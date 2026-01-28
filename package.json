@@ -1,0 +1,38 @@
+{
+  "name": "vocalia",
+  "version": "1.0.0",
+  "description": "VocalIA - Voice AI Platform for MENA & Europe",
+  "author": "3A Automation <contact@3a-automation.com>",
+  "license": "PROPRIETARY",
+  "main": "core/index.js",
+  "scripts": {
+    "start:api": "node core/voice-api-resilient.cjs",
+    "start:realtime": "node core/grok-voice-realtime.cjs",
+    "start:telephony": "node telephony/voice-telephony-bridge.cjs",
+    "start:all": "npm run start:api & npm run start:realtime & npm run start:telephony",
+    "health": "node scripts/health-check.cjs",
+    "test": "node scripts/test-suite.cjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "ws": "^8.14.2",
+    "twilio": "^4.19.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3a-automation/vocalia"
+  },
+  "keywords": [
+    "voice-ai",
+    "telephony",
+    "grok",
+    "twilio",
+    "mena",
+    "darija",
+    "arabic"
+  ]
+}
