@@ -243,6 +243,12 @@
         "terms": "Terms",
         "cookies": "Cookies"
       },
-      "copyright": "© 2026 VocalIA. All rights reserved."
+      "copyright": "© 2026 VocalIA. All rights reserved.",
+      "trust": {
+        "gdpr": "GDPR Compliant",
+        "ai_act": "AI Act Ready",
+        "security": "AES-256 Encrypted",
+        "reliability": "99.9% Uptime"
+      }
     }
   }

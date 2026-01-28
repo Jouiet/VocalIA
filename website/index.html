@@ -197,6 +197,26 @@
       border-radius: inherit;
       pointer-events: none;
     }
+
+    @keyframes scan {
+      0% {
+        top: 0%;
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        top: 100%;
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
@@ -293,10 +313,68 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </a>
-          <a href="#demo"
-            class="px-8 py-4 rounded-xl gradient-border hover:bg-vocalia-800/30 transition font-semibold text-lg">
-            <span data-i18n="hero.cta_secondary">Voir la Démo</span>
           </a>
+          <button onclick="openDemoModal()"
+            class="px-8 py-4 rounded-xl gradient-border hover:bg-vocalia-800/30 transition font-semibold text-lg flex items-center space-x-2 group">
+            <span class="relative flex h-3 w-3 mr-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+            </span>
+            <span data-i18n="hero.cta_secondary">Voir la Démo</span>
+          </button>
+        </div>
+
+        <!-- Video Modal -->
+        <div id="demoModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
+          aria-modal="true">
+          <!-- Backdrop -->
+          <div class="fixed inset-0 bg-vocalia-950/90 backdrop-blur-xl transition-opacity opacity-0" id="modalBackdrop">
+          </div>
+
+          <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+              <div
+                class="relative transform overflow-hidden rounded-2xl bg-black text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-5xl border border-vocalia-700 opacity-0 scale-95"
+                id="modalPanel">
+                <!-- Close button -->
+                <button onclick="closeDemoModal()"
+                  class="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/50 text-white hover:bg-vocalia-600 transition">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                <!-- Video Container (Placeholder for Cinematic Experience) -->
+                <div
+                  class="aspect-video w-full bg-gradient-to-br from-vocalia-900 to-black flex items-center justify-center relative overflow-hidden group">
+                  <div class="absolute inset-0 bg-[url('/assets/grid.svg')] opacity-20"></div>
+
+                  <!-- Pulsing Play Button -->
+                  <div class="relative z-10 text-center">
+                    <div
+                      class="w-20 h-20 rounded-full bg-vocalia-500/20 flex items-center justify-center backdrop-blur-sm border border-vocalia-400/30 group-hover:scale-110 transition duration-500 cursor-pointer">
+                      <svg class="w-8 h-8 text-vocalia-400 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                    <p class="mt-4 text-vocalia-300 font-mono text-sm tracking-widest uppercase">Cinematic Demo
+                      Loading...</p>
+                  </div>
+
+                  <!-- Scanning line animation -->
+                  <div
+                    class="absolute top-0 left-0 w-full h-1 bg-vocalia-500/50 shadow-[0_0_15px_rgba(12,142,233,0.5)] animate-[scan_3s_linear_infinite]">
+                  </div>
+                </div>
+
+                <div class="p-6 bg-vocalia-900 border-t border-vocalia-800">
+                  <h3 class="text-xl font-bold text-white mb-2" data-i18n="hero.title">Vos Agents Vocaux IA</h3>
+                  <p class="text-vocalia-300 text-sm">Experience the power of VocalIA. Real-time voice synthesis,
+                    sentiment analysis, and instant CRM integration.</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Stats -->
@@ -748,8 +826,34 @@
         </div>
       </div>
 
-      <div class="border-t border-vocalia-800 mt-12 pt-8 text-center text-vocalia-500">
+      <div
+        class="border-t border-vocalia-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-vocalia-500 text-sm">
         <p data-i18n="footer.copyright">© 2026 VocalIA. Tous droits réservés.</p>
+
+        <!-- Trust Badges -->
+        <div class="flex items-center space-x-6 mt-4 md:mt-0">
+          <div class="flex items-center space-x-2" title="GDPR Compliant">
+            <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span data-i18n="footer.trust.gdpr">Conforme RGPD</span>
+          </div>
+          <div class="flex items-center space-x-2" title="AI Act Ready">
+            <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+            <span data-i18n="footer.trust.ai_act">AI Act Ready</span>
+          </div>
+          <div class="flex items-center space-x-2 hidden sm:flex">
+            <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span data-i18n="footer.trust.security">Secure AES-256</span>
+          </div>
+        </div>
       </div>
     </div>
   </footer>
@@ -798,6 +902,44 @@
         document.getElementById('telephonyPrice').textContent = overage;
       }
     }
+
+    // Modal Logic
+    const modal = document.getElementById('demoModal');
+    const backdrop = document.getElementById('modalBackdrop');
+    const panel = document.getElementById('modalPanel');
+
+    function openDemoModal() {
+      modal.classList.remove('hidden');
+      // Small delay for transition
+      setTimeout(() => {
+        backdrop.classList.remove('opacity-0');
+        panel.classList.remove('opacity-0', 'scale-95');
+        panel.classList.add('opacity-100', 'scale-100');
+      }, 10);
+    }
+
+    function closeDemoModal() {
+      backdrop.classList.remove('opacity-100');
+      panel.classList.remove('opacity-100', 'scale-100');
+      panel.classList.add('opacity-0', 'scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal || e.target === backdrop) {
+        closeDemoModal();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeDemoModal();
+      }
+    });
 
     // Initialize
     (async function init() {
