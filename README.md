@@ -1,10 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> **Domain:** www.vocalIA.ma | **Parent:** 3A Automation | **Version:** 1.0.0
+> **Domain:** <www.vocalIA.ma> | **Version:** 1.0.0
 
 ## Overview
 
 VocalIA is a comprehensive Voice AI platform combining:
+
 - **Voice Widget** - Browser-based (Web Speech API, $0 cost)
 - **Voice Telephony AI** - PSTN integration (Twilio + Grok WebSocket)
 
@@ -94,23 +95,27 @@ VocalIA/
 ## Features
 
 ### Voice Widget (Browser)
+
 - Free (Web Speech API)
 - Lead qualification (BANT scoring)
 - GA4 event tracking
 - Booking flow integration
 
 ### Voice Telephony AI (PSTN)
+
 - Twilio PSTN ↔ Grok WebSocket bridge
 - 11 function tools
 - HITL (Human-in-the-Loop) controls
 - WhatsApp confirmation
 
 ### Multi-Tenant Personas (30)
+
 - Tier 1 (Core): Agency, E-commerce, Dental, Property, HOA, School, Collector
 - Tier 2 (Expansion): 11 additional verticals
 - Tier 3 (Extended): 12 additional verticals
 
 ### Languages
+
 - French (FR)
 - English (EN)
 - Spanish (ES)
@@ -156,8 +161,8 @@ SHOPIFY_SHOP_NAME=
 
 ## License
 
-Proprietary - 3A Automation. All rights reserved.
+Proprietary - VocalIA. All rights reserved.
 
 ---
 
-**Contact:** contact@www.vocalIA.ma | **Parent:** 3A Automation
+**Contact:** <contact@www.vocalIA.ma> | **VocalIA - SOTA Voice AI Systems**

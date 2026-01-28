@@ -60,8 +60,8 @@ const BASE_SYSTEM_PROMPT = `Tu es l'assistant IA de VocalIA (AAA - AI Automation
 
 - Nom: VocalIA (Automation, Analytics, AI)
 - Type: Agence d'Automatisation AI (AAA)
-- Site: https://3a-automation.com
-- Email: contact@3a-automation.com
+- Site: https://vocalia.ma
+- Email: contact@vocalia.ma
 - Localisation: Maroc, servant MENA et monde entier
 - Langues: Français (principal), Anglais, Arabe (sur demande)
 
@@ -87,7 +87,7 @@ Marketing: Meta Ads, Google Ads, TikTok Ads, LinkedIn Ads
 3. AI Integration (génération contenu, SEO automatisé)
 
 OFFRE GRATUITE: Audit e-commerce complet
-URL: https://3a-automation.com/#contact
+URL: https://vocalia.ma/#contact
 
 ## CIBLE CLIENT
 
@@ -239,7 +239,7 @@ async function interactiveChat() {
   });
 
   console.log('\n' + '='.repeat(60));
-  console.log('3A AUTOMATION - CHAT INTERACTIF GROK');
+  console.log('VOCALIA - CHAT INTERACTIF GROK');
   console.log(`RAG: ${USE_RAG && ragInitialized ? 'ACTIVÉ' : 'DÉSACTIVÉ'}`);
   console.log('='.repeat(60));
   console.log("Tapez 'quit' pour quitter");
@@ -274,7 +274,7 @@ async function interactiveChat() {
       // Special commands
       if (userInput === '/catalog' && ragInitialized) {
         const catalog = getCatalog();
-        console.log('\n--- CATALOGUE 3A AUTOMATION ---');
+        console.log('\n--- CATALOGUE VOCALIA ---');
         console.log(`\nPackages: ${catalog.packages.length}`);
         for (const pkg of catalog.packages) {
           console.log(`  ${pkg.name}: Setup ${pkg.setup}, Monthly ${pkg.monthly}`);
@@ -358,8 +358,8 @@ async function queryKnowledgeBase(query) {
  */
 async function main() {
   console.log('\n' + '='.repeat(60));
-  console.log('3A AUTOMATION - GROK CLIENT v2.0 (RAG Enhanced)');
-  console.log('Projet: 3a-automations');
+  console.log('VOCALIA - GROK CLIENT v2.0 (RAG Enhanced)');
+  console.log('Projet: vocalia');
   console.log('='.repeat(60));
 
   // Check API key

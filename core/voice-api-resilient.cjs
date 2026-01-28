@@ -39,9 +39,9 @@ const ContextBox = require('./ContextBox.cjs');
 // Security constants
 const MAX_BODY_SIZE = 1024 * 1024; // 1MB limit
 const CORS_WHITELIST = [
-  'https://3a-automation.com',
-  'https://www.3a-automation.com',
-  'https://dashboard.3a-automation.com',
+  'https://vocalia.ma',
+  'https://www.vocalia.ma',
+  'https://dashboard.vocalia.ma',
   'http://localhost:3000',
   'http://localhost:5173'
 ];
@@ -1117,7 +1117,7 @@ function startServer(port = 3004) {
     if (origin && CORS_WHITELIST.includes(origin)) {
       res.setHeader('Access-Control-Allow-Origin', origin);
     } else if (!origin) {
-      res.setHeader('Access-Control-Allow-Origin', 'https://3a-automation.com');
+      res.setHeader('Access-Control-Allow-Origin', 'https://vocalia.ma');
     } else {
       res.writeHead(403, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Origin not allowed' }));

@@ -1509,7 +1509,7 @@ async function sendGenericSMS(to, body) {
 }
 
 async function sendSMSBookingLink(session) {
-  const bookingLink = 'https://3a-automation.com/reserver';
+  const bookingLink = 'https://vocalia.ma/reserver';
   const phone = session.bookingData.phone?.replace(/\D/g, '');
 
   if (!phone) {
@@ -2228,7 +2228,7 @@ async function sendRecoverySMS(session) {
   // Use WhatsApp if available, else log for manual follow-up
   if (CONFIG.whatsapp.accessToken && CONFIG.whatsapp.phoneNumberId) {
     try {
-      const bookingLink = 'https://3a-automation.com/reserver';
+      const bookingLink = 'https://vocalia.ma/reserver';
       const message = session.bookingData.name
         ? `Bonjour ${session.bookingData.name}, nous avons été coupés! Réservez votre appel découverte ici: ${bookingLink}`
         : `Bonjour, réservez votre appel découverte VocalIA: ${bookingLink}`;

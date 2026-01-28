@@ -98,14 +98,14 @@ node telephony/voice-telephony-bridge.cjs  # Port 3009
 
 ## Parent Documentation
 
-Hérite de 3A Automation:
+Hérite de VocalIA:
 - `~/Desktop/JO-AAA/docs/ETAGERE-TECHNOLOGIQUE-ECOSYSTEME-3A.md`
 - `~/Desktop/JO-AAA/docs/AI-PROVIDER-STRATEGY.md`
 - `~/.claude/CLAUDE.md` (global memory)
 
 ---
 
-## 3A-Shelf Integration
+## VocalIA-Ops Integration
 
 ```bash
 # Package installé via yalc

@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 > Version: 1.1.0 | 28/01/2026 | Session 184bis | **MASTER REFERENCE**
 >
-> **Brand:** VocalIA | **Domain:** vocalia.ma | **Parent:** 3A Automation
+> **Brand:** VocalIA | **Domain:** vocalia.ma | **Parent:** VocalIA
 
 ## Executive Summary
 
@@ -12,7 +12,7 @@
 | **Nom** | VocalIA |
 | **Domain** | vocalia.ma |
 | **Tagline** | "Voice AI for MENA & Europe" |
-| **Parent Company** | 3A Automation |
+| **Parent Company** | VocalIA |
 | **Positionnement** | Widget + Telephony AI combinés |
 
 **Analyse du nom "VocalIA":**
@@ -229,7 +229,7 @@ turn_detection: {
 
 | # | Key | Name | Voice | Sensitivity |
 |:--|:----|:-----|:------|:------------|
-| 1 | AGENCY | 3A Automation Architect | ara | normal |
+| 1 | AGENCY | VocalIA Architect | ara | normal |
 | 2 | DENTAL | Cabinet Dentaire Lumière | eve | high |
 | 3 | PROPERTY | Atlas Property Management | leo | normal |
 | 4 | HOA | Sunnyvale HOA Hotline | sal | normal |

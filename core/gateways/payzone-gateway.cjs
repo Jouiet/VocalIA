@@ -1,5 +1,5 @@
 /**
- * 3A-AUTOMATION - Payzone.ma / CMI Gateway
+ * VOCALIA - Payzone.ma / CMI Gateway
  * Production-ready SOAP/XML implementation for Moroccan MAD transactions.
  * 
  * Protocol: Server-to-Server (Webservices)

@@ -1,6 +1,6 @@
 /**
  * BillingAgent.cjs - Horizontal Billing Automation
- * 3A Automation - Session 178quater (Agent Ops v3.0)
+ * VocalIA - Session 178quater (Agent Ops v3.0)
  *
  * Automatically creates Stripe customers and draft invoices
  * when leads are qualified or bookings are confirmed.
@@ -160,7 +160,7 @@ class BillingAgent {
             customer: customerId,
             amount: amountInCents,
             currency: this.currency,
-            description: `3A Automation Service: ${description || 'Essentials Pack'}`
+            description: `VocalIA Service: ${description || 'Essentials Pack'}`
         });
         const itemIdempotencyKey = this.gateway.generateIdempotencyKey('invoice_item', sessionKey);
         await this.gateway.request('/v1/invoice_items', 'POST', itemPayload.toString(), { idempotencyKey: itemIdempotencyKey });

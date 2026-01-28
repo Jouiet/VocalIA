@@ -1,11 +1,12 @@
 # VocalIA - Voice AI Platform
+>
 > Version: 1.7.0 | 28/01/2026 | Session 190 | Engineering Score: 99/100 | Health: 100%
 
 ## Identité
 
 - **Type**: Voice AI SaaS Platform
-- **Domain**: www.vocalIA.ma
-- **Parent**: 3A Automation (3a-automation.com)
+- **Domain**: <www.vocalIA.ma>
+- **Identity**: VocalIA (vocalia.ma) - SOTA Voice AI Systems
 - **Location**: `~/Desktop/VocalIA/`
 
 ---
@@ -19,7 +20,7 @@
 | **Multi-Persona** | 15 | **15** | 28 personas, 5 langues, marketing science |
 | **Integrations** | 15 | **12** | HubSpot+Klaviyo+Shopify (creds manquants) |
 | **Documentation** | 10 | **10** | 5 rules, CLAUDE.md, 10 docs ✅ |
-| **Infrastructure** | 15 | **15** | MCP ✅, Sensors ✅, Registry ✅, GPM ✅, 3A-Shelf ✅ |
+| **Infrastructure** | 15 | **15** | MCP ✅, Sensors ✅, Registry ✅, GPM ✅, VocalIA-Ops ✅ |
 | **Testing** | 15 | **15** | 36/36 checks ✅, health-check.cjs ✅ |
 | **CI/CD** | - | **+3** | GitHub Actions (ci.yml + deploy.yml) ✅ |
 | **TOTAL** | **100** | **99** | Health Score: 100% (36/36 passed) |
@@ -54,6 +55,7 @@ website/                              # 2,183 lignes
 ```
 
 **Features:**
+
 - Design futuriste, sober, puissant
 - Auto-detect location: MAD (Maroc), EUR (Europe), USD (Autres)
 - FR + EN avec switch dynamique
@@ -122,7 +124,7 @@ VocalIA/                              # 23,496 lignes (54 fichiers)
 | Lignes code | **24,700+** | +156 (CI/CD) |
 | Fichiers code | **58** | +2 (workflow files) |
 | Health Check | **100%** | 36/36 checks passed |
-| Branding VocalIA | **100%** | 0 refs "3A Automation" |
+| Branding VocalIA | **100%** | 0 refs "VocalIA" |
 | KB FR | **16** secteurs | knowledge_base.json |
 | KB Darija | **15** secteurs | knowledge_base_ary.json ✅ |
 | Langues Telephony | **5** | FR, EN, ES, AR, ARY |
@@ -147,15 +149,17 @@ VocalIA/                              # 23,496 lignes (54 fichiers)
 ## Gaps Status (Session 188)
 
 ### ✅ DONE (Session 188)
+
 | Gap | Status | Vérification |
 |:----|:------:|:-------------|
-| Branding "3A" → "VocalIA" | ✅ DONE | `grep "3A Automation" --include="*.cjs" . \| wc -l` → 0 |
+| Branding "3A" → "VocalIA" | ✅ DONE | `grep "VocalIA" --include="*.cjs" . \| wc -l` → 0 |
 | Telephony 5 langues | ✅ DONE | FR, EN, ES, AR, ARY |
 | KB Darija | ✅ DONE | `knowledge_base_ary.json` (15 secteurs) |
-| KB Placeholder data | ✅ DONE | vocalia.ma, jobs@vocalia.ma |
+| KB Placeholder data | ✅ DONE | vocalia.ma, <jobs@vocalia.ma> |
 | Website | ✅ DONE | 1,135 lignes, FR+EN, geo-detect |
 
 ### ⚠️ User Action Required
+
 | Credential | Service | Setup |
 |:-----------|:--------|:------|
 | TWILIO_* | Telephony | [Twilio Console](https://www.twilio.com/console) |
@@ -178,7 +182,7 @@ node core/voice-api-resilient.cjs --server &
 node telephony/voice-telephony-bridge.cjs &
 
 # Verify branding
-grep -r "3A Automation" --include="*.cjs" . | wc -l
+grep -r "VocalIA" --include="*.cjs" . | wc -l
 # Expected: 0
 ```
 
@@ -214,11 +218,13 @@ grep -r "3A Automation" --include="*.cjs" . | wc -l
 3. ✅ **Health Check Extended**: 34/34 → 36/36
 
 **Delta Session 190:**
+
 - Health: 34/34 → 36/36 (+2)
 - Score: 98 → 99 (+1)
 - CI/CD: 0 → 2 pipelines
 
 **Cumul Sessions 188-190:**
+
 - LOC: 22,361 → 24,700+ (+2,339)
 - Website: 0 → 2,183 lignes
 - CI/CD: 0 → 2 pipelines (6 jobs)

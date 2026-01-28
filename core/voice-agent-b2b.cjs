@@ -162,9 +162,9 @@ class VoiceAgentB2B {
     return `You are the VocalIA AI Assistant, a dual-role voice assistant for VocalIA agency that handles BOTH sales assistance AND customer support.
 
 ═══════════════════════════════════════════════════════════════════
-ABOUT 3A AUTOMATION
+ABOUT VOCALIA
 ═══════════════════════════════════════════════════════════════════
-- Agency: https://3a-automation.com
+- Agency: https://vocalia.ma
 - Specialization: Marketing automation for e-commerce and B2B
 - Services: 119 automation solutions across 10 categories
 - Markets: France, Europe, North America
@@ -283,7 +283,7 @@ VOICE RESPONSE GUIDELINES
 BOOKING A CALL
 ═══════════════════════════════════════════════════════════════════
 When a client wants to discuss further:
-"I'd be happy to arrange a discovery call with our team. You can book directly at 3a-automation.com/booking or I can have someone reach out to you. What works best?"
+"I'd be happy to arrange a discovery call with our team. You can book directly at vocalia.ma/booking or I can have someone reach out to you. What works best?"
 
 ═══════════════════════════════════════════════════════════════════
 ESCALATION TO HUMAN
@@ -295,7 +295,7 @@ Transfer when:
 - Custom development requests
 - Complaints or issues
 
-Say: "I'll connect you with one of our specialists who can help further. You can also email contact@3a-automation.com or book a call at 3a-automation.com/booking."
+Say: "I'll connect you with one of our specialists who can help further. You can also email contact@vocalia.ma or book a call at vocalia.ma/booking."
 
 ═══════════════════════════════════════════════════════════════════
 IMPORTANT RULES
@@ -468,7 +468,7 @@ IMPORTANT RULES
 
     // BOOKING
     if (input.includes('book') || input.includes('call') || input.includes('meeting') || input.includes('appointment')) {
-      return "I'd be happy to arrange a discovery call. You can book directly at 3a-automation.com/booking, or I can have one of our specialists reach out to you. What works best?";
+      return "I'd be happy to arrange a discovery call. You can book directly at vocalia.ma/booking, or I can have one of our specialists reach out to you. What works best?";
     }
 
     // EMAIL AUTOMATION
@@ -576,7 +576,7 @@ async function runInteractiveCLI() {
   const readline = require('readline');
 
   console.log('\n' + '='.repeat(60));
-  console.log('3A AUTOMATION - Voice Agent B2B - Interactive CLI');
+  console.log('VOCALIA - Voice Agent B2B - Interactive CLI');
   console.log('='.repeat(60));
   console.log("Type 'quit' to exit, 'status' to check agent status");
   console.log('='.repeat(60) + '\n');

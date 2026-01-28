@@ -55,7 +55,7 @@ La question "est-il optimal d'avoir une automatisation ou un agent pour gérer A
 
 ### JUSTIFICATION FINALE
 
-Il est **NON-OPTIMAL** de gérer "AI Voice" uniquement avec une automatisation car cela dégrade l'expérience utilisateur au niveau d'un répondeur des années 90, détruisant la valeur ajoutée de 3A Automation.
+Il est **NON-OPTIMAL** de gérer "AI Voice" uniquement avec une automatisation car cela dégrade l'expérience utilisateur au niveau d'un répondeur des années 90, détruisant la valeur ajoutée de VocalIA.
 
 Toutefois, il est **DANGEREUX** de gérer la "Téléphonie" via un agent pur sans le filet de sécurité d'un pont automatisé (Bridge).
 

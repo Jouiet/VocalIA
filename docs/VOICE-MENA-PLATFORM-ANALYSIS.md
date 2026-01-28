@@ -87,7 +87,7 @@
 
 | Critère | SAWT IA | **3A Voice** | Avantage |
 |---------|---------|--------------|----------|
-| **Entreprise** | Sensei Prod (10 ans, marketing) | 3A Automation (AI Agency) | - |
+| **Entreprise** | Sensei Prod (10 ans, marketing) | VocalIA (AI Agency) | - |
 | **Lancement** | Nov 2025 | Jan 2026 | SAWT IA (+2 mois) |
 | **Technologie** | ML in-house (propriétaire) | Stack ouvert (Grok+ElevenLabs) | 3A (flexibilité) |
 | **Langues** | Darija, FR, autres | Darija, FR, EN, ES, AR (5) | 3A (documenté) |
@@ -1748,7 +1748,7 @@ BLOCKERS:
 
 | Semaine | Tâche | Livrable |
 |---------|-------|----------|
-| S1 | Landing page Voice MENA (FR/AR) | voicemena.3a-automation.com |
+| S1 | Landing page Voice MENA (FR/AR) | voicemena.vocalia.ma |
 | S1 | Widget voice embarquable | `<script>` intégrable |
 | S2 | Dashboard client self-service | Onboarding automatisé |
 | S2 | Intégration paiement MAD | CMI / PayPal |
@@ -1880,7 +1880,7 @@ Raisons:
 
 | # | Action | Type | Délai | Owner |
 |---|--------|------|-------|-------|
-| 1 | **Webapp voicemena.3a-automation.com** | Production | 2 semaines | Dev |
+| 1 | **Webapp voicemena.vocalia.ma** | Production | 2 semaines | Dev |
 | 2 | **Widget voice embarquable production** | Production | 2 semaines | Dev |
 | 3 | **Dashboard client self-service** | Production | 2 semaines | Dev |
 | 4 | **Intégration paiement MAD (CMI)** | Production | 1 semaine | Dev |
@@ -1998,7 +1998,7 @@ Raisons:
 **Document créé:** 27/01/2026
 **Dernière màj:** 27/01/2026 - Session 171: Atlas-Chat-9B Voice-API + Telephony v5.5.5
 **Version:** 5.5.5 (Multi-Canal + Atlas-Chat-9B Integrated in voice-api-resilient + voice-telephony-bridge)
-**Auteur:** Claude Opus 4.5 (3A Automation)
+**Auteur:** Claude Opus 4.5 (VocalIA)
 **Classification:** Stratégie Business - Confidentiel
 **Décision:** ✅ **GO MULTI-CANAL + SOLUTION COMPLÈTE** - Web Widget (91%) + WhatsApp Voice (84%) + PSTN Morocco (63%)
 

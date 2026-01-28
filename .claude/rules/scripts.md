@@ -137,5 +137,5 @@ npm run start:all
 
 ---
 
-*Adapté de 3A Automation - Session 184bis*
+*Adapté de VocalIA - Session 184bis*
 *VocalIA Voice AI Platform*

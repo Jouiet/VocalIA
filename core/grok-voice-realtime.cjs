@@ -638,8 +638,8 @@ class GrokRealtimeProxy {
 
       // P2 FIX: CORS with origin whitelist
       const allowedOrigins = [
-        'https://3a-automation.com',
-        'https://dashboard.3a-automation.com',
+        'https://vocalia.ma',
+        'https://dashboard.vocalia.ma',
         'http://localhost:3000',
         'http://localhost:3007'
       ];

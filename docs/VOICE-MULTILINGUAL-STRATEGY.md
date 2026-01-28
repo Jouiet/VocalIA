@@ -1,4 +1,4 @@
-# VOICE MULTILINGUAL STRATEGY - 3A AUTOMATION
+# VOICE MULTILINGUAL STRATEGY - VOCALIA
 
 > **Version:** 3.2.0 | **Date:** 27/01/2026 | **Session:** 171 (Atlas-Chat-9B Integrated)
 > **Statut:** COMPLET - Widget 5 Langues + Telephony Multilingue + **Services 3/3 HEALTHY** + **Atlas-Chat-9B Fallback**
@@ -109,7 +109,7 @@ node automations/agency/core/voice-quality-sensor.cjs --health
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                    VOICE SYSTEMS - 3A AUTOMATION                         │
+│                    VOICE SYSTEMS - VOCALIA                         │
 │                         (État Janvier 2026)                              │
 └─────────────────────────────────────────────────────────────────────────┘
 

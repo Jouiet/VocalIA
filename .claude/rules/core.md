@@ -52,5 +52,5 @@ node scripts/voice-quality-sensor.cjs --health
 ```
 
 ## Deploy
-Parent: 3A Automation (JO-AAA)
+Parent: VocalIA (JO-AAA)
 VPS: Hostinger 1168256 (si déployé en prod)

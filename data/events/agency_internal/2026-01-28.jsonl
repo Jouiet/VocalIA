@@ -1,0 +1,1 @@
+{"id":"evt_1769632277578_5d9e5122e862102f","type":"tenant.created","tenantId":"agency_internal","payload":{"tenantId":"test_client_maroc","name":"Maroc E-commerce SARL","vertical":"e-commerce"},"metadata":{"timestamp":"2026-01-28T20:31:17.578Z","priority":"normal","correlationId":"evt_1769632277578_5d9e5122e862102f","source":"TenantOnboardingAgent"},"_retries":0}

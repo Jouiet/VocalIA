@@ -9,4 +9,4 @@
 | Make.com (Webhooks) | 350ms | -5% |
 
 ## Verdict
-3A Automation is **8-10x faster** than traditional low-code platforms due to native Node.js execution and optimized MCP Router handshake.
+VocalIA is **8-10x faster** than traditional low-code platforms due to native Node.js execution and optimized MCP Router handshake.

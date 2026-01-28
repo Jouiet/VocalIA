@@ -1,6 +1,6 @@
 /**
  * Compliance Guardian (Policy-as-Code Engine)
- * Validates agent actions against EU AI Act 2026 and Agency Ethics.
+ * Validates agent actions against EU AI Act 2026 and VocalIA Ethics.
  * 
  * @version 1.0.0
  * @date 2026-01-20
@@ -14,9 +14,20 @@ class ComplianceGuardian {
         this.rules = [
             { id: 'GDPR_PII', pattern: /\b(\d{3}-\d{2}-\d{4}|[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b/i, severity: 'HIGH', description: 'Possible PII leak (Email/SSN)' },
             { id: 'ETHICS_PRESSURE', pattern: /\b(buy now or die|force them|don't take no|harass)\b/i, severity: 'HIGH', description: 'Unethical pressure tactics' },
-            { id: 'AI_DISCLOSURE', required: true, check: (text) => text.includes('[AI]') || text.includes('Assisté par IA') || text.includes('Automated'), severity: 'MEDIUM', description: 'Must disclose AI usage in outreach' }
+            { id: 'AI_DISCLOSURE', required: true, check: (text) => text.includes('[AI]') || text.includes('Assisté par IA') || text.includes('Automated'), severity: 'MEDIUM', description: 'Must disclose AI usage in outreach' },
+            // SOC2 / Security 2026 Additions
+            { id: 'STRIPE_KEY', pattern: /sk_(live|test)_[0-9a-zA-Z]{24}/, severity: 'CRITICAL', description: 'Hardcoded Stripe Secret Key detected' },
+            { id: 'TOKEN_LIMIT', check: (text) => text.length < 32000, severity: 'MEDIUM', description: 'Context window overflow risk' }
         ];
-        this.logPath = path.join(__dirname, '../../../data/compliance_audit.log');
+        this.logPath = path.join(process.cwd(), 'data', 'compliance_audit.log');
+        this._ensureLogDir();
+    }
+
+    _ensureLogDir() {
+        const dir = path.dirname(this.logPath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
     }
 
     /**

@@ -420,7 +420,7 @@ function generateConfig(options) {
     services = null,
     bookingUrl = '',
     customColors = null,
-    voiceEndpoint = 'https://dashboard.3a-automation.com/api/voice/respond',
+    voiceEndpoint = 'https://dashboard.vocalia.ma/api/voice/respond',
     bookingEndpoint = ''
   } = options;
 
@@ -509,7 +509,7 @@ function generateConfig(options) {
 
     realtime: {
       enabled: false,
-      proxyUrl: 'wss://voice-api.3a-automation.com/realtime',
+      proxyUrl: 'wss://voice-api.vocalia.ma/realtime',
       fallbackUrl: 'ws://localhost:3007',
       voice: 'ara',
       autoUpgrade: true
@@ -588,7 +588,7 @@ window.VOICE_WIDGET_CONFIG = ${JSON.stringify(config, null, 2)};
 
   // 3. Embed snippet for client
   const embedSnippet = `<!-- VocalIA Voice Widget - ${config.client.name} -->
-<script src="https://3a-automation.com/voice-assistant/voice-widget.min.js"></script>
+<script src="https://vocalia.ma/voice-assistant/voice-widget.min.js"></script>
 <script src="${config.client.domain}/voice-widget-config.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -642,8 +642,8 @@ Edit \`voice-widget-config.json\` to customize:
 - Services: \`knowledge.services\`
 
 ## Support
-Contact: support@3a-automation.com
-Documentation: https://3a-automation.com/docs/voice-widget
+Contact: support@vocalia.ma
+Documentation: https://vocalia.ma/docs/voice-widget
 `;
   const readmePath = path.join(outputDir, 'README.md');
   fs.writeFileSync(readmePath, readme);

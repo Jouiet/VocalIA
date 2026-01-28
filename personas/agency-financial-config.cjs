@@ -7,8 +7,8 @@
 const FINANCIAL_CONFIG = {
     company: {
         name: 'VocalIA',
-        email: 'contact@3a-automation.com',
-        website: 'https://3a-automation.com',
+        email: 'contact@vocalia.ma',
+        website: 'https://vocalia.ma',
         address: 'Angle Boulevard Zerktouni et Rue Al-Bakri',
         city: 'Casablanca',
         country: 'Maroc',

@@ -1,5 +1,5 @@
 /**
- * 3A-AUTOMATION - Stripe Global Gateway
+ * VOCALIA - Stripe Global Gateway
  * Handles international transactions (Google Pay, Apple Pay, AliPay)
  * via REST API proxy architecture.
  *

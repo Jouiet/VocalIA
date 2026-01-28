@@ -1,5 +1,5 @@
 /**
- * MARKETING SCIENCE CORE - 3A Automation
+ * MARKETING SCIENCE CORE - VocalIA
  * Central Library for Persuasion Psychology & Copyrighting Frameworks
  * 
  * "The Right Words at the Right Time"

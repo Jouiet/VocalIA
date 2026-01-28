@@ -2,7 +2,7 @@
 
 > **Version**: 1.0.0 | **Date**: 28/01/2026 | **Session**: 184bis POST-FIX
 > **Méthode**: Bottom-up factuel, vérifié empiriquement
-> **Source**: 3A Automation (JO-AAA) → VocalIA
+> **Source**: VocalIA (JO-AAA) → VocalIA
 
 ---
 
@@ -212,4 +212,4 @@ find . -name "*.cjs" | grep -v node_modules | wc -l
 
 *Document créé: 28/01/2026 - Session 184bis POST-FIX*
 *Méthode: Bottom-up factuel*
-*Parent: 3A Automation (JO-AAA)*
+*Parent: VocalIA (JO-AAA)*

@@ -1,7 +1,7 @@
 /**
  * @3a/agent-ops - Agent Operations v3.0
  *
- * Étagère Technologique - 3A Automation
+ * Étagère Technologique - VocalIA
  *
  * Modules:
  * - AgencyEventBus: Event-driven architecture backbone
@@ -61,7 +61,7 @@ if (require.main === module) {
       process.exit(0);
     });
   } else {
-    console.log('@3a/agent-ops v3.0.0 - Agent Operations for 3A Automation');
+    console.log('@3a/agent-ops v3.0.0 - Agent Operations for VocalIA');
     console.log('Usage: node index.cjs --health');
   }
 }

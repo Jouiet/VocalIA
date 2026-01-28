@@ -1,5 +1,5 @@
 # VocalIA - Voice AI Architecture
-> **Brand:** VocalIA | **Domain:** vocalia.ma | **Parent:** 3A Automation
+> **Brand:** VocalIA | **Domain:** vocalia.ma | **Parent:** VocalIA
 
 ## Version: 2.1.0 | Date: 28/01/2026 | Session: 184bis
 
@@ -85,7 +85,7 @@ Fonctionnalités Dial.Plus:
 └── Multi-langue automatique
 
 Usage:
-├── Appels entrants 3A Automation
+├── Appels entrants VocalIA
 ├── Qualification leads
 ├── Prise de rendez-vous
 └── Support client de base
@@ -176,7 +176,7 @@ automations/shared-components/dialplus-knowledge-base.json
 ### Comment Uploader sur Dial.Plus
 
 1. Aller sur <https://app.dial.plus>
-2. Sélectionner l'agent 3A Automation
+2. Sélectionner l'agent VocalIA
 3. Section "Knowledge Base" ou "Documents"
 4. Uploader `dialplus-knowledge-base.json`
 5. Tester avec un appel de vérification

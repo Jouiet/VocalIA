@@ -73,7 +73,7 @@ class MetaCAPIGateway {
      * Build the base event payload
      * SOTA: Includes event_id for deduplication (hybrid Pixel+CAPI)
      */
-    _buildPayload(eventName, userData, customData = {}, eventSourceUrl = 'https://3a-automation.com') {
+    _buildPayload(eventName, userData, customData = {}, eventSourceUrl = 'https://vocalia.ma') {
         const timestamp = Math.floor(Date.now() / 1000);
 
         // SOTA: Generate event_id for deduplication

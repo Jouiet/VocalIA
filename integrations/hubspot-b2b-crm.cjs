@@ -1140,13 +1140,16 @@ class HubSpotB2BCRM {
 // ============================================================================
 
 // Export for programmatic use
-module.exports = { HubSpotB2BCRM, CONFIG };
+const instance = new HubSpotB2BCRM();
+module.exports = instance;
+module.exports.HubSpotB2BCRM = HubSpotB2BCRM;
+module.exports.CONFIG = CONFIG; // Also export CONFIG
 
-// Run CLI if executed directly
+// CLI
 if (require.main === module) {
   (async () => {
     const args = process.argv.slice(2);
-    const crm = new HubSpotB2BCRM();
+    const crm = instance;
 
     if (args.includes('--health')) {
       await crm.healthCheck();

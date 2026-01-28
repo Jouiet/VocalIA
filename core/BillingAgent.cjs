@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const StripeGlobalGateway = require('./gateways/stripe-global-gateway.cjs');
+const PayzoneGlobalGateway = require('./gateways/payzone-global-gateway.cjs'); // NEW: For MAD payments
 const RevenueScience = require('./RevenueScience.cjs');
 const MarketingScience = require('./marketing-science-core.cjs');
 
@@ -45,8 +46,12 @@ const BILLING_STATES = {
 
 class BillingAgent {
     constructor(options = {}) {
-        this.gateway = new StripeGlobalGateway({
+        this.stripe = new StripeGlobalGateway({
             apiKey: process.env.STRIPE_SECRET_KEY
+        });
+
+        this.payzone = new PayzoneGlobalGateway({
+            apiKey: process.env.PAYZONE_API_KEY
         });
 
         // Product pricing fallback (Essentials Pack)
@@ -68,22 +73,27 @@ class BillingAgent {
         console.log(`[BillingAgent] Processing billing for ${identity.email || identity.phone}`);
 
         try {
+            const tenantId = sessionData.metadata?.tenantId || 'agency_internal';
+            const currency = sessionData.metadata?.currency || this.currency;
+            const gateway = currency === 'mad' ? this.payzone : this.stripe;
+
             // 1. Create or Find Customer
-            const customer = await this._getOrCreateCustomer(identity);
+            const customer = await this._getOrCreateCustomer(identity, gateway);
 
             // 2. Determine price via RevenueScience (The Yield Brain)
             const price = RevenueScience.calculateOptimalPrice(qualification);
 
             // 3. Margin Protection Guard
             if (!RevenueScience.isMarginSafe(price)) {
-                console.warn('[BillingAgent] MARGIN WARNING: Quote below safety threshold.');
+                console.warn(`[BillingAgent][${tenantId}] MARGIN WARNING: Quote below safety threshold.`);
             }
 
             // 4. Create Draft Invoice (Engineered Flow: Handoff to human for final 11% check)
-            const invoice = await this._createDraftInvoice(customer.id, price, intent?.need);
+            const invoice = await this._createDraftInvoice(customer.id, price, intent?.need, null, gateway, currency);
 
             // 5. Track conversion for closed-loop attribution (GA4 + Meta CAPI)
             await MarketingScience.trackV2('booking_initiated', {
+                tenantId: tenantId,
                 sector: 'BILLING',
                 email: identity.email,
                 phone: identity.phone,
@@ -133,7 +143,7 @@ class BillingAgent {
         }
     }
 
-    async _getOrCreateCustomer(identity) {
+    async _getOrCreateCustomer(identity, gateway) {
         const payload = new URLSearchParams({
             email: identity.email || '',
             name: identity.name || 'AI Lead',
@@ -143,15 +153,15 @@ class BillingAgent {
         });
 
         // SOTA: Idempotency key based on email/phone (prevents duplicate customers)
-        const idempotencyKey = this.gateway.generateIdempotencyKey(
+        const idempotencyKey = gateway.generateIdempotencyKey(
             'create_customer',
             identity.email || identity.phone
         );
 
-        return await this.gateway.request('/v1/customers', 'POST', payload.toString(), { idempotencyKey });
+        return await gateway.request('/v1/customers', 'POST', payload.toString(), { idempotencyKey });
     }
 
-    async _createDraftInvoice(customerId, amountInCents, description = '', sessionId = null) {
+    async _createDraftInvoice(customerId, amountInCents, description = '', sessionId = null, gateway = this.stripe, currency = 'eur') {
         // SOTA: Generate session-scoped idempotency key
         const sessionKey = sessionId || `${customerId}-${Date.now()}`;
 
@@ -159,11 +169,11 @@ class BillingAgent {
         const itemPayload = new URLSearchParams({
             customer: customerId,
             amount: amountInCents,
-            currency: this.currency,
+            currency: currency,
             description: `VocalIA Service: ${description || 'Essentials Pack'}`
         });
-        const itemIdempotencyKey = this.gateway.generateIdempotencyKey('invoice_item', sessionKey);
-        await this.gateway.request('/v1/invoice_items', 'POST', itemPayload.toString(), { idempotencyKey: itemIdempotencyKey });
+        const itemIdempotencyKey = gateway.generateIdempotencyKey('invoice_item', sessionKey);
+        await gateway.request('/v1/invoice_items', 'POST', itemPayload.toString(), { idempotencyKey: itemIdempotencyKey });
 
         // 2. Create Invoice
         const invoicePayload = new URLSearchParams({
@@ -174,8 +184,8 @@ class BillingAgent {
             'metadata[session_id]': sessionKey,
             'metadata[created_by]': 'billing_agent_v2'
         });
-        const invoiceIdempotencyKey = this.gateway.generateIdempotencyKey('invoice', sessionKey);
-        return await this.gateway.request('/v1/invoices', 'POST', invoicePayload.toString(), { idempotencyKey: invoiceIdempotencyKey });
+        const invoiceIdempotencyKey = gateway.generateIdempotencyKey('invoice', sessionKey);
+        return await gateway.request('/v1/invoices', 'POST', invoicePayload.toString(), { idempotencyKey: invoiceIdempotencyKey });
     }
 
     /**
