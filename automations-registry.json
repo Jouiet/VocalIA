@@ -1,0 +1,118 @@
+{
+  "platform": "VocalIA",
+  "version": "1.0.0",
+  "updated": "2026-01-28",
+  "automations": [
+    {
+      "id": "voice-api-resilient",
+      "name": "Voice API Resilient",
+      "category": "voice",
+      "description": "Multi-AI voice response with Grok→Gemini→Claude→Atlas fallback",
+      "script": "core/voice-api-resilient.cjs",
+      "port": 3004,
+      "status": "production"
+    },
+    {
+      "id": "grok-voice-realtime",
+      "name": "Grok Voice Realtime",
+      "category": "voice",
+      "description": "WebSocket audio streaming via Grok",
+      "script": "core/grok-voice-realtime.cjs",
+      "port": 3007,
+      "status": "production"
+    },
+    {
+      "id": "voice-telephony-bridge",
+      "name": "Voice Telephony Bridge",
+      "category": "telephony",
+      "description": "Twilio PSTN ↔ Grok WebSocket bridge",
+      "script": "telephony/voice-telephony-bridge.cjs",
+      "port": 3009,
+      "status": "production",
+      "requires": ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "XAI_API_KEY"]
+    },
+    {
+      "id": "voice-persona-injector",
+      "name": "Voice Persona Injector",
+      "category": "personas",
+      "description": "28 personas with marketing science (BANT, PAS, CIALDINI)",
+      "script": "personas/voice-persona-injector.cjs",
+      "status": "production"
+    },
+    {
+      "id": "voice-widget-core",
+      "name": "Voice Widget Core",
+      "category": "widget",
+      "description": "Browser-based voice assistant using Web Speech API ($0)",
+      "script": "widget/voice-widget-core.js",
+      "status": "production"
+    },
+    {
+      "id": "voice-widget-templates",
+      "name": "Voice Widget Templates",
+      "category": "widget",
+      "description": "Industry-specific widget presets",
+      "script": "widget/voice-widget-templates.cjs",
+      "status": "production"
+    },
+    {
+      "id": "hubspot-b2b-crm",
+      "name": "HubSpot B2B CRM",
+      "category": "integrations",
+      "description": "HubSpot CRM integration for voice agents",
+      "script": "integrations/hubspot-b2b-crm.cjs",
+      "status": "production",
+      "requires": ["HUBSPOT_ACCESS_TOKEN"]
+    },
+    {
+      "id": "voice-ecommerce-tools",
+      "name": "Voice E-commerce Tools",
+      "category": "integrations",
+      "description": "Shopify + Klaviyo read-only voice tools",
+      "script": "integrations/voice-ecommerce-tools.cjs",
+      "status": "production",
+      "requires": ["SHOPIFY_ACCESS_TOKEN", "KLAVIYO_API_KEY"]
+    },
+    {
+      "id": "voice-quality-sensor",
+      "name": "Voice Quality Sensor",
+      "category": "sensors",
+      "description": "Voice API health monitoring",
+      "script": "sensors/voice-quality-sensor.cjs",
+      "status": "production"
+    },
+    {
+      "id": "cost-tracking-sensor",
+      "name": "Cost Tracking Sensor",
+      "category": "sensors",
+      "description": "API cost monitoring across providers",
+      "script": "sensors/cost-tracking-sensor.cjs",
+      "status": "production"
+    },
+    {
+      "id": "lead-velocity-sensor",
+      "name": "Lead Velocity Sensor",
+      "category": "sensors",
+      "description": "Lead qualification rate metrics",
+      "script": "sensors/lead-velocity-sensor.cjs",
+      "status": "production"
+    },
+    {
+      "id": "retention-sensor",
+      "name": "Retention Sensor",
+      "category": "sensors",
+      "description": "Client retention metrics",
+      "script": "sensors/retention-sensor.cjs",
+      "status": "production"
+    }
+  ],
+  "categories": {
+    "voice": 2,
+    "telephony": 1,
+    "personas": 1,
+    "widget": 2,
+    "integrations": 2,
+    "sensors": 4
+  },
+  "total": 12
+}

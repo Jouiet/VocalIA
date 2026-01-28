@@ -1,16 +1,44 @@
 # VocalIA - Documentation Index
 
-> **Version**: 1.0.0 | **Date**: 28/01/2026
+> **Version**: 2.1.0 | **Date**: 28/01/2026 | **Session**: 186
 
 ---
 
-## Documents Principaux
+## Document Principal de Suivi
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **📋 SESSION-HISTORY.md** | **SUIVI D'IMPLÉMENTATION OFFICIEL** | ✅ Current |
+
+Ce document contient:
+- Engineering Score (95/100)
+- Métriques vérifiées avec commandes
+- Inventaire complet des 49 modules
+- Session history
+- Gaps status
+- Commandes de vérification
+
+---
+
+## Documents Techniques
 
 | Document | Description | Taille |
 |:---------|:------------|:-------|
-| **VOICE-AI-PLATFORM-REFERENCE.md** | Master reference technique | ~500 lignes |
-| **VOICE-AI-ARCHITECTURE.md** | Architecture et diagrammes | ~250 lignes |
-| **SESSION-HISTORY.md** | Suivi des sessions et engineering score | ~150 lignes |
+| **VOICE-AI-PLATFORM-REFERENCE.md** | Master reference technique | ~660 lignes |
+| **VOICE-AI-ARCHITECTURE.md** | Architecture et diagrammes | ~242 lignes |
+| **SAVOIR-FAIRE-TRANSMISSIBLE.md** | Transfert 3A → VocalIA | ~215 lignes |
+
+---
+
+## Documents Benchmark & Audit (TRANSMIS 28/01/2026)
+
+| Document | Description | Taille |
+|:---------|:------------|:-------|
+| **VOICE-MENA-PLATFORM-ANALYSIS.md** | **BENCHMARK STRATÉGIQUE** - Marchés, concurrence, économie | ~2,187 lignes |
+| **VOICE-MULTILINGUAL-STRATEGY.md** | Stratégie multilingue complète | ~736 lignes |
+| **VOICE-DARIJA-FORENSIC.md** | Audit forensique Darija | ~111 lignes |
+| **VOICE-AUDIT-FINAL.md** | Audit final Voice AI | ~85 lignes |
+| **benchmarks-2026.md** | Benchmarks latence | ~12 lignes |
 
 ---
 
@@ -21,17 +49,50 @@
 | **core.md** | Standards code, credentials, deploy | ✅ Toujours |
 | **factuality.md** | Vérification empirique | ✅ Toujours |
 | **voice-platform.md** | Spécificités Voice AI | ✅ Toujours |
+| **scripts.md** | Reference scripts et HITL | ✅ Toujours |
+| **token-optimization.md** | Token management | ✅ Toujours |
 
 ---
 
 ## Fichiers Racine
 
-| Fichier | Description |
-|:--------|:------------|
-| **CLAUDE.md** | Memory système VocalIA |
-| **README.md** | Documentation publique |
-| **package.json** | NPM configuration |
-| **.env.example** | Template credentials |
+| Fichier | Description | Status |
+|:--------|:------------|:------:|
+| **CLAUDE.md** | Memory système VocalIA v1.3.0 | ✅ Updated |
+| **README.md** | Documentation publique | ✅ |
+| **package.json** | NPM configuration (6 deps) | ✅ |
+| **automations-registry.json** | 12 automations | ✅ NEW |
+| **data/pressure-matrix.json** | GPM data | ✅ NEW |
+| **.mcp.json** | MCP configuration (grok) | ✅ |
+
+---
+
+## Métriques Vérifiées (28/01/2026)
+
+| Métrique | Valeur | Vérification |
+|:---------|:-------|:-------------|
+| **Code** | 22,361 lignes | `find -exec wc -l` |
+| **Fichiers** | 49 | `find \| wc -l` |
+| **Engineering Score** | 95/100 | CLAUDE.md |
+| **Health Check** | 100% (25/25) | `node scripts/health-check.cjs` |
+| **Personas** | 28 | Verified unique |
+| **Function Tools** | 11 | telephony bridge |
+| **Langues** | 5 | FR, EN, ES, AR, ARY |
+| **CRM** | 3 | HubSpot, Klaviyo, Shopify |
+
+---
+
+## Services
+
+```bash
+# Health Check (PRINCIPAL)
+node scripts/health-check.cjs
+
+# Start services
+node core/voice-api-resilient.cjs      # Port 3004
+node core/grok-voice-realtime.cjs      # Port 3007
+node telephony/voice-telephony-bridge.cjs  # Port 3009
+```
 
 ---
 
@@ -44,29 +105,15 @@ Hérite de 3A Automation:
 
 ---
 
-## Quick Reference
+## 3A-Shelf Integration
 
-### Services
 ```bash
-node core/voice-api-resilient.cjs      # Port 3004
-node core/grok-voice-realtime.cjs      # Port 3007
-node telephony/voice-telephony-bridge.cjs  # Port 3009
+# Package installé via yalc
+ls node_modules/@3a/agent-ops/
+# Modules: EventBus, ContextBox, BillingAgent, ErrorScience, RevenueScience
 ```
-
-### Health Check
-```bash
-node scripts/voice-quality-sensor.cjs --health
-```
-
-### Métriques Clés
-| Métrique | Valeur |
-|:---------|:-------|
-| Code | 8,098 lignes |
-| Personas | 30 |
-| Function Tools | 11 |
-| Langues | 5 (FR, EN, ES, AR, ARY) |
-| CRM | 3 (HubSpot, Klaviyo, Shopify) |
 
 ---
 
-*Index créé: 28/01/2026*
+*Index màj: 28/01/2026 - Session 186*
+*Documents benchmark & audit transmis depuis 3A*

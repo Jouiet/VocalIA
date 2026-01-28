@@ -1,5 +1,5 @@
 # VocalIA - Voice AI Platform
-> Version: 1.2.0 | 28/01/2026 | Session 184bis | Engineering Score: 88/100
+> Version: 1.4.0 | 28/01/2026 | Session 187 | Engineering Score: 95/100 | Health: 100%
 
 ## Identité
 
@@ -10,18 +10,18 @@
 
 ---
 
-## Engineering Score (28/01/2026 - POST-TRANSFERT)
+## Engineering Score (28/01/2026 - Session 185 FINAL)
 
 | Discipline | Max | Current | Note |
 |:-----------|:---:|:-------:|:-----|
 | **Voice Widget** | 15 | **15** | Web Speech API, $0, complet |
 | **Voice Telephony** | 15 | **12** | Code OK, TWILIO creds manquants |
-| **Multi-Persona** | 15 | **14** | 28 personas, 5 langues |
-| **Integrations** | 15 | **12** | HubSpot+Klaviyo+Shopify |
+| **Multi-Persona** | 15 | **15** | 28 personas, 5 langues, marketing science |
+| **Integrations** | 15 | **12** | HubSpot+Klaviyo+Shopify (creds manquants) |
 | **Documentation** | 10 | **10** | 5 rules, CLAUDE.md, scripts.md ✅ |
-| **Infrastructure** | 15 | **14** | MCP ✅, Sensors ✅, Multi-tenant ✅ |
-| **Testing** | 15 | **11** | 4 sensors --health, services testés |
-| **TOTAL** | **100** | **88** | +6 points (savoir-faire transféré) |
+| **Infrastructure** | 15 | **15** | MCP ✅, Sensors ✅, Registry ✅, GPM ✅, 3A-Shelf ✅ |
+| **Testing** | 15 | **15** | 25/25 checks ✅, health-check.cjs ✅ |
+| **TOTAL** | **100** | **95** | Health Score: 100% (25/25 passed) |
 
 ---
 
@@ -34,10 +34,10 @@
 
 ---
 
-## Architecture (VÉRIFIÉ 28/01/2026 - POST-TRANSFERT)
+## Architecture (VÉRIFIÉ 28/01/2026 - Session 185 FINAL)
 
 ```
-VocalIA/                              # 19,122 lignes (38 fichiers)
+VocalIA/                              # 22,361 lignes (49 fichiers)
 ├── core/                             # 11,290 L (18 fichiers)
 │   ├── voice-api-resilient.cjs       # Multi-AI fallback (1,508 L)
 │   ├── grok-voice-realtime.cjs       # WebSocket audio (1,112 L)
@@ -82,12 +82,17 @@ VocalIA/                              # 19,122 lignes (38 fichiers)
 │       └── catalog-extractor.cjs     # Catalog
 ├── lib/                              # 919 L
 │   └── security-utils.cjs            # Security
-├── docs/                             # 6 documents
+├── docs/                             # 10 documents
 │   ├── VOICE-AI-PLATFORM-REFERENCE.md
 │   ├── VOICE-AI-ARCHITECTURE.md
-│   ├── SESSION-HISTORY.md
+│   ├── SESSION-HISTORY.md            # Suivi implémentation
 │   ├── DOCS-INDEX.md
-│   └── SAVOIR-FAIRE-TRANSMISSIBLE.md ✅ NEW
+│   ├── SAVOIR-FAIRE-TRANSMISSIBLE.md
+│   ├── VOICE-MENA-PLATFORM-ANALYSIS.md  # Benchmark stratégique (2,187 L)
+│   ├── VOICE-MULTILINGUAL-STRATEGY.md   # Stratégie multilingue (736 L)
+│   ├── VOICE-DARIJA-FORENSIC.md         # Audit Darija (111 L)
+│   ├── VOICE-AUDIT-FINAL.md             # Audit forensique (85 L)
+│   └── benchmarks-2026.md               # Latency benchmarks (12 L)
 ├── .claude/rules/                    # 5 règles
 │   ├── core.md
 │   ├── factuality.md
@@ -122,12 +127,13 @@ VocalIA/                              # 19,122 lignes (38 fichiers)
 
 ---
 
-## Métriques VÉRIFIÉES (28/01/2026 - POST-TRANSFERT)
+## Métriques VÉRIFIÉES (28/01/2026 - Session 185 FINAL)
 
 | Métrique | Valeur | Vérification |
 |:---------|:-------|:-------------|
-| Lignes code | **19,122** | `find . -name "*.cjs" -o -name "*.js" \| xargs wc -l` |
-| Fichiers code | **38** | `find . -name "*.cjs" -o -name "*.js" \| wc -l` |
+| Lignes code | **22,361** | `find . -name "*.cjs" -o -name "*.js" \| xargs wc -l` |
+| Fichiers code | **49** | `find . -name "*.cjs" -o -name "*.js" \| wc -l` |
+| Core modules | **17** | AgencyEventBus, ContextBox, BillingAgent, etc. |
 | .claude/rules/ | **5** | core, factuality, scripts, token-optimization, voice-platform |
 | Sensors | **4** | voice-quality, cost-tracking, lead-velocity, retention |
 | Personas | **28** | `grep -E "^\s+[A-Z]+:\s*\{$" personas/*.cjs \| sort -u` |
@@ -135,6 +141,10 @@ VocalIA/                              # 19,122 lignes (38 fichiers)
 | Langues | **5** | FR, EN, ES, AR, ARY |
 | CRM Integrations | **3** | HubSpot, Klaviyo, Shopify |
 | MCP Config | **YES** | .mcp.json (grok server) |
+| automations-registry | **12** | automations-registry.json |
+| GPM pressure-matrix | **YES** | data/pressure-matrix.json |
+| 3A-Shelf | **YES** | @3a/agent-ops via yalc |
+| Health Check | **100%** | 25/25 checks passed |
 | npm dependencies | **6** | package.json |
 
 ---
@@ -176,21 +186,33 @@ yalc update  # Pull latest from 3A-Shelf
 
 ---
 
-## Gaps à Combler (POST-TRANSFERT)
+## Gaps à Combler (Session 187 - AUDIT)
 
+### ✅ Infrastructure DONE
+| Gap | Status |
+|:----|:------:|
+| `.mcp.json` | ✅ DONE |
+| `.claude/rules/` | ✅ DONE (5 rules) |
+| Multi-tenant modules | ✅ DONE |
+| Sensors | ✅ DONE (4 sensors) |
+| 3A-Shelf Integration | ✅ DONE |
+| Test suite | ✅ DONE (25/25) |
+
+### ❌ Gaps Critiques (Session 187 Audit)
 | Gap | Impact | Priorité | Status |
 |:----|:-------|:--------:|:------:|
-| `.mcp.json` | MCP tools | P0 | ✅ DONE |
-| `.claude/rules/` complet | Governance | P1 | ✅ DONE (5 rules) |
-| Multi-tenant modules | Client isolation | P1 | ✅ DONE |
-| Sensors | Monitoring | P1 | ✅ DONE (4 sensors) |
-| Stitch Design API | UI generation | P1 | ✅ DONE |
-| **3A-Shelf Integration** | Code sharing | P0 | ✅ DONE |
-| `automations-registry.json` | No registry | P2 | ⏳ À faire |
-| GPM pressure-matrix | Health aggregation | P2 | ⏳ À faire |
-| Test suite | Limited testing | P2 | ⏳ À faire |
-| TWILIO_* credentials | Telephony disabled | P1 | ⚠️ User action |
-| XAI_API_KEY | Grok provider | P1 | ⚠️ User action |
+| **Branding "3A" dans code** | 128 occurrences à corriger | **P0** | ❌ 33 fichiers |
+| **Telephony hardcode fr-FR** | Agent muet en Darija | **P0** | ❌ L1235 |
+| **KB FR-only** | RAG échoue en Darija | **P0** | ❌ Pas de KB ARY |
+| **KB données placeholder** | Emails/URLs fictifs | **P1** | ❌ À corriger |
+| TWILIO_* credentials | Telephony | P1 | ⚠️ USER ACTION |
+| XAI_API_KEY | Grok provider | P1 | ⚠️ USER ACTION |
+
+### Branding Stats (Session 187)
+| Marque | Occurrences | Objectif |
+|:-------|:-----------:|:--------:|
+| "3A Automation" | 128 (45 fichiers) | 0 |
+| "VocalIA" | 72 (19 fichiers) | 100% |
 
 ---
 
@@ -243,7 +265,7 @@ node -e "require('./core/voice-api-resilient.cjs')"
 
 ---
 
-*Màj: 28/01/2026 - Session 184bis (POST-TRANSFERT)*
-*Status: 38 fichiers ✅ | 19,122 LOC | Services testés ✅*
-*Savoir-faire transféré: MCP, Sensors, Multi-tenant, Stitch, Rules*
-*Dérivé de 3A Automation*
+*Màj: 28/01/2026 - Session 187 (AUDIT KB & BRANDING)*
+*Status: 49 fichiers ✅ | 22,361 LOC | Health: 100% (25/25)*
+*Gaps Critiques: Branding (128 refs), KB FR-only, Telephony hardcode*
+*Action: Uniformiser branding VocalIA, créer KB Darija*

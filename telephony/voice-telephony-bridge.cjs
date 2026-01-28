@@ -57,7 +57,7 @@ const BillingAgent = require('../core/BillingAgent.cjs');
 // Initialize Cognitive Modules
 const KB = new ServiceKnowledgeBase();
 KB.load();
-const ECOM_TOOLS = new VoiceEcommerceTools();
+const ECOM_TOOLS = VoiceEcommerceTools; // Already a singleton instance
 // RAG Knowledge Base - Multilingual support (Session 167)
 const KNOWLEDGE_BASES = {
   fr: require('./knowledge_base.json'),

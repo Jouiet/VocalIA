@@ -1,0 +1,61 @@
+{
+  "platform": "VocalIA",
+  "version": "1.0.0",
+  "last_updated": "2026-01-28T20:30:00Z",
+  "update_frequency": "5m",
+  "sectors": {
+    "voice": {
+      "name": "Voice AI",
+      "score": 75,
+      "status": "healthy",
+      "indicators": {
+        "api_latency_ms": 150,
+        "fallback_rate": 0.02,
+        "active_sessions": 0,
+        "daily_calls": 0
+      },
+      "services": {
+        "voice-api": { "status": "down", "port": 3004 },
+        "grok-realtime": { "status": "up", "port": 3007 },
+        "telephony-bridge": { "status": "down", "port": 3009 }
+      }
+    },
+    "personas": {
+      "name": "Personas",
+      "score": 100,
+      "status": "healthy",
+      "indicators": {
+        "active_personas": 28,
+        "languages": 5,
+        "marketing_frameworks": 3
+      }
+    },
+    "integrations": {
+      "name": "Integrations",
+      "score": 50,
+      "status": "degraded",
+      "indicators": {
+        "hubspot": "no_credentials",
+        "shopify": "no_credentials",
+        "klaviyo": "no_credentials"
+      }
+    },
+    "costs": {
+      "name": "API Costs",
+      "score": 100,
+      "status": "healthy",
+      "indicators": {
+        "daily_spend_usd": 0,
+        "budget_remaining_pct": 100,
+        "provider_costs": {
+          "grok": 0,
+          "gemini": 0,
+          "claude": 0
+        }
+      }
+    }
+  },
+  "alerts": [],
+  "global_score": 81,
+  "health_status": "healthy"
+}
