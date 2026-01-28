@@ -1,5 +1,5 @@
 # VocalIA - Voice AI Platform
-> Version: 1.5.0 | 28/01/2026 | Session 188 | Engineering Score: 97/100 | Health: 100%
+> Version: 1.6.0 | 28/01/2026 | Session 189 | Engineering Score: 98/100 | Health: 100%
 
 ## Identité
 
@@ -34,11 +34,14 @@
 
 ---
 
-## Website (NEW - Session 188)
+## Website + Dashboards (Session 188-189)
 
 ```
-website/                              # 1,135 lignes
+website/                              # 2,183 lignes
 ├── index.html                        # Landing page (561 L)
+├── dashboard/
+│   ├── client.html                   # Client Dashboard (468 L) ✅ NEW
+│   └── admin.html                    # Admin Dashboard (580 L) ✅ NEW
 ├── src/
 │   ├── lib/
 │   │   ├── geo-detect.js             # Geo detection + currency (188 L)
@@ -54,6 +57,8 @@ website/                              # 1,135 lignes
 - Auto-detect location: MAD (Maroc), EUR (Europe), USD (Autres)
 - FR + EN avec switch dynamique
 - Tailwind CSS + animations modernes
+- **Dashboard Client**: Stats, appels, agents, KB, facturation
+- **Dashboard Admin**: Système, tenants, revenus, API, logs, health
 
 ---
 
@@ -109,17 +114,18 @@ VocalIA/                              # 23,496 lignes (54 fichiers)
 
 ---
 
-## Métriques VÉRIFIÉES (28/01/2026 - Session 188)
+## Métriques VÉRIFIÉES (28/01/2026 - Session 189)
 
 | Métrique | Valeur | Vérification |
 |:---------|:-------|:-------------|
-| Lignes code | **23,496** | +1,135 (website) |
-| Fichiers code | **54** | +5 (website files) |
-| Health Check | **100%** | 32/32 checks passed |
+| Lignes code | **24,544** | +1,048 (dashboards) |
+| Fichiers code | **56** | +2 (dashboard files) |
+| Health Check | **100%** | 34/34 checks passed |
 | Branding VocalIA | **100%** | 0 refs "3A Automation" |
 | KB FR | **16** secteurs | knowledge_base.json |
 | KB Darija | **15** secteurs | knowledge_base_ary.json ✅ |
 | Langues Telephony | **5** | FR, EN, ES, AR, ARY |
+| Website | **2,183** lignes | Landing + Dashboards |
 
 ---
 
@@ -187,25 +193,42 @@ grep -r "3A Automation" --include="*.cjs" . | wc -l
 
 ---
 
-## Session 188 Summary
+## Session 189 Summary
 
-**DOE Framework - Completed Tasks:**
+**DOE Framework - Phase 2 Operations:**
 
-1. ✅ **Branding**: 61 → 0 refs "3A Automation"
-2. ✅ **Telephony**: Added ES, AR, ARY languages (5 total)
-3. ✅ **KB Darija**: Created `knowledge_base_ary.json` (15 sectors)
-4. ✅ **KB Placeholder**: Fixed to vocalia.ma
-5. ✅ **Website**: Created 1,135 lines (futuristic, FR+EN, geo-detect)
-6. ✅ **Health Check**: Extended to 32/32 checks
+1. ✅ **Dashboard Client**: 468 lignes
+   - Stats (appels, minutes, conversion, NPS)
+   - Volume d'appels graphique
+   - Langues détectées
+   - Agents IA actifs
+   - Appels récents
+   - Facturation
 
-**Delta:**
-- LOC: 22,361 → 23,496 (+1,135)
-- Files: 49 → 54 (+5)
-- Health: 25/25 → 32/32 (+7)
-- Score: 95 → 97 (+2)
+2. ✅ **Dashboard Admin**: 580 lignes
+   - Vue système (tenants, calls, MRR, latency, uptime)
+   - État des services (ports 3004, 3007, 3009, 8080)
+   - Health Check (34/34)
+   - Top Tenants + revenus
+   - API Usage (Grok, Gemini, Twilio, ElevenLabs)
+   - Logs temps réel
+   - Actions rapides
+
+3. ✅ **Health Check**: 32/32 → 34/34
+
+**Delta Session 189:**
+- LOC: 23,496 → 24,544 (+1,048)
+- Files: 54 → 56 (+2)
+- Health: 32/32 → 34/34 (+2)
+- Score: 97 → 98 (+1)
+
+**Cumul Sessions 188-189:**
+- LOC: 22,361 → 24,544 (+2,183)
+- Website: 0 → 2,183 lignes
+- Phase 1.5 + Phase 2.1: COMPLETE ✅
 
 ---
 
-*Màj: 28/01/2026 - Session 188 (DOE Framework)*
-*Status: 54 fichiers ✅ | 23,496 LOC | Health: 100% (32/32)*
-*Phase 1.5: COMPLETE ✅*
+*Màj: 28/01/2026 - Session 189 (DOE Phase 2)*
+*Status: 56 fichiers ✅ | 24,544 LOC | Health: 100% (34/34)*
+*Phase 2.1 (Dashboards): COMPLETE ✅*
