@@ -1,8 +1,8 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 2.0.0 | **Date**: 28/01/2026 | **Session**: 200
+> **Version**: 2.1.0 | **Date**: 28/01/2026 | **Session**: 200
 > **Status**: REMEDIATED | **CSS Build**: SOVEREIGN
-> **Palette**: Premium Indigo/Violet (Stripe/Linear-inspired)
+> **Palette**: Deep Teal/Emerald (2026 AI-Forward Trend)
 
 ---
 
@@ -154,35 +154,35 @@ website/                              # 2,500+ lignes
         └── style.css                 # Generated (52KB) ✅
 ```
 
-### Design System (VocalIA Brand v2.0 - Premium Indigo/Violet)
+### Design System (VocalIA Brand v3.0 - Deep Teal/Emerald)
 
-**Inspiration**: Stripe #635BFF, Linear #5E6AD2, Pantone 2025-2026
+**Inspiration**: 2026 AI-Forward Tech Trend, Enterprise Trust, Modern Innovation
 
 ```css
-/* VocalIA Premium Palette */
---color-vocalia-50:  #f5f3ff;  /* Lightest */
---color-vocalia-100: #ede9fe;
---color-vocalia-200: #ddd6fe;
---color-vocalia-300: #c4b5fd;
---color-vocalia-400: #a78bfa;
---color-vocalia-500: #8b5cf6;  /* Primary */
---color-vocalia-600: #7c3aed;
---color-vocalia-700: #6d28d9;
---color-vocalia-800: #5b21b6;
---color-vocalia-900: #4c1d95;
---color-vocalia-950: #2e1065;  /* Darkest */
+/* VocalIA Deep Teal/Emerald Palette */
+--color-vocalia-50:  #f0fdfa;  /* Lightest */
+--color-vocalia-100: #ccfbf1;
+--color-vocalia-200: #99f6e4;
+--color-vocalia-300: #5eead4;
+--color-vocalia-400: #2dd4bf;
+--color-vocalia-500: #14b8a6;  /* Secondary */
+--color-vocalia-600: #0d9488;  /* Primary Brand */
+--color-vocalia-700: #0f766e;
+--color-vocalia-800: #115e59;
+--color-vocalia-900: #134e4a;
+--color-vocalia-950: #042f2e;  /* Darkest */
 
-/* Neutral - Slate (Linear/Notion-inspired) */
+/* Neutral - Slate (Premium Dark Mode) */
 --color-slate-900: #0f172a;   /* Dark background */
 --color-slate-800: #1e293b;   /* Cards */
 --color-slate-400: #94a3b8;   /* Secondary text */
 --color-slate-50:  #f8fafc;   /* Light background */
 ```
 
-**Research Sources**:
-- [Stripe Brand Colors](https://mobbin.com/colors/brand/stripe)
-- [Linear Brand Guidelines](https://linear.app/brand)
-- [Pantone 2025-2026](https://www.pantone.com/color-of-the-year)
+**Design Philosophy**:
+- Deep Teal (#0d9488): Trust, Innovation, AI-Forward
+- Slate Dark (#0f172a): Premium, Professional, Modern
+- Glassmorphism: Futuriste, Sobre, Puissant
 
 ---
 

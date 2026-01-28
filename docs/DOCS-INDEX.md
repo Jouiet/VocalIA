@@ -11,6 +11,7 @@
 | **📋 SESSION-HISTORY.md** | **SUIVI D'IMPLÉMENTATION OFFICIEL** | ✅ Current |
 
 Ce document contient:
+
 - Engineering Score (95/100)
 - Métriques vérifiées avec commandes
 - Inventaire complet des 49 modules
@@ -38,6 +39,7 @@ Ce document contient:
 | **VOICE-MULTILINGUAL-STRATEGY.md** | Stratégie multilingue complète | ~736 lignes |
 | **VOICE-DARIJA-FORENSIC.md** | Audit forensique Darija | ~111 lignes |
 | **VOICE-AUDIT-FINAL.md** | Audit final Voice AI | ~85 lignes |
+| **FORENSIC-AUDIT-WEBSITE.md** | Audit Frontend (Website & Dashboards) | ~90 lignes |
 | **benchmarks-2026.md** | Benchmarks latence | ~12 lignes |
 
 ---
@@ -99,6 +101,7 @@ node telephony/voice-telephony-bridge.cjs  # Port 3009
 ## Parent Documentation
 
 Hérite de VocalIA:
+
 - `~/Desktop/JO-AAA/docs/ETAGERE-TECHNOLOGIQUE-ECOSYSTEME-3A.md`
 - `~/Desktop/JO-AAA/docs/AI-PROVIDER-STRATEGY.md`
 - `~/.claude/CLAUDE.md` (global memory)

@@ -25,60 +25,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
 
-  <style>
-    .glass {
-      background: rgba(11, 64, 110, 0.3);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(124, 200, 252, 0.1);
-    }
 
-    .gradient-text {
-      background: linear-gradient(135deg, #0c8ee9 0%, #36aaf8 50%, #7cc8fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-card {
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 40px rgba(12, 142, 233, 0.2);
-    }
-
-    .pulse-dot {
-      animation: pulse-dot 2s infinite;
-    }
-
-    @keyframes pulse-dot {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.5;
-      }
-    }
-
-    .chart-bar {
-      animation: grow-bar 1s ease-out forwards;
-      transform-origin: bottom;
-    }
-
-    @keyframes grow-bar {
-      from {
-        transform: scaleY(0);
-      }
-
-      to {
-        transform: scaleY(1);
-      }
-    }
-  </style>
 </head>
 
 <body class="bg-vocalia-950 text-white min-h-screen">
@@ -203,7 +150,7 @@
       <section id="overview" class="mb-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <!-- Total Calls -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+          <div class="stat-card glass-panel p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
                 <svg class="w-6 h-6 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -218,7 +165,7 @@
           </div>
 
           <!-- Minutes Used -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+          <div class="stat-card glass-panel p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
                 <svg class="w-6 h-6 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,7 +185,7 @@
           </div>
 
           <!-- Conversion Rate -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+          <div class="stat-card glass-panel p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
                 <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -253,7 +200,7 @@
           </div>
 
           <!-- Customer Satisfaction -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+          <div class="stat-card glass-panel p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
                 <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,7 +219,7 @@
       <!-- Charts Row -->
       <section class="grid lg:grid-cols-3 gap-6 mb-8">
         <!-- Call Volume Chart -->
-        <div class="lg:col-span-2 rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div class="lg:col-span-2 glass-panel p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.charts.call_volume">Volume d'appels</h3>
             <select
@@ -323,7 +270,7 @@
         </div>
 
         <!-- Language Distribution -->
-        <div class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div class="glass-panel p-6">
           <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.charts.languages">Langues détectées</h3>
           <div class="space-y-4">
             <div>
@@ -378,7 +325,7 @@
       <!-- Active Agents & Recent Calls -->
       <section class="grid lg:grid-cols-2 gap-6 mb-8">
         <!-- Active Agents -->
-        <div id="agents" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div id="agents" class="glass-panel p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.agents.title">Agents IA actifs</h3>
             <button class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
@@ -462,7 +409,7 @@
         </div>
 
         <!-- Recent Calls -->
-        <div id="calls" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div id="calls" class="glass-panel p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.calls.recent">Appels récents</h3>
             <a href="#" class="text-vocalia-400 hover:text-white text-sm transition"
@@ -539,7 +486,7 @@
       </section>
 
       <!-- Billing Summary -->
-      <section id="billing" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+      <section id="billing" class="glass-panel p-6">
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-lg font-semibold" data-i18n="dashboard.billing.title">Facturation</h3>
           <span class="text-vocalia-400 text-sm" data-i18n="dashboard.billing.period"

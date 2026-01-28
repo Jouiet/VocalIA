@@ -1,30 +1,29 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   VocalIA Design System v2.0 - Premium Enterprise Palette
-   Inspired by: Stripe, Linear, Notion | Pantone 2025-2026 Trends
+   VocalIA Design System v3.0 - Deep Teal/Emerald Premium
+   Trend: 2026 AI-Forward | Modern Tech | Trust & Innovation
    Created: 28/01/2026 | Session 200
    ========================================================================== */
 
 @theme {
   /* =======================================================================
-     VocalIA Brand Colors - Indigo/Purple Base (Enterprise Trust)
-     Inspired by Stripe #635BFF + Linear #5E6AD2
+     VocalIA Brand - Deep Teal/Emerald (2026 AI-Forward Trend)
      ======================================================================= */
-  --color-vocalia-50: #f5f3ff;
-  --color-vocalia-100: #ede9fe;
-  --color-vocalia-200: #ddd6fe;
-  --color-vocalia-300: #c4b5fd;
-  --color-vocalia-400: #a78bfa;
-  --color-vocalia-500: #8b5cf6;
-  --color-vocalia-600: #7c3aed;
-  --color-vocalia-700: #6d28d9;
-  --color-vocalia-800: #5b21b6;
-  --color-vocalia-900: #4c1d95;
-  --color-vocalia-950: #2e1065;
+  --color-vocalia-50: #f0fdfa;
+  --color-vocalia-100: #ccfbf1;
+  --color-vocalia-200: #99f6e4;
+  --color-vocalia-300: #5eead4;
+  --color-vocalia-400: #2dd4bf;
+  --color-vocalia-500: #14b8a6;
+  --color-vocalia-600: #0d9488;
+  --color-vocalia-700: #0f766e;
+  --color-vocalia-800: #115e59;
+  --color-vocalia-900: #134e4a;
+  --color-vocalia-950: #042f2e;
 
   /* =======================================================================
-     Slate - Premium Neutral (Linear/Notion-inspired)
+     Slate - Premium Dark Mode Neutrals
      ======================================================================= */
   --color-slate-50: #f8fafc;
   --color-slate-100: #f1f5f9;
@@ -39,26 +38,26 @@
   --color-slate-950: #020617;
 
   /* =======================================================================
-     Accent Colors - 2025-2026 Trends
+     Accent Colors
      ======================================================================= */
-  /* Emerald - Success (Fresh, Modern) */
-  --color-emerald-500: #10b981;
-  --color-emerald-600: #059669;
-
-  /* Amber - Warning (Warm, Pantone Mocha Mousse influence) */
-  --color-amber-500: #f59e0b;
-  --color-amber-600: #d97706;
-
-  /* Rose - Error (Sophisticated) */
-  --color-rose-500: #f43f5e;
-  --color-rose-600: #e11d48;
-
-  /* Cyan - Info/Tech (Voice AI accent) */
+  /* Cyan - Tech Highlight */
   --color-cyan-400: #22d3ee;
   --color-cyan-500: #06b6d4;
 
+  /* Amber - Warm Accent (Pantone 2025 influence) */
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+
+  /* Rose - Error */
+  --color-rose-500: #f43f5e;
+  --color-rose-600: #e11d48;
+
+  /* Emerald - Success (Deeper green) */
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+
   /* =======================================================================
-     Semantic Colors
+     Semantic
      ======================================================================= */
   --color-success: #10b981;
   --color-warning: #f59e0b;
@@ -66,7 +65,7 @@
   --color-info: #06b6d4;
 
   /* =======================================================================
-     Font System
+     Fonts
      ======================================================================= */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -75,15 +74,15 @@
 @layer base {
   :root {
     /* Primary Brand */
-    --primary: #8b5cf6;
-    --primary-hover: #7c3aed;
-    --primary-light: #a78bfa;
+    --primary: #0d9488;
+    --primary-light: #14b8a6;
+    --primary-dark: #0f766e;
+    --primary-glow: rgba(13, 148, 136, 0.4);
 
     /* Backgrounds */
     --bg-dark: #0f172a;
     --bg-dark-secondary: #1e293b;
     --bg-light: #f8fafc;
-    --bg-light-secondary: #f1f5f9;
 
     /* Text */
     --text-primary: #f8fafc;
@@ -91,16 +90,16 @@
     --text-muted: #64748b;
 
     /* Borders */
-    --border-subtle: rgba(148, 163, 184, 0.2);
-    --border-medium: rgba(148, 163, 184, 0.3);
+    --border-subtle: rgba(148, 163, 184, 0.15);
+    --border-medium: rgba(148, 163, 184, 0.25);
+    --border-accent: rgba(13, 148, 136, 0.3);
 
     /* Glassmorphism */
-    --glass-bg: rgba(15, 23, 42, 0.8);
-    --glass-bg-light: rgba(248, 250, 252, 0.8);
-    --glass-border: rgba(148, 163, 184, 0.2);
+    --glass-bg: rgba(15, 23, 42, 0.85);
+    --glass-border: rgba(148, 163, 184, 0.15);
     --glass-backdrop: blur(20px);
 
-    /* Spacing */
+    /* Radius */
     --radius-sm: 0.375rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
@@ -123,7 +122,7 @@
 
 @layer components {
   /* =======================================================================
-     Glass Panel - Premium Glassmorphism
+     Glass Panel
      ======================================================================= */
   .glass-panel {
     background: var(--glass-bg);
@@ -135,26 +134,26 @@
   }
 
   .glass-panel:hover {
-    border-color: rgba(139, 92, 246, 0.4);
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
+    border-color: var(--border-accent);
+    box-shadow: 0 0 30px var(--primary-glow);
   }
 
   /* =======================================================================
-     Buttons - Enterprise Style
+     Buttons
      ======================================================================= */
   .btn-primary {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: white;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     border-radius: var(--radius-lg);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 4px 14px var(--primary-glow);
   }
 
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+    box-shadow: 0 6px 20px var(--primary-glow);
   }
 
   .btn-secondary {
@@ -168,19 +167,19 @@
   }
 
   .btn-secondary:hover {
-    background: rgba(139, 92, 246, 0.1);
-    border-color: rgba(139, 92, 246, 0.4);
+    background: rgba(13, 148, 136, 0.1);
+    border-color: var(--border-accent);
   }
 
   .btn-glow {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 20px var(--primary-glow);
   }
 
   /* =======================================================================
-     Cards - Dashboard Components
+     Dashboard Cards
      ======================================================================= */
   .dashboard-card {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-xl);
     padding: 1.5rem;
@@ -188,19 +187,19 @@
   }
 
   .dashboard-card:hover {
-    border-color: rgba(139, 92, 246, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border-color: var(--border-accent);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
   }
 
   .stat-card {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%);
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.1) 0%, rgba(15, 118, 110, 0.05) 100%);
+    border: 1px solid rgba(13, 148, 136, 0.2);
     border-radius: var(--radius-xl);
     padding: 1.5rem;
   }
 
   /* =======================================================================
-     Navigation - Sidebar
+     Navigation
      ======================================================================= */
   .nav-item {
     display: flex;
@@ -213,26 +212,26 @@
   }
 
   .nav-item:hover {
-    background: rgba(139, 92, 246, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     color: var(--text-primary);
   }
 
   .nav-item.active {
-    background: rgba(139, 92, 246, 0.2);
+    background: rgba(13, 148, 136, 0.2);
     color: white;
   }
 
   /* =======================================================================
-     Badge - Section Labels
+     Badges
      ======================================================================= */
   .section-badge {
     display: inline-flex;
     align-items: center;
     padding: 0.375rem 0.875rem;
     border-radius: var(--radius-full);
-    background: rgba(139, 92, 246, 0.15);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    color: #a78bfa;
+    background: rgba(13, 148, 136, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.3);
+    color: #2dd4bf;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -256,14 +255,9 @@
     transform: scale(1.1);
   }
 
-  .service-icon-circle.purple {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
-  }
-
-  .service-icon-circle.green {
-    background: linear-gradient(135deg, #10b981, #059669);
-    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+  .service-icon-circle.teal {
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.3);
   }
 
   .service-icon-circle.cyan {
@@ -271,27 +265,41 @@
     box-shadow: 0 4px 14px rgba(6, 182, 212, 0.3);
   }
 
+  .service-icon-circle.green {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+  }
+
   .service-icon-circle.amber {
     background: linear-gradient(135deg, #f59e0b, #d97706);
     box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
   }
 
+  .service-icon-circle.purple {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.3);
+  }
+
   /* =======================================================================
-     Mesh Gradients - Background Effects
+     Mesh Gradients
      ======================================================================= */
-  .mesh-gradient-purple {
-    background: radial-gradient(ellipse at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+  .mesh-gradient-teal {
+    background: radial-gradient(ellipse at 50% 0%, rgba(13, 148, 136, 0.15) 0%, transparent 70%);
   }
 
   .mesh-gradient-cyan {
     background: radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
   }
 
+  .mesh-gradient-purple {
+    background: radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+  }
+
   /* =======================================================================
      Pricing Cards
      ======================================================================= */
   .pricing-card {
-    background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.7) 100%);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-2xl);
     padding: 2rem;
@@ -300,19 +308,19 @@
 
   .pricing-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(139, 92, 246, 0.3);
+    border-color: var(--border-accent);
   }
 
   .pricing-card.featured {
-    border-color: rgba(139, 92, 246, 0.5);
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.2);
+    border-color: rgba(13, 148, 136, 0.5);
+    box-shadow: 0 0 40px rgba(13, 148, 136, 0.15);
   }
 }
 
 @layer utilities {
   /* Gradient Text */
   .gradient-text {
-    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #7c3aed 100%);
+    background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 50%, #0d9488 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -326,8 +334,8 @@
   }
 
   /* Glow Effects */
-  .glow-purple {
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+  .glow-teal {
+    box-shadow: 0 0 30px rgba(13, 148, 136, 0.4);
   }
 
   .glow-cyan {
@@ -350,7 +358,7 @@
     box-shadow: 0 0 8px rgba(244, 63, 94, 0.6);
   }
 
-  /* Glass Utilities */
+  /* Glass */
   .glass {
     background: var(--glass-bg);
     backdrop-filter: var(--glass-backdrop);
@@ -368,7 +376,7 @@
     z-index: 1;
   }
 
-  /* Animation Utilities */
+  /* Animations */
   .animate-glow {
     animation: glow 2s ease-in-out infinite alternate;
   }
@@ -376,27 +384,28 @@
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
+
+  .animate-pulse-teal {
+    animation: pulse-teal 2s ease-in-out infinite;
+  }
 }
 
 /* =======================================================================
    Keyframes
    ======================================================================= */
 @keyframes glow {
-  from {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-  }
-  to {
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
-  }
+  from { box-shadow: 0 0 20px rgba(13, 148, 136, 0.3); }
+  to { box-shadow: 0 0 40px rgba(13, 148, 136, 0.5); }
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-teal {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 @keyframes scan {
@@ -417,18 +426,18 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8b5cf6;
+  background: #0d9488;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a78bfa;
+  background: #14b8a6;
 }
 
 /* =======================================================================
    Selection
    ======================================================================= */
 ::selection {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(13, 148, 136, 0.3);
   color: white;
 }

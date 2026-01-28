@@ -278,7 +278,10 @@
   <!-- Hero Section -->
   <section class="relative min-h-screen flex items-center justify-center overflow-hidden noise" id="main-content">
     <!-- Background gradient -->
-    <div class="absolute inset-0 bg-gradient-to-br from-vocalia-950 via-vocalia-900 to-vocalia-950"></div>
+    <div class="absolute inset-0 bg-vocalia-950">
+      <div class="absolute inset-0 mesh-gradient-purple opacity-40 mix-blend-screen"></div>
+      <div class="absolute inset-0 mesh-gradient-cyan opacity-30 mix-blend-overlay"></div>
+    </div>
 
     <!-- Animated orbs -->
     <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-vocalia-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
@@ -288,12 +291,11 @@
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
       <div class="text-center">
         <!-- Badge -->
-        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass mb-8">
-          <div class="sound-wave">
+        <div class="section-badge mb-8 backdrop-blur-md">
+          <div class="sound-wave inline-flex mr-2">
             <span></span><span></span><span></span><span></span><span></span>
           </div>
-          <span class="text-vocalia-200 text-sm font-medium" data-i18n="hero.badge">Voice AI de Nouvelle
-            Génération</span>
+          <span class="text-vocalia-200" data-i18n="hero.badge">Voice AI de Nouvelle Génération</span>
         </div>
 
         <!-- Title -->
@@ -310,8 +312,7 @@
 
         <!-- CTAs -->
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <a href="#pricing"
-            class="group relative px-8 py-4 rounded-xl bg-gradient-to-r from-vocalia-500 to-vocalia-400 hover:from-vocalia-400 hover:to-vocalia-300 transition-all duration-300 font-semibold text-lg animate-glow">
+          <a href="#pricing" class="group relative btn-cyber animate-glow">
             <span data-i18n="hero.cta_primary">Essai Gratuit</span>
             <svg class="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
@@ -429,7 +430,7 @@
           <div
             class="absolute -inset-0.5 bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-2xl blur opacity-30 group-hover:opacity-50 transition">
           </div>
-          <div class="relative rounded-2xl bg-vocalia-900 p-8">
+          <div class="relative glass-panel p-8">
             <div class="flex items-center justify-between mb-6">
               <div
                 class="w-14 h-14 rounded-xl bg-gradient-to-br from-vocalia-500/20 to-vocalia-400/20 flex items-center justify-center">
@@ -441,87 +442,88 @@
               <span class="px-4 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium"
                 data-i18n="features.widget.price">Gratuit</span>
             </div>
-            <h3 class="text-2xl font-bold mb-3" data-i18n="features.widget.title">Voice Widget</h3>
-            <p class="text-vocalia-300 mb-6" data-i18n="features.widget.description">Intégrez un assistant vocal
-              intelligent sur votre site web. Aucune installation requise.</p>
-            <ul class="space-y-3">
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>Web Speech API native</span></li>
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>30 personas métier</span></li>
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>5 langues supportées</span></li>
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>Intégration en 2 minutes</span></li>
-            </ul>
           </div>
-        </div>
-
-        <!-- Telephony Card -->
-        <div class="relative group">
-          <div
-            class="absolute -inset-0.5 bg-gradient-to-r from-vocalia-400 to-vocalia-300 rounded-2xl blur opacity-30 group-hover:opacity-50 transition">
-          </div>
-          <div class="relative rounded-2xl bg-vocalia-900 p-8">
-            <div class="flex items-center justify-between mb-6">
-              <div
-                class="w-14 h-14 rounded-xl bg-gradient-to-br from-vocalia-400/20 to-vocalia-300/20 flex items-center justify-center">
-                <svg class="w-8 h-8 text-vocalia-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-              </div>
-              <span class="px-4 py-1 rounded-full bg-vocalia-500/20 text-vocalia-300 text-sm font-medium"><span
-                  id="telephonyPrice">0.06€</span><span data-i18n="features.telephony.price">/min</span></span>
-            </div>
-            <h3 class="text-2xl font-bold mb-3" data-i18n="features.telephony.title">Voice Telephony AI</h3>
-            <p class="text-vocalia-300 mb-6" data-i18n="features.telephony.description">Agents IA pour vos lignes
-              téléphoniques. Qualification de leads, support client, prise de RDV.</p>
-            <ul class="space-y-3">
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>Twilio PSTN intégré</span></li>
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>Grok + Gemini fallback</span></li>
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>RAG Knowledge Base</span></li>
-              <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
-                  fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg><span>HITL configurable</span></li>
-            </ul>
-          </div>
+          <h3 class="text-2xl font-bold mb-3 gradient-text" data-i18n="features.widget.title">Voice Widget</h3>
+          <p class="text-vocalia-300 mb-6" data-i18n="features.widget.description">Intégrez un assistant vocal
+            intelligent sur votre site web. Aucune installation requise.</p>
+          <ul class="space-y-3">
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>Web Speech API native</span></li>
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>30 personas métier</span></li>
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>5 langues supportées</span></li>
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>Intégration en 2 minutes</span></li>
+          </ul>
         </div>
       </div>
+
+      <!-- Telephony Card -->
+      <div class="relative group">
+        <div
+          class="absolute -inset-0.5 bg-gradient-to-r from-vocalia-400 to-vocalia-300 rounded-2xl blur opacity-30 group-hover:opacity-50 transition">
+        </div>
+        <div class="relative glass-panel p-8">
+          <div class="flex items-center justify-between mb-6">
+            <div
+              class="w-14 h-14 rounded-xl bg-gradient-to-br from-vocalia-400/20 to-vocalia-300/20 flex items-center justify-center">
+              <svg class="w-8 h-8 text-vocalia-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+            </div>
+            <span class="px-4 py-1 rounded-full bg-vocalia-500/20 text-vocalia-300 text-sm font-medium"><span
+                id="telephonyPrice">0.06€</span><span data-i18n="features.telephony.price">/min</span></span>
+          </div>
+          <h3 class="text-2xl font-bold mb-3" data-i18n="features.telephony.title">Voice Telephony AI</h3>
+          <p class="text-vocalia-300 mb-6" data-i18n="features.telephony.description">Agents IA pour vos lignes
+            téléphoniques. Qualification de leads, support client, prise de RDV.</p>
+          <ul class="space-y-3">
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>Twilio PSTN intégré</span></li>
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>Grok + Gemini fallback</span></li>
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>RAG Knowledge Base</span></li>
+            <li class="flex items-center text-vocalia-200"><svg class="w-5 h-5 text-vocalia-400 mr-3"
+                fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg><span>HITL configurable</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
     </div>
   </section>
 
@@ -534,23 +536,23 @@
       </div>
 
       <div class="flex flex-wrap justify-center gap-4">
-        <div class="px-6 py-4 rounded-xl glass flex items-center space-x-3">
+        <div class="px-6 py-4 glass-panel flex items-center space-x-3">
           <span class="text-2xl">🇫🇷</span>
           <span class="font-medium">Français</span>
         </div>
-        <div class="px-6 py-4 rounded-xl glass flex items-center space-x-3">
+        <div class="px-6 py-4 glass-panel flex items-center space-x-3">
           <span class="text-2xl">🇬🇧</span>
           <span class="font-medium">English</span>
         </div>
-        <div class="px-6 py-4 rounded-xl glass flex items-center space-x-3">
+        <div class="px-6 py-4 glass-panel flex items-center space-x-3">
           <span class="text-2xl">🇪🇸</span>
           <span class="font-medium">Español</span>
         </div>
-        <div class="px-6 py-4 rounded-xl glass flex items-center space-x-3">
+        <div class="px-6 py-4 glass-panel flex items-center space-x-3">
           <span class="text-2xl">🇸🇦</span>
           <span class="font-medium">العربية</span>
         </div>
-        <div class="px-6 py-4 rounded-xl glass flex items-center space-x-3">
+        <div class="px-6 py-4 glass-panel flex items-center space-x-3">
           <span class="text-2xl">🇲🇦</span>
           <span class="font-medium">الدارجة</span>
         </div>
@@ -568,7 +570,7 @@
 
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Widget Plan -->
-        <div class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700 p-6">
+        <div class="glass-panel p-6">
           <h3 class="text-xl font-bold mb-2" data-i18n="pricing.widget.name">Widget</h3>
           <div class="flex items-baseline mb-6">
             <span class="text-4xl font-bold">0</span>
@@ -601,13 +603,11 @@
                   clip-rule="evenodd" />
               </svg>Support email</li>
           </ul>
-          <button
-            class="w-full py-3 rounded-xl border border-vocalia-500 text-vocalia-400 hover:bg-vocalia-500 hover:text-white transition font-medium"
-            data-i18n="pricing.widget.cta">Commencer Gratuitement</button>
+          <button class="w-full btn-cyber mt-8" data-i18n="pricing.widget.cta">Commencer Gratuitement</button>
         </div>
 
         <!-- Starter Plan -->
-        <div class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700 p-6">
+        <div class="glass-panel p-6">
           <h3 class="text-xl font-bold mb-2" data-i18n="pricing.starter.name">Starter</h3>
           <div class="flex items-baseline mb-6">
             <span class="text-4xl font-bold" id="starterPrice">49</span>
@@ -640,9 +640,7 @@
                   clip-rule="evenodd" />
               </svg>Dashboard analytics</li>
           </ul>
-          <button
-            class="w-full py-3 rounded-xl border border-vocalia-500 text-vocalia-400 hover:bg-vocalia-500 hover:text-white transition font-medium"
-            data-i18n="pricing.starter.cta">Essai 14 jours</button>
+          <button class="w-full btn-cyber mt-8" data-i18n="pricing.starter.cta">Essai 14 jours</button>
         </div>
 
         <!-- Pro Plan (Popular) -->
@@ -689,12 +687,11 @@
                   clip-rule="evenodd" />
               </svg>Support prioritaire</li>
           </ul>
-          <button class="w-full py-3 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition font-medium"
-            data-i18n="pricing.pro.cta">Contacter les Ventes</button>
+          <button class="w-full btn-cyber mt-8" data-i18n="pricing.pro.cta">Contacter les Ventes</button>
         </div>
 
         <!-- Enterprise Plan -->
-        <div class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700 p-6">
+        <div class="glass-panel p-6">
           <h3 class="text-xl font-bold mb-2" data-i18n="pricing.enterprise.name">Enterprise</h3>
           <div class="flex items-baseline mb-6">
             <span class="text-4xl font-bold" data-i18n="pricing.enterprise.price">Sur Mesure</span>
@@ -731,9 +728,7 @@
                   clip-rule="evenodd" />
               </svg>Account manager dédié</li>
           </ul>
-          <button
-            class="w-full py-3 rounded-xl border border-vocalia-500 text-vocalia-400 hover:bg-vocalia-500 hover:text-white transition font-medium"
-            data-i18n="pricing.enterprise.cta">Nous Contacter</button>
+          <button class="w-full btn-cyber mt-8" data-i18n="pricing.enterprise.cta">Nous Contacter</button>
         </div>
       </div>
     </div>

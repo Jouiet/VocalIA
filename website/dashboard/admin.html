@@ -25,72 +25,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
 
-  <style>
-    .glass {
-      background: rgba(11, 64, 110, 0.3);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(124, 200, 252, 0.1);
-    }
 
-    .gradient-text {
-      background: linear-gradient(135deg, #0c8ee9 0%, #36aaf8 50%, #7cc8fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-card {
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 40px rgba(12, 142, 233, 0.2);
-    }
-
-    .pulse-dot {
-      animation: pulse-dot 2s infinite;
-    }
-
-    @keyframes pulse-dot {
-
-      0%,
-      100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: 0.5;
-      }
-    }
-
-    .health-ring {
-      animation: rotate 2s linear infinite;
-    }
-
-    @keyframes rotate {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #0b406e;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #0c8ee9;
-      border-radius: 3px;
-    }
-  </style>
 </head>
 
 <body class="bg-vocalia-950 text-white min-h-screen">
@@ -215,7 +150,7 @@
       <section id="system" class="mb-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <!-- Tenants -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-5">
+          <div class="stat-card glass-panel p-5">
             <div class="flex items-center justify-between mb-3">
               <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
                 <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,7 +165,7 @@
           </div>
 
           <!-- Total Calls Today -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-5">
+          <div class="stat-card glass-panel p-5">
             <div class="flex items-center justify-between mb-3">
               <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
                 <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,7 +180,7 @@
           </div>
 
           <!-- MRR -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-5">
+          <div class="stat-card glass-panel p-5">
             <div class="flex items-center justify-between mb-3">
               <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
                 <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -260,7 +195,7 @@
           </div>
 
           <!-- API Latency -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-5">
+          <div class="stat-card glass-panel p-5">
             <div class="flex items-center justify-between mb-3">
               <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
                 <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -275,7 +210,7 @@
           </div>
 
           <!-- Uptime -->
-          <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-5">
+          <div class="stat-card glass-panel p-5">
             <div class="flex items-center justify-between mb-3">
               <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
                 <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -294,7 +229,7 @@
       <!-- Health Checks & Services -->
       <section id="health" class="grid lg:grid-cols-2 gap-6 mb-8">
         <!-- Service Status -->
-        <div class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div class="glass-panel p-6">
           <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.health.title">État des services</h3>
           <div class="space-y-4">
             <div class="flex items-center justify-between p-3 rounded-xl bg-vocalia-800/30">
@@ -333,7 +268,7 @@
         </div>
 
         <!-- Health Check Results -->
-        <div class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div class="glass-panel p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold">Health Check</h3>
             <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">32/32</span>
@@ -404,7 +339,7 @@
       <!-- Tenants & Revenue -->
       <section class="grid lg:grid-cols-3 gap-6 mb-8">
         <!-- Top Tenants -->
-        <div id="tenants" class="lg:col-span-2 rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div id="tenants" class="lg:col-span-2 glass-panel p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.tenants.title">Top Tenants</h3>
             <button class="text-vocalia-400 hover:text-white text-sm transition"
@@ -492,7 +427,7 @@
         </div>
 
         <!-- Revenue Breakdown -->
-        <div id="revenue" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div id="revenue" class="glass-panel p-6">
           <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.charts.revenue_split">Répartition revenus</h3>
           <div class="space-y-4">
             <div>
@@ -539,7 +474,7 @@
       <!-- API Usage & Logs -->
       <section class="grid lg:grid-cols-2 gap-6 mb-8">
         <!-- API Usage -->
-        <div id="api" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div id="api" class="glass-panel p-6">
           <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.sidebar.api">Utilisation API (24h)</h3>
           <div class="space-y-4">
             <div class="flex items-center justify-between p-3 rounded-xl bg-vocalia-800/30">
@@ -606,7 +541,7 @@
         </div>
 
         <!-- Recent Logs -->
-        <div id="logs" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
+        <div id="logs" class="glass-panel p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.sidebar.logs">Logs récents</h3>
             <select

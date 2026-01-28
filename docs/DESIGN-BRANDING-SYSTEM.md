@@ -1,7 +1,7 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 1.0.0 | **Date**: 28/01/2026 | **Session**: 200
-> **Palette**: Premium Indigo/Violet (Stripe/Linear-inspired)
+> **Version**: 2.0.0 | **Date**: 28/01/2026 | **Session**: 200
+> **Palette**: Deep Teal/Emerald (2026 AI-Forward Trend)
 
 ---
 
@@ -17,23 +17,23 @@
 
 ---
 
-## Color Palette v2.0
+## Color Palette v3.0
 
-### Primary - VocalIA Indigo/Violet
+### Primary - VocalIA Deep Teal/Emerald
 
 | Shade | Hex Code | Usage |
 |:------|:---------|:------|
-| 50 | `#f5f3ff` | Light backgrounds |
-| 100 | `#ede9fe` | Hover states (light) |
-| 200 | `#ddd6fe` | Borders (light mode) |
-| 300 | `#c4b5fd` | Disabled states |
-| 400 | `#a78bfa` | Secondary text, icons |
-| **500** | **`#8b5cf6`** | **Primary Brand** |
-| 600 | `#7c3aed` | Primary hover |
-| 700 | `#6d28d9` | Active states |
-| 800 | `#5b21b6` | Dark accents |
-| 900 | `#4c1d95` | Deep accents |
-| 950 | `#2e1065` | Darkest |
+| 50 | `#f0fdfa` | Light backgrounds |
+| 100 | `#ccfbf1` | Hover states (light) |
+| 200 | `#99f6e4` | Borders (light mode) |
+| 300 | `#5eead4` | Disabled states |
+| 400 | `#2dd4bf` | Secondary text, icons |
+| 500 | `#14b8a6` | Secondary brand |
+| **600** | **`#0d9488`** | **Primary Brand** |
+| 700 | `#0f766e` | Primary hover |
+| 800 | `#115e59` | Active states |
+| 900 | `#134e4a` | Dark accents |
+| 950 | `#042f2e` | Darkest |
 
 ### Neutral - Slate
 
@@ -64,10 +64,10 @@
 
 | Source | Color | Influence |
 |:-------|:------|:----------|
-| [Stripe](https://stripe.com/brand) | #635BFF | Primary indigo base |
-| [Linear](https://linear.app/brand) | #5E6AD2 | Purple sophistication |
-| [Pantone 2025](https://www.pantone.com/color-of-the-year/2025) | Mocha Mousse | Warm neutrals |
-| [Pantone 2026](https://www.pantone.com/color-of-the-year/2026) | Cloud Dancer | Clean whites |
+| 2026 AI-Forward Trend | #0d9488 | Deep Teal trust |
+| Enterprise SaaS | Slate-900 | Premium dark mode |
+| Pantone 2026 | Cloud Dancer | Clean contrasts |
+| Tech Innovation | Emerald | Growth & innovation |
 
 ---
 
@@ -232,14 +232,14 @@ mcp__playwright__browser_take_screenshot({ filename: "homepage.png", fullPage: t
 ```css
 /* Primary - Gradient with glow */
 .btn-primary {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);
 }
 
 /* Secondary - Ghost with border */
 .btn-secondary {
   background: transparent;
-  border: 1px solid rgba(148, 163, 184, 0.3);
+  border: 1px solid rgba(148, 163, 184, 0.25);
 }
 ```
 
@@ -248,15 +248,15 @@ mcp__playwright__browser_take_screenshot({ filename: "homepage.png", fullPage: t
 ```css
 /* Dashboard Card */
 .dashboard-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
+  border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 1rem;
 }
 
 /* Stat Card - Highlighted */
 .stat-card {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(15, 118, 110, 0.05));
+  border: 1px solid rgba(13, 148, 136, 0.2);
 }
 ```
 
@@ -311,7 +311,8 @@ transition: all 0.3s ease;
 |:------------|:------|:------:|
 | #f8fafc on #0f172a | 15.6:1 | ✅ AAA |
 | #94a3b8 on #0f172a | 6.8:1 | ✅ AA |
-| #8b5cf6 on #0f172a | 5.2:1 | ✅ AA |
+| #14b8a6 on #0f172a | 7.1:1 | ✅ AA |
+| #2dd4bf on #0f172a | 9.4:1 | ✅ AAA |
 
 ---
 
