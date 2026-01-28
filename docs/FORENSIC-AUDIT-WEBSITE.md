@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 2.2.0 | **Date**: 29/01/2026 | **Session**: 200
+> **Version**: 2.3.0 | **Date**: 29/01/2026 | **Session**: 201
 > **Status**: REMEDIATED | **CSS Build**: SOVEREIGN
 > **Palette**: Enterprise Dark v4.0 (Linear/Stripe-inspired)
 
@@ -23,6 +23,7 @@ Ce document documente l'audit forensique complet du frontend VocalIA (Website + 
 | 198 | 28/01/2026 | WCAG Accessibility | Complete |
 | 199 | 28/01/2026 | Deployment Config | Complete |
 | 200 | 28/01/2026 | CSS Theme Fix | Complete |
+| 201 | 29/01/2026 | i18n Interpolation Fix | Complete |
 
 ---
 
@@ -126,6 +127,58 @@ Configurer les headers au niveau du serveur (Vercel/Nginx) :
 
 ### Status
 Les meta tags restent en place comme fallback. Les vrais headers sont configurés dans `vercel.json`.
+
+---
+
+## Issue #4: i18n Template Variable Interpolation (Session 201)
+
+### Problem
+Les template variables `{{name}}`, `{{time}}`, `{{duration}}`, `{{month}}`, `{{count}}` s'affichaient brutes dans le navigateur car `translatePage()` ne lisait pas les paramètres d'interpolation.
+
+### Root Cause
+```javascript
+// AVANT - translatePage() ignorait data-i18n-params
+function translatePage() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const translated = t(key); // ❌ Pas de params!
+    // ...
+  });
+}
+```
+
+### Solution
+```javascript
+// APRÈS - translatePage() lit data-i18n-params
+function translatePage() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    let params = {};
+    const paramsAttr = el.getAttribute('data-i18n-params');
+    if (paramsAttr) {
+      params = JSON.parse(paramsAttr); // ✅ Parse params
+    }
+    const translated = t(key, params); // ✅ Pass to interpolation
+    // ...
+  });
+}
+```
+
+### HTML Pattern
+```html
+<!-- Example usage -->
+<p data-i18n="dashboard.header.welcome"
+   data-i18n-params='{"name": "Jean"}'>
+  Bienvenue, Jean.
+</p>
+```
+
+### Verification
+```bash
+# All template variables have matching params
+grep "data-i18n-params" website/dashboard/client.html | wc -l
+# Result: 6 (all dynamic content covered)
+```
 
 ---
 

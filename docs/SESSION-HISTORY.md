@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 2.7.0 | **Updated**: 29/01/2026 | **Session**: 200
+> **Version**: 2.8.0 | **Updated**: 29/01/2026 | **Session**: 201
 > **Engineering Score**: 99/100 | **Health Check**: 100% (36/36)
 
 ---
@@ -262,6 +262,57 @@ node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
 node scripts/health-check.cjs
 # Result: 36/36 (100%) ✅
 ```
+
+---
+
+### Session 201 (29/01/2026) - i18n INTERPOLATION FIX
+
+**Directive:** Fix i18n template variables showing raw in browser ({{name}}, {{time}}, etc.)
+
+**Root Cause Analysis:**
+
+The `translatePage()` function in `i18n.js` was calling `t(key)` without reading the `data-i18n-params` attribute from HTML elements. Template variables like `{{name}}`, `{{time}}` were displaying raw because no params were passed to the interpolation function.
+
+**Actions Taken:**
+
+1. **i18n.js Fix**: Updated `translatePage()` to read `data-i18n-params` attribute
+   - Parses JSON params from attribute
+   - Passes params to `t(key, params)` for interpolation
+   - Applied to text content, placeholders, and titles
+
+2. **Translation Updates**:
+   - Updated `fr.json`: `ago` key now includes `{{duration}}` parameter
+   - Updated `en.json`: Same structure for consistency
+
+3. **Dashboard HTML Fixes** (client.html):
+   - Added missing i18n attributes to 4 call timestamp lines
+   - Added missing i18n attributes to 3 call status labels (Support, Transféré, Abandonné)
+   - Added missing i18n to 2 billing labels (Forfait actuel, Prochaine facture)
+
+**Files Modified:**
+- `website/src/lib/i18n.js` (added params parsing)
+- `website/src/locales/fr.json` (ago key with duration)
+- `website/src/locales/en.json` (ago key with duration)
+- `website/dashboard/client.html` (9 i18n fixes)
+
+**Verification:**
+```bash
+# JSON validation
+node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
+# Result: ✅ Valid
+
+# Health check
+node scripts/health-check.cjs
+# Result: 36/36 (100%) ✅
+
+# Template variables coverage
+grep "data-i18n-params" website/dashboard/client.html | wc -l
+# Result: 6 (all dynamic content covered)
+```
+
+**Status:** i18n interpolation system now fully functional. No raw `{{}}` variables in UI.
+
+---
 
 **Visual Verification (Playwright):**
 - Homepage: All sections render correctly

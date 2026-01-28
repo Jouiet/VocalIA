@@ -60,7 +60,7 @@
     "calls": {
       "recent": "Appels récents",
       "view_all": "Voir tout →",
-      "ago": "Il y a {{time}}",
+      "ago": "Il y a {{time}} • {{duration}}",
       "status": {
         "converted": "Converti",
         "support": "Support",

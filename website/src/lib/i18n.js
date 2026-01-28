@@ -110,11 +110,22 @@ async function initI18n(geoLang) {
 
 /**
  * Translate all elements with data-i18n attribute
+ * Supports data-i18n-params for interpolation
  */
 function translatePage() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    const translated = t(key);
+    // Parse params from data-i18n-params attribute
+    let params = {};
+    const paramsAttr = el.getAttribute('data-i18n-params');
+    if (paramsAttr) {
+      try {
+        params = JSON.parse(paramsAttr);
+      } catch (e) {
+        console.warn(`[i18n] Invalid params JSON for key ${key}:`, e);
+      }
+    }
+    const translated = t(key, params);
     if (translated !== key) {
       el.textContent = translated;
     }
@@ -123,7 +134,16 @@ function translatePage() {
   // Handle placeholders
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
-    const translated = t(key);
+    let params = {};
+    const paramsAttr = el.getAttribute('data-i18n-params');
+    if (paramsAttr) {
+      try {
+        params = JSON.parse(paramsAttr);
+      } catch (e) {
+        console.warn(`[i18n] Invalid params JSON for placeholder ${key}:`, e);
+      }
+    }
+    const translated = t(key, params);
     if (translated !== key) {
       el.placeholder = translated;
     }
@@ -132,7 +152,16 @@ function translatePage() {
   // Handle titles
   document.querySelectorAll('[data-i18n-title]').forEach(el => {
     const key = el.getAttribute('data-i18n-title');
-    const translated = t(key);
+    let params = {};
+    const paramsAttr = el.getAttribute('data-i18n-params');
+    if (paramsAttr) {
+      try {
+        params = JSON.parse(paramsAttr);
+      } catch (e) {
+        console.warn(`[i18n] Invalid params JSON for title ${key}:`, e);
+      }
+    }
+    const translated = t(key, params);
     if (translated !== key) {
       el.title = translated;
     }

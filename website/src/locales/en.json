@@ -60,7 +60,7 @@
     "calls": {
       "recent": "Recent Calls",
       "view_all": "View All →",
-      "ago": "{{time}} ago",
+      "ago": "{{time}} ago • {{duration}}",
       "status": {
         "converted": "Converted",
         "support": "Support",
