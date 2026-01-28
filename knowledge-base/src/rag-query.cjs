@@ -48,7 +48,7 @@ function getKnowledgeContext(query, options = {}) {
  * Build system prompt with RAG context
  */
 function buildRAGPrompt(query, knowledgeContext) {
-  const basePrompt = `Tu es l'assistant intelligent de 3A Automation, expert en automatisation e-commerce, analytics et IA.
+  const basePrompt = `Tu es l'assistant intelligent de VocalIA, expert en automatisation e-commerce, analytics et IA.
 
 RÈGLES STRICTES:
 1. Réponds UNIQUEMENT basé sur le contexte fourni ci-dessous
@@ -196,7 +196,7 @@ if (require.main === module) {
     'Quel est le prix du package Growth?',
     'Quelles automatisations Klaviyo sont disponibles?',
     'Comment fonctionne la méthodologie Flywheel?',
-    'Quels sont les services proposés par 3A Automation?'
+    'Quels sont les services proposés par VocalIA?'
   ];
 
   (async () => {

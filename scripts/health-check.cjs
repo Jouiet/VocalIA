@@ -83,6 +83,54 @@ for (const [category, paths] of Object.entries(modules)) {
   console.log('');
 }
 
+// Check Knowledge Base files
+console.log(`${COLORS.cyan}Knowledge Base Data:${COLORS.reset}`);
+const kbFiles = [
+  'telephony/knowledge_base.json',
+  'telephony/knowledge_base_ary.json'
+];
+
+for (const file of kbFiles) {
+  const fullPath = path.join(__dirname, '..', file);
+  if (fs.existsSync(fullPath)) {
+    try {
+      const data = require(fullPath);
+      const sectors = file.includes('ary') ? data._meta?.sectors : Object.keys(data).length;
+      console.log(`  ${COLORS.green}✅ ${file} (${sectors} sectors)${COLORS.reset}`);
+      totalOk++;
+    } catch (e) {
+      console.log(`  ${COLORS.red}❌ ${file}: Invalid JSON${COLORS.reset}`);
+      totalFail++;
+    }
+  } else {
+    console.log(`  ${COLORS.red}❌ ${file} (NOT FOUND)${COLORS.reset}`);
+    totalFail++;
+  }
+}
+console.log('');
+
+// Check Website
+console.log(`${COLORS.cyan}Website:${COLORS.reset}`);
+const websiteFiles = [
+  'website/index.html',
+  'website/src/lib/geo-detect.js',
+  'website/src/lib/i18n.js',
+  'website/src/locales/fr.json',
+  'website/src/locales/en.json'
+];
+
+for (const file of websiteFiles) {
+  const fullPath = path.join(__dirname, '..', file);
+  if (fs.existsSync(fullPath)) {
+    console.log(`  ${COLORS.green}✅ ${path.basename(file)}${COLORS.reset}`);
+    totalOk++;
+  } else {
+    console.log(`  ${COLORS.red}❌ ${file} (NOT FOUND)${COLORS.reset}`);
+    totalFail++;
+  }
+}
+console.log('');
+
 // Check config files
 console.log(`${COLORS.cyan}Configuration:${COLORS.reset}`);
 const configFiles = [

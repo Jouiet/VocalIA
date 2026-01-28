@@ -2,7 +2,7 @@
 /**
  * stitch-to-3a-css.cjs
  *
- * Converts Google Stitch UI components (Tailwind CSS) to 3A Automation design system.
+ * Converts Google Stitch UI components (Tailwind CSS) to VocalIA design system.
  *
  * Usage:
  *   node stitch-to-3a-css.cjs <input.html> [--output=output.html]
@@ -11,7 +11,7 @@
  *
  * @version 1.0.0
  * @session 163
- * @author Claude Code for 3A Automation
+ * @author Claude Code for VocalIA
  */
 
 const fs = require('fs');
@@ -259,7 +259,7 @@ function addBranding(html, options = {}) {
 
   // Add 3A meta tags
   const metaTags = `
-    <meta name="author" content="3A Automation">
+    <meta name="author" content="VocalIA">
     <meta name="generator" content="Stitch-to-3A-CSS v1.0.0">
     <meta name="stitch-converted" content="${new Date().toISOString()}">
   `;

@@ -153,39 +153,58 @@ const CONFIG = {
 
 const TWIML_MESSAGES = {
   // Language mapping: internal code → Twilio language code
+  // Twilio docs: https://www.twilio.com/docs/voice/twiml/say#attributes-language
   languageCodes: {
     'fr': 'fr-FR',
-    'en': 'en-US'
+    'en': 'en-US',
+    'es': 'es-ES',
+    'ar': 'ar-SA',
+    'ary': 'ar-SA'  // Darija fallback to Saudi Arabic for Twilio TTS
   },
 
   // Connection message
   connecting: {
     'fr': 'Connexion à l\'assistant vocal.',
-    'en': 'Connecting to voice assistant.'
+    'en': 'Connecting to voice assistant.',
+    'es': 'Conectando con el asistente de voz.',
+    'ar': 'جاري الاتصال بالمساعد الصوتي.',
+    'ary': 'كنتكونيكطا معا لاسيستون فوكال.'
   },
 
   // Service unavailable
   serviceUnavailable: {
     'fr': 'Désolé, le service est temporairement indisponible. Veuillez réessayer plus tard.',
-    'en': 'Sorry, the service is temporarily unavailable. Please try again later.'
+    'en': 'Sorry, the service is temporarily unavailable. Please try again later.',
+    'es': 'Lo sentimos, el servicio no está disponible temporalmente. Por favor, inténtelo más tarde.',
+    'ar': 'عذراً، الخدمة غير متاحة مؤقتاً. يرجى المحاولة لاحقاً.',
+    'ary': 'سمحلينا، الخدمة ماشي متوفرة دابا. عاود جرب من بعد.'
   },
 
   // Outbound greeting
   outboundGreeting: {
-    'fr': 'Bonjour, ici 3A Automation. Je vous passe mon collègue IA.',
-    'en': 'Hello, this is 3A Automation. I\'m connecting you to my AI colleague.'
+    'fr': 'Bonjour, ici VocalIA. Je vous passe mon collègue IA.',
+    'en': 'Hello, this is VocalIA. I\'m connecting you to my AI colleague.',
+    'es': 'Hola, aquí VocalIA. Le paso con mi colega de IA.',
+    'ar': 'مرحباً، هنا VocalIA. سأحولك إلى زميلي الذكاء الاصطناعي.',
+    'ary': 'سلام، هنا VocalIA. غادي نعطيك لصاحبي الذكاء الاصطناعي.'
   },
 
   // Connection error
   connectionError: {
     'fr': 'Une erreur est survenue lors de la connexion.',
-    'en': 'An error occurred while connecting.'
+    'en': 'An error occurred while connecting.',
+    'es': 'Ocurrió un error al conectar.',
+    'ar': 'حدث خطأ أثناء الاتصال.',
+    'ary': 'كاين شي مشكل فالكونيكسيون.'
   },
 
   // Transfer to human
   transferToHuman: {
     'fr': 'Je vous transfère vers un conseiller humain. Veuillez patienter un instant.',
-    'en': 'I\'m transferring you to a human advisor. Please wait a moment.'
+    'en': 'I\'m transferring you to a human advisor. Please wait a moment.',
+    'es': 'Le estoy transfiriendo a un asesor humano. Por favor, espere un momento.',
+    'ar': 'سأحولك إلى مستشار بشري. يرجى الانتظار لحظة.',
+    'ary': 'غادي نوصلك بواحد المستشار. تسنى شوية عافاك.'
   }
 };
 
@@ -1498,7 +1517,7 @@ async function sendSMSBookingLink(session) {
     return;
   }
 
-  const body = `Bonjour ! Voici le lien pour réserver votre appel découverte avec 3A Automation: ${bookingLink}\n\nÀ très vite !`;
+  const body = `Bonjour ! Voici le lien pour réserver votre appel découverte avec VocalIA: ${bookingLink}\n\nÀ très vite !`;
   await sendGenericSMS(phone, body);
 }
 
@@ -2212,7 +2231,7 @@ async function sendRecoverySMS(session) {
       const bookingLink = 'https://3a-automation.com/reserver';
       const message = session.bookingData.name
         ? `Bonjour ${session.bookingData.name}, nous avons été coupés! Réservez votre appel découverte ici: ${bookingLink}`
-        : `Bonjour, réservez votre appel découverte 3A Automation: ${bookingLink}`;
+        : `Bonjour, réservez votre appel découverte VocalIA: ${bookingLink}`;
 
       const response = await fetch(
         `https://graph.facebook.com/v22.0/${CONFIG.whatsapp.phoneNumberId}/messages`,

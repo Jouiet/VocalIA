@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "title": "VocalIA - Agents Vocaux IA pour Entreprises",
+    "description": "Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées."
+  },
+  "nav": {
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "demo": "Démo",
+    "dashboard": "Tableau de bord",
+    "login": "Connexion"
+  },
+  "hero": {
+    "badge": "Voice AI de Nouvelle Génération",
+    "title": "Vos Agents Vocaux IA",
+    "titleHighlight": "24/7",
+    "subtitle": "Widget web et téléphonie intelligente pour votre entreprise. Multilingue: FR, EN, AR, ES, Darija.",
+    "cta_primary": "Essai Gratuit",
+    "cta_secondary": "Voir la Démo",
+    "trusted": "Ils nous font confiance"
+  },
+  "features": {
+    "title": "Deux Produits, Une Plateforme",
+    "subtitle": "Couvrez 100% de vos canaux vocaux",
+    "widget": {
+      "title": "Voice Widget",
+      "description": "Intégrez un assistant vocal intelligent sur votre site web. Aucune installation requise.",
+      "price": "Gratuit",
+      "features": ["Web Speech API native", "30 personas métier", "5 langues supportées", "Intégration en 2 minutes"]
+    },
+    "telephony": {
+      "title": "Voice Telephony AI",
+      "description": "Agents IA pour vos lignes téléphoniques. Qualification de leads, support client, prise de RDV.",
+      "price": "/min",
+      "features": ["Twilio PSTN intégré", "Grok + Gemini fallback", "RAG Knowledge Base", "HITL configurable"]
+    }
+  },
+  "languages": {
+    "title": "5 Langues Natives",
+    "subtitle": "Parlez à vos clients dans leur langue",
+    "list": {
+      "fr": "Français",
+      "en": "Anglais",
+      "es": "Espagnol",
+      "ar": "Arabe",
+      "ary": "Darija Marocain"
+    }
+  },
+  "personas": {
+    "title": "30 Personas Métier",
+    "subtitle": "Des agents spécialisés pour chaque secteur",
+    "list": ["E-commerce", "Dentaire", "Hôtellerie", "Juridique", "Assurance", "Immobilier", "RH", "Logistique"]
+  },
+  "pricing": {
+    "title": "Tarifs Transparents",
+    "subtitle": "Pas de frais cachés, pas d'engagement",
+    "widget": {
+      "name": "Widget",
+      "price": "0",
+      "period": "/mois",
+      "features": ["Assistant vocal web", "30 personas inclus", "5 langues", "Support email"],
+      "cta": "Commencer Gratuitement"
+    },
+    "starter": {
+      "name": "Starter",
+      "price": "499",
+      "period": "/mois",
+      "features": ["1 ligne téléphonique", "500 min/mois incluses", "RAG Knowledge Base", "Dashboard analytics"],
+      "cta": "Essai 14 jours"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "1499",
+      "period": "/mois",
+      "features": ["5 lignes téléphoniques", "2000 min/mois incluses", "Multi-tenant", "API complète", "Support prioritaire"],
+      "cta": "Contacter les Ventes",
+      "popular": true
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "price": "Sur Mesure",
+      "features": ["Lignes illimitées", "Volume illimité", "SLA garanti", "Intégrations custom", "Account manager dédié"],
+      "cta": "Nous Contacter"
+    },
+    "overage": "Min. supplémentaire"
+  },
+  "stats": {
+    "latency": "Latence moyenne",
+    "languages": "Langues supportées",
+    "personas": "Personas métier",
+    "uptime": "Disponibilité"
+  },
+  "cta": {
+    "title": "Prêt à Transformer Votre Service Client?",
+    "subtitle": "Déployez votre premier agent vocal IA en moins de 5 minutes.",
+    "button": "Démarrer Maintenant"
+  },
+  "footer": {
+    "tagline": "Agents Vocaux IA pour Entreprises",
+    "product": "Produit",
+    "company": "Entreprise",
+    "legal": "Légal",
+    "links": {
+      "features": "Fonctionnalités",
+      "pricing": "Tarifs",
+      "docs": "Documentation",
+      "api": "API",
+      "about": "À propos",
+      "blog": "Blog",
+      "careers": "Carrières",
+      "contact": "Contact",
+      "privacy": "Confidentialité",
+      "terms": "CGU",
+      "cookies": "Cookies"
+    },
+    "copyright": "© 2026 VocalIA. Tous droits réservés."
+  }
+}

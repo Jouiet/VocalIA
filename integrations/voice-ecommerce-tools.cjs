@@ -1,6 +1,6 @@
 /**
  * Voice E-commerce Tools
- * 3A Automation - Voice AI Hardening Phase
+ * VocalIA - Voice AI Hardening Phase
  * 
  * Provides safe, read-only access to Shopify and Klaviyo data
  * for real-time voice assistants.

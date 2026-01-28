@@ -2,7 +2,7 @@
   "name": "vocalia",
   "version": "1.0.0",
   "description": "VocalIA - Voice AI Platform for MENA & Europe",
-  "author": "3A Automation <contact@3a-automation.com>",
+  "author": "VocalIA <contact@3a-automation.com>",
   "license": "PROPRIETARY",
   "main": "core/index.js",
   "scripts": {

@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "title": "VocalIA - AI Voice Agents for Business",
+    "description": "Transform customer interactions with intelligent AI voice agents. Web widget and PSTN telephony. 5 languages supported."
+  },
+  "nav": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "demo": "Demo",
+    "dashboard": "Dashboard",
+    "login": "Login"
+  },
+  "hero": {
+    "badge": "Next-Gen Voice AI",
+    "title": "Your AI Voice Agents",
+    "titleHighlight": "24/7",
+    "subtitle": "Intelligent web widget and telephony for your business. Multilingual: FR, EN, AR, ES, Darija.",
+    "cta_primary": "Start Free Trial",
+    "cta_secondary": "Watch Demo",
+    "trusted": "Trusted by"
+  },
+  "features": {
+    "title": "Two Products, One Platform",
+    "subtitle": "Cover 100% of your voice channels",
+    "widget": {
+      "title": "Voice Widget",
+      "description": "Embed an intelligent voice assistant on your website. No installation required.",
+      "price": "Free",
+      "features": ["Native Web Speech API", "30 industry personas", "5 languages supported", "2-minute integration"]
+    },
+    "telephony": {
+      "title": "Voice Telephony AI",
+      "description": "AI agents for your phone lines. Lead qualification, customer support, appointment booking.",
+      "price": "/min",
+      "features": ["Twilio PSTN integrated", "Grok + Gemini fallback", "RAG Knowledge Base", "Configurable HITL"]
+    }
+  },
+  "languages": {
+    "title": "5 Native Languages",
+    "subtitle": "Speak to your customers in their language",
+    "list": {
+      "fr": "French",
+      "en": "English",
+      "es": "Spanish",
+      "ar": "Arabic",
+      "ary": "Moroccan Darija"
+    }
+  },
+  "personas": {
+    "title": "30 Industry Personas",
+    "subtitle": "Specialized agents for every sector",
+    "list": ["E-commerce", "Dental", "Hospitality", "Legal", "Insurance", "Real Estate", "HR", "Logistics"]
+  },
+  "pricing": {
+    "title": "Transparent Pricing",
+    "subtitle": "No hidden fees, no commitment",
+    "widget": {
+      "name": "Widget",
+      "price": "0",
+      "period": "/month",
+      "features": ["Web voice assistant", "30 personas included", "5 languages", "Email support"],
+      "cta": "Start Free"
+    },
+    "starter": {
+      "name": "Starter",
+      "price": "49",
+      "period": "/month",
+      "features": ["1 phone line", "500 min/month included", "RAG Knowledge Base", "Analytics dashboard"],
+      "cta": "14-day Trial"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "149",
+      "period": "/month",
+      "features": ["5 phone lines", "2000 min/month included", "Multi-tenant", "Full API access", "Priority support"],
+      "cta": "Contact Sales",
+      "popular": true
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "price": "Custom",
+      "features": ["Unlimited lines", "Unlimited volume", "Guaranteed SLA", "Custom integrations", "Dedicated account manager"],
+      "cta": "Contact Us"
+    },
+    "overage": "Additional min"
+  },
+  "stats": {
+    "latency": "Average latency",
+    "languages": "Languages supported",
+    "personas": "Industry personas",
+    "uptime": "Uptime"
+  },
+  "cta": {
+    "title": "Ready to Transform Your Customer Service?",
+    "subtitle": "Deploy your first AI voice agent in under 5 minutes.",
+    "button": "Get Started Now"
+  },
+  "footer": {
+    "tagline": "AI Voice Agents for Business",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "links": {
+      "features": "Features",
+      "pricing": "Pricing",
+      "docs": "Documentation",
+      "api": "API",
+      "about": "About",
+      "blog": "Blog",
+      "careers": "Careers",
+      "contact": "Contact",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "cookies": "Cookies"
+    },
+    "copyright": "© 2026 VocalIA. All rights reserved."
+  }
+}

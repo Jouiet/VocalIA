@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Resilient Voice API - Multi-Provider Fallback + Lead Qualification
- * 3A Automation - Session 127bis Phase 2
+ * VocalIA - Session 127bis Phase 2
  *
  * Provides AI responses for the voice widget with automatic failover
  * + Lead qualification with scoring and CRM sync
@@ -297,10 +297,10 @@ function recordLatency(provider, latencyMs) {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SYSTEM PROMPT - 3A Automation Voice Assistant
+// SYSTEM PROMPT - VocalIA Voice Assistant
 // ─────────────────────────────────────────────────────────────────────────────
-const SYSTEM_PROMPT = `You are the 3A Automation Holistic Architect Agent (HAA-1). 
-You represent 3A Automation (Automation, Analytics, AI), the premier agency for high-end e-commerce and B2B systems.
+const SYSTEM_PROMPT = `You are the VocalIA Holistic Architect Agent (HAA-1). 
+You represent VocalIA (Automation, Analytics, AI), the premier agency for high-end e-commerce and B2B systems.
 
 YOUR IDENTITY:
 - Status: #1 Holistic Systems Architect.
@@ -583,12 +583,12 @@ function getSystemPromptForLanguage(language = 'fr') {
   }
 
   // Darija: FACTUALLY ACCURATE system prompt
-  // FACT: 3A Automation = AI Automation AGENCY that SERVES e-commerce/B2B clients
+  // FACT: VocalIA = AI Automation AGENCY that SERVES e-commerce/B2B clients
   // NOT: an e-commerce company itself
-  return `أنت المساعد الصوتي ديال 3A Automation.
+  return `أنت المساعد الصوتي ديال VocalIA.
 
 شكون حنا (الحقيقة):
-3A Automation هي أجونس متخصصة فالأوتوماسيون. ماشي شركة إي كوميرس.
+VocalIA هي أجونس متخصصة فالأوتوماسيون. ماشي شركة إي كوميرس.
 حنا كنعاونو أصحاب المتاجر الإلكترونية والشركات B2B باش يأوتوماتيزيو الماركيتينغ ديالهم.
 
 الخدمات لي كنقدمو:
@@ -887,7 +887,7 @@ async function syncLeadToHubSpot(session) {
     lead_status: status,
     hs_lead_status: status === 'hot' ? 'NEW' : status === 'warm' ? 'OPEN' : 'UNQUALIFIED',
     source: 'Voice Widget',
-    source_detail: '3A Automation Voice Assistant'
+    source_detail: 'VocalIA Voice Assistant'
   };
 
   if (extractedData.name) {
@@ -1484,7 +1484,7 @@ async function main() {
   }
 
   console.log(`
-[Voice] Resilient Voice API + Lead Qualification - 3A Automation
+[Voice] Resilient Voice API + Lead Qualification - VocalIA
 
 Usage:
   node voice-api-resilient.cjs --server [--port=3004]

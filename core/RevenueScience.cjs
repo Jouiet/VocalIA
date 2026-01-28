@@ -1,6 +1,6 @@
 /**
  * RevenueScience.cjs - Yield Optimization & Financial Intelligence
- * 3A Automation - Session 179 (Agent Ops v3.0)
+ * VocalIA - Session 179 (Agent Ops v3.0)
  *
  * SOTA Features (Session 178-179):
  * - Demand Curve Modeling: Capacity-based pricing elasticity

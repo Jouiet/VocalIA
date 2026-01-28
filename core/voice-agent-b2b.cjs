@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * 3A Automation - Voice Agent Core (B2B Agency Context)
+ * VocalIA - Voice Agent Core (B2B Agency Context)
  *
- * DUAL-ROLE Voice-enabled AI Assistant for 3A Automation:
+ * DUAL-ROLE Voice-enabled AI Assistant for VocalIA:
  * 1. SALES ASSISTANT - Automation discovery, recommendations, pricing
  * 2. CUSTOMER SUPPORT - Project status, questions, onboarding
  *
@@ -159,7 +159,7 @@ class VoiceAgentB2B {
   }
 
   _buildSystemPrompt() {
-    return `You are the 3A Automation AI Assistant, a dual-role voice assistant for 3A Automation agency that handles BOTH sales assistance AND customer support.
+    return `You are the VocalIA AI Assistant, a dual-role voice assistant for VocalIA agency that handles BOTH sales assistance AND customer support.
 
 ═══════════════════════════════════════════════════════════════════
 ABOUT 3A AUTOMATION
@@ -503,12 +503,12 @@ IMPORTANT RULES
 
     // GREETINGS
     if (input.includes('hello') || input.includes('hi') || input.includes('bonjour')) {
-      return "Hello! Welcome to 3A Automation. I'm your AI assistant, here to help you discover the right automation solutions for your business or answer questions about our services. How can I help you today?";
+      return "Hello! Welcome to VocalIA. I'm your AI assistant, here to help you discover the right automation solutions for your business or answer questions about our services. How can I help you today?";
     }
 
     // WHAT DO YOU DO
     if (input.includes('what do you') || input.includes('services') || input.includes('do you offer')) {
-      return "3A Automation offers 119 marketing automation solutions across email marketing, lead generation, SEO, Shopify admin, analytics, Voice AI, and more. We serve e-commerce and B2B businesses. What area interests you most?";
+      return "VocalIA offers 119 marketing automation solutions across email marketing, lead generation, SEO, Shopify admin, analytics, Voice AI, and more. We serve e-commerce and B2B businesses. What area interests you most?";
     }
 
     // CONTEXT-BASED (if RAG found something)
@@ -692,7 +692,7 @@ async function main() {
 
   // Default: show help
   console.log(`
-3A Automation - Voice Agent B2B
+VocalIA - Voice Agent B2B
 
 Usage:
   node voice-agent-b2b.cjs --health       Health check

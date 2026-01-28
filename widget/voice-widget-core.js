@@ -1,5 +1,5 @@
 /**
- * 3A Automation - Voice Assistant Widget Core
+ * VocalIA - Voice Assistant Widget Core
  * Version: 2.0.0
  *
  * Unified widget that loads language-specific translations

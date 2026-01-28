@@ -248,7 +248,7 @@ class GrokRealtimeSession extends EventEmitter {
 
     this.voice = options.voice || CONFIG.defaults.voice;
     this.model = options.model || CONFIG.defaults.model;
-    this.instructions = options.instructions || 'You are a helpful voice assistant for 3A Automation.';
+    this.instructions = options.instructions || 'You are a helpful voice assistant for VocalIA.';
 
     this.ws = null;
     this.sessionId = null;

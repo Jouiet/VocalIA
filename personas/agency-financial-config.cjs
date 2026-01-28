@@ -1,12 +1,12 @@
 /**
  * AGENCY FINANCIAL CONFIGURATION
- * Single Source of Truth for 3A Automation Banking & Payment Details
+ * Single Source of Truth for VocalIA Banking & Payment Details
  * Extracted from: invoice-generator.cjs
  */
 
 const FINANCIAL_CONFIG = {
     company: {
-        name: '3A Automation',
+        name: 'VocalIA',
         email: 'contact@3a-automation.com',
         website: 'https://3a-automation.com',
         address: 'Angle Boulevard Zerktouni et Rue Al-Bakri',
@@ -24,7 +24,7 @@ const FINANCIAL_CONFIG = {
                 method: 'CMI / Payzone.ma',
                 bank: 'Attijariwafa Bank',
                 rib: '007810000000000000000185', // Example structured RIB
-                beneficiary: '3A Automation'
+                beneficiary: 'VocalIA'
             }
         },
         EUR: {

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 3A Automation - Grok/xAI Integration Client (Node.js)
+ * VocalIA - Grok/xAI Integration Client (Node.js)
  * Version: 2.0 - RAG Enhanced
  * Created: 2025-12-17
  * Updated: 2025-12-18 - Added RAG Knowledge Base Integration
@@ -54,11 +54,11 @@ function initRAG() {
 }
 
 // Base System Prompt
-const BASE_SYSTEM_PROMPT = `Tu es l'assistant IA de 3A Automation (AAA - AI Automation Agency), spécialisée en Automatisation E-commerce (B2C) et Workflows PME (B2B).
+const BASE_SYSTEM_PROMPT = `Tu es l'assistant IA de VocalIA (AAA - AI Automation Agency), spécialisée en Automatisation E-commerce (B2C) et Workflows PME (B2B).
 
 ## IDENTITÉ
 
-- Nom: 3A Automation (Automation, Analytics, AI)
+- Nom: VocalIA (Automation, Analytics, AI)
 - Type: Agence d'Automatisation AI (AAA)
 - Site: https://3a-automation.com
 - Email: contact@3a-automation.com

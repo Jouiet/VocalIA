@@ -3,7 +3,7 @@
         "livraison": "La livraison standard prend 3-5 jours ouvrés (Gratuite dès 50€). La livraison Express prend 1-2 jours (15€).",
         "retours": "Nous offrons une politique de retour de 30 jours pour les articles non utilisés dans leur emballage d'origine. Les frais de retour sont gratuits.",
         "paiements": "Nous acceptons Visa, Mastercard, Amex, PayPal et Apple Pay.",
-        "support": "email support: support@universalecom.com",
+        "support": "Email support: support@{{client_domain}}",
         "horaires": "Lundi-Vendredi 9h-17h"
     },
     "universal_sme_v1": {
@@ -24,9 +24,9 @@
         "parking": "Le stationnement des invités est limité à 48 heures. Permis requis pour les séjours plus longs."
     },
     "agency_v2": {
-        "services": "3A Automation propose des agents IA vocaux, des automatisations e-commerce (Shopify) et des systèmes de marketing agentique Level 5.",
+        "services": "VocalIA propose des agents IA vocaux, des automatisations e-commerce (Shopify) et des systèmes de marketing agentique Level 5.",
         "mission": "Notre mission est de transformer les agences et boutiques en moteurs autonomes ultra-performants.",
-        "contact": "Contactez-nous via le site 3a-automation.com ou par téléphone au +212 6 00 00 00 00.",
+        "contact": "Contactez-nous via le site vocalia.ma ou par téléphone au +212 6 00 00 00 00.",
         "expertise": "Experts en RAG, Grok, Gemini 3 Pro et déploiements holistiques."
     },
     "healer_v1": {
@@ -63,7 +63,7 @@
         "postes": "Nous recrutons actuellement des Développeurs IA, des Sales Managers et des Spécialistes Automatisation.",
         "process": "1. Screening téléphonique, 2. Test technique/cas pratique, 3. Entretien avec la direction.",
         "valeurs": "Innovation, Autonomie, Excellence technique.",
-        "candidature": "Envoyez votre CV à jobs@3a-automation.com."
+        "candidature": "Envoyez votre CV à jobs@vocalia.ma."
     },
     "dispatcher_v1": {
         "suivi": "Utilisez le lien reçu par SMS pour suivre votre colis en temps réel.",

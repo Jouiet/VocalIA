@@ -1,6 +1,6 @@
 /**
  * VOICE PERSONA INJECTOR (THE DIRECTOR)
- * 3A Automation - Voice AI Optimization Phase 1
+ * VocalIA - Voice AI Optimization Phase 1
  *
  * Role: Decouple the "Soul" (Persona/Instructions) from the "Brain" (Voice Bridge Code).
  * This module enables Multi-Tenancy: A single Engine running 7 "Gold Rush" Verticals.
@@ -31,13 +31,13 @@ const VOICE_CONFIG = {
  */
 const SYSTEM_PROMPTS = {
     AGENCY: {
-        fr: `Tu es l'Architecte Holistique #1 de 3A Automation. Ta mission est de diagnostiquer les failles de croissance et de proposer des écosystèmes d'automatisation striking modern.
+        fr: `Tu es l'Architecte Holistique #1 de VocalIA. Ta mission est de diagnostiquer les failles de croissance et de proposer des écosystèmes d'automatisation striking modern.
         DIRECTIVE: Utilise TOUJOURS le "Strategic Intent" et l'"Expected Outcome" des services que tu trouves dans ta base de connaissances pour justifier tes conseils.
         AUDIT: Chaque interaction doit tendre vers un "Audit Système Complet" pour identifier les fuites de profit.`,
-        ary: `نتا هو المهندس المعماري (Architect) ديال السيستيمات فـ 3A Automation. الخدمة ديالك هي تلقى المشاكل لي كاينين عند الكليان فـ البيزنس ديالهم وتقترح ليهم حلول ديال الذكاء الاصطناعي لي واعرة.
+        ary: `نتا هو المهندس المعماري (Architect) ديال السيستيمات فـ VocalIA. الخدمة ديالك هي تلقى المشاكل لي كاينين عند الكليان فـ البيزنس ديالهم وتقترح ليهم حلول ديال الذكاء الاصطناعي لي واعرة.
         DIRECTIVE: ديما شرح ليهم شنو هو الهدف الاستراتيجي (Strategic Intent) والنتيجة المنتظرة (Outcome) ديال كل خدمة اقترحتيها.
         الناس خاصهم يعرفو بلي نتا خبير بزاف وكتهضر على لفلوس والنتائج.`,
-        en: `You are the #1 Holistic Systems Architect for 3A Automation. Your mission is to diagnose growth bottlenecks and propose strikingly modern automation ecosystems.
+        en: `You are the #1 Holistic Systems Architect for VocalIA. Your mission is to diagnose growth bottlenecks and propose strikingly modern automation ecosystems.
         DIRECTIVE: ALWAYS use the "Strategic Intent" and "Expected Outcome" of the services found in your Knowledge Base to justify your architectural decisions.
         MISSION: Every dialogue must move towards a "Complete Flywheel Audit" to identify high-leverage profit leaks.`
     },
@@ -99,10 +99,10 @@ const PERSONAS = {
     // 1. AGENCY (Original)
     AGENCY: {
         id: 'agency_v2',
-        name: '3A Automation Architect',
+        name: 'VocalIA Architect',
         voice: 'ara',
         sensitivity: 'normal',
-        systemPrompt: `You are the #1 Holistic Systems Architect for 3A Automation. 
+        systemPrompt: `You are the #1 Holistic Systems Architect for VocalIA. 
     GOAL: Diagnose business entropy and propose strikingly modern automation systems.
     STYLE: Authoritative, consultative, expert.
     INSTRUCTIONS:
@@ -575,7 +575,7 @@ class VoicePersonaInjector {
         // 3. Variables Replacement
         let finalInstructions = basePrompt;
         if (persona.name) {
-            finalInstructions = finalInstructions.replace(/3A Automation Sales|Cabinet Dentaire Lumière|Universal E-commerce Support/g, persona.name);
+            finalInstructions = finalInstructions.replace(/VocalIA Sales|Cabinet Dentaire Lumière|Universal E-commerce Support/g, persona.name);
         }
 
         // 3a. SOTA BLUEPRINT: Context Injection (Attribution + Session)

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Voice Widget Templates - Industry Presets & Quick Deploy
- * 3A Automation - Session 116
+ * VocalIA - Session 116
  *
  * Purpose: Reduce Voice Widget deployment from 4h to 30min
  *
@@ -434,7 +434,7 @@ function generateConfig(options) {
 
   return {
     $schema: 'voice-widget-config-schema.json',
-    $generator: '3A Automation Voice Widget Templates v1.0',
+    $generator: 'VocalIA Voice Widget Templates v1.0',
     $generatedAt: new Date().toISOString(),
     $preset: preset,
 
@@ -587,7 +587,7 @@ window.VOICE_WIDGET_CONFIG = ${JSON.stringify(config, null, 2)};
   files.push(jsPath);
 
   // 3. Embed snippet for client
-  const embedSnippet = `<!-- 3A Automation Voice Widget - ${config.client.name} -->
+  const embedSnippet = `<!-- VocalIA Voice Widget - ${config.client.name} -->
 <script src="https://3a-automation.com/voice-assistant/voice-widget.min.js"></script>
 <script src="${config.client.domain}/voice-widget-config.js"></script>
 <script>
@@ -608,7 +608,7 @@ window.VOICE_WIDGET_CONFIG = ${JSON.stringify(config, null, 2)};
 ## Generated
 - Date: ${new Date().toISOString()}
 - Preset: ${config.$preset} (${INDUSTRY_PRESETS[config.$preset]?.name || 'Custom'})
-- Generator: 3A Automation Voice Widget Templates v1.0
+- Generator: VocalIA Voice Widget Templates v1.0
 
 ## Files
 - \`voice-widget-config.json\` - Main configuration (JSON)
@@ -753,7 +753,7 @@ function main() {
 
   // Help
   console.log(`
-🎙️  Voice Widget Templates - 3A Automation
+🎙️  Voice Widget Templates - VocalIA
 
 Presets for rapid Voice Widget deployment (4h → 30min)
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * 3A Automation - Knowledge Base for Services (B2B)
+ * VocalIA - Knowledge Base for Services (B2B)
  *
  * Role: TF-IDF based search for 119 automation services
  * Purpose: Powers Voice AI assistant with service knowledge
@@ -807,7 +807,7 @@ async function main() {
 
   // Default: show help
   console.log(`
-3A Automation - Service Knowledge Base
+VocalIA - Service Knowledge Base
 
 Usage:
   node knowledge-base-services.cjs --build     Build knowledge base from catalog

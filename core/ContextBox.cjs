@@ -1,6 +1,6 @@
 /**
  * ContextBox.cjs - Unified Memory Layer for Agent Ops v3.0
- * 3A Automation - Session 178quater (SOTA Multi-Agent Coordination)
+ * VocalIA - Session 178quater (SOTA Multi-Agent Coordination)
  *
  * Implements the "Context Box" concept from the Agent Ops manifesto.
  * Provides a persistent, self-healing state manager for customer journeys.

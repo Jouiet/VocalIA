@@ -1,6 +1,6 @@
 /**
  * AgencyEventBus.cjs - SOTA Event-Driven Architecture for Agent Ops v3.0
- * 3A Automation - Session 178quater
+ * VocalIA - Session 178quater
  *
  * Multi-tenant event bus with:
  * - Event persistence & replay

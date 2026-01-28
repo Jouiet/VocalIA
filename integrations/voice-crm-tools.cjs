@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Voice CRM Tools - 3A Automation
+ * Voice CRM Tools - VocalIA
  * 
  * Purpose: Bridge between Voice API and HubSpot CRM for real-time history RAG.
  * Features:

@@ -1,6 +1,6 @@
 /**
  * Meta Conversions API (CAPI) Gateway
- * 3A Automation - Session 177/178 (SOTA Optimization)
+ * VocalIA - Session 177/178 (SOTA Optimization)
  *
  * Server-Side Conversion Tracking for Meta Ads
  * Sends offline conversions (Lead, Purchase) back to Meta for optimization
@@ -202,7 +202,7 @@ class MetaCAPIGateway {
             lead_score: data.leadScore || data.bant_score || 0,
             value: data.estimatedLtv || data.value || 0,
             currency: data.currency || 'EUR',
-            content_name: data.service || '3A Automation Lead',
+            content_name: data.service || 'VocalIA Lead',
             content_category: data.sector || 'Voice AI'
         };
 
@@ -229,7 +229,7 @@ class MetaCAPIGateway {
             value: data.value || 0,
             currency: data.currency || 'EUR',
             order_id: data.orderId || data.invoiceId,
-            content_name: data.productName || '3A Automation Service',
+            content_name: data.productName || 'VocalIA Service',
             content_category: data.sector || 'Automation'
         };
 
