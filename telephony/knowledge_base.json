@@ -1,0 +1,98 @@
+{
+    "universal_ecom_v1": {
+        "livraison": "La livraison standard prend 3-5 jours ouvrés (Gratuite dès 50€). La livraison Express prend 1-2 jours (15€).",
+        "retours": "Nous offrons une politique de retour de 30 jours pour les articles non utilisés dans leur emballage d'origine. Les frais de retour sont gratuits.",
+        "paiements": "Nous acceptons Visa, Mastercard, Amex, PayPal et Apple Pay.",
+        "support": "email support: support@universalecom.com",
+        "horaires": "Lundi-Vendredi 9h-17h"
+    },
+    "universal_sme_v1": {
+        "horaires": "Lundi-Vendredi 8h-18h, Samedi 9h-13h.",
+        "services": "Nous proposons des consultations, des réparations et des services de maintenance.",
+        "tarifs": "Les consultations sont à 50€ (déduits de la facture finale). Le tarif horaire est de 80€/heure.",
+        "adresse": "123 Rue Principale, Quartier des Affaires."
+    },
+    "dental_intake_v1": {
+        "urgence_dentaire": "Pour toute douleur intense ou traumatisme, nous proposons des créneaux d'urgence le jour même entre 11h-12h et 15h-16h.",
+        "assurances": "Nous acceptons la CNOPS, CNSS et les principales mutuelles privées. Nous proposons aussi des facilités de paiement.",
+        "offre_nouveau_patient": "Le forfait 'Nouveau Patient' à 99€ comprend l'examen, les radios et le détartrage.",
+        "dentiste": "Le Dr. Lumière est notre dentiste principal, spécialiste en implantologie et esthétique dentaire."
+    },
+    "hoa_support_v1": {
+        "poubelles": "Le ramassage des ordures a lieu le mardi matin. Le recyclage un mardi sur deux.",
+        "piscine": "La piscine communautaire est ouverte de 8h à 22h tous les jours. Badge requis.",
+        "parking": "Le stationnement des invités est limité à 48 heures. Permis requis pour les séjours plus longs."
+    },
+    "agency_v2": {
+        "services": "3A Automation propose des agents IA vocaux, des automatisations e-commerce (Shopify) et des systèmes de marketing agentique Level 5.",
+        "mission": "Notre mission est de transformer les agences et boutiques en moteurs autonomes ultra-performants.",
+        "contact": "Contactez-nous via le site 3a-automation.com ou par téléphone au +212 6 00 00 00 00.",
+        "expertise": "Experts en RAG, Grok, Gemini 3 Pro et déploiements holistiques."
+    },
+    "healer_v1": {
+        "specialites": "Généraliste, Pédiatrie, Gynécologie, Kinésithérapie, Cardiologie.",
+        "horaires": "Lundi-Vendredi 8h-20h, Samedi 8h-12h.",
+        "urgence": "Contactez le 15 pour les urgences vitales. Pour les urgences cabinet, appelez à l'ouverture à 8h.",
+        "rdv": "Prise de rendez-vous possible par téléphone ou via notre portail patient."
+    },
+    "mechanic_v1": {
+        "services": "Révision, freins, pneus, batterie, diagnostic électronique, contrôle technique.",
+        "horaires": "Lundi-Vendredi 8h30-18h00, Samedi 9h-12h.",
+        "vehicule_courtoisie": "Nous prêtons un véhicule de courtoisie sur réservation préalable.",
+        "garantie": "Toutes nos réparations sont garanties 1 an pièces et main d'œuvre."
+    },
+    "counselor_v1": {
+        "domaines": "Droit du travail, Droit de la famille, Droit immobilier, Droit des affaires.",
+        "honoraires": "La première consultation de 30 minutes est facturée 80€ HT.",
+        "documents": "Veuillez apporter tout contrat ou correspondance lié à votre affaire lors du premier rendez-vous.",
+        "localisation": "Nos bureaux sont situés au centre-ville, parking disponible."
+    },
+    "concierge_v1": {
+        "petit_dejeuner": "Servi de 7h à 10h30 au restaurant l'Horizon.",
+        "check_in_out": "Check-in à partir de 15h, Check-out jusqu'à 11h.",
+        "wifi": "Wifi gratuit haut débit disponible dans tout l'établissement.",
+        "parking": "Parking privé sécurisé disponible pour 20€ par nuit."
+    },
+    "stylist_v1": {
+        "soins": "Coiffure, Massages, Soins du visage, Manucure, Hammam.",
+        "horaires": "Mardi-Samedi 10h-19h, Nocturne le Jeudi jusqu'à 21h.",
+        "produits": "Nous utilisons exclusivement des produits bio et éco-responsables.",
+        "annulation": "Toute annulation doit être faite 24h à l'avance pour éviter la facturation."
+    },
+    "recruiter_v1": {
+        "postes": "Nous recrutons actuellement des Développeurs IA, des Sales Managers et des Spécialistes Automatisation.",
+        "process": "1. Screening téléphonique, 2. Test technique/cas pratique, 3. Entretien avec la direction.",
+        "valeurs": "Innovation, Autonomie, Excellence technique.",
+        "candidature": "Envoyez votre CV à jobs@3a-automation.com."
+    },
+    "dispatcher_v1": {
+        "suivi": "Utilisez le lien reçu par SMS pour suivre votre colis en temps réel.",
+        "zone_livraison": "Nous livrons dans tout le pays sous 24h à 48h.",
+        "problemes": "En cas d'absence, le colis est déposé au point relais le plus proche.",
+        "tarifs": "Livraison standard à partir de 5,90€."
+    },
+    "collector_v1": {
+        "paiement_ligne": "Réglez vos factures en toute sécurité via le lien envoyé sur votre espace client.",
+        "echeancier": "Des facilités de paiement peuvent être accordées après étude de votre dossier.",
+        "contact_litiges": "Pour toute contestation, envoyez un email à recouvrement@service-ethique.fr.",
+        "horaires": "Service disponible du lundi au vendredi de 9h à 17h."
+    },
+    "surveyor_v1": {
+        "enquete": "Nous réalisons des enquêtes NPS pour mesurer la satisfaction globale.",
+        "confidentialite": "Toutes vos réponses sont anonymes et traitées de manière agrégée.",
+        "recompense": "Participez à notre tirage au sort mensuel après avoir complété le questionnaire.",
+        "usage": "Vos retours nous aident à améliorer nos services en continu."
+    },
+    "governor_v1": {
+        "etat_civil": "Demandes d'actes de naissance, mariage ou décès possibles en ligne.",
+        "urbanisme": "Dépôt de permis de construire le lundi et mercredi matin uniquement.",
+        "dechets": "Collecte sélective le mercredi soir, encombrants le premier vendredi du mois.",
+        "contact": "Accueil général ouverts aux horaires de bureau habituels."
+    },
+    "insurer_v1": {
+        "sinistre": "Déclarez votre sinistre sous 5 jours ouvrés via l'application mobile ou par téléphone.",
+        "devis": "Obtenez un devis gratuit en ligne pour votre auto ou votre habitation.",
+        "assistance": "Assistance 24h/24 et 7j/7 au numéro vert indiqué au dos de votre carte verte.",
+        "reseau": "Plus de 1500 garagistes partenaires pour des réparations sans avance de frais."
+    }
+}

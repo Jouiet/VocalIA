@@ -27,13 +27,13 @@ const path = require('path');
 const {
   RateLimiter,
   setSecurityHeaders
-} = require('../../lib/security-utils.cjs');
+} = require('../lib/security-utils.cjs');
 
 // Import Advanced Cognitive Modules (Session 167)
 const KB_MOD = require('./knowledge-base-services.cjs');
-const ECOM_MOD = require('./voice-ecommerce-tools.cjs');
-const CRM_MOD = require('./voice-crm-tools.cjs');
-const { VoicePersonaInjector, VOICE_CONFIG } = require('./voice-persona-injector.cjs');
+const ECOM_MOD = require('../integrations/voice-ecommerce-tools.cjs');
+const CRM_MOD = require('../integrations/voice-crm-tools.cjs');
+const { VoicePersonaInjector, VOICE_CONFIG } = require('../personas/voice-persona-injector.cjs');
 // Session 178: SOTA - ContextBox integration for persistent session state
 const ContextBox = require('./ContextBox.cjs');
 // Security constants
@@ -1206,7 +1206,7 @@ function startServer(port = 3004) {
           processQualificationData(session, message, language);
 
           // Get Persona for metadata (RLS Context)
-          const { VoicePersonaInjector } = require('./voice-persona-injector.cjs');
+          const { VoicePersonaInjector } = require('../personas/voice-persona-injector.cjs');
           const persona = VoicePersonaInjector.getPersona(null, null, sessionId); // We assume sessionId is the clientId here for RAG isolation
 
           const result = await getResilisentResponse(message, history, { ...session, metadata: persona }, language);

@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@3a/agent-ops": {
+      "signature": "e51d81a4c7589574322884cc84b52915",
+      "file": true
+    }
+  }
+}

@@ -27,7 +27,7 @@ const {
   RateLimiter,
   setSecurityHeaders,
   secureRandomString
-} = require('../../lib/security-utils.cjs');
+} = require('../lib/security-utils.cjs');
 
 // Security constants
 const MAX_BODY_SIZE = 1024 * 1024; // 1MB

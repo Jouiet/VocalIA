@@ -44,15 +44,15 @@ const { URL } = require('url');
 const crypto = require('crypto');
 
 // Marketing Science Core
-const MarketingScience = require('./marketing-science-core.cjs');
+const MarketingScience = require('../core/marketing-science-core.cjs');
 // Voice Persona Injector (The Director)
-const { VoicePersonaInjector } = require('./voice-persona-injector.cjs');
+const { VoicePersonaInjector } = require('../personas/voice-persona-injector.cjs');
 
 // Import Advanced Cognitive Modules (Session 167)
-const { ServiceKnowledgeBase } = require('./knowledge-base-services.cjs');
-const VoiceEcommerceTools = require('./voice-ecommerce-tools.cjs');
-const ContextBox = require('./ContextBox.cjs');
-const BillingAgent = require('./BillingAgent.cjs');
+const { ServiceKnowledgeBase } = require('../core/knowledge-base-services.cjs');
+const VoiceEcommerceTools = require('../integrations/voice-ecommerce-tools.cjs');
+const ContextBox = require('../core/ContextBox.cjs');
+const BillingAgent = require('../core/BillingAgent.cjs');
 
 // Initialize Cognitive Modules
 const KB = new ServiceKnowledgeBase();

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "grok": {
+      "command": "npx",
+      "args": ["grok-search-mcp@latest"],
+      "env": {
+        "XAI_API_KEY": "${XAI_API_KEY}"
+      },
+      "description": "Grok AI web search for voice context enrichment"
+    }
+  },
+  "_comment": "VocalIA MCP Configuration - Voice AI Platform",
+  "_version": "1.0.0",
+  "_created": "2026-01-28"
+}

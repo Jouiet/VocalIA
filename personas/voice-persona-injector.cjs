@@ -16,7 +16,7 @@
 
 const CLIENT_REGISTRY = require('./client_registry.json');
 const FINANCIAL_CONFIG = require('./agency-financial-config.cjs');
-const MarketingScience = require('./marketing-science-core.cjs');
+const MarketingScience = require('../core/marketing-science-core.cjs');
 
 // Session 166sexies - Multilingual Support Configuration
 // Session 178: Restored full 5-language support per Ultrathink audit
@@ -580,7 +580,7 @@ class VoicePersonaInjector {
 
         // 3a. SOTA BLUEPRINT: Context Injection (Attribution + Session)
         // Session 177: Passing marketing signals from ContextBox (if available)
-        const ContextBox = require('./ContextBox.cjs');
+        const ContextBox = require('../core/ContextBox.cjs');
         const context = ContextBox.get(persona.id);
         if (context.pillars?.attribution) {
             const attr = context.pillars.attribution;
