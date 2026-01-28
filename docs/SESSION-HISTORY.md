@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.0.0 | **Updated**: 29/01/2026 | **Session**: 203
+> **Version**: 3.0.1 | **Updated**: 29/01/2026 | **Session**: 204
 > **Engineering Score**: 99/100 | **Health Check**: 100% (36/36)
 
 ---
@@ -262,6 +262,48 @@ node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
 node scripts/health-check.cjs
 # Result: 36/36 (100%) ✅
 ```
+
+---
+
+### Session 204 (29/01/2026) - AUDIT & NETTOYAGE PLUG-AND-PLAY
+
+**Directive:** Audit de valeur brutalement honnête des assets plug-and-play.
+
+**Constat Factuel:**
+- Widget VocalIA: EXISTE (`widget/voice-widget-core.js`) mais **PAS déployé** sur website
+- Clients multi-tenant: **AUCUN** (structure `clients/` n'existe pas)
+- tenantId dans core/: PRÉPARÉ mais **NON UTILISÉ**
+- Voice-assistant sur vocalia.ma: **N'EXISTE PAS**
+
+**Audit des Scripts:**
+
+| Script | Status | Problème | Décision |
+|:-------|:-------|:---------|:---------|
+| test-voice-widget.cjs | ❌ CASSÉ | Teste URL inexistante | **SUPPRIMÉ** |
+| use-minified-voice-widget.cjs | ❌ INUTILE | HTML ne référence pas widget | **SUPPRIMÉ** |
+| verify-voice-rag-handoff.cjs | ❌ CASSÉ | Démarre serveur au require() | **SUPPRIMÉ** |
+| PLUG-AND-PLAY-STRATEGY.md | ⚠️ OBSOLÈTE | Chemins 3A Automation | **ARCHIVÉ** |
+| generate-voice-widget-client.cjs | ✅ FONCTIONNE | Partiel mais utilisable | **CONSERVÉ** |
+| voice-widget-client-config.json | ✅ VALIDE | Template bien structuré | **CONSERVÉ** |
+
+**Actions Exécutées:**
+```bash
+rm scripts/test-voice-widget.cjs
+rm scripts/use-minified-voice-widget.cjs
+rm scripts/verify-voice-rag-handoff.cjs
+mv docs/PLUG-AND-PLAY-STRATEGY.md docs/archive/
+```
+
+**Justification:**
+- Effort pour fixer les scripts cassés: **5h30+**
+- Valeur actuelle (0 clients, 0 déploiement): **~0**
+- ROI: **Négatif** → Suppression = option optimale
+
+**Fichiers Conservés:**
+- `scripts/generate-voice-widget-client.cjs` (9.7KB) - Utilisable pour futurs clients
+- `templates/voice-widget-client-config.json` (1.9KB) - Template valide
+
+**Health Check:** 36/36 (100%) ✅
 
 ---
 
