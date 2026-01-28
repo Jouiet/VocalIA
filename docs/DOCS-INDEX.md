@@ -1,6 +1,6 @@
 # VocalIA - Documentation Index
 
-> **Version**: 2.1.0 | **Date**: 28/01/2026 | **Session**: 186
+> **Version**: 2.2.0 | **Date**: 28/01/2026 | **Session**: 200
 
 ---
 
@@ -31,7 +31,16 @@ Ce document contient:
 
 ---
 
-## Documents Benchmark & Audit (TRANSMIS 28/01/2026)
+## Design & Branding (NEW - Session 200)
+
+| Document | Description | Taille |
+|:---------|:------------|:-------|
+| **DESIGN-BRANDING-SYSTEM.md** | Palette Deep Teal, typo, composants | ~390 lignes |
+| **DESIGN-TOOLS-WORKFLOWS.md** | **Workflows actionnables**: Stitch, Whisk, Remotion, Gemini, Playwright, DevTools | ~450 lignes |
+
+---
+
+## Documents Benchmark & Audit
 
 | Document | Description | Taille |
 |:---------|:------------|:-------|
@@ -39,7 +48,7 @@ Ce document contient:
 | **VOICE-MULTILINGUAL-STRATEGY.md** | Stratégie multilingue complète | ~736 lignes |
 | **VOICE-DARIJA-FORENSIC.md** | Audit forensique Darija | ~111 lignes |
 | **VOICE-AUDIT-FINAL.md** | Audit final Voice AI | ~85 lignes |
-| **FORENSIC-AUDIT-WEBSITE.md** | Audit Frontend (Website & Dashboards) | ~90 lignes |
+| **FORENSIC-AUDIT-WEBSITE.md** | Audit Frontend (Website & Dashboards) | ~315 lignes |
 | **benchmarks-2026.md** | Benchmarks latence | ~12 lignes |
 
 ---

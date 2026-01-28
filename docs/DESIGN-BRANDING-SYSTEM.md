@@ -377,14 +377,21 @@ grep -o 'bg-vocalia-[0-9]*' website/public/css/style.css | sort -u
 
 ---
 
+## Related Documentation
+
+- **[DESIGN-TOOLS-WORKFLOWS.md](./DESIGN-TOOLS-WORKFLOWS.md)** - Actionable workflows for Stitch, Whisk, Remotion, Gemini, Playwright, DevTools
+- **[FORENSIC-AUDIT-WEBSITE.md](./FORENSIC-AUDIT-WEBSITE.md)** - Website audit & remediation history
+
 ## External Resources
 
 - [Stripe Accessible Color Systems](https://stripe.com/blog/accessible-color-systems)
 - [Linear Brand Guidelines](https://linear.app/brand)
 - [Tailwind v4 Documentation](https://tailwindcss.com/docs)
 - [Pantone Color of the Year](https://www.pantone.com/color-of-the-year)
-- [Mobbin Brand Colors](https://mobbin.com/colors/brand/stripe)
-- [uiGradients](https://uigradients.com/)
+- [Remotion Docs - Claude Code](https://www.remotion.dev/docs/ai/claude-code)
+- [Google Stitch](https://stitch.withgoogle.com/)
+- [Google Whisk](https://labs.google/fx/tools/whisk)
+- [Chrome DevTools MCP](https://developer.chrome.com/blog/chrome-devtools-mcp)
 
 ---
 
