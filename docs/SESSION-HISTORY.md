@@ -195,10 +195,20 @@ node scripts/health-check.cjs
 
 | Métrique | Avant (199) | Après (200) | Delta |
 |:---------|:------------|:------------|:------|
-| CSS Size | 15KB | 52KB | +37KB |
+| CSS Size | 15KB | 54KB | +39KB |
 | VocalIA Classes | 0 | 50+ | +50 |
 | i18n Errors | 2 | 0 | -2 |
-| Docs | 10 | 11 | +1 |
+| Docs | 10 | 12 | +2 |
+| Palette | Cyan/Blue | Indigo/Violet | Premium |
+
+**Palette v2.0 (Premium):**
+- Primary: `#8b5cf6` (Indigo/Violet - Stripe/Linear inspired)
+- Background: `#0f172a` (Slate 900)
+- Accent: `#06b6d4` (Cyan), `#10b981` (Emerald)
+
+**New Documentation:**
+- `docs/DESIGN-BRANDING-SYSTEM.md` (320 lines)
+- Tools: Stitch, Whisk, Remotion, Gemini, Playwright
 
 ---
 

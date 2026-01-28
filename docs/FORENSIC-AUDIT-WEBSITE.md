@@ -1,7 +1,8 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 1.0.0 | **Date**: 28/01/2026 | **Session**: 200
+> **Version**: 2.0.0 | **Date**: 28/01/2026 | **Session**: 200
 > **Status**: REMEDIATED | **CSS Build**: SOVEREIGN
+> **Palette**: Premium Indigo/Violet (Stripe/Linear-inspired)
 
 ---
 
@@ -153,21 +154,35 @@ website/                              # 2,500+ lignes
         └── style.css                 # Generated (52KB) ✅
 ```
 
-### Design System (VocalIA Brand)
+### Design System (VocalIA Brand v2.0 - Premium Indigo/Violet)
+
+**Inspiration**: Stripe #635BFF, Linear #5E6AD2, Pantone 2025-2026
+
 ```css
-/* VocalIA Palette */
---color-vocalia-50:  #f0f9ff;  /* Lightest */
---color-vocalia-100: #e0f2fe;
---color-vocalia-200: #bae6fd;
---color-vocalia-300: #7dd3fc;
---color-vocalia-400: #38bdf8;
---color-vocalia-500: #0c8ee9;  /* Primary */
---color-vocalia-600: #0284c7;
---color-vocalia-700: #0369a1;
---color-vocalia-800: #075985;
---color-vocalia-900: #0b406e;
---color-vocalia-950: #082f49;  /* Darkest */
+/* VocalIA Premium Palette */
+--color-vocalia-50:  #f5f3ff;  /* Lightest */
+--color-vocalia-100: #ede9fe;
+--color-vocalia-200: #ddd6fe;
+--color-vocalia-300: #c4b5fd;
+--color-vocalia-400: #a78bfa;
+--color-vocalia-500: #8b5cf6;  /* Primary */
+--color-vocalia-600: #7c3aed;
+--color-vocalia-700: #6d28d9;
+--color-vocalia-800: #5b21b6;
+--color-vocalia-900: #4c1d95;
+--color-vocalia-950: #2e1065;  /* Darkest */
+
+/* Neutral - Slate (Linear/Notion-inspired) */
+--color-slate-900: #0f172a;   /* Dark background */
+--color-slate-800: #1e293b;   /* Cards */
+--color-slate-400: #94a3b8;   /* Secondary text */
+--color-slate-50:  #f8fafc;   /* Light background */
 ```
+
+**Research Sources**:
+- [Stripe Brand Colors](https://mobbin.com/colors/brand/stripe)
+- [Linear Brand Guidelines](https://linear.app/brand)
+- [Pantone 2025-2026](https://www.pantone.com/color-of-the-year)
 
 ---
 
@@ -268,15 +283,32 @@ node scripts/health-check.cjs
 
 ---
 
+## Design Tools Available
+
+| Tool | Purpose | Documentation |
+|:-----|:--------|:--------------|
+| **Google Stitch** | UI generation | `core/stitch-api.cjs` |
+| **Google Whisk** | Image-based AI design | [labs.google/whisk](https://labs.google/fx/tools/whisk) |
+| **Remotion** | Programmatic video (React) | [remotion.dev](https://www.remotion.dev/) |
+| **Gemini MCP** | Design consultation | `gemini_chat`, `gemini_deep_research` |
+| **Playwright MCP** | Visual testing | Screenshots, DOM snapshot |
+| **Chrome DevTools MCP** | Live debugging | CSS inspection, console |
+
+**Full Documentation**: `docs/DESIGN-BRANDING-SYSTEM.md`
+
+---
+
 ## Conclusion
 
 Le frontend VocalIA est maintenant :
 - **Souverain** : CSS build local, pas de CDN critique
+- **Premium** : Palette Indigo/Violet (Stripe/Linear-inspired)
 - **Sécurisé** : Headers configurés au niveau serveur
 - **Accessible** : WCAG 2.1 compliant
 - **Optimisé SEO** : Schema.org, OG, sitemap
 - **Multilingue** : FR/EN avec geo-detection
 - **Multi-devise** : MAD/EUR/USD selon région
+- **Outillé** : Stitch, Whisk, Remotion, Gemini disponibles
 
 ---
 
