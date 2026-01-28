@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
   <meta name="robots" content="noindex">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,17 +32,63 @@
   </script>
 
   <!-- Inter Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 
   <style>
-    .glass { background: rgba(11, 64, 110, 0.3); backdrop-filter: blur(12px); border: 1px solid rgba(124, 200, 252, 0.1); }
-    .gradient-text { background: linear-gradient(135deg, #0c8ee9 0%, #36aaf8 50%, #7cc8fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .stat-card { transition: transform 0.2s, box-shadow 0.2s; }
-    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(12, 142, 233, 0.2); }
-    .pulse-dot { animation: pulse-dot 2s infinite; }
-    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-    .chart-bar { animation: grow-bar 1s ease-out forwards; transform-origin: bottom; }
-    @keyframes grow-bar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    .glass {
+      background: rgba(11, 64, 110, 0.3);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(124, 200, 252, 0.1);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #0c8ee9 0%, #36aaf8 50%, #7cc8fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(12, 142, 233, 0.2);
+    }
+
+    .pulse-dot {
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .chart-bar {
+      animation: grow-bar 1s ease-out forwards;
+      transform-origin: bottom;
+    }
+
+    @keyframes grow-bar {
+      from {
+        transform: scaleY(0);
+      }
+
+      to {
+        transform: scaleY(1);
+      }
+    }
   </style>
 </head>
 
@@ -50,7 +98,8 @@
     <!-- Logo -->
     <div class="p-6 border-b border-vocalia-700/50">
       <a href="/" class="flex items-center space-x-2">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+        <div
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
           <span class="text-xl">🎙️</span>
         </div>
         <span class="text-xl font-bold gradient-text">VocalIA</span>
@@ -60,45 +109,78 @@
     <!-- Navigation -->
     <nav class="p-4 space-y-1">
       <a href="#overview" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-vocalia-500/20 text-white">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
-        <span>Vue d'ensemble</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+        </svg>
+        <span data-i18n="dashboard.sidebar.overview">Vue d'ensemble</span>
       </a>
-      <a href="#calls" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-        <span>Appels</span>
+      <a href="#calls"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+        <span data-i18n="dashboard.sidebar.calls">Appels</span>
       </a>
-      <a href="#agents" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-        <span>Agents IA</span>
+      <a href="#agents"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span data-i18n="dashboard.sidebar.agents">Agents IA</span>
       </a>
-      <a href="#knowledge" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-        <span>Knowledge Base</span>
+      <a href="#knowledge"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+        <span data-i18n="dashboard.sidebar.knowledge">Knowledge Base</span>
       </a>
-      <a href="#analytics" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        <span>Analytics</span>
+      <a href="#analytics"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <span data-i18n="dashboard.sidebar.analytics">Analytics</span>
       </a>
-      <a href="#billing" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-        <span>Facturation</span>
+      <a href="#billing"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+        </svg>
+        <span data-i18n="dashboard.sidebar.billing">Facturation</span>
       </a>
-      <a href="#settings" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span>Paramètres</span>
+      <a href="#settings"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-vocalia-800/50 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span data-i18n="dashboard.sidebar.settings">Paramètres</span>
       </a>
     </nav>
 
     <!-- User info -->
     <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-vocalia-700/50">
       <div class="flex items-center space-x-3 px-2">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">JD</div>
+        <div
+          class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">
+          JD</div>
         <div class="flex-1 min-w-0">
           <p class="text-sm font-medium truncate">Jean Dupont</p>
           <p class="text-xs text-vocalia-400 truncate">Pro Plan</p>
         </div>
         <button class="p-2 rounded-lg hover:bg-vocalia-800/50 transition">
-          <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
         </button>
       </div>
     </div>
@@ -110,14 +192,15 @@
     <header class="sticky top-0 z-30 bg-vocalia-950/80 backdrop-blur-xl border-b border-vocalia-700/50">
       <div class="flex items-center justify-between px-8 py-4">
         <div>
-          <h1 class="text-2xl font-bold">Tableau de bord</h1>
-          <p class="text-vocalia-400 text-sm">Bienvenue, Jean. Voici l'activité de vos agents.</p>
+          <h1 class="text-2xl font-bold" data-i18n="dashboard.sidebar.overview">Tableau de bord</h1>
+          <p class="text-vocalia-400 text-sm" data-i18n="dashboard.header.welcome" data-i18n-params='{"name": "Jean"}'>
+            Bienvenue, Jean. Voici l'activité de vos agents.</p>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Status indicator -->
           <div class="flex items-center space-x-2 px-4 py-2 rounded-xl glass">
             <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span>
-            <span class="text-sm text-vocalia-200">Système opérationnel</span>
+            <span class="text-sm text-vocalia-200" data-i18n="dashboard.header.status">Système opérationnel</span>
           </div>
           <!-- Date -->
           <div class="text-vocalia-400 text-sm" id="currentDate"></div>
@@ -134,27 +217,34 @@
           <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
-                <svg class="w-6 h-6 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                <svg class="w-6 h-6 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
               </div>
               <span class="text-green-400 text-sm font-medium">+12%</span>
             </div>
             <h3 class="text-3xl font-bold mb-1" id="totalCalls">1,247</h3>
-            <p class="text-vocalia-400 text-sm">Appels ce mois</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.calls_month">Appels ce mois</p>
           </div>
 
           <!-- Minutes Used -->
           <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
-                <svg class="w-6 h-6 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <svg class="w-6 h-6 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
               <span class="text-vocalia-400 text-sm">/ 2000 min</span>
             </div>
             <h3 class="text-3xl font-bold mb-1" id="minutesUsed">1,456</h3>
-            <p class="text-vocalia-400 text-sm">Minutes utilisées</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.minutes_used">Minutes utilisées</p>
             <!-- Progress bar -->
             <div class="mt-3 h-2 bg-vocalia-800 rounded-full overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full" style="width: 73%"></div>
+              <div class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full" style="width: 73%">
+              </div>
             </div>
           </div>
 
@@ -162,24 +252,30 @@
           <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
-                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
               </div>
               <span class="text-green-400 text-sm font-medium">+5%</span>
             </div>
             <h3 class="text-3xl font-bold mb-1">34.2%</h3>
-            <p class="text-vocalia-400 text-sm">Taux de conversion</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.conversion_rate">Taux de conversion</p>
           </div>
 
           <!-- Customer Satisfaction -->
           <div class="stat-card rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
-                <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
               </div>
               <span class="text-yellow-400 text-sm font-medium">NPS</span>
             </div>
             <h3 class="text-3xl font-bold mb-1">87</h3>
-            <p class="text-vocalia-400 text-sm">Score satisfaction</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.nps">Score satisfaction</p>
           </div>
         </div>
       </section>
@@ -189,8 +285,9 @@
         <!-- Call Volume Chart -->
         <div class="lg:col-span-2 rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold">Volume d'appels</h3>
-            <select class="bg-vocalia-800 border border-vocalia-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+            <h3 class="text-lg font-semibold" data-i18n="dashboard.charts.call_volume">Volume d'appels</h3>
+            <select
+              class="bg-vocalia-800 border border-vocalia-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
               <option>7 derniers jours</option>
               <option>30 derniers jours</option>
               <option>Ce mois</option>
@@ -199,31 +296,38 @@
           <!-- Simple Chart -->
           <div class="flex items-end justify-between h-48 gap-2">
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg" style="height: 60%; animation-delay: 0s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
+                style="height: 60%; animation-delay: 0s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Lun</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg" style="height: 80%; animation-delay: 0.1s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
+                style="height: 80%; animation-delay: 0.1s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Mar</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg" style="height: 45%; animation-delay: 0.2s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
+                style="height: 45%; animation-delay: 0.2s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Mer</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg" style="height: 90%; animation-delay: 0.3s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
+                style="height: 90%; animation-delay: 0.3s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Jeu</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg" style="height: 75%; animation-delay: 0.4s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
+                style="height: 75%; animation-delay: 0.4s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Ven</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg" style="height: 30%; animation-delay: 0.5s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
+                style="height: 30%; animation-delay: 0.5s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Sam</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg" style="height: 25%; animation-delay: 0.6s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
+                style="height: 25%; animation-delay: 0.6s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Dim</span>
             </div>
           </div>
@@ -231,7 +335,7 @@
 
         <!-- Language Distribution -->
         <div class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
-          <h3 class="text-lg font-semibold mb-6">Langues détectées</h3>
+          <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.charts.languages">Langues détectées</h3>
           <div class="space-y-4">
             <div>
               <div class="flex justify-between text-sm mb-1">
@@ -287,14 +391,18 @@
         <!-- Active Agents -->
         <div id="agents" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold">Agents IA actifs</h3>
-            <button class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium">+ Configurer</button>
+            <h3 class="text-lg font-semibold" data-i18n="dashboard.agents.title">Agents IA actifs</h3>
+            <button class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
+              data-i18n="dashboard.agents.configure">+
+              Configurer</button>
           </div>
           <div class="space-y-4">
             <!-- Agent 1 -->
-            <div class="flex items-center justify-between p-4 rounded-xl bg-vocalia-800/30 border border-vocalia-700/30">
+            <div
+              class="flex items-center justify-between p-4 rounded-xl bg-vocalia-800/30 border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-400/20 flex items-center justify-center">
+                <div
+                  class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-400/20 flex items-center justify-center">
                   <span class="text-2xl">🛒</span>
                 </div>
                 <div>
@@ -303,16 +411,22 @@
                 </div>
               </div>
               <div class="flex items-center space-x-3">
-                <span class="flex items-center text-sm text-green-400"><span class="w-2 h-2 rounded-full bg-green-400 mr-2"></span>Actif</span>
+                <span class="flex items-center text-sm text-green-400"><span
+                    class="w-2 h-2 rounded-full bg-green-400 mr-2"></span>Actif</span>
                 <button class="p-2 rounded-lg hover:bg-vocalia-700/50 transition">
-                  <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+                  <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                  </svg>
                 </button>
               </div>
             </div>
             <!-- Agent 2 -->
-            <div class="flex items-center justify-between p-4 rounded-xl bg-vocalia-800/30 border border-vocalia-700/30">
+            <div
+              class="flex items-center justify-between p-4 rounded-xl bg-vocalia-800/30 border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-400/20 flex items-center justify-center">
+                <div
+                  class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-400/20 flex items-center justify-center">
                   <span class="text-2xl">📅</span>
                 </div>
                 <div>
@@ -321,16 +435,22 @@
                 </div>
               </div>
               <div class="flex items-center space-x-3">
-                <span class="flex items-center text-sm text-green-400"><span class="w-2 h-2 rounded-full bg-green-400 mr-2"></span>Actif</span>
+                <span class="flex items-center text-sm text-green-400"><span
+                    class="w-2 h-2 rounded-full bg-green-400 mr-2"></span>Actif</span>
                 <button class="p-2 rounded-lg hover:bg-vocalia-700/50 transition">
-                  <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+                  <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                  </svg>
                 </button>
               </div>
             </div>
             <!-- Agent 3 -->
-            <div class="flex items-center justify-between p-4 rounded-xl bg-vocalia-800/30 border border-vocalia-700/30">
+            <div
+              class="flex items-center justify-between p-4 rounded-xl bg-vocalia-800/30 border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-400/20 flex items-center justify-center">
+                <div
+                  class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-400/20 flex items-center justify-center">
                   <span class="text-2xl">🏨</span>
                 </div>
                 <div>
@@ -339,9 +459,13 @@
                 </div>
               </div>
               <div class="flex items-center space-x-3">
-                <span class="flex items-center text-sm text-yellow-400"><span class="w-2 h-2 rounded-full bg-yellow-400 mr-2"></span>Pause</span>
+                <span class="flex items-center text-sm text-yellow-400"><span
+                    class="w-2 h-2 rounded-full bg-yellow-400 mr-2"></span>Pause</span>
                 <button class="p-2 rounded-lg hover:bg-vocalia-700/50 transition">
-                  <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+                  <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -351,28 +475,36 @@
         <!-- Recent Calls -->
         <div id="calls" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold">Appels récents</h3>
-            <a href="#" class="text-vocalia-400 hover:text-white text-sm transition">Voir tout →</a>
+            <h3 class="text-lg font-semibold" data-i18n="dashboard.calls.recent">Appels récents</h3>
+            <a href="#" class="text-vocalia-400 hover:text-white text-sm transition"
+              data-i18n="dashboard.calls.view_all">Voir tout →</a>
           </div>
           <div class="space-y-3">
             <!-- Call 1 -->
             <div class="flex items-center justify-between p-3 rounded-xl hover:bg-vocalia-800/30 transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-                  <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                  <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
                 </div>
                 <div>
                   <p class="font-medium">+212 6XX XXX XX1</p>
-                  <p class="text-xs text-vocalia-400">Il y a 5 min • 3:42</p>
+                  <p class="text-xs text-vocalia-400" data-i18n="dashboard.calls.ago"
+                    data-i18n-params='{"time": "5 min"}'>Il y a 5 min • 3:42</p>
                 </div>
               </div>
-              <span class="px-2 py-1 rounded-lg bg-green-500/20 text-green-400 text-xs font-medium">Converti</span>
+              <span class="px-2 py-1 rounded-lg bg-green-500/20 text-green-400 text-xs font-medium"
+                data-i18n="dashboard.calls.status.converted">Converti</span>
             </div>
             <!-- Call 2 -->
             <div class="flex items-center justify-between p-3 rounded-xl hover:bg-vocalia-800/30 transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                  <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                  <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
                 </div>
                 <div>
                   <p class="font-medium">+33 6XX XXX XX2</p>
@@ -385,7 +517,10 @@
             <div class="flex items-center justify-between p-3 rounded-xl hover:bg-vocalia-800/30 transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                  <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                  <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
                 </div>
                 <div>
                   <p class="font-medium">+212 6XX XXX XX3</p>
@@ -398,7 +533,10 @@
             <div class="flex items-center justify-between p-3 rounded-xl hover:bg-vocalia-800/30 transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
-                  <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z"/></svg>
+                  <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z" />
+                  </svg>
                 </div>
                 <div>
                   <p class="font-medium">+1 XXX XXX XX4</p>
@@ -414,8 +552,9 @@
       <!-- Billing Summary -->
       <section id="billing" class="rounded-2xl bg-vocalia-900/50 border border-vocalia-700/50 p-6">
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-semibold">Facturation</h3>
-          <span class="text-vocalia-400 text-sm">Période: Janvier 2026</span>
+          <h3 class="text-lg font-semibold" data-i18n="dashboard.billing.title">Facturation</h3>
+          <span class="text-vocalia-400 text-sm" data-i18n="dashboard.billing.period"
+            data-i18n-params='{"month": "Janvier 2026"}'>Période: Janvier 2026</span>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
           <div class="p-4 rounded-xl bg-vocalia-800/30">
@@ -424,9 +563,11 @@
             <p class="text-sm text-vocalia-400">149€/mois</p>
           </div>
           <div class="p-4 rounded-xl bg-vocalia-800/30">
-            <p class="text-vocalia-400 text-sm mb-1">Minutes supplémentaires</p>
+            <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.extra_mins">Minutes supplémentaires
+            </p>
             <p class="text-2xl font-bold">0</p>
-            <p class="text-sm text-vocalia-400">544 min restantes</p>
+            <p class="text-sm text-vocalia-400" data-i18n="dashboard.billing.remaining_mins"
+              data-i18n-params='{"count": "544"}'>544 min restantes</p>
           </div>
           <div class="p-4 rounded-xl bg-vocalia-800/30">
             <p class="text-vocalia-400 text-sm mb-1">Prochaine facture</p>
@@ -438,11 +579,12 @@
     </div>
   </main>
 
+  <!-- Scripts -->
+  <script src="../src/lib/geo-detect.js"></script>
+  <script src="../src/lib/i18n.js"></script>
   <script>
     // Set current date
-    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('fr-FR', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    });
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
     // Animate stats on load
     function animateValue(id, start, end, duration) {
@@ -458,11 +600,31 @@
       window.requestAnimationFrame(step);
     }
 
-    // Animate on page load
-    setTimeout(() => {
-      animateValue('totalCalls', 0, 1247, 1000);
-      animateValue('minutesUsed', 0, 1456, 1000);
-    }, 300);
+    // Initialize
+    (async function init() {
+      // Geo & I18n
+      const geo = await VocaliaGeo.getGeo();
+      await VocaliaI18n.initI18n(geo.lang);
+      VocaliaI18n.translatePage();
+
+      // Date localization
+      const locale = VocaliaI18n.getLocale() === 'ar' ? 'ar-MA' : VocaliaI18n.getLocale() + '-FR';
+      document.getElementById('currentDate').textContent = new Date().toLocaleDateString(locale, dateOptions);
+
+      // Listen for locale changes
+      window.addEventListener('localeChanged', (e) => {
+        VocaliaI18n.translatePage();
+        const newLocale = e.detail.locale === 'ar' ? 'ar-MA' : e.detail.locale + '-FR';
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString(newLocale, dateOptions);
+      });
+
+      // Animate on page load
+      setTimeout(() => {
+        animateValue('totalCalls', 0, 1247, 1000);
+        animateValue('minutesUsed', 0, 1456, 1000);
+      }, 300);
+    })();
   </script>
 </body>
+
 </html>
