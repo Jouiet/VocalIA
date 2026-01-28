@@ -1,0 +1,76 @@
+{
+  "$schema": "voice-widget-config-schema.json",
+  "$comment": "Template de configuration Voice Widget Client - VocalIA",
+
+  "client": {
+    "name": "MonClient",
+    "domain": "monclient.com",
+    "email": "contact@monclient.com",
+    "industry": "services"
+  },
+
+  "branding": {
+    "primaryColor": "#4FBAF1",
+    "primaryDark": "#2B6685",
+    "accentColor": "#10B981",
+    "darkBg": "#191E35"
+  },
+
+  "messages": {
+    "welcomeMessage": "Bonjour ! Je suis l'assistant MonClient. Comment puis-je vous aider ?",
+    "welcomeMessageTextOnly": "Bonjour ! Posez votre question par écrit, je vous réponds instantanément.",
+    "placeholder": "Posez votre question..."
+  },
+
+  "api": {
+    "voiceEndpoint": "https://dashboard.vocalia.ma/api/voice/respond",
+    "$comment_voiceEndpoint": "Endpoint pour les réponses IA - peut être personnalisé"
+  },
+
+  "booking": {
+    "enabled": true,
+    "endpoint": "https://script.google.com/macros/s/VOTRE_SCRIPT_ID/exec",
+    "$comment_endpoint": "Google Apps Script connecté au Calendar du client"
+  },
+
+  "knowledge": {
+    "summary": "MonClient - Expert en [domaine]. Nous aidons nos clients à [proposition de valeur].",
+    "categories": [
+      "Services",
+      "Produits",
+      "Tarifs",
+      "Support"
+    ],
+    "services": {
+      "service1": {
+        "name": "Consultation",
+        "description": "Analyse personnalisée de vos besoins",
+        "price": "Gratuit"
+      },
+      "service2": {
+        "name": "Accompagnement",
+        "description": "Mise en place et suivi",
+        "price": "Sur devis"
+      }
+    },
+    "sectors": [
+      "B2B",
+      "Services"
+    ],
+    "pricingUrl": "/tarifs.html",
+    "bookingUrl": "/rendez-vous.html"
+  },
+
+  "features": {
+    "voiceEnabled": true,
+    "textFallback": true,
+    "bookingIntegration": true,
+    "analytics": true
+  },
+
+  "meta": {
+    "createdBy": "VocalIA",
+    "createdAt": "2025-12-28",
+    "version": "1.0"
+  }
+}
