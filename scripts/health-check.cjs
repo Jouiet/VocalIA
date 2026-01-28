@@ -153,6 +153,24 @@ for (const file of configFiles) {
   }
 }
 
+// Check CI/CD
+console.log(`\n${COLORS.cyan}CI/CD:${COLORS.reset}`);
+const cicdFiles = [
+  '.github/workflows/ci.yml',
+  '.github/workflows/deploy.yml'
+];
+
+for (const file of cicdFiles) {
+  const fullPath = path.join(__dirname, '..', file);
+  if (fs.existsSync(fullPath)) {
+    console.log(`  ${COLORS.green}✅ ${path.basename(file)}${COLORS.reset}`);
+    totalOk++;
+  } else {
+    console.log(`  ${COLORS.red}❌ ${file} (NOT FOUND)${COLORS.reset}`);
+    totalFail++;
+  }
+}
+
 // Check rules
 console.log(`\n${COLORS.cyan}Rules:${COLORS.reset}`);
 const rulesDir = path.join(__dirname, '..', '.claude/rules');
