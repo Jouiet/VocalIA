@@ -1,7 +1,8 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 2.0.0 | **Date**: 28/01/2026 | **Session**: 200
-> **Palette**: Deep Teal/Emerald (2026 AI-Forward Trend)
+> **Version**: 4.0.0 | **Date**: 28/01/2026 | **Session**: 200
+> **Palette**: Enterprise Dark (Linear/Stripe-inspired)
+> **Research**: GitHub ihlamury/design-skills, Gemini Deep Research, pipecat-ai/voice-ui-kit
 
 ---
 
@@ -17,23 +18,32 @@
 
 ---
 
-## Color Palette v3.0
+## Color Palette v4.0 (Enterprise Dark)
 
-### Primary - VocalIA Deep Teal/Emerald
+### Primary - VocalIA Deep Indigo (Linear #5E6AD2 inspired)
 
 | Shade | Hex Code | Usage |
 |:------|:---------|:------|
-| 50 | `#f0fdfa` | Light backgrounds |
-| 100 | `#ccfbf1` | Hover states (light) |
-| 200 | `#99f6e4` | Borders (light mode) |
-| 300 | `#5eead4` | Disabled states |
-| 400 | `#2dd4bf` | Secondary text, icons |
-| 500 | `#14b8a6` | Secondary brand |
-| **600** | **`#0d9488`** | **Primary Brand** |
-| 700 | `#0f766e` | Primary hover |
-| 800 | `#115e59` | Active states |
-| 900 | `#134e4a` | Dark accents |
-| 950 | `#042f2e` | Darkest |
+| 50 | `#eef2ff` | Light backgrounds |
+| 100 | `#e0e7ff` | Hover states (light) |
+| 200 | `#c7d2fe` | Borders (light mode) |
+| 300 | `#a5b4fc` | Highlight text |
+| 400 | `#818cf8` | Secondary accents |
+| 500 | `#6366f1` | Secondary brand |
+| **600** | **`#5E6AD2`** | **Primary Brand (Linear)** |
+| 700 | `#4f46e5` | Primary hover |
+| 800 | `#4338ca` | Active states |
+| 900 | `#3730a3` | Deep accents |
+| 950 | `#1e1b4b` | Darkest |
+
+### Surface Colors (Linear-inspired Ultra-dark)
+
+| Token | Hex Code | Usage |
+|:------|:---------|:------|
+| `--bg-base` | `#09090b` | Page background |
+| `--bg-raised` | `#111114` | Cards, modals |
+| `--bg-elevated` | `#18181b` | Elevated elements |
+| `--bg-overlay` | `#27272a` | Overlays, tooltips |
 
 ### Neutral - Slate
 
@@ -60,14 +70,21 @@
 | Error | Rose | `#f43f5e` |
 | Info | Cyan | `#06b6d4` |
 
-### Design Inspiration
+### Design Inspiration (Researched Sources)
 
 | Source | Color | Influence |
 |:-------|:------|:----------|
-| 2026 AI-Forward Trend | #0d9488 | Deep Teal trust |
-| Enterprise SaaS | Slate-900 | Premium dark mode |
-| Pantone 2026 | Cloud Dancer | Clean contrasts |
-| Tech Innovation | Emerald | Growth & innovation |
+| [Linear Design Skills](https://github.com/ihlamury/design-skills) | #5E6AD2 | Primary accent |
+| [Stripe Brand](https://stripe.com/brand) | #635BFF | Enterprise trust |
+| [Vercel Geist](https://vercel.com/geist) | #111111 | Ultra-dark surfaces |
+| [pipecat-ai/voice-ui-kit](https://github.com/pipecat-ai/voice-ui-kit) | Tailwind 4 | Voice AI components |
+
+### Research Sources
+
+- **Gemini Deep Research**: Enterprise Voice AI SaaS design 2026
+- **GitHub Design Skills**: Opinionated UI constraints from Linear, Stripe, Vercel
+- **Hugging Face**: Color-Pedia dataset for color psychology
+- **Voice AI Repos**: react-voice-visualizer, assistant-ui, VoiceFlow-Pro
 
 ---
 
