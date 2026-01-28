@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 1.7.0 | 28/01/2026 | Session 190 | Engineering Score: 99/100 | Health: 100%
+> Version: 1.8.0 | 28/01/2026 | Session 200 | Engineering Score: 99/100 | Health: 100%
 
 ## Identité
 
