@@ -159,6 +159,70 @@
     outline: 2px solid var(--focus-ring);
     outline-offset: var(--focus-offset);
   }
+
+  /* =======================================================================
+     Light Mode - Premium Enterprise
+     Applied via html.light or [data-theme="light"]
+     ======================================================================= */
+  html.light,
+  [data-theme="light"] {
+    /* Surfaces - Light mode */
+    --bg-base: #ffffff;
+    --bg-raised: #f9fafb;
+    --bg-elevated: #f3f4f6;
+    --bg-overlay: #e5e7eb;
+
+    /* Text - High contrast on light */
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-muted: #6b7280;
+    --text-disabled: #9ca3af;
+
+    /* Borders - Light mode */
+    --border-subtle: rgba(0, 0, 0, 0.05);
+    --border-default: rgba(0, 0, 0, 0.1);
+    --border-strong: rgba(0, 0, 0, 0.15);
+    --border-accent: rgba(94, 106, 210, 0.3);
+
+    /* Shadows - Softer for light mode */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 20px rgba(94, 106, 210, 0.15);
+
+    /* Primary stays the same - Deep Indigo */
+    --primary-glow: rgba(94, 106, 210, 0.15);
+
+    color-scheme: light;
+  }
+
+  /* Light mode specific overrides */
+  html.light body,
+  [data-theme="light"] body {
+    background: var(--bg-base);
+    color: var(--text-primary);
+  }
+
+  html.light ::selection,
+  [data-theme="light"] ::selection {
+    background: rgba(94, 106, 210, 0.2);
+    color: #111827;
+  }
+
+  html.light ::-webkit-scrollbar-track,
+  [data-theme="light"] ::-webkit-scrollbar-track {
+    background: var(--bg-raised);
+  }
+
+  html.light ::-webkit-scrollbar-thumb,
+  [data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+  }
+
+  html.light ::-webkit-scrollbar-thumb:hover,
+  [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
 }
 
 @layer components {
@@ -516,4 +580,125 @@
 ::selection {
   background: rgba(94, 106, 210, 0.3);
   color: white;
+}
+
+/* =======================================================================
+   Light Mode Component Overrides
+   ======================================================================= */
+html.light .glass,
+[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light .glass-panel,
+[data-theme="light"] .glass-panel {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .gradient-text,
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #5E6AD2 0%, #4f46e5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light mode badge adjustments */
+html.light .badge-primary,
+[data-theme="light"] .badge-primary {
+  background: rgba(94, 106, 210, 0.1);
+  color: #5E6AD2;
+}
+
+html.light .badge-success,
+[data-theme="light"] .badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+
+html.light .badge-warning,
+[data-theme="light"] .badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+}
+
+html.light .badge-error,
+[data-theme="light"] .badge-error {
+  background: rgba(244, 63, 94, 0.1);
+  color: #e11d48;
+}
+
+/* Light mode hero section */
+html.light .hero-badge,
+[data-theme="light"] .hero-badge {
+  background: rgba(94, 106, 210, 0.08);
+  color: #5E6AD2;
+}
+
+/* Light mode navigation */
+html.light .nav-item,
+[data-theme="light"] .nav-item {
+  color: var(--text-secondary);
+}
+
+html.light .nav-item:hover,
+[data-theme="light"] .nav-item:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+html.light .nav-item.active,
+[data-theme="light"] .nav-item.active {
+  background: rgba(94, 106, 210, 0.1);
+  color: #5E6AD2;
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  transition: all 150ms ease;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* Hide icons based on theme */
+html:not(.light) .theme-toggle .icon-sun,
+[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+
+html:not(.light) .theme-toggle .icon-moon,
+[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+
+html.light .theme-toggle .icon-sun,
+[data-theme="light"] .theme-toggle .icon-sun {
+  display: none;
+}
+
+html.light .theme-toggle .icon-moon,
+[data-theme="light"] .theme-toggle .icon-moon {
+  display: block;
 }

@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 2.8.0 | **Updated**: 29/01/2026 | **Session**: 201
+> **Version**: 2.9.0 | **Updated**: 29/01/2026 | **Session**: 202
 > **Engineering Score**: 99/100 | **Health Check**: 100% (36/36)
 
 ---
@@ -262,6 +262,59 @@ node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
 node scripts/health-check.cjs
 # Result: 36/36 (100%) ✅
 ```
+
+---
+
+### Session 202 (29/01/2026) - DARK/LIGHT MODE TOGGLE
+
+**Directive:** Add dark/light mode toggle and verify geo-detection rules.
+
+**Geo-Detection Rules Verified:**
+| Region | Language | Currency |
+|:-------|:---------|:---------|
+| Morocco | Français | MAD (DH) |
+| Algeria, Tunisia, Europe | Français | EUR (€) |
+| Gulf/MENA | English | USD ($) |
+| Others | English | USD ($) |
+
+**Actions Taken:**
+
+1. **Light Mode CSS** (input.css):
+   - Added `html.light` CSS variables for light backgrounds, text, borders
+   - Added component overrides (glass, badges, navigation, hero)
+   - Added theme toggle button styles with sun/moon icon visibility
+
+2. **Theme Toggle Implementation**:
+   - Added toggle button to index.html navigation
+   - Added toggle button to client.html dashboard header
+   - Added toggle button to admin.html dashboard header
+   - JavaScript: localStorage persistence, system preference detection
+
+3. **Theme Synchronization**:
+   - Shared localStorage key `vocalia_theme` across all pages
+   - Respects `prefers-color-scheme: light` system preference
+   - Persists user choice across sessions
+
+**Files Modified:**
+- `website/src/input.css` (+120 lines light mode CSS)
+- `website/index.html` (theme toggle + JS)
+- `website/dashboard/client.html` (theme toggle + JS)
+- `website/dashboard/admin.html` (theme toggle + JS)
+- `website/public/css/style.css` (rebuilt: 57KB)
+
+**Verification:**
+```bash
+# Geo rules verified
+node -e "require('./website/src/lib/geo-detect.js')" # ✅
+
+# CSS includes light mode
+grep -c "\.light" website/public/css/style.css # ✅
+
+# Health check
+node scripts/health-check.cjs # 36/36 (100%) ✅
+```
+
+**Status:** Dark/light mode fully functional. Geo-detection rules correct.
 
 ---
 
