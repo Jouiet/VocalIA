@@ -25,6 +25,7 @@ Ce document contient:
 
 | Document | Description | Taille |
 |:---------|:------------|:-------|
+| **PLUG-AND-PLAY-STRATEGY.md** | **STRATÉGIE MULTI-TENANT** - Widget, Telephony, OAuth | ~804 lignes |
 | **VOICE-AI-PLATFORM-REFERENCE.md** | Master reference technique | ~660 lignes |
 | **VOICE-AI-ARCHITECTURE.md** | Architecture et diagrammes | ~242 lignes |
 | **SAVOIR-FAIRE-TRANSMISSIBLE.md** | Transfert 3A → VocalIA | ~215 lignes |
@@ -127,5 +128,5 @@ ls node_modules/@3a/agent-ops/
 
 ---
 
-*Index màj: 28/01/2026 - Session 186*
-*Documents benchmark & audit transmis depuis 3A*
+*Index màj: 29/01/2026 - Session 183bis*
+*Documents plug-and-play + scripts widget transmis depuis 3A*

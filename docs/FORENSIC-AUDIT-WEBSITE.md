@@ -1,8 +1,8 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 2.1.0 | **Date**: 28/01/2026 | **Session**: 200
+> **Version**: 2.2.0 | **Date**: 29/01/2026 | **Session**: 200
 > **Status**: REMEDIATED | **CSS Build**: SOVEREIGN
-> **Palette**: Deep Teal/Emerald (2026 AI-Forward Trend)
+> **Palette**: Enterprise Dark v4.0 (Linear/Stripe-inspired)
 
 ---
 
@@ -154,35 +154,43 @@ website/                              # 2,500+ lignes
         └── style.css                 # Generated (52KB) ✅
 ```
 
-### Design System (VocalIA Brand v3.0 - Deep Teal/Emerald)
+### Design System (VocalIA Brand v4.0 - Enterprise Dark)
 
-**Inspiration**: 2026 AI-Forward Tech Trend, Enterprise Trust, Modern Innovation
+**Research Sources**: GitHub ihlamury/design-skills, pipecat-ai/voice-ui-kit, Gemini Deep Research
 
 ```css
-/* VocalIA Deep Teal/Emerald Palette */
---color-vocalia-50:  #f0fdfa;  /* Lightest */
---color-vocalia-100: #ccfbf1;
---color-vocalia-200: #99f6e4;
---color-vocalia-300: #5eead4;
---color-vocalia-400: #2dd4bf;
---color-vocalia-500: #14b8a6;  /* Secondary */
---color-vocalia-600: #0d9488;  /* Primary Brand */
---color-vocalia-700: #0f766e;
---color-vocalia-800: #115e59;
---color-vocalia-900: #134e4a;
---color-vocalia-950: #042f2e;  /* Darkest */
+/* VocalIA Enterprise Dark Palette (Linear-inspired) */
+--color-vocalia-50:  #eef2ff;  /* Lightest */
+--color-vocalia-100: #e0e7ff;
+--color-vocalia-200: #c7d2fe;
+--color-vocalia-300: #a5b4fc;  /* Highlight text */
+--color-vocalia-400: #818cf8;
+--color-vocalia-500: #6366f1;  /* Secondary */
+--color-vocalia-600: #5E6AD2;  /* Primary Brand (Linear) */
+--color-vocalia-700: #4f46e5;  /* Hover */
+--color-vocalia-800: #4338ca;
+--color-vocalia-900: #3730a3;
+--color-vocalia-950: #1e1b4b;  /* Darkest */
 
-/* Neutral - Slate (Premium Dark Mode) */
---color-slate-900: #0f172a;   /* Dark background */
---color-slate-800: #1e293b;   /* Cards */
---color-slate-400: #94a3b8;   /* Secondary text */
---color-slate-50:  #f8fafc;   /* Light background */
+/* Surfaces - Ultra-dark (Linear-inspired) */
+--bg-base:     #09090b;  /* Page background */
+--bg-raised:   #111114;  /* Cards, modals */
+--bg-elevated: #18181b;  /* Elevated elements */
+--bg-overlay:  #27272a;  /* Overlays, tooltips */
+
+/* Text - High contrast */
+--text-primary:   #fafafa;
+--text-secondary: #a1a1aa;
+--text-muted:     #71717a;
 ```
 
-**Design Philosophy**:
-- Deep Teal (#0d9488): Trust, Innovation, AI-Forward
-- Slate Dark (#0f172a): Premium, Professional, Modern
-- Glassmorphism: Futuriste, Sobre, Puissant
+**Design Philosophy** (from Linear Design Skills):
+- Primary: #5E6AD2 (Linear accent) - Trust, Premium
+- Surfaces: Ultra-dark (#09090b) - Developer-focused
+- Grid: 4px system
+- Radius: 6px default
+- Animation: max 200ms (compositor only)
+- Focus: 2px outline, 2px offset
 
 ---
 
