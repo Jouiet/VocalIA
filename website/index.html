@@ -70,7 +70,11 @@
   <link href="./public/css/style.css" rel="stylesheet">
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+
+  <!-- GSAP Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -289,14 +293,25 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section class="relative min-h-screen flex items-center justify-center overflow-hidden" id="main-content">
-    <!-- Animated Gradient Background -->
-    <div class="absolute inset-0 animate-gradient pointer-events-none"></div>
+  <!-- Scroll Progress Indicator -->
+  <div class="scroll-progress" id="scrollProgress"></div>
 
-    <!-- Morphing Blob Decorations (pointer-events-none to allow clicks) -->
-    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-vocalia-500/30 rounded-full blur-3xl animate-morph animate-float-slow pointer-events-none"></div>
-    <div class="absolute bottom-1/3 right-1/4 w-80 h-80 bg-vocalia-400/25 rounded-full blur-3xl animate-morph animate-float-slow pointer-events-none" style="animation-delay: 2s;"></div>
+  <!-- Hero Section -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden" id="main-content" data-animate="hero">
+    <!-- Particle System Background -->
+    <div class="particles-container">
+      <canvas class="particles-canvas" data-particles></canvas>
+    </div>
+
+    <!-- Floating Orbs Background -->
+    <div class="hero-orb-container" data-floating-orbs>
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <div class="hero-orb hero-orb-3"></div>
+    </div>
+
+    <!-- Animated Gradient Background -->
+    <div class="absolute inset-0 animate-gradient-gpu pointer-events-none"></div>
     <div class="absolute top-1/2 right-1/3 w-64 h-64 bg-violet-500/20 rounded-full blur-3xl animate-morph animate-float pointer-events-none" style="animation-delay: 4s;"></div>
 
     <!-- Floating Particles (pointer-events-none to allow clicks) -->
@@ -311,7 +326,7 @@
     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
       <div class="text-center">
         <!-- Badge with shimmer -->
-        <div class="section-badge mb-8 backdrop-blur-md animate-fade-in inline-flex items-center">
+        <div class="section-badge mb-8 backdrop-blur-md inline-flex items-center" data-animate="badge">
           <div class="sound-wave inline-flex mr-2">
             <span></span><span></span><span></span><span></span><span></span>
           </div>
@@ -320,19 +335,19 @@
 
         <!-- Title with staggered reveal -->
         <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
-          <span class="animate-text-reveal block" data-i18n="hero.title">Vos Agents Vocaux IA</span>
+          <span class="block" data-animate="title" data-i18n="hero.title">Vos Agents Vocaux IA</span>
           <br>
-          <span class="gradient-text animate-text-reveal animate-text-reveal-delay-2 block animate-glow-pulse" style="display: inline-block;" data-i18n="hero.titleHighlight">24/7</span>
+          <span class="text-gradient-animate animate-glow-pulse" style="display: inline-block;" data-i18n="hero.titleHighlight">24/7</span>
         </h1>
 
         <!-- Subtitle with fade-in - HIGH CONTRAST -->
-        <p class="text-xl sm:text-2xl text-white/90 max-w-3xl mx-auto mb-10 animate-fade-in delay-300 drop-shadow-lg" data-i18n="hero.subtitle">
+        <p class="text-xl sm:text-2xl text-white/90 max-w-3xl mx-auto mb-10 drop-shadow-lg" data-animate="subtitle" data-i18n="hero.subtitle">
           Widget web et téléphonie intelligente pour votre entreprise. Multilingue: FR, EN, AR, ES, Darija.
         </p>
 
         <!-- CTAs with staggered animation - z-50 ensures clickability -->
         <div class="relative z-50 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <a href="#pricing" class="group btn-cyber animate-scale-in delay-400 hover:shadow-2xl hover:shadow-vocalia-500/50">
+          <a href="#pricing" class="group btn-cyber hover:shadow-2xl hover:shadow-vocalia-500/50" data-animate="cta" data-magnetic>
             <span data-i18n="hero.cta_primary">Essai Gratuit</span>
             <svg class="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
               stroke="currentColor" viewBox="0 0 24 24">
@@ -340,7 +355,7 @@
             </svg>
           </a>
           <button onclick="openDemoModal()"
-            class="px-8 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all font-semibold text-lg flex items-center group animate-scale-in delay-500 hover:scale-105">
+            class="px-8 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all font-semibold text-lg flex items-center group hover:scale-105" data-animate="cta" data-magnetic>
             <span class="relative flex h-3 w-3 mr-3" aria-hidden="true">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
@@ -402,23 +417,35 @@
           </div>
         </div>
 
-        <!-- Stats - Glass Cards with animations -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          <div class="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all hover:scale-105 animate-count-up delay-100">
-            <div class="text-3xl sm:text-4xl font-bold gradient-text">&lt; 100ms</div>
-            <div class="text-white/70 mt-2 text-sm" data-i18n="stats.latency">Latence moyenne</div>
+        <!-- Stats - Glass Cards with animated counters -->
+        <div class="stats-grid max-w-4xl mx-auto" data-animate="visual">
+          <div class="stat-item hover-lift" data-card-3d="5">
+            <div class="card-glare"></div>
+            <div class="counter-display">
+              <span class="counter-value" data-counter="100" data-counter-prefix="< " data-counter-suffix="ms">< 100ms</span>
+            </div>
+            <div class="counter-label" data-i18n="stats.latency">Latence moyenne</div>
           </div>
-          <div class="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all hover:scale-105 animate-count-up delay-200">
-            <div class="text-3xl sm:text-4xl font-bold gradient-text">5</div>
-            <div class="text-white/70 mt-2 text-sm" data-i18n="stats.languages">Langues supportées</div>
+          <div class="stat-item hover-lift" data-card-3d="5">
+            <div class="card-glare"></div>
+            <div class="counter-display">
+              <span class="counter-value" data-counter="5">5</span>
+            </div>
+            <div class="counter-label" data-i18n="stats.languages">Langues supportées</div>
           </div>
-          <div class="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all hover:scale-105 animate-count-up delay-300">
-            <div class="text-3xl sm:text-4xl font-bold gradient-text">30</div>
-            <div class="text-white/70 mt-2 text-sm" data-i18n="stats.personas">Personas métier</div>
+          <div class="stat-item hover-lift" data-card-3d="5">
+            <div class="card-glare"></div>
+            <div class="counter-display">
+              <span class="counter-value" data-counter="30">30</span>
+            </div>
+            <div class="counter-label" data-i18n="stats.personas">Personas métier</div>
           </div>
-          <div class="text-center p-6 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all hover:scale-105 animate-count-up delay-400">
-            <div class="text-3xl sm:text-4xl font-bold gradient-text">99.9%</div>
-            <div class="text-white/70 mt-2 text-sm" data-i18n="stats.uptime">Disponibilité</div>
+          <div class="stat-item hover-lift" data-card-3d="5">
+            <div class="card-glare"></div>
+            <div class="counter-display">
+              <span class="counter-value" data-counter="99.9" data-counter-suffix="%" data-counter-decimals="1">99.9%</span>
+            </div>
+            <div class="counter-label" data-i18n="stats.uptime">Disponibilité</div>
           </div>
         </div>
       </div>
@@ -436,15 +463,16 @@
   <section id="features" class="py-24 relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section header -->
-      <div class="text-center mb-16">
+      <div class="text-center mb-16" data-reveal="up">
         <h2 class="text-4xl sm:text-5xl font-bold mb-4" data-i18n="features.title">Deux Produits, Une Plateforme</h2>
         <p class="text-xl text-zinc-400" data-i18n="features.subtitle">Couvrez 100% de vos canaux vocaux</p>
       </div>
 
       <!-- Bento Grid Layout (2026 Standard) -->
-      <div class="bento-grid">
+      <div class="bento-grid" data-bento-grid>
         <!-- Widget Card - Featured Large (2x2) -->
-        <div class="bento-large relative group animate-slide-in-left">
+        <div class="bento-large relative group" data-bento-item data-card-3d="8">
+          <div class="card-glare"></div>
           <div class="absolute -inset-0.5 bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition pointer-events-none"></div>
           <div class="relative glass-panel p-8 h-full flex flex-col">
             <div class="flex items-center justify-between mb-6">
@@ -500,7 +528,8 @@
         </div>
 
         <!-- Telephony Card - Tall (1x2) -->
-        <div class="bento-tall relative group animate-slide-in-right" style="animation-delay: 0.1s;">
+        <div class="bento-tall relative group" data-bento-item data-card-3d="8">
+          <div class="card-glare"></div>
           <div class="absolute -inset-0.5 bg-gradient-to-r from-vocalia-400 to-violet-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition pointer-events-none"></div>
           <div class="relative glass-panel p-6 h-full flex flex-col">
             <div class="flex items-center justify-between mb-4">
@@ -547,8 +576,8 @@
         </div>
 
         <!-- Stats Card - Wide -->
-        <div class="bento-wide animate-fade-in" style="animation-delay: 0.2s;">
-          <div class="glass-panel p-6 h-full">
+        <div class="bento-wide" data-bento-item>
+          <div class="glass-panel p-6 h-full hover-lift">
             <div class="grid grid-cols-3 gap-4 h-full">
               <div class="text-center flex flex-col justify-center">
                 <span class="text-3xl font-bold text-white tabular-nums">99%</span>
@@ -567,8 +596,8 @@
         </div>
 
         <!-- AI Insights Card -->
-        <div class="bento-item animate-fade-in" style="animation-delay: 0.3s;">
-          <div class="ai-insights-card h-full">
+        <div class="bento-item" data-bento-item>
+          <div class="ai-insights-card h-full hover-lift">
             <div class="ai-insights-header">
               <div class="ai-insights-icon">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -1147,6 +1176,21 @@
         VocaliaI18n.translatePage();
       });
     })();
+  </script>
+
+  <!-- VocalIA GSAP Animation System -->
+  <script src="/src/lib/gsap-animations.js"></script>
+  <script>
+    // Scroll Progress Indicator
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scrollProgress');
+      if (scrollProgress) {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / docHeight) * 100;
+        scrollProgress.style.width = progress + '%';
+      }
+    });
   </script>
 
   <!-- VocalIA Voice Visualizer -->
