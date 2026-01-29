@@ -24,14 +24,14 @@ class VoiceVisualizer {
 
     this.ctx = this.canvas.getContext('2d');
 
-    // SUBTLE BLUE palette - Elegant, non-aggressive
+    // SKY BLUE palette - Exact color from user reference
     this.options = {
       mode: options.mode || 'wave',
-      // Muted blue palette - elegant not aggressive
-      primaryColor: options.primaryColor || '#6b9bd1',    // Soft Steel Blue
-      secondaryColor: options.secondaryColor || '#4a7fb8', // Muted Blue
-      accentColor: options.accentColor || '#8bb8e0',       // Light Periwinkle
-      glowColor: options.glowColor || '#6b9bd1',           // Matching glow (not white)
+      // Pure sky blue - from user's reference image
+      primaryColor: options.primaryColor || '#7CB9E8',    // Sky Blue (main)
+      secondaryColor: options.secondaryColor || '#5DADE2', // Medium Sky Blue
+      accentColor: options.accentColor || '#AED6F1',       // Light Sky Blue
+      glowColor: options.glowColor || '#7CB9E8',           // Matching sky blue glow
       barCount: options.barCount || 32,
       sensitivity: options.sensitivity || 1.0,
       smoothing: options.smoothing || 0.8,
