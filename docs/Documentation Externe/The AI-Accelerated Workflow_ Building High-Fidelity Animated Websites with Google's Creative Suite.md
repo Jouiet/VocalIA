@@ -56,7 +56,7 @@ With the assets prepared, Anti-Gravity can now build the website around the anim
 The final phase involves polishing the website and making it live.
 
 1. **Iterative Refinement:**  Use natural language prompts within Anti-Gravity to address any issues or make improvements. For example, tell the agent "the scroll feels too fast" to adjust the animation timing, or ask it to replace a standard button with a more advanced component from a specific UI library  **by providing the relevant installation commands and code snippets in your prompt.**  
-2. **Prepare for Deployment:**  Once the website meets all requirements, instruct Anti-Gravity to prepare the code for hosting as a static website on a platform like Netlify or Vercel.  
+2. **Prepare for Deployment:**  Once the website meets all requirements, instruct Anti-Gravity to prepare the code for hosting as a static website on a hosting platform.  
 3. **Deploy the Website:**  Follow the agent's instructions, which typically involve dropping the final output folder directly into the deployment service's interface to make the website live on the web.The successful execution of this workflow leads to a profound impact on how development teams can operate.
 
 #### 3.0 Analyzing the Impact: Revolutionizing Development Cycles

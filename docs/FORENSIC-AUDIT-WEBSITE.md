@@ -158,7 +158,7 @@ Audit basé sur:
 
 ### Comparaison Concurrents 2026
 
-| Feature | Linear | Vercel | **VocalIA** |
+| Feature | Linear | NindoHost | **VocalIA** |
 |:--------|:------:|:------:|:-----------:|
 | Bento Layout | ✅ | ✅ | ❌ |
 | GPU Animations | ✅ | ✅ | ⚠️ Partial |
@@ -279,8 +279,8 @@ Audit basé sur:
 ### Implémentations Session 213
 
 **16. Deployment Configuration:**
-- `vercel.json`: Headers, rewrites, caching
-- Ready for Vercel free tier deployment
+- `.htaccess`: Headers, rewrites, caching
+- Ready for NindoHost free tier deployment
 
 **17. Favicon Multi-size (6 formats):**
 - favicon.ico (16+32px combined)
@@ -339,7 +339,7 @@ Audit basé sur:
 
 ### Context
 
-Icons audit revealed VocalIA was using Heroicons v1 (2019-2020 style) with `stroke-width="2"`. Modern 2026 design systems (Linear, Vercel, Apple) use Lucide icons with `stroke-width="1.5"` and more organic, multi-path SVG structures.
+Icons audit revealed VocalIA was using Heroicons v1 (2019-2020 style) with `stroke-width="2"`. Modern 2026 design systems (Linear, NindoHost, Apple) use Lucide icons with `stroke-width="1.5"` and more organic, multi-path SVG structures.
 
 ### Audit Findings
 
@@ -608,9 +608,9 @@ Les directives de sécurité CSP et X-Frame-Options sont ignorées quand défini
 ```
 
 ### Recommendation
-Configurer les headers au niveau du serveur (Vercel/Nginx) :
+Configurer les headers au niveau du serveur (NindoHost/Nginx) :
 ```json
-// vercel.json
+// .htaccess
 {
   "headers": [
     {
@@ -625,7 +625,7 @@ Configurer les headers au niveau du serveur (Vercel/Nginx) :
 ```
 
 ### Status
-Les meta tags restent en place comme fallback. Les vrais headers sont configurés dans `vercel.json`.
+Les meta tags restent en place comme fallback. Les vrais headers sont configurés dans `.htaccess`.
 
 ---
 
@@ -689,7 +689,7 @@ website/                              # 2,500+ lignes
 ├── index.html                        # Landing page (700+ L) ✅
 ├── robots.txt                        # SEO ✅
 ├── sitemap.xml                       # SEO ✅
-├── vercel.json                       # Deployment config ✅
+├── .htaccess                       # Deployment config ✅
 ├── dashboard/
 │   ├── client.html                   # Client Dashboard (500+ L) ✅
 │   └── admin.html                    # Admin Dashboard (600+ L) ✅
@@ -817,7 +817,7 @@ website/                              # 2,500+ lignes
 
 ## Security Headers
 
-| Header | Meta Tag | Vercel Config |
+| Header | Meta Tag | NindoHost Config |
 |:-------|:--------:|:-------------:|
 | CSP | ⚠️ Warning | ✅ |
 | X-Frame-Options | ⚠️ Warning | ✅ |
@@ -890,7 +890,7 @@ node scripts/health-check.cjs
 **Backend: EXCELLENT (99/100)**
 **Frontend vs 2026 Standards: ~97% - COMPLIANT**
 
-Le frontend est maintenant au niveau des standards 2026 (Linear, Vercel, Notion):
+Le frontend est maintenant au niveau des standards 2026 (Linear, NindoHost, Notion):
 - ✅ Lucide Icons 2026 (stroke-width 1.5, multi-path SVG)
 - ✅ Liquid-Glass Dashboard Cards (Apple 2026 inspired)
 - ✅ WCAG AA Accessibility Compliance

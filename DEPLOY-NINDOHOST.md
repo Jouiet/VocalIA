@@ -228,7 +228,6 @@ Le fichier `.htaccess` inclut:
 |:-------|:-----|:-----------|
 | **VPS Hostinger** | ~5€/mois | Moyenne |
 | **Railway/Render** | Freemium | Faible |
-| **Vercel Edge Functions** | Freemium | Faible |
 | **Self-hosted** | Variable | Haute |
 
 ### Plan Backend (Session 215+)

@@ -83,7 +83,7 @@ BRAND_ICONS = [
     (r'GitHub', 'cpu', 'github'),
     (r'GitLab', 'cpu', 'git-branch'),
     (r'Bitbucket', 'cpu', 'git-branch'),
-    (r'Vercel', 'cpu', 'triangle'),
+    (r'Server', 'cpu', 'triangle'),
     (r'Netlify', 'cpu', 'globe'),
     (r'Heroku', 'cpu', 'server'),
 

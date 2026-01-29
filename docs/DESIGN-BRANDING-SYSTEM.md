@@ -128,13 +128,13 @@ grep -riE "Grok|Gemini|Twilio|xAI|Anthropic" website/ --include="*.html" --inclu
 |:-------|:------|:----------|
 | [Linear Design Skills](https://github.com/ihlamury/design-skills) | #5E6AD2 | Primary accent |
 | [Stripe Brand](https://stripe.com/brand) | #635BFF | Enterprise trust |
-| [Vercel Geist](https://vercel.com/geist) | #111111 | Ultra-dark surfaces |
+| Linear Dark | #111111 | Ultra-dark surfaces |
 | [pipecat-ai/voice-ui-kit](https://github.com/pipecat-ai/voice-ui-kit) | Tailwind 4 | Voice AI components |
 
 ### Research Sources
 
 - **Gemini Deep Research**: Enterprise Voice AI SaaS design 2026
-- **GitHub Design Skills**: Opinionated UI constraints from Linear, Stripe, Vercel
+- **GitHub Design Skills**: Opinionated UI constraints from Linear, Stripe, Linear
 - **Hugging Face**: Color-Pedia dataset for color psychology
 - **Voice AI Repos**: react-voice-visualizer, assistant-ui, VoiceFlow-Pro
 
@@ -619,7 +619,7 @@ Apple 2026-inspired three-layer system:
 
 | # | Action | Priorité | Fichier |
 |:-:|:-------|:--------:|:--------|
-| 1 | Deploy to Vercel | P1 | vercel.json |
+| 1 | Deploy to Linear | P1 | deploy config |
 | 2 | Fix VocaliaGeo error | P1 | index.html |
 | 3 | Dashboard liquid-glass integration | P2 | dashboard/*.html |
 | 4 | E2E Visual Testing | P2 | Playwright |

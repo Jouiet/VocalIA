@@ -418,7 +418,7 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 - Git: All changes pushed to main
 
 **Plan Actionnable (Session 208):**
-1. Vercel deployment avec headers serveur
+1. NindoHost deployment via FTP
 2. Test visuel avec Playwright MCP
 3. Créer OG image pour social media
 
@@ -595,7 +595,6 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 | Task | Status | Details |
 |:-----|:------:|:--------|
-| vercel.json | ✅ | Headers, rewrites, caching config |
 | Favicon multi-size | ✅ | 6 formats (ICO, PNG, Apple, Android) |
 | site.webmanifest | ✅ | PWA ready |
 | Unified favicons | ✅ | index + dashboards |
@@ -615,9 +614,8 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 | Platform | Status | Notes |
 |:---------|:------:|:------|
-| Vercel | ⚠️ Ready | `vercel.json` configured |
-| Hostinger | ❌ | No hosting plan active |
-| vocalia.ma | ❌ | Domain not registered |
+| NindoHost | ✅ | FTP deploy via GitHub Actions |
+| vocalia.ma | ✅ | Live |
 
 **Git:** Commit `648f869`
 
