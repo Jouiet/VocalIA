@@ -366,13 +366,13 @@
       </style>
 
       <button class="va-trigger" id="va-trigger" aria-label="${L.ui.ariaOpenAssistant}">
-        <img src="/logo.png" alt="VocalIA" width="32" height="32" loading="lazy" />
+        <img src="/public/images/logo.webp" alt="VocalIA" width="32" height="32" loading="lazy" />
       </button>
 
       <div class="va-panel" id="va-panel">
         <div class="va-header">
           <div class="va-header-icon">
-            <img src="/logo.png" alt="VocalIA" width="32" height="32" loading="lazy" />
+            <img src="/public/images/logo.webp" alt="VocalIA" width="32" height="32" loading="lazy" />
           </div>
           <div class="va-header-text">
             <h3>${L.ui.headerTitle}</h3>

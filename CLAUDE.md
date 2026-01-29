@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 3.5.0 | 29/01/2026 | Session 220 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 3.6.0 | 29/01/2026 | Session 221 | Backend: 99/100 | Frontend: ~98% | Health: 100%
 
 ## Identité
 
@@ -877,8 +877,45 @@ Analyse forensique approfondie de toutes les lacunes design et UI/UX sur 24 page
 
 ---
 
-*Màj: 29/01/2026 - Session 220 (Deep Forensic UI/UX Audit)*
-*Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
+## Session 221 Summary
+
+**Header Menu & Layout Critical Fixes:**
+
+User-reported critical bugs: "le menu headers est cassé - le footer n'est pas optimal non plus!"
+
+### Issues Corrigées
+
+| Issue | Sévérité | Status |
+|:------|:--------:|:------:|
+| Dropdown menus overlapping text | CRITIQUE | ✅ FIXED |
+| Hero image over subtitle | HAUTE | ✅ FIXED |
+| Stats cards mal organisées | HAUTE | ✅ FIXED |
+| Mobile menu invisible class | MOYENNE | ✅ FIXED |
+| 404 /logo.png | BASSE | ✅ FIXED |
+
+### Implémentations Session 221
+
+| Fix | Détail |
+|:----|:-------|
+| **Dropdowns** | Remplacé `.glass` par `bg-slate-800/95 backdrop-blur-xl`, `flex gap-8` au lieu de `grid`, ajouté `pointer-events-none/auto` |
+| **Hero image** | `hidden 2xl:block` - n'apparaît que sur très grands écrans |
+| **Stats grid** | Refactorisé avec `grid grid-cols-2 md:grid-cols-4` Tailwind natif |
+| **Mobile menu** | Ajouté `invisible opacity-0 pointer-events-none` pour état fermé |
+| **Logo 404** | `/logo.png` → `/public/images/logo.webp` dans voice-widget.js |
+
+### Fichiers Modifiés (Session 221)
+
+| Fichier | Modification |
+|:--------|:-------------|
+| `index.html` | Dropdowns, hero image, stats grid, mobile menu |
+| `voice-assistant/voice-widget.js` | Logo path fix |
+
+**Score Post-Session 221:** ~98%
+
+---
+
+*Màj: 29/01/2026 - Session 221 (Header Menu & Layout Critical Fixes)*
+*Status: Backend 99/100 ✅ | Frontend ~98% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Auto-Deploy: GitHub Actions → NindoHost*
 *Pages: 24 HTML | SITEMAP: 100% COMPLETE*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
