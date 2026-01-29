@@ -47,8 +47,7 @@ jobs:
           echo "Testing widget..."
           node -e "require('./widget/voice-widget-templates.cjs'); console.log('✅ voice-widget-templates')"
           echo "Testing knowledge-base..."
-          node -e "require('./knowledge-base/src/vector-store.cjs'); console.log('✅ vector-store')"
-          node -e "require('./knowledge-base/src/rag-query.cjs'); console.log('✅ rag-query')"
+          node -e "require('./core/knowledge-base-services.cjs'); console.log('✅ knowledge-base-services')"
           echo "All modules loaded successfully!"
 
   lint:
