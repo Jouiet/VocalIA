@@ -503,9 +503,10 @@ class VoiceVisualizer {
       this.ctx.beginPath();
       this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
 
-      // Gradient stroke effect
+      // Gradient stroke effect (ensure inner radius is never negative)
+      const innerRadius = Math.max(0, radius - lineWidth);
       const rippleGradient = this.ctx.createRadialGradient(
-        centerX, centerY, radius - lineWidth,
+        centerX, centerY, innerRadius,
         centerX, centerY, radius + lineWidth
       );
       rippleGradient.addColorStop(0, 'transparent');
