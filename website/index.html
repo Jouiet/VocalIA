@@ -74,8 +74,8 @@
   <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS (Sovereign) - Preloaded -->
-  <link rel="preload" href="/public/css/style.css?v=215" as="style">
-  <link href="/public/css/style.css?v=215" rel="stylesheet">
+  <link rel="preload" href="/public/css/style.css?v=216" as="style">
+  <link href="/public/css/style.css?v=216" rel="stylesheet">
 
   <!-- DNS Prefetch & Preconnect for external resources -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -1461,7 +1461,7 @@
   </script>
 
   <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
-  <script src="/src/lib/voice-visualizer.js?v=215" defer></script>
+  <script src="/src/lib/voice-visualizer.js?v=216" defer></script>
   <script src="/src/lib/card-tilt.js" defer></script>
   <script>
     // Lazy load visualizers only when visible (performance optimization)
@@ -1486,8 +1486,10 @@
             // Initialize only when visible
             const viz = new VoiceVisualizer(config.id, {
               mode: config.mode,
-              color: '#5E6AD2',
-              secondaryColor: '#8b5cf6',
+              primaryColor: '#5DADE2',
+              secondaryColor: '#85C1E9',
+              accentColor: '#5DADE2',
+              glowColor: '#5DADE2',
               barCount: config.barCount || 24,
               demo: true
             });
