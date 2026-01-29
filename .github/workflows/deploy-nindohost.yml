@@ -49,6 +49,7 @@ jobs:
       - name: Deployment Summary
         run: |
           echo "=== Deployment Complete ==="
+          echo "FTP Server: ftp.vocalia.ma"
           echo "Target: https://vocalia.ma"
           echo "Time: $(date)"
           echo ""
