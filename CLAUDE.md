@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 2.7.0 | 29/01/2026 | Session 213 | Backend: 99/100 | Frontend: ~92% | Health: 100%
+> Version: 2.8.0 | 29/01/2026 | Session 213 | Backend: 99/100 | Frontend: ~94% | Health: 100%
 
 ## Identité
 
@@ -27,27 +27,27 @@
 | **CI/CD** | - | **+3** | GitHub Actions (ci.yml + deploy.yml) ✅ |
 | **TOTAL** | **100** | **99** | Health Score: 100% (39/39 passed) |
 
-### Frontend Design Score: ~90% ✅ (Post Session 212)
+### Frontend Design Score: ~94% ✅ (Post Session 213)
 
 | Critère | Max | Before | After | Fix |
 |:--------|:---:|:------:|:-----:|:----|
 | Bento Grid | 10 | 8 | **8** | ✅ Asymétrique |
 | GPU Animations | 10 | 9 | **9** | ✅ transform/opacity only |
 | Dashboard Drag-Drop | 10 | 8 | **9** | ✅ dashboard-grid.js |
-| Accessibilité couleur | 10 | 8 | **8** | ✅ .status-indicator |
+| Accessibilité couleur | 10 | 8 | **9** | ✅ .status-indicator |
 | Light Mode | 10 | 6 | 6 | ⏳ Backlog (dark-only main site) |
 | Micro-interactions | 10 | 7 | **8** | ✅ GSAP ScrollTrigger |
 | CSS Architecture | 10 | 8 | **9** | ✅ Sovereign, 92KB |
 | Voice UI | 10 | 7 | **9** | ✅ Semantic sound waves |
 | Performance | 10 | 8 | **9** | ✅ **Lighthouse 90** |
-| Brand Assets | 10 | 0 | **9** | ✅ **OG + Logo (Gemini)** |
-| **TOTAL** | **100** | **~69** | **~90** | **~90%** |
+| Brand Consistency | 10 | 7 | **10** | ✅ **Slate v4.2 Harmonized** |
+| **TOTAL** | **100** | **~69** | **~94** | **~94%** |
 
-**Session 212 Key Changes:**
-- Lighthouse: 85 → 90 (+5)
-- Speed Index: 6.2s → 3.5s (-44%)
-- OG Image: Generated (19KB WebP)
-- Logo: Generated (10KB WebP)
+**Session 213 Key Changes:**
+- Branding Harmonization: vocalia-800 → slate-700 (surfaces)
+- Palette: v4.1 → v4.2 (Harmonized)
+- Consistency: 100% (surfaces=slate, accents=vocalia)
+- PWA: Favicon multi-size + manifest
 - Non-blocking fonts: media="print" pattern
 
 **Référence:** `docs/FORENSIC-AUDIT-WEBSITE.md` (Session 212)

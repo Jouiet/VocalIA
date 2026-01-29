@@ -1,7 +1,7 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 4.2.0 | **Date**: 29/01/2026 | **Session**: 212
-> **Palette**: Enterprise Slate v4.1 | **Brand Assets**: OG + Logo ✅
+> **Version**: 4.3.0 | **Date**: 29/01/2026 | **Session**: 213
+> **Palette**: Enterprise Slate v4.2 (Harmonized) | **Brand Assets**: Complete ✅
 > **Research**: GitHub ihlamury/design-skills, Gemini Deep Research, pipecat-ai/voice-ui-kit
 
 ---
@@ -36,16 +36,25 @@
 | 900 | `#3730a3` | Deep accents |
 | 950 | `#1e1b4b` | Darkest |
 
-### Surface Colors (Slate v4.1 - Brighter)
+### Surface Colors (Slate v4.2 - Harmonized)
 
-| Token | Hex Code | Usage |
-|:------|:---------|:------|
-| `--bg-base` | `#0f172a` | Page background (slate-900) |
-| `--bg-raised` | `#1e293b` | Cards, modals (slate-800) |
-| `--bg-elevated` | `#334155` | Elevated elements (slate-700) |
-| `--bg-overlay` | `#475569` | Overlays, tooltips (slate-600) |
+| Token | Hex Code | Tailwind | Usage |
+|:------|:---------|:---------|:------|
+| `--bg-base` | `#1e293b` | slate-800 | Page background |
+| `--bg-raised` | `#334155` | slate-700 | Cards, modals |
+| `--bg-elevated` | `#475569` | slate-600 | Elevated elements |
+| `--bg-overlay` | `#64748b` | slate-500 | Overlays, tooltips |
 
-**Note Session 211:** Palette éclaircie suite feedback "trop sombre". Contraste amélioré tout en gardant identité enterprise dark.
+### Harmonization Rules (Session 213)
+
+| Usage | Palette | Examples |
+|:------|:--------|:---------|
+| **Surfaces** | slate-700/800 | Cards, backgrounds, modals |
+| **Accents** | vocalia-400/500/600 | Buttons, highlights, links |
+| **Borders** | slate-600 | Card borders, dividers |
+| **Text** | vocalia-300/400 | Accent text, labels |
+
+**Important:** Never use vocalia-700/800/900 for backgrounds - these are accent colors only.
 
 ### Neutral - Slate
 
