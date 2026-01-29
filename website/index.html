@@ -748,20 +748,27 @@
                 <span>Intégration en 2 minutes</span>
               </li>
             </ul>
-            <!-- Widget Demo Video -->
+            <!-- Widget Demo Video (hover to unmute) -->
             <div class="mt-6 pt-6 border-t border-slate-600/50">
-              <div class="flex items-center justify-center">
+              <div class="flex items-center justify-center relative group">
                 <video
+                  id="demoVideo"
                   src="/public/videos/vocalia-demo-fr.mp4"
-                  class="w-full max-w-sm h-auto rounded-xl shadow-lg shadow-indigo-500/20"
+                  class="w-32 h-auto rounded-lg shadow-md shadow-indigo-500/20 cursor-pointer transition-transform hover:scale-105"
                   autoplay
                   muted
                   loop
                   playsinline
                   poster="/public/images/hero/vocalia-widget.webp"
-                  aria-label="Démonstration VocalIA Voice Widget">
+                  aria-label="Démonstration VocalIA Voice Widget"
+                  onmouseenter="this.muted=false"
+                  onmouseleave="this.muted=true">
                   Votre navigateur ne supporte pas la vidéo HTML5.
                 </video>
+                <!-- Sound indicator -->
+                <div class="absolute bottom-2 right-2 px-2 py-1 bg-black/60 rounded text-xs text-white/80 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  🔊 Son activé
+                </div>
               </div>
             </div>
           </div>
