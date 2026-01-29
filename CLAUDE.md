@@ -65,38 +65,57 @@
 
 ---
 
-## Website + Dashboards + Widget (Session 188-205)
+## Website SOTA Multi-Pages (Session 214)
 
 ```
-website/                              # 2,500+ lignes
-├── index.html                        # Landing page + Widget (570 L)
+website/                              # 7,883+ lignes (7 pages HTML)
+├── index.html                        # Landing page + Mega Menu (~1,200 L)
+├── features.html                     # All features page (~580 L) ✅ Session 214
+├── pricing.html                      # Dedicated pricing (~620 L) ✅ Session 214
+├── products/
+│   ├── voice-widget.html             # Widget product page (~480 L) ✅ Session 214
+│   └── voice-telephony.html          # Telephony product page (~550 L) ✅ Session 214
 ├── dashboard/
-│   ├── client.html                   # Client Dashboard (468 L)
-│   └── admin.html                    # Admin Dashboard (580 L)
-├── voice-assistant/                  # ✅ NEW Session 205
+│   ├── client.html                   # Client Dashboard (~468 L)
+│   └── admin.html                    # Admin Dashboard (~580 L)
+├── voice-assistant/                  # Voice Widget JS
 │   ├── voice-widget.js               # Widget VocalIA (760 L)
 │   └── lang/
 │       ├── voice-fr.json             # Langue FR (180 L)
 │       └── voice-en.json             # Langue EN (170 L)
 ├── src/
 │   ├── lib/
-│   │   ├── geo-detect.js             # Geo detection + currency (188 L)
-│   │   ├── i18n.js                   # Internationalization (150 L)
-│   │   ├── voice-visualizer.js       # Canvas voice viz (440 L) ✅ Session 210
-│   │   └── gsap-animations.js        # GSAP + ScrollTrigger (820 L) ✅ Session 211
+│   │   ├── geo-detect.js             # Geo detection + currency
+│   │   ├── i18n.js                   # Internationalization
+│   │   ├── card-tilt.js              # 3D Mouse Tilt (220 L) ✅ Session 214
+│   │   ├── voice-visualizer.js       # Canvas voice viz (440 L)
+│   │   └── gsap-animations.js        # GSAP + ScrollTrigger (820 L)
 │   └── locales/
-│       ├── fr.json                   # French translations (118 L)
-│       └── en.json                   # English translations (118 L)
+│       ├── fr.json                   # French translations
+│       └── en.json                   # English translations
+├── SITEMAP-PLAN.md                   # 22+ page architecture plan ✅ Session 214
 └── public/assets/
 ```
 
+**Site Architecture (SOTA):**
+
+| Tier | Pages | Status |
+|:-----|:------|:------:|
+| Core | Home, Features, Pricing, About, Contact, Docs | 3/6 ✅ |
+| Products | Voice Widget, Voice Telephony | 2/2 ✅ |
+| Use Cases | E-commerce, Support, Appointments, Leads | 0/4 |
+| Industries | Healthcare, Real Estate, Finance, Retail | 0/4 |
+| Resources | Integrations, Blog, Changelog, API | 0/4 |
+| Legal | Privacy, Terms | 0/2 |
+
 **Features:**
 
-- Design futuriste, sober, puissant
+- **Mega-menu navigation** with dropdowns for Products, Solutions, Resources
+- Design futuriste: Liquid Glass cards, OKLCH P3 colors, 3D Tilt
 - Auto-detect location: MAD (Maroc), EUR (Europe), USD (Autres)
 - FR + EN avec switch dynamique
-- Tailwind CSS + animations modernes
-- **Voice Widget**: Démo live intégrée (Web Speech API) ✅ NEW
+- Tailwind CSS v4 + GSAP animations
+- **Voice Widget**: Démo live intégrée (Web Speech API)
 - **Dashboard Client**: Stats, appels, agents, KB, facturation
 - **Dashboard Admin**: Système, tenants, revenus, API, logs, health
 

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarifs - VocalIA | Agents Vocaux IA</title>
+  <meta name="description"
+    content="Plans tarifaires VocalIA: Widget gratuit, Starter à 99€/mois, Pro à 299€/mois, Enterprise sur mesure. Téléphonie à ~0.06€/min.">
+  <link rel="canonical" href="https://vocalia.ma/pricing" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/pricing" />
+  <meta property="og:title" content="Tarifs - VocalIA | Agents Vocaux IA" />
+  <meta property="og:description"
+    content="Plans tarifaires VocalIA: Widget gratuit, Pro à 299€/mois, Enterprise sur mesure." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-pricing.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Tarifs VocalIA",
+      "description": "Plans tarifaires pour la plateforme VocalIA Voice AI",
+      "url": "https://vocalia.ma/pricing",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+          {"@type": "ListItem", "position": 2, "name": "Tarifs", "item": "https://vocalia.ma/pricing"}
+        ]
+      }
+    }
+  </script>
+
+  <!-- Critical CSS -->
+  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS -->
+  <link rel="preload" href="./public/css/style.css" as="style">
+  <link href="./public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(51, 65, 85, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .pricing-card {
+      background: rgba(51, 65, 85, 0.6);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    .pricing-card:hover {
+      border-color: rgba(94, 106, 210, 0.4);
+      transform: translateY(-4px);
+    }
+    .pricing-card.featured {
+      background: linear-gradient(135deg, rgba(94, 106, 210, 0.15), rgba(99, 102, 241, 0.1));
+      border: 2px solid #5E6AD2;
+    }
+    .pricing-card.featured::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, #5E6AD2, #6366f1);
+      border-radius: 18px;
+      z-index: -1;
+      opacity: 0.3;
+      filter: blur(20px);
+    }
+    .toggle-switch {
+      position: relative;
+      width: 200px;
+      height: 44px;
+      background: rgba(51, 65, 85, 0.8);
+      border-radius: 22px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      display: flex;
+      align-items: center;
+      padding: 4px;
+    }
+    .toggle-option {
+      flex: 1;
+      text-align: center;
+      padding: 8px 16px;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 14px;
+      color: #a1a1aa;
+    }
+    .toggle-option.active {
+      background: #5E6AD2;
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white antialiased">
+  <!-- Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller au contenu principal</a>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+            <span class="text-xl">🎙️</span>
+          </div>
+          <span class="text-xl font-bold gradient-text">VocalIA</span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center space-x-1">
+          <div class="relative group">
+            <button class="px-4 py-2 text-zinc-400 hover:text-white transition flex items-center gap-1">
+              Produits
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="absolute top-full left-0 mt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div class="glass rounded-xl p-4 shadow-xl border border-slate-600">
+                <a href="/products/voice-widget" class="block p-3 rounded-lg hover:bg-white/5 transition">
+                  <div class="font-semibold text-white">Voice Widget</div>
+                  <div class="text-sm text-zinc-400">Assistant vocal web gratuit</div>
+                </a>
+                <a href="/products/voice-telephony" class="block p-3 rounded-lg hover:bg-white/5 transition">
+                  <div class="font-semibold text-white">Voice Telephony AI</div>
+                  <div class="text-sm text-zinc-400">Agents téléphoniques PSTN</div>
+                </a>
+                <hr class="border-slate-600 my-2">
+                <a href="/features" class="block p-3 rounded-lg hover:bg-white/5 transition text-zinc-400 hover:text-white">
+                  Toutes les fonctionnalités
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <button class="px-4 py-2 text-zinc-400 hover:text-white transition flex items-center gap-1">
+              Solutions
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="absolute top-full left-0 mt-2 w-[400px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div class="glass rounded-xl p-6 shadow-xl border border-slate-600">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Cas d'Usage</div>
+                    <a href="/use-cases/e-commerce" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">E-commerce</a>
+                    <a href="/use-cases/customer-support" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Service Client</a>
+                    <a href="/use-cases/appointments" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Prise de RDV</a>
+                  </div>
+                  <div>
+                    <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Industries</div>
+                    <a href="/industries/healthcare" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Santé</a>
+                    <a href="/industries/real-estate" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Immobilier</a>
+                    <a href="/industries/finance" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Finance</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="/pricing" class="px-4 py-2 text-white font-medium">Tarifs</a>
+
+          <div class="relative group">
+            <button class="px-4 py-2 text-zinc-400 hover:text-white transition flex items-center gap-1">
+              Ressources
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div class="absolute top-full right-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+              <div class="glass rounded-xl p-4 shadow-xl border border-slate-600">
+                <a href="/docs" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Documentation</a>
+                <a href="/integrations" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Intégrations</a>
+                <a href="/blog" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Blog</a>
+                <a href="/changelog" class="block p-2 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Changelog</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="flex items-center space-x-3">
+          <a href="/dashboard" class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition font-medium">Connexion</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="relative pt-32 pb-16 overflow-hidden" id="main-content">
+    <div class="absolute inset-0 bg-gradient-to-b from-vocalia-950 via-gray-950 to-slate-800 pointer-events-none"></div>
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(94,106,210,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(94,106,210,0.02)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="mb-8" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2 text-sm text-zinc-400">
+          <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+          <li><span class="mx-2">/</span></li>
+          <li class="text-white">Tarifs</li>
+        </ol>
+      </nav>
+
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+          Tarifs <span class="gradient-text">Transparents</span>
+        </h1>
+        <p class="text-xl text-zinc-400 mb-10">
+          Commencez gratuitement avec le Widget, évoluez vers l'Enterprise au rythme de votre croissance.
+        </p>
+
+        <!-- Billing Toggle -->
+        <div class="flex items-center justify-center gap-4 mb-12">
+          <div class="toggle-switch" id="billingToggle">
+            <div class="toggle-option active" data-period="monthly">Mensuel</div>
+            <div class="toggle-option" data-period="annual">Annuel <span class="text-emerald-400 text-xs ml-1">-20%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Cards -->
+  <section class="pb-24 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Free Plan -->
+        <div class="pricing-card p-6 relative">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-zinc-300 mb-2">Widget Gratuit</h3>
+            <div class="flex items-baseline gap-1">
+              <span class="text-4xl font-bold">0</span>
+              <span class="text-zinc-400">€</span>
+            </div>
+            <p class="text-sm text-zinc-500 mt-1">pour toujours</p>
+          </div>
+
+          <p class="text-zinc-400 text-sm mb-6">Idéal pour tester VocalIA sur votre site web sans engagement.</p>
+
+          <ul class="space-y-3 mb-8 text-sm">
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Voice Widget illimité
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              5 personas métier
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              2 langues (FR, EN)
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Branding VocalIA
+            </li>
+          </ul>
+
+          <a href="/signup?plan=free" class="block w-full py-3 px-6 rounded-xl border border-slate-600 text-center font-semibold transition hover:bg-slate-700 hover:border-slate-500">
+            Commencer Gratuitement
+          </a>
+        </div>
+
+        <!-- Starter Plan -->
+        <div class="pricing-card p-6 relative">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-zinc-300 mb-2">Starter</h3>
+            <div class="flex items-baseline gap-1">
+              <span class="text-4xl font-bold" id="starterPrice">99</span>
+              <span class="text-zinc-400">€/mois</span>
+            </div>
+            <p class="text-sm text-zinc-500 mt-1" id="starterAnnual">ou 79€/mois (annuel)</p>
+          </div>
+
+          <p class="text-zinc-400 text-sm mb-6">Pour les PME qui veulent automatiser leur service client.</p>
+
+          <ul class="space-y-3 mb-8 text-sm">
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Widget sans branding
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              100 min téléphonie inclus
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              15 personas métier
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              5 langues
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Analytics basique
+            </li>
+          </ul>
+
+          <a href="/signup?plan=starter" class="block w-full py-3 px-6 rounded-xl border border-slate-600 text-center font-semibold transition hover:bg-slate-700 hover:border-slate-500">
+            Démarrer
+          </a>
+        </div>
+
+        <!-- Pro Plan (Featured) -->
+        <div class="pricing-card featured p-6 relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+            <span class="px-4 py-1 rounded-full bg-vocalia-500 text-white text-xs font-semibold uppercase tracking-wider">Populaire</span>
+          </div>
+
+          <div class="mb-6 mt-2">
+            <h3 class="text-lg font-semibold text-white mb-2">Pro</h3>
+            <div class="flex items-baseline gap-1">
+              <span class="text-4xl font-bold gradient-text" id="proPrice">299</span>
+              <span class="text-zinc-400">€/mois</span>
+            </div>
+            <p class="text-sm text-zinc-500 mt-1" id="proAnnual">ou 239€/mois (annuel)</p>
+          </div>
+
+          <p class="text-zinc-400 text-sm mb-6">Pour les entreprises qui veulent maximiser l'automatisation.</p>
+
+          <ul class="space-y-3 mb-8 text-sm">
+            <li class="flex items-start gap-2 text-white">
+              <svg class="w-5 h-5 text-vocalia-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              500 min téléphonie inclus
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <svg class="w-5 h-5 text-vocalia-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              30 personas métier
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <svg class="w-5 h-5 text-vocalia-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Intégrations CRM (HubSpot, Klaviyo)
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <svg class="w-5 h-5 text-vocalia-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Analytics avancé
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <svg class="w-5 h-5 text-vocalia-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Support prioritaire
+            </li>
+          </ul>
+
+          <a href="/signup?plan=pro" class="block w-full py-3 px-6 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-center font-semibold transition">
+            Choisir Pro
+          </a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card p-6 relative">
+          <div class="mb-6">
+            <h3 class="text-lg font-semibold text-zinc-300 mb-2">Enterprise</h3>
+            <div class="flex items-baseline gap-1">
+              <span class="text-4xl font-bold">Sur Mesure</span>
+            </div>
+            <p class="text-sm text-zinc-500 mt-1">tarif personnalisé</p>
+          </div>
+
+          <p class="text-zinc-400 text-sm mb-6">Pour les grandes entreprises avec des besoins spécifiques.</p>
+
+          <ul class="space-y-3 mb-8 text-sm">
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Volume illimité
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Self-hosted option
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              SLA 99.99%
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Account manager dédié
+            </li>
+            <li class="flex items-start gap-2 text-zinc-300">
+              <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              Intégrations custom
+            </li>
+          </ul>
+
+          <a href="/contact?plan=enterprise" class="block w-full py-3 px-6 rounded-xl border-2 border-vocalia-500 text-vocalia-400 text-center font-semibold transition hover:bg-vocalia-500/10">
+            Nous Contacter
+          </a>
+        </div>
+      </div>
+
+      <!-- Telephony Pricing Note -->
+      <div class="mt-12 text-center">
+        <div class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-700/50 border border-slate-600">
+          <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span class="text-zinc-300">Minutes supplémentaires téléphonie: <strong class="text-white">0.06€/min</strong></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature Comparison Table -->
+  <section class="py-20 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-12">Comparaison Détaillée</h2>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-slate-700">
+              <th class="text-left py-4 px-4 font-semibold">Fonctionnalité</th>
+              <th class="text-center py-4 px-4 font-semibold">Gratuit</th>
+              <th class="text-center py-4 px-4 font-semibold">Starter</th>
+              <th class="text-center py-4 px-4 font-semibold text-vocalia-400">Pro</th>
+              <th class="text-center py-4 px-4 font-semibold">Enterprise</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">Voice Widget</td>
+              <td class="text-center py-4 px-4"><span class="text-emerald-400">✓</span></td>
+              <td class="text-center py-4 px-4"><span class="text-emerald-400">✓</span></td>
+              <td class="text-center py-4 px-4"><span class="text-emerald-400">✓</span></td>
+              <td class="text-center py-4 px-4"><span class="text-emerald-400">✓</span></td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">Voice Telephony</td>
+              <td class="text-center py-4 px-4"><span class="text-zinc-500">—</span></td>
+              <td class="text-center py-4 px-4">100 min</td>
+              <td class="text-center py-4 px-4">500 min</td>
+              <td class="text-center py-4 px-4">Illimité</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">Personas</td>
+              <td class="text-center py-4 px-4">5</td>
+              <td class="text-center py-4 px-4">15</td>
+              <td class="text-center py-4 px-4">30</td>
+              <td class="text-center py-4 px-4">Custom</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">Langues</td>
+              <td class="text-center py-4 px-4">2</td>
+              <td class="text-center py-4 px-4">5</td>
+              <td class="text-center py-4 px-4">5 + Darija</td>
+              <td class="text-center py-4 px-4">All + Custom</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">Intégrations CRM</td>
+              <td class="text-center py-4 px-4"><span class="text-zinc-500">—</span></td>
+              <td class="text-center py-4 px-4">Zapier</td>
+              <td class="text-center py-4 px-4">HubSpot, Klaviyo</td>
+              <td class="text-center py-4 px-4">Custom</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">Analytics</td>
+              <td class="text-center py-4 px-4">Basique</td>
+              <td class="text-center py-4 px-4">Standard</td>
+              <td class="text-center py-4 px-4">Avancé</td>
+              <td class="text-center py-4 px-4">BI Custom</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">Support</td>
+              <td class="text-center py-4 px-4">Docs</td>
+              <td class="text-center py-4 px-4">Email</td>
+              <td class="text-center py-4 px-4">Prioritaire</td>
+              <td class="text-center py-4 px-4">24/7 Dédié</td>
+            </tr>
+            <tr class="border-b border-slate-800">
+              <td class="py-4 px-4 font-medium">SLA</td>
+              <td class="text-center py-4 px-4"><span class="text-zinc-500">—</span></td>
+              <td class="text-center py-4 px-4">99.5%</td>
+              <td class="text-center py-4 px-4">99.9%</td>
+              <td class="text-center py-4 px-4">99.99%</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-4 font-medium">Self-Hosted</td>
+              <td class="text-center py-4 px-4"><span class="text-zinc-500">—</span></td>
+              <td class="text-center py-4 px-4"><span class="text-zinc-500">—</span></td>
+              <td class="text-center py-4 px-4"><span class="text-zinc-500">—</span></td>
+              <td class="text-center py-4 px-4"><span class="text-emerald-400">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-12">Questions Fréquentes</h2>
+
+      <div class="space-y-4">
+        <!-- FAQ Item 1 -->
+        <details class="group glass rounded-xl">
+          <summary class="flex items-center justify-between p-6 cursor-pointer">
+            <span class="font-semibold">Comment fonctionne la facturation téléphonie?</span>
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-zinc-400">
+            Chaque plan inclut un certain nombre de minutes téléphonie. Au-delà, les minutes supplémentaires sont facturées à 0.06€/min. Ce tarif inclut l'infrastructure Twilio et le traitement AI Grok.
+          </div>
+        </details>
+
+        <!-- FAQ Item 2 -->
+        <details class="group glass rounded-xl">
+          <summary class="flex items-center justify-between p-6 cursor-pointer">
+            <span class="font-semibold">Puis-je changer de plan à tout moment?</span>
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-zinc-400">
+            Oui, vous pouvez upgrader ou downgrader à tout moment. L'upgrade est immédiat, le downgrade prend effet au prochain cycle de facturation.
+          </div>
+        </details>
+
+        <!-- FAQ Item 3 -->
+        <details class="group glass rounded-xl">
+          <summary class="flex items-center justify-between p-6 cursor-pointer">
+            <span class="font-semibold">Le Voice Widget est-il vraiment gratuit?</span>
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-zinc-400">
+            Oui. Le Widget utilise la Web Speech API native du navigateur, qui est gratuite. VocalIA n'a aucun coût d'API à vous répercuter. Seul le branding VocalIA est affiché sur le plan gratuit.
+          </div>
+        </details>
+
+        <!-- FAQ Item 4 -->
+        <details class="group glass rounded-xl">
+          <summary class="flex items-center justify-between p-6 cursor-pointer">
+            <span class="font-semibold">Qu'est-ce que le support Darija?</span>
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-zinc-400">
+            Le Darija est le dialecte marocain parlé par 30+ millions de personnes. VocalIA utilise Atlas-Chat-9B, un modèle spécialisé, pour offrir un support natif unique sur le marché.
+          </div>
+        </details>
+
+        <!-- FAQ Item 5 -->
+        <details class="group glass rounded-xl">
+          <summary class="flex items-center justify-between p-6 cursor-pointer">
+            <span class="font-semibold">Comment fonctionne l'option self-hosted?</span>
+            <svg class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-zinc-400">
+            Pour les clients Enterprise, nous fournissons les containers Docker et scripts de déploiement pour installer VocalIA sur votre propre infrastructure (VPS, cloud privé, on-premise). Vous gardez le contrôle total de vos données.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-24 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-vocalia-600 to-vocalia-500"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6">Prêt à Automatiser Vos Appels?</h2>
+      <p class="text-xl text-white/80 mb-8">Commencez gratuitement, évoluez quand vous êtes prêt.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="/signup" class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg">
+          Commencer Gratuitement
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </a>
+        <a href="/contact" class="inline-flex items-center px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white hover:bg-white/20 transition font-semibold text-lg">
+          Parler à un Expert
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-5 gap-8">
+        <div class="md:col-span-2">
+          <a href="/" class="flex items-center space-x-2 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+              <span class="text-xl">🎙️</span>
+            </div>
+            <span class="text-xl font-bold gradient-text">VocalIA</span>
+          </a>
+          <p class="text-zinc-400 mb-4">Agents Vocaux IA pour Entreprises</p>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-4">Produit</h4>
+          <ul class="space-y-2 text-zinc-400">
+            <li><a href="/features" class="hover:text-white transition">Fonctionnalités</a></li>
+            <li><a href="/pricing" class="hover:text-white transition">Tarifs</a></li>
+            <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-4">Entreprise</h4>
+          <ul class="space-y-2 text-zinc-400">
+            <li><a href="/about" class="hover:text-white transition">À propos</a></li>
+            <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-semibold mb-4">Légal</h4>
+          <ul class="space-y-2 text-zinc-400">
+            <li><a href="/privacy" class="hover:text-white transition">Confidentialité</a></li>
+            <li><a href="/terms" class="hover:text-white transition">CGU</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-zinc-500 text-sm">
+        <p>© 2026 VocalIA. Tous droits réservés.</p>
+        <div class="flex items-center space-x-4 mt-4 md:mt-0">
+          <span class="flex items-center gap-1"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> RGPD</span>
+          <span class="flex items-center gap-1"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> AES-256</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Billing Toggle
+    const toggle = document.getElementById('billingToggle');
+    const options = toggle.querySelectorAll('.toggle-option');
+
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('active'));
+        option.classList.add('active');
+
+        const isAnnual = option.dataset.period === 'annual';
+
+        // Update prices (20% discount for annual)
+        document.getElementById('starterPrice').textContent = isAnnual ? '79' : '99';
+        document.getElementById('proPrice').textContent = isAnnual ? '239' : '299';
+        document.getElementById('starterAnnual').textContent = isAnnual ? 'facturé annuellement' : 'ou 79€/mois (annuel)';
+        document.getElementById('proAnnual').textContent = isAnnual ? 'facturé annuellement' : 'ou 239€/mois (annuel)';
+      });
+    });
+  </script>
+</body>
+</html>
