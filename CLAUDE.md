@@ -1471,23 +1471,100 @@ Model Context Protocol server exposing VocalIA capabilities to Claude Desktop:
 
 ---
 
-### PLAN ACTIONNABLE (Session 228)
+## Session 228 Summary
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Deploy API backend (api.vocalia.ma) | **P0** | Required for SDKs/MCP to function |
-| 2 | Publish SDKs to PyPI/npm | P1 | After API deployment |
-| 3 | Light mode LCH polish | P2 | Optional enhancement (backlog) |
-| 4 | Performance audit | P3 | Lighthouse CI integration |
+**Critical Fixes: Voice Visualizer Colors + Newsletter CTAs + Vercel Removal**
+
+### 1. Voice Visualizer - ROOT CAUSE FIX ✅
+
+**Problème:** Animations affichaient violet/lavender au lieu de bleu ciel
+
+**Root Cause Trouvée (ligne 1489-1490 index.html):**
+```javascript
+// AVANT (BUG):
+color: '#5E6AD2',           // indigo
+secondaryColor: '#8b5cf6',  // VIOLET!
+
+// APRÈS (CORRIGÉ):
+primaryColor: '#5DADE2',    // Sky Blue
+secondaryColor: '#85C1E9',  // Light Sky Blue
+accentColor: '#5DADE2',
+glowColor: '#5DADE2',
+```
+
+### 2. Newsletter CTA - INLINE RESTORATION ✅
+
+**Problème:** JS dynamic component loading ne fonctionnait pas sur NindoHost FTP
+
+| Avant | Après |
+|:------|:------|
+| `data-component="newsletter-cta"` | HTML inline |
+| 0 CTAs visibles | 24 fichiers avec CTA |
+| Fetch JS échoue | Fonctionne partout |
+
+### 3. Vercel Removal - COMPLET ✅
+
+| Fichier | Action |
+|:--------|:-------|
+| `website/vercel.json` | ❌ Supprimé |
+| `CLAUDE.md` | ✅ Nettoyé |
+| `docs/SESSION-HISTORY.md` | ✅ Nettoyé |
+| `docs/FORENSIC-AUDIT-WEBSITE.md` | ✅ Nettoyé |
+| `docs/DESIGN-BRANDING-SYSTEM.md` | ✅ Nettoyé |
+| `DEPLOY-NINDOHOST.md` | ✅ Nettoyé |
+| `scripts/fix-brand-icons.py` | ✅ Nettoyé |
+
+**Vérification:** `grep -ri "vercel" .` → **0 résultats**
+
+### 4. Visualizer Canvas Standardization ✅
+
+| Canvas | Height |
+|:-------|:------:|
+| visualizer-wave | 180px |
+| visualizer-bars | 180px |
+| visualizer-orb | 180px |
+| visualizer-pulse | 180px |
+
+Container élargi: `max-w-6xl` → `max-w-7xl`
+
+### Commits Session 228
+
+| Commit | Description |
+|:-------|:------------|
+| `c363617` | Remove vercel.json |
+| `018c7eb` | Remove ALL Vercel references |
+| `78c99f6` | Restore inline CTAs |
+| `fe6a06b` | Fix: Pure sky blue #5DADE2 |
+| `6e531d5` | ROOT CAUSE FIX: index.html violet override |
+| `1294885` | Standardize canvas heights + max-w-7xl |
+
+### Vérification Empirique ✅
+
+| Check | Status |
+|:------|:------:|
+| Déploiement NindoHost | ✅ SUCCESS |
+| Vercel traces | ✅ 0 |
+| Visualizer `#5DADE2` | ✅ |
+| CTAs (24 fichiers) | ✅ |
+| Cache v=217 | ✅ |
 
 ---
 
-*Màj: 29/01/2026 - Session 227 (MCP Server + SDKs)*
+### PLAN ACTIONNABLE (Session 229)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Vérifier Mode Pulse visible sur prod | **P0** | User report |
+| 2 | Deploy API backend (api.vocalia.ma) | P1 | Required for SDKs/MCP |
+| 3 | Test complet 4 modes visualizer | P1 | Wave, Bars, Orb, Pulse |
+| 4 | Publish SDKs to PyPI/npm | P2 | After API deployment |
+
+---
+
+*Màj: 30/01/2026 - Session 228 (Voice Visualizer ROOT CAUSE + CTAs + Vercel Removal)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
-*Live: https://vocalia.ma ✅ | Visual Testing: Playwright MCP ✅*
+*Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ | Node.js ✅ | MCP Server ✅ (11 tools)*
-*i18n: Locale JSON files accessible ✅ (403 fix deployed)*
-*Dashboards: Light/Dark mode fully functional ✅*
-*Blog: 7 articles with working links ✅ | Docs: /docs/ fixed ✅*
+*Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
