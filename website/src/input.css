@@ -2887,9 +2887,18 @@ html.light .voice-visualizer-btn:hover,
 }
 
 .animate-marquee-left {
-  animation: marquee-left 30s linear infinite;
+  display: flex;
+  width: max-content;
+  animation: marquee-left 25s linear infinite;
 }
 
 .animate-marquee-right {
-  animation: marquee-right 30s linear infinite;
+  display: flex;
+  width: max-content;
+  animation: marquee-right 25s linear infinite;
+}
+
+.animate-marquee-left:hover,
+.animate-marquee-right:hover {
+  animation-play-state: paused;
 }
