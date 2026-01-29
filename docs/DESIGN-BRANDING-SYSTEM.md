@@ -412,5 +412,96 @@ grep -o 'bg-vocalia-[0-9]*' website/public/css/style.css | sort -u
 
 ---
 
+## Session 209 - 2026 Components Added
+
+### Bento Grid System
+
+```css
+/* 4-column asymmetric grid */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(120px, auto);
+  gap: 1rem;
+}
+
+.bento-large { grid-column: span 2; grid-row: span 2; }
+.bento-wide { grid-column: span 2; }
+.bento-tall { grid-row: span 2; }
+.bento-featured { grid-column: span 3; grid-row: span 2; }
+```
+
+### Accessible Status Indicators (WCAG 2.1)
+
+```html
+<!-- Icon + Color + Text (not color alone) -->
+<span class="status-indicator status-indicator-online">
+  <span class="status-indicator-dot"></span>
+  <span>En ligne</span>
+</span>
+```
+
+Classes disponibles:
+- `.status-indicator-online` (green + checkmark)
+- `.status-indicator-warning` (amber + exclamation)
+- `.status-indicator-error` (red + X)
+- `.status-indicator-offline` (gray + circle)
+
+### GPU-Only Animations
+
+```css
+/* GOOD - Compositor only (no repaints) */
+.animate-gradient-gpu    /* transform: rotate() scale() */
+.animate-glow-pulse      /* opacity on pseudo-element */
+.animate-shimmer         /* transform: translateX() */
+
+/* DEPRECATED - Causes repaints */
+.animate-gradient        /* was: background-position (slow) */
+```
+
+### Dashboard Drag-and-Drop
+
+```javascript
+// Initialize
+new DashboardGrid('.dashboard-content', {
+  storageKey: 'vocalia-layout',
+  enableCollapse: true,
+  enableDrag: true
+});
+```
+
+Features:
+- Vanilla JS (no dependencies)
+- Layout persistence (localStorage)
+- Keyboard accessible
+- Collapse/expand widgets
+
+### AI Insights Card
+
+```html
+<div class="ai-insights-card">
+  <div class="ai-insights-header">
+    <div class="ai-insights-icon">...</div>
+    <span class="ai-insights-badge">AI</span>
+  </div>
+  <p class="ai-insights-content">
+    <strong>Insight title</strong> — Details here.
+  </p>
+</div>
+```
+
+---
+
+## PLAN ACTIONNABLE (Session 210)
+
+| # | Action | Priorité | Fichier |
+|:-:|:-------|:--------:|:--------|
+| 1 | Light Mode LCH | P2 | `input.css` |
+| 2 | Voice Visualizer | P2 | NEW component |
+| 3 | OG Image | P2 | `assets/og-image.jpg` |
+
+---
+
 *Document créé: 28/01/2026 - Session 200*
+*Màj: 29/01/2026 - Session 209 (2026 Components)*
 *Auteur: Claude Code (DOE Framework)*

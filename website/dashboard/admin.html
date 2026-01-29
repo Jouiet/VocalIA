@@ -684,8 +684,20 @@
       window.addEventListener('localeChanged', () => {
         VocaliaI18n.translatePage();
       });
+
+      // Initialize draggable dashboard grid
+      if (typeof DashboardGrid !== 'undefined') {
+        window.adminDashboardGrid = new DashboardGrid('.dashboard-content', {
+          storageKey: 'vocalia-admin-layout',
+          enableCollapse: true,
+          enableDrag: true
+        });
+      }
     })();
   </script>
+
+  <!-- Dashboard Drag & Drop -->
+  <script src="../src/lib/dashboard-grid.js"></script>
 </body>
 
 </html>
