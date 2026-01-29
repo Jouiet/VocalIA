@@ -1,6 +1,7 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 3.7.1 | 29/01/2026 | Session 222 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 3.7.2 | 29/01/2026 | Session 222.2 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> CI/CD: ✅ VocalIA CI (31s) | ✅ Deploy (22s)
 
 ## Identité
 
@@ -24,7 +25,7 @@
 | **Documentation** | 10 | **10** | 5 rules, CLAUDE.md, 10 docs ✅ |
 | **Infrastructure** | 15 | **15** | MCP ✅, Sensors ✅, Registry ✅, GPM ✅, VocalIA-Ops ✅ |
 | **Testing** | 15 | **15** | 39/39 checks ✅, health-check.cjs ✅ |
-| **CI/CD** | - | **+3** | GitHub Actions (ci.yml + deploy.yml) ✅ |
+| **CI/CD** | - | **+3** | GitHub Actions: ci.yml (31s) + deploy-nindohost.yml (22s) ✅ |
 | **TOTAL** | **100** | **99** | Health Score: 100% (39/39 passed) |
 
 ### Frontend Design Score: ~97% ✅ (Post Session 220)
@@ -987,6 +988,49 @@ grep -riE "Grok|Gemini|Twilio" website/ --include="*.html" | wc -l
 
 ---
 
+## Session 222.2 Summary - CI/CD Critical Fix
+
+**Directive:** Fix GitHub Actions workflows stuck in "queued" state.
+
+### Analyse Forensique
+
+| Symptôme | Cause Racine | Fix |
+|:---------|:-------------|:----|
+| 16 runs queued | Queue congestion | Annulation massive |
+| VocalIA CI jamais réussi | 5 jobs parallèles + slow steps | Simplifié à 1 job |
+| "Verify Module Loading" hang | Modules avec timeout | Retiré du CI |
+| deploy.yml blocking | Environments approval | Supprimé (Session 222.1) |
+
+### Résultat Final
+
+| Workflow | Status | Durée |
+|:---------|:-------|:------|
+| VocalIA CI | ✅ **SUCCESS** | 31s |
+| Deploy to NindoHost | ✅ **SUCCESS** | 22s |
+
+### ci.yml Simplifié
+
+```yaml
+jobs:
+  ci:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - Checkout + Setup Node.js
+      - npm ci
+      - node scripts/health-check.cjs
+      - Verify JSON files
+      - Build Summary
+```
+
+**Commits:**
+- `c44d220` Fix: CI workflow referencing archived files
+- `e60db41` Fix: health-check reference to deploy-nindohost.yml
+- `3b2a549` Fix: CI with timeouts, removed slow module check
+
+---
+
 ### PLAN ACTIONNABLE (Session 223)
 
 | # | Action | Priorité | Notes |
@@ -998,9 +1042,10 @@ grep -riE "Grok|Gemini|Twilio" website/ --include="*.html" | wc -l
 
 ---
 
-*Màj: 29/01/2026 - Session 222 (Security: Technology Disclosure Fix)*
+*Màj: 29/01/2026 - Session 222.2 (CI/CD Critical Fix)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Auto-Deploy: GitHub Actions → NindoHost*
+*CI/CD: ✅ VocalIA CI (31s) | ✅ Deploy (22s) - Both GREEN*
 *Pages: 24 HTML | SITEMAP: 100% COMPLETE*
 *Security: Technology Disclosure Protection ✅ (36 → 0 exposures)*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*

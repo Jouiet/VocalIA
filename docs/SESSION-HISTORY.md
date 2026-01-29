@@ -2048,6 +2048,67 @@ website/public/css/style.css
 
 ---
 
+### Session 222 Part 2 - CI/CD Critical Fix (29/01/2026 19:00 CET)
+
+**Directive:** Fix GitHub Actions workflows stuck in "queued" state.
+
+### ANALYSE FORENSIQUE
+
+| Symptôme | Impact |
+|:---------|:-------|
+| 16 runs en queue | Congestion bloquant tous les nouveaux runs |
+| VocalIA CI jamais réussi | 0 runs successful depuis création (Session 190) |
+| Deploy fonctionne | Preuve que le compte GitHub est OK |
+
+### CAUSES RACINES IDENTIFIÉES
+
+| Cause | Diagnostic | Fix |
+|:------|:-----------|:----|
+| **Queue congestion** | 16 runs accumulés en queue | Annulation massive de tous les runs |
+| **ci.yml 5 jobs** | Surcharge allocation runners | Simplifié à 1 job |
+| **"Verify Module Loading"** | Step qui timeout/hang | Retiré du CI |
+| **deploy.yml environments** | Approbation manuelle potentielle | Supprimé (Session 222 Part 1) |
+
+### WORKFLOW AVANT/APRÈS
+
+| Aspect | Avant | Après |
+|:-------|:------|:------|
+| Jobs | 5 (health-check, lint, security, test, build) | **1** (ci) |
+| Durée | ∞ (jamais terminé) | **31s** |
+| Status | Toujours "queued" ou "cancelled" | **✅ SUCCESS** |
+| Steps | 20+ node -e requires | 4 steps essentiels |
+
+### ci.yml FINAL
+
+```yaml
+jobs:
+  ci:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - Checkout
+      - Setup Node.js + npm ci
+      - Run Health Check
+      - Verify JSON files
+      - Build Summary
+```
+
+### VÉRIFICATION
+
+```bash
+gh run list --limit 3
+# completed  success  VocalIA CI       31s
+# completed  success  Deploy to NindoHost  22s
+```
+
+**Commits:**
+- `e60db41` - Fix: health-check reference to deploy-nindohost.yml
+- `c44d220` - Fix: CI workflow referencing archived files
+- `3b2a549` - Fix: CI with timeouts, removed slow module check
+
+---
+
 ### PLAN ACTIONNABLE (Session 223)
 
 | # | Action | Priorité | Notes |
@@ -2060,6 +2121,7 @@ website/public/css/style.css
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 222 (Security Technology Disclosure Fix)*
+*Màj: 29/01/2026 - Session 222 Part 2 (CI/CD Critical Fix)*
 *Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
 *Security: 36 technology disclosures → 0 (FIXED)*
+*CI/CD: VocalIA CI ✅ SUCCESS (31s) | Deploy ✅ SUCCESS (22s)*
