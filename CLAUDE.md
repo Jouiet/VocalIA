@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 3.9.1 | 29/01/2026 | Session 224.2 | Backend: 99/100 | Frontend: ~98% | Health: 100%
-> CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s)
+> Version: 4.0.0 | 29/01/2026 | Session 225 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Dashboards: Liquid-Glass ✅
 
 ## Identité
 
@@ -1319,19 +1319,42 @@ Les icônes checkmark utilisaient l'ancien format Heroicons Solid:
 
 ---
 
-### PLAN ACTIONNABLE (Session 225)
+## Session 225 Summary
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Liquid-glass cards dashboards | P1 | Task #29 pending |
-| 2 | Light mode fixes | P2 | Dashboard contrast |
-| 3 | Visual testing Playwright | P2 | Verify all fixes live |
+**1. Liquid-Glass Dashboard Cards:** ✅ COMPLETED
+
+Dashboard cards upgraded from basic `glass-panel` to Apple 2026-inspired `liquid-glass`:
+
+| File | Cards Updated |
+|:-----|:--------------|
+| `dashboard/client.html` | 5 (charts, agents, calls, billing) |
+| `dashboard/admin.html` | 6 (health, tenants, revenue, api, logs) |
+
+**Features:**
+- 3D Transform on hover: `translateY(-8px) translateZ(20px)`
+- Inner glow via `::before` pseudo-element
+- Shimmer effect via `::after` with opacity transition
+- Light mode support already in CSS
+
+### Commit
+
+`272fab5` - Session 225: Dashboard Liquid-Glass Integration
 
 ---
 
-*Màj: 29/01/2026 - Session 224.2 (Critical Fixes: Icons, Docs, Blog)*
-*Status: Backend 99/100 ✅ | Frontend ~98% ✅ | Health 100% (39/39)*
+### PLAN ACTIONNABLE (Session 226)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Light mode LCH fixes | P2 | Dashboard contrast (backlog) |
+| 2 | Visual testing Playwright | P2 | Verify all fixes live |
+
+---
+
+*Màj: 29/01/2026 - Session 225 (Dashboard Liquid-Glass Integration)*
+*Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Auto-Deploy: GitHub Actions → NindoHost*
+*Dashboards: Liquid-Glass 3D Cards ✅ (11 cards total)*
 *Icons: ALL Heroicons (Outline+Solid) → Lucide 2026 ✅*
 *Blog: 7 articles with working links ✅ | Docs: /docs/ fixed ✅*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*

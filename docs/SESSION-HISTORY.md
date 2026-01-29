@@ -2362,18 +2362,55 @@ ls website/docs/index.html
 
 ---
 
-### PLAN ACTIONNABLE (Session 225)
+## Session 225 (29/01/2026)
+
+### OBJECTIF
+
+Upgrade dashboard cards from basic `glass-panel` to Apple 2026-inspired `liquid-glass` effect.
+
+### IMPLÉMENTATIONS
+
+**1. Liquid-Glass Dashboard Cards:** ✅
+
+| File | Cards Updated |
+|:-----|:--------------|
+| `dashboard/client.html` | 5 (charts, agents, calls, billing) |
+| `dashboard/admin.html` | 6 (health, tenants, revenue, api, logs) |
+
+**CSS Class Features:**
+```css
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(180%);
+  transform-style: preserve-3d;
+}
+.liquid-glass:hover {
+  transform: translateY(-8px) translateZ(20px);
+}
+```
+
+- Inner glow: `::before` pseudo-element with gradient
+- Shimmer on hover: `::after` with opacity transition
+- Light mode: Already supported in CSS
+
+### COMMITS
+
+- `272fab5` - Session 225: Dashboard Liquid-Glass Integration
+
+---
+
+### PLAN ACTIONNABLE (Session 226)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Liquid-glass cards dashboards | P1 | Task #29 pending |
-| 2 | Light mode fixes | P2 | Dashboard contrast |
-| 3 | Visual testing Playwright | P2 | Verify live site |
+| 1 | Light mode LCH fixes | P2 | Dashboard contrast (backlog) |
+| 2 | Visual testing Playwright | P2 | Verify live site |
 
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 224.2 (Critical Fixes)*
-*Status: Backend 99/100 | Frontend ~98% | Health: 100% (39/39)*
+*Màj: 29/01/2026 - Session 225 (Dashboard Liquid-Glass Integration)*
+*Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
+*Dashboards: 11 liquid-glass cards (5 client + 6 admin)*
 *Icons: ALL Heroicons (Outline+Solid) → Lucide 2026*
 *Blog: 7 articles with working links | Docs: /docs/ fixed*
