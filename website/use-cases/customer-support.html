@@ -89,32 +89,518 @@
 
 <body class="bg-slate-800 text-white antialiased">
   <!-- Skip Link -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller au contenu principal</a>
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <a href="/" class="flex items-center space-x-2">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
-            <span class="text-xl">🎙️</span>
+    <a href="#main-content"
+
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller
+
+      au contenu principal</a>
+
+
+    <!-- Navigation -->
+
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="flex items-center justify-between h-16">
+
+          <!-- Logo -->
+
+          <a href="/" class="flex items-center space-x-2">
+
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+
+              <span class="text-xl">🎙️</span>
+
+            </div>
+
+            <span class="text-xl font-bold gradient-text">VocalIA</span>
+
+          </a>
+
+
+          <!-- Desktop Nav with Mega Menu -->
+
+          <div class="hidden md:flex items-center space-x-1">
+
+            <!-- Products Dropdown -->
+
+            <div class="relative group">
+
+              <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+
+                Produits
+
+                <svg class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m6 9 6 6 6-6" />
+
+                </svg>
+
+              </button>
+
+              <div class="absolute top-full left-0 mt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+
+                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+
+                  <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+
+                    <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center shrink-0">
+
+                      <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                        <circle cx="12" cy="12" r="10" stroke-width="1.5"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" stroke-width="1.5"/><path d="M2 12h20" stroke-width="1.5"/>
+
+                      </svg>
+
+                    </div>
+
+                    <div>
+
+                      <div class="font-semibold text-white">Voice Widget</div>
+
+                      <div class="text-sm text-zinc-400">Assistant vocal web gratuit</div>
+
+                    </div>
+
+                  </a>
+
+                  <a href="/products/voice-telephony" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+
+                    <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
+
+                      <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                        <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                      </svg>
+
+                    </div>
+
+                    <div>
+
+                      <div class="font-semibold text-white">Voice Telephony AI</div>
+
+                      <div class="text-sm text-zinc-400">Agents téléphoniques PSTN</div>
+
+                    </div>
+
+                  </a>
+
+                  <hr class="border-slate-600/50 my-2">
+
+                  <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
+
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16M4 12h16M4 19h16" />
+
+                    </svg>
+
+                    Toutes les fonctionnalités
+
+                  </a>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Solutions Dropdown -->
+
+            <div class="relative group">
+
+              <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+
+                Solutions
+
+                <svg class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m6 9 6 6 6-6" />
+
+                </svg>
+
+              </button>
+
+              <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+
+                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+
+                  <div class="grid grid-cols-3 gap-6">
+
+                    <!-- Column 1: Use Cases -->
+
+                    <div>
+
+                      <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Par Cas d'Usage</div>
+
+                      <a href="/use-cases/e-commerce" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+
+                        E-commerce
+
+                      </a>
+
+                      <a href="/use-cases/customer-support" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+
+                        Service Client
+
+                      </a>
+
+                      <a href="/use-cases/appointments" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 8H3V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2zM21 8v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8zM8 2v4M16 2v4"/></svg>
+
+                        Prise de RDV
+
+                      </a>
+
+                      <a href="/use-cases/lead-qualification" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+
+                        Qualification Leads
+
+                      </a>
+
+                    </div>
+
+                    <!-- Column 2: Industries -->
+
+                    <div>
+
+                      <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Par Industrie</div>
+
+                      <a href="/industries/healthcare" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+                        Santé & Médical
+
+                      </a>
+
+                      <a href="/industries/real-estate" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 21H5a2 2 0 0 1-2-2V9l9-7 9 7v10a2 2 0 0 1-2 2h-4M9 21v-7h6v7M9 21h6"/></svg>
+
+                        Immobilier
+
+                      </a>
+
+                      <a href="/industries/finance" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+
+                        Services Financiers
+
+                      </a>
+
+                      <a href="/industries/retail" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+
+                        Retail & Commerce
+
+                      </a>
+
+                    </div>
+
+                    <!-- Column 3: Featured -->
+
+                    <div class="bg-slate-700/30 rounded-lg p-4">
+
+                      <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3">Populaire</div>
+
+                      <div class="space-y-3">
+
+                        <a href="/solutions/multilingual" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+
+                          <div class="flex items-center gap-2 mb-1">
+
+                            <span class="text-lg">🌍</span>
+
+                            <span class="text-white font-medium text-sm">Multi-Langue</span>
+
+                          </div>
+
+                          <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija — 5 langues natives</p>
+
+                        </a>
+
+                        <a href="/solutions/darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+
+                          <div class="flex items-center gap-2 mb-1">
+
+                            <span class="text-lg">🇲🇦</span>
+
+                            <span class="text-white font-medium text-sm">Darija AI</span>
+
+                          </div>
+
+                          <p class="text-zinc-400 text-xs">Premier assistant vocal en dialecte marocain</p>
+
+                        </a>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition">Tarifs</a>
+
+
+            <!-- Resources Dropdown -->
+
+            <div class="relative group">
+
+              <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+
+                Ressources
+
+                <svg class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m6 9 6 6 6-6" />
+
+                </svg>
+
+              </button>
+
+              <div class="absolute top-full right-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+
+                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+
+                  <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Documentation</a>
+
+                  <a href="/integrations" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Intégrations</a>
+
+                  <a href="/blog" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Blog</a>
+
+                  <a href="/changelog" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">Changelog</a>
+
+                </div>
+
+              </div>
+
+            </div>
+
           </div>
-          <span class="text-xl font-bold">VocalIA</span>
-        </a>
-        <div class="hidden md:flex items-center space-x-8">
-          <a href="/features" class="text-slate-300 hover:text-white transition-colors">Fonctionnalités</a>
-          <a href="/pricing" class="text-slate-300 hover:text-white transition-colors">Tarifs</a>
-          <a href="/docs" class="text-slate-300 hover:text-white transition-colors">Documentation</a>
-          <a href="/contact" class="text-slate-300 hover:text-white transition-colors">Contact</a>
-        </div>
-        <div class="flex items-center space-x-4">
-          <a href="/dashboard/client" class="text-slate-300 hover:text-white transition-colors">Connexion</a>
-          <a href="/contact" class="px-4 py-2 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-colors">Démo gratuite</a>
-        </div>
-      </div>
-    </div>
-  </nav>
 
+
+          <!-- CTA + Mobile -->
+
+          <div class="flex items-center space-x-3">
+
+            <a href="/dashboard"
+
+              class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition font-medium">Connexion</a>
+
+
+            <!-- Mobile Hamburger Button -->
+
+            <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
+
+              <svg class="w-6 h-6 text-vocalia-200" id="menuIconOpen" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5h16M4 12h16M4 19h16" />
+
+              </svg>
+
+              <svg class="w-6 h-6 text-vocalia-200 hidden" id="menuIconClose" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 6 6 18M6 6l12 12" />
+
+              </svg>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Mobile Menu Drawer -->
+
+      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+
+        <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
+
+          <!-- Products Section -->
+
+          <div class="mb-6">
+
+            <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Produits</h3>
+
+            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+
+              <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
+
+                <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                  <circle cx="12" cy="12" r="10" stroke-width="1.5"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" stroke-width="1.5"/><path d="M2 12h20" stroke-width="1.5"/>
+
+                </svg>
+
+              </div>
+
+              <div>
+
+                <div class="font-medium text-white">Voice Widget</div>
+
+                <div class="text-sm text-zinc-400">Assistant vocal web gratuit</div>
+
+              </div>
+
+            </a>
+
+            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+
+              <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
+
+                <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                </svg>
+
+              </div>
+
+              <div>
+
+                <div class="font-medium text-white">Voice Telephony AI</div>
+
+                <div class="text-sm text-zinc-400">Agents téléphoniques PSTN</div>
+
+              </div>
+
+            </a>
+
+          </div>
+
+
+          <!-- Solutions Section -->
+
+          <div class="mb-6">
+
+            <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Solutions</h3>
+
+            <div class="grid grid-cols-2 gap-2">
+
+              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">E-commerce</a>
+
+              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">Santé</a>
+
+              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">Service Client</a>
+
+              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">Immobilier</a>
+
+            </div>
+
+          </div>
+
+
+          <!-- Resources Section -->
+
+          <div class="mb-6">
+
+            <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Ressources</h3>
+
+            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">Documentation</a>
+
+            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">Intégrations</a>
+
+            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">Blog</a>
+
+            <a href="/changelog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300">Changelog</a>
+
+          </div>
+
+
+          <!-- Mobile CTA -->
+
+          <div class="space-y-3">
+
+            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+
+              Tarifs
+
+            </a>
+
+            <a href="/dashboard" class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white">
+
+              Connexion
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </nav>
+
+
+    <!-- Mobile Menu Script -->
+
+    <script>
+
+      (function() {
+
+        const btn = document.getElementById('mobileMenuBtn');
+
+        const menu = document.getElementById('mobileMenu');
+
+        const iconOpen = document.getElementById('menuIconOpen');
+
+        const iconClose = document.getElementById('menuIconClose');
+
+        if (btn && menu) {
+
+          btn.addEventListener('click', function() {
+
+            const isOpen = !menu.classList.contains('translate-x-full');
+
+            if (isOpen) {
+
+              menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+
+              iconOpen.classList.remove('hidden');
+
+              iconClose.classList.add('hidden');
+
+            } else {
+
+              menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+
+              iconOpen.classList.add('hidden');
+
+              iconClose.classList.remove('hidden');
+
+            }
+
+          });
+
+        }
+
+      })();
+
+    </script>
   <main id="main-content" class="pt-24 pb-16">
     <!-- Hero Section -->
     <section class="py-16 relative overflow-hidden">
@@ -186,7 +672,7 @@
         <div class="grid md:grid-cols-3 gap-6">
           <div class="problem-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mb-4">
-              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2m6-2a10 10 0 1 1-20 0 10 10 0 0 1 20 0"></path></svg>
             </div>
             <h3 class="text-lg font-semibold mb-2">Temps d'attente inacceptable</h3>
             <p class="text-slate-400">Les clients s'attendent à une réponse en moins de 5 minutes. La moyenne actuelle: 12-24h par email, 10min par téléphone.</p>
@@ -350,11 +836,11 @@
           <!-- Contact Info -->
           <div class="space-y-2 text-sm text-zinc-400 mb-4">
             <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M22 6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2zm-2 0-8 5-8-5"/></svg>
               contact@vocalia.ma
             </a>
             <a href="tel:+212520000000" class="flex items-center gap-2 hover:text-white transition">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
               +212 5 20 00 00 00
             </a>
           </div>
