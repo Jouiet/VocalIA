@@ -1,6 +1,6 @@
 # VocalIA - Documentation Index
 
-> **Version**: 2.5.0 | **Date**: 29/01/2026 | **Session**: 207
+> **Version**: 2.6.0 | **Date**: 29/01/2026 | **Session**: 208
 
 ---
 
