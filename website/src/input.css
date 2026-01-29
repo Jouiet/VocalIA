@@ -2156,11 +2156,30 @@ html.light .voice-visualizer-btn:hover,
 }
 
 .voice-demo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1rem;
   max-width: 1200px;
   margin: 0 auto;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.voice-demo-grid > * {
+  flex: 0 0 220px;
+}
+
+@media (min-width: 1024px) {
+  .voice-demo-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+  }
+  .voice-demo-grid > * {
+    flex: 0 0 calc(25% - 0.75rem);
+  }
 }
 
 .voice-demo-card {

@@ -128,8 +128,8 @@
         "description": "AI agents for your phone lines. Lead qualification, customer support, appointment booking.",
         "price": "/min",
         "features": [
-          "Twilio PSTN integrated",
-          "Grok + Gemini fallback",
+          "PSTN integrated",
+          "Multi-AI Fallback",
           "RAG Knowledge Base",
           "Configurable HITL"
         ]

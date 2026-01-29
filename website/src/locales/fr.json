@@ -128,8 +128,8 @@
         "description": "Agents IA pour vos lignes téléphoniques. Qualification de leads, support client, prise de RDV.",
         "price": "/min",
         "features": [
-          "Twilio PSTN intégré",
-          "Grok + Gemini fallback",
+          "PSTN intégré",
+          "Multi-AI Fallback",
           "RAG Knowledge Base",
           "HITL configurable"
         ]

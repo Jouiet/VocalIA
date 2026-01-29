@@ -797,7 +797,7 @@
                 <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                 </svg>
-                <span>Twilio PSTN intégré</span>
+                <span>PSTN intégré</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <svg class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -889,7 +889,7 @@
                 <!-- Communication -->
                 <span class="px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-sm text-red-300 whitespace-nowrap flex items-center gap-2">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"/></svg>
-                  Twilio
+                  Téléphonie
                 </span>
                 <span class="px-4 py-2 bg-fuchsia-500/10 border border-fuchsia-500/30 rounded-lg text-sm text-fuchsia-300 whitespace-nowrap flex items-center gap-2">
                   <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
@@ -1291,9 +1291,8 @@
 
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div class="grid grid-cols-2 md:grid-cols-6 gap-8">
-        <!-- Brand -->
-        <div class="col-span-2">
+      <!-- Brand Section -->
+      <div class="mb-10">
           <a href="/" class="flex items-center space-x-2 mb-4">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-400 flex items-center justify-center">
               <span class="text-xl">🎙️</span>
@@ -1329,8 +1328,10 @@
           </div>
         </div>
 
+      <!-- Categories Row - Inline -->
+      <div class="flex flex-wrap gap-x-12 gap-y-6 mb-10">
         <!-- Product -->
-        <div>
+        <div class="min-w-[140px]">
           <h4 class="font-semibold text-white mb-4" data-i18n="footer.product">Produit</h4>
           <ul class="space-y-2 text-sm text-zinc-400">
             <li><a href="#features" class="hover:text-white transition">Fonctionnalités</a></li>
@@ -1342,7 +1343,7 @@
         </div>
 
         <!-- Solutions -->
-        <div>
+        <div class="min-w-[140px]">
           <h4 class="font-semibold text-white mb-4">Solutions</h4>
           <ul class="space-y-2 text-sm text-zinc-400">
             <li><a href="/use-cases/e-commerce" class="hover:text-white transition">E-commerce</a></li>
@@ -1354,7 +1355,7 @@
         </div>
 
         <!-- Ressources -->
-        <div>
+        <div class="min-w-[140px]">
           <h4 class="font-semibold text-white mb-4">Ressources</h4>
           <ul class="space-y-2 text-sm text-zinc-400">
             <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
@@ -1366,7 +1367,7 @@
         </div>
 
         <!-- Entreprise -->
-        <div>
+        <div class="min-w-[140px]">
           <h4 class="font-semibold text-white mb-4">Entreprise</h4>
           <ul class="space-y-2 text-sm text-zinc-400">
             <li><a href="/about" class="hover:text-white transition">À propos</a></li>
