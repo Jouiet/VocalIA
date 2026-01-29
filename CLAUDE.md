@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 2.6.0 | 29/01/2026 | Session 212 | Backend: 99/100 | Frontend: ~90% | Health: 100%
+> Version: 2.7.0 | 29/01/2026 | Session 213 | Backend: 99/100 | Frontend: ~92% | Health: 100%
 
 ## Identité
 
@@ -548,17 +548,55 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 **Score Post-Session 212:** ~90%
 
-## PLAN ACTIONNABLE (Session 213)
+---
 
-| # | Action | Priorité | Fichier |
-|:-:|:-------|:--------:|:--------|
-| 1 | Deploy to Hostinger/Vercel | P1 | CI/CD |
-| 2 | Critical CSS extraction | P2 | `input.css` |
-| 3 | Dashboard polish | P2 | `dashboard/*.html` |
-| 4 | Voice widget final test | P2 | `voice-widget.js` |
+## Session 213 Summary
+
+**Deployment Prep + Favicons:**
+
+### Implémentations Session 213
+
+| Task | Status | Details |
+|:-----|:------:|:--------|
+| vercel.json | ✅ | Headers, rewrites, caching config |
+| Favicon multi-size | ✅ | 6 formats (ICO, PNG, Apple, Android) |
+| site.webmanifest | ✅ | PWA ready |
+| Unified favicons | ✅ | index + dashboards |
+
+### Favicon Assets Created
+
+| File | Size | Usage |
+|:-----|:----:|:------|
+| favicon.ico | 5KB | Browser tab (16+32) |
+| favicon-16x16.png | 417B | Small displays |
+| favicon-32x32.png | 771B | Standard |
+| apple-touch-icon.png | 7KB | iOS bookmark |
+| android-chrome-192.png | 7KB | Android PWA |
+| android-chrome-512.png | 29KB | Splash screen |
+
+### Deployment Status
+
+| Platform | Status | Notes |
+|:---------|:------:|:------|
+| Vercel | ⚠️ Ready | `vercel.json` configured |
+| Hostinger | ❌ | No hosting plan active |
+| vocalia.ma | ❌ | Domain not registered |
+
+**Git:** Commit `648f869`
+
+**Score Post-Session 213:** ~92%
+
+## PLAN ACTIONNABLE (Session 214)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Register vocalia.ma | P1 | User action required |
+| 2 | Deploy to Vercel | P1 | `vercel deploy` |
+| 3 | Dashboard final polish | P2 | Admin/Client UX |
+| 4 | Voice widget integration test | P2 | End-to-end |
 
 ---
 
-*Màj: 29/01/2026 - Session 212 (Performance + Brand Assets)*
-*Status: Backend 99/100 ✅ | Frontend ~90% ✅ | Health 100% (39/39)*
+*Màj: 29/01/2026 - Session 213 (Deployment Prep + Favicons)*
+*Status: Backend 99/100 ✅ | Frontend ~92% ✅ | Health 100% (39/39)*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*

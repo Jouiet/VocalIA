@@ -1,7 +1,7 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.6.0 | **Updated**: 29/01/2026 | **Session**: 212
-> **Backend Score**: 99/100 | **Frontend Score**: ~90% | **Health Check**: 100% (39/39)
+> **Version**: 3.7.0 | **Updated**: 29/01/2026 | **Session**: 213
+> **Backend Score**: 99/100 | **Frontend Score**: ~92% | **Health Check**: 100% (39/39)
 
 ---
 
@@ -1590,7 +1590,87 @@ node scripts/health-check.cjs
 
 ---
 
+---
+
+## Session 213 - Deployment Prep + Favicons (29/01/2026)
+
+### Objectives
+
+1. **Deployment Configuration** - Vercel/Hostinger prep
+2. **Favicon Multi-size** - All platforms covered
+3. **PWA Manifest** - Mobile ready
+
+### Hostinger Investigation
+
+| Check | Result |
+|:------|:-------|
+| Domains | 7 active (no vocalia.ma) |
+| Hosting | No active plans |
+| Websites | None configured |
+
+**Conclusion:** Vercel recommended for initial deployment (free tier).
+
+### Implémentations Session 213
+
+**1. vercel.json Configuration:**
+- Security headers (X-Frame-Options, CSP compatible)
+- Cache headers for static assets (1 year)
+- URL rewrites (/dashboard → /dashboard/client.html)
+
+**2. Favicon Multi-size:**
+
+| File | Size | Platform |
+|:-----|:----:|:---------|
+| favicon.ico | 5KB | Browser (16+32px) |
+| favicon-16x16.png | 417B | Tab icon |
+| favicon-32x32.png | 771B | Standard |
+| apple-touch-icon.png | 7KB | iOS |
+| android-chrome-192.png | 7KB | Android |
+| android-chrome-512.png | 29KB | Splash |
+
+**3. site.webmanifest:**
+- PWA ready configuration
+- Theme color: #5E6AD2
+- Background: #0f172a
+
+### Verification
+
+```bash
+# All favicon files exist
+ls website/public/images/favicon/
+# 6 files ✅
+
+# Health check
+node scripts/health-check.cjs
+# 39/39 (100%) ✅
+```
+
+### Git
+
+- Commit: `648f869`
+- Pushed: ✅ main branch
+
+### Score Post-Session 213
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| Frontend Score | ~90% | **~92%** |
+| Favicon | Emoji | **6 formats** |
+| PWA Ready | ❌ | **✅** |
+| Deploy Config | ❌ | **✅** |
+
+### PLAN ACTIONNABLE (Session 214)
+
+| # | Action | Priorité | Effort |
+|:-:|:-------|:--------:|:------:|
+| 1 | Register vocalia.ma | P1 | User |
+| 2 | Deploy to Vercel | P1 | 30min |
+| 3 | Dashboard polish | P2 | 2h |
+| 4 | Voice widget E2E test | P2 | 1h |
+
+---
+
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 212 (Performance + Brand Assets)*
-*Status: Backend 99/100 | Frontend ~90% | Health: 100% (39/39)*
-*Phase 3 Frontend: ~90% COMPLETE | Next: Deploy*
+*Màj: 29/01/2026 - Session 213 (Deployment Prep + Favicons)*
+*Status: Backend 99/100 | Frontend ~92% | Health: 100% (39/39)*
+*Phase 3 Frontend: ~92% COMPLETE | Next: Deploy + Polish*
