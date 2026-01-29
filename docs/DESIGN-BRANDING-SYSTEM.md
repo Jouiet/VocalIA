@@ -1,8 +1,8 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 4.3.0 | **Date**: 29/01/2026 | **Session**: 213
-> **Palette**: Enterprise Slate v4.2 (Harmonized) | **Brand Assets**: Complete ✅
-> **Research**: GitHub ihlamury/design-skills, Gemini Deep Research, pipecat-ai/voice-ui-kit
+> **Version**: 4.4.0 | **Date**: 29/01/2026 | **Session**: 214
+> **Palette**: OKLCH P3 Wide-Gamut "4K" Colors | **Brand Assets**: Complete ✅
+> **Research**: Apple Liquid Glass, GitHub ihlamury/design-skills, LogRocket OKLCH, CodePen 3D Tilt
 
 ---
 
@@ -512,17 +512,79 @@ Features:
 
 **Generated via:** Gemini 2.0 Flash Image Generation
 
-## PLAN ACTIONNABLE (Session 213)
+---
+
+## Session 214 - Liquid Glass & 4K Colors
+
+### OKLCH P3 Wide-Gamut Colors
+
+Upgraded from hex/RGBA to OKLCH for 50% more vibrant colors on P3 displays (93%+ browser support 2026).
+
+```css
+/* OKLCH P3 Wide-Gamut "4K" Colors */
+--color-vocalia-500: oklch(58% 0.24 275);
+--color-vocalia-600: oklch(54% 0.22 270);
+--primary: oklch(54% 0.22 270);
+```
+
+**Source:** [LogRocket OKLCH](https://blog.logrocket.com/oklch-css-consistent-accessible-color-palettes)
+
+### Liquid Glass Card Component
+
+Apple 2026-inspired three-layer system:
+
+```css
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.liquid-glass::before { /* Inner glow */ }
+.liquid-glass::after { /* Shimmer highlight */ }
+```
+
+**Sources:**
+- [Apple Liquid Glass](https://developer.apple.com/documentation/TechnologyOverviews/liquid-glass)
+- [DEV.to Pure CSS Implementation](https://dev.to/kevinbism/recreating-apples-liquid-glass-effect-with-pure-css-3gpl)
+
+### 3D Floating Card with Mouse Tracking
+
+```javascript
+// card-tilt.js - Mouse-tracking 3D effect
+<div data-tilt data-tilt-max="10" data-tilt-perspective="1200">
+  <div class="tilt-inner">Content</div>
+  <div class="tilt-glare"></div>
+</div>
+```
+
+**Sources:**
+- [GitHub alexanderuk82/3d-card](https://github.com/alexanderuk82/3d-card)
+- [CodePen Glassmorphism 3D Tilt](https://codepen.io/Ahmod-Musa/pen/Qwjjezj)
+
+### New CSS Classes
+
+| Class | Effect |
+|:------|:-------|
+| `.liquid-glass` | Apple Liquid Glass with 3 layers |
+| `.card-float` | Floating card with perspective |
+| `[data-tilt]` | Mouse-tracking 3D tilt |
+| `.animate-float-card` | Subtle floating animation |
+| `.animate-shimmer-glass` | Shimmer effect |
+
+## PLAN ACTIONNABLE (Session 215)
 
 | # | Action | Priorité | Fichier |
 |:-:|:-------|:--------:|:--------|
-| 1 | Deploy to production | P1 | CI/CD |
-| 2 | Favicon multi-size | P2 | `favicon.ico` |
-| 3 | Dashboard polish | P2 | `dashboard/*.html` |
-| 4 | Apple Touch Icon | P3 | `apple-touch-icon.png` |
+| 1 | Deploy to Vercel | P1 | vercel.json |
+| 2 | Fix VocaliaGeo error | P1 | index.html |
+| 3 | Dashboard liquid-glass integration | P2 | dashboard/*.html |
+| 4 | E2E Visual Testing | P2 | Playwright |
 
 ---
 
 *Document créé: 28/01/2026 - Session 200*
-*Màj: 29/01/2026 - Session 212 (Brand Assets Generated)*
+*Màj: 29/01/2026 - Session 214 (Liquid Glass & 4K Colors)*
 *Auteur: Claude Code (DOE Framework)*

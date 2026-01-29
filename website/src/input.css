@@ -9,20 +9,23 @@
 
 @theme {
   /* =======================================================================
-     VocalIA Brand - Deep Indigo (Linear/Stripe Enterprise)
-     Base: Linear #5E6AD2 adjusted for VocalIA identity
+     VocalIA Brand - Deep Indigo (OKLCH P3 Wide-Gamut "4K" Colors)
+     Session 214: Upgraded to OKLCH for 50% more vibrant colors on P3 displays
+     Reference: Linear #5E6AD2, but enhanced for modern HDR screens
+     Source: LogRocket OKLCH, Tailwind v4 OKLCH
+     Note: Using OKLCH directly for P3 wide-gamut support (93%+ browser support 2026)
      ======================================================================= */
-  --color-vocalia-50: #eef2ff;
-  --color-vocalia-100: #e0e7ff;
-  --color-vocalia-200: #c7d2fe;
-  --color-vocalia-300: #a5b4fc;
-  --color-vocalia-400: #818cf8;
-  --color-vocalia-500: #6366f1;
-  --color-vocalia-600: #5E6AD2;
-  --color-vocalia-700: #4f46e5;
-  --color-vocalia-800: #4338ca;
-  --color-vocalia-900: #3730a3;
-  --color-vocalia-950: #1e1b4b;
+  --color-vocalia-50: oklch(97% 0.02 275);
+  --color-vocalia-100: oklch(93% 0.04 275);
+  --color-vocalia-200: oklch(87% 0.08 275);
+  --color-vocalia-300: oklch(78% 0.14 275);
+  --color-vocalia-400: oklch(68% 0.20 275);
+  --color-vocalia-500: oklch(58% 0.24 275);
+  --color-vocalia-600: oklch(54% 0.22 270);
+  --color-vocalia-700: oklch(48% 0.24 275);
+  --color-vocalia-800: oklch(42% 0.20 275);
+  --color-vocalia-900: oklch(35% 0.16 275);
+  --color-vocalia-950: oklch(22% 0.10 275)
 
   /* =======================================================================
      Surface Colors - Linear-inspired Dark Mode
@@ -98,11 +101,13 @@
 
 @layer base {
   :root {
-    /* Primary Brand - Deep Indigo */
-    --primary: #5E6AD2;
-    --primary-light: #6366f1;
-    --primary-dark: #4f46e5;
-    --primary-glow: rgba(94, 106, 210, 0.25);
+    /* Primary Brand - Deep Indigo (OKLCH P3 Wide-Gamut "4K" Colors)
+       Using OKLCH for vibrant P3 display support (93%+ browser support 2026)
+       Source: LogRocket OKLCH, Tailwind v4 */
+    --primary: oklch(54% 0.22 270);
+    --primary-light: oklch(58% 0.24 275);
+    --primary-dark: oklch(48% 0.24 275);
+    --primary-glow: oklch(54% 0.22 270 / 0.25);
 
     /* Surfaces - Brighter Slate (Enterprise, high visibility) */
     --bg-base: #1e293b;
@@ -281,14 +286,26 @@
      Cards - Glass with subtle border
      ======================================================================= */
   .card {
-    background: var(--bg-raised);
-    border: 1px solid var(--border-subtle);
+    position: relative;
+    background: rgba(51, 65, 85, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(148, 163, 184, 0.12);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.12),
+      0 1px 2px rgba(0, 0, 0, 0.08);
+    transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
   }
 
   .card:hover {
-    border-color: var(--border-default);
+    transform: translateY(-3px);
+    border-color: rgba(148, 163, 184, 0.2);
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.18),
+      0 2px 8px rgba(0, 0, 0, 0.12);
   }
 
   .card-elevated {
@@ -321,6 +338,166 @@
   .glass-panel:hover {
     border-color: rgba(161, 161, 170, 0.2);
     background: rgba(17, 17, 20, 0.7);
+  }
+
+  /* =======================================================================
+     Liquid Glass Card - Apple 2026 Inspired (Session 214)
+     Source: Apple Liquid Glass, DEV.to Pure CSS implementation
+     Three-layer system: base + ::before (inner glow) + ::after (shimmer)
+     ======================================================================= */
+  .liquid-glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-xl);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      0 2px 8px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+    will-change: transform, box-shadow;
+    z-index: 1;
+  }
+
+  /* Inner glow layer */
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Shimmer/specular highlight layer */
+  .liquid-glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      125deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.04) 75%,
+      transparent 100%
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .liquid-glass:hover {
+    transform: translateY(-8px) translateZ(20px);
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.4),
+      0 8px 24px rgba(0, 0, 0, 0.3),
+      0 0 40px rgba(94, 106, 210, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .liquid-glass:hover::after {
+    opacity: 1;
+  }
+
+  /* Floating Card - 3D depth with parallax-ready structure */
+  .card-float {
+    position: relative;
+    background: rgba(51, 65, 85, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.2),
+      0 1px 4px rgba(0, 0, 0, 0.15);
+    transform-style: preserve-3d;
+    transform: perspective(1200px) rotateX(0deg) rotateY(0deg);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform, box-shadow;
+  }
+
+  .card-float:hover {
+    transform: perspective(1200px) rotateX(2deg) rotateY(-2deg) translateZ(30px);
+    box-shadow:
+      0 25px 50px rgba(0, 0, 0, 0.35),
+      0 10px 20px rgba(0, 0, 0, 0.25),
+      0 0 30px rgba(94, 106, 210, 0.1);
+    border-color: rgba(148, 163, 184, 0.35);
+  }
+
+  /* Depth layers for floating effect */
+  .card-float::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      135deg,
+      rgba(94, 106, 210, 0.1) 0%,
+      transparent 50%,
+      rgba(99, 102, 241, 0.05) 100%
+    );
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .card-float:hover::before {
+    opacity: 1;
+  }
+
+  /* =======================================================================
+     Dynamic Tilt Card - JavaScript-enhanced (card-tilt.js)
+     Uses data-tilt attribute for mouse-tracking 3D effect
+     ======================================================================= */
+  [data-tilt] {
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out;
+    will-change: transform;
+  }
+
+  [data-tilt] .tilt-inner {
+    transform: translateZ(40px);
+    transition: transform 0.3s ease;
+  }
+
+  [data-tilt]:hover .tilt-inner {
+    transform: translateZ(60px);
+  }
+
+  /* Glare overlay for tilt cards */
+  [data-tilt] .tilt-glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  [data-tilt]:hover .tilt-glare {
+    opacity: 1;
   }
 
   /* =======================================================================
@@ -386,10 +563,48 @@
      Dashboard Components
      ======================================================================= */
   .stat-card {
-    background: var(--bg-raised);
-    border: 1px solid var(--border-subtle);
+    position: relative;
+    background: rgba(51, 65, 85, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: var(--radius-lg);
     padding: 1.25rem;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.15),
+      0 1px 4px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transform-style: preserve-3d;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px) translateZ(15px);
+    box-shadow:
+      0 12px 32px rgba(0, 0, 0, 0.25),
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      0 0 20px rgba(94, 106, 210, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border-color: rgba(148, 163, 184, 0.25);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 50%
+    );
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .stat-card:hover::before {
+    opacity: 1;
   }
 
   .stat-value {
@@ -1247,9 +1462,60 @@ html.light .stat-card,
 html.light .card,
 [data-theme="light"] .stat-card,
 [data-theme="light"] .card {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+html.light .stat-card:hover,
+html.light .card:hover,
+[data-theme="light"] .stat-card:hover,
+[data-theme="light"] .card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+html.light .liquid-glass,
+[data-theme="light"] .liquid-glass {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+html.light .liquid-glass:hover,
+[data-theme="light"] .liquid-glass:hover {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 0 40px rgba(94, 106, 210, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+html.light .card-float,
+[data-theme="light"] .card-float {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+html.light .card-float:hover,
+[data-theme="light"] .card-float:hover {
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.1),
+    0 10px 20px rgba(0, 0, 0, 0.06),
+    0 0 30px rgba(94, 106, 210, 0.05);
 }
 
 html.light .card-elevated,
@@ -2071,6 +2337,66 @@ html.light .voice-visualizer-btn:hover,
   border-radius: inherit;
   pointer-events: none;
   z-index: 1;
+}
+
+/* =======================================================================
+   Liquid Glass Floating Animation (Session 214)
+   GPU-accelerated: transform only, no repaints
+   ======================================================================= */
+@keyframes floatCard {
+  0%, 100% {
+    transform: translateY(0) translateZ(0);
+  }
+  50% {
+    transform: translateY(-8px) translateZ(10px);
+  }
+}
+
+@keyframes shimmerGlass {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+/* Floating card animation class */
+.animate-float-card {
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+/* Shimmer effect for premium cards */
+.animate-shimmer-glass {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerGlass 3s ease-in-out infinite;
+  pointer-events: none;
+  border-radius: inherit;
 }
 
 /* =======================================================================

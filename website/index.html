@@ -460,11 +460,11 @@
 
       <!-- Bento Grid Layout (2026 Standard) -->
       <div class="bento-grid" data-bento-grid>
-        <!-- Widget Card - Featured Large (2x2) -->
-        <div class="bento-large relative group" data-bento-item data-card-3d="8">
-          <div class="card-glare"></div>
+        <!-- Widget Card - Featured Large (2x2) - Liquid Glass -->
+        <div class="bento-large relative group" data-bento-item data-tilt data-tilt-max="8" data-tilt-perspective="1200">
+          <div class="tilt-glare"></div>
           <div class="absolute -inset-0.5 bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition pointer-events-none"></div>
-          <div class="relative glass-panel p-8 h-full flex flex-col">
+          <div class="relative liquid-glass p-8 h-full flex flex-col animate-shimmer-glass">
             <div class="flex items-center justify-between mb-6">
               <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-vocalia-500/20 to-vocalia-400/20 flex items-center justify-center animate-float">
                 <svg class="w-8 h-8 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -514,11 +514,11 @@
           </div>
         </div>
 
-        <!-- Telephony Card - Tall (1x2) -->
-        <div class="bento-tall relative group" data-bento-item data-card-3d="8">
-          <div class="card-glare"></div>
+        <!-- Telephony Card - Tall (1x2) - Liquid Glass -->
+        <div class="bento-tall relative group" data-bento-item data-tilt data-tilt-max="10" data-tilt-perspective="1200">
+          <div class="tilt-glare"></div>
           <div class="absolute -inset-0.5 bg-gradient-to-r from-vocalia-400 to-violet-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition pointer-events-none"></div>
-          <div class="relative glass-panel p-6 h-full flex flex-col">
+          <div class="relative liquid-glass p-6 h-full flex flex-col animate-shimmer-glass">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-vocalia-400/20 to-violet-500/20 flex items-center justify-center animate-float" style="animation-delay: 0.5s;">
                 <svg class="w-6 h-6 text-vocalia-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -563,8 +563,8 @@
         </div>
 
         <!-- Stats Card - Wide -->
-        <div class="bento-wide" data-bento-item>
-          <div class="glass-panel p-6 h-full hover-lift">
+        <div class="bento-wide" data-bento-item data-tilt data-tilt-max="6" data-tilt-perspective="1400">
+          <div class="card-float p-6 h-full">
             <div class="grid grid-cols-3 gap-4 h-full">
               <div class="text-center flex flex-col justify-center">
                 <span class="text-3xl font-bold text-white tabular-nums">99%</span>
@@ -600,8 +600,8 @@
         </div>
 
         <!-- Integrations Card -->
-        <div class="bento-item animate-fade-in" style="animation-delay: 0.4s;">
-          <div class="glass-panel p-6 h-full">
+        <div class="bento-item animate-fade-in" style="animation-delay: 0.4s;" data-tilt data-tilt-max="8">
+          <div class="card-float p-6 h-full">
             <h4 class="font-semibold text-white mb-3">Intégrations</h4>
             <div class="flex flex-wrap gap-2">
               <span class="px-3 py-1 bg-slate-700 rounded-full text-xs text-zinc-300">HubSpot</span>
@@ -624,23 +624,23 @@
       </div>
 
       <div class="flex flex-wrap justify-center gap-4">
-        <div class="px-6 py-4 glass-panel flex items-center space-x-3 hover:scale-105 transition-transform cursor-default animate-scale-in delay-100">
+        <div class="px-6 py-4 liquid-glass flex items-center space-x-3 cursor-default animate-scale-in delay-100 animate-float-card" style="animation-delay: 0s;">
           <span class="text-2xl">🇫🇷</span>
           <span class="font-medium">Français</span>
         </div>
-        <div class="px-6 py-4 glass-panel flex items-center space-x-3 hover:scale-105 transition-transform cursor-default animate-scale-in delay-200">
+        <div class="px-6 py-4 liquid-glass flex items-center space-x-3 cursor-default animate-scale-in delay-200 animate-float-card" style="animation-delay: 0.5s;">
           <span class="text-2xl">🇬🇧</span>
           <span class="font-medium">English</span>
         </div>
-        <div class="px-6 py-4 glass-panel flex items-center space-x-3 hover:scale-105 transition-transform cursor-default animate-scale-in delay-300">
+        <div class="px-6 py-4 liquid-glass flex items-center space-x-3 cursor-default animate-scale-in delay-300 animate-float-card" style="animation-delay: 1s;">
           <span class="text-2xl">🇪🇸</span>
           <span class="font-medium">Español</span>
         </div>
-        <div class="px-6 py-4 glass-panel flex items-center space-x-3 hover:scale-105 transition-transform cursor-default animate-scale-in delay-400">
+        <div class="px-6 py-4 liquid-glass flex items-center space-x-3 cursor-default animate-scale-in delay-400 animate-float-card" style="animation-delay: 1.5s;">
           <span class="text-2xl">🇸🇦</span>
           <span class="font-medium">العربية</span>
         </div>
-        <div class="px-6 py-4 glass-panel flex items-center space-x-3 hover:scale-105 transition-transform cursor-default animate-scale-in delay-500">
+        <div class="px-6 py-4 liquid-glass flex items-center space-x-3 cursor-default animate-scale-in delay-500 animate-float-card" style="animation-delay: 2s;">
           <span class="text-2xl">🇲🇦</span>
           <span class="font-medium">الدارجة</span>
         </div>
@@ -1154,6 +1154,7 @@
 
   <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
   <script src="/src/lib/voice-visualizer.js" defer></script>
+  <script src="/src/lib/card-tilt.js" defer></script>
   <script>
     // Lazy load visualizers only when visible (performance optimization)
     document.addEventListener('DOMContentLoaded', function() {
