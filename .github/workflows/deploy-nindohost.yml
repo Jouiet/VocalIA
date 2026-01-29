@@ -1,0 +1,63 @@
+# VocalIA - Auto Deploy to NindoHost via FTP
+# Triggers on push to main branch
+# Deploys website/ folder to public_html/
+
+name: Deploy to NindoHost
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+      - '.github/workflows/deploy-nindohost.yml'
+  workflow_dispatch:  # Manual trigger option
+
+jobs:
+  deploy:
+    name: Deploy Website
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Verify Website Files
+        run: |
+          echo "=== VocalIA Deploy Check ==="
+          echo "Files to deploy:"
+          find website -type f -name "*.html" | head -20
+          echo ""
+          echo "Total HTML files: $(find website -name '*.html' | wc -l)"
+          echo "Total files: $(find website -type f | wc -l)"
+
+      - name: Deploy to NindoHost via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.NINDOHOST_FTP_HOST }}
+          username: ${{ secrets.NINDOHOST_FTP_USER }}
+          password: ${{ secrets.NINDOHOST_FTP_PASS }}
+          local-dir: ./website/
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/*.md
+            **/SITEMAP-PLAN.md
+            **/.DS_Store
+
+      - name: Deployment Summary
+        run: |
+          echo "=== Deployment Complete ==="
+          echo "Target: https://vocalia.ma"
+          echo "Time: $(date)"
+          echo ""
+          echo "Pages deployed:"
+          echo "- https://vocalia.ma"
+          echo "- https://vocalia.ma/features"
+          echo "- https://vocalia.ma/pricing"
+          echo "- https://vocalia.ma/about"
+          echo "- https://vocalia.ma/contact"
+          echo "- https://vocalia.ma/docs"
+          echo "- https://vocalia.ma/products/voice-widget"
+          echo "- https://vocalia.ma/products/voice-telephony"
