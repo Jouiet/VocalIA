@@ -133,6 +133,13 @@ class VoiceVisualizer {
   animate() {
     if (!this.isActive) return;
 
+    // Safety check - don't animate if canvas has no size
+    if (!this.width || !this.height || this.width <= 0 || this.height <= 0) {
+      this.resize();
+      this.animationId = requestAnimationFrame(() => this.animate());
+      return;
+    }
+
     this.time += 0.016; // ~60fps timing
 
     if (this.options.demo) {
@@ -185,33 +192,37 @@ class VoiceVisualizer {
   }
 
   draw() {
-    // Clear canvas completely - clean look
-    this.ctx.fillStyle = 'rgba(15, 20, 30, 1)';
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    try {
+      // Clear canvas completely - clean look
+      this.ctx.fillStyle = 'rgba(15, 20, 30, 1)';
+      this.ctx.fillRect(0, 0, this.width, this.height);
 
-    // Calculate average for ambient
-    let avg = 0;
-    for (let i = 0; i < this.dataArray.length; i++) avg += this.dataArray[i];
-    avg = avg / this.dataArray.length / 255;
+      // Calculate average for ambient
+      let avg = 0;
+      for (let i = 0; i < this.dataArray.length; i++) avg += this.dataArray[i];
+      avg = avg / this.dataArray.length / 255;
 
-    // Subtle ambient glow
-    if (this.options.showAmbient) {
-      this.drawAmbient(avg * 0.3 + 0.1);
-    }
+      // Subtle ambient glow
+      if (this.options.showAmbient) {
+        this.drawAmbient(avg * 0.3 + 0.1);
+      }
 
-    switch (this.options.mode) {
-      case 'bars':
-        this.drawBars();
-        break;
-      case 'orb':
-        this.drawOrb();
-        break;
-      case 'pulse':
-        this.drawPulse();
-        break;
-      case 'wave':
-      default:
-        this.drawWave();
+      switch (this.options.mode) {
+        case 'bars':
+          this.drawBars();
+          break;
+        case 'orb':
+          this.drawOrb();
+          break;
+        case 'pulse':
+          this.drawPulse();
+          break;
+        case 'wave':
+        default:
+          this.drawWave();
+      }
+    } catch (e) {
+      console.error('[VoiceVisualizer] Draw error:', e.message);
     }
   }
 
