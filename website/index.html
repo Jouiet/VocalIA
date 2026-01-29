@@ -74,8 +74,8 @@
   <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS (Sovereign) - Preloaded -->
-  <link rel="preload" href="./public/css/style.css" as="style">
-  <link href="./public/css/style.css" rel="stylesheet">
+  <link rel="preload" href="/public/css/style.css" as="style">
+  <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- DNS Prefetch & Preconnect for external resources -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -1118,9 +1118,9 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="src/lib/geo-detect.js" defer></script>
-  <script src="src/lib/i18n.js" defer></script>
+  <!-- Scripts - Core libs (no defer, needed immediately) -->
+  <script src="/src/lib/geo-detect.js"></script>
+  <script src="/src/lib/i18n.js"></script>
   <script>
     // VocalIA Main Site - Dark Mode Only (no theme toggle)
     // Theme toggle available only in dashboards
