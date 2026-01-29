@@ -18,7 +18,7 @@ Toutes les informations sont **vérifiables empiriquement** via les commandes li
 |:-----------|:---:|:-------:|:-------------|:-----|
 | **Voice Widget** | 15 | **15** | `node widget/voice-widget-templates.cjs` | Web Speech API, $0 |
 | **Voice Telephony** | 15 | **12** | `node telephony/voice-telephony-bridge.cjs` loads | Code OK, TWILIO creds missing |
-| **Multi-Persona** | 15 | **15** | 28 personas verified | BANT, PAS, CIALDINI |
+| **Multi-Persona** | 15 | **15** | 30 personas verified | BANT, PAS, CIALDINI |
 | **Integrations** | 15 | **12** | 3/3 modules load | Creds missing for full function |
 | **Documentation** | 10 | **10** | 5 rules + CLAUDE.md | Complete |
 | **Infrastructure** | 15 | **15** | MCP ✅ Registry ✅ GPM ✅ | VocalIA-Ops integrated |
@@ -90,7 +90,7 @@ node scripts/health-check.cjs
 
 | Module | Lignes | Status | Purpose |
 |:-------|:------:|:------:|:--------|
-| voice-persona-injector.cjs | 648 | ✅ | 28 personas, 5 languages |
+| voice-persona-injector.cjs | 648 | ✅ | 30 personas, 5 languages |
 | agency-financial-config.cjs | ~100 | ✅ | Pricing configuration |
 
 ### Sensors (4 modules)

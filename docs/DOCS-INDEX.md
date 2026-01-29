@@ -108,7 +108,7 @@ Ce document contient:
 | **Engineering Score** | 99/100 | CLAUDE.md |
 | **Health Check** | 100% (39/39) | `node scripts/health-check.cjs` |
 | **Voice Widget** | ✅ Intégré | Website live |
-| **Personas** | 28 | Verified unique |
+| **Personas** | 30 | Verified unique |
 | **Function Tools** | 11 | telephony bridge |
 | **Langues** | 5 | FR, EN, ES, AR, ARY |
 | **CRM** | 3 | HubSpot, Klaviyo, Shopify |

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Industries - VocalIA | Voice AI pour Tous les Secteurs</title>
+  <meta name="description"
+    content="VocalIA propose des agents vocaux IA adaptés à 20+ secteurs d'activité. Finance, Santé, Immobilier, E-commerce, et plus. 30 personas métier préconfigurés.">
+  <link rel="canonical" href="https://vocalia.ma/industries/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/industries/" />
+  <meta property="og:title" content="Industries - VocalIA | Voice AI pour Tous les Secteurs" />
+  <meta property="og:description" content="Agents vocaux IA pour 20+ secteurs. Finance, Santé, Immobilier, Retail, et plus." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Industries VocalIA",
+      "description": "Solutions Voice AI par secteur d'activité",
+      "url": "https://vocalia.ma/industries/",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+          {"@type": "ListItem", "position": 2, "name": "Industries", "item": "https://vocalia.ma/industries/"}
+        ]
+      }
+    }
+  </script>
+
+  <!-- Critical CSS -->
+  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS -->
+  <link rel="preload" href="/public/css/style.css" as="style">
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(51, 65, 85, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .industry-card {
+      background: linear-gradient(135deg, rgba(51, 65, 85, 0.9), rgba(30, 41, 59, 0.95));
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      transition: all 0.3s ease;
+    }
+    .industry-card:hover {
+      border-color: rgba(99, 102, 241, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -15px rgba(99, 102, 241, 0.2);
+    }
+    .tier-badge {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.1));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+    .featured-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+    .persona-count {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white antialiased">
+  <!-- Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">Aller au contenu principal</a>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-400 flex items-center justify-center">
+            <span class="text-lg">🎙️</span>
+          </div>
+          <span class="text-lg font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="/products/voice-widget" class="text-sm text-zinc-300 hover:text-white transition">Voice Widget</a>
+          <a href="/products/voice-telephony" class="text-sm text-zinc-300 hover:text-white transition">Voice Telephony</a>
+          <a href="/industries/" class="text-sm text-white font-medium">Industries</a>
+          <a href="/pricing" class="text-sm text-zinc-300 hover:text-white transition">Tarifs</a>
+          <a href="/docs" class="text-sm text-zinc-300 hover:text-white transition">Docs</a>
+          <a href="/#demo" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-medium transition">Demo</a>
+        </div>
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden p-2 text-zinc-400 hover:text-white" aria-label="Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content" class="pt-20">
+    <!-- Hero Section -->
+    <section class="py-16 lg:py-24 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-transparent to-slate-900/50"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <!-- Breadcrumb -->
+        <nav class="mb-8" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
+            <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li class="text-indigo-400">Industries</li>
+          </ol>
+        </nav>
+
+        <div class="max-w-3xl">
+          <h1 class="text-4xl lg:text-5xl font-bold mb-6">
+            Voice AI pour <span class="gradient-text">Tous les Secteurs</span>
+          </h1>
+          <p class="text-xl text-zinc-300 mb-8">
+            30 personas métier préconfigurés couvrant 20+ secteurs d'activité. Trouvez la solution adaptée à votre business.
+          </p>
+
+          <!-- Stats -->
+          <div class="flex flex-wrap gap-4">
+            <div class="persona-count rounded-full px-4 py-2 flex items-center gap-2">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+              </svg>
+              <span class="text-emerald-400 font-semibold">30 Personas</span>
+            </div>
+            <div class="tier-badge rounded-full px-4 py-2 flex items-center gap-2">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              </svg>
+              <span class="text-indigo-400 font-semibold">20+ Secteurs</span>
+            </div>
+            <div class="tier-badge rounded-full px-4 py-2 flex items-center gap-2">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+              </svg>
+              <span class="text-indigo-400 font-semibold">5 Langues</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Industries -->
+    <section class="py-16 bg-slate-900/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold mb-8">Industries Phares</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Finance -->
+          <a href="/industries/finance" class="featured-card rounded-2xl p-6 block group">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 group-hover:text-indigo-400 transition">Finance & Assurance</h3>
+            <p class="text-sm text-zinc-400 mb-4">Banques, assurances, fintech. Conformité PCI DSS.</p>
+            <div class="flex items-center gap-2 text-xs text-indigo-400">
+              <span>1 persona</span>
+              <span class="text-zinc-600">•</span>
+              <span>INSURER</span>
+            </div>
+          </a>
+
+          <!-- Healthcare -->
+          <a href="/industries/healthcare" class="featured-card rounded-2xl p-6 block group">
+            <div class="w-12 h-12 rounded-xl bg-rose-500/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 group-hover:text-indigo-400 transition">Santé & Médical</h3>
+            <p class="text-sm text-zinc-400 mb-4">Cliniques, dentistes, pharmacies. RGPD santé.</p>
+            <div class="flex items-center gap-2 text-xs text-indigo-400">
+              <span>3 personas</span>
+              <span class="text-zinc-600">•</span>
+              <span>DENTAL, HEALER, PHARMACIST</span>
+            </div>
+          </a>
+
+          <!-- Real Estate -->
+          <a href="/industries/real-estate" class="featured-card rounded-2xl p-6 block group">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 group-hover:text-indigo-400 transition">Immobilier</h3>
+            <p class="text-sm text-zinc-400 mb-4">Gestion locative, syndic, maintenance.</p>
+            <div class="flex items-center gap-2 text-xs text-indigo-400">
+              <span>2 personas</span>
+              <span class="text-zinc-600">•</span>
+              <span>PROPERTY, HOA</span>
+            </div>
+          </a>
+
+          <!-- Retail -->
+          <a href="/industries/retail" class="featured-card rounded-2xl p-6 block group">
+            <div class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+              </svg>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 group-hover:text-indigo-400 transition">Retail & E-commerce</h3>
+            <p class="text-sm text-zinc-400 mb-4">Boutiques en ligne, suivi commandes, SAV.</p>
+            <div class="flex items-center gap-2 text-xs text-indigo-400">
+              <span>1 persona</span>
+              <span class="text-zinc-600">•</span>
+              <span>UNIVERSAL_ECOMMERCE</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- All Industries Grid -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold mb-4">Tous les Secteurs Couverts</h2>
+        <p class="text-zinc-400 mb-8">30 personas métier répartis en 3 tiers selon la maturité du déploiement.</p>
+
+        <!-- Tier 1: Core -->
+        <div class="mb-12">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-full">TIER 1</span>
+            <h3 class="text-xl font-semibold">Gold Rush Core (7 personas)</h3>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- AGENCY -->
+            <div class="industry-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold">Agences & Conseil</h4>
+                  <p class="text-xs text-zinc-500">AGENCY</p>
+                </div>
+              </div>
+              <p class="text-sm text-zinc-400">Architecte système, qualification BANT, audit business.</p>
+            </div>
+
+            <!-- DENTAL -->
+            <div class="industry-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-rose-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold">Cabinets Dentaires</h4>
+                  <p class="text-xs text-zinc-500">DENTAL</p>
+                </div>
+              </div>
+              <p class="text-sm text-zinc-400">Gestion RDV, nouveaux patients, urgences.</p>
+            </div>
+
+            <!-- PROPERTY -->
+            <div class="industry-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold">Gestion Immobilière</h4>
+                  <p class="text-xs text-zinc-500">PROPERTY</p>
+                </div>
+              </div>
+              <p class="text-sm text-zinc-400">Maintenance locataires, tickets, urgences.</p>
+            </div>
+
+            <!-- HOA -->
+            <div class="industry-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold">Syndic / HOA</h4>
+                  <p class="text-xs text-zinc-500">HOA</p>
+                </div>
+              </div>
+              <p class="text-sm text-zinc-400">Hotline copropriété, plaintes, questions.</p>
+            </div>
+
+            <!-- SCHOOL -->
+            <div class="industry-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold">Education</h4>
+                  <p class="text-xs text-zinc-500">SCHOOL</p>
+                </div>
+              </div>
+              <p class="text-sm text-zinc-400">Ligne d'absence, gestion parents.</p>
+            </div>
+
+            <!-- CONTRACTOR -->
+            <div class="industry-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold">BTP / Artisans</h4>
+                  <p class="text-xs text-zinc-500">CONTRACTOR</p>
+                </div>
+              </div>
+              <p class="text-sm text-zinc-400">Qualification leads, devis toiture/solaire.</p>
+            </div>
+
+            <!-- FUNERAL -->
+            <div class="industry-card rounded-xl p-5">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-slate-500/20 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="font-semibold">Pompes Funebres</h4>
+                  <p class="text-xs text-zinc-500">FUNERAL</p>
+                </div>
+              </div>
+              <p class="text-sm text-zinc-400">Accueil compassionnel, sensibilite ultra-haute.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier 2: Expansion -->
+        <div class="mb-12">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="px-3 py-1 bg-indigo-500/20 text-indigo-400 text-xs font-semibold rounded-full">TIER 2</span>
+            <h3 class="text-xl font-semibold">Expansion (11 personas)</h3>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Cliniques Multi-Specialites</h4>
+              <p class="text-xs text-zinc-500 mb-2">HEALER</p>
+              <p class="text-sm text-zinc-400">RDV multi-specialites, triage patients.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Garages Auto</h4>
+              <p class="text-xs text-zinc-500 mb-2">MECHANIC</p>
+              <p class="text-sm text-zinc-400">Revision, reparation, controle technique.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Cabinets Juridiques</h4>
+              <p class="text-xs text-zinc-500 mb-2">COUNSELOR</p>
+              <p class="text-sm text-zinc-400">Qualification dossiers, prise RDV avocats.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Hotellerie</h4>
+              <p class="text-xs text-zinc-500 mb-2">CONCIERGE</p>
+              <p class="text-sm text-zinc-400">Reservations chambres, restaurant.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Beaute & Spa</h4>
+              <p class="text-xs text-zinc-500 mb-2">STYLIST</p>
+              <p class="text-sm text-zinc-400">RDV soins, coiffure, massages.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Recrutement / RH</h4>
+              <p class="text-xs text-zinc-500 mb-2">RECRUITER</p>
+              <p class="text-sm text-zinc-400">Screening candidats, prise RDV entretiens.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Logistique</h4>
+              <p class="text-xs text-zinc-500 mb-2">DISPATCHER</p>
+              <p class="text-sm text-zinc-400">Suivi colis, problemes livraison.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Recouvrement</h4>
+              <p class="text-xs text-zinc-500 mb-2">COLLECTOR</p>
+              <p class="text-sm text-zinc-400">Rappels paiement, plans echelonnes.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Enquetes Satisfaction</h4>
+              <p class="text-xs text-zinc-500 mb-2">SURVEYOR</p>
+              <p class="text-sm text-zinc-400">Collecte NPS, avis clients.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Administration Publique</h4>
+              <p class="text-xs text-zinc-500 mb-2">GOVERNOR</p>
+              <p class="text-sm text-zinc-400">Mairie, demarches administratives.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Assurances</h4>
+              <p class="text-xs text-zinc-500 mb-2">INSURER</p>
+              <p class="text-sm text-zinc-400">Sinistres, devis, reclamations.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier 3: Extended -->
+        <div class="mb-12">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="px-3 py-1 bg-amber-500/20 text-amber-400 text-xs font-semibold rounded-full">TIER 3</span>
+            <h3 class="text-xl font-semibold">Extended (12 personas)</h3>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Expertise Comptable</h4>
+              <p class="text-xs text-zinc-500 mb-2">ACCOUNTANT</p>
+              <p class="text-sm text-zinc-400">Qualification clients, RDV experts.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Architecture</h4>
+              <p class="text-xs text-zinc-500 mb-2">ARCHITECT</p>
+              <p class="text-sm text-zinc-400">Projets construction, renovation.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Pharmacies</h4>
+              <p class="text-xs text-zinc-500 mb-2">PHARMACIST</p>
+              <p class="text-sm text-zinc-400">Commandes medicaments, horaires garde.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Location Vehicules</h4>
+              <p class="text-xs text-zinc-500 mb-2">RENTER</p>
+              <p class="text-sm text-zinc-400">Reservations, disponibilites.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Supply Chain B2B</h4>
+              <p class="text-xs text-zinc-500 mb-2">LOGISTICIAN</p>
+              <p class="text-sm text-zinc-400">Commandes gros, livraisons B2B.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Formation</h4>
+              <p class="text-xs text-zinc-500 mb-2">TRAINER</p>
+              <p class="text-sm text-zinc-400">Bootcamps, inscriptions formations.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Evenementiel</h4>
+              <p class="text-xs text-zinc-500 mb-2">PLANNER</p>
+              <p class="text-sm text-zinc-400">Mariages, conferences, traiteur.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Agroalimentaire</h4>
+              <p class="text-xs text-zinc-500 mb-2">PRODUCER</p>
+              <p class="text-sm text-zinc-400">Approvisionnement, equipement industriel.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Nettoyage Industriel</h4>
+              <p class="text-xs text-zinc-500 mb-2">CLEANER</p>
+              <p class="text-sm text-zinc-400">Devis B2B, entretien locaux.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">Fitness & Salles de Sport</h4>
+              <p class="text-xs text-zinc-500 mb-2">GYM</p>
+              <p class="text-sm text-zinc-400">Abonnements, seances essai.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">E-commerce Universel</h4>
+              <p class="text-xs text-zinc-500 mb-2">UNIVERSAL_ECOMMERCE</p>
+              <p class="text-sm text-zinc-400">Toute boutique en ligne.</p>
+            </div>
+            <div class="industry-card rounded-xl p-5">
+              <h4 class="font-semibold mb-1">PME / Services Locaux</h4>
+              <p class="text-xs text-zinc-500 mb-2">UNIVERSAL_SME</p>
+              <p class="text-sm text-zinc-400">Receptionniste universel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gradient-to-br from-indigo-900/30 to-slate-900">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-4">Votre secteur n'est pas liste ?</h2>
+        <p class="text-xl text-zinc-300 mb-8">
+          Nos personas universels (UNIVERSAL_ECOMMERCE, UNIVERSAL_SME) s'adaptent a tout type d'activite. Contactez-nous pour une configuration personnalisee.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/#demo" class="px-8 py-4 bg-indigo-600 hover:bg-indigo-500 rounded-xl text-lg font-semibold transition">
+            Demander une Demo
+          </a>
+          <a href="/pricing" class="px-8 py-4 bg-slate-700 hover:bg-slate-600 rounded-xl text-lg font-medium transition">
+            Voir les Tarifs
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800">
+    <!-- Newsletter Section -->
+    <div class="border-b border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="lg:max-w-md">
+            <h3 class="text-xl font-bold text-white mb-2">Restez informe</h3>
+            <p class="text-zinc-400 text-sm">Recevez nos dernieres actualites sur l'IA vocale et les nouvelles fonctionnalites.</p>
+          </div>
+          <form class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto" onsubmit="event.preventDefault(); alert('Merci pour votre inscription!');">
+            <input type="email" placeholder="votre@email.com" required
+              class="flex-1 lg:w-72 px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+            <button type="submit"
+              class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition whitespace-nowrap">
+              S'inscrire
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Footer -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Brand Section -->
+      <div class="mb-10">
+        <a href="/" class="flex items-center space-x-2 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-400 flex items-center justify-center">
+            <span class="text-xl">🎙️</span>
+          </div>
+          <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        </a>
+        <p class="text-zinc-400 mb-4 text-sm">Agents Vocaux IA pour Entreprises</p>
+        <div class="space-y-2 text-sm text-zinc-400 mb-4">
+          <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            contact@vocalia.ma
+          </a>
+          <a href="tel:+212520000000" class="flex items-center gap-2 hover:text-white transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            +212 5 20 00 00 00
+          </a>
+        </div>
+        <div class="flex space-x-3">
+          <a href="https://twitter.com/vocalia_ma" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="Twitter">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://linkedin.com/company/vocalia" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="LinkedIn">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+          <a href="https://github.com/vocalia" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="GitHub">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <a href="https://youtube.com/@vocalia" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="YouTube">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Categories Row -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Produit</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/features" class="hover:text-white transition">Fonctionnalites</a></li>
+            <li><a href="/pricing" class="hover:text-white transition">Tarifs</a></li>
+            <li><a href="/products/voice-widget" class="hover:text-white transition">Voice Widget</a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition">Voice Telephony</a></li>
+            <li><a href="/integrations" class="hover:text-white transition">Integrations</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Solutions</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/use-cases/e-commerce" class="hover:text-white transition">E-commerce</a></li>
+            <li><a href="/use-cases/customer-support" class="hover:text-white transition">Service Client</a></li>
+            <li><a href="/industries/healthcare" class="hover:text-white transition">Sante</a></li>
+            <li><a href="/industries/real-estate" class="hover:text-white transition">Immobilier</a></li>
+            <li><a href="/solutions/darija" class="hover:text-white transition">Darija AI</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Ressources</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
+            <li><a href="/docs/api" class="hover:text-white transition">API Reference</a></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+            <li><a href="/changelog" class="hover:text-white transition">Changelog</a></li>
+            <li><a href="/status" class="hover:text-white transition">Status</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Entreprise</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/about" class="hover:text-white transition">A propos</a></li>
+            <li><a href="/careers" class="hover:text-white transition">Carrieres</a></li>
+            <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+            <li><a href="/privacy" class="hover:text-white transition">Confidentialite</a></li>
+            <li><a href="/terms" class="hover:text-white transition">CGU</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-slate-800 mt-8 pt-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits reserves.</p>
+          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>RGPD</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              <span>AI Act Ready</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span>AES-256</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>5 Langues</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span>99.9% Uptime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

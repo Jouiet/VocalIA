@@ -35,7 +35,7 @@
       "id": "voice-persona-injector",
       "name": "Voice Persona Injector",
       "category": "personas",
-      "description": "28 personas with marketing science (BANT, PAS, CIALDINI)",
+      "description": "30 personas with marketing science (BANT, PAS, CIALDINI)",
       "script": "personas/voice-persona-injector.cjs",
       "status": "production"
     },
