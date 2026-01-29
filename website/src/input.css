@@ -2059,7 +2059,7 @@ html.light .ai-insights-badge,
   width: 100%;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(94, 106, 210, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.9) 100%);
   border: 1px solid rgba(94, 106, 210, 0.15);
 }
 
@@ -2067,7 +2067,7 @@ html.light .ai-insights-badge,
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 100%, rgba(94, 106, 210, 0.1) 0%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 80%, rgba(99, 102, 241, 0.25) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -2156,8 +2156,8 @@ html.light .voice-visualizer-btn:hover,
 }
 
 .voice-demo-grid {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   max-width: 1200px;
   margin: 0 auto;
@@ -2167,34 +2167,26 @@ html.light .voice-visualizer-btn:hover,
   scrollbar-width: thin;
 }
 
-.voice-demo-grid > * {
-  flex: 0 0 220px;
-}
-
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .voice-demo-grid {
-    flex-wrap: wrap;
-    justify-content: center;
-    overflow-x: visible;
-  }
-  .voice-demo-grid > * {
-    flex: 0 0 calc(25% - 0.75rem);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
 .voice-demo-card {
   position: relative;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-subtle);
+  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
   border-radius: var(--radius-xl);
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   transition: all 200ms ease;
 }
 
 .voice-demo-card:hover {
-  border-color: rgba(94, 106, 210, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.3), 0 0 60px rgba(139, 92, 246, 0.15);
 }
 
 .voice-demo-card-header {
@@ -2214,9 +2206,14 @@ html.light .voice-visualizer-btn:hover,
 .voice-demo-card-badge {
   font-size: 0.625rem;
   padding: 0.25rem 0.5rem;
-  background: rgba(94, 106, 210, 0.15);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.4);
   border-radius: var(--radius-full);
-  color: #a5b4fc;
+  color: #c4b5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  animation: pulse 2s ease-in-out infinite;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
