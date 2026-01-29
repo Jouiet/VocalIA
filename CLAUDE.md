@@ -267,6 +267,7 @@ grep -r "VocalIA" --include="*.cjs" . | wc -l
 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | Master reference |
 | `docs/VOICE-MENA-PLATFORM-ANALYSIS.md` | Benchmark stratégique |
 | `docs/VOICE-DARIJA-FORENSIC.md` | Audit Darija |
+| `docs/VOCALIA-MCP.md` | Documentation MCP Server (11 tools) ✅ NEW |
 
 ---
 
@@ -1444,9 +1445,16 @@ Model Context Protocol server exposing VocalIA capabilities to Claude Desktop:
 
 | Fix | Details |
 |:----|:--------|
-| Video visibility | `hidden xl:block` → responsive all sizes |
+| Video floating | `position: fixed` → intégrée dans Voice Widget card |
+| 28 → 30 Personas | Stats card corrigée |
 | GitHub links | `github.com/vocalia` → `github.com/Jouiet/VoicalAI` |
 | Emojis → Lucide | 1,240+ icons modernized |
+
+### 4. Documentation ✅
+
+| Document | Contenu |
+|:---------|:--------|
+| `docs/VOCALIA-MCP.md` | 11 tools, installation, exemples, architecture |
 
 ### Competitive Analysis (Factual)
 
