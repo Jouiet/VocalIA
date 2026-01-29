@@ -104,11 +104,11 @@
     --primary-dark: #4f46e5;
     --primary-glow: rgba(94, 106, 210, 0.25);
 
-    /* Surfaces - Dark Slate (Enterprise, more visible) */
-    --bg-base: #0f172a;
-    --bg-raised: #1e293b;
-    --bg-elevated: #334155;
-    --bg-overlay: #475569;
+    /* Surfaces - Brighter Slate (Enterprise, high visibility) */
+    --bg-base: #1e293b;
+    --bg-raised: #334155;
+    --bg-elevated: #475569;
+    --bg-overlay: #64748b;
 
     /* Text - High contrast */
     --text-primary: #fafafa;
