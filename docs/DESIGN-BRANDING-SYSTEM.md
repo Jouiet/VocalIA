@@ -1,7 +1,7 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 4.1.0 | **Date**: 29/01/2026 | **Session**: 211
-> **Palette**: Enterprise Slate v4.1 (Brighter, better contrast)
+> **Version**: 4.2.0 | **Date**: 29/01/2026 | **Session**: 212
+> **Palette**: Enterprise Slate v4.1 | **Brand Assets**: OG + Logo ✅
 > **Research**: GitHub ihlamury/design-skills, Gemini Deep Research, pipecat-ai/voice-ui-kit
 
 ---
@@ -494,17 +494,26 @@ Features:
 
 ---
 
-## PLAN ACTIONNABLE (Session 212)
+## Brand Assets (Session 212)
+
+| Asset | Size | Path | Description |
+|:------|:----:|:-----|:------------|
+| **OG Image** | 19KB | `public/images/og-image.webp` | Social preview, 1024x1024 |
+| **Logo Icon** | 10KB | `public/images/logo.webp` | Sound wave, #5E6AD2 |
+
+**Generated via:** Gemini 2.0 Flash Image Generation
+
+## PLAN ACTIONNABLE (Session 213)
 
 | # | Action | Priorité | Fichier |
 |:-:|:-------|:--------:|:--------|
-| 1 | OG Image génération | P1 | `public/images/og-image.webp` |
-| 2 | Logo officiel VocalIA | P1 | `public/images/logo.webp` |
-| 3 | Micro-interactions hover | P2 | `input.css` |
-| 4 | Dashboard admin polish | P3 | `dashboard/admin.html` |
+| 1 | Deploy to production | P1 | CI/CD |
+| 2 | Favicon multi-size | P2 | `favicon.ico` |
+| 3 | Dashboard polish | P2 | `dashboard/*.html` |
+| 4 | Apple Touch Icon | P3 | `apple-touch-icon.png` |
 
 ---
 
 *Document créé: 28/01/2026 - Session 200*
-*Màj: 29/01/2026 - Session 211 (Brighter Palette + Performance)*
+*Màj: 29/01/2026 - Session 212 (Brand Assets Generated)*
 *Auteur: Claude Code (DOE Framework)*

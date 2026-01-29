@@ -1,8 +1,8 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 3.3.0 | **Date**: 29/01/2026 | **Session**: 211
-> **Status**: REMEDIATION COMPLETE (~87%) | **CSS Build**: SOVEREIGN (92KB)
-> **Palette**: Enterprise Slate v4.1 (Brighter, better contrast)
+> **Version**: 3.4.0 | **Date**: 29/01/2026 | **Session**: 212
+> **Status**: REMEDIATION COMPLETE (~90%) | **CSS Build**: SOVEREIGN (92KB)
+> **Palette**: Enterprise Slate v4.1 | **Lighthouse**: 90
 
 ---
 
@@ -244,6 +244,30 @@ Audit basé sur:
 
 **Score Post-Session 211:** 70/80 (~87%)
 
+### Implémentations Session 212
+
+**12. Lighthouse Performance Forensics:**
+- Score: 85 → 90 (+5)
+- Speed Index: 6.2s → 3.5s (-44%)
+- Render blocking resources: 5 → 1 (-80%)
+
+**13. Non-Blocking Resource Loading:**
+- Google Fonts: `media="print" onload="this.media='all'"` pattern
+- JS files: Added `defer` to geo-detect, i18n, gsap-animations
+- CSS: Preload hint + critical inline CSS
+
+**14. Image Performance:**
+- soundwaves.webp: 53KB → 15KB (resize to 640px)
+- Added width/height attributes for CLS prevention
+- Added `fetchpriority="high"` to LCP image
+- Added `decoding="async"` to all images
+
+**15. Brand Assets (Gemini 2.0 Flash):**
+- `og-image.webp`: 19KB - VocalIA social preview
+- `logo.webp`: 10KB - Abstract sound wave icon (#5E6AD2)
+
+**Score Post-Session 212:** 72/80 (~90%)
+
 ---
 
 ## Audit Timeline
@@ -260,6 +284,7 @@ Audit basé sur:
 | 201 | 29/01/2026 | i18n Interpolation Fix | Complete |
 | 207 | 29/01/2026 | Design System Alignment | Complete |
 | 208 | 29/01/2026 | SOTA Animations & Light Mode | Partial |
+| **212** | **29/01/2026** | **Performance + Brand Assets** | **Complete** |
 | **211** | **29/01/2026** | **Performance + Brighter Palette** | **Complete** |
 | **210** | **29/01/2026** | **Voice Visualizer & Drag-Drop** | **Complete** |
 | **209** | **29/01/2026** | **Audit vs 2026 Standards** | **CRITICAL GAPS** |
@@ -633,5 +658,5 @@ Le frontend fonctionne mais n'est pas au niveau "frontier AI model" des standard
 ---
 
 *Document créé: 28/01/2026 - Session 200*
-*Mise à jour: 29/01/2026 - Session 211 (Performance + Brighter Palette)*
+*Mise à jour: 29/01/2026 - Session 212 (Performance + Brand Assets)*
 *Auteur: Claude Code (DOE Framework)*

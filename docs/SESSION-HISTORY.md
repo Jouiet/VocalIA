@@ -1,7 +1,7 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.5.0 | **Updated**: 29/01/2026 | **Session**: 211
-> **Backend Score**: 99/100 | **Frontend Score**: ~87% | **Health Check**: 100% (39/39)
+> **Version**: 3.6.0 | **Updated**: 29/01/2026 | **Session**: 212
+> **Backend Score**: 99/100 | **Frontend Score**: ~90% | **Health Check**: 100% (39/39)
 
 ---
 
@@ -1511,7 +1511,86 @@ node scripts/health-check.cjs
 
 ---
 
+---
+
+## Session 212 - Performance + Brand Assets (29/01/2026)
+
+### Objectives
+
+1. **Performance Deep Optimization** - Lighthouse forensics
+2. **OG Image** - Social media preview
+3. **Logo VocalIA** - Brand icon
+
+### Performance Audit Results (Lighthouse)
+
+| Métrique | Session 211 | Session 212 | Amélioration |
+|:---------|:-----------:|:-----------:|:------------:|
+| **Score** | 85 | **90** | +5 |
+| **Speed Index** | 6.2s | **3.5s** | -44% |
+| **TBT** | 10ms | **80ms** | (still good) |
+| **LCP** | 2.9s | **2.8s** | -3% |
+| **CLS** | 0 | **0** | Perfect |
+| **Render Blocking** | 5 | **1** | -80% |
+
+### Implémentations Session 212
+
+**1. Non-Blocking Resources:**
+- Google Fonts: `media="print" onload="this.media='all'"` pattern
+- JS files: Added `defer` attribute to geo-detect, i18n, gsap-animations
+- CSS: Added `preload` hint + critical inline CSS
+
+**2. Image Optimizations:**
+- soundwaves.webp: 53KB → 15KB (72% reduction via resize 640px)
+- Added width/height attributes to prevent CLS
+- Added `fetchpriority="high"` to LCP image
+- Added `decoding="async"` to all images
+
+**3. Brand Assets Generated (Gemini 2.0 Flash):**
+- `og-image.webp`: 19KB - VocalIA branding with sound waves
+- `logo.webp`: 10KB - Abstract sound wave icon (#5E6AD2)
+
+### Verification
+
+```bash
+# Lighthouse score
+npx lighthouse http://localhost:8080/ --only-categories=performance
+# Result: 90 ✅
+
+# Image sizes
+du -sh website/public/images/*.webp
+# 10K logo.webp
+# 19K og-image.webp
+
+# Health check
+node scripts/health-check.cjs
+# 39/39 (100%) ✅
+```
+
+### Git
+
+- Commit: `79d8ed5`
+- Pushed: ✅ main branch
+
+### Score Post-Session 212
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| Frontend Score | ~87% | **~90%** |
+| Lighthouse | 85 | **90** |
+| Brand Assets | 0 | **2** (OG + Logo) |
+
+### PLAN ACTIONNABLE (Session 213)
+
+| # | Action | Priorité | Effort |
+|:-:|:-------|:--------:|:------:|
+| 1 | Deploy to Hostinger/Vercel | P1 | 1h |
+| 2 | Critical CSS extraction | P2 | 2h |
+| 3 | Dashboard enhancements | P2 | 2h |
+| 4 | Voice widget integration test | P2 | 1h |
+
+---
+
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 211 (Performance + Brighter Palette)*
-*Status: Backend 99/100 | Frontend ~87% | Health: 100% (39/39)*
-*Phase 3 Frontend: IN PROGRESS | Next: OG Image + Deploy*
+*Màj: 29/01/2026 - Session 212 (Performance + Brand Assets)*
+*Status: Backend 99/100 | Frontend ~90% | Health: 100% (39/39)*
+*Phase 3 Frontend: ~90% COMPLETE | Next: Deploy*
