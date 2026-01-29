@@ -49,7 +49,7 @@
           "@type": "Organization",
           "name": "VocalIA",
           "url": "https://vocalia.ma",
-          "logo": "https://vocalia.ma/assets/logo.png",
+          "logo": "https://vocalia.ma/assets/logo.webp",
           "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+212-600-000000",
@@ -68,11 +68,16 @@
 
   <!-- Tailwind CSS (Sovereign) -->
   <link href="./public/css/style.css" rel="stylesheet">
+
+  <!-- DNS Prefetch & Preconnect for external resources -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 
-  <!-- GSAP Animation Library -->
+  <!-- GSAP Animation Library - Loaded async for performance -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <meta http-equiv="X-Frame-Options" content="DENY">
@@ -83,7 +88,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet">
 
   <style>
@@ -251,22 +256,8 @@
           <a href="#demo" class="text-vocalia-200 hover:text-white transition" data-i18n="nav.demo">Démo</a>
         </div>
 
-        <!-- CTA + Theme + Lang -->
+        <!-- CTA + Lang (Dark mode only - no toggle needed) -->
         <div class="flex items-center space-x-3">
-          <!-- Theme Toggle -->
-          <button id="themeToggle" aria-label="Basculer le mode sombre/clair" class="theme-toggle">
-            <!-- Sun icon (shown in dark mode, click for light) -->
-            <svg class="icon-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <!-- Moon icon (shown in light mode, click for dark) -->
-            <svg class="icon-moon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-          </button>
-
           <!-- Language Switcher -->
           <div class="relative">
             <button id="langBtn" aria-label="Choisir la langue"
@@ -303,7 +294,7 @@
 
     <!-- Sound waves background - semantic for Voice AI -->
     <div class="absolute inset-0 pointer-events-none opacity-30">
-      <img src="/public/images/hero/vocalia-soundwaves.png" alt="" class="absolute bottom-0 left-0 w-full h-auto object-cover" loading="lazy" aria-hidden="true">
+      <img src="/public/images/hero/vocalia-soundwaves.webp" alt="" class="absolute bottom-0 left-0 w-full h-auto object-cover" loading="lazy" aria-hidden="true">
     </div>
 
     <!-- Subtle grid pattern (voice AI = precision, structure) -->
@@ -438,7 +429,7 @@
 
       <!-- Hero Image - Professional Voice AI Representative -->
       <div class="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-1/3 max-w-md opacity-90 pointer-events-none" data-animate="visual">
-        <img src="/public/images/hero/vocalia-hero-1.png" alt="Professional using VocalIA voice assistant" class="w-full h-auto rounded-2xl shadow-2xl shadow-vocalia-500/20" loading="eager">
+        <img src="/public/images/hero/vocalia-hero-1.webp" alt="Professional using VocalIA voice assistant" class="w-full h-auto rounded-2xl shadow-2xl shadow-vocalia-500/20" loading="eager">
       </div>
     </div>
 
@@ -509,7 +500,7 @@
             <!-- Widget visualization -->
             <div class="mt-6 pt-6 border-t border-zinc-700/50">
               <div class="flex items-center justify-center">
-                <img src="/public/images/hero/vocalia-widget.png" alt="VocalIA voice widget interface" class="w-full max-w-xs h-auto rounded-lg opacity-90" loading="lazy">
+                <img src="/public/images/hero/vocalia-widget.webp" alt="VocalIA voice widget interface" class="w-full max-w-xs h-auto rounded-lg opacity-90" loading="lazy">
               </div>
             </div>
           </div>
@@ -1035,36 +1026,8 @@
   <script src="src/lib/geo-detect.js"></script>
   <script src="src/lib/i18n.js"></script>
   <script>
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
-
-    // Initialize theme from localStorage or system preference
-    function initTheme() {
-      const stored = localStorage.getItem('vocalia_theme');
-      if (stored) {
-        html.classList.toggle('light', stored === 'light');
-      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-        html.classList.add('light');
-      }
-    }
-
-    // Toggle theme
-    function toggleTheme() {
-      html.classList.toggle('light');
-      const isLight = html.classList.contains('light');
-      localStorage.setItem('vocalia_theme', isLight ? 'light' : 'dark');
-    }
-
-    themeToggle.addEventListener('click', toggleTheme);
-    initTheme();
-
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
-      if (!localStorage.getItem('vocalia_theme')) {
-        html.classList.toggle('light', e.matches);
-      }
-    });
+    // VocalIA Main Site - Dark Mode Only (no theme toggle)
+    // Theme toggle available only in dashboards
 
     // Language dropdown
     const langBtn = document.getElementById('langBtn');
