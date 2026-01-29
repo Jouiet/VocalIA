@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 2.9.0 | 29/01/2026 | Session 214 | Backend: 99/100 | Frontend: ~96% | Health: 100%
+> Version: 3.0.0 | 29/01/2026 | Session 215 | Backend: 99/100 | Frontend: ~96% | Health: 100%
 
 ## Identité
 
@@ -65,13 +65,15 @@
 
 ---
 
-## Website SOTA Multi-Pages (Session 214)
+## Website SOTA Multi-Pages (Session 215)
 
 ```
-website/                              # 7,883+ lignes (7 pages HTML)
+website/                              # 9,000+ lignes (9 pages HTML)
 ├── index.html                        # Landing page + Mega Menu (~1,200 L)
 ├── features.html                     # All features page (~580 L) ✅ Session 214
 ├── pricing.html                      # Dedicated pricing (~620 L) ✅ Session 214
+├── about.html                        # Mission, values, team (~500 L) ✅ Session 215
+├── contact.html                      # Contact form, FAQ (~450 L) ✅ Session 215
 ├── products/
 │   ├── voice-widget.html             # Widget product page (~480 L) ✅ Session 214
 │   └── voice-telephony.html          # Telephony product page (~550 L) ✅ Session 214
@@ -93,7 +95,8 @@ website/                              # 7,883+ lignes (7 pages HTML)
 │   └── locales/
 │       ├── fr.json                   # French translations
 │       └── en.json                   # English translations
-├── SITEMAP-PLAN.md                   # 22+ page architecture plan ✅ Session 214
+├── .htaccess                         # Apache config, clean URLs ✅ Session 215
+├── SITEMAP-PLAN.md                   # 22+ page architecture plan
 └── public/assets/
 ```
 
@@ -101,7 +104,7 @@ website/                              # 7,883+ lignes (7 pages HTML)
 
 | Tier | Pages | Status |
 |:-----|:------|:------:|
-| Core | Home, Features, Pricing, About, Contact, Docs | 3/6 ✅ |
+| Core | Home, Features, Pricing, About, Contact, Docs | **5/6 ✅** |
 | Products | Voice Widget, Voice Telephony | 2/2 ✅ |
 | Use Cases | E-commerce, Support, Appointments, Leads | 0/4 |
 | Industries | Healthcare, Real Estate, Finance, Retail | 0/4 |
@@ -607,17 +610,36 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 **Score Post-Session 213:** ~92%
 
-## PLAN ACTIONNABLE (Session 214)
+## Session 215 Summary
+
+**Implémentations:**
+- ✅ `website/about.html` (500+ lines) - Mission, values, team, languages, tech stack
+- ✅ `website/contact.html` (450+ lines) - Contact form, info cards, FAQ
+- ✅ `website/.htaccess` - Apache config, clean URLs, security headers, caching
+- ✅ `scripts/create-deploy-zip.sh` - Automated deployment ZIP creation
+- ✅ `DEPLOY-NINDOHOST.md` - Comprehensive cPanel deployment guide
+- ✅ Fixed VocaliaGeo error (removed `defer` from geo-detect.js)
+- ✅ Updated sitemap.xml (9 URLs total)
+
+**Métriques:**
+- HTML Pages: 7 → **9** (+2)
+- Total Lines: ~8,000 → **~9,000** (+1,000)
+- Deploy ZIP: **2.2MB** ready
+
+**Git:** Commit `f95178a`
+
+## PLAN ACTIONNABLE (Session 216)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Register vocalia.ma | P1 | User action required |
-| 2 | Deploy to Vercel | P1 | `vercel deploy` |
-| 3 | Dashboard final polish | P2 | Admin/Client UX |
-| 4 | Voice widget integration test | P2 | End-to-end |
+| 1 | **Acheter hébergement NindoHost** | **P0** | User action - Pack Starter 39 DH/mois |
+| 2 | Upload ZIP to cPanel | P1 | `vocalia-website-*.zip` |
+| 3 | Create Docs page | P2 | API reference, getting started |
+| 4 | Create Use Cases pages | P2 | E-commerce, Support, Appointments |
+| 5 | Voice widget integration test | P3 | End-to-end |
 
 ---
 
-*Màj: 29/01/2026 - Session 213 (Deployment Prep + Favicons)*
-*Status: Backend 99/100 ✅ | Frontend ~92% ✅ | Health 100% (39/39)*
+*Màj: 29/01/2026 - Session 215 (About & Contact Pages + Deploy Fix)*
+*Status: Backend 99/100 ✅ | Frontend ~96% ✅ | Health 100% (39/39)*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
