@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.0.0 | 29/01/2026 | Session 225 | Backend: 99/100 | Frontend: ~97% | Health: 100%
-> CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Dashboards: Liquid-Glass ✅
+> Version: 4.1.0 | 29/01/2026 | Session 226 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 
 ## Identité
 
@@ -1342,20 +1342,61 @@ Dashboard cards upgraded from basic `glass-panel` to Apple 2026-inspired `liquid
 
 ---
 
-### PLAN ACTIONNABLE (Session 226)
+## Session 226 Summary
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Light mode LCH fixes | P2 | Dashboard contrast (backlog) |
-| 2 | Visual testing Playwright | P2 | Verify all fixes live |
+**1. Visual Testing with Playwright MCP:** ✅ COMPLETED
+
+Full visual verification of live site https://vocalia.ma:
+
+| Page | Status | Notes |
+|:-----|:------:|:------|
+| Homepage | ✅ | Stats display correctly, hero section working |
+| Dashboard Client | ✅ | Liquid-glass cards, dark/light mode working |
+| Dashboard Admin | ✅ | All widgets functional, theme toggle works |
+| Blog Index | ✅ | 7 articles with working links |
+| Blog Article | ✅ | Full content renders correctly |
+
+**2. Critical Bug Fix: 403 Forbidden for Locale JSON Files**
+
+**Root Cause:** `.htaccess` blocked ALL `.json` files for security:
+```apache
+<FilesMatch "\.(md|json|cjs|js)$">
+    Require all denied
+</FilesMatch>
+```
+
+**Fix:** Added exception for i18n locale files:
+```apache
+<FilesMatch "^(fr|en|voice-fr|voice-en)\.json$">
+    Require all granted
+</FilesMatch>
+```
+
+**3. Dashboard Light Mode Verified:**
+- Theme toggle functional (localStorage persistence)
+- Clean white backgrounds with proper contrast
+- All liquid-glass cards render correctly in light mode
+
+### Commits
+
+- `a02dcaa` - Fix: Allow locale JSON files in .htaccess (403 Forbidden fix)
 
 ---
 
-*Màj: 29/01/2026 - Session 225 (Dashboard Liquid-Glass Integration)*
+### PLAN ACTIONNABLE (Session 227)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Light mode LCH polish | P2 | Optional enhancement (backlog) |
+| 2 | Performance audit | P3 | Lighthouse CI integration |
+
+---
+
+*Màj: 29/01/2026 - Session 226 (Visual Testing + 403 Fix)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
-*Live: https://vocalia.ma ✅ | Auto-Deploy: GitHub Actions → NindoHost*
-*Dashboards: Liquid-Glass 3D Cards ✅ (11 cards total)*
-*Icons: ALL Heroicons (Outline+Solid) → Lucide 2026 ✅*
+*Live: https://vocalia.ma ✅ | Visual Testing: Playwright MCP ✅*
+*i18n: Locale JSON files accessible ✅ (403 fix deployed)*
+*Dashboards: Light/Dark mode fully functional ✅*
 *Blog: 7 articles with working links ✅ | Docs: /docs/ fixed ✅*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*

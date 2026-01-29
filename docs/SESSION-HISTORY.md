@@ -2399,18 +2399,58 @@ Upgrade dashboard cards from basic `glass-panel` to Apple 2026-inspired `liquid-
 
 ---
 
-### PLAN ACTIONNABLE (Session 226)
+## Session 226 (29/01/2026)
+
+### OBJECTIF
+
+Visual testing with Playwright MCP + fix critical 403 error for locale JSON files.
+
+### IMPLÉMENTATIONS
+
+**1. Visual Testing Playwright MCP:** ✅
+
+| Page | Status |
+|:-----|:------:|
+| Homepage (vocalia.ma) | ✅ |
+| Dashboard Client | ✅ |
+| Dashboard Admin | ✅ |
+| Blog Index | ✅ |
+| Blog Article | ✅ |
+
+**2. Critical Fix: 403 Forbidden for Locale JSON**
+
+Root cause: `.htaccess` blocked ALL `.json` files.
+
+```apache
+# Fix: Added exception for locale files
+<FilesMatch "^(fr|en|voice-fr|voice-en)\.json$">
+    Require all granted
+</FilesMatch>
+```
+
+**3. Light Mode Verified:**
+- Dashboard theme toggle works correctly
+- localStorage persistence functional
+- All liquid-glass cards render in light mode
+
+### COMMITS
+
+- `a02dcaa` - Fix: Allow locale JSON files in .htaccess
+
+---
+
+### PLAN ACTIONNABLE (Session 227)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Light mode LCH fixes | P2 | Dashboard contrast (backlog) |
-| 2 | Visual testing Playwright | P2 | Verify live site |
+| 1 | Light mode LCH polish | P2 | Optional (backlog) |
+| 2 | Performance audit | P3 | Lighthouse CI |
 
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 225 (Dashboard Liquid-Glass Integration)*
+*Màj: 29/01/2026 - Session 226 (Visual Testing + 403 Fix)*
 *Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
-*Dashboards: 11 liquid-glass cards (5 client + 6 admin)*
-*Icons: ALL Heroicons (Outline+Solid) → Lucide 2026*
+*Live: https://vocalia.ma ✅ | i18n: Locale files accessible ✅*
+*Dashboards: Light/Dark mode fully functional ✅*
 *Blog: 7 articles with working links | Docs: /docs/ fixed*

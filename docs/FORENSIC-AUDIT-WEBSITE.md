@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.0.0 | **Date**: 29/01/2026 | **Session**: 225
+> **Version**: 4.1.0 | **Date**: 29/01/2026 | **Session**: 226
 > **Status**: WCAG 2.1 AA COMPLIANCE (~97%) | **CSS Build**: SOVEREIGN (93KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: Technology Disclosure Protection ✅ (Session 222)
@@ -9,6 +9,8 @@
 > **Blog**: 7 articles with working links ✅ (Session 224.2)
 > **Docs**: /docs/ serves docs/index.html ✅ (Session 224.2)
 > **Dashboards**: Liquid-Glass Cards ✅ (Session 225)
+> **i18n**: Locale JSON files accessible ✅ (Session 226 - 403 fix)
+> **Visual Testing**: Playwright MCP verified ✅ (Session 226)
 
 ---
 
@@ -511,6 +513,7 @@ grep -riE "Grok|Gemini|Twilio" website/ --include="*.html" --include="*.json" | 
 | 201 | 29/01/2026 | i18n Interpolation Fix | Complete |
 | 207 | 29/01/2026 | Design System Alignment | Complete |
 | 208 | 29/01/2026 | SOTA Animations & Light Mode | Partial |
+| **226** | **29/01/2026** | **Visual Testing + 403 Fix** | **Complete** |
 | **225** | **29/01/2026** | **Liquid-Glass Dashboard Cards** | **Complete** |
 | **224** | **29/01/2026** | **Icons, Blog, Docs, Header Mega Menu** | **Complete** |
 | **222** | **29/01/2026** | **Security: Technology Disclosure Fix** | **Complete** |
