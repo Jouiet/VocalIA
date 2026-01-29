@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 3.9.0 | 29/01/2026 | Session 224 | Backend: 99/100 | Frontend: ~98% | Health: 100%
+> Version: 3.9.1 | 29/01/2026 | Session 224.2 | Backend: 99/100 | Frontend: ~98% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s)
 
 ## Identité
@@ -1281,22 +1281,58 @@ grep -r 'stroke-width="1.5"' website/ --include="*.html" | wc -l
 
 ---
 
+## Session 224.2 Summary - Critical Fixes
+
+**Problèmes CRITIQUES corrigés:**
+
+### 1. Icons Solid (Heroicons 2019)
+
+Les icônes checkmark utilisaient l'ancien format Heroicons Solid:
+- `viewBox="0 0 20 20"` + `fill="currentColor"`
+- Corrigé: `viewBox="0 0 24 24"` + `stroke="currentColor"`
+- Script: `scripts/modernize-icons-v2.py`
+- **8 fichiers** mis à jour
+
+### 2. /docs/ Directory Listing
+
+**Problème:** `/docs/` affichait un listing au lieu de la page docs.
+**Solution:** Déplacé `docs.html` → `docs/index.html`
+
+### 3. Blog Liens Cassés
+
+**Problème:** 7 liens `href="#"` cassés dans blog/index.html
+**Solution:** Créé 7 articles complets + mis à jour les liens
+
+| Article | Fichier | Taille |
+|:--------|:--------|:------:|
+| Réduire 70% coûts support | reduire-couts-support-voice-ai.html | 10.5 KB |
+| Darija launch | vocalia-lance-support-darija.html | 8.3 KB |
+| Clinique Amal | clinique-amal-rappels-vocaux.html | 13.6 KB |
+| Shopify tutorial | integrer-vocalia-shopify.html | 14.6 KB |
+| RGPD guide | rgpd-voice-ai-guide-2026.html | 15.9 KB |
+| Immo Plus | agence-immo-plus-conversion.html | 16.4 KB |
+| AI Act | ai-act-europe-voice-ai.html | 17.9 KB |
+
+### Commit
+
+`930065f` - Session 224.2: Critical Fixes (+2,337 lignes, 18 fichiers)
+
+---
+
 ### PLAN ACTIONNABLE (Session 225)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | **Individual blog article pages** | P1 | 7 articles/pages |
-| 2 | Liquid-glass cards dashboards | P2 | Task #29 pending |
-| 3 | Light mode fixes | P3 | Dashboard contrast |
-| 4 | Visual testing Playwright | P3 | Verify layouts |
+| 1 | Liquid-glass cards dashboards | P1 | Task #29 pending |
+| 2 | Light mode fixes | P2 | Dashboard contrast |
+| 3 | Visual testing Playwright | P2 | Verify all fixes live |
 
 ---
 
-*Màj: 29/01/2026 - Session 224 (Icons Lucide FINAL + Header Propagation)*
+*Màj: 29/01/2026 - Session 224.2 (Critical Fixes: Icons, Docs, Blog)*
 *Status: Backend 99/100 ✅ | Frontend ~98% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Auto-Deploy: GitHub Actions → NindoHost*
-*CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) - Both GREEN*
-*Icons: Lucide 2026 (463 stroke-width 1.5) | Headers: 24 pages unified mega menu*
-*Personas: 30 (verified) | Blog: 7 articles | Industries: /industries/ created*
+*Icons: ALL Heroicons (Outline+Solid) → Lucide 2026 ✅*
+*Blog: 7 articles with working links ✅ | Docs: /docs/ fixed ✅*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*

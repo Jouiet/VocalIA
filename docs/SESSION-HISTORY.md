@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.11.0 | **Updated**: 29/01/2026 | **Session**: 224
+> **Version**: 3.12.0 | **Updated**: 29/01/2026 | **Session**: 224.2
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
 
 ---
@@ -2286,19 +2286,94 @@ Blog index (`website/blog/index.html`) already contains 7 quality articles:
 
 ---
 
+### PLAN ACTIONNABLE (Session 225) → Session 224.2 COMPLETED
+
+| # | Action | Priorité | Status |
+|:-:|:-------|:--------:|:------:|
+| 1 | Blog article pages | P1 | ✅ 7 créés |
+| 2 | Icons Solid fix | P0 | ✅ viewBox 20→24 |
+| 3 | Docs routing fix | P0 | ✅ docs/index.html |
+
+---
+
+## Session 224.2 - Critical Fixes (29/01/2026)
+
+**Directive:** Fix critical issues discovered during user testing.
+
+### 1. Icons Heroicons Solid (viewBox 20x20)
+
+**Problème:** Checkmark icons utilisaient Heroicons Solid (2019):
+- `viewBox="0 0 20 20"` + `fill="currentColor"`
+- Path: `d="M16.707 5.293a1 1 0 010 1.414l-8 8..."`
+
+**Solution:** Script `scripts/modernize-icons-v2.py`
+- Converted to Lucide: `viewBox="0 0 24 24"` + `stroke="currentColor"`
+- Path: `d="M20 6L9 17l-5-5"`
+- **8 fichiers** corrigés
+
+### 2. /docs/ Directory Listing
+
+**Problème:** vocalia.ma/docs/ affichait:
+```
+Index of /docs/
+Name    Last Modified
+api.html    2026-01-29
+```
+
+**Cause:** `docs.html` existait à la racine, mais `/docs/` était un répertoire.
+
+**Solution:** `mv docs.html → docs/index.html`
+
+### 3. Blog Liens Cassés
+
+**Problème:** 7 liens `href="#"` dans blog/index.html
+
+**Solution:** Créé 7 articles complets:
+
+| Article | URL | Taille |
+|:--------|:----|:------:|
+| Réduire 70% coûts support | /blog/articles/reduire-couts-support-voice-ai | 10.5 KB |
+| Darija launch | /blog/articles/vocalia-lance-support-darija | 8.3 KB |
+| Clinique Amal case study | /blog/articles/clinique-amal-rappels-vocaux | 13.6 KB |
+| Shopify tutorial | /blog/articles/integrer-vocalia-shopify | 14.6 KB |
+| RGPD guide 2026 | /blog/articles/rgpd-voice-ai-guide-2026 | 15.9 KB |
+| Immo Plus case study | /blog/articles/agence-immo-plus-conversion | 16.4 KB |
+| AI Act Europe | /blog/articles/ai-act-europe-voice-ai | 17.9 KB |
+
+### COMMITS
+
+- `930065f` - Session 224.2: Critical Fixes (Icons, Docs, Blog)
+
+### VÉRIFICATION
+
+```bash
+# Icons viewBox 20x20
+grep -r 'viewBox="0 0 20 20"' website/ --include="*.html" | wc -l
+# Result: 0 ✅
+
+# Blog broken links
+grep 'href="#"' website/blog/index.html | wc -l
+# Result: 0 ✅
+
+# Docs structure
+ls website/docs/index.html
+# Result: exists ✅
+```
+
+---
+
 ### PLAN ACTIONNABLE (Session 225)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Individual blog article pages | P1 | 7 HTML files to create |
-| 2 | Liquid-glass cards dashboards | P2 | Task #29 pending |
-| 3 | Light mode fixes | P3 | Dashboard contrast |
-| 4 | Visual testing Playwright | P3 | Verify layouts |
+| 1 | Liquid-glass cards dashboards | P1 | Task #29 pending |
+| 2 | Light mode fixes | P2 | Dashboard contrast |
+| 3 | Visual testing Playwright | P2 | Verify live site |
 
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 224 (Icons FINAL + Header Propagation)*
+*Màj: 29/01/2026 - Session 224.2 (Critical Fixes)*
 *Status: Backend 99/100 | Frontend ~98% | Health: 100% (39/39)*
-*Icons: Lucide 2026 (463 occurrences) | Headers: 24 pages unified*
-*Personas: 30 verified | Blog: 7 articles index*
+*Icons: ALL Heroicons (Outline+Solid) → Lucide 2026*
+*Blog: 7 articles with working links | Docs: /docs/ fixed*
