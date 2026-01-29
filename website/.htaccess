@@ -93,3 +93,10 @@ ErrorDocument 500 /index.html
         Require all granted
     </IfModule>
 </FilesMatch>
+
+# Allow locale JSON files for i18n
+<FilesMatch "^(fr|en|voice-fr|voice-en)\.json$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+</FilesMatch>
