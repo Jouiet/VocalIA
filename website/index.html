@@ -700,19 +700,18 @@
               </li>
             </ul>
             <!-- Demo Video - Integrated in Voice Widget card (50% size) -->
-            <div class="mt-6 relative group/video w-1/2">
+            <div class="mt-6 relative w-1/2">
               <video
                 id="heroVideo"
                 src="/public/videos/vocalia-demo-fr.mp4"
                 class="w-full h-auto rounded-xl shadow-lg shadow-indigo-500/30 cursor-pointer ring-1 ring-indigo-500/20"
                 autoplay muted loop playsinline
-                onmouseenter="this.muted=false; this.play();"
-                onmouseleave="this.muted=true;"
-                aria-label="Démonstration VocalIA">
+                onclick="this.muted = !this.muted; document.getElementById('videoSoundBadge').textContent = this.muted ? 'Clic = Son' : 'Son activé';"
+                aria-label="Démonstration VocalIA - Cliquez pour activer le son">
               </video>
-              <div class="absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/80 rounded text-[10px] text-white/90 opacity-0 group-hover/video:opacity-100 transition-opacity pointer-events-none flex items-center gap-1">
+              <div id="videoSoundBadge" class="absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/80 rounded text-[10px] text-white/90 flex items-center gap-1">
                 <i data-lucide="volume-2" class="w-2.5 h-2.5"></i>
-                <span>Son</span>
+                Clic = Son
               </div>
             </div>
           </div>
