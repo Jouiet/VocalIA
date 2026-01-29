@@ -15,7 +15,7 @@
   <meta property="og:title" content="VocalIA - Agents Vocaux IA pour Entreprises" />
   <meta property="og:description"
     content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées." />
-  <meta property="og:image" content="https://vocalia.ma/assets/og-image.jpg" />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:site_name" content="VocalIA" />
 
@@ -25,7 +25,7 @@
   <meta property="twitter:title" content="VocalIA - Agents Vocaux IA pour Entreprises" />
   <meta property="twitter:description"
     content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées." />
-  <meta property="twitter:image" content="https://vocalia.ma/assets/og-image.jpg" />
+  <meta property="twitter:image" content="https://vocalia.ma/public/images/og-image.webp" />
 
   <!-- Schema.org JSON-LD (AEO Optimized) -->
   <script type="application/ld+json">
@@ -49,7 +49,7 @@
           "@type": "Organization",
           "name": "VocalIA",
           "url": "https://vocalia.ma",
-          "logo": "https://vocalia.ma/assets/logo.webp",
+          "logo": "https://vocalia.ma/public/images/logo.webp",
           "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+212-600-000000",
@@ -66,7 +66,11 @@
   <link rel="icon" type="image/svg+xml"
     href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>">
 
-  <!-- Tailwind CSS (Sovereign) -->
+  <!-- Critical CSS - Inline for instant render -->
+  <style>body{background:#0f172a;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS (Sovereign) - Preloaded -->
+  <link rel="preload" href="./public/css/style.css" as="style">
   <link href="./public/css/style.css" rel="stylesheet">
 
   <!-- DNS Prefetch & Preconnect for external resources -->
@@ -84,12 +88,12 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
-  <!-- Inter Font -->
+  <!-- Inter Font - Non-blocking load -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"></noscript>
 
   <style>
     /* Custom scrollbar - Enterprise Dark */
@@ -294,7 +298,7 @@
 
     <!-- Sound waves background - semantic for Voice AI -->
     <div class="absolute inset-0 pointer-events-none opacity-30">
-      <img src="/public/images/hero/vocalia-soundwaves.webp" alt="" class="absolute bottom-0 left-0 w-full h-auto object-cover" loading="lazy" aria-hidden="true">
+      <img src="/public/images/hero/vocalia-soundwaves.webp" alt="" class="absolute bottom-0 left-0 w-full h-auto object-cover" loading="lazy" aria-hidden="true" width="640" height="359" decoding="async">
     </div>
 
     <!-- Subtle grid pattern (voice AI = precision, structure) -->
@@ -429,7 +433,7 @@
 
       <!-- Hero Image - Professional Voice AI Representative -->
       <div class="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-1/3 max-w-md opacity-90 pointer-events-none" data-animate="visual">
-        <img src="/public/images/hero/vocalia-hero-1.webp" alt="Professional using VocalIA voice assistant" class="w-full h-auto rounded-2xl shadow-2xl shadow-vocalia-500/20" loading="eager">
+        <img src="/public/images/hero/vocalia-hero-1.webp" alt="Professional using VocalIA voice assistant" class="w-full h-auto rounded-2xl shadow-2xl shadow-vocalia-500/20" loading="eager" fetchpriority="high" width="1024" height="1024" decoding="async">
       </div>
     </div>
 
@@ -500,7 +504,7 @@
             <!-- Widget visualization -->
             <div class="mt-6 pt-6 border-t border-zinc-700/50">
               <div class="flex items-center justify-center">
-                <img src="/public/images/hero/vocalia-widget.webp" alt="VocalIA voice widget interface" class="w-full max-w-xs h-auto rounded-lg opacity-90" loading="lazy">
+                <img src="/public/images/hero/vocalia-widget.webp" alt="VocalIA voice widget interface" class="w-full max-w-xs h-auto rounded-lg opacity-90" loading="lazy" width="1024" height="1024" decoding="async">
               </div>
             </div>
           </div>
@@ -1023,8 +1027,8 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="src/lib/geo-detect.js"></script>
-  <script src="src/lib/i18n.js"></script>
+  <script src="src/lib/geo-detect.js" defer></script>
+  <script src="src/lib/i18n.js" defer></script>
   <script>
     // VocalIA Main Site - Dark Mode Only (no theme toggle)
     // Theme toggle available only in dashboards
@@ -1130,7 +1134,7 @@
   </script>
 
   <!-- VocalIA GSAP Animation System -->
-  <script src="/src/lib/gsap-animations.js"></script>
+  <script src="/src/lib/gsap-animations.js" defer></script>
   <script>
     // Scroll Progress Indicator
     window.addEventListener('scroll', () => {
