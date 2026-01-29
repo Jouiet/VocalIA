@@ -42,7 +42,7 @@ RewriteRule ^dashboard/?$ /dashboard/client.html [L]
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
 
     # CSP (Content Security Policy)
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'"
 </IfModule>
 
 # Caching - Static Assets
