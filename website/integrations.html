@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intégrations - VocalIA | CRM, E-commerce, Calendriers</title>
+  <meta name="description" content="Connectez VocalIA à vos outils existants. Intégrations natives avec HubSpot, Salesforce, Shopify, Calendly, Twilio et plus. API RESTful complète.">
+  <link rel="canonical" href="https://vocalia.ma/integrations" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/integrations" />
+  <meta property="og:title" content="Intégrations VocalIA - Connectez vos outils" />
+  <meta property="og:description" content="Intégrations natives avec HubSpot, Shopify, Twilio et plus." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Critical CSS -->
+  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS -->
+  <link rel="preload" href="/public/css/style.css" as="style">
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(51, 65, 85, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .integration-card {
+      background: linear-gradient(135deg, rgba(51, 65, 85, 0.7), rgba(30, 41, 59, 0.85));
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      transition: all 0.3s ease;
+    }
+    .integration-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-4px);
+    }
+    .category-badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white antialiased">
+  <!-- Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller au contenu principal</a>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+            <span class="text-xl">🎙️</span>
+          </div>
+          <span class="text-xl font-bold">VocalIA</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/features" class="text-slate-300 hover:text-white transition-colors">Fonctionnalités</a>
+          <a href="/pricing" class="text-slate-300 hover:text-white transition-colors">Tarifs</a>
+          <a href="/docs" class="text-slate-300 hover:text-white transition-colors">Documentation</a>
+          <a href="/contact" class="text-slate-300 hover:text-white transition-colors">Contact</a>
+        </div>
+        <div class="flex items-center space-x-4">
+          <a href="/dashboard/client" class="text-slate-300 hover:text-white transition-colors">Connexion</a>
+          <a href="/contact" class="px-4 py-2 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-colors">Démo gratuite</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content" class="pt-24 pb-16">
+    <!-- Hero Section -->
+    <section class="py-16 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-vocalia-900/20 to-transparent"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"></path></svg>
+          20+ Intégrations
+        </span>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
+          Connectez VocalIA à<br><span class="gradient-text">votre stack existant</span>
+        </h1>
+        <p class="text-xl text-slate-300 max-w-3xl mx-auto mb-8">
+          Synchronisez vos données client, automatisez vos workflows et enrichissez vos conversations IA avec nos intégrations natives.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/docs" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105">
+            Documentation API
+          </a>
+          <a href="/contact" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors">
+            Demander une intégration
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRM Integrations -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 class="text-2xl font-bold">CRM & Sales</h2>
+          <span class="category-badge bg-orange-500/20 text-orange-400">4 intégrations</span>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-orange-400">H</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">HubSpot</h3>
+            <p class="text-slate-400 text-sm mb-4">Sync contacts, deals, et activités. Création automatique de tickets.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Bidirectionnel</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-blue-400">S</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Salesforce</h3>
+            <p class="text-slate-400 text-sm mb-4">Intégration complète avec leads, contacts, et opportunities.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Bidirectionnel</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-green-400">P</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Pipedrive</h3>
+            <p class="text-slate-400 text-sm mb-4">Gestion des deals et pipeline. Logs d'appels automatiques.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Bidirectionnel</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-purple-400">Z</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Zoho CRM</h3>
+            <p class="text-slate-400 text-sm mb-4">Sync contacts et leads. Automatisation des workflows.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-amber-500/20 text-amber-400 rounded text-xs">Via Zapier</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- E-commerce Integrations -->
+    <section class="py-16 bg-slate-900/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 class="text-2xl font-bold">E-commerce</h2>
+          <span class="category-badge bg-green-500/20 text-green-400">4 intégrations</span>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-green-400">S</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Shopify</h3>
+            <p class="text-slate-400 text-sm mb-4">Suivi commandes, stock, clients. Lookup par email ou numéro.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Temps réel</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-purple-400">W</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">WooCommerce</h3>
+            <p class="text-slate-400 text-sm mb-4">API REST pour commandes, produits et clients WordPress.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Webhook</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-orange-400">M</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Magento</h3>
+            <p class="text-slate-400 text-sm mb-4">Intégration entreprise pour catalogues et commandes complexes.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-amber-500/20 text-amber-400 rounded text-xs">API</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-cyan-400">K</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Klaviyo</h3>
+            <p class="text-slate-400 text-sm mb-4">Segmentation client, tags, et historique d'achats pour personnalisation.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Bidirectionnel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Communication Integrations -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 class="text-2xl font-bold">Communication & Téléphonie</h2>
+          <span class="category-badge bg-red-500/20 text-red-400">4 intégrations</span>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-red-400">T</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Twilio</h3>
+            <p class="text-slate-400 text-sm mb-4">Infrastructure téléphonique PSTN. Appels entrants et sortants.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Core</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Requis</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-purple-400">S</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Slack</h3>
+            <p class="text-slate-400 text-sm mb-4">Notifications temps réel des appels, leads chauds et alertes.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Webhook</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-blue-400">T</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Microsoft Teams</h3>
+            <p class="text-slate-400 text-sm mb-4">Intégration avec les canaux Teams pour notifications et escalades.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-amber-500/20 text-amber-400 rounded text-xs">Webhook</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-green-400">W</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">WhatsApp Business</h3>
+            <p class="text-slate-400 text-sm mb-4">Messagerie IA sur WhatsApp via API Business (bientôt).</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-xs">Bientôt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calendar Integrations -->
+    <section class="py-16 bg-slate-900/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 class="text-2xl font-bold">Calendriers & Planification</h2>
+          <span class="category-badge bg-blue-500/20 text-blue-400">4 intégrations</span>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-blue-400">G</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Google Calendar</h3>
+            <p class="text-slate-400 text-sm mb-4">Sync bidirectionnelle des disponibilités et créneaux.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">OAuth2</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-blue-400">O</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Outlook Calendar</h3>
+            <p class="text-slate-400 text-sm mb-4">Intégration Microsoft 365 pour calendriers professionnels.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Graph API</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-cyan-400">C</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Calendly</h3>
+            <p class="text-slate-400 text-sm mb-4">Création automatique de liens de réservation personnalisés.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Webhook</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-orange-400">C</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Cal.com</h3>
+            <p class="text-slate-400 text-sm mb-4">Alternative open source à Calendly, fully self-hosted.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">API</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support & Helpdesk -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 class="text-2xl font-bold">Support & Helpdesk</h2>
+          <span class="category-badge bg-purple-500/20 text-purple-400">4 intégrations</span>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-emerald-400">Z</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Zendesk</h3>
+            <p class="text-slate-400 text-sm mb-4">Création de tickets, sync agents, et historique conversations.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Bidirectionnel</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-green-400">F</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Freshdesk</h3>
+            <p class="text-slate-400 text-sm mb-4">Gestion des tickets et escalade automatique vers agents.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-xs">Natif</span>
+              <span class="px-2 py-1 bg-slate-700 text-slate-400 rounded text-xs">Webhook</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-blue-400">I</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Intercom</h3>
+            <p class="text-slate-400 text-sm mb-4">Messagerie in-app et sync des conversations avec l'IA vocale.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-amber-500/20 text-amber-400 rounded text-xs">API</span>
+            </div>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4">
+              <span class="text-2xl font-bold text-purple-400">C</span>
+            </div>
+            <h3 class="text-lg font-semibold mb-2">Crisp</h3>
+            <p class="text-slate-400 text-sm mb-4">Livechat et sync conversations pour support omnicanal.</p>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 bg-amber-500/20 text-amber-400 rounded text-xs">API</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- API Section -->
+    <section class="py-16 bg-slate-900/50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
+              API RESTful
+            </span>
+            <h2 class="text-3xl font-bold mb-6">Construisez vos propres intégrations</h2>
+            <p class="text-slate-300 mb-6">
+              Notre API RESTful complète vous permet de créer des intégrations personnalisées avec n'importe quel système.
+            </p>
+            <ul class="space-y-4">
+              <li class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>Authentification OAuth2 et API Keys</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>Webhooks pour événements en temps réel</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>SDK JavaScript, Python, PHP</span>
+              </li>
+              <li class="flex items-center gap-3">
+                <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                <span>Documentation OpenAPI/Swagger</span>
+              </li>
+            </ul>
+            <div class="mt-8">
+              <a href="/docs" class="inline-flex items-center px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-colors">
+                Voir la documentation
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+              </a>
+            </div>
+          </div>
+          <div class="glass rounded-xl p-6 font-mono text-sm">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
+            <pre class="text-slate-300 overflow-x-auto"><code><span class="text-slate-500">// Exemple: Créer un appel sortant</span>
+<span class="text-purple-400">const</span> response = <span class="text-purple-400">await</span> fetch(
+  <span class="text-emerald-400">'https://api.vocalia.ma/v1/calls'</span>,
+  {
+    method: <span class="text-emerald-400">'POST'</span>,
+    headers: {
+      <span class="text-emerald-400">'Authorization'</span>: <span class="text-emerald-400">`Bearer ${apiKey}`</span>,
+      <span class="text-emerald-400">'Content-Type'</span>: <span class="text-emerald-400">'application/json'</span>
+    },
+    body: JSON.stringify({
+      to: <span class="text-emerald-400">'+212600000000'</span>,
+      persona: <span class="text-emerald-400">'sales_qualifier'</span>,
+      language: <span class="text-emerald-400">'fr'</span>,
+      context: {
+        customer_name: <span class="text-emerald-400">'Ahmed'</span>,
+        product_interest: <span class="text-emerald-400">'Voice Widget'</span>
+      }
+    })
+  }
+);
+
+<span class="text-purple-400">const</span> { call_id, status } = <span class="text-purple-400">await</span> response.json();</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold mb-6">Besoin d'une intégration personnalisée?</h2>
+        <p class="text-xl text-slate-300 mb-8">
+          Notre équipe peut développer des connecteurs sur mesure pour vos outils métier.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105">
+            Contacter l'équipe
+          </a>
+          <a href="/docs" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors">
+            Explorer l'API
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+              <span class="text-sm">🎙️</span>
+            </div>
+            <span class="font-bold">VocalIA</span>
+          </div>
+          <p class="text-slate-400 text-sm">Agents vocaux IA pour entreprises. 20+ intégrations natives.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Produits</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/products/voice-widget" class="hover:text-white">Voice Widget</a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white">Voice Telephony</a></li>
+            <li><a href="/features" class="hover:text-white">Fonctionnalités</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Ressources</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/docs" class="hover:text-white">Documentation</a></li>
+            <li><a href="/integrations" class="hover:text-white text-vocalia-400">Intégrations</a></li>
+            <li><a href="/pricing" class="hover:text-white">Tarifs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Contact</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li>contact@vocalia.ma</li>
+            <li>Casablanca, Maroc</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-800 pt-8 flex flex-wrap justify-between items-center gap-4">
+        <p class="text-slate-400 text-sm">&copy; 2026 VocalIA. Tous droits réservés.</p>
+        <div class="flex items-center gap-4 text-sm text-slate-400">
+          <a href="/privacy" class="hover:text-white">Confidentialité</a>
+          <a href="/terms" class="hover:text-white">CGU</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/src/lib/geo-detect.js"></script>
+  <script src="/src/lib/i18n.js"></script>
+</body>
+</html>

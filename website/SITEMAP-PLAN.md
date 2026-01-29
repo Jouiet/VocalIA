@@ -87,7 +87,7 @@
 
 | Page | URL | Priority | Status |
 |:-----|:----|:--------:|:------:|
-| Integrations | `/integrations` | P1 | 🔴 TODO |
+| Integrations | `/integrations` | P1 | ✅ Done (Session 217) |
 | Blog | `/blog` | P2 | 🔴 TODO |
 | Changelog | `/changelog` | P2 | 🔴 TODO |
 | API Reference | `/docs/api` | P1 | 🔴 TODO |
@@ -96,8 +96,8 @@
 
 | Page | URL | Priority | Status |
 |:-----|:----|:--------:|:------:|
-| Privacy Policy | `/privacy` | P1 | 🔴 TODO |
-| Terms of Service | `/terms` | P1 | 🔴 TODO |
+| Privacy Policy | `/privacy` | P1 | ✅ Done (Session 217) |
+| Terms of Service | `/terms` | P1 | ✅ Done (Session 217) |
 
 ---
 
