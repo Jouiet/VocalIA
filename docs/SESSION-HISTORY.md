@@ -1859,18 +1859,96 @@ Created `website/SITEMAP-PLAN.md` with 22+ page architecture:
 | Navigation | Simple | **Mega-menu** |
 | Site Structure | MVP | **SOTA Multi-page** |
 
-### PLAN ACTIONNABLE (Session 215)
+---
 
-| # | Action | Priorité | Effort |
-|:-:|:-------|:--------:|:------:|
-| 1 | Fix VocaliaGeo error | P1 | 30min |
-| 2 | Deploy to Vercel | P1 | 30min |
-| 3 | Dashboard liquid-glass full integration | P2 | 1h |
-| 4 | E2E Visual Testing with Playwright | P2 | 1h |
+## Session 215 - About, Contact, Docs Pages + Deploy Fix (29/01/2026)
+
+### Objectives
+
+1. **Fix VocaliaGeo error** - Script loading order
+2. **Create missing core pages** - About, Contact, Documentation
+3. **NindoHost deployment preparation** - .htaccess, ZIP script
+
+### Implémentations Session 215
+
+| Component | Status | Lines |
+|:----------|:------:|------:|
+| **website/about.html** | ✅ DONE | ~500 |
+| **website/contact.html** | ✅ DONE | ~450 |
+| **website/docs.html** | ✅ DONE | ~650 |
+| **website/.htaccess** | ✅ DONE | 95 |
+| **scripts/create-deploy-zip.sh** | ✅ DONE | 79 |
+| **DEPLOY-NINDOHOST.md** | ✅ DONE | 260 |
+
+### Fixes Applied
+
+| Issue | Fix |
+|:------|:----|
+| VocaliaGeo error | Removed `defer` from geo-detect.js/i18n.js in index.html |
+| Script execution order | Core libs load synchronously before inline scripts |
+
+### Files Changed
+
+| File | Change |
+|:-----|:-------|
+| `website/index.html` | Fixed script loading order |
+| `website/about.html` | **NEW** - Mission, values, team, languages, tech stack |
+| `website/contact.html` | **NEW** - Contact form, info cards, FAQ |
+| `website/docs.html` | **NEW** - API docs, quickstart, examples |
+| `website/.htaccess` | **NEW** - Apache config, clean URLs, security headers |
+| `website/sitemap.xml` | Added about, contact, docs (10 URLs total) |
+| `scripts/create-deploy-zip.sh` | **NEW** - Automated ZIP creation |
+| `DEPLOY-NINDOHOST.md` | **NEW** - cPanel deployment guide |
+
+### Verification
+
+```bash
+# Health check
+node scripts/health-check.cjs
+# Result: 39/39 (100%) ✅
+
+# HTML pages count
+ls website/*.html website/**/*.html | wc -l
+# Result: 10 ✅
+
+# Deploy ZIP
+bash scripts/create-deploy-zip.sh
+# Result: 2.3MB ZIP created ✅
+```
+
+### Git
+
+- Commit 1: `f95178a` - About & Contact Pages + Deploy Fix
+- Commit 2: `92c4378` - Documentation update
+- Pushed: ✅ main branch
+
+### NindoHost Status
+
+User purchased **NindoHost Rise** plan (468 DH/an):
+- Status: **En attente** (activating)
+- Once active: cPanel > File Manager > Upload ZIP
+
+### Score Post-Session 215
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| HTML Pages | 9 | **10** |
+| Core Pages | 5/6 | **6/6 ✅** |
+| Total Lines | ~9,000 | **~10,000** |
+| Deploy Ready | ❌ | **✅ ZIP 2.3MB** |
+
+### PLAN ACTIONNABLE (Session 216)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | **Upload ZIP to NindoHost** | **P0** | Once hosting activates |
+| 2 | Create Use Cases pages | P2 | E-commerce, Support, etc. |
+| 3 | Create Legal pages | P2 | Privacy, Terms |
+| 4 | Visual E2E testing | P3 | Playwright |
 
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 214 (Liquid Glass & 4K Colors)*
+*Màj: 29/01/2026 - Session 215 (About, Contact, Docs + Deploy)*
 *Status: Backend 99/100 | Frontend ~96% | Health: 100% (39/39)*
-*Phase 3 Frontend: ~96% COMPLETE | Next: Deploy + Fix + Polish*
+*Core Pages: 6/6 COMPLETE | Next: Upload to NindoHost*
