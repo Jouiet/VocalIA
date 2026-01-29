@@ -160,7 +160,7 @@ for (const file of configFiles) {
 console.log(`\n${COLORS.cyan}CI/CD:${COLORS.reset}`);
 const cicdFiles = [
   '.github/workflows/ci.yml',
-  '.github/workflows/deploy.yml'
+  '.github/workflows/deploy-nindohost.yml'
 ];
 
 for (const file of cicdFiles) {
