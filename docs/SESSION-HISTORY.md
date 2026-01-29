@@ -2439,7 +2439,58 @@ Root cause: `.htaccess` blocked ALL `.json` files.
 
 ---
 
-### PLAN ACTIONNABLE (Session 227)
+---
+
+## Session 227 (29/01/2026)
+
+### OBJECTIF
+
+Delete changelog page per user request: "suprimes cette page stupide 'https://vocalia.ma/changelog'"
+
+### IMPLÉMENTATIONS
+
+**1. Created Removal Script:** ✅
+
+```python
+# scripts/remove-changelog.py
+# Removes all changelog links from HTML files using regex patterns:
+# - <li><a href="/changelog">Changelog</a></li>
+# - <a href="/changelog" class="...">Changelog</a>
+```
+
+**2. Files Modified:**
+
+| Type | Count |
+|:-----|------:|
+| HTML files | 24 |
+| sitemap.xml | 1 |
+| style.css | 1 (rebuild) |
+| changelog.html | DELETED |
+
+**3. Manual Fixes:**
+
+- Removed dead `#changelog` link in `docs/index.html` sidebar
+- Cleaned up sitemap.xml entry (script regex missed full block)
+
+### VERIFICATION
+
+```bash
+# No changelog references remaining
+grep -r "changelog" website/*.html | wc -l
+# Expected: 0
+
+# Health check still passing
+node scripts/health-check.cjs
+# Result: 39/39 (100%)
+```
+
+### COMMITS
+
+- `fa988c4` - Session 227: Delete changelog page and all references (28 files, +179/-1407)
+
+---
+
+### PLAN ACTIONNABLE (Session 228)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
@@ -2449,8 +2500,8 @@ Root cause: `.htaccess` blocked ALL `.json` files.
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 226 (Visual Testing + 403 Fix)*
+*Màj: 29/01/2026 - Session 227 (Changelog Removal)*
 *Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
-*Live: https://vocalia.ma ✅ | i18n: Locale files accessible ✅*
+*Live: https://vocalia.ma ✅ | Changelog: DELETED ✅*
 *Dashboards: Light/Dark mode fully functional ✅*
 *Blog: 7 articles with working links | Docs: /docs/ fixed*
