@@ -481,24 +481,24 @@ class VoiceVisualizer {
   drawPulse() {
     const centerX = this.width / 2;
     const centerY = this.height / 2;
-    const maxRadius = Math.min(this.width, this.height) * 0.48;
+    const maxRadius = Math.min(this.width, this.height) * 0.38; // Smaller radius
 
     // Average amplitude
     let avg = 0;
     for (let i = 0; i < this.dataArray.length; i++) avg += this.dataArray[i];
     avg = avg / this.dataArray.length / 255;
 
-    // Ripples
-    const rippleCount = 6;
+    // Ripples - more subtle
+    const rippleCount = 4; // Fewer ripples
     for (let i = 0; i < rippleCount; i++) {
-      const progress = ((this.time * 0.4 + i / rippleCount) % 1);
+      const progress = ((this.time * 0.3 + i / rippleCount) % 1); // Slower
       const radius = progress * maxRadius;
-      const alpha = (1 - progress) * (0.6 + avg * 0.4);
-      const lineWidth = 3 + (1 - progress) * 4;
+      const alpha = (1 - progress) * (0.3 + avg * 0.3); // More transparent
+      const lineWidth = 1 + (1 - progress) * 2; // Thinner lines
 
-      // Ripple glow
+      // Subtle ripple glow
       this.ctx.shadowColor = this.options.primaryColor;
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 5; // Reduced glow
 
       this.ctx.beginPath();
       this.ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
@@ -520,12 +520,12 @@ class VoiceVisualizer {
 
     this.ctx.shadowBlur = 0;
 
-    // Center pulse beacon
-    const pulseRadius = 25 + avg * 40;
+    // Center pulse beacon - smaller and more elegant
+    const pulseRadius = 15 + avg * 20; // Reduced size
 
     // Subtle outer glow
     this.ctx.shadowColor = this.options.primaryColor;
-    this.ctx.shadowBlur = 20;
+    this.ctx.shadowBlur = 10; // Reduced glow
 
     const beaconGradient = this.ctx.createRadialGradient(
       centerX, centerY, 0,
@@ -556,19 +556,19 @@ class VoiceVisualizer {
 
     this.ctx.shadowBlur = 0;
 
-    // Particle sparks
-    const sparkCount = 12;
+    // Particle sparks - subtle and fewer
+    const sparkCount = 8; // Fewer sparks
     for (let i = 0; i < sparkCount; i++) {
-      const angle = (i / sparkCount) * Math.PI * 2 + this.time;
-      const sparkProgress = ((this.time * 2 + i * 0.3) % 1);
-      const sparkRadius = pulseRadius * 0.5 + sparkProgress * maxRadius * 0.4;
-      const sparkAlpha = (1 - sparkProgress) * avg;
+      const angle = (i / sparkCount) * Math.PI * 2 + this.time * 0.5; // Slower rotation
+      const sparkProgress = ((this.time * 1.5 + i * 0.3) % 1);
+      const sparkRadius = pulseRadius * 0.8 + sparkProgress * maxRadius * 0.3;
+      const sparkAlpha = (1 - sparkProgress) * avg * 0.6; // More transparent
 
       const sparkX = centerX + Math.cos(angle) * sparkRadius;
       const sparkY = centerY + Math.sin(angle) * sparkRadius;
 
       this.ctx.beginPath();
-      this.ctx.arc(sparkX, sparkY, 2 + avg * 3, 0, Math.PI * 2);
+      this.ctx.arc(sparkX, sparkY, 1.5 + avg * 2, 0, Math.PI * 2); // Smaller sparks
       this.ctx.fillStyle = `${this.options.primaryColor}${Math.floor(sparkAlpha * 255).toString(16).padStart(2, '0')}`;
       this.ctx.fill();
     }
