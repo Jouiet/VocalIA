@@ -33,6 +33,10 @@ cp -r website/.htaccess "$DEPLOY_DIR/"
 mkdir -p "$DEPLOY_DIR/products"
 cp -r website/products/*.html "$DEPLOY_DIR/products/"
 
+# Copy use-cases directory
+mkdir -p "$DEPLOY_DIR/use-cases"
+cp -r website/use-cases/*.html "$DEPLOY_DIR/use-cases/"
+
 # Copy dashboard directory
 mkdir -p "$DEPLOY_DIR/dashboard"
 cp -r website/dashboard/*.html "$DEPLOY_DIR/dashboard/"
