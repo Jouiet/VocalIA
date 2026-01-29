@@ -2156,20 +2156,15 @@ html.light .voice-visualizer-btn:hover,
 }
 
 .voice-demo-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 1.5rem;
+  width: 100%;
 }
 
 @media (min-width: 768px) {
   .voice-demo-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr) !important;
   }
 }
 
