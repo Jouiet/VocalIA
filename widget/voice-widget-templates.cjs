@@ -630,7 +630,7 @@ If using booking integration:
 
 ### 4. Enable Realtime Voice (Optional)
 For premium voice quality:
-- Deploy grok-voice-realtime.cjs on 3A server
+- Deploy grok-voice-realtime.cjs on VocalIA server
 - Set \`realtime.enabled: true\`
 - Update \`realtime.proxyUrl\`
 

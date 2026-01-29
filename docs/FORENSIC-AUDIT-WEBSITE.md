@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 2.3.0 | **Date**: 29/01/2026 | **Session**: 201
+> **Version**: 2.4.0 | **Date**: 29/01/2026 | **Session**: 207
 > **Status**: REMEDIATED | **CSS Build**: SOVEREIGN
 > **Palette**: Enterprise Dark v4.0 (Linear/Stripe-inspired)
 
@@ -24,6 +24,7 @@ Ce document documente l'audit forensique complet du frontend VocalIA (Website + 
 | 199 | 28/01/2026 | Deployment Config | Complete |
 | 200 | 28/01/2026 | CSS Theme Fix | Complete |
 | 201 | 29/01/2026 | i18n Interpolation Fix | Complete |
+| 207 | 29/01/2026 | Design System Alignment | Complete |
 
 ---
 

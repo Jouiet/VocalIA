@@ -49,10 +49,10 @@ const modules = {
   'Widget': [
     'widget/voice-widget-templates.cjs'
   ],
-  'Knowledge Base': [
-    'knowledge-base/src/vector-store.cjs',
-    'knowledge-base/src/rag-query.cjs',
-    'knowledge-base/src/catalog-extractor.cjs'
+  'RAG Index': [
+    'data/knowledge-base/chunks.json',
+    'data/knowledge-base/tfidf_index.json',
+    'data/knowledge-base/status.json'
   ]
 };
 
@@ -118,7 +118,10 @@ const websiteFiles = [
   'website/src/lib/geo-detect.js',
   'website/src/lib/i18n.js',
   'website/src/locales/fr.json',
-  'website/src/locales/en.json'
+  'website/src/locales/en.json',
+  'website/voice-assistant/voice-widget.js',
+  'website/voice-assistant/lang/voice-fr.json',
+  'website/voice-assistant/lang/voice-en.json'
 ];
 
 for (const file of websiteFiles) {

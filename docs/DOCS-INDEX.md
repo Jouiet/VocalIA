@@ -1,6 +1,6 @@
 # VocalIA - Documentation Index
 
-> **Version**: 2.2.0 | **Date**: 28/01/2026 | **Session**: 200
+> **Version**: 2.5.0 | **Date**: 29/01/2026 | **Session**: 207
 
 ---
 
@@ -12,12 +12,32 @@
 
 Ce document contient:
 
-- Engineering Score (95/100)
+- Engineering Score (99/100)
 - Métriques vérifiées avec commandes
-- Inventaire complet des 49 modules
+- Inventaire complet des 58+ modules
 - Session history
 - Gaps status
 - Commandes de vérification
+
+---
+
+## Voice Widget (NEW - Session 205)
+
+| Fichier | Description | Status |
+|:--------|:------------|:------:|
+| **website/voice-assistant/voice-widget.js** | Widget VocalIA intégré | ✅ Live |
+| **website/voice-assistant/lang/voice-fr.json** | Langue Française | ✅ |
+| **website/voice-assistant/lang/voice-en.json** | Langue Anglaise | ✅ |
+| **scripts/generate-voice-widget-client.cjs** | Générateur widget clients | ✅ |
+| **templates/voice-widget-client-config.json** | Template config client | ✅ |
+
+---
+
+## Audits Factuels (Session 205+)
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **SESSION-205-AUDIT.md** | **AUDIT BRUTAL** - RAG, Widget, Transferts | ✅ NEW |
 
 ---
 
@@ -25,7 +45,7 @@ Ce document contient:
 
 | Document | Description | Taille |
 |:---------|:------------|:-------|
-| **PLUG-AND-PLAY-STRATEGY.md** | **STRATÉGIE MULTI-TENANT** - Widget, Telephony, OAuth | ~804 lignes |
+| **PLUG-AND-PLAY-STRATEGY.md** | **STRATÉGIE MULTI-TENANT** - Widget, Telephony, OAuth | ~800 lignes |
 | **VOICE-AI-PLATFORM-REFERENCE.md** | Master reference technique | ~660 lignes |
 | **VOICE-AI-ARCHITECTURE.md** | Architecture et diagrammes | ~242 lignes |
 | **SAVOIR-FAIRE-TRANSMISSIBLE.md** | Transfert 3A → VocalIA | ~215 lignes |
@@ -79,14 +99,15 @@ Ce document contient:
 
 ---
 
-## Métriques Vérifiées (28/01/2026)
+## Métriques Vérifiées (29/01/2026)
 
 | Métrique | Valeur | Vérification |
 |:---------|:-------|:-------------|
-| **Code** | 22,361 lignes | `find -exec wc -l` |
-| **Fichiers** | 49 | `find \| wc -l` |
-| **Engineering Score** | 95/100 | CLAUDE.md |
-| **Health Check** | 100% (25/25) | `node scripts/health-check.cjs` |
+| **Code** | 25,000+ lignes | `find -exec wc -l` |
+| **Fichiers** | 58+ | `find \| wc -l` |
+| **Engineering Score** | 99/100 | CLAUDE.md |
+| **Health Check** | 100% (39/39) | `node scripts/health-check.cjs` |
+| **Voice Widget** | ✅ Intégré | Website live |
 | **Personas** | 28 | Verified unique |
 | **Function Tools** | 11 | telephony bridge |
 | **Langues** | 5 | FR, EN, ES, AR, ARY |
@@ -128,5 +149,5 @@ ls node_modules/@3a/agent-ops/
 
 ---
 
-*Index màj: 29/01/2026 - Session 183bis*
-*Documents plug-and-play + scripts widget transmis depuis 3A*
+*Index màj: 29/01/2026 - Session 205*
+*Voice Widget intégré au website + générateur client*

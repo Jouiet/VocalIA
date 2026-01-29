@@ -15,11 +15,10 @@ const fs = require('fs');
 const path = require('path');
 const EmbeddingService = require('./knowledge-embedding-service.cjs');
 
-// Paths
-const BASE_DIR = path.join(__dirname, '../../..');
-const KNOWLEDGE_BASE_DIR = path.join(BASE_DIR, 'knowledge_base');
+// Paths - KB now in project (Session 206)
+const KNOWLEDGE_BASE_DIR = path.join(__dirname, '../data/knowledge-base');
 const KB_SERVICES_FILE = path.join(__dirname, 'knowledge-base-services.json');
-const CATALOG_PATH = path.join(BASE_DIR, 'landing-page-hostinger/data/automations-catalog.json');
+const CATALOG_PATH = path.join(__dirname, '../automations-registry.json');
 
 // Knowledge base files
 const KB_CHUNKS_FILE = path.join(KNOWLEDGE_BASE_DIR, 'chunks.json');
@@ -351,7 +350,7 @@ class TFIDFIndex {
 }
 
 /**
- * Knowledge Base Manager for 3A Services
+ * Knowledge Base Manager for VocalIA Services
  */
 class ServiceKnowledgeBase {
   constructor() {
@@ -365,7 +364,7 @@ class ServiceKnowledgeBase {
    * Build knowledge base from automations catalog
    */
   async build() {
-    console.log('📚 Building 3A Services Knowledge Base...');
+    console.log('📚 Building VocalIA Services Knowledge Base...');
 
     // Ensure directory exists
     if (!fs.existsSync(KNOWLEDGE_BASE_DIR)) {
@@ -712,7 +711,7 @@ async function main() {
   const kb = new ServiceKnowledgeBase();
 
   if (args.includes('--health')) {
-    console.log('✅ 3A Service Knowledge Base: Module OK');
+    console.log('✅ VocalIA Service Knowledge Base: Module OK');
     const status = kb.getStatus();
     console.log(`   Knowledge Base: ${status.exists ? 'Built' : 'Not built'}`);
     if (status.exists) {

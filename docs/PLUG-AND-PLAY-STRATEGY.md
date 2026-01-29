@@ -68,7 +68,7 @@ Pas de wishful thinking. Pas de claims non vérifiés.
 
 ### 2.1 Assets Multi-Tenant Existants
 
-**Code source analysé:** `automations/agency/core/`
+**Code source analysé:** `core/`
 
 | Fichier | Lignes | Multi-tenant? | Preuve |
 |:--------|:------:|:-------------:|:-------|
@@ -114,7 +114,7 @@ grep -r "tenantId|client_id" automations/ --include="*.cjs"
 | Schema per Tenant | DB partagée, schémas séparés | Haute isolation | [Azure Docs](https://learn.microsoft.com/en-us/azure/architecture/guide/saas-multitenant-solution-architecture/) |
 | Database per Tenant | Une DB par client | Compliance strict | [WorkOS Guide](https://workos.com/blog/developers-guide-saas-multi-tenant-architecture) |
 
-**Recommandation 3A:** Shared Schema + RLS (Google Sheets avec colonnes tenant_id)
+**Recommandation VocalIA:** Shared Schema + RLS (Google Sheets avec colonnes tenant_id)
 
 ### 3.2 Credential Management SOTA
 
@@ -125,7 +125,7 @@ grep -r "tenantId|client_id" automations/ --include="*.cjs"
 | Doppler | SaaS | $18/user/mo | ✅ | [Doppler](https://www.doppler.com/) |
 | AWS Secrets Manager | Cloud | $0.40/secret/mo | ✅ | AWS |
 
-**Recommandation 3A:** Infisical (MIT License, 50+ intégrations, SOC2/HIPAA compliant)
+**Recommandation VocalIA:** Infisical (MIT License, 50+ intégrations, SOC2/HIPAA compliant)
 
 ### 3.3 Shopify OAuth SOTA (2026)
 
@@ -201,7 +201,7 @@ POST https://a.klaviyo.com/oauth/token
 | Retell AI | $0.07+/min | ❌ (wrapper needed) | ✅ Visual builder |
 | Vapi | $0.05+/min | ❌ (wrapper needed) | ⚠️ Dev-first |
 | Bland AI | $0.09/min | ❌ (wrapper needed) | ❌ Code-first |
-| **3A Voice** | TBD | ✅ Own stack | ⚠️ En développement |
+| **VocalIA Voice** | TBD | ✅ Own stack | ⚠️ En développement |
 
 **White-Label Solutions:**
 - [VoiceAIWrapper](https://voiceaiwrapper.com/) - Rebrand Vapi/Retell/ElevenLabs
@@ -276,7 +276,7 @@ POST https://a.klaviyo.com/oauth/token
 │         │                                                        │
 │         ▼                                                        │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │                  3A-GLOBAL-MCP                           │    │
+│  │                  VOCALIA-MCP                           │    │
 │  │  ├── Tools: 124 (tenant-aware)                          │    │
 │  │  ├── Session: mcp-session-id header                     │    │
 │  │  └── Config: Per-tenant from Infisical                  │    │
@@ -362,9 +362,9 @@ POST https://a.klaviyo.com/oauth/token
 | Task | Fichiers | LOC |
 |:-----|:---------|:---:|
 | Deploy Infisical (Docker) | `docker-compose.infisical.yml` | 50 |
-| SDK wrapper | `automations/agency/core/SecretVault.cjs` | 200 |
+| SDK wrapper | `core/SecretVault.cjs` | 200 |
 | Migration script | `scripts/migrate-secrets-to-vault.cjs` | 150 |
-| Update credential-validator | `automations/agency/core/credential-validator.cjs` | 100 |
+| Update credential-validator | `core/credential-validator.cjs` | 100 |
 
 **Infisical Setup (Source: [Infisical Docs](https://infisical.com/docs)):**
 ```bash
@@ -522,14 +522,14 @@ export async function exchangeToken(code: string, verifier: string) {
 
 ### 6.5 Phase 3: MCP Multi-Tenant (Semaines 7-8)
 
-**Objectif:** Rendre 3a-global-mcp tenant-aware
+**Objectif:** Rendre vocalia-mcp tenant-aware
 
 **Source:** [MCP Multi-Tenant Discussion](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/193)
 
 | Task | Fichiers | LOC |
 |:-----|:---------|:---:|
-| Session middleware | `automations/3a-global-mcp/src/middleware/tenant.js` | 150 |
-| Config resolver | `automations/3a-global-mcp/src/config/tenant-config.js` | 100 |
+| Session middleware | `mcp/src/middleware/tenant.js` | 150 |
+| Config resolver | `mcp/src/config/tenant-config.js` | 100 |
 | Update tool handlers | Multiple files | 300 |
 
 **Tenant Middleware:**
@@ -579,14 +579,14 @@ async function handler(params, context) {
 | Task | Fichiers | LOC |
 |:-----|:---------|:---:|
 | Widget config system | `landing-page-hostinger/voice-assistant/config.js` | 100 |
-| Dynamic CORS | `automations/agency/core/voice-api-resilient.cjs` | 50 |
+| Dynamic CORS | `core/voice-api-resilient.cjs` | 50 |
 | Embed code generator | `dashboard/src/components/voice/EmbedGenerator.tsx` | 150 |
 | Widget customization | `landing-page-hostinger/voice-assistant/voice-widget-core.js` | 100 |
 
 **Widget Configuration:**
 ```javascript
 // voice-assistant/config.js
-window.Voice3AConfig = {
+window.VocalIAConfig = {
   tenantId: 'client-acme',
   apiUrl: 'https://voice-api.vocalia.ma',
   language: 'fr',
@@ -604,9 +604,9 @@ window.Voice3AConfig = {
 
 **Embed Code:**
 ```html
-<!-- 3A Voice Widget -->
+<!-- VocalIA Voice Widget -->
 <script>
-  window.Voice3AConfig = {
+  window.VocalIAConfig = {
     tenantId: 'CLIENT_TENANT_ID',
     apiUrl: 'https://voice-api.vocalia.ma'
   };

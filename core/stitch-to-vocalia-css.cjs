@@ -17,7 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// 3A Design System Tokens
+// VocalIA Design System Tokens
 const DESIGN_TOKENS = {
   colors: {
     '#191E35': 'var(--secondary)',
@@ -32,7 +32,7 @@ const DESIGN_TOKENS = {
     '#1B2F54': 'var(--secondary-light)',
   },
 
-  // Tailwind to 3A class mappings
+  // Tailwind to VocalIA class mappings
   classMap: {
     // Glassmorphism
     'bg-white/3': 'glass-bg',
@@ -42,7 +42,7 @@ const DESIGN_TOKENS = {
 
     // Typography
     'font-extrabold': 'font-bold',
-    'tracking-tight': '', // Not needed, handled by 3A font
+    'tracking-tight': '', // Not needed, handled by VocalIA font
     'leading-tight': '',
 
     // Layout
@@ -51,7 +51,7 @@ const DESIGN_TOKENS = {
     'rounded-lg': 'rounded-md',
     'rounded-full': 'rounded-full',
 
-    // Spacing (keep Tailwind for now, could map to 3A vars)
+    // Spacing (keep Tailwind for now, could map to VocalIA vars)
     'gap-6': 'gap-lg',
     'gap-8': 'gap-xl',
     'p-8': 'p-xl',
@@ -74,7 +74,7 @@ const DESIGN_TOKENS = {
 
 // CSS Variable definitions for output
 const CSS_VARS = `
-/* 3A Design System Variables (injected) */
+/* VocalIA Design System Variables (injected) */
 :root {
   --primary: #4FBAF1;
   --secondary: #191E35;
@@ -102,9 +102,9 @@ const CSS_VARS = `
 }
 `;
 
-// 3A CSS class definitions
+// VocalIA CSS class definitions
 const CLASS_DEFINITIONS = `
-/* 3A Glass Panel */
+/* VocalIA Glass Panel */
 .glass-panel {
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
@@ -120,7 +120,7 @@ const CLASS_DEFINITIONS = `
   transform: translateY(-5px);
 }
 
-/* 3A Mesh Gradients */
+/* VocalIA Mesh Gradients */
 .mesh-gradient-purple {
   background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, rgba(0,0,0,0) 70%);
 }
@@ -129,7 +129,7 @@ const CLASS_DEFINITIONS = `
   background: radial-gradient(circle, rgba(79,186,241,0.15) 0%, rgba(0,0,0,0) 70%);
 }
 
-/* 3A Button Styles */
+/* VocalIA Button Styles */
 .btn-cyber {
   background: var(--primary);
   color: var(--text-light);
@@ -146,7 +146,7 @@ const CLASS_DEFINITIONS = `
   box-shadow: 0 0 30px rgba(79, 186, 241, 0.4);
 }
 
-/* 3A Section Badge */
+/* VocalIA Section Badge */
 .section-badge {
   display: inline-block;
   padding: var(--spacing-xs) var(--spacing-md);
@@ -160,7 +160,7 @@ const CLASS_DEFINITIONS = `
   letter-spacing: 0.1em;
 }
 
-/* 3A Service Icon */
+/* VocalIA Service Icon */
 .service-icon-circle {
   width: 3.5rem;
   height: 3.5rem;
@@ -206,7 +206,7 @@ function convertColors(html) {
 }
 
 /**
- * Convert Tailwind classes to 3A classes
+ * Convert Tailwind classes to VocalIA classes
  */
 function convertClasses(html) {
   let result = html;
@@ -221,7 +221,7 @@ function convertClasses(html) {
 }
 
 /**
- * Remove Tailwind CDN and inject 3A styles
+ * Remove Tailwind CDN and inject VocalIA styles
  */
 function replaceStylesheet(html, mode = 'inline') {
   let result = html;
@@ -232,15 +232,15 @@ function replaceStylesheet(html, mode = 'inline') {
   // Remove Tailwind config script
   result = result.replace(/<script id="tailwind-config">[\s\S]*?<\/script>/g, '');
 
-  // Remove existing inline style blocks (we'll replace with 3A)
+  // Remove existing inline style blocks (we'll replace with VocalIA)
   result = result.replace(/<style>[\s\S]*?<\/style>/g, '');
 
   if (mode === 'inline') {
-    // Inject 3A CSS inline
+    // Inject VocalIA CSS inline
     const styleBlock = `<style>\n${CSS_VARS}\n${CLASS_DEFINITIONS}\n</style>`;
     result = result.replace('</head>', `${styleBlock}\n</head>`);
   } else if (mode === 'link') {
-    // Link to 3A stylesheet
+    // Link to VocalIA stylesheet
     const link = `<link rel="stylesheet" href="/styles.css?v=84.0">`;
     result = result.replace('</head>', `${link}\n</head>`);
   }
@@ -249,7 +249,7 @@ function replaceStylesheet(html, mode = 'inline') {
 }
 
 /**
- * Add 3A branding and meta tags
+ * Add VocalIA branding and meta tags
  */
 function addBranding(html, options = {}) {
   let result = html;
@@ -257,10 +257,10 @@ function addBranding(html, options = {}) {
   // Update copyright year
   result = result.replace(/© \d{4}/, `© ${new Date().getFullYear()}`);
 
-  // Add 3A meta tags
+  // Add VocalIA meta tags
   const metaTags = `
     <meta name="author" content="VocalIA">
-    <meta name="generator" content="Stitch-to-3A-CSS v1.0.0">
+    <meta name="generator" content="Stitch-to-VocalIA-CSS v1.0.0">
     <meta name="stitch-converted" content="${new Date().toISOString()}">
   `;
   result = result.replace('</head>', `${metaTags}\n</head>`);
@@ -271,7 +271,7 @@ function addBranding(html, options = {}) {
 /**
  * Main conversion function
  */
-function convertStitchTo3A(inputPath, options = {}) {
+function convertStitchToVocalIA(inputPath, options = {}) {
   const html = fs.readFileSync(inputPath, 'utf-8');
 
   let result = html;
@@ -315,7 +315,7 @@ function processBatch(dirPath) {
     const outputPath = path.join(dirPath, '3a-' + file);
 
     try {
-      const converted = convertStitchTo3A(inputPath);
+      const converted = convertStitchToVocalIA(inputPath);
       fs.writeFileSync(outputPath, converted);
       results.push({ file, status: 'OK', output: outputPath });
       console.log(`✅ ${file} → ${outputPath}`);
@@ -370,7 +370,7 @@ function main() {
   const mode = modeArg ? modeArg.split('=')[1] : 'inline';
 
   try {
-    const converted = convertStitchTo3A(inputPath, { mode });
+    const converted = convertStitchToVocalIA(inputPath, { mode });
     fs.writeFileSync(outputPath, converted);
     console.log(`✅ Converted: ${inputPath} → ${outputPath}`);
     console.log(`   Mode: ${mode}`);
@@ -385,4 +385,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { convertStitchTo3A, healthCheck, DESIGN_TOKENS };
+module.exports = { convertStitchToVocalIA, healthCheck, DESIGN_TOKENS };

@@ -52,7 +52,7 @@ const GROK_MODEL = 'grok-4-1-fast-non-reasoning';
 const BASE_DIR = path.join(__dirname, '../../..');
 const CONVERSATION_LOG_DIR = path.join(BASE_DIR, 'logs/voice_conversations');
 
-// Service Packs (3A offerings)
+// Service Packs (VocalIA offerings)
 const SERVICE_PACKS = {
   starter: {
     name: 'Starter Pack',
@@ -644,7 +644,7 @@ async function main() {
   const args = process.argv.slice(2);
 
   if (args.includes('--health')) {
-    console.log('✅ 3A Voice Agent B2B: Module OK');
+    console.log('✅ VocalIA Voice Agent B2B: Module OK');
 
     const agent = new VoiceAgentB2B();
     const initResult = agent.initialize();

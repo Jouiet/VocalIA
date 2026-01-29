@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 1.8.0 | 28/01/2026 | Session 200 | Engineering Score: 99/100 | Health: 100%
+> Version: 2.1.0 | 29/01/2026 | Session 207 | Engineering Score: 99/100 | Health: 100%
 
 ## Identité
 
@@ -21,9 +21,9 @@
 | **Integrations** | 15 | **12** | HubSpot+Klaviyo+Shopify (creds manquants) |
 | **Documentation** | 10 | **10** | 5 rules, CLAUDE.md, 10 docs ✅ |
 | **Infrastructure** | 15 | **15** | MCP ✅, Sensors ✅, Registry ✅, GPM ✅, VocalIA-Ops ✅ |
-| **Testing** | 15 | **15** | 36/36 checks ✅, health-check.cjs ✅ |
+| **Testing** | 15 | **15** | 39/39 checks ✅, health-check.cjs ✅ |
 | **CI/CD** | - | **+3** | GitHub Actions (ci.yml + deploy.yml) ✅ |
-| **TOTAL** | **100** | **99** | Health Score: 100% (36/36 passed) |
+| **TOTAL** | **100** | **99** | Health Score: 100% (39/39 passed) |
 
 ---
 
@@ -36,14 +36,19 @@
 
 ---
 
-## Website + Dashboards (Session 188-189)
+## Website + Dashboards + Widget (Session 188-205)
 
 ```
-website/                              # 2,183 lignes
-├── index.html                        # Landing page (561 L)
+website/                              # 2,500+ lignes
+├── index.html                        # Landing page + Widget (570 L)
 ├── dashboard/
-│   ├── client.html                   # Client Dashboard (468 L) ✅ NEW
-│   └── admin.html                    # Admin Dashboard (580 L) ✅ NEW
+│   ├── client.html                   # Client Dashboard (468 L)
+│   └── admin.html                    # Admin Dashboard (580 L)
+├── voice-assistant/                  # ✅ NEW Session 205
+│   ├── voice-widget.js               # Widget VocalIA (760 L)
+│   └── lang/
+│       ├── voice-fr.json             # Langue FR (180 L)
+│       └── voice-en.json             # Langue EN (170 L)
 ├── src/
 │   ├── lib/
 │   │   ├── geo-detect.js             # Geo detection + currency (188 L)
@@ -60,6 +65,7 @@ website/                              # 2,183 lignes
 - Auto-detect location: MAD (Maroc), EUR (Europe), USD (Autres)
 - FR + EN avec switch dynamique
 - Tailwind CSS + animations modernes
+- **Voice Widget**: Démo live intégrée (Web Speech API) ✅ NEW
 - **Dashboard Client**: Stats, appels, agents, KB, facturation
 - **Dashboard Admin**: Système, tenants, revenus, API, logs, health
 
@@ -172,7 +178,7 @@ VocalIA/                              # 23,496 lignes (54 fichiers)
 ```bash
 # Health check
 node scripts/health-check.cjs
-# Expected: 32/32 passed, 100%
+# Expected: 39/39 passed, 100%
 
 # Start website locally
 npx serve website -p 8080
@@ -232,6 +238,89 @@ grep -r "VocalIA" --include="*.cjs" . | wc -l
 
 ---
 
-*Màj: 28/01/2026 - Session 190 (DOE Phase 2 CI/CD)*
-*Status: 58 fichiers ✅ | 24,700+ LOC | Health: 100% (36/36)*
-*Phase 2 (CI/CD): COMPLETE ✅*
+## Session 205 Summary
+
+**1. Voice Widget Integration:** ✅
+- `website/voice-assistant/voice-widget.js`: Copie de widget/voice-widget-core.js
+- `website/voice-assistant/lang/`: voice-fr.json + voice-en.json
+- Script intégré dans index.html ligne 1011
+
+**2. Fichiers Transférés (6):**
+- ✅ `PLUG-AND-PLAY-STRATEGY.md` → docs/ (rebrandé)
+- ✅ `generate-voice-widget-client.cjs` → scripts/
+- ✅ `voice-widget-client-config.json` → templates/
+- ❌ 3 scripts supprimés (cassés)
+
+**3. AUDIT RAG - CORRIGÉ:**
+
+| Problème | Sévérité | Status |
+|:---------|:--------:|:------:|
+| grok-client.cjs RAG cassé | HAUTE | ✅ **CORRIGÉ** |
+| 877 lignes code legacy (knowledge-base/src/) | BASSE | ⚠️ À décider |
+| KB stocké hors projet (~/knowledge_base/) | MOYENNE | ⚠️ À déplacer |
+
+**RAG Unifié - TOUS FONCTIONNELS:**
+- `grok-client.cjs` → ✅ **CORRIGÉ** (utilise knowledge-base-services.cjs)
+- `voice-agent-b2b.cjs` → ✅ OK
+- `voice-telephony-bridge.cjs` → ✅ OK
+
+**Tests Post-Correction:**
+```bash
+grok-client.queryKnowledgeBase('voice') → ✅ 3 results
+RAGRetrieval.retrieveContext('telephony') → ✅ 2 results
+ServiceKnowledgeBase.search('voice') → ✅ 3 results
+```
+
+**Delta Session 205:**
+- Health: 36/36 → 39/39 (+3)
+- Widget: Intégré
+- RAG: **UNIFIÉ ET FONCTIONNEL**
+- grok-client.cjs: **CORRIGÉ**
+
+**Plan Actionnable (Session 206):**
+1. Déplacer KB dans le projet (~/knowledge_base/ → data/knowledge-base/)
+2. Décider: Garder ou supprimer knowledge-base/src/ (code legacy)
+
+---
+
+## Session 206 Summary
+
+**1. KB Déplacé dans Projet:** ✅
+- Ancien: `~/knowledge_base/` (hors projet, non portable)
+- Nouveau: `data/knowledge-base/` (in-project, git-tracked)
+- `knowledge-base-services.cjs` mis à jour ligne 19
+
+**2. Branding "3A" Complet:** ✅
+
+| Fichier | Modification |
+|:--------|:-------------|
+| `core/grok-client.cjs` | "3A Assistant" → "VocalIA Assistant" |
+| `core/stitch-to-3a-css.cjs` | Renommé → `stitch-to-vocalia-css.cjs` |
+| `personas/voice-persona-injector.cjs` | "3A Talent" → "VocalIA Talent" |
+| `widget/voice-widget-core.js` | alt="3A" → alt="VocalIA" |
+| `core/voice-agent-b2b.cjs` | Comment rebrandé |
+| `core/voice-api-resilient.cjs` | Comments rebrandés |
+
+**3. Script Sync Widget:** ✅
+- `scripts/sync-widget.sh` créé
+- Synchronise `widget/voice-widget-core.js` → `website/voice-assistant/`
+
+**4. Vérification Finale:**
+```bash
+node scripts/health-check.cjs                    # → 39/39 ✅
+node core/knowledge-base-services.cjs --search "voice"  # → 5 results ✅
+node -e "require('./core/grok-client.cjs').initRAG()"   # → ACTIVÉ (18 chunks) ✅
+grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
+```
+
+**Delta Session 206:**
+- KB: ~/knowledge_base/ → data/knowledge-base/ (IN-PROJECT)
+- Branding: 100% VocalIA (0 refs "3A" dans code actif)
+- Sync: Widget sync script opérationnel
+- RAG: **PLEINEMENT FONCTIONNEL**
+
+---
+
+*Màj: 29/01/2026 - Session 206 (KB In-Project + Branding Unifié)*
+*Status: Health 100% (39/39) | RAG FONCTIONNEL | Branding 100%*
+*Voir: docs/SESSION-205-AUDIT.md pour audit complet*

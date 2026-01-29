@@ -70,7 +70,7 @@
   <link href="./public/css/style.css" rel="stylesheet">
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' 'unsafe-inline' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -83,37 +83,37 @@
     rel="stylesheet">
 
   <style>
-    /* Custom scrollbar */
+    /* Custom scrollbar - Enterprise Dark */
     ::-webkit-scrollbar {
-      width: 8px;
+      width: 6px;
     }
 
     ::-webkit-scrollbar-track {
-      background: #0b406e;
+      background: #09090b;
     }
 
     ::-webkit-scrollbar-thumb {
-      background: #0c8ee9;
-      border-radius: 4px;
+      background: rgba(161, 161, 170, 0.25);
+      border-radius: 3px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: #36aaf8;
+      background: #71717a;
     }
 
-    /* Gradient text */
+    /* Gradient text - Deep Indigo */
     .gradient-text {
-      background: linear-gradient(135deg, #0c8ee9 0%, #36aaf8 50%, #7cc8fc 100%);
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    /* Glass morphism */
+    /* Glass morphism - Linear-inspired */
     .glass {
-      background: rgba(11, 64, 110, 0.4);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(124, 200, 252, 0.1);
+      background: rgba(17, 17, 20, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(161, 161, 170, 0.15);
     }
 
     /* Noise texture overlay */
@@ -136,7 +136,7 @@
 
     .sound-wave span {
       width: 4px;
-      background: linear-gradient(to top, #0c8ee9, #7cc8fc);
+      background: linear-gradient(to top, #5E6AD2, #a5b4fc);
       border-radius: 2px;
       animation: wave 1s ease-in-out infinite;
     }
@@ -178,10 +178,10 @@
       }
     }
 
-    /* Gradient border */
+    /* Gradient border - Enterprise Dark */
     .gradient-border {
       position: relative;
-      background: linear-gradient(135deg, #072849, #0b406e);
+      background: linear-gradient(135deg, #111114, #18181b);
     }
 
     .gradient-border::before {
@@ -189,7 +189,7 @@
       position: absolute;
       inset: 0;
       padding: 1px;
-      background: linear-gradient(135deg, #0c8ee9, #7cc8fc);
+      background: linear-gradient(135deg, #5E6AD2, #a5b4fc);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
@@ -1006,6 +1006,9 @@
       });
     })();
   </script>
+
+  <!-- VocalIA Voice Widget - Try our product! -->
+  <script src="/voice-assistant/voice-widget.js" defer></script>
 </body>
 
 </html>

@@ -573,8 +573,8 @@ loadLanguageAssets();
 
 /**
  * Generate a culturally-adapted system prompt based on language
- * For Darija (ary): Uses full 3A context - FACTUALLY ACCURATE
- * Session 176quater: Fixed identity - 3A is an AGENCY, not an e-commerce company
+ * For Darija (ary): Uses full VocalIA context - FACTUALLY ACCURATE
+ * Session 176quater: Fixed identity - VocalIA is an AGENCY, not an e-commerce company
  */
 function getSystemPromptForLanguage(language = 'fr') {
   // Non-Darija: use base English prompt (works well with all models)

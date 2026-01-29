@@ -6,7 +6,7 @@
  * This module enables Multi-Tenancy: A single Engine running 7 "Gold Rush" Verticals.
  *
  * PERSONAS:
- * 1. AGENCY (Default): 3A Sales Assistant
+ * 1. AGENCY (Default): VocalIA Sales Assistant
  * 2. DENTAL: Patient Intake & Scheduling
  * 3. PROPERTY: Maintenance Request Handling
  * 4. HOA: Support Hotline & Rules
@@ -272,10 +272,10 @@ const PERSONAS = {
     // 13. THE RECRUITER (HR / Screening)
     RECRUITER: {
         id: 'recruiter_v1',
-        name: '3A Talent Acquisition',
+        name: 'VocalIA Talent Acquisition',
         voice: 'tom',
         sensitivity: 'normal',
-        systemPrompt: `Tu es l'assistant de recrutement pour 3A Talent.
+        systemPrompt: `Tu es l'assistant de recrutement pour VocalIA Talent.
     OBJECTIF: Effectuer un premier screening rapide des candidats.
     INSTRUCTIONS: Demande pour quel poste ils appellent. Demande leurs années d'expérience et leur disponibilité pour un entretien approfondi.`
     },

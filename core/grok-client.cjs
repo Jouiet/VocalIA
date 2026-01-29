@@ -23,34 +23,81 @@ const XAI_API_KEY = process.env.XAI_API_KEY;
 const XAI_API_URL = 'https://api.x.ai/v1/chat/completions';
 const USE_RAG = !process.argv.includes('--no-rag');
 
-// RAG Components (lazy loaded)
-let ragQuery = null;
-let getKnowledgeContext = null;
-let getCatalog = null;
+// RAG Components (lazy loaded) - Uses knowledge-base-services.cjs (SOTA)
+let knowledgeBase = null;
 let ragInitialized = false;
 
 /**
- * Initialize RAG components
+ * Initialize RAG components using ServiceKnowledgeBase
+ * Fixed Session 205: Now uses the working knowledge-base-services.cjs
  */
 function initRAG() {
   if (ragInitialized) return true;
 
   try {
-    const ragModule = require('../knowledge-base/src/rag-query.cjs');
-    const catalogModule = require('../knowledge-base/src/catalog-extractor.cjs');
+    const { ServiceKnowledgeBase } = require('./knowledge-base-services.cjs');
+    knowledgeBase = new ServiceKnowledgeBase();
 
-    ragQuery = ragModule.ragQuery;
-    getKnowledgeContext = ragModule.getKnowledgeContext;
-    getCatalog = catalogModule.getCatalog;
+    if (!knowledgeBase.load()) {
+      console.log('RAG Knowledge Base: BUILD REQUIRED');
+      console.log('   └─ Run: node core/knowledge-base-services.cjs --build');
+      return false;
+    }
+
+    const status = knowledgeBase.getStatus();
     ragInitialized = true;
-
-    console.log('RAG Knowledge Base: ACTIVÉ');
+    console.log(`RAG Knowledge Base: ACTIVÉ (${status.chunk_count} chunks)`);
     return true;
   } catch (error) {
     console.log('RAG Knowledge Base: NON DISPONIBLE');
     console.log(`   └─ ${error.message}`);
     return false;
   }
+}
+
+/**
+ * RAG Query - wrapper for ServiceKnowledgeBase.search()
+ */
+async function ragQuery(query, options = {}) {
+  if (!knowledgeBase) {
+    return { hasResults: false, context: '', sources: [], confidence: 0 };
+  }
+
+  const topK = options.topK || 5;
+  const results = knowledgeBase.search(query, topK);
+
+  if (!results || results.length === 0) {
+    return { hasResults: false, context: '', sources: [], confidence: 0 };
+  }
+
+  // Format results for prompt injection
+  const context = results.map(r => `[${r.id}] ${r.text || r.description}`).join('\n\n');
+  const sources = results.map(r => ({ source: r.id, section: r.category || 'general' }));
+  const confidence = results[0]?.score || 0.5;
+
+  return { hasResults: true, context, sources, confidence };
+}
+
+/**
+ * Get knowledge context - wrapper for backward compatibility
+ */
+function getKnowledgeContext(query, options = {}) {
+  if (!knowledgeBase) {
+    return null;
+  }
+
+  const topK = options.topK || 5;
+  const results = knowledgeBase.search(query, topK);
+
+  if (!results || results.length === 0) {
+    return null;
+  }
+
+  return {
+    results,
+    query,
+    count: results.length
+  };
 }
 
 // Base System Prompt
@@ -285,20 +332,19 @@ async function interactiveChat() {
         continue;
       }
 
-      if (userInput === '/stats' && ragInitialized) {
-        const { getKBStats } = require('../knowledge-base/src/rag-query.cjs');
-        const stats = getKBStats();
+      if (userInput === '/stats' && ragInitialized && knowledgeBase) {
+        const stats = knowledgeBase.getStatus();
         console.log('\n--- KNOWLEDGE BASE STATS ---');
-        console.log(`Chunks: ${stats.totalDocuments}`);
-        console.log(`Tokens: ${stats.uniqueTokens}`);
-        console.log(`Avg chunk: ${stats.avgDocLength} tokens`);
-        console.log('Categories:', Object.keys(stats.categories).join(', '));
+        console.log(`Chunks: ${stats.chunk_count}`);
+        console.log(`Terms: ${stats.term_count}`);
+        console.log(`Automations: ${stats.automations_count}`);
+        console.log(`Categories: ${stats.categories_count}`);
         continue;
       }
 
       console.log('\nChargement...');
       const response = await chatCompletion(userInput);
-      console.log(`\n3A Assistant: ${response}`);
+      console.log(`\nVocalIA Assistant: ${response}`);
 
     } catch (error) {
       if (error.message === 'readline was closed') {
@@ -344,13 +390,30 @@ Retourne:
 
 /**
  * Query knowledge base directly
+ * Fixed Session 205: Uses ServiceKnowledgeBase
  */
 async function queryKnowledgeBase(query) {
-  if (!ragInitialized) {
-    return { error: 'RAG not initialized' };
+  if (!ragInitialized || !knowledgeBase) {
+    return { error: 'RAG not initialized. Run initRAG() first.' };
   }
 
-  return getKnowledgeContext(query, { topK: 5 });
+  const results = knowledgeBase.search(query, 5);
+
+  if (!results || results.length === 0) {
+    return { found: false, results: [], query };
+  }
+
+  return {
+    found: true,
+    results: results.map(r => ({
+      id: r.id,
+      text: r.text || r.description,
+      score: r.score,
+      category: r.category
+    })),
+    query,
+    count: results.length
+  };
 }
 
 /**
