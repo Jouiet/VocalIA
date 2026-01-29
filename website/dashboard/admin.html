@@ -482,11 +482,14 @@
         </div>
       </section>
 
-      <!-- API Usage & Logs -->
-      <section class="grid lg:grid-cols-2 gap-6 mb-8">
-        <!-- API Usage -->
-        <div id="api" class="glass-panel p-6">
-          <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.sidebar.api">Utilisation API (24h)</h3>
+      <!-- API Usage & Logs (Drag-and-Drop Enabled) -->
+      <section id="widgets-grid" data-dashboard-grid class="grid lg:grid-cols-2 gap-6 mb-8">
+        <!-- API Usage Widget -->
+        <div id="api" class="dashboard-widget glass-panel" data-widget-id="api-usage">
+          <div class="widget-header p-6 pb-0">
+            <h3 class="widget-title text-lg font-semibold" data-i18n="dashboard.sidebar.api">Utilisation API (24h)</h3>
+          </div>
+          <div class="widget-content p-6 pt-4">
           <div class="space-y-4">
             <div class="flex items-center justify-between p-3 rounded-xl bg-vocalia-800/30">
               <div class="flex items-center space-x-3">
@@ -549,12 +552,14 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
 
-        <!-- Recent Logs -->
-        <div id="logs" class="glass-panel p-6">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold" data-i18n="dashboard.sidebar.logs">Logs récents</h3>
+        <!-- Recent Logs Widget -->
+        <div id="logs" class="dashboard-widget glass-panel" data-widget-id="logs">
+          <div class="widget-header p-6 pb-0">
+            <div class="flex items-center justify-between">
+              <h3 class="widget-title text-lg font-semibold" data-i18n="dashboard.sidebar.logs">Logs récents</h3>
             <select
               class="bg-vocalia-800 border border-vocalia-700 rounded-lg px-3 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-vocalia-500">
               <option>Tous</option>
@@ -562,7 +567,9 @@
               <option>Warnings</option>
               <option>Info</option>
             </select>
+            </div>
           </div>
+          <div class="widget-content p-6 pt-4">
           <div class="space-y-2 font-mono text-xs max-h-64 overflow-y-auto">
             <div class="p-2 rounded bg-vocalia-800/30 flex items-start space-x-2">
               <span class="text-green-400">[INFO]</span>
@@ -595,6 +602,7 @@
               <span class="text-vocalia-400">22:40:22</span>
               <span class="text-vocalia-200 flex-1">WebSocket connection established: client=hotel_riad</span>
             </div>
+          </div>
           </div>
         </div>
       </section>

@@ -632,6 +632,90 @@
     </div>
   </section>
 
+  <!-- Voice Visualizer Demo Section -->
+  <section class="voice-demo-section py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <span class="section-badge inline-flex items-center gap-2 mb-4">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          </svg>
+          <span>Voice AI</span>
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_demo.title">Visualisez la Voix</h2>
+        <p class="text-lg text-zinc-400 max-w-2xl mx-auto" data-i18n="voice_demo.subtitle">Notre technologie de traitement vocal en temps réel</p>
+      </div>
+
+      <div class="voice-demo-grid">
+        <!-- Wave Mode -->
+        <div class="voice-demo-card">
+          <div class="voice-demo-card-header">
+            <span class="voice-demo-card-title">Mode Wave</span>
+            <span class="voice-demo-card-badge">Demo</span>
+          </div>
+          <div class="voice-visualizer-container">
+            <canvas id="visualizer-wave" class="voice-visualizer-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Bars Mode -->
+        <div class="voice-demo-card">
+          <div class="voice-demo-card-header">
+            <span class="voice-demo-card-title">Mode Bars</span>
+            <span class="voice-demo-card-badge">Demo</span>
+          </div>
+          <div class="voice-visualizer-container">
+            <canvas id="visualizer-bars" class="voice-visualizer-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Orb Mode -->
+        <div class="voice-demo-card">
+          <div class="voice-demo-card-header">
+            <span class="voice-demo-card-title">Mode Orb</span>
+            <span class="voice-demo-card-badge">Demo</span>
+          </div>
+          <div class="voice-visualizer-container">
+            <canvas id="visualizer-orb" class="voice-visualizer-canvas" style="height: 200px;"></canvas>
+          </div>
+        </div>
+
+        <!-- Pulse Mode -->
+        <div class="voice-demo-card">
+          <div class="voice-demo-card-header">
+            <span class="voice-demo-card-title">Mode Pulse</span>
+            <span class="voice-demo-card-badge">Demo</span>
+          </div>
+          <div class="voice-visualizer-container">
+            <canvas id="visualizer-pulse" class="voice-visualizer-canvas" style="height: 200px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Features highlight -->
+      <div class="mt-12 flex flex-wrap justify-center gap-6 text-sm text-zinc-400">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>GPU-Accelerated Canvas</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>Web Audio API Integration</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>60 FPS Rendering</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Pricing Section -->
   <section id="pricing" class="py-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1063,6 +1147,51 @@
         VocaliaI18n.translatePage();
       });
     })();
+  </script>
+
+  <!-- VocalIA Voice Visualizer -->
+  <script src="/src/lib/voice-visualizer.js"></script>
+  <script>
+    // Initialize Voice Visualizers when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if VoiceVisualizer is available
+      if (typeof VoiceVisualizer !== 'undefined') {
+        // Wave mode visualizer
+        const waveViz = new VoiceVisualizer('#visualizer-wave', {
+          mode: 'wave',
+          color: '#5E6AD2',
+          secondaryColor: '#8b5cf6',
+          demo: true
+        });
+
+        // Bars mode visualizer
+        const barsViz = new VoiceVisualizer('#visualizer-bars', {
+          mode: 'bars',
+          color: '#5E6AD2',
+          secondaryColor: '#8b5cf6',
+          barCount: 32,
+          demo: true
+        });
+
+        // Orb mode visualizer
+        const orbViz = new VoiceVisualizer('#visualizer-orb', {
+          mode: 'orb',
+          color: '#5E6AD2',
+          secondaryColor: '#8b5cf6',
+          demo: true
+        });
+
+        // Pulse mode visualizer
+        const pulseViz = new VoiceVisualizer('#visualizer-pulse', {
+          mode: 'pulse',
+          color: '#5E6AD2',
+          secondaryColor: '#8b5cf6',
+          demo: true
+        });
+
+        console.log('[VocalIA] Voice visualizers initialized');
+      }
+    });
   </script>
 
   <!-- VocalIA Voice Widget - Try our product! -->

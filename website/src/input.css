@@ -1768,3 +1768,263 @@ html.light .ai-insights-badge,
   background: rgba(94, 106, 210, 0.1);
   color: #5E6AD2;
 }
+
+/* =======================================================================
+   Voice Visualizer Component (Session 210)
+   Canvas-based audio visualization with multiple modes
+   ======================================================================= */
+.voice-visualizer-container {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(94, 106, 210, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
+  border: 1px solid rgba(94, 106, 210, 0.15);
+}
+
+.voice-visualizer-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(94, 106, 210, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.voice-visualizer-canvas {
+  display: block;
+  width: 100%;
+  height: 200px;
+}
+
+.voice-visualizer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(94, 106, 210, 0.1);
+}
+
+.voice-visualizer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.voice-visualizer-btn:hover {
+  background: rgba(94, 106, 210, 0.15);
+  border-color: rgba(94, 106, 210, 0.3);
+  color: var(--text-primary);
+}
+
+.voice-visualizer-btn.active {
+  background: rgba(94, 106, 210, 0.2);
+  border-color: rgba(94, 106, 210, 0.4);
+  color: #a5b4fc;
+}
+
+.voice-visualizer-mode {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+.voice-visualizer-mode:hover,
+.voice-visualizer-mode.active {
+  background: rgba(94, 106, 210, 0.15);
+  border-color: rgba(94, 106, 210, 0.3);
+  color: #a5b4fc;
+}
+
+/* Light mode visualizer */
+html.light .voice-visualizer-container,
+[data-theme="light"] .voice-visualizer-container {
+  background: linear-gradient(135deg, rgba(94, 106, 210, 0.03) 0%, rgba(139, 92, 246, 0.02) 100%);
+  border-color: rgba(94, 106, 210, 0.1);
+}
+
+html.light .voice-visualizer-btn,
+[data-theme="light"] .voice-visualizer-btn {
+  background: #f3f4f6;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+html.light .voice-visualizer-btn:hover,
+[data-theme="light"] .voice-visualizer-btn:hover {
+  background: rgba(94, 106, 210, 0.1);
+}
+
+/* Voice Visualizer Demo Section */
+.voice-demo-section {
+  position: relative;
+  padding: 3rem 2rem;
+  background: linear-gradient(180deg, transparent 0%, rgba(94, 106, 210, 0.03) 50%, transparent 100%);
+}
+
+.voice-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.voice-demo-card {
+  position: relative;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all 200ms ease;
+}
+
+.voice-demo-card:hover {
+  border-color: rgba(94, 106, 210, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.voice-demo-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.voice-demo-card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.voice-demo-card-badge {
+  font-size: 0.625rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(94, 106, 210, 0.15);
+  border-radius: var(--radius-full);
+  color: #a5b4fc;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Soundwave animation for voice demo */
+.voice-soundwave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 40px;
+}
+
+.voice-soundwave-bar {
+  width: 4px;
+  background: linear-gradient(180deg, #5E6AD2 0%, #8b5cf6 100%);
+  border-radius: 2px;
+  animation: soundwave 1s ease-in-out infinite;
+}
+
+.voice-soundwave-bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+.voice-soundwave-bar:nth-child(2) { height: 70%; animation-delay: 0.1s; }
+.voice-soundwave-bar:nth-child(3) { height: 100%; animation-delay: 0.2s; }
+.voice-soundwave-bar:nth-child(4) { height: 60%; animation-delay: 0.3s; }
+.voice-soundwave-bar:nth-child(5) { height: 80%; animation-delay: 0.4s; }
+.voice-soundwave-bar:nth-child(6) { height: 50%; animation-delay: 0.5s; }
+.voice-soundwave-bar:nth-child(7) { height: 90%; animation-delay: 0.6s; }
+
+@keyframes soundwave {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1); }
+}
+
+/* Voice Activity Indicator */
+.voice-activity-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.voice-activity-ring {
+  position: relative;
+  width: 48px;
+  height: 48px;
+}
+
+.voice-activity-ring::before,
+.voice-activity-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.voice-activity-ring::before {
+  border-top-color: #5E6AD2;
+  animation: voice-ring-spin 1.5s linear infinite;
+}
+
+.voice-activity-ring::after {
+  border-bottom-color: #8b5cf6;
+  animation: voice-ring-spin 1.5s linear infinite reverse;
+}
+
+.voice-activity-ring-inner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(94, 106, 210, 0.3) 0%, rgba(139, 92, 246, 0.2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voice-activity-ring-inner svg {
+  width: 20px;
+  height: 20px;
+  color: #a5b4fc;
+}
+
+@keyframes voice-ring-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Voice Waveform Mini */
+.voice-waveform-mini {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 24px;
+}
+
+.voice-waveform-mini-bar {
+  width: 3px;
+  background: currentColor;
+  border-radius: 1.5px;
+  animation: mini-wave 0.8s ease-in-out infinite;
+}
+
+.voice-waveform-mini-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+.voice-waveform-mini-bar:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+.voice-waveform-mini-bar:nth-child(3) { height: 100%; animation-delay: 0.15s; }
+.voice-waveform-mini-bar:nth-child(4) { height: 50%; animation-delay: 0.2s; }
+.voice-waveform-mini-bar:nth-child(5) { height: 80%; animation-delay: 0.25s; }
+
+@keyframes mini-wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.5); }
+}

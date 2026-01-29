@@ -146,6 +146,10 @@
         "ary": "Darija Marocain"
       }
     },
+    "voice_demo": {
+      "title": "Visualisez la Voix",
+      "subtitle": "Notre technologie de traitement vocal en temps réel"
+    },
     "personas": {
       "title": "30 Personas Métier",
       "subtitle": "Des agents spécialisés pour chaque secteur",

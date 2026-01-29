@@ -146,6 +146,10 @@
         "ary": "Moroccan Darija"
       }
     },
+    "voice_demo": {
+      "title": "Visualize Voice",
+      "subtitle": "Our real-time voice processing technology"
+    },
     "personas": {
       "title": "30 Industry Personas",
       "subtitle": "Specialized agents for every sector",
