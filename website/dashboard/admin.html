@@ -141,13 +141,16 @@
                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
-          <!-- System Status -->
-          <div class="flex items-center space-x-2 px-4 py-2 rounded-xl glass">
-            <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span>
-            <span class="text-sm text-vocalia-200" data-i18n="dashboard.header.status_admin">Tous systèmes OK</span>
+          <!-- System Status (WCAG 1.4.1 - Icon + Color + Text) -->
+          <div class="flex items-center px-4 py-2 rounded-xl glass">
+            <span class="status-indicator status-indicator-online">
+              <span class="status-indicator-dot" aria-hidden="true"></span>
+              <span class="sr-only">Status:</span>
+              <span class="text-sm text-vocalia-200" data-i18n="dashboard.header.status_admin">Tous systèmes OK</span>
+            </span>
           </div>
           <!-- Refresh -->
-          <button onclick="location.reload()" class="p-2 rounded-lg hover:bg-slate-700/50 transition">
+          <button onclick="location.reload()" class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
             <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />

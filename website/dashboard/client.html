@@ -114,7 +114,7 @@
           <p class="text-sm font-medium truncate">Jean Dupont</p>
           <p class="text-xs text-vocalia-400 truncate">Pro Plan</p>
         </div>
-        <button class="p-2 rounded-lg hover:bg-slate-700/50 transition">
+        <button class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
           <svg class="w-5 h-5 text-vocalia-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -146,10 +146,13 @@
                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
             </svg>
           </button>
-          <!-- Status indicator -->
-          <div class="flex items-center space-x-2 px-4 py-2 rounded-xl glass">
-            <span class="w-2 h-2 rounded-full bg-green-400 pulse-dot"></span>
-            <span class="text-sm text-vocalia-200" data-i18n="dashboard.header.status">Système opérationnel</span>
+          <!-- Status indicator (WCAG 1.4.1 - Icon + Color + Text) -->
+          <div class="flex items-center px-4 py-2 rounded-xl glass">
+            <span class="status-indicator status-indicator-online">
+              <span class="status-indicator-dot" aria-hidden="true"></span>
+              <span class="sr-only">Status:</span>
+              <span class="text-sm text-vocalia-200" data-i18n="dashboard.header.status">Système opérationnel</span>
+            </span>
           </div>
           <!-- Date -->
           <div class="text-vocalia-400 text-sm" id="currentDate"></div>

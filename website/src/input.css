@@ -159,10 +159,25 @@
     line-height: 1.5;
   }
 
-  /* Focus states - Linear spec: 2px outline, 2px offset */
+  /* Focus states - Linear spec: 2px outline, 2px offset (WCAG 2.1.1 Session 220) */
   :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: var(--focus-offset);
+  }
+
+  /* Enhance focus for interactive elements */
+  button:focus-visible,
+  a:focus-visible,
+  [role="button"]:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(94, 106, 210, 0.2);
+  }
+
+  /* Remove default focus outline for mouse users */
+  :focus:not(:focus-visible) {
+    outline: none;
   }
 
   /* =======================================================================
@@ -2352,12 +2367,18 @@ html.light .voice-visualizer-btn:hover,
   }
 }
 
+/* GPU-Only Shimmer: uses transform instead of background-position (Session 220) */
 @keyframes shimmerGlass {
   0% {
-    background-position: -200% 0;
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.08;
   }
   100% {
-    background-position: 200% 0;
+    transform: translateX(100%);
+    opacity: 0;
   }
 }
 
@@ -2386,17 +2407,20 @@ html.light .voice-visualizer-btn:hover,
 .animate-shimmer-glass::after {
   content: '';
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.1) 50%,
     transparent 100%
   );
-  background-size: 200% 100%;
   animation: shimmerGlass 3s ease-in-out infinite;
   pointer-events: none;
   border-radius: inherit;
+  will-change: transform, opacity;
 }
 
 /* =======================================================================
@@ -2789,21 +2813,40 @@ html.light .voice-visualizer-btn:hover,
 }
 
 /* =======================================================================
-   Reduced Motion Override (Accessibility)
+   Reduced Motion Override (WCAG 2.3.3 - Session 220)
+   Respects user preference for motion sensitivity
    ======================================================================= */
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
   .hero-orb,
+  .hero-orb-1,
+  .hero-orb-2,
+  .hero-orb-3,
   [data-bento-item],
   .card-3d,
   .hover-lift,
-  .text-gradient-animate {
+  .text-gradient-animate,
+  .animate-float-card,
+  .animate-shimmer-glass,
+  .animate-shimmer-glass::after,
+  .pulse-dot,
+  .glow-pulse,
+  [data-reveal] {
     animation: none !important;
-    transition: opacity 0.3s ease !important;
     transform: none !important;
+    opacity: 1 !important;
   }
 
-  [data-reveal] {
-    opacity: 1 !important;
+  .card-3d:hover,
+  .hover-lift:hover {
     transform: none !important;
   }
 }

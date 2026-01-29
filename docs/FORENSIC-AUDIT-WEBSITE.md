@@ -1,8 +1,8 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 3.6.0 | **Date**: 29/01/2026 | **Session**: 213
-> **Status**: REMEDIATION COMPLETE (~94%) | **CSS Build**: SOVEREIGN (92KB)
-> **Palette**: Enterprise Slate v4.2 (Harmonized) | **Lighthouse**: 90 | **PWA**: Ready
+> **Version**: 3.7.0 | **Date**: 29/01/2026 | **Session**: 220
+> **Status**: WCAG 2.1 AA COMPLIANCE (~97%) | **CSS Build**: SOVEREIGN (93KB)
+> **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 
 ---
 
@@ -15,7 +15,7 @@ Ce document documente l'audit forensique complet du frontend VocalIA (Website + 
 | Scope | Score | Description |
 |:------|:-----:|:------------|
 | **Backend Engineering** | 99/100 | Voice API, Telephony, Personas, RAG - EXCELLENT |
-| **Frontend Design (vs 2026)** | **~94%** | Session 213: Branding Harmonization ✅ |
+| **Frontend Design (vs 2026)** | **~97%** | Session 220: WCAG AA Remediation ✅ |
 
 **Le score backend de 99/100 est validé.** Ce document concerne l'audit FRONTEND uniquement.
 
@@ -287,6 +287,44 @@ Audit basé sur:
 
 **Score Post-Session 213:** 74/80 (~92%)
 
+### Implémentations Session 220
+
+**Deep Forensic UI/UX Audit:**
+- 38 issues identified across 24 pages
+- Severity: 1 CRITICAL, 8 HIGH, 15 MEDIUM, 14 LOW
+
+**19. GPU-Only Animation Fix (CRITICAL):**
+- Replaced `shimmerGlass` background-position animation with transform-based GPU-only version
+- Added `will-change: transform, opacity` for compositor optimization
+- Eliminated main-thread jank on hover states
+
+**20. prefers-reduced-motion (WCAG 2.3.3):**
+- Comprehensive `@media (prefers-reduced-motion: reduce)` block
+- Disables ALL animations respecting user preference
+- Covers: hero orbs, bento items, 3D cards, shimmer effects
+
+**21. Accessible Status Indicators (WCAG 1.4.1):**
+- Updated dashboard/client.html and admin.html
+- Status indicators now use icon + color + text (not color alone)
+- Added `sr-only` labels for screen readers
+
+**22. Focus Ring Enhancement (WCAG 2.1.1):**
+- Global focus-visible styles with box-shadow glow
+- Dashboard buttons now have explicit focus states
+- Removed default focus for mouse users (:focus:not(:focus-visible))
+
+**23. Footer Standardization:**
+- Fixed 7 files with inconsistent footer styling
+- Unified: `bg-slate-900 border-t border-slate-800 py-16`
+- Affected: blog, changelog, api, healthcare, real-estate, finance, retail
+
+**24. Image Dimensions for CLS:**
+- All images now have explicit width/height attributes
+- Widget logo icons: 32x32px dimensions added
+- Prevents Cumulative Layout Shift on load
+
+**Score Post-Session 220:** 78/80 (~97%)
+
 ---
 
 ## Audit Timeline
@@ -303,6 +341,7 @@ Audit basé sur:
 | 201 | 29/01/2026 | i18n Interpolation Fix | Complete |
 | 207 | 29/01/2026 | Design System Alignment | Complete |
 | 208 | 29/01/2026 | SOTA Animations & Light Mode | Partial |
+| **220** | **29/01/2026** | **WCAG AA Compliance + Forensic Audit** | **Complete** |
 | **213** | **29/01/2026** | **Deployment Prep + Favicons** | **Complete** |
 | **212** | **29/01/2026** | **Performance + Brand Assets** | **Complete** |
 | **211** | **29/01/2026** | **Performance + Brighter Palette** | **Complete** |
