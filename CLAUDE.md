@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 3.0.0 | 29/01/2026 | Session 215 | Backend: 99/100 | Frontend: ~96% | Health: 100%
+> Version: 3.1.0 | 29/01/2026 | Session 216 | Backend: 99/100 | Frontend: ~96% | Health: 100%
 
 ## Identité
 
@@ -628,18 +628,78 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 **Git:** Commit `f95178a`
 
-## PLAN ACTIONNABLE (Session 216)
+## Session 216 Summary
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | **Acheter hébergement NindoHost** | **P0** | User action - Pack Starter 39 DH/mois |
-| 2 | Upload ZIP to cPanel | P1 | `vocalia-website-*.zip` |
-| 3 | Create Docs page | P2 | API reference, getting started |
-| 4 | Create Use Cases pages | P2 | E-commerce, Support, Appointments |
-| 5 | Voice widget integration test | P3 | End-to-end |
+**Use Cases Pages + Auto-Deploy NindoHost:**
+
+### Implémentations Session 216
+
+| Task | Status | Details |
+|:-----|:------:|:--------|
+| E-commerce Use Case | ✅ DONE | `/use-cases/e-commerce.html` (400+ lines) |
+| Customer Support Use Case | ✅ DONE | `/use-cases/customer-support.html` (350+ lines) |
+| Appointments Use Case | ✅ DONE | `/use-cases/appointments.html` (350+ lines) |
+| Lead Qualification Use Case | ✅ DONE | `/use-cases/lead-qualification.html` (400+ lines) |
+| GitHub Actions FTP Deploy | ✅ DONE | `.github/workflows/deploy-nindohost.yml` |
+| Auto-Deploy Test | ✅ DONE | Successful deployment to vocalia.ma |
+
+### Use Cases Pages Features
+
+| Page | Content |
+|:-----|:--------|
+| **E-commerce** | Support client automatisé, suivi commandes, retours, stock, ROI calculator |
+| **Customer Support** | Service 24/7, base connaissances IA, escalade intelligente, analytics |
+| **Appointments** | Sync calendrier, rappels SMS/vocal, multi-praticiens, industries (santé, immo) |
+| **Lead Qualification** | Framework BANT automatisé, scoring temps réel, CRM sync, alertes |
+
+### Auto-Deploy Configuration
+
+| Config | Value |
+|:-------|:------|
+| FTP Server | `ftp.vocalia.ma` |
+| FTP User | `vocaliam` |
+| Target Dir | `/public_html/` |
+| Trigger | Push to `main` (website/**) |
+| Workflow | `.github/workflows/deploy-nindohost.yml` |
+
+### Website Pages Status
+
+| Page | URL | Status |
+|:-----|:----|:------:|
+| Home | `/` | ✅ |
+| Features | `/features` | ✅ |
+| Pricing | `/pricing` | ✅ |
+| About | `/about` | ✅ |
+| Contact | `/contact` | ✅ |
+| Docs | `/docs` | ✅ |
+| Voice Widget | `/products/voice-widget` | ✅ |
+| Voice Telephony | `/products/voice-telephony` | ✅ |
+| E-commerce | `/use-cases/e-commerce` | ✅ **NEW** |
+| Customer Support | `/use-cases/customer-support` | ✅ **NEW** |
+| Appointments | `/use-cases/appointments` | ✅ **NEW** |
+| Lead Qualification | `/use-cases/lead-qualification` | ✅ **NEW** |
+| Dashboard Client | `/dashboard/client` | ✅ |
+| Dashboard Admin | `/dashboard/admin` | ✅ |
+| **TOTAL** | **14 pages** | **100%** |
+
+**Git:** Commit `92425bc`
+
+**Live Site:** https://vocalia.ma ✅
 
 ---
 
-*Màj: 29/01/2026 - Session 215 (About & Contact Pages + Deploy Fix)*
+## PLAN ACTIONNABLE (Session 217)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Industry pages (Healthcare, Real Estate) | P2 | 4 pages planned |
+| 2 | Legal pages (Privacy, Terms) | P2 | GDPR compliance |
+| 3 | Integrations page | P2 | CRM/E-commerce partners |
+| 4 | API Reference page | P2 | Developer documentation |
+
+---
+
+*Màj: 29/01/2026 - Session 216 (Use Cases + Auto-Deploy)*
 *Status: Backend 99/100 ✅ | Frontend ~96% ✅ | Health 100% (39/39)*
+*Live: https://vocalia.ma ✅ | Auto-Deploy: GitHub Actions → NindoHost*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
