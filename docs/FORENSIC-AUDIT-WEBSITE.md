@@ -1,8 +1,8 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 3.2.0 | **Date**: 29/01/2026 | **Session**: 210
-> **Status**: REMEDIATION COMPLETE (~85%) | **CSS Build**: SOVEREIGN (87KB)
-> **Palette**: Enterprise Dark v4.0 (Linear/Stripe-inspired)
+> **Version**: 3.3.0 | **Date**: 29/01/2026 | **Session**: 211
+> **Status**: REMEDIATION COMPLETE (~87%) | **CSS Build**: SOVEREIGN (92KB)
+> **Palette**: Enterprise Slate v4.1 (Brighter, better contrast)
 
 ---
 
@@ -224,6 +224,26 @@ Audit basé sur:
 
 **Score Post-Session 210:** 68/80 (~85%)
 
+### Implémentations Session 211
+
+**9. Performance Optimization:**
+- Images PNG → WebP (96% size reduction: 2MB → 77KB)
+- Font weights: 6 → 4 (removed unused 300/400)
+- Removed non-semantic animations (particles, orbs)
+- Added semantic sound waves background (Voice AI identity)
+
+**10. Brighter Palette:**
+- Body: `bg-vocalia-950` (#1e1b4b) → `bg-slate-900` (#0f172a)
+- Surfaces: #09090b → #0f172a (better visibility)
+- Cards: vocalia-900 → slate-800 (improved contrast)
+- Borders: 10% → 15-25% opacity (more defined)
+
+**11. Theme Simplification:**
+- Removed light mode from main site (dark-only)
+- Light/Dark toggle preserved for dashboards only
+
+**Score Post-Session 211:** 70/80 (~87%)
+
 ---
 
 ## Audit Timeline
@@ -240,6 +260,7 @@ Audit basé sur:
 | 201 | 29/01/2026 | i18n Interpolation Fix | Complete |
 | 207 | 29/01/2026 | Design System Alignment | Complete |
 | 208 | 29/01/2026 | SOTA Animations & Light Mode | Partial |
+| **211** | **29/01/2026** | **Performance + Brighter Palette** | **Complete** |
 | **210** | **29/01/2026** | **Voice Visualizer & Drag-Drop** | **Complete** |
 | **209** | **29/01/2026** | **Audit vs 2026 Standards** | **CRITICAL GAPS** |
 
@@ -612,5 +633,5 @@ Le frontend fonctionne mais n'est pas au niveau "frontier AI model" des standard
 ---
 
 *Document créé: 28/01/2026 - Session 200*
-*Mise à jour: 29/01/2026 - Session 209 (Audit vs 2026 Standards)*
+*Mise à jour: 29/01/2026 - Session 211 (Performance + Brighter Palette)*
 *Auteur: Claude Code (DOE Framework)*

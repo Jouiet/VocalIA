@@ -1,7 +1,7 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 4.0.0 | **Date**: 28/01/2026 | **Session**: 200
-> **Palette**: Enterprise Dark (Linear/Stripe-inspired)
+> **Version**: 4.1.0 | **Date**: 29/01/2026 | **Session**: 211
+> **Palette**: Enterprise Slate v4.1 (Brighter, better contrast)
 > **Research**: GitHub ihlamury/design-skills, Gemini Deep Research, pipecat-ai/voice-ui-kit
 
 ---
@@ -36,14 +36,16 @@
 | 900 | `#3730a3` | Deep accents |
 | 950 | `#1e1b4b` | Darkest |
 
-### Surface Colors (Linear-inspired Ultra-dark)
+### Surface Colors (Slate v4.1 - Brighter)
 
 | Token | Hex Code | Usage |
 |:------|:---------|:------|
-| `--bg-base` | `#09090b` | Page background |
-| `--bg-raised` | `#111114` | Cards, modals |
-| `--bg-elevated` | `#18181b` | Elevated elements |
-| `--bg-overlay` | `#27272a` | Overlays, tooltips |
+| `--bg-base` | `#0f172a` | Page background (slate-900) |
+| `--bg-raised` | `#1e293b` | Cards, modals (slate-800) |
+| `--bg-elevated` | `#334155` | Elevated elements (slate-700) |
+| `--bg-overlay` | `#475569` | Overlays, tooltips (slate-600) |
+
+**Note Session 211:** Palette éclaircie suite feedback "trop sombre". Contraste amélioré tout en gardant identité enterprise dark.
 
 ### Neutral - Slate
 
@@ -492,16 +494,17 @@ Features:
 
 ---
 
-## PLAN ACTIONNABLE (Session 210)
+## PLAN ACTIONNABLE (Session 212)
 
 | # | Action | Priorité | Fichier |
 |:-:|:-------|:--------:|:--------|
-| 1 | Light Mode LCH | P2 | `input.css` |
-| 2 | Voice Visualizer | P2 | NEW component |
-| 3 | OG Image | P2 | `assets/og-image.jpg` |
+| 1 | OG Image génération | P1 | `public/images/og-image.webp` |
+| 2 | Logo officiel VocalIA | P1 | `public/images/logo.webp` |
+| 3 | Micro-interactions hover | P2 | `input.css` |
+| 4 | Dashboard admin polish | P3 | `dashboard/admin.html` |
 
 ---
 
 *Document créé: 28/01/2026 - Session 200*
-*Màj: 29/01/2026 - Session 209 (2026 Components)*
+*Màj: 29/01/2026 - Session 211 (Brighter Palette + Performance)*
 *Auteur: Claude Code (DOE Framework)*

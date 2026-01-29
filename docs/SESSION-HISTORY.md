@@ -1,7 +1,7 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.4.0 | **Updated**: 29/01/2026 | **Session**: 210
-> **Backend Score**: 99/100 | **Frontend Score**: ~85% | **Health Check**: 100% (39/39)
+> **Version**: 3.5.0 | **Updated**: 29/01/2026 | **Session**: 211
+> **Backend Score**: 99/100 | **Frontend Score**: ~87% | **Health Check**: 100% (39/39)
 
 ---
 
@@ -1425,18 +1425,93 @@ node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
 | Dashboard Drag-Drop | 8/10 | **9/10** |
 | CSS Size | 82KB | 87KB |
 
-### PLAN ACTIONNABLE (Session 211)
+---
+
+## Session 211 - Performance + Brighter Palette (29/01/2026)
+
+### Objectives
+
+1. **Performance Optimization** - Images, fonts, animations
+2. **Brighter Palette** - User feedback "trop sombre"
+3. **Semantic Animations** - Animations serving product identity
+
+### Implémentations Session 211
+
+**1. Performance Optimization:**
+
+| Asset | Before | After | Gain |
+|:------|-------:|------:|-----:|
+| vocalia-hero-1.png | 560KB | 14KB (.webp) | 97% |
+| vocalia-widget.png | 691KB | 11KB (.webp) | 98% |
+| vocalia-soundwaves.png | 727KB | 52KB (.webp) | 93% |
+| **Total Images** | **2MB** | **77KB** | **96%** |
+| Font weights | 6 | 4 | 33% |
+
+**2. Brighter Palette (v4.1):**
+
+| Element | Before | After |
+|:--------|:-------|:------|
+| Body | `bg-vocalia-950` (#1e1b4b) | `bg-slate-900` (#0f172a) |
+| --bg-base | #09090b | #0f172a |
+| --bg-raised | #111114 | #1e293b |
+| --bg-elevated | #18181b | #334155 |
+| Borders | 10% opacity | 15-25% opacity |
+
+**3. Semantic Animation Principle:**
+> "les animations doivent avoir un sens lié avec l'esprit et l'utilité du produit"
+
+- ❌ Removed: Particles, floating orbs (decorative, no meaning)
+- ✅ Kept: Sound waves background (semantic for Voice AI)
+
+**4. Theme Simplification:**
+- Main site: Dark only (removed light mode toggle)
+- Dashboards: Light/Dark preserved
+
+### Verification
+
+```bash
+# Image sizes
+du -sh website/public/images/hero/*.webp
+# 14K vocalia-hero-1.webp
+# 52K vocalia-soundwaves.webp
+# 11K vocalia-widget.webp
+
+# CSS rebuilt
+ls -la website/public/css/style.css
+# 92KB ✅
+
+# Health check
+node scripts/health-check.cjs
+# 39/39 (100%) ✅
+```
+
+### Git
+
+- Commit 1: `2aafd61` (Performance Optimization)
+- Commit 2: `d7e5be3` (Brighter Palette)
+- Pushed: ✅ main branch
+
+### Score Post-Session 211
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| Frontend Score | ~85% | **~87%** |
+| Performance | 3/10 | **8/10** |
+| Palette | Trop sombre | Slate v4.1 |
+| Image Load | 2MB | 77KB |
+
+### PLAN ACTIONNABLE (Session 212)
 
 | # | Action | Priorité | Effort |
 |:-:|:-------|:--------:|:------:|
-| 1 | Light Mode LCH color space | P2 | 4h |
-| 2 | Playwright visual testing | P2 | 2h |
+| 1 | OG Image génération | P1 | 1h |
+| 2 | Logo officiel VocalIA | P1 | 1h |
 | 3 | Deploy to Hostinger | P1 | 1h |
-| 4 | OG Image creation | P2 | 1h |
+| 4 | Micro-interactions polish | P2 | 2h |
 
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 210 (Voice Visualizer & Drag-Drop)*
-*Status: Backend 99/100 | Frontend ~85% | Health: 100% (39/39)*
-*Phase 3 Frontend: IN PROGRESS | Next: Visual testing + Deploy*
+*Màj: 29/01/2026 - Session 211 (Performance + Brighter Palette)*
+*Status: Backend 99/100 | Frontend ~87% | Health: 100% (39/39)*
+*Phase 3 Frontend: IN PROGRESS | Next: OG Image + Deploy*

@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 2.4.0 | 29/01/2026 | Session 211 | Backend: 99/100 | Frontend: ~90% | Health: 100%
+> Version: 2.5.0 | 29/01/2026 | Session 211 | Backend: 99/100 | Frontend: ~87% | Health: 100%
 
 ## Identité
 
@@ -27,19 +27,25 @@
 | **CI/CD** | - | **+3** | GitHub Actions (ci.yml + deploy.yml) ✅ |
 | **TOTAL** | **100** | **99** | Health Score: 100% (39/39 passed) |
 
-### Frontend Design Score: ~90% ✅ (Post Session 211)
+### Frontend Design Score: ~87% ✅ (Post Session 211)
 
 | Critère | Max | Before | After | Fix |
 |:--------|:---:|:------:|:-----:|:----|
-| Bento Grid | 10 | 8 | **9** | ✅ + 3D hover + stagger reveal |
-| GPU Animations | 10 | 9 | **10** | ✅ **GSAP + ScrollTrigger** |
-| Dashboard Drag-Drop | 10 | 9 | **9** | ✅ dashboard-grid.js |
+| Bento Grid | 10 | 8 | **8** | ✅ Asymétrique |
+| GPU Animations | 10 | 9 | **9** | ✅ transform/opacity only |
+| Dashboard Drag-Drop | 10 | 8 | **9** | ✅ dashboard-grid.js |
 | Accessibilité couleur | 10 | 8 | **8** | ✅ .status-indicator |
-| Light Mode | 10 | 6 | 6 | ⏳ Backlog |
-| Micro-interactions | 10 | 7 | **9** | ✅ **Magnetic buttons, parallax** |
-| CSS Architecture | 10 | 8 | **9** | ✅ +450L SOTA animations |
-| Voice UI | 10 | 9 | **10** | ✅ **Particle system + orbs** |
-| **TOTAL** | **80** | **~68** | **~72** | **~90%** |
+| Light Mode | 10 | 6 | 6 | ⏳ Backlog (dark-only main site) |
+| Micro-interactions | 10 | 7 | **8** | ✅ GSAP ScrollTrigger |
+| CSS Architecture | 10 | 8 | **9** | ✅ Sovereign, 92KB |
+| Voice UI | 10 | 7 | **9** | ✅ Semantic sound waves |
+| Performance | 10 | 3 | **8** | ✅ WebP, font optimization |
+| **TOTAL** | **90** | **~64** | **~78** | **~87%** |
+
+**Session 211 Key Changes:**
+- Images: PNG → WebP (96% size reduction)
+- Palette: vocalia-950 → slate-900 (brighter)
+- Animations: Semantic only (sound waves for Voice AI)
 
 **Référence:** `docs/FORENSIC-AUDIT-WEBSITE.md` (Session 211)
 
@@ -457,48 +463,61 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 ## Session 211 Summary
 
-**SOTA Animation System - Stitch/Whisk/GSAP Integration:**
+**Performance + Brighter Palette:**
 
 ### Implémentations Session 211
 
-| Fix | Status | Fichiers |
-|:----|:------:|:---------|
-| GSAP ScrollTrigger | ✅ DONE | `gsap-animations.js` (820 lignes) |
-| 3D Card Hover Effects | ✅ DONE | `input.css` + `index.html` |
-| Particle System | ✅ DONE | `gsap-animations.js` (ParticleSystem class) |
-| Floating Orbs | ✅ DONE | `input.css` (floatOrb keyframes) |
-| Animated Counters | ✅ DONE | `gsap-animations.js` (initCounters) |
-| Magnetic Buttons | ✅ DONE | `gsap-animations.js` (MagneticButton class) |
-| Scroll Progress | ✅ DONE | `index.html` (scrollProgress indicator) |
-| Bento Stagger Reveal | ✅ DONE | `input.css` + data-bento-item |
-| Stitch Dashboard Gen | ✅ DONE | Project #3146200606521130276 |
+| Fix | Status | Détail |
+|:----|:------:|:-------|
+| Images WebP | ✅ DONE | PNG → WebP (96% size reduction) |
+| Font Weights | ✅ DONE | 6 → 4 (removed unused 300/400) |
+| Semantic Animations | ✅ DONE | Removed particles/orbs, kept sound waves |
+| Brighter Palette | ✅ DONE | vocalia-950 → slate-900 |
+| Theme Simplification | ✅ DONE | Dark-only main site |
 
-**GSAP Animation System Features:**
-- ScrollTrigger for scroll-based animations
-- 3D perspective card transforms (rotateX/Y)
-- Mouse-following particle effects
-- Staggered reveal animations
-- GPU-accelerated (transform/opacity only)
-- Reduced motion support (prefers-reduced-motion)
+**Performance Gains:**
 
-**Stitch AI Integration:**
-- Created VocalIA Dashboard 2026 project
-- Generated 2 analytics card variants
-- Premium glassmorphism dark mode
-- Deep indigo accent (#5E6AD2)
+| Asset | Before | After | Gain |
+|:------|-------:|------:|-----:|
+| vocalia-hero-1 | 560KB | 14KB | 97% |
+| vocalia-widget | 691KB | 11KB | 98% |
+| vocalia-soundwaves | 727KB | 52KB | 93% |
+| **Total** | **2MB** | **77KB** | **96%** |
 
-**Fichiers Nouveaux:**
-- `website/src/lib/gsap-animations.js` (820 lignes)
+**Brighter Palette v4.1:**
 
-**Fichiers Modifiés:**
-- `website/index.html` (+80 lignes, particles, orbs, data-attributes)
-- `website/src/input.css` (+450 lignes, SOTA animations)
-- `website/public/css/style.css` (rebuilt)
+| CSS Variable | Before | After |
+|:-------------|:-------|:------|
+| --bg-base | #09090b | #0f172a |
+| --bg-raised | #111114 | #1e293b |
+| --bg-elevated | #18181b | #334155 |
+| Body class | bg-vocalia-950 | bg-slate-900 |
 
-**Score Post-Session 211:** ~72/80 (~90%)
+**Semantic Animation Principle:**
+> "les animations doivent avoir un sens lié avec l'esprit et l'utilité du produit"
+
+- ❌ Removed: Particles, floating orbs (decorative, no meaning)
+- ✅ Kept: Sound waves background (semantic for Voice AI)
+
+**Git:**
+- Commit 1: `2aafd61` (Performance Optimization)
+- Commit 2: `d7e5be3` (Brighter Palette)
+
+**Score Post-Session 211:** ~70/80 (~87%)
 
 ---
 
-*Màj: 29/01/2026 - Session 211 (SOTA Animation System)*
-*Status: Backend 99/100 ✅ | Frontend ~90% ✅ | Health 100% (39/39)*
+## PLAN ACTIONNABLE (Session 212)
+
+| # | Action | Priorité | Fichier |
+|:-:|:-------|:--------:|:--------|
+| 1 | OG Image génération | P1 | `public/images/og-image.webp` |
+| 2 | Logo officiel VocalIA | P1 | `public/images/logo.webp` |
+| 3 | Deploy to Hostinger | P1 | vercel/hostinger |
+| 4 | Micro-interactions polish | P2 | `input.css` |
+
+---
+
+*Màj: 29/01/2026 - Session 211 (Performance + Brighter Palette)*
+*Status: Backend 99/100 ✅ | Frontend ~87% ✅ | Health 100% (39/39)*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
