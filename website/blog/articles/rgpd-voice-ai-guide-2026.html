@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RGPD et Voice AI : Guide de conformite 2026 - VocalIA Blog</title>
+  <meta name="description" content="Guide complet sur la conformite RGPD pour les systemes d'IA vocale. Consentement, conservation des donnees, droits des utilisateurs et bonnes pratiques.">
+  <link rel="canonical" href="https://vocalia.ma/blog/articles/rgpd-voice-ai-guide-2026" />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://vocalia.ma/blog/articles/rgpd-voice-ai-guide-2026" />
+  <meta property="og:title" content="RGPD et Voice AI : Guide de conformite 2026" />
+  <meta property="og:description" content="Tout ce que vous devez savoir pour deployer un agent vocal conforme au RGPD." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+  <meta property="article:published_time" content="2026-01-29" />
+  <meta property="article:author" content="Equipe VocalIA" />
+
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RGPD et Voice AI : Guide de conformite 2026",
+    "datePublished": "2026-01-29",
+    "author": {"@type": "Organization", "name": "VocalIA"},
+    "publisher": {"@type": "Organization", "name": "VocalIA", "url": "https://vocalia.ma"}
+  }
+  </script>
+
+  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
+  <link href="/public/css/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .glass { background: rgba(51, 65, 85, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(148, 163, 184, 0.25); }
+    .prose { max-width: 65ch; }
+    .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
+    .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+    .prose p { margin-bottom: 1rem; line-height: 1.75; color: #cbd5e1; }
+    .prose ul { margin-bottom: 1rem; padding-left: 1.5rem; }
+    .prose li { margin-bottom: 0.5rem; color: #cbd5e1; }
+    .prose strong { color: #fff; }
+    .stat-card { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(99, 102, 241, 0.3); }
+    .warning-card { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(234, 88, 12, 0.1)); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .success-card { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1)); border: 1px solid rgba(16, 185, 129, 0.3); }
+  </style>
+</head>
+<body class="bg-slate-800 text-white antialiased">
+  <!-- Simple Nav -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+          <span class="text-lg">🎙️</span>
+        </div>
+        <span class="font-bold gradient-text">VocalIA</span>
+      </a>
+      <a href="/blog" class="text-vocalia-300 hover:text-white transition text-sm">← Retour au blog</a>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-16">
+    <article class="max-w-4xl mx-auto px-4">
+      <!-- Header -->
+      <header class="mb-12">
+        <nav class="mb-6" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li class="text-vocalia-400">Guide</li>
+          </ol>
+        </nav>
+
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-semibold mb-4">Guide</span>
+
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
+          RGPD et Voice AI : <span class="gradient-text">Guide de conformite 2026</span>
+        </h1>
+
+        <div class="flex items-center gap-4 text-slate-400">
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center">
+              <span class="text-sm font-semibold">VA</span>
+            </div>
+            <span>Equipe VocalIA</span>
+          </div>
+          <span>•</span>
+          <time datetime="2026-01-29">29 janvier 2026</time>
+          <span>•</span>
+          <span>10 min de lecture</span>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="prose">
+        <p class="text-xl text-slate-300 mb-8">
+          Deployer un agent vocal IA implique de traiter des donnees personnelles sensibles : voix, identite,
+          historique de conversation. Ce guide vous explique comment rester conforme au RGPD tout en profitant
+          des avantages de l'IA vocale.
+        </p>
+
+        <div class="warning-card rounded-xl p-6 my-8">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">⚠️</span>
+            <div>
+              <p class="text-amber-400 font-semibold mb-2">Avertissement</p>
+              <p class="text-sm text-slate-300 mb-0">
+                Ce guide est informatif et ne constitue pas un avis juridique. Consultez un juriste specialise
+                en protection des donnees pour votre situation specifique.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Les donnees traitees par un agent vocal</h2>
+
+        <p>
+          Un systeme d'IA vocale traite plusieurs types de donnees personnelles :
+        </p>
+
+        <ul>
+          <li><strong>Donnees d'identification</strong> — Numero de telephone, nom, email</li>
+          <li><strong>Donnees vocales</strong> — Enregistrement audio de la conversation</li>
+          <li><strong>Transcriptions</strong> — Version texte des echanges</li>
+          <li><strong>Donnees contextuelles</strong> — Historique client, preferences, commandes</li>
+          <li><strong>Metadonnees</strong> — Heure d'appel, duree, localisation approximative</li>
+        </ul>
+
+        <h2>Les 6 bases legales du RGPD</h2>
+
+        <p>
+          Pour traiter ces donnees, vous devez vous appuyer sur l'une des bases legales suivantes :
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-4 my-8">
+          <div class="stat-card rounded-xl p-6">
+            <div class="text-vocalia-400 font-semibold mb-2">1. Consentement</div>
+            <p class="text-sm text-slate-400 mb-0">La personne accepte explicitement le traitement</p>
+          </div>
+          <div class="stat-card rounded-xl p-6">
+            <div class="text-vocalia-400 font-semibold mb-2">2. Contrat</div>
+            <p class="text-sm text-slate-400 mb-0">Necessaire a l'execution d'un contrat</p>
+          </div>
+          <div class="stat-card rounded-xl p-6">
+            <div class="text-vocalia-400 font-semibold mb-2">3. Obligation legale</div>
+            <p class="text-sm text-slate-400 mb-0">Impose par la loi (rare pour Voice AI)</p>
+          </div>
+          <div class="stat-card rounded-xl p-6">
+            <div class="text-vocalia-400 font-semibold mb-2">4. Interet vital</div>
+            <p class="text-sm text-slate-400 mb-0">Protection de la vie (urgences medicales)</p>
+          </div>
+          <div class="stat-card rounded-xl p-6">
+            <div class="text-vocalia-400 font-semibold mb-2">5. Mission publique</div>
+            <p class="text-sm text-slate-400 mb-0">Exercice de l'autorite publique</p>
+          </div>
+          <div class="stat-card rounded-xl p-6">
+            <div class="text-vocalia-400 font-semibold mb-2">6. Interet legitime</div>
+            <p class="text-sm text-slate-400 mb-0">Interet de l'entreprise equilibre avec droits</p>
+          </div>
+        </div>
+
+        <h3>Quelle base pour votre agent vocal ?</h3>
+
+        <p>
+          Dans la plupart des cas commerciaux, deux bases sont pertinentes :
+        </p>
+
+        <ul>
+          <li><strong>Consentement</strong> — Pour les enregistrements audio et l'amelioration du service</li>
+          <li><strong>Execution du contrat</strong> — Pour le suivi de commande, la prise de rendez-vous</li>
+        </ul>
+
+        <h2>Informer l'appelant : obligation de transparence</h2>
+
+        <p>
+          Le RGPD exige que vous informiez clairement l'appelant avant tout traitement. Votre agent vocal
+          doit annoncer :
+        </p>
+
+        <div class="success-card rounded-xl p-6 my-8">
+          <p class="text-emerald-400 font-semibold mb-3">Exemple de message d'accueil conforme</p>
+          <p class="text-slate-300 italic mb-0">
+            "Bonjour, vous etes en ligne avec l'assistant vocal de [Entreprise]. Cette conversation peut
+            etre enregistree pour ameliorer nos services. Si vous souhaitez en savoir plus sur le traitement
+            de vos donnees, dites 'confidentialite'. Pour parler a un conseiller humain, dites 'conseiller'."
+          </p>
+        </div>
+
+        <h2>Conservation des donnees : durees recommandees</h2>
+
+        <p>
+          Le principe de minimisation impose de ne pas conserver les donnees plus longtemps que necessaire :
+        </p>
+
+        <div class="glass rounded-xl p-6 my-8">
+          <div class="space-y-3">
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Enregistrements audio</span>
+              <span class="text-white font-semibold">30 jours max</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Transcriptions</span>
+              <span class="text-white font-semibold">6 mois max</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Donnees transactionnelles</span>
+              <span class="text-white font-semibold">Duree du contrat + 3 ans</span>
+            </div>
+            <div class="flex justify-between pt-2">
+              <span class="text-slate-400">Logs techniques</span>
+              <span class="text-white font-semibold">12 mois</span>
+            </div>
+          </div>
+        </div>
+
+        <h2>Droits des personnes concernees</h2>
+
+        <p>
+          Le RGPD garantit plusieurs droits aux appelants que vous devez pouvoir honorer :
+        </p>
+
+        <h3>Droit d'acces</h3>
+        <p>
+          L'appelant peut demander une copie de toutes les donnees que vous detenez sur lui,
+          y compris les enregistrements audio et transcriptions.
+        </p>
+
+        <h3>Droit de rectification</h3>
+        <p>
+          Si des informations sont incorrectes (mauvais numero de telephone, nom mal orthographie),
+          l'appelant peut demander leur correction.
+        </p>
+
+        <h3>Droit a l'effacement ("droit a l'oubli")</h3>
+        <p>
+          L'appelant peut demander la suppression de ses donnees. Attention : certaines obligations
+          legales (factures, contrats) peuvent vous obliger a conserver certaines informations.
+        </p>
+
+        <h3>Droit d'opposition</h3>
+        <p>
+          L'appelant peut s'opposer a l'enregistrement de la conversation. Votre systeme doit
+          pouvoir desactiver l'enregistrement sur demande.
+        </p>
+
+        <h2>Sous-traitance et transferts hors UE</h2>
+
+        <p>
+          Si votre fournisseur d'IA vocale traite les donnees en dehors de l'UE (USA, par exemple),
+          vous devez vous assurer que des garanties appropriees existent :
+        </p>
+
+        <ul>
+          <li><strong>Clauses contractuelles types</strong> — Approuvees par la Commission europeenne</li>
+          <li><strong>Decision d'adequation</strong> — Le pays offre un niveau de protection equivalent</li>
+          <li><strong>Regles d'entreprise contraignantes</strong> — Pour les groupes multinationaux</li>
+        </ul>
+
+        <div class="success-card rounded-xl p-6 my-8">
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">✅</span>
+            <div>
+              <p class="text-emerald-400 font-semibold mb-2">VocalIA et la conformite</p>
+              <p class="text-sm text-slate-300 mb-0">
+                VocalIA heberge les donnees de ses clients sur des serveurs situes en France (OVH)
+                et au Maroc (Inwi). Aucun transfert vers les Etats-Unis n'est effectue par defaut.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h2>Checklist de conformite RGPD</h2>
+
+        <p>
+          Avant de deployer votre agent vocal, verifiez ces points :
+        </p>
+
+        <ol class="list-decimal pl-6 space-y-3">
+          <li>Message d'information en debut d'appel</li>
+          <li>Possibilite de refuser l'enregistrement</li>
+          <li>Option pour parler a un humain</li>
+          <li>Politique de confidentialite accessible</li>
+          <li>Durees de conservation definies et appliquees</li>
+          <li>Processus de reponse aux demandes d'acces/suppression</li>
+          <li>Contrat de sous-traitance avec votre fournisseur</li>
+          <li>Registre des traitements mis a jour</li>
+        </ol>
+
+        <h2>Sanctions en cas de non-conformite</h2>
+
+        <p>
+          Les sanctions RGPD peuvent atteindre :
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-4 my-8">
+          <div class="stat-card rounded-xl p-6 text-center">
+            <div class="text-3xl font-bold text-red-400 mb-2">20 M€</div>
+            <div class="text-sm text-slate-400">Ou 4% du CA mondial</div>
+          </div>
+          <div class="stat-card rounded-xl p-6 text-center">
+            <div class="text-3xl font-bold text-amber-400 mb-2">10 M€</div>
+            <div class="text-sm text-slate-400">Pour manquements mineurs</div>
+          </div>
+        </div>
+
+        <p>
+          Au-dela des amendes, une violation peut entrainer une atteinte majeure a votre reputation.
+          La conformite RGPD est donc un investissement, pas un cout.
+        </p>
+
+        <div class="glass rounded-xl p-8 my-12 text-center">
+          <h3 class="text-2xl font-bold mb-4">Besoin d'un audit de conformite ?</h3>
+          <p class="text-slate-400 mb-6">Notre equipe peut vous accompagner dans la mise en conformite de votre projet Voice AI.</p>
+          <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
+            Demander un audit gratuit
+          </a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-8">
+    <div class="max-w-4xl mx-auto px-4 text-center text-slate-400 text-sm">
+      <p>© 2026 VocalIA. Agents Vocaux IA pour Entreprises.</p>
+      <div class="flex justify-center gap-6 mt-4">
+        <a href="/privacy" class="hover:text-white transition">Confidentialite</a>
+        <a href="/terms" class="hover:text-white transition">CGU</a>
+        <a href="/contact" class="hover:text-white transition">Contact</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
