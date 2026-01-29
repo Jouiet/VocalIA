@@ -679,9 +679,19 @@
         </div>
       </div>
 
-      <!-- Hero Image - Moved to bottom-right corner to avoid text overlap (Session 221) -->
-      <div class="hidden 2xl:block absolute right-12 bottom-32 w-64 max-w-[200px] opacity-70 pointer-events-none" data-animate="visual">
-        <img src="/public/images/hero/vocalia-hero-1.webp" alt="Professional using VocalIA voice assistant" class="w-full h-auto rounded-2xl shadow-2xl shadow-vocalia-500/20" loading="lazy" width="1024" height="1024" decoding="async">
+      <!-- Hero Video - Session 222: Replaced image with video, sound on hover -->
+      <div class="hidden lg:block absolute right-8 bottom-24 w-48 group" data-animate="visual">
+        <video
+          src="/public/videos/vocalia-demo-fr.mp4"
+          class="w-full h-auto rounded-xl shadow-xl shadow-indigo-500/30 cursor-pointer"
+          autoplay muted loop playsinline
+          onmouseenter="this.muted=false"
+          onmouseleave="this.muted=true"
+          aria-label="Démonstration VocalIA">
+        </video>
+        <div class="absolute bottom-2 right-2 px-2 py-1 bg-black/70 rounded text-xs text-white/90 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          🔊 Son activé
+        </div>
       </div>
     </div>
 
