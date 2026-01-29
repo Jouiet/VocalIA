@@ -307,6 +307,82 @@
   }
 
   /* =======================================================================
+     Glass Panel - Premium glassmorphism
+     ======================================================================= */
+  .glass-panel {
+    background: rgba(17, 17, 20, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(161, 161, 170, 0.1);
+    border-radius: var(--radius-xl);
+    transition: all 200ms ease;
+  }
+
+  .glass-panel:hover {
+    border-color: rgba(161, 161, 170, 0.2);
+    background: rgba(17, 17, 20, 0.7);
+  }
+
+  /* =======================================================================
+     Section Badge - Hero badge style
+     ======================================================================= */
+  .section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(94, 106, 210, 0.1);
+    border: 1px solid rgba(94, 106, 210, 0.25);
+    border-radius: var(--radius-full);
+    color: #a5b4fc;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  /* =======================================================================
+     Cyber Button - Premium CTA style
+     ======================================================================= */
+  .btn-cyber {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #5E6AD2 0%, #6366f1 50%, #818cf8 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 1.125rem;
+    border-radius: var(--radius-xl);
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 200ms ease;
+    box-shadow: 0 4px 15px rgba(94, 106, 210, 0.3);
+  }
+
+  .btn-cyber::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 400ms ease;
+  }
+
+  .btn-cyber:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(94, 106, 210, 0.4);
+  }
+
+  .btn-cyber:hover::before {
+    transform: translateX(100%);
+  }
+
+  .btn-cyber:active {
+    transform: translateY(0);
+  }
+
+  /* =======================================================================
      Dashboard Components
      ======================================================================= */
   .stat-card {
@@ -551,6 +627,7 @@
   );
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
+  pointer-events: none; /* CRITICAL: Allow clicks through */
 }
 
 /* Floating/Levitating Elements */
@@ -584,6 +661,7 @@
 
 .animate-float-slow {
   animation: float-slow 8s ease-in-out infinite;
+  pointer-events: none; /* Allow clicks through decorative elements */
 }
 
 .animate-float-delay-1 {
@@ -654,6 +732,7 @@
 
 .animate-morph {
   animation: morph 8s ease-in-out infinite;
+  pointer-events: none; /* Allow clicks through decorative elements */
 }
 
 /* Shimmer Effect */
