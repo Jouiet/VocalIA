@@ -682,10 +682,10 @@
         <p class="text-xl text-zinc-400" data-i18n="features.subtitle">Couvrez 100% de vos canaux vocaux</p>
       </div>
 
-      <!-- Bento Grid Layout (Session 222: Pure Tailwind - No Custom CSS Classes) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-        <!-- Widget Card - Featured Large (spans 2 cols, 2 rows) -->
-        <div class="md:col-span-2 md:row-span-2 relative group">
+      <!-- Bento Grid Layout (Session 222: Pure Tailwind - 3-column balanced layout) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+        <!-- Widget Card - Featured Large (spans 2 cols on lg, 2 rows) -->
+        <div class="md:col-span-1 lg:col-span-2 lg:row-span-2 relative group">
           <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-indigo-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition pointer-events-none"></div>
           <div class="relative bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 h-full flex flex-col">
             <div class="flex items-center justify-between mb-6">
@@ -737,8 +737,8 @@
           </div>
         </div>
 
-        <!-- Telephony Card - Tall (spans 2 rows) -->
-        <div class="md:row-span-2 relative group">
+        <!-- Telephony Card - Tall (spans 2 rows on lg) -->
+        <div class="lg:row-span-2 relative group">
           <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-400 to-violet-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition pointer-events-none"></div>
           <div class="relative bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 h-full flex flex-col">
             <div class="flex items-center justify-between mb-4">
@@ -784,8 +784,8 @@
           </div>
         </div>
 
-        <!-- Stats Card - Wide (spans full width on mobile, 2 cols on larger) -->
-        <div class="md:col-span-2 lg:col-span-1">
+        <!-- Stats Card - Full width row below main cards -->
+        <div class="md:col-span-2 lg:col-span-3">
           <div class="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 h-full hover:-translate-y-1 transition-transform">
             <div class="grid grid-cols-3 gap-4 h-full">
               <div class="text-center flex flex-col justify-center">
@@ -821,8 +821,8 @@
           </div>
         </div>
 
-        <!-- Integrations Card -->
-        <div>
+        <!-- Integrations Card (spans 2 columns for balance) -->
+        <div class="lg:col-span-2">
           <div class="bg-slate-800/60 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 h-full hover:-translate-y-1 transition-transform">
             <h4 class="font-semibold text-white mb-3">Intégrations</h4>
             <div class="flex flex-wrap gap-2">
@@ -830,6 +830,9 @@
               <span class="px-3 py-1 bg-slate-700/80 rounded-full text-xs text-zinc-300">Klaviyo</span>
               <span class="px-3 py-1 bg-slate-700/80 rounded-full text-xs text-zinc-300">Shopify</span>
               <span class="px-3 py-1 bg-slate-700/80 rounded-full text-xs text-zinc-300">Twilio</span>
+              <span class="px-3 py-1 bg-slate-700/80 rounded-full text-xs text-zinc-300">Calendly</span>
+              <span class="px-3 py-1 bg-slate-700/80 rounded-full text-xs text-zinc-300">Slack</span>
+              <span class="px-3 py-1 bg-slate-700/80 rounded-full text-xs text-zinc-300">Zapier</span>
             </div>
           </div>
         </div>
