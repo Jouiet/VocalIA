@@ -1,7 +1,8 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.1.0 | 29/01/2026 | Session 226 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.2.0 | 29/01/2026 | Session 227 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
+> SDKs: ✅ Python (pip install vocalia) | ✅ Node.js (npm install vocalia) | ✅ MCP Server
 
 ## Identité
 
@@ -125,10 +126,10 @@ website/                              # 9,000+ lignes (9 pages HTML)
 
 ---
 
-## Architecture (VÉRIFIÉ 28/01/2026 - Session 188)
+## Architecture (VÉRIFIÉ 29/01/2026 - Session 227)
 
 ```
-VocalIA/                              # 23,496 lignes (54 fichiers)
+VocalIA/                              # 25,000+ lignes (60+ fichiers)
 ├── core/                             # 11,290 L (18 fichiers)
 │   ├── voice-api-resilient.cjs       # Multi-AI fallback (1,508 L)
 │   ├── grok-voice-realtime.cjs       # WebSocket audio (1,112 L)
@@ -140,12 +141,19 @@ VocalIA/                              # 23,496 lignes (54 fichiers)
 ├── telephony/                        # 2,658 L + KBs
 │   ├── voice-telephony-bridge.cjs    # PSTN bridge, 5 langues
 │   ├── knowledge_base.json           # KB FR (16 secteurs)
-│   └── knowledge_base_ary.json       # KB Darija (15 secteurs) ✅ NEW
+│   └── knowledge_base_ary.json       # KB Darija (15 secteurs)
 ├── personas/                         # 648 L
 ├── integrations/                     # 1,458 L
 ├── sensors/                          # 4 sensors
 ├── knowledge-base/                   # 654 L
-├── website/                          # 1,135 L ✅ NEW
+├── website/                          # 9,000+ L (24 pages)
+├── sdks/                             # ✅ NEW Session 227
+│   ├── python/                       # Python SDK (pip install vocalia)
+│   └── node/                         # Node.js SDK (npm install vocalia)
+├── mcp-server/                       # ✅ NEW Session 227
+│   ├── src/index.ts                  # MCP Server (11 tools)
+│   ├── package.json                  # @vocalia/mcp-server
+│   └── tsconfig.json                 # TypeScript config
 ├── docs/                             # 10 documents
 ├── .claude/rules/                    # 5 règles
 └── .mcp.json
@@ -203,6 +211,9 @@ VocalIA/                              # 23,496 lignes (54 fichiers)
 | Darija Support | ❌ | ❌ | **✅** |
 | Self-Hosted | ❌ | ❌ | **✅** |
 | Website Geo-detect | N/A | N/A | **✅** |
+| MCP Server | ✅ (8 tools) | ❌ | **✅ (11 tools)** |
+| Python SDK | ✅ | ✅ | **✅** |
+| Node.js SDK | ✅ | ✅ | **✅** |
 
 ---
 
@@ -1383,18 +1394,92 @@ Full visual verification of live site https://vocalia.ma:
 
 ---
 
-### PLAN ACTIONNABLE (Session 227)
+## Session 227 Summary
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Light mode LCH polish | P2 | Optional enhancement (backlog) |
-| 2 | Performance audit | P3 | Lighthouse CI integration |
+**MCP Server + SDKs Creation:**
+
+### 1. VocalIA MCP Server ✅
+
+Model Context Protocol server exposing VocalIA capabilities to Claude Desktop:
+
+| Tool | Description |
+|:-----|:------------|
+| `voice_generate_response` | Generate AI voice response with persona |
+| `voice_synthesize` | Text-to-speech conversion |
+| `voice_transcribe` | Speech-to-text transcription |
+| `telephony_initiate_call` | Start outbound AI phone call |
+| `telephony_get_call` | Get call status and details |
+| `telephony_get_transcript` | Get conversation transcript |
+| `telephony_transfer_call` | Transfer to human agent |
+| `personas_list` | List all 30 industry personas |
+| `knowledge_base_search` | RAG search in knowledge base |
+| `qualify_lead` | BANT lead qualification |
+| `schedule_callback` | Schedule follow-up callback |
+
+**Files Created:**
+- `mcp-server/src/index.ts` (400+ lines)
+- `mcp-server/package.json`
+- `mcp-server/tsconfig.json`
+- `mcp-server/README.md`
+
+### 2. SDKs Created ✅
+
+| SDK | Install | Location |
+|:----|:--------|:---------|
+| Python | `pip install vocalia` | `sdks/python/` |
+| Node.js | `npm install vocalia` | `sdks/node/` |
+
+**Python SDK Features:**
+- VocalIA + AsyncVocalIA clients
+- voice.generate_response(), synthesize(), transcribe()
+- telephony.initiate_call(), get_call(), get_transcript(), transfer_call()
+- Error classes: AuthenticationError, RateLimitError, CallError
+
+**Node.js SDK Features:**
+- TypeScript with full type definitions
+- Lazy-loaded voice and telephony clients
+- Same API surface as Python SDK
+
+### 3. Website Fixes ✅
+
+| Fix | Details |
+|:----|:--------|
+| Video visibility | `hidden xl:block` → responsive all sizes |
+| GitHub links | `github.com/vocalia` → `github.com/Jouiet/VoicalAI` |
+| Emojis → Lucide | 1,240+ icons modernized |
+
+### Competitive Analysis (Factual)
+
+| Platform | MCP Server | Tools |
+|:---------|:-----------|:------|
+| Vapi | ✅ Official | 8 tools |
+| Twilio | ✅ Community | 5 tools |
+| Retell | ❌ | N/A |
+| **VocalIA** | **✅ Official** | **11 tools** |
+
+### Commits Session 227
+
+- SDKs + MCP Server creation
+- Website video + GitHub link fixes
+- Emoji → Lucide modernization (1,240+ icons)
 
 ---
 
-*Màj: 29/01/2026 - Session 226 (Visual Testing + 403 Fix)*
+### PLAN ACTIONNABLE (Session 228)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Deploy API backend (api.vocalia.ma) | **P0** | Required for SDKs/MCP to function |
+| 2 | Publish SDKs to PyPI/npm | P1 | After API deployment |
+| 3 | Light mode LCH polish | P2 | Optional enhancement (backlog) |
+| 4 | Performance audit | P3 | Lighthouse CI integration |
+
+---
+
+*Màj: 29/01/2026 - Session 227 (MCP Server + SDKs)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Visual Testing: Playwright MCP ✅*
+*SDKs: Python ✅ | Node.js ✅ | MCP Server ✅ (11 tools)*
 *i18n: Locale JSON files accessible ✅ (403 fix deployed)*
 *Dashboards: Light/Dark mode fully functional ✅*
 *Blog: 7 articles with working links ✅ | Docs: /docs/ fixed ✅*

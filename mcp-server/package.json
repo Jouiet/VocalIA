@@ -1,0 +1,45 @@
+{
+  "name": "@vocalia/mcp-server",
+  "version": "0.1.0",
+  "description": "VocalIA MCP Server - Voice AI Platform Integration for Claude",
+  "main": "dist/index.js",
+  "bin": {
+    "vocalia-mcp": "./dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "inspector": "npx @modelcontextprotocol/inspector dist/index.js"
+  },
+  "keywords": [
+    "vocalia",
+    "mcp",
+    "voice",
+    "ai",
+    "telephony",
+    "claude",
+    "anthropic",
+    "darija",
+    "morocco"
+  ],
+  "author": "VocalIA <dev@vocalia.ma>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jouiet/VoicalAI.git"
+  },
+  "homepage": "https://vocalia.ma",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
