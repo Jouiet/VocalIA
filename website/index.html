@@ -74,8 +74,8 @@
   <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS (Sovereign) - Preloaded -->
-  <link rel="preload" href="/public/css/style.css?v=216" as="style">
-  <link href="/public/css/style.css?v=216" rel="stylesheet">
+  <link rel="preload" href="/public/css/style.css?v=217" as="style">
+  <link href="/public/css/style.css?v=217" rel="stylesheet">
 
   <!-- DNS Prefetch & Preconnect for external resources -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -954,7 +954,7 @@
 
   <!-- Voice Visualizer Demo Section -->
   <section class="voice-demo-section py-20">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <span class="section-badge inline-flex items-center gap-2 mb-4">
           <i data-lucide="twitter" class="w-4 h-4"></i>
@@ -972,7 +972,7 @@
             <span class="voice-demo-card-badge">Demo</span>
           </div>
           <div class="voice-visualizer-container">
-            <canvas id="visualizer-wave" class="voice-visualizer-canvas"></canvas>
+            <canvas id="visualizer-wave" class="voice-visualizer-canvas" style="height: 180px;"></canvas>
           </div>
         </div>
 
@@ -983,7 +983,7 @@
             <span class="voice-demo-card-badge">Demo</span>
           </div>
           <div class="voice-visualizer-container">
-            <canvas id="visualizer-bars" class="voice-visualizer-canvas"></canvas>
+            <canvas id="visualizer-bars" class="voice-visualizer-canvas" style="height: 180px;"></canvas>
           </div>
         </div>
 
@@ -994,7 +994,7 @@
             <span class="voice-demo-card-badge">Demo</span>
           </div>
           <div class="voice-visualizer-container">
-            <canvas id="visualizer-orb" class="voice-visualizer-canvas" style="height: 200px;"></canvas>
+            <canvas id="visualizer-orb" class="voice-visualizer-canvas" style="height: 180px;"></canvas>
           </div>
         </div>
 
@@ -1005,7 +1005,7 @@
             <span class="voice-demo-card-badge">Demo</span>
           </div>
           <div class="voice-visualizer-container">
-            <canvas id="visualizer-pulse" class="voice-visualizer-canvas" style="height: 200px;"></canvas>
+            <canvas id="visualizer-pulse" class="voice-visualizer-canvas" style="height: 180px;"></canvas>
           </div>
         </div>
       </div>
@@ -1461,7 +1461,7 @@
   </script>
 
   <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
-  <script src="/src/lib/voice-visualizer.js?v=216" defer></script>
+  <script src="/src/lib/voice-visualizer.js?v=217" defer></script>
   <script src="/src/lib/card-tilt.js" defer></script>
   <script>
     // Lazy load visualizers only when visible (performance optimization)
