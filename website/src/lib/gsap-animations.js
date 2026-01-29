@@ -834,44 +834,19 @@ window.MagneticButton = MagneticButton;
 
 // Auto-initialize on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-  // Performance: Detect mobile/low-power devices
-  const isMobile = window.innerWidth < 768;
+  // Performance: Detect preferences
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isLowPower = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
-  const shouldReduceAnimations = isMobile || prefersReducedMotion || isLowPower;
 
-  // Initialize GSAP animations
-  const animations = new VocalIAAnimations();
-  animations.init();
-
-  // Initialize particle system if canvas exists (skip on mobile/low-power)
-  const particleCanvas = document.querySelector('[data-particles]');
-  if (particleCanvas && !shouldReduceAnimations) {
-    new ParticleSystem(particleCanvas, {
-      particleCount: 25, // Reduced for performance
-      color: '#5E6AD2',
-      connectDistance: 70 // Reduced connection distance
-    });
-  } else if (particleCanvas) {
-    // Hide particle canvas on low-performance devices
-    particleCanvas.style.display = 'none';
+  // Initialize GSAP scroll animations (meaningful for UX)
+  if (!prefersReducedMotion) {
+    const animations = new VocalIAAnimations();
+    animations.init();
   }
 
-  // Initialize floating orbs if container exists (fewer on mobile)
-  const orbContainer = document.querySelector('[data-floating-orbs]');
-  if (orbContainer && !prefersReducedMotion) {
-    new FloatingOrb(orbContainer, {
-      count: shouldReduceAnimations ? 2 : 3, // Fewer orbs
-      colors: ['#5E6AD2', '#6366f1', '#a5b4fc']
-    });
-  }
+  // NOTE: Particle system and floating orbs REMOVED
+  // Reason: No semantic connection to Voice AI product
+  // Voice AI animations should represent: sound waves, voice activity, conversations
+  // Random particles/orbs are visual noise without marketing meaning
 
-  // Initialize magnetic buttons (desktop only)
-  if (!isMobile) {
-    document.querySelectorAll('[data-magnetic]').forEach(btn => {
-      new MagneticButton(btn, 0.3);
-    });
-  }
-
-  console.log('[VocalIA] Animations initialized', { reducedMode: shouldReduceAnimations });
+  console.log('[VocalIA] Animations initialized (Voice AI focused)');
 });
