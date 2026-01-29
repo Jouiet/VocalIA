@@ -44,6 +44,17 @@ cp -r website/use-cases/*.html "$DEPLOY_DIR/use-cases/"
 mkdir -p "$DEPLOY_DIR/industries"
 cp -r website/industries/*.html "$DEPLOY_DIR/industries/"
 
+# Copy docs directory
+mkdir -p "$DEPLOY_DIR/docs"
+cp -r website/docs/*.html "$DEPLOY_DIR/docs/"
+
+# Copy blog directory
+mkdir -p "$DEPLOY_DIR/blog"
+cp -r website/blog/*.html "$DEPLOY_DIR/blog/"
+
+# Copy changelog
+cp -r website/changelog.html "$DEPLOY_DIR/"
+
 # Copy dashboard directory
 mkdir -p "$DEPLOY_DIR/dashboard"
 cp -r website/dashboard/*.html "$DEPLOY_DIR/dashboard/"

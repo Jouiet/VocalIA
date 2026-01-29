@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - VocalIA | Actualités Voice AI & Insights</title>
+  <meta name="description"
+    content="Découvrez les dernières actualités Voice AI, guides d'intégration, études de cas et insights de l'industrie sur le blog VocalIA.">
+  <link rel="canonical" href="https://vocalia.ma/blog" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/blog" />
+  <meta property="og:title" content="Blog VocalIA - Actualités Voice AI" />
+  <meta property="og:description" content="Actualités, guides et études de cas sur l'IA vocale pour entreprises." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "Blog VocalIA",
+      "description": "Actualités et insights sur la Voice AI pour entreprises",
+      "url": "https://vocalia.ma/blog",
+      "publisher": {
+        "@type": "Organization",
+        "name": "VocalIA",
+        "url": "https://vocalia.ma"
+      }
+    }
+  </script>
+
+  <!-- Critical CSS -->
+  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS -->
+  <link rel="preload" href="/public/css/style.css" as="style">
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(51, 65, 85, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .blog-card {
+      background: linear-gradient(135deg, rgba(51, 65, 85, 0.5), rgba(30, 41, 59, 0.8));
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      transition: all 0.3s ease;
+    }
+    .blog-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-4px);
+    }
+    .category-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .category-guide { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .category-news { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .category-case-study { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+    .category-tutorial { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .featured-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.1));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white antialiased">
+  <!-- Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller au contenu principal</a>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+            <span class="text-xl">🎙️</span>
+          </div>
+          <span class="text-xl font-bold">VocalIA</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/features" class="text-slate-300 hover:text-white transition">Fonctionnalités</a>
+          <a href="/pricing" class="text-slate-300 hover:text-white transition">Tarifs</a>
+          <a href="/docs" class="text-slate-300 hover:text-white transition">Documentation</a>
+          <a href="/contact" class="px-4 py-2 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg transition font-medium">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-vocalia-500/10 to-transparent pointer-events-none"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <!-- Breadcrumb -->
+        <nav class="mb-8" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li class="text-vocalia-400">Blog</li>
+          </ol>
+        </nav>
+
+        <div class="text-center max-w-3xl mx-auto">
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6">
+            Blog <span class="gradient-text">VocalIA</span>
+          </h1>
+          <p class="text-xl text-slate-300 mb-8">
+            Actualités Voice AI, guides d'intégration, études de cas et insights de l'industrie.
+          </p>
+
+          <!-- Categories Filter -->
+          <div class="flex flex-wrap justify-center gap-3">
+            <button class="px-4 py-2 bg-vocalia-500 rounded-full text-sm font-medium">Tous</button>
+            <button class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition">Guides</button>
+            <button class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition">Actualités</button>
+            <button class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition">Études de cas</button>
+            <button class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition">Tutoriels</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Article -->
+    <section class="py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article class="featured-card rounded-2xl overflow-hidden">
+          <div class="md:flex">
+            <div class="md:w-1/2 bg-gradient-to-br from-vocalia-500/30 to-purple-500/20 p-12 flex items-center justify-center">
+              <div class="text-center">
+                <span class="text-6xl mb-4 block">🎙️</span>
+                <span class="text-vocalia-400 font-semibold">Article à la une</span>
+              </div>
+            </div>
+            <div class="md:w-1/2 p-8 md:p-12">
+              <span class="category-badge category-guide mb-4 inline-block">Guide</span>
+              <h2 class="text-2xl md:text-3xl font-bold mb-4">
+                Comment réduire de 70% vos coûts support client avec Voice AI
+              </h2>
+              <p class="text-slate-400 mb-6">
+                Découvrez comment les entreprises leaders utilisent l'IA vocale pour automatiser leur support client tout en améliorant la satisfaction. Guide complet avec ROI calculator.
+              </p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center">
+                    <span class="text-sm">VA</span>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium">Équipe VocalIA</p>
+                    <p class="text-xs text-slate-400">29 janvier 2026 · 12 min</p>
+                  </div>
+                </div>
+                <a href="#" class="text-vocalia-400 hover:text-vocalia-300 font-medium flex items-center gap-2">
+                  Lire l'article
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Articles Grid -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold mb-8">Articles récents</h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Article 1 -->
+          <article class="blog-card rounded-2xl overflow-hidden">
+            <div class="h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 flex items-center justify-center">
+              <span class="text-5xl">📊</span>
+            </div>
+            <div class="p-6">
+              <span class="category-badge category-news mb-3 inline-block">Actualité</span>
+              <h3 class="text-xl font-bold mb-3">
+                VocalIA lance le support Darija pour le marché marocain
+              </h3>
+              <p class="text-slate-400 text-sm mb-4">
+                Première plateforme Voice AI à supporter le dialecte marocain grâce à Atlas-Chat-9B.
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-slate-500">28 janvier 2026</p>
+                <a href="#" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 2 -->
+          <article class="blog-card rounded-2xl overflow-hidden">
+            <div class="h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/10 flex items-center justify-center">
+              <span class="text-5xl">🏥</span>
+            </div>
+            <div class="p-6">
+              <span class="category-badge category-case-study mb-3 inline-block">Étude de cas</span>
+              <h3 class="text-xl font-bold mb-3">
+                Clinique Amal : -60% de no-shows grâce aux rappels vocaux
+              </h3>
+              <p class="text-slate-400 text-sm mb-4">
+                Comment une clinique de Casablanca a réduit ses rendez-vous manqués avec VocalIA.
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-slate-500">25 janvier 2026</p>
+                <a href="#" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 3 -->
+          <article class="blog-card rounded-2xl overflow-hidden">
+            <div class="h-48 bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center">
+              <span class="text-5xl">⚙️</span>
+            </div>
+            <div class="p-6">
+              <span class="category-badge category-tutorial mb-3 inline-block">Tutoriel</span>
+              <h3 class="text-xl font-bold mb-3">
+                Intégrer VocalIA à Shopify en 5 minutes
+              </h3>
+              <p class="text-slate-400 text-sm mb-4">
+                Guide pas à pas pour connecter votre boutique e-commerce à notre assistant vocal.
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-slate-500">22 janvier 2026</p>
+                <a href="#" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 4 -->
+          <article class="blog-card rounded-2xl overflow-hidden">
+            <div class="h-48 bg-gradient-to-br from-emerald-500/20 to-teal-500/10 flex items-center justify-center">
+              <span class="text-5xl">🔒</span>
+            </div>
+            <div class="p-6">
+              <span class="category-badge category-guide mb-3 inline-block">Guide</span>
+              <h3 class="text-xl font-bold mb-3">
+                RGPD & Voice AI : Guide de conformité 2026
+              </h3>
+              <p class="text-slate-400 text-sm mb-4">
+                Tout ce que vous devez savoir sur la protection des données vocales en Europe.
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-slate-500">18 janvier 2026</p>
+                <a href="#" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 5 -->
+          <article class="blog-card rounded-2xl overflow-hidden">
+            <div class="h-48 bg-gradient-to-br from-rose-500/20 to-red-500/10 flex items-center justify-center">
+              <span class="text-5xl">🏠</span>
+            </div>
+            <div class="p-6">
+              <span class="category-badge category-case-study mb-3 inline-block">Étude de cas</span>
+              <h3 class="text-xl font-bold mb-3">
+                Agence Immo Plus : +45% de conversion leads
+              </h3>
+              <p class="text-slate-400 text-sm mb-4">
+                Comment l'IA vocale qualifie les leads immobiliers 24/7 à Rabat et Marrakech.
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-slate-500">15 janvier 2026</p>
+                <a href="#" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Article 6 -->
+          <article class="blog-card rounded-2xl overflow-hidden">
+            <div class="h-48 bg-gradient-to-br from-indigo-500/20 to-violet-500/10 flex items-center justify-center">
+              <span class="text-5xl">🤖</span>
+            </div>
+            <div class="p-6">
+              <span class="category-badge category-news mb-3 inline-block">Actualité</span>
+              <h3 class="text-xl font-bold mb-3">
+                AI Act Europe : Ce qui change pour les Voice AI
+              </h3>
+              <p class="text-slate-400 text-sm mb-4">
+                Analyse des implications du règlement européen sur l'IA pour les assistants vocaux.
+              </p>
+              <div class="flex items-center justify-between">
+                <p class="text-xs text-slate-500">10 janvier 2026</p>
+                <a href="#" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex justify-center mt-12">
+          <nav class="flex items-center gap-2">
+            <button class="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-white transition" disabled>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="w-10 h-10 bg-vocalia-500 rounded-lg font-medium">1</button>
+            <button class="w-10 h-10 glass rounded-lg font-medium text-slate-300 hover:text-white transition">2</button>
+            <button class="w-10 h-10 glass rounded-lg font-medium text-slate-300 hover:text-white transition">3</button>
+            <button class="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-300 hover:text-white transition">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="py-16 bg-slate-900/50">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="glass rounded-2xl p-8 md:p-12">
+          <h2 class="text-2xl md:text-3xl font-bold mb-4">
+            Restez informé des dernières actualités <span class="gradient-text">Voice AI</span>
+          </h2>
+          <p class="text-slate-400 mb-8">
+            Recevez nos articles, guides et études de cas directement dans votre boîte mail. Pas de spam.
+          </p>
+          <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="votre@email.com"
+              class="flex-1 px-4 py-3 bg-slate-800 border border-slate-600 rounded-xl focus:outline-none focus:border-vocalia-500 transition"
+              required
+            >
+            <button type="submit" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-xl font-semibold transition whitespace-nowrap">
+              S'inscrire
+            </button>
+          </form>
+          <p class="text-xs text-slate-500 mt-4">
+            En vous inscrivant, vous acceptez notre <a href="/privacy" class="underline">politique de confidentialité</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-700/50 py-12 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+              <span class="text-xl">🎙️</span>
+            </div>
+            <span class="text-xl font-bold">VocalIA</span>
+          </div>
+          <p class="text-slate-400 text-sm">Voice AI Platform pour entreprises exigeantes.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Produits</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/products/voice-widget" class="hover:text-white transition">Voice Widget</a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition">Voice Telephony</a></li>
+            <li><a href="/features" class="hover:text-white transition">Fonctionnalités</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Ressources</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
+            <li><a href="/docs/api" class="hover:text-white transition">API Reference</a></li>
+            <li><a href="/blog" class="hover:text-white transition text-vocalia-400">Blog</a></li>
+            <li><a href="/changelog" class="hover:text-white transition">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Légal</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/privacy" class="hover:text-white transition">Confidentialité</a></li>
+            <li><a href="/terms" class="hover:text-white transition">CGU</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-700/50 mt-8 pt-8 text-center text-slate-500 text-sm">
+        © 2026 VocalIA. Tous droits réservés.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

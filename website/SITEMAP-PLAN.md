@@ -88,9 +88,9 @@
 | Page | URL | Priority | Status |
 |:-----|:----|:--------:|:------:|
 | Integrations | `/integrations` | P1 | ✅ Done (Session 217) |
-| Blog | `/blog` | P2 | 🔴 TODO |
-| Changelog | `/changelog` | P2 | 🔴 TODO |
-| API Reference | `/docs/api` | P1 | 🔴 TODO |
+| Blog | `/blog` | P2 | ✅ Done (Session 219) |
+| Changelog | `/changelog` | P2 | ✅ Done (Session 219) |
+| API Reference | `/docs/api` | P1 | ✅ Done (Session 219) |
 
 ### Tier 6 - Legal (2)
 

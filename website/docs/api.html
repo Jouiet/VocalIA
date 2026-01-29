@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Reference - VocalIA | Documentation Développeurs</title>
+  <meta name="description"
+    content="Documentation API VocalIA: authentification, endpoints REST, WebSockets, webhooks et exemples de code pour Voice Widget et Voice Telephony.">
+  <link rel="canonical" href="https://vocalia.ma/docs/api" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/docs/api" />
+  <meta property="og:title" content="API Reference - VocalIA" />
+  <meta property="og:description" content="Documentation API complète pour développeurs. REST, WebSockets, webhooks." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "name": "VocalIA API Reference",
+      "description": "Documentation API pour développeurs - Voice AI Platform",
+      "url": "https://vocalia.ma/docs/api",
+      "author": {
+        "@type": "Organization",
+        "name": "VocalIA"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+          {"@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://vocalia.ma/docs"},
+          {"@type": "ListItem", "position": 3, "name": "API Reference", "item": "https://vocalia.ma/docs/api"}
+        ]
+      }
+    }
+  </script>
+
+  <!-- Critical CSS -->
+  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS -->
+  <link rel="preload" href="/public/css/style.css" as="style">
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(51, 65, 85, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .code-block {
+      background: #0f172a;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .code-header {
+      background: rgba(15, 23, 42, 0.8);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      padding: 0.75rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .code-content {
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    .code-content pre {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+    }
+    .method-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .method-get { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .method-post { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .method-put { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .method-delete { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .method-ws { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+    .sidebar-link {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: #94a3b8;
+      border-left: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .sidebar-link:hover, .sidebar-link.active {
+      color: #fff;
+      border-left-color: #6366f1;
+      background: rgba(99, 102, 241, 0.1);
+    }
+    .param-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .param-table th, .param-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+    .param-table th {
+      color: #94a3b8;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+    .param-required {
+      color: #ef4444;
+      font-size: 0.75rem;
+    }
+    .param-optional {
+      color: #94a3b8;
+      font-size: 0.75rem;
+    }
+    .token-string { color: #10b981; }
+    .token-number { color: #f59e0b; }
+    .token-boolean { color: #3b82f6; }
+    .token-key { color: #a5b4fc; }
+    .token-comment { color: #64748b; }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white antialiased">
+  <!-- Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller au contenu principal</a>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+            <span class="text-xl">🎙️</span>
+          </div>
+          <span class="text-xl font-bold">VocalIA</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/features" class="text-slate-300 hover:text-white transition">Fonctionnalités</a>
+          <a href="/pricing" class="text-slate-300 hover:text-white transition">Tarifs</a>
+          <a href="/docs" class="text-vocalia-400 font-medium">Documentation</a>
+          <a href="/contact" class="px-4 py-2 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg transition font-medium">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="flex pt-16">
+    <!-- Sidebar -->
+    <aside class="hidden lg:block w-64 fixed left-0 top-16 bottom-0 overflow-y-auto border-r border-slate-700/50 bg-slate-900/50">
+      <div class="p-4">
+        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4">API Reference</h3>
+
+        <div class="space-y-1">
+          <a href="#introduction" class="sidebar-link active">Introduction</a>
+          <a href="#authentication" class="sidebar-link">Authentification</a>
+          <a href="#base-url" class="sidebar-link">Base URL</a>
+        </div>
+
+        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4">Voice Widget</h3>
+        <div class="space-y-1">
+          <a href="#widget-embed" class="sidebar-link">Intégration Widget</a>
+          <a href="#widget-config" class="sidebar-link">Configuration</a>
+          <a href="#widget-events" class="sidebar-link">Événements</a>
+        </div>
+
+        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4">Voice Telephony</h3>
+        <div class="space-y-1">
+          <a href="#calls-create" class="sidebar-link">Créer un appel</a>
+          <a href="#calls-get" class="sidebar-link">Récupérer un appel</a>
+          <a href="#calls-list" class="sidebar-link">Lister les appels</a>
+          <a href="#calls-transfer" class="sidebar-link">Transférer</a>
+        </div>
+
+        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4">WebSockets</h3>
+        <div class="space-y-1">
+          <a href="#ws-connection" class="sidebar-link">Connexion</a>
+          <a href="#ws-events" class="sidebar-link">Événements temps réel</a>
+        </div>
+
+        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4">Webhooks</h3>
+        <div class="space-y-1">
+          <a href="#webhooks-setup" class="sidebar-link">Configuration</a>
+          <a href="#webhooks-events" class="sidebar-link">Types d'événements</a>
+          <a href="#webhooks-security" class="sidebar-link">Sécurité</a>
+        </div>
+
+        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4">Références</h3>
+        <div class="space-y-1">
+          <a href="#errors" class="sidebar-link">Codes d'erreur</a>
+          <a href="#rate-limits" class="sidebar-link">Rate Limits</a>
+          <a href="#sdks" class="sidebar-link">SDKs</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="flex-1 lg:ml-64 min-h-screen">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Breadcrumb -->
+        <nav class="mb-8" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li class="text-vocalia-400">API Reference</li>
+          </ol>
+        </nav>
+
+        <!-- Introduction -->
+        <section id="introduction" class="mb-16">
+          <h1 class="text-4xl font-extrabold mb-4">API <span class="gradient-text">Reference</span></h1>
+          <p class="text-xl text-slate-300 mb-8">
+            Documentation complète de l'API VocalIA pour intégrer Voice Widget et Voice Telephony dans vos applications.
+          </p>
+
+          <div class="grid md:grid-cols-2 gap-4 mb-8">
+            <div class="glass rounded-xl p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                  <span class="text-lg">🌐</span>
+                </div>
+                <h3 class="font-semibold">REST API</h3>
+              </div>
+              <p class="text-slate-400 text-sm">Endpoints HTTP pour créer, gérer et monitorer vos appels vocaux.</p>
+            </div>
+            <div class="glass rounded-xl p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                  <span class="text-lg">⚡</span>
+                </div>
+                <h3 class="font-semibold">WebSockets</h3>
+              </div>
+              <p class="text-slate-400 text-sm">Connexion temps réel pour audio streaming et événements live.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Authentication -->
+        <section id="authentication" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Authentification</h2>
+          <p class="text-slate-300 mb-6">
+            L'API VocalIA utilise des clés API pour l'authentification. Incluez votre clé dans le header <code class="text-vocalia-400 bg-slate-900 px-2 py-1 rounded">Authorization</code> de chaque requête.
+          </p>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">HTTP Header</span>
+              <button class="text-slate-400 hover:text-white text-sm">Copier</button>
+            </div>
+            <div class="code-content">
+              <pre><span class="token-key">Authorization</span>: Bearer <span class="token-string">voc_sk_live_xxxxxxxxxxxxxxxxxxxxxxxx</span></pre>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <h3 class="font-semibold mb-3 flex items-center gap-2">
+              <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+              Sécurité des clés API
+            </h3>
+            <ul class="text-slate-400 text-sm space-y-2">
+              <li>• Ne jamais exposer vos clés côté client (frontend)</li>
+              <li>• Utilisez des variables d'environnement</li>
+              <li>• Régénérez vos clés si compromises</li>
+              <li>• Utilisez des clés de test en développement</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Base URL -->
+        <section id="base-url" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Base URL</h2>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Production</span>
+            </div>
+            <div class="code-content">
+              <pre><span class="token-string">https://api.vocalia.ma/v1</span></pre>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Sandbox (Test)</span>
+            </div>
+            <div class="code-content">
+              <pre><span class="token-string">https://sandbox.api.vocalia.ma/v1</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Voice Widget -->
+        <section id="widget-embed" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Voice Widget - Intégration</h2>
+          <p class="text-slate-300 mb-6">
+            Intégrez le Voice Widget en ajoutant simplement une balise script à votre page.
+          </p>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">HTML</span>
+              <button class="text-slate-400 hover:text-white text-sm">Copier</button>
+            </div>
+            <div class="code-content">
+              <pre><span class="token-comment">&lt;!-- VocalIA Voice Widget --&gt;</span>
+<span class="token-key">&lt;script</span> <span class="token-string">src</span>=<span class="token-string">"https://cdn.vocalia.ma/widget/v1.js"</span><span class="token-key">&gt;&lt;/script&gt;</span>
+<span class="token-key">&lt;script&gt;</span>
+  VocalIA.init({
+    <span class="token-key">apiKey</span>: <span class="token-string">'voc_pk_live_xxxx'</span>,
+    <span class="token-key">agentId</span>: <span class="token-string">'agent_xxxx'</span>,
+    <span class="token-key">language</span>: <span class="token-string">'fr'</span>,
+    <span class="token-key">position</span>: <span class="token-string">'bottom-right'</span>
+  });
+<span class="token-key">&lt;/script&gt;</span></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Widget Config -->
+        <section id="widget-config" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Voice Widget - Configuration</h2>
+
+          <div class="overflow-x-auto">
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Paramètre</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="text-vocalia-400">apiKey</code> <span class="param-required">requis</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">Clé API publique (voc_pk_*)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">agentId</code> <span class="param-required">requis</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">ID de l'agent vocal configuré</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">language</code> <span class="param-optional">optionnel</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">Langue: fr, en, ar, es, ary (default: fr)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">position</code> <span class="param-optional">optionnel</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">bottom-right, bottom-left, top-right, top-left</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">theme</code> <span class="param-optional">optionnel</span></td>
+                  <td class="text-slate-400">object</td>
+                  <td class="text-slate-300">Personnalisation couleurs (primaryColor, etc.)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">onReady</code> <span class="param-optional">optionnel</span></td>
+                  <td class="text-slate-400">function</td>
+                  <td class="text-slate-300">Callback quand le widget est prêt</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Widget Events -->
+        <section id="widget-events" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Voice Widget - Événements</h2>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">JavaScript</span>
+            </div>
+            <div class="code-content">
+              <pre>VocalIA.on(<span class="token-string">'conversationStart'</span>, (data) => {
+  console.log(<span class="token-string">'Conversation démarrée:'</span>, data.conversationId);
+});
+
+VocalIA.on(<span class="token-string">'message'</span>, (data) => {
+  console.log(<span class="token-string">'Message:'</span>, data.role, data.content);
+});
+
+VocalIA.on(<span class="token-string">'conversationEnd'</span>, (data) => {
+  console.log(<span class="token-string">'Durée:'</span>, data.duration, <span class="token-string">'secondes'</span>);
+});
+
+VocalIA.on(<span class="token-string">'error'</span>, (error) => {
+  console.error(<span class="token-string">'Erreur:'</span>, error.message);
+});</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Create Call -->
+        <section id="calls-create" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge method-post">POST</span>
+            Créer un appel
+          </h2>
+          <p class="text-slate-300 mb-6">
+            Initie un appel sortant vers un numéro de téléphone.
+          </p>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Endpoint</span>
+            </div>
+            <div class="code-content">
+              <pre>POST /v1/calls</pre>
+            </div>
+          </div>
+
+          <h3 class="font-semibold mb-3">Paramètres</h3>
+          <div class="overflow-x-auto mb-6">
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Paramètre</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="text-vocalia-400">to</code> <span class="param-required">requis</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">Numéro destination (E.164: +212612345678)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">agentId</code> <span class="param-required">requis</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">ID de l'agent vocal</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">from</code> <span class="param-optional">optionnel</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">Numéro appelant (si plusieurs configurés)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">metadata</code> <span class="param-optional">optionnel</span></td>
+                  <td class="text-slate-400">object</td>
+                  <td class="text-slate-300">Données personnalisées à passer à l'agent</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">webhookUrl</code> <span class="param-optional">optionnel</span></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">URL pour recevoir les événements de l'appel</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="font-semibold mb-3">Exemple de requête</h3>
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">cURL</span>
+              <button class="text-slate-400 hover:text-white text-sm">Copier</button>
+            </div>
+            <div class="code-content">
+              <pre>curl -X POST https://api.vocalia.ma/v1/calls \
+  -H <span class="token-string">"Authorization: Bearer voc_sk_live_xxxx"</span> \
+  -H <span class="token-string">"Content-Type: application/json"</span> \
+  -d '{
+    <span class="token-key">"to"</span>: <span class="token-string">"+212612345678"</span>,
+    <span class="token-key">"agentId"</span>: <span class="token-string">"agent_support_fr"</span>,
+    <span class="token-key">"metadata"</span>: {
+      <span class="token-key">"customerId"</span>: <span class="token-string">"cust_123"</span>,
+      <span class="token-key">"orderId"</span>: <span class="token-string">"ord_456"</span>
+    }
+  }'</pre>
+            </div>
+          </div>
+
+          <h3 class="font-semibold mb-3">Réponse</h3>
+          <div class="code-block">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">JSON - 201 Created</span>
+            </div>
+            <div class="code-content">
+              <pre>{
+  <span class="token-key">"id"</span>: <span class="token-string">"call_abc123xyz"</span>,
+  <span class="token-key">"status"</span>: <span class="token-string">"initiating"</span>,
+  <span class="token-key">"to"</span>: <span class="token-string">"+212612345678"</span>,
+  <span class="token-key">"from"</span>: <span class="token-string">"+212520123456"</span>,
+  <span class="token-key">"agentId"</span>: <span class="token-string">"agent_support_fr"</span>,
+  <span class="token-key">"createdAt"</span>: <span class="token-string">"2026-01-29T15:30:00Z"</span>,
+  <span class="token-key">"metadata"</span>: {
+    <span class="token-key">"customerId"</span>: <span class="token-string">"cust_123"</span>,
+    <span class="token-key">"orderId"</span>: <span class="token-string">"ord_456"</span>
+  }
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Get Call -->
+        <section id="calls-get" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge method-get">GET</span>
+            Récupérer un appel
+          </h2>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Endpoint</span>
+            </div>
+            <div class="code-content">
+              <pre>GET /v1/calls/{call_id}</pre>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">JSON - 200 OK</span>
+            </div>
+            <div class="code-content">
+              <pre>{
+  <span class="token-key">"id"</span>: <span class="token-string">"call_abc123xyz"</span>,
+  <span class="token-key">"status"</span>: <span class="token-string">"completed"</span>,
+  <span class="token-key">"duration"</span>: <span class="token-number">127</span>,
+  <span class="token-key">"to"</span>: <span class="token-string">"+212612345678"</span>,
+  <span class="token-key">"from"</span>: <span class="token-string">"+212520123456"</span>,
+  <span class="token-key">"transcript"</span>: [
+    {<span class="token-key">"role"</span>: <span class="token-string">"agent"</span>, <span class="token-key">"content"</span>: <span class="token-string">"Bonjour, VocalIA..."</span>},
+    {<span class="token-key">"role"</span>: <span class="token-string">"user"</span>, <span class="token-key">"content"</span>: <span class="token-string">"Je voudrais..."</span>}
+  ],
+  <span class="token-key">"sentiment"</span>: <span class="token-string">"positive"</span>,
+  <span class="token-key">"cost"</span>: <span class="token-number">0.13</span>,
+  <span class="token-key">"createdAt"</span>: <span class="token-string">"2026-01-29T15:30:00Z"</span>,
+  <span class="token-key">"endedAt"</span>: <span class="token-string">"2026-01-29T15:32:07Z"</span>
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- List Calls -->
+        <section id="calls-list" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge method-get">GET</span>
+            Lister les appels
+          </h2>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Endpoint</span>
+            </div>
+            <div class="code-content">
+              <pre>GET /v1/calls?limit=20&status=completed&from=2026-01-01</pre>
+            </div>
+          </div>
+
+          <h3 class="font-semibold mb-3">Query Parameters</h3>
+          <div class="overflow-x-auto">
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Paramètre</th>
+                  <th>Type</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="text-vocalia-400">limit</code></td>
+                  <td class="text-slate-400">integer</td>
+                  <td class="text-slate-300">Nombre de résultats (max 100, default 20)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">offset</code></td>
+                  <td class="text-slate-400">integer</td>
+                  <td class="text-slate-300">Offset pour pagination</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">status</code></td>
+                  <td class="text-slate-400">string</td>
+                  <td class="text-slate-300">Filtrer par status: initiating, ringing, in-progress, completed, failed</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">from</code></td>
+                  <td class="text-slate-400">date</td>
+                  <td class="text-slate-300">Date de début (ISO 8601)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">to</code></td>
+                  <td class="text-slate-400">date</td>
+                  <td class="text-slate-300">Date de fin (ISO 8601)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Transfer Call -->
+        <section id="calls-transfer" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge method-post">POST</span>
+            Transférer un appel
+          </h2>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Endpoint</span>
+            </div>
+            <div class="code-content">
+              <pre>POST /v1/calls/{call_id}/transfer</pre>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Request Body</span>
+            </div>
+            <div class="code-content">
+              <pre>{
+  <span class="token-key">"to"</span>: <span class="token-string">"+212520999888"</span>,
+  <span class="token-key">"message"</span>: <span class="token-string">"Je vous transfère vers un conseiller."</span>
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- WebSocket Connection -->
+        <section id="ws-connection" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+            <span class="method-badge method-ws">WS</span>
+            WebSocket - Connexion
+          </h2>
+          <p class="text-slate-300 mb-6">
+            Connexion WebSocket pour audio streaming bidirectionnel en temps réel.
+          </p>
+
+          <div class="code-block mb-6">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">WebSocket URL</span>
+            </div>
+            <div class="code-content">
+              <pre>wss://realtime.vocalia.ma/v1/stream?apiKey=voc_sk_live_xxxx</pre>
+            </div>
+          </div>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">JavaScript</span>
+            </div>
+            <div class="code-content">
+              <pre><span class="token-key">const</span> ws = <span class="token-key">new</span> WebSocket(
+  <span class="token-string">'wss://realtime.vocalia.ma/v1/stream?apiKey=voc_sk_live_xxxx'</span>
+);
+
+ws.onopen = () => {
+  <span class="token-comment">// Envoyer configuration initiale</span>
+  ws.send(JSON.stringify({
+    <span class="token-key">type</span>: <span class="token-string">'config'</span>,
+    <span class="token-key">agentId</span>: <span class="token-string">'agent_support_fr'</span>,
+    <span class="token-key">language</span>: <span class="token-string">'fr'</span>,
+    <span class="token-key">sampleRate</span>: <span class="token-number">16000</span>
+  }));
+};
+
+ws.onmessage = (event) => {
+  <span class="token-key">const</span> data = JSON.parse(event.data);
+  <span class="token-key">if</span> (data.type === <span class="token-string">'audio'</span>) {
+    <span class="token-comment">// Jouer l'audio de réponse</span>
+    playAudio(data.audio);
+  }
+};</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- WebSocket Events -->
+        <section id="ws-events" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">WebSocket - Événements</h2>
+
+          <div class="space-y-4">
+            <div class="glass rounded-xl p-4">
+              <h3 class="font-semibold mb-2 text-vocalia-400">audio</h3>
+              <p class="text-slate-400 text-sm">Audio PCM 16-bit mono encodé en base64 à jouer.</p>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <h3 class="font-semibold mb-2 text-vocalia-400">transcript</h3>
+              <p class="text-slate-400 text-sm">Transcription en temps réel (partielle et finale).</p>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <h3 class="font-semibold mb-2 text-vocalia-400">function_call</h3>
+              <p class="text-slate-400 text-sm">L'agent veut exécuter une fonction (transfer, booking, etc.).</p>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <h3 class="font-semibold mb-2 text-vocalia-400">end</h3>
+              <p class="text-slate-400 text-sm">Fin de la conversation avec résumé et metadata.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Webhooks Setup -->
+        <section id="webhooks-setup" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Webhooks - Configuration</h2>
+          <p class="text-slate-300 mb-6">
+            Configurez des webhooks pour recevoir des notifications en temps réel sur vos appels.
+          </p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Exemple de payload webhook</span>
+            </div>
+            <div class="code-content">
+              <pre>{
+  <span class="token-key">"event"</span>: <span class="token-string">"call.completed"</span>,
+  <span class="token-key">"timestamp"</span>: <span class="token-string">"2026-01-29T15:32:07Z"</span>,
+  <span class="token-key">"data"</span>: {
+    <span class="token-key">"callId"</span>: <span class="token-string">"call_abc123xyz"</span>,
+    <span class="token-key">"duration"</span>: <span class="token-number">127</span>,
+    <span class="token-key">"status"</span>: <span class="token-string">"completed"</span>,
+    <span class="token-key">"sentiment"</span>: <span class="token-string">"positive"</span>,
+    <span class="token-key">"leadScore"</span>: <span class="token-number">85</span>
+  }
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Webhook Events -->
+        <section id="webhooks-events" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Webhooks - Types d'événements</h2>
+
+          <div class="overflow-x-auto">
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Événement</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="text-vocalia-400">call.initiated</code></td>
+                  <td class="text-slate-300">Appel initié, en attente de connexion</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">call.ringing</code></td>
+                  <td class="text-slate-300">Téléphone sonne chez le destinataire</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">call.answered</code></td>
+                  <td class="text-slate-300">Appel décroché, conversation en cours</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">call.completed</code></td>
+                  <td class="text-slate-300">Appel terminé avec succès</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">call.failed</code></td>
+                  <td class="text-slate-300">Appel échoué (occupé, pas de réponse, etc.)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">call.transferred</code></td>
+                  <td class="text-slate-300">Appel transféré vers un humain</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">lead.qualified</code></td>
+                  <td class="text-slate-300">Lead qualifié (score BANT disponible)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-vocalia-400">booking.created</code></td>
+                  <td class="text-slate-300">RDV créé via l'agent vocal</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Webhook Security -->
+        <section id="webhooks-security" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Webhooks - Sécurité</h2>
+          <p class="text-slate-300 mb-6">
+            Validez l'authenticité des webhooks avec la signature HMAC-SHA256.
+          </p>
+
+          <div class="code-block">
+            <div class="code-header">
+              <span class="text-slate-400 text-sm">Node.js - Vérification signature</span>
+            </div>
+            <div class="code-content">
+              <pre><span class="token-key">const</span> crypto = require(<span class="token-string">'crypto'</span>);
+
+<span class="token-key">function</span> verifyWebhook(payload, signature, secret) {
+  <span class="token-key">const</span> expected = crypto
+    .createHmac(<span class="token-string">'sha256'</span>, secret)
+    .update(payload)
+    .digest(<span class="token-string">'hex'</span>);
+
+  <span class="token-key">return</span> crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(<span class="token-string">'sha256='</span> + expected)
+  );
+}</pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- Error Codes -->
+        <section id="errors" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Codes d'erreur</h2>
+
+          <div class="overflow-x-auto">
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Status</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="text-red-400">invalid_api_key</code></td>
+                  <td class="text-slate-400">401</td>
+                  <td class="text-slate-300">Clé API invalide ou expirée</td>
+                </tr>
+                <tr>
+                  <td><code class="text-red-400">insufficient_permissions</code></td>
+                  <td class="text-slate-400">403</td>
+                  <td class="text-slate-300">Permissions insuffisantes pour cette action</td>
+                </tr>
+                <tr>
+                  <td><code class="text-red-400">resource_not_found</code></td>
+                  <td class="text-slate-400">404</td>
+                  <td class="text-slate-300">Ressource non trouvée (appel, agent, etc.)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-red-400">invalid_phone_number</code></td>
+                  <td class="text-slate-400">400</td>
+                  <td class="text-slate-300">Numéro de téléphone invalide (format E.164)</td>
+                </tr>
+                <tr>
+                  <td><code class="text-red-400">rate_limit_exceeded</code></td>
+                  <td class="text-slate-400">429</td>
+                  <td class="text-slate-300">Limite de requêtes dépassée</td>
+                </tr>
+                <tr>
+                  <td><code class="text-red-400">insufficient_credits</code></td>
+                  <td class="text-slate-400">402</td>
+                  <td class="text-slate-300">Crédits insuffisants pour cette opération</td>
+                </tr>
+                <tr>
+                  <td><code class="text-red-400">agent_not_configured</code></td>
+                  <td class="text-slate-400">400</td>
+                  <td class="text-slate-300">Agent non configuré ou désactivé</td>
+                </tr>
+                <tr>
+                  <td><code class="text-red-400">internal_error</code></td>
+                  <td class="text-slate-400">500</td>
+                  <td class="text-slate-300">Erreur interne, réessayez plus tard</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Rate Limits -->
+        <section id="rate-limits" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">Rate Limits</h2>
+
+          <div class="overflow-x-auto mb-6">
+            <table class="param-table">
+              <thead>
+                <tr>
+                  <th>Plan</th>
+                  <th>Requêtes/min</th>
+                  <th>Appels simultanés</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-slate-300">Starter</td>
+                  <td class="text-slate-400">60</td>
+                  <td class="text-slate-400">5</td>
+                </tr>
+                <tr>
+                  <td class="text-slate-300">Pro</td>
+                  <td class="text-slate-400">300</td>
+                  <td class="text-slate-400">25</td>
+                </tr>
+                <tr>
+                  <td class="text-slate-300">Enterprise</td>
+                  <td class="text-slate-400">1000+</td>
+                  <td class="text-slate-400">100+</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <h3 class="font-semibold mb-3">Headers de rate limit</h3>
+            <div class="code-block">
+              <div class="code-content">
+                <pre><span class="token-key">X-RateLimit-Limit</span>: <span class="token-number">300</span>
+<span class="token-key">X-RateLimit-Remaining</span>: <span class="token-number">287</span>
+<span class="token-key">X-RateLimit-Reset</span>: <span class="token-number">1706540400</span></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SDKs -->
+        <section id="sdks" class="mb-16">
+          <h2 class="text-2xl font-bold mb-4">SDKs & Libraries</h2>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div class="glass rounded-xl p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                  <span class="text-lg">📦</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Node.js</h3>
+                  <code class="text-sm text-slate-400">npm install @vocalia/sdk</code>
+                </div>
+              </div>
+              <a href="https://github.com/vocalia/vocalia-node" class="text-vocalia-400 text-sm hover:underline">GitHub →</a>
+            </div>
+
+            <div class="glass rounded-xl p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <span class="text-lg">🐍</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Python</h3>
+                  <code class="text-sm text-slate-400">pip install vocalia</code>
+                </div>
+              </div>
+              <a href="https://github.com/vocalia/vocalia-python" class="text-vocalia-400 text-sm hover:underline">GitHub →</a>
+            </div>
+
+            <div class="glass rounded-xl p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                  <span class="text-lg">💎</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Ruby</h3>
+                  <code class="text-sm text-slate-400">gem install vocalia</code>
+                </div>
+              </div>
+              <span class="text-slate-500 text-sm">Coming soon</span>
+            </div>
+
+            <div class="glass rounded-xl p-6">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                  <span class="text-lg">🐹</span>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Go</h3>
+                  <code class="text-sm text-slate-400">go get vocalia.ma/sdk</code>
+                </div>
+              </div>
+              <span class="text-slate-500 text-sm">Coming soon</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="glass rounded-2xl p-8 text-center">
+          <h2 class="text-2xl font-bold mb-4">Prêt à intégrer VocalIA ?</h2>
+          <p class="text-slate-400 mb-6">Créez votre compte et obtenez vos clés API en quelques minutes.</p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-xl font-semibold transition">
+              Obtenir mes clés API
+            </a>
+            <a href="/docs" class="px-6 py-3 glass hover:bg-slate-700/50 rounded-xl font-semibold transition">
+              Retour à la documentation
+            </a>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-700/50 py-12 bg-slate-900/50 lg:ml-64">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-500 text-sm">
+      © 2026 VocalIA. Tous droits réservés. | <a href="/privacy" class="hover:text-white">Confidentialité</a> | <a href="/terms" class="hover:text-white">CGU</a>
+    </div>
+  </footer>
+
+  <!-- Sidebar Active Link Script -->
+  <script>
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', function() {
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Changelog - VocalIA | Historique des versions</title>
+  <meta name="description"
+    content="Consultez l'historique des mises à jour VocalIA: nouvelles fonctionnalités, améliorations et corrections de bugs pour Voice Widget et Voice Telephony.">
+  <link rel="canonical" href="https://vocalia.ma/changelog" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/changelog" />
+  <meta property="og:title" content="Changelog VocalIA - Historique des versions" />
+  <meta property="og:description" content="Suivez toutes les mises à jour de la plateforme Voice AI VocalIA." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Changelog VocalIA",
+      "description": "Historique des versions et mises à jour VocalIA",
+      "url": "https://vocalia.ma/changelog",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+          {"@type": "ListItem", "position": 2, "name": "Changelog", "item": "https://vocalia.ma/changelog"}
+        ]
+      }
+    }
+  </script>
+
+  <!-- Critical CSS -->
+  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS -->
+  <link rel="preload" href="/public/css/style.css" as="style">
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(51, 65, 85, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+    .version-card {
+      background: linear-gradient(135deg, rgba(51, 65, 85, 0.5), rgba(30, 41, 59, 0.8));
+      border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .tag {
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .tag-new { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+    .tag-improved { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+    .tag-fixed { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+    .tag-breaking { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .tag-security { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+    .timeline-line {
+      position: absolute;
+      left: 1.5rem;
+      top: 3rem;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(99, 102, 241, 0.5), transparent);
+    }
+    .timeline-dot {
+      position: absolute;
+      left: 1rem;
+      top: 0.75rem;
+      width: 1rem;
+      height: 1rem;
+      background: #6366f1;
+      border-radius: 50%;
+      border: 3px solid #1e293b;
+    }
+    .latest-badge {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.1));
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white antialiased">
+  <!-- Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller au contenu principal</a>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+            <span class="text-xl">🎙️</span>
+          </div>
+          <span class="text-xl font-bold">VocalIA</span>
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/features" class="text-slate-300 hover:text-white transition">Fonctionnalités</a>
+          <a href="/pricing" class="text-slate-300 hover:text-white transition">Tarifs</a>
+          <a href="/docs" class="text-slate-300 hover:text-white transition">Documentation</a>
+          <a href="/contact" class="px-4 py-2 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg transition font-medium">Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-vocalia-500/10 to-transparent pointer-events-none"></div>
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <!-- Breadcrumb -->
+        <nav class="mb-8" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+            <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li class="text-vocalia-400">Changelog</li>
+          </ol>
+        </nav>
+
+        <div class="text-center">
+          <h1 class="text-4xl sm:text-5xl font-extrabold mb-6">
+            <span class="gradient-text">Changelog</span>
+          </h1>
+          <p class="text-xl text-slate-300 mb-8">
+            Suivez toutes les mises à jour, nouvelles fonctionnalités et améliorations de VocalIA.
+          </p>
+
+          <!-- Filter Tags -->
+          <div class="flex flex-wrap justify-center gap-3">
+            <button class="px-4 py-2 bg-vocalia-500 rounded-full text-sm font-medium">Toutes</button>
+            <button class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 mr-2"></span>Nouvelles
+            </button>
+            <button class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition">
+              <span class="inline-block w-2 h-2 rounded-full bg-blue-500 mr-2"></span>Améliorations
+            </button>
+            <button class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition">
+              <span class="inline-block w-2 h-2 rounded-full bg-amber-500 mr-2"></span>Corrections
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog Timeline -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="relative">
+
+          <!-- Version 3.3.0 -->
+          <article class="relative pl-12 pb-12">
+            <div class="timeline-line"></div>
+            <div class="timeline-dot"></div>
+
+            <div class="version-card rounded-2xl p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <h2 class="text-2xl font-bold">v3.3.0</h2>
+                <span class="latest-badge px-3 py-1 rounded-full text-xs font-semibold text-emerald-400">Latest</span>
+                <span class="text-slate-400 text-sm">29 janvier 2026</span>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-new">Nouveau</span>
+                    Pages Industries
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Page Santé avec conformité HIPAA, HDS, RGPD Santé</li>
+                    <li>• Page Immobilier avec qualification BANT et CRM</li>
+                    <li>• Page Finance avec PCI DSS, SOC 2, DORA</li>
+                    <li>• Page Retail avec support omnicanal</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-improved">Amélioré</span>
+                    Sitemap & SEO
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• 21 pages HTML dans le sitemap</li>
+                    <li>• Schema.org BreadcrumbList sur toutes les pages</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Version 3.2.0 -->
+          <article class="relative pl-12 pb-12">
+            <div class="timeline-line"></div>
+            <div class="timeline-dot" style="background: #3b82f6;"></div>
+
+            <div class="version-card rounded-2xl p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <h2 class="text-2xl font-bold">v3.2.0</h2>
+                <span class="text-slate-400 text-sm">29 janvier 2026</span>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-new">Nouveau</span>
+                    Pages Légales & Intégrations
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Page Politique de Confidentialité (RGPD, AI Act, Loi 09-08)</li>
+                    <li>• Page Conditions Générales d'Utilisation</li>
+                    <li>• Page Intégrations avec 20+ connecteurs</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-improved">Amélioré</span>
+                    Déploiement
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• GitHub Actions FTP Deploy automatique</li>
+                    <li>• Script create-deploy-zip.sh mis à jour</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Version 3.1.0 -->
+          <article class="relative pl-12 pb-12">
+            <div class="timeline-line"></div>
+            <div class="timeline-dot" style="background: #3b82f6;"></div>
+
+            <div class="version-card rounded-2xl p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <h2 class="text-2xl font-bold">v3.1.0</h2>
+                <span class="text-slate-400 text-sm">28 janvier 2026</span>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-new">Nouveau</span>
+                    Use Cases Pages
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Page E-commerce avec ROI calculator</li>
+                    <li>• Page Service Client 24/7</li>
+                    <li>• Page Prise de RDV automatisée</li>
+                    <li>• Page Qualification Leads BANT</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Version 3.0.0 -->
+          <article class="relative pl-12 pb-12">
+            <div class="timeline-line"></div>
+            <div class="timeline-dot" style="background: #f59e0b;"></div>
+
+            <div class="version-card rounded-2xl p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <h2 class="text-2xl font-bold">v3.0.0</h2>
+                <span class="tag tag-breaking">Breaking</span>
+                <span class="text-slate-400 text-sm">25 janvier 2026</span>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-new">Nouveau</span>
+                    Refonte Design System
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• OKLCH P3 Colors pour écrans HDR</li>
+                    <li>• Liquid Glass card system (Apple 2026)</li>
+                    <li>• 3D Tilt mouse-tracking animations</li>
+                    <li>• CSS 100% souverain (97KB, aucune dépendance CDN)</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-improved">Amélioré</span>
+                    Performance
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Lighthouse score: 90+</li>
+                    <li>• Animations GPU-only (transform, opacity)</li>
+                    <li>• Critical CSS inline</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-breaking">Breaking</span>
+                    Migration CSS
+                  </h3>
+                  <p class="text-slate-400 text-sm ml-4">
+                    Suppression de Tailwind CDN. Styles compilés en local uniquement.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Version 2.5.0 -->
+          <article class="relative pl-12 pb-12">
+            <div class="timeline-line"></div>
+            <div class="timeline-dot" style="background: #10b981;"></div>
+
+            <div class="version-card rounded-2xl p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <h2 class="text-2xl font-bold">v2.5.0</h2>
+                <span class="text-slate-400 text-sm">20 janvier 2026</span>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-new">Nouveau</span>
+                    Support Darija (Dialecte Marocain)
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Intégration Atlas-Chat-9B pour le Darija</li>
+                    <li>• Knowledge Base spécifique (15 secteurs)</li>
+                    <li>• Voice Telephony 5 langues: FR, EN, ES, AR, ARY</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-improved">Amélioré</span>
+                    Multi-AI Fallback
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Chain: Grok → Gemini → Claude → Atlas → Local</li>
+                    <li>• Latency trigger: 15s ou status != 200</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Version 2.0.0 -->
+          <article class="relative pl-12 pb-12">
+            <div class="timeline-dot" style="background: #a855f7;"></div>
+
+            <div class="version-card rounded-2xl p-6 md:p-8">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <h2 class="text-2xl font-bold">v2.0.0</h2>
+                <span class="text-slate-400 text-sm">15 janvier 2026</span>
+              </div>
+
+              <div class="space-y-4">
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-new">Nouveau</span>
+                    Voice Telephony AI
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Twilio PSTN ↔ Grok WebSocket bridge</li>
+                    <li>• 11 function tools (BANT, booking, transfer...)</li>
+                    <li>• Coût: ~$0.06/min (60% moins cher que Vapi)</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-new">Nouveau</span>
+                    28 Personas B2B
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Personas sectoriels: Dental, Property, Finance...</li>
+                    <li>• Marketing science integration</li>
+                    <li>• Injection dynamique par industrie</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 class="font-semibold mb-2 flex items-center gap-2">
+                    <span class="tag tag-security">Sécurité</span>
+                    HITL Controls
+                  </h3>
+                  <ul class="text-slate-400 text-sm space-y-1 ml-4">
+                    <li>• Human-in-the-loop pour hot leads (score > 75)</li>
+                    <li>• Approbation manuelle transfers et bookings</li>
+                    <li>• Slack webhook notifications</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- View All Link -->
+        <div class="text-center mt-8">
+          <p class="text-slate-400 text-sm">
+            Voir l'historique complet sur <a href="https://github.com/Jouiet/VoicalAI/releases" class="text-vocalia-400 hover:underline">GitHub Releases</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subscribe CTA -->
+    <section class="py-16 bg-slate-900/50">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="glass rounded-2xl p-8">
+          <h2 class="text-2xl font-bold mb-4">
+            Recevez les mises à jour
+          </h2>
+          <p class="text-slate-400 mb-6">
+            Soyez notifié des nouvelles versions et fonctionnalités VocalIA.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="https://github.com/Jouiet/VoicalAI/releases.atom" class="px-6 py-3 glass hover:bg-slate-700/50 rounded-xl font-semibold transition flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-3.368c10.58.046 19.152 8.594 19.183 19.188h4.817c-.03-13.231-10.755-23.954-24-24v4.812z"/></svg>
+              RSS Feed
+            </a>
+            <a href="https://github.com/Jouiet/VoicalAI" class="px-6 py-3 glass hover:bg-slate-700/50 rounded-xl font-semibold transition flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-700/50 py-12 bg-slate-900/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+              <span class="text-xl">🎙️</span>
+            </div>
+            <span class="text-xl font-bold">VocalIA</span>
+          </div>
+          <p class="text-slate-400 text-sm">Voice AI Platform pour entreprises exigeantes.</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Produits</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/products/voice-widget" class="hover:text-white transition">Voice Widget</a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition">Voice Telephony</a></li>
+            <li><a href="/features" class="hover:text-white transition">Fonctionnalités</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Ressources</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
+            <li><a href="/docs/api" class="hover:text-white transition">API Reference</a></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+            <li><a href="/changelog" class="hover:text-white transition text-vocalia-400">Changelog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-4">Légal</h4>
+          <ul class="space-y-2 text-slate-400 text-sm">
+            <li><a href="/privacy" class="hover:text-white transition">Confidentialité</a></li>
+            <li><a href="/terms" class="hover:text-white transition">CGU</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-700/50 mt-8 pt-8 text-center text-slate-500 text-sm">
+        © 2026 VocalIA. Tous droits réservés.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

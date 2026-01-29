@@ -115,6 +115,30 @@
         <priority>0.8</priority>
     </url>
 
+    <!-- API Reference -->
+    <url>
+        <loc>https://vocalia.ma/docs/api</loc>
+        <lastmod>2026-01-29</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Blog -->
+    <url>
+        <loc>https://vocalia.ma/blog</loc>
+        <lastmod>2026-01-29</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Changelog -->
+    <url>
+        <loc>https://vocalia.ma/changelog</loc>
+        <lastmod>2026-01-29</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
     <!-- Industries -->
     <url>
         <loc>https://vocalia.ma/industries/healthcare</loc>
