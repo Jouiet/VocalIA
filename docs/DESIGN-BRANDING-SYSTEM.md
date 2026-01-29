@@ -1,8 +1,9 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 4.4.0 | **Date**: 29/01/2026 | **Session**: 214
+> **Version**: 4.4.1 | **Date**: 29/01/2026 | **Session**: 222
 > **Palette**: OKLCH P3 Wide-Gamut "4K" Colors | **Brand Assets**: Complete ✅
 > **Research**: Apple Liquid Glass, GitHub ihlamury/design-skills, LogRocket OKLCH, CodePen 3D Tilt
+> **Security**: Technology Disclosure Protection (Session 222)
 
 ---
 
@@ -15,6 +16,46 @@
 - Chefs d'entreprises (Maroc, Europe, International)
 - Indépendants et PME
 - Décideurs techniques (CTO, VP Engineering)
+
+---
+
+## 🔐 Content Security Guidelines (Session 222)
+
+### Principe
+
+**Ne JAMAIS divulguer les technologies internes sur les pages publiques.**
+
+VocalIA compète contre des plateformes IA frontières. Exposer notre stack technologique donne un avantage direct aux concurrents.
+
+### Règles d'Obfuscation
+
+| ❌ NE PAS ÉCRIRE | ✅ ÉCRIRE À LA PLACE |
+|:-----------------|:---------------------|
+| "Grok AI" | "IA temps réel", "IA Engine" |
+| "Gemini" | "Multi-AI", "Fallback IA" |
+| "Twilio" | "PSTN", "Téléphonie" |
+| "grok-4-1-fast-reasoning" | "Multi-AI temps réel" |
+| "Grok → Gemini → Claude → Atlas" | "5 niveaux de redondance IA" |
+| "xAI", "Google", "Anthropic" | "Providers IA", "Multi-provider" |
+
+### Zones Protégées
+
+| Zone | Protection |
+|:-----|:-----------|
+| Pages publiques (landing, features, pricing) | ✅ Obfuscation totale |
+| Pages produit (voice-widget, voice-telephony) | ✅ Obfuscation totale |
+| Documentation API | ⚠️ Générique seulement |
+| Dashboard client | ⚠️ Générique (Provider 1, Provider 2) |
+| Dashboard admin | ⚠️ Obfusqué par cohérence |
+| Code backend (non public) | ✅ Noms réels OK |
+
+### Vérification
+
+```bash
+# Avant chaque deploy, vérifier absence de divulgations
+grep -riE "Grok|Gemini|Twilio|xAI|Anthropic" website/ --include="*.html" --include="*.json"
+# Attendu: 0 résultats (ou seulement CSS comments)
+```
 
 ---
 

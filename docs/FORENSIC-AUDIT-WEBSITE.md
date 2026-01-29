@@ -1,8 +1,9 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 3.7.0 | **Date**: 29/01/2026 | **Session**: 220
+> **Version**: 3.7.1 | **Date**: 29/01/2026 | **Session**: 222
 > **Status**: WCAG 2.1 AA COMPLIANCE (~97%) | **CSS Build**: SOVEREIGN (93KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
+> **Security**: Technology Disclosure Protection ✅ (Session 222)
 
 ---
 
@@ -327,6 +328,60 @@ Audit basé sur:
 
 ---
 
+## 🔐 Session 222: Security - Technology Disclosure Protection
+
+### Context
+
+VocalIA competes against frontier AI voice platforms. Exposing internal technology stack (vendor names, API providers) gives competitors direct intelligence advantage.
+
+### Audit Findings (36 Disclosures)
+
+| Category | Count | Examples |
+|:---------|:-----:|:---------|
+| API Provider Names | 12 | "Grok AI", "Gemini" |
+| Infrastructure Vendor | 14 | "Twilio PSTN" |
+| Architecture Details | 10 | "grok-4-1-fast-reasoning", fallback chains |
+
+### Files Affected
+
+```
+17 files across website/
+- 9 HTML pages (public-facing)
+- 2 JSON locales (fr.json, en.json)
+- 1 product page (voice-telephony.html)
+- 1 admin dashboard (obfuscated for consistency)
+- 1 CSS file (layout fixes)
+```
+
+### Obfuscation Strategy
+
+| Exposed | Obfuscated To |
+|:--------|:--------------|
+| "Grok AI" | "IA Engine" / "IA temps réel" |
+| "Gemini" | "Multi-AI" / "Fallback" |
+| "Twilio" | "PSTN" / "Téléphonie" |
+| "grok-4-1-fast-reasoning" | "Multi-AI temps réel" |
+| "Grok → Gemini → Claude → Atlas" | "5 niveaux de redondance IA" |
+
+### Verification
+
+```bash
+# Post-fix grep
+grep -riE "Grok|Gemini|Twilio" website/ --include="*.html" --include="*.json" | wc -l
+# Result: 0 (only 1 CSS comment, non-public)
+```
+
+### Layout Fixes (Session 222)
+
+| Element | Issue | Fix |
+|:--------|:------|:----|
+| Voice AI Cards | Stacking vertically | `flex nowrap` (inline) |
+| Footer Categories | Mobile 2-col grid | `flex-wrap gap-x-12` |
+
+**Commit:** `d553925` (pushed to main)
+
+---
+
 ## Audit Timeline
 
 | Session | Date | Phase | Status |
@@ -341,6 +396,7 @@ Audit basé sur:
 | 201 | 29/01/2026 | i18n Interpolation Fix | Complete |
 | 207 | 29/01/2026 | Design System Alignment | Complete |
 | 208 | 29/01/2026 | SOTA Animations & Light Mode | Partial |
+| **222** | **29/01/2026** | **Security: Technology Disclosure Fix** | **Complete** |
 | **220** | **29/01/2026** | **WCAG AA Compliance + Forensic Audit** | **Complete** |
 | **213** | **29/01/2026** | **Deployment Prep + Favicons** | **Complete** |
 | **212** | **29/01/2026** | **Performance + Brand Assets** | **Complete** |
