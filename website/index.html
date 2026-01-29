@@ -74,8 +74,8 @@
   <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS (Sovereign) - Preloaded -->
-  <link rel="preload" href="/public/css/style.css?v=211" as="style">
-  <link href="/public/css/style.css?v=211" rel="stylesheet">
+  <link rel="preload" href="/public/css/style.css?v=212" as="style">
+  <link href="/public/css/style.css?v=212" rel="stylesheet">
 
   <!-- DNS Prefetch & Preconnect for external resources -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -1133,27 +1133,43 @@
     </div>
   </section>
 
-  <!-- Footer (Session 222: Enriched with newsletter and better organization) -->
-  <footer class="bg-slate-900 border-t border-slate-800">
-    <!-- Newsletter Section -->
-    <div class="border-b border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div class="lg:max-w-md">
-            <h3 class="text-xl font-bold text-white mb-2">Restez informé</h3>
-            <p class="text-zinc-400 text-sm">Recevez nos dernières actualités sur l'IA vocale et les nouvelles fonctionnalités.</p>
-          </div>
-          <form class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto" onsubmit="event.preventDefault(); alert('Merci pour votre inscription!');">
-            <input type="email" placeholder="votre@email.com" required
-              class="flex-1 lg:w-72 px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
-            <button type="submit"
-              class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-lg transition whitespace-nowrap">
+  <!-- Newsletter CTA (Session 210: Enhanced glassmorphic design from blog) -->
+  <section class="py-20 bg-gradient-to-b from-transparent via-slate-900/50 to-slate-900">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="glass rounded-3xl p-10 md:p-14 relative overflow-hidden">
+        <!-- Background glow -->
+        <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-fuchsia-500/10 pointer-events-none"></div>
+        <div class="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-fuchsia-500/20 rounded-full blur-3xl"></div>
+
+        <div class="relative z-10">
+          <h2 class="text-2xl md:text-4xl font-bold mb-4">
+            Restez informé des dernières actualités <span class="gradient-text">Voice AI</span>
+          </h2>
+          <p class="text-slate-400 mb-8 text-lg">
+            Recevez nos articles, guides et études de cas directement dans votre boîte mail. Pas de spam, promis.
+          </p>
+          <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Merci pour votre inscription!');">
+            <input
+              type="email"
+              placeholder="votre@email.com"
+              class="flex-1 px-5 py-4 bg-slate-800/80 border border-slate-600/50 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition text-lg"
+              required
+            >
+            <button type="submit" class="px-8 py-4 bg-gradient-to-r from-cyan-500 to-fuchsia-500 hover:from-cyan-400 hover:to-fuchsia-400 rounded-xl font-bold text-lg transition-all transform hover:scale-105 whitespace-nowrap shadow-lg shadow-cyan-500/25">
               S'inscrire
             </button>
           </form>
+          <p class="text-xs text-slate-500 mt-6">
+            En vous inscrivant, vous acceptez notre <a href="/privacy" class="underline hover:text-white transition">politique de confidentialité</a>.
+          </p>
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800">
 
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

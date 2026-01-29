@@ -24,17 +24,17 @@ class VoiceVisualizer {
 
     this.ctx = this.canvas.getContext('2d');
 
-    // Premium color palette - High contrast neon
+    // BLUE EQUALIZER palette - Classic audio visualizer style
     this.options = {
       mode: options.mode || 'wave',
-      // Vibrant cyan/magenta palette
-      primaryColor: options.primaryColor || '#00f5ff',    // Electric Cyan
-      secondaryColor: options.secondaryColor || '#ff00ff', // Hot Magenta
-      accentColor: options.accentColor || '#7c3aed',       // Vivid Violet
-      glowColor: options.glowColor || '#00f5ff',
+      // Blue gradient palette (from user reference image)
+      primaryColor: options.primaryColor || '#5cb8ff',    // Bright Sky Blue
+      secondaryColor: options.secondaryColor || '#1e90ff', // Dodger Blue
+      accentColor: options.accentColor || '#a8d8ff',       // Light Ice Blue
+      glowColor: options.glowColor || '#ffffff',           // White glow for intensity
       barCount: options.barCount || 48,
-      sensitivity: options.sensitivity || 1.2,
-      smoothing: options.smoothing || 0.75,
+      sensitivity: options.sensitivity || 1.5,
+      smoothing: options.smoothing || 0.7,
       demo: options.demo !== false,
       showAmbient: options.showAmbient !== false,
       ...options
@@ -185,8 +185,8 @@ class VoiceVisualizer {
   }
 
   draw() {
-    // Clear with slight fade for trail effect
-    this.ctx.fillStyle = 'rgba(9, 9, 11, 0.92)';
+    // Clear with slight fade for trail effect - darker for more contrast
+    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.88)';
     this.ctx.fillRect(0, 0, this.width, this.height);
 
     // Calculate average for ambient
@@ -194,9 +194,9 @@ class VoiceVisualizer {
     for (let i = 0; i < this.dataArray.length; i++) avg += this.dataArray[i];
     avg = avg / this.dataArray.length / 255;
 
-    // Draw ambient glow
+    // Draw stronger ambient glow
     if (this.options.showAmbient) {
-      this.drawAmbient(avg * 0.8 + 0.2);
+      this.drawAmbient(avg * 1.2 + 0.3);
     }
 
     switch (this.options.mode) {
@@ -228,31 +228,31 @@ class VoiceVisualizer {
     gradient.addColorStop(0.7, this.options.primaryColor);
     gradient.addColorStop(1, this.options.accentColor);
 
-    // GLOW LAYER - Multiple passes for neon effect
-    for (let glow = 3; glow >= 0; glow--) {
+    // GLOW LAYER - 5 passes for intense neon effect
+    for (let glow = 4; glow >= 0; glow--) {
       this.ctx.beginPath();
 
       for (let i = 0; i < this.dataArray.length; i++) {
         const value = this.dataArray[i] / 255;
-        const y = this.height - (value * this.height * 0.75 + this.height * 0.12);
+        const y = this.height - (value * this.height * 0.8 + this.height * 0.1);
         const x = i * sliceWidth;
 
         if (i === 0) {
           this.ctx.moveTo(x, y);
         } else {
           const prevX = (i - 1) * sliceWidth;
-          const prevY = this.height - (this.dataArray[i - 1] / 255 * this.height * 0.75 + this.height * 0.12);
+          const prevY = this.height - (this.dataArray[i - 1] / 255 * this.height * 0.8 + this.height * 0.1);
           const cpX = (prevX + x) / 2;
           this.ctx.quadraticCurveTo(prevX, prevY, cpX, y);
         }
       }
 
-      // Glow effect
-      this.ctx.strokeStyle = gradient;
-      this.ctx.lineWidth = 2 + glow * 4;
-      this.ctx.globalAlpha = glow === 0 ? 1 : 0.15;
-      this.ctx.shadowColor = this.options.primaryColor;
-      this.ctx.shadowBlur = glow * 15;
+      // Intense glow effect
+      this.ctx.strokeStyle = glow === 0 ? '#ffffff' : gradient;
+      this.ctx.lineWidth = glow === 0 ? 3 : 4 + glow * 5;
+      this.ctx.globalAlpha = glow === 0 ? 1 : 0.25;
+      this.ctx.shadowColor = this.options.glowColor;
+      this.ctx.shadowBlur = 20 + glow * 20;
       this.ctx.stroke();
     }
 
@@ -313,15 +313,15 @@ class VoiceVisualizer {
       const x = i * barWidth + gap / 2;
       const y = this.height - barHeight;
 
-      // Color based on frequency position
-      const hue = 180 + (i / barCount) * 120; // Cyan to Magenta
-      const saturation = 100;
-      const lightness = 50 + value * 20;
+      // Color based on frequency position - BLUE gradient
+      const hue = 200 + (i / barCount) * 20; // Blue range (200-220)
+      const saturation = 85 + value * 15;    // 85-100%
+      const lightness = 55 + value * 25;     // Brighter: 55-80%
       const barColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
-      // Glow effect
-      this.ctx.shadowColor = barColor;
-      this.ctx.shadowBlur = 15 + value * 25;
+      // INTENSE Glow effect
+      this.ctx.shadowColor = '#ffffff';
+      this.ctx.shadowBlur = 25 + value * 40;
 
       // Bar gradient
       const barGradient = this.ctx.createLinearGradient(x, y + barHeight, x, y);
@@ -359,11 +359,11 @@ class VoiceVisualizer {
       const x = i * barWidth + gap / 2;
       const y = this.height - barHeight;
 
-      const hue = 180 + (i / barCount) * 120;
+      const hue = 200 + (i / barCount) * 20; // Blue range for reflection
 
       this.ctx.beginPath();
       this.ctx.roundRect(x, y, actualBarWidth, barHeight, 4);
-      this.ctx.fillStyle = `hsl(${hue}, 100%, 60%)`;
+      this.ctx.fillStyle = `hsl(${hue}, 90%, 65%)`;
       this.ctx.fill();
     }
 
@@ -440,9 +440,9 @@ class VoiceVisualizer {
 
     this.ctx.globalAlpha = 1;
 
-    // Core orb with intense glow
-    this.ctx.shadowColor = this.options.primaryColor;
-    this.ctx.shadowBlur = 40 + avg * 30;
+    // Core orb with ULTRA intense glow
+    this.ctx.shadowColor = '#ffffff';
+    this.ctx.shadowBlur = 60 + avg * 50;
 
     const coreRadius = baseRadius * 0.65 * (1 + avg * 0.25);
     const coreGradient = this.ctx.createRadialGradient(
@@ -522,9 +522,9 @@ class VoiceVisualizer {
     // Center pulse beacon
     const pulseRadius = 25 + avg * 40;
 
-    // Outer glow
-    this.ctx.shadowColor = this.options.secondaryColor;
-    this.ctx.shadowBlur = 50;
+    // ULTRA bright outer glow
+    this.ctx.shadowColor = '#ffffff';
+    this.ctx.shadowBlur = 80;
 
     const beaconGradient = this.ctx.createRadialGradient(
       centerX, centerY, 0,
