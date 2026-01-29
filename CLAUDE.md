@@ -321,6 +321,43 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 ---
 
-*Màj: 29/01/2026 - Session 206 (KB In-Project + Branding Unifié)*
-*Status: Health 100% (39/39) | RAG FONCTIONNEL | Branding 100%*
+## Session 207 Summary
+
+**1. Design System Alignment:** ✅
+
+| Ancien | Nouveau | Usage |
+|:-------|:--------|:------|
+| `#0c8ee9` | `#5E6AD2` | Primary brand |
+| `#36aaf8` | `#6366f1` | Primary light |
+| `#7cc8fc` | `#a5b4fc` | Highlight |
+| `#0b406e` | `#09090b` | Background base |
+
+**2. CSP Header Cleaned:** ✅
+- Removed `cdn.tailwindcss.com` from script-src
+- Sovereign CSS only, no external dependencies
+
+**3. Legacy Code Archived:** ✅
+- `knowledge-base/src/` → `docs/archive/legacy-code/`
+- 877 lignes préservées pour référence
+- Health check updated: Legacy refs removed
+
+**4. GitHub Push:** ✅
+- 26 files changed, +3204/-138 lines
+- Commit: c0de5cb
+
+**Delta Session 207:**
+- Design: Enterprise Dark palette fully applied
+- Security: CSP tightened (no CDN)
+- Technical debt: 877 lines legacy code archived
+- Git: All changes pushed to main
+
+**Plan Actionnable (Session 208):**
+1. Vercel deployment avec headers serveur
+2. Test visuel avec Playwright MCP
+3. Créer OG image pour social media
+
+---
+
+*Màj: 29/01/2026 - Session 207 (Design System Aligned)*
+*Status: Health 100% (39/39) | Design: Enterprise Dark | Git: Pushed*
 *Voir: docs/SESSION-205-AUDIT.md pour audit complet*
