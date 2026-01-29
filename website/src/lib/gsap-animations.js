@@ -552,16 +552,20 @@ class ParticleSystem {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.particles = [];
-    this.mouse = { x: null, y: null, radius: 150 };
+    this.mouse = { x: null, y: null, radius: 100 };
     this.animationId = null;
+    this.isVisible = true;
+    this.lastFrameTime = 0;
+    this.targetFPS = 30; // Throttle to 30fps for performance
+    this.frameInterval = 1000 / this.targetFPS;
 
     this.options = {
-      particleCount: options.particleCount || 80,
+      particleCount: options.particleCount || 25, // Reduced for performance
       color: options.color || '#5E6AD2',
       minSize: options.minSize || 1,
-      maxSize: options.maxSize || 3,
-      speed: options.speed || 0.5,
-      connectDistance: options.connectDistance || 120,
+      maxSize: options.maxSize || 2.5,
+      speed: options.speed || 0.25,
+      connectDistance: options.connectDistance || 60, // Reduced connections
       mouseInteraction: options.mouseInteraction !== false
     };
 
@@ -572,7 +576,27 @@ class ParticleSystem {
     this.resize();
     this.createParticles();
     this.bindEvents();
+    this.setupVisibilityDetection();
     this.animate();
+  }
+
+  setupVisibilityDetection() {
+    // Pause when tab not visible
+    document.addEventListener('visibilitychange', () => {
+      this.isVisible = !document.hidden;
+      if (this.isVisible && !this.animationId) {
+        this.animate();
+      }
+    });
+
+    // Pause when not in viewport
+    const observer = new IntersectionObserver((entries) => {
+      this.isVisible = entries[0].isIntersecting;
+      if (this.isVisible && !this.animationId) {
+        this.animate();
+      }
+    }, { threshold: 0.1 });
+    observer.observe(this.canvas);
   }
 
   resize() {
@@ -649,26 +673,46 @@ class ParticleSystem {
       this.ctx.fillStyle = this.hexToRgba(this.options.color, p.opacity);
       this.ctx.fill();
 
-      // Connect particles
-      for (let j = i + 1; j < this.particles.length; j++) {
+      // Connect particles (limit connections for performance)
+      const maxConnections = 3;
+      let connections = 0;
+      for (let j = i + 1; j < this.particles.length && connections < maxConnections; j++) {
         const p2 = this.particles[j];
         const dx = p.x - p2.x;
         const dy = p.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const distSq = dx * dx + dy * dy; // Avoid sqrt for performance
+        const connectDistSq = this.options.connectDistance * this.options.connectDistance;
 
-        if (dist < this.options.connectDistance) {
-          const opacity = (1 - dist / this.options.connectDistance) * 0.3;
+        if (distSq < connectDistSq) {
+          const opacity = (1 - Math.sqrt(distSq) / this.options.connectDistance) * 0.2;
           this.ctx.beginPath();
           this.ctx.moveTo(p.x, p.y);
           this.ctx.lineTo(p2.x, p2.y);
           this.ctx.strokeStyle = this.hexToRgba(this.options.color, opacity);
           this.ctx.lineWidth = 0.5;
           this.ctx.stroke();
+          connections++;
         }
       }
     });
 
-    this.animationId = requestAnimationFrame(() => this.animate());
+    // Continue animation loop with throttling
+    if (this.isVisible) {
+      this.animationId = requestAnimationFrame((timestamp) => this.animateThrottled(timestamp));
+    } else {
+      this.animationId = null;
+    }
+  }
+
+  animateThrottled(timestamp) {
+    const elapsed = timestamp - this.lastFrameTime;
+
+    if (elapsed >= this.frameInterval) {
+      this.lastFrameTime = timestamp - (elapsed % this.frameInterval);
+      this.animate();
+    } else if (this.isVisible) {
+      this.animationId = requestAnimationFrame((ts) => this.animateThrottled(ts));
+    }
   }
 
   hexToRgba(hex, alpha) {
@@ -691,11 +735,11 @@ class FloatingOrb {
     this.container = container;
     this.orbs = [];
     this.options = {
-      count: options.count || 5,
-      colors: options.colors || ['#5E6AD2', '#6366f1', '#a5b4fc', '#818cf8'],
-      minSize: options.minSize || 100,
-      maxSize: options.maxSize || 300,
-      blur: options.blur || 80
+      count: options.count || 3, // Reduced from 5
+      colors: options.colors || ['#5E6AD2', '#6366f1', '#a5b4fc'],
+      minSize: options.minSize || 80,
+      maxSize: options.maxSize || 200, // Reduced from 300
+      blur: options.blur || 40 // Reduced from 80 (blur is expensive)
     };
 
     this.init();
@@ -790,31 +834,44 @@ window.MagneticButton = MagneticButton;
 
 // Auto-initialize on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
+  // Performance: Detect mobile/low-power devices
+  const isMobile = window.innerWidth < 768;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isLowPower = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+  const shouldReduceAnimations = isMobile || prefersReducedMotion || isLowPower;
+
   // Initialize GSAP animations
   const animations = new VocalIAAnimations();
   animations.init();
 
-  // Initialize particle system if canvas exists
+  // Initialize particle system if canvas exists (skip on mobile/low-power)
   const particleCanvas = document.querySelector('[data-particles]');
-  if (particleCanvas) {
+  if (particleCanvas && !shouldReduceAnimations) {
     new ParticleSystem(particleCanvas, {
-      particleCount: 60,
+      particleCount: 25, // Reduced for performance
       color: '#5E6AD2',
-      connectDistance: 100
+      connectDistance: 70 // Reduced connection distance
     });
+  } else if (particleCanvas) {
+    // Hide particle canvas on low-performance devices
+    particleCanvas.style.display = 'none';
   }
 
-  // Initialize floating orbs if container exists
+  // Initialize floating orbs if container exists (fewer on mobile)
   const orbContainer = document.querySelector('[data-floating-orbs]');
-  if (orbContainer) {
+  if (orbContainer && !prefersReducedMotion) {
     new FloatingOrb(orbContainer, {
-      count: 4,
-      colors: ['#5E6AD2', '#6366f1', '#a5b4fc', '#818cf8']
+      count: shouldReduceAnimations ? 2 : 3, // Fewer orbs
+      colors: ['#5E6AD2', '#6366f1', '#a5b4fc']
     });
   }
 
-  // Initialize magnetic buttons
-  document.querySelectorAll('[data-magnetic]').forEach(btn => {
-    new MagneticButton(btn, 0.3);
-  });
+  // Initialize magnetic buttons (desktop only)
+  if (!isMobile) {
+    document.querySelectorAll('[data-magnetic]').forEach(btn => {
+      new MagneticButton(btn, 0.3);
+    });
+  }
+
+  console.log('[VocalIA] Animations initialized', { reducedMode: shouldReduceAnimations });
 });

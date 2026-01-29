@@ -2129,10 +2129,11 @@ html.light .voice-visualizer-btn:hover,
 .hero-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
+  filter: blur(60px); /* Reduced blur for performance */
+  opacity: 0.3;
   will-change: transform;
   pointer-events: none;
+  contain: layout style paint; /* CSS containment for performance */
 }
 
 .hero-orb-1 {

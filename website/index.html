@@ -1193,48 +1193,56 @@
     });
   </script>
 
-  <!-- VocalIA Voice Visualizer -->
-  <script src="/src/lib/voice-visualizer.js"></script>
+  <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
+  <script src="/src/lib/voice-visualizer.js" defer></script>
   <script>
-    // Initialize Voice Visualizers when DOM is ready
+    // Lazy load visualizers only when visible (performance optimization)
     document.addEventListener('DOMContentLoaded', function() {
-      // Check if VoiceVisualizer is available
-      if (typeof VoiceVisualizer !== 'undefined') {
-        // Wave mode visualizer
-        const waveViz = new VoiceVisualizer('#visualizer-wave', {
-          mode: 'wave',
-          color: '#5E6AD2',
-          secondaryColor: '#8b5cf6',
-          demo: true
-        });
+      if (typeof VoiceVisualizer === 'undefined') return;
 
-        // Bars mode visualizer
-        const barsViz = new VoiceVisualizer('#visualizer-bars', {
-          mode: 'bars',
-          color: '#5E6AD2',
-          secondaryColor: '#8b5cf6',
-          barCount: 32,
-          demo: true
-        });
+      const visualizerConfigs = [
+        { id: '#visualizer-wave', mode: 'wave', barCount: null },
+        { id: '#visualizer-bars', mode: 'bars', barCount: 24 },
+        { id: '#visualizer-orb', mode: 'orb', barCount: null },
+        { id: '#visualizer-pulse', mode: 'pulse', barCount: null }
+      ];
 
-        // Orb mode visualizer
-        const orbViz = new VoiceVisualizer('#visualizer-orb', {
-          mode: 'orb',
-          color: '#5E6AD2',
-          secondaryColor: '#8b5cf6',
-          demo: true
-        });
+      const loadedVisualizers = new Map();
 
-        // Pulse mode visualizer
-        const pulseViz = new VoiceVisualizer('#visualizer-pulse', {
-          mode: 'pulse',
-          color: '#5E6AD2',
-          secondaryColor: '#8b5cf6',
-          demo: true
-        });
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const canvas = entry.target;
+          const config = visualizerConfigs.find(c => document.querySelector(c.id) === canvas);
 
-        console.log('[VocalIA] Voice visualizers initialized');
-      }
+          if (entry.isIntersecting && config && !loadedVisualizers.has(config.id)) {
+            // Initialize only when visible
+            const viz = new VoiceVisualizer(config.id, {
+              mode: config.mode,
+              color: '#5E6AD2',
+              secondaryColor: '#8b5cf6',
+              barCount: config.barCount || 24,
+              demo: true
+            });
+            loadedVisualizers.set(config.id, viz);
+          } else if (!entry.isIntersecting && loadedVisualizers.has(config?.id)) {
+            // Pause when not visible
+            const viz = loadedVisualizers.get(config.id);
+            if (viz && viz.pause) viz.pause();
+          } else if (entry.isIntersecting && loadedVisualizers.has(config?.id)) {
+            // Resume when visible again
+            const viz = loadedVisualizers.get(config.id);
+            if (viz && viz.resume) viz.resume();
+          }
+        });
+      }, { rootMargin: '100px', threshold: 0.1 });
+
+      // Observe all visualizer canvases
+      visualizerConfigs.forEach(config => {
+        const canvas = document.querySelector(config.id);
+        if (canvas) observer.observe(canvas);
+      });
+
+      console.log('[VocalIA] Lazy loading visualizers enabled');
     });
   </script>
 
