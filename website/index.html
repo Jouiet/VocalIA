@@ -1133,37 +1133,29 @@
     </div>
   </section>
 
-  <!-- Newsletter CTA (Session 210: Brand-consistent design) -->
-  <section class="py-20 bg-gradient-to-b from-transparent via-slate-900/50 to-slate-900">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <div class="glass rounded-3xl p-10 md:p-14 relative overflow-hidden border border-indigo-500/20">
-        <!-- Background glow - Brand colors -->
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-violet-500/10 pointer-events-none"></div>
-        <div class="absolute -top-20 -right-20 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-violet-500/20 rounded-full blur-3xl"></div>
-
-        <div class="relative z-10">
-          <h2 class="text-2xl md:text-4xl font-bold mb-4 text-white">
-            Restez informé des dernières actualités <span class="gradient-text">Voice AI</span>
-          </h2>
-          <p class="text-slate-400 mb-8 text-lg">
-            Recevez nos articles, guides et études de cas directement dans votre boîte mail. Pas de spam, promis.
-          </p>
-          <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Merci pour votre inscription!');">
-            <input
-              type="email"
-              placeholder="votre@email.com"
-              class="flex-1 px-5 py-4 bg-slate-800/80 border border-slate-600/50 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/20 transition text-lg"
-              required
-            >
-            <button type="submit" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-bold text-lg text-white transition-all transform hover:scale-105 hover:-translate-y-0.5 whitespace-nowrap shadow-lg shadow-vocalia-500/30">
-              S'inscrire
-            </button>
-          </form>
-          <p class="text-xs text-slate-500 mt-6">
-            En vous inscrivant, vous acceptez notre <a href="/privacy" class="underline hover:text-white transition">politique de confidentialité</a>.
+  <!-- Newsletter CTA (Session 210: Compact brand-consistent design) -->
+  <section class="py-12 bg-slate-900/50">
+    <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
+        <div class="text-center mb-6">
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
+            Restez informé des actualités <span class="gradient-text">Voice AI</span>
+          </h3>
+          <p class="text-slate-400 text-sm">
+            Articles, guides et études de cas. Pas de spam.
           </p>
         </div>
+        <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); alert('Merci pour votre inscription!');">
+          <input
+            type="email"
+            placeholder="votre@email.com"
+            class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/20 transition text-sm"
+            required
+          >
+          <button type="submit" class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap">
+            S'inscrire
+          </button>
+        </form>
       </div>
     </div>
   </section>

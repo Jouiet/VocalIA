@@ -24,17 +24,17 @@ class VoiceVisualizer {
 
     this.ctx = this.canvas.getContext('2d');
 
-    // BLUE EQUALIZER palette - Classic audio visualizer style
+    // SUBTLE BLUE palette - Elegant, non-aggressive
     this.options = {
       mode: options.mode || 'wave',
-      // Blue gradient palette (from user reference image)
-      primaryColor: options.primaryColor || '#5cb8ff',    // Bright Sky Blue
-      secondaryColor: options.secondaryColor || '#1e90ff', // Dodger Blue
-      accentColor: options.accentColor || '#a8d8ff',       // Light Ice Blue
-      glowColor: options.glowColor || '#ffffff',           // White glow for intensity
-      barCount: options.barCount || 48,
-      sensitivity: options.sensitivity || 1.5,
-      smoothing: options.smoothing || 0.7,
+      // Muted blue palette - elegant not aggressive
+      primaryColor: options.primaryColor || '#6b9bd1',    // Soft Steel Blue
+      secondaryColor: options.secondaryColor || '#4a7fb8', // Muted Blue
+      accentColor: options.accentColor || '#8bb8e0',       // Light Periwinkle
+      glowColor: options.glowColor || '#6b9bd1',           // Matching glow (not white)
+      barCount: options.barCount || 32,
+      sensitivity: options.sensitivity || 1.0,
+      smoothing: options.smoothing || 0.8,
       demo: options.demo !== false,
       showAmbient: options.showAmbient !== false,
       ...options
@@ -173,11 +173,11 @@ class VoiceVisualizer {
   /**
    * Draw ambient background glow
    */
-  drawAmbient(intensity = 0.5) {
-    // Bottom-up gradient glow
+  drawAmbient(intensity = 0.2) {
+    // Very subtle bottom gradient
     const gradient = this.ctx.createLinearGradient(0, this.height, 0, 0);
-    gradient.addColorStop(0, `${this.options.primaryColor}${Math.floor(intensity * 40).toString(16).padStart(2, '0')}`);
-    gradient.addColorStop(0.5, `${this.options.accentColor}15`);
+    gradient.addColorStop(0, `${this.options.primaryColor}${Math.floor(intensity * 20).toString(16).padStart(2, '0')}`);
+    gradient.addColorStop(0.4, 'transparent');
     gradient.addColorStop(1, 'transparent');
 
     this.ctx.fillStyle = gradient;
@@ -185,8 +185,8 @@ class VoiceVisualizer {
   }
 
   draw() {
-    // Clear with slight fade for trail effect - darker for more contrast
-    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.88)';
+    // Clear canvas completely - clean look
+    this.ctx.fillStyle = 'rgba(15, 20, 30, 1)';
     this.ctx.fillRect(0, 0, this.width, this.height);
 
     // Calculate average for ambient
@@ -194,9 +194,9 @@ class VoiceVisualizer {
     for (let i = 0; i < this.dataArray.length; i++) avg += this.dataArray[i];
     avg = avg / this.dataArray.length / 255;
 
-    // Draw stronger ambient glow
+    // Subtle ambient glow
     if (this.options.showAmbient) {
-      this.drawAmbient(avg * 1.2 + 0.3);
+      this.drawAmbient(avg * 0.3 + 0.1);
     }
 
     switch (this.options.mode) {
@@ -247,12 +247,12 @@ class VoiceVisualizer {
         }
       }
 
-      // Intense glow effect
-      this.ctx.strokeStyle = glow === 0 ? '#ffffff' : gradient;
-      this.ctx.lineWidth = glow === 0 ? 3 : 4 + glow * 5;
-      this.ctx.globalAlpha = glow === 0 ? 1 : 0.25;
-      this.ctx.shadowColor = this.options.glowColor;
-      this.ctx.shadowBlur = 20 + glow * 20;
+      // Subtle glow effect
+      this.ctx.strokeStyle = gradient;
+      this.ctx.lineWidth = glow === 0 ? 2 : 1 + glow * 2;
+      this.ctx.globalAlpha = glow === 0 ? 0.9 : 0.12;
+      this.ctx.shadowColor = this.options.primaryColor;
+      this.ctx.shadowBlur = 5 + glow * 5;
       this.ctx.stroke();
     }
 
@@ -319,9 +319,9 @@ class VoiceVisualizer {
       const lightness = 55 + value * 25;     // Brighter: 55-80%
       const barColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
-      // INTENSE Glow effect
-      this.ctx.shadowColor = '#ffffff';
-      this.ctx.shadowBlur = 25 + value * 40;
+      // Subtle glow effect
+      this.ctx.shadowColor = this.options.primaryColor;
+      this.ctx.shadowBlur = 4 + value * 8;
 
       // Bar gradient
       const barGradient = this.ctx.createLinearGradient(x, y + barHeight, x, y);
@@ -440,9 +440,9 @@ class VoiceVisualizer {
 
     this.ctx.globalAlpha = 1;
 
-    // Core orb with ULTRA intense glow
-    this.ctx.shadowColor = '#ffffff';
-    this.ctx.shadowBlur = 60 + avg * 50;
+    // Core orb with subtle glow
+    this.ctx.shadowColor = this.options.primaryColor;
+    this.ctx.shadowBlur = 15 + avg * 10;
 
     const coreRadius = baseRadius * 0.65 * (1 + avg * 0.25);
     const coreGradient = this.ctx.createRadialGradient(
@@ -522,9 +522,9 @@ class VoiceVisualizer {
     // Center pulse beacon
     const pulseRadius = 25 + avg * 40;
 
-    // ULTRA bright outer glow
-    this.ctx.shadowColor = '#ffffff';
-    this.ctx.shadowBlur = 80;
+    // Subtle outer glow
+    this.ctx.shadowColor = this.options.primaryColor;
+    this.ctx.shadowBlur = 20;
 
     const beaconGradient = this.ctx.createRadialGradient(
       centerX, centerY, 0,
