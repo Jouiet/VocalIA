@@ -104,11 +104,11 @@
     --primary-dark: #4f46e5;
     --primary-glow: rgba(94, 106, 210, 0.25);
 
-    /* Surfaces - Ultra-dark (Linear-inspired) */
-    --bg-base: #09090b;
-    --bg-raised: #111114;
-    --bg-elevated: #18181b;
-    --bg-overlay: #27272a;
+    /* Surfaces - Dark Slate (Enterprise, more visible) */
+    --bg-base: #0f172a;
+    --bg-raised: #1e293b;
+    --bg-elevated: #334155;
+    --bg-overlay: #475569;
 
     /* Text - High contrast */
     --text-primary: #fafafa;
@@ -116,11 +116,11 @@
     --text-muted: #71717a;
     --text-disabled: #52525b;
 
-    /* Borders - Subtle */
-    --border-subtle: rgba(161, 161, 170, 0.1);
-    --border-default: rgba(161, 161, 170, 0.15);
-    --border-strong: rgba(161, 161, 170, 0.25);
-    --border-accent: rgba(94, 106, 210, 0.4);
+    /* Borders - More visible */
+    --border-subtle: rgba(148, 163, 184, 0.15);
+    --border-default: rgba(148, 163, 184, 0.25);
+    --border-strong: rgba(148, 163, 184, 0.35);
+    --border-accent: rgba(99, 102, 241, 0.5);
 
     /* Focus - 2px outline, Linear spec */
     --focus-ring: #5E6AD2;
