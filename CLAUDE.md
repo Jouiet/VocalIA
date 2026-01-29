@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 3.1.0 | 29/01/2026 | Session 216 | Backend: 99/100 | Frontend: ~96% | Health: 100%
+> Version: 3.3.0 | 29/01/2026 | Session 218 | Backend: 99/100 | Frontend: ~96% | Health: 100%
 
 ## Identité
 
@@ -688,18 +688,109 @@ grep -r "3A" core/ widget/ personas/ --include="*.cjs"  # → 0 hits ✅
 
 ---
 
-## PLAN ACTIONNABLE (Session 217)
+## Session 217 Summary
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Industry pages (Healthcare, Real Estate) | P2 | 4 pages planned |
-| 2 | Legal pages (Privacy, Terms) | P2 | GDPR compliance |
-| 3 | Integrations page | P2 | CRM/E-commerce partners |
-| 4 | API Reference page | P2 | Developer documentation |
+**Legal Pages + Integrations:**
+
+### Implémentations Session 217
+
+| Task | Status | Details |
+|:-----|:------:|:--------|
+| Privacy Policy | ✅ DONE | `/privacy` - RGPD, AI Act, Loi 09-08 |
+| Terms of Service | ✅ DONE | `/terms` - 10 sections légales complètes |
+| Integrations Page | ✅ DONE | `/integrations` - 20+ intégrations |
+
+### Pages Légales Features
+
+| Page | Sections |
+|:-----|:---------|
+| **Privacy** | Données collectées, utilisation, base légale, partage, sécurité, droits RGPD, cookies, IA vocale |
+| **Terms** | Objet, définitions, accès, services, obligations, tarifs, PI, responsabilité, résiliation |
+
+### Integrations Documentées (20+)
+
+| Catégorie | Intégrations |
+|:----------|:-------------|
+| **CRM** | HubSpot, Salesforce, Pipedrive, Zoho |
+| **E-commerce** | Shopify, WooCommerce, Magento, Klaviyo |
+| **Communication** | Twilio, Slack, Teams, WhatsApp |
+| **Calendriers** | Google Calendar, Outlook, Calendly, Cal.com |
+| **Support** | Zendesk, Freshdesk, Intercom, Crisp |
+
+### Website Pages Status (17 total)
+
+| Tier | Pages | Status |
+|:-----|:------|:------:|
+| Core | Home, Features, Pricing, About, Contact, Docs | ✅ 6/6 |
+| Products | Voice Widget, Voice Telephony | ✅ 2/2 |
+| Use Cases | E-commerce, Support, Appointments, Leads | ✅ 4/4 |
+| Resources | Integrations | ✅ 1/1 |
+| Legal | Privacy, Terms | ✅ 2/2 |
+| Dashboards | Client, Admin | ✅ 2/2 |
+| **TOTAL** | **17 pages** | **100%** |
+
+**Git:** Commit `d32f0de`
 
 ---
 
-*Màj: 29/01/2026 - Session 216 (Use Cases + Auto-Deploy)*
+## Session 218 Summary
+
+**Industry Pages Implementation:**
+
+### Implémentations Session 218
+
+| Task | Status | Details |
+|:-----|:------:|:--------|
+| Healthcare | ✅ DONE | `/industries/healthcare` - HIPAA, HDS, RGPD Santé |
+| Real Estate | ✅ DONE | `/industries/real-estate` - BANT qualification, CRM immo |
+| Finance | ✅ DONE | `/industries/finance` - PCI DSS, SOC 2, DORA |
+| Retail | ✅ DONE | `/industries/retail` - Omnicanal, Click & Collect |
+
+### Industry Pages Features
+
+| Page | Key Features |
+|:-----|:-------------|
+| **Healthcare** | Prise RDV, rappels no-show, pré-consultation, suivi post-op |
+| **Real Estate** | Qualification BANT, visites, présentation biens, suivi acquéreurs |
+| **Finance** | Authentification vocale, opérations bancaires, sinistres, crédit |
+| **Retail** | Suivi commandes, Click & Collect, retours, fidélité |
+
+### Compliance Badges par Industrie
+
+| Industrie | Certifications |
+|:----------|:---------------|
+| Healthcare | HIPAA, RGPD Santé, HDS |
+| Finance | PCI DSS L1, SOC 2 Type II, DORA, AI Act |
+| Real Estate | RGPD |
+| Retail | RGPD |
+
+### Website Pages Status (21 total)
+
+| Tier | Pages | Status |
+|:-----|:------|:------:|
+| Core | Home, Features, Pricing, About, Contact, Docs | ✅ 6/6 |
+| Products | Voice Widget, Voice Telephony | ✅ 2/2 |
+| Use Cases | E-commerce, Support, Appointments, Leads | ✅ 4/4 |
+| Industries | Healthcare, Real Estate, Finance, Retail | ✅ 4/4 **NEW** |
+| Resources | Integrations | ✅ 1/1 |
+| Legal | Privacy, Terms | ✅ 2/2 |
+| Dashboards | Client, Admin | ✅ 2/2 |
+| **TOTAL** | **21 pages** | **100%** |
+
+---
+
+## PLAN ACTIONNABLE (Session 219)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | API Reference page (/docs/api) | P1 | Developer documentation |
+| 2 | Blog listing page | P3 | Marketing content |
+| 3 | Changelog page | P3 | Version history |
+
+---
+
+*Màj: 29/01/2026 - Session 218 (Industry Pages)*
 *Status: Backend 99/100 ✅ | Frontend ~96% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Auto-Deploy: GitHub Actions → NindoHost*
+*Pages: 21 HTML | Compliance: GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*

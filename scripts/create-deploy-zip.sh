@@ -40,6 +40,10 @@ cp -r website/products/*.html "$DEPLOY_DIR/products/"
 mkdir -p "$DEPLOY_DIR/use-cases"
 cp -r website/use-cases/*.html "$DEPLOY_DIR/use-cases/"
 
+# Copy industries directory
+mkdir -p "$DEPLOY_DIR/industries"
+cp -r website/industries/*.html "$DEPLOY_DIR/industries/"
+
 # Copy dashboard directory
 mkdir -p "$DEPLOY_DIR/dashboard"
 cp -r website/dashboard/*.html "$DEPLOY_DIR/dashboard/"
