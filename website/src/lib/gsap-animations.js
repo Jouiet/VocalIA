@@ -57,6 +57,11 @@ class VocalIAAnimations {
       gsap.registerPlugin(ScrollTrigger);
     }
 
+    // Mark body as GSAP-ready (enables CSS hiding for reveal animations)
+    if (window.gsap && window.ScrollTrigger) {
+      document.body.classList.add('gsap-ready');
+    }
+
     // Initialize animation systems
     this.initHeroAnimations();
     this.initScrollReveal();
@@ -96,13 +101,29 @@ class VocalIAAnimations {
         }
       }, 50);
 
-      // Timeout after 5s
+      // Timeout after 5s - reveal elements as fallback
       setTimeout(() => {
         clearInterval(check);
         console.warn('[VocalIA] GSAP not loaded, using fallback animations');
+        this.revealAllElements();
         resolve();
       }, 5000);
     });
+  }
+
+  /**
+   * Fallback: Reveal all hidden elements when GSAP fails
+   */
+  revealAllElements() {
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    document.querySelectorAll('[data-bento-item]').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+    console.log('[VocalIA] Fallback: All elements revealed');
   }
 
   /**
@@ -194,7 +215,11 @@ class VocalIAAnimations {
    * Scroll Reveal Animations
    */
   initScrollReveal() {
-    if (!window.gsap || !window.ScrollTrigger) return;
+    if (!window.gsap || !window.ScrollTrigger) {
+      // Fallback: reveal all elements immediately
+      this.revealAllElements();
+      return;
+    }
 
     // Fade up elements
     document.querySelectorAll('[data-reveal="up"]').forEach(el => {

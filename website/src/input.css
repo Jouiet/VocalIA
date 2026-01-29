@@ -2540,25 +2540,34 @@ html.light .voice-visualizer-btn:hover,
 
 /* =======================================================================
    Scroll Reveal Animation Classes (for GSAP)
+   Fallback: Elements visible by default, hidden only when JS is ready
    ======================================================================= */
-[data-reveal] {
+
+/* Only hide elements when GSAP is available (body gets .gsap-ready class) */
+body.gsap-ready [data-reveal] {
   opacity: 0;
 }
 
-[data-reveal="up"] {
+body.gsap-ready [data-reveal="up"] {
   transform: translateY(60px);
 }
 
-[data-reveal="left"] {
+body.gsap-ready [data-reveal="left"] {
   transform: translateX(-60px);
 }
 
-[data-reveal="right"] {
+body.gsap-ready [data-reveal="right"] {
   transform: translateX(60px);
 }
 
-[data-reveal="scale"] {
+body.gsap-ready [data-reveal="scale"] {
   transform: scale(0.9);
+}
+
+/* Without .gsap-ready, elements remain visible (fallback) */
+[data-reveal] {
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /* =======================================================================

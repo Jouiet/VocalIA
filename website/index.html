@@ -74,8 +74,8 @@
   <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS (Sovereign) - Preloaded -->
-  <link rel="preload" href="/public/css/style.css?v=221" as="style">
-  <link href="/public/css/style.css?v=221" rel="stylesheet">
+  <link rel="preload" href="/public/css/style.css?v=222" as="style">
+  <link href="/public/css/style.css?v=222" rel="stylesheet">
 
   <!-- DNS Prefetch & Preconnect for external resources -->
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -706,17 +706,23 @@
         <div class="relative group">
           <div class="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition pointer-events-none"></div>
           <div class="relative bg-slate-800/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6 h-full flex flex-col items-center justify-center">
-            <video
-              id="heroVideo"
-              src="/public/videos/vocalia-demo-fr.mp4"
-              class="w-full h-auto rounded-xl shadow-lg shadow-indigo-500/30 cursor-pointer ring-1 ring-indigo-500/20"
-              autoplay muted loop playsinline
-              onclick="this.muted = !this.muted; document.getElementById('videoSoundBadge').textContent = this.muted ? 'Clic = Son' : 'Son activé';"
-              aria-label="Démonstration VocalIA - Cliquez pour activer le son">
-            </video>
-            <div id="videoSoundBadge" class="mt-3 px-3 py-1.5 bg-slate-900/80 rounded-lg text-xs text-zinc-300 flex items-center gap-2">
-              <i data-lucide="volume-2" class="w-3 h-3"></i>
-              Clic = Son
+            <div class="relative w-full">
+              <video
+                id="heroVideo"
+                src="/public/videos/vocalia-demo-fr.mp4"
+                class="w-full h-auto rounded-xl shadow-lg shadow-indigo-500/30 cursor-pointer ring-1 ring-indigo-500/20"
+                autoplay muted loop playsinline
+                aria-label="Démonstration VocalIA - Cliquez pour activer le son">
+              </video>
+              <!-- Sound toggle overlay - appears on hover -->
+              <button
+                id="videoSoundToggle"
+                onclick="const v=document.getElementById('heroVideo'); v.muted=!v.muted; this.querySelector('.icon-muted').classList.toggle('hidden',!v.muted); this.querySelector('.icon-unmuted').classList.toggle('hidden',v.muted);"
+                class="absolute bottom-3 right-3 w-10 h-10 bg-slate-900/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-slate-700/50 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-200 group"
+                aria-label="Activer/désactiver le son">
+                <i data-lucide="volume-x" class="icon-muted w-4 h-4 text-zinc-400 group-hover:text-white transition-colors"></i>
+                <i data-lucide="volume-2" class="icon-unmuted w-4 h-4 text-indigo-400 hidden"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -1446,7 +1452,7 @@
   </script>
 
   <!-- VocalIA GSAP Animation System -->
-  <script src="/src/lib/gsap-animations.js" defer></script>
+  <script src="/src/lib/gsap-animations.js?v=222" defer></script>
   <script>
     // Scroll Progress Indicator
     window.addEventListener('scroll', () => {
@@ -1461,7 +1467,7 @@
   </script>
 
   <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
-  <script src="/src/lib/voice-visualizer.js?v=221" defer></script>
+  <script src="/src/lib/voice-visualizer.js?v=222" defer></script>
   <script src="/src/lib/card-tilt.js" defer></script>
   <script>
     // Lazy load visualizers only when visible (performance optimization)
