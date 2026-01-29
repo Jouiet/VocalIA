@@ -374,29 +374,29 @@ class VoiceVisualizer {
   }
 
   /**
-   * ORB - Pulsing energy orb with rays
+   * ORB - Elegant pulsing orb with subtle rays
    */
   drawOrb() {
     const centerX = this.width / 2;
     const centerY = this.height / 2;
-    const baseRadius = Math.min(this.width, this.height) * 0.28;
+    const baseRadius = Math.min(this.width, this.height) * 0.22; // Smaller base
 
     // Average amplitude
     let avg = 0;
     for (let i = 0; i < this.dataArray.length; i++) avg += this.dataArray[i];
     avg = avg / this.dataArray.length / 255;
 
-    // Outer glow rings
-    for (let ring = 5; ring >= 0; ring--) {
-      const ringRadius = baseRadius * (1.5 + ring * 0.15 + avg * 0.4);
-      const alpha = (0.4 - ring * 0.06) * (0.5 + avg * 0.5);
+    // Outer glow rings - fewer and more subtle
+    for (let ring = 2; ring >= 0; ring--) {
+      const ringRadius = baseRadius * (1.3 + ring * 0.12 + avg * 0.2);
+      const alpha = (0.2 - ring * 0.05) * (0.4 + avg * 0.3);
 
       const gradient = this.ctx.createRadialGradient(
-        centerX, centerY, ringRadius * 0.5,
+        centerX, centerY, ringRadius * 0.6,
         centerX, centerY, ringRadius
       );
       gradient.addColorStop(0, `${this.options.primaryColor}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`);
-      gradient.addColorStop(0.7, `${this.options.secondaryColor}${Math.floor(alpha * 0.3 * 255).toString(16).padStart(2, '0')}`);
+      gradient.addColorStop(0.7, `${this.options.secondaryColor}${Math.floor(alpha * 0.2 * 255).toString(16).padStart(2, '0')}`);
       gradient.addColorStop(1, 'transparent');
 
       this.ctx.beginPath();
@@ -405,17 +405,17 @@ class VoiceVisualizer {
       this.ctx.fill();
     }
 
-    // Energy rays
-    const rayCount = 48;
+    // Energy rays - fewer and thinner
+    const rayCount = 24; // Reduced from 48
     this.ctx.lineCap = 'round';
 
     for (let i = 0; i < rayCount; i++) {
-      const angle = (i / rayCount) * Math.PI * 2 + this.time * 0.5;
+      const angle = (i / rayCount) * Math.PI * 2 + this.time * 0.3; // Slower rotation
       const dataIndex = Math.floor(i * this.dataArray.length / rayCount);
       const value = this.dataArray[dataIndex] / 255;
 
-      const innerRadius = baseRadius * (0.9 + avg * 0.2);
-      const rayLength = baseRadius * 0.4 + value * baseRadius * 0.8;
+      const innerRadius = baseRadius * (0.95 + avg * 0.1);
+      const rayLength = baseRadius * 0.3 + value * baseRadius * 0.5; // Shorter rays
       const outerRadius = innerRadius + rayLength;
 
       const x1 = centerX + Math.cos(angle) * innerRadius;
@@ -426,32 +426,32 @@ class VoiceVisualizer {
       // Ray gradient
       const rayGradient = this.ctx.createLinearGradient(x1, y1, x2, y2);
       rayGradient.addColorStop(0, this.options.primaryColor);
-      rayGradient.addColorStop(0.6, this.options.secondaryColor);
+      rayGradient.addColorStop(0.5, this.options.secondaryColor);
       rayGradient.addColorStop(1, 'transparent');
 
       this.ctx.beginPath();
       this.ctx.moveTo(x1, y1);
       this.ctx.lineTo(x2, y2);
       this.ctx.strokeStyle = rayGradient;
-      this.ctx.lineWidth = 2 + value * 3;
-      this.ctx.globalAlpha = 0.6 + value * 0.4;
+      this.ctx.lineWidth = 1 + value * 1.5; // Thinner rays
+      this.ctx.globalAlpha = 0.4 + value * 0.3; // More transparent
       this.ctx.stroke();
     }
 
     this.ctx.globalAlpha = 1;
 
-    // Core orb with subtle glow
+    // Core orb - smaller with subtle glow
     this.ctx.shadowColor = this.options.primaryColor;
-    this.ctx.shadowBlur = 15 + avg * 10;
+    this.ctx.shadowBlur = 8 + avg * 5; // Reduced glow
 
-    const coreRadius = baseRadius * 0.65 * (1 + avg * 0.25);
+    const coreRadius = baseRadius * 0.55 * (1 + avg * 0.15); // Smaller core
     const coreGradient = this.ctx.createRadialGradient(
-      centerX - coreRadius * 0.2, centerY - coreRadius * 0.2, 0,
+      centerX - coreRadius * 0.15, centerY - coreRadius * 0.15, 0,
       centerX, centerY, coreRadius
     );
     coreGradient.addColorStop(0, '#ffffff');
-    coreGradient.addColorStop(0.2, this.options.primaryColor);
-    coreGradient.addColorStop(0.6, this.options.secondaryColor);
+    coreGradient.addColorStop(0.25, this.options.primaryColor);
+    coreGradient.addColorStop(0.7, this.options.secondaryColor);
     coreGradient.addColorStop(1, this.options.accentColor);
 
     this.ctx.beginPath();
@@ -461,16 +461,16 @@ class VoiceVisualizer {
 
     this.ctx.shadowBlur = 0;
 
-    // Inner shine
+    // Inner shine - smaller
     const shineGradient = this.ctx.createRadialGradient(
-      centerX - coreRadius * 0.3, centerY - coreRadius * 0.3, 0,
-      centerX, centerY, coreRadius * 0.6
+      centerX - coreRadius * 0.25, centerY - coreRadius * 0.25, 0,
+      centerX, centerY, coreRadius * 0.45
     );
-    shineGradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)');
+    shineGradient.addColorStop(0, 'rgba(255, 255, 255, 0.5)');
     shineGradient.addColorStop(1, 'transparent');
 
     this.ctx.beginPath();
-    this.ctx.arc(centerX, centerY, coreRadius * 0.6, 0, Math.PI * 2);
+    this.ctx.arc(centerX, centerY, coreRadius * 0.45, 0, Math.PI * 2);
     this.ctx.fillStyle = shineGradient;
     this.ctx.fill();
   }
