@@ -2,7 +2,7 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 2.0 | **Date:** 30/01/2026 | **Session:** 249.2
+> **Version:** 2.1 | **Date:** 30/01/2026 | **Session:** 249.3
 > **Approche:** Bottom-Up Factuelle | **Méthodologie:** Recherche Web + Analyse Code Source
 
 ---
@@ -65,16 +65,17 @@ Pas de wishful thinking. Pas de claims non vérifiés.
 | **Agence** | Vente de temps + expertise | Réduit temps setup de 5-16h à 1-2h |
 | **Plug-and-Play** | Outils auto-configurables | Multiplicateur d'efficacité interne |
 
-### 1.2 État Actuel (Score Plug-and-Play) - Updated Session 249.2
+### 1.2 État Actuel (Score Plug-and-Play) - Updated Session 249.3
 
 | Composant | Score Actuel | Score Cible | Notes |
 |:----------|:------------:|:-----------:|:------|
-| MCP Server | 60% | 85% | 21 tools, multi-tenant ready |
+| MCP Server | **80%** | 85% | 59 tools, multi-tenant ready, Phase 1 COMPLETE |
 | Voice Widget | 25% | 90% | Web Speech API |
 | Shopify Integration | 10% | 80% | Basic, needs expansion |
 | Klaviyo Integration | 15% | 85% | Basic, needs expansion |
 | Multi-tenant | **85%** | 90% | ✅ Phase 0 COMPLETE |
-| **GLOBAL** | **45%** | **85%** | +27% from Phase 0 |
+| **Integrations** | **55%** | 85% | 11/20 (Calendly, Freshdesk, Pipedrive ✅) |
+| **GLOBAL** | **55%** | **85%** | +10% from Phase 1 |
 
 ### 1.3 Investissement Requis
 

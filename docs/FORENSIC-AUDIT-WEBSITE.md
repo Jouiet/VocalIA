@@ -19,7 +19,7 @@
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
-> **MCP Server**: v0.3.3 SOTA (21 tools, BM25 RAG) ✅ (Session 241)
+> **MCP Server**: v0.5.0 SOTA (59 tools, BM25 RAG) ✅ (Session 249.3)
 > **CSS Safelist**: Opacity classes (bg-white/25, etc.) ✅ (Session 237)
 > **Marketing Score**: B+ (Solid B2B SaaS, Missing Social Proof)
 > **Investor Page**: ✅ COMPLETE (Session 244) - investor.html
