@@ -1,8 +1,8 @@
 # VocalIA - Voice AI Platform
 
-> Version: 4.9.0 | 30/01/2026 | Session 241 | Health: 100%
+> Version: 5.0.0 | 30/01/2026 | Session 241.2 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | 1444 keys | RTL ✅ | QA Scripts ✅
-> SDKs: Python | Node.js | MCP Server v0.3.2 (21 tools)
+> SDKs: Python | Node.js | MCP Server v0.3.2 (21 tools) | RAG: BM25 SOTA
 
 ## Identité
 
@@ -194,4 +194,4 @@ open http://localhost:8080?lang=ar
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Màj: 30/01/2026 - Session 241 (SOTA Audit: 85% aligned, Voice/ContextBox SOTA)*
+*Màj: 30/01/2026 - Session 241.2 (BM25 RAG, SOTA 90% aligned)*

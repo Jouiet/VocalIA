@@ -2942,7 +2942,7 @@ VocalIA's architecture is **85% SOTA-aligned**:
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 30/01/2026 - Session 241 (SOTA Optimization Audit)*
+*Màj: 30/01/2026 - Session 241.2 (BM25 RAG SOTA Implementation)*
 *Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Icons: Lucide 2026 ✅ | Logos: 21 SVG ✅*
 *CSS: Tailwind v4.1.18 ✅ | Safelist classes ✅ | 141KB compiled*
