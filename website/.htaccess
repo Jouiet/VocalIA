@@ -41,6 +41,9 @@ RewriteRule ^dashboard/?$ /dashboard/client.html [L]
     # Referrer Policy
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
 
+    # HSTS - Force HTTPS for 1 year, include subdomains, preload
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
     # CSP (Content Security Policy)
     Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'"
 </IfModule>

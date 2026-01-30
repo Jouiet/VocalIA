@@ -174,7 +174,7 @@ open http://localhost:8080?lang=ar
 | 4 | ✅ Add AI bot rules to robots.txt | Done | 0a15878 |
 | 5 | ✅ Add FAQPage schema (pricing.html) | Done | 0a15878 |
 | 6 | ✅ Add Speakable schema (index.html) | Done | 0a15878 |
-| 7 | ✅ Add HSTS header (vercel.json) | Done | 0a15878 |
+| 7 | ✅ Add HSTS header (.htaccess) | Done | 0a15878 |
 | 8 | ✅ Add orphan pages to sitemap | Done | 0a15878 |
 | 9 | ✅ Create investor.html | Done | Session 244 |
 

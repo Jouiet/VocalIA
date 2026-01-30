@@ -1501,7 +1501,7 @@ URL: https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFK
 | 4 | Add AI bot rules to robots.txt (GPTBot, ClaudeBot) | AEO | 30min |
 | 5 | Add FAQPage schema to pricing.html, docs/index.html | AEO | 2h |
 | 6 | Add Speakable schema to homepage | AEO + Brand fit | 1h |
-| 7 | Add HSTS header to vercel.json | Security | 30min |
+| 7 | Add HSTS header to .htaccess | Security | 30min |
 | 8 | Add 9 orphan pages to sitemap.xml | SEO | 1h |
 
 #### P2 - MEDIUM (Fix Next Sprint)
@@ -1571,7 +1571,7 @@ URL: https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFK
 | 4 | Add AI bot rules (GPTBot, ClaudeBot, etc.) | ✅ | robots.txt |
 | 5 | Add FAQPage schema | ✅ | pricing.html |
 | 6 | Add Speakable schema | ✅ | index.html |
-| 7 | Add HSTS header | ✅ | vercel.json |
+| 7 | Add HSTS header | ✅ | .htaccess |
 | 8 | Add 8 orphan pages to sitemap | ✅ | sitemap.xml |
 
 ### Score Changes
