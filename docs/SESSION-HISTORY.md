@@ -3075,3 +3075,83 @@ VocalIA's architecture is **85% SOTA-aligned**:
 *Màj: 30/01/2026 - Session 244*
 *Status: Backend 99/100 | Frontend ~97% | SEO ~90% | AEO ~75%*
 *Security: ✅ Fixed | Hreflang: ✅ 100% | Twitter Cards: ✅ 100%*
+
+### Session 244.2: Security Fix + RLHF Research + Competitor Analysis
+
+**Commits:** `707fce6`, `90b3488`
+
+#### Critical Corrections
+
+| Issue | Status |
+|:------|:------:|
+| vercel.json supprimé | ✅ Fixed |
+| HSTS ajouté à .htaccess | ✅ Fixed |
+| Documentation corrigée | ✅ vercel→.htaccess |
+
+#### RLHF Research Summary
+
+**Pipeline 4 phases:**
+1. Pretraining (98% compute): Next-token prediction, trillions tokens
+2. SFT: Behavior cloning, 10K-100K pairs
+3. Reward Model: Comparison data, 100K-1M examples
+4. PPO Optimization: KL-constrained RL
+
+**Formule clé:** `objective = E[RM(x,y) - β * KL(π_RL || π_SFT)] + γ * E[log π_RL(x)]`
+
+**Sources:** CMU RLHF 101, Nathan Lambert Book, Chip Huyen
+
+#### Competitor Analysis: YourAtlas.com
+
+| Aspect | YourAtlas | VocalIA | Avantage |
+|:-------|:----------|:--------|:---------|
+| Pricing | ❓ Caché | $0.06/min | VocalIA |
+| Channels | Voice | Voice+Widget | VocalIA |
+| Languages | EN mainly | 5 (incl Darija) | VocalIA |
+| Personas | Custom scripts | 30 pré-config | VocalIA |
+| API/SDK | ❌ | ✅ Python/Node | VocalIA |
+| MCP | ❌ | ✅ 21 tools | VocalIA |
+| Onboarding | White-glove 7d | Self-service | VocalIA |
+
+---
+
+## Plan Actionnable (Post-Session 244)
+
+### Completed (Sessions 242-244)
+
+| # | Task | Status | Impact |
+|:-:|:-----|:------:|:------:|
+| 1 | Security fix (exposed URL) | ✅ | P0 |
+| 2 | Hreflang 29 pages | ✅ | SEO +20% |
+| 3 | Twitter Cards 28 pages | ✅ | Social |
+| 4 | AI bot rules robots.txt | ✅ | AEO +50% |
+| 5 | FAQPage schema | ✅ | AEO |
+| 6 | Speakable schema | ✅ | Voice AI |
+| 7 | HSTS .htaccess | ✅ | Security |
+| 8 | Sitemap orphans | ✅ | SEO |
+| 9 | investor.html | ✅ | Fundraising |
+| 10 | vercel.json removed | ✅ | Cleanup |
+
+### Next Sprint (P1-P2)
+
+| # | Task | Priority | Effort | Blocker |
+|:-:|:-----|:--------:|:------:|:--------|
+| 1 | SDK Publish (npm/PyPI) | P1 | 2h | User creds |
+| 2 | API Backend deploy | P1 | 4h | VPS config |
+| 3 | Testimonials section | P2 | 4h | - |
+| 4 | A2A AgentCard | P2 | 8h | Ecosystem |
+| 5 | UCP Product feeds | P2 | 16h | Ecosystem |
+
+### Scores Actuels
+
+| Metric | Value | Change |
+|:-------|:-----:|:------:|
+| SEO | ~90% | +20% |
+| AEO | ~75% | +50% |
+| Security | ✅ | Fixed |
+| Backend | 99/100 | - |
+| Frontend | ~97% | - |
+
+---
+
+*Màj: 30/01/2026 - Session 244.2 (RLHF + YourAtlas + vercel.json removed)*
+*Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

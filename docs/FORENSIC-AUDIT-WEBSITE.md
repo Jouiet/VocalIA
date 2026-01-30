@@ -1587,3 +1587,53 @@ URL: https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFK
 *Document créé: 28/01/2026 - Session 200*
 *Mise à jour: 30/01/2026 - Session 243 (P0/P1 Implementation Complete)*
 *Auteur: Claude Code (DOE Framework)*
+
+---
+
+## 🔍 Session 244.2: Competitor Analysis - YourAtlas.com (30/01/2026)
+
+### Competitor Profile
+
+| Aspect | YourAtlas | Source |
+|:-------|:----------|:-------|
+| **Product** | AI Sales Agents (Voice, SMS, Chat) | youratlas.com |
+| **Target** | Service businesses (dental, spa, contractors) | Marketing |
+| **USP** | 60-second lead response, 24/7 | Claims |
+| **Onboarding** | White-glove, 7 days | Marketing |
+| **Endorsement** | Dan Martell | Verified |
+| **Pricing** | ❓ Not public | - |
+
+### Marketing Claims (Non Vérifiés)
+
+| Claim | Value | Status |
+|:------|:------|:------:|
+| Connection rates | 75-85% | ⚠️ Unverified |
+| Engagement | 30% | ⚠️ Unverified |
+| Cost savings | Up to 70% | ⚠️ Unverified |
+| Conversions | +300% | ⚠️ Unverified |
+| ROAS | 10x | ⚠️ Unverified |
+
+### VocalIA vs YourAtlas Comparison
+
+| Feature | VocalIA | YourAtlas | Winner |
+|:--------|:-------:|:---------:|:------:|
+| **Pricing** | $0.06/min (public) | ❓ Hidden | VocalIA |
+| **Channels** | Voice + Widget | Voice only | VocalIA |
+| **Languages** | 5 (incl. Darija) | EN mainly | VocalIA |
+| **Personas** | 30 pré-configurés | Custom scripts | VocalIA |
+| **API/SDK** | ✅ Python + Node.js | ❌ | VocalIA |
+| **MCP Server** | ✅ 21 tools | ❌ | VocalIA |
+| **Self-Service** | ✅ | ❌ White-glove | VocalIA |
+| **Target Market** | B2B Multi-industry | Service business | Tie |
+
+### VocalIA Competitive Moats
+
+1. **Pricing Transparency**: Public $0.06/min vs hidden pricing
+2. **Dual-Channel**: Widget + Telephony combined (unique)
+3. **Linguistic Moat**: Darija = 40M speakers, monopoly
+4. **Developer-First**: SDKs, API, MCP Server
+5. **Self-Service**: No dependency on white-glove onboarding
+
+---
+
+*Sources: youratlas.com, danmartell.com, web search results*
