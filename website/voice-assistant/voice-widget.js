@@ -21,8 +21,9 @@
 
     // Paths
     LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
-    // SECURITY: API endpoint - configure via window.VOCALIA_BOOKING_API or use default
+    // Security: API Config
     BOOKING_API: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking',
+    VOICE_API: window.VOCALIA_VOICE_API || 'http://localhost:3004/respond', // Connect to Real AI
 
     // Branding
     primaryColor: '#4FBAF1',
@@ -363,6 +364,21 @@
           from { opacity: 1; transform: translateX(0) scale(1); }
           to { opacity: 0; transform: translateX(${isRTL ? '-' : ''}20px) scale(0.9); }
         }
+        
+        /* A2UI Overlay */
+        .va-a2ui-overlay {
+          position: absolute; top: 72px; left: 0; right: 0;
+          padding: 6px 12px;
+          background: rgba(16, 185, 129, 0.95); /* Emerald */
+          color: white; font-size: 11px; font-weight: 600;
+          display: flex; align-items: center; justify-content: center; gap: 6px;
+          transform: translateY(-100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+          backdrop-filter: blur(4px); border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .va-a2ui-overlay.visible { transform: translateY(0); }
+        .va-a2ui-overlay.corrected { background: rgba(245, 158, 11, 0.95); } /* Amber */
+        
         @media (max-width: 480px) { .va-panel { width: calc(100vw - 40px); ${position}: -10px; } }
       </style>
 
@@ -383,6 +399,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
         </div>
+        <div id="va-a2ui-overlay" class="va-a2ui-overlay"></div>
 
         <div class="va-messages" id="va-messages"></div>
 
@@ -834,16 +851,59 @@
       if (ctx.bookingFlow.step === 'submitting') {
         return await processBookingConfirmation();
       }
-      if (bookingResponse) return bookingResponse;
+      if (bookingResponse) return { text: bookingResponse };
     }
 
-    // 2. Check for booking intent
+    // 2. Try Remote Voice API (The "Real" Intelligence with A2UI)
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
+
+      // Generate Session ID if missing
+      if (!state.sessionId) state.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+
+      const responseVal = await fetch(CONFIG.VOICE_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMessage,
+          sessionId: state.sessionId,
+          language: state.currentLang,
+          history: state.conversationHistory.slice(-6) // Send context
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (responseVal.ok) {
+        const data = await responseVal.json();
+        if (data.success && data.response) {
+          // Process Lead Data if present
+          if (data.lead && data.lead.score) {
+            state.conversationContext.leadScore = data.lead.score;
+            // Could trigger specific UI update here too
+          }
+
+          return {
+            text: data.response,
+            a2ui: data.a2ui || null
+          };
+        }
+      }
+    } catch (e) {
+      console.warn("[VocalIA] Voice API failed, falling back to local rules", e);
+    }
+
+    // --- FALLBACK (Rule-Based) ---
+    // Return objects now instead of strings
+
+    // 3. Check for booking intent
     if (isBookingIntent(lower)) {
       ctx.bookingFlow.active = true;
       ctx.bookingFlow.step = 'name';
       ctx.bookingFlow.data.service = L.booking.service;
       trackEvent('voice_booking_started', { step: 'name' });
-      return L.booking.messages.start;
+      return { text: L.booking.messages.start };
     }
 
     // 3. Update context with detected industry/need
@@ -907,7 +967,7 @@
     }
 
     // 9. True default - qualification question
-    return L.defaults.qualificationQuestion;
+    return { text: L.defaults.qualificationQuestion };
   }
 
   // ============================================================
@@ -922,92 +982,143 @@
     showTyping();
 
     try {
-      const response = await getAIResponse(text);
-      hideTyping();
-      addMessage(response, 'assistant');
-    } catch (error) {
-      hideTyping();
-      addMessage(state.langData.ui.errorMessage, 'assistant');
-      console.error('[VocalIA] Response error:', error);
-    }
-  }
+      try {
+        const result = await getAIResponse(text);
+        hideTyping();
 
-  // ============================================================
-  // PANEL CONTROL
-  // ============================================================
+        const responseText = result.text || result; // Handle backward compat (though we updated all returns)
+        addMessage(responseText, 'assistant');
 
-  function togglePanel() {
-    state.isOpen = !state.isOpen;
-    const panel = document.getElementById('va-panel');
-
-    if (state.isOpen) {
-      panel.classList.add('open');
-      trackEvent('voice_panel_opened');
-
-      if (state.conversationHistory.length === 0) {
-        const L = state.langData;
-        const welcomeMsg = needsTextFallback ? L.ui.welcomeMessageTextOnly : L.ui.welcomeMessage;
-        addMessage(welcomeMsg, 'assistant');
+        // Update A2UI
+        if (result.a2ui) {
+          updateA2UI(result.a2ui);
+        }
+      } catch (error) {
+        hideTyping();
+        addMessage(state.langData.ui.errorMessage, 'assistant');
+        console.error('[VocalIA] Response error:', error);
       }
-      document.getElementById('va-input').focus();
+    }
+
+  // ============================================================
+  // A2UI RENDERER (Agentic UI)
+  // ============================================================
+  function updateA2UI(metadata) {
+      if (!metadata) return;
+      const overlay = document.getElementById('va-a2ui-overlay');
+      if (!overlay) return;
+
+      // Reset classes
+      overlay.className = 'va-a2ui-overlay';
+
+      // Content Logic
+      let content = '';
+      let isVisible = false;
+
+      if (metadata.verification === 'corrected') {
+        content = `
+        <span style="font-size: 14px;">⚡</span> 
+        <span>Auto-Corrected (${metadata.latency}ms)</span>
+      `;
+        overlay.classList.add('corrected');
+        isVisible = true;
+      } else if (metadata.verification === 'approved') {
+        content = `
+        <span style="font-size: 14px;">🛡️</span> 
+        <span>Verified (${metadata.latency}ms)</span>
+      `;
+        isVisible = true;
+      }
+
+      if (isVisible) {
+        overlay.innerHTML = content;
+        // Trigger reflow
+        void overlay.offsetWidth;
+        overlay.classList.add('visible');
+
+        // Auto-hide
+        setTimeout(() => {
+          overlay.classList.remove('visible');
+        }, 4000);
+      }
+    }
+
+    // ============================================================
+    // PANEL CONTROL
+    // ============================================================
+
+    function togglePanel() {
+      state.isOpen = !state.isOpen;
+      const panel = document.getElementById('va-panel');
+
+      if (state.isOpen) {
+        panel.classList.add('open');
+        trackEvent('voice_panel_opened');
+
+        if (state.conversationHistory.length === 0) {
+          const L = state.langData;
+          const welcomeMsg = needsTextFallback ? L.ui.welcomeMessageTextOnly : L.ui.welcomeMessage;
+          addMessage(welcomeMsg, 'assistant');
+        }
+        document.getElementById('va-input').focus();
+      } else {
+        panel.classList.remove('open');
+        if (state.synthesis) state.synthesis.cancel();
+        trackEvent('voice_panel_closed');
+      }
+    }
+
+    // ============================================================
+    // EVENT LISTENERS
+    // ============================================================
+
+    function initEventListeners() {
+      document.getElementById('va-trigger').addEventListener('click', togglePanel);
+      document.getElementById('va-close').addEventListener('click', togglePanel);
+
+      document.getElementById('va-send').addEventListener('click', () => {
+        sendMessage(document.getElementById('va-input').value);
+      });
+
+      document.getElementById('va-input').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage(e.target.value);
+      });
+
+      if (hasSpeechRecognition) {
+        initSpeechRecognition();
+        const micBtn = document.getElementById('va-mic');
+        if (micBtn) {
+          micBtn.addEventListener('click', toggleListening);
+        }
+      }
+    }
+
+    // ============================================================
+    // INITIALIZATION
+    // ============================================================
+
+    async function init() {
+      try {
+        const lang = detectLanguage();
+        console.log(`[VocalIA] Detected language: ${lang}`);
+
+        await loadLanguage(lang);
+        console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
+
+        captureAttribution(); // Session 177: MarEng Injector
+        createWidget();
+        trackEvent('voice_widget_loaded', { language: state.currentLang });
+
+      } catch (error) {
+        console.error('[VocalIA] Init error:', error);
+      }
+    }
+
+    // Start
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
     } else {
-      panel.classList.remove('open');
-      if (state.synthesis) state.synthesis.cancel();
-      trackEvent('voice_panel_closed');
+      init();
     }
-  }
 
-  // ============================================================
-  // EVENT LISTENERS
-  // ============================================================
-
-  function initEventListeners() {
-    document.getElementById('va-trigger').addEventListener('click', togglePanel);
-    document.getElementById('va-close').addEventListener('click', togglePanel);
-
-    document.getElementById('va-send').addEventListener('click', () => {
-      sendMessage(document.getElementById('va-input').value);
-    });
-
-    document.getElementById('va-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendMessage(e.target.value);
-    });
-
-    if (hasSpeechRecognition) {
-      initSpeechRecognition();
-      const micBtn = document.getElementById('va-mic');
-      if (micBtn) {
-        micBtn.addEventListener('click', toggleListening);
-      }
-    }
-  }
-
-  // ============================================================
-  // INITIALIZATION
-  // ============================================================
-
-  async function init() {
-    try {
-      const lang = detectLanguage();
-      console.log(`[VocalIA] Detected language: ${lang}`);
-
-      await loadLanguage(lang);
-      console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
-
-      captureAttribution(); // Session 177: MarEng Injector
-      createWidget();
-      trackEvent('voice_widget_loaded', { language: state.currentLang });
-
-    } catch (error) {
-      console.error('[VocalIA] Init error:', error);
-    }
-  }
-
-  // Start
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
-})();
+  }) ();

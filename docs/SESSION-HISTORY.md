@@ -1,7 +1,8 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.13.0 | **Updated**: 30/01/2026 | **Session**: 245
+> **Version**: 3.14.0 | **Updated**: 30/01/2026 | **Session**: 246
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
+> **Integrations Check**: 4/16 (25%) - CRITICAL GAP DETECTED
 
 ---
 
@@ -615,6 +616,39 @@ grep "data-i18n-params" website/dashboard/client.html | wc -l
 
 - **Health**: `scripts/health-check.cjs` output confirmed all systems operational.
 - **Configuration**: Verified `deploy config` syntax and header values.
+
+### Session 246 (30/01/2026) - FORENSIC AUDIT OF INTEGRATIONS (BRUTAL TRUTH)
+
+**Directive:** Verify existence and nature of all integrations listed on the "Integrations" page.
+
+**Audit Findings (The "Brutal Truth"):**
+
+- **Claimed**: 16 "Native" Integrations (HubSpot, Salesforce, Slack, Google Calendar, etc.)
+- **Reality**: Only 4 are partially implemented in codebase.
+- **Verdict**: **75% GAP**.
+
+| Integration | Claimed | Reality | Status |
+|:---|:---|:---|:---|
+| **HubSpot** | Native | `crm_create_contact` (MCP) | ✅ Active (Partial) |
+| **Shopify** | Native | `ecommerce_product_stock` | ✅ Active (Partial) |
+| **Salesforce** | Native | ❌ 0 references | ❌ False Claim |
+| **Slack** | Native | ❌ 0 references | ❌ False Claim |
+| **Google Cal**| Native | `booking-queue.json` | ❌ False Claim |
+
+**Actions Taken:**
+
+1. **Forensic Scan**: `grep` search across `core/`, `integrations/`, and `automations/`.
+2. **Documentation Update**:
+    - Updated `FORENSIC-AUDIT-WEBSITE.md` with full reality check.
+    - Updated `PLUG-AND-PLAY-STRATEGY.md` with Integration Gap Analysis.
+    - Updated `VOCALIA-MCP.md` priorities.
+3. **Strategy Shift**:
+    - **Immediate**: Implement **Google Calendar MCP** and **Slack MCP** to close critical gaps.
+
+**Health Check**: 39/39 (100%) ✅ (Codebase healthy, but missing features).
+
+---
+
 - **Status**: **FORENSIC AUDIT & REMEDIATION COMPLETE**. The VocalIA frontend is now SOTA, Sovereign, Secure, and Accessible.
 
 **Final Forensic Verification (Session 199):**
@@ -3301,6 +3335,7 @@ grep -roh 'data-i18n' *.html */*.html */*/*.html | wc -l  # 2016
     - ZIP de déploiement créé: `vocalia-website-20260130-160933.zip`.
 
 **État Final**:
+
 - Translation QA: ✅ 100% Passed
 - Darija Authenticity: ✅ 100% Authentic
 - Health Check: ✅ 39/39 (100%)

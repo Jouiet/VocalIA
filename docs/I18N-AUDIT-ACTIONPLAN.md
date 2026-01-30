@@ -40,6 +40,7 @@
 ### 1.2 Verdict Global
 
 **Le système i18n est 100% COMPLET.**
+
 - ✅ **Phase 0-7 COMPLETE**: All pages internationalized
 - ✅ **7355 total translations** (1471 keys × 5 languages)
 - ✅ **Translations are REAL** (not FR copies) - Verified EN/ES differ ~85% from FR
@@ -69,6 +70,7 @@
 | **TOTAL** | **455** | **295** | **100%** |
 
 **Session 228.4 Changes:**
+
 - index.html: 42 → 114 (+72 attributes)
 - Added 23 tier2/tier3 _desc keys to fr.json (1260 → 1283)
 - Synced all 5 locales (6415 total translations)
@@ -85,6 +87,7 @@
 | **TOTAL** | **294** | **174** | **100%** |
 
 **Session 228.5 Changes:**
+
 - Added 161 new use-case specific keys to fr.json (1283 → 1444)
 - Synced all 5 locales (7220 total translations)
 - All 4 use-case pages now fully internationalized:
@@ -107,15 +110,15 @@
 
 ## 2. Contexte & Exigences
 
-### 2.1 Marchés Cibles
+### 2.1 Marchés Cibles (STRICT RULES ENFORCED - Session 246)
 
-| Marché | Langue Site | Devise | Détection |
-|:-------|:------------|:-------|:----------|
-| **Maroc** | Français | MAD (DH) | Geo IP |
-| **Algérie, Tunisie** | Français | EUR (€) | Geo IP |
-| **Europe** | Français | EUR (€) | Geo IP |
-| **MENA (hors Maghreb)** | Anglais | USD ($) | Geo IP |
-| **International** | Anglais | USD ($) | Geo IP |
+| Marché | Langue Site | Devise | Détection | Status |
+|:-------|:------------|:-------|:----------|:------:|
+| **Maroc** | Français | MAD (DH) | IP/TZ | ✅ ENFORCED |
+| **Algérie, Tunisie** | Français | EUR (€) | IP/TZ | ✅ ENFORCED |
+| **Europe** | Français | EUR (€) | IP/TZ | ✅ ENFORCED |
+| **MENA (hors Maghreb)** | Anglais | USD ($) | IP/TZ | ✅ ENFORCED |
+| **International** | Anglais | USD ($) | IP/TZ | ✅ ENFORCED |
 
 ### 2.2 Langues Supportées
 
@@ -284,6 +287,7 @@ Plan d'action priorisé
 ### 5.2 Gap Header Navigation - ✅ FIXED
 
 Toutes les 32 pages ont un header traduit avec:
+
 - ✅ `data-i18n` sur tous les boutons de navigation
 - ✅ Language switcher fonctionnel (5 langues)
 - ✅ Texte dynamique selon langue sélectionnée
@@ -444,6 +448,7 @@ website/src/locales/
 #### Tâche 0.1: Ajouter scripts aux 21 pages manquantes
 
 **Fichiers concernés:**
+
 ```
 about.html
 contact.html
@@ -469,6 +474,7 @@ blog/articles/ai-act-europe-voice-ai.html
 ```
 
 **Code à ajouter (avant </body>):**
+
 ```html
 <!-- i18n & Geo Detection -->
 <script src="/src/lib/geo-detect.js?v=241"></script>
@@ -478,6 +484,7 @@ blog/articles/ai-act-europe-voice-ai.html
 #### Tâche 0.2: Ajouter Language Switcher à toutes les pages
 
 **Template Language Switcher:**
+
 ```html
 <div class="relative">
   <button id="langBtn" aria-label="Choisir la langue"
@@ -511,6 +518,7 @@ blog/articles/ai-act-europe-voice-ai.html
 Copier le header de `components/header.html` (avec data-i18n) vers toutes les pages.
 
 **Validation Phase 0:**
+
 - [ ] 34/34 pages ont geo-detect.js
 - [ ] 34/34 pages ont i18n.js
 - [ ] 34/34 pages ont le language switcher
@@ -525,6 +533,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 #### Tâche 1.1: features.html
 
 **Éléments à traduire:**
+
 - Page title & meta
 - Hero section
 - Feature cards (12+)
@@ -532,6 +541,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 - CTAs
 
 **Clés à créer (estimé: 60):**
+
 ```json
 "pages": {
   "features": {
@@ -565,6 +575,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 #### Tâche 1.2: pricing.html
 
 **Éléments à traduire:**
+
 - Page title & meta
 - Hero section
 - Pricing cards (4 plans)
@@ -573,6 +584,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 - CTAs
 
 **Clés à créer (estimé: 50):**
+
 ```json
 "pages": {
   "pricing": {
@@ -596,6 +608,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 ```
 
 **Validation Phase 1:**
+
 - [ ] features.html entièrement traduit (5 langues)
 - [ ] pricing.html entièrement traduit (5 langues)
 - [ ] Toutes les clés ajoutées aux 5 fichiers locale
@@ -609,6 +622,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 #### Tâche 2.1: about.html (~40 clés)
 
 **Sections:**
+
 - Hero (mission)
 - Values (4-5 cards)
 - Team section
@@ -618,6 +632,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 #### Tâche 2.2: contact.html (~25 clés)
 
 **Sections:**
+
 - Hero
 - Contact form (labels, placeholders, buttons)
 - Contact info (email, phone, address)
@@ -626,6 +641,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 #### Tâche 2.3: products/voice-widget.html (~50 clés)
 
 **Sections:**
+
 - Hero
 - Features (8+ items)
 - How it works
@@ -637,6 +653,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 #### Tâche 2.4: products/voice-telephony.html (~50 clés)
 
 **Sections:**
+
 - Hero
 - Features (8+ items)
 - Use cases
@@ -646,6 +663,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 - CTA
 
 **Validation Phase 2:**
+
 - [ ] 4 pages entièrement traduites
 - [ ] ~165 clés ajoutées aux 5 fichiers locale
 
@@ -656,13 +674,14 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 **Pages:** 5 pages industries - **4/5 COMPLETE** (index.html partial)
 
 **Verified Results:**
+
 - healthcare.html: 90 data-i18n ✅
 - finance.html: 93 data-i18n ✅
 - real-estate.html: 79 data-i18n ✅
 - retail.html: 79 data-i18n ✅
 - index.html: 42 data-i18n (needs +50 for segments/features)
 
-#### Structure commune par page (~38 clés chacune):
+#### Structure commune par page (~38 clés chacune)
 
 ```json
 "industries": {
@@ -701,6 +720,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 ```
 
 **Validation Phase 3:** ✅ VERIFIED 30/01/2026
+
 - [x] 4/5 pages industries traduites (index partial)
 - [x] 237 clés utilisées sur 361 disponibles (66%)
 - [x] 383 total data-i18n attributes
@@ -713,7 +733,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 
 **Note:** Ces pages ont déjà i18n.js mais pas de data-i18n sur le contenu.
 
-#### Structure commune (~30 clés chacune):
+#### Structure commune (~30 clés chacune)
 
 ```json
 "use_cases": {
@@ -732,6 +752,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 ```
 
 **Validation Phase 4:**
+
 - [ ] 4 pages use-cases traduites
 - [ ] ~120 clés ajoutées
 
@@ -742,31 +763,37 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 **Pages:** `docs/index.html`, `docs/api.html`, `privacy.html`, `terms.html`, `integrations.html`
 
 #### docs/index.html (~50 clés)
+
 - Getting started
 - Quick links
 - Categories
 
 #### docs/api.html (~50 clés)
+
 - API sections
 - Code examples labels
 - Response descriptions
 
 #### privacy.html (~80 clés)
+
 - Sections RGPD
 - Droits utilisateurs
 - Cookies policy
 
 #### terms.html (~100 clés)
+
 - 10+ sections légales
 - Définitions
 - Clauses
 
 #### integrations.html (~60 clés)
+
 - Hero
 - Integration cards
 - Categories
 
 **Validation Phase 5:**
+
 - [ ] 5 pages traduites
 - [ ] ~280 clés ajoutées
 
@@ -785,6 +812,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 **Recommandation:** Option B (traduire UI: navigation, sidebar, footer) + garder articles en FR
 
 **Clés blog/index.html (~20 clés):**
+
 ```json
 "blog": {
   "meta_title": "",
@@ -886,6 +914,7 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 | `darija-validator.py` | Détecte contamination MSA | `python3 scripts/darija-validator.py` |
 
 **Critères de Détection:**
+
 - Truncation: traduction < 60% longueur référence FR
 - Identique: traduction = FR (non traduite)
 - MSA: marqueurs formels arabes dans Darija (e.g., التي، الذي، لذلك)

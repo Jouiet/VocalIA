@@ -48,6 +48,7 @@
 **Localisation:** `scripts/sync-locales.py`
 
 **Ce qu'il FAIT (vérifié lignes 129-188, 191-267):**
+
 ```
 ✅ check_locales(): Compte clés manquantes/extras
 ✅ sync_locales(): Copie structure FR vers autres locales
@@ -57,6 +58,7 @@
 ```
 
 **Ce qu'il NE FAIT PAS (vérifié - fonctions inexistantes):**
+
 ```
 ❌ check_translation_length(): N'existe pas
 ❌ check_semantic_consistency(): N'existe pas
@@ -70,6 +72,7 @@
 **Localisation:** `sensors/voice-quality-sensor.cjs`
 
 **Ce qu'il FAIT (vérifié lignes 28-98):**
+
 ```
 ✅ checkVoiceEndpoints(): Ping ports 3004, 3007, 3009
 ✅ checkAIProviders(): Vérifie ElevenLabs, OpenAI API keys
@@ -78,6 +81,7 @@
 ```
 
 **Ce qu'il NE FAIT PAS:**
+
 ```
 ❌ Aucune vérification de traduction
 ❌ Aucune vérification de qualité textuelle
@@ -89,6 +93,7 @@
 **Localisation:** `scripts/health-check.cjs`
 
 **Ce qu'il FAIT (vérifié lignes 24-136):**
+
 ```
 ✅ Vérifie existence fichiers (fs.existsSync)
 ✅ Charge modules (require())
@@ -97,6 +102,7 @@
 ```
 
 **Ce qu'il NE FAIT PAS:**
+
 ```
 ❌ Aucune validation contenu traductions
 ❌ Ne vérifie que l'EXISTENCE, pas la QUALITÉ
@@ -107,6 +113,7 @@
 **Localisation:** `mcp-server/src/index.ts`
 
 **Tools par catégorie (vérifié lignes 8-17):**
+
 ```
 Voice: 2 tools (voice_generate_response, voice_providers_status)
 Persona: 3 tools (personas_list, personas_get, personas_get_system_prompt)
@@ -127,6 +134,7 @@ TRANSLATION QA TOOLS: 0
 **Localisation:** `website/src/lib/i18n.js`
 
 **Ce qu'il FAIT (vérifié lignes 14-193):**
+
 ```
 ✅ loadTranslations(locale): Fetch /src/locales/{locale}.json
 ✅ t(key, params): Traduction avec interpolation {{param}}
@@ -136,6 +144,7 @@ TRANSLATION QA TOOLS: 0
 ```
 
 **Ce qu'il NE FAIT PAS:**
+
 ```
 ❌ Aucune validation qualité
 ❌ Aucune détection de traduction manquante
@@ -151,6 +160,7 @@ TRANSLATION QA TOOLS: 0
 **Status:** N'EXISTE PAS
 **Impact:** Traductions tronquées non détectées
 **Données:**
+
 - 148 clés avec traduction <60% longueur FR
 - AR: 67 clés tronquées (4.6%)
 - ARY: 55 clés tronquées (3.8%)
@@ -162,6 +172,7 @@ TRANSLATION QA TOOLS: 0
 **Status:** N'EXISTE PAS
 **Impact:** Incohérences sémantiques non détectées
 **Exemple vérifié:**
+
 - `pricing_page.title` FR="Tarifs" EN="Transparent"
 - Analyse: OK - "Tarifs Transparents" vs "Transparent Pricing" (ordre différent, sémantique OK)
 - Mais AUCUN système ne vérifie cela automatiquement
@@ -172,12 +183,14 @@ TRANSLATION QA TOOLS: 0
 **Impact:** Contamination MSA non détectée
 
 **Marqueurs Darija (référence):**
+
 ```javascript
 DARIJA_MARKERS = ['واش', 'ديال', 'كاين', 'بزاف', 'دابا', 'كنت', 'كيف', 'علاش', 'فين', 'شنو', 'تال', 'بلاش']
 MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 'إن', 'أن']
 ```
 
 **Vérification empirique knowledge_base_ary.json:**
+
 ```
 ✅ "ديال" - 15+ occurrences (authentique)
 ✅ "تال" - 10+ occurrences (authentique "jusqu'à")
@@ -188,6 +201,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 ```
 
 **Vérification empirique voice-ary.json:**
+
 ```
 ✅ "ديال" - 20+ occurrences
 ✅ "بزاف" - présent
@@ -204,6 +218,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 **Status:** N'EXISTE PAS
 **Impact:** Ton non adapté pour Voice AI
 **Problèmes identifiés:**
+
 - ES: Utilise "usted" (formel) au lieu de "tú" (conversationnel)
 - AR: Mélange MSA formel et dialectal
 
@@ -212,6 +227,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 **Status:** N'EXISTE PAS
 **Impact:** Mots mal prononcés par TTS
 **Risques:**
+
 - Acronymes (BANT, ROI, API)
 - Noms propres
 - Termes techniques
@@ -246,6 +262,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 **Lignes:** 107 (avec _meta)
 
 **Qualité Darija vérifiée:**
+
 ```
 ✅ Vocabulaire authentique
 ✅ Grammaire Darija
@@ -254,6 +271,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 ```
 
 **Différence FR↔ARY:**
+
 - FR: 16 secteurs
 - ARY: 15 secteurs (manque 1)
 - À vérifier: quel secteur manque
@@ -265,6 +283,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 ### 5.1 voice-fr.json (143 lignes)
 
 **Structure:**
+
 ```json
 {
   "meta": { "version", "lang", "code", "rtl", "speechSynthesis", "speechRecognition" },
@@ -280,6 +299,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 ### 5.2 voice-ary.json (143 lignes)
 
 **Qualité Darija:**
+
 ```
 ✅ UI traduit en Darija authentique
 ✅ Topics avec keywords Darija
@@ -289,6 +309,7 @@ MSA_FORMAL = ['التي', 'الذي', 'لذلك', 'وبالتالي', 'هذا', 
 ```
 
 **Exemples de qualité:**
+
 ```
 FR: "Bonjour ! Je suis l'assistant VocalIA."
 ARY: "أهلاً! أنا المساعد ديال VocalIA."

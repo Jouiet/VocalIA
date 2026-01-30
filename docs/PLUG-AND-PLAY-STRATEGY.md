@@ -1,4 +1,5 @@
 # VocalIA - STRATÉGIE PLUG-AND-PLAY
+
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
 > **Version:** 1.0 | **Date:** 27/01/2026 | **Session:** 180
@@ -137,6 +138,7 @@ grep -r "tenantId|client_id" automations/ --include="*.cjs"
 | Authorization Code | Non-embedded | ⚠️ | Standard OAuth 2.0 |
 
 **Code requis (Shopify officiel):**
+
 ```javascript
 // 1. Récupérer session token (header ou URL)
 const sessionToken = request.headers['authorization']?.replace('Bearer ', '');
@@ -163,6 +165,7 @@ const accessToken = await shopify.auth.tokenExchange({
 | Migration estimée: 2-4 semaines | 1 dev, effort modéré |
 
 **Code requis (Klaviyo officiel):**
+
 ```javascript
 // PKCE obligatoire
 const codeVerifier = generateCodeVerifier(); // 43-128 chars
@@ -188,6 +191,7 @@ POST https://a.klaviyo.com/oauth/token
 | Stateful connections | Stateless patterns | Smithery approach |
 
 **Solutions existantes:**
+
 - **Sage MCP:** FastAPI + React, multi-tenant platform ([GitHub](https://github.com/modelcontextprotocol/servers))
 - **MCP Plexus:** Python framework, OAuth 2.1
 - **IBM ContextForge:** Gateway federation
@@ -204,6 +208,7 @@ POST https://a.klaviyo.com/oauth/token
 | **VocalIA Voice** | TBD | ✅ Own stack | ⚠️ En développement |
 
 **White-Label Solutions:**
+
 - [VoiceAIWrapper](https://voiceaiwrapper.com/) - Rebrand Vapi/Retell/ElevenLabs
 - [Vapify](https://vapify.agency/) - Vapi white-label agency platform
 
@@ -222,6 +227,19 @@ POST https://a.klaviyo.com/oauth/token
 | MCP Multi-tenant | 20% | 85% | -65% | 2 semaines |
 | Voice Widget Config | 25% | 90% | -65% | 1 semaine |
 | Onboarding Flow | 0% | 85% | -85% | 2 semaines |
+
+### 4.2 Integration Reality Gap (Session 246)
+
+**Audit Verdict:** 75% of "Native" integrations claimed on the website **DO NOT EXIST** in the codebase.
+
+| Integration | Claimed | Reality | Gap |
+|:---|:---|:---|:---|
+| **Calendars** | Google, Outlook, Calendly | Native | ❌ **100% GAP** (JSON only) |
+| **Sales** | Salesforce, Pipedrive, Zoho | Native | ❌ **100% GAP** (Missing) |
+| **Support** | Zendesk, Intercom | Native | ❌ **100% GAP** (Missing) |
+| **Comms** | Slack, Teams | Native | ❌ **100% GAP** (Missing) |
+
+**Strategic Resolution:** Use MCP to implement these as **Plug-and-Play Tools** in Phase 4.
 
 ### 4.2 Blockers Prioritaires
 
@@ -349,6 +367,7 @@ POST https://a.klaviyo.com/oauth/token
 | Client registry API | `dashboard/src/app/api/clients/` | 200 |
 
 **Critères de succès:**
+
 - [ ] `node scripts/create-client.cjs --name "Test" --vertical shopify` fonctionne
 - [ ] `/clients/test/config.json` créé avec structure correcte
 - [ ] API `/api/clients` liste les clients
@@ -367,6 +386,7 @@ POST https://a.klaviyo.com/oauth/token
 | Update credential-validator | `core/credential-validator.cjs` | 100 |
 
 **Infisical Setup (Source: [Infisical Docs](https://infisical.com/docs)):**
+
 ```bash
 # Docker deployment
 git clone https://github.com/Infisical/infisical.git
@@ -378,6 +398,7 @@ npm install @infisical/sdk
 ```
 
 **Code wrapper:**
+
 ```javascript
 // SecretVault.cjs
 const { InfisicalClient } = require('@infisical/sdk');
@@ -411,6 +432,7 @@ module.exports = new SecretVault();
 ```
 
 **Critères de succès:**
+
 - [ ] Infisical accessible sur `http://localhost:8080`
 - [ ] `SecretVault.getSecret('client-a', 'SHOPIFY_ACCESS_TOKEN')` retourne valeur
 - [ ] Secrets agence migrés vers project `agency`
@@ -431,6 +453,7 @@ module.exports = new SecretVault();
 | Install callback | `dashboard/src/app/auth/callback/page.tsx` | 100 |
 
 **shopify.app.toml:**
+
 ```toml
 name = "VocalIA"
 client_id = "YOUR_CLIENT_ID"
@@ -448,6 +471,7 @@ api_version = "2024-01"
 ```
 
 **Route callback:**
+
 ```javascript
 // dashboard/src/app/api/auth/shopify/callback/route.ts
 import { shopifyApi } from '@shopify/shopify-api';
@@ -486,6 +510,7 @@ export async function GET(request) {
 | Token refresh | Cron job | 100 |
 
 **PKCE Implementation:**
+
 ```javascript
 // lib/pkce.ts
 import crypto from 'crypto';
@@ -516,6 +541,7 @@ export async function exchangeToken(code: string, verifier: string) {
 ```
 
 **Critères de succès:**
+
 - [ ] Install Shopify app → Token stocké dans Infisical
 - [ ] Connect Klaviyo → Token stocké dans Infisical
 - [ ] Token refresh automatique avant expiration
@@ -533,6 +559,7 @@ export async function exchangeToken(code: string, verifier: string) {
 | Update tool handlers | Multiple files | 300 |
 
 **Tenant Middleware:**
+
 ```javascript
 // middleware/tenant.js
 const SecretVault = require('../../agency/core/SecretVault.cjs');
@@ -561,6 +588,7 @@ async function tenantMiddleware(request, context) {
 ```
 
 **Tool Handler Update Pattern:**
+
 ```javascript
 // Before (single-tenant)
 const SHOPIFY_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
@@ -584,6 +612,7 @@ async function handler(params, context) {
 | Widget customization | `landing-page-hostinger/voice-assistant/voice-widget-core.js` | 100 |
 
 **Widget Configuration:**
+
 ```javascript
 // voice-assistant/config.js
 window.VocalIAConfig = {
@@ -603,6 +632,7 @@ window.VocalIAConfig = {
 ```
 
 **Embed Code:**
+
 ```html
 <!-- VocalIA Voice Widget -->
 <script>
@@ -615,6 +645,7 @@ window.VocalIAConfig = {
 ```
 
 **Dynamic CORS:**
+
 ```javascript
 // voice-api-resilient.cjs
 const allowedOrigins = async (tenantId) => {
@@ -650,6 +681,7 @@ app.use((req, res, next) => {
 | Documentation | `docs/CLIENT-ONBOARDING.md` | N/A |
 
 **Onboarding Flow:**
+
 ```
 Step 1: Create Account
         ↓
@@ -752,38 +784,45 @@ Semaines 11-12: Phase 5 (Onboarding)
 ## 9. SOURCES & RÉFÉRENCES
 
 ### 9.1 Multi-Tenant Architecture
+
 - [Frontegg - SaaS Multitenancy](https://frontegg.com/blog/saas-multitenancy)
 - [Azure - Multitenant Solution Architecture](https://learn.microsoft.com/en-us/azure/architecture/guide/saas-multitenant-solution-architecture/)
 - [WorkOS - Developer's Guide](https://workos.com/blog/developers-guide-saas-multi-tenant-architecture)
 - [Clerk - Multi-Tenant vs Single-Tenant](https://clerk.com/blog/multi-tenant-vs-single-tenant)
 
 ### 9.2 Credential Management
+
 - [Infisical GitHub](https://github.com/Infisical/infisical)
 - [HashiCorp Vault Alternatives](https://infisical.com/blog/hashicorp-vault-alternatives)
 - [StrongDM - Vault Alternatives 2026](https://www.strongdm.com/blog/alternatives-to-hashicorp-vault)
 
 ### 9.3 Shopify OAuth
+
 - [Shopify Embedded App Authorization](https://shopify.dev/docs/apps/build/authentication-authorization/set-embedded-app-authorization)
 - [Shopify Token Exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant)
 - [Shopify App JS GitHub](https://github.com/Shopify/shopify-app-js)
 
 ### 9.4 Klaviyo OAuth
+
 - [Klaviyo OAuth Setup](https://developers.klaviyo.com/en/docs/set_up_oauth)
 - [Klaviyo OAuth Migration](https://developers.klaviyo.com/en/docs/migrate_to_oauth_from_private_key_authentication)
 - [Klaviyo Node Integration Example](https://github.com/klaviyo-labs/node-integration-example)
 
 ### 9.5 MCP Multi-Tenant
+
 - [MCP Discussion #193](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/193)
 - [MCP Servers GitHub](https://github.com/modelcontextprotocol/servers)
 - [Solo.io - MCP Authorization Patterns](https://www.solo.io/blog/mcp-authorization-patterns-for-upstream-api-calls)
 
 ### 9.6 Voice AI Platforms
+
 - [Vapi](https://vapi.ai/)
 - [Retell AI](https://www.retellai.com/)
 - [Bland AI](https://www.bland.ai/)
 - [VoiceAIWrapper](https://voiceaiwrapper.com/)
 
 ### 9.7 Next.js SaaS Boilerplates
+
 - [ixartz/SaaS-Boilerplate](https://github.com/ixartz/SaaS-Boilerplate)
 - [next-saas-rbac](https://github.com/carlos-hfc/next-saas-rbac)
 - [Nextacular](https://nextacular.co/)

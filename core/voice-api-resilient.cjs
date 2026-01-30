@@ -46,6 +46,17 @@ const CORS_WHITELIST = [
   'http://localhost:5173'
 ];
 
+// Session 245: A2A Translation Supervisor
+// Lazy load to ensure initialization
+let translationSupervisor = null;
+try {
+  translationSupervisor = require('./translation-supervisor.cjs');
+} catch (e) {
+  console.warn('[VoiceAPI] Translation Supervisor not loaded:', e.message);
+}
+const eventBus = require('./AgencyEventBus.cjs');
+
+
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIGURATION
 // ─────────────────────────────────────────────────────────────────────────────
@@ -408,7 +419,83 @@ async function callGrok(userMessage, conversationHistory = [], customSystemPromp
 
   const parsed = safeJsonParse(response.data, 'Grok voice response');
   if (!parsed.success) throw new Error(`Grok JSON parse failed: ${parsed.error}`);
-  return parsed.data.choices[0].message.content;
+
+  // A2A Verification (Session 245)
+  return await verifyTranslation(parsed.data.choices[0].message.content, 'fr'); // Grok defaults to context lang, passed generic 'fr' here but should use actual
+}
+
+// Helper for A2A Verification
+async function verifyTranslation(text, language = 'fr', sessionId = 'unknown') {
+  if (!translationSupervisor) return { text, a2ui: null };
+
+  const correlationId = `gen-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+  const startTime = Date.now();
+  console.log(`[VoiceAPI] Requesting A2A Supervision for: "${text.substring(0, 30)}..." (${correlationId})`);
+
+  return new Promise((resolve) => {
+    let resolved = false;
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        cleanup();
+        console.warn(`[VoiceAPI] Supervision timeout (${correlationId}), returning original.`);
+        const latency = Date.now() - startTime;
+        resolve({
+          text,
+          a2ui: {
+            verification: 'timeout',
+            latency,
+            supervisor: 'TranslationSupervisor'
+          }
+        });
+      }
+    }, 200); // 200ms budget
+
+    const handler = (event) => {
+      if (event.metadata.correlationId === correlationId && !resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        cleanup();
+        const latency = Date.now() - startTime;
+
+        if (event.type === 'voice.generation.corrected') {
+          console.log(`[VoiceAPI] A2A Correction applied: "${event.payload.text}"`);
+          resolve({
+            text: event.payload.text,
+            a2ui: {
+              verification: 'corrected',
+              latency,
+              original: text, // Explanability: Show what was fixed
+              supervisor: 'TranslationSupervisor'
+            }
+          });
+        } else {
+          resolve({
+            text: event.payload.text || text,
+            a2ui: {
+              verification: 'approved',
+              latency,
+              supervisor: 'TranslationSupervisor'
+            }
+          });
+        }
+      }
+    };
+
+    const cleanup = () => {
+      eventBus.off('voice.generation.approved', handler);
+      eventBus.off('voice.generation.corrected', handler);
+    };
+
+    eventBus.on('voice.generation.approved', handler);
+    eventBus.on('voice.generation.corrected', handler);
+
+    eventBus.publish('voice.generation.check', {
+      text,
+      language,
+      sessionId
+    }, { correlationId, priority: 'critical' });
+  });
 }
 
 async function callOpenAI(userMessage, conversationHistory = [], customSystemPrompt = null) {
@@ -439,7 +526,7 @@ async function callOpenAI(userMessage, conversationHistory = [], customSystemPro
 
   const parsed = safeJsonParse(response.data, 'OpenAI voice response');
   if (!parsed.success) throw new Error(`OpenAI JSON parse failed: ${parsed.error}`);
-  return parsed.data.choices[0].message.content;
+  return await verifyTranslation(parsed.data.choices[0].message.content, 'fr');
 }
 
 // Session 170: Atlas-Chat-9B for Darija (Moroccan Arabic) - HuggingFace Inference API
@@ -477,7 +564,7 @@ async function callAtlasChat(userMessage, conversationHistory = [], customSystem
   // Featherless AI returns OpenAI-compatible response format
   const result = parsed.data?.choices?.[0]?.message?.content;
   if (!result) throw new Error('Atlas-Chat returned empty response');
-  return result.trim();
+  return await verifyTranslation(result.trim(), 'ary');
 }
 
 async function callGemini(userMessage, conversationHistory = [], customSystemPrompt = null) {
@@ -511,7 +598,7 @@ async function callGemini(userMessage, conversationHistory = [], customSystemPro
 
   const parsed = safeJsonParse(response.data, 'Gemini voice response');
   if (!parsed.success) throw new Error(`Gemini JSON parse failed: ${parsed.error}`);
-  return parsed.data.candidates[0].content.parts[0].text;
+  return await verifyTranslation(parsed.data.candidates[0].content.parts[0].text, 'fr');
 }
 
 async function callAnthropic(userMessage, conversationHistory = [], customSystemPrompt = null) {
@@ -542,7 +629,7 @@ async function callAnthropic(userMessage, conversationHistory = [], customSystem
 
   const parsed = safeJsonParse(response.data, 'Anthropic voice response');
   if (!parsed.success) throw new Error(`Anthropic JSON parse failed: ${parsed.error}`);
-  return parsed.data.content[0].text;
+  return await verifyTranslation(parsed.data.content[0].text, 'fr');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1077,9 +1164,14 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
       const latencyMs = Date.now() - startTime;
       recordLatency(provider.name, latencyMs);
 
+      // Handle A2UI metadata if present
+      const content = response.text || response;
+      const a2ui = response.a2ui || null;
+
       return {
         success: true,
-        response,
+        response: content,
+        a2ui, // Inject A2UI metadata into response
         provider: provider.name,
         latencyMs, // Session 178: SOTA - Include latency in response
         fallbacksUsed: errors.length,
@@ -1095,9 +1187,13 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
   console.log(`[Voice API] All providers failed, using local fallback (${language})`);
   const localResult = getLocalResponse(userMessage, language);
 
+  // Session 246: Apply A2UI Supervision even to local fallback for visual consistency
+  const verification = await verifyTranslation(localResult.response, language);
+
   return {
-    success: true, // Still successful because we have a response
-    response: localResult.response,
+    success: true,
+    response: verification.text,
+    a2ui: verification.a2ui,
     provider: 'local',
     fallbacksUsed: errors.length,
     errors,

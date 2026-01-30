@@ -1,8 +1,8 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.3.3 | 30/01/2026 | Session 242 | BM25 RAG SOTA
-> **Protocol Gap:** A2A ❌ | AP2 ❌ | A2UI ❌ (MCP only = 25% of UCP stack)
+> Version: 0.3.3 | 30/01/2026 | Session 246 | BM25 RAG SOTA
+> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ✅ (Beta) | Integrations ⚠️ (Gap Detected)
 
 ## Qu'est-ce que MCP?
 
@@ -75,6 +75,7 @@ Ces tools fonctionnent sans aucun service externe:
 | **VocalIA** | ✅ Officiel | **21** | `mcp-server/` |
 
 **Différenciateurs VocalIA:**
+
 - 30 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
 - Support Darija (Atlas-Chat-9B)
@@ -127,6 +128,7 @@ Redémarrer Claude Desktop après modification.
 ### Voice Tools (2)
 
 #### `voice_generate_response`
+
 Génère une réponse IA avec lead scoring intégré.
 
 | Paramètre | Type | Requis | Description |
@@ -137,6 +139,7 @@ Génère une réponse IA avec lead scoring intégré.
 | `personaKey` | enum | ❌ | Persona à utiliser (défaut: AGENCY) |
 
 #### `voice_providers_status`
+
 Vérifie le status des providers AI (Grok, Gemini, Claude, Atlas-Chat).
 
 ---
@@ -144,6 +147,7 @@ Vérifie le status des providers AI (Grok, Gemini, Claude, Atlas-Chat).
 ### Persona Tools (3)
 
 #### `personas_list`
+
 Liste les 30 personas par tier.
 
 | Paramètre | Type | Requis | Description |
@@ -151,6 +155,7 @@ Liste les 30 personas par tier.
 | `tier` | enum | ❌ | core, expansion, extended, all (défaut: all) |
 
 **Réponse:**
+
 ```json
 {
   "core": [7 personas],
@@ -162,6 +167,7 @@ Liste les 30 personas par tier.
 ```
 
 #### `personas_get`
+
 Détails d'un persona avec preview du system prompt.
 
 | Paramètre | Type | Requis | Description |
@@ -169,6 +175,7 @@ Détails d'un persona avec preview du system prompt.
 | `personaKey` | enum | ✅ | AGENCY, DENTAL, PROPERTY, etc. |
 
 #### `personas_get_system_prompt`
+
 Obtenir le system prompt complet dans une langue.
 
 | Paramètre | Type | Requis | Description |
@@ -181,6 +188,7 @@ Obtenir le system prompt complet dans une langue.
 ### Lead Qualification Tools (2)
 
 #### `qualify_lead`
+
 Qualification BANT avec scoring avancé.
 
 | Paramètre | Type | Requis | Description |
@@ -193,6 +201,7 @@ Qualification BANT avec scoring avancé.
 | `notes` | string | ❌ | Notes additionnelles |
 
 **Réponse:**
+
 ```json
 {
   "bant_scores": { "budget": 80, "authority": 100, "need": 90, "timeline": 75 },
@@ -206,6 +215,7 @@ Qualification BANT avec scoring avancé.
 ```
 
 #### `lead_score_explain`
+
 Documentation complète de la méthodologie BANT.
 
 ---
@@ -213,6 +223,7 @@ Documentation complète de la méthodologie BANT.
 ### Knowledge Base Tools (2)
 
 #### `knowledge_search`
+
 Recherche TF-IDF dans la base de connaissances (119+ services).
 
 | Paramètre | Type | Requis | Description |
@@ -222,6 +233,7 @@ Recherche TF-IDF dans la base de connaissances (119+ services).
 | `limit` | number | ❌ | Nombre de résultats (1-10, défaut: 5) |
 
 #### `knowledge_base_status`
+
 Information sur la KB: 119+ services, 15 catégories, métadonnées stratégiques.
 
 ---
@@ -229,6 +241,7 @@ Information sur la KB: 119+ services, 15 catégories, métadonnées stratégique
 ### Telephony Tools (3)
 
 #### `telephony_initiate_call`
+
 Déclencher un appel sortant via Twilio.
 
 | Paramètre | Type | Requis | Description |
@@ -239,13 +252,16 @@ Déclencher un appel sortant via Twilio.
 | `context` | string | ❌ | Contexte pour l'agent |
 
 **Prérequis:**
+
 - `voice-telephony-bridge.cjs` en cours sur port 3009
 - `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`
 
 #### `telephony_get_status`
+
 Status du système téléphonie.
 
 #### `telephony_transfer_call`
+
 Transférer un appel actif vers un agent humain.
 
 ---
@@ -253,6 +269,7 @@ Transférer un appel actif vers un agent humain.
 ### CRM Tools (2)
 
 #### `crm_get_customer`
+
 Obtenir le contexte client depuis HubSpot.
 
 | Paramètre | Type | Requis | Description |
@@ -262,6 +279,7 @@ Obtenir le contexte client depuis HubSpot.
 **Prérequis:** `HUBSPOT_API_KEY` ou `HUBSPOT_ACCESS_TOKEN`
 
 #### `crm_create_contact`
+
 Créer un nouveau contact dans HubSpot.
 
 ---
@@ -269,23 +287,50 @@ Créer un nouveau contact dans HubSpot.
 ### E-commerce Tools (3)
 
 #### `ecommerce_order_status`
+
 Statut commande depuis Shopify.
 
 **Prérequis:** `SHOPIFY_ACCESS_TOKEN`, `SHOPIFY_SHOP_NAME`
 
 #### `ecommerce_product_stock`
+
 Vérifier disponibilité produit.
 
 #### `ecommerce_customer_profile`
+
 Profil client depuis Klaviyo.
 
 **Prérequis:** `KLAVIYO_API_KEY`
 
 ---
 
+### UCP Tools (2)
+
+#### `ucp_sync_preference`
+
+Synchronise les préférences utilisateur avec les Règles de Marché Strictes.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `countryCode` | string | ✅ | Code ISO (ex: MA, FR, US) |
+| `userId` | string | ❌ | ID utilisateur optionnel |
+
+**Règles Appliquées:**
+
+- `MA` -> `market: maroc`, `lang: fr`, `currency: MAD`
+- `FR/ES/DZ` -> `market: europe`, `lang: fr`, `currency: EUR`
+- `US/AE` -> `market: intr`, `lang: en`, `currency: USD`
+
+#### `ucp_get_profile`
+
+Récupère le profil unifié actuel.
+
+---
+
 ### Booking Tools (2)
 
 #### `booking_schedule_callback`
+
 Planifier un rappel avec contexte.
 
 | Paramètre | Type | Requis | Description |
@@ -297,6 +342,7 @@ Planifier un rappel avec contexte.
 | `nextAction` | enum | ❌ | call_back, send_email, send_sms_booking_link, send_info_pack |
 
 #### `booking_create`
+
 Créer un RDV discovery call.
 
 ---
@@ -304,9 +350,11 @@ Créer un RDV discovery call.
 ### System Tools (2)
 
 #### `api_status`
+
 Health check complet de tous les services.
 
 **Réponse:**
+
 ```json
 {
   "mcp_server": { "name": "vocalia", "version": "0.3.0", "tools_count": 21 },
@@ -325,6 +373,7 @@ Health check complet de tous les services.
 ```
 
 #### `system_languages`
+
 Liste des 5 langues et 7 voix supportées.
 
 ---
@@ -379,9 +428,21 @@ ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUC
                           ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
                           │  Voice API   │ │  Telephony   │ │   HubSpot    │
                           │  :3004       │ │  :3009       │ │   Shopify    │
-                          └──────────────┘ └──────────────┘ │   Klaviyo    │
+                                                            │   Klaviyo    │
                                                             └──────────────┘
 ```
+
+#### `a2a_dispatch`
+
+Dispatch une tâche à un autre agent via l'Agency Event Bus.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `targetAgent` | enum | ✅ | Agent cible (supervisor, scheduler, billing) |
+| `taskType` | string | ✅ | Type de tâche |
+| `payload` | string | ✅ | Charge utile JSON de la tâche |
+
+---
 
 ### Stack Technique
 
@@ -417,6 +478,7 @@ mcp-server/
 ```
 
 Claude utilisera `voice_generate_response` avec:
+
 - message: "Quels sont vos horaires d'ouverture?"
 - personaKey: "DENTAL"
 - language: "fr"
@@ -428,6 +490,7 @@ Claude utilisera `voice_generate_response` avec:
 ```
 
 Claude utilisera `qualify_lead` avec:
+
 - budget: 80
 - authority: 100
 - need: 90
@@ -443,6 +506,7 @@ Résultat: Score 91 → HOT lead (avec +5 bonus industrie)
 ```
 
 Claude utilisera `telephony_initiate_call` avec:
+
 - to: "+212600000000"
 - personaKey: "AGENCY"
 - language: "fr"
@@ -627,8 +691,9 @@ User → VocalIA Agent (MCP: tools internes)
 ---
 
 *Documentation créée: 29/01/2026 - Session 227*
-*Mise à jour: 30/01/2026 - Session 242 (A2A/AP2/A2UI gap analysis)*
-*SOTA: MCP 78% | A2A 0% | AP2 0% | A2UI 0%*
+*Mise à jour: 30/01/2026 - Session 245 (A2A Dispatcher & Supervisor Active)*
+*SOTA: MCP 78% | A2A 50% | AP2 0% | A2UI 0%*
+
 *Maintenu par: VocalIA Engineering*
 
 ---

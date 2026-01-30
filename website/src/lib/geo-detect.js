@@ -1,207 +1,159 @@
 /**
- * VocalIA - Geo Detection & Currency Module
+ * VocalIA - Geo Detection & Currency Module (v246 - Strict Market Rules)
  * Auto-detects user location and sets language/currency
  *
- * Rules:
- * - Morocco → French + MAD
- * - Algeria, Tunisia, Europe → French + EUR
- * - Gulf/MENA (excl. above) → English + USD
- * - Others → English + USD
+ * STRICT MARKET RULES (Session 246):
+ * 1. Maroc -> FR + MAD
+ * 2. Europe/Maghreb -> FR + EUR
+ * 3. MENA (Gulf) -> EN + USD
+ * 4. International -> EN + USD
  */
 
 const GEO_CONFIG = {
-  // Morocco - Darija + MAD (special case: offer Darija or French)
-  MA: { lang: 'fr', altLang: 'ary', currency: 'MAD', symbol: 'DH', locale: 'fr-MA' },
+  // 1. MAROC
+  MA: { lang: 'fr', currency: 'MAD', symbol: 'DH', locale: 'fr-MA', region: 'maroc' },
 
-  // Francophone + Euro
-  FR: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-FR' },
-  BE: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-BE' },
-  CH: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-CH' },
-  LU: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-LU' },
-  DZ: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-DZ' },
-  TN: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-TN' },
+  // 2. EUROPE & MAGHREB (Strict: FR + EUR)
+  DZ: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-DZ', region: 'maghreb' },
+  TN: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-TN', region: 'maghreb' },
+  FR: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-FR', region: 'europe' },
+  BE: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-BE', region: 'europe' },
+  CH: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-CH', region: 'europe' },
+  LU: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-LU', region: 'europe' },
+  DE: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-DE', region: 'europe' },
+  IT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-IT', region: 'europe' },
+  ES: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-ES', region: 'europe' }, // Strict Rule: FR for Europe
+  PT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-PT', region: 'europe' },
+  NL: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-NL', region: 'europe' },
 
-  // Spanish speaking - Europe
-  ES: { lang: 'es', currency: 'EUR', symbol: '€', locale: 'es-ES' },
+  // 3. MENA (Gulf) - English + USD
+  AE: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-AE', region: 'mena' },
+  SA: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-SA', region: 'mena' },
+  QA: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-QA', region: 'mena' },
+  KW: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-KW', region: 'mena' },
+  BH: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-BH', region: 'mena' },
+  OM: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-OM', region: 'mena' },
+  EG: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-EG', region: 'mena' },
+  JO: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-JO', region: 'mena' },
+  LB: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-LB', region: 'mena' },
+  IQ: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-IQ', region: 'mena' },
 
-  // Spanish speaking - LATAM (USD)
-  MX: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-MX' },
-  AR: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-AR' },
-  CO: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-CO' },
-  CL: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-CL' },
-  PE: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-PE' },
-  VE: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-VE' },
-  EC: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-EC' },
+  // 4. INTERNATIONAL
+  US: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-US', region: 'intl' },
+  GB: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-GB', region: 'intl' },
+  CA: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-CA', region: 'intl' },
+  AU: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-AU', region: 'intl' },
 
-  // Euro zone (default to French for proximity)
-  DE: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'de-DE' },
-  IT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'it-IT' },
-  PT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'pt-PT' },
-  NL: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'nl-NL' },
-  AT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'de-AT' },
-  IE: { lang: 'en', currency: 'EUR', symbol: '€', locale: 'en-IE' },
-
-  // Gulf/MENA - Arabic (MSA) + USD
-  AE: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-AE' },
-  SA: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-SA' },
-  QA: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-QA' },
-  KW: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-KW' },
-  BH: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-BH' },
-  OM: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-OM' },
-  EG: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-EG' },
-  JO: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-JO' },
-  LB: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-LB' },
-  IQ: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-IQ' },
-  SY: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-SY' },
-  YE: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-YE' },
-  LY: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-LY' },
-  SD: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-SD' },
-
-  // English speaking
-  US: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-US' },
-  GB: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-GB' },
-  CA: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-CA' },
-  AU: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-AU' },
-  NZ: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-NZ' },
-  IN: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-IN' },
-  SG: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-SG' },
-
-  // Default
-  DEFAULT: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-US' }
+  // DEFAULT
+  DEFAULT: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-US', region: 'intl' }
 };
 
-// Pricing by currency (Widget is free, these are for Telephony)
 const PRICING = {
-  MAD: {
-    starter: 499,
-    pro: 1499,
-    overage: 0.60  // per minute
-  },
-  EUR: {
-    starter: 49,
-    pro: 149,
-    overage: 0.06
-  },
-  USD: {
-    starter: 49,
-    pro: 149,
-    overage: 0.06
-  }
+  MAD: { starter: 499, pro: 1499, overage: 0.60 },
+  EUR: { starter: 49, pro: 149, overage: 0.06 },
+  USD: { starter: 49, pro: 149, overage: 0.06 }
 };
 
 /**
- * Detect user's country from timezone or IP
- * @returns {Promise<string>} ISO country code
+ * Detect user's country from timezone or IP (Client-side)
  */
 async function detectCountry() {
-  // Method 1: Try IP geolocation API
+  // 1. URL Override (Testing)
+  const params = new URLSearchParams(window.location.search);
+  const testCountry = params.get('test_country');
+  if (testCountry && GEO_CONFIG[testCountry.toUpperCase()]) {
+    console.log(`[VocaliaGeo] Override: ${testCountry}`);
+    return testCountry.toUpperCase();
+  }
+
+  // 2. IP API with Timeout
   try {
-    const response = await fetch('https://ipapi.co/json/', {
-      signal: AbortSignal.timeout(2000)
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 1500);
+    const response = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+    clearTimeout(timeoutId);
     if (response.ok) {
       const data = await response.json();
       return data.country_code || 'US';
     }
   } catch (e) {
-    console.log('[GeoDetect] IP API failed, using timezone fallback');
+    // console.warn('[VocaliaGeo] IP detection fallback');
   }
 
-  // Method 2: Timezone-based detection
+  // 3. Timezone Fallback
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const tzCountryMap = {
+  const tzMap = {
     'Africa/Casablanca': 'MA',
-    'Africa/Algiers': 'DZ',
-    'Africa/Tunis': 'TN',
     'Europe/Paris': 'FR',
-    'Europe/Brussels': 'BE',
-    'Europe/Zurich': 'CH',
     'Europe/London': 'GB',
     'America/New_York': 'US',
-    'America/Los_Angeles': 'US',
-    'Asia/Dubai': 'AE',
-    'Asia/Riyadh': 'SA'
+    'Asia/Dubai': 'AE'
   };
 
-  return tzCountryMap[tz] || 'US';
+  // Simple heuristic
+  for (const [key, val] of Object.entries(tzMap)) {
+    if (tz.includes(key)) return val;
+  }
+  return 'US';
 }
 
-/**
- * Get geo configuration for a country
- * @param {string} countryCode - ISO country code
- * @returns {Object} Configuration object
- */
 function getGeoConfig(countryCode) {
   return GEO_CONFIG[countryCode] || GEO_CONFIG.DEFAULT;
 }
 
-/**
- * Get pricing for a currency
- * @param {string} currency - Currency code (MAD, EUR, USD)
- * @returns {Object} Pricing object
- */
 function getPricing(currency) {
   return PRICING[currency] || PRICING.USD;
 }
 
-/**
- * Format price with currency symbol
- * @param {number} amount - Price amount
- * @param {string} currency - Currency code
- * @returns {string} Formatted price
- */
 function formatPrice(amount, currency) {
   const config = Object.values(GEO_CONFIG).find(c => c.currency === currency) || GEO_CONFIG.DEFAULT;
-
-  if (currency === 'MAD') {
-    return `${amount} ${config.symbol}`;
-  }
+  if (currency === 'MAD') return `${amount} ${config.symbol}`;
   return `${config.symbol}${amount}`;
 }
 
-/**
- * Initialize geo detection and apply to page
- * @returns {Promise<Object>} Geo config
- */
 async function initGeoDetection() {
-  const countryCode = await detectCountry();
+  // Check cache (24h)
+  const stored = localStorage.getItem('vocalia_geo_v2');
+  let countryCode = 'US';
+
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Date.now() - parsed.timestamp < 86400000) {
+        countryCode = parsed.country;
+      } else {
+        countryCode = await detectCountry();
+      }
+    } catch {
+      countryCode = await detectCountry();
+    }
+  } else {
+    countryCode = await detectCountry();
+  }
+
   const config = getGeoConfig(countryCode);
   const pricing = getPricing(config.currency);
 
-  // Store in localStorage for persistence
-  localStorage.setItem('vocalia_geo', JSON.stringify({
+  localStorage.setItem('vocalia_geo_v2', JSON.stringify({
     country: countryCode,
-    ...config,
-    pricing,
-    detected: new Date().toISOString()
+    timestamp: Date.now(),
+    ...config
   }));
+
+  // Force strict language setting if different
+  // Note: i18n.js usually handles setting the language, 
+  // but we should update localStorage for i18n to pick up
+  localStorage.setItem('vocalia_lang', config.lang);
 
   return { country: countryCode, ...config, pricing };
 }
 
-/**
- * Get stored geo config or detect
- * @returns {Promise<Object>} Geo config
- */
 async function getGeo() {
-  const stored = localStorage.getItem('vocalia_geo');
-  if (stored) {
-    const parsed = JSON.parse(stored);
-    // Refresh if older than 24h
-    const age = Date.now() - new Date(parsed.detected).getTime();
-    if (age < 24 * 60 * 60 * 1000) {
-      return parsed;
-    }
-  }
   return initGeoDetection();
 }
 
-// Export for ES modules
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { detectCountry, getGeoConfig, getPricing, formatPrice, initGeoDetection, getGeo, GEO_CONFIG, PRICING };
-}
-
-// Export for browser
+// Browser Export
 if (typeof window !== 'undefined') {
   window.VocaliaGeo = { detectCountry, getGeoConfig, getPricing, formatPrice, initGeoDetection, getGeo, GEO_CONFIG, PRICING };
 }
+
