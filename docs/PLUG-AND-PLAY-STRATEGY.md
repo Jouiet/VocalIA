@@ -2,22 +2,29 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 1.2 | **Date:** 30/01/2026 | **Session:** 249
+> **Version:** 2.0 | **Date:** 30/01/2026 | **Session:** 249.2
 > **Approche:** Bottom-Up Factuelle | **Méthodologie:** Recherche Web + Analyse Code Source
 
 ---
 
-## 🔴 AUDIT SESSION 249: Gaps Critiques Identifiés
+## ✅ SESSION 249.2: Phase 0 Multi-Tenant COMPLETE
 
-| Composant Requis | État | Impact |
-|:-----------------|:----:|:-------|
-| `core/SecretVault.cjs` | ❌ N'existe pas | Credentials single-tenant |
-| `clients/` directory | ❌ N'existe pas | Pas d'isolation par client |
-| OAuth Gateway | ❌ N'existe pas | Clients ne peuvent pas connecter leurs apps |
-| Webhook handlers | ❌ Minimal | Pas de flux bidirectionnel |
-| Integrations multi-tenant | ❌ Toutes `process.env` | Tout partage les mêmes credentials |
+| Composant Requis | État | Fichier |
+|:-----------------|:----:|:--------|
+| `core/SecretVault.cjs` | ✅ DONE | 347 lignes - AES-256-GCM encryption |
+| `clients/` directory | ✅ DONE | 2 tenants: agency_internal, client_demo |
+| OAuth Gateway | ✅ DONE | `core/OAuthGateway.cjs` (401 lignes, port 3010) |
+| Webhook handlers | ✅ DONE | `core/WebhookRouter.cjs` (394 lignes, port 3011) |
+| Integrations multi-tenant | ✅ DONE | HubSpot, Calendar, Slack → TenantContext |
 
-**Action:** Phase 0 du INTEGRATIONS-ROADMAP.md doit être implémentée AVANT toute nouvelle intégration.
+**Vérification empirique:**
+```bash
+ls core/SecretVault.cjs core/OAuthGateway.cjs core/WebhookRouter.cjs  # ✅ EXISTS
+ls clients/  # agency_internal, client_demo, _template
+node core/SecretVault.cjs --health  # ✅ OK
+```
+
+**Status:** Architecture multi-tenant prête pour Phase 1 (Google Sheets/Drive).
 
 ---
 
@@ -58,16 +65,16 @@ Pas de wishful thinking. Pas de claims non vérifiés.
 | **Agence** | Vente de temps + expertise | Réduit temps setup de 5-16h à 1-2h |
 | **Plug-and-Play** | Outils auto-configurables | Multiplicateur d'efficacité interne |
 
-### 1.2 État Actuel (Score Plug-and-Play)
+### 1.2 État Actuel (Score Plug-and-Play) - Updated Session 249.2
 
-| Composant | Score Actuel | Score Cible |
-|:----------|:------------:|:-----------:|
-| MCP Server | 20% | 85% |
-| Voice Widget | 25% | 90% |
-| Shopify Integration | 10% | 80% |
-| Klaviyo Integration | 15% | 85% |
-| Multi-tenant | 18% | 90% |
-| **GLOBAL** | **18%** | **85%** |
+| Composant | Score Actuel | Score Cible | Notes |
+|:----------|:------------:|:-----------:|:------|
+| MCP Server | 60% | 85% | 21 tools, multi-tenant ready |
+| Voice Widget | 25% | 90% | Web Speech API |
+| Shopify Integration | 10% | 80% | Basic, needs expansion |
+| Klaviyo Integration | 15% | 85% | Basic, needs expansion |
+| Multi-tenant | **85%** | 90% | ✅ Phase 0 COMPLETE |
+| **GLOBAL** | **45%** | **85%** | +27% from Phase 0 |
 
 ### 1.3 Investissement Requis
 

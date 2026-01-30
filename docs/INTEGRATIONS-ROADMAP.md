@@ -28,12 +28,12 @@
 | Metric | Value |
 |:-------|:------|
 | **Integrations affichées sur site** | 20 |
-| **Integrations implémentées** | 6 (30%) |
-| **Gap à combler** | 14 |
-| **Nouvelles demandées (Google Apps)** | 4 |
-| **Total à implémenter** | 18 |
+| **Integrations implémentées** | **8** (40%) |
+| **Gap à combler** | 12 |
+| **Google Apps (Sheets + Drive)** | ✅ COMPLETE (Session 249.2) |
 | **Phase 0 (Multi-Tenant)** | ✅ 100% COMPLETE |
-| **Effort total restant** | 45-80 jours-homme |
+| **Phase 1 Progress** | 40% (2/5) |
+| **Effort total restant** | 40-70 jours-homme |
 
 ---
 
@@ -308,15 +308,16 @@ node core/SecretVault.cjs --health  # ✅ OK
 
 **Objectif**: 6 intégrations avec le meilleur ROI/effort
 
-| Jour | Intégration | Tâches | Livrables |
-|:----:|:------------|:-------|:----------|
-| J1-J2 | Google Sheets | OAuth scope ajout, CRUD cells, read range | `mcp-server/src/tools/sheets.ts` |
-| J3-J4 | Google Drive | List files, upload, download, share | `mcp-server/src/tools/drive.ts` |
-| J5-J6 | Calendly | Availability, book event, cancel | `mcp-server/src/tools/calendly.ts` |
-| J7-J8 | Freshdesk | Create ticket, get ticket, reply | `mcp-server/src/tools/freshdesk.ts` |
-| J9-J10 | Pipedrive | Contacts, deals, activities | `integrations/pipedrive-crm.cjs` |
+| Jour | Intégration | Tâches | Livrables | Status |
+|:----:|:------------|:-------|:----------|:------:|
+| J1-J2 | Google Sheets | OAuth scope ajout, CRUD cells, read range | `mcp-server/src/tools/sheets.ts` | ✅ DONE |
+| J3-J4 | Google Drive | List files, upload, download, share | `mcp-server/src/tools/drive.ts` | ✅ DONE |
+| J5-J6 | Calendly | Availability, book event, cancel | `mcp-server/src/tools/calendly.ts` | ⏳ TODO |
+| J7-J8 | Freshdesk | Create ticket, get ticket, reply | `mcp-server/src/tools/freshdesk.ts` | ⏳ TODO |
+| J9-J10 | Pipedrive | Contacts, deals, activities | `integrations/pipedrive-crm.cjs` | ⏳ TODO |
 
 **Effort Phase 1**: 10-15 jours
+**Progress Phase 1**: 2/5 (40%) - Google Apps (Sheets + Drive) COMPLETE
 
 ### 5.2 Phase 2: Communication (Semaine 3-4)
 

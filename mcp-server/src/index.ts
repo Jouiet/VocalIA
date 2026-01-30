@@ -5,7 +5,7 @@
  *
  * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (21 tools - 10 always available, 11 require services):
+ * TOOL CATEGORIES (32 tools - 10 always available, 22 require services):
  * - Voice Tools (2): voice_generate_response, voice_providers_status [REQUIRE API]
  * - Persona Tools (3): personas_list, personas_get, personas_get_system_prompt [ALWAYS]
  * - Lead Tools (2): qualify_lead, lead_score_explain [ALWAYS]
@@ -15,8 +15,12 @@
  * - E-commerce Tools (3): ecommerce_order_status, ecommerce_product_stock [SHOPIFY], ecommerce_customer_profile [KLAVIYO]
  * - Booking Tools (2): booking_schedule_callback, booking_create [ALWAYS - FILE PERSISTENCE]
  * - System Tools (2): api_status, system_languages [ALWAYS]
+ * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
+ * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
+ * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
+ * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
  *
- * TOTAL: 21 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 32 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -32,6 +36,8 @@ import { promisify } from "util";
 import { calendarTools } from "./tools/calendar.js";
 import { slackTools } from "./tools/slack.js";
 import { ucpTools } from "./tools/ucp.js";
+import { sheetsTools } from "./tools/sheets.js";
+import { driveTools } from "./tools/drive.js";
 
 const execAsync = promisify(exec);
 
@@ -1027,8 +1033,8 @@ server.tool(
         text: JSON.stringify({
           mcp_server: {
             name: "vocalia",
-            version: "0.3.2",
-            tools_count: 21,
+            version: "0.4.0",
+            tools_count: 32,
           },
           services: {
             voice_api: {
@@ -1053,6 +1059,12 @@ server.tool(
             requires_hubspot: ["crm_get_customer", "crm_create_contact"],
             requires_shopify: ["ecommerce_order_status", "ecommerce_product_stock"],
             requires_klaviyo: ["ecommerce_customer_profile"],
+            requires_google: [
+              "calendar_check_availability", "calendar_create_event",
+              "sheets_read_range", "sheets_write_range", "sheets_append_rows", "sheets_get_info", "sheets_create",
+              "drive_list_files", "drive_get_file", "drive_create_folder", "drive_upload_file", "drive_share_file", "drive_delete_file"
+            ],
+            requires_slack: ["slack_send_notification"],
           },
         }, null, 2),
       }],
@@ -1114,16 +1126,38 @@ server.tool(ucpTools.ucp_get_profile.name, ucpTools.ucp_get_profile.parameters, 
 server.tool(ucpTools.ucp_list_profiles.name, ucpTools.ucp_list_profiles.parameters, ucpTools.ucp_list_profiles.handler);
 
 // =============================================================================
+// GOOGLE SHEETS TOOLS (5) - REQUIRE GOOGLE CREDENTIALS
+// =============================================================================
+
+server.tool(sheetsTools.read_range.name, sheetsTools.read_range.parameters, sheetsTools.read_range.handler);
+server.tool(sheetsTools.write_range.name, sheetsTools.write_range.parameters, sheetsTools.write_range.handler);
+server.tool(sheetsTools.append_rows.name, sheetsTools.append_rows.parameters, sheetsTools.append_rows.handler);
+server.tool(sheetsTools.get_spreadsheet_info.name, sheetsTools.get_spreadsheet_info.parameters, sheetsTools.get_spreadsheet_info.handler);
+server.tool(sheetsTools.create_spreadsheet.name, sheetsTools.create_spreadsheet.parameters, sheetsTools.create_spreadsheet.handler);
+
+// =============================================================================
+// GOOGLE DRIVE TOOLS (6) - REQUIRE GOOGLE CREDENTIALS
+// =============================================================================
+
+server.tool(driveTools.list_files.name, driveTools.list_files.parameters, driveTools.list_files.handler);
+server.tool(driveTools.get_file.name, driveTools.get_file.parameters, driveTools.get_file.handler);
+server.tool(driveTools.create_folder.name, driveTools.create_folder.parameters, driveTools.create_folder.handler);
+server.tool(driveTools.upload_file.name, driveTools.upload_file.parameters, driveTools.upload_file.handler);
+server.tool(driveTools.share_file.name, driveTools.share_file.parameters, driveTools.share_file.handler);
+server.tool(driveTools.delete_file.name, driveTools.delete_file.parameters, driveTools.delete_file.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.3.2 running on stdio");
+  console.error("VocalIA MCP Server v0.4.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 21 (10 always available, 11 require external services)");
+  console.error("Tools: 32 (10 always available, 22 require external services)");
+  console.error("Google Tools: Sheets (5), Drive (6), Calendar (2)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
 }
 

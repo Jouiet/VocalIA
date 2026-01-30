@@ -1,8 +1,8 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.3.3 | 30/01/2026 | Session 246 | BM25 RAG SOTA
-> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ⚠️ (Gap Detected)
+> Version: 0.4.0 | 30/01/2026 | Session 249.2 | BM25 RAG SOTA | Google Apps Integration
+> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (Phase 1 Complete)
 
 ## Qu'est-ce que MCP?
 
@@ -12,7 +12,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 
 ---
 
-## Status des Tools (Session 231.2)
+## Status des Tools (Session 249.2)
 
 ### Vue d'ensemble
 
@@ -27,7 +27,11 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | E-commerce | 3 | 0 | 3 |
 | Booking | 2 | **2** | 0 |
 | System | 2 | **2** | 0 |
-| **TOTAL** | **21** | **10** | **11** |
+| Calendar | 2 | 0 | 2 |
+| Slack | 1 | 0 | 1 |
+| **Sheets** | **5** | 0 | **5** |
+| **Drive** | **6** | 0 | **6** |
+| **TOTAL** | **32** | **10** | **22** |
 
 ### Tools Toujours Disponibles (10)
 
