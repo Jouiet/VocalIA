@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.5.0 | 30/01/2026 | Session 249.10 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.5.4 (**116 tools**) | RAG: BM25 SOTA
+> Version: 6.6.0 | 30/01/2026 | Session 249.10 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
+> SDKs: Python | Node.js | MCP Server v0.5.5 (**116 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **23 native** | WordPress Plugin ✅ | Frontend: factuel | 0 fake claims
-> SEO: ~90% ✅ | AEO: ~75% ✅ | UCP ✅ | QA ✅ | SecretVault ✅ | OAuth Gateway ✅ | clients/ ✅
+> Integrations: **22 native** | WordPress Plugin ✅ | Frontend: **100% factuel** | 0 fake claims
+> Cleanup: Cal.com/Intercom/Crisp DELETED | Salesforce/Teams/WhatsApp/Outlook REMOVED from UI
 
 ## Identité
 
@@ -190,55 +190,61 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 249.3: Phase 1 Integrations COMPLETE**
+**Session 249.10: FACTUAL CLEANUP COMPLETE**
 
-### Phase 0 - Multi-Tenant Architecture ✅ COMPLETE
+### Session 249.9-249.10: Cleanup + Gmail
 
-| Composant | Fichier | Status |
-|:----------|:--------|:------:|
-| SecretVault | `core/SecretVault.cjs` (347 lignes) | ✅ |
-| OAuth Gateway | `core/OAuthGateway.cjs` (401 lignes) | ✅ |
-| WebhookRouter | `core/WebhookRouter.cjs` (394 lignes) | ✅ |
-| clients/ | 2 tenants | ✅ |
-| HubSpot refactor | TenantContext | ✅ |
-| MCP tools refactor | _meta.tenantId | ✅ |
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **MCP Cleanup** | Cal.com, Intercom, Crisp supprimés (-18 tools) | ✅ |
+| **Gmail API** | 7 tools OAuth2 (send, list, search, draft, labels) | ✅ |
+| **WordPress Plugin** | `plugins/wordpress/vocalia-voice-widget.php` (490 lignes) | ✅ |
+| **Frontend Cleanup** | Salesforce, Teams, WhatsApp, Outlook, Cal.com, Intercom, Crisp | ✅ |
+| **Locales Cleanup** | 5 fichiers × 5 keys corrigées = 25 corrections | ✅ |
 
-### Phase 1 - Quick Wins ✅ COMPLETE (100%)
+### Intégrations Factuelles (22)
 
-| Integration | Tools | Status |
-|:------------|:-----:|:------:|
-| Google Sheets | 5 | ✅ DONE |
-| Google Drive | 6 | ✅ DONE |
-| Calendly | 6 | ✅ DONE |
-| Freshdesk | 6 | ✅ DONE |
-| Pipedrive | 7 | ✅ DONE |
+| Catégorie | Intégrations |
+|:----------|:-------------|
+| **CRM** | HubSpot, Pipedrive, Zoho CRM |
+| **Support** | Zendesk, Freshdesk |
+| **E-commerce** | Shopify, WooCommerce, Magento, Klaviyo |
+| **Google** | Calendar, Sheets, Drive, Docs, Gmail |
+| **Calendrier** | Calendly |
+| **iPaaS** | Zapier, Make, n8n |
+| **Export** | CSV, XLSX, PDF, SMTP |
+| **Notification** | Slack |
 
 ### Vérification Empirique
 
 ```bash
-# Multi-tenant components
-ls core/SecretVault.cjs core/OAuthGateway.cjs core/WebhookRouter.cjs  # ✅ EXISTS
-ls clients/  # agency_internal, client_demo, _template
+# MCP tools count
+grep -c "server.tool(" mcp-server/src/index.ts  # 116 ✅
 
-# MCP build
-cd mcp-server && npm run build  # ✅ SUCCESS (32 tools)
+# WordPress plugin
+ls plugins/wordpress/*.php  # 2 files ✅
+
+# Gmail tools
+wc -l mcp-server/src/tools/gmail.ts  # 500 lines ✅
+
+# False integrations in frontend
+grep -c "Salesforce\|WhatsApp" website/integrations.html  # 0 ✅
 ```
 
 ---
 
 ## Plan Actionnable (Session 250)
 
-| # | Task | Priority | Effort |
-|:-:|:-----|:--------:|:------:|
-| 1 | Calendly integration | P1 | 2-3j |
-| 2 | Freshdesk integration | P1 | 2-3j |
-| 3 | Pipedrive integration | P1 | 3-5j |
-| 4 | SDK Publish (npm/PyPI) | P1 | User creds |
-| 5 | Gmail integration | P2 | 2-4j |
+| # | Task | Priority | Blocker |
+|:-:|:-----|:--------:|:--------|
+| 1 | SDK Publish (npm/PyPI) | P1 | User credentials required |
+| 2 | API Backend deploy (api.vocalia.ma) | P1 | Hosting setup |
+| 3 | WordPress Plugin → WordPress.org | P2 | Review process |
+| 4 | Phase 6: Blog i18n | P3 | Low priority (articles FR only) |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/INTEGRATIONS-ROADMAP.md` pour planning détaillé*
-*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (32 tools)*
-*Màj: 30/01/2026 - Session 249.2 (Phase 0 COMPLETE, Phase 1 40%)*
+*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (116 tools)*
+*Màj: 30/01/2026 - Session 249.10 (Factual Cleanup COMPLETE)*

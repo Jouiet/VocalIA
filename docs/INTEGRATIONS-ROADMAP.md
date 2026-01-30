@@ -1,39 +1,43 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 3.3.0 | **Date**: 30/01/2026 | **Session**: 249.9
+> **Version**: 3.4.0 | **Date**: 30/01/2026 | **Session**: 249.10
 > **Methodology**: Bottom-up forensic audit | **Status**: ✅ ALL PHASES COMPLETE (100%)
 > **iPaaS**: Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Cleanup**: Cal.com, Intercom, Crisp → **DELETED** (low value per audit)
+> **Factual UI**: Salesforce, Teams, WhatsApp, Outlook → **REMOVED from frontend** (never implemented)
 
 ---
 
-## ⚠️ AUDIT SESSION 249.9 - CLEANUP FACTUEL
+## ⚠️ AUDIT SESSION 249.9-249.10 - CLEANUP FACTUEL COMPLET
 
-**Outils SUPPRIMÉS (18 tools):**
+**Session 249.9 - MCP Cleanup:**
 
-| Intégration | Raison Suppression | Tools Retirés |
-|:------------|:-------------------|:-------------:|
-| **Cal.com** | <2% market share, 90% overlap Calendly | 6 |
-| **Intercom** | 70% overlap Zendesk/Freshdesk | 6 |
-| **Crisp** | 3.5% market share, no strategic value | 6 |
+| Action | Détail | Impact |
+|:-------|:-------|:------:|
+| **Cal.com** supprimé | <2% market share, 90% overlap Calendly | -6 tools |
+| **Intercom** supprimé | 70% overlap Zendesk/Freshdesk | -6 tools |
+| **Crisp** supprimé | 3.5% market share, no strategic value | -6 tools |
+| **Gmail API** ajouté | Full inbox access, OAuth2 | +7 tools |
 
-**Outils AJOUTÉS (7 tools):**
+**Session 249.10 - Frontend + Locales Cleanup:**
 
-| Intégration | Valeur | Tools Ajoutés |
-|:------------|:-------|:-------------:|
-| **Gmail API** | Full inbox access, OAuth2 | 7 |
+| Fichier/Zone | Corrections |
+|:-------------|:------------|
+| `index.html` logo carousel | Salesforce→Pipedrive, Intercom→Sheets, WhatsApp→Gmail, Teams→n8n |
+| `integrations.html` | 7 cards removed (Salesforce, Teams, WhatsApp, Outlook, Cal.com, Intercom, Crisp) |
+| `industries/*.html` (4 pages) | Removed Outlook, WhatsApp, Salesforce, Microsoft, Emarsys |
+| `use-cases/*.html` (3 pages) | Removed Outlook, Cal.com, Salesforce |
+| `src/locales/*.json` (5 files) | 5 keys × 5 languages = 25 corrections |
 
-**Frontend nettoyé:**
+**Clés locales corrigées:**
 
-| Élément Retiré | Raison |
-|:---------------|:-------|
-| Salesforce card | Non implémenté |
-| Teams card | Non implémenté |
-| WhatsApp card | Bloqué par Meta |
-| Outlook card | Non implémenté |
-| Cal.com card | Supprimé backend |
-| Intercom card | Supprimé backend |
-| Crisp card | Supprimé backend |
+| Clé | Avant | Après |
+|:----|:------|:------|
+| `solution1_feature1` | "Google/Outlook" | "Google Calendar" |
+| `integration_outlook` | "Outlook" | **DELETED** |
+| `feature_crm_desc` (support) | "HubSpot, Salesforce, Zendesk..." | "HubSpot, Zendesk..." |
+| `feature_sync_desc` | "Outlook, Calendly, Cal.com" | "Calendly" |
+| `feature_crm_desc` (leads) | "HubSpot, Salesforce, Pipedrive" | "HubSpot, Pipedrive" |
 
 ---
 

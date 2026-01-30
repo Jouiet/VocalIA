@@ -1,12 +1,13 @@
 # VocalIA - Audit Forensique i18n & Plan d'Action
 
 > **Document:** I18N-AUDIT-ACTIONPLAN.md
-> **Version:** 2.6.0
+> **Version:** 2.7.0
 > **Date:** 30/01/2026
-> **Session:** 248 (Forensic Audit)
+> **Session:** 249.10 (Factual Cleanup)
 > **Auteur:** Claude Opus 4.5
-> **Status:** ✅ 100% COMPLETE - i18n + Hreflang + Twitter Cards
+> **Status:** ✅ 100% COMPLETE - i18n + Hreflang + Twitter Cards + **Factual Cleanup**
 > **⚠️ Session 248:** QA Script `translation-quality-check.py` a 481 FAUX POSITIFS (seuil 60% trop strict)
+> **✅ Session 249.10:** Locale files cleaned - 25 false integration references removed
 
 ---
 
@@ -98,7 +99,32 @@
   - Workflow/BANT sections
   - CTA sections
 
-### 1.5 Impact Business
+### 1.5 Session 249.10 - Factual Cleanup
+
+**Objectif:** Supprimer les références d'intégrations non implémentées de tous les fichiers locales.
+
+| Fichier | Clés Corrigées | Détail |
+|:--------|:--------------:|:-------|
+| fr.json | 5 | Outlook, Salesforce, Cal.com removed |
+| en.json | 6 | + solution2_desc correction |
+| es.json | 5 | Spanish translations updated |
+| ar.json | 5 | Arabic translations updated |
+| ary.json | 5 | Darija translations updated |
+| **TOTAL** | **26** | False references eliminated |
+
+**Clés modifiées:**
+
+| Clé | Section | Modification |
+|:----|:--------|:-------------|
+| `solution1_feature1` | healthcare | "Google/Outlook" → "Google Calendar" |
+| `integration_outlook` | healthcare | **KEY DELETED** |
+| `feature_crm_desc` (support) | customer-support | Removed "Salesforce, " |
+| `feature_sync_desc` | appointments | Removed "Outlook, " and "Cal.com" |
+| `feature_crm_desc` (leads) | lead-qualification | Removed "Salesforce, " |
+
+**Commit:** `ae9141d fix(i18n): Remove false integration references across all locales`
+
+### 1.6 Impact Business
 
 | Impact | Description |
 |:-------|:------------|
