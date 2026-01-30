@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
-> Version: 4.8.2 | 30/01/2026 | Session 228.6 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | 1471 keys | RTL ✅ | 100% COMPLETE
+> Version: 4.9.0 | 30/01/2026 | Session 241 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | 1444 keys | RTL ✅ | QA Scripts ✅
 > SDKs: Python | Node.js | MCP Server v0.3.2 (21 tools)
 
 ## Identité
@@ -96,6 +96,13 @@ node scripts/health-check.cjs
 # Build CSS
 cd website && npm run build:css
 
+# Translation QA
+python3 scripts/translation-quality-check.py --verbose
+python3 scripts/darija-validator.py
+
+# Sync locales (FR → others)
+python3 scripts/sync-locales.py sync
+
 # Deploy (auto via GitHub Actions)
 git push origin main
 
@@ -154,38 +161,37 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 240.2: i18n Sync Complete**
-- ✅ All 5 locales synchronized: 1260 keys each (FR, EN, ES, AR, ARY)
-- ✅ docs/api.html i18n: 30→46 data-i18n attributes
-- ✅ docs_api_page translations: 44 keys × 5 languages
-- ✅ Use cases translations complete (ES, AR, ARY)
-- ✅ Integration brand names synced across locales
+**Session 241: Translation QA Scripts Complete**
+- ✅ Created `scripts/translation-quality-check.py` - Detects truncated translations
+- ✅ Created `scripts/darija-validator.py` - Validates Darija authenticity (MSA detection)
+- ✅ Fixed BANT descriptions (EN, ES, AR, ARY) - 19 truncations corrected
+- ✅ Fixed use cases challenges_subtitle (AR) - Unique translations per page
+- ✅ Darija MSA contamination: 0 (EXCELLENT verdict)
 
-**i18n Phases:**
-- ✅ Phase 1: Core pages (index, features, pricing, about, contact)
-- ✅ Phase 2: Products pages (voice-widget, voice-telephony)
-- ✅ Phase 3: Industries pages (5 pages)
-- ✅ Phase 4: Use Cases (4 pages)
-- ✅ Phase 5: Docs & Legal (docs/index, docs/api, privacy, terms, integrations)
-- ⏳ Phase 6: Blog (8 pages) - Low priority, UI only
-
-**i18n Metrics:**
-- Total keys: **1260** × 5 languages = **6300** translations
+**i18n Status:**
+- Total keys: **1444** × 5 languages = **7220** translations
 - Pages with i18n.js: **31/31** (100%)
-- Coverage: **25/31 pages** (81%) - Blog + dashboards remaining
+- Truncated translations remaining: 233 (mostly natural length differences)
+- Darija authenticity: 368 Darija markers, 0 MSA contamination
+
+**QA Scripts:**
+- `translation-quality-check.py` - Detects <60% length ratio, identical, empty
+- `darija-validator.py` - Detects MSA formal markers in Darija content
 
 ---
 
-## Plan Actionnable (Session 241)
+## Plan Actionnable (Session 242)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
 | 1 | User: SDK publish (twine, npm) | P1 | Requires user creds |
 | 2 | Deploy API backend (api.vocalia.ma) | P1 | For SDKs/MCP |
-| 3 | Phase 6: Blog i18n | P3 | UI only (articles FR) |
-| 4 | Dashboards i18n | P3 | client.html, admin.html |
+| 3 | MCP tool `translation_qa` | P1 | QA accessible via Claude Desktop |
+| 4 | CI/CD translation QA | P1 | Prevent regression |
+| 5 | Phase 6: Blog i18n | P3 | UI only (articles FR) |
+| 6 | Dashboards i18n | P3 | client.html, admin.html |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Màj: 30/01/2026 - Session 240.2 (1260 keys × 5 languages)*
+*Màj: 30/01/2026 - Session 241 (QA Scripts: translation-quality-check.py, darija-validator.py)*
