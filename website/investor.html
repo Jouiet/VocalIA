@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investisseurs - VocalIA | Voice AI Platform</title>
+  <meta name="description"
+    content="Investissez dans VocalIA, la plateforme Voice AI la plus abordable du marché. Widget + Téléphonie, 30 personas, 5 langues dont Darija. 60% moins cher que la concurrence.">
+  <link rel="canonical" href="https://vocalia.ma/investor" />
+
+  <!-- Hreflang for i18n SEO (5 languages) -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/investor?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/investor?lang=en" />
+  <link rel="alternate" hreflang="es" href="https://vocalia.ma/investor?lang=es" />
+  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/investor?lang=ar" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/investor" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/investor" />
+  <meta property="og:title" content="Investisseurs - VocalIA | Voice AI Platform" />
+  <meta property="og:description"
+    content="Investissez dans VocalIA. Widget + Téléphonie Voice AI. 60% moins cher. 30 personas. 5 langues." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://vocalia.ma/investor" />
+  <meta name="twitter:title" content="Investisseurs - VocalIA | Voice AI Platform" />
+  <meta name="twitter:description" content="Voice AI Platform - 60% moins cher que Vapi/Retell" />
+  <meta name="twitter:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Schema.org - InvestmentOrFundingPage -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "VocalIA Investor Relations",
+      "description": "Investment opportunity in VocalIA Voice AI Platform",
+      "url": "https://vocalia.ma/investor",
+      "about": {
+        "@type": "Organization",
+        "name": "VocalIA",
+        "url": "https://vocalia.ma",
+        "foundingDate": "2026",
+        "foundingLocation": {"@type": "Place", "name": "Maroc"},
+        "description": "Voice AI Platform with Widget + Telephony, 30 personas, 5 languages",
+        "knowsAbout": ["Voice AI", "Conversational AI", "Telephony", "SaaS"],
+        "numberOfEmployees": {"@type": "QuantitativeValue", "value": "5-10"}
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+          {"@type": "ListItem", "position": 2, "name": "Investisseurs", "item": "https://vocalia.ma/investor"}
+        ]
+      }
+    }
+  </script>
+
+  <!-- Critical CSS -->
+  <style>body{background:#0f172a;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+
+  <!-- Tailwind CSS -->
+  <link rel="preload" href="/public/css/style.css" as="style">
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="robots" content="noindex, nofollow">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(30, 41, 59, 0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .metric-card {
+      background: linear-gradient(135deg, rgba(94,106,210,0.12), rgba(99,102,241,0.04));
+      border: 1px solid rgba(99,102,241,0.25);
+      transition: all 0.3s ease;
+    }
+    .metric-card:hover {
+      border-color: rgba(99,102,241,0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(99,102,241,0.15);
+    }
+    .competitor-row {
+      background: rgba(51, 65, 85, 0.3);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    }
+    .competitor-row.vocalia {
+      background: linear-gradient(135deg, rgba(94,106,210,0.15), rgba(99,102,241,0.08));
+      border: 1px solid rgba(99,102,241,0.3);
+    }
+    .glow-pulse {
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(94,106,210,0.3); }
+      50% { box-shadow: 0 0 40px rgba(94,106,210,0.6); }
+    }
+    .stat-number {
+      font-variant-numeric: tabular-nums;
+    }
+    .timeline-line {
+      background: linear-gradient(to bottom, #5E6AD2, transparent);
+    }
+    .moat-badge {
+      background: linear-gradient(135deg, #10b981, #059669);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-900 text-white antialiased">
+  <!-- Skip Link -->
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">Aller
+    au contenu principal</a>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+            <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+          </div>
+          <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        </a>
+
+        <!-- Back to Site -->
+        <a href="/" class="flex items-center gap-2 text-zinc-400 hover:text-white transition">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span data-i18n="investor.back_to_site">Retour au site</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content" class="pt-24 pb-20">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden">
+      <!-- Background Grid -->
+      <div class="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:60px_60px]"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
+        <!-- Badge -->
+        <div class="flex justify-center mb-6">
+          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-sm font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span data-i18n="investor.badge">Opportunité d'Investissement</span>
+          </span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-center mb-6">
+          <span data-i18n="investor.title_1">La Plateforme Voice AI</span><br>
+          <span class="gradient-text" data-i18n="investor.title_2">60% Moins Chère que la Concurrence</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-xl text-zinc-400 text-center max-w-3xl mx-auto mb-12" data-i18n="investor.subtitle">
+          VocalIA combine Widget Web + Téléphonie AI dans une seule plateforme. 30 personas métier. 5 langues dont Darija. Technologie propriétaire.
+        </p>
+
+        <!-- Key Metrics Row -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
+          <div class="metric-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-bold text-white stat-number mb-1">$0.06</div>
+            <div class="text-sm text-zinc-400" data-i18n="investor.metric_cost">Coût par minute</div>
+            <div class="text-xs text-emerald-400 mt-2">vs $0.15 Vapi</div>
+          </div>
+          <div class="metric-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-bold text-white stat-number mb-1">30</div>
+            <div class="text-sm text-zinc-400" data-i18n="investor.metric_personas">Personas Métier</div>
+            <div class="text-xs text-emerald-400 mt-2" data-i18n="investor.metric_personas_sub">Pré-configurés</div>
+          </div>
+          <div class="metric-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-bold text-white stat-number mb-1">5</div>
+            <div class="text-sm text-zinc-400" data-i18n="investor.metric_languages">Langues</div>
+            <div class="text-xs text-emerald-400 mt-2" data-i18n="investor.metric_languages_sub">incl. Darija</div>
+          </div>
+          <div class="metric-card rounded-2xl p-6 text-center">
+            <div class="text-3xl md:text-4xl font-bold text-white stat-number mb-1">2</div>
+            <div class="text-sm text-zinc-400" data-i18n="investor.metric_products">Produits</div>
+            <div class="text-xs text-emerald-400 mt-2" data-i18n="investor.metric_products_sub">Widget + Téléphonie</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Market Opportunity -->
+    <section class="py-16 bg-slate-800/30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center mb-4" data-i18n="investor.market_title">Opportunité de Marché</h2>
+        <p class="text-zinc-400 text-center max-w-2xl mx-auto mb-12" data-i18n="investor.market_subtitle">
+          Le marché Voice AI explose. 25% du trafic organique migre vers les moteurs de recherche IA (Gartner 2026).
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- TAM -->
+          <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700/50">
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
+              <i data-lucide="globe" class="w-6 h-6 text-indigo-400"></i>
+            </div>
+            <div class="text-2xl font-bold text-white mb-2">$12.5B</div>
+            <div class="text-lg font-semibold text-zinc-300 mb-2" data-i18n="investor.tam_title">TAM 2030</div>
+            <p class="text-sm text-zinc-400" data-i18n="investor.tam_desc">Marché global Conversational AI, croissance 25% CAGR</p>
+          </div>
+          <!-- SAM -->
+          <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700/50">
+            <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
+              <i data-lucide="target" class="w-6 h-6 text-violet-400"></i>
+            </div>
+            <div class="text-2xl font-bold text-white mb-2">$850M</div>
+            <div class="text-lg font-semibold text-zinc-300 mb-2" data-i18n="investor.sam_title">SAM Europe/MENA</div>
+            <p class="text-sm text-zinc-400" data-i18n="investor.sam_desc">France, Espagne, Maroc, UAE + régions francophones</p>
+          </div>
+          <!-- SOM -->
+          <div class="bg-slate-800/50 rounded-2xl p-8 border border-slate-700/50">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+              <i data-lucide="crosshair" class="w-6 h-6 text-emerald-400"></i>
+            </div>
+            <div class="text-2xl font-bold text-white mb-2">$25M</div>
+            <div class="text-lg font-semibold text-zinc-300 mb-2" data-i18n="investor.som_title">SOM Year 3</div>
+            <p class="text-sm text-zinc-400" data-i18n="investor.som_desc">Objectif réaliste avec 1% market share SAM</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Competitive Advantage -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center mb-4" data-i18n="investor.advantage_title">Avantage Concurrentiel</h2>
+        <p class="text-zinc-400 text-center max-w-2xl mx-auto mb-12" data-i18n="investor.advantage_subtitle">
+          VocalIA offre le meilleur rapport fonctionnalités/prix du marché Voice AI.
+        </p>
+
+        <!-- Comparison Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-slate-700">
+                <th class="py-4 px-6 text-zinc-400 font-medium" data-i18n="investor.table_feature">Fonctionnalité</th>
+                <th class="py-4 px-6 text-center text-indigo-400 font-semibold">VocalIA</th>
+                <th class="py-4 px-6 text-center text-zinc-400 font-medium">Vapi</th>
+                <th class="py-4 px-6 text-center text-zinc-400 font-medium">Retell</th>
+                <th class="py-4 px-6 text-center text-zinc-400 font-medium">Bland</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="competitor-row">
+                <td class="py-4 px-6 text-zinc-300" data-i18n="investor.table_pricing">Pricing /min</td>
+                <td class="py-4 px-6 text-center font-bold text-emerald-400">$0.06</td>
+                <td class="py-4 px-6 text-center text-zinc-400">$0.15-0.33</td>
+                <td class="py-4 px-6 text-center text-zinc-400">$0.13-0.31</td>
+                <td class="py-4 px-6 text-center text-zinc-400">$0.09</td>
+              </tr>
+              <tr class="competitor-row vocalia">
+                <td class="py-4 px-6 text-zinc-300" data-i18n="investor.table_widget_tel">Widget + Téléphonie</td>
+                <td class="py-4 px-6 text-center"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+              </tr>
+              <tr class="competitor-row">
+                <td class="py-4 px-6 text-zinc-300" data-i18n="investor.table_personas">30 Personas Métier</td>
+                <td class="py-4 px-6 text-center"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+              </tr>
+              <tr class="competitor-row vocalia">
+                <td class="py-4 px-6 text-zinc-300" data-i18n="investor.table_darija">Support Darija</td>
+                <td class="py-4 px-6 text-center"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+              </tr>
+              <tr class="competitor-row">
+                <td class="py-4 px-6 text-zinc-300" data-i18n="investor.table_mcp">MCP Server (21 tools)</td>
+                <td class="py-4 px-6 text-center"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+                <td class="py-4 px-6 text-center"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></td>
+              </tr>
+              <tr class="competitor-row vocalia">
+                <td class="py-4 px-6 text-zinc-300" data-i18n="investor.table_languages">5 Langues natives</td>
+                <td class="py-4 px-6 text-center"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></td>
+                <td class="py-4 px-6 text-center text-zinc-500">Limité</td>
+                <td class="py-4 px-6 text-center text-zinc-500">Limité</td>
+                <td class="py-4 px-6 text-center text-zinc-500">Limité</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Moats -->
+        <div class="mt-12 grid md:grid-cols-3 gap-6">
+          <div class="flex items-start gap-4 p-6 bg-slate-800/30 rounded-xl border border-slate-700/50">
+            <div class="moat-badge w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white mb-1" data-i18n="investor.moat_1_title">Moat Linguistique</h3>
+              <p class="text-sm text-zinc-400" data-i18n="investor.moat_1_desc">Seule plateforme avec Darija native (40M locuteurs Maroc)</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 p-6 bg-slate-800/30 rounded-xl border border-slate-700/50">
+            <div class="moat-badge w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white mb-1" data-i18n="investor.moat_2_title">Moat Produit</h3>
+              <p class="text-sm text-zinc-400" data-i18n="investor.moat_2_desc">Widget + Téléphonie dans une seule plateforme unifiée</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4 p-6 bg-slate-800/30 rounded-xl border border-slate-700/50">
+            <div class="moat-badge w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i data-lucide="trending-down" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-white mb-1" data-i18n="investor.moat_3_title">Moat Coût</h3>
+              <p class="text-sm text-zinc-400" data-i18n="investor.moat_3_desc">Architecture optimisée: 60% moins cher que la concurrence</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="py-16 bg-slate-800/30">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center mb-4" data-i18n="investor.tech_title">Stack Technologique</h2>
+        <p class="text-zinc-400 text-center max-w-2xl mx-auto mb-12" data-i18n="investor.tech_subtitle">
+          Architecture cloud-native avec Multi-AI fallback pour une fiabilité 99.9%.
+        </p>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="brain" class="w-7 h-7 text-blue-400"></i>
+            </div>
+            <h3 class="font-semibold text-white mb-2" data-i18n="investor.tech_ai">Multi-AI Engine</h3>
+            <p class="text-xs text-zinc-400" data-i18n="investor.tech_ai_desc">5 niveaux de redondance IA</p>
+          </div>
+          <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-green-500/20 to-green-600/10 flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="phone-call" class="w-7 h-7 text-green-400"></i>
+            </div>
+            <h3 class="font-semibold text-white mb-2" data-i18n="investor.tech_telephony">Téléphonie PSTN</h3>
+            <p class="text-xs text-zinc-400" data-i18n="investor.tech_telephony_desc">Bridge temps réel</p>
+          </div>
+          <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500/20 to-purple-600/10 flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="database" class="w-7 h-7 text-purple-400"></i>
+            </div>
+            <h3 class="font-semibold text-white mb-2" data-i18n="investor.tech_rag">BM25 RAG</h3>
+            <p class="text-xs text-zinc-400" data-i18n="investor.tech_rag_desc">Knowledge base intelligente</p>
+          </div>
+          <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700/50 text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-orange-500/20 to-orange-600/10 flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="plug" class="w-7 h-7 text-orange-400"></i>
+            </div>
+            <h3 class="font-semibold text-white mb-2" data-i18n="investor.tech_mcp">MCP Server</h3>
+            <p class="text-xs text-zinc-400" data-i18n="investor.tech_mcp_desc">21 tools, Claude + GPT</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Use of Funds -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-bold text-center mb-4" data-i18n="investor.funds_title">Utilisation des Fonds</h2>
+        <p class="text-zinc-400 text-center max-w-2xl mx-auto mb-12" data-i18n="investor.funds_subtitle">
+          Investissement ciblé pour accélérer la croissance et la pénétration marché.
+        </p>
+
+        <div class="max-w-3xl mx-auto space-y-4">
+          <!-- Product -->
+          <div class="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+            <div class="w-16 text-2xl font-bold text-indigo-400">40%</div>
+            <div class="flex-1">
+              <div class="font-semibold text-white" data-i18n="investor.funds_product">Développement Produit</div>
+              <div class="text-sm text-zinc-400" data-i18n="investor.funds_product_desc">A2UI, AP2, nouvelles intégrations, analytics avancés</div>
+            </div>
+            <div class="w-24 h-2 rounded-full bg-slate-700">
+              <div class="h-2 rounded-full bg-indigo-500" style="width: 40%"></div>
+            </div>
+          </div>
+          <!-- Sales & Marketing -->
+          <div class="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+            <div class="w-16 text-2xl font-bold text-violet-400">30%</div>
+            <div class="flex-1">
+              <div class="font-semibold text-white" data-i18n="investor.funds_sales">Sales & Marketing</div>
+              <div class="text-sm text-zinc-400" data-i18n="investor.funds_sales_desc">Acquisition clients, content, événements, partenariats</div>
+            </div>
+            <div class="w-24 h-2 rounded-full bg-slate-700">
+              <div class="h-2 rounded-full bg-violet-500" style="width: 30%"></div>
+            </div>
+          </div>
+          <!-- Team -->
+          <div class="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+            <div class="w-16 text-2xl font-bold text-emerald-400">20%</div>
+            <div class="flex-1">
+              <div class="font-semibold text-white" data-i18n="investor.funds_team">Équipe</div>
+              <div class="text-sm text-zinc-400" data-i18n="investor.funds_team_desc">Engineering, Sales, Customer Success</div>
+            </div>
+            <div class="w-24 h-2 rounded-full bg-slate-700">
+              <div class="h-2 rounded-full bg-emerald-500" style="width: 20%"></div>
+            </div>
+          </div>
+          <!-- Operations -->
+          <div class="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700/50">
+            <div class="w-16 text-2xl font-bold text-amber-400">10%</div>
+            <div class="flex-1">
+              <div class="font-semibold text-white" data-i18n="investor.funds_ops">Opérations</div>
+              <div class="text-sm text-zinc-400" data-i18n="investor.funds_ops_desc">Infrastructure, legal, conformité GDPR/AI Act</div>
+            </div>
+            <div class="w-24 h-2 rounded-full bg-slate-700">
+              <div class="h-2 rounded-full bg-amber-500" style="width: 10%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glow-pulse bg-gradient-to-br from-indigo-500/20 to-violet-500/10 rounded-3xl p-12 border border-indigo-500/30 text-center">
+          <h2 class="text-3xl font-bold text-white mb-4" data-i18n="investor.cta_title">Prêt à Discuter?</h2>
+          <p class="text-zinc-300 mb-8 max-w-xl mx-auto" data-i18n="investor.cta_subtitle">
+            Contactez-nous pour recevoir notre pitch deck complet et planifier une démo produit.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="mailto:invest@vocalia.ma" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-xl transition">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+              <span data-i18n="investor.cta_email">Contacter l'Équipe</span>
+            </a>
+            <a href="/docs" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition">
+              <i data-lucide="book-open" class="w-5 h-5"></i>
+              <span data-i18n="investor.cta_docs">Voir la Documentation</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (Minimal for Investor Page) -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-400 flex items-center justify-center">
+            <i data-lucide="mic" class="w-4 h-4 text-white"></i>
+          </div>
+          <span class="font-semibold text-white">VocalIA</span>
+        </div>
+        <p class="text-sm text-zinc-500" data-i18n="footer.copyright">&copy; 2026 VocalIA. Tous droits réservés.</p>
+        <div class="flex items-center gap-4">
+          <a href="/privacy" class="text-sm text-zinc-400 hover:text-white transition" data-i18n="footer.links.privacy">Confidentialité</a>
+          <a href="/terms" class="text-sm text-zinc-400 hover:text-white transition" data-i18n="footer.links.terms">CGU</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- i18n -->
+  <script src="/src/lib/i18n.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (typeof VocaliaI18n !== 'undefined') {
+        await VocaliaI18n.init();
+        VocaliaI18n.translatePage();
+      }
+    });
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+  </script>
+</body>
+
+</html>
