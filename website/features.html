@@ -591,21 +591,21 @@
       <!-- Breadcrumb -->
       <nav class="mb-8" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-2 text-sm text-zinc-400">
-          <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+          <li><a href="/" class="hover:text-white transition" data-i18n="features_page.breadcrumb_home">Accueil</a></li>
           <li><span class="mx-2">/</span></li>
-          <li class="text-white">Fonctionnalités</li>
+          <li class="text-white" data-i18n="features_page.breadcrumb_features">Fonctionnalités</li>
         </ol>
       </nav>
 
       <div class="text-center max-w-4xl mx-auto">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-vocalia-500/10 border border-vocalia-500/30 text-vocalia-300 text-sm mb-6">
           <i data-lucide="sparkles" class="w-4 h-4"></i>
-          Plateforme Voice AI Complète
+          <span data-i18n="features_page.badge">Plateforme Voice AI Complète</span>
         </div>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-          Toutes les <span class="gradient-text">Fonctionnalités</span>
+          <span data-i18n="features_page.title">Toutes les</span> <span class="gradient-text" data-i18n="features_page.title_highlight">Fonctionnalités</span>
         </h1>
-        <p class="text-xl text-zinc-400 mb-10">
+        <p class="text-xl text-zinc-400 mb-10" data-i18n="features_page.subtitle">
           Une suite complète d'outils pour créer, déployer et gérer vos agents vocaux IA.
           Du widget web gratuit à la téléphonie enterprise.
         </p>
@@ -617,8 +617,8 @@
   <section class="py-20 relative">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Deux Produits Complémentaires</h2>
-        <p class="text-lg text-zinc-400">Couvrez 100% de vos canaux de communication vocale</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="features_page.products_title">Deux Produits Complémentaires</h2>
+        <p class="text-lg text-zinc-400" data-i18n="features_page.products_subtitle">Couvrez 100% de vos canaux de communication vocale</p>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-8">
@@ -630,32 +630,32 @@
               <div class="feature-icon">
                 <i data-lucide="sparkles" class="w-7 h-7 text-vocalia-400"></i>
               </div>
-              <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-medium">Gratuit</span>
+              <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-medium" data-i18n="features_page.widget_free">Gratuit</span>
             </div>
-            <h3 class="text-2xl font-bold mb-3 gradient-text">Voice Widget</h3>
-            <p class="text-zinc-400 mb-6">Intégrez un assistant vocal intelligent directement sur votre site web. Installation en 2 minutes, aucun coût.</p>
+            <h3 class="text-2xl font-bold mb-3 gradient-text" data-i18n="features_page.widget_title">Voice Widget</h3>
+            <p class="text-zinc-400 mb-6" data-i18n="features_page.widget_desc">Intégrez un assistant vocal intelligent directement sur votre site web. Installation en 2 minutes, aucun coût.</p>
 
             <ul class="space-y-3 mb-8">
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-vocalia-400 mr-3"></i>
-                Web Speech API native (0$ d'API)
+                <span data-i18n="features_page.widget_f1">Web Speech API native (0$ d'API)</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-vocalia-400 mr-3"></i>
-                30 personas métier pré-configurés
+                <span data-i18n="features_page.widget_f2">30 personas métier pré-configurés</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-vocalia-400 mr-3"></i>
-                Personnalisation complète du design
+                <span data-i18n="features_page.widget_f3">Personnalisation complète du design</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-vocalia-400 mr-3"></i>
-                Analytics en temps réel
+                <span data-i18n="features_page.widget_f4">Analytics en temps réel</span>
               </li>
             </ul>
 
             <a href="/products/voice-widget" class="inline-flex items-center gap-2 text-vocalia-400 hover:text-vocalia-300 transition font-medium">
-              En savoir plus
+              <span data-i18n="features_page.learn_more">En savoir plus</span>
               <i data-lucide="box" class="w-4 h-4"></i>
             </a>
           </div>
@@ -669,32 +669,32 @@
               <div class="feature-icon" style="background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(99,102,241,0.1)); border-color: rgba(139,92,246,0.3);">
                 <i data-lucide="phone" class="w-7 h-7 text-violet-400"></i>
               </div>
-              <span class="px-3 py-1 rounded-full bg-violet-500/20 text-violet-400 text-sm font-medium">~0.06€/min</span>
+              <span class="px-3 py-1 rounded-full bg-violet-500/20 text-violet-400 text-sm font-medium" data-i18n="features_page.telephony_price">~0.06€/min</span>
             </div>
-            <h3 class="text-2xl font-bold mb-3" style="background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Voice Telephony AI</h3>
-            <p class="text-zinc-400 mb-6">Agents vocaux téléphoniques sur lignes PSTN réelles. Qualité enterprise, latence <100ms.</p>
+            <h3 class="text-2xl font-bold mb-3" style="background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;" data-i18n="features_page.telephony_title">Voice Telephony AI</h3>
+            <p class="text-zinc-400 mb-6" data-i18n="features_page.telephony_desc">Agents vocaux téléphoniques sur lignes PSTN réelles. Qualité enterprise, latence <100ms.</p>
 
             <ul class="space-y-3 mb-8">
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-violet-400 mr-3"></i>
-                PSTN + IA WebSocket temps réel
+                <span data-i18n="features_page.telephony_f1">PSTN + IA WebSocket temps réel</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-violet-400 mr-3"></i>
-                5 langues: FR, EN, ES, AR, Darija
+                <span data-i18n="features_page.telephony_f2">5 langues: FR, EN, ES, AR, Darija</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-violet-400 mr-3"></i>
-                11 function tools (booking, CRM, etc.)
+                <span data-i18n="features_page.telephony_f3">11 function tools (booking, CRM, etc.)</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-5 h-5 text-violet-400 mr-3"></i>
-                Multi-AI fallback (99.9% uptime)
+                <span data-i18n="features_page.telephony_f4">Multi-AI fallback (99.9% uptime)</span>
               </li>
             </ul>
 
             <a href="/products/voice-telephony" class="inline-flex items-center gap-2 text-violet-400 hover:text-violet-300 transition font-medium">
-              En savoir plus
+              <span data-i18n="features_page.learn_more">En savoir plus</span>
               <i data-lucide="box" class="w-4 h-4"></i>
             </a>
           </div>
@@ -707,8 +707,8 @@
   <section class="py-20 bg-slate-900/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Fonctionnalités Complètes</h2>
-        <p class="text-lg text-zinc-400">Tout ce dont vous avez besoin pour des agents vocaux de niveau enterprise</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="features_page.all_features_title">Fonctionnalités Complètes</h2>
+        <p class="text-lg text-zinc-400" data-i18n="features_page.all_features_subtitle">Tout ce dont vous avez besoin pour des agents vocaux de niveau enterprise</p>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -717,8 +717,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Latence Ultra-Basse</h3>
-          <p class="text-zinc-400 text-sm">Réponses en moins de 100ms grâce à notre architecture IA + WebSocket optimisée.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_latency_title">Latence Ultra-Basse</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_latency_desc">Réponses en moins de 100ms grâce à notre architecture IA + WebSocket optimisée.</p>
         </div>
 
         <!-- Feature 2 -->
@@ -726,8 +726,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">5 Langues Natives</h3>
-          <p class="text-zinc-400 text-sm">Français, Anglais, Espagnol, Arabe MSA et Darija marocain avec détection automatique.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_languages_title">5 Langues Natives</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_languages_desc">Français, Anglais, Espagnol, Arabe MSA et Darija marocain avec détection automatique.</p>
         </div>
 
         <!-- Feature 3 -->
@@ -735,8 +735,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">30 Personas Métier</h3>
-          <p class="text-zinc-400 text-sm">Agents pré-configurés: dentiste, immobilier, e-commerce, support, RH, finance, et plus.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_personas_title">30 Personas Métier</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_personas_desc">Agents pré-configurés: dentiste, immobilier, e-commerce, support, RH, finance, et plus.</p>
         </div>
 
         <!-- Feature 4 -->
@@ -744,8 +744,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="shield-check" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Multi-AI Fallback</h3>
-          <p class="text-zinc-400 text-sm">5 niveaux de redondance IA. 99.9% uptime garanti grâce au fallback automatique.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_fallback_title">Multi-AI Fallback</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_fallback_desc">5 niveaux de redondance IA. 99.9% uptime garanti grâce au fallback automatique.</p>
         </div>
 
         <!-- Feature 5 -->
@@ -753,8 +753,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Analytics Temps Réel</h3>
-          <p class="text-zinc-400 text-sm">Tableau de bord avec métriques: durée appels, sentiment, taux conversion, coûts.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_analytics_title">Analytics Temps Réel</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_analytics_desc">Tableau de bord avec métriques: durée appels, sentiment, taux conversion, coûts.</p>
         </div>
 
         <!-- Feature 6 -->
@@ -762,8 +762,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">11 Function Tools</h3>
-          <p class="text-zinc-400 text-sm">Booking, CRM sync, order lookup, lead qualification, payment, transfer, et plus.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_tools_title">11 Function Tools</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_tools_desc">Booking, CRM sync, order lookup, lead qualification, payment, transfer, et plus.</p>
         </div>
 
         <!-- Feature 7 -->
@@ -771,8 +771,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Knowledge Base RAG</h3>
-          <p class="text-zinc-400 text-sm">Base de connaissances vectorielle par secteur. Réponses contextuelles précises.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_rag_title">Knowledge Base RAG</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_rag_desc">Base de connaissances vectorielle par secteur. Réponses contextuelles précises.</p>
         </div>
 
         <!-- Feature 8 -->
@@ -780,8 +780,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">HITL Controls</h3>
-          <p class="text-zinc-400 text-sm">Human-in-the-loop pour les décisions critiques: bookings, transfers, escalations.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_hitl_title">HITL Controls</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_hitl_desc">Human-in-the-loop pour les décisions critiques: bookings, transfers, escalations.</p>
         </div>
 
         <!-- Feature 9 -->
@@ -789,8 +789,8 @@
           <div class="feature-icon mb-4">
             <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Intégrations CRM</h3>
-          <p class="text-zinc-400 text-sm">HubSpot, Klaviyo, Shopify, Calendly. Sync bidirectionnel automatique.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_crm_title">Intégrations CRM</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_crm_desc">HubSpot, Klaviyo, Shopify, Calendly. Sync bidirectionnel automatique.</p>
         </div>
       </div>
     </div>
@@ -800,15 +800,15 @@
   <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Pourquoi VocalIA?</h2>
-        <p class="text-lg text-zinc-400">Comparé aux alternatives du marché</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="features_page.comparison_title">Pourquoi VocalIA?</h2>
+        <p class="text-lg text-zinc-400" data-i18n="features_page.comparison_subtitle">Comparé aux alternatives du marché</p>
       </div>
 
       <div class="overflow-x-auto">
         <table class="w-full">
           <thead>
             <tr class="border-b border-slate-700">
-              <th class="text-left py-4 px-4 font-semibold">Fonctionnalité</th>
+              <th class="text-left py-4 px-4 font-semibold" data-i18n="features_page.table_feature">Fonctionnalité</th>
               <th class="text-center py-4 px-4 font-semibold text-vocalia-400">VocalIA</th>
               <th class="text-center py-4 px-4 font-semibold text-zinc-500">Vapi</th>
               <th class="text-center py-4 px-4 font-semibold text-zinc-500">Retell</th>
@@ -817,42 +817,42 @@
           </thead>
           <tbody class="text-sm">
             <tr class="border-b border-slate-800">
-              <td class="py-4 px-4">Prix par minute</td>
+              <td class="py-4 px-4" data-i18n="features_page.table_price">Prix par minute</td>
               <td class="text-center py-4 px-4 text-vocalia-400 font-semibold">~0.06€</td>
               <td class="text-center py-4 px-4 text-zinc-400">0.15-0.33€</td>
               <td class="text-center py-4 px-4 text-zinc-400">0.13-0.31€</td>
               <td class="text-center py-4 px-4 text-zinc-400">0.09€</td>
             </tr>
             <tr class="border-b border-slate-800">
-              <td class="py-4 px-4">Widget Web Gratuit</td>
+              <td class="py-4 px-4" data-i18n="features_page.table_widget">Widget Web Gratuit</td>
               <td class="text-center py-4 px-4"><span class="text-emerald-400"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
             </tr>
             <tr class="border-b border-slate-800">
-              <td class="py-4 px-4">Support Darija</td>
+              <td class="py-4 px-4" data-i18n="features_page.table_darija">Support Darija</td>
               <td class="text-center py-4 px-4"><span class="text-emerald-400"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
             </tr>
             <tr class="border-b border-slate-800">
-              <td class="py-4 px-4">Personas Pré-configurés</td>
+              <td class="py-4 px-4" data-i18n="features_page.table_personas">Personas Pré-configurés</td>
               <td class="text-center py-4 px-4 text-vocalia-400 font-semibold">30</td>
               <td class="text-center py-4 px-4 text-zinc-400">0</td>
               <td class="text-center py-4 px-4 text-zinc-400">0</td>
               <td class="text-center py-4 px-4 text-zinc-400">0</td>
             </tr>
             <tr class="border-b border-slate-800">
-              <td class="py-4 px-4">Self-Hosted Option</td>
+              <td class="py-4 px-4" data-i18n="features_page.table_selfhost">Self-Hosted Option</td>
               <td class="text-center py-4 px-4"><span class="text-emerald-400"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
             </tr>
             <tr>
-              <td class="py-4 px-4">Multi-AI Fallback</td>
+              <td class="py-4 px-4" data-i18n="features_page.table_fallback">Multi-AI Fallback</td>
               <td class="text-center py-4 px-4"><span class="text-emerald-400"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
               <td class="text-center py-4 px-4"><span class="text-zinc-500"><i data-lucide="x" class="w-5 h-5 text-red-400 inline"></i></span></td>
@@ -868,14 +868,14 @@
   <section class="py-24 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-vocalia-600 to-vocalia-500"></div>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Prêt à Démarrer?</h2>
-      <p class="text-xl text-white/80 mb-8">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6" data-i18n="features_page.cta_title">Prêt à Démarrer?</h2>
+      <p class="text-xl text-white/80 mb-8" data-i18n="features_page.cta_subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <a href="/pricing" class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg">
-          Voir les Tarifs
+          <span data-i18n="features_page.cta_pricing">Voir les Tarifs</span>
           <i data-lucide="mail" class="w-5 h-5 ml-2"></i>
         </a>
-        <a href="/contact" class="inline-flex items-center px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white hover:bg-white/20 transition font-semibold text-lg">
+        <a href="/contact" class="inline-flex items-center px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white hover:bg-white/20 transition font-semibold text-lg" data-i18n="features_page.cta_contact">
           Contacter l'Équipe
         </a>
       </div>
@@ -887,21 +887,22 @@
       <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
-            Restez informé des actualités <span class="gradient-text">Voice AI</span>
+            <span data-i18n="features_page.newsletter_title">Restez informé des actualités</span> <span class="gradient-text" data-i18n="features_page.newsletter_title_highlight">Voice AI</span>
           </h3>
-          <p class="text-slate-400 text-sm">
+          <p class="text-slate-400 text-sm" data-i18n="features_page.newsletter_desc">
             Articles, guides et études de cas. Pas de spam.
           </p>
         </div>
         <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); this.querySelector('button').textContent = '✓ Inscrit!'; this.querySelector('button').disabled = true;">
           <input
             type="email"
+            data-i18n-placeholder="features_page.newsletter_placeholder"
             placeholder="votre@email.com"
             class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required
             aria-label="Adresse email"
           >
-          <button type="submit" class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap">
+          <button type="submit" class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap" data-i18n="features_page.newsletter_button">
             S'inscrire
           </button>
         </form>
