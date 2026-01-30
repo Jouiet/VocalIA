@@ -63,11 +63,26 @@ function t(key, params = {}) {
 }
 
 /**
+ * Supported locales
+ * - fr: French (default)
+ * - en: English
+ * - es: Spanish
+ * - ar: Arabic (MSA)
+ * - ary: Darija (Moroccan Arabic)
+ */
+const SUPPORTED_LOCALES = ['fr', 'en', 'es', 'ar', 'ary'];
+
+/**
+ * RTL (Right-to-Left) locales
+ */
+const RTL_LOCALES = ['ar', 'ary'];
+
+/**
  * Set current locale
  * @param {string} locale - Locale code
  */
 async function setLocale(locale) {
-  if (!['fr', 'en'].includes(locale)) {
+  if (!SUPPORTED_LOCALES.includes(locale)) {
     console.warn(`[i18n] Unsupported locale: ${locale}, falling back to fr`);
     locale = 'fr';
   }
@@ -76,6 +91,15 @@ async function setLocale(locale) {
   currentLocale = locale;
   document.documentElement.lang = locale;
   localStorage.setItem('vocalia_lang', locale);
+
+  // Set text direction for RTL languages
+  if (RTL_LOCALES.includes(locale)) {
+    document.documentElement.dir = 'rtl';
+    document.body.classList.add('rtl');
+  } else {
+    document.documentElement.dir = 'ltr';
+    document.body.classList.remove('rtl');
+  }
 
   // Dispatch event for UI updates
   window.dispatchEvent(new CustomEvent('localeChanged', { detail: { locale } }));

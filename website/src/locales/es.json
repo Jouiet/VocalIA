@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "title": "VocalIA - Agentes Vocales IA para Empresas",
+    "description": "Transforme sus interacciones con clientes mediante agentes vocales IA inteligentes. Widget web y telefonía PSTN. 5 idiomas soportados."
+  },
+  "nav": {
+    "features": "Funcionalidades",
+    "pricing": "Precios",
+    "demo": "Demo",
+    "dashboard": "Panel de Control",
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión"
+  },
+  "dashboard": {
+    "sidebar": {
+      "overview": "Vista General",
+      "calls": "Llamadas",
+      "agents": "Agentes IA",
+      "knowledge": "Base de Conocimiento",
+      "analytics": "Analíticas",
+      "billing": "Facturación",
+      "settings": "Configuración",
+      "system": "Sistema",
+      "tenants": "Tenants",
+      "revenue": "Ingresos",
+      "api": "Uso de API",
+      "health": "Estado",
+      "logs": "Registros",
+      "users": "Usuarios"
+    },
+    "header": {
+      "welcome": "Bienvenido, {{name}}. Aquí está la actividad de sus agentes.",
+      "status": "Sistema operativo",
+      "status_admin": "Todos los sistemas OK",
+      "refresh": "Actualizar"
+    },
+    "stats": {
+      "calls_month": "Llamadas este mes",
+      "minutes_used": "Minutos utilizados",
+      "conversion_rate": "Tasa de conversión",
+      "nps": "Puntuación de satisfacción",
+      "tenants_active": "Tenants activos",
+      "calls_today": "Llamadas hoy",
+      "mrr": "MRR",
+      "latency": "Latencia promedio",
+      "uptime": "Disponibilidad",
+      "in_progress": "En curso: {{count}}"
+    },
+    "charts": {
+      "call_volume": "Volumen de llamadas",
+      "languages": "Idiomas detectados",
+      "revenue_split": "Distribución de ingresos"
+    },
+    "agents": {
+      "title": "Agentes IA activos",
+      "configure": "+ Configurar",
+      "active": "Activo",
+      "paused": "Pausado"
+    },
+    "calls": {
+      "recent": "Llamadas recientes",
+      "view_all": "Ver todo →",
+      "ago": "Hace {{time}} • {{duration}}",
+      "status": {
+        "converted": "Convertido",
+        "support": "Soporte",
+        "transferred": "Transferido",
+        "abandoned": "Abandonado"
+      }
+    },
+    "billing": {
+      "title": "Facturación",
+      "period": "Período: {{month}}",
+      "current_plan": "Plan actual",
+      "extra_mins": "Minutos adicionales",
+      "next_bill": "Próxima factura",
+      "remaining_mins": "{{count}} min restantes"
+    },
+    "health": {
+      "title": "Estado de los servicios",
+      "operational": "Operativo",
+      "degraded": "Degradado",
+      "down": "Caído"
+    },
+    "tenants": {
+      "title": "Top Tenants",
+      "table": {
+        "tenant": "Tenant",
+        "plan": "Plan",
+        "calls": "Llamadas/mes",
+        "mrr": "MRR",
+        "status": "Estado"
+      }
+    },
+    "quick_actions": {
+      "title": "Acciones rápidas",
+      "new_tenant": "Nuevo Tenant",
+      "restart": "Reiniciar Servicios",
+      "logs": "Exportar Logs",
+      "config": "Configuración"
+    }
+  },
+  "hero": {
+    "badge": "Voice AI de Nueva Generación",
+    "title": "Sus Agentes Vocales IA",
+    "titleHighlight": "24/7",
+    "subtitle": "Widget web y telefonía inteligente para su empresa. Multilingüe: FR, EN, AR, ES, Darija.",
+    "cta_primary": "Prueba Gratuita",
+    "cta_secondary": "Ver Demo",
+    "trusted": "Confían en nosotros"
+  },
+  "features": {
+    "title": "Dos Productos, Una Plataforma",
+    "subtitle": "Cubra el 100% de sus canales de voz",
+    "widget": {
+      "title": "Voice Widget",
+      "description": "Integre un asistente vocal inteligente en su sitio web. Sin instalación requerida.",
+      "price": "Gratis",
+      "features": [
+        "API de Voz Web nativa",
+        "30 personas profesionales",
+        "5 idiomas soportados",
+        "Integración en 2 minutos"
+      ]
+    },
+    "telephony": {
+      "title": "Voice Telephony AI",
+      "description": "Agentes IA para sus líneas telefónicas. Calificación de leads, soporte al cliente, citas.",
+      "price": "/min",
+      "features": [
+        "PSTN integrado",
+        "Multi-AI Fallback",
+        "RAG Knowledge Base",
+        "HITL configurable"
+      ]
+    }
+  },
+  "languages": {
+    "title": "5 Idiomas Nativos",
+    "subtitle": "Hable con sus clientes en su idioma",
+    "list": {
+      "fr": "Francés",
+      "en": "Inglés",
+      "es": "Español",
+      "ar": "Árabe",
+      "ary": "Darija Marroquí"
+    }
+  },
+  "voice_demo": {
+    "title": "Visualice la Voz",
+    "subtitle": "Nuestra tecnología de procesamiento de voz en tiempo real"
+  },
+  "personas": {
+    "title": "30 Personas Profesionales",
+    "subtitle": "Agentes especializados para cada sector",
+    "list": [
+      "E-commerce",
+      "Dental",
+      "Hotelería",
+      "Legal",
+      "Seguros",
+      "Inmobiliaria",
+      "RRHH",
+      "Logística"
+    ]
+  },
+  "pricing": {
+    "title": "Precios Transparentes",
+    "subtitle": "Sin cargos ocultos, sin compromiso",
+    "widget": {
+      "name": "Widget",
+      "price": "0",
+      "period": "/mes",
+      "features": [
+        "Asistente vocal web",
+        "30 personas incluidas",
+        "5 idiomas",
+        "Soporte por email"
+      ],
+      "cta": "Comenzar Gratis"
+    },
+    "starter": {
+      "name": "Starter",
+      "price": "49",
+      "period": "/mes",
+      "features": [
+        "1 línea telefónica",
+        "500 min/mes incluidos",
+        "RAG Knowledge Base",
+        "Dashboard analytics"
+      ],
+      "cta": "Prueba 14 días"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "149",
+      "period": "/mes",
+      "features": [
+        "5 líneas telefónicas",
+        "2000 min/mes incluidos",
+        "Multi-tenant",
+        "API completa",
+        "Soporte prioritario"
+      ],
+      "cta": "Contactar Ventas",
+      "popular": true
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "price": "A Medida",
+      "features": [
+        "Líneas ilimitadas",
+        "Volumen ilimitado",
+        "SLA garantizado",
+        "Integraciones custom",
+        "Account manager dedicado"
+      ],
+      "cta": "Contáctenos"
+    },
+    "overage": "Min. adicional"
+  },
+  "stats": {
+    "latency": "Latencia promedio",
+    "languages": "Idiomas soportados",
+    "personas": "Personas profesionales",
+    "uptime": "Disponibilidad"
+  },
+  "cta": {
+    "title": "¿Listo para Transformar su Servicio al Cliente?",
+    "subtitle": "Despliegue su primer agente vocal IA en menos de 5 minutos.",
+    "button": "Comenzar Ahora"
+  },
+  "footer": {
+    "tagline": "Agentes Vocales IA para Empresas",
+    "product": "Producto",
+    "company": "Empresa",
+    "legal": "Legal",
+    "links": {
+      "features": "Funcionalidades",
+      "pricing": "Precios",
+      "docs": "Documentación",
+      "api": "API",
+      "about": "Acerca de",
+      "blog": "Blog",
+      "careers": "Carreras",
+      "contact": "Contacto",
+      "privacy": "Privacidad",
+      "terms": "Términos",
+      "cookies": "Cookies"
+    },
+    "copyright": "© 2026 VocalIA. Todos los derechos reservados.",
+    "trust": {
+      "gdpr": "Conforme RGPD",
+      "ai_act": "AI Act Ready",
+      "security": "Cifrado AES-256",
+      "reliability": "99.9% Uptime"
+    }
+  }
+}

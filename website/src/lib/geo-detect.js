@@ -10,8 +10,8 @@
  */
 
 const GEO_CONFIG = {
-  // Morocco
-  MA: { lang: 'fr', currency: 'MAD', symbol: 'DH', locale: 'fr-MA' },
+  // Morocco - Darija + MAD (special case: offer Darija or French)
+  MA: { lang: 'fr', altLang: 'ary', currency: 'MAD', symbol: 'DH', locale: 'fr-MA' },
 
   // Francophone + Euro
   FR: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-FR' },
@@ -21,31 +21,50 @@ const GEO_CONFIG = {
   DZ: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-DZ' },
   TN: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-TN' },
 
+  // Spanish speaking - Europe
+  ES: { lang: 'es', currency: 'EUR', symbol: '€', locale: 'es-ES' },
+
+  // Spanish speaking - LATAM (USD)
+  MX: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-MX' },
+  AR: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-AR' },
+  CO: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-CO' },
+  CL: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-CL' },
+  PE: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-PE' },
+  VE: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-VE' },
+  EC: { lang: 'es', currency: 'USD', symbol: '$', locale: 'es-EC' },
+
   // Euro zone (default to French for proximity)
   DE: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'de-DE' },
-  ES: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'es-ES' },
   IT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'it-IT' },
   PT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'pt-PT' },
   NL: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'nl-NL' },
   AT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'de-AT' },
   IE: { lang: 'en', currency: 'EUR', symbol: '€', locale: 'en-IE' },
 
-  // Gulf/MENA (English + USD)
-  AE: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-AE' },
-  SA: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-SA' },
-  QA: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-QA' },
-  KW: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-KW' },
-  BH: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-BH' },
-  OM: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-OM' },
-  EG: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-EG' },
-  JO: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-JO' },
-  LB: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-LB' },
+  // Gulf/MENA - Arabic (MSA) + USD
+  AE: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-AE' },
+  SA: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-SA' },
+  QA: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-QA' },
+  KW: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-KW' },
+  BH: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-BH' },
+  OM: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-OM' },
+  EG: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-EG' },
+  JO: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-JO' },
+  LB: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-LB' },
+  IQ: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-IQ' },
+  SY: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-SY' },
+  YE: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-YE' },
+  LY: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-LY' },
+  SD: { lang: 'ar', currency: 'USD', symbol: '$', locale: 'ar-SD' },
 
   // English speaking
   US: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-US' },
   GB: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-GB' },
   CA: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-CA' },
   AU: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-AU' },
+  NZ: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-NZ' },
+  IN: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-IN' },
+  SG: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-SG' },
 
   // Default
   DEFAULT: { lang: 'en', currency: 'USD', symbol: '$', locale: 'en-US' }
