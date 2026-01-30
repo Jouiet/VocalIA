@@ -40,3 +40,6 @@ sdks/python/**/__pycache__/
 sdks/node/dist/
 sdks/node/node_modules/
 .playwright-mcp/
+
+# Locale backups
+.locale-backups/
