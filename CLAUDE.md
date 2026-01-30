@@ -1,8 +1,8 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.3 | 30/01/2026 | Session 230 | Backend: 99/100 | Frontend: 100% | Health: 100%
+> Version: 4.3.4 | 30/01/2026 | Session 231 | Backend: 99/100 | Frontend: 100% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
-> SDKs: ✅ Python (pip install vocalia) | ✅ Node.js (npm install vocalia) | ✅ MCP Server
+> SDKs: ✅ Python | ✅ Node.js | MCP Server v0.2.0 (4 tools fonctionnels)
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
 > Stats Counters: ✅ Animated (< 100ms, 5 langues, 30 personas, 99.9% uptime)
 
@@ -1770,20 +1770,52 @@ All backlog items now resolved:
 | Personas | `-18` ❌ | `30` ✅ |
 | Uptime | `-59.7%` ❌ | `99.9%` ✅ |
 
-### Plan Actionnable (Session 231)
+---
+
+## Session 231 Summary (30/01/2026)
+
+**MCP Server v0.2.0 - Factual Implementation:**
+
+### Audit Factuel
+
+| Claim Initial | Réalité Vérifiée |
+|:--------------|:-----------------|
+| 11 MCP tools | **4 tools fonctionnels** |
+| API endpoints v1 | **Endpoints /respond, /qualify, /health** |
+| TTS/STT via API | **Browser Web Speech API** |
+| Telephony | **Requires TWILIO credentials** |
+
+### MCP Tools Fonctionnels (4)
+
+| Tool | Status | Description |
+|:-----|:------:|:------------|
+| `voice_generate_response` | ✅ | Appelle /respond sur port 3004 |
+| `personas_list` | ✅ | 30 personas locaux (pas d'API) |
+| `qualify_lead` | ✅ | Calcul BANT local |
+| `api_status` | ✅ | Vérifie connexion API |
+
+### Corrections Apportées
+
+| Fichier | Modification |
+|:--------|:-------------|
+| `mcp-server/src/index.ts` | Réduit de 11 à 4 tools factuels |
+| `mcp-server/package.json` | v0.1.0 → v0.2.0 |
+| `docs/VOCALIA-MCP.md` | Documentation honnête |
+
+### Plan Actionnable (Session 232)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Deploy API backend (api.vocalia.ma) | P1 | Required for SDKs/MCP |
-| 2 | Publish SDKs to PyPI/npm | P2 | After API deployment |
-| 3 | Production stress testing | P2 | Load testing endpoints |
+| 1 | Run voice-api-resilient.cjs locally | P1 | Test MCP avec API réelle |
+| 2 | Publish SDKs to PyPI/npm | P2 | Après tests API |
+| 3 | Add knowledge_base_search to API | P2 | Expose /search endpoint |
 
 ---
 
-*Màj: 30/01/2026 - Session 230 (Stats Counters Bug Fix)*
+*Màj: 30/01/2026 - Session 231 (MCP Server Factual Refactor)*
 *Status: Backend 99/100 ✅ | Frontend 100% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
-*SDKs: Python ✅ | Node.js ✅ | MCP Server ✅ (11 tools)*
+*SDKs: Python ✅ | Node.js ✅ | MCP Server v0.2.0 (4 tools)*
 *Dashboards: Lucide Icons ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
 *Stats: < 100ms ✅ | 5 langues ✅ | 30 personas ✅ | 99.9% uptime ✅*
 *Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*
