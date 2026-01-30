@@ -3,7 +3,7 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 232 - v0.3.2 - REAL Implementation (NO MOCKS)
+ * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
  * TOOL CATEGORIES (21 tools - 10 always available, 11 require services):
  * - Voice Tools (2): voice_generate_response, voice_providers_status [REQUIRE API]
@@ -468,7 +468,7 @@ server.tool(
 // KNOWLEDGE BASE TOOLS (3) - LOCAL WITH KB FILES
 // =============================================================================
 
-// Tool 8: knowledge_search - TF-IDF search in knowledge base
+// Tool 8: knowledge_search - BM25 search in knowledge base (SOTA Session 241.2)
 server.tool(
   "knowledge_search",
   {

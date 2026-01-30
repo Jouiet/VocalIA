@@ -2,7 +2,7 @@
 
 > Version: 5.0.0 | 30/01/2026 | Session 241.2 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | 1444 keys | RTL ✅ | QA Scripts ✅
-> SDKs: Python | Node.js | MCP Server v0.3.2 (21 tools) | RAG: BM25 SOTA
+> SDKs: Python | Node.js | MCP Server v0.3.3 (21 tools) | RAG: BM25 SOTA
 
 ## Identité
 

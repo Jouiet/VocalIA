@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.3.2 | 30/01/2026 | Session 232
+> Version: 0.3.3 | 30/01/2026 | Session 241.2 | BM25 RAG SOTA
 
 ## Qu'est-ce que MCP?
 
