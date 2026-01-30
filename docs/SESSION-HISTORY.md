@@ -1,8 +1,8 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.18.0 | **Updated**: 30/01/2026 | **Session**: 249.5
+> **Version**: 3.19.0 | **Updated**: 30/01/2026 | **Session**: 249.6
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 19/20 (95%) | **MCP Tools**: 106 | **All Phases**: ✅ COMPLETE
+> **Integrations Check**: 19/20 (95%) | **MCP Tools**: 114 | **All Phases**: ✅ COMPLETE
 
 ---
 
@@ -3643,5 +3643,63 @@ cd mcp-server && npm run build  # ✅ SUCCESS
 
 ---
 
-*Màj: 30/01/2026 - Session 249.5 (ALL PHASES COMPLETE - 106 tools)*
+### Session 249.6: Export & Email Tools (30/01/2026)
+
+**Goal**: Ajouter capacités d'export (CSV, XLSX, PDF) et envoi email (SMTP)
+
+**Nouvelles capacités MCP (8 tools):**
+
+| Catégorie | Fichier | Tools | Description |
+|:----------|:--------|:-----:|:------------|
+| **Export** | `tools/export.ts` | 5 | CSV, XLSX, PDF generation |
+| **Email** | `tools/email.ts` | 3 | SMTP templates |
+
+**Export Tools (5):**
+
+| Tool | Output | Dependencies |
+|:-----|:-------|:-------------|
+| `export_generate_csv` | data/exports/*.csv | papaparse |
+| `export_generate_xlsx` | data/exports/*.xlsx | exceljs |
+| `export_generate_pdf` | data/exports/*.pdf | pdfkit |
+| `export_generate_pdf_table` | data/exports/*.pdf | pdfkit |
+| `export_list_files` | JSON listing | fs |
+
+**Email Tools (3):**
+
+| Tool | Templates | Dependencies |
+|:-----|:----------|:-------------|
+| `email_send` | Custom | nodemailer |
+| `email_send_template` | lead_confirmation, booking_confirmation, follow_up, invoice | nodemailer |
+| `email_verify_smtp` | N/A | nodemailer |
+
+**Dependencies ajoutées (package.json):**
+
+```json
+{
+  "exceljs": "^4.4.0",
+  "nodemailer": "^7.0.13",
+  "papaparse": "^5.5.3",
+  "pdfkit": "^0.17.2",
+  "@types/nodemailer": "^7.0.9",
+  "@types/papaparse": "^5.5.2",
+  "@types/pdfkit": "^0.17.4"
+}
+```
+
+**Features:**
+
+- VocalIA branding sur PDF (couleur #5E6AD2)
+- Excel avec en-têtes stylés et auto-filter
+- 4 templates email prédéfinis pour cas d'usage courants
+- Output directory: `data/exports/`
+
+**Commits:**
+
+- `feat(export): Add CSV, XLSX, PDF export + Email tools (8 tools)`
+
+**Statut final**: MCP Server v0.5.3 | 114 tools | 19/20 integrations (95%) | Export ✅ | Email ✅
+
+---
+
+*Màj: 30/01/2026 - Session 249.6 (Export + Email - 114 tools)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

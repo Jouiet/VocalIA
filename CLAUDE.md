@@ -1,8 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.0.0 | 30/01/2026 | Session 249.5 | Health: 100%
+> Version: 6.1.0 | 30/01/2026 | Session 249.6 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.5.2 (**106 tools**) | RAG: BM25 SOTA
+> SDKs: Python | Node.js | MCP Server v0.5.3 (**114 tools**) | RAG: BM25 SOTA
+> Export: CSV, XLSX, PDF | Email: SMTP (4 templates) | Output: data/exports/
 > Integrations: **19/20 (95%)** | ✅ All Phases COMPLETE | 4 blocked (Salesforce, Teams, WhatsApp, Outlook)
 > SEO: ~90% ✅ | AEO: ~75% ✅ | UCP ✅ | QA ✅ | SecretVault ✅ | OAuth Gateway ✅ | clients/ ✅
 
@@ -51,7 +52,7 @@ VocalIA/
 ├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (106 tools)
+├── mcp-server/     # MCP Server (114 tools)
 └── docs/           # Documentation
 ```
 
@@ -149,7 +150,7 @@ open http://localhost:8080?lang=ar
 |:---------|:------------|
 | `docs/SESSION-HISTORY.md` | Historique complet sessions |
 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | Reference technique |
-| `docs/VOCALIA-MCP.md` | MCP Server (106 tools) |
+| `docs/VOCALIA-MCP.md` | MCP Server (114 tools) |
 | `docs/INTEGRATIONS-ROADMAP.md` | Phase 0 ✅ + Phase 1 ✅ COMPLETE |
 | `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant architecture |
 | `docs/I18N-AUDIT-ACTIONPLAN.md` | Plan i18n (100% COMPLETE) |

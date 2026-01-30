@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.5.2 | 30/01/2026 | Session 249.5 | BM25 RAG SOTA | **ALL PHASES COMPLETE (106 tools)**
+> Version: 0.5.3 | 30/01/2026 | Session 249.6 | BM25 RAG SOTA | **ALL PHASES COMPLETE (114 tools)**
 > **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (95%)
 
 ## Qu'est-ce que MCP?
@@ -12,7 +12,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 
 ---
 
-## Status des Tools (Session 249.5)
+## Status des Tools (Session 249.6)
 
 ### Vue d'ensemble
 
@@ -43,9 +43,11 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Crisp** | **6** | 0 | **6** |
 | **Zoho CRM** | **6** | 0 | **6** |
 | **Magento** | **6** | 0 | **6** |
-| **TOTAL** | **106** | **11** | **95** |
+| **Export** | **5** | **5** | 0 |
+| **Email** | **3** | 0 | **3** |
+| **TOTAL** | **114** | **16** | **98** |
 
-### Tools Toujours Disponibles (10)
+### Tools Toujours Disponibles (15)
 
 Ces tools fonctionnent sans aucun service externe:
 
@@ -61,6 +63,11 @@ Ces tools fonctionnent sans aucun service externe:
 | `system_languages` | 5 langues + 7 voix | Local |
 | `booking_schedule_callback` | Planifier un rappel | **File: data/booking-queue.json** |
 | `booking_create` | Créer un RDV | **File: data/booking-queue.json** |
+| `export_generate_csv` | Générer fichier CSV | **File: data/exports/** |
+| `export_generate_xlsx` | Générer fichier Excel | **File: data/exports/** |
+| `export_generate_pdf` | Générer PDF document | **File: data/exports/** |
+| `export_generate_pdf_table` | Générer PDF avec table | **File: data/exports/** |
+| `export_list_files` | Lister exports disponibles | **File: data/exports/** |
 
 ### Tools Nécessitant Services (11)
 
@@ -88,11 +95,11 @@ Ces tools fonctionnent sans aucun service externe:
 | **Twilio** | ✅ Community | 5 | [github.com/twilio-labs/mcp-twilio](https://github.com/twilio-labs/mcp-twilio) |
 | **Vonage** | ✅ Officiel | 2 | [github.com/Vonage-Community/telephony-mcp-server](https://github.com/Vonage-Community/telephony-mcp-server) |
 | **Retell** | ❌ | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ✅ Officiel | **106** | `mcp-server/` |
+| **VocalIA** | ✅ Officiel | **114** | `mcp-server/` |
 
 **Différenciateurs VocalIA (SOTA):**
 
-- **106 tools** - 13x plus que Vapi (8 tools)
+- **114 tools** - 14x plus que Vapi (8 tools)
 - 30 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
 - Support Darija (Atlas-Chat-9B)
@@ -614,6 +621,139 @@ Lister les activités (appels, réunions, tâches).
 
 ---
 
+### Export Tools (5) - Document Generation
+
+#### `export_generate_csv`
+
+Génère un fichier CSV à partir d'un tableau de données.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `data` | array | ✅ | Tableau d'objets à convertir |
+| `filename` | string | ✅ | Nom du fichier (sans extension) |
+| `headers` | array | ❌ | En-têtes colonnes (auto-détectés si omis) |
+
+**Output:** `data/exports/{filename}.csv`
+
+#### `export_generate_xlsx`
+
+Génère un fichier Excel XLSX avec formatage VocalIA.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `data` | array | ✅ | Tableau d'objets à convertir |
+| `filename` | string | ✅ | Nom du fichier (sans extension) |
+| `sheetName` | string | ❌ | Nom de la feuille (défaut: "Data") |
+| `headers` | array | ❌ | En-têtes colonnes (auto-détectés si omis) |
+
+**Output:** `data/exports/{filename}.xlsx`
+
+#### `export_generate_pdf`
+
+Génère un document PDF avec branding VocalIA.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `content` | string | ✅ | Contenu texte du PDF |
+| `filename` | string | ✅ | Nom du fichier (sans extension) |
+| `title` | string | ❌ | Titre du document |
+| `includeDate` | boolean | ❌ | Inclure date de génération (défaut: true) |
+
+**Output:** `data/exports/{filename}.pdf`
+
+#### `export_generate_pdf_table`
+
+Génère un PDF avec tableau de données formaté.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `data` | array | ✅ | Tableau d'objets pour la table |
+| `filename` | string | ✅ | Nom du fichier (sans extension) |
+| `title` | string | ✅ | Titre du document |
+| `headers` | array | ❌ | En-têtes colonnes (auto-détectés si omis) |
+
+**Output:** `data/exports/{filename}.pdf`
+
+#### `export_list_files`
+
+Liste tous les fichiers exportés dans le répertoire exports.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| - | - | - | Aucun paramètre requis |
+
+**Réponse:**
+
+```json
+{
+  "status": "success",
+  "export_directory": "/path/to/data/exports",
+  "file_count": 5,
+  "files": [
+    { "filename": "leads.csv", "size_bytes": 2048, "type": "CSV", ... }
+  ]
+}
+```
+
+---
+
+### Email Tools (3) - SMTP Integration
+
+#### `email_send`
+
+Envoie un email via SMTP.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `to` | string | ✅ | Destinataire email |
+| `subject` | string | ✅ | Sujet de l'email |
+| `body` | string | ✅ | Contenu texte |
+| `html` | string | ❌ | Contenu HTML |
+| `from` | string | ❌ | Expéditeur (défaut: VocalIA) |
+| `replyTo` | string | ❌ | Adresse de réponse |
+
+**Prérequis:** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`
+
+#### `email_send_template`
+
+Envoie un email avec template prédéfini.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `to` | string | ✅ | Destinataire email |
+| `template` | enum | ✅ | lead_confirmation, booking_confirmation, follow_up, invoice |
+| `variables` | object | ✅ | Variables du template (name, date, etc.) |
+| `from` | string | ❌ | Expéditeur (défaut: VocalIA) |
+
+**Templates disponibles:**
+
+| Template | Variables requises | Usage |
+|:---------|:-------------------|:------|
+| `lead_confirmation` | name | Confirmation lead capturé |
+| `booking_confirmation` | name, date, time | Confirmation RDV |
+| `follow_up` | name | Relance après intérêt |
+| `invoice` | name, invoiceNumber, amount, currency | Envoi facture |
+
+#### `email_verify_smtp`
+
+Vérifie la connexion au serveur SMTP.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| - | - | - | Aucun paramètre requis |
+
+**Réponse:**
+
+```json
+{
+  "status": "success",
+  "smtp": { "host": "smtp.example.com", "port": 587, "secure": true },
+  "message": "SMTP connection verified successfully"
+}
+```
+
+---
+
 ---
 
 ## 4. Architecture Multi-Client (SaaS)
@@ -959,9 +1099,10 @@ User → VocalIA Agent (MCP: tools internes)
 ---
 
 *Documentation créée: 29/01/2026 - Session 227*
-*Mise à jour: 30/01/2026 - Session 249.5 (ALL PHASES COMPLETE - 106 tools)*
+*Mise à jour: 30/01/2026 - Session 249.6 (ALL PHASES COMPLETE - 114 tools)*
 *SOTA: MCP 100% | A2A 100% | AP2 0% | A2UI 0%*
 *Integrations: 19/20 (95%) | All Phases: 100% | Blocked: 4 (Salesforce, Teams, WhatsApp, Outlook)*
+*Export: CSV, XLSX, PDF | Email: SMTP templates*
 
 *Maintenu par: VocalIA Engineering*
 
