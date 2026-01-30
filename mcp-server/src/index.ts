@@ -64,15 +64,13 @@ import { calendlyTools } from "./tools/calendly.js";
 import { freshdeskTools } from "./tools/freshdesk.js";
 import { pipedriveTools } from "./tools/pipedrive.js";
 import { docsTools } from "./tools/docs.js";
-import { calcomTools } from "./tools/calcom.js";
 import { zendeskTools } from "./tools/zendesk.js";
 import { woocommerceTools } from "./tools/woocommerce.js";
-import { intercomTools } from "./tools/intercom.js";
-import { crispTools } from "./tools/crisp.js";
 import { zohoTools } from "./tools/zoho.js";
 import { magentoTools } from "./tools/magento.js";
 import { exportTools } from "./tools/export.js";
 import { emailTools } from "./tools/email.js";
+import { gmailTools } from "./tools/gmail.js";
 import { zapierTools } from "./tools/zapier.js";
 import { makeTools } from "./tools/make.js";
 import { n8nTools } from "./tools/n8n.js";
@@ -1240,17 +1238,6 @@ server.tool(docsTools.append_text.name, docsTools.append_text.parameters, docsTo
 server.tool(docsTools.replace_text.name, docsTools.replace_text.parameters, docsTools.replace_text.handler);
 
 // =============================================================================
-// CAL.COM TOOLS (6) - REQUIRE CALCOM API KEY
-// =============================================================================
-
-server.tool(calcomTools.get_me.name, calcomTools.get_me.parameters, calcomTools.get_me.handler);
-server.tool(calcomTools.list_event_types.name, calcomTools.list_event_types.parameters, calcomTools.list_event_types.handler);
-server.tool(calcomTools.list_bookings.name, calcomTools.list_bookings.parameters, calcomTools.list_bookings.handler);
-server.tool(calcomTools.get_availability.name, calcomTools.get_availability.parameters, calcomTools.get_availability.handler);
-server.tool(calcomTools.cancel_booking.name, calcomTools.cancel_booking.parameters, calcomTools.cancel_booking.handler);
-server.tool(calcomTools.list_schedules.name, calcomTools.list_schedules.parameters, calcomTools.list_schedules.handler);
-
-// =============================================================================
 // ZENDESK TOOLS (6) - REQUIRE ZENDESK CREDENTIALS
 // =============================================================================
 
@@ -1272,28 +1259,6 @@ server.tool(woocommerceTools.list_products.name, woocommerceTools.list_products.
 server.tool(woocommerceTools.get_product.name, woocommerceTools.get_product.parameters, woocommerceTools.get_product.handler);
 server.tool(woocommerceTools.list_customers.name, woocommerceTools.list_customers.parameters, woocommerceTools.list_customers.handler);
 server.tool(woocommerceTools.get_customer.name, woocommerceTools.get_customer.parameters, woocommerceTools.get_customer.handler);
-
-// =============================================================================
-// INTERCOM TOOLS (6) - REQUIRE INTERCOM_ACCESS_TOKEN
-// =============================================================================
-
-server.tool(intercomTools.list_contacts.name, intercomTools.list_contacts.parameters, intercomTools.list_contacts.handler);
-server.tool(intercomTools.get_contact.name, intercomTools.get_contact.parameters, intercomTools.get_contact.handler);
-server.tool(intercomTools.search_contacts.name, intercomTools.search_contacts.parameters, intercomTools.search_contacts.handler);
-server.tool(intercomTools.list_conversations.name, intercomTools.list_conversations.parameters, intercomTools.list_conversations.handler);
-server.tool(intercomTools.get_conversation.name, intercomTools.get_conversation.parameters, intercomTools.get_conversation.handler);
-server.tool(intercomTools.reply_conversation.name, intercomTools.reply_conversation.parameters, intercomTools.reply_conversation.handler);
-
-// =============================================================================
-// CRISP TOOLS (6) - REQUIRE CRISP CREDENTIALS
-// =============================================================================
-
-server.tool(crispTools.list_conversations.name, crispTools.list_conversations.parameters, crispTools.list_conversations.handler);
-server.tool(crispTools.get_conversation.name, crispTools.get_conversation.parameters, crispTools.get_conversation.handler);
-server.tool(crispTools.get_messages.name, crispTools.get_messages.parameters, crispTools.get_messages.handler);
-server.tool(crispTools.send_message.name, crispTools.send_message.parameters, crispTools.send_message.handler);
-server.tool(crispTools.update_conversation_state.name, crispTools.update_conversation_state.parameters, crispTools.update_conversation_state.handler);
-server.tool(crispTools.get_people_profile.name, crispTools.get_people_profile.parameters, crispTools.get_people_profile.handler);
 
 // =============================================================================
 // ZOHO CRM TOOLS (6) - REQUIRE ZOHO CREDENTIALS
@@ -1334,6 +1299,18 @@ server.tool(exportTools.list_exports.name, exportTools.list_exports.parameters, 
 server.tool(emailTools.send_email.name, emailTools.send_email.parameters, emailTools.send_email.handler);
 server.tool(emailTools.send_email_with_template.name, emailTools.send_email_with_template.parameters, emailTools.send_email_with_template.handler);
 server.tool(emailTools.verify_smtp.name, emailTools.verify_smtp.parameters, emailTools.verify_smtp.handler);
+
+// =============================================================================
+// GMAIL TOOLS (7) - Full Gmail API Integration - Session 249.9
+// =============================================================================
+
+server.tool(gmailTools.send_email.name, gmailTools.send_email.parameters, gmailTools.send_email.handler);
+server.tool(gmailTools.list_messages.name, gmailTools.list_messages.parameters, gmailTools.list_messages.handler);
+server.tool(gmailTools.get_message.name, gmailTools.get_message.parameters, gmailTools.get_message.handler);
+server.tool(gmailTools.search_emails.name, gmailTools.search_emails.parameters, gmailTools.search_emails.handler);
+server.tool(gmailTools.create_draft.name, gmailTools.create_draft.parameters, gmailTools.create_draft.handler);
+server.tool(gmailTools.list_labels.name, gmailTools.list_labels.parameters, gmailTools.list_labels.handler);
+server.tool(gmailTools.modify_labels.name, gmailTools.modify_labels.parameters, gmailTools.modify_labels.handler);
 
 // =============================================================================
 // IPAAS TOOLS (Zapier, Make, n8n) - Session 249.8
