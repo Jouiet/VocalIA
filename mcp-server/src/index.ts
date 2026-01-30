@@ -3,9 +3,9 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
+ * Session 249.5 - v0.5.1 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (75 tools - 11 always available, 64 require services):
+ * TOOL CATEGORIES (94 tools - 11 always available, 83 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -19,7 +19,7 @@
  * - UCP Inline (1): ucp_sync [REQUIRE UCP]
  * - Booking Tools (2): booking_schedule_callback, booking_create [ALWAYS - FILE PERSISTENCE]
  *
- * EXTERNAL MODULE TOOLS (36):
+ * EXTERNAL MODULE TOOLS (71):
  * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
  * - UCP Tools (3): ucp_sync_preference, ucp_get_profile, ucp_list_profiles [REQUIRE UCP]
@@ -31,8 +31,11 @@
  * - Freshdesk Tools (6): freshdesk_list_tickets, freshdesk_get_ticket, freshdesk_create_ticket, freshdesk_reply_ticket, freshdesk_update_ticket, freshdesk_search_contacts [REQUIRE FRESHDESK]
  * - Zendesk Tools (6): zendesk_list_tickets, zendesk_get_ticket, zendesk_create_ticket, zendesk_add_comment, zendesk_update_ticket, zendesk_search_users [REQUIRE ZENDESK]
  * - Pipedrive Tools (7): pipedrive_list_deals, pipedrive_create_deal, pipedrive_update_deal, pipedrive_list_persons, pipedrive_create_person, pipedrive_search, pipedrive_list_activities [REQUIRE PIPEDRIVE]
+ * - WooCommerce Tools (7): woocommerce_list_orders, woocommerce_get_order, woocommerce_update_order, woocommerce_list_products, woocommerce_get_product, woocommerce_list_customers, woocommerce_get_customer [REQUIRE WOOCOMMERCE]
+ * - Intercom Tools (6): intercom_list_contacts, intercom_get_contact, intercom_search_contacts, intercom_list_conversations, intercom_get_conversation, intercom_reply_conversation [REQUIRE INTERCOM]
+ * - Crisp Tools (6): crisp_list_conversations, crisp_get_conversation, crisp_get_messages, crisp_send_message, crisp_update_conversation_state, crisp_get_people_profile [REQUIRE CRISP]
  *
- * TOTAL: 75 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 94 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -56,6 +59,9 @@ import { pipedriveTools } from "./tools/pipedrive.js";
 import { docsTools } from "./tools/docs.js";
 import { calcomTools } from "./tools/calcom.js";
 import { zendeskTools } from "./tools/zendesk.js";
+import { woocommerceTools } from "./tools/woocommerce.js";
+import { intercomTools } from "./tools/intercom.js";
+import { crispTools } from "./tools/crisp.js";
 
 const execAsync = promisify(exec);
 
@@ -1240,6 +1246,40 @@ server.tool(zendeskTools.create_ticket.name, zendeskTools.create_ticket.paramete
 server.tool(zendeskTools.add_comment.name, zendeskTools.add_comment.parameters, zendeskTools.add_comment.handler);
 server.tool(zendeskTools.update_ticket.name, zendeskTools.update_ticket.parameters, zendeskTools.update_ticket.handler);
 server.tool(zendeskTools.search_users.name, zendeskTools.search_users.parameters, zendeskTools.search_users.handler);
+
+// =============================================================================
+// WOOCOMMERCE TOOLS (7) - REQUIRE WOOCOMMERCE CREDENTIALS
+// =============================================================================
+
+server.tool(woocommerceTools.list_orders.name, woocommerceTools.list_orders.parameters, woocommerceTools.list_orders.handler);
+server.tool(woocommerceTools.get_order.name, woocommerceTools.get_order.parameters, woocommerceTools.get_order.handler);
+server.tool(woocommerceTools.update_order.name, woocommerceTools.update_order.parameters, woocommerceTools.update_order.handler);
+server.tool(woocommerceTools.list_products.name, woocommerceTools.list_products.parameters, woocommerceTools.list_products.handler);
+server.tool(woocommerceTools.get_product.name, woocommerceTools.get_product.parameters, woocommerceTools.get_product.handler);
+server.tool(woocommerceTools.list_customers.name, woocommerceTools.list_customers.parameters, woocommerceTools.list_customers.handler);
+server.tool(woocommerceTools.get_customer.name, woocommerceTools.get_customer.parameters, woocommerceTools.get_customer.handler);
+
+// =============================================================================
+// INTERCOM TOOLS (6) - REQUIRE INTERCOM_ACCESS_TOKEN
+// =============================================================================
+
+server.tool(intercomTools.list_contacts.name, intercomTools.list_contacts.parameters, intercomTools.list_contacts.handler);
+server.tool(intercomTools.get_contact.name, intercomTools.get_contact.parameters, intercomTools.get_contact.handler);
+server.tool(intercomTools.search_contacts.name, intercomTools.search_contacts.parameters, intercomTools.search_contacts.handler);
+server.tool(intercomTools.list_conversations.name, intercomTools.list_conversations.parameters, intercomTools.list_conversations.handler);
+server.tool(intercomTools.get_conversation.name, intercomTools.get_conversation.parameters, intercomTools.get_conversation.handler);
+server.tool(intercomTools.reply_conversation.name, intercomTools.reply_conversation.parameters, intercomTools.reply_conversation.handler);
+
+// =============================================================================
+// CRISP TOOLS (6) - REQUIRE CRISP CREDENTIALS
+// =============================================================================
+
+server.tool(crispTools.list_conversations.name, crispTools.list_conversations.parameters, crispTools.list_conversations.handler);
+server.tool(crispTools.get_conversation.name, crispTools.get_conversation.parameters, crispTools.get_conversation.handler);
+server.tool(crispTools.get_messages.name, crispTools.get_messages.parameters, crispTools.get_messages.handler);
+server.tool(crispTools.send_message.name, crispTools.send_message.parameters, crispTools.send_message.handler);
+server.tool(crispTools.update_conversation_state.name, crispTools.update_conversation_state.parameters, crispTools.update_conversation_state.handler);
+server.tool(crispTools.get_people_profile.name, crispTools.get_people_profile.parameters, crispTools.get_people_profile.handler);
 
 // =============================================================================
 // SERVER STARTUP
