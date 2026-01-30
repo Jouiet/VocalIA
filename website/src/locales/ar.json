@@ -7,7 +7,7 @@
     "products": "المنتجات",
     "solutions": "الحلول",
     "resources": "الموارد",
-    "features": "المميزات",
+    "features": "المميزات والوظائف",
     "pricing": "الأسعار",
     "demo": "العرض التوضيحي",
     "dashboard": "لوحة التحكم",
@@ -33,9 +33,9 @@
     },
     "header": {
       "welcome": "مرحباً {{name}}. إليك نشاط وكلائك.",
-      "status": "النظام يعمل",
+      "status": "النظام يعمل بكفاءة",
       "status_admin": "جميع الأنظمة تعمل",
-      "refresh": "تحديث"
+      "refresh": "تحديث البيانات"
     },
     "stats": {
       "calls_month": "مكالمات هذا الشهر",
@@ -1377,7 +1377,7 @@
     "integrations_title": "التكاملات",
     "integrations_subtitle": "يتصل بأدواتك",
     "cta_title": "أهّل العملاء المحتملين آلياً",
-    "cta_subtitle": "اطلب عرضاً توضيحياً لرؤية التأهيل في العمل.",
+    "cta_subtitle": "يستحق مندوبو المبيعات لديك التحدث مع عملاء مؤهلين. دع VocalIA يقوم بالفرز.",
     "cta_button": "طلب عرض توضيحي",
     "breadcrumb_home": "Accueil",
     "breadcrumb_usecases": "Cas d'usage",

@@ -5,6 +5,7 @@
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: ✅ FIXED - Exposed URL removed (Session 243)
 > **SEO Score**: 90/100 (A-) - Hreflang 100%, Twitter Cards 100% ✅
+> Translation QA: ✅ 100% (No Truncations, No MSA in Darija) - Session 245
 > **AEO Score**: 75/100 (B) - AI bot rules ✅, FAQ schema ✅, Speakable ✅
 > **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
@@ -45,6 +46,7 @@ Ce document documente l'audit forensique complet du frontend VocalIA (Website + 
 ### Méthodologie
 
 Audit basé sur:
+
 1. **Web Search 2026 standards** - Sources: Awwwards, Linear Design System, Apple HIG 2026
 2. **Code source analysis** - input.css, index.html, dashboard/*.html
 3. **8 critères factuels** vs benchmarks industrie 2026
@@ -68,6 +70,7 @@ Audit basé sur:
 #### Issue #5: Bento Layout Absent (SEVERE)
 
 **Constat Factuel:**
+
 ```html
 <!-- ACTUEL - Grid standard symétrique -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -77,6 +80,7 @@ Audit basé sur:
 ```
 
 **Standard 2026 (Awwwards, Linear):**
+
 ```css
 /* Bento Grid - Asymétrique avec spans variables */
 .bento-grid {
@@ -96,6 +100,7 @@ Audit basé sur:
 #### Issue #6: Animations Non-GPU (PERFORMANCE)
 
 **Constat Factuel:**
+
 ```css
 /* ACTUEL - Cause repaints (non-compositor) */
 @keyframes gradient-shift {
@@ -110,6 +115,7 @@ Audit basé sur:
 ```
 
 **Standard 2026 (Chrome DevRel, Web.dev):**
+
 ```css
 /* GPU-Only - Compositor properties uniquement */
 @keyframes float {
@@ -126,6 +132,7 @@ Audit basé sur:
 #### Issue #7: Dashboards Statiques (UX SEVERE)
 
 **Constat Factuel:**
+
 ```html
 <!-- ACTUEL - Layout hardcodé -->
 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -134,6 +141,7 @@ Audit basé sur:
 ```
 
 **Standard 2026 (Notion, Linear, Figma):**
+
 - Drag-and-drop widgets
 - Resize handles
 - Layout persistence (localStorage/API)
@@ -146,6 +154,7 @@ Audit basé sur:
 #### Issue #8: Accessibilité Couleur-Seule (WCAG FAIL)
 
 **Constat Factuel:**
+
 ```html
 <!-- ACTUEL - Couleur seule pour statut -->
 <span class="w-2 h-2 rounded-full bg-green-500"></span>
@@ -153,6 +162,7 @@ Audit basé sur:
 ```
 
 **Standard WCAG 2.1 AA:**
+
 ```html
 <!-- REQUIS - Icône + Label + Couleur -->
 <span class="flex items-center gap-2">
@@ -194,27 +204,32 @@ Audit basé sur:
 ### Implémentations Session 209
 
 **1. GPU-Only Animations:**
+
 - `animate-gradient-gpu` - Uses transform/rotate instead of background-position
 - `animate-glow-pulse` - Replaced box-shadow with pseudo-element + opacity
 - `animate-shimmer` - Uses translateX instead of background-position
 
 **2. Accessible Status Indicators:**
+
 - New `.status-indicator` component with icon + color + text
 - `.status-indicator-online`, `.status-indicator-warning`, `.status-indicator-error`
 - Includes `.sr-only` class for screen readers
 
 **3. Bento Grid System:**
+
 - `.bento-grid` - 4-column responsive grid
 - `.bento-large` (2x2), `.bento-wide` (2x1), `.bento-tall` (1x2), `.bento-featured` (3x2)
 - Responsive breakpoints for tablet/mobile
 
 **4. Dashboard Drag-and-Drop:**
+
 - `dashboard-grid.js` - Vanilla JS drag-and-drop system
 - Layout persistence via localStorage
 - Keyboard accessibility support
 - Collapse/expand widgets
 
 **5. AI Insights Card:**
+
 - `.ai-insights-card` component for automated insights display
 - Typing indicator animation
 - Gradient accent bar
@@ -224,6 +239,7 @@ Audit basé sur:
 ### Implémentations Session 210
 
 **6. Voice Visualizer (NEW):**
+
 - `voice-visualizer.js` - 440 lines Canvas-based component
 - 4 visualization modes: wave, bars, orb, pulse
 - GPU-accelerated 60 FPS rendering
@@ -232,11 +248,13 @@ Audit basé sur:
 - Theme-aware (dark/light mode support)
 
 **7. Voice Demo Section:**
+
 - New section in `index.html` showcasing all 4 visualizer modes
 - i18n support (FR/EN translations)
 - Feature highlights (GPU Canvas, Web Audio, 60 FPS)
 
 **8. Dashboard Drag-Drop Integration:**
+
 - `admin.html` updated with `data-dashboard-grid` attribute
 - API Usage & Logs widgets now draggable
 - Layout persistence via localStorage
@@ -246,18 +264,21 @@ Audit basé sur:
 ### Implémentations Session 211
 
 **9. Performance Optimization:**
+
 - Images PNG → WebP (96% size reduction: 2MB → 77KB)
 - Font weights: 6 → 4 (removed unused 300/400)
 - Removed non-semantic animations (particles, orbs)
 - Added semantic sound waves background (Voice AI identity)
 
 **10. Brighter Palette:**
+
 - Body: `bg-vocalia-950` (#1e1b4b) → `bg-slate-900` (#0f172a)
 - Surfaces: #09090b → #0f172a (better visibility)
 - Cards: vocalia-900 → slate-800 (improved contrast)
 - Borders: 10% → 15-25% opacity (more defined)
 
 **11. Theme Simplification:**
+
 - Removed light mode from main site (dark-only)
 - Light/Dark toggle preserved for dashboards only
 
@@ -266,22 +287,26 @@ Audit basé sur:
 ### Implémentations Session 212
 
 **12. Lighthouse Performance Forensics:**
+
 - Score: 85 → 90 (+5)
 - Speed Index: 6.2s → 3.5s (-44%)
 - Render blocking resources: 5 → 1 (-80%)
 
 **13. Non-Blocking Resource Loading:**
+
 - Google Fonts: `media="print" onload="this.media='all'"` pattern
 - JS files: Added `defer` to geo-detect, i18n, gsap-animations
 - CSS: Preload hint + critical inline CSS
 
 **14. Image Performance:**
+
 - soundwaves.webp: 53KB → 15KB (resize to 640px)
 - Added width/height attributes for CLS prevention
 - Added `fetchpriority="high"` to LCP image
 - Added `decoding="async"` to all images
 
 **15. Brand Assets (Gemini 2.0 Flash):**
+
 - `og-image.webp`: 19KB - VocalIA social preview
 - `logo.webp`: 10KB - Abstract sound wave icon (#5E6AD2)
 
@@ -290,16 +315,19 @@ Audit basé sur:
 ### Implémentations Session 213
 
 **16. Deployment Configuration:**
+
 - `.htaccess`: Headers, rewrites, caching
 - Ready for NindoHost free tier deployment
 
 **17. Favicon Multi-size (6 formats):**
+
 - favicon.ico (16+32px combined)
 - PNG: 16x16, 32x32, 180x180, 192x192, 512x512
 - Apple touch icon for iOS
 - Android chrome icons for PWA
 
 **18. PWA Manifest:**
+
 - `site.webmanifest` with theme colors
 - Standalone display mode ready
 - App icons configured
@@ -309,35 +337,42 @@ Audit basé sur:
 ### Implémentations Session 220
 
 **Deep Forensic UI/UX Audit:**
+
 - 38 issues identified across 24 pages
 - Severity: 1 CRITICAL, 8 HIGH, 15 MEDIUM, 14 LOW
 
 **19. GPU-Only Animation Fix (CRITICAL):**
+
 - Replaced `shimmerGlass` background-position animation with transform-based GPU-only version
 - Added `will-change: transform, opacity` for compositor optimization
 - Eliminated main-thread jank on hover states
 
 **20. prefers-reduced-motion (WCAG 2.3.3):**
+
 - Comprehensive `@media (prefers-reduced-motion: reduce)` block
 - Disables ALL animations respecting user preference
 - Covers: hero orbs, bento items, 3D cards, shimmer effects
 
 **21. Accessible Status Indicators (WCAG 1.4.1):**
+
 - Updated dashboard/client.html and admin.html
 - Status indicators now use icon + color + text (not color alone)
 - Added `sr-only` labels for screen readers
 
 **22. Focus Ring Enhancement (WCAG 2.1.1):**
+
 - Global focus-visible styles with box-shadow glow
 - Dashboard buttons now have explicit focus states
 - Removed default focus for mouse users (:focus:not(:focus-visible))
 
 **23. Footer Standardization:**
+
 - Fixed 7 files with inconsistent footer styling
 - Unified: `bg-slate-900 border-t border-slate-800 py-16`
 - Affected: blog, changelog, api, healthcare, real-estate, finance, retail
 
 **24. Image Dimensions for CLS:**
+
 - All images now have explicit width/height attributes
 - Widget logo icons: 32x32px dimensions added
 - Prevents Cumulative Layout Shift on load
@@ -397,6 +432,7 @@ Icons audit revealed VocalIA was using Heroicons v1 (2019-2020 style) with `stro
 | Tier 3 | 12 | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
 
 **10 Files Corrected (28→30):**
+
 - changelog.html, voice-fr.json, voice-en.json
 - CLAUDE.md (2x), SESSION-HISTORY.md (2x)
 - scripts.md, pressure-matrix.json, automations-registry.json, DOCS-INDEX.md
@@ -419,6 +455,7 @@ Dashboard cards used basic `glass-panel` class with simple blur effect. Modern 2
 ### Implementation
 
 **CSS Class Migration:**
+
 ```css
 /* Before: glass-panel */
 .glass-panel {
@@ -540,9 +577,11 @@ grep -riE "Grok|Gemini|Twilio" website/ --include="*.html" --include="*.json" | 
 ## Issue #1: Tailwind CSS Build (CRITICAL)
 
 ### Problem
+
 Le CSS généré par Tailwind v4 ne contenait pas les classes utilitaires VocalIA (`bg-vocalia-*`, `text-vocalia-*`, etc.) car la configuration utilisait `:root` au lieu de `@theme`.
 
 ### Root Cause
+
 ```css
 /* AVANT - Incorrect pour Tailwind v4 */
 @layer base {
@@ -553,6 +592,7 @@ Le CSS généré par Tailwind v4 ne contenait pas les classes utilitaires VocalI
 ```
 
 ### Solution
+
 ```css
 /* APRÈS - Correct pour Tailwind v4 */
 @import "tailwindcss";
@@ -566,6 +606,7 @@ Le CSS généré par Tailwind v4 ne contenait pas les classes utilitaires VocalI
 ```
 
 ### Verification
+
 ```bash
 # CSS file size
 ls -la website/public/css/style.css
@@ -581,13 +622,16 @@ grep -o 'bg-vocalia-[0-9]*' website/public/css/style.css | sort -u
 ## Issue #2: i18n JSON Syntax Errors
 
 ### Problem
+
 Les fichiers `fr.json` et `en.json` avaient une erreur de syntaxe : virgule manquante entre `dashboard` et `hero`.
 
 ### Location
+
 - `/website/src/locales/fr.json` (line 101)
 - `/website/src/locales/en.json` (line 101)
 
 ### Fix
+
 ```json
 // BEFORE
     }
@@ -600,6 +644,7 @@ Les fichiers `fr.json` et `en.json` avaient une erreur de syntaxe : virgule manq
 ```
 
 ### Verification
+
 ```bash
 node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
 # Result: ✅ Valid JSON
@@ -610,16 +655,20 @@ node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
 ## Issue #3: CSP/X-Frame-Options Meta Tags
 
 ### Problem
+
 Les directives de sécurité CSP et X-Frame-Options sont ignorées quand définies via `<meta>` tags.
 
 ### Current State
+
 ```html
 <meta http-equiv="Content-Security-Policy" content="...">
 <meta http-equiv="X-Frame-Options" content="DENY">
 ```
 
 ### Recommendation
+
 Configurer les headers au niveau du serveur (NindoHost/Nginx) :
+
 ```json
 // .htaccess
 {
@@ -636,6 +685,7 @@ Configurer les headers au niveau du serveur (NindoHost/Nginx) :
 ```
 
 ### Status
+
 Les meta tags restent en place comme fallback. Les vrais headers sont configurés dans `.htaccess`.
 
 ---
@@ -643,9 +693,11 @@ Les meta tags restent en place comme fallback. Les vrais headers sont configuré
 ## Issue #4: i18n Template Variable Interpolation (Session 201)
 
 ### Problem
+
 Les template variables `{{name}}`, `{{time}}`, `{{duration}}`, `{{month}}`, `{{count}}` s'affichaient brutes dans le navigateur car `translatePage()` ne lisait pas les paramètres d'interpolation.
 
 ### Root Cause
+
 ```javascript
 // AVANT - translatePage() ignorait data-i18n-params
 function translatePage() {
@@ -658,6 +710,7 @@ function translatePage() {
 ```
 
 ### Solution
+
 ```javascript
 // APRÈS - translatePage() lit data-i18n-params
 function translatePage() {
@@ -675,6 +728,7 @@ function translatePage() {
 ```
 
 ### HTML Pattern
+
 ```html
 <!-- Example usage -->
 <p data-i18n="dashboard.header.welcome"
@@ -684,6 +738,7 @@ function translatePage() {
 ```
 
 ### Verification
+
 ```bash
 # All template variables have matching params
 grep "data-i18n-params" website/dashboard/client.html | wc -l
@@ -695,6 +750,7 @@ grep "data-i18n-params" website/dashboard/client.html | wc -l
 ## Architecture Vérifiée
 
 ### File Structure
+
 ```
 website/                              # 2,500+ lignes
 ├── index.html                        # Landing page (700+ L) ✅
@@ -748,6 +804,7 @@ website/                              # 2,500+ lignes
 ```
 
 **Design Philosophy** (from Linear Design Skills):
+
 - Primary: #5E6AD2 (Linear accent) - Trust, Premium
 - Surfaces: Ultra-dark (#09090b) - Developer-focused
 - Grid: 4px system
@@ -760,6 +817,7 @@ website/                              # 2,500+ lignes
 ## Visual Verification
 
 ### Homepage (index.html)
+
 | Section | Status | Elements |
 |:--------|:------:|:---------|
 | Navigation | ✅ | Logo, Links, Language Switch |
@@ -771,6 +829,7 @@ website/                              # 2,500+ lignes
 | Footer | ✅ | Links, Trust Badges |
 
 ### Client Dashboard
+
 | Section | Status | Elements |
 |:--------|:------:|:---------|
 | Sidebar | ✅ | Logo, Nav (7 items), Profile |
@@ -782,6 +841,7 @@ website/                              # 2,500+ lignes
 | Billing | ✅ | Plan, Usage, Next bill |
 
 ### Admin Dashboard
+
 | Section | Status | Elements |
 |:--------|:------:|:---------|
 | Sidebar | ✅ | Logo+Admin, Nav (7 items) |
@@ -805,7 +865,7 @@ website/                              # 2,500+ lignes
 | Schema.org | ✅ | SoftwareApplication + Organization |
 | Open Graph | ✅ | og:title, og:description, og:image |
 | Twitter Card | ✅ | summary_large_image |
-| Canonical | ✅ | https://vocalia.ma/ |
+| Canonical | ✅ | <https://vocalia.ma/> |
 | noindex (dashboards) | ✅ | Private pages excluded |
 
 ---
@@ -902,6 +962,7 @@ node scripts/health-check.cjs
 **Frontend vs 2026 Standards: ~97% - COMPLIANT**
 
 Le frontend est maintenant au niveau des standards 2026 (Linear, NindoHost, Notion):
+
 - ✅ Lucide Icons 2026 (stroke-width 1.5, multi-path SVG)
 - ✅ Liquid-Glass Dashboard Cards (Apple 2026 inspired)
 - ✅ WCAG AA Accessibility Compliance
@@ -949,6 +1010,7 @@ User reported "fake text logos" in integrations section and marquee animation is
 **Before:** Animation stopped at 50% because content was not properly duplicated.
 
 **After:**
+
 ```html
 <!-- 10 logos + 10 duplicates = seamless -50% translateX loop -->
 <div class="flex animate-marquee-left gap-16">
@@ -959,12 +1021,14 @@ User reported "fake text logos" in integrations section and marquee animation is
 ### 3. CRITICAL DISCOVERY: Tailwind Pre-Compilation Limitation 🚨
 
 **Root Cause:**
+
 - Tailwind CSS is pre-compiled in `/public/css/style.css`
 - New utility classes don't exist unless already in source during build
 - `bg-white/30`, `bg-white/25` → **NOT IN COMPILED CSS**
 - `bg-white`, `bg-white/10` → **IN COMPILED CSS**
 
 **Evidence:**
+
 ```bash
 grep "bg-white" public/css/style.css
 # Found: bg-white, bg-white\/10, hover\:bg-white\/20, hover\:bg-white\/5
@@ -972,6 +1036,7 @@ grep "bg-white" public/css/style.css
 ```
 
 **Workaround Applied:**
+
 ```html
 <div style="background-color: rgba(255,255,255,0.25);">
   <!-- Inline style because Tailwind class not compiled -->
@@ -987,6 +1052,7 @@ grep "bg-white" public/css/style.css
 ### 5. Single White Band
 
 Restructured from two separate bands to single parent container:
+
 ```html
 <div style="background-color: rgba(255,255,255,0.25);">
   <div class="mb-4"><!-- Row 1: marquee-left --></div>
@@ -1052,7 +1118,7 @@ grep 'style="background-color: rgba' website/*.html
 
 ### Voice Visualizer Verification
 
-All 4 visualizer modes verified on production (https://vocalia.ma):
+All 4 visualizer modes verified on production (<https://vocalia.ma>):
 
 | Mode | Status | Colors |
 |:-----|:------:|:-------|
@@ -1082,11 +1148,13 @@ User requested full 5-language support for website (FR, EN, ES, AR, ARY) and mod
 ### 1. Icon Modernization
 
 **Twitter → X Rebrand:**
+
 - Twitter was rebranded to X in July 2023
 - 117 occurrences of `data-lucide="twitter"` replaced with official X logo SVG
 - 25 HTML files updated
 
 **Dashboard Icons:**
+
 - admin.html: 8 sidebar/action icons fixed (layout-dashboard → semantic icons)
 - client.html: 5 sidebar icons fixed (session précédente)
 
@@ -1147,6 +1215,7 @@ Extended voice assistant to support all 5 languages with complete translations.
 ### Language Switcher Propagation
 
 Propagated 5-language switcher to all pages:
+
 - 21 core pages
 - 7 blog articles
 - **Total: 28 files**
@@ -1216,11 +1285,13 @@ Added 30 `data-i18n` attributes to footer:
 ### 2. Locale Files Extended
 
 All 5 locale files updated with expanded footer section:
+
 - `fr.json`, `en.json`, `es.json`, `ar.json`, `ary.json`
 
 ### 3. Dashboard Language Switchers
 
 Added 5-language switcher to both dashboards:
+
 - `dashboard/client.html` - Language switcher in header
 - `dashboard/admin.html` - Language switcher in header
 
@@ -1240,6 +1311,7 @@ Created `scripts/propagate-footer-i18n.py` for future maintenance.
 ### Files Updated
 
 29 HTML files with standardized footer i18n:
+
 - 6 core pages (index, features, pricing, about, contact, integrations)
 - 2 product pages
 - 4 use-case pages
@@ -1283,15 +1355,19 @@ Created `scripts/propagate-footer-i18n.py` for future maintenance.
 #### Critical Issues - STATUS POST Session 243
 
 **1. HREFLANG** ✅ FIXED (Session 243 - commit 0a15878)
+
 - 29 pages now have hreflang tags (5 languages: fr, en, es, ar, x-default)
 
 **2. TWITTER CARDS** ✅ FIXED (Session 243 - commit 0a15878)
+
 - 28 pages now have complete Twitter Card meta tags
 
 **3. FAQPage Schema** ✅ FIXED (Session 243 - commit 0a15878)
+
 - pricing.html has FAQPage schema with 5 Q&A
 
 **4. Sitemap Orphan Pages** ✅ FIXED (Session 243 - commit 0a15878)
+
 - 8 pages added: industries/index + 7 blog articles
 
 ---
@@ -1303,6 +1379,7 @@ Created `scripts/propagate-footer-i18n.py` for future maintenance.
 #### AI Bot Access ✅ FIXED (Session 243)
 
 **robots.txt now has AI bot rules (commit 0a15878):**
+
 - GPTBot: Allow /
 - ClaudeBot: Allow /
 - Claude-Web: Allow /
@@ -1338,12 +1415,14 @@ Created `scripts/propagate-footer-i18n.py` for future maintenance.
 #### Status: ✅ RESOLVED
 
 **EXPOSED GOOGLE APPS SCRIPT URL:** ✅ FIXED (commit 0a15878)
+
 ```
 File: voice-assistant/voice-widget.js
 Line: 24
 BEFORE: https://script.google.com/macros/s/AKfycbw...
 AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 ```
+
 **Risk:** PUBLIC API endpoint embedded in frontend code. Can receive booking data from any origin.
 **FIX:** Move to backend proxy at api.vocalia.ma
 
@@ -1385,6 +1464,7 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 #### INVESTOR PAGE: ✅ CREATED (Session 244)
 
 **investor.html created (commit 707fce6):**
+
 - Market opportunity (TAM/SAM/SOM)
 - Competitive advantage table
 - Technology stack overview
@@ -1437,6 +1517,7 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 ### 7. SWOT Analysis
 
 #### Strengths
+
 - ✅ **Backend 99/100** - Voice AI, Personas, RAG BM25
 - ✅ **Design 99%** - Enterprise-grade consistency
 - ✅ **i18n 100%** - 5 languages, 1471 keys, RTL support
@@ -1445,6 +1526,7 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 - ✅ **MCP Server** - 21 production tools
 
 #### Weaknesses (UPDATED Post-Session 244)
+
 - ✅ **SEO ~90%** - Hreflang ✅, Twitter Cards ✅ (FIXED)
 - ✅ **AEO ~75%** - AI bot rules ✅, FAQ schema ✅ (FIXED)
 - ✅ **Security** - Exposed URL ✅ (FIXED)
@@ -1452,12 +1534,14 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 - ✅ **Investor Page** - investor.html ✅ (FIXED)
 
 #### Opportunities
+
 - 🎯 **AEO 2026** - First-mover in Voice AI + Answer Engines
 - 🎯 **Gemini Live API** - Native audio, affective dialogue
 - 🎯 **Morocco Market** - Darija monopoly
 - 🎯 **Voice Search** - Speakable schema perfect fit
 
 #### Threats
+
 - ⚠️ **GPT/Claude citations** - Without AEO, invisible to AI search
 - ⚠️ **Competitor SEO** - Better hreflang implementation
 - ⚠️ **Investor perception** - No social proof = no credibility
@@ -1506,6 +1590,7 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 ### 9. Voice Assistant Features (2026 Research)
 
 **Gemini Live API (GA January 2026):**
+
 - Native audio processing (no STT→LLM→TTS pipeline)
 - Affective dialogue (emotional intelligence)
 - Proactive audio (smarter barge-in)
@@ -1515,6 +1600,7 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 **Source:** [Google Cloud Blog](https://cloud.google.com/blog/products/ai-machine-learning/gemini-live-api-available-on-vertex-ai)
 
 **Client Value Proposition:**
+
 - <50ms latency (vs 200-500ms traditional)
 - Emotional tone detection (de-escalation)
 - Multi-turn conversations without interruption

@@ -27,6 +27,11 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { z } from "zod";
 import * as fs from "fs";
 import * as path from "path";
+import { exec } from "child_process";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
+
 
 // Booking queue file path (real persistence)
 const BOOKING_QUEUE_PATH = path.join(process.cwd(), "data", "booking-queue.json");
@@ -169,6 +174,36 @@ CAPABILITIES: Order status, stock availability, returns, tracking.`,
     ary: `نتا هو المساعد ديال الكليان فـ متجر إلكتروني. هضر بالداريجة المغربية بطريقة زوينة.`,
   },
 };
+
+// =============================================================================
+// SYSTEM TOOLS (3)
+// =============================================================================
+
+// Tool 0: translation_qa_check - Run translation quality audit
+server.tool(
+  "translation_qa_check",
+  {},
+  async () => {
+    try {
+      const scriptPath = path.join(process.cwd(), "scripts", "translation-quality-check.py");
+      const { stdout, stderr } = await execAsync(`python3 "${scriptPath}"`);
+      return {
+        content: [{
+          type: "text" as const,
+          text: stdout || stderr || "QA Check Completed"
+        }]
+      };
+    } catch (error) {
+      return {
+        content: [{
+          type: "text" as const,
+          text: `QA Check Failed: ${(error as any).message}\n${(error as any).stdout || ""}`
+        }]
+      };
+    }
+  }
+);
+
 
 // =============================================================================
 // VOICE TOOLS (3)
@@ -398,15 +433,15 @@ server.tool(
           recommendation: qualification === "HOT"
             ? "Immediate follow-up required. Schedule discovery call within 24h."
             : qualification === "WARM"
-            ? "High potential. Schedule follow-up within 48-72h."
-            : qualification === "COOL"
-            ? "Add to nurture sequence. Re-engage in 2-4 weeks."
-            : "Low priority. Add to long-term nurture campaign.",
+              ? "High potential. Schedule follow-up within 48-72h."
+              : qualification === "COOL"
+                ? "Add to nurture sequence. Re-engage in 2-4 weeks."
+                : "Low priority. Add to long-term nurture campaign.",
           next_actions: qualification === "HOT"
             ? ["create_booking", "send_calendar_invite", "notify_sales_team"]
             : qualification === "WARM"
-            ? ["schedule_callback", "send_info_pack"]
-            : ["add_to_email_sequence"],
+              ? ["schedule_callback", "send_info_pack"]
+              : ["add_to_email_sequence"],
           industry,
           notes,
         }, null, 2),

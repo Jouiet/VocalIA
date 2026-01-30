@@ -24,7 +24,7 @@ cp -r website/features.html "$DEPLOY_DIR/"
 cp -r website/pricing.html "$DEPLOY_DIR/"
 cp -r website/about.html "$DEPLOY_DIR/"
 cp -r website/contact.html "$DEPLOY_DIR/"
-cp -r website/docs.html "$DEPLOY_DIR/"
+
 cp -r website/privacy.html "$DEPLOY_DIR/"
 cp -r website/terms.html "$DEPLOY_DIR/"
 cp -r website/integrations.html "$DEPLOY_DIR/"
@@ -53,7 +53,7 @@ mkdir -p "$DEPLOY_DIR/blog"
 cp -r website/blog/*.html "$DEPLOY_DIR/blog/"
 
 # Copy changelog
-cp -r website/changelog.html "$DEPLOY_DIR/"
+
 
 # Copy dashboard directory
 mkdir -p "$DEPLOY_DIR/dashboard"

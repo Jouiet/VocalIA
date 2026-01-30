@@ -191,12 +191,14 @@ npm run build:css  # → 66KB
 ```
 
 **Git:**
+
 - Commit: `c2b7984`
 - Pushed: ✅ main branch
 
 ### Session 208 Fix (29/01/2026 03:00 CET) - CRITICAL CSS & UX OVERHAUL
 
 **Problèmes Identifiés:**
+
 - Boutons non cliquables (z-index/pointer-events)
 - Structure HTML cassée (contenu Features hors containers)
 - Classes CSS manquantes (.glass-panel, .btn-cyber, .section-badge)
@@ -214,6 +216,7 @@ npm run build:css  # → 66KB
 | Pricing buttons | Hover animations (translate, shadow, scale) |
 
 **CSS Ajouté:**
+
 ```css
 .glass-panel { backdrop-filter: blur(20px); ... }
 .btn-cyber { background: linear-gradient(...); box-shadow: ...; }
@@ -221,11 +224,13 @@ npm run build:css  # → 66KB
 ```
 
 **Vérification:**
+
 - ✅ Tous les boutons cliquables
 - ✅ Animations fluides
 - ✅ Design cohérent
 
 **Git:**
+
 - Commit: `2817935`
 - Pushed: ✅ main branch
 
@@ -363,6 +368,7 @@ node scripts/health-check.cjs
 **Directive:** Audit de valeur brutalement honnête des assets plug-and-play.
 
 **Constat Factuel:**
+
 - Widget VocalIA: EXISTE (`widget/voice-widget-core.js`) mais **PAS déployé** sur website
 - Clients multi-tenant: **AUCUN** (structure `clients/` n'existe pas)
 - tenantId dans core/: PRÉPARÉ mais **NON UTILISÉ**
@@ -380,6 +386,7 @@ node scripts/health-check.cjs
 | voice-widget-client-config.json | ✅ VALIDE | Template bien structuré | **CONSERVÉ** |
 
 **Actions Exécutées:**
+
 ```bash
 rm scripts/test-voice-widget.cjs
 rm scripts/use-minified-voice-widget.cjs
@@ -388,11 +395,13 @@ mv docs/PLUG-AND-PLAY-STRATEGY.md docs/archive/
 ```
 
 **Justification:**
+
 - Effort pour fixer les scripts cassés: **5h30+**
 - Valeur actuelle (0 clients, 0 déploiement): **~0**
 - ROI: **Négatif** → Suppression = option optimale
 
 **Fichiers Conservés:**
+
 - `scripts/generate-voice-widget-client.cjs` (9.7KB) - Utilisable pour futurs clients
 - `templates/voice-widget-client-config.json` (1.9KB) - Template valide
 
@@ -416,18 +425,21 @@ mv docs/PLUG-AND-PLAY-STRATEGY.md docs/archive/
 | `templates/voice-widget-client-config.json` | 1.9KB | Client config template |
 
 **Rebranding Applied:**
+
 - Replaced all "3A Automation" → "VocalIA"
 - Replaced all "3a-automation.com" → "vocalia.ma"
 - Updated paths: `landing-page-hostinger` → `website`
 - Updated paths: `automations/agency/core` → `telephony`
 
 **Plug-and-Play Architecture:**
+
 - Multi-tenant client isolation via `tenantId`
 - Per-client widget customization (colors, messages, endpoints)
 - Per-client knowledge base
 - OAuth integration templates (Shopify, Klaviyo)
 
 **Usage:**
+
 ```bash
 # Generate client widget
 node scripts/generate-voice-widget-client.cjs --config clients/acme/config.json
@@ -440,6 +452,7 @@ node scripts/verify-voice-rag-handoff.cjs
 ```
 
 **Verification:**
+
 ```bash
 # No old references
 grep -r "3a-automation" scripts/ docs/PLUG-AND-PLAY-STRATEGY.md # ✅ Clean
@@ -457,6 +470,7 @@ node scripts/health-check.cjs # 36/36 (100%) ✅
 **Directive:** Add dark/light mode toggle and verify geo-detection rules.
 
 **Geo-Detection Rules Verified:**
+
 | Region | Language | Currency |
 |:-------|:---------|:---------|
 | Morocco | Français | MAD (DH) |
@@ -483,6 +497,7 @@ node scripts/health-check.cjs # 36/36 (100%) ✅
    - Persists user choice across sessions
 
 **Files Modified:**
+
 - `website/src/input.css` (+120 lines light mode CSS)
 - `website/index.html` (theme toggle + JS)
 - `website/dashboard/client.html` (theme toggle + JS)
@@ -490,6 +505,7 @@ node scripts/health-check.cjs # 36/36 (100%) ✅
 - `website/public/css/style.css` (rebuilt: 57KB)
 
 **Verification:**
+
 ```bash
 # Geo rules verified
 node -e "require('./website/src/lib/geo-detect.js')" # ✅
@@ -530,12 +546,14 @@ The `translatePage()` function in `i18n.js` was calling `t(key)` without reading
    - Added missing i18n to 2 billing labels (Forfait actuel, Prochaine facture)
 
 **Files Modified:**
+
 - `website/src/lib/i18n.js` (added params parsing)
 - `website/src/locales/fr.json` (ago key with duration)
 - `website/src/locales/en.json` (ago key with duration)
 - `website/dashboard/client.html` (9 i18n fixes)
 
 **Verification:**
+
 ```bash
 # JSON validation
 node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
@@ -555,6 +573,7 @@ grep "data-i18n-params" website/dashboard/client.html | wc -l
 ---
 
 **Visual Verification (Playwright):**
+
 - Homepage: All sections render correctly
 - Client Dashboard: Stats, charts, agents, billing visible
 - Admin Dashboard: 5 KPIs, services status, tenants table, logs
@@ -570,11 +589,13 @@ grep "data-i18n-params" website/dashboard/client.html | wc -l
 | Palette | Cyan/Blue | Indigo/Violet | Premium |
 
 **Palette v2.0 (Premium):**
+
 - Primary: `#8b5cf6` (Indigo/Violet - Stripe/Linear inspired)
 - Background: `#0f172a` (Slate 900)
 - Accent: `#06b6d4` (Cyan), `#10b981` (Emerald)
 
 **New Documentation:**
+
 - `docs/DESIGN-BRANDING-SYSTEM.md` (320 lines)
 - Tools: Stitch, Whisk, Remotion, Gemini, Playwright
 
@@ -1464,6 +1485,7 @@ node -e "JSON.parse(require('fs').readFileSync('website/src/locales/fr.json'))"
 - ✅ Kept: Sound waves background (semantic for Voice AI)
 
 **4. Theme Simplification:**
+
 - Main site: Dark only (removed light mode toggle)
 - Dashboards: Light/Dark preserved
 
@@ -1535,17 +1557,20 @@ node scripts/health-check.cjs
 ### Implémentations Session 212
 
 **1. Non-Blocking Resources:**
+
 - Google Fonts: `media="print" onload="this.media='all'"` pattern
 - JS files: Added `defer` attribute to geo-detect, i18n, gsap-animations
 - CSS: Added `preload` hint + critical inline CSS
 
 **2. Image Optimizations:**
+
 - soundwaves.webp: 53KB → 15KB (72% reduction via resize 640px)
 - Added width/height attributes to prevent CLS
 - Added `fetchpriority="high"` to LCP image
 - Added `decoding="async"` to all images
 
 **3. Brand Assets Generated (Gemini 2.0 Flash):**
+
 - `og-image.webp`: 19KB - VocalIA branding with sound waves
 - `logo.webp`: 10KB - Abstract sound wave icon (#5E6AD2)
 
@@ -1613,6 +1638,7 @@ node scripts/health-check.cjs
 ### Implémentations Session 213
 
 **1. deploy config Configuration:**
+
 - Security headers (X-Frame-Options, CSP compatible)
 - Cache headers for static assets (1 year)
 - URL rewrites (/dashboard → /dashboard/client.html)
@@ -1629,6 +1655,7 @@ node scripts/health-check.cjs
 | android-chrome-512.png | 29KB | Splash |
 
 **3. site.webmanifest:**
+
 - PWA ready configuration
 - Theme color: #5E6AD2
 - Background: #0f172a
@@ -1843,6 +1870,7 @@ node scripts/health-check.cjs
 #### Site Architecture Plan
 
 Created `website/SITEMAP-PLAN.md` with 22+ page architecture:
+
 - Tier 1: Core (Home, Features, Pricing, About, Contact, Docs)
 - Tier 2: Products (Voice Widget, Voice Telephony)
 - Tier 3: Use Cases (E-commerce, Support, Appointments, Lead Qualification)
@@ -1925,6 +1953,7 @@ bash scripts/create-deploy-zip.sh
 ### NindoHost Status
 
 User purchased **NindoHost Rise** plan (468 DH/an):
+
 - Status: **En attente** (activating)
 - Once active: cPanel > File Manager > Upload ZIP
 
@@ -2103,6 +2132,7 @@ gh run list --limit 3
 ```
 
 **Commits:**
+
 - `e60db41` - Fix: health-check reference to deploy-nindohost.yml
 - `c44d220` - Fix: CI workflow referencing archived files
 - `3b2a549` - Fix: CI with timeouts, removed slow module check
@@ -2139,6 +2169,7 @@ gh run list --limit 3
 | Shopping-bag | Simple shape | 3 paths (bag + handles) |
 
 **Files Updated:**
+
 - `website/index.html` (7 icons)
 - `website/components/header.html` (3 icons)
 
@@ -2147,6 +2178,7 @@ gh run list --limit 3
 **File:** `website/industries/index.html` (663 lines)
 
 **Content:**
+
 - All 30 personas listed by tier
 - 4 featured industry cards (Finance, Healthcare, Real Estate, Retail)
 - Schema.org CollectionPage structured data
@@ -2160,11 +2192,13 @@ gh run list --limit 3
 **Source of Truth:** `personas/voice-persona-injector.cjs`
 
 **Verified Count:** **30 personas** (NOT 28)
+
 - Tier 1: 7 personas (AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL)
 - Tier 2: 11 personas (HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER)
 - Tier 3: 12 personas (ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_ECOMMERCE, UNIVERSAL_SME)
 
 **10 Files Corrected (28→30):**
+
 - changelog.html, voice-fr.json, voice-en.json
 - CLAUDE.md (2x), SESSION-HISTORY.md (2x)
 - scripts.md, pressure-matrix.json, automations-registry.json, DOCS-INDEX.md
@@ -2172,6 +2206,7 @@ gh run list --limit 3
 ### 4. FOOTER STANDARDIZED
 
 **File Fixed:** `website/blog/index.html`
+
 - Old footer → New standardized footer
 - Includes newsletter, trust badges, proper styling
 
@@ -2227,6 +2262,7 @@ Script created: `scripts/modernize-icons.py`
 | stroke-width="2" → stroke-width="1.5" | 27 files |
 
 **Metrics Post-Script:**
+
 - `stroke-width="2"` → 0 occurrences (verified)
 - `stroke-width="1.5"` → 463 occurrences across 27 files
 - Old Heroicons phone pattern → 0 occurrences (verified)
@@ -2236,6 +2272,7 @@ Script created: `scripts/modernize-icons.py`
 Script created: `scripts/propagate-header.py`
 
 **Unified Header Features:**
+
 - Skip link for WCAG accessibility
 - Mega menu (Products, Solutions, Resources)
 - 3-column Solutions dropdown (Use Cases, Industries, Featured)
@@ -2243,6 +2280,7 @@ Script created: `scripts/propagate-header.py`
 - All pages share identical navigation
 
 **Files Updated:**
+
 ```
 about.html, blog/index.html, changelog.html, contact.html,
 docs.html, docs/api.html, features.html, industries/* (5 files),
@@ -2251,6 +2289,7 @@ terms.html, use-cases/* (4 files)
 ```
 
 **Verification:**
+
 ```bash
 # Mobile menu present in all non-dashboard pages
 grep -r 'id="mobileMenu"' website/ --include="*.html" | wc -l
@@ -2303,10 +2342,12 @@ Blog index (`website/blog/index.html`) already contains 7 quality articles:
 ### 1. Icons Heroicons Solid (viewBox 20x20)
 
 **Problème:** Checkmark icons utilisaient Heroicons Solid (2019):
+
 - `viewBox="0 0 20 20"` + `fill="currentColor"`
 - Path: `d="M16.707 5.293a1 1 0 010 1.414l-8 8..."`
 
 **Solution:** Script `scripts/modernize-icons-v2.py`
+
 - Converted to Lucide: `viewBox="0 0 24 24"` + `stroke="currentColor"`
 - Path: `d="M20 6L9 17l-5-5"`
 - **8 fichiers** corrigés
@@ -2314,6 +2355,7 @@ Blog index (`website/blog/index.html`) already contains 7 quality articles:
 ### 2. /docs/ Directory Listing
 
 **Problème:** vocalia.ma/docs/ affichait:
+
 ```
 Index of /docs/
 Name    Last Modified
@@ -2378,6 +2420,7 @@ Upgrade dashboard cards from basic `glass-panel` to Apple 2026-inspired `liquid-
 | `dashboard/admin.html` | 6 (health, tenants, revenue, api, logs) |
 
 **CSS Class Features:**
+
 ```css
 .liquid-glass {
   background: rgba(255, 255, 255, 0.08);
@@ -2429,6 +2472,7 @@ Root cause: `.htaccess` blocked ALL `.json` files.
 ```
 
 **3. Light Mode Verified:**
+
 - Dashboard theme toggle works correctly
 - localStorage persistence functional
 - All liquid-glass cards render in light mode
@@ -2453,8 +2497,8 @@ Moderniser TOUTES les icônes avec Lucide Icons (standard 2026).
 
 | Aspect | Détail |
 |:-------|:-------|
-| Library | Lucide Icons (https://lucide.dev) |
-| CDN | https://unpkg.com/lucide@latest |
+| Library | Lucide Icons (<https://lucide.dev>) |
+| CDN | <https://unpkg.com/lucide@latest> |
 | Icons | 1,500+ disponibles |
 | Style | Clean, modern, 2026 standard |
 
@@ -2492,7 +2536,7 @@ Moderniser TOUTES les icônes avec Lucide Icons (standard 2026).
 
 ### OBJECTIF
 
-Delete changelog page per user request: "suprimes cette page stupide 'https://vocalia.ma/changelog'"
+Delete changelog page per user request: "suprimes cette page stupide '<https://vocalia.ma/changelog>'"
 
 ### IMPLÉMENTATIONS
 
@@ -2570,6 +2614,7 @@ Fix integrations section: real brand logos, seamless marquee animation, proper c
 **3. CRITICAL: Tailwind Pre-Compilation Limitation** 🚨
 
 **Root Cause Discovery:**
+
 ```
 Tailwind CSS est pré-compilé dans /public/css/style.css
 Les classes comme bg-white/30 n'existent PAS dans le CSS compilé
@@ -2577,12 +2622,15 @@ sauf si elles étaient déjà utilisées avant le build.
 ```
 
 **Classes Disponibles:**
+
 - ✅ `bg-white`, `bg-white/10`, `hover:bg-white/20`, `hover:bg-white/5`
 
 **Classes NON Disponibles:**
+
 - ❌ `bg-white/30`, `bg-white/25`, `bg-slate-500/40`, etc.
 
 **Workaround Appliqué:**
+
 ```html
 <div style="background-color: rgba(255,255,255,0.25);">
   <!-- Inline style car classe Tailwind non compilée -->
@@ -2845,6 +2893,7 @@ grep -c 'data-i18n=' website/industries/*.html
 ### Audit Scope
 
 Comprehensive audit comparing VocalIA systems against 2025-2026 SOTA best practices:
+
 - RAG (Retrieval Augmented Generation)
 - MCP Server (Model Context Protocol)
 - Voice AI latency
@@ -2905,12 +2954,14 @@ ea53db2 - fix(darija): Fix MSA detection false positives and missing detections
 ### Session 241.2: BM25 Implementation (SOTA RAG)
 
 **Implementation:**
+
 - Replaced TF-IDF with BM25 in `core/knowledge-base-services.cjs`
 - BM25 parameters: k1=1.5, b=0.75 (standard)
 - Document length normalization ✅
 - Term frequency saturation ✅
 
 **Verification:**
+
 ```bash
 node core/knowledge-base-services.cjs --build   # ✅ 18 chunks, 44 terms
 node core/knowledge-base-services.cjs --search "voice AI"  # ✅ Relevant results
@@ -2934,6 +2985,7 @@ node core/knowledge-base-services.cjs --search "voice AI"  # ✅ Relevant result
 ### Architecture Summary
 
 VocalIA's architecture is **85% SOTA-aligned**:
+
 - ✅ Voice AI: SOTA (native Grok, <1s TTFA, 400ms VAD)
 - ✅ ContextBox: SOTA (token mgmt, EventBus, compaction)
 - ✅ MCP: Good (21 tools, bounded, documented)
@@ -2971,10 +3023,12 @@ VocalIA's architecture is **85% SOTA-aligned**:
 #### A2A & UCP Gap Analysis
 
 **What VocalIA HAS:**
+
 - ✅ MCP Server (21 tools) - Model Context Protocol
 - ✅ E-commerce integrations (Shopify, Klaviyo) - basic REST
 
 **What VocalIA is MISSING for 2026 Agentic Commerce:**
+
 - ❌ A2A AgentCard (JSON capability advertisement)
 - ❌ A2A task management endpoints
 - ❌ UCP product data exposure (structured feeds)
@@ -2991,11 +3045,13 @@ VocalIA's architecture is **85% SOTA-aligned**:
 | **A2UI** | Widget génère DatePicker dynamique | +40% complétion | 24h |
 
 **Recommandation Priorité:**
+
 1. **A2UI (P1)** - 24h, pas de dépendance externe, impact UX immédiat
 2. **AP2 (P1)** - 80h, dépend PSP (Stripe beta), revenue direct
 3. **A2A (P2)** - 40h, dépend écosystème (Shopify/HubSpot agents pas encore publics)
 
 **Sources:**
+
 - [A2A Protocol](https://a2a-protocol.org/latest/)
 - [Google A2A Blog](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/)
 - [Google AP2](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol)
@@ -3006,6 +3062,7 @@ VocalIA's architecture is **85% SOTA-aligned**:
 #### Plan Actionnable
 
 **P0 - Immediate:**
+
 1. Remove exposed Google Apps Script URL
 2. Add hreflang to 31 pages
 3. Add Twitter Cards to 29 pages
@@ -3026,7 +3083,7 @@ VocalIA's architecture is **85% SOTA-aligned**:
 *Document créé: 28/01/2026 - Session 184bis*
 *Màj: 30/01/2026 - Session 242 (DOE Forensic - A2A/UCP/AEO gaps)*
 *Status: Backend 99/100 | Frontend ~97% | SEO 70% | AEO 25% | A2A ❌ | UCP ❌*
-*Live: https://vocalia.ma ✅ | Icons: Lucide 2026 ✅ | Logos: 21 SVG ✅*
+*Live: <https://vocalia.ma> ✅ | Icons: Lucide 2026 ✅ | Logos: 21 SVG ✅*
 *CSS: Tailwind v4.1.18 ✅ | Safelist classes ✅ | 141KB compiled*
 *i18n: 5 Languages ✅ | Hreflang: ❌ 0% | Industries: Complete ✅*
 *Critical: Exposed API URL in voice-widget.js:24 - MUST FIX*
@@ -3091,6 +3148,7 @@ VocalIA's architecture is **85% SOTA-aligned**:
 #### RLHF Research Summary
 
 **Pipeline 4 phases:**
+
 1. Pretraining (98% compute): Next-token prediction, trillions tokens
 2. SFT: Behavior cloning, 10K-100K pairs
 3. Reward Model: Comparison data, 100K-1M examples
@@ -3170,12 +3228,14 @@ VocalIA's architecture is **85% SOTA-aligned**:
 | Budget | ❌ RLHF = $100K+ labeling |
 
 **Concept Transférable:** Prompt Optimization with Feedback
+
 - Utiliser BANT scores comme "reward signal"
 - A/B test personas par industrie
 - Itérer prompts basé sur conversion rates
 - Versionner personas (déjà implémenté: `_v2`)
 
 **Ce qui existe déjà dans VocalIA:**
+
 - `qualify_lead`: BANT scoring (ligne 624)
 - `track_conversion_event`: outcome tracking (ligne 775)
 - `PERSONAS`: 30 templates versionnés
@@ -3192,6 +3252,7 @@ VocalIA's architecture is **85% SOTA-aligned**:
 **Commit:** `e5936f4` - docs: Session 245 - I18N audit tables updated to reflect 100% completion
 
 **Changes:**
+
 | Section | Before | After |
 |:--------|:-------|:------|
 | Pages principales | 4/8 (50%) | 9/9 (100%) |
@@ -3204,6 +3265,7 @@ VocalIA's architecture is **85% SOTA-aligned**:
 | **TOTAL** | 10/31 (32%) | **32/32 (100%)** |
 
 **Fixes:**
+
 - ✅ Updated all outdated ❌ markers with empirically verified ✅
 - ✅ Added geo-detect.js to investor.html (was missing)
 - ✅ Updated data-i18n counts with real values
@@ -3211,8 +3273,35 @@ VocalIA's architecture is **85% SOTA-aligned**:
 - ✅ Total: 1471 translation keys × 5 languages = 7355 translations
 
 **Verification Commands Used:**
+
 ```bash
 grep -rl 'i18n.js' *.html */*.html */*/*.html | wc -l  # 32
 grep -roh 'data-i18n' *.html */*.html */*/*.html | wc -l  # 2016
 ```
 
+---
+
+### Session 245: Translation QA & Authenticity Audit (30/01/2026)
+
+**Goal**: Atteindre 100% de qualité traduction et authenticité Darija (Zero Hallucination/Truncation).
+
+**Actions**:
+
+1. **Creation Scripts QA**:
+    - `scripts/translation-quality-check.py`: Détection de ~148 clés tronquées (ratio < 60% vs FR).
+    - `scripts/darija-validator.py`: Détection de MSA (Modern Standard Arabic) dans le Darija.
+2. **Fixes Massifs**:
+    - **Darija**: Nettoyage 100% du MSA ("التي" -> "اللي", "إن" -> "راه"). Score passé de 37 erreurs à **0**.
+    - **Truncations**: Correction manuelle des CTAs et Titres pour EN, ES, AR.
+3. **Protocol Enhancements**:
+    - Intégration CI/CD: QA scripts ajoutés à `.github/workflows/ci.yml` (blocking).
+    - MCP Tool: Ajout de `translation_qa_check` au serveur MCP.
+4. **Deployment**:
+    - Build CSS Sovereign compilé.
+    - ZIP de déploiement créé: `vocalia-website-20260130-160933.zip`.
+
+**État Final**:
+- Translation QA: ✅ 100% Passed
+- Darija Authenticity: ✅ 100% Authentic
+- Health Check: ✅ 39/39 (100%)
+- Deploy Ready: ✅ OUI

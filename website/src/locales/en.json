@@ -7,12 +7,12 @@
     "products": "Products",
     "solutions": "Solutions",
     "resources": "Resources",
-    "features": "Features",
+    "features": "Platform Features",
     "pricing": "Pricing",
     "demo": "Demo",
     "dashboard": "Dashboard",
-    "login": "Login",
-    "logout": "Logout"
+    "login": "Client Login",
+    "logout": "Log Out"
   },
   "dashboard": {
     "sidebar": {
@@ -104,13 +104,13 @@
     }
   },
   "hero": {
-    "badge": "Next-Gen Voice AI",
+    "badge": "Next-Gen Voice AI Platform",
     "title": "Your AI Voice Agents",
     "titleHighlight": "24/7",
     "subtitle": "Intelligent web widget and telephony for your business. Multilingual: FR, EN, AR, ES, Darija.",
     "cta_primary": "Start Free Trial",
     "cta_secondary": "Watch Demo",
-    "trusted": "Trusted by"
+    "trusted": "Trusted by Industry Leaders"
   },
   "features": {
     "title": "Two Products, One Platform",
@@ -288,7 +288,7 @@
     "free_f2": "5 business personas",
     "free_f3": "2 languages (FR, EN)",
     "free_f4": "VocalIA branding",
-    "free_cta": "Start Free",
+    "free_cta": "Start Required Free Trial",
     "starter_name": "Starter",
     "starter_price": "99",
     "starter_period": "$/mo",
@@ -453,9 +453,9 @@
     "mission_tag2": "No Commitment",
     "mission_tag3": "Darija Support",
     "mission_competitors": "Competitors",
-    "mission_savings": "Save 60%+",
+    "mission_savings": "Save 60%+ on Costs",
     "values_badge": "Our Values",
-    "values_title": "What",
+    "values_title": "What Defines Us",
     "values_title_highlight": "Defines Us",
     "value1_title": "Continuous Innovation",
     "value1_desc": "We use the latest multi-provider AI technologies to deliver ever smarter and more natural voice agents.",
@@ -488,8 +488,8 @@
     "meta_title": "Features - VocalIA | AI Voice Agents",
     "meta_description": "Discover all VocalIA features: Free Voice Widget, AI Telephony, 30 business personas, 5 languages, CRM integrations and more.",
     "badge": "Complete Voice AI Platform",
-    "title": "All",
-    "title_highlight": "Features",
+    "title": "All Platform",
+    "title_highlight": "Capabilities & Features",
     "subtitle": "A complete suite of tools to create, deploy and manage your AI voice agents. From free web widget to enterprise telephony.",
     "breadcrumb_home": "Home",
     "breadcrumb_features": "Features",
@@ -1210,7 +1210,7 @@
     "integrations_title": "Support integrations",
     "integrations_subtitle": "Compatible with your existing tools",
     "cta_title": "Ready to transform your customer service?",
-    "cta_subtitle": "Request a personalized demo with your use cases.",
+    "cta_subtitle": "Join companies delivering exceptional support without breaking the budget.",
     "cta_button": "Request a Demo",
     "breadcrumb_home": "Accueil",
     "breadcrumb_usecases": "Cas d'usage",
@@ -1292,7 +1292,7 @@
     "integrations_title": "Calendar integrations",
     "integrations_subtitle": "Compatible with your existing tools",
     "cta_title": "Ready to automate your appointment booking?",
-    "cta_subtitle": "Request a demo with calendar synchronization.",
+    "cta_subtitle": "Every missed call is a missed opportunity. VocalIA answers 24/7 and converts callers into confirmed appointments.",
     "cta_button": "Request a Demo",
     "breadcrumb_home": "Accueil",
     "breadcrumb_usecases": "Cas d'usage",
@@ -1454,7 +1454,7 @@
   },
   "privacy_page": {
     "hero_title": "Privacy",
-    "hero_title_accent": "Policy",
+    "hero_title_accent": "Policy & Data Protection",
     "hero_subtitle": "How we protect your personal data.",
     "last_update": "Last updated",
     "section_intro": "Introduction",

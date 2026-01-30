@@ -1,0 +1,4628 @@
+[
+  {
+    "locale": "en",
+    "key": "nav.features",
+    "fr": "Fonctionnalités",
+    "loc": "Features",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "en",
+    "key": "nav.login",
+    "fr": "Connexion",
+    "loc": "Login",
+    "fr_len": 9,
+    "loc_len": 5,
+    "ratio": 0.56
+  },
+  {
+    "locale": "en",
+    "key": "nav.logout",
+    "fr": "Déconnexion",
+    "loc": "Logout",
+    "fr_len": 11,
+    "loc_len": 6,
+    "ratio": 0.55
+  },
+  {
+    "locale": "en",
+    "key": "dashboard.sidebar.overview",
+    "fr": "Vue d'ensemble",
+    "loc": "Overview",
+    "fr_len": 14,
+    "loc_len": 8,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "dashboard.sidebar.users",
+    "fr": "Utilisateurs",
+    "loc": "Users",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "en",
+    "key": "dashboard.stats.nps",
+    "fr": "Score satisfaction",
+    "loc": "Sat. Score",
+    "fr_len": 18,
+    "loc_len": 10,
+    "ratio": 0.56
+  },
+  {
+    "locale": "en",
+    "key": "dashboard.billing.extra_mins",
+    "fr": "Minutes supplémentaires",
+    "loc": "Extra Minutes",
+    "fr_len": 23,
+    "loc_len": 13,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "hero.badge",
+    "fr": "Voice AI de Nouvelle Génération",
+    "loc": "Next-Gen Voice AI",
+    "fr_len": 31,
+    "loc_len": 17,
+    "ratio": 0.55
+  },
+  {
+    "locale": "en",
+    "key": "hero.trusted",
+    "fr": "Ils nous font confiance",
+    "loc": "Trusted by",
+    "fr_len": 23,
+    "loc_len": 10,
+    "ratio": 0.43
+  },
+  {
+    "locale": "en",
+    "key": "features.widget.price",
+    "fr": "Gratuit",
+    "loc": "Free",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "pricing.widget.cta",
+    "fr": "Commencer Gratuitement",
+    "loc": "Start Free",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "en",
+    "key": "stats.uptime",
+    "fr": "Disponibilité",
+    "loc": "Uptime",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "en",
+    "key": "pricing_page.title_highlight",
+    "fr": "Transparents",
+    "loc": "Pricing",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "en",
+    "key": "pricing_page.breadcrumb_home",
+    "fr": "Accueil",
+    "loc": "Home",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "pricing_page.free_period",
+    "fr": "pour toujours",
+    "loc": "forever",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "en",
+    "key": "pricing_page.free_cta",
+    "fr": "Commencer Gratuitement",
+    "loc": "Start Free",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "en",
+    "key": "pricing_page.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "Feature",
+    "fr_len": 14,
+    "loc_len": 7,
+    "ratio": 0.5
+  },
+  {
+    "locale": "en",
+    "key": "pricing_page.cta_primary",
+    "fr": "Commencer Gratuitement",
+    "loc": "Start Free",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "en",
+    "key": "pricing_page.table_free",
+    "fr": "Gratuit",
+    "loc": "Free",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "contact_page.form_lastname_placeholder",
+    "fr": "Dupont",
+    "loc": "Doe",
+    "fr_len": 6,
+    "loc_len": 3,
+    "ratio": 0.5
+  },
+  {
+    "locale": "en",
+    "key": "about_page.mission_savings",
+    "fr": "Économie de 60%+",
+    "loc": "Save 60%+",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "en",
+    "key": "about_page.values_title",
+    "fr": "Ce qui nous",
+    "loc": "What",
+    "fr_len": 11,
+    "loc_len": 4,
+    "ratio": 0.36
+  },
+  {
+    "locale": "en",
+    "key": "about_page.tech_title_highlight",
+    "fr": "Enterprise-Grade",
+    "loc": "Stack",
+    "fr_len": 16,
+    "loc_len": 5,
+    "ratio": 0.31
+  },
+  {
+    "locale": "en",
+    "key": "about_page.cta_primary",
+    "fr": "Commencer Gratuitement",
+    "loc": "Start Free",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "en",
+    "key": "features_page.title",
+    "fr": "Toutes les",
+    "loc": "All",
+    "fr_len": 10,
+    "loc_len": 3,
+    "ratio": 0.3
+  },
+  {
+    "locale": "en",
+    "key": "features_page.title_highlight",
+    "fr": "Fonctionnalités",
+    "loc": "Features",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "en",
+    "key": "features_page.breadcrumb_home",
+    "fr": "Accueil",
+    "loc": "Home",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "features_page.breadcrumb_features",
+    "fr": "Fonctionnalités",
+    "loc": "Features",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "en",
+    "key": "features_page.widget_free",
+    "fr": "Gratuit",
+    "loc": "Free",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "features_page.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "Feature",
+    "fr_len": 14,
+    "loc_len": 7,
+    "ratio": 0.5
+  },
+  {
+    "locale": "en",
+    "key": "features_page.newsletter_title",
+    "fr": "Restez informé des actualités",
+    "loc": "Stay updated on",
+    "fr_len": 29,
+    "loc_len": 15,
+    "ratio": 0.52
+  },
+  {
+    "locale": "en",
+    "key": "voice_widget_page.breadcrumb_home",
+    "fr": "Accueil",
+    "loc": "Home",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "voice_telephony_page.breadcrumb_home",
+    "fr": "Accueil",
+    "loc": "Home",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "industries_index_page.tier1_hoa",
+    "fr": "Syndic",
+    "loc": "HOA",
+    "fr_len": 6,
+    "loc_len": 3,
+    "ratio": 0.5
+  },
+  {
+    "locale": "en",
+    "key": "industries_index_page.tier3_planner",
+    "fr": "Événementiel",
+    "loc": "Events",
+    "fr_len": 12,
+    "loc_len": 6,
+    "ratio": 0.5
+  },
+  {
+    "locale": "en",
+    "key": "industries_realestate_page.segment_land",
+    "fr": "Terrains",
+    "loc": "Land",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "en",
+    "key": "usecases_support_page.cta_subtitle",
+    "fr": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur budget.",
+    "loc": "Request a personalized demo with your use cases.",
+    "fr_len": 88,
+    "loc_len": 48,
+    "ratio": 0.55
+  },
+  {
+    "locale": "en",
+    "key": "usecases_appointments_page.industries_title",
+    "fr": "Secteurs qui nous font confiance",
+    "loc": "Industries served",
+    "fr_len": 32,
+    "loc_len": 17,
+    "ratio": 0.53
+  },
+  {
+    "locale": "en",
+    "key": "usecases_appointments_page.industry_legal",
+    "fr": "Juridique",
+    "loc": "Legal",
+    "fr_len": 9,
+    "loc_len": 5,
+    "ratio": 0.56
+  },
+  {
+    "locale": "en",
+    "key": "usecases_appointments_page.cta_subtitle",
+    "fr": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit vos appelants en rendez-vous confirmés.",
+    "loc": "Request a demo with calendar synchronization.",
+    "fr_len": 120,
+    "loc_len": 45,
+    "ratio": 0.38
+  },
+  {
+    "locale": "en",
+    "key": "usecases_leads_page.bant_subtitle",
+    "fr": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualification",
+    "loc": "Automatic qualification on 4 criteria",
+    "fr_len": 87,
+    "loc_len": 37,
+    "ratio": 0.43
+  },
+  {
+    "locale": "en",
+    "key": "usecases_leads_page.cta_subtitle",
+    "fr": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA faire le tri.",
+    "loc": "Request a demo with the BANT framework.",
+    "fr_len": 91,
+    "loc_len": 39,
+    "ratio": 0.43
+  },
+  {
+    "locale": "en",
+    "key": "privacy_page.hero_title",
+    "fr": "Politique de",
+    "loc": "Privacy",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "en",
+    "key": "privacy_page.hero_title_accent",
+    "fr": "Confidentialité",
+    "loc": "Policy",
+    "fr_len": 15,
+    "loc_len": 6,
+    "ratio": 0.4
+  },
+  {
+    "locale": "en",
+    "key": "privacy_page.section_usage",
+    "fr": "Utilisation des Données",
+    "loc": "Data Usage",
+    "fr_len": 23,
+    "loc_len": 10,
+    "ratio": 0.43
+  },
+  {
+    "locale": "en",
+    "key": "privacy_page.data_usage",
+    "fr": "Données d'utilisation",
+    "loc": "Usage data",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "en",
+    "key": "terms_page.hero_title",
+    "fr": "Conditions Générales",
+    "loc": "Terms of",
+    "fr_len": 20,
+    "loc_len": 8,
+    "ratio": 0.4
+  },
+  {
+    "locale": "en",
+    "key": "terms_page.hero_title_accent",
+    "fr": "d'Utilisation",
+    "loc": "Service",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "en",
+    "key": "terms_page.section_obligations",
+    "fr": "Obligations de l'Utilisateur",
+    "loc": "User Obligations",
+    "fr_len": 28,
+    "loc_len": 16,
+    "ratio": 0.57
+  },
+  {
+    "locale": "en",
+    "key": "terms_page.section_pricing",
+    "fr": "Tarification",
+    "loc": "Pricing",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "en",
+    "key": "footer.links.features",
+    "fr": "Fonctionnalités",
+    "loc": "Features",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "en",
+    "key": "footer.links.privacy",
+    "fr": "Confidentialité",
+    "loc": "Privacy",
+    "fr_len": 15,
+    "loc_len": 7,
+    "ratio": 0.47
+  },
+  {
+    "locale": "en",
+    "key": "docs_api_page.sidebar_webhooks_setup",
+    "fr": "Configuration",
+    "loc": "Setup",
+    "fr_len": 13,
+    "loc_len": 5,
+    "ratio": 0.38
+  },
+  {
+    "locale": "en",
+    "key": "investor.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "Feature",
+    "fr_len": 14,
+    "loc_len": 7,
+    "ratio": 0.5
+  },
+  {
+    "locale": "en",
+    "key": "investor.funds_title",
+    "fr": "Utilisation des Fonds",
+    "loc": "Use of Funds",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "es",
+    "key": "solutions_menu.appointments",
+    "fr": "Prise de RDV",
+    "loc": "Citas",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "es",
+    "key": "industries_index_page.tier2_collector",
+    "fr": "Recouvrement",
+    "loc": "Cobros",
+    "fr_len": 12,
+    "loc_len": 6,
+    "ratio": 0.5
+  },
+  {
+    "locale": "es",
+    "key": "industries_index_page.tier2_governor",
+    "fr": "Administration",
+    "loc": "Gobierno",
+    "fr_len": 14,
+    "loc_len": 8,
+    "ratio": 0.57
+  },
+  {
+    "locale": "es",
+    "key": "industries_index_page.tier3_planner",
+    "fr": "Événementiel",
+    "loc": "Eventos",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "es",
+    "key": "usecases_ecommerce_page.hero_title",
+    "fr": "Support Client E-commerce",
+    "loc": "Voice AI para",
+    "fr_len": 25,
+    "loc_len": 13,
+    "ratio": 0.52
+  },
+  {
+    "locale": "es",
+    "key": "usecases_ecommerce_page.hero_title_accent",
+    "fr": "Automatisé par l'IA Vocale",
+    "loc": "E-commerce",
+    "fr_len": 26,
+    "loc_len": 10,
+    "ratio": 0.38
+  },
+  {
+    "locale": "es",
+    "key": "usecases_ecommerce_page.hero_cta_secondary",
+    "fr": "Documentation API",
+    "loc": "Ver Demo",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "es",
+    "key": "usecases_ecommerce_page.stat_languages",
+    "fr": "Langues supportées",
+    "loc": "Idiomas",
+    "fr_len": 18,
+    "loc_len": 7,
+    "ratio": 0.39
+  },
+  {
+    "locale": "es",
+    "key": "usecases_ecommerce_page.challenges_subtitle",
+    "fr": "Les équipes support sont submergées par des questions répétitives",
+    "loc": "Problemas que resolvemos para usted",
+    "fr_len": 65,
+    "loc_len": 35,
+    "ratio": 0.54
+  },
+  {
+    "locale": "es",
+    "key": "usecases_ecommerce_page.solutions_subtitle",
+    "fr": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes",
+    "loc": "IA de Voz diseñada para e-commerce",
+    "fr_len": 78,
+    "loc_len": 34,
+    "ratio": 0.44
+  },
+  {
+    "locale": "es",
+    "key": "usecases_ecommerce_page.cta_subtitle",
+    "fr": "Déployez VocalIA en moins de 24h et commencez à économiser dès le premier jour.",
+    "loc": "Solicita una demo para ver Voice AI en acción.",
+    "fr_len": 79,
+    "loc_len": 46,
+    "ratio": 0.58
+  },
+  {
+    "locale": "es",
+    "key": "usecases_support_page.hero_cta_secondary",
+    "fr": "Voir les intégrations",
+    "loc": "Ver Demo",
+    "fr_len": 21,
+    "loc_len": 8,
+    "ratio": 0.38
+  },
+  {
+    "locale": "es",
+    "key": "usecases_support_page.cta_subtitle",
+    "fr": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur budget.",
+    "loc": "Solicita una demo con nuestra persona de soporte.",
+    "fr_len": 88,
+    "loc_len": 49,
+    "ratio": 0.56
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.hero_title_accent",
+    "fr": "Automatisée par l'IA",
+    "loc": "Citas",
+    "fr_len": 20,
+    "loc_len": 5,
+    "ratio": 0.25
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.hero_cta_secondary",
+    "fr": "Voir les intégrations",
+    "loc": "Ver Demo",
+    "fr_len": 21,
+    "loc_len": 8,
+    "ratio": 0.38
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.challenges_subtitle",
+    "fr": "La gestion des rendez-vous est chronophage et source d'erreurs",
+    "loc": "Problemas que resolvemos para usted",
+    "fr_len": 62,
+    "loc_len": 35,
+    "ratio": 0.56
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.solutions_subtitle",
+    "fr": "Un assistant vocal qui gère vos rendez-vous automatiquement",
+    "loc": "IA de Voz para la gestión de citas",
+    "fr_len": 59,
+    "loc_len": 34,
+    "ratio": 0.58
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.industries_subtitle",
+    "fr": "VocalIA s'adapte aux spécificités de chaque industrie",
+    "loc": "Industrias compatibles",
+    "fr_len": 53,
+    "loc_len": 22,
+    "ratio": 0.42
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.industry_legal",
+    "fr": "Juridique",
+    "loc": "Legal",
+    "fr_len": 9,
+    "loc_len": 5,
+    "ratio": 0.56
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.integrations_title",
+    "fr": "Intégrations calendrier",
+    "loc": "Integraciones",
+    "fr_len": 23,
+    "loc_len": 13,
+    "ratio": 0.57
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.cta_title",
+    "fr": "Arrêtez de perdre des clients au téléphone",
+    "loc": "Automatiza tus Citas",
+    "fr_len": 42,
+    "loc_len": 20,
+    "ratio": 0.48
+  },
+  {
+    "locale": "es",
+    "key": "usecases_appointments_page.cta_subtitle",
+    "fr": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit vos appelants en rendez-vous confirmés.",
+    "loc": "Solicita una demo para ver la automatización de citas.",
+    "fr_len": 120,
+    "loc_len": 54,
+    "ratio": 0.45
+  },
+  {
+    "locale": "es",
+    "key": "usecases_leads_page.hero_cta_secondary",
+    "fr": "Voir le framework BANT",
+    "loc": "Ver Demo",
+    "fr_len": 22,
+    "loc_len": 8,
+    "ratio": 0.36
+  },
+  {
+    "locale": "es",
+    "key": "usecases_leads_page.challenges_subtitle",
+    "fr": "Trop de leads non qualifiés gaspillent le temps des commerciaux",
+    "loc": "Problemas que resolvemos para usted",
+    "fr_len": 63,
+    "loc_len": 35,
+    "ratio": 0.56
+  },
+  {
+    "locale": "es",
+    "key": "usecases_leads_page.bant_title",
+    "fr": "Framework BANT automatisé",
+    "loc": "Framework BANT",
+    "fr_len": 25,
+    "loc_len": 14,
+    "ratio": 0.56
+  },
+  {
+    "locale": "es",
+    "key": "usecases_leads_page.bant_subtitle",
+    "fr": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualification",
+    "loc": "Calificación estructurada para leads de calidad",
+    "fr_len": 87,
+    "loc_len": 47,
+    "ratio": 0.54
+  },
+  {
+    "locale": "es",
+    "key": "usecases_leads_page.cta_subtitle",
+    "fr": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA faire le tri.",
+    "loc": "Solicita una demo para ver la calificación en acción.",
+    "fr_len": 91,
+    "loc_len": 53,
+    "ratio": 0.58
+  },
+  {
+    "locale": "es",
+    "key": "privacy_page.section_usage",
+    "fr": "Utilisation des Données",
+    "loc": "Uso de Datos",
+    "fr_len": 23,
+    "loc_len": 12,
+    "ratio": 0.52
+  },
+  {
+    "locale": "es",
+    "key": "privacy_page.data_usage",
+    "fr": "Données d'utilisation",
+    "loc": "Datos de uso",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "es",
+    "key": "terms_page.hero_title",
+    "fr": "Conditions Générales",
+    "loc": "Términos y",
+    "fr_len": 20,
+    "loc_len": 10,
+    "ratio": 0.5
+  },
+  {
+    "locale": "es",
+    "key": "terms_page.section_pricing",
+    "fr": "Tarification",
+    "loc": "Precios",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "nav.features",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.header.status",
+    "fr": "Système opérationnel",
+    "loc": "النظام يعمل",
+    "fr_len": 20,
+    "loc_len": 11,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.header.refresh",
+    "fr": "Actualiser",
+    "loc": "تحديث",
+    "fr_len": 10,
+    "loc_len": 5,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.stats.nps",
+    "fr": "Score satisfaction",
+    "loc": "نقاط الرضا",
+    "fr_len": 18,
+    "loc_len": 10,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.agents.configure",
+    "fr": "+ Configurer",
+    "loc": "+ تكوين",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.calls.status.support",
+    "fr": "Support",
+    "loc": "دعم",
+    "fr_len": 7,
+    "loc_len": 3,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.calls.status.abandoned",
+    "fr": "Abandonné",
+    "loc": "مهجور",
+    "fr_len": 9,
+    "loc_len": 5,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.health.operational",
+    "fr": "Opérationnel",
+    "loc": "يعمل",
+    "fr_len": 12,
+    "loc_len": 4,
+    "ratio": 0.33
+  },
+  {
+    "locale": "ar",
+    "key": "dashboard.quick_actions.config",
+    "fr": "Configuration",
+    "loc": "التكوين",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "hero.trusted",
+    "fr": "Ils nous font confiance",
+    "loc": "يثقون بنا",
+    "fr_len": 23,
+    "loc_len": 9,
+    "ratio": 0.39
+  },
+  {
+    "locale": "ar",
+    "key": "languages.subtitle",
+    "fr": "Parlez à vos clients dans leur langue",
+    "loc": "تحدث مع عملائك بلغتهم",
+    "fr_len": 37,
+    "loc_len": 21,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "voice_demo.title",
+    "fr": "Visualisez la Voix",
+    "loc": "تصور الصوت",
+    "fr_len": 18,
+    "loc_len": 10,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "personas.subtitle",
+    "fr": "Des agents spécialisés pour chaque secteur",
+    "loc": "وكلاء متخصصون لكل قطاع",
+    "fr_len": 42,
+    "loc_len": 22,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "pricing.title",
+    "fr": "Tarifs Transparents",
+    "loc": "أسعار شفافة",
+    "fr_len": 19,
+    "loc_len": 11,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "pricing.widget.cta",
+    "fr": "Commencer Gratuitement",
+    "loc": "ابدأ مجاناً",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "pricing.enterprise.price",
+    "fr": "Sur Mesure",
+    "loc": "مخصص",
+    "fr_len": 10,
+    "loc_len": 4,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ar",
+    "key": "cta.button",
+    "fr": "Démarrer Maintenant",
+    "loc": "ابدأ الآن",
+    "fr_len": 19,
+    "loc_len": 9,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "resources_menu.docs",
+    "fr": "Documentation",
+    "loc": "الوثائق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.title_highlight",
+    "fr": "Transparents",
+    "loc": "شفافة",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.subtitle",
+    "fr": "Commencez gratuitement avec le Widget, évoluez vers l'Enterprise au rythme de votre croissance.",
+    "loc": "ابدأ مجاناً مع الويدجت، وتطور نحو Enterprise مع نموك.",
+    "fr_len": 95,
+    "loc_len": 53,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.toggle_monthly",
+    "fr": "Mensuel",
+    "loc": "شهري",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.free_period",
+    "fr": "pour toujours",
+    "loc": "للأبد",
+    "fr_len": 13,
+    "loc_len": 5,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.free_cta",
+    "fr": "Commencer Gratuitement",
+    "loc": "ابدأ مجاناً",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.starter_cta",
+    "fr": "Démarrer",
+    "loc": "ابدأ",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.pro_desc",
+    "fr": "Pour les entreprises qui veulent maximiser l'automatisation.",
+    "loc": "للشركات الراغبة في تعظيم الأتمتة.",
+    "fr_len": 60,
+    "loc_len": 33,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.pro_f5",
+    "fr": "Support prioritaire",
+    "loc": "دعم أولوية",
+    "fr_len": 19,
+    "loc_len": 10,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.enterprise_price",
+    "fr": "Sur Mesure",
+    "loc": "مخصص",
+    "fr_len": 10,
+    "loc_len": 4,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.enterprise_period",
+    "fr": "tarif personnalisé",
+    "loc": "سعر مخصص",
+    "fr_len": 18,
+    "loc_len": 8,
+    "ratio": 0.44
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.overage_note",
+    "fr": "Minutes supplémentaires téléphonie:",
+    "loc": "دقائق هاتفية إضافية:",
+    "fr_len": 35,
+    "loc_len": 20,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "الميزة",
+    "fr_len": 14,
+    "loc_len": 6,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.table_priority",
+    "fr": "Prioritaire",
+    "loc": "أولوية",
+    "fr_len": 11,
+    "loc_len": 6,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.faq1_q",
+    "fr": "Comment fonctionne la facturation téléphonie?",
+    "loc": "كيف تعمل فوترة الهاتفية؟",
+    "fr_len": 45,
+    "loc_len": 24,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.faq4_q",
+    "fr": "Qu'est-ce que le support Darija?",
+    "loc": "ما هو دعم الدارجة؟",
+    "fr_len": 32,
+    "loc_len": 18,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.cta_primary",
+    "fr": "Commencer Gratuitement",
+    "loc": "ابدأ مجاناً",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "pricing_page.val_priority",
+    "fr": "Prioritaire",
+    "loc": "أولوية",
+    "fr_len": 11,
+    "loc_len": 6,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.title",
+    "fr": "Parlons de Votre",
+    "loc": "لنتحدث عن",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.form_company_placeholder",
+    "fr": "Nom de votre entreprise",
+    "loc": "اسم شركتك",
+    "fr_len": 23,
+    "loc_len": 9,
+    "ratio": 0.39
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.form_subject_default",
+    "fr": "Sélectionnez un sujet",
+    "loc": "اختر موضوعاً",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.form_subject_demo",
+    "fr": "Demande de démo",
+    "loc": "طلب عرض",
+    "fr_len": 15,
+    "loc_len": 7,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.form_subject_technical",
+    "fr": "Question technique",
+    "loc": "سؤال تقني",
+    "fr_len": 18,
+    "loc_len": 9,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.form_subject_partnership",
+    "fr": "Partenariat",
+    "loc": "شراكة",
+    "fr_len": 11,
+    "loc_len": 5,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.form_subject_support",
+    "fr": "Support",
+    "loc": "دعم",
+    "fr_len": 7,
+    "loc_len": 3,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.form_message_placeholder",
+    "fr": "Décrivez votre projet ou votre question...",
+    "loc": "صف مشروعك أو سؤالك...",
+    "fr_len": 42,
+    "loc_len": 21,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.info_sales_desc",
+    "fr": "Pour les devis et démonstrations",
+    "loc": "للعروض والتقديمات",
+    "fr_len": 32,
+    "loc_len": 17,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "contact_page.faq2_q",
+    "fr": "Quels sont les délais d'intégration ?",
+    "loc": "ما هي مدة التكامل؟",
+    "fr_len": 37,
+    "loc_len": 18,
+    "ratio": 0.49
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.title_suffix",
+    "fr": "pour les Entreprises",
+    "loc": "للشركات",
+    "fr_len": 20,
+    "loc_len": 7,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.stat_cheaper",
+    "fr": "Moins Cher",
+    "loc": "أرخص",
+    "fr_len": 10,
+    "loc_len": 4,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.mission_badge",
+    "fr": "Notre Mission",
+    "loc": "مهمتنا",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.mission_tag1",
+    "fr": "Tarification Transparente",
+    "loc": "تسعير شفاف",
+    "fr_len": 25,
+    "loc_len": 10,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.mission_savings",
+    "fr": "Économie de 60%+",
+    "loc": "وفّر 60%+",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.values_badge",
+    "fr": "Nos Valeurs",
+    "loc": "قيمنا",
+    "fr_len": 11,
+    "loc_len": 5,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.values_title",
+    "fr": "Ce qui nous",
+    "loc": "ما",
+    "fr_len": 11,
+    "loc_len": 2,
+    "ratio": 0.18
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.tech_title_highlight",
+    "fr": "Enterprise-Grade",
+    "loc": "مؤسسية",
+    "fr_len": 16,
+    "loc_len": 6,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.tech1_desc",
+    "fr": "Raisonnement instantané",
+    "loc": "استدلال لحظي",
+    "fr_len": 23,
+    "loc_len": 12,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.cta_primary",
+    "fr": "Commencer Gratuitement",
+    "loc": "ابدأ مجاناً",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "about_page.cta_secondary",
+    "fr": "Demander une Démo",
+    "loc": "اطلب عرضاً",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.title",
+    "fr": "Toutes les",
+    "loc": "جميع",
+    "fr_len": 10,
+    "loc_len": 4,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.title_highlight",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.breadcrumb_features",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.products_title",
+    "fr": "Deux Produits Complémentaires",
+    "loc": "منتجان متكاملان",
+    "fr_len": 29,
+    "loc_len": 15,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.widget_f3",
+    "fr": "Personnalisation complète du design",
+    "loc": "تخصيص كامل للتصميم",
+    "fr_len": 35,
+    "loc_len": 18,
+    "ratio": 0.51
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.all_features_title",
+    "fr": "Fonctionnalités Complètes",
+    "loc": "مميزات كاملة",
+    "fr_len": 25,
+    "loc_len": 12,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.all_features_subtitle",
+    "fr": "Tout ce dont vous avez besoin pour des agents vocaux de niveau enterprise",
+    "loc": "كل ما تحتاجه لوكلاء صوتيين بمستوى مؤسسي",
+    "fr_len": 73,
+    "loc_len": 39,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.comparison_subtitle",
+    "fr": "Comparé aux alternatives du marché",
+    "loc": "مقارنة ببدائل السوق",
+    "fr_len": 34,
+    "loc_len": 19,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "الميزة",
+    "fr_len": 14,
+    "loc_len": 6,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ar",
+    "key": "features_page.newsletter_button",
+    "fr": "S'inscrire",
+    "loc": "اشترك",
+    "fr_len": 10,
+    "loc_len": 5,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.cta_start",
+    "fr": "Démarrer Gratuitement",
+    "loc": "ابدأ مجاناً",
+    "fr_len": 21,
+    "loc_len": 11,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.cta_docs",
+    "fr": "Documentation",
+    "loc": "التوثيق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.stat_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.widget_online",
+    "fr": "En ligne",
+    "loc": "متصل",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.widget_user_q",
+    "fr": "Quels sont vos horaires d'ouverture?",
+    "loc": "ما هي ساعات العمل؟",
+    "fr_len": 36,
+    "loc_len": 18,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.step3_title",
+    "fr": "Collez et Déployez",
+    "loc": "الصق وانشر",
+    "fr_len": 18,
+    "loc_len": 10,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.code_label",
+    "fr": "Installation",
+    "loc": "التثبيت",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.code_copy",
+    "fr": "Copier",
+    "loc": "نسخ",
+    "fr_len": 6,
+    "loc_len": 3,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.features_subtitle",
+    "fr": "Tout ce dont vous avez besoin, gratuitement",
+    "loc": "كل ما تحتاجه، مجاناً",
+    "fr_len": 43,
+    "loc_len": 20,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.specs_compat_title",
+    "fr": "Compatibilité",
+    "loc": "التوافق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "voice_widget_page.specs_perf_title",
+    "fr": "Performance",
+    "loc": "الأداء",
+    "fr_len": 11,
+    "loc_len": 6,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "voice_telephony_page.cta_docs",
+    "fr": "Documentation API",
+    "loc": "توثيق API",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "voice_telephony_page.stat_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "voice_telephony_page.arch_pstn_desc",
+    "fr": "Numéro dédié, routage intelligent",
+    "loc": "رقم مخصص، توجيه ذكي",
+    "fr_len": 33,
+    "loc_len": 19,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "voice_telephony_page.tool4_desc",
+    "fr": "Inventaire temps réel",
+    "loc": "مخزون فوري",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ar",
+    "key": "voice_telephony_page.tool7_desc",
+    "fr": "Réservation calendrier",
+    "loc": "حجز التقويم",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "voice_telephony_page.cta_title",
+    "fr": "Prêt à Transformer Votre Téléphonie?",
+    "loc": "مستعد لتحويل هاتفيتك؟",
+    "fr_len": 36,
+    "loc_len": 21,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "industries_index_page.hero_title_accent",
+    "fr": "Votre Industrie",
+    "loc": "لصناعتك",
+    "fr_len": 15,
+    "loc_len": 7,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "industries_index_page.featured_subtitle",
+    "fr": "Solutions spécialisées avec certifications sectorielles",
+    "loc": "حلول متخصصة مع شهادات قطاعية",
+    "fr_len": 55,
+    "loc_len": 28,
+    "ratio": 0.51
+  },
+  {
+    "locale": "ar",
+    "key": "industries_index_page.tier2_collector",
+    "fr": "Recouvrement",
+    "loc": "التحصيل",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "industries_index_page.tier2_governor",
+    "fr": "Administration",
+    "loc": "الحكومة",
+    "fr_len": 14,
+    "loc_len": 7,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "industries_index_page.stats_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "industries_index_page.cta_title",
+    "fr": "Votre Industrie, Notre Expertise",
+    "loc": "صناعتك، خبرتنا",
+    "fr_len": 32,
+    "loc_len": 14,
+    "ratio": 0.44
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل تحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 19,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au secteur médical",
+    "loc": "ميزات خاصة بالقطاع الطبي",
+    "fr_len": 46,
+    "loc_len": 24,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.solution3_feature2",
+    "fr": "Transmission au praticien",
+    "loc": "إرسال للممارس",
+    "fr_len": 25,
+    "loc_len": 13,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.solution4_feature2",
+    "fr": "Détection complications",
+    "loc": "كشف المضاعفات",
+    "fr_len": 23,
+    "loc_len": 13,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque spécialité",
+    "loc": "حلول مكيفة لكل تخصص",
+    "fr_len": 38,
+    "loc_len": 19,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.segment_general",
+    "fr": "Médecine Générale",
+    "loc": "الطب العام",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.stats_patient_satisfaction",
+    "fr": "Satisfaction Patient",
+    "loc": "رضا المرضى",
+    "fr_len": 20,
+    "loc_len": 10,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.stats_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ar",
+    "key": "industries_healthcare_page.cta_title",
+    "fr": "Transformez Votre Accueil Patient",
+    "loc": "حوّل استقبال مرضاك",
+    "fr_len": 33,
+    "loc_len": 18,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل تحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 19,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au secteur financier",
+    "loc": "ميزات خاصة بالقطاع المالي",
+    "fr_len": 48,
+    "loc_len": 25,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.solution2_feature1",
+    "fr": "Solde en temps réel",
+    "loc": "رصيد فوري",
+    "fr_len": 19,
+    "loc_len": 9,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.solution2_feature3",
+    "fr": "Historique transactions",
+    "loc": "سجل المعاملات",
+    "fr_len": 23,
+    "loc_len": 13,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.solution3_desc",
+    "fr": "Déclaration automatisée avec collecte d'informations et création de dossier.",
+    "loc": "التصريح الآلي مع جمع المعلومات وإنشاء الملف.",
+    "fr_len": 76,
+    "loc_len": 44,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.solution4_feature1",
+    "fr": "Collecte revenus",
+    "loc": "جمع الدخل",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.compliance_pci_desc",
+    "fr": "Plus haut niveau de conformité pour le traitement des données de paiement.",
+    "loc": "أعلى مستوى امتثال لمعالجة بيانات الدفع.",
+    "fr_len": 74,
+    "loc_len": 39,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.compliance_soc2_desc",
+    "fr": "Audit annuel de sécurité, disponibilité et confidentialité.",
+    "loc": "تدقيق سنوي للأمان والتوفر والسرية.",
+    "fr_len": 59,
+    "loc_len": 34,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque métier",
+    "loc": "حلول مكيفة لكل عمل",
+    "fr_len": 34,
+    "loc_len": 18,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "industries_finance_page.cta_title",
+    "fr": "Sécurisez Votre Service Client",
+    "loc": "أمّن خدمة عملائك",
+    "fr_len": 30,
+    "loc_len": 16,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل تحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 19,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.challenge2_title",
+    "fr": "Disponibilité Limitée",
+    "loc": "توفر محدود",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au secteur immobilier",
+    "loc": "ميزات خاصة بقطاع العقارات",
+    "fr_len": 49,
+    "loc_len": 25,
+    "ratio": 0.51
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.solution1_title",
+    "fr": "Qualification BANT",
+    "loc": "تأهيل BANT",
+    "fr_len": 18,
+    "loc_len": 10,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.solution1_feature2",
+    "fr": "Financement confirmé",
+    "loc": "تمويل مؤكد",
+    "fr_len": 20,
+    "loc_len": 10,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.solution2_desc",
+    "fr": "Réservation automatique des créneaux de visite avec confirmation SMS.",
+    "loc": "حجز تلقائي لمواعيد الزيارة مع تأكيد SMS.",
+    "fr_len": 69,
+    "loc_len": 40,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque segment",
+    "loc": "حلول مكيفة لكل قطاع",
+    "fr_len": 35,
+    "loc_len": 19,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.segment_residential",
+    "fr": "Résidentiel",
+    "loc": "سكني",
+    "fr_len": 11,
+    "loc_len": 4,
+    "ratio": 0.36
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.segment_commercial",
+    "fr": "Commercial",
+    "loc": "تجاري",
+    "fr_len": 10,
+    "loc_len": 5,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "industries_realestate_page.cta_title",
+    "fr": "Boostez Vos Conversions Immobilières",
+    "loc": "عزز تحويلاتك العقارية",
+    "fr_len": 36,
+    "loc_len": 21,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل تحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 19,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.challenge4_desc",
+    "fr": "Coordonner la préparation et le retrait des commandes est un défi logistique.",
+    "loc": "تنسيق إعداد واستلام الطلبات تحدٍ لوجستي.",
+    "fr_len": 77,
+    "loc_len": 40,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au commerce",
+    "loc": "ميزات خاصة بالتجارة",
+    "fr_len": 39,
+    "loc_len": 19,
+    "ratio": 0.49
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.solution1_feature1",
+    "fr": "Statut temps réel",
+    "loc": "حالة فورية",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.solution4_feature2",
+    "fr": "Offres exclusives",
+    "loc": "عروض حصرية",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque canal",
+    "loc": "حلول مكيفة لكل قناة",
+    "fr_len": 33,
+    "loc_len": 19,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.stats_customer_satisfaction",
+    "fr": "Satisfaction",
+    "loc": "الرضا",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ar",
+    "key": "industries_retail_page.cta_title",
+    "fr": "Transformez Votre Service Client Retail",
+    "loc": "حوّل خدمة عملاء التجزئة",
+    "fr_len": 39,
+    "loc_len": 23,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_ecommerce_page.stat_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_ecommerce_page.stat_languages",
+    "fr": "Langues supportées",
+    "loc": "اللغات",
+    "fr_len": 18,
+    "loc_len": 6,
+    "ratio": 0.33
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_ecommerce_page.challenges_subtitle",
+    "fr": "Les équipes support sont submergées par des questions répétitives",
+    "loc": "فرق الدعم غارقة في الأسئلة المتكررة",
+    "fr_len": 65,
+    "loc_len": 35,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_ecommerce_page.challenge3_title",
+    "fr": "Questions répétitives",
+    "loc": "ذروات النشاط",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_ecommerce_page.solutions_title",
+    "fr": "La solution VocalIA",
+    "loc": "حلولنا",
+    "fr_len": 19,
+    "loc_len": 6,
+    "ratio": 0.32
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_ecommerce_page.solutions_subtitle",
+    "fr": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes",
+    "loc": "صوت ذكي مصمم للتجارة الإلكترونية",
+    "fr_len": 78,
+    "loc_len": 32,
+    "ratio": 0.41
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_ecommerce_page.integrations_subtitle",
+    "fr": "Connectez VocalIA à votre stack en quelques clics",
+    "loc": "متوافق مع منصاتك الحالية",
+    "fr_len": 49,
+    "loc_len": 24,
+    "ratio": 0.49
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.hero_cta_secondary",
+    "fr": "Voir les intégrations",
+    "loc": "مشاهدة العرض",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.stat_satisfaction",
+    "fr": "Satisfaction client",
+    "loc": "الرضا",
+    "fr_len": 19,
+    "loc_len": 5,
+    "ratio": 0.26
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.stat_resolution",
+    "fr": "Résolution 1er contact",
+    "loc": "حل أول اتصال",
+    "fr_len": 22,
+    "loc_len": 12,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.stat_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.solutions_title",
+    "fr": "La solution VocalIA",
+    "loc": "حلولنا",
+    "fr_len": 19,
+    "loc_len": 6,
+    "ratio": 0.32
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.solution2_title",
+    "fr": "Escalade intelligente",
+    "loc": "تصعيد ذكي",
+    "fr_len": 21,
+    "loc_len": 9,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.integrations_title",
+    "fr": "Intégrations support",
+    "loc": "التكاملات",
+    "fr_len": 20,
+    "loc_len": 9,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.integrations_subtitle",
+    "fr": "Compatible avec vos outils existants",
+    "loc": "يتصل بأدواتك",
+    "fr_len": 36,
+    "loc_len": 12,
+    "ratio": 0.33
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.cta_title",
+    "fr": "Transformez votre service client",
+    "loc": "حسّن دعم العملاء",
+    "fr_len": 32,
+    "loc_len": 16,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_support_page.cta_subtitle",
+    "fr": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur budget.",
+    "loc": "اطلب عرضاً توضيحياً مع شخصية الدعم لدينا.",
+    "fr_len": 88,
+    "loc_len": 41,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.hero_title_accent",
+    "fr": "Automatisée par l'IA",
+    "loc": "المواعيد",
+    "fr_len": 20,
+    "loc_len": 8,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.hero_subtitle",
+    "fr": "Laissez l'IA gérer vos prises de rendez-vous 24/7. Synchronisation calendrier, rappels automatiques, réduction des no-shows.",
+    "loc": "أتمت جدولة المواعيد والتذكيرات وإعادة الجدولة مع وكلاء صوتيين.",
+    "fr_len": 124,
+    "loc_len": 62,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.hero_cta_secondary",
+    "fr": "Voir les intégrations",
+    "loc": "مشاهدة العرض",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.stat_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.challenges_title",
+    "fr": "Les défis de la prise de RDV",
+    "loc": "تحديات الحجز",
+    "fr_len": 28,
+    "loc_len": 12,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.challenge3_desc",
+    "fr": "Les clients ne peuvent réserver qu'aux heures de bureau, perdant les demandes hors horaires.",
+    "loc": "الحجوزات ممكنة فقط خلال ساعات العمل، مما يضيع الفرص.",
+    "fr_len": 92,
+    "loc_len": 52,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.solutions_title",
+    "fr": "La solution VocalIA",
+    "loc": "حلولنا",
+    "fr_len": 19,
+    "loc_len": 6,
+    "ratio": 0.32
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.solution1_title",
+    "fr": "Réservation 24/7",
+    "loc": "حجز 24/7",
+    "fr_len": 16,
+    "loc_len": 8,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.industries_subtitle",
+    "fr": "VocalIA s'adapte aux spécificités de chaque industrie",
+    "loc": "الصناعات المتوافقة",
+    "fr_len": 53,
+    "loc_len": 18,
+    "ratio": 0.34
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.integrations_title",
+    "fr": "Intégrations calendrier",
+    "loc": "التكاملات",
+    "fr_len": 23,
+    "loc_len": 9,
+    "ratio": 0.39
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.integrations_subtitle",
+    "fr": "Compatible avec vos outils existants",
+    "loc": "يتصل بأدواتك",
+    "fr_len": 36,
+    "loc_len": 12,
+    "ratio": 0.33
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.cta_title",
+    "fr": "Arrêtez de perdre des clients au téléphone",
+    "loc": "أتمت مواعيدك",
+    "fr_len": 42,
+    "loc_len": 12,
+    "ratio": 0.29
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_appointments_page.cta_subtitle",
+    "fr": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit vos appelants en rendez-vous confirmés.",
+    "loc": "اطلب عرضاً توضيحياً لرؤية أتمتة المواعيد.",
+    "fr_len": 120,
+    "loc_len": 41,
+    "ratio": 0.34
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.hero_subtitle",
+    "fr": "Qualifiez automatiquement vos prospects avec le framework BANT. Scoring en temps réel, synchronisation CRM, alertes commerciales.",
+    "loc": "أهّل العملاء المحتملين آلياً بإطار BANT والتسجيل في الوقت الفعلي ومزامنة CRM.",
+    "fr_len": 129,
+    "loc_len": 77,
+    "ratio": 0.6
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.hero_cta_secondary",
+    "fr": "Voir le framework BANT",
+    "loc": "مشاهدة العرض",
+    "fr_len": 22,
+    "loc_len": 12,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.challenges_title",
+    "fr": "Les défis de la qualification",
+    "loc": "تحديات التأهيل",
+    "fr_len": 29,
+    "loc_len": 14,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.challenge3_title",
+    "fr": "Qualification manuelle",
+    "loc": "عدم الاتساق",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.bant_title",
+    "fr": "Framework BANT automatisé",
+    "loc": "إطار BANT",
+    "fr_len": 25,
+    "loc_len": 9,
+    "ratio": 0.36
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.bant_subtitle",
+    "fr": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualification",
+    "loc": "تأهيل منظم لعملاء محتملين ذوي جودة",
+    "fr_len": 87,
+    "loc_len": 34,
+    "ratio": 0.39
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.solutions_title",
+    "fr": "La solution VocalIA",
+    "loc": "حلولنا",
+    "fr_len": 19,
+    "loc_len": 6,
+    "ratio": 0.32
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.solution4_title",
+    "fr": "Alertes commerciales",
+    "loc": "نقل ذكي",
+    "fr_len": 20,
+    "loc_len": 7,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.integrations_title",
+    "fr": "Intégrations CRM",
+    "loc": "التكاملات",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.integrations_subtitle",
+    "fr": "Compatible avec vos outils existants",
+    "loc": "يتصل بأدواتك",
+    "fr_len": 36,
+    "loc_len": 12,
+    "ratio": 0.33
+  },
+  {
+    "locale": "ar",
+    "key": "usecases_leads_page.cta_subtitle",
+    "fr": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA faire le tri.",
+    "loc": "اطلب عرضاً توضيحياً لرؤية التأهيل في العمل.",
+    "fr_len": 91,
+    "loc_len": 43,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "docs_page.hero_badge",
+    "fr": "Documentation",
+    "loc": "الوثائق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "docs_page.hero_title",
+    "fr": "Intégrez",
+    "loc": "دمج",
+    "fr_len": 8,
+    "loc_len": 3,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ar",
+    "key": "docs_page.section_widget_desc",
+    "fr": "Le Voice Widget est un assistant vocal qui s'intègre directement dans votre site web.",
+    "loc": "Voice Widget هو مساعد صوتي يندمج مباشرة في موقعك.",
+    "fr_len": 85,
+    "loc_len": 49,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "docs_page.copy_button",
+    "fr": "Copier",
+    "loc": "نسخ",
+    "fr_len": 6,
+    "loc_len": 3,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "docs_page.cta_desc",
+    "fr": "Notre équipe technique est disponible pour vous accompagner.",
+    "loc": "فريقنا التقني متاح لمساعدتك.",
+    "fr_len": 60,
+    "loc_len": 28,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.hero_title",
+    "fr": "Politique de",
+    "loc": "سياسة",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.hero_title_accent",
+    "fr": "Confidentialité",
+    "loc": "الخصوصية",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.hero_subtitle",
+    "fr": "Comment nous protégeons vos données personnelles.",
+    "loc": "كيف نحمي بياناتك الشخصية.",
+    "fr_len": 49,
+    "loc_len": 25,
+    "ratio": 0.51
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.last_update",
+    "fr": "Dernière mise à jour",
+    "loc": "آخر تحديث",
+    "fr_len": 20,
+    "loc_len": 9,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.section_intro",
+    "fr": "Introduction",
+    "loc": "مقدمة",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.section_rights",
+    "fr": "Vos Droits",
+    "loc": "حقوقك",
+    "fr_len": 10,
+    "loc_len": 5,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.gdpr_rectification",
+    "fr": "Droit de rectification",
+    "loc": "حق التصحيح",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ar",
+    "key": "privacy_page.gdpr_deletion",
+    "fr": "Droit à l'effacement",
+    "loc": "حق الحذف",
+    "fr_len": 20,
+    "loc_len": 8,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ar",
+    "key": "terms_page.hero_title",
+    "fr": "Conditions Générales",
+    "loc": "الشروط",
+    "fr_len": 20,
+    "loc_len": 6,
+    "ratio": 0.3
+  },
+  {
+    "locale": "ar",
+    "key": "terms_page.last_update",
+    "fr": "Dernière mise à jour",
+    "loc": "آخر تحديث",
+    "fr_len": 20,
+    "loc_len": 9,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ar",
+    "key": "terms_page.section_services",
+    "fr": "Description des Services",
+    "loc": "وصف الخدمات",
+    "fr_len": 24,
+    "loc_len": 11,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ar",
+    "key": "terms_page.section_pricing",
+    "fr": "Tarification",
+    "loc": "التسعير",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "integrations_page.cta_docs",
+    "fr": "Documentation API",
+    "loc": "وثائق API",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "integrations_page.cta_request",
+    "fr": "Demander une intégration",
+    "loc": "اطلب تكاملاً",
+    "fr_len": 24,
+    "loc_len": 12,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "integrations_page.section_communication",
+    "fr": "Communication",
+    "loc": "الاتصال",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "integrations_page.section_automation",
+    "fr": "Automatisation",
+    "loc": "الأتمتة",
+    "fr_len": 14,
+    "loc_len": 7,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "integrations_page.integrations_count",
+    "fr": "intégrations",
+    "loc": "تكاملات",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ar",
+    "key": "footer.links.features",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "footer.links.docs",
+    "fr": "Documentation",
+    "loc": "الوثائق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "footer.links.privacy",
+    "fr": "Confidentialité",
+    "loc": "الخصوصية",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "docs_api_page.sidebar_auth",
+    "fr": "Authentification",
+    "loc": "المصادقة",
+    "fr_len": 16,
+    "loc_len": 8,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "docs_api_page.sidebar_telephony_transfer",
+    "fr": "Transférer",
+    "loc": "نقل",
+    "fr_len": 10,
+    "loc_len": 3,
+    "ratio": 0.3
+  },
+  {
+    "locale": "ar",
+    "key": "docs_api_page.sidebar_webhooks_setup",
+    "fr": "Configuration",
+    "loc": "الإعداد",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ar",
+    "key": "docs_api_page.auth_title",
+    "fr": "Authentification",
+    "loc": "المصادقة",
+    "fr_len": 16,
+    "loc_len": 8,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "docs_api_page.auth_copy",
+    "fr": "Copier",
+    "loc": "نسخ",
+    "fr_len": 6,
+    "loc_len": 3,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "docs_api_page.auth_security_item2",
+    "fr": "Utilisez des variables d'environnement",
+    "loc": "استخدم متغيرات البيئة",
+    "fr_len": 38,
+    "loc_len": 21,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ar",
+    "key": "investor.badge",
+    "fr": "Opportunité d'Investissement",
+    "loc": "فرصة استثمارية",
+    "fr_len": 28,
+    "loc_len": 14,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ar",
+    "key": "investor.metric_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "investor.market_title",
+    "fr": "Opportunité de Marché",
+    "loc": "فرصة السوق",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ar",
+    "key": "investor.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "الميزة",
+    "fr_len": 14,
+    "loc_len": 6,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ar",
+    "key": "investor.moat_1_title",
+    "fr": "Moat Linguistique",
+    "loc": "حصن لغوي",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ar",
+    "key": "investor.tech_rag_desc",
+    "fr": "Knowledge base intelligente",
+    "loc": "قاعدة معرفة ذكية",
+    "fr_len": 27,
+    "loc_len": 16,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ar",
+    "key": "investor.funds_subtitle",
+    "fr": "Investissement ciblé pour accélérer la croissance et la pénétration marché.",
+    "loc": "استثمار موجه لتسريع النمو واختراق السوق.",
+    "fr_len": 75,
+    "loc_len": 40,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ar",
+    "key": "investor.funds_product",
+    "fr": "Développement Produit",
+    "loc": "تطوير المنتج",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ar",
+    "key": "investor.cta_docs",
+    "fr": "Voir la Documentation",
+    "loc": "عرض الوثائق",
+    "fr_len": 21,
+    "loc_len": 11,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "nav.features",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "nav.login",
+    "fr": "Connexion",
+    "loc": "دخول",
+    "fr_len": 9,
+    "loc_len": 4,
+    "ratio": 0.44
+  },
+  {
+    "locale": "ary",
+    "key": "nav.logout",
+    "fr": "Déconnexion",
+    "loc": "خروج",
+    "fr_len": 11,
+    "loc_len": 4,
+    "ratio": 0.36
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.header.refresh",
+    "fr": "Actualiser",
+    "loc": "تحديث",
+    "fr_len": 10,
+    "loc_len": 5,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.stats.nps",
+    "fr": "Score satisfaction",
+    "loc": "نقط الرضا",
+    "fr_len": 18,
+    "loc_len": 9,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.agents.configure",
+    "fr": "+ Configurer",
+    "loc": "+ إعداد",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.calls.status.converted",
+    "fr": "Converti",
+    "loc": "تحول",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.calls.status.support",
+    "fr": "Support",
+    "loc": "دعم",
+    "fr_len": 7,
+    "loc_len": 3,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.calls.status.transferred",
+    "fr": "Transféré",
+    "loc": "تنقل",
+    "fr_len": 9,
+    "loc_len": 4,
+    "ratio": 0.44
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.calls.status.abandoned",
+    "fr": "Abandonné",
+    "loc": "متروك",
+    "fr_len": 9,
+    "loc_len": 5,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.health.operational",
+    "fr": "Opérationnel",
+    "loc": "خدام",
+    "fr_len": 12,
+    "loc_len": 4,
+    "ratio": 0.33
+  },
+  {
+    "locale": "ary",
+    "key": "dashboard.health.degraded",
+    "fr": "Dégradé",
+    "loc": "ضعيف",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "hero.trusted",
+    "fr": "Ils nous font confiance",
+    "loc": "كيتيقو فينا",
+    "fr_len": 23,
+    "loc_len": 11,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "features.widget.description",
+    "fr": "Intégrez un assistant vocal intelligent sur votre site web. Aucune installation requise.",
+    "loc": "دمج مساعد صوتي ذكي فالموقع ديالك. بلا ما تنصّب والو.",
+    "fr_len": 88,
+    "loc_len": 52,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "languages.title",
+    "fr": "5 Langues Natives",
+    "loc": "5 لغات",
+    "fr_len": 17,
+    "loc_len": 6,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ary",
+    "key": "voice_demo.title",
+    "fr": "Visualisez la Voix",
+    "loc": "شوف الصوت",
+    "fr_len": 18,
+    "loc_len": 9,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "personas.subtitle",
+    "fr": "Des agents spécialisés pour chaque secteur",
+    "loc": "وكيلات متخصصين لكل قطاع",
+    "fr_len": 42,
+    "loc_len": 23,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "pricing.title",
+    "fr": "Tarifs Transparents",
+    "loc": "أثمان شفافة",
+    "fr_len": 19,
+    "loc_len": 11,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "pricing.widget.cta",
+    "fr": "Commencer Gratuitement",
+    "loc": "بدا مجاناً",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "pricing.overage",
+    "fr": "Min. supplémentaire",
+    "loc": "دقيقة زايدة",
+    "fr_len": 19,
+    "loc_len": 11,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "cta.button",
+    "fr": "Démarrer Maintenant",
+    "loc": "بدا دابا",
+    "fr_len": 19,
+    "loc_len": 8,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ary",
+    "key": "solutions_menu.surveys",
+    "fr": "Enquêtes & Sondages",
+    "loc": "الاستطلاعات",
+    "fr_len": 19,
+    "loc_len": 11,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "solutions_menu.retail",
+    "fr": "Retail & Commerce",
+    "loc": "التجارة",
+    "fr_len": 17,
+    "loc_len": 7,
+    "ratio": 0.41
+  },
+  {
+    "locale": "ary",
+    "key": "resources_menu.docs",
+    "fr": "Documentation",
+    "loc": "الوثائق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "actions.request_demo",
+    "fr": "Demander une démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.title_highlight",
+    "fr": "Transparents",
+    "loc": "شفافة",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.toggle_monthly",
+    "fr": "Mensuel",
+    "loc": "شهري",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.free_period",
+    "fr": "pour toujours",
+    "loc": "للأبد",
+    "fr_len": 13,
+    "loc_len": 5,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.free_cta",
+    "fr": "Commencer Gratuitement",
+    "loc": "بدا مجاناً",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.starter_cta",
+    "fr": "Démarrer",
+    "loc": "بدا",
+    "fr_len": 8,
+    "loc_len": 3,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.pro_desc",
+    "fr": "Pour les entreprises qui veulent maximiser l'automatisation.",
+    "loc": "للشركات اللي بغات تكبر الأتمتة.",
+    "fr_len": 60,
+    "loc_len": 31,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.pro_f5",
+    "fr": "Support prioritaire",
+    "loc": "دعم أولوية",
+    "fr_len": 19,
+    "loc_len": 10,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.enterprise_period",
+    "fr": "tarif personnalisé",
+    "loc": "ثمن مخصص",
+    "fr_len": 18,
+    "loc_len": 8,
+    "ratio": 0.44
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.enterprise_desc",
+    "fr": "Pour les grandes entreprises avec des besoins spécifiques.",
+    "loc": "للشركات الكبار بمتطلبات خاصة.",
+    "fr_len": 58,
+    "loc_len": 29,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.overage_note",
+    "fr": "Minutes supplémentaires téléphonie:",
+    "loc": "دقايق تيليفون زايدة:",
+    "fr_len": 35,
+    "loc_len": 20,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "الميزة",
+    "fr_len": 14,
+    "loc_len": 6,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.table_standard",
+    "fr": "Standard",
+    "loc": "عادي",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.table_priority",
+    "fr": "Prioritaire",
+    "loc": "أولوية",
+    "fr_len": 11,
+    "loc_len": 6,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.faq4_q",
+    "fr": "Qu'est-ce que le support Darija?",
+    "loc": "شنو هو دعم الدارجة؟",
+    "fr_len": 32,
+    "loc_len": 19,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.cta_subtitle",
+    "fr": "Commencez gratuitement, évoluez quand vous êtes prêt.",
+    "loc": "بدا مجاناً، طور ملي تكون جاهز.",
+    "fr_len": 53,
+    "loc_len": 30,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.cta_primary",
+    "fr": "Commencer Gratuitement",
+    "loc": "بدا مجاناً",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.val_standard",
+    "fr": "Standard",
+    "loc": "عادي",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "pricing_page.val_priority",
+    "fr": "Prioritaire",
+    "loc": "أولوية",
+    "fr_len": 11,
+    "loc_len": 6,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.title",
+    "fr": "Parlons de Votre",
+    "loc": "نهضرو على",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.form_subject_default",
+    "fr": "Sélectionnez un sujet",
+    "loc": "اختار موضوع",
+    "fr_len": 21,
+    "loc_len": 11,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.form_subject_demo",
+    "fr": "Demande de démo",
+    "loc": "طلب عرض",
+    "fr_len": 15,
+    "loc_len": 7,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.form_subject_technical",
+    "fr": "Question technique",
+    "loc": "سؤال تقني",
+    "fr_len": 18,
+    "loc_len": 9,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.form_subject_partnership",
+    "fr": "Partenariat",
+    "loc": "شراكة",
+    "fr_len": 11,
+    "loc_len": 5,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.form_subject_support",
+    "fr": "Support",
+    "loc": "دعم",
+    "fr_len": 7,
+    "loc_len": 3,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.info_sales_desc",
+    "fr": "Pour les devis et démonstrations",
+    "loc": "للعروض والتقديمات",
+    "fr_len": 32,
+    "loc_len": 17,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "contact_page.faq2_q",
+    "fr": "Quels sont les délais d'intégration ?",
+    "loc": "شحال كياخد التكامل؟",
+    "fr_len": 37,
+    "loc_len": 19,
+    "ratio": 0.51
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.title_suffix",
+    "fr": "pour les Entreprises",
+    "loc": "للشركات",
+    "fr_len": 20,
+    "loc_len": 7,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.stat_cheaper",
+    "fr": "Moins Cher",
+    "loc": "رخص",
+    "fr_len": 10,
+    "loc_len": 3,
+    "ratio": 0.3
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.mission_tag1",
+    "fr": "Tarification Transparente",
+    "loc": "ثمن شفاف",
+    "fr_len": 25,
+    "loc_len": 8,
+    "ratio": 0.32
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.mission_savings",
+    "fr": "Économie de 60%+",
+    "loc": "وفّر 60%+",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.values_title",
+    "fr": "Ce qui nous",
+    "loc": "شنو",
+    "fr_len": 11,
+    "loc_len": 3,
+    "ratio": 0.27
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.value1_desc",
+    "fr": "Nous utilisons les dernières technologies IA multi-provider pour offrir des agents vocaux toujours plus intelligents et naturels.",
+    "loc": "كنستعملو آخر تقنيات الذكاء الاصطناعي باش نعطيو وكلاء صوتيين ذكيين وطبيعيين.",
+    "fr_len": 129,
+    "loc_len": 75,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.value3_desc",
+    "fr": "Premier support Darija (dialecte marocain) au monde, avec des agents qui comprennent vraiment les nuances culturelles locales.",
+    "loc": "أول دعم للدارجة فالعالم، مع وكلاء فاهمين مزيان الفروق الثقافية المحلية.",
+    "fr_len": 126,
+    "loc_len": 71,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.tech_title_highlight",
+    "fr": "Enterprise-Grade",
+    "loc": "مؤسسية",
+    "fr_len": 16,
+    "loc_len": 6,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.tech1_desc",
+    "fr": "Raisonnement instantané",
+    "loc": "استدلال لحظي",
+    "fr_len": 23,
+    "loc_len": 12,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.cta_primary",
+    "fr": "Commencer Gratuitement",
+    "loc": "بدا مجاناً",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "about_page.cta_secondary",
+    "fr": "Demander une Démo",
+    "loc": "طلب عرض",
+    "fr_len": 17,
+    "loc_len": 7,
+    "ratio": 0.41
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.title",
+    "fr": "Toutes les",
+    "loc": "كاع",
+    "fr_len": 10,
+    "loc_len": 3,
+    "ratio": 0.3
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.title_highlight",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.breadcrumb_features",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.widget_desc",
+    "fr": "Intégrez un assistant vocal intelligent directement sur votre site web. Installation en 2 minutes, aucun coût.",
+    "loc": "دمج مساعد صوتي ذكي فالموقع ديالك. تنصيب في 2 دقايق، بلا ما تخلص.",
+    "fr_len": 110,
+    "loc_len": 64,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.widget_f3",
+    "fr": "Personnalisation complète du design",
+    "loc": "تخصيص كامل للديزاين",
+    "fr_len": 35,
+    "loc_len": 19,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.learn_more",
+    "fr": "En savoir plus",
+    "loc": "عرف أكثر",
+    "fr_len": 14,
+    "loc_len": 8,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.all_features_title",
+    "fr": "Fonctionnalités Complètes",
+    "loc": "مميزات كاملة",
+    "fr_len": 25,
+    "loc_len": 12,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.feat_latency_title",
+    "fr": "Latence Ultra-Basse",
+    "loc": "سرعة عالية",
+    "fr_len": 19,
+    "loc_len": 10,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.feat_languages_title",
+    "fr": "5 Langues Natives",
+    "loc": "5 لغات",
+    "fr_len": 17,
+    "loc_len": 6,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.feat_tools_title",
+    "fr": "11 Function Tools",
+    "loc": "11 أداة",
+    "fr_len": 17,
+    "loc_len": 7,
+    "ratio": 0.41
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.feat_rag_desc",
+    "fr": "Base de connaissances vectorielle par secteur. Réponses contextuelles précises.",
+    "loc": "قاعدة معرفة حسب القطاع. ردود سياقية دقيقة.",
+    "fr_len": 79,
+    "loc_len": 42,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "الميزة",
+    "fr_len": 14,
+    "loc_len": 6,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.table_personas",
+    "fr": "Personas Pré-configurés",
+    "loc": "شخصيات جاهزة",
+    "fr_len": 23,
+    "loc_len": 12,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "features_page.newsletter_button",
+    "fr": "S'inscrire",
+    "loc": "اشترك",
+    "fr_len": 10,
+    "loc_len": 5,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.cta_start",
+    "fr": "Démarrer Gratuitement",
+    "loc": "بدا بالمجان",
+    "fr_len": 21,
+    "loc_len": 11,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.cta_docs",
+    "fr": "Documentation",
+    "loc": "التوثيق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.stat_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.widget_online",
+    "fr": "En ligne",
+    "loc": "متصل",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.step3_title",
+    "fr": "Collez et Déployez",
+    "loc": "كولي وانشر",
+    "fr_len": 18,
+    "loc_len": 10,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.code_label",
+    "fr": "Installation",
+    "loc": "التثبيت",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.features_subtitle",
+    "fr": "Tout ce dont vous avez besoin, gratuitement",
+    "loc": "كلشي لي خاصك، بالمجان",
+    "fr_len": 43,
+    "loc_len": 21,
+    "ratio": 0.49
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.specs_compat_title",
+    "fr": "Compatibilité",
+    "loc": "التوافق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "voice_widget_page.specs_perf_title",
+    "fr": "Performance",
+    "loc": "الأداء",
+    "fr_len": 11,
+    "loc_len": 6,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "voice_telephony_page.cta_demo",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "voice_telephony_page.cta_docs",
+    "fr": "Documentation API",
+    "loc": "توثيق API",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "voice_telephony_page.stat_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "voice_telephony_page.tool4_desc",
+    "fr": "Inventaire temps réel",
+    "loc": "مخزون فوري",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "voice_telephony_page.tool7_desc",
+    "fr": "Réservation calendrier",
+    "loc": "حجز التقويم",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "voice_telephony_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_index_page.featured_subtitle",
+    "fr": "Solutions spécialisées avec certifications sectorielles",
+    "loc": "حلول متخصصة مع شهادات قطاعية",
+    "fr_len": 55,
+    "loc_len": 28,
+    "ratio": 0.51
+  },
+  {
+    "locale": "ary",
+    "key": "industries_index_page.tier1_hoa_desc",
+    "fr": "Copropriétés, gestion immo",
+    "loc": "الشقق، السانديك",
+    "fr_len": 26,
+    "loc_len": 15,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "industries_index_page.tier2_collector",
+    "fr": "Recouvrement",
+    "loc": "التحصيل",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "industries_index_page.tier2_governor",
+    "fr": "Administration",
+    "loc": "الحكومة",
+    "fr_len": 14,
+    "loc_len": 7,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "industries_index_page.stats_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "industries_index_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.hero_cta",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل كيحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 20,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au secteur médical",
+    "loc": "ميزات خاصة بالقطاع الطبي",
+    "fr_len": 46,
+    "loc_len": 24,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.solution3_feature2",
+    "fr": "Transmission au praticien",
+    "loc": "إرسال للطبيب",
+    "fr_len": 25,
+    "loc_len": 12,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.solution4_feature2",
+    "fr": "Détection complications",
+    "loc": "كشف المضاعفات",
+    "fr_len": 23,
+    "loc_len": 13,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque spécialité",
+    "loc": "حلول مكيفة لكل تخصص",
+    "fr_len": 38,
+    "loc_len": 19,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.segment_general",
+    "fr": "Médecine Générale",
+    "loc": "الطب العام",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.stats_patient_satisfaction",
+    "fr": "Satisfaction Patient",
+    "loc": "رضا المرضى",
+    "fr_len": 20,
+    "loc_len": 10,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.stats_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ary",
+    "key": "industries_healthcare_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.hero_cta",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل كيحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 20,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au secteur financier",
+    "loc": "ميزات خاصة بالقطاع المالي",
+    "fr_len": 48,
+    "loc_len": 25,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.solution2_feature1",
+    "fr": "Solde en temps réel",
+    "loc": "رصيد فوري",
+    "fr_len": 19,
+    "loc_len": 9,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.solution2_feature3",
+    "fr": "Historique transactions",
+    "loc": "سجل المعاملات",
+    "fr_len": 23,
+    "loc_len": 13,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.solution4_feature1",
+    "fr": "Collecte revenus",
+    "loc": "جمع الدخل",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.compliance_pci_desc",
+    "fr": "Plus haut niveau de conformité pour le traitement des données de paiement.",
+    "loc": "أعلى مستوى امتثال لمعالجة بيانات الدفع.",
+    "fr_len": 74,
+    "loc_len": 39,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.compliance_soc2_desc",
+    "fr": "Audit annuel de sécurité, disponibilité et confidentialité.",
+    "loc": "تدقيق سنوي للأمان والتوفر والسرية.",
+    "fr_len": 59,
+    "loc_len": 34,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque métier",
+    "loc": "حلول مكيفة لكل خدمة",
+    "fr_len": 34,
+    "loc_len": 19,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "industries_finance_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.hero_title_accent",
+    "fr": "l'Immobilier",
+    "loc": "للعقار",
+    "fr_len": 12,
+    "loc_len": 6,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.hero_cta",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل كيحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 20,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.challenge2_title",
+    "fr": "Disponibilité Limitée",
+    "loc": "توفر محدود",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au secteur immobilier",
+    "loc": "ميزات خاصة بقطاع العقار",
+    "fr_len": 49,
+    "loc_len": 23,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.solution1_title",
+    "fr": "Qualification BANT",
+    "loc": "تأهيل BANT",
+    "fr_len": 18,
+    "loc_len": 10,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.solution1_feature2",
+    "fr": "Financement confirmé",
+    "loc": "تمويل مؤكد",
+    "fr_len": 20,
+    "loc_len": 10,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque segment",
+    "loc": "حلول مكيفة لكل قطاع",
+    "fr_len": 35,
+    "loc_len": 19,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.segment_residential",
+    "fr": "Résidentiel",
+    "loc": "سكني",
+    "fr_len": 11,
+    "loc_len": 4,
+    "ratio": 0.36
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.segment_commercial",
+    "fr": "Commercial",
+    "loc": "تجاري",
+    "fr_len": 10,
+    "loc_len": 5,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.segment_rental",
+    "fr": "Location",
+    "loc": "كراء",
+    "fr_len": 8,
+    "loc_len": 4,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "industries_realestate_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.hero_cta",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.challenges_subtitle",
+    "fr": "Problématiques résolues par VocalIA",
+    "loc": "مشاكل كيحلها VocalIA",
+    "fr_len": 35,
+    "loc_len": 20,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.challenge4_desc",
+    "fr": "Coordonner la préparation et le retrait des commandes est un défi logistique.",
+    "loc": "تنسيق إعداد واستلام الكومون تحدي لوجيستيكي.",
+    "fr_len": 77,
+    "loc_len": 43,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.solutions_subtitle",
+    "fr": "Fonctionnalités spécifiques au commerce",
+    "loc": "ميزات خاصة بالتجارة",
+    "fr_len": 39,
+    "loc_len": 19,
+    "ratio": 0.49
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.solution1_feature1",
+    "fr": "Statut temps réel",
+    "loc": "حالة فورية",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.solution4_feature2",
+    "fr": "Offres exclusives",
+    "loc": "عروض حصرية",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.segments_subtitle",
+    "fr": "Solutions adaptées à chaque canal",
+    "loc": "حلول مكيفة لكل قناة",
+    "fr_len": 33,
+    "loc_len": 19,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.stats_customer_satisfaction",
+    "fr": "Satisfaction",
+    "loc": "الرضا",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ary",
+    "key": "industries_retail_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.hero_title",
+    "fr": "Support Client E-commerce",
+    "loc": "Voice AI ديال",
+    "fr_len": 25,
+    "loc_len": 13,
+    "ratio": 0.52
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.hero_cta",
+    "fr": "Demander une démo",
+    "loc": "جرب مجانا",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.hero_cta_secondary",
+    "fr": "Documentation API",
+    "loc": "شوف الديمو",
+    "fr_len": 17,
+    "loc_len": 10,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.stat_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.stat_languages",
+    "fr": "Langues supportées",
+    "loc": "اللغات",
+    "fr_len": 18,
+    "loc_len": 6,
+    "ratio": 0.33
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.challenges_subtitle",
+    "fr": "Les équipes support sont submergées par des questions répétitives",
+    "loc": "المشاكل اللي كنحلوها ليك",
+    "fr_len": 65,
+    "loc_len": 24,
+    "ratio": 0.37
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.challenge3_title",
+    "fr": "Questions répétitives",
+    "loc": "ذروات النشاط",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.solutions_subtitle",
+    "fr": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes",
+    "loc": "صوت ذكي مصمم للتجارة الإلكترونية",
+    "fr_len": 78,
+    "loc_len": 32,
+    "ratio": 0.41
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.cta_subtitle",
+    "fr": "Déployez VocalIA en moins de 24h et commencez à économiser dès le premier jour.",
+    "loc": "طلب ديمو باش تشوف Voice AI في العمل.",
+    "fr_len": 79,
+    "loc_len": 36,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_ecommerce_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.hero_subtitle",
+    "fr": "Offrez un support client exceptionnel avec des agents vocaux IA qui répondent instantanément, dans 5 langues, sans temps d'attente.",
+    "loc": "عطي دعم 24/7 مع وكيلات صوتية كيحلو المشاكل وكيصعّدو للبشر وكيحسنو الرضا.",
+    "fr_len": 131,
+    "loc_len": 72,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.hero_cta",
+    "fr": "Demander une démo",
+    "loc": "جرب مجانا",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.hero_cta_secondary",
+    "fr": "Voir les intégrations",
+    "loc": "شوف الديمو",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.stat_satisfaction",
+    "fr": "Satisfaction client",
+    "loc": "الرضا",
+    "fr_len": 19,
+    "loc_len": 5,
+    "ratio": 0.26
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.stat_resolution",
+    "fr": "Résolution 1er contact",
+    "loc": "حل أول اتصال",
+    "fr_len": 22,
+    "loc_len": 12,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.stat_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.challenges_subtitle",
+    "fr": "Les centres de contact font face à des défis croissants",
+    "loc": "المشاكل اللي كنحلوها ليك",
+    "fr_len": 55,
+    "loc_len": 24,
+    "ratio": 0.44
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.solution2_title",
+    "fr": "Escalade intelligente",
+    "loc": "تصعيد ذكي",
+    "fr_len": 21,
+    "loc_len": 9,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.integrations_title",
+    "fr": "Intégrations support",
+    "loc": "التكاملات",
+    "fr_len": 20,
+    "loc_len": 9,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.integrations_subtitle",
+    "fr": "Compatible avec vos outils existants",
+    "loc": "كيتصل بالأدوات ديالك",
+    "fr_len": 36,
+    "loc_len": 20,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.cta_subtitle",
+    "fr": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur budget.",
+    "loc": "طلب ديمو مع شخصية الدعم ديالنا.",
+    "fr_len": 88,
+    "loc_len": 31,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_support_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.hero_title_accent",
+    "fr": "Automatisée par l'IA",
+    "loc": "الموعد",
+    "fr_len": 20,
+    "loc_len": 6,
+    "ratio": 0.3
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.hero_subtitle",
+    "fr": "Laissez l'IA gérer vos prises de rendez-vous 24/7. Synchronisation calendrier, rappels automatiques, réduction des no-shows.",
+    "loc": "أوتوماتيزي جدولة المواعيد والتذكيرات وإعادة الجدولة مع وكيلات صوتية.",
+    "fr_len": 124,
+    "loc_len": 68,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.hero_cta",
+    "fr": "Demander une démo",
+    "loc": "جرب مجانا",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.hero_cta_secondary",
+    "fr": "Voir les intégrations",
+    "loc": "شوف الديمو",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.stat_availability",
+    "fr": "Disponibilité",
+    "loc": "التوفر",
+    "fr_len": 13,
+    "loc_len": 6,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.challenges_title",
+    "fr": "Les défis de la prise de RDV",
+    "loc": "تحديات الحجز",
+    "fr_len": 28,
+    "loc_len": 12,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.challenges_subtitle",
+    "fr": "La gestion des rendez-vous est chronophage et source d'erreurs",
+    "loc": "المشاكل اللي كنحلوها ليك",
+    "fr_len": 62,
+    "loc_len": 24,
+    "ratio": 0.39
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.challenge3_desc",
+    "fr": "Les clients ne peuvent réserver qu'aux heures de bureau, perdant les demandes hors horaires.",
+    "loc": "الحجوزات ممكنة غير فأوقات العمل، وهادشي كيضيع الفرص.",
+    "fr_len": 92,
+    "loc_len": 52,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.solution1_title",
+    "fr": "Réservation 24/7",
+    "loc": "حجز 24/7",
+    "fr_len": 16,
+    "loc_len": 8,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.industries_subtitle",
+    "fr": "VocalIA s'adapte aux spécificités de chaque industrie",
+    "loc": "الصناعات المتوافقة",
+    "fr_len": 53,
+    "loc_len": 18,
+    "ratio": 0.34
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.integrations_title",
+    "fr": "Intégrations calendrier",
+    "loc": "التكاملات",
+    "fr_len": 23,
+    "loc_len": 9,
+    "ratio": 0.39
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.integrations_subtitle",
+    "fr": "Compatible avec vos outils existants",
+    "loc": "كيتصل بالأدوات ديالك",
+    "fr_len": 36,
+    "loc_len": 20,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.cta_title",
+    "fr": "Arrêtez de perdre des clients au téléphone",
+    "loc": "أوتوماتيزي المواعيد ديالك",
+    "fr_len": 42,
+    "loc_len": 25,
+    "ratio": 0.6
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.cta_subtitle",
+    "fr": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit vos appelants en rendez-vous confirmés.",
+    "loc": "طلب ديمو باش تشوف أوتوماتيزاسيون المواعيد.",
+    "fr_len": 120,
+    "loc_len": 42,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_appointments_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.hero_title_accent",
+    "fr": "Framework BANT Automatisé",
+    "loc": "تأهيل الليد",
+    "fr_len": 25,
+    "loc_len": 11,
+    "ratio": 0.44
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.hero_subtitle",
+    "fr": "Qualifiez automatiquement vos prospects avec le framework BANT. Scoring en temps réel, synchronisation CRM, alertes commerciales.",
+    "loc": "أهّل الليد أوتوماتيكياً بإطار BANT والسكورينغ في الوقت الحقيقي ومزامنة CRM.",
+    "fr_len": 129,
+    "loc_len": 75,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.hero_cta",
+    "fr": "Demander une démo",
+    "loc": "جرب مجانا",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.hero_cta_secondary",
+    "fr": "Voir le framework BANT",
+    "loc": "شوف الديمو",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.challenges_title",
+    "fr": "Les défis de la qualification",
+    "loc": "تحديات التأهيل",
+    "fr_len": 29,
+    "loc_len": 14,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.challenges_subtitle",
+    "fr": "Trop de leads non qualifiés gaspillent le temps des commerciaux",
+    "loc": "المشاكل اللي كنحلوها ليك",
+    "fr_len": 63,
+    "loc_len": 24,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.challenge3_title",
+    "fr": "Qualification manuelle",
+    "loc": "عدم الاتساق",
+    "fr_len": 22,
+    "loc_len": 11,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.bant_title",
+    "fr": "Framework BANT automatisé",
+    "loc": "إطار BANT",
+    "fr_len": 25,
+    "loc_len": 9,
+    "ratio": 0.36
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.bant_subtitle",
+    "fr": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualification",
+    "loc": "تأهيل منظم لعملاء محتملين ذوي جودة",
+    "fr_len": 87,
+    "loc_len": 34,
+    "ratio": 0.39
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.solution4_title",
+    "fr": "Alertes commerciales",
+    "loc": "نقل ذكي",
+    "fr_len": 20,
+    "loc_len": 7,
+    "ratio": 0.35
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.integrations_title",
+    "fr": "Intégrations CRM",
+    "loc": "التكاملات",
+    "fr_len": 16,
+    "loc_len": 9,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.integrations_subtitle",
+    "fr": "Compatible avec vos outils existants",
+    "loc": "كيتصل بالأدوات ديالك",
+    "fr_len": 36,
+    "loc_len": 20,
+    "ratio": 0.56
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.cta_subtitle",
+    "fr": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA faire le tri.",
+    "loc": "طلب ديمو باش تشوف التأهيل في العمل.",
+    "fr_len": 91,
+    "loc_len": 35,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ary",
+    "key": "usecases_leads_page.cta_button",
+    "fr": "Demander une Démo",
+    "loc": "طلب ديمو",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "docs_page.hero_title",
+    "fr": "Intégrez",
+    "loc": "دمج",
+    "fr_len": 8,
+    "loc_len": 3,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ary",
+    "key": "privacy_page.hero_title",
+    "fr": "Politique de",
+    "loc": "سياسة",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ary",
+    "key": "privacy_page.hero_title_accent",
+    "fr": "Confidentialité",
+    "loc": "الخصوصية",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "privacy_page.last_update",
+    "fr": "Dernière mise à jour",
+    "loc": "آخر تحديث",
+    "fr_len": 20,
+    "loc_len": 9,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "privacy_page.section_intro",
+    "fr": "Introduction",
+    "loc": "مقدمة",
+    "fr_len": 12,
+    "loc_len": 5,
+    "ratio": 0.42
+  },
+  {
+    "locale": "ary",
+    "key": "privacy_page.gdpr_rectification",
+    "fr": "Droit de rectification",
+    "loc": "حق التصحيح",
+    "fr_len": 22,
+    "loc_len": 10,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "privacy_page.gdpr_deletion",
+    "fr": "Droit à l'effacement",
+    "loc": "حق الحذف",
+    "fr_len": 20,
+    "loc_len": 8,
+    "ratio": 0.4
+  },
+  {
+    "locale": "ary",
+    "key": "terms_page.hero_title",
+    "fr": "Conditions Générales",
+    "loc": "الشروط",
+    "fr_len": 20,
+    "loc_len": 6,
+    "ratio": 0.3
+  },
+  {
+    "locale": "ary",
+    "key": "terms_page.last_update",
+    "fr": "Dernière mise à jour",
+    "loc": "آخر تحديث",
+    "fr_len": 20,
+    "loc_len": 9,
+    "ratio": 0.45
+  },
+  {
+    "locale": "ary",
+    "key": "terms_page.section_services",
+    "fr": "Description des Services",
+    "loc": "وصف الخدمات",
+    "fr_len": 24,
+    "loc_len": 11,
+    "ratio": 0.46
+  },
+  {
+    "locale": "ary",
+    "key": "terms_page.section_pricing",
+    "fr": "Tarification",
+    "loc": "الأثمان",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "integrations_page.cta_docs",
+    "fr": "Documentation API",
+    "loc": "وثائق API",
+    "fr_len": 17,
+    "loc_len": 9,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "integrations_page.cta_request",
+    "fr": "Demander une intégration",
+    "loc": "طلب تكامل",
+    "fr_len": 24,
+    "loc_len": 9,
+    "ratio": 0.38
+  },
+  {
+    "locale": "ary",
+    "key": "integrations_page.section_communication",
+    "fr": "Communication",
+    "loc": "الاتصال",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "integrations_page.integrations_count",
+    "fr": "intégrations",
+    "loc": "تكاملات",
+    "fr_len": 12,
+    "loc_len": 7,
+    "ratio": 0.58
+  },
+  {
+    "locale": "ary",
+    "key": "footer.links.features",
+    "fr": "Fonctionnalités",
+    "loc": "المميزات",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "footer.links.docs",
+    "fr": "Documentation",
+    "loc": "الوثائق",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "footer.links.privacy",
+    "fr": "Confidentialité",
+    "loc": "الخصوصية",
+    "fr_len": 15,
+    "loc_len": 8,
+    "ratio": 0.53
+  },
+  {
+    "locale": "ary",
+    "key": "docs_api_page.sidebar_auth",
+    "fr": "Authentification",
+    "loc": "المصادقة",
+    "fr_len": 16,
+    "loc_len": 8,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "docs_api_page.sidebar_telephony_transfer",
+    "fr": "Transférer",
+    "loc": "نقل",
+    "fr_len": 10,
+    "loc_len": 3,
+    "ratio": 0.3
+  },
+  {
+    "locale": "ary",
+    "key": "docs_api_page.sidebar_webhooks_setup",
+    "fr": "Configuration",
+    "loc": "الإعداد",
+    "fr_len": 13,
+    "loc_len": 7,
+    "ratio": 0.54
+  },
+  {
+    "locale": "ary",
+    "key": "docs_api_page.auth_title",
+    "fr": "Authentification",
+    "loc": "المصادقة",
+    "fr_len": 16,
+    "loc_len": 8,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "docs_api_page.auth_copy",
+    "fr": "Copier",
+    "loc": "نسخ",
+    "fr_len": 6,
+    "loc_len": 3,
+    "ratio": 0.5
+  },
+  {
+    "locale": "ary",
+    "key": "docs_api_page.auth_security_item2",
+    "fr": "Utilisez des variables d'environnement",
+    "loc": "استعمل متغيرات البيئة",
+    "fr_len": 38,
+    "loc_len": 21,
+    "ratio": 0.55
+  },
+  {
+    "locale": "ary",
+    "key": "investor.metric_languages",
+    "fr": "Langues",
+    "loc": "لغات",
+    "fr_len": 7,
+    "loc_len": 4,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "investor.market_title",
+    "fr": "Opportunité de Marché",
+    "loc": "فرصة السوق",
+    "fr_len": 21,
+    "loc_len": 10,
+    "ratio": 0.48
+  },
+  {
+    "locale": "ary",
+    "key": "investor.table_feature",
+    "fr": "Fonctionnalité",
+    "loc": "الميزة",
+    "fr_len": 14,
+    "loc_len": 6,
+    "ratio": 0.43
+  },
+  {
+    "locale": "ary",
+    "key": "investor.moat_1_title",
+    "fr": "Moat Linguistique",
+    "loc": "حصن لغوي",
+    "fr_len": 17,
+    "loc_len": 8,
+    "ratio": 0.47
+  },
+  {
+    "locale": "ary",
+    "key": "investor.tech_rag_desc",
+    "fr": "Knowledge base intelligente",
+    "loc": "قاعدة معرفة ذكية",
+    "fr_len": 27,
+    "loc_len": 16,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "investor.funds_subtitle",
+    "fr": "Investissement ciblé pour accélérer la croissance et la pénétration marché.",
+    "loc": "استثمار موجه باش نسرّعو النمو واختراق السوق.",
+    "fr_len": 75,
+    "loc_len": 44,
+    "ratio": 0.59
+  },
+  {
+    "locale": "ary",
+    "key": "investor.funds_product",
+    "fr": "Développement Produit",
+    "loc": "تطوير المنتج",
+    "fr_len": 21,
+    "loc_len": 12,
+    "ratio": 0.57
+  },
+  {
+    "locale": "ary",
+    "key": "investor.cta_docs",
+    "fr": "Voir la Documentation",
+    "loc": "شوف الوثائق",
+    "fr_len": 21,
+    "loc_len": 11,
+    "ratio": 0.52
+  }
+]
