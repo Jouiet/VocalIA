@@ -1,19 +1,53 @@
 import { google } from 'googleapis';
 import { z } from 'zod';
+import * as path from 'path';
+import { createRequire } from 'module';
 
-// Helper to get authenticated client
-async function getCalendarClient() {
-    const clientId = process.env.GOOGLE_CLIENT_ID;
-    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    const redirectUri = process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth2callback';
-    const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
+// Multi-tenant support via SecretVault (Session 249.2)
+const require = createRequire(import.meta.url);
+let SecretVault: any = null;
+try {
+    const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
+    SecretVault = require(vaultPath);
+} catch (e) {
+    // Fallback to env vars
+}
 
-    if (!clientId || !clientSecret || !refreshToken) {
+/**
+ * Get Google credentials for a tenant
+ * @param tenantId - Tenant ID (default: agency_internal)
+ */
+async function getGoogleCredentials(tenantId: string = 'agency_internal') {
+    if (SecretVault) {
+        const creds = await SecretVault.loadCredentials(tenantId);
+        if (creds.GOOGLE_CLIENT_ID && creds.GOOGLE_CLIENT_SECRET && creds.GOOGLE_REFRESH_TOKEN) {
+            return {
+                clientId: creds.GOOGLE_CLIENT_ID,
+                clientSecret: creds.GOOGLE_CLIENT_SECRET,
+                refreshToken: creds.GOOGLE_REFRESH_TOKEN,
+                redirectUri: creds.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth2callback'
+            };
+        }
+    }
+    // Fallback to environment
+    return {
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+        redirectUri: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth2callback'
+    };
+}
+
+// Helper to get authenticated client (multi-tenant aware)
+async function getCalendarClient(tenantId: string = 'agency_internal') {
+    const creds = await getGoogleCredentials(tenantId);
+
+    if (!creds.clientId || !creds.clientSecret || !creds.refreshToken) {
         throw new Error("Missing Google Credentials (CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN)");
     }
 
-    const oAuth2Client = new google.auth.OAuth2(clientId, clientSecret, redirectUri);
-    oAuth2Client.setCredentials({ refresh_token: refreshToken });
+    const oAuth2Client = new google.auth.OAuth2(creds.clientId, creds.clientSecret, creds.redirectUri);
+    oAuth2Client.setCredentials({ refresh_token: creds.refreshToken });
     return google.calendar({ version: 'v3', auth: oAuth2Client });
 }
 
@@ -25,10 +59,12 @@ export const calendarTools = {
             timeMin: z.string().describe('Start time in ISO format'),
             timeMax: z.string().describe('End time in ISO format'),
             calendarId: z.string().optional().describe('Calendar ID (default: primary)'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
         },
-        handler: async ({ timeMin, timeMax, calendarId = 'primary' }: { timeMin: string, timeMax: string, calendarId?: string }) => {
+        handler: async ({ timeMin, timeMax, calendarId = 'primary', _meta }: { timeMin: string, timeMax: string, calendarId?: string, _meta?: { tenantId?: string } }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
             try {
-                const calendar = await getCalendarClient();
+                const calendar = await getCalendarClient(tenantId);
                 const response = await calendar.freebusy.query({
                     requestBody: {
                         timeMin,
@@ -68,10 +104,12 @@ export const calendarTools = {
             endTime: z.string().describe('End time in ISO format'),
             attendees: z.array(z.string().email()).optional().describe('List of attendee emails'),
             calendarId: z.string().optional().describe('Calendar ID (default: primary)'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
         },
-        handler: async ({ summary, startTime, endTime, attendees, calendarId = 'primary' }: { summary: string, startTime: string, endTime: string, attendees?: string[], calendarId?: string }) => {
+        handler: async ({ summary, startTime, endTime, attendees, calendarId = 'primary', _meta }: { summary: string, startTime: string, endTime: string, attendees?: string[], calendarId?: string, _meta?: { tenantId?: string } }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
             try {
-                const calendar = await getCalendarClient();
+                const calendar = await getCalendarClient(tenantId);
                 const event = {
                     summary,
                     start: { dateTime: startTime },

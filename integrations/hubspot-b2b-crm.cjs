@@ -25,12 +25,32 @@
 require('dotenv').config();
 const { Client } = require('@hubspot/api-client');
 
+// Multi-tenant support via SecretVault (Session 249.2)
+let SecretVault;
+try {
+  SecretVault = require('../core/SecretVault.cjs');
+} catch (e) {
+  SecretVault = null;
+}
+
 // ============================================================================
-// CONFIGURATION
+// CONFIGURATION (with multi-tenant fallback)
 // ============================================================================
 
+// Get credentials for a tenant (or fallback to env)
+async function getCredentials(tenantId = 'agency_internal') {
+  if (SecretVault) {
+    const creds = await SecretVault.loadCredentials(tenantId);
+    if (creds.HUBSPOT_ACCESS_TOKEN || creds.HUBSPOT_API_KEY) {
+      return creds.HUBSPOT_ACCESS_TOKEN || creds.HUBSPOT_API_KEY;
+    }
+  }
+  // Fallback to environment
+  return process.env.HUBSPOT_API_KEY || process.env.HUBSPOT_ACCESS_TOKEN;
+}
+
 const CONFIG = {
-  accessToken: process.env.HUBSPOT_API_KEY || process.env.HUBSPOT_ACCESS_TOKEN,
+  accessToken: process.env.HUBSPOT_API_KEY || process.env.HUBSPOT_ACCESS_TOKEN, // Sync fallback
   rateLimit: {
     requests: 100,
     perSeconds: 10,
@@ -232,11 +252,16 @@ function listPendingDeals() {
 }
 
 // ============================================================================
-// HUBSPOT CLIENT
+// HUBSPOT CLIENT (Multi-Tenant Aware - Session 249.2)
 // ============================================================================
 
 class HubSpotB2BCRM {
-  constructor(accessToken = CONFIG.accessToken) {
+  /**
+   * @param {string} accessToken - HubSpot access token (optional if using tenantId)
+   * @param {string} tenantId - Tenant ID for multi-tenant mode (optional)
+   */
+  constructor(accessToken = CONFIG.accessToken, tenantId = null) {
+    this.tenantId = tenantId || 'agency_internal';
     if (!accessToken) {
       console.warn('⚠️ No HubSpot access token provided. Running in test mode.');
       this.testMode = true;
@@ -1136,14 +1161,47 @@ class HubSpotB2BCRM {
 }
 
 // ============================================================================
+// MULTI-TENANT FACTORY (Session 249.2)
+// ============================================================================
+
+/**
+ * Create a tenant-specific HubSpot CRM instance
+ * @param {string} tenantId - Tenant identifier
+ * @returns {Promise<HubSpotB2BCRM>}
+ */
+async function createForTenant(tenantId) {
+  const accessToken = await getCredentials(tenantId);
+  return new HubSpotB2BCRM(accessToken, tenantId);
+}
+
+// Cache for tenant instances
+const tenantInstances = new Map();
+
+/**
+ * Get or create a cached tenant instance
+ * @param {string} tenantId
+ * @returns {Promise<HubSpotB2BCRM>}
+ */
+async function getForTenant(tenantId = 'agency_internal') {
+  if (!tenantInstances.has(tenantId)) {
+    const instance = await createForTenant(tenantId);
+    tenantInstances.set(tenantId, instance);
+  }
+  return tenantInstances.get(tenantId);
+}
+
+// ============================================================================
 // CLI INTERFACE
 // ============================================================================
 
-// Export for programmatic use
+// Export for programmatic use (default: agency_internal)
 const instance = new HubSpotB2BCRM();
 module.exports = instance;
 module.exports.HubSpotB2BCRM = HubSpotB2BCRM;
-module.exports.CONFIG = CONFIG; // Also export CONFIG
+module.exports.CONFIG = CONFIG;
+module.exports.createForTenant = createForTenant;
+module.exports.getForTenant = getForTenant;
+module.exports.getCredentials = getCredentials;
 
 // CLI
 if (require.main === module) {

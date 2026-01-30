@@ -1,4 +1,29 @@
 import { z } from 'zod';
+import * as path from 'path';
+import { createRequire } from 'module';
+
+// Multi-tenant support via SecretVault (Session 249.2)
+const require = createRequire(import.meta.url);
+let SecretVault: any = null;
+try {
+    const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
+    SecretVault = require(vaultPath);
+} catch (e) {
+    // Fallback to env vars
+}
+
+/**
+ * Get Slack webhook URL for a tenant
+ */
+async function getSlackWebhook(tenantId: string = 'agency_internal'): Promise<string | null> {
+    if (SecretVault) {
+        const creds = await SecretVault.loadCredentials(tenantId);
+        if (creds.SLACK_WEBHOOK_URL) {
+            return creds.SLACK_WEBHOOK_URL;
+        }
+    }
+    return process.env.SLACK_WEBHOOK_URL || null;
+}
 
 export const slackTools = {
     send_notification: {
@@ -9,9 +34,11 @@ export const slackTools = {
             channel: z.string().optional().describe('Channel override (if supported by webhook)'),
             username: z.string().optional().describe('Bot username override'),
             icon_emoji: z.string().optional().describe('Bot icon emoji override (e.g. :robot_face:)'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
         },
-        handler: async ({ message, channel, username, icon_emoji }: { message: string, channel?: string, username?: string, icon_emoji?: string }) => {
-            const webhookUrl = process.env.SLACK_WEBHOOK_URL;
+        handler: async ({ message, channel, username, icon_emoji, _meta }: { message: string, channel?: string, username?: string, icon_emoji?: string, _meta?: { tenantId?: string } }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const webhookUrl = await getSlackWebhook(tenantId);
 
             if (!webhookUrl) {
                 return {
