@@ -2537,18 +2537,114 @@ node scripts/health-check.cjs
 
 ---
 
-### PLAN ACTIONNABLE (Session 228)
+---
+
+## Session 228.2 - Integrations Logos & Marquee (30/01/2026)
+
+### OBJECTIF
+
+Fix integrations section: real brand logos, seamless marquee animation, proper contrast.
+
+### IMPLÉMENTATIONS
+
+**1. Real Brand SVG Logos Downloaded:** ✅
+
+21 logos downloaded to `/website/public/images/logos/`:
+
+| Source | Method |
+|:-------|:-------|
+| Simple Icons CDN | `https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/[slug].svg` |
+| Bootstrap Icons | For Microsoft Teams |
+| Manual Creation | Klaviyo, Pipedrive, Freshdesk (branded placeholders) |
+
+**Logos:** HubSpot, Salesforce, Shopify, Slack, Zapier, Zendesk, Intercom, Notion, Calendly, Google Calendar, Mailchimp, Make, Twilio, WhatsApp, WooCommerce, Zoho, Microsoft Teams, Klaviyo, Pipedrive, Freshdesk, + more.
+
+**2. Seamless Marquee Animation:** ✅
+
+| Problème | Cause | Solution |
+|:---------|:------|:---------|
+| Animation stops at middle | Insufficient content duplication | 10+10 logos per row |
+| Two separate white bands | Nested containers | Single parent `<div>` for both rows |
+| Logos too small | `h-8` class | `h-12` (1.5x larger) |
+
+**3. CRITICAL: Tailwind Pre-Compilation Limitation** 🚨
+
+**Root Cause Discovery:**
+```
+Tailwind CSS est pré-compilé dans /public/css/style.css
+Les classes comme bg-white/30 n'existent PAS dans le CSS compilé
+sauf si elles étaient déjà utilisées avant le build.
+```
+
+**Classes Disponibles:**
+- ✅ `bg-white`, `bg-white/10`, `hover:bg-white/20`, `hover:bg-white/5`
+
+**Classes NON Disponibles:**
+- ❌ `bg-white/30`, `bg-white/25`, `bg-slate-500/40`, etc.
+
+**Workaround Appliqué:**
+```html
+<div style="background-color: rgba(255,255,255,0.25);">
+  <!-- Inline style car classe Tailwind non compilée -->
+</div>
+```
+
+**4. Logo Contrast Fix:** ✅
+
+| Avant | Après |
+|:------|:------|
+| Logos invisibles sur dark bg | `bg-white/90 rounded-xl p-2 shadow-sm` |
+
+### COMMITS
+
+```
+1501216 - Real SVG logos + seamless marquee
+aa97452 - Logo contrast with white backgrounds
+e067c91 - Transparent white band (two bands)
+60c9e21 - Single band + lighter opacity
+0f5f733 - Logos 1.5x larger (h-8→h-12)
+70fe89a, f947de3, 50b5bed - Band visibility attempts
+badb1e7 - Final fix: inline style rgba(255,255,255,0.25)
+```
+
+### VÉRIFICATION
+
+```bash
+# Logo files
+ls website/public/images/logos/*.svg | wc -l
+# Result: 21 ✅
+
+# Inline style workaround in place
+grep "rgba(255,255,255,0.25)" website/index.html
+# Result: Found ✅
+```
+
+### DELTA Session 228.2
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| Brand logos | 0 (inline SVG) | **21 fichiers SVG** |
+| Marquee | Stops at middle | **Seamless loop** |
+| Logo size | h-8 | **h-12 (1.5x)** |
+| White band | Invisible | **Visible (inline style)** |
+
+---
+
+### PLAN ACTIONNABLE (Session 229)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Light mode LCH polish | P2 | Optional (backlog) |
-| 2 | Performance audit | P3 | Lighthouse CI |
+| 1 | **Recompile Tailwind CSS** | **P0** | Include `bg-white/25`, `bg-white/30` |
+| 2 | Document CSS build process | P1 | Prevent future inline workarounds |
+| 3 | Consider Tailwind JIT mode | P2 | Dynamic class generation |
+| 4 | Light mode LCH polish | P3 | Optional (backlog) |
 
 ---
 
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 29/01/2026 - Session 228 (Lucide Icons Modernization)*
+*Màj: 30/01/2026 - Session 228.2 (Integrations Logos & Marquee + Tailwind Limitation)*
 *Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
-*Live: https://vocalia.ma ✅ | Icons: Lucide 2026 ✅*
+*Live: https://vocalia.ma ✅ | Icons: Lucide 2026 ✅ | Logos: 21 SVG ✅*
 *Dashboards: Light/Dark mode fully functional ✅*
 *Blog: 7 articles with working links | Docs: /docs/ fixed*
+*Technical Debt: Tailwind recompilation needed for new opacity classes*

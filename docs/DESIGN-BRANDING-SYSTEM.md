@@ -1,6 +1,6 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 4.4.1 | **Date**: 29/01/2026 | **Session**: 222
+> **Version**: 4.5.0 | **Date**: 30/01/2026 | **Session**: 228.2
 > **Palette**: OKLCH P3 Wide-Gamut "4K" Colors | **Brand Assets**: Complete ✅
 > **Research**: Apple Liquid Glass, GitHub ihlamury/design-skills, LogRocket OKLCH, CodePen 3D Tilt
 > **Security**: Technology Disclosure Protection (Session 222)
@@ -432,6 +432,30 @@ website/
 ```bash
 npm run build:css
 # Output: website/public/css/style.css
+```
+
+### ⚠️ CRITICAL: Tailwind Pre-Compilation Limitation (Session 228.2)
+
+**Problem Discovered:** Tailwind CSS is pre-compiled. New utility classes don't exist unless they were in source files during build.
+
+| Class Type | Status |
+|:-----------|:------:|
+| `bg-white`, `bg-white/10` | ✅ In compiled CSS |
+| `bg-white/30`, `bg-white/25` | ❌ NOT in compiled CSS |
+
+**Workaround:** Use inline styles for opacity values not in compiled CSS:
+```html
+<!-- Instead of bg-white/25 (not compiled) -->
+<div style="background-color: rgba(255,255,255,0.25);">
+```
+
+**Proper Fix:** Add required classes to source files and rebuild:
+```bash
+# 1. Add classes to input.css or any HTML file
+# 2. Rebuild CSS
+npm run build:css
+# 3. Verify classes exist
+grep "bg-white\/25" website/public/css/style.css
 ```
 
 ### Start Local Server

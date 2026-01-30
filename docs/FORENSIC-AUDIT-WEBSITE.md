@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.1.0 | **Date**: 29/01/2026 | **Session**: 226
+> **Version**: 4.2.0 | **Date**: 30/01/2026 | **Session**: 228.2
 > **Status**: WCAG 2.1 AA COMPLIANCE (~97%) | **CSS Build**: SOVEREIGN (93KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: Technology Disclosure Protection ✅ (Session 222)
@@ -11,6 +11,7 @@
 > **Dashboards**: Liquid-Glass Cards ✅ (Session 225)
 > **i18n**: Locale JSON files accessible ✅ (Session 226 - 403 fix)
 > **Visual Testing**: Playwright MCP verified ✅ (Session 226)
+> **Integrations**: 21 brand SVG logos + seamless marquee ✅ (Session 228.2)
 
 ---
 
@@ -900,6 +901,104 @@ Le frontend est maintenant au niveau des standards 2026 (Linear, NindoHost, Noti
 
 ---
 
+---
+
+## 🔧 Session 228.2: Integrations Logos & Tailwind Limitation (30/01/2026)
+
+### Context
+
+User reported "fake text logos" in integrations section and marquee animation issues.
+
+### Issues Fixed
+
+| Issue | Severity | Status |
+|:------|:--------:|:------:|
+| Inline SVG placeholders (not real logos) | HIGH | ✅ FIXED |
+| Marquee stops at middle | MEDIUM | ✅ FIXED |
+| Logos invisible on dark background | HIGH | ✅ FIXED |
+| White band completely invisible | CRITICAL | ✅ FIXED |
+| Two separate bands instead of one | LOW | ✅ FIXED |
+
+### 1. Real Brand SVG Logos
+
+**21 logos downloaded to `/website/public/images/logos/`:**
+
+| Category | Logos |
+|:---------|:------|
+| CRM | HubSpot, Salesforce, Pipedrive, Zoho |
+| E-commerce | Shopify, WooCommerce, Klaviyo |
+| Communication | Slack, Twilio, WhatsApp, Teams |
+| Support | Zendesk, Freshdesk, Intercom |
+| Automation | Zapier, Make, Notion |
+| Calendars | Google Calendar, Calendly |
+
+**Source:** Simple Icons CDN (`https://cdn.jsdelivr.net/npm/simple-icons@v14/icons/[slug].svg`)
+
+### 2. Seamless Marquee Animation
+
+**Before:** Animation stopped at 50% because content was not properly duplicated.
+
+**After:**
+```html
+<!-- 10 logos + 10 duplicates = seamless -50% translateX loop -->
+<div class="flex animate-marquee-left gap-16">
+  <!-- Logo 1-10 --> + <!-- Logo 1-10 (duplicate) -->
+</div>
+```
+
+### 3. CRITICAL DISCOVERY: Tailwind Pre-Compilation Limitation 🚨
+
+**Root Cause:**
+- Tailwind CSS is pre-compiled in `/public/css/style.css`
+- New utility classes don't exist unless already in source during build
+- `bg-white/30`, `bg-white/25` → **NOT IN COMPILED CSS**
+- `bg-white`, `bg-white/10` → **IN COMPILED CSS**
+
+**Evidence:**
+```bash
+grep "bg-white" public/css/style.css
+# Found: bg-white, bg-white\/10, hover\:bg-white\/20, hover\:bg-white\/5
+# NOT found: bg-white\/30, bg-white\/25, bg-white\/40
+```
+
+**Workaround Applied:**
+```html
+<div style="background-color: rgba(255,255,255,0.25);">
+  <!-- Inline style because Tailwind class not compiled -->
+</div>
+```
+
+### 4. Logo Contrast Enhancement
+
+| Problem | Solution |
+|:--------|:---------|
+| Logos invisible on `#0f172a` background | Added `bg-white/90 rounded-xl p-2 shadow-sm` containers |
+
+### 5. Single White Band
+
+Restructured from two separate bands to single parent container:
+```html
+<div style="background-color: rgba(255,255,255,0.25);">
+  <div class="mb-4"><!-- Row 1: marquee-left --></div>
+  <div><!-- Row 2: marquee-right --></div>
+</div>
+```
+
+### Technical Debt Created
+
+| Debt | Priority | Resolution |
+|:-----|:--------:|:-----------|
+| Inline style workaround | P0 | Recompile Tailwind with new opacity classes |
+| Manual logo SVG management | P2 | Consider icon font or sprite sheet |
+
+### Commits
+
+- `badb1e7` - Final fix: inline style rgba(255,255,255,0.25)
+- `0f5f733` - Logos 1.5x larger (h-8→h-12)
+- `1501216` - Real SVG logos + seamless marquee
+
+---
+
 *Document créé: 28/01/2026 - Session 200*
-*Mise à jour: 29/01/2026 - Session 213 (Deployment Prep + Favicons)*
+*Mise à jour: 30/01/2026 - Session 228.2 (Integrations Logos + Tailwind Limitation)*
 *Auteur: Claude Code (DOE Framework)*

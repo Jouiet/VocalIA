@@ -1,8 +1,9 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.2.0 | 29/01/2026 | Session 227 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.3.0 | 30/01/2026 | Session 228.2 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python (pip install vocalia) | ✅ Node.js (npm install vocalia) | ✅ MCP Server
+> Integrations: 21 brand logos (SVG) | Marquee seamless loop ✅
 
 ## Identité
 
@@ -1561,10 +1562,80 @@ Container élargi: `max-w-6xl` → `max-w-7xl`
 
 ---
 
-*Màj: 30/01/2026 - Session 228 (Voice Visualizer ROOT CAUSE + CTAs + Vercel Removal)*
+---
+
+## Session 228.2 Summary (30/01/2026)
+
+**Integrations Logos & Marquee Critical Fixes:**
+
+### 1. Real Brand Logos Downloaded ✅
+
+21 SVG logos downloaded to `/website/public/images/logos/`:
+
+| Category | Logos |
+|:---------|:------|
+| **CRM** | HubSpot, Salesforce, Pipedrive, Zoho |
+| **E-commerce** | Shopify, WooCommerce, Klaviyo |
+| **Communication** | Slack, Twilio, WhatsApp, Microsoft Teams |
+| **Calendars** | Google Calendar, Calendly |
+| **Support** | Zendesk, Freshdesk, Intercom |
+| **Automation** | Zapier, Make, Notion |
+| **Email** | Mailchimp |
+
+### 2. Seamless Marquee Animation ✅
+
+| Issue | Fix |
+|:------|:----|
+| Animation stops at middle | Content duplication (10+10 logos per row) |
+| Two separate bands | Single parent container for both rows |
+| Logo size too small | `h-8` → `h-12` (1.5x larger) |
+
+### 3. CRITICAL DISCOVERY: Tailwind Pre-Compilation Limitation
+
+**Root Cause Identified:**
+- Tailwind CSS is pre-compiled in `/public/css/style.css`
+- New utility classes like `bg-white/30` don't exist unless already used in build
+- Available: `bg-white`, `bg-white/10`, `hover:bg-white/20`, `hover:bg-white/5`
+- NOT available: `bg-white/30`, `bg-slate-500/40`, etc.
+
+**Workaround Applied:**
+```html
+<!-- Inline style for white band (Tailwind class not in compiled CSS) -->
+<div style="background-color: rgba(255,255,255,0.25);">
+```
+
+### 4. Contrast Fix for Dark Background ✅
+
+| Before | After |
+|:-------|:------|
+| Logos invisible on dark bg | `bg-white/90 rounded-xl p-2 shadow-sm` containers |
+
+### Commits Session 228.2
+
+| Commit | Description |
+|:-------|:------------|
+| `1501216` | Real SVG logos + seamless marquee |
+| `aa97452` | Logo contrast with white backgrounds |
+| `e067c91` | Transparent white band (two bands) |
+| `60c9e21` | Single band + lighter opacity |
+| `0f5f733` | Logos 1.5x larger (h-8→h-12) |
+| `badb1e7` | Final fix: inline style rgba(255,255,255,0.25) |
+
+### Plan Actionnable (Session 229)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Recompile Tailwind CSS with new utilities | **P0** | Include `bg-white/25`, `bg-white/30`, etc. |
+| 2 | Document CSS build process | P1 | Prevent future inline style workarounds |
+| 3 | Consider Tailwind JIT mode | P2 | Dynamic class generation |
+
+---
+
+*Màj: 30/01/2026 - Session 228.2 (Integrations Logos & Marquee + Tailwind Limitation)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ | Node.js ✅ | MCP Server ✅ (11 tools)*
 *Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*
+*Integrations: 21 brand SVG logos ✅ | Marquee: Seamless loop ✅*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
