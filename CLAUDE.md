@@ -1,10 +1,10 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.9 | 30/01/2026 | Session 234 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.4.0 | 30/01/2026 | Session 235 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
-> Stats Counters: ✅ Animated (< 100ms, 5 langues, 30 personas, 99.9% uptime)
+> i18n: ✅ 5 Languages (FR, EN, ES, AR, ARY) | RTL Support ✅ | Icons: X (2026) ✅
 
 ## Identité
 

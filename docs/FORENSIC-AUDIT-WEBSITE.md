@@ -1,21 +1,21 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.3.5 | **Date**: 30/01/2026 | **Session**: 231.2
-> **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (129KB)
+> **Version**: 4.4.0 | **Date**: 30/01/2026 | **Session**: 235
+> **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (130KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: Technology Disclosure Protection ✅ (Session 222)
-> **Icons**: Lucide 2026 (ALL patterns fixed) ✅ (Session 224.2)
+> **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
 > **Blog**: 7 articles with working links ✅ (Session 224.2)
 > **Docs**: /docs/ serves docs/index.html ✅ (Session 224.2)
-> **Dashboards**: Liquid-Glass + Light Mode ✅ (Session 225, 229.2)
-> **i18n**: Locale JSON files accessible ✅ (Session 226 - 403 fix)
+> **Dashboards**: Liquid-Glass + Light Mode + Semantic Icons ✅ (Session 235)
+> **i18n**: 5 Languages (FR, EN, ES, AR, ARY) + RTL Support ✅ (Session 235)
 > **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229)
 > **Integrations**: 21 brand SVG logos + seamless marquee ✅ (Session 228.2)
-> **Tailwind**: Safelist utilities (40 classes) ✅ (Session 229)
+> **Tailwind**: Safelist utilities (40+ classes) ✅ (Session 229)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
-> **MCP Server**: v0.3.0 SOTA (21 tools) ✅ (Session 231.2)
+> **MCP Server**: v0.3.2 SOTA (21 tools) ✅ (Session 232)
 
 ---
 
@@ -1067,6 +1067,63 @@ All 4 visualizer modes verified on production (https://vocalia.ma):
 
 ---
 
+## 🌍 Session 235: 5-Language Support + Icon Modernization (30/01/2026)
+
+### Context
+
+User requested full 5-language support for website (FR, EN, ES, AR, ARY) and modern 2026 icons.
+
+### 1. Icon Modernization
+
+**Twitter → X Rebrand:**
+- Twitter was rebranded to X in July 2023
+- 117 occurrences of `data-lucide="twitter"` replaced with official X logo SVG
+- 25 HTML files updated
+
+**Dashboard Icons:**
+- admin.html: 8 sidebar/action icons fixed (layout-dashboard → semantic icons)
+- client.html: 5 sidebar icons fixed (session précédente)
+
+### 2. 5-Language i18n Support
+
+| Language | Code | Locale File | Status |
+|:---------|:-----|:------------|:------:|
+| French | fr | fr.json | ✅ Existing |
+| English | en | en.json | ✅ Existing |
+| Spanish | es | es.json | ✅ **NEW** |
+| Arabic MSA | ar | ar.json | ✅ **NEW** |
+| Darija | ary | ary.json | ✅ **NEW** |
+
+**Each locale: ~260 translation keys**
+
+### 3. Geo-Detection Routing
+
+| Region | Language | Currency |
+|:-------|:---------|:---------|
+| Morocco | French (alt: Darija) | MAD |
+| France, Belgium, Switzerland | French | EUR |
+| Spain | Spanish | EUR |
+| LATAM (MX, AR, CO, CL, PE, VE, EC) | Spanish | USD |
+| Gulf/MENA (AE, SA, QA, KW, BH, etc.) | Arabic | USD |
+| US, UK, Canada, Australia | English | USD |
+
+### 4. RTL Support
+
+- Added `[dir="rtl"]` CSS styles for Arabic and Darija
+- Automatic `dir="rtl"` attribute on `<html>` for AR/ARY locales
+- Flex direction, margins, paddings, text alignment flipped
+- Arabic font stack: 'Inter', 'Noto Sans Arabic', system-ui
+
+### Commits Session 235
+
+| Commit | Description |
+|:-------|:------------|
+| `39a7e20` | Dashboard admin icons fix |
+| `c4f0a89` | Twitter → X rebrand (117 icons) |
+| `208bd56` | 5-language support + RTL |
+
+---
+
 *Document créé: 28/01/2026 - Session 200*
-*Mise à jour: 30/01/2026 - Session 229 (Tailwind Safelist + Visualizer Verification)*
+*Mise à jour: 30/01/2026 - Session 235 (5-Language Support + Icon Modernization)*
 *Auteur: Claude Code (DOE Framework)*
