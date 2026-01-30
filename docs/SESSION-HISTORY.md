@@ -1,8 +1,8 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.22.0 | **Updated**: 30/01/2026 | **Session**: 249.11
+> **Version**: 3.23.0 | **Updated**: 30/01/2026 | **Session**: 249.12
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 26/26 (100%) | **MCP Tools**: 143 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~64%
+> **Integrations Check**: 24/24 (100%) | **MCP Tools**: 143 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~64%
 
 ---
 
@@ -4011,5 +4011,40 @@ Build time: 398ms
 
 ---
 
-*Màj: 30/01/2026 - Session 249.11 (E-Commerce Expansion + Translation QA)*
+## Session 249.12 - Homepage Cleanup + Documentation Sync (30/01/2026)
+
+**Objectif**: Nettoyer homepage, synchroniser documentation avec état factuel.
+
+**Changements effectués:**
+
+| Action | Détail |
+|:-------|:-------|
+| **Section Pricing supprimée** | Homepage n'a plus de section pricing (page dédiée /pricing) |
+| **Liens mis à jour** | `#pricing` → `/pricing` (3 occurrences) |
+| **JavaScript nettoyé** | Fonction `updatePrices()` simplifiée |
+| **Logos marquee vérifiés** | 24 SVGs avec couleurs de marque correctes |
+| **Documentation synchronisée** | 26 → 24 intégrations (cohérence factuelle) |
+| **Translation QA** | 0 issues (script optimisé Session 249.11) |
+
+**Vérifications:**
+
+```bash
+# Logos avec couleurs correctes
+for f in *.svg; do grep -o 'fill="[^"]*"' "$f" | head -1; done
+# 24 logos avec fill="#BRANDCOLOR"
+
+# Translation QA
+python3 scripts/translation-quality-check.py
+# ✅ 0 issues (5984 keys checked)
+
+# No more #pricing references
+grep "#pricing" website/index.html
+# 0 matches
+```
+
+**Statut final**: Homepage ✅ | 24 Integrations ✅ | QA 0 issues ✅
+
+---
+
+*Màj: 30/01/2026 - Session 249.12 (Homepage Cleanup + Documentation Sync)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

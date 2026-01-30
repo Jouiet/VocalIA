@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.8.0 | 30/01/2026 | Session 249.11 | Health: 100%
+> Version: 6.9.0 | 30/01/2026 | Session 249.12 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
 > SDKs: Python | Node.js | MCP Server v0.5.6 (**143 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
@@ -264,4 +264,4 @@ ls data/ucp-profiles.json  # exists ✅
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/INTEGRATIONS-ROADMAP.md` pour planning détaillé*
 *Voir `docs/VOCALIA-MCP.md` pour documentation MCP (143 tools)*
-*Màj: 30/01/2026 - Session 249.11 (Strategic E-commerce COMPLETE)*
+*Màj: 30/01/2026 - Session 249.12 (Homepage Cleanup + Doc Sync)*

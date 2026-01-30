@@ -15,7 +15,7 @@
 > **i18n**: 5 Languages (FR, EN, ES, AR, ARY) + RTL Support ✅ (Session 236)
 > **Footer i18n**: 30 keys × 29 pages (870 total) ✅ (Session 238)
 > **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229, 238)
-> **Integrations**: 26 factuelles (~64% e-commerce) + seamless marquee ✅ (Session 249.11)
+> **Integrations**: 24 factuelles (~64% e-commerce) + seamless marquee ✅ (Session 249.12)
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)

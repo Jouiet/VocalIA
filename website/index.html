@@ -594,7 +594,7 @@
 
         <!-- CTAs with staggered animation - z-50 ensures clickability -->
         <div class="relative z-50 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <a href="#pricing" class="group btn-cyber hover:shadow-2xl hover:shadow-vocalia-500/50" data-animate="cta" data-magnetic>
+          <a href="/pricing" class="group btn-cyber hover:shadow-2xl hover:shadow-vocalia-500/50" data-animate="cta" data-magnetic>
             <span data-i18n="hero.cta_primary">Essai Gratuit</span>
             <i data-lucide="lock" class="w-5 h-5 inline-block ml-2 group-hover:translate-x-1 transition-transform"></i>
           </a>
@@ -1088,90 +1088,6 @@
     </div>
   </section>
 
-  <!-- Pricing Section -->
-  <section id="pricing" class="py-24">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl sm:text-5xl font-bold mb-4" data-i18n="pricing.title">Tarifs Transparents</h2>
-        <p class="text-xl text-vocalia-300" data-i18n="pricing.subtitle">Pas de frais cachés, pas d'engagement</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Widget Plan -->
-        <div class="glass-panel p-6 hover:scale-[1.02] transition-transform animate-scale-in delay-100 flex flex-col">
-          <h3 class="text-xl font-bold mb-2" data-i18n="pricing.widget.name">Widget</h3>
-          <div class="flex items-baseline mb-6">
-            <span class="text-4xl font-bold gradient-text">0</span>
-            <span class="text-vocalia-400 ml-1" id="currencySymbol">€</span>
-            <span class="text-vocalia-400 ml-1" data-i18n="pricing.widget.period">/mois</span>
-          </div>
-          <ul class="space-y-3 mb-8 text-sm text-vocalia-200 flex-grow">
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>Assistant vocal web</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>30 personas inclus</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>5 langues</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>Support email</li>
-          </ul>
-          <button class="w-full py-3 px-6 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold transition-all hover:shadow-lg hover:shadow-vocalia-500/30 hover:-translate-y-0.5 mt-auto" data-i18n="pricing.widget.cta">Commencer Gratuitement</button>
-        </div>
-
-        <!-- Starter Plan -->
-        <div class="glass-panel p-6 hover:scale-[1.02] transition-transform animate-scale-in delay-200 flex flex-col">
-          <h3 class="text-xl font-bold mb-2" data-i18n="pricing.starter.name">Starter</h3>
-          <div class="flex items-baseline mb-6">
-            <span class="text-4xl font-bold gradient-text" id="starterPrice">49</span>
-            <span class="text-vocalia-400 ml-1 currency-symbol">€</span>
-            <span class="text-vocalia-400 ml-1" data-i18n="pricing.starter.period">/mois</span>
-          </div>
-          <ul class="space-y-3 mb-8 text-sm text-vocalia-200 flex-grow">
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>1 ligne téléphonique</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>500 min/mois incluses</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>RAG Knowledge Base</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>Dashboard analytics</li>
-          </ul>
-          <button class="w-full py-3 px-6 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold transition-all hover:shadow-lg hover:shadow-vocalia-500/30 hover:-translate-y-0.5" data-i18n="pricing.starter.cta">Essai 14 jours</button>
-        </div>
-
-        <!-- Pro Plan (Popular) -->
-        <div
-          class="relative rounded-2xl bg-gradient-to-b from-vocalia-800 to-vocalia-900 border-2 border-vocalia-500 p-6 hover:scale-[1.02] transition-transform animate-scale-in delay-300 animate-glow-pulse">
-          <div
-            class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-vocalia-500 text-sm font-medium">
-            Populaire</div>
-          <h3 class="text-xl font-bold mb-2 mt-2" data-i18n="pricing.pro.name">Pro</h3>
-          <div class="flex items-baseline mb-6">
-            <span class="text-4xl font-bold" id="proPrice">149</span>
-            <span class="text-vocalia-400 ml-1 currency-symbol">€</span>
-            <span class="text-vocalia-400 ml-1" data-i18n="pricing.pro.period">/mois</span>
-          </div>
-          <ul class="space-y-3 mb-8 text-sm text-vocalia-200">
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>5 lignes téléphoniques</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>2000 min/mois incluses</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>Multi-tenant</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>API complète</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>Support prioritaire</li>
-          </ul>
-          <button class="w-full py-3 px-6 rounded-xl bg-white text-vocalia-600 font-bold transition-all hover:bg-vocalia-100 hover:shadow-xl hover:shadow-vocalia-500/40 hover:-translate-y-0.5" data-i18n="pricing.pro.cta">Contacter les Ventes</button>
-        </div>
-
-        <!-- Enterprise Plan -->
-        <div class="glass-panel p-6 hover:scale-[1.02] transition-transform animate-scale-in delay-400 flex flex-col">
-          <h3 class="text-xl font-bold mb-2" data-i18n="pricing.enterprise.name">Enterprise</h3>
-          <div class="flex items-baseline mb-6">
-            <span class="text-4xl font-bold gradient-text" data-i18n="pricing.enterprise.price">Sur Mesure</span>
-          </div>
-          <ul class="space-y-3 mb-8 text-sm text-vocalia-200 flex-grow">
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>Lignes illimitées</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>Volume illimité</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>SLA garanti</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>Intégrations custom</li>
-            <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2 flex-shrink-0"></i>Account manager dédié</li>
-          </ul>
-          <button class="w-full py-3 px-6 rounded-xl border-2 border-vocalia-500 text-vocalia-400 font-semibold transition-all hover:bg-vocalia-500/10 hover:text-vocalia-300 hover:-translate-y-0.5" data-i18n="pricing.enterprise.cta">Nous Contacter</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- CTA Section -->
   <section class="py-24 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-vocalia-600 to-vocalia-500"></div>
@@ -1185,7 +1101,7 @@
         Client?</h2>
       <p class="text-xl text-white/80 mb-8" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5
         minutes.</p>
-      <a href="#pricing"
+      <a href="/pricing"
         class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg">
         <span data-i18n="cta.button">Démarrer Maintenant</span>
         <i data-lucide="sparkles" class="w-5 h-5 ml-2"></i>
@@ -1269,7 +1185,7 @@
           <h4 class="font-semibold text-white text-base mb-4" data-i18n="footer.product">Produit</h4>
           <ul class="space-y-3 text-sm text-zinc-400">
             <li><a href="#features" class="hover:text-white transition" data-i18n="footer.links.features">Fonctionnalités</a></li>
-            <li><a href="#pricing" class="hover:text-white transition" data-i18n="footer.links.pricing">Tarifs</a></li>
+            <li><a href="/pricing" class="hover:text-white transition" data-i18n="footer.links.pricing">Tarifs</a></li>
             <li><a href="/products/voice-widget" class="hover:text-white transition" data-i18n="footer.links.voice_widget">Voice Widget</a></li>
             <li><a href="/products/voice-telephony" class="hover:text-white transition" data-i18n="footer.links.voice_telephony">Voice Telephony</a></li>
             <li><a href="/integrations" class="hover:text-white transition" data-i18n="footer.links.integrations">Intégrations</a></li>
@@ -1436,25 +1352,9 @@
       });
     }
 
-    // Update prices based on geo
+    // Update prices based on geo (homepage doesn't show prices - see /pricing page)
     function updatePrices(geo) {
-      const symbols = { MAD: 'DH', EUR: '€', USD: '$' };
-      const symbol = symbols[geo.currency] || '€';
-
-      // Update all currency symbols
-      document.querySelectorAll('.currency-symbol, #currencySymbol').forEach(el => {
-        el.textContent = symbol;
-      });
-
-      // Update prices
-      const pricing = geo.pricing;
-      if (pricing) {
-        document.getElementById('starterPrice').textContent = pricing.starter;
-        document.getElementById('proPrice').textContent = pricing.pro;
-
-        const overage = geo.currency === 'MAD' ? `${pricing.overage} DH` : `${symbol}${pricing.overage}`;
-        document.getElementById('telephonyPrice').textContent = overage;
-      }
+      // Pricing details are on the dedicated /pricing page
     }
 
     // Modal Logic

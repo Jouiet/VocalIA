@@ -1,13 +1,13 @@
 # VocalIA - Audit Forensique i18n & Plan d'Action
 
 > **Document:** I18N-AUDIT-ACTIONPLAN.md
-> **Version:** 2.7.0
+> **Version:** 2.8.0
 > **Date:** 30/01/2026
-> **Session:** 249.10 (Factual Cleanup)
+> **Session:** 249.12 (Documentation Sync)
 > **Auteur:** Claude Opus 4.5
 > **Status:** ✅ 100% COMPLETE - i18n + Hreflang + Twitter Cards + **Factual Cleanup**
-> **⚠️ Session 248:** QA Script `translation-quality-check.py` a 481 FAUX POSITIFS (seuil 60% trop strict)
-> **✅ Session 249.10:** Locale files cleaned - 25 false integration references removed
+> **✅ Session 249.11:** QA Script fixed with per-language ratios (0 issues)
+> **✅ Session 249.12:** Documentation synchronized, 24 integrations factual
 
 ---
 
