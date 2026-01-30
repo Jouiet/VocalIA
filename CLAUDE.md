@@ -4,7 +4,7 @@
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
 > SDKs: Python | Node.js | MCP Server v0.5.6 (**143 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **26 native** (~64% e-commerce market) | WordPress Plugin ✅ | Frontend: factuel
+> Integrations: **24 native** (~64% e-commerce market) | WordPress Plugin ✅ | Frontend: factuel
 > E-commerce: WooCommerce, Shopify, Magento, Wix, Squarespace, BigCommerce, PrestaShop
 
 ## Identité

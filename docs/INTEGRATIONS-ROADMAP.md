@@ -50,7 +50,7 @@
 | **MCP Server Version** | v0.5.6 |
 | **Total MCP Tools** | **143** |
 | **Tool Files** | 23 (+ inline HubSpot/Shopify/Klaviyo) |
-| **Integrations natives** | **26** |
+| **Integrations natives** | **24** (customer-facing) |
 | **E-commerce platforms** | **7** (~64% global market) |
 | **Frontend** | 100% factuel |
 | **iPaaS implémentés** | 3 (Zapier, Make, n8n) |
@@ -62,8 +62,8 @@
 
 | Metric | Value |
 |:-------|:------|
-| **Integrations affichées sur site** | 26 |
-| **Integrations implémentées** | **26** (100%) |
+| **Integrations affichées sur site** | 24 |
+| **Integrations implémentées** | **24** (100% customer-facing) |
 | **Gap à combler** | 0 |
 | **Google Workspace (Sheets, Drive, Docs, Gmail)** | ✅ COMPLETE |
 | **E-commerce (7 platforms, ~64% market)** | ✅ COMPLETE - Session 249.11 |
