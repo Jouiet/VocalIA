@@ -154,22 +154,25 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 240.1: i18n Implementation - Phase 5 COMPLETE**
-- ✅ Phase 4: Use Cases (4 pages) - translations + data-i18n
-- ✅ Phase 5: Docs (docs/index.html) - translations + data-i18n
-- ✅ Phase 5: Privacy (privacy.html) - translations + data-i18n
-- ✅ Phase 5: Terms (terms.html) - translations + data-i18n
-- ✅ Phase 5: Integrations (integrations.html) - translations + data-i18n
+**Session 240.2: i18n Sync Complete**
+- ✅ All 5 locales synchronized: 1260 keys each (FR, EN, ES, AR, ARY)
+- ✅ docs/api.html i18n: 30→46 data-i18n attributes
+- ✅ docs_api_page translations: 44 keys × 5 languages
+- ✅ Use cases translations complete (ES, AR, ARY)
+- ✅ Integration brand names synced across locales
 
 **i18n Phases:**
 - ✅ Phase 1: Core pages (index, features, pricing, about, contact)
 - ✅ Phase 2: Products pages (voice-widget, voice-telephony)
 - ✅ Phase 3: Industries pages (5 pages)
 - ✅ Phase 4: Use Cases (4 pages)
-- ✅ Phase 5: Docs & Legal (docs, privacy, terms, integrations)
+- ✅ Phase 5: Docs & Legal (docs/index, docs/api, privacy, terms, integrations)
 - ⏳ Phase 6: Blog (8 pages) - Low priority, UI only
 
-**i18n Coverage:** 24/29 pages (83%) - Blog pages remaining
+**i18n Metrics:**
+- Total keys: **1260** × 5 languages = **6300** translations
+- Pages with i18n.js: **31/31** (100%)
+- Coverage: **25/31 pages** (81%) - Blog + dashboards remaining
 
 ---
 
@@ -185,4 +188,4 @@ open http://localhost:8080?lang=ar
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Màj: 30/01/2026 - Session 240.1 (Phase 5 Complete)*
+*Màj: 30/01/2026 - Session 240.2 (1260 keys × 5 languages)*
