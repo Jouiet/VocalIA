@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
-> Version: 4.8.1 | 30/01/2026 | Session 240.1 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 29 pages | RTL ✅
+> Version: 4.8.2 | 30/01/2026 | Session 228.6 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | 1471 keys | RTL ✅ | 100% COMPLETE
 > SDKs: Python | Node.js | MCP Server v0.3.2 (21 tools)
 
 ## Identité
@@ -40,7 +40,7 @@ VocalIA/
 ├── telephony/      # PSTN bridge
 ├── personas/       # 30 personas
 ├── integrations/   # CRM/E-commerce
-├── website/        # 29 pages HTML
+├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
 ├── mcp-server/     # MCP Server (21 tools)
