@@ -1,10 +1,10 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.4.0 | 30/01/2026 | Session 235 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.5.0 | 30/01/2026 | Session 236 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
-> i18n: ✅ 5 Languages (FR, EN, ES, AR, ARY) | RTL Support ✅ | Icons: X (2026) ✅
+> i18n: ✅ 5 Languages (FR, EN, ES, AR, ARY) | RTL ✅ | 37 pages ✅ | Voice Assistant 5 langs ✅
 
 ## Identité
 
@@ -1943,14 +1943,49 @@ npm run build     # → dist/index.js, dist/index.mjs, dist/index.d.ts ✅
 
 ---
 
-*Màj: 30/01/2026 - Session 234 (SDKs Build Ready)*
+## Session 236 Summary
+
+**Complete i18n Implementation:**
+
+### New Voice Assistant Language Files
+
+| File | Language | Keys | RTL |
+|:-----|:---------|:----:|:---:|
+| `voice-es.json` | Spanish | 143 | No |
+| `voice-ar.json` | Arabic MSA | 143 | Yes |
+| `voice-ary.json` | Darija | 143 | Yes |
+
+### Language Switcher Propagation
+
+| Category | Files Updated |
+|:---------|:-------------:|
+| Core pages | 21 |
+| Blog articles | 7 |
+| **Total** | **28** |
+
+### Geo-Detection Routing
+
+| Region | Language | Currency |
+|:-------|:---------|:---------|
+| Morocco | FR (alt: ARY) | MAD |
+| Francophone + Europe | FR | EUR |
+| Spain | ES | EUR |
+| LATAM | ES | USD |
+| MENA | AR | USD |
+| International | EN | USD |
+
+### Commits Session 236
+
+- `bc661d1` - feat(i18n): Complete 5-language support (+1,776 lines)
+
+---
+
+*Màj: 30/01/2026 - Session 236 (Complete i18n Implementation)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ BUILD READY | Node.js ✅ BUILD READY | MCP v0.3.2 (21 tools)*
-*MCP ↔ Voice API: ✅ Integration Verified (Session 233)*
+*i18n: 5 Languages ✅ | 37 pages ✅ | Voice Assistant 5 langs ✅ | RTL Support ✅*
 *Dashboards: Lucide Icons ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
 *Stats: < 100ms ✅ | 5 langues ✅ | 30 personas ✅ | 99.9% uptime ✅*
-*Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*
-*Integrations: 21 brand SVG logos ✅ | Marquee: Seamless loop ✅*
 *Compliance: WCAG 2.1 AA 100%, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
