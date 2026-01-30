@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.1.0 | 30/01/2026 | Session 249.6 | Health: 100%
+> Version: 6.2.0 | 30/01/2026 | Session 249.7 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
 > SDKs: Python | Node.js | MCP Server v0.5.3 (**114 tools**) | RAG: BM25 SOTA
 > Export: CSV, XLSX, PDF | Email: SMTP (4 templates) | Output: data/exports/

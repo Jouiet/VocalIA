@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.19.0 | **Updated**: 30/01/2026 | **Session**: 249.6
+> **Version**: 3.20.0 | **Updated**: 30/01/2026 | **Session**: 249.7
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
 > **Integrations Check**: 19/20 (95%) | **MCP Tools**: 114 | **All Phases**: ✅ COMPLETE
 
@@ -3701,5 +3701,48 @@ cd mcp-server && npm run build  # ✅ SUCCESS
 
 ---
 
-*Màj: 30/01/2026 - Session 249.6 (Export + Email - 114 tools)*
+### Session 249.7: Audit Factuel - Corrections Incohérences (30/01/2026)
+
+**Goal**: Corriger les incohérences identifiées par audit externe
+
+**Incohérences FACTUELLES corrigées:**
+
+| Problème | Avant | Après | Impact |
+|:---------|:------|:------|:-------|
+| "+50 connecteurs" | FAUX | "20+ intégrations natives" | Factualité ✅ |
+| Salesforce "Natif" | Trompeur | "Enterprise" + "Sur demande" | Honnêteté ✅ |
+| Outlook "Natif" | Trompeur | "Bientôt" | Honnêteté ✅ |
+| Animation Notion | Affiché | **RETIRÉ** | Pas de valeur Voice AI |
+| Animation Mailchimp | Affiché | **RETIRÉ** | Pas de valeur Voice AI |
+
+**Gap stratégique identifié:**
+
+| iPaaS | Valeur Business | Priorité |
+|:------|:----------------|:--------:|
+| **Zapier** | +7000 apps connectables | **P0** |
+| **Make** | Alternative populaire | **P1** |
+
+**Analyse audit:**
+
+- Animation homepage: **18 logos** (après retrait Notion/Mailchimp)
+- Page intégrations: **20 cartes** (badges corrigés)
+- Backend implémenté: **19 intégrations** (114 MCP tools)
+- Intégrations bloquées: 4 (Salesforce, Teams, WhatsApp, Outlook)
+- iPaaS manquants: 2 (Zapier, Make) - **À IMPLÉMENTER P0**
+
+**Fichiers modifiés:**
+
+- `website/index.html`: "+50 connecteurs" → "20+ intégrations natives", Notion/Mailchimp retirés
+- `website/integrations.html`: Badges Salesforce "Enterprise", Outlook "Bientôt"
+- `docs/INTEGRATIONS-ROADMAP.md`: Section iPaaS ajoutée
+
+**Commits:**
+
+- `fix(website): Correct factual inconsistencies identified by audit`
+
+**Statut final**: Website factuel ✅ | Badges corrigés ✅ | iPaaS roadmap P0
+
+---
+
+*Màj: 30/01/2026 - Session 249.7 (Audit factuel - Corrections incohérences)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

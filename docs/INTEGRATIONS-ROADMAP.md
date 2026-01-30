@@ -1,20 +1,42 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 3.0.0 | **Date**: 30/01/2026 | **Session**: 249.5
+> **Version**: 3.1.0 | **Date**: 30/01/2026 | **Session**: 249.7
 > **Methodology**: Bottom-up forensic audit | **Status**: ✅ PHASE 1-4 COMPLETE (95%)
+
+---
+
+## ⚠️ AUDIT SESSION 249.7 - CORRECTIONS FACTUELLES
+
+**Problèmes corrigés ce jour:**
+
+| Incohérence | Avant | Après | Fichier |
+|:------------|:------|:------|:--------|
+| Claim "+50 connecteurs" | FAUX | "20+ intégrations natives" | index.html |
+| Salesforce badge | "Natif ✅" | "Enterprise" | integrations.html |
+| Outlook badge | "Natif ✅" | "Bientôt" | integrations.html |
+| Logos animation Notion | Affiché | **RETIRÉ** (aucune valeur) | index.html |
+| Logos animation Mailchimp | Affiché | **RETIRÉ** (aucune valeur) | index.html |
+
+**Gaps stratégiques identifiés:**
+
+| iPaaS | Valeur | Action Requise |
+|:------|:-------|:---------------|
+| **Zapier** | STRATÉGIQUE MAJEURE | **P0** - À implémenter |
+| **Make** | STRATÉGIQUE | **P1** - À implémenter |
 
 ---
 
 ## ✅ IMPLEMENTATION COMPLETE
 
-**Session 249.5: Toutes les intégrations non-bloquées sont implémentées.**
+**Session 249.6: Export/Email tools ajoutés. 249.7: Corrections factuelles.**
 
 | Metric | Value |
 |:-------|:------|
-| **MCP Server Version** | v0.5.2 |
-| **Total MCP Tools** | **106** |
-| **Integrations implémentées** | **19/20** (95%) |
+| **MCP Server Version** | v0.5.3 |
+| **Total MCP Tools** | **114** |
+| **Integrations implémentées** | **19/23** (83%) |
 | **Integrations bloquées** | 4 (Salesforce, Teams, WhatsApp, Outlook) |
+| **Integrations iPaaS manquantes** | 2 (Zapier, Make) - **P0** |
 | **Phases complètes** | 0, 1, 2, 3, 4 |
 
 ---
@@ -78,6 +100,38 @@ cd mcp-server && npm run build  # ✅ OK
 | 2 | **Microsoft Teams** | Communication | Azure AD tenant required | Azure setup |
 | 3 | **WhatsApp Business** | Communication | Meta Business verification | 2-4 weeks wait |
 | 4 | **Outlook Calendar** | Calendrier | Microsoft Graph + Azure AD | Azure setup |
+
+### 1.3 Intégrations iPaaS - GAP STRATÉGIQUE (P0)
+
+**Pourquoi iPaaS est critique:**
+- Zapier = +7000 apps connectables → "50+ systèmes" devient VRAI
+- Make = Alternative populaire, pricing compétitif
+- **Impact**: Multiplier les intégrations possibles sans dev additionnel
+
+| # | Intégration | Priorité | API | Effort | Impact Business |
+|:-:|:------------|:--------:|:----|:------:|:----------------|
+| 1 | **Zapier** | **P0** | REST Webhooks + Actions | 3-5j | MAJEUR - +7000 apps |
+| 2 | **Make** | **P1** | REST API + Scenarios | 2-4j | ÉLEVÉ - Alt Zapier |
+
+**Approche technique Zapier:**
+```
+VocalIA → Zapier Webhook (trigger)
+         → N'importe quel app dans Zapier
+         → Zapier → VocalIA Webhook (action)
+```
+
+**Tools à implémenter:**
+```typescript
+// mcp-server/src/tools/zapier.ts
+zapier_trigger_webhook     // Déclencher un workflow Zapier
+zapier_list_zaps           // Lister les Zaps actifs
+zapier_get_zap_status      // Status d'un Zap
+
+// mcp-server/src/tools/make.ts
+make_trigger_scenario      // Déclencher un scénario Make
+make_list_scenarios        // Lister les scénarios
+make_get_execution         // Status d'une exécution
+```
 
 ---
 
