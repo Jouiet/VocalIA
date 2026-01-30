@@ -713,8 +713,8 @@
 
         <!-- Introduction -->
         <section id="introduction" class="mb-16">
-          <h1 class="text-4xl font-extrabold mb-4">API <span class="gradient-text">Reference</span></h1>
-          <p class="text-xl text-slate-300 mb-8">
+          <h1 class="text-4xl font-extrabold mb-4"><span data-i18n="docs_api_page.hero_title">API</span> <span class="gradient-text" data-i18n="docs_api_page.hero_title_accent">Reference</span></h1>
+          <p class="text-xl text-slate-300 mb-8" data-i18n="docs_api_page.hero_subtitle">
             Documentation complète de l'API VocalIA pour intégrer Voice Widget et Voice Telephony dans vos applications.
           </p>
 
@@ -724,33 +724,33 @@
                 <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                   <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
                 </div>
-                <h3 class="font-semibold">REST API</h3>
+                <h3 class="font-semibold" data-i18n="docs_api_page.card_rest_title">REST API</h3>
               </div>
-              <p class="text-slate-400 text-sm">Endpoints HTTP pour créer, gérer et monitorer vos appels vocaux.</p>
+              <p class="text-slate-400 text-sm" data-i18n="docs_api_page.card_rest_desc">Endpoints HTTP pour créer, gérer et monitorer vos appels vocaux.</p>
             </div>
             <div class="glass rounded-xl p-6">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
                   <span class="text-lg">⚡</span>
                 </div>
-                <h3 class="font-semibold">WebSockets</h3>
+                <h3 class="font-semibold" data-i18n="docs_api_page.card_ws_title">WebSockets</h3>
               </div>
-              <p class="text-slate-400 text-sm">Connexion temps réel pour audio streaming et événements live.</p>
+              <p class="text-slate-400 text-sm" data-i18n="docs_api_page.card_ws_desc">Connexion temps réel pour audio streaming et événements live.</p>
             </div>
           </div>
         </section>
 
         <!-- Authentication -->
         <section id="authentication" class="mb-16">
-          <h2 class="text-2xl font-bold mb-4">Authentification</h2>
-          <p class="text-slate-300 mb-6">
-            L'API VocalIA utilise des clés API pour l'authentification. Incluez votre clé dans le header <code class="text-vocalia-400 bg-slate-900 px-2 py-1 rounded">Authorization</code> de chaque requête.
+          <h2 class="text-2xl font-bold mb-4" data-i18n="docs_api_page.auth_title">Authentification</h2>
+          <p class="text-slate-300 mb-6" data-i18n="docs_api_page.auth_desc">
+            L'API VocalIA utilise des clés API pour l'authentification. Incluez votre clé dans le header Authorization de chaque requête.
           </p>
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">HTTP Header</span>
-              <button class="text-slate-400 hover:text-white text-sm">Copier</button>
+              <span class="text-slate-400 text-sm" data-i18n="docs_api_page.auth_header">HTTP Header</span>
+              <button class="text-slate-400 hover:text-white text-sm" data-i18n="docs_api_page.auth_copy">Copier</button>
             </div>
             <div class="code-content">
               <pre><span class="token-key">Authorization</span>: Bearer <span class="token-string">voc_sk_live_xxxxxxxxxxxxxxxxxxxxxxxx</span></pre>
@@ -760,24 +760,23 @@
           <div class="glass rounded-xl p-6">
             <h3 class="font-semibold mb-3 flex items-center gap-2">
               <i data-lucide="code" class="w-5 h-5 text-amber-400"></i>
-              Sécurité des clés API
+              <span data-i18n="docs_api_page.auth_security_title">Sécurité des clés API</span>
             </h3>
             <ul class="text-slate-400 text-sm space-y-2">
-              <li>• Ne jamais exposer vos clés côté client (frontend)</li>
-              <li>• Utilisez des variables d'environnement</li>
-              <li>• Régénérez vos clés si compromises</li>
-              <li>• Utilisez des clés de test en développement</li>
+              <li>• <span data-i18n="docs_api_page.auth_security_item1">Ne jamais exposer vos clés côté client (frontend)</span></li>
+              <li>• <span data-i18n="docs_api_page.auth_security_item2">Utilisez des variables d'environnement</span></li>
+              <li>• <span data-i18n="docs_api_page.auth_security_item3">Régénérez vos clés si compromises</span></li>
             </ul>
           </div>
         </section>
 
         <!-- Base URL -->
         <section id="base-url" class="mb-16">
-          <h2 class="text-2xl font-bold mb-4">Base URL</h2>
+          <h2 class="text-2xl font-bold mb-4" data-i18n="docs_api_page.base_url_title">Base URL</h2>
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">Production</span>
+              <span class="text-slate-400 text-sm" data-i18n="docs_api_page.base_url_production">Production</span>
             </div>
             <div class="code-content">
               <pre><span class="token-string">https://api.vocalia.ma/v1</span></pre>
