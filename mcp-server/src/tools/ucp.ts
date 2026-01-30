@@ -1,70 +1,55 @@
 import { z } from 'zod';
-
-const MARKET_RULES: Record<string, any> = {
-    // 1. MAROC
-    MA: { id: 'maroc', lang: 'fr', currency: 'MAD', symbol: 'DH', label: 'Maroc' },
-
-    // 2. EUROPE & MAGHREB (Strict: FR + EUR)
-    DZ: { id: 'maghreb', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Maghreb' },
-    TN: { id: 'maghreb', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Maghreb' },
-    FR: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    BE: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    CH: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    LU: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    DE: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    IT: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    ES: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    PT: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    NL: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-
-    // 3. MENA (Gulf)
-    AE: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    SA: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    QA: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    KW: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    BH: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    OM: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    EG: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    JO: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    LB: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    IQ: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-
-    // Defaults
-    DEFAULT_INTL: { id: 'intl', lang: 'en', currency: 'USD', symbol: '$', label: 'International' }
-};
+import { tenantMiddleware } from '../middleware/tenant.js';
 
 export const ucpTools = {
     ucp_sync_preference: {
         name: 'ucp_sync_preference',
-        description: 'Sync user preferences enforcing Strict Market Rules (Maroc/Europe/International). Returns the enforced profile.',
+        description: 'Sync user preferences enforcing Tenant Market Rules (Maroc/Europe/International). Returns the enforced profile.',
         parameters: {
             countryCode: z.string().describe('ISO Country Code (e.g. MA, FR, US)'),
-            userId: z.string().optional().describe('User ID if available')
+            userId: z.string().optional().describe('User ID if available'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Meta context for tenancy')
         },
-        handler: async ({ countryCode, userId }: { countryCode: string, userId?: string }) => {
+        handler: async (args: any) => {
+            // 1. Resolve Tenant Context
+            const tenant = await tenantMiddleware(args);
+            const config = tenant.config;
+
+            const countryCode = args.countryCode || 'US';
             const code = countryCode.toUpperCase();
-            const config = MARKET_RULES[code] || MARKET_RULES.DEFAULT_INTL;
+
+            // 2. Apply Tenant-Specific Market Rules
+            // If agency_internal, it uses Strict Rules.
+            // If client_demo, it uses its own rules.
+
+            let rule;
+
+            if (config.marketRules.strict) {
+                // Use exact match or default
+                rule = config.marketRules.markets[code] || config.marketRules.default;
+            } else {
+                // Lax rules (default to main market)
+                rule = config.marketRules.default;
+            }
 
             const profile = {
-                userId: userId || 'anonymous',
+                userId: args.userId || 'anonymous',
+                tenantId: tenant.id,
                 country: code,
-                market: config.id,
-                locale: config.lang,
-                currency: config.currency,
-                currencySymbol: config.symbol,
+                market: rule.id,
+                locale: rule.lang,
+                currency: rule.currency,
+                currencySymbol: rule.symbol,
                 enforced: true,
                 timestamp: new Date().toISOString()
             };
-
-            // In a real implementation, this would save to a database.
-            // For now, we return the enforced profile for the Agent context.
 
             return {
                 content: [{
                     type: "text" as const,
                     text: JSON.stringify({
                         status: "success",
-                        message: `Profile synced for ${code}`,
+                        message: `Profile synced for ${code} on tenant ${tenant.name}`,
                         profile
                     }, null, 2)
                 }]
@@ -76,15 +61,17 @@ export const ucpTools = {
         name: 'ucp_get_profile',
         description: 'Get current UCP profile',
         parameters: {
-            userId: z.string()
+            userId: z.string(),
+            _meta: z.object({ tenantId: z.string().optional() }).optional()
         },
-        handler: async ({ userId }: { userId: string }) => {
-            // Mock retrieval
+        handler: async (args: any) => {
+            const tenant = await tenantMiddleware(args);
             return {
                 content: [{
                     type: "text" as const,
                     text: JSON.stringify({
-                        userId,
+                        userId: args.userId,
+                        tenant: tenant.name,
                         status: "not_found",
                         hint: "Use ucp_sync_preference to create a profile first."
                     }, null, 2)
