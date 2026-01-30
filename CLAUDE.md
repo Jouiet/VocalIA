@@ -154,18 +154,27 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 239: i18n Implementation**
-- Phase 3: Industries pages (5 pages)
-- Task: Add translations to all 5 locale files
-- Next: Add data-i18n attributes to HTML
+**Session 239: i18n Implementation** ✅ DONE
+- ✅ Phase 3: Industries pages (5 pages) - translations + data-i18n
 
-**Phases Completed:**
+**i18n Phases:**
 - ✅ Phase 1: Core pages
 - ✅ Phase 2: Products pages
-- 🔄 Phase 3: Industries pages (in progress)
-- ⏳ Phase 4: Use Cases pages
-- ⏳ Phase 5: Docs & Legal pages
-- ⏳ Phase 6: Blog pages
+- ✅ Phase 3: Industries pages
+- ⏳ Phase 4: Use Cases (4 pages)
+- ⏳ Phase 5: Docs & Legal (5 pages)
+- ⏳ Phase 6: Blog (8 pages)
+
+---
+
+## Plan Actionnable (Session 240)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | User: `twine upload` + `npm publish` | **P0** | Requires user credentials |
+| 2 | Deploy API backend (api.vocalia.ma) | P1 | For SDKs/MCP production |
+| 3 | MCP Server npm publish | P2 | After API deploy |
+| 4 | Continue i18n Phase 4-6 | P2 | Use Cases, Docs, Blog |
 
 ---
 
