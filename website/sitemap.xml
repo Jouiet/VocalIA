@@ -157,6 +157,58 @@
         <priority>0.8</priority>
     </url>
 
+    <!-- Industries Index -->
+    <url>
+        <loc>https://vocalia.ma/industries</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Blog Articles -->
+    <url>
+        <loc>https://vocalia.ma/blog/articles/ai-act-europe-voice-ai</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://vocalia.ma/blog/articles/vocalia-lance-support-darija</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://vocalia.ma/blog/articles/integrer-vocalia-shopify</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://vocalia.ma/blog/articles/clinique-amal-rappels-vocaux</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://vocalia.ma/blog/articles/rgpd-voice-ai-guide-2026</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://vocalia.ma/blog/articles/reduire-couts-support-voice-ai</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://vocalia.ma/blog/articles/agence-immo-plus-conversion</loc>
+        <lastmod>2026-01-30</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
     <!-- Dashboard (noindex but in sitemap for crawl budget) -->
     <url>
         <loc>https://vocalia.ma/dashboard/client</loc>

@@ -1,3 +1,7 @@
+# VocalIA robots.txt - AEO Optimized for 2026
+# Allows AI bots (GPTBot, ClaudeBot, etc.) for Answer Engine Optimization
+
+# Default rules for all crawlers
 User-agent: *
 Allow: /
 Allow: /index.html
@@ -6,5 +10,44 @@ Disallow: /dashboard/
 Disallow: /src/
 Disallow: /config/
 Disallow: /api/
+
+# AI Search Bots - ALLOWED for AEO (Answer Engine Optimization)
+# GPT/ChatGPT Search
+User-agent: GPTBot
+Allow: /
+
+# Claude/Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Google Gemini/Bard
+User-agent: Google-Extended
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# Meta AI
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Common Crawl (for AI training datasets)
+User-agent: CCBot
+Allow: /
 
 Sitemap: https://vocalia.ma/sitemap.xml

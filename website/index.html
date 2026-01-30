@@ -9,6 +9,13 @@
     content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées.">
   <link rel="canonical" href="https://vocalia.ma/" />
 
+  <!-- Hreflang for i18n SEO (5 languages) -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/?lang=en" />
+  <link rel="alternate" hreflang="es" href="https://vocalia.ma/?lang=es" />
+  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/?lang=ar" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/" />
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://vocalia.ma/" />
@@ -27,7 +34,7 @@
     content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées." />
   <meta property="twitter:image" content="https://vocalia.ma/public/images/og-image.webp" />
 
-  <!-- Schema.org JSON-LD (AEO Optimized) -->
+  <!-- Schema.org JSON-LD (AEO Optimized with Speakable) -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -57,6 +64,15 @@
             "areaServed": ["MA", "FR", "US"],
             "availableLanguage": ["French", "English", "Arabic"]
           }
+        },
+        {
+          "@type": "WebPage",
+          "name": "VocalIA - Agents Vocaux IA pour Entreprises",
+          "speakable": {
+            "@type": "SpeakableSpecification",
+            "cssSelector": [".hero-title", ".hero-subtitle", ".value-proposition"]
+          },
+          "description": "Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web gratuit et téléphonie PSTN à 0.06€/min. Support 5 langues: FR, EN, ES, AR, Darija."
         }
       ]
     }

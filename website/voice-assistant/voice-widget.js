@@ -21,7 +21,8 @@
 
     // Paths
     LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
-    BOOKING_API: 'https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFKZXGFUTS9c3SKrmRZdJEg0tcWnvA-P2Jl/exec',
+    // SECURITY: API endpoint - configure via window.VOCALIA_BOOKING_API or use default
+    BOOKING_API: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking',
 
     // Branding
     primaryColor: '#4FBAF1',

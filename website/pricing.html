@@ -9,6 +9,13 @@
     content="Plans tarifaires VocalIA: Widget gratuit, Starter à 99€/mois, Pro à 299€/mois, Enterprise sur mesure. Téléphonie à ~0.06€/min.">
   <link rel="canonical" href="https://vocalia.ma/pricing" />
 
+  <!-- Hreflang for i18n SEO (5 languages) -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/pricing?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/pricing?lang=en" />
+  <link rel="alternate" hreflang="es" href="https://vocalia.ma/pricing?lang=es" />
+  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/pricing?lang=ar" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/pricing" />
+
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://vocalia.ma/pricing" />
@@ -17,12 +24,20 @@
     content="Plans tarifaires VocalIA: Widget gratuit, Pro à 299€/mois, Enterprise sur mesure." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-pricing.webp" />
 
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://vocalia.ma/pricing" />
+  <meta name="twitter:title" content="Tarifs - VocalIA | Agents Vocaux IA" />
+  <meta name="twitter:description" content="Agents Vocaux IA pour Entreprises" />
+  <meta name="twitter:image" content="https://vocalia.ma/public/images/og-pricing.webp" />
+
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#5E6AD2">
 
-  <!-- Schema.org -->
+  <!-- Schema.org WebPage -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -37,6 +52,56 @@
           {"@type": "ListItem", "position": 2, "name": "Tarifs", "item": "https://vocalia.ma/pricing"}
         ]
       }
+    }
+  </script>
+
+  <!-- Schema.org FAQPage - AEO Optimized -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Comment fonctionne la facturation téléphonie?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vous payez un forfait mensuel (Starter: 100 min, Pro: 500 min). Les minutes supplémentaires sont facturées à 0.06€/min. La facturation est mensuelle avec reporting détaillé."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Puis-je changer de plan à tout moment?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, vous pouvez upgrader ou downgrader votre plan à tout moment. Le changement prend effet immédiatement et la facturation est ajustée au prorata."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Le Voice Widget est-il vraiment gratuit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Oui, le Voice Widget utilise l'API Web Speech native du navigateur. Il n'y a aucun coût API car tout le traitement vocal se fait localement. C'est gratuit pour toujours."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Qu'est-ce que le support Darija?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Le Darija est l'arabe marocain parlé. VocalIA est la seule plateforme Voice AI à supporter nativement le Darija grâce au modèle Atlas-Chat-9B, parfait pour le marché marocain."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Comment fonctionne l'option self-hosted?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "L'option Enterprise self-hosted vous permet de déployer VocalIA sur votre propre infrastructure (AWS, GCP, Azure, on-premise). Vous gardez le contrôle total des données. Support dédié inclus."
+          }
+        }
+      ]
     }
   </script>
 
