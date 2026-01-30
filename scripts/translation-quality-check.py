@@ -11,7 +11,7 @@ from pathlib import Path
 # Use absolute path for reliability
 PROJECT_ROOT = Path("/Users/mac/Desktop/VocalIA")
 LOCALES_DIR = PROJECT_ROOT / "website/src/locales"
-MIN_LENGTH_RATIO = 0.60  # 60% minimum de la longueur FR
+MIN_LENGTH_RATIO = 0.40  # 40% minimum (reduced from 60% - Session 249 P1 fix)
 
 def get_all_keys(data, parent_key=''):
     """Recursively get all keys from nested dictionary."""
