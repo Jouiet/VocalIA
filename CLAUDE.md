@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 4.8.0 | 30/01/2026 | Session 239 | Health: 100%
+> Version: 4.8.1 | 30/01/2026 | Session 240.1 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 29 pages | RTL ✅
 > SDKs: Python | Node.js | MCP Server v0.3.2 (21 tools)
 
@@ -154,29 +154,31 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 239: i18n Implementation** ✅ DONE
-- ✅ Phase 3: Industries pages (5 pages) - translations + data-i18n
+**Session 240.1: i18n Implementation Continued**
+- ✅ Phase 4: Use Cases (4 pages) - translations + data-i18n
+- ✅ Phase 5: Docs page (docs/index.html) - translations + data-i18n
+- ✅ Phase 5: Legal translations (privacy_page, terms_page) added to locales
 
 **i18n Phases:**
 - ✅ Phase 1: Core pages
 - ✅ Phase 2: Products pages
 - ✅ Phase 3: Industries pages
-- ⏳ Phase 4: Use Cases (4 pages)
-- ⏳ Phase 5: Docs & Legal (5 pages)
-- ⏳ Phase 6: Blog (8 pages)
+- ✅ Phase 4: Use Cases (4 pages)
+- ⏳ Phase 5: Privacy/Terms HTML data-i18n (translations done)
+- ⏳ Phase 6: Blog (8 pages) - Low priority
 
 ---
 
-## Plan Actionnable (Session 240)
+## Plan Actionnable (Session 241)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | User: `twine upload` + `npm publish` | **P0** | Requires user credentials |
-| 2 | Deploy API backend (api.vocalia.ma) | P1 | For SDKs/MCP production |
-| 3 | MCP Server npm publish | P2 | After API deploy |
-| 4 | Continue i18n Phase 4-6 | P2 | Use Cases, Docs, Blog |
+| 1 | Add data-i18n to privacy.html, terms.html | P1 | Translations ready |
+| 2 | User: SDK publish (twine, npm) | P1 | Requires user creds |
+| 3 | Deploy API backend (api.vocalia.ma) | P1 | For SDKs/MCP |
+| 4 | Phase 6: Blog i18n | P3 | UI only (articles FR) |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Màj: 30/01/2026 - Session 239*
+*Màj: 30/01/2026 - Session 240.1*
