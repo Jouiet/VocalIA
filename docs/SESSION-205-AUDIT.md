@@ -103,7 +103,7 @@ B) Supprimer pour réduire dette technique
 KB actuel: ~/knowledge_base/ (HOME)
            ↑ Fonctionne mais hors du projet
 
-TODO Session 206: Déplacer vers data/knowledge-base/
+✅ COMPLÉTÉ Session 206: Déplacé vers data/knowledge-base/
 ```
 
 ---

@@ -795,7 +795,7 @@ function getLeadStatus(score) {
 function processQualificationData(session, message, language = 'fr') {
   const extracted = session.extractedData;
   const lower = message.toLowerCase();
-  const lang = LANG_DATA[language] || LANG_DATA['fr'];
+  const lang = LANG_DATA[language] || LANG_DATA['fr'] || { topics: {}, industries: {}, defaults: {} };
 
   // Extract new data from message
   const budget = extractBudget(message);
@@ -1039,16 +1039,17 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
   const basePrompt = getSystemPromptForLanguage(language);
   const fullSystemPrompt = `${basePrompt}\n\nRELEVANT_SYSTEMS (RLS Isolated):\n${ragContext}${graphContext}${toolContext}${crmContext}\n\nTENANT_ID: ${tenantId}`;
 
-  // Fallback order: Grok → [Atlas-Chat for Darija] → OpenAI → Gemini → Anthropic → Local
+  // Fallback order: Grok → [Atlas-Chat for Darija] → Gemini → Anthropic → Local
   // Session 170: Language-aware chain - Atlas-Chat-9B prioritized for Darija (ary)
-  const baseOrder = ['grok', 'openai', 'gemini', 'anthropic'];
+  // Session 233: Removed OpenAI (not in PROVIDERS)
+  const baseOrder = ['grok', 'gemini', 'anthropic'];
   const providerOrder = language === 'ary' && PROVIDERS.atlasChat?.enabled
-    ? ['grok', 'atlasChat', 'openai', 'gemini', 'anthropic']
+    ? ['grok', 'atlasChat', 'gemini', 'anthropic']
     : baseOrder;
 
   for (const providerKey of providerOrder) {
     const provider = PROVIDERS[providerKey];
-    if (!provider.enabled) {
+    if (!provider || !provider.enabled) {
       errors.push({ provider: provider.name, error: 'Not configured' });
       continue;
     }
