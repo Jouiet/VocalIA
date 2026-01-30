@@ -630,3 +630,87 @@ User → VocalIA Agent (MCP: tools internes)
 *Mise à jour: 30/01/2026 - Session 242 (A2A/AP2/A2UI gap analysis)*
 *SOTA: MCP 78% | A2A 0% | AP2 0% | A2UI 0%*
 *Maintenu par: VocalIA Engineering*
+
+---
+
+## Prompt Optimization with Feedback (Session 244.3)
+
+### Context: RLHF n'est PAS applicable pour VocalIA
+
+**Raison:** VocalIA utilise des APIs externes (Grok, Gemini, Claude) - pas de modèle propriétaire.
+
+**Alternative:** Utiliser les principes RLHF pour optimiser les PROMPTS (pas les weights).
+
+### Primitives Existantes dans VocalIA
+
+| Composant | Location | Usage |
+|:----------|:---------|:------|
+| `qualify_lead` | telephony/voice-telephony-bridge.cjs:624 | Reward signal (BANT score) |
+| `track_conversion_event` | telephony/voice-telephony-bridge.cjs:775 | Outcome tracking |
+| `PERSONAS` (30) | personas/voice-persona-injector.cjs:98 | A/B test candidates |
+| `industry` param | telephony:649 | Segmentation |
+| `_v2` versioning | persona IDs | Prompt iteration |
+
+### Architecture Recommandée
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    CALL HAPPENS                         │
+│  Persona X + User Query → LLM API → Response            │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│                 OUTCOME TRACKING                        │
+│  • BANT score (qualify_lead result)                     │
+│  • Conversion (booking made? transfer completed?)       │
+│  • Call duration                                        │
+│  • User sentiment (if detectable)                       │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│              PERSONA PERFORMANCE TABLE                  │
+│  persona_id | industry | calls | conversions | avg_bant │
+│  dental_v2  | health   | 150   | 45 (30%)    | 72       │
+│  property_v2| realestate| 200  | 80 (40%)    | 78       │
+└─────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│            PROMPT IMPROVEMENT LOOP                      │
+│  1. Identify low-performing personas                    │
+│  2. Analyze winning patterns                            │
+│  3. Update prompt templates                             │
+│  4. Deploy new version (v2 → v3)                        │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Ce que VocalIA DOIT faire
+
+1. **Tracker outcomes par persona** (qualify_lead, track_conversion_event existent)
+2. **Comparer performances personas par industrie**
+3. **Itérer prompts basé sur données réelles**
+4. **Versionner personas** (déjà implémenté: `_v2` dans IDs)
+
+### Différence RLHF vs Prompt Optimization
+
+| Aspect | RLHF | VocalIA Prompt Optimization |
+|:-------|:-----|:----------------------------|
+| **Ce qui change** | Model weights (θ) | Prompt text |
+| **Compute** | GPUs for training | CPU (text editing) |
+| **Feedback loop** | RM → PPO → weights | Metrics → Human → prompts |
+| **Scale needed** | 100K+ examples | 100s of calls |
+| **Cost** | $100K+ | ~$0 (time only) |
+
+### Plan Actionnable
+
+| Task | Priority | Effort | Status |
+|:-----|:--------:|:------:|:------:|
+| Persona performance dashboard | P2 | 8h | ❌ |
+| A/B test framework personas | P2 | 16h | ❌ |
+| Prompt version comparison | P2 | 8h | ❌ |
+
+---
+
+*Màj: 30/01/2026 - Session 244.3 (Prompt Optimization avec RLHF principles)*
