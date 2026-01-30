@@ -1,9 +1,10 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.2 | 30/01/2026 | Session 229.2 | Backend: 99/100 | Frontend: 100% | Health: 100%
+> Version: 4.3.3 | 30/01/2026 | Session 230 | Backend: 99/100 | Frontend: 100% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python (pip install vocalia) | ✅ Node.js (npm install vocalia) | ✅ MCP Server
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
+> Stats Counters: ✅ Animated (< 100ms, 5 langues, 30 personas, 99.9% uptime)
 
 ## Identité
 
@@ -1730,7 +1731,46 @@ All backlog items now resolved:
 - ✅ Voice UI Patterns (S210)
 - ✅ WCAG AA+ (S220)
 
-### Plan Actionnable (Session 230)
+---
+
+## Session 230 Summary (30/01/2026)
+
+**Stats Counters Bug Fix + Cleanup:**
+
+### Bug Corrigé: Compteurs Négatifs
+
+| Problème | Cause Racine | Solution |
+|:---------|:-------------|:---------|
+| Compteurs affichant -60ms, -3, -18, -59.7% | Race condition avec performance.now() | Réécriture complète avec Date.now() |
+| Animation ne démarrant pas pour éléments visibles | IntersectionObserver ne fire pas si déjà visible | Check getBoundingClientRect() initial |
+
+### Code Réécrit: initCounters()
+
+| Amélioration | Détail |
+|:-------------|:-------|
+| Timing robuste | `Date.now()` au lieu de `performance.now()` |
+| Valeurs non-négatives | `Math.max(0, value)` garantit positif |
+| Anti-double-run | Flag `data-animating` prévient doublons |
+| Performance | Un seul IntersectionObserver pour tous les compteurs |
+
+### Cleanup
+
+| Item | Action |
+|:-----|:-------|
+| components.js | Référence supprimée (non utilisé) |
+| .htaccess | components.js ajouté à whitelist |
+| DESIGN-BRANDING-SYSTEM.md | Tailwind opacity marqué RESOLVED |
+
+### Vérification Playwright
+
+| Compteur | Avant | Après |
+|:---------|:------|:------|
+| Latence | `-60ms` ❌ | `< 100ms` ✅ |
+| Langues | `-3` ❌ | `5` ✅ |
+| Personas | `-18` ❌ | `30` ✅ |
+| Uptime | `-59.7%` ❌ | `99.9%` ✅ |
+
+### Plan Actionnable (Session 231)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
@@ -1740,13 +1780,13 @@ All backlog items now resolved:
 
 ---
 
-*Màj: 30/01/2026 - Session 229.2 (Light Mode Complete - All Backlog Resolved)*
+*Màj: 30/01/2026 - Session 230 (Stats Counters Bug Fix)*
 *Status: Backend 99/100 ✅ | Frontend 100% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ | Node.js ✅ | MCP Server ✅ (11 tools)*
 *Dashboards: Lucide Icons ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
+*Stats: < 100ms ✅ | 5 langues ✅ | 30 personas ✅ | 99.9% uptime ✅*
 *Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*
 *Integrations: 21 brand SVG logos ✅ | Marquee: Seamless loop ✅*
-*Tailwind: Safelist utilities ✅ | CSS: 129KB sovereign ✅*
 *Compliance: WCAG 2.1 AA 100%, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
