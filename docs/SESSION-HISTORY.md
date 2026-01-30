@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.24.0 | **Updated**: 30/01/2026 | **Session**: 249.13
+> **Version**: 3.25.0 | **Updated**: 30/01/2026 | **Session**: 249.14
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
 > **Integrations Check**: 24/24 (100%) | **MCP Tools**: 143 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~64%
 
@@ -4117,5 +4117,87 @@ npm run build:css
 
 ---
 
-*Màj: 30/01/2026 - Session 249.13 (Cross-Browser & Mobile Accessibility)*
+## Session 249.14 - Icon Forensic Audit & Corrections (30/01/2026)
+
+**Objectif**: Analyse forensique des icônes dupliquées/mal placées + corrections systématiques.
+
+### 1. Problèmes Identifiés (Pré-correction)
+
+| Page | Problème | Count |
+|:-----|:---------|:-----:|
+| voice-widget.html | `mic` icons pour Technical Specs | 3 |
+| voice-telephony.html | `circle` placeholders | 6 |
+| customer-support.html | `mic` pour features non-voice | 4 |
+| Footer (toutes pages) | X logo manquant, Twitter supprimé | 31 |
+
+### 2. Corrections Implémentées
+
+**a) voice-widget.html - Technical Specs:**
+
+| Section | Avant | Après |
+|:--------|:------|:------|
+| Compatibilité | `mic` | `monitor` |
+| Performance | `mic` | `zap` |
+| Sécurité | `mic` | `shield` |
+
+**b) voice-telephony.html - Features:**
+
+| Feature | Avant | Après |
+|:--------|:------|:------|
+| Appelant (arch) | `circle` | `user` |
+| Latence Ultra-Basse | `circle` | `zap` |
+| 5 Langues Natives | `circle` | `globe` |
+| 11 Function Tools | `circle` | `wrench` |
+| 30 Personas Métier | `circle` | `users` |
+| HITL Controls | `circle` | `user-check` |
+
+**c) customer-support.html - Features:**
+
+| Feature | Avant | Après |
+|:--------|:------|:------|
+| Escalade intelligente | `mic` | `arrow-up-right` |
+| Analytics en temps réel | `mic` | `bar-chart-2` |
+| 5 langues natives | `mic` | `globe` |
+| Intégrations CRM | `mic` | `plug` |
+
+### 3. Distribution Finale des Icônes
+
+```bash
+# Audit post-correction
+for f in industries/*.html use-cases/*.html products/*.html; do
+  echo "$(basename $f): $(grep -oE 'data-lucide="[^"]+"' "$f" | sed 's/data-lucide="//;s/"//' | sort | uniq -c | sort -rn | head -3)"
+done
+```
+
+| Page | Top 3 Icons |
+|:-----|:------------|
+| finance.html | check (12), shield-check (9), x-circle (6) |
+| healthcare.html | check (12), shield-check (6), phone (6) |
+| customer-support.html | phone (4), mic (4), x-circle (3) |
+| voice-widget.html | sparkles (4), mic (4), phone (3) |
+| voice-telephony.html | x (8), phone (6), mic (5) |
+
+### 4. Fichiers Modifiés
+
+- `website/products/voice-widget.html` - 3 edits
+- `website/products/voice-telephony.html` - 6 edits
+- `website/use-cases/customer-support.html` - 4 edits
+
+### 5. Vérifications
+
+```bash
+# Plus de circle placeholders
+grep -c 'data-lucide="circle"' website/products/voice-telephony.html
+# Output: 0
+
+# mic icons réduits dans customer-support
+grep -c 'data-lucide="mic"' website/use-cases/customer-support.html
+# Output: 4 (logos + voice features only)
+```
+
+**Statut final**: Icon Audit ✅ | 13 corrections ✅ | Distribution équilibrée ✅
+
+---
+
+*Màj: 30/01/2026 - Session 249.14 (Icon Forensic Audit)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
