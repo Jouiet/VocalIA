@@ -588,11 +588,11 @@
         <!-- Breadcrumb -->
         <nav class="mb-8">
           <ol class="flex items-center space-x-2 text-sm text-slate-400">
-            <li><a href="/" class="hover:text-white">Accueil</a></li>
+            <li><a href="/" class="hover:text-white" data-i18n="usecases_ecommerce_page.breadcrumb_home">Accueil</a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/use-cases/e-commerce" class="hover:text-white">Cas d'usage</a></li>
             <li><span class="mx-2">/</span></li>
-            <li class="text-vocalia-400">E-commerce</li>
+            <li class="text-vocalia-400" data-i18n="usecases_ecommerce_page.breadcrumb_current">E-commerce</li>
           </ol>
         </nav>
 
@@ -600,7 +600,7 @@
           <div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
               <i data-lucide="shopping-bag" class="w-4 h-4 mr-2"></i>
-              E-commerce & Retail
+              <span data-i18n="usecases_ecommerce_page.badge">E-commerce & Retail</span>
             </span>
             <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
               <span class="gradient-text" data-i18n="usecases_ecommerce_page.hero_title">Voice AI pour</span><br>
@@ -610,10 +610,10 @@
               Automatisez le support client, suivi de commandes et retours avec des agents vocaux IA disponibles 24/7.
             </p>
             <div class="flex flex-wrap gap-4">
-              <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105">
+              <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105" data-i18n="usecases_ecommerce_page.cta_demo">
                 Demander une démo
               </a>
-              <a href="/docs" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors">
+              <a href="/docs" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors" data-i18n="usecases_ecommerce_page.cta_docs">
                 Documentation API
               </a>
             </div>
@@ -644,8 +644,8 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Les défis du support e-commerce</h2>
-          <p class="text-slate-400 max-w-2xl mx-auto">Les équipes support sont submergées par des questions répétitives</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_ecommerce_page.problems_title">Les défis du support e-commerce</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="usecases_ecommerce_page.problems_subtitle">Les équipes support sont submergées par des questions répétitives</p>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
           <div class="problem-card rounded-xl p-6">
@@ -654,8 +654,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Attente excessive</h3>
-            <p class="text-slate-400">Les clients attendent en moyenne 12 heures pour une réponse email, causant frustration et abandon de panier.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.problem_wait_title">Attente excessive</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.problem_wait_desc">Les clients attendent en moyenne 12 heures pour une réponse email, causant frustration et abandon de panier.</p>
           </div>
           <div class="problem-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mb-4">
@@ -663,8 +663,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Coûts RH élevés</h3>
-            <p class="text-slate-400">Recruter et former des agents support multilingues coûte cher, surtout pour couvrir les pics saisonniers.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.problem_costs_title">Coûts RH élevés</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.problem_costs_desc">Recruter et former des agents support multilingues coûte cher, surtout pour couvrir les pics saisonniers.</p>
           </div>
           <div class="problem-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mb-4">
@@ -672,8 +672,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Questions répétitives</h3>
-            <p class="text-slate-400">80% des demandes concernent le suivi de commande, retours et disponibilité stock - automatisables.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.problem_repetitive_title">Questions répétitives</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.problem_repetitive_desc">80% des demandes concernent le suivi de commande, retours et disponibilité stock - automatisables.</p>
           </div>
         </div>
       </div>
@@ -683,8 +683,8 @@
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">La solution VocalIA</h2>
-          <p class="text-slate-400 max-w-2xl mx-auto">Un assistant vocal intelligent qui gère automatiquement les demandes courantes</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_ecommerce_page.solution_title">La solution VocalIA</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="usecases_ecommerce_page.solution_subtitle">Un assistant vocal intelligent qui gère automatiquement les demandes courantes</p>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="solution-card rounded-xl p-6">
@@ -693,8 +693,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Suivi de commande</h3>
-            <p class="text-slate-400">Connexion directe à Shopify/WooCommerce pour donner le statut en temps réel.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.solution_tracking_title">Suivi de commande</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.solution_tracking_desc">Connexion directe à Shopify/WooCommerce pour donner le statut en temps réel.</p>
           </div>
           <div class="solution-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
@@ -702,8 +702,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Gestion des retours</h3>
-            <p class="text-slate-400">Initiation automatique des procédures de retour et remboursement.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.solution_returns_title">Gestion des retours</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.solution_returns_desc">Initiation automatique des procédures de retour et remboursement.</p>
           </div>
           <div class="solution-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
@@ -711,15 +711,15 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Stock & disponibilité</h3>
-            <p class="text-slate-400">Vérification instantanée des stocks et alternatives produits.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.solution_stock_title">Stock & disponibilité</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.solution_stock_desc">Vérification instantanée des stocks et alternatives produits.</p>
           </div>
           <div class="solution-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="phone" class="w-6 h-6 text-emerald-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Escalade intelligente</h3>
-            <p class="text-slate-400">Transfert automatique vers un agent humain pour les cas complexes.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.solution_escalation_title">Escalade intelligente</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.solution_escalation_desc">Transfert automatique vers un agent humain pour les cas complexes.</p>
           </div>
           <div class="solution-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
@@ -727,8 +727,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Multilingue natif</h3>
-            <p class="text-slate-400">Support en FR, EN, ES, AR et Darija pour servir tous vos marchés.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.solution_multilingual_title">Multilingue natif</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.solution_multilingual_desc">Support en FR, EN, ES, AR et Darija pour servir tous vos marchés.</p>
           </div>
           <div class="solution-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
@@ -736,8 +736,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Analytics détaillés</h3>
-            <p class="text-slate-400">Dashboard temps réel des conversations, satisfaction et tendances.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_ecommerce_page.solution_analytics_title">Analytics détaillés</h3>
+            <p class="text-slate-400" data-i18n="usecases_ecommerce_page.solution_analytics_desc">Dashboard temps réel des conversations, satisfaction et tendances.</p>
           </div>
         </div>
       </div>
@@ -747,8 +747,8 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Intégrations e-commerce</h2>
-          <p class="text-slate-400">Connectez VocalIA à votre stack en quelques clics</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_ecommerce_page.integrations_title">Intégrations e-commerce</h2>
+          <p class="text-slate-400" data-i18n="usecases_ecommerce_page.integrations_subtitle">Connectez VocalIA à votre stack en quelques clics</p>
         </div>
         <div class="flex flex-wrap justify-center gap-8 items-center">
           <div class="glass rounded-xl px-8 py-4 text-center">
@@ -776,7 +776,7 @@
         <div class="glass rounded-2xl p-8 md:p-12">
           <div class="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 class="text-3xl font-bold mb-6">Calculez votre ROI</h2>
+              <h2 class="text-3xl font-bold mb-6" data-i18n="usecases_ecommerce_page.roi_title">Calculez votre ROI</h2>
               <p class="text-slate-300 mb-6">
                 En moyenne, nos clients e-commerce économisent <span class="text-vocalia-400 font-bold">15 000€/mois</span>
                 en automatisant 70% de leurs demandes support.
@@ -829,15 +829,15 @@
     <!-- CTA Section -->
     <section class="py-16">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold mb-6">Prêt à automatiser votre support e-commerce?</h2>
-        <p class="text-xl text-slate-300 mb-8">
+        <h2 class="text-3xl font-bold mb-6" data-i18n="usecases_ecommerce_page.cta_title">Prêt à automatiser votre support e-commerce?</h2>
+        <p class="text-xl text-slate-300 mb-8" data-i18n="usecases_ecommerce_page.cta_subtitle">
           Déployez VocalIA en moins de 24h et commencez à économiser dès le premier jour.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105">
+          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105" data-i18n="usecases_ecommerce_page.cta_primary">
             Demander une démo gratuite
           </a>
-          <a href="/pricing" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors">
+          <a href="/pricing" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors" data-i18n="usecases_ecommerce_page.cta_secondary">
             Voir les tarifs
           </a>
         </div>

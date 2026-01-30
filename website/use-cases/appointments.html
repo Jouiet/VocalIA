@@ -588,11 +588,11 @@
         <!-- Breadcrumb -->
         <nav class="mb-8">
           <ol class="flex items-center space-x-2 text-sm text-slate-400">
-            <li><a href="/" class="hover:text-white">Accueil</a></li>
+            <li><a href="/" class="hover:text-white" data-i18n="usecases_appointments_page.breadcrumb_home">Accueil</a></li>
             <li><span class="mx-2">/</span></li>
-            <li><a href="/use-cases/e-commerce" class="hover:text-white">Cas d'usage</a></li>
+            <li><a href="/use-cases/e-commerce" class="hover:text-white" data-i18n="usecases_appointments_page.breadcrumb_usecases">Cas d'usage</a></li>
             <li><span class="mx-2">/</span></li>
-            <li class="text-vocalia-400">Prise de RDV</li>
+            <li class="text-vocalia-400" data-i18n="usecases_appointments_page.breadcrumb_current">Prise de RDV</li>
           </ol>
         </nav>
 
@@ -600,7 +600,7 @@
           <div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
               <i data-lucide="calendar" class="w-4 h-4 mr-2"></i>
-              Gestion de RDV
+              <span data-i18n="usecases_appointments_page.badge">Gestion de RDV</span>
             </span>
             <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
               <span class="gradient-text" data-i18n="usecases_appointments_page.hero_title">Voice AI pour</span><br>
@@ -610,10 +610,10 @@
               Automatisez la planification, les rappels et la reprogrammation des rendez-vous avec des agents vocaux IA.
             </p>
             <div class="flex flex-wrap gap-4">
-              <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105">
+              <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105" data-i18n="usecases_appointments_page.cta_demo">
                 Demander une démo
               </a>
-              <a href="/products/voice-telephony" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors">
+              <a href="/products/voice-telephony" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors" data-i18n="usecases_appointments_page.cta_product">
                 Voice Telephony
               </a>
             </div>
@@ -644,37 +644,37 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Secteurs qui nous font confiance</h2>
-          <p class="text-slate-400 max-w-2xl mx-auto">VocalIA s'adapte aux spécificités de chaque industrie</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_appointments_page.industries_title">Secteurs qui nous font confiance</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="usecases_appointments_page.industries_subtitle">VocalIA s'adapte aux spécificités de chaque industrie</p>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="industry-card rounded-xl p-6 text-center">
             <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="heart-pulse" class="w-8 h-8 text-red-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Santé</h3>
-            <p class="text-slate-400 text-sm">Cabinets médicaux, dentistes, cliniques. Gestion des urgences et rappels de suivi.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.industry_health_title">Santé</h3>
+            <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.industry_health_desc">Cabinets médicaux, dentistes, cliniques. Gestion des urgences et rappels de suivi.</p>
           </div>
           <div class="industry-card rounded-xl p-6 text-center">
             <div class="w-16 h-16 rounded-full bg-blue-500/20 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="building-2" class="w-8 h-8 text-blue-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Immobilier</h3>
-            <p class="text-slate-400 text-sm">Agences, promoteurs. Visites, estimations, signatures chez notaire.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.industry_realestate_title">Immobilier</h3>
+            <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.industry_realestate_desc">Agences, promoteurs. Visites, estimations, signatures chez notaire.</p>
           </div>
           <div class="industry-card rounded-xl p-6 text-center">
             <div class="w-16 h-16 rounded-full bg-amber-500/20 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="sparkles" class="w-8 h-8 text-amber-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Services financiers</h3>
-            <p class="text-slate-400 text-sm">Banques, assurances, conseillers. RDV conseil et signature contrats.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.industry_finance_title">Services financiers</h3>
+            <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.industry_finance_desc">Banques, assurances, conseillers. RDV conseil et signature contrats.</p>
           </div>
           <div class="industry-card rounded-xl p-6 text-center">
             <div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="sparkles" class="w-8 h-8 text-emerald-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Beauté & Bien-être</h3>
-            <p class="text-slate-400 text-sm">Salons, spas, coaches. Réservations multi-services et praticiens.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.industry_beauty_title">Beauté & Bien-être</h3>
+            <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.industry_beauty_desc">Salons, spas, coaches. Réservations multi-services et praticiens.</p>
           </div>
         </div>
       </div>
@@ -684,16 +684,16 @@
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Fonctionnalités clés</h2>
-          <p class="text-slate-400 max-w-2xl mx-auto">Tout ce dont vous avez besoin pour automatiser votre agenda</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_appointments_page.features_title">Fonctionnalités clés</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="usecases_appointments_page.features_subtitle">Tout ce dont vous avez besoin pour automatiser votre agenda</p>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="calendar" class="w-6 h-6 text-emerald-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Sync calendrier temps réel</h3>
-            <p class="text-slate-400">Google Calendar, Outlook, Calendly, Cal.com. Disponibilités toujours à jour.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.feature_sync_title">Sync calendrier temps réel</h3>
+            <p class="text-slate-400" data-i18n="usecases_appointments_page.feature_sync_desc">Google Calendar, Outlook, Calendly, Cal.com. Disponibilités toujours à jour.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
@@ -701,8 +701,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Rappels automatiques</h3>
-            <p class="text-slate-400">SMS et appel vocal 24h et 1h avant. Réduction drastique des no-shows.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.feature_reminders_title">Rappels automatiques</h3>
+            <p class="text-slate-400" data-i18n="usecases_appointments_page.feature_reminders_desc">SMS et appel vocal 24h et 1h avant. Réduction drastique des no-shows.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
@@ -710,8 +710,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Report et annulation</h3>
-            <p class="text-slate-400">Le client peut reporter ou annuler par simple appel. Créneau libéré automatiquement.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.feature_reschedule_title">Report et annulation</h3>
+            <p class="text-slate-400" data-i18n="usecases_appointments_page.feature_reschedule_desc">Le client peut reporter ou annuler par simple appel. Créneau libéré automatiquement.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
@@ -719,22 +719,22 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Multi-praticiens</h3>
-            <p class="text-slate-400">Gestion des agendas de plusieurs professionnels. Allocation intelligente selon compétences.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.feature_multipractitioner_title">Multi-praticiens</h3>
+            <p class="text-slate-400" data-i18n="usecases_appointments_page.feature_multipractitioner_desc">Gestion des agendas de plusieurs professionnels. Allocation intelligente selon compétences.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="shield-check" class="w-6 h-6 text-emerald-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Pré-qualification</h3>
-            <p class="text-slate-400">Questions de screening avant réservation. Collecte d'infos essentielles pour préparer le RDV.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.feature_prequalification_title">Pré-qualification</h3>
+            <p class="text-slate-400" data-i18n="usecases_appointments_page.feature_prequalification_desc">Questions de screening avant réservation. Collecte d'infos essentielles pour préparer le RDV.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="phone" class="w-6 h-6 text-emerald-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Appels sortants</h3>
-            <p class="text-slate-400">Campagnes de rappel proactives pour relancer les clients inactifs ou confirmer les RDV.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_appointments_page.feature_outbound_title">Appels sortants</h3>
+            <p class="text-slate-400" data-i18n="usecases_appointments_page.feature_outbound_desc">Campagnes de rappel proactives pour relancer les clients inactifs ou confirmer les RDV.</p>
           </div>
         </div>
       </div>
@@ -744,7 +744,7 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Le parcours client optimisé</h2>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_appointments_page.workflow_title">Le parcours client optimisé</h2>
         </div>
         <div class="relative">
           <div class="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-vocalia-500/30 -translate-y-1/2"></div>
@@ -753,29 +753,29 @@
               <div class="w-12 h-12 rounded-full bg-vocalia-500 flex items-center justify-center mx-auto mb-4 relative z-10">
                 <span class="text-xl font-bold">1</span>
               </div>
-              <h3 class="font-semibold mb-2">Appel entrant</h3>
-              <p class="text-slate-400 text-sm">Le client appelle votre numéro 24/7</p>
+              <h3 class="font-semibold mb-2" data-i18n="usecases_appointments_page.workflow_step1_title">Appel entrant</h3>
+              <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.workflow_step1_desc">Le client appelle votre numéro 24/7</p>
             </div>
             <div class="relative bg-slate-800 rounded-xl p-6 text-center">
               <div class="w-12 h-12 rounded-full bg-vocalia-500 flex items-center justify-center mx-auto mb-4 relative z-10">
                 <span class="text-xl font-bold">2</span>
               </div>
-              <h3 class="font-semibold mb-2">Qualification</h3>
-              <p class="text-slate-400 text-sm">L'IA identifie le besoin et les préférences</p>
+              <h3 class="font-semibold mb-2" data-i18n="usecases_appointments_page.workflow_step2_title">Qualification</h3>
+              <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.workflow_step2_desc">L'IA identifie le besoin et les préférences</p>
             </div>
             <div class="relative bg-slate-800 rounded-xl p-6 text-center">
               <div class="w-12 h-12 rounded-full bg-vocalia-500 flex items-center justify-center mx-auto mb-4 relative z-10">
                 <span class="text-xl font-bold">3</span>
               </div>
-              <h3 class="font-semibold mb-2">Réservation</h3>
-              <p class="text-slate-400 text-sm">Créneau proposé et confirmé en temps réel</p>
+              <h3 class="font-semibold mb-2" data-i18n="usecases_appointments_page.workflow_step3_title">Réservation</h3>
+              <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.workflow_step3_desc">Créneau proposé et confirmé en temps réel</p>
             </div>
             <div class="relative bg-slate-800 rounded-xl p-6 text-center">
               <div class="w-12 h-12 rounded-full bg-vocalia-500 flex items-center justify-center mx-auto mb-4 relative z-10">
                 <span class="text-xl font-bold">4</span>
               </div>
-              <h3 class="font-semibold mb-2">Confirmation</h3>
-              <p class="text-slate-400 text-sm">SMS + email + rappels automatiques</p>
+              <h3 class="font-semibold mb-2" data-i18n="usecases_appointments_page.workflow_step4_title">Confirmation</h3>
+              <p class="text-slate-400 text-sm" data-i18n="usecases_appointments_page.workflow_step4_desc">SMS + email + rappels automatiques</p>
             </div>
           </div>
         </div>
@@ -785,15 +785,15 @@
     <!-- CTA Section -->
     <section class="py-16">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold mb-6">Arrêtez de perdre des clients au téléphone</h2>
-        <p class="text-xl text-slate-300 mb-8">
+        <h2 class="text-3xl font-bold mb-6" data-i18n="usecases_appointments_page.cta_title">Arrêtez de perdre des clients au téléphone</h2>
+        <p class="text-xl text-slate-300 mb-8" data-i18n="usecases_appointments_page.cta_subtitle">
           Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit vos appelants en rendez-vous confirmés.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105">
+          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105" data-i18n="usecases_appointments_page.cta_primary">
             Essayer gratuitement
           </a>
-          <a href="/pricing" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors">
+          <a href="/pricing" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors" data-i18n="usecases_appointments_page.cta_secondary">
             Voir les tarifs
           </a>
         </div>

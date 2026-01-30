@@ -592,11 +592,11 @@
         <!-- Breadcrumb -->
         <nav class="mb-8">
           <ol class="flex items-center space-x-2 text-sm text-slate-400">
-            <li><a href="/" class="hover:text-white">Accueil</a></li>
+            <li><a href="/" class="hover:text-white" data-i18n="usecases_support_page.breadcrumb_home">Accueil</a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/use-cases/e-commerce" class="hover:text-white">Cas d'usage</a></li>
             <li><span class="mx-2">/</span></li>
-            <li class="text-vocalia-400">Service Client</li>
+            <li class="text-vocalia-400" data-i18n="usecases_support_page.breadcrumb_current">Service Client</li>
           </ol>
         </nav>
 
@@ -604,7 +604,7 @@
           <div>
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
               <i data-lucide="sparkles" class="w-4 h-4 mr-2"></i>
-              Support Client
+              <span data-i18n="usecases_support_page.badge">Support Client</span>
             </span>
             <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
               <span class="gradient-text" data-i18n="usecases_support_page.hero_title">Voice AI pour</span><br>
@@ -614,10 +614,10 @@
               Offrez un support 24/7 avec des agents vocaux IA qui résolvent les requêtes, escaladent les problèmes et améliorent la satisfaction.
             </p>
             <div class="flex flex-wrap gap-4">
-              <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105">
+              <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105" data-i18n="usecases_support_page.cta_demo">
                 Demander une démo
               </a>
-              <a href="/docs" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors">
+              <a href="/docs" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors" data-i18n="usecases_support_page.cta_docs">
                 Documentation API
               </a>
             </div>
@@ -648,8 +648,8 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Les défis du service client moderne</h2>
-          <p class="text-slate-400 max-w-2xl mx-auto">Les attentes clients augmentent, les ressources restent limitées</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_support_page.problems_title">Les défis du service client moderne</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="usecases_support_page.problems_subtitle">Les attentes clients augmentent, les ressources restent limitées</p>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
           <div class="problem-card rounded-xl p-6">
@@ -658,8 +658,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Temps d'attente inacceptable</h3>
-            <p class="text-slate-400">Les clients s'attendent à une réponse en moins de 5 minutes. La moyenne actuelle: 12-24h par email, 10min par téléphone.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.problem_wait_title">Temps d'attente inacceptable</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.problem_wait_desc">Les clients s'attendent à une réponse en moins de 5 minutes. La moyenne actuelle: 12-24h par email, 10min par téléphone.</p>
           </div>
           <div class="problem-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mb-4">
@@ -667,8 +667,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Coûts exponentiels</h3>
-            <p class="text-slate-400">Chaque agent coûte 35-50K€/an. Pour un support 24/7 multilingue, comptez 10+ agents minimum.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.problem_costs_title">Coûts exponentiels</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.problem_costs_desc">Chaque agent coûte 35-50K€/an. Pour un support 24/7 multilingue, comptez 10+ agents minimum.</p>
           </div>
           <div class="problem-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-red-500/20 flex items-center justify-center mb-4">
@@ -676,8 +676,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Qualité inconsistante</h3>
-            <p class="text-slate-400">La qualité varie selon l'agent, son humeur, sa formation. Impossible de garantir une expérience uniforme.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.problem_quality_title">Qualité inconsistante</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.problem_quality_desc">La qualité varie selon l'agent, son humeur, sa formation. Impossible de garantir une expérience uniforme.</p>
           </div>
         </div>
       </div>
@@ -687,23 +687,23 @@
     <section class="py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Support client nouvelle génération</h2>
-          <p class="text-slate-400 max-w-2xl mx-auto">VocalIA combine IA conversationnelle et expertise métier pour un support irréprochable</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_support_page.features_title">Support client nouvelle génération</h2>
+          <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="usecases_support_page.features_subtitle">VocalIA combine IA conversationnelle et expertise métier pour un support irréprochable</p>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-vocalia-500/20 flex items-center justify-center mb-4">
               <i data-lucide="message-circle" class="w-6 h-6 text-vocalia-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Conversations naturelles</h3>
-            <p class="text-slate-400">IA entraînée sur des millions de conversations support. Comprend le contexte, les nuances et les émotions.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.feature_conversations_title">Conversations naturelles</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.feature_conversations_desc">IA entraînée sur des millions de conversations support. Comprend le contexte, les nuances et les émotions.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-vocalia-500/20 flex items-center justify-center mb-4">
               <i data-lucide="shield-check" class="w-6 h-6 text-vocalia-400"></i>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Base de connaissances IA</h3>
-            <p class="text-slate-400">Synchronisation automatique avec votre documentation, FAQ, et historique tickets pour des réponses toujours à jour.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.feature_kb_title">Base de connaissances IA</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.feature_kb_desc">Synchronisation automatique avec votre documentation, FAQ, et historique tickets pour des réponses toujours à jour.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-vocalia-500/20 flex items-center justify-center mb-4">
@@ -711,8 +711,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Escalade intelligente</h3>
-            <p class="text-slate-400">Détection automatique des cas complexes ou clients VIP. Transfert fluide vers agent humain avec contexte complet.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.feature_escalation_title">Escalade intelligente</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.feature_escalation_desc">Détection automatique des cas complexes ou clients VIP. Transfert fluide vers agent humain avec contexte complet.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-vocalia-500/20 flex items-center justify-center mb-4">
@@ -720,8 +720,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Analytics en temps réel</h3>
-            <p class="text-slate-400">Dashboard avec métriques clés: volume, résolution, satisfaction, tendances. Insights actionables automatiques.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.feature_analytics_title">Analytics en temps réel</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.feature_analytics_desc">Dashboard avec métriques clés: volume, résolution, satisfaction, tendances. Insights actionables automatiques.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-vocalia-500/20 flex items-center justify-center mb-4">
@@ -729,8 +729,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">5 langues natives</h3>
-            <p class="text-slate-400">Français, Anglais, Espagnol, Arabe standard et Darija marocain. Détection automatique de la langue du client.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.feature_languages_title">5 langues natives</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.feature_languages_desc">Français, Anglais, Espagnol, Arabe standard et Darija marocain. Détection automatique de la langue du client.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-vocalia-500/20 flex items-center justify-center mb-4">
@@ -738,8 +738,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
             </div>
-            <h3 class="text-lg font-semibold mb-2">Intégrations CRM</h3>
-            <p class="text-slate-400">Connexion native avec HubSpot, Salesforce, Zendesk, Freshdesk. Synchronisation bidirectionnelle des données client.</p>
+            <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_support_page.feature_crm_title">Intégrations CRM</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.feature_crm_desc">Connexion native avec HubSpot, Salesforce, Zendesk, Freshdesk. Synchronisation bidirectionnelle des données client.</p>
           </div>
         </div>
       </div>
@@ -749,30 +749,30 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold mb-4">Comment ça fonctionne</h2>
-          <p class="text-slate-400">Déploiement en 3 étapes simples</p>
+          <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_support_page.workflow_title">Comment ça fonctionne</h2>
+          <p class="text-slate-400" data-i18n="usecases_support_page.workflow_subtitle">Déploiement en 3 étapes simples</p>
         </div>
         <div class="grid md:grid-cols-3 gap-8">
           <div class="text-center">
             <div class="w-16 h-16 rounded-full bg-vocalia-500/20 flex items-center justify-center mx-auto mb-4">
               <span class="text-2xl font-bold text-vocalia-400">1</span>
             </div>
-            <h3 class="text-xl font-semibold mb-2">Connectez vos données</h3>
-            <p class="text-slate-400">Importez votre FAQ, documentation produit et historique de tickets. L'IA apprend votre métier en 24h.</p>
+            <h3 class="text-xl font-semibold mb-2" data-i18n="usecases_support_page.workflow_step1_title">Connectez vos données</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.workflow_step1_desc">Importez votre FAQ, documentation produit et historique de tickets. L'IA apprend votre métier en 24h.</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 rounded-full bg-vocalia-500/20 flex items-center justify-center mx-auto mb-4">
               <span class="text-2xl font-bold text-vocalia-400">2</span>
             </div>
-            <h3 class="text-xl font-semibold mb-2">Personnalisez l'agent</h3>
-            <p class="text-slate-400">Choisissez parmi 30 personas métier ou créez le vôtre. Définissez le ton, les règles d'escalade.</p>
+            <h3 class="text-xl font-semibold mb-2" data-i18n="usecases_support_page.workflow_step2_title">Personnalisez l'agent</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.workflow_step2_desc">Choisissez parmi 30 personas métier ou créez le vôtre. Définissez le ton, les règles d'escalade.</p>
           </div>
           <div class="text-center">
             <div class="w-16 h-16 rounded-full bg-vocalia-500/20 flex items-center justify-center mx-auto mb-4">
               <span class="text-2xl font-bold text-vocalia-400">3</span>
             </div>
-            <h3 class="text-xl font-semibold mb-2">Déployez et optimisez</h3>
-            <p class="text-slate-400">Widget web ou téléphonie. Suivez les performances en temps réel et affinez continuellement.</p>
+            <h3 class="text-xl font-semibold mb-2" data-i18n="usecases_support_page.workflow_step3_title">Déployez et optimisez</h3>
+            <p class="text-slate-400" data-i18n="usecases_support_page.workflow_step3_desc">Widget web ou téléphonie. Suivez les performances en temps réel et affinez continuellement.</p>
           </div>
         </div>
       </div>
@@ -781,15 +781,15 @@
     <!-- CTA Section -->
     <section class="py-16">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold mb-6">Transformez votre service client</h2>
-        <p class="text-xl text-slate-300 mb-8">
+        <h2 class="text-3xl font-bold mb-6" data-i18n="usecases_support_page.cta_title">Transformez votre service client</h2>
+        <p class="text-xl text-slate-300 mb-8" data-i18n="usecases_support_page.cta_subtitle">
           Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur budget.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105">
+          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105" data-i18n="usecases_support_page.cta_primary">
             Planifier une démo
           </a>
-          <a href="/pricing" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors">
+          <a href="/pricing" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors" data-i18n="usecases_support_page.cta_secondary">
             Voir les tarifs
           </a>
         </div>

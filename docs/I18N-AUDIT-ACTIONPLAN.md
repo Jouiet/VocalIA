@@ -1,11 +1,11 @@
 # VocalIA - Audit Forensique i18n & Plan d'Action
 
 > **Document:** I18N-AUDIT-ACTIONPLAN.md
-> **Version:** 2.1.0
+> **Version:** 2.2.0
 > **Date:** 30/01/2026
-> **Session:** 228.3
+> **Session:** 228.5
 > **Auteur:** Claude Opus 4.5
-> **Status:** ✅ PHASE 0-5 COMPLETE - Industries VERIFIED 100%
+> **Status:** ✅ PHASE 0-6 COMPLETE - Use Cases + Industries VERIFIED 100%
 
 ---
 
@@ -34,15 +34,15 @@
 | Pages avec i18n.js | **31** | 91% | ✅ COMPLETE |
 | Pages avec data-i18n | **25** | 74% | ✅ GOOD |
 | Components partagés | 3 | 9% | - |
-| Clés de traduction | **1260** | 100% | ✅ SYNCED |
+| Clés de traduction | **1444** | 100% | ✅ SYNCED |
 | Langues supportées | **5** | 100% | ✅ FR, EN, ES, AR, ARY |
 
 ### 1.2 Verdict Global
 
 **Le système i18n est FONCTIONNEL.**
-- ✅ **Phase 0-5 COMPLETE**: Infrastructure, Core, Products, Industries, Use Cases, Docs & Legal
-- ⏳ **Phase 6 (Blog)**: Low priority - UI only (articles remain in FR)
-- **6300 total translations** (1260 keys × 5 languages)
+- ✅ **Phase 0-6 COMPLETE**: Infrastructure, Core, Products, Industries, Use Cases, Docs & Legal
+- ⏳ **Phase 7 (Blog)**: Low priority - UI only (articles remain in FR)
+- **7220 total translations** (1444 keys × 5 languages)
 
 ### 1.3 Industries Pages - COMPLETE (Session 228.4)
 
@@ -61,7 +61,27 @@
 - Synced all 5 locales (6415 total translations)
 - Replaced broken SVG icons with Lucide icons
 
-### 1.3 Impact Business
+### 1.4 Use Cases Pages - COMPLETE (Session 228.5)
+
+| Page | data-i18n | Use-Case Specific | Status |
+|:-----|:---------:|:-----------------:|:------:|
+| appointments.html | **80** | 50 | ✅ COMPLETE |
+| customer-support.html | **76** | 46 | ✅ COMPLETE |
+| e-commerce.html | **71** | 41 | ✅ COMPLETE |
+| lead-qualification.html | **67** | 37 | ✅ COMPLETE |
+| **TOTAL** | **294** | **174** | **100%** |
+
+**Session 228.5 Changes:**
+- Added 161 new use-case specific keys to fr.json (1283 → 1444)
+- Synced all 5 locales (7220 total translations)
+- All 4 use-case pages now fully internationalized:
+  - Hero sections (badge, title, subtitle, stats, CTAs)
+  - Industries/Problems sections
+  - Features/Solutions sections
+  - Workflow/BANT sections
+  - CTA sections
+
+### 1.5 Impact Business
 
 | Impact | Description |
 |:-------|:------------|
