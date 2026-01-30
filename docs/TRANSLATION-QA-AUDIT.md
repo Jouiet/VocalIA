@@ -1,8 +1,8 @@
 # VocalIA - Audit Exhaustif Systèmes QA Traduction
 
-> **Date:** 30/01/2026 | **Session:** 241
-> **Version:** 3.0.0 (Scripts QA Implémentés)
-> **Verdict:** ✅ RESOLVED - Scripts QA créés et opérationnels
+> **Date:** 30/01/2026 | **Session:** 248 (Updated)
+> **Version:** 3.1.0 (Session 248 Audit Findings)
+> **Verdict:** ⚠️ PARTIAL - Scripts QA opérationnels mais `translation-quality-check.py` génère 481 FAUX POSITIFS
 > **Méthodologie:** Audit bottom-up, vérification fichier par fichier, empirique
 
 ---
@@ -532,7 +532,62 @@ server.tool(
 
 ---
 
-*Document créé: 30/01/2026 - Session 228.6*
+---
+
+## 11. SESSION 248 - AUDIT DÉFAUTS QA SCRIPTS
+
+### 11.1 Défaut Critique: `translation-quality-check.py`
+
+**Problème:** Le seuil de 60% génère **481 FAUX POSITIFS**
+
+**Test empirique (30/01/2026):**
+```bash
+python3 scripts/translation-quality-check.py
+→ Found 481 potential truncation issues (< 60% of FR length)
+```
+
+**Exemples de FAUX POSITIFS (traductions légitimes):**
+
+| Clé | FR | EN | Ratio | Verdict |
+|:----|:---|:---|:-----:|:-------:|
+| `dashboard.sidebar.overview` | Vue d'ensemble (14) | Overview (8) | 57% | ❌ FP |
+| `dashboard.sidebar.users` | Utilisateurs (12) | Users (5) | 42% | ❌ FP |
+| `features.widget.price` | Gratuit (7) | Free (4) | 57% | ❌ FP |
+| `stats.uptime` | Disponibilité (13) | Uptime (6) | 46% | ❌ FP |
+
+**Cause:** L'anglais est naturellement plus concis que le français. Le seuil de 60% est trop strict.
+
+### 11.2 Script Fonctionnel: `darija-validator.py`
+
+**Test empirique (30/01/2026):**
+```bash
+python3 scripts/darija-validator.py
+→ Global Authenticity Score: 94
+→ ✅ No MSA contamination detected
+```
+
+**Verdict:** ✅ FONCTIONNE CORRECTEMENT
+
+### 11.3 Métriques i18n Actualisées
+
+| Métrique | Valeur Documentée | Valeur Réelle | Écart |
+|:---------|:-----------------:|:-------------:|:-----:|
+| Leaf keys par locale | 1,471 | **1,530** | +59 |
+| Total locales | 5 | 5 | ✅ |
+| Pages avec i18n.js | 32 | 32 | ✅ |
+| data-i18n attributes | ~2,000 | **2,016** | ✅ |
+
+### 11.4 Actions Correctives Requises
+
+| Action | Priorité | Effort | Impact |
+|:-------|:--------:|:------:|:-------|
+| Ajuster seuil truncation à 40% | P1 | 30min | Réduit FP de ~80% |
+| Ajouter whitelist termes courts | P1 | 1h | Élimine FP connus |
+| Documenter clés correctes | P2 | 2h | Évite faux alerts |
+
+---
+
+*Document màj: 30/01/2026 - Session 248*
 *Méthodologie: Audit bottom-up, vérification fichier par fichier*
 *Auteur: Claude Opus 4.5*
-*Status: AUDIT EXHAUSTIF COMPLET - Gaps critiques identifiés et quantifiés*
+*Status: ⚠️ PARTIAL - QA script truncation a des faux positifs*

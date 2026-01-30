@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> Version: 5.2.2 | 30/01/2026 | Session 245 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 32 pages | 1471 keys | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.3.3 (21 tools) | RAG: BM25 SOTA
-> SEO: ~90% ✅ | AEO: ~75% ✅ | Investor Page: ✅ | **GAPS**: A2A ❌ | Social Proof ❌
+> Version: 5.3.0 | 30/01/2026 | Session 248 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 32 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
+> SDKs: Python | Node.js | MCP Server v0.3.3 (26 tools) | RAG: BM25 SOTA
+> SEO: ~90% ✅ | AEO: ~75% ✅ | **GAPS**: UCP ⚠️ (no persist) | QA Script ⚠️ (481 FP) | Social Proof ❌
 
 ## Identité
 
@@ -162,65 +162,58 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 245: I18N Audit Tables Update**
+**Session 248: Audit Forensique Approfondi**
 
-### Completed Tasks (Sessions 243-245)
+### Métriques Corrigées (Vérification Empirique)
 
-| # | Task | Status | Commit |
-|:-:|:-----|:------:|:------:|
-| 1 | ✅ SEO/AEO fixes (hreflang, Twitter Cards, schema) | Done | 0a15878 |
-| 2 | ✅ Create investor.html | Done | 707fce6 |
-| 3 | ✅ Remove vercel.json (NO VERCEL!) | Done | fc4d690 |
-| 4 | ✅ Add HSTS to .htaccess | Done | fc4d690 |
-| 5 | ✅ RLHF analysis (NOT applicable) | Done | Session 244.3 |
-| 6 | ✅ Update I18N audit tables (32/32 pages) | Done | e5936f4 |
-| 7 | ✅ Add geo-detect.js to investor.html | Done | e5936f4 |
+| Metric | Documenté | Réel | Vérification |
+|:-------|:---------:|:----:|:-------------|
+| Locale keys | 1,471 | **1,530** | `jq paths | length` |
+| data-i18n | ~2,000 | **2,016** | `grep -roh` |
+| MCP Tools | 21 | **26** | index.ts |
+| Core modules | 9,221 lignes | ✅ | `wc -l core/*.cjs` |
 
-### i18n Status - 100% COMPLETE
+### DÉFAUTS CRITIQUES (Session 248)
 
-| Metric | Value | Verified |
-|:-------|:-----:|:--------:|
-| Pages with i18n.js | 32/32 | ✅ grep |
-| Pages with geo-detect.js | 32/32 | ✅ grep |
-| Total data-i18n attributes | 2016 | ✅ grep |
-| Translation keys | 1471 × 5 = 7355 | ✅ |
+| Défaut | Fichier | Impact | Fix |
+|:-------|:--------|:-------|:----|
+| `ucp_get_profile` NO PERSIST | ucp.ts:76 | UCP cassé | Implémenter storage |
+| QA Script 481 faux positifs | translation-quality-check.py | QA inutilisable | Seuil 60%→40% |
+| Google API Key invalid | .env | Embeddings cassés | User action |
 
-### Remaining Gaps
+### Composants VALIDÉS (Fonctionnels)
 
-| Gap | Priority | Blocker |
-|:----|:--------:|:--------|
-| Social Proof/Testimonials | P2 | Needs REAL customer data |
-| Persona Performance Dashboard | P2 | - |
-| SDK Publish | P1 | Needs user creds (npm/PyPI) |
-| API Backend Deploy | P1 | Needs VPS config |
-| Blog article i18n | P3 | Articles remain FR (by design) |
+| Composant | Status | Test |
+|:----------|:------:|:-----|
+| BM25 RAG | ✅ | `--search "voice AI"` |
+| Translation Supervisor | ✅ | EventBus + patterns |
+| Global Localization | ✅ | 4 régions strictes |
+| Darija Validator | ✅ | Score 94 |
+| MCP TypeScript | ✅ | `npm run build` |
 
-### RLHF Analysis (Session 244.3)
+### Sessions 228-247 Summary
 
-**Verdict:** RLHF n'est PAS applicable (API consumer, pas model owner)
-
-**Ce que VocalIA DOIT faire (Prompt Optimization):**
-1. Tracker outcomes par persona (qualify_lead, track_conversion_event)
-2. Comparer performances personas par industrie
-3. Itérer prompts basé sur données réelles
-4. Versionner personas (déjà: `_v2` dans IDs)
-
-**Voir:** `docs/VOCALIA-MCP.md` section "Prompt Optimization with Feedback"
+- **+1,655 lignes** code nouveau (22 fichiers)
+- **+2,000 lignes** HTML modifié (SEO/i18n)
+- **195 hreflang** + **39 Twitter Cards**
+- **BM25 SOTA** implémenté (k1=1.5, b=0.75)
 
 ---
 
-## Plan Actionnable (Next Sprint)
+## Plan Actionnable (Session 249)
 
 | # | Task | Priority | Blocker | Effort |
 |:-:|:-----|:--------:|:--------|:------:|
-| 1 | SDK Publish | P1 | User creds (npm/PyPI) | 2h |
-| 2 | API Backend deploy | P1 | VPS config | 4h |
-| 3 | Social Proof/Testimonials | P2 | Content needed | 4h |
-| 4 | Persona Performance Dashboard | P2 | - | 8h |
+| 1 | **Fix `ucp_get_profile` persistence** | P0 | - | 2h |
+| 2 | **Fix QA script seuil (60%→40%)** | P1 | - | 30min |
+| 3 | Renouveler Google API Key | P1 | User | 10min |
+| 4 | Configurer Calendar/Slack creds | P2 | User | 30min |
+| 5 | SDK Publish (npm/PyPI) | P1 | User creds | 2h |
+| 6 | Social Proof content | P2 | User data | - |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/FORENSIC-AUDIT-WEBSITE.md` pour détails audit*
-*Voir `docs/VOCALIA-MCP.md` pour Prompt Optimization*
-*Màj: 30/01/2026 - Session 245 (I18N audit 100% complete: 32/32 pages, 2016 data-i18n)*
+*Voir `docs/VOCALIA-MCP.md` pour UCP persistence gap*
+*Màj: 30/01/2026 - Session 248 (Audit forensique: 1530 keys, UCP no persist, QA 481 FP)*

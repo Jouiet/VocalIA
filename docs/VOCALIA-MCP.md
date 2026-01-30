@@ -2,7 +2,7 @@
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
 > Version: 0.3.3 | 30/01/2026 | Session 246 | BM25 RAG SOTA
-> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ✅ (Beta) | Integrations ⚠️ (Gap Detected)
+> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ⚠️ (Gap Detected)
 
 ## Qu'est-ce que MCP?
 
@@ -324,6 +324,16 @@ Synchronise les préférences utilisateur avec les Règles de Marché Strictes.
 #### `ucp_get_profile`
 
 Récupère le profil unifié actuel.
+
+**⚠️ DÉFAUT CRITIQUE (Session 248):**
+```typescript
+// mcp-server/src/tools/ucp.ts:76-77
+// TOUJOURS retourne "not_found" - PAS DE PERSISTENCE!
+status: "not_found",
+hint: "Use ucp_sync_preference to create a profile first."
+```
+
+**Action requise:** Implémenter stockage réel (file-based ou database).
 
 ---
 

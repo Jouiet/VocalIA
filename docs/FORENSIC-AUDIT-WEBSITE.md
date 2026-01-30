@@ -1,11 +1,11 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 5.1.0 | **Date**: 30/01/2026 | **Session**: 244 (P0/P1 Complete)
+> **Version**: 5.2.0 | **Date**: 30/01/2026 | **Session**: 248 (Forensic Audit)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: ✅ FIXED - Exposed URL removed (Session 243)
 > **SEO Score**: 90/100 (A-) - Hreflang 100%, Twitter Cards 100% ✅
-> Translation QA: ✅ 100% (No Truncations, No MSA in Darija) - Session 245
+> **Translation QA**: ⚠️ Script a 481 FAUX POSITIFS - Darija ✅ (Score 94)
 > **AEO Score**: 75/100 (B) - AI bot rules ✅, FAQ schema ✅, Speakable ✅
 > **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
