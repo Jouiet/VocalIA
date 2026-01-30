@@ -88,7 +88,7 @@ ErrorDocument 500 /index.html
 </FilesMatch>
 
 # Allow specific JS files
-<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget)\.js$">
+<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|components)\.js$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>

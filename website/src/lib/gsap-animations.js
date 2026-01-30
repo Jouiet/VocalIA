@@ -341,6 +341,7 @@ class VocalIAAnimations {
 
   /**
    * Animated Number Counters
+   * Fixed Session 230: Elements already in view now animate immediately
    */
   initCounters() {
     document.querySelectorAll('[data-counter]').forEach(counter => {
@@ -353,7 +354,19 @@ class VocalIAAnimations {
       // Set initial value
       counter.textContent = prefix + '0' + suffix;
 
-      // Create intersection observer
+      // Check if already in view (above the fold)
+      const rect = counter.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+      if (isVisible) {
+        // Small delay for visual effect even if already visible
+        setTimeout(() => {
+          this.animateCounter(counter, target, duration, prefix, suffix, decimals);
+        }, 100);
+        return; // Skip observer for this element
+      }
+
+      // Create intersection observer for below-fold elements
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -361,7 +374,7 @@ class VocalIAAnimations {
             observer.unobserve(counter);
           }
         });
-      }, { threshold: 0.5 });
+      }, { threshold: 0.1, rootMargin: '50px' });
 
       observer.observe(counter);
       this.observers.push(observer);

@@ -434,29 +434,27 @@ npm run build:css
 # Output: website/public/css/style.css
 ```
 
-### ⚠️ CRITICAL: Tailwind Pre-Compilation Limitation (Session 228.2)
+### ✅ RESOLVED: Tailwind Opacity Classes (Session 229)
 
-**Problem Discovered:** Tailwind CSS is pre-compiled. New utility classes don't exist unless they were in source files during build.
+**Problem (Session 228.2):** Tailwind CSS is pre-compiled. New utility classes didn't exist unless in source files during build.
+
+**Solution Applied (Session 229):** Added 40+ safelist utilities to `src/input.css`:
+```css
+@layer utilities {
+  .bg-white\/15 { background-color: rgb(255 255 255 / 0.15); }
+  .bg-white\/20 { background-color: rgb(255 255 255 / 0.20); }
+  .bg-white\/25 { background-color: rgb(255 255 255 / 0.25); }
+  .bg-white\/30 { background-color: rgb(255 255 255 / 0.30); }
+  /* ... 40+ total utilities */
+}
+```
 
 | Class Type | Status |
 |:-----------|:------:|
 | `bg-white`, `bg-white/10` | ✅ In compiled CSS |
-| `bg-white/30`, `bg-white/25` | ❌ NOT in compiled CSS |
+| `bg-white/25`, `bg-white/30` | ✅ **NOW IN compiled CSS (Session 229)** |
 
-**Workaround:** Use inline styles for opacity values not in compiled CSS:
-```html
-<!-- Instead of bg-white/25 (not compiled) -->
-<div style="background-color: rgba(255,255,255,0.25);">
-```
-
-**Proper Fix:** Add required classes to source files and rebuild:
-```bash
-# 1. Add classes to input.css or any HTML file
-# 2. Rebuild CSS
-npm run build:css
-# 3. Verify classes exist
-grep "bg-white\/25" website/public/css/style.css
-```
+**All inline style workarounds removed** - proper Tailwind classes now work.
 
 ### Start Local Server
 ```bash
