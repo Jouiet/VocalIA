@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 5.2.0 | 30/01/2026 | Session 244 (P0/P1 Complete) | Health: 100%
+> Version: 5.2.1 | 30/01/2026 | Session 244.3 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 32 pages | 1530 keys | RTL ✅ | **Hreflang: ✅ 100%**
 > SDKs: Python | Node.js | MCP Server v0.3.3 (21 tools) | RAG: BM25 SOTA
 > SEO: ~90% ✅ | AEO: ~75% ✅ | Investor Page: ✅ | **GAPS**: A2A ❌ | UCP ❌ | Social Proof ❌
@@ -191,14 +191,39 @@ open http://localhost:8080?lang=ar
 
 | Gap | Priority | Status |
 |:----|:--------:|:------:|
-| A2A Protocol | P2 | ❌ Not started |
-| UCP Implementation | P2 | ❌ Not started |
 | Social Proof/Testimonials | P2 | ❌ Not started |
+| Persona Performance Dashboard | P2 | ❌ (VOCALIA-MCP.md) |
+| A2A Protocol | P3 | ❌ Depends ecosystem |
+| UCP Implementation | P3 | ❌ Depends ecosystem |
 | SDK Publish | P1 | Needs user creds |
 | API Backend Deploy | P1 | Needs VPS config |
+
+### RLHF Analysis (Session 244.3)
+
+**Verdict:** RLHF n'est PAS applicable (API consumer, pas model owner)
+
+**Ce que VocalIA DOIT faire (Prompt Optimization):**
+1. Tracker outcomes par persona (qualify_lead, track_conversion_event)
+2. Comparer performances personas par industrie
+3. Itérer prompts basé sur données réelles
+4. Versionner personas (déjà: `_v2` dans IDs)
+
+**Voir:** `docs/VOCALIA-MCP.md` section "Prompt Optimization with Feedback"
+
+---
+
+## Plan Actionnable (Next Sprint)
+
+| # | Task | Priority | Blocker | Effort |
+|:-:|:-----|:--------:|:--------|:------:|
+| 1 | SDK Publish | P1 | User creds (npm/PyPI) | 2h |
+| 2 | API Backend deploy | P1 | VPS config | 4h |
+| 3 | Social Proof/Testimonials | P2 | Content needed | 4h |
+| 4 | Persona Performance Dashboard | P2 | - | 8h |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/FORENSIC-AUDIT-WEBSITE.md` pour détails audit*
-*Màj: 30/01/2026 - Session 244 (P0/P1 Complete, Investor Page Created)*
+*Voir `docs/VOCALIA-MCP.md` pour Prompt Optimization*
+*Màj: 30/01/2026 - Session 244.3 (RLHF analysis, doc updates)*
