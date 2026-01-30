@@ -3433,18 +3433,48 @@ grep -roh 'data-i18n' *.html */*.html */*/*.html | wc -l  # 2016
 
 ---
 
-## Plan Actionnable (Session 249)
+## Session 249: DOE Implementation (30/01/2026)
 
-| # | Action | Priorité | Effort | Blocker |
-|:-:|:-------|:--------:|:------:|:--------|
-| 1 | Fix `ucp_get_profile` persistence | P0 | 2h | - |
-| 2 | Fix QA script seuil (60% → 40%) | P1 | 30min | - |
-| 3 | Renouveler Google API Key | P1 | 10min | User |
-| 4 | Configurer Calendar/Slack creds | P2 | 30min | User |
-| 5 | SDK Publish (npm/PyPI) | P1 | 2h | User creds |
-| 6 | Social Proof content | P2 | - | User data |
+**Goal**: Implement P0/P1 fixes identified in Session 248 audit using DOE framework.
+
+**Fixes Implemented:**
+
+| # | Action | Status | Verification |
+|:-:|:-------|:------:|:-------------|
+| 1 | Fix `ucp_get_profile` persistence | ✅ | `test-ucp-persistence.cjs` PASSED |
+| 2 | Fix QA script seuil (60% → 40%) | ✅ | 481 → 58 issues (88% reduction) |
+| 3 | Renouveler Google API Key | ⏳ | User Action Required |
+| 4 | Configurer Calendar/Slack creds | ⏳ | User Action Required |
+| 5 | SDK Publish (npm/PyPI) | ⏳ | User Credentials Required |
+| 6 | Social Proof content | ⏳ | User Data Required |
+
+**Technical Details:**
+
+- **UCP Persistence**: Added file-based JSON storage in `data/ucp-profiles.json`
+  - New functions: `loadProfiles()`, `saveProfiles()`, `profileKey()`
+  - New tool: `ucp_list_profiles` for tenant profile listing
+  - Files: `mcp-server/src/tools/ucp.ts`, `mcp-server/src/index.ts`
+
+- **QA Threshold**: Reduced `MIN_LENGTH_RATIO` from 0.60 to 0.40
+  - Rationale: Arabic/English are naturally more concise than French
+  - File: `scripts/translation-quality-check.py`
+
+**Health Check**: 39/39 passed (100%)
+
+**Status**: P0/P1 dev tasks completed. Remaining items blocked by user credentials/data.
 
 ---
 
-*Màj: 30/01/2026 - Session 248 (Audit Forensique)*
+## Plan Actionnable (Session 250)
+
+| # | Action | Priorité | Blocker |
+|:-:|:-------|:--------:|:--------|
+| 1 | Google API Key renewal | P1 | User |
+| 2 | Calendar/Slack credentials | P2 | User |
+| 3 | SDK Publish (npm/PyPI) | P1 | User creds |
+| 4 | Social Proof content | P2 | User data |
+
+---
+
+*Màj: 30/01/2026 - Session 249 (DOE Implementation)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
