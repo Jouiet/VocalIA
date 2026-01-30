@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.1 | 30/01/2026 | Session 229 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.3.2 | 30/01/2026 | Session 229.1 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python (pip install vocalia) | ✅ Node.js (npm install vocalia) | ✅ MCP Server
-> Tailwind: Safelist ✅ (40 opacity classes) | CSS: 129KB | Visualizer: Sky Blue ✅
+> Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
 
 ## Identité
 
@@ -1667,6 +1667,32 @@ Playwright MCP testing confirmed all 4 modes working:
 | Inline style workaround | ✅ RESOLVED |
 | Missing opacity classes | ✅ RESOLVED |
 | CSS build documented | ✅ RESOLVED |
+
+---
+
+## Session 229.1 Summary (30/01/2026)
+
+**Dashboard Icons Fix:**
+
+### Issue
+Lucide icons not loading in dashboards - blocked by CSP meta tag.
+
+### Root Cause
+Meta CSP in `client.html` and `admin.html` was missing `https://unpkg.com` in script-src.
+
+### Fix Applied
+```html
+<!-- Before -->
+script-src 'self' 'unsafe-inline'
+
+<!-- After -->
+script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com
+```
+
+### Verification
+- 25 Lucide SVG icons now rendering in client dashboard
+- All navigation, stats, and action icons visible
+- Commit: `9299c2e`
 
 ### Plan Actionnable (Session 230)
 
