@@ -40,6 +40,10 @@ jobs:
           done
         timeout-minutes: 1
 
+      - name: Validate i18n Locales (FR as source of truth)
+        run: python3 scripts/sync-locales.py --check
+        timeout-minutes: 1
+
       - name: Build Summary
         run: |
           echo "## VocalIA Build Summary" >> $GITHUB_STEP_SUMMARY
