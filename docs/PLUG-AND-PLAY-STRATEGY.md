@@ -810,9 +810,25 @@ Semaines 11-12: Phase 5 (Onboarding)
 | Version | Date | Modifications |
 |:--------|:-----|:--------------|
 | 1.0 | 27/01/2026 | Document initial - Recherche SOTA + Plan complet |
+| 1.1 | 30/01/2026 | Session 248 - UCP GAP: `ucp_get_profile` NO PERSISTENCE (ucp.ts:76) |
+
+---
+
+## ⚠️ SESSION 248 DÉFAUT CRITIQUE
+
+**UCP `ucp_get_profile` n'a PAS de persistence réelle!**
+
+```typescript
+// mcp-server/src/tools/ucp.ts:76-77
+status: "not_found",  // TOUJOURS retourné!
+hint: "Use ucp_sync_preference to create a profile first."
+```
+
+**Action requise:** Implémenter file-based ou DB storage avant mise en production.
 
 ---
 
 *Document créé: 27/01/2026 - Session 180*
+*Màj: 30/01/2026 - Session 248 (UCP persistence gap)*
 *Méthodologie: Bottom-Up Factuelle*
 *Auteur: Claude Code + Recherche Web*
