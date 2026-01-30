@@ -2,7 +2,7 @@
  * VocalIA Telephony Client - PSTN Voice AI
  */
 
-import type { VocalIA } from './client';
+import type { VocalIA } from './client.js';
 import type {
   CallSession,
   InitiateCallParams,
@@ -10,7 +10,7 @@ import type {
   TransferCallParams,
   WebhookConfig,
   TranscriptSegment,
-} from './types';
+} from './types.js';
 
 export class TelephonyClient {
   constructor(private readonly client: VocalIA) {}

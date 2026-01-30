@@ -31,3 +31,11 @@ build/
 
 # Claude local settings (not shared)
 .claude/settings.local.json
+
+# SDK build artifacts
+sdks/python/dist/
+sdks/python/build/
+sdks/python/*.egg-info/
+sdks/python/**/__pycache__/
+sdks/node/dist/
+sdks/node/node_modules/

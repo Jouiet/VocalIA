@@ -23,9 +23,9 @@
  * ```
  */
 
-export { VocalIA } from './client';
-export { VoiceClient } from './voice';
-export { TelephonyClient } from './telephony';
+export { VocalIA } from './client.js';
+export { VoiceClient } from './voice.js';
+export { TelephonyClient } from './telephony.js';
 
 export type {
   VocalIAConfig,
@@ -39,7 +39,7 @@ export type {
   InitiateCallParams,
   TranscribeParams,
   SynthesizeParams,
-} from './types';
+} from './types.js';
 
 export {
   VocalIAError,
@@ -49,4 +49,4 @@ export {
   ValidationError,
   NotFoundError,
   CallError,
-} from './errors';
+} from './errors.js';

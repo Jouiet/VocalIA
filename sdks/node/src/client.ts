@@ -3,10 +3,10 @@
  */
 
 import { request } from 'undici';
-import { VoiceClient } from './voice';
-import { TelephonyClient } from './telephony';
-import { AuthenticationError } from './errors';
-import type { VocalIAConfig } from './types';
+import { VoiceClient } from './voice.js';
+import { TelephonyClient } from './telephony.js';
+import { AuthenticationError } from './errors.js';
+import type { VocalIAConfig } from './types.js';
 
 const DEFAULT_BASE_URL = 'https://api.vocalia.ma';
 const DEFAULT_TIMEOUT = 30000;
@@ -100,7 +100,7 @@ export class VocalIA {
     const data = responseText ? JSON.parse(responseText) : {};
 
     if (statusCode >= 400) {
-      const { handleAPIError } = await import('./errors');
+      const { handleAPIError } = await import('./errors.js');
       throw handleAPIError(statusCode, data);
     }
 
@@ -154,7 +154,7 @@ export class VocalIA {
     const data = responseText ? JSON.parse(responseText) : {};
 
     if (statusCode >= 400) {
-      const { handleAPIError } = await import('./errors');
+      const { handleAPIError } = await import('./errors.js');
       throw handleAPIError(statusCode, data);
     }
 
@@ -181,7 +181,7 @@ export class VocalIA {
     if (statusCode >= 400) {
       const text = await body.text();
       const data = text ? JSON.parse(text) : {};
-      const { handleAPIError } = await import('./errors');
+      const { handleAPIError } = await import('./errors.js');
       throw handleAPIError(statusCode, data);
     }
 

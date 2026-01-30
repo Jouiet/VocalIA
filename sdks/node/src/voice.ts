@@ -2,7 +2,7 @@
  * VocalIA Voice Client - Widget & Web Speech API
  */
 
-import type { VocalIA } from './client';
+import type { VocalIA } from './client.js';
 import type {
   VoiceResponse,
   Persona,
@@ -10,7 +10,7 @@ import type {
   GenerateResponseParams,
   TranscribeParams,
   SynthesizeParams,
-} from './types';
+} from './types.js';
 
 export class VoiceClient {
   constructor(private readonly client: VocalIA) {}
