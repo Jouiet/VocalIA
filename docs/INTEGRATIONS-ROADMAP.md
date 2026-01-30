@@ -1,22 +1,24 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 2.0.0 | **Date**: 30/01/2026 | **Session**: 249.2
-> **Methodology**: Bottom-up forensic audit | **Status**: 🔴 BLOQUÉ PAR PHASE 0
+> **Version**: 2.1.0 | **Date**: 30/01/2026 | **Session**: 249.2
+> **Methodology**: Bottom-up forensic audit | **Status**: 🟡 PHASE 0 EN COURS (50%)
 
 ---
 
-## 🔴 ALERTE CRITIQUE: Gap Architectural Multi-Tenant
+## 🟡 Phase 0: Multi-Tenant Architecture (EN COURS)
 
-**AVANT d'implémenter les intégrations, Phase 0 est REQUISE.**
+**Session 249.2: Implémentation démarrée. 3/6 composants complétés.**
 
-| Composant | Requis | État | Vérification |
-|:----------|:------:|:----:|:-------------|
-| SecretVault.cjs | ✅ | ❌ **N'EXISTE PAS** | `ls core/SecretVault.cjs` → not found |
-| clients/ directory | ✅ | ❌ **N'EXISTE PAS** | `ls clients/` → not found |
-| OAuth Gateway | ✅ | ❌ N'existe pas | - |
-| Integrations multi-tenant | ✅ | ❌ Toutes `process.env` | `grep "process.env" integrations/*.cjs` |
+| Composant | État | Vérification |
+|:----------|:----:|:-------------|
+| SecretVault.cjs | ✅ DONE | `node core/SecretVault.cjs --health` → OK |
+| clients/ directory | ✅ DONE | 2 tenants: agency_internal, client_demo |
+| client-registry.cjs | ✅ DONE | Charge configs depuis clients/ |
+| OAuth Gateway | ⏳ TODO | Connecter comptes clients externes |
+| Webhook handlers | ⏳ TODO | Recevoir data inbound |
+| Refactor integrations | ⏳ TODO | HubSpot, Calendar → TenantContext |
 
-**Impact**: Sans Phase 0, les intégrations sont SINGLE-TENANT (un seul jeu de credentials pour tous).
+**Progression Phase 0**: 3/6 (50%) | **Effort restant**: ~5-8 jours
 
 ---
 
@@ -29,8 +31,8 @@
 | **Gap à combler** | 14 |
 | **Nouvelles demandées (Google Apps)** | 4 |
 | **Total à implémenter** | 18 |
-| **Phase 0 (Multi-Tenant)** | 🔴 10-15 jours BLOQUANT |
-| **Effort total (avec Phase 0)** | 60-110 jours-homme |
+| **Phase 0 (Multi-Tenant)** | 🟡 50% done, ~5-8j restants |
+| **Effort total restant** | 50-90 jours-homme |
 
 ---
 
@@ -277,14 +279,23 @@ Effort = (Complexité API × Scope fonctionnel × Tests) + Documentation
 | J9-J10 | Webhook handlers | Recevoir data inbound des systèmes | `core/WebhookRouter.cjs` |
 
 **Effort Phase 0**: 10-15 jours
-**Status**: 🔴 NON IMPLÉMENTÉ - BLOQUE TOUT LE RESTE
+**Status**: 🟡 EN COURS (Session 249.2)
 
-**Vérification empirique actuelle:**
+**Progression Phase 0:**
+| Composant | Status | Vérification |
+|:----------|:------:|:-------------|
+| clients/ structure | ✅ DONE | `ls clients/` → 2 tenants |
+| SecretVault.cjs | ✅ DONE | `node core/SecretVault.cjs --health` OK |
+| client-registry.cjs updated | ✅ DONE | Charge depuis clients/ |
+| OAuth Gateway | ⏳ TODO | - |
+| Refactor integrations | ⏳ TODO | - |
+| Webhook handlers | ⏳ TODO | - |
+
+**Vérification empirique (30/01/2026 17:55):**
 ```bash
-ls core/SecretVault.cjs           # DOES NOT EXIST
-ls clients/                       # DOES NOT EXIST
-grep "TenantContext" integrations/*.cjs  # 0 matches
-grep "process.env" integrations/*.cjs    # 12+ matches (PROBLÈME)
+ls core/SecretVault.cjs           # ✅ EXISTS (347 lines)
+ls clients/                       # ✅ EXISTS (2 tenants)
+node core/SecretVault.cjs --health  # ✅ OK
 ```
 
 ---
