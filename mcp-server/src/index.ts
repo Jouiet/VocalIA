@@ -5,7 +5,7 @@
  *
  * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (32 tools - 10 always available, 22 require services):
+ * TOOL CATEGORIES (51 tools - 10 always available, 41 require services):
  * - Voice Tools (2): voice_generate_response, voice_providers_status [REQUIRE API]
  * - Persona Tools (3): personas_list, personas_get, personas_get_system_prompt [ALWAYS]
  * - Lead Tools (2): qualify_lead, lead_score_explain [ALWAYS]
@@ -19,8 +19,11 @@
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
  * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
  * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
+ * - Calendly Tools (6): calendly_get_user, calendly_list_event_types, calendly_get_available_times, calendly_list_events, calendly_cancel_event, calendly_get_busy_times [REQUIRE CALENDLY]
+ * - Freshdesk Tools (6): freshdesk_list_tickets, freshdesk_get_ticket, freshdesk_create_ticket, freshdesk_reply_ticket, freshdesk_update_ticket, freshdesk_search_contacts [REQUIRE FRESHDESK]
+ * - Pipedrive Tools (7): pipedrive_list_deals, pipedrive_create_deal, pipedrive_update_deal, pipedrive_list_persons, pipedrive_create_person, pipedrive_search, pipedrive_list_activities [REQUIRE PIPEDRIVE]
  *
- * TOTAL: 32 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 51 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -38,6 +41,9 @@ import { slackTools } from "./tools/slack.js";
 import { ucpTools } from "./tools/ucp.js";
 import { sheetsTools } from "./tools/sheets.js";
 import { driveTools } from "./tools/drive.js";
+import { calendlyTools } from "./tools/calendly.js";
+import { freshdeskTools } from "./tools/freshdesk.js";
+import { pipedriveTools } from "./tools/pipedrive.js";
 
 const execAsync = promisify(exec);
 
@@ -1033,8 +1039,8 @@ server.tool(
         text: JSON.stringify({
           mcp_server: {
             name: "vocalia",
-            version: "0.4.0",
-            tools_count: 32,
+            version: "0.5.0",
+            tools_count: 51,
           },
           services: {
             voice_api: {
@@ -1065,6 +1071,18 @@ server.tool(
               "drive_list_files", "drive_get_file", "drive_create_folder", "drive_upload_file", "drive_share_file", "drive_delete_file"
             ],
             requires_slack: ["slack_send_notification"],
+            requires_calendly: [
+              "calendly_get_user", "calendly_list_event_types", "calendly_get_available_times",
+              "calendly_list_events", "calendly_cancel_event", "calendly_get_busy_times"
+            ],
+            requires_freshdesk: [
+              "freshdesk_list_tickets", "freshdesk_get_ticket", "freshdesk_create_ticket",
+              "freshdesk_reply_ticket", "freshdesk_update_ticket", "freshdesk_search_contacts"
+            ],
+            requires_pipedrive: [
+              "pipedrive_list_deals", "pipedrive_create_deal", "pipedrive_update_deal",
+              "pipedrive_list_persons", "pipedrive_create_person", "pipedrive_search", "pipedrive_list_activities"
+            ],
           },
         }, null, 2),
       }],
@@ -1145,6 +1163,40 @@ server.tool(driveTools.create_folder.name, driveTools.create_folder.parameters, 
 server.tool(driveTools.upload_file.name, driveTools.upload_file.parameters, driveTools.upload_file.handler);
 server.tool(driveTools.share_file.name, driveTools.share_file.parameters, driveTools.share_file.handler);
 server.tool(driveTools.delete_file.name, driveTools.delete_file.parameters, driveTools.delete_file.handler);
+
+// =============================================================================
+// CALENDLY TOOLS (6) - REQUIRE CALENDLY CREDENTIALS
+// =============================================================================
+
+server.tool(calendlyTools.get_user.name, calendlyTools.get_user.parameters, calendlyTools.get_user.handler);
+server.tool(calendlyTools.list_event_types.name, calendlyTools.list_event_types.parameters, calendlyTools.list_event_types.handler);
+server.tool(calendlyTools.get_available_times.name, calendlyTools.get_available_times.parameters, calendlyTools.get_available_times.handler);
+server.tool(calendlyTools.list_scheduled_events.name, calendlyTools.list_scheduled_events.parameters, calendlyTools.list_scheduled_events.handler);
+server.tool(calendlyTools.cancel_event.name, calendlyTools.cancel_event.parameters, calendlyTools.cancel_event.handler);
+server.tool(calendlyTools.get_user_busy_times.name, calendlyTools.get_user_busy_times.parameters, calendlyTools.get_user_busy_times.handler);
+
+// =============================================================================
+// FRESHDESK TOOLS (6) - REQUIRE FRESHDESK CREDENTIALS
+// =============================================================================
+
+server.tool(freshdeskTools.list_tickets.name, freshdeskTools.list_tickets.parameters, freshdeskTools.list_tickets.handler);
+server.tool(freshdeskTools.get_ticket.name, freshdeskTools.get_ticket.parameters, freshdeskTools.get_ticket.handler);
+server.tool(freshdeskTools.create_ticket.name, freshdeskTools.create_ticket.parameters, freshdeskTools.create_ticket.handler);
+server.tool(freshdeskTools.reply_to_ticket.name, freshdeskTools.reply_to_ticket.parameters, freshdeskTools.reply_to_ticket.handler);
+server.tool(freshdeskTools.update_ticket.name, freshdeskTools.update_ticket.parameters, freshdeskTools.update_ticket.handler);
+server.tool(freshdeskTools.search_contacts.name, freshdeskTools.search_contacts.parameters, freshdeskTools.search_contacts.handler);
+
+// =============================================================================
+// PIPEDRIVE TOOLS (7) - REQUIRE PIPEDRIVE CREDENTIALS
+// =============================================================================
+
+server.tool(pipedriveTools.list_deals.name, pipedriveTools.list_deals.parameters, pipedriveTools.list_deals.handler);
+server.tool(pipedriveTools.create_deal.name, pipedriveTools.create_deal.parameters, pipedriveTools.create_deal.handler);
+server.tool(pipedriveTools.update_deal.name, pipedriveTools.update_deal.parameters, pipedriveTools.update_deal.handler);
+server.tool(pipedriveTools.list_persons.name, pipedriveTools.list_persons.parameters, pipedriveTools.list_persons.handler);
+server.tool(pipedriveTools.create_person.name, pipedriveTools.create_person.parameters, pipedriveTools.create_person.handler);
+server.tool(pipedriveTools.search.name, pipedriveTools.search.parameters, pipedriveTools.search.handler);
+server.tool(pipedriveTools.list_activities.name, pipedriveTools.list_activities.parameters, pipedriveTools.list_activities.handler);
 
 // =============================================================================
 // SERVER STARTUP

@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> Version: 5.6.0 | 30/01/2026 | Session 249.2 | Health: 100%
+> Version: 5.7.0 | 30/01/2026 | Session 249.3 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.4.0 (**32 tools**) | RAG: BM25 SOTA
-> Integrations: **8/20 (40%)** | ✅ Multi-Tenant Phase 0 COMPLETE | Phase 1: 40%
+> SDKs: Python | Node.js | MCP Server v0.5.0 (**59 tools**) | RAG: BM25 SOTA
+> Integrations: **11/20 (55%)** | ✅ Multi-Tenant Phase 0 COMPLETE | ✅ Phase 1 COMPLETE (100%)
 > SEO: ~90% ✅ | AEO: ~75% ✅ | UCP ✅ | QA ✅ | SecretVault ✅ | OAuth Gateway ✅ | clients/ ✅
 
 ## Identité
@@ -51,7 +51,7 @@ VocalIA/
 ├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (32 tools)
+├── mcp-server/     # MCP Server (59 tools)
 └── docs/           # Documentation
 ```
 
@@ -149,14 +149,14 @@ open http://localhost:8080?lang=ar
 |:---------|:------------|
 | `docs/SESSION-HISTORY.md` | Historique complet sessions |
 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | Reference technique |
-| `docs/VOCALIA-MCP.md` | MCP Server (32 tools) |
-| `docs/INTEGRATIONS-ROADMAP.md` | Phase 0 ✅ + Phase 1 planning |
+| `docs/VOCALIA-MCP.md` | MCP Server (59 tools) |
+| `docs/INTEGRATIONS-ROADMAP.md` | Phase 0 ✅ + Phase 1 ✅ COMPLETE |
 | `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant architecture |
 | `docs/I18N-AUDIT-ACTIONPLAN.md` | Plan i18n (100% COMPLETE) |
 
 ---
 
-## MCP Server v0.4.0 (32 Tools)
+## MCP Server v0.5.0 (59 Tools)
 
 **Local Tools (10):**
 - personas_list, personas_get, personas_get_system_prompt
@@ -169,6 +169,15 @@ open http://localhost:8080?lang=ar
 - Sheets: read_range, write_range, append_rows, get_info, create
 - Drive: list_files, get_file, create_folder, upload_file, share_file, delete_file
 
+**Scheduling Tools (6) - Multi-Tenant:**
+- Calendly: get_user, list_event_types, get_available_times, list_events, cancel_event, get_busy_times
+
+**Support Tools (6) - Multi-Tenant:**
+- Freshdesk: list_tickets, get_ticket, create_ticket, reply_ticket, update_ticket, search_contacts
+
+**CRM Tools (7) - Multi-Tenant:**
+- Pipedrive: list_deals, create_deal, update_deal, list_persons, create_person, search, list_activities
+
 **External Integrations (9):**
 - HubSpot: crm_get_customer, crm_create_contact
 - Shopify: ecommerce_order_status, ecommerce_product_stock
@@ -180,7 +189,7 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 249.2: Multi-Tenant + Google Apps**
+**Session 249.3: Phase 1 Integrations COMPLETE**
 
 ### Phase 0 - Multi-Tenant Architecture ✅ COMPLETE
 
@@ -193,15 +202,15 @@ open http://localhost:8080?lang=ar
 | HubSpot refactor | TenantContext | ✅ |
 | MCP tools refactor | _meta.tenantId | ✅ |
 
-### Phase 1 - Google Apps ✅ PARTIAL (40%)
+### Phase 1 - Quick Wins ✅ COMPLETE (100%)
 
 | Integration | Tools | Status |
 |:------------|:-----:|:------:|
 | Google Sheets | 5 | ✅ DONE |
 | Google Drive | 6 | ✅ DONE |
-| Calendly | - | ⏳ TODO |
-| Freshdesk | - | ⏳ TODO |
-| Pipedrive | - | ⏳ TODO |
+| Calendly | 6 | ✅ DONE |
+| Freshdesk | 6 | ✅ DONE |
+| Pipedrive | 7 | ✅ DONE |
 
 ### Vérification Empirique
 

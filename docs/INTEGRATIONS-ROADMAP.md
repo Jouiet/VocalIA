@@ -28,11 +28,11 @@
 | Metric | Value |
 |:-------|:------|
 | **Integrations affichées sur site** | 20 |
-| **Integrations implémentées** | **8** (40%) |
-| **Gap à combler** | 12 |
+| **Integrations implémentées** | **11** (55%) |
+| **Gap à combler** | 9 |
 | **Google Apps (Sheets + Drive)** | ✅ COMPLETE (Session 249.2) |
 | **Phase 0 (Multi-Tenant)** | ✅ 100% COMPLETE |
-| **Phase 1 Progress** | 40% (2/5) |
+| **Phase 1 Progress** | ✅ 100% (5/5) COMPLETE |
 | **Effort total restant** | 40-70 jours-homme |
 
 ---
@@ -68,17 +68,17 @@ ls mcp-server/src/tools/  # calendar.ts, slack.ts, ucp.ts
 | # | Intégration | Catégorie | Affiché Site | Code | Verdict |
 |:-:|:------------|:----------|:------------:|:----:|:-------:|
 | 1 | Salesforce | CRM | ✅ | ❌ | MANQUANT |
-| 2 | Pipedrive | CRM | ✅ | ❌ | MANQUANT |
+| 2 | Pipedrive | CRM | ✅ | ✅ | DONE (Session 249.3) |
 | 3 | Zoho CRM | CRM | ✅ | ❌ | MANQUANT |
 | 4 | WooCommerce | E-commerce | ✅ | ❌ | MANQUANT |
 | 5 | Magento | E-commerce | ✅ | ❌ | MANQUANT |
 | 6 | Microsoft Teams | Communication | ✅ | ❌ | MANQUANT |
 | 7 | WhatsApp Business | Communication | ✅ | ❌ | MANQUANT |
 | 8 | Outlook Calendar | Calendrier | ✅ | ❌ | MANQUANT |
-| 9 | Calendly | Calendrier | ✅ | ❌ | MANQUANT |
+| 9 | Calendly | Calendrier | ✅ | ✅ | DONE (Session 249.3) |
 | 10 | Cal.com | Calendrier | ✅ | ❌ | MANQUANT |
 | 11 | Zendesk | Support | ✅ | ❌ | MANQUANT |
-| 12 | Freshdesk | Support | ✅ | ❌ | MANQUANT |
+| 12 | Freshdesk | Support | ✅ | ✅ | DONE (Session 249.3) |
 | 13 | Intercom | Support | ✅ | ❌ | MANQUANT |
 | 14 | Crisp | Support | ✅ | ❌ | MANQUANT |
 
@@ -312,12 +312,17 @@ node core/SecretVault.cjs --health  # ✅ OK
 |:----:|:------------|:-------|:----------|:------:|
 | J1-J2 | Google Sheets | OAuth scope ajout, CRUD cells, read range | `mcp-server/src/tools/sheets.ts` | ✅ DONE |
 | J3-J4 | Google Drive | List files, upload, download, share | `mcp-server/src/tools/drive.ts` | ✅ DONE |
-| J5-J6 | Calendly | Availability, book event, cancel | `mcp-server/src/tools/calendly.ts` | ⏳ TODO |
-| J7-J8 | Freshdesk | Create ticket, get ticket, reply | `mcp-server/src/tools/freshdesk.ts` | ⏳ TODO |
-| J9-J10 | Pipedrive | Contacts, deals, activities | `integrations/pipedrive-crm.cjs` | ⏳ TODO |
+| J5-J6 | Calendly | Availability, book event, cancel | `mcp-server/src/tools/calendly.ts` | ✅ DONE |
+| J7-J8 | Freshdesk | Create ticket, get ticket, reply | `mcp-server/src/tools/freshdesk.ts` | ✅ DONE |
+| J9-J10 | Pipedrive | Contacts, deals, activities | `mcp-server/src/tools/pipedrive.ts` | ✅ DONE |
 
 **Effort Phase 1**: 10-15 jours
-**Progress Phase 1**: 2/5 (40%) - Google Apps (Sheets + Drive) COMPLETE
+**Progress Phase 1**: 5/5 (100%) - COMPLETE (Session 249.3)
+- Google Sheets ✅
+- Google Drive ✅
+- Calendly ✅ (6 tools)
+- Freshdesk ✅ (6 tools)
+- Pipedrive ✅ (7 tools)
 
 ### 5.2 Phase 2: Communication (Semaine 3-4)
 
@@ -412,16 +417,16 @@ mcp-server/src/tools/
 ├── slack.ts          # ✅ Existant
 ├── ucp.ts            # ✅ Existant
 ├── gmail.ts          # 🆕 À créer
-├── drive.ts          # 🆕 À créer
-├── sheets.ts         # 🆕 À créer
+├── drive.ts          # ✅ DONE (6 tools)
+├── sheets.ts         # ✅ DONE (5 tools)
 ├── docs.ts           # 🆕 À créer
-├── calendly.ts       # 🆕 À créer
+├── calendly.ts       # ✅ DONE (6 tools)
 ├── calcom.ts         # 🆕 À créer
 ├── outlook.ts        # 🆕 À créer
 ├── teams.ts          # 🆕 À créer
 ├── whatsapp.ts       # 🆕 À créer
 ├── zendesk.ts        # 🆕 À créer
-├── freshdesk.ts      # 🆕 À créer
+├── freshdesk.ts      # ✅ DONE (6 tools)
 ├── intercom.ts       # 🆕 À créer
 └── crisp.ts          # 🆕 À créer
 
@@ -430,7 +435,7 @@ integrations/
 ├── voice-ecommerce-tools.cjs # ✅ À compléter
 ├── voice-crm-tools.cjs       # ✅ Existant
 ├── salesforce-crm.cjs        # 🆕 À créer
-├── pipedrive-crm.cjs         # 🆕 À créer
+├── pipedrive.ts              # ✅ DONE (7 tools) - MCP tool
 ├── zoho-crm.cjs              # 🆕 À créer
 ├── woocommerce.cjs           # 🆕 À créer
 └── magento.cjs               # 🆕 À créer
