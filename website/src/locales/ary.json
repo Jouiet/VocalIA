@@ -4,6 +4,9 @@
     "description": "بدّل تعاملاتك مع الكليان بوكيلات صوتية ذكية. ويدجت ويب و تيليفون PSTN. 5 لغات."
   },
   "nav": {
+    "products": "المنتوجات",
+    "solutions": "الحلول",
+    "resources": "الموارد",
     "features": "المميزات",
     "pricing": "الأثمان",
     "demo": "الديمو",
@@ -217,7 +220,8 @@
       ],
       "cta": "تواصل معانا"
     },
-    "overage": "دقيقة زايدة"
+    "overage": "دقيقة زايدة",
+    "starting_from": "من 0 {{currency}}/شهر"
   },
   "stats": {
     "latency": "متوسط التأخير",
@@ -229,6 +233,41 @@
     "title": "واجد باش تبدّل خدمة الكليان ديالك؟",
     "subtitle": "نشر الوكيل الصوتي الذكي الأول ديالك في أقل من 5 دقائق.",
     "button": "بدا دابا"
+  },
+  "products_menu": {
+    "widget_subtitle": "مساعد صوتي ويب مجاني",
+    "telephony_subtitle": "تيليفون ذكي للشركات"
+  },
+  "solutions_menu": {
+    "by_use_case": "حسب الاستعمال",
+    "by_industry": "حسب القطاع",
+    "popular": "الأكثر طلباً",
+    "ecommerce": "التجارة الإلكترونية",
+    "customer_support": "خدمة الكليان",
+    "appointments": "حجز المواعيد",
+    "lead_qualification": "تأهيل الكليان المحتملين",
+    "surveys": "الاستطلاعات",
+    "healthcare": "الصحة والطب",
+    "real_estate": "العقار",
+    "finance": "الخدمات المالية",
+    "retail": "التجارة",
+    "hospitality": "الفنادق والسياحة",
+    "multilanguage": "متعدد اللغات (5 لغات)",
+    "darija_ai": "الدارجة AI"
+  },
+  "resources_menu": {
+    "docs": "الوثائق",
+    "api": "API Reference",
+    "integrations": "التكاملات",
+    "blog": "المدونة",
+    "changelog": "سجل التغييرات",
+    "status": "الحالة"
+  },
+  "a11y": {
+    "skip_to_content": "سير للمحتوى الرئيسي"
+  },
+  "actions": {
+    "request_demo": "طلب ديمو"
   },
   "footer": {
     "tagline": "وكيلات صوتية ذكية للشركات",

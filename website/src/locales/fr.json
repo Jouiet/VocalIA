@@ -4,6 +4,9 @@
     "description": "Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées."
   },
   "nav": {
+    "products": "Produits",
+    "solutions": "Solutions",
+    "resources": "Ressources",
     "features": "Fonctionnalités",
     "pricing": "Tarifs",
     "demo": "Démo",
@@ -217,7 +220,8 @@
         ],
         "cta": "Nous Contacter"
       },
-      "overage": "Min. supplémentaire"
+      "overage": "Min. supplémentaire",
+      "starting_from": "À partir de 0 {{currency}}/mois"
     },
     "stats": {
       "latency": "Latence moyenne",
@@ -229,6 +233,41 @@
       "title": "Prêt à Transformer Votre Service Client?",
       "subtitle": "Déployez votre premier agent vocal IA en moins de 5 minutes.",
       "button": "Démarrer Maintenant"
+    },
+    "products_menu": {
+      "widget_subtitle": "Assistant vocal web gratuit",
+      "telephony_subtitle": "Téléphonie IA B2B"
+    },
+    "solutions_menu": {
+      "by_use_case": "Par Cas d'Usage",
+      "by_industry": "Par Industrie",
+      "popular": "Populaire",
+      "ecommerce": "E-commerce",
+      "customer_support": "Service Client",
+      "appointments": "Prise de RDV",
+      "lead_qualification": "Qualification Leads",
+      "surveys": "Enquêtes & Sondages",
+      "healthcare": "Santé & Médical",
+      "real_estate": "Immobilier",
+      "finance": "Services Financiers",
+      "retail": "Retail & Commerce",
+      "hospitality": "Hôtellerie & Tourisme",
+      "multilanguage": "Multi-Langue (5 langues)",
+      "darija_ai": "Darija AI"
+    },
+    "resources_menu": {
+      "docs": "Documentation",
+      "api": "API Reference",
+      "integrations": "Intégrations",
+      "blog": "Blog",
+      "changelog": "Changelog",
+      "status": "Status"
+    },
+    "a11y": {
+      "skip_to_content": "Aller au contenu principal"
+    },
+    "actions": {
+      "request_demo": "Demander une démo"
     },
     "footer": {
       "tagline": "Agents Vocaux IA pour Entreprises",

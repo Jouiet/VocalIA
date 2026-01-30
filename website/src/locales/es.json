@@ -4,6 +4,9 @@
     "description": "Transforme sus interacciones con clientes mediante agentes vocales IA inteligentes. Widget web y telefonía PSTN. 5 idiomas soportados."
   },
   "nav": {
+    "products": "Productos",
+    "solutions": "Soluciones",
+    "resources": "Recursos",
     "features": "Funcionalidades",
     "pricing": "Precios",
     "demo": "Demo",
@@ -217,7 +220,8 @@
       ],
       "cta": "Contáctenos"
     },
-    "overage": "Min. adicional"
+    "overage": "Min. adicional",
+    "starting_from": "Desde 0 {{currency}}/mes"
   },
   "stats": {
     "latency": "Latencia promedio",
@@ -229,6 +233,41 @@
     "title": "¿Listo para Transformar su Servicio al Cliente?",
     "subtitle": "Despliegue su primer agente vocal IA en menos de 5 minutos.",
     "button": "Comenzar Ahora"
+  },
+  "products_menu": {
+    "widget_subtitle": "Asistente vocal web gratuito",
+    "telephony_subtitle": "Telefonía IA B2B"
+  },
+  "solutions_menu": {
+    "by_use_case": "Por Caso de Uso",
+    "by_industry": "Por Industria",
+    "popular": "Popular",
+    "ecommerce": "E-commerce",
+    "customer_support": "Atención al Cliente",
+    "appointments": "Citas",
+    "lead_qualification": "Calificación de Leads",
+    "surveys": "Encuestas y Sondeos",
+    "healthcare": "Salud y Médico",
+    "real_estate": "Inmobiliaria",
+    "finance": "Servicios Financieros",
+    "retail": "Retail y Comercio",
+    "hospitality": "Hotelería y Turismo",
+    "multilanguage": "Multi-Idioma (5 idiomas)",
+    "darija_ai": "Darija AI"
+  },
+  "resources_menu": {
+    "docs": "Documentación",
+    "api": "API Reference",
+    "integrations": "Integraciones",
+    "blog": "Blog",
+    "changelog": "Changelog",
+    "status": "Estado"
+  },
+  "a11y": {
+    "skip_to_content": "Ir al contenido principal"
+  },
+  "actions": {
+    "request_demo": "Solicitar una demo"
   },
   "footer": {
     "tagline": "Agentes Vocales IA para Empresas",

@@ -4,6 +4,9 @@
     "description": "حوّل تفاعلاتك مع العملاء باستخدام وكلاء صوتيين ذكيين. ويدجت ويب واتصالات PSTN. دعم 5 لغات."
   },
   "nav": {
+    "products": "المنتجات",
+    "solutions": "الحلول",
+    "resources": "الموارد",
     "features": "المميزات",
     "pricing": "الأسعار",
     "demo": "العرض التوضيحي",
@@ -217,7 +220,8 @@
       ],
       "cta": "تواصل معنا"
     },
-    "overage": "دقيقة إضافية"
+    "overage": "دقيقة إضافية",
+    "starting_from": "ابتداءً من 0 {{currency}}/شهر"
   },
   "stats": {
     "latency": "متوسط التأخير",
@@ -229,6 +233,41 @@
     "title": "هل أنت مستعد لتحويل خدمة عملائك؟",
     "subtitle": "انشر وكيلك الصوتي الأول بالذكاء الاصطناعي في أقل من 5 دقائق.",
     "button": "ابدأ الآن"
+  },
+  "products_menu": {
+    "widget_subtitle": "مساعد صوتي ويب مجاني",
+    "telephony_subtitle": "اتصالات ذكية للأعمال"
+  },
+  "solutions_menu": {
+    "by_use_case": "حسب الاستخدام",
+    "by_industry": "حسب القطاع",
+    "popular": "الأكثر شعبية",
+    "ecommerce": "التجارة الإلكترونية",
+    "customer_support": "خدمة العملاء",
+    "appointments": "حجز المواعيد",
+    "lead_qualification": "تأهيل العملاء المحتملين",
+    "surveys": "الاستطلاعات والاستبيانات",
+    "healthcare": "الصحة والطب",
+    "real_estate": "العقارات",
+    "finance": "الخدمات المالية",
+    "retail": "التجزئة والتجارة",
+    "hospitality": "الضيافة والسياحة",
+    "multilanguage": "متعدد اللغات (5 لغات)",
+    "darija_ai": "الدارجة AI"
+  },
+  "resources_menu": {
+    "docs": "الوثائق",
+    "api": "API Reference",
+    "integrations": "التكاملات",
+    "blog": "المدونة",
+    "changelog": "سجل التغييرات",
+    "status": "الحالة"
+  },
+  "a11y": {
+    "skip_to_content": "انتقل إلى المحتوى الرئيسي"
+  },
+  "actions": {
+    "request_demo": "طلب عرض توضيحي"
   },
   "footer": {
     "tagline": "وكلاء صوتيون بالذكاء الاصطناعي للشركات",

@@ -4,6 +4,9 @@
     "description": "Transform customer interactions with intelligent AI voice agents. Web widget and PSTN telephony. 5 languages supported."
   },
   "nav": {
+    "products": "Products",
+    "solutions": "Solutions",
+    "resources": "Resources",
     "features": "Features",
     "pricing": "Pricing",
     "demo": "Demo",
@@ -217,7 +220,8 @@
         ],
         "cta": "Contact Us"
       },
-      "overage": "Additional min"
+      "overage": "Additional min",
+      "starting_from": "Starting from 0 {{currency}}/month"
     },
     "stats": {
       "latency": "Average latency",
@@ -229,6 +233,41 @@
       "title": "Ready to Transform Your Customer Service?",
       "subtitle": "Deploy your first AI voice agent in under 5 minutes.",
       "button": "Get Started Now"
+    },
+    "products_menu": {
+      "widget_subtitle": "Free web voice assistant",
+      "telephony_subtitle": "B2B AI Telephony"
+    },
+    "solutions_menu": {
+      "by_use_case": "By Use Case",
+      "by_industry": "By Industry",
+      "popular": "Popular",
+      "ecommerce": "E-commerce",
+      "customer_support": "Customer Support",
+      "appointments": "Appointments",
+      "lead_qualification": "Lead Qualification",
+      "surveys": "Surveys & Polls",
+      "healthcare": "Healthcare",
+      "real_estate": "Real Estate",
+      "finance": "Financial Services",
+      "retail": "Retail & Commerce",
+      "hospitality": "Hospitality & Tourism",
+      "multilanguage": "Multi-Language (5 languages)",
+      "darija_ai": "Darija AI"
+    },
+    "resources_menu": {
+      "docs": "Documentation",
+      "api": "API Reference",
+      "integrations": "Integrations",
+      "blog": "Blog",
+      "changelog": "Changelog",
+      "status": "Status"
+    },
+    "a11y": {
+      "skip_to_content": "Skip to main content"
+    },
+    "actions": {
+      "request_demo": "Request a demo"
     },
     "footer": {
       "tagline": "AI Voice Agents for Business",
