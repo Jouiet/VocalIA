@@ -3912,5 +3912,43 @@ grep "Outlook\|Salesforce\|Cal\.com" website/src/locales/*.json | grep -v "qa-re
 
 ---
 
-*Màj: 30/01/2026 - Session 249.10 (Factual Cleanup COMPLETE)*
+## Session 250 - SOTA 2026 Design Upgrades (30/01/2026)
+
+**Objectif**: Implémenter les standards design 2026 (Bento Grid, WCAG accessibility).
+
+### 1. Bento Grid Layout - features.html
+
+| Élément | Avant | Après |
+|:--------|:------|:------|
+| Grid Layout | `grid-cols-3` standard | `bento-grid` asymétrique |
+| Featured Card | Même taille | `bento-large` (2×2) avec metrics |
+| Wide Cards | Standard | `bento-wide` (2×1) |
+| Animations | Aucune | `data-bento-item` staggered |
+| Icons | `sparkles` partout | Diversifiés (zap, globe, brain, etc.) |
+
+### 2. WCAG 2.1 AA - Dashboards
+
+| Dashboard | Issue | Fix |
+|:----------|:------|:----|
+| client.html | Status dots color-only | `check-circle` + `pause-circle` icons |
+| admin.html | Service status dots | `check-circle` icons |
+| Both | Missing sr-only labels | Added `<span class="sr-only">Statut:</span>` |
+
+### CSS Rebuild
+
+```
+Tailwind CSS v4.1.18
+input.css: 3058 lines
+Build time: 398ms
+```
+
+**Commits:**
+
+- `4d1c58a feat(design): SOTA 2026 upgrades - Bento Grid + WCAG fixes`
+
+**Statut final**: Design SOTA 2026 ✅ | Bento Grid ✅ | WCAG AA ✅
+
+---
+
+*Màj: 30/01/2026 - Session 250 (SOTA Design Upgrades)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

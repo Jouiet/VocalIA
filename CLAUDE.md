@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.6.0 | 30/01/2026 | Session 249.10 | Health: 100%
+> Version: 6.7.0 | 30/01/2026 | Session 250 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
 > SDKs: Python | Node.js | MCP Server v0.5.5 (**116 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **22 native** | WordPress Plugin ✅ | Frontend: **100% factuel** | 0 fake claims
-> Cleanup: Cal.com/Intercom/Crisp DELETED | Salesforce/Teams/WhatsApp/Outlook REMOVED from UI
+> Design: Bento Grid ✅ | WCAG 2.1 AA ✅ | OKLCH P3 ✅ | Liquid Glass ✅ | 3058 CSS lines
 
 ## Identité
 
