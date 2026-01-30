@@ -1,7 +1,7 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.4.0 | **Date**: 30/01/2026 | **Session**: 235
-> **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (130KB)
+> **Version**: 4.6.0 | **Date**: 30/01/2026 | **Session**: 237
+> **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: Technology Disclosure Protection ✅ (Session 222)
 > **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
@@ -9,13 +9,14 @@
 > **Blog**: 7 articles with working links ✅ (Session 224.2)
 > **Docs**: /docs/ serves docs/index.html ✅ (Session 224.2)
 > **Dashboards**: Liquid-Glass + Light Mode + Semantic Icons ✅ (Session 235)
-> **i18n**: 5 Languages (FR, EN, ES, AR, ARY) + RTL Support ✅ (Session 235)
-> **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229)
+> **i18n**: 5 Languages (FR, EN, ES, AR, ARY) + RTL Support ✅ (Session 236)
+> **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229, 237)
 > **Integrations**: 21 brand SVG logos + seamless marquee ✅ (Session 228.2)
-> **Tailwind**: Safelist utilities (40+ classes) ✅ (Session 229)
+> **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
 > **MCP Server**: v0.3.2 SOTA (21 tools) ✅ (Session 232)
+> **CSS Safelist**: Opacity classes (bg-white/25, etc.) ✅ (Session 237)
 
 ---
 

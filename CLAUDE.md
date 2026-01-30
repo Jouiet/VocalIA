@@ -1,10 +1,11 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.5.0 | 30/01/2026 | Session 236 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.6.0 | 30/01/2026 | Session 237 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
 > i18n: ✅ 5 Languages (FR, EN, ES, AR, ARY) | RTL ✅ | 37 pages ✅ | Voice Assistant 5 langs ✅
+> CSS: Tailwind v4.1.18 ✅ | Safelist opacity classes ✅ | 141KB compiled
 
 ## Identité
 
@@ -1980,7 +1981,49 @@ npm run build     # → dist/index.js, dist/index.mjs, dist/index.d.ts ✅
 
 ---
 
-*Màj: 30/01/2026 - Session 236 (Complete i18n Implementation)*
+## Session 237 Summary
+
+**CSS Safelist Fix - Tailwind Opacity Classes:**
+
+### Problem Identified
+
+Tailwind CSS v4 pre-compilation was missing opacity classes not used in HTML:
+- `bg-white/25`, `bg-white/30` needed for marquee band
+- Workaround was inline `style="background-color: rgba(255,255,255,0.25)"`
+
+### Solution Implemented
+
+Added safelist utilities to `input.css`:
+
+```css
+.safelist-white-opacity { @apply bg-white/5 ... bg-white/90; }
+.safelist-slate-opacity { @apply bg-slate-500/20 ... bg-slate-800/95; }
+.safelist-black-opacity { @apply bg-black/10 ... bg-black/80; }
+.safelist-vocalia-opacity { @apply bg-vocalia-500/10 ... bg-vocalia-600/30; }
+.safelist-border-opacity { @apply border-white/10 ... border-slate-700/70; }
+```
+
+### Metrics
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| CSS file size | 130KB | **141KB** |
+| Opacity classes | ~20 | **60+** |
+| Inline style workarounds | 1 | **0** |
+
+### Verification
+
+- Playwright MCP visual test ✅
+- Health check: 39/39 ✅
+- Live site working ✅
+
+### Commits Session 237
+
+- `acf97d4` - fix(css): Add safelist for opacity classes
+
+---
+
+*Màj: 30/01/2026 - Session 237 (CSS Safelist Fix)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ BUILD READY | Node.js ✅ BUILD READY | MCP v0.3.2 (21 tools)*

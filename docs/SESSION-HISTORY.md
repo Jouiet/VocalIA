@@ -2641,10 +2641,55 @@ grep "rgba(255,255,255,0.25)" website/index.html
 
 ---
 
+---
+
+## Session 237 - CSS Safelist Fix
+
+### Context
+
+Session 228.2 identified that Tailwind v4 pre-compilation was missing opacity classes not used in the HTML source. Workaround was inline `style="background-color: rgba(255,255,255,0.25)"` for marquee band.
+
+### Solution
+
+Added safelist utilities to `website/src/input.css`:
+
+```css
+/* White opacity variants */
+.safelist-white-opacity {
+  @apply bg-white/5 bg-white/10 bg-white/15 bg-white/20 bg-white/25 bg-white/30 bg-white/40 bg-white/50 bg-white/60 bg-white/70 bg-white/80 bg-white/90;
+}
+
+/* Slate, Black, Vocalia, Border variants also added */
+```
+
+### Results
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| CSS file | 130KB | 141KB (+11KB) |
+| Opacity classes | ~20 | 60+ |
+| Inline style workarounds | 1 | 0 |
+
+### Verification
+
+- `grep '\.bg-white\\/25' style.css` → Found ✅
+- Playwright MCP visual test → Integrations section working ✅
+- Health check: 39/39 ✅
+
+### PLAN ACTIONNABLE (Session 238)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | **SDKs publish** | **P0** | User: `twine upload` + `npm publish` |
+| 2 | API Backend deploy | P1 | api.vocalia.ma for full functionality |
+| 3 | MCP Server npm publish | P2 | After SDK publish |
+
+---
+
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 30/01/2026 - Session 228.2 (Integrations Logos & Marquee + Tailwind Limitation)*
+*Màj: 30/01/2026 - Session 237 (CSS Safelist Fix)*
 *Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Icons: Lucide 2026 ✅ | Logos: 21 SVG ✅*
-*Dashboards: Light/Dark mode fully functional ✅*
-*Blog: 7 articles with working links | Docs: /docs/ fixed*
-*Technical Debt: Tailwind recompilation needed for new opacity classes*
+*CSS: Tailwind v4.1.18 ✅ | Safelist classes ✅ | 141KB compiled*
+*i18n: 5 Languages ✅ | 37 pages ✅ | Voice Assistant 5 langs ✅*
+*Technical Debt: RESOLVED - No more inline style workarounds*
