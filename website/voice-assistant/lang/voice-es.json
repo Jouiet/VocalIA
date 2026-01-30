@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "lang": "es",
+    "code": "es",
+    "rtl": false,
+    "speechSynthesis": "es-ES",
+    "speechRecognition": "es-ES"
+  },
+  "ui": {
+    "headerTitle": "Asistente VocalIA",
+    "headerSubtitleVoice": "Habla o escribe tu pregunta",
+    "headerSubtitleText": "Escribe tu pregunta",
+    "placeholder": "Haz tu pregunta...",
+    "welcomeMessage": "Hola! Soy el asistente VocalIA. Como puedo ayudarte con tu proyecto de IA de voz?",
+    "welcomeMessageTextOnly": "Hola! Soy el asistente VocalIA. Preguntame lo que quieras sobre nuestras soluciones de IA de voz.",
+    "errorMessage": "Lo siento, ha ocurrido un error. Por favor, intentalo de nuevo.",
+    "ariaOpenAssistant": "Abrir asistente de voz VocalIA",
+    "ariaClose": "Cerrar",
+    "ariaMic": "Activar microfono",
+    "ariaSend": "Enviar mensaje",
+    "notifTitle": "Necesitas ayuda?",
+    "notifSub": "Hablemos de tu proyecto de IA de voz",
+    "ctaButton": "Solicitar una demo",
+    "ctaLink": "/booking.html"
+  },
+  "topics": {
+    "pricing": {
+      "keywords": ["precio", "coste", "cuanto", "presupuesto", "tarifa", "cotizacion"],
+      "response": "Las soluciones VocalIA empiezan en 99EUR/mes para el Voice Widget y 0,06EUR/minuto para la telefonia AI. Tambien ofrecemos paquetes personalizados segun tu volumen. Quieres un presupuesto adaptado a tu uso?"
+    },
+    "demo": {
+      "keywords": ["demo", "demostracion", "probar", "ver", "mostrar"],
+      "response": "Me encantaria mostrarte VocalIA en accion! Puedes reservar una demo de 30 minutos con nuestro equipo. Te mostraremos el widget en vivo y la telefonia AI. Te gustaria agendar una llamada?"
+    },
+    "widget": {
+      "keywords": ["widget", "sitio web", "integracion web", "chat de voz", "insertar"],
+      "response": "El Voice Widget de VocalIA se integra con solo una linea de codigo en tu sitio. Usa la Web Speech API del navegador (gratis!), soporta frances, ingles y espanol, y ofrece reconocimiento de voz nativo. Quieres ver una demo?"
+    },
+    "telephony": {
+      "keywords": ["telefono", "telefonia", "llamada", "llamadas", "pbx", "ivr", "centralita"],
+      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a solo 0,06EUR/minuto (60% mas barato que Vapi). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
+    },
+    "integration": {
+      "keywords": ["integracion", "crm", "hubspot", "shopify", "api", "webhook"],
+      "response": "VocalIA se integra nativamente con HubSpot, Shopify y Klaviyo. Tambien tenemos una API REST completa y webhooks para tus sistemas personalizados. Que herramientas usas actualmente?"
+    },
+    "languages": {
+      "keywords": ["idioma", "idiomas", "multilingue", "arabe", "darija", "frances", "ingles"],
+      "response": "VocalIA soporta 5 idiomas: Frances, Ingles, Espanol, Arabe estandar y Darija marroqui. Somos la unica solucion en Marruecos con soporte nativo de Darija gracias a Atlas-Chat-9B."
+    },
+    "competitors": {
+      "keywords": ["vapi", "retell", "bland", "competidor", "alternativa", "comparacion", "versus"],
+      "response": "Comparado con Vapi (0,15-0,33EUR/min) o Retell (0,13-0,31EUR/min), VocalIA cuesta solo 0,06EUR/min - eso es 60% de ahorro. Ademas, ofrecemos Widget + Telefonia en una sola plataforma y soporte exclusivo de Darija."
+    },
+    "leads": {
+      "keywords": ["lead", "leads", "prospecto", "calificacion", "bant", "cualificar"],
+      "response": "Nuestro sistema califica automaticamente tus leads usando puntuacion BANT (Presupuesto, Autoridad, Necesidad, Tiempo). Cada llamada genera un registro de lead enriquecido en tu CRM con puntuacion y recomendacion de accion."
+    },
+    "personas": {
+      "keywords": ["persona", "agente", "personalidad", "voz", "tono"],
+      "response": "VocalIA ofrece 30 personas preconfiguradas para diferentes industrias: Inmobiliaria, Dental, E-commerce, Hosteleria... Cada persona tiene su propio tono, vocabulario y experiencia del sector. Que industria te interesa?"
+    },
+    "yes": {
+      "keywords": ["si", "ok", "claro", "por supuesto", "vale", "de acuerdo"],
+      "responses": {
+        "demo": "Perfecto! Haz clic en 'Solicitar una demo' abajo, o dame tu email y te envio un enlace de reserva.",
+        "pricing": "Te preparo un presupuesto. Puedes darme tu email y el volumen de llamadas mensual estimado?",
+        "default": "Genial! Como mas puedo ayudarte con VocalIA?"
+      }
+    }
+  },
+  "booking": {
+    "service": "Demo VocalIA",
+    "keywords": ["reservar", "cita", "agendar", "programar", "calendario"],
+    "cancelKeywords": ["cancelar", "parar", "no gracias", "dejalo"],
+    "confirmKeywords": ["confirmar", "confirmado", "validar", "perfecto", "esta bien"],
+    "slotKeywords": {
+      "1": ["primero", "primera", "1", "uno", "una"],
+      "2": ["segundo", "segunda", "2", "dos"],
+      "3": ["tercero", "tercera", "3", "tres", "ultimo", "ultima"]
+    },
+    "messages": {
+      "start": "Te ayudo a reservar una demo de VocalIA. Cual es tu nombre?",
+      "askName": "No he entendido tu nombre. Puedes repetirlo?",
+      "askEmail": "Encantado de conocerte {name}! Cual es tu direccion de email?",
+      "invalidEmail": "Esa direccion de email no parece valida. Puedes verificarla?",
+      "noSlots": "Lo siento, no hay horarios disponibles esta semana. Contactanos en contact@vocalia.ma",
+      "slotsIntro": "Aqui estan los horarios disponibles:\n",
+      "slotFormat": "{index}. {date} a las {time}",
+      "slotsOutro": "\nDime tu eleccion (1, 2 o 3).",
+      "slotNotUnderstood": "No he entendido tu eleccion. Di 1, 2 o 3 para seleccionar un horario.",
+      "confirmIntro": "Perfecto! Aqui esta el resumen:\n",
+      "confirmName": "Nombre: {name}",
+      "confirmEmail": "Email: {email}",
+      "confirmDate": "Fecha: {date} a las {time}",
+      "confirmOutro": "\n\nDi 'confirmar' para validar esta cita.",
+      "confirmPrompt": "Di 'confirmar' para validar o 'cancelar' para empezar de nuevo.",
+      "success": "Tu demo esta confirmada! Se ha enviado un email de confirmacion a {email}. Hasta pronto!",
+      "failure": "Lo siento, la reserva ha fallado: {message}. Contacta contact@vocalia.ma",
+      "cancelled": "Sin problema, reserva cancelada. Como mas puedo ayudarte?"
+    }
+  },
+  "industries": {
+    "ecommerce": {
+      "keywords": ["ecommerce", "e-commerce", "tienda", "comercio electronico", "venta online", "retail"],
+      "intro": "VocalIA ayuda a los e-commerce a automatizar el soporte al cliente, el seguimiento de pedidos y las ventas por telefono.",
+      "services": "Para e-commerce, ofrecemos: seguimiento de pedidos por voz, calificacion de compradores, recuperacion de carritos abandonados y soporte 24/7.",
+      "leads": "Para calificar tus leads de e-commerce, nuestra IA analiza la intencion de compra, presupuesto y urgencia de la necesidad."
+    },
+    "inmobiliaria": {
+      "keywords": ["inmobiliaria", "agencia", "apartamento", "casa", "propiedad", "alquiler", "piso"],
+      "intro": "VocalIA califica tus prospectos inmobiliarios, agenda visitas y responde preguntas sobre propiedades 24/7.",
+      "services": "Para inmobiliaria: calificacion comprador/vendedor, citas de visitas, informacion de propiedades y seguimiento de expedientes.",
+      "leads": "Calificamos tus leads inmobiliarios segun presupuesto, tipo de propiedad buscada y plazo de compra."
+    },
+    "medical": {
+      "keywords": ["medico", "doctor", "dentista", "clinica", "consultorio", "salud", "paciente"],
+      "intro": "VocalIA gestiona la reserva de citas y los recordatorios de pacientes para profesionales de la salud.",
+      "services": "Para el sector medico: citas de pacientes, recordatorios automaticos, gestion de urgencias e informacion practica.",
+      "leads": "Clasificamos las llamadas por urgencia y dirigimos a los pacientes al profesional adecuado."
+    },
+    "hotel": {
+      "keywords": ["hotel", "reserva", "habitacion", "alojamiento", "hosteleria", "turismo"],
+      "intro": "VocalIA automatiza las reservas y el servicio al cliente para la industria hotelera.",
+      "services": "Para hosteleria: reservas de habitaciones, informacion de servicios, check-in/out y conserjeria 24/7.",
+      "leads": "Capturamos solicitudes de reserva con fechas, numero de huespedes y preferencias."
+    }
+  },
+  "needs": {
+    "quote": ["presupuesto", "precio", "cuanto", "coste", "tarifa"],
+    "demo": ["demo", "ver", "probar", "mostrar"],
+    "info": ["informacion", "como", "que", "explicar", "dime"],
+    "support": ["ayuda", "problema", "error", "no funciona", "fallo"]
+  },
+  "defaults": {
+    "qualificationQuestion": "Cual es tu industria? Tenemos soluciones adaptadas para e-commerce, inmobiliaria, salud y muchas mas.",
+    "industryResponse": "Tenemos experiencia especifica para el sector {industry}. Te gustaria saber mas sobre nuestras soluciones dedicadas?",
+    "industryFollowup": " Te gustaria ver como VocalIA puede automatizar tus llamadas?",
+    "servicesFollowup": " Te gustaria una demostracion personalizada?",
+    "leadsFollowup": " Te gustaria ver nuestra calificacion BANT en accion?"
+  }
+}
