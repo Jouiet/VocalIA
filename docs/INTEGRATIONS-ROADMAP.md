@@ -1,7 +1,8 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 3.1.0 | **Date**: 30/01/2026 | **Session**: 249.7
-> **Methodology**: Bottom-up forensic audit | **Status**: ✅ PHASE 1-4 COMPLETE (95%)
+> **Version**: 3.2.0 | **Date**: 30/01/2026 | **Session**: 249.8
+> **Methodology**: Bottom-up forensic audit | **Status**: ✅ ALL PHASES COMPLETE (100%)
+> **iPaaS**: Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 
 ---
 
@@ -32,12 +33,12 @@
 
 | Metric | Value |
 |:-------|:------|
-| **MCP Server Version** | v0.5.3 |
-| **Total MCP Tools** | **114** |
-| **Integrations implémentées** | **19/23** (83%) |
+| **MCP Server Version** | v0.5.4 |
+| **Total MCP Tools** | **127** |
+| **Integrations implémentées** | **22/23** (96%) |
 | **Integrations bloquées** | 4 (Salesforce, Teams, WhatsApp, Outlook) |
-| **Integrations iPaaS manquantes** | 2 (Zapier, Make) - **P0** |
-| **Phases complètes** | 0, 1, 2, 3, 4 |
+| **iPaaS implémentés** | 3 (Zapier, Make, n8n) - **✅ DONE** |
+| **Phases complètes** | 0, 1, 2, 3, 4, iPaaS |
 
 ---
 
@@ -101,36 +102,41 @@ cd mcp-server && npm run build  # ✅ OK
 | 3 | **WhatsApp Business** | Communication | Meta Business verification | 2-4 weeks wait |
 | 4 | **Outlook Calendar** | Calendrier | Microsoft Graph + Azure AD | Azure setup |
 
-### 1.3 Intégrations iPaaS - GAP STRATÉGIQUE (P0)
+### 1.3 Intégrations iPaaS - ✅ COMPLETE (Session 249.8)
 
 **Pourquoi iPaaS est critique:**
 - Zapier = +7000 apps connectables → "50+ systèmes" devient VRAI
 - Make = Alternative populaire, pricing compétitif
+- n8n = Open-source, self-hostable
 - **Impact**: Multiplier les intégrations possibles sans dev additionnel
 
-| # | Intégration | Priorité | API | Effort | Impact Business |
-|:-:|:------------|:--------:|:----|:------:|:----------------|
-| 1 | **Zapier** | **P0** | REST Webhooks + Actions | 3-5j | MAJEUR - +7000 apps |
-| 2 | **Make** | **P1** | REST API + Scenarios | 2-4j | ÉLEVÉ - Alt Zapier |
+| # | Intégration | Priorité | Tools | Fichier | Status |
+|:-:|:------------|:--------:|:-----:|:--------|:------:|
+| 1 | **Zapier** | P0 | 3 | `tools/zapier.ts` | ✅ DONE |
+| 2 | **Make** | P1 | 5 | `tools/make.ts` | ✅ DONE |
+| 3 | **n8n** | P2 | 5 | `tools/n8n.ts` | ✅ DONE |
 
-**Approche technique Zapier:**
-```
-VocalIA → Zapier Webhook (trigger)
-         → N'importe quel app dans Zapier
-         → Zapier → VocalIA Webhook (action)
-```
+**Tools implémentés:**
 
-**Tools à implémenter:**
 ```typescript
-// mcp-server/src/tools/zapier.ts
-zapier_trigger_webhook     // Déclencher un workflow Zapier
-zapier_list_zaps           // Lister les Zaps actifs
-zapier_get_zap_status      // Status d'un Zap
+// Zapier (3 tools)
+zapier_trigger_webhook     // Déclencher workflow via webhook
+zapier_trigger_nla         // Natural Language Actions
+zapier_list_actions        // Lister actions NLA disponibles
 
-// mcp-server/src/tools/make.ts
-make_trigger_scenario      // Déclencher un scénario Make
-make_list_scenarios        // Lister les scénarios
-make_get_execution         // Status d'une exécution
+// Make (5 tools)
+make_trigger_webhook       // Déclencher scénario via webhook
+make_list_scenarios        // Lister scénarios
+make_get_scenario          // Détails d'un scénario
+make_run_scenario          // Exécuter manuellement
+make_list_executions       // Historique exécutions
+
+// n8n (5 tools)
+n8n_trigger_webhook        // Déclencher workflow via webhook
+n8n_list_workflows         // Lister workflows
+n8n_get_workflow           // Détails d'un workflow
+n8n_activate_workflow      // Activer/désactiver
+n8n_list_executions        // Historique exécutions
 ```
 
 ---

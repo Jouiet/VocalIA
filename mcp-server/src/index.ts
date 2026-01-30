@@ -3,9 +3,9 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 249.5 - v0.5.1 - REAL Implementation (NO MOCKS) + BM25 RAG
+ * Session 249.8 - v0.5.4 - REAL Implementation (NO MOCKS) + BM25 RAG + iPaaS
  *
- * TOOL CATEGORIES (114 tools - 11 always available, 103 require services):
+ * TOOL CATEGORIES (127 tools - 11 always available, 116 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -38,8 +38,11 @@
  * - Magento Tools (6): magento_list_orders, magento_get_order, magento_list_products, magento_get_product, magento_get_stock, magento_list_customers [REQUIRE MAGENTO]
  * - Export Tools (5): export_generate_csv, export_generate_xlsx, export_generate_pdf, export_generate_pdf_table, export_list_files [LOCAL]
  * - Email Tools (3): email_send, email_send_template, email_verify_smtp [REQUIRE SMTP]
+ * - Zapier Tools (3): zapier_trigger_webhook, zapier_trigger_nla, zapier_list_actions [REQUIRE ZAPIER]
+ * - Make Tools (5): make_trigger_webhook, make_list_scenarios, make_get_scenario, make_run_scenario, make_list_executions [REQUIRE MAKE]
+ * - n8n Tools (5): n8n_trigger_webhook, n8n_list_workflows, n8n_get_workflow, n8n_activate_workflow, n8n_list_executions [REQUIRE N8N]
  *
- * TOTAL: 114 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 127 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -70,6 +73,9 @@ import { zohoTools } from "./tools/zoho.js";
 import { magentoTools } from "./tools/magento.js";
 import { exportTools } from "./tools/export.js";
 import { emailTools } from "./tools/email.js";
+import { zapierTools } from "./tools/zapier.js";
+import { makeTools } from "./tools/make.js";
+import { n8nTools } from "./tools/n8n.js";
 
 const execAsync = promisify(exec);
 
@@ -1328,6 +1334,30 @@ server.tool(exportTools.list_exports.name, exportTools.list_exports.parameters, 
 server.tool(emailTools.send_email.name, emailTools.send_email.parameters, emailTools.send_email.handler);
 server.tool(emailTools.send_email_with_template.name, emailTools.send_email_with_template.parameters, emailTools.send_email_with_template.handler);
 server.tool(emailTools.verify_smtp.name, emailTools.verify_smtp.parameters, emailTools.verify_smtp.handler);
+
+// =============================================================================
+// IPAAS TOOLS (Zapier, Make, n8n) - Session 249.8
+// Strategic integrations enabling +7000 app connections
+// =============================================================================
+
+// Zapier Tools (3) - iPaaS #1 worldwide
+server.tool(zapierTools.trigger_webhook.name, zapierTools.trigger_webhook.parameters, zapierTools.trigger_webhook.handler);
+server.tool(zapierTools.trigger_nla.name, zapierTools.trigger_nla.parameters, zapierTools.trigger_nla.handler);
+server.tool(zapierTools.list_available_actions.name, zapierTools.list_available_actions.parameters, zapierTools.list_available_actions.handler);
+
+// Make Tools (5) - iPaaS #2, popular in Europe/MENA
+server.tool(makeTools.trigger_webhook.name, makeTools.trigger_webhook.parameters, makeTools.trigger_webhook.handler);
+server.tool(makeTools.list_scenarios.name, makeTools.list_scenarios.parameters, makeTools.list_scenarios.handler);
+server.tool(makeTools.get_scenario.name, makeTools.get_scenario.parameters, makeTools.get_scenario.handler);
+server.tool(makeTools.run_scenario.name, makeTools.run_scenario.parameters, makeTools.run_scenario.handler);
+server.tool(makeTools.list_executions.name, makeTools.list_executions.parameters, makeTools.list_executions.handler);
+
+// n8n Tools (5) - Open-source iPaaS, self-hostable
+server.tool(n8nTools.trigger_webhook.name, n8nTools.trigger_webhook.parameters, n8nTools.trigger_webhook.handler);
+server.tool(n8nTools.list_workflows.name, n8nTools.list_workflows.parameters, n8nTools.list_workflows.handler);
+server.tool(n8nTools.get_workflow.name, n8nTools.get_workflow.parameters, n8nTools.get_workflow.handler);
+server.tool(n8nTools.activate_workflow.name, n8nTools.activate_workflow.parameters, n8nTools.activate_workflow.handler);
+server.tool(n8nTools.list_executions.name, n8nTools.list_executions.parameters, n8nTools.list_executions.handler);
 
 // =============================================================================
 // SERVER STARTUP

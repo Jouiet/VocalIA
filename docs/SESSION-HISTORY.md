@@ -1,8 +1,8 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.20.0 | **Updated**: 30/01/2026 | **Session**: 249.7
+> **Version**: 3.21.0 | **Updated**: 30/01/2026 | **Session**: 249.8
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 19/20 (95%) | **MCP Tools**: 114 | **All Phases**: ✅ COMPLETE
+> **Integrations Check**: 22/23 (96%) | **MCP Tools**: 127 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅
 
 ---
 
@@ -3744,5 +3744,60 @@ cd mcp-server && npm run build  # ✅ SUCCESS
 
 ---
 
-*Màj: 30/01/2026 - Session 249.7 (Audit factuel - Corrections incohérences)*
+### Session 249.8: iPaaS Integration - Zapier, Make, n8n (30/01/2026)
+
+**Goal**: Implémenter les 3 iPaaS stratégiques pour atteindre "+7000 apps connectables"
+
+**Nouvelles intégrations MCP (13 tools):**
+
+| iPaaS | Fichier | Tools | Impact |
+|:------|:--------|:-----:|:-------|
+| **Zapier** | `tools/zapier.ts` | 3 | +7000 apps (#1 mondial) |
+| **Make** | `tools/make.ts` | 5 | Alt populaire Europe/MENA |
+| **n8n** | `tools/n8n.ts` | 5 | Open-source, self-hosted |
+
+**Zapier Tools (3):**
+
+| Tool | Description |
+|:-----|:------------|
+| `zapier_trigger_webhook` | Déclencher workflow Zapier |
+| `zapier_trigger_nla` | Natural Language Actions |
+| `zapier_list_actions` | Lister actions NLA |
+
+**Make Tools (5):**
+
+| Tool | Description |
+|:-----|:------------|
+| `make_trigger_webhook` | Déclencher scénario |
+| `make_list_scenarios` | Lister scénarios |
+| `make_get_scenario` | Détails scénario |
+| `make_run_scenario` | Exécuter scénario |
+| `make_list_executions` | Historique exécutions |
+
+**n8n Tools (5):**
+
+| Tool | Description |
+|:-----|:------------|
+| `n8n_trigger_webhook` | Déclencher workflow |
+| `n8n_list_workflows` | Lister workflows |
+| `n8n_get_workflow` | Détails workflow |
+| `n8n_activate_workflow` | Activer/désactiver |
+| `n8n_list_executions` | Historique exécutions |
+
+**Impact Business:**
+
+- "+50 connecteurs" devient **VRAI** via Zapier (+7000 apps)
+- Pricing compétitif: Make moins cher que Zapier
+- Self-hosted option: n8n pour clients enterprise
+- Support Europe/MENA: Make populaire dans ces marchés
+
+**Commits:**
+
+- `feat(ipaas): Add Zapier, Make, n8n MCP tools (13 tools)`
+
+**Statut final**: MCP Server v0.5.4 | **127 tools** | iPaaS ✅ | +7000 apps connectables
+
+---
+
+*Màj: 30/01/2026 - Session 249.8 (iPaaS - 127 tools)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

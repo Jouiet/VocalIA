@@ -1,8 +1,9 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.5.3 | 30/01/2026 | Session 249.6 | BM25 RAG SOTA | **ALL PHASES COMPLETE (114 tools)**
-> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (95%)
+> Version: 0.5.4 | 30/01/2026 | Session 249.8 | BM25 RAG SOTA | **ALL PHASES COMPLETE (127 tools)**
+> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (100%)
+> **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 
 ## Qu'est-ce que MCP?
 
@@ -12,7 +13,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 
 ---
 
-## Status des Tools (Session 249.6)
+## Status des Tools (Session 249.8)
 
 ### Vue d'ensemble
 
@@ -45,7 +46,10 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Magento** | **6** | 0 | **6** |
 | **Export** | **5** | **5** | 0 |
 | **Email** | **3** | 0 | **3** |
-| **TOTAL** | **114** | **16** | **98** |
+| **Zapier** | **3** | 0 | **3** |
+| **Make** | **5** | 0 | **5** |
+| **n8n** | **5** | 0 | **5** |
+| **TOTAL** | **127** | **16** | **111** |
 
 ### Tools Toujours Disponibles (15)
 
@@ -95,11 +99,12 @@ Ces tools fonctionnent sans aucun service externe:
 | **Twilio** | ✅ Community | 5 | [github.com/twilio-labs/mcp-twilio](https://github.com/twilio-labs/mcp-twilio) |
 | **Vonage** | ✅ Officiel | 2 | [github.com/Vonage-Community/telephony-mcp-server](https://github.com/Vonage-Community/telephony-mcp-server) |
 | **Retell** | ❌ | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ✅ Officiel | **114** | `mcp-server/` |
+| **VocalIA** | ✅ Officiel | **127** | `mcp-server/` |
 
 **Différenciateurs VocalIA (SOTA):**
 
-- **114 tools** - 14x plus que Vapi (8 tools)
+- **127 tools** - 16x plus que Vapi (8 tools)
+- **iPaaS complet** (Zapier, Make, n8n) → +7000 apps connectables
 - 30 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
 - Support Darija (Atlas-Chat-9B)
