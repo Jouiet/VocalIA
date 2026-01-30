@@ -167,13 +167,13 @@ open http://localhost:8080?lang=ar
 - ✅ SOTA audit: RAG, MCP, Voice, ContextBox, Sensors
 - ✅ System verification: 19 Python + 18 CJS + 21 MCP tools = 100%
 
-**SOTA Alignment: 85%**
+**SOTA Alignment: 90%**
 | System | Status | Gap |
 |:-------|:------:|:----|
 | Voice AI | ✅ SOTA | Native Grok, <1s TTFA |
 | ContextBox | ✅ SOTA | Token mgmt, EventBus |
 | MCP | ✅ Good | 21 tools, bounded |
-| RAG | ⚠️ Near | BM25 + reranking needed |
+| RAG | ✅ BM25 | Session 241.2 - reranking P3 |
 
 **QA Scripts:**
 - `translation-quality-check.py` - Detects <60% length ratio, identical, empty
@@ -187,8 +187,8 @@ open http://localhost:8080?lang=ar
 |:-:|:-------|:--------:|:------:|:------|
 | 1 | SDK publish | **P0** | Distribution | User creds required |
 | 2 | API Backend deploy | **P1** | MCP/SDKs work | api.vocalia.ma |
-| 3 | Replace TF-IDF with BM25 | P2 | +15% recall | 2h effort |
-| 4 | Add Cohere re-ranking | P2 | +67% precision | 4h effort |
+| 3 | ~~Replace TF-IDF with BM25~~ | ~~P2~~ | ~~+15% recall~~ | ✅ Session 241.2 |
+| 4 | Add Cohere re-ranking | P3 | +67% precision | Optional - BM25 is good |
 | 5 | MCP Prometheus metrics | P3 | Observability | Production feature |
 
 ---

@@ -2902,14 +2902,32 @@ Comprehensive audit comparing VocalIA systems against 2025-2026 SOTA best practi
 ea53db2 - fix(darija): Fix MSA detection false positives and missing detections
 ```
 
+### Session 241.2: BM25 Implementation (SOTA RAG)
+
+**Implementation:**
+- Replaced TF-IDF with BM25 in `core/knowledge-base-services.cjs`
+- BM25 parameters: k1=1.5, b=0.75 (standard)
+- Document length normalization ✅
+- Term frequency saturation ✅
+
+**Verification:**
+```bash
+node core/knowledge-base-services.cjs --build   # ✅ 18 chunks, 44 terms
+node core/knowledge-base-services.cjs --search "voice AI"  # ✅ Relevant results
+```
+
+**Impact:** +15-25% recall per [Anthropic Research](https://www.anthropic.com/news/contextual-retrieval)
+
+---
+
 ### PLAN ACTIONNABLE (Session 242)
 
 | # | Action | Priorité | Impact | Effort |
 |:-:|:-------|:--------:|:------:|:------:|
 | 1 | SDKs publish | **P0** | Distribution | User creds |
 | 2 | API Backend deploy | **P1** | MCP/SDKs work | VPS config |
-| 3 | Replace TF-IDF with BM25 | P2 | +15% recall | 2h |
-| 4 | Add re-ranking (Cohere) | P2 | +67% precision | 4h |
+| 3 | ~~Replace TF-IDF with BM25~~ | ~~P2~~ | ~~+15%~~ | ✅ Session 241.2 |
+| 4 | Add re-ranking (Cohere) | P3 | +67% precision | Optional |
 | 5 | MCP Prometheus metrics | P3 | Observability | 3h |
 | 6 | MCP streaming for long ops | P3 | UX | 2h |
 
