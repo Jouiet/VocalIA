@@ -1,0 +1,6882 @@
+{
+  "generated": "2026-01-30",
+  "total_issues": 990,
+  "by_type": {
+    "truncated": 233,
+    "identical": 757
+  },
+  "issues": [
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "nav.features",
+      "fr_len": 15,
+      "loc_len": 8,
+      "ratio": 53.3,
+      "fr_preview": "Fonctionnalités",
+      "loc_preview": "Features"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "nav.logout",
+      "fr_len": 11,
+      "loc_len": 6,
+      "ratio": 54.5,
+      "fr_preview": "Déconnexion",
+      "loc_preview": "Logout"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "dashboard.sidebar.overview",
+      "fr_len": 14,
+      "loc_len": 8,
+      "ratio": 57.1,
+      "fr_preview": "Vue d'ensemble",
+      "loc_preview": "Overview"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "dashboard.sidebar.users",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Utilisateurs",
+      "loc_preview": "Users"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "dashboard.stats.nps",
+      "fr_len": 18,
+      "loc_len": 10,
+      "ratio": 55.6,
+      "fr_preview": "Score satisfaction",
+      "loc_preview": "Sat. Score"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "dashboard.billing.extra_mins",
+      "fr_len": 23,
+      "loc_len": 13,
+      "ratio": 56.5,
+      "fr_preview": "Minutes supplémentaires",
+      "loc_preview": "Extra Minutes"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "hero.badge",
+      "fr_len": 31,
+      "loc_len": 17,
+      "ratio": 54.8,
+      "fr_preview": "Voice AI de Nouvelle Génération",
+      "loc_preview": "Next-Gen Voice AI"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "hero.trusted",
+      "fr_len": 23,
+      "loc_len": 10,
+      "ratio": 43.5,
+      "fr_preview": "Ils nous font confiance",
+      "loc_preview": "Trusted by"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "pricing.widget.cta",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "Start Free"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "stats.uptime",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "Uptime"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "pricing_page.title_highlight",
+      "fr_len": 12,
+      "loc_len": 7,
+      "ratio": 58.3,
+      "fr_preview": "Transparents",
+      "loc_preview": "Pricing"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "pricing_page.free_period",
+      "fr_len": 13,
+      "loc_len": 7,
+      "ratio": 53.8,
+      "fr_preview": "pour toujours",
+      "loc_preview": "forever"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "pricing_page.free_cta",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "Start Free"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "pricing_page.table_feature",
+      "fr_len": 14,
+      "loc_len": 7,
+      "ratio": 50.0,
+      "fr_preview": "Fonctionnalité",
+      "loc_preview": "Feature"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "pricing_page.cta_primary",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "Start Free"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "about_page.mission_savings",
+      "fr_len": 16,
+      "loc_len": 9,
+      "ratio": 56.2,
+      "fr_preview": "Économie de 60%+",
+      "loc_preview": "Save 60%+"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "about_page.values_title",
+      "fr_len": 11,
+      "loc_len": 4,
+      "ratio": 36.4,
+      "fr_preview": "Ce qui nous",
+      "loc_preview": "What"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "about_page.tech_title_highlight",
+      "fr_len": 16,
+      "loc_len": 5,
+      "ratio": 31.2,
+      "fr_preview": "Enterprise-Grade",
+      "loc_preview": "Stack"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "about_page.cta_primary",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "Start Free"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "features_page.title",
+      "fr_len": 10,
+      "loc_len": 3,
+      "ratio": 30.0,
+      "fr_preview": "Toutes les",
+      "loc_preview": "All"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "features_page.title_highlight",
+      "fr_len": 15,
+      "loc_len": 8,
+      "ratio": 53.3,
+      "fr_preview": "Fonctionnalités",
+      "loc_preview": "Features"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "features_page.breadcrumb_features",
+      "fr_len": 15,
+      "loc_len": 8,
+      "ratio": 53.3,
+      "fr_preview": "Fonctionnalités",
+      "loc_preview": "Features"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "features_page.table_feature",
+      "fr_len": 14,
+      "loc_len": 7,
+      "ratio": 50.0,
+      "fr_preview": "Fonctionnalité",
+      "loc_preview": "Feature"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "features_page.newsletter_title",
+      "fr_len": 29,
+      "loc_len": 15,
+      "ratio": 51.7,
+      "fr_preview": "Restez informé des actualités",
+      "loc_preview": "Stay updated on"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "industries_index_page.tier3_planner",
+      "fr_len": 12,
+      "loc_len": 6,
+      "ratio": 50.0,
+      "fr_preview": "Événementiel",
+      "loc_preview": "Events"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "usecases_support_page.cta_subtitle",
+      "fr_len": 88,
+      "loc_len": 48,
+      "ratio": 54.5,
+      "fr_preview": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur...",
+      "loc_preview": "Request a personalized demo with your use cases."
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "usecases_appointments_page.industries_title",
+      "fr_len": 32,
+      "loc_len": 17,
+      "ratio": 53.1,
+      "fr_preview": "Secteurs qui nous font confiance",
+      "loc_preview": "Industries served"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "usecases_appointments_page.cta_subtitle",
+      "fr_len": 120,
+      "loc_len": 45,
+      "ratio": 37.5,
+      "fr_preview": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit...",
+      "loc_preview": "Request a demo with calendar synchronization."
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_subtitle",
+      "fr_len": 87,
+      "loc_len": 37,
+      "ratio": 42.5,
+      "fr_preview": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualif...",
+      "loc_preview": "Automatic qualification on 4 criteria"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "usecases_leads_page.cta_subtitle",
+      "fr_len": 91,
+      "loc_len": 39,
+      "ratio": 42.9,
+      "fr_preview": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA fa...",
+      "loc_preview": "Request a demo with the BANT framework."
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "privacy_page.hero_title",
+      "fr_len": 12,
+      "loc_len": 7,
+      "ratio": 58.3,
+      "fr_preview": "Politique de",
+      "loc_preview": "Privacy"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "privacy_page.hero_title_accent",
+      "fr_len": 15,
+      "loc_len": 6,
+      "ratio": 40.0,
+      "fr_preview": "Confidentialité",
+      "loc_preview": "Policy"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "privacy_page.section_usage",
+      "fr_len": 23,
+      "loc_len": 10,
+      "ratio": 43.5,
+      "fr_preview": "Utilisation des Données",
+      "loc_preview": "Data Usage"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "privacy_page.data_usage",
+      "fr_len": 21,
+      "loc_len": 10,
+      "ratio": 47.6,
+      "fr_preview": "Données d'utilisation",
+      "loc_preview": "Usage data"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "terms_page.hero_title",
+      "fr_len": 20,
+      "loc_len": 8,
+      "ratio": 40.0,
+      "fr_preview": "Conditions Générales",
+      "loc_preview": "Terms of"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "terms_page.hero_title_accent",
+      "fr_len": 13,
+      "loc_len": 7,
+      "ratio": 53.8,
+      "fr_preview": "d'Utilisation",
+      "loc_preview": "Service"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "terms_page.section_obligations",
+      "fr_len": 28,
+      "loc_len": 16,
+      "ratio": 57.1,
+      "fr_preview": "Obligations de l'Utilisateur",
+      "loc_preview": "User Obligations"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "terms_page.section_pricing",
+      "fr_len": 12,
+      "loc_len": 7,
+      "ratio": 58.3,
+      "fr_preview": "Tarification",
+      "loc_preview": "Pricing"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "footer.links.features",
+      "fr_len": 15,
+      "loc_len": 8,
+      "ratio": 53.3,
+      "fr_preview": "Fonctionnalités",
+      "loc_preview": "Features"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "footer.links.privacy",
+      "fr_len": 15,
+      "loc_len": 7,
+      "ratio": 46.7,
+      "fr_preview": "Confidentialité",
+      "loc_preview": "Privacy"
+    },
+    {
+      "type": "truncated",
+      "locale": "en",
+      "key": "docs_api_page.sidebar_webhooks_setup",
+      "fr_len": 13,
+      "loc_len": 5,
+      "ratio": 38.5,
+      "fr_preview": "Configuration",
+      "loc_preview": "Setup"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "dashboard.quick_actions.restart",
+      "value": "Restart Services"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features.telephony.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "solutions_menu.retail",
+      "value": "Retail & Commerce"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "pricing_page.enterprise_f2",
+      "value": "Self-hosted option"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "pricing_page.table_voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "pricing_page.row_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "contact_page.info_office_desc",
+      "value": "Remote-first company"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "about_page.badge",
+      "value": "Made in Morocco"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features_page.telephony_title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features_page.telephony_f3",
+      "value": "11 function tools (booking, CRM, etc.)"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features_page.telephony_f4",
+      "value": "Multi-AI fallback (99.9% uptime)"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features_page.feat_fallback_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features_page.feat_tools_title",
+      "value": "11 Function Tools"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features_page.table_selfhost",
+      "value": "Self-Hosted Option"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "features_page.table_fallback",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_widget_page.feature6_title",
+      "value": "Mobile Responsive"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_widget_page.specs_compat_chrome",
+      "value": "Chrome 33+ (Desktop & Mobile)"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_widget_page.specs_compat_safari",
+      "value": "Safari 14.1+ (Desktop & iOS)"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_widget_page.specs_perf_bundle",
+      "value": "Bundle size: ~45KB gzipped"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.badge",
+      "value": "Enterprise Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.breadcrumb_current",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.feature3_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.feature4_title",
+      "value": "11 Function Tools"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool2_name",
+      "value": "handle_objection"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool3_name",
+      "value": "check_order_status"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool4_name",
+      "value": "check_product_stock"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool5_name",
+      "value": "get_customer_tags"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool6_name",
+      "value": "schedule_callback"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool8_name",
+      "value": "track_conversion_event"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool9_name",
+      "value": "search_knowledge_base"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "voice_telephony_page.tool10_name",
+      "value": "send_payment_details"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.featured_retail_title",
+      "value": "Retail & Commerce"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier1_title",
+      "value": "Tier 1 - Core Business"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_title",
+      "value": "Tier 2 - Expansion"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_title",
+      "value": "Tier 3 - Extended"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_healer_desc",
+      "value": "RDV multi-spécialités, triage patients"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_mechanic_desc",
+      "value": "Révision, réparation, contrôle technique"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_counselor_desc",
+      "value": "Qualification dossiers, prise RDV avocats"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_concierge_desc",
+      "value": "Réservations chambres, restaurant"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_stylist_desc",
+      "value": "RDV soins, coiffure, massages"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_recruiter_desc",
+      "value": "Screening candidats, prise RDV entretiens"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_dispatcher_desc",
+      "value": "Suivi colis, problèmes livraison"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_collector_desc",
+      "value": "Rappels paiement, plans échelonnés"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_surveyor_desc",
+      "value": "Collecte NPS, avis clients"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_governor_desc",
+      "value": "Mairie, démarches administratives"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier2_insurer_desc",
+      "value": "Sinistres, devis, réclamations"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_accountant_desc",
+      "value": "Qualification clients, RDV experts"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_architect_desc",
+      "value": "Projets construction, rénovation"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_pharmacist_desc",
+      "value": "Commandes médicaments, horaires garde"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_renter_desc",
+      "value": "Réservations, disponibilités"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_logistician_desc",
+      "value": "Commandes gros, livraisons B2B"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_trainer_desc",
+      "value": "Bootcamps, inscriptions formations"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_planner_desc",
+      "value": "Mariages, conférences, traiteur"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_producer_desc",
+      "value": "Approvisionnement, équipement industriel"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_cleaner_desc",
+      "value": "Devis B2B, entretien locaux"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_gym_desc",
+      "value": "Abonnements, séances essai"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_universal_ecommerce_desc",
+      "value": "Toute boutique en ligne"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_index_page.tier3_universal_sme_desc",
+      "value": "Réceptionniste universel"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_healthcare_page.integration_google_calendar",
+      "value": "Google Calendar"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_finance_page.compliance_pci_title",
+      "value": "PCI DSS Level 1"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_retail_page.hero_title_accent",
+      "value": "Retail & Commerce"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_retail_page.challenge4_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_retail_page.solution2_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "industries_retail_page.segment_click_collect",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.badge",
+      "value": "E-commerce & Retail"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problems_title",
+      "value": "Les défis du support e-commerce"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problems_subtitle",
+      "value": "Les équipes support sont submergées par des questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problem_wait_title",
+      "value": "Attente excessive"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problem_wait_desc",
+      "value": "Les clients attendent en moyenne 12 heures pour une réponse email, causant frust..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problem_costs_title",
+      "value": "Coûts RH élevés"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problem_costs_desc",
+      "value": "Recruter et former des agents support multilingues coûte cher, surtout pour couv..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problem_repetitive_title",
+      "value": "Questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.problem_repetitive_desc",
+      "value": "80% des demandes concernent le suivi de commande, retours et disponibilité stock..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_title",
+      "value": "La solution VocalIA"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_subtitle",
+      "value": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_tracking_title",
+      "value": "Suivi de commande"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_tracking_desc",
+      "value": "Connexion directe à Shopify/WooCommerce pour donner le statut en temps réel."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_returns_title",
+      "value": "Gestion des retours"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_returns_desc",
+      "value": "Initiation automatique des procédures de retour et remboursement."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_stock_title",
+      "value": "Stock & disponibilité"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_stock_desc",
+      "value": "Vérification instantanée des stocks et alternatives produits."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_escalation_desc",
+      "value": "Transfert automatique vers un agent humain pour les cas complexes."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_multilingual_title",
+      "value": "Multilingue natif"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_multilingual_desc",
+      "value": "Support en FR, EN, ES, AR et Darija pour servir tous vos marchés."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_analytics_title",
+      "value": "Analytics détaillés"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.solution_analytics_desc",
+      "value": "Dashboard temps réel des conversations, satisfaction et tendances."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_desc",
+      "value": "En moyenne, nos clients e-commerce économisent"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_detail",
+      "value": "en automatisant 70% de leurs demandes support."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_benefit1",
+      "value": "Réduction de 3 à 4 agents support temps plein"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_benefit2",
+      "value": "Satisfaction client +25% (réponse immédiate)"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_benefit3",
+      "value": "Conversion +12% (abandon panier réduit)"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_label_savings",
+      "value": "Économies estimées par mois"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_label_agent_cost",
+      "value": "Coût agent support/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_label_agents_replaced",
+      "value": "Agents remplacés"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.roi_label_vocalia_cost",
+      "value": "Coût VocalIA/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.cta_primary",
+      "value": "Demander une démo gratuite"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_ecommerce_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problems_title",
+      "value": "Les défis du service client moderne"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problems_subtitle",
+      "value": "Les attentes clients augmentent, les ressources restent limitées"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problem_wait_title",
+      "value": "Temps d'attente inacceptable"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problem_wait_desc",
+      "value": "Les clients s'attendent à une réponse en moins de 5 minutes. La moyenne actuelle..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problem_costs_title",
+      "value": "Coûts exponentiels"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problem_costs_desc",
+      "value": "Chaque agent coûte 35-50K€/an. Pour un support 24/7 multilingue, comptez 10+ age..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problem_quality_title",
+      "value": "Qualité inconsistante"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.problem_quality_desc",
+      "value": "La qualité varie selon l'agent, son humeur, sa formation. Impossible de garantir..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.features_title",
+      "value": "Support client nouvelle génération"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.features_subtitle",
+      "value": "VocalIA combine IA conversationnelle et expertise métier pour un support irrépro..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_conversations_title",
+      "value": "Conversations naturelles"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_conversations_desc",
+      "value": "IA entraînée sur des millions de conversations support. Comprend le contexte, le..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_kb_title",
+      "value": "Base de connaissances IA"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_kb_desc",
+      "value": "Synchronisation automatique avec votre documentation, FAQ, et historique tickets..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_escalation_desc",
+      "value": "Détection automatique des cas complexes ou clients VIP. Transfert fluide vers ag..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_analytics_title",
+      "value": "Analytics en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_analytics_desc",
+      "value": "Dashboard avec métriques clés: volume, résolution, satisfaction, tendances. Insi..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_languages_title",
+      "value": "5 langues natives"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_languages_desc",
+      "value": "Français, Anglais, Espagnol, Arabe standard et Darija marocain. Détection automa..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_crm_title",
+      "value": "Intégrations CRM"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.feature_crm_desc",
+      "value": "Connexion native avec HubSpot, Salesforce, Zendesk, Freshdesk. Synchronisation b..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_title",
+      "value": "Comment ça fonctionne"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_subtitle",
+      "value": "Déploiement en 3 étapes simples"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_step1_title",
+      "value": "Connectez vos données"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_step1_desc",
+      "value": "Importez votre FAQ, documentation produit et historique de tickets. L'IA apprend..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_step2_title",
+      "value": "Personnalisez l'agent"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_step2_desc",
+      "value": "Choisissez parmi 30 personas métier ou créez le vôtre. Définissez le ton, les rè..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_step3_title",
+      "value": "Déployez et optimisez"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.workflow_step3_desc",
+      "value": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez conti..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.cta_primary",
+      "value": "Planifier une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_support_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.cta_product",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.industry_health_desc",
+      "value": "Cabinets médicaux, dentistes, cliniques. Gestion des urgences et rappels de suiv..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.industry_realestate_desc",
+      "value": "Agences, promoteurs. Visites, estimations, signatures chez notaire."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.industry_finance_title",
+      "value": "Services financiers"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.industry_finance_desc",
+      "value": "Banques, assurances, conseillers. RDV conseil et signature contrats."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.industry_beauty_title",
+      "value": "Beauté & Bien-être"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.industry_beauty_desc",
+      "value": "Salons, spas, coaches. Réservations multi-services et praticiens."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.features_title",
+      "value": "Fonctionnalités clés"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.features_subtitle",
+      "value": "Tout ce dont vous avez besoin pour automatiser votre agenda"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_sync_title",
+      "value": "Sync calendrier temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_sync_desc",
+      "value": "Google Calendar, Outlook, Calendly, Cal.com. Disponibilités toujours à jour."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_reminders_title",
+      "value": "Rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_reminders_desc",
+      "value": "SMS et appel vocal 24h et 1h avant. Réduction drastique des no-shows."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_reschedule_title",
+      "value": "Report et annulation"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_reschedule_desc",
+      "value": "Le client peut reporter ou annuler par simple appel. Créneau libéré automatiquem..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_multipractitioner_title",
+      "value": "Multi-praticiens"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_multipractitioner_desc",
+      "value": "Gestion des agendas de plusieurs professionnels. Allocation intelligente selon c..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_prequalification_title",
+      "value": "Pré-qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_prequalification_desc",
+      "value": "Questions de screening avant réservation. Collecte d'infos essentielles pour pré..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_outbound_title",
+      "value": "Appels sortants"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.feature_outbound_desc",
+      "value": "Campagnes de rappel proactives pour relancer les clients inactifs ou confirmer l..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.workflow_title",
+      "value": "Le parcours client optimisé"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.workflow_step1_desc",
+      "value": "Le client appelle votre numéro 24/7"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.workflow_step2_desc",
+      "value": "L'IA identifie le besoin et les préférences"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.workflow_step3_desc",
+      "value": "Créneau proposé et confirmé en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.workflow_step4_desc",
+      "value": "SMS + email + rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.cta_primary",
+      "value": "Essayer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_appointments_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.breadcrumb_current",
+      "value": "Qualification Leads"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_budget_questions_label",
+      "value": "Questions types:"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_budget_q1",
+      "value": "Quel budget avez-vous prévu?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_budget_q2",
+      "value": "Comment financez-vous ce projet?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_authority_q1",
+      "value": "Qui prend la décision finale?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_authority_q2",
+      "value": "D'autres personnes sont-elles impliquées?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_need_q1",
+      "value": "Quel problème cherchez-vous à résoudre?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_need_q2",
+      "value": "Quelles solutions avez-vous essayées?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_timeline_q1",
+      "value": "Quand souhaitez-vous démarrer?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.bant_timeline_q2",
+      "value": "Y a-t-il une échéance particulière?"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.score_title",
+      "value": "Score de qualification en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.score_desc",
+      "value": "À la fin de chaque conversation, VocalIA génère un score BANT complet et une rec..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.score_hot",
+      "value": "Hot lead - Transfert immédiat au commercial"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.score_warm",
+      "value": "Warm lead - Nurturing automatisé"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.score_cold",
+      "value": "Cold lead - Séquence email long-terme"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.score_recommendation",
+      "value": "Recommandation: Transfert commercial immédiat"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.features_title",
+      "value": "Fonctionnalités de qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_adaptive_title",
+      "value": "Questionnaire adaptatif"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_adaptive_desc",
+      "value": "Les questions s'adaptent en temps réel selon les réponses. Conversation naturell..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_transfer_title",
+      "value": "Transfert à chaud"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_transfer_desc",
+      "value": "Lead qualifié? Transfert instantané au commercial disponible avec briefing conte..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_crm_desc",
+      "value": "Score et données enrichies synchronisés automatiquement avec HubSpot, Salesforce..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_alerts_title",
+      "value": "Alertes temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_alerts_desc",
+      "value": "Notification Slack/email immédiate pour chaque hot lead. Ne laissez plus refroid..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_analytics_title",
+      "value": "Analytics pipeline"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_analytics_desc",
+      "value": "Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre ..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_objections_title",
+      "value": "Gestion objections"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.feature_objections_desc",
+      "value": "L'IA traite les objections courantes et relance les leads hésitants avec les bon..."
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.cta_primary",
+      "value": "Commencer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "usecases_leads_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "docs_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "footer.links.voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "docs_api_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "common.newsletter_title",
+      "value": "Restez informé des actualités"
+    },
+    {
+      "type": "identical",
+      "locale": "en",
+      "key": "common.newsletter_subtitle",
+      "value": "Articles, guides et études de cas. Pas de spam."
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "solutions_menu.appointments",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Prise de RDV",
+      "loc_preview": "Citas"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "industries_index_page.tier2_collector",
+      "fr_len": 12,
+      "loc_len": 6,
+      "ratio": 50.0,
+      "fr_preview": "Recouvrement",
+      "loc_preview": "Cobros"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "industries_index_page.tier2_governor",
+      "fr_len": 14,
+      "loc_len": 8,
+      "ratio": 57.1,
+      "fr_preview": "Administration",
+      "loc_preview": "Gobierno"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "industries_index_page.tier3_planner",
+      "fr_len": 12,
+      "loc_len": 7,
+      "ratio": 58.3,
+      "fr_preview": "Événementiel",
+      "loc_preview": "Eventos"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.hero_title",
+      "fr_len": 25,
+      "loc_len": 13,
+      "ratio": 52.0,
+      "fr_preview": "Support Client E-commerce",
+      "loc_preview": "Voice AI para"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.hero_title_accent",
+      "fr_len": 26,
+      "loc_len": 10,
+      "ratio": 38.5,
+      "fr_preview": "Automatisé par l'IA Vocale",
+      "loc_preview": "E-commerce"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.hero_cta_secondary",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Documentation API",
+      "loc_preview": "Ver Demo"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.stat_languages",
+      "fr_len": 18,
+      "loc_len": 7,
+      "ratio": 38.9,
+      "fr_preview": "Langues supportées",
+      "loc_preview": "Idiomas"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.challenges_subtitle",
+      "fr_len": 65,
+      "loc_len": 35,
+      "ratio": 53.8,
+      "fr_preview": "Les équipes support sont submergées par des questions répétitives",
+      "loc_preview": "Problemas que resolvemos para usted"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solutions_subtitle",
+      "fr_len": 78,
+      "loc_len": 34,
+      "ratio": 43.6,
+      "fr_preview": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes",
+      "loc_preview": "IA de Voz diseñada para e-commerce"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.cta_subtitle",
+      "fr_len": 79,
+      "loc_len": 46,
+      "ratio": 58.2,
+      "fr_preview": "Déployez VocalIA en moins de 24h et commencez à économiser dès le premier jour.",
+      "loc_preview": "Solicita una demo para ver Voice AI en acción."
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_support_page.hero_cta_secondary",
+      "fr_len": 21,
+      "loc_len": 8,
+      "ratio": 38.1,
+      "fr_preview": "Voir les intégrations",
+      "loc_preview": "Ver Demo"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_support_page.cta_subtitle",
+      "fr_len": 88,
+      "loc_len": 49,
+      "ratio": 55.7,
+      "fr_preview": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur...",
+      "loc_preview": "Solicita una demo con nuestra persona de soporte."
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.hero_title_accent",
+      "fr_len": 20,
+      "loc_len": 5,
+      "ratio": 25.0,
+      "fr_preview": "Automatisée par l'IA",
+      "loc_preview": "Citas"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.hero_cta_secondary",
+      "fr_len": 21,
+      "loc_len": 8,
+      "ratio": 38.1,
+      "fr_preview": "Voir les intégrations",
+      "loc_preview": "Ver Demo"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.challenges_subtitle",
+      "fr_len": 62,
+      "loc_len": 35,
+      "ratio": 56.5,
+      "fr_preview": "La gestion des rendez-vous est chronophage et source d'erreurs",
+      "loc_preview": "Problemas que resolvemos para usted"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.solutions_subtitle",
+      "fr_len": 59,
+      "loc_len": 34,
+      "ratio": 57.6,
+      "fr_preview": "Un assistant vocal qui gère vos rendez-vous automatiquement",
+      "loc_preview": "IA de Voz para la gestión de citas"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.industries_subtitle",
+      "fr_len": 53,
+      "loc_len": 22,
+      "ratio": 41.5,
+      "fr_preview": "VocalIA s'adapte aux spécificités de chaque industrie",
+      "loc_preview": "Industrias compatibles"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.integrations_title",
+      "fr_len": 23,
+      "loc_len": 13,
+      "ratio": 56.5,
+      "fr_preview": "Intégrations calendrier",
+      "loc_preview": "Integraciones"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.cta_title",
+      "fr_len": 42,
+      "loc_len": 20,
+      "ratio": 47.6,
+      "fr_preview": "Arrêtez de perdre des clients au téléphone",
+      "loc_preview": "Automatiza tus Citas"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_appointments_page.cta_subtitle",
+      "fr_len": 120,
+      "loc_len": 54,
+      "ratio": 45.0,
+      "fr_preview": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit...",
+      "loc_preview": "Solicita una demo para ver la automatización de citas."
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_leads_page.hero_cta_secondary",
+      "fr_len": 22,
+      "loc_len": 8,
+      "ratio": 36.4,
+      "fr_preview": "Voir le framework BANT",
+      "loc_preview": "Ver Demo"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_leads_page.challenges_subtitle",
+      "fr_len": 63,
+      "loc_len": 35,
+      "ratio": 55.6,
+      "fr_preview": "Trop de leads non qualifiés gaspillent le temps des commerciaux",
+      "loc_preview": "Problemas que resolvemos para usted"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_title",
+      "fr_len": 25,
+      "loc_len": 14,
+      "ratio": 56.0,
+      "fr_preview": "Framework BANT automatisé",
+      "loc_preview": "Framework BANT"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_subtitle",
+      "fr_len": 87,
+      "loc_len": 47,
+      "ratio": 54.0,
+      "fr_preview": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualif...",
+      "loc_preview": "Calificación estructurada para leads de calidad"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "usecases_leads_page.cta_subtitle",
+      "fr_len": 91,
+      "loc_len": 53,
+      "ratio": 58.2,
+      "fr_preview": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA fa...",
+      "loc_preview": "Solicita una demo para ver la calificación en acción."
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "privacy_page.section_usage",
+      "fr_len": 23,
+      "loc_len": 12,
+      "ratio": 52.2,
+      "fr_preview": "Utilisation des Données",
+      "loc_preview": "Uso de Datos"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "privacy_page.data_usage",
+      "fr_len": 21,
+      "loc_len": 12,
+      "ratio": 57.1,
+      "fr_preview": "Données d'utilisation",
+      "loc_preview": "Datos de uso"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "terms_page.hero_title",
+      "fr_len": 20,
+      "loc_len": 10,
+      "ratio": 50.0,
+      "fr_preview": "Conditions Générales",
+      "loc_preview": "Términos y"
+    },
+    {
+      "type": "truncated",
+      "locale": "es",
+      "key": "terms_page.section_pricing",
+      "fr_len": 12,
+      "loc_len": 7,
+      "ratio": 58.3,
+      "fr_preview": "Tarification",
+      "loc_preview": "Precios"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "dashboard.billing.remaining_mins",
+      "value": "{{count}} min restantes"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "features.telephony.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "pricing_page.free_f4",
+      "value": "Branding VocalIA"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "pricing_page.table_voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "pricing_page.row_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "about_page.badge",
+      "value": "Made in Morocco"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "about_page.tech_title_highlight",
+      "value": "Enterprise-Grade"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "features_page.telephony_title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "features_page.telephony_f4",
+      "value": "Multi-AI fallback (99.9% uptime)"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "features_page.feat_fallback_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "features_page.feat_tools_title",
+      "value": "11 Function Tools"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "features_page.feat_rag_title",
+      "value": "Knowledge Base RAG"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "features_page.table_fallback",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_widget_page.feature6_title",
+      "value": "Mobile Responsive"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_widget_page.specs_compat_chrome",
+      "value": "Chrome 33+ (Desktop & Mobile)"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_widget_page.specs_compat_safari",
+      "value": "Safari 14.1+ (Desktop & iOS)"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.breadcrumb_current",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.feature3_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.feature4_title",
+      "value": "11 Function Tools"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool2_name",
+      "value": "handle_objection"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool3_name",
+      "value": "check_order_status"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool4_name",
+      "value": "check_product_stock"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool5_name",
+      "value": "get_customer_tags"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool6_name",
+      "value": "schedule_callback"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool8_name",
+      "value": "track_conversion_event"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool9_name",
+      "value": "search_knowledge_base"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "voice_telephony_page.tool10_name",
+      "value": "send_payment_details"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_healer_desc",
+      "value": "RDV multi-spécialités, triage patients"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_mechanic_desc",
+      "value": "Révision, réparation, contrôle technique"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_counselor_desc",
+      "value": "Qualification dossiers, prise RDV avocats"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_concierge_desc",
+      "value": "Réservations chambres, restaurant"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_stylist_desc",
+      "value": "RDV soins, coiffure, massages"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_recruiter_desc",
+      "value": "Screening candidats, prise RDV entretiens"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_dispatcher_desc",
+      "value": "Suivi colis, problèmes livraison"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_collector_desc",
+      "value": "Rappels paiement, plans échelonnés"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_surveyor_desc",
+      "value": "Collecte NPS, avis clients"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_governor_desc",
+      "value": "Mairie, démarches administratives"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier2_insurer_desc",
+      "value": "Sinistres, devis, réclamations"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_accountant_desc",
+      "value": "Qualification clients, RDV experts"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_architect_desc",
+      "value": "Projets construction, rénovation"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_pharmacist_desc",
+      "value": "Commandes médicaments, horaires garde"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_renter_desc",
+      "value": "Réservations, disponibilités"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_logistician_desc",
+      "value": "Commandes gros, livraisons B2B"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_trainer_desc",
+      "value": "Bootcamps, inscriptions formations"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_planner_desc",
+      "value": "Mariages, conférences, traiteur"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_producer_desc",
+      "value": "Approvisionnement, équipement industriel"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_cleaner_desc",
+      "value": "Devis B2B, entretien locaux"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_gym_desc",
+      "value": "Abonnements, séances essai"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_universal_ecommerce_desc",
+      "value": "Toute boutique en ligne"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_index_page.tier3_universal_sme_desc",
+      "value": "Réceptionniste universel"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_healthcare_page.solution1_feature1",
+      "value": "Sync Google/Outlook Calendar"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_healthcare_page.integration_google_calendar",
+      "value": "Google Calendar"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_finance_page.compliance_pci_title",
+      "value": "PCI DSS Level 1"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_retail_page.challenge4_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_retail_page.solution2_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "industries_retail_page.segment_click_collect",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.badge",
+      "value": "E-commerce & Retail"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problems_title",
+      "value": "Les défis du support e-commerce"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problems_subtitle",
+      "value": "Les équipes support sont submergées par des questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problem_wait_title",
+      "value": "Attente excessive"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problem_wait_desc",
+      "value": "Les clients attendent en moyenne 12 heures pour une réponse email, causant frust..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problem_costs_title",
+      "value": "Coûts RH élevés"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problem_costs_desc",
+      "value": "Recruter et former des agents support multilingues coûte cher, surtout pour couv..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problem_repetitive_title",
+      "value": "Questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.problem_repetitive_desc",
+      "value": "80% des demandes concernent le suivi de commande, retours et disponibilité stock..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_title",
+      "value": "La solution VocalIA"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_subtitle",
+      "value": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_tracking_title",
+      "value": "Suivi de commande"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_tracking_desc",
+      "value": "Connexion directe à Shopify/WooCommerce pour donner le statut en temps réel."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_returns_title",
+      "value": "Gestion des retours"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_returns_desc",
+      "value": "Initiation automatique des procédures de retour et remboursement."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_stock_title",
+      "value": "Stock & disponibilité"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_stock_desc",
+      "value": "Vérification instantanée des stocks et alternatives produits."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_escalation_desc",
+      "value": "Transfert automatique vers un agent humain pour les cas complexes."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_multilingual_title",
+      "value": "Multilingue natif"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_multilingual_desc",
+      "value": "Support en FR, EN, ES, AR et Darija pour servir tous vos marchés."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_analytics_title",
+      "value": "Analytics détaillés"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.solution_analytics_desc",
+      "value": "Dashboard temps réel des conversations, satisfaction et tendances."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_desc",
+      "value": "En moyenne, nos clients e-commerce économisent"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_detail",
+      "value": "en automatisant 70% de leurs demandes support."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_benefit1",
+      "value": "Réduction de 3 à 4 agents support temps plein"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_benefit2",
+      "value": "Satisfaction client +25% (réponse immédiate)"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_benefit3",
+      "value": "Conversion +12% (abandon panier réduit)"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_label_savings",
+      "value": "Économies estimées par mois"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_label_agent_cost",
+      "value": "Coût agent support/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_label_agents_replaced",
+      "value": "Agents remplacés"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.roi_label_vocalia_cost",
+      "value": "Coût VocalIA/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.cta_primary",
+      "value": "Demander une démo gratuite"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_ecommerce_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problems_title",
+      "value": "Les défis du service client moderne"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problems_subtitle",
+      "value": "Les attentes clients augmentent, les ressources restent limitées"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problem_wait_title",
+      "value": "Temps d'attente inacceptable"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problem_wait_desc",
+      "value": "Les clients s'attendent à une réponse en moins de 5 minutes. La moyenne actuelle..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problem_costs_title",
+      "value": "Coûts exponentiels"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problem_costs_desc",
+      "value": "Chaque agent coûte 35-50K€/an. Pour un support 24/7 multilingue, comptez 10+ age..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problem_quality_title",
+      "value": "Qualité inconsistante"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.problem_quality_desc",
+      "value": "La qualité varie selon l'agent, son humeur, sa formation. Impossible de garantir..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.features_title",
+      "value": "Support client nouvelle génération"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.features_subtitle",
+      "value": "VocalIA combine IA conversationnelle et expertise métier pour un support irrépro..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_conversations_title",
+      "value": "Conversations naturelles"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_conversations_desc",
+      "value": "IA entraînée sur des millions de conversations support. Comprend le contexte, le..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_kb_title",
+      "value": "Base de connaissances IA"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_kb_desc",
+      "value": "Synchronisation automatique avec votre documentation, FAQ, et historique tickets..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_escalation_desc",
+      "value": "Détection automatique des cas complexes ou clients VIP. Transfert fluide vers ag..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_analytics_title",
+      "value": "Analytics en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_analytics_desc",
+      "value": "Dashboard avec métriques clés: volume, résolution, satisfaction, tendances. Insi..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_languages_title",
+      "value": "5 langues natives"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_languages_desc",
+      "value": "Français, Anglais, Espagnol, Arabe standard et Darija marocain. Détection automa..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_crm_title",
+      "value": "Intégrations CRM"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.feature_crm_desc",
+      "value": "Connexion native avec HubSpot, Salesforce, Zendesk, Freshdesk. Synchronisation b..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_title",
+      "value": "Comment ça fonctionne"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_subtitle",
+      "value": "Déploiement en 3 étapes simples"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_step1_title",
+      "value": "Connectez vos données"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_step1_desc",
+      "value": "Importez votre FAQ, documentation produit et historique de tickets. L'IA apprend..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_step2_title",
+      "value": "Personnalisez l'agent"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_step2_desc",
+      "value": "Choisissez parmi 30 personas métier ou créez le vôtre. Définissez le ton, les rè..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_step3_title",
+      "value": "Déployez et optimisez"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.workflow_step3_desc",
+      "value": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez conti..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.cta_primary",
+      "value": "Planifier une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_support_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.cta_product",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.industry_health_desc",
+      "value": "Cabinets médicaux, dentistes, cliniques. Gestion des urgences et rappels de suiv..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.industry_realestate_desc",
+      "value": "Agences, promoteurs. Visites, estimations, signatures chez notaire."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.industry_finance_title",
+      "value": "Services financiers"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.industry_finance_desc",
+      "value": "Banques, assurances, conseillers. RDV conseil et signature contrats."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.industry_beauty_title",
+      "value": "Beauté & Bien-être"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.industry_beauty_desc",
+      "value": "Salons, spas, coaches. Réservations multi-services et praticiens."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.features_title",
+      "value": "Fonctionnalités clés"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.features_subtitle",
+      "value": "Tout ce dont vous avez besoin pour automatiser votre agenda"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_sync_title",
+      "value": "Sync calendrier temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_sync_desc",
+      "value": "Google Calendar, Outlook, Calendly, Cal.com. Disponibilités toujours à jour."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_reminders_title",
+      "value": "Rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_reminders_desc",
+      "value": "SMS et appel vocal 24h et 1h avant. Réduction drastique des no-shows."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_reschedule_title",
+      "value": "Report et annulation"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_reschedule_desc",
+      "value": "Le client peut reporter ou annuler par simple appel. Créneau libéré automatiquem..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_multipractitioner_title",
+      "value": "Multi-praticiens"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_multipractitioner_desc",
+      "value": "Gestion des agendas de plusieurs professionnels. Allocation intelligente selon c..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_prequalification_title",
+      "value": "Pré-qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_prequalification_desc",
+      "value": "Questions de screening avant réservation. Collecte d'infos essentielles pour pré..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_outbound_title",
+      "value": "Appels sortants"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.feature_outbound_desc",
+      "value": "Campagnes de rappel proactives pour relancer les clients inactifs ou confirmer l..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.workflow_title",
+      "value": "Le parcours client optimisé"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.workflow_step1_desc",
+      "value": "Le client appelle votre numéro 24/7"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.workflow_step2_desc",
+      "value": "L'IA identifie le besoin et les préférences"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.workflow_step3_desc",
+      "value": "Créneau proposé et confirmé en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.workflow_step4_desc",
+      "value": "SMS + email + rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.cta_primary",
+      "value": "Essayer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_appointments_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.breadcrumb_current",
+      "value": "Qualification Leads"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_budget_questions_label",
+      "value": "Questions types:"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_budget_q1",
+      "value": "Quel budget avez-vous prévu?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_budget_q2",
+      "value": "Comment financez-vous ce projet?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_authority_q1",
+      "value": "Qui prend la décision finale?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_authority_q2",
+      "value": "D'autres personnes sont-elles impliquées?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_need_q1",
+      "value": "Quel problème cherchez-vous à résoudre?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_need_q2",
+      "value": "Quelles solutions avez-vous essayées?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_timeline_q1",
+      "value": "Quand souhaitez-vous démarrer?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.bant_timeline_q2",
+      "value": "Y a-t-il une échéance particulière?"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.score_title",
+      "value": "Score de qualification en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.score_desc",
+      "value": "À la fin de chaque conversation, VocalIA génère un score BANT complet et une rec..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.score_hot",
+      "value": "Hot lead - Transfert immédiat au commercial"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.score_warm",
+      "value": "Warm lead - Nurturing automatisé"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.score_cold",
+      "value": "Cold lead - Séquence email long-terme"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.score_recommendation",
+      "value": "Recommandation: Transfert commercial immédiat"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.features_title",
+      "value": "Fonctionnalités de qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_adaptive_title",
+      "value": "Questionnaire adaptatif"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_adaptive_desc",
+      "value": "Les questions s'adaptent en temps réel selon les réponses. Conversation naturell..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_transfer_title",
+      "value": "Transfert à chaud"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_transfer_desc",
+      "value": "Lead qualifié? Transfert instantané au commercial disponible avec briefing conte..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_crm_desc",
+      "value": "Score et données enrichies synchronisés automatiquement avec HubSpot, Salesforce..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_alerts_title",
+      "value": "Alertes temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_alerts_desc",
+      "value": "Notification Slack/email immédiate pour chaque hot lead. Ne laissez plus refroid..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_analytics_title",
+      "value": "Analytics pipeline"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_analytics_desc",
+      "value": "Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre ..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_objections_title",
+      "value": "Gestion objections"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.feature_objections_desc",
+      "value": "L'IA traite les objections courantes et relance les leads hésitants avec les bon..."
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.cta_primary",
+      "value": "Commencer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "usecases_leads_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "docs_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "footer.links.voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "docs_api_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "common.newsletter_title",
+      "value": "Restez informé des actualités"
+    },
+    {
+      "type": "identical",
+      "locale": "es",
+      "key": "common.newsletter_subtitle",
+      "value": "Articles, guides et études de cas. Pas de spam."
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "dashboard.health.operational",
+      "fr_len": 12,
+      "loc_len": 4,
+      "ratio": 33.3,
+      "fr_preview": "Opérationnel",
+      "loc_preview": "يعمل"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "hero.trusted",
+      "fr_len": 23,
+      "loc_len": 9,
+      "ratio": 39.1,
+      "fr_preview": "Ils nous font confiance",
+      "loc_preview": "يثقون بنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "pricing.enterprise.price",
+      "fr_len": 10,
+      "loc_len": 4,
+      "ratio": 40.0,
+      "fr_preview": "Sur Mesure",
+      "loc_preview": "مخصص"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "cta.button",
+      "fr_len": 19,
+      "loc_len": 9,
+      "ratio": 47.4,
+      "fr_preview": "Démarrer Maintenant",
+      "loc_preview": "ابدأ الآن"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "pricing_page.title_highlight",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Transparents",
+      "loc_preview": "شفافة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "pricing_page.free_period",
+      "fr_len": 13,
+      "loc_len": 5,
+      "ratio": 38.5,
+      "fr_preview": "pour toujours",
+      "loc_preview": "للأبد"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "pricing_page.enterprise_price",
+      "fr_len": 10,
+      "loc_len": 4,
+      "ratio": 40.0,
+      "fr_preview": "Sur Mesure",
+      "loc_preview": "مخصص"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "pricing_page.enterprise_period",
+      "fr_len": 18,
+      "loc_len": 8,
+      "ratio": 44.4,
+      "fr_preview": "tarif personnalisé",
+      "loc_preview": "سعر مخصص"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "pricing_page.table_feature",
+      "fr_len": 14,
+      "loc_len": 6,
+      "ratio": 42.9,
+      "fr_preview": "Fonctionnalité",
+      "loc_preview": "الميزة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "contact_page.form_company_placeholder",
+      "fr_len": 23,
+      "loc_len": 9,
+      "ratio": 39.1,
+      "fr_preview": "Nom de votre entreprise",
+      "loc_preview": "اسم شركتك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "contact_page.form_subject_demo",
+      "fr_len": 15,
+      "loc_len": 7,
+      "ratio": 46.7,
+      "fr_preview": "Demande de démo",
+      "loc_preview": "طلب عرض"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "contact_page.form_subject_partnership",
+      "fr_len": 11,
+      "loc_len": 5,
+      "ratio": 45.5,
+      "fr_preview": "Partenariat",
+      "loc_preview": "شراكة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "contact_page.faq2_q",
+      "fr_len": 37,
+      "loc_len": 18,
+      "ratio": 48.6,
+      "fr_preview": "Quels sont les délais d'intégration ?",
+      "loc_preview": "ما هي مدة التكامل؟"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "about_page.title_suffix",
+      "fr_len": 20,
+      "loc_len": 7,
+      "ratio": 35.0,
+      "fr_preview": "pour les Entreprises",
+      "loc_preview": "للشركات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "about_page.stat_cheaper",
+      "fr_len": 10,
+      "loc_len": 4,
+      "ratio": 40.0,
+      "fr_preview": "Moins Cher",
+      "loc_preview": "أرخص"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "about_page.mission_badge",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Notre Mission",
+      "loc_preview": "مهمتنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "about_page.mission_tag1",
+      "fr_len": 25,
+      "loc_len": 10,
+      "ratio": 40.0,
+      "fr_preview": "Tarification Transparente",
+      "loc_preview": "تسعير شفاف"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "about_page.values_badge",
+      "fr_len": 11,
+      "loc_len": 5,
+      "ratio": 45.5,
+      "fr_preview": "Nos Valeurs",
+      "loc_preview": "قيمنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "about_page.values_title",
+      "fr_len": 11,
+      "loc_len": 2,
+      "ratio": 18.2,
+      "fr_preview": "Ce qui nous",
+      "loc_preview": "ما"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "about_page.tech_title_highlight",
+      "fr_len": 16,
+      "loc_len": 6,
+      "ratio": 37.5,
+      "fr_preview": "Enterprise-Grade",
+      "loc_preview": "مؤسسية"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "features_page.title",
+      "fr_len": 10,
+      "loc_len": 4,
+      "ratio": 40.0,
+      "fr_preview": "Toutes les",
+      "loc_preview": "جميع"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "features_page.all_features_title",
+      "fr_len": 25,
+      "loc_len": 12,
+      "ratio": 48.0,
+      "fr_preview": "Fonctionnalités Complètes",
+      "loc_preview": "مميزات كاملة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "features_page.table_feature",
+      "fr_len": 14,
+      "loc_len": 6,
+      "ratio": 42.9,
+      "fr_preview": "Fonctionnalité",
+      "loc_preview": "الميزة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "voice_widget_page.features_subtitle",
+      "fr_len": 43,
+      "loc_len": 20,
+      "ratio": 46.5,
+      "fr_preview": "Tout ce dont vous avez besoin, gratuitement",
+      "loc_preview": "كل ما تحتاجه، مجاناً"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool4_desc",
+      "fr_len": 21,
+      "loc_len": 10,
+      "ratio": 47.6,
+      "fr_preview": "Inventaire temps réel",
+      "loc_preview": "مخزون فوري"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_index_page.hero_title_accent",
+      "fr_len": 15,
+      "loc_len": 7,
+      "ratio": 46.7,
+      "fr_preview": "Votre Industrie",
+      "loc_preview": "لصناعتك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_index_page.cta_title",
+      "fr_len": 32,
+      "loc_len": 14,
+      "ratio": 43.8,
+      "fr_preview": "Votre Industrie, Notre Expertise",
+      "loc_preview": "صناعتك، خبرتنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_healthcare_page.stats_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_finance_page.solution2_feature1",
+      "fr_len": 19,
+      "loc_len": 9,
+      "ratio": 47.4,
+      "fr_preview": "Solde en temps réel",
+      "loc_preview": "رصيد فوري"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_realestate_page.challenge2_title",
+      "fr_len": 21,
+      "loc_len": 10,
+      "ratio": 47.6,
+      "fr_preview": "Disponibilité Limitée",
+      "loc_preview": "توفر محدود"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_realestate_page.segment_residential",
+      "fr_len": 11,
+      "loc_len": 4,
+      "ratio": 36.4,
+      "fr_preview": "Résidentiel",
+      "loc_preview": "سكني"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_retail_page.solutions_subtitle",
+      "fr_len": 39,
+      "loc_len": 19,
+      "ratio": 48.7,
+      "fr_preview": "Fonctionnalités spécifiques au commerce",
+      "loc_preview": "ميزات خاصة بالتجارة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "industries_retail_page.stats_customer_satisfaction",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Satisfaction",
+      "loc_preview": "الرضا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.stat_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.stat_languages",
+      "fr_len": 18,
+      "loc_len": 6,
+      "ratio": 33.3,
+      "fr_preview": "Langues supportées",
+      "loc_preview": "اللغات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solutions_title",
+      "fr_len": 19,
+      "loc_len": 6,
+      "ratio": 31.6,
+      "fr_preview": "La solution VocalIA",
+      "loc_preview": "حلولنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solutions_subtitle",
+      "fr_len": 78,
+      "loc_len": 32,
+      "ratio": 41.0,
+      "fr_preview": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes",
+      "loc_preview": "صوت ذكي مصمم للتجارة الإلكترونية"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.integrations_subtitle",
+      "fr_len": 49,
+      "loc_len": 24,
+      "ratio": 49.0,
+      "fr_preview": "Connectez VocalIA à votre stack en quelques clics",
+      "loc_preview": "متوافق مع منصاتك الحالية"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_support_page.stat_satisfaction",
+      "fr_len": 19,
+      "loc_len": 5,
+      "ratio": 26.3,
+      "fr_preview": "Satisfaction client",
+      "loc_preview": "الرضا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_support_page.stat_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_support_page.solutions_title",
+      "fr_len": 19,
+      "loc_len": 6,
+      "ratio": 31.6,
+      "fr_preview": "La solution VocalIA",
+      "loc_preview": "حلولنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_support_page.solution2_title",
+      "fr_len": 21,
+      "loc_len": 9,
+      "ratio": 42.9,
+      "fr_preview": "Escalade intelligente",
+      "loc_preview": "تصعيد ذكي"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_support_page.integrations_title",
+      "fr_len": 20,
+      "loc_len": 9,
+      "ratio": 45.0,
+      "fr_preview": "Intégrations support",
+      "loc_preview": "التكاملات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_support_page.integrations_subtitle",
+      "fr_len": 36,
+      "loc_len": 12,
+      "ratio": 33.3,
+      "fr_preview": "Compatible avec vos outils existants",
+      "loc_preview": "يتصل بأدواتك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_support_page.cta_subtitle",
+      "fr_len": 88,
+      "loc_len": 41,
+      "ratio": 46.6,
+      "fr_preview": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur...",
+      "loc_preview": "اطلب عرضاً توضيحياً مع شخصية الدعم لدينا."
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.hero_title_accent",
+      "fr_len": 20,
+      "loc_len": 8,
+      "ratio": 40.0,
+      "fr_preview": "Automatisée par l'IA",
+      "loc_preview": "المواعيد"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.stat_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.challenges_title",
+      "fr_len": 28,
+      "loc_len": 12,
+      "ratio": 42.9,
+      "fr_preview": "Les défis de la prise de RDV",
+      "loc_preview": "تحديات الحجز"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.solutions_title",
+      "fr_len": 19,
+      "loc_len": 6,
+      "ratio": 31.6,
+      "fr_preview": "La solution VocalIA",
+      "loc_preview": "حلولنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.industries_subtitle",
+      "fr_len": 53,
+      "loc_len": 18,
+      "ratio": 34.0,
+      "fr_preview": "VocalIA s'adapte aux spécificités de chaque industrie",
+      "loc_preview": "الصناعات المتوافقة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.integrations_title",
+      "fr_len": 23,
+      "loc_len": 9,
+      "ratio": 39.1,
+      "fr_preview": "Intégrations calendrier",
+      "loc_preview": "التكاملات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.integrations_subtitle",
+      "fr_len": 36,
+      "loc_len": 12,
+      "ratio": 33.3,
+      "fr_preview": "Compatible avec vos outils existants",
+      "loc_preview": "يتصل بأدواتك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.cta_title",
+      "fr_len": 42,
+      "loc_len": 12,
+      "ratio": 28.6,
+      "fr_preview": "Arrêtez de perdre des clients au téléphone",
+      "loc_preview": "أتمت مواعيدك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_appointments_page.cta_subtitle",
+      "fr_len": 120,
+      "loc_len": 41,
+      "ratio": 34.2,
+      "fr_preview": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit...",
+      "loc_preview": "اطلب عرضاً توضيحياً لرؤية أتمتة المواعيد."
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_leads_page.challenges_title",
+      "fr_len": 29,
+      "loc_len": 14,
+      "ratio": 48.3,
+      "fr_preview": "Les défis de la qualification",
+      "loc_preview": "تحديات التأهيل"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_title",
+      "fr_len": 25,
+      "loc_len": 9,
+      "ratio": 36.0,
+      "fr_preview": "Framework BANT automatisé",
+      "loc_preview": "إطار BANT"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_subtitle",
+      "fr_len": 87,
+      "loc_len": 34,
+      "ratio": 39.1,
+      "fr_preview": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualif...",
+      "loc_preview": "تأهيل منظم لعملاء محتملين ذوي جودة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_leads_page.solutions_title",
+      "fr_len": 19,
+      "loc_len": 6,
+      "ratio": 31.6,
+      "fr_preview": "La solution VocalIA",
+      "loc_preview": "حلولنا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_leads_page.solution4_title",
+      "fr_len": 20,
+      "loc_len": 7,
+      "ratio": 35.0,
+      "fr_preview": "Alertes commerciales",
+      "loc_preview": "نقل ذكي"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_leads_page.integrations_subtitle",
+      "fr_len": 36,
+      "loc_len": 12,
+      "ratio": 33.3,
+      "fr_preview": "Compatible avec vos outils existants",
+      "loc_preview": "يتصل بأدواتك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "usecases_leads_page.cta_subtitle",
+      "fr_len": 91,
+      "loc_len": 43,
+      "ratio": 47.3,
+      "fr_preview": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA fa...",
+      "loc_preview": "اطلب عرضاً توضيحياً لرؤية التأهيل في العمل."
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "docs_page.cta_desc",
+      "fr_len": 60,
+      "loc_len": 28,
+      "ratio": 46.7,
+      "fr_preview": "Notre équipe technique est disponible pour vous accompagner.",
+      "loc_preview": "فريقنا التقني متاح لمساعدتك."
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "privacy_page.hero_title",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Politique de",
+      "loc_preview": "سياسة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "privacy_page.last_update",
+      "fr_len": 20,
+      "loc_len": 9,
+      "ratio": 45.0,
+      "fr_preview": "Dernière mise à jour",
+      "loc_preview": "آخر تحديث"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "privacy_page.section_intro",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Introduction",
+      "loc_preview": "مقدمة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "privacy_page.gdpr_rectification",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Droit de rectification",
+      "loc_preview": "حق التصحيح"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "privacy_page.gdpr_deletion",
+      "fr_len": 20,
+      "loc_len": 8,
+      "ratio": 40.0,
+      "fr_preview": "Droit à l'effacement",
+      "loc_preview": "حق الحذف"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "terms_page.hero_title",
+      "fr_len": 20,
+      "loc_len": 6,
+      "ratio": 30.0,
+      "fr_preview": "Conditions Générales",
+      "loc_preview": "الشروط"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "terms_page.last_update",
+      "fr_len": 20,
+      "loc_len": 9,
+      "ratio": 45.0,
+      "fr_preview": "Dernière mise à jour",
+      "loc_preview": "آخر تحديث"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "terms_page.section_services",
+      "fr_len": 24,
+      "loc_len": 11,
+      "ratio": 45.8,
+      "fr_preview": "Description des Services",
+      "loc_preview": "وصف الخدمات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ar",
+      "key": "docs_api_page.sidebar_telephony_transfer",
+      "fr_len": 10,
+      "loc_len": 3,
+      "ratio": 30.0,
+      "fr_preview": "Transférer",
+      "loc_preview": "نقل"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "features.telephony.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "pricing_page.table_voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "pricing_page.row_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "features_page.telephony_title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "features_page.telephony_f4",
+      "value": "Multi-AI fallback (99.9% uptime)"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "features_page.feat_fallback_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "features_page.feat_rag_title",
+      "value": "Knowledge Base RAG"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "features_page.table_fallback",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.breadcrumb_current",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.feature3_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool2_name",
+      "value": "handle_objection"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool3_name",
+      "value": "check_order_status"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool4_name",
+      "value": "check_product_stock"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool5_name",
+      "value": "get_customer_tags"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool6_name",
+      "value": "schedule_callback"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool8_name",
+      "value": "track_conversion_event"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool9_name",
+      "value": "search_knowledge_base"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "voice_telephony_page.tool10_name",
+      "value": "send_payment_details"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_healer_desc",
+      "value": "RDV multi-spécialités, triage patients"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_mechanic_desc",
+      "value": "Révision, réparation, contrôle technique"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_counselor_desc",
+      "value": "Qualification dossiers, prise RDV avocats"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_concierge_desc",
+      "value": "Réservations chambres, restaurant"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_stylist_desc",
+      "value": "RDV soins, coiffure, massages"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_recruiter_desc",
+      "value": "Screening candidats, prise RDV entretiens"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_dispatcher_desc",
+      "value": "Suivi colis, problèmes livraison"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_collector_desc",
+      "value": "Rappels paiement, plans échelonnés"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_surveyor_desc",
+      "value": "Collecte NPS, avis clients"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_governor_desc",
+      "value": "Mairie, démarches administratives"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier2_insurer_desc",
+      "value": "Sinistres, devis, réclamations"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_accountant_desc",
+      "value": "Qualification clients, RDV experts"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_architect_desc",
+      "value": "Projets construction, rénovation"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_pharmacist_desc",
+      "value": "Commandes médicaments, horaires garde"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_renter_desc",
+      "value": "Réservations, disponibilités"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_logistician_desc",
+      "value": "Commandes gros, livraisons B2B"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_trainer_desc",
+      "value": "Bootcamps, inscriptions formations"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_planner_desc",
+      "value": "Mariages, conférences, traiteur"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_producer_desc",
+      "value": "Approvisionnement, équipement industriel"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_cleaner_desc",
+      "value": "Devis B2B, entretien locaux"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_gym_desc",
+      "value": "Abonnements, séances essai"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_universal_ecommerce_desc",
+      "value": "Toute boutique en ligne"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_index_page.tier3_universal_sme_desc",
+      "value": "Réceptionniste universel"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_healthcare_page.integration_google_calendar",
+      "value": "Google Calendar"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_finance_page.compliance_pci_title",
+      "value": "PCI DSS Level 1"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_retail_page.challenge4_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_retail_page.solution2_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "industries_retail_page.segment_click_collect",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problems_title",
+      "value": "Les défis du support e-commerce"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problems_subtitle",
+      "value": "Les équipes support sont submergées par des questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problem_wait_title",
+      "value": "Attente excessive"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problem_wait_desc",
+      "value": "Les clients attendent en moyenne 12 heures pour une réponse email, causant frust..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problem_costs_title",
+      "value": "Coûts RH élevés"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problem_costs_desc",
+      "value": "Recruter et former des agents support multilingues coûte cher, surtout pour couv..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problem_repetitive_title",
+      "value": "Questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.problem_repetitive_desc",
+      "value": "80% des demandes concernent le suivi de commande, retours et disponibilité stock..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_title",
+      "value": "La solution VocalIA"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_subtitle",
+      "value": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_tracking_title",
+      "value": "Suivi de commande"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_tracking_desc",
+      "value": "Connexion directe à Shopify/WooCommerce pour donner le statut en temps réel."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_returns_title",
+      "value": "Gestion des retours"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_returns_desc",
+      "value": "Initiation automatique des procédures de retour et remboursement."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_stock_title",
+      "value": "Stock & disponibilité"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_stock_desc",
+      "value": "Vérification instantanée des stocks et alternatives produits."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_escalation_desc",
+      "value": "Transfert automatique vers un agent humain pour les cas complexes."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_multilingual_title",
+      "value": "Multilingue natif"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_multilingual_desc",
+      "value": "Support en FR, EN, ES, AR et Darija pour servir tous vos marchés."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_analytics_title",
+      "value": "Analytics détaillés"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.solution_analytics_desc",
+      "value": "Dashboard temps réel des conversations, satisfaction et tendances."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_desc",
+      "value": "En moyenne, nos clients e-commerce économisent"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_detail",
+      "value": "en automatisant 70% de leurs demandes support."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_benefit1",
+      "value": "Réduction de 3 à 4 agents support temps plein"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_benefit2",
+      "value": "Satisfaction client +25% (réponse immédiate)"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_benefit3",
+      "value": "Conversion +12% (abandon panier réduit)"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_label_savings",
+      "value": "Économies estimées par mois"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_label_agent_cost",
+      "value": "Coût agent support/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_label_agents_replaced",
+      "value": "Agents remplacés"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.roi_label_vocalia_cost",
+      "value": "Coût VocalIA/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.cta_primary",
+      "value": "Demander une démo gratuite"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_ecommerce_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problems_title",
+      "value": "Les défis du service client moderne"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problems_subtitle",
+      "value": "Les attentes clients augmentent, les ressources restent limitées"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problem_wait_title",
+      "value": "Temps d'attente inacceptable"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problem_wait_desc",
+      "value": "Les clients s'attendent à une réponse en moins de 5 minutes. La moyenne actuelle..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problem_costs_title",
+      "value": "Coûts exponentiels"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problem_costs_desc",
+      "value": "Chaque agent coûte 35-50K€/an. Pour un support 24/7 multilingue, comptez 10+ age..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problem_quality_title",
+      "value": "Qualité inconsistante"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.problem_quality_desc",
+      "value": "La qualité varie selon l'agent, son humeur, sa formation. Impossible de garantir..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.features_title",
+      "value": "Support client nouvelle génération"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.features_subtitle",
+      "value": "VocalIA combine IA conversationnelle et expertise métier pour un support irrépro..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_conversations_title",
+      "value": "Conversations naturelles"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_conversations_desc",
+      "value": "IA entraînée sur des millions de conversations support. Comprend le contexte, le..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_kb_title",
+      "value": "Base de connaissances IA"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_kb_desc",
+      "value": "Synchronisation automatique avec votre documentation, FAQ, et historique tickets..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_escalation_desc",
+      "value": "Détection automatique des cas complexes ou clients VIP. Transfert fluide vers ag..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_analytics_title",
+      "value": "Analytics en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_analytics_desc",
+      "value": "Dashboard avec métriques clés: volume, résolution, satisfaction, tendances. Insi..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_languages_title",
+      "value": "5 langues natives"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_languages_desc",
+      "value": "Français, Anglais, Espagnol, Arabe standard et Darija marocain. Détection automa..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_crm_title",
+      "value": "Intégrations CRM"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.feature_crm_desc",
+      "value": "Connexion native avec HubSpot, Salesforce, Zendesk, Freshdesk. Synchronisation b..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_title",
+      "value": "Comment ça fonctionne"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_subtitle",
+      "value": "Déploiement en 3 étapes simples"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_step1_title",
+      "value": "Connectez vos données"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_step1_desc",
+      "value": "Importez votre FAQ, documentation produit et historique de tickets. L'IA apprend..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_step2_title",
+      "value": "Personnalisez l'agent"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_step2_desc",
+      "value": "Choisissez parmi 30 personas métier ou créez le vôtre. Définissez le ton, les rè..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_step3_title",
+      "value": "Déployez et optimisez"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.workflow_step3_desc",
+      "value": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez conti..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.cta_primary",
+      "value": "Planifier une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_support_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.cta_product",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.industry_health_desc",
+      "value": "Cabinets médicaux, dentistes, cliniques. Gestion des urgences et rappels de suiv..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.industry_realestate_desc",
+      "value": "Agences, promoteurs. Visites, estimations, signatures chez notaire."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.industry_finance_title",
+      "value": "Services financiers"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.industry_finance_desc",
+      "value": "Banques, assurances, conseillers. RDV conseil et signature contrats."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.industry_beauty_title",
+      "value": "Beauté & Bien-être"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.industry_beauty_desc",
+      "value": "Salons, spas, coaches. Réservations multi-services et praticiens."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.features_title",
+      "value": "Fonctionnalités clés"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.features_subtitle",
+      "value": "Tout ce dont vous avez besoin pour automatiser votre agenda"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_sync_title",
+      "value": "Sync calendrier temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_sync_desc",
+      "value": "Google Calendar, Outlook, Calendly, Cal.com. Disponibilités toujours à jour."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_reminders_title",
+      "value": "Rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_reminders_desc",
+      "value": "SMS et appel vocal 24h et 1h avant. Réduction drastique des no-shows."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_reschedule_title",
+      "value": "Report et annulation"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_reschedule_desc",
+      "value": "Le client peut reporter ou annuler par simple appel. Créneau libéré automatiquem..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_multipractitioner_title",
+      "value": "Multi-praticiens"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_multipractitioner_desc",
+      "value": "Gestion des agendas de plusieurs professionnels. Allocation intelligente selon c..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_prequalification_title",
+      "value": "Pré-qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_prequalification_desc",
+      "value": "Questions de screening avant réservation. Collecte d'infos essentielles pour pré..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_outbound_title",
+      "value": "Appels sortants"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.feature_outbound_desc",
+      "value": "Campagnes de rappel proactives pour relancer les clients inactifs ou confirmer l..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.workflow_title",
+      "value": "Le parcours client optimisé"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.workflow_step1_desc",
+      "value": "Le client appelle votre numéro 24/7"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.workflow_step2_desc",
+      "value": "L'IA identifie le besoin et les préférences"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.workflow_step3_desc",
+      "value": "Créneau proposé et confirmé en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.workflow_step4_desc",
+      "value": "SMS + email + rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.cta_primary",
+      "value": "Essayer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_appointments_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.breadcrumb_current",
+      "value": "Qualification Leads"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_budget_questions_label",
+      "value": "Questions types:"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_budget_q1",
+      "value": "Quel budget avez-vous prévu?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_budget_q2",
+      "value": "Comment financez-vous ce projet?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_authority_q1",
+      "value": "Qui prend la décision finale?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_authority_q2",
+      "value": "D'autres personnes sont-elles impliquées?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_need_q1",
+      "value": "Quel problème cherchez-vous à résoudre?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_need_q2",
+      "value": "Quelles solutions avez-vous essayées?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_timeline_q1",
+      "value": "Quand souhaitez-vous démarrer?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.bant_timeline_q2",
+      "value": "Y a-t-il une échéance particulière?"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.score_title",
+      "value": "Score de qualification en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.score_desc",
+      "value": "À la fin de chaque conversation, VocalIA génère un score BANT complet et une rec..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.score_hot",
+      "value": "Hot lead - Transfert immédiat au commercial"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.score_warm",
+      "value": "Warm lead - Nurturing automatisé"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.score_cold",
+      "value": "Cold lead - Séquence email long-terme"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.score_recommendation",
+      "value": "Recommandation: Transfert commercial immédiat"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.features_title",
+      "value": "Fonctionnalités de qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_adaptive_title",
+      "value": "Questionnaire adaptatif"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_adaptive_desc",
+      "value": "Les questions s'adaptent en temps réel selon les réponses. Conversation naturell..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_transfer_title",
+      "value": "Transfert à chaud"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_transfer_desc",
+      "value": "Lead qualifié? Transfert instantané au commercial disponible avec briefing conte..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_crm_desc",
+      "value": "Score et données enrichies synchronisés automatiquement avec HubSpot, Salesforce..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_alerts_title",
+      "value": "Alertes temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_alerts_desc",
+      "value": "Notification Slack/email immédiate pour chaque hot lead. Ne laissez plus refroid..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_analytics_title",
+      "value": "Analytics pipeline"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_analytics_desc",
+      "value": "Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre ..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_objections_title",
+      "value": "Gestion objections"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.feature_objections_desc",
+      "value": "L'IA traite les objections courantes et relance les leads hésitants avec les bon..."
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.cta_primary",
+      "value": "Commencer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "usecases_leads_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "docs_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "footer.links.voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "docs_api_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "common.newsletter_title",
+      "value": "Restez informé des actualités"
+    },
+    {
+      "type": "identical",
+      "locale": "ar",
+      "key": "common.newsletter_subtitle",
+      "value": "Articles, guides et études de cas. Pas de spam."
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "nav.logout",
+      "fr_len": 11,
+      "loc_len": 4,
+      "ratio": 36.4,
+      "fr_preview": "Déconnexion",
+      "loc_preview": "خروج"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "dashboard.health.operational",
+      "fr_len": 12,
+      "loc_len": 4,
+      "ratio": 33.3,
+      "fr_preview": "Opérationnel",
+      "loc_preview": "خدام"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "hero.trusted",
+      "fr_len": 23,
+      "loc_len": 11,
+      "ratio": 47.8,
+      "fr_preview": "Ils nous font confiance",
+      "loc_preview": "كيتيقو فينا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "languages.title",
+      "fr_len": 17,
+      "loc_len": 6,
+      "ratio": 35.3,
+      "fr_preview": "5 Langues Natives",
+      "loc_preview": "5 لغات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "pricing.widget.cta",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "بدا مجاناً"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "cta.button",
+      "fr_len": 19,
+      "loc_len": 8,
+      "ratio": 42.1,
+      "fr_preview": "Démarrer Maintenant",
+      "loc_preview": "بدا دابا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "solutions_menu.retail",
+      "fr_len": 17,
+      "loc_len": 7,
+      "ratio": 41.2,
+      "fr_preview": "Retail & Commerce",
+      "loc_preview": "التجارة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "actions.request_demo",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "pricing_page.title_highlight",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Transparents",
+      "loc_preview": "شفافة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "pricing_page.free_period",
+      "fr_len": 13,
+      "loc_len": 5,
+      "ratio": 38.5,
+      "fr_preview": "pour toujours",
+      "loc_preview": "للأبد"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "pricing_page.free_cta",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "بدا مجاناً"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "pricing_page.enterprise_period",
+      "fr_len": 18,
+      "loc_len": 8,
+      "ratio": 44.4,
+      "fr_preview": "tarif personnalisé",
+      "loc_preview": "ثمن مخصص"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "pricing_page.table_feature",
+      "fr_len": 14,
+      "loc_len": 6,
+      "ratio": 42.9,
+      "fr_preview": "Fonctionnalité",
+      "loc_preview": "الميزة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "pricing_page.cta_primary",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "بدا مجاناً"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "contact_page.form_subject_demo",
+      "fr_len": 15,
+      "loc_len": 7,
+      "ratio": 46.7,
+      "fr_preview": "Demande de démo",
+      "loc_preview": "طلب عرض"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "contact_page.form_subject_partnership",
+      "fr_len": 11,
+      "loc_len": 5,
+      "ratio": 45.5,
+      "fr_preview": "Partenariat",
+      "loc_preview": "شراكة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "about_page.title_suffix",
+      "fr_len": 20,
+      "loc_len": 7,
+      "ratio": 35.0,
+      "fr_preview": "pour les Entreprises",
+      "loc_preview": "للشركات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "about_page.stat_cheaper",
+      "fr_len": 10,
+      "loc_len": 3,
+      "ratio": 30.0,
+      "fr_preview": "Moins Cher",
+      "loc_preview": "رخص"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "about_page.mission_tag1",
+      "fr_len": 25,
+      "loc_len": 8,
+      "ratio": 32.0,
+      "fr_preview": "Tarification Transparente",
+      "loc_preview": "ثمن شفاف"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "about_page.values_title",
+      "fr_len": 11,
+      "loc_len": 3,
+      "ratio": 27.3,
+      "fr_preview": "Ce qui nous",
+      "loc_preview": "شنو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "about_page.tech_title_highlight",
+      "fr_len": 16,
+      "loc_len": 6,
+      "ratio": 37.5,
+      "fr_preview": "Enterprise-Grade",
+      "loc_preview": "مؤسسية"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "about_page.cta_primary",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Commencer Gratuitement",
+      "loc_preview": "بدا مجاناً"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "about_page.cta_secondary",
+      "fr_len": 17,
+      "loc_len": 7,
+      "ratio": 41.2,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب عرض"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "features_page.title",
+      "fr_len": 10,
+      "loc_len": 3,
+      "ratio": 30.0,
+      "fr_preview": "Toutes les",
+      "loc_preview": "كاع"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "features_page.all_features_title",
+      "fr_len": 25,
+      "loc_len": 12,
+      "ratio": 48.0,
+      "fr_preview": "Fonctionnalités Complètes",
+      "loc_preview": "مميزات كاملة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "features_page.feat_languages_title",
+      "fr_len": 17,
+      "loc_len": 6,
+      "ratio": 35.3,
+      "fr_preview": "5 Langues Natives",
+      "loc_preview": "5 لغات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "features_page.feat_tools_title",
+      "fr_len": 17,
+      "loc_len": 7,
+      "ratio": 41.2,
+      "fr_preview": "11 Function Tools",
+      "loc_preview": "11 أداة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "features_page.table_feature",
+      "fr_len": 14,
+      "loc_len": 6,
+      "ratio": 42.9,
+      "fr_preview": "Fonctionnalité",
+      "loc_preview": "الميزة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "voice_widget_page.features_subtitle",
+      "fr_len": 43,
+      "loc_len": 21,
+      "ratio": 48.8,
+      "fr_preview": "Tout ce dont vous avez besoin, gratuitement",
+      "loc_preview": "كلشي لي خاصك، بالمجان"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "voice_telephony_page.cta_demo",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool4_desc",
+      "fr_len": 21,
+      "loc_len": 10,
+      "ratio": 47.6,
+      "fr_preview": "Inventaire temps réel",
+      "loc_preview": "مخزون فوري"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "voice_telephony_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_index_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_healthcare_page.hero_cta",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_healthcare_page.solution3_feature2",
+      "fr_len": 25,
+      "loc_len": 12,
+      "ratio": 48.0,
+      "fr_preview": "Transmission au praticien",
+      "loc_preview": "إرسال للطبيب"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_healthcare_page.stats_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_healthcare_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_finance_page.hero_cta",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_finance_page.solution2_feature1",
+      "fr_len": 19,
+      "loc_len": 9,
+      "ratio": 47.4,
+      "fr_preview": "Solde en temps réel",
+      "loc_preview": "رصيد فوري"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_finance_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_realestate_page.hero_cta",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_realestate_page.challenge2_title",
+      "fr_len": 21,
+      "loc_len": 10,
+      "ratio": 47.6,
+      "fr_preview": "Disponibilité Limitée",
+      "loc_preview": "توفر محدود"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_realestate_page.solutions_subtitle",
+      "fr_len": 49,
+      "loc_len": 23,
+      "ratio": 46.9,
+      "fr_preview": "Fonctionnalités spécifiques au secteur immobilier",
+      "loc_preview": "ميزات خاصة بقطاع العقار"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_realestate_page.segment_residential",
+      "fr_len": 11,
+      "loc_len": 4,
+      "ratio": 36.4,
+      "fr_preview": "Résidentiel",
+      "loc_preview": "سكني"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_realestate_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_retail_page.hero_cta",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_retail_page.solutions_subtitle",
+      "fr_len": 39,
+      "loc_len": 19,
+      "ratio": 48.7,
+      "fr_preview": "Fonctionnalités spécifiques au commerce",
+      "loc_preview": "ميزات خاصة بالتجارة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_retail_page.stats_customer_satisfaction",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Satisfaction",
+      "loc_preview": "الرضا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "industries_retail_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.stat_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.stat_languages",
+      "fr_len": 18,
+      "loc_len": 6,
+      "ratio": 33.3,
+      "fr_preview": "Langues supportées",
+      "loc_preview": "اللغات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.challenges_subtitle",
+      "fr_len": 65,
+      "loc_len": 24,
+      "ratio": 36.9,
+      "fr_preview": "Les équipes support sont submergées par des questions répétitives",
+      "loc_preview": "المشاكل اللي كنحلوها ليك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solutions_subtitle",
+      "fr_len": 78,
+      "loc_len": 32,
+      "ratio": 41.0,
+      "fr_preview": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes",
+      "loc_preview": "صوت ذكي مصمم للتجارة الإلكترونية"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.cta_subtitle",
+      "fr_len": 79,
+      "loc_len": 36,
+      "ratio": 45.6,
+      "fr_preview": "Déployez VocalIA en moins de 24h et commencez à économiser dès le premier jour.",
+      "loc_preview": "طلب ديمو باش تشوف Voice AI في العمل."
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.hero_cta_secondary",
+      "fr_len": 21,
+      "loc_len": 10,
+      "ratio": 47.6,
+      "fr_preview": "Voir les intégrations",
+      "loc_preview": "شوف الديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.stat_satisfaction",
+      "fr_len": 19,
+      "loc_len": 5,
+      "ratio": 26.3,
+      "fr_preview": "Satisfaction client",
+      "loc_preview": "الرضا"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.stat_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.challenges_subtitle",
+      "fr_len": 55,
+      "loc_len": 24,
+      "ratio": 43.6,
+      "fr_preview": "Les centres de contact font face à des défis croissants",
+      "loc_preview": "المشاكل اللي كنحلوها ليك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.solution2_title",
+      "fr_len": 21,
+      "loc_len": 9,
+      "ratio": 42.9,
+      "fr_preview": "Escalade intelligente",
+      "loc_preview": "تصعيد ذكي"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.integrations_title",
+      "fr_len": 20,
+      "loc_len": 9,
+      "ratio": 45.0,
+      "fr_preview": "Intégrations support",
+      "loc_preview": "التكاملات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.cta_subtitle",
+      "fr_len": 88,
+      "loc_len": 31,
+      "ratio": 35.2,
+      "fr_preview": "Rejoignez les entreprises qui offrent un support exceptionnel sans exploser leur...",
+      "loc_preview": "طلب ديمو مع شخصية الدعم ديالنا."
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_support_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.hero_title_accent",
+      "fr_len": 20,
+      "loc_len": 6,
+      "ratio": 30.0,
+      "fr_preview": "Automatisée par l'IA",
+      "loc_preview": "الموعد"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.hero_cta_secondary",
+      "fr_len": 21,
+      "loc_len": 10,
+      "ratio": 47.6,
+      "fr_preview": "Voir les intégrations",
+      "loc_preview": "شوف الديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.stat_availability",
+      "fr_len": 13,
+      "loc_len": 6,
+      "ratio": 46.2,
+      "fr_preview": "Disponibilité",
+      "loc_preview": "التوفر"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.challenges_title",
+      "fr_len": 28,
+      "loc_len": 12,
+      "ratio": 42.9,
+      "fr_preview": "Les défis de la prise de RDV",
+      "loc_preview": "تحديات الحجز"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.challenges_subtitle",
+      "fr_len": 62,
+      "loc_len": 24,
+      "ratio": 38.7,
+      "fr_preview": "La gestion des rendez-vous est chronophage et source d'erreurs",
+      "loc_preview": "المشاكل اللي كنحلوها ليك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.industries_subtitle",
+      "fr_len": 53,
+      "loc_len": 18,
+      "ratio": 34.0,
+      "fr_preview": "VocalIA s'adapte aux spécificités de chaque industrie",
+      "loc_preview": "الصناعات المتوافقة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.integrations_title",
+      "fr_len": 23,
+      "loc_len": 9,
+      "ratio": 39.1,
+      "fr_preview": "Intégrations calendrier",
+      "loc_preview": "التكاملات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.cta_subtitle",
+      "fr_len": 120,
+      "loc_len": 42,
+      "ratio": 35.0,
+      "fr_preview": "Chaque appel manqué est une opportunité perdue. VocalIA répond 24/7 et convertit...",
+      "loc_preview": "طلب ديمو باش تشوف أوتوماتيزاسيون المواعيد."
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_appointments_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.hero_title_accent",
+      "fr_len": 25,
+      "loc_len": 11,
+      "ratio": 44.0,
+      "fr_preview": "Framework BANT Automatisé",
+      "loc_preview": "تأهيل الليد"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.hero_cta_secondary",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Voir le framework BANT",
+      "loc_preview": "شوف الديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.challenges_title",
+      "fr_len": 29,
+      "loc_len": 14,
+      "ratio": 48.3,
+      "fr_preview": "Les défis de la qualification",
+      "loc_preview": "تحديات التأهيل"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.challenges_subtitle",
+      "fr_len": 63,
+      "loc_len": 24,
+      "ratio": 38.1,
+      "fr_preview": "Trop de leads non qualifiés gaspillent le temps des commerciaux",
+      "loc_preview": "المشاكل اللي كنحلوها ليك"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_title",
+      "fr_len": 25,
+      "loc_len": 9,
+      "ratio": 36.0,
+      "fr_preview": "Framework BANT automatisé",
+      "loc_preview": "إطار BANT"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_subtitle",
+      "fr_len": 87,
+      "loc_len": 34,
+      "ratio": 39.1,
+      "fr_preview": "L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualif...",
+      "loc_preview": "تأهيل منظم لعملاء محتملين ذوي جودة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.solution4_title",
+      "fr_len": 20,
+      "loc_len": 7,
+      "ratio": 35.0,
+      "fr_preview": "Alertes commerciales",
+      "loc_preview": "نقل ذكي"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.cta_subtitle",
+      "fr_len": 91,
+      "loc_len": 35,
+      "ratio": 38.5,
+      "fr_preview": "Vos commerciaux méritent de parler à des prospects qualifiés. Laissez VocalIA fa...",
+      "loc_preview": "طلب ديمو باش تشوف التأهيل في العمل."
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "usecases_leads_page.cta_button",
+      "fr_len": 17,
+      "loc_len": 8,
+      "ratio": 47.1,
+      "fr_preview": "Demander une Démo",
+      "loc_preview": "طلب ديمو"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "privacy_page.hero_title",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Politique de",
+      "loc_preview": "سياسة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "privacy_page.last_update",
+      "fr_len": 20,
+      "loc_len": 9,
+      "ratio": 45.0,
+      "fr_preview": "Dernière mise à jour",
+      "loc_preview": "آخر تحديث"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "privacy_page.section_intro",
+      "fr_len": 12,
+      "loc_len": 5,
+      "ratio": 41.7,
+      "fr_preview": "Introduction",
+      "loc_preview": "مقدمة"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "privacy_page.gdpr_rectification",
+      "fr_len": 22,
+      "loc_len": 10,
+      "ratio": 45.5,
+      "fr_preview": "Droit de rectification",
+      "loc_preview": "حق التصحيح"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "privacy_page.gdpr_deletion",
+      "fr_len": 20,
+      "loc_len": 8,
+      "ratio": 40.0,
+      "fr_preview": "Droit à l'effacement",
+      "loc_preview": "حق الحذف"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "terms_page.hero_title",
+      "fr_len": 20,
+      "loc_len": 6,
+      "ratio": 30.0,
+      "fr_preview": "Conditions Générales",
+      "loc_preview": "الشروط"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "terms_page.last_update",
+      "fr_len": 20,
+      "loc_len": 9,
+      "ratio": 45.0,
+      "fr_preview": "Dernière mise à jour",
+      "loc_preview": "آخر تحديث"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "terms_page.section_services",
+      "fr_len": 24,
+      "loc_len": 11,
+      "ratio": 45.8,
+      "fr_preview": "Description des Services",
+      "loc_preview": "وصف الخدمات"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "integrations_page.cta_request",
+      "fr_len": 24,
+      "loc_len": 9,
+      "ratio": 37.5,
+      "fr_preview": "Demander une intégration",
+      "loc_preview": "طلب تكامل"
+    },
+    {
+      "type": "truncated",
+      "locale": "ary",
+      "key": "docs_api_page.sidebar_telephony_transfer",
+      "fr_len": 10,
+      "loc_len": 3,
+      "ratio": 30.0,
+      "fr_preview": "Transférer",
+      "loc_preview": "نقل"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "features.telephony.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "pricing_page.table_voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "pricing_page.row_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "features_page.telephony_title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "features_page.feat_fallback_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "features_page.feat_rag_title",
+      "value": "Knowledge Base RAG"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "features_page.table_fallback",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.title",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.breadcrumb_current",
+      "value": "Voice Telephony AI"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.feature3_title",
+      "value": "Multi-AI Fallback"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool2_name",
+      "value": "handle_objection"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool3_name",
+      "value": "check_order_status"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool4_name",
+      "value": "check_product_stock"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool5_name",
+      "value": "get_customer_tags"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool6_name",
+      "value": "schedule_callback"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool8_name",
+      "value": "track_conversion_event"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool9_name",
+      "value": "search_knowledge_base"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "voice_telephony_page.tool10_name",
+      "value": "send_payment_details"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_healer_desc",
+      "value": "RDV multi-spécialités, triage patients"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_mechanic_desc",
+      "value": "Révision, réparation, contrôle technique"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_counselor_desc",
+      "value": "Qualification dossiers, prise RDV avocats"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_concierge_desc",
+      "value": "Réservations chambres, restaurant"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_stylist_desc",
+      "value": "RDV soins, coiffure, massages"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_recruiter_desc",
+      "value": "Screening candidats, prise RDV entretiens"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_dispatcher_desc",
+      "value": "Suivi colis, problèmes livraison"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_collector_desc",
+      "value": "Rappels paiement, plans échelonnés"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_surveyor_desc",
+      "value": "Collecte NPS, avis clients"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_governor_desc",
+      "value": "Mairie, démarches administratives"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier2_insurer_desc",
+      "value": "Sinistres, devis, réclamations"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_accountant_desc",
+      "value": "Qualification clients, RDV experts"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_architect_desc",
+      "value": "Projets construction, rénovation"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_pharmacist_desc",
+      "value": "Commandes médicaments, horaires garde"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_renter_desc",
+      "value": "Réservations, disponibilités"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_logistician_desc",
+      "value": "Commandes gros, livraisons B2B"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_trainer_desc",
+      "value": "Bootcamps, inscriptions formations"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_planner_desc",
+      "value": "Mariages, conférences, traiteur"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_producer_desc",
+      "value": "Approvisionnement, équipement industriel"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_cleaner_desc",
+      "value": "Devis B2B, entretien locaux"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_gym_desc",
+      "value": "Abonnements, séances essai"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_universal_ecommerce_desc",
+      "value": "Toute boutique en ligne"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_index_page.tier3_universal_sme_desc",
+      "value": "Réceptionniste universel"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_healthcare_page.integration_google_calendar",
+      "value": "Google Calendar"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_finance_page.compliance_pci_title",
+      "value": "PCI DSS Level 1"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_retail_page.challenge4_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_retail_page.solution2_title",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "industries_retail_page.segment_click_collect",
+      "value": "Click & Collect"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problems_title",
+      "value": "Les défis du support e-commerce"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problems_subtitle",
+      "value": "Les équipes support sont submergées par des questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problem_wait_title",
+      "value": "Attente excessive"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problem_wait_desc",
+      "value": "Les clients attendent en moyenne 12 heures pour une réponse email, causant frust..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problem_costs_title",
+      "value": "Coûts RH élevés"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problem_costs_desc",
+      "value": "Recruter et former des agents support multilingues coûte cher, surtout pour couv..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problem_repetitive_title",
+      "value": "Questions répétitives"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.problem_repetitive_desc",
+      "value": "80% des demandes concernent le suivi de commande, retours et disponibilité stock..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_title",
+      "value": "La solution VocalIA"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_subtitle",
+      "value": "Un assistant vocal intelligent qui gère automatiquement les demandes courantes"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_tracking_title",
+      "value": "Suivi de commande"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_tracking_desc",
+      "value": "Connexion directe à Shopify/WooCommerce pour donner le statut en temps réel."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_returns_title",
+      "value": "Gestion des retours"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_returns_desc",
+      "value": "Initiation automatique des procédures de retour et remboursement."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_stock_title",
+      "value": "Stock & disponibilité"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_stock_desc",
+      "value": "Vérification instantanée des stocks et alternatives produits."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_escalation_desc",
+      "value": "Transfert automatique vers un agent humain pour les cas complexes."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_multilingual_title",
+      "value": "Multilingue natif"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_multilingual_desc",
+      "value": "Support en FR, EN, ES, AR et Darija pour servir tous vos marchés."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_analytics_title",
+      "value": "Analytics détaillés"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.solution_analytics_desc",
+      "value": "Dashboard temps réel des conversations, satisfaction et tendances."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_desc",
+      "value": "En moyenne, nos clients e-commerce économisent"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_detail",
+      "value": "en automatisant 70% de leurs demandes support."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_benefit1",
+      "value": "Réduction de 3 à 4 agents support temps plein"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_benefit2",
+      "value": "Satisfaction client +25% (réponse immédiate)"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_benefit3",
+      "value": "Conversion +12% (abandon panier réduit)"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_label_savings",
+      "value": "Économies estimées par mois"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_label_agent_cost",
+      "value": "Coût agent support/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_label_agents_replaced",
+      "value": "Agents remplacés"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.roi_label_vocalia_cost",
+      "value": "Coût VocalIA/mois"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.cta_primary",
+      "value": "Demander une démo gratuite"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_ecommerce_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problems_title",
+      "value": "Les défis du service client moderne"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problems_subtitle",
+      "value": "Les attentes clients augmentent, les ressources restent limitées"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problem_wait_title",
+      "value": "Temps d'attente inacceptable"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problem_wait_desc",
+      "value": "Les clients s'attendent à une réponse en moins de 5 minutes. La moyenne actuelle..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problem_costs_title",
+      "value": "Coûts exponentiels"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problem_costs_desc",
+      "value": "Chaque agent coûte 35-50K€/an. Pour un support 24/7 multilingue, comptez 10+ age..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problem_quality_title",
+      "value": "Qualité inconsistante"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.problem_quality_desc",
+      "value": "La qualité varie selon l'agent, son humeur, sa formation. Impossible de garantir..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.features_title",
+      "value": "Support client nouvelle génération"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.features_subtitle",
+      "value": "VocalIA combine IA conversationnelle et expertise métier pour un support irrépro..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_conversations_title",
+      "value": "Conversations naturelles"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_conversations_desc",
+      "value": "IA entraînée sur des millions de conversations support. Comprend le contexte, le..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_kb_title",
+      "value": "Base de connaissances IA"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_kb_desc",
+      "value": "Synchronisation automatique avec votre documentation, FAQ, et historique tickets..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_escalation_title",
+      "value": "Escalade intelligente"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_escalation_desc",
+      "value": "Détection automatique des cas complexes ou clients VIP. Transfert fluide vers ag..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_analytics_title",
+      "value": "Analytics en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_analytics_desc",
+      "value": "Dashboard avec métriques clés: volume, résolution, satisfaction, tendances. Insi..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_languages_title",
+      "value": "5 langues natives"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_languages_desc",
+      "value": "Français, Anglais, Espagnol, Arabe standard et Darija marocain. Détection automa..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_crm_title",
+      "value": "Intégrations CRM"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.feature_crm_desc",
+      "value": "Connexion native avec HubSpot, Salesforce, Zendesk, Freshdesk. Synchronisation b..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_title",
+      "value": "Comment ça fonctionne"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_subtitle",
+      "value": "Déploiement en 3 étapes simples"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_step1_title",
+      "value": "Connectez vos données"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_step1_desc",
+      "value": "Importez votre FAQ, documentation produit et historique de tickets. L'IA apprend..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_step2_title",
+      "value": "Personnalisez l'agent"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_step2_desc",
+      "value": "Choisissez parmi 30 personas métier ou créez le vôtre. Définissez le ton, les rè..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_step3_title",
+      "value": "Déployez et optimisez"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.workflow_step3_desc",
+      "value": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez conti..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.cta_primary",
+      "value": "Planifier une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_support_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.cta_product",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.industry_health_desc",
+      "value": "Cabinets médicaux, dentistes, cliniques. Gestion des urgences et rappels de suiv..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.industry_realestate_desc",
+      "value": "Agences, promoteurs. Visites, estimations, signatures chez notaire."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.industry_finance_title",
+      "value": "Services financiers"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.industry_finance_desc",
+      "value": "Banques, assurances, conseillers. RDV conseil et signature contrats."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.industry_beauty_title",
+      "value": "Beauté & Bien-être"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.industry_beauty_desc",
+      "value": "Salons, spas, coaches. Réservations multi-services et praticiens."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.features_title",
+      "value": "Fonctionnalités clés"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.features_subtitle",
+      "value": "Tout ce dont vous avez besoin pour automatiser votre agenda"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_sync_title",
+      "value": "Sync calendrier temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_sync_desc",
+      "value": "Google Calendar, Outlook, Calendly, Cal.com. Disponibilités toujours à jour."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_reminders_title",
+      "value": "Rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_reminders_desc",
+      "value": "SMS et appel vocal 24h et 1h avant. Réduction drastique des no-shows."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_reschedule_title",
+      "value": "Report et annulation"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_reschedule_desc",
+      "value": "Le client peut reporter ou annuler par simple appel. Créneau libéré automatiquem..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_multipractitioner_title",
+      "value": "Multi-praticiens"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_multipractitioner_desc",
+      "value": "Gestion des agendas de plusieurs professionnels. Allocation intelligente selon c..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_prequalification_title",
+      "value": "Pré-qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_prequalification_desc",
+      "value": "Questions de screening avant réservation. Collecte d'infos essentielles pour pré..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_outbound_title",
+      "value": "Appels sortants"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.feature_outbound_desc",
+      "value": "Campagnes de rappel proactives pour relancer les clients inactifs ou confirmer l..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.workflow_title",
+      "value": "Le parcours client optimisé"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.workflow_step1_desc",
+      "value": "Le client appelle votre numéro 24/7"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.workflow_step2_desc",
+      "value": "L'IA identifie le besoin et les préférences"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.workflow_step3_desc",
+      "value": "Créneau proposé et confirmé en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.workflow_step4_desc",
+      "value": "SMS + email + rappels automatiques"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.cta_primary",
+      "value": "Essayer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_appointments_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.breadcrumb_current",
+      "value": "Qualification Leads"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.cta_demo",
+      "value": "Demander une démo"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.cta_docs",
+      "value": "Documentation API"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_budget_questions_label",
+      "value": "Questions types:"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_budget_q1",
+      "value": "Quel budget avez-vous prévu?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_budget_q2",
+      "value": "Comment financez-vous ce projet?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_authority_q1",
+      "value": "Qui prend la décision finale?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_authority_q2",
+      "value": "D'autres personnes sont-elles impliquées?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_need_q1",
+      "value": "Quel problème cherchez-vous à résoudre?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_need_q2",
+      "value": "Quelles solutions avez-vous essayées?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_timeline_q1",
+      "value": "Quand souhaitez-vous démarrer?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.bant_timeline_q2",
+      "value": "Y a-t-il une échéance particulière?"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.score_title",
+      "value": "Score de qualification en temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.score_desc",
+      "value": "À la fin de chaque conversation, VocalIA génère un score BANT complet et une rec..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.score_hot",
+      "value": "Hot lead - Transfert immédiat au commercial"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.score_warm",
+      "value": "Warm lead - Nurturing automatisé"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.score_cold",
+      "value": "Cold lead - Séquence email long-terme"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.score_recommendation",
+      "value": "Recommandation: Transfert commercial immédiat"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.features_title",
+      "value": "Fonctionnalités de qualification"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_adaptive_title",
+      "value": "Questionnaire adaptatif"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_adaptive_desc",
+      "value": "Les questions s'adaptent en temps réel selon les réponses. Conversation naturell..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_transfer_title",
+      "value": "Transfert à chaud"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_transfer_desc",
+      "value": "Lead qualifié? Transfert instantané au commercial disponible avec briefing conte..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_crm_desc",
+      "value": "Score et données enrichies synchronisés automatiquement avec HubSpot, Salesforce..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_alerts_title",
+      "value": "Alertes temps réel"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_alerts_desc",
+      "value": "Notification Slack/email immédiate pour chaque hot lead. Ne laissez plus refroid..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_analytics_title",
+      "value": "Analytics pipeline"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_analytics_desc",
+      "value": "Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre ..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_objections_title",
+      "value": "Gestion objections"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.feature_objections_desc",
+      "value": "L'IA traite les objections courantes et relance les leads hésitants avec les bon..."
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.cta_primary",
+      "value": "Commencer gratuitement"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "usecases_leads_page.cta_secondary",
+      "value": "Voir les tarifs"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "docs_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "footer.links.voice_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "docs_api_page.sidebar_telephony",
+      "value": "Voice Telephony"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "common.newsletter_title",
+      "value": "Restez informé des actualités"
+    },
+    {
+      "type": "identical",
+      "locale": "ary",
+      "key": "common.newsletter_subtitle",
+      "value": "Articles, guides et études de cas. Pas de spam."
+    }
+  ]
+}

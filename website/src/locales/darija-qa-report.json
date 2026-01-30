@@ -1,0 +1,33 @@
+{
+  "generated": "2026-01-30",
+  "total_issues": 0,
+  "total_msa_markers": 0,
+  "total_darija_markers": 368,
+  "files_stats": [
+    {
+      "file": "ary.json",
+      "total_texts": 1436,
+      "authentic": 1048,
+      "authenticity_rate": 73.0,
+      "darija_markers": 260,
+      "msa_contamination": 0
+    },
+    {
+      "file": "voice-ary.json",
+      "total_texts": 68,
+      "authentic": 61,
+      "authenticity_rate": 89.7,
+      "darija_markers": 65,
+      "msa_contamination": 0
+    },
+    {
+      "file": "knowledge_base_ary.json",
+      "total_texts": 70,
+      "authentic": 67,
+      "authenticity_rate": 95.7,
+      "darija_markers": 43,
+      "msa_contamination": 0
+    }
+  ],
+  "issues": []
+}

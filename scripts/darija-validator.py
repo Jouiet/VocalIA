@@ -61,6 +61,7 @@ DARIJA_MARKERS = [
 
 # MSA formal markers (to detect contamination)
 # These are checked as standalone words using word boundary patterns
+# The regex ensures we don't match inside words (e.g., لما inside المكالمات)
 MSA_FORMAL_MARKERS_RAW = [
     "التي",     # allati - feminine relative pronoun (formal)
     "الذي",     # alladhi - masculine relative pronoun (formal)
@@ -76,6 +77,7 @@ MSA_FORMAL_MARKERS_RAW = [
     "علاوة",    # 3ilawatan - furthermore (formal)
     "فضلا",     # fadlan - in addition (formal)
     "مما",      # mimma - from which (formal)
+    "لما",      # lamma - when (formal MSA, Darija uses ملي)
 ]
 
 # Create regex patterns for word boundary matching
@@ -86,8 +88,11 @@ for marker in MSA_FORMAL_MARKERS_RAW:
     pattern = re.compile(rf'(?:^|[\s،.؟!:])({re.escape(marker)})(?:[\s،.؟!:]|$)')
     MSA_PATTERNS.append((marker, pattern))
 
-# Acceptable formal terms (business/technical context)
-ACCEPTABLE_FORMAL = [
+# Words that use formal Arabic definite article but are acceptable in business context
+# These are NOT MSA contamination when used as standalone terms
+# Note: This is for reference only - we don't skip MSA detection based on these
+# because constructs like "التي", "الذي" are always MSA regardless of context
+BUSINESS_TERMS_FORMAL = [
     "التوصيل",  # delivery - acceptable for business
     "الخدمة",   # service
     "المنتج",   # product
@@ -127,14 +132,11 @@ def score_darija_authenticity(text: str) -> Dict[str, Any]:
         if marker in text:
             darija_found.append(marker)
 
-    # Check for MSA markers (-2 each, unless acceptable)
+    # Check for MSA markers (-2 each)
     # Use regex patterns for accurate word boundary detection
     for marker, pattern in MSA_PATTERNS:
         if pattern.search(text):
-            # Check if it's in an acceptable context
-            is_acceptable = any(acc in text for acc in ACCEPTABLE_FORMAL)
-            if not is_acceptable:
-                msa_found.append(marker)
+            msa_found.append(marker)
 
     score = len(darija_found) - (2 * len(msa_found))
 
