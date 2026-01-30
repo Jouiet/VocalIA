@@ -1,30 +1,30 @@
 #!/bin/bash
-# VocalIA - Create Deploy ZIP for NindoHost cPanel
+# VocalIA - Create Deploy ZIP for NindoHost cPanel (SaaS Ready)
 # Usage: bash scripts/create-deploy-zip.sh
+# Version: 246 (Multi-Tenant)
 
 set -e
 
-echo "=== VocalIA Deploy ZIP Creator ==="
+echo "=== VocalIA SaaS Deploy ZIP Creator ==="
 echo "Creating deployment package for NindoHost..."
 
 # Navigate to project root
 cd "$(dirname "$0")/.."
 
 # Create deploy directory
-DEPLOY_DIR="deploy"
-ZIP_NAME="vocalia-website-$(date +%Y%m%d-%H%M%S).zip"
+DEPLOY_DIR="deploy_saas"
+ZIP_NAME="vocalia-saas-$(date +%Y%m%d-%H%M%S).zip"
 
 rm -rf "$DEPLOY_DIR"
 mkdir -p "$DEPLOY_DIR"
 
-# Copy website files
-echo "Copying website files..."
+# --- FRONTEND (Static Vitrine) ---
+echo "1. Copying Frontend (Vitrine)..."
 cp -r website/index.html "$DEPLOY_DIR/"
 cp -r website/features.html "$DEPLOY_DIR/"
 cp -r website/pricing.html "$DEPLOY_DIR/"
 cp -r website/about.html "$DEPLOY_DIR/"
 cp -r website/contact.html "$DEPLOY_DIR/"
-
 cp -r website/privacy.html "$DEPLOY_DIR/"
 cp -r website/terms.html "$DEPLOY_DIR/"
 cp -r website/integrations.html "$DEPLOY_DIR/"
@@ -32,55 +32,45 @@ cp -r website/robots.txt "$DEPLOY_DIR/"
 cp -r website/sitemap.xml "$DEPLOY_DIR/"
 cp -r website/.htaccess "$DEPLOY_DIR/"
 
-# Copy products directory
 mkdir -p "$DEPLOY_DIR/products"
 cp -r website/products/*.html "$DEPLOY_DIR/products/"
 
-# Copy use-cases directory
-mkdir -p "$DEPLOY_DIR/use-cases"
-cp -r website/use-cases/*.html "$DEPLOY_DIR/use-cases/"
-
-# Copy industries directory
-mkdir -p "$DEPLOY_DIR/industries"
-cp -r website/industries/*.html "$DEPLOY_DIR/industries/"
-
-# Copy docs directory
-mkdir -p "$DEPLOY_DIR/docs"
-cp -r website/docs/*.html "$DEPLOY_DIR/docs/"
-
-# Copy blog directory
-mkdir -p "$DEPLOY_DIR/blog"
-cp -r website/blog/*.html "$DEPLOY_DIR/blog/"
-
-# Copy changelog
-
-
-# Copy dashboard directory
 mkdir -p "$DEPLOY_DIR/dashboard"
 cp -r website/dashboard/*.html "$DEPLOY_DIR/dashboard/"
 
-# Copy public assets (CSS, images)
-echo "Copying public assets..."
-cp -r website/public "$DEPLOY_DIR/"
+mkdir -p "$DEPLOY_DIR/public"
+cp -r website/public/* "$DEPLOY_DIR/public/"
 
-# Copy src/lib (JS files)
-echo "Copying JavaScript libraries..."
 mkdir -p "$DEPLOY_DIR/src/lib"
-cp website/src/lib/*.js "$DEPLOY_DIR/src/lib/" 2>/dev/null || true
+cp website/src/lib/*.js "$DEPLOY_DIR/src/lib/"
 
-# Copy locales
-echo "Copying locales..."
 mkdir -p "$DEPLOY_DIR/src/locales"
-cp website/src/locales/*.json "$DEPLOY_DIR/src/locales/" 2>/dev/null || true
+cp website/src/locales/*.json "$DEPLOY_DIR/src/locales/"
 
-# Copy voice assistant
-echo "Copying voice assistant..."
-cp -r website/voice-assistant "$DEPLOY_DIR/" 2>/dev/null || true
+# --- BACKEND (MCP Server + Core) ---
+# NOTE: NindoHost cPanel is shared hosting (Node.js app support varies).
+# Ideally, this should go to a VPS. But we package it for potential Node deployment.
+echo "2. Copying Backend (Server)..."
+mkdir -p "$DEPLOY_DIR/server"
+mkdir -p "$DEPLOY_DIR/server/core"
+mkdir -p "$DEPLOY_DIR/server/mcp-server"
 
-# Create the ZIP
+# Core: Registry
+cp core/client-registry.cjs "$DEPLOY_DIR/server/core/"
+
+# MCA Server: Build & Dist
+echo "   Building MCP Server..."
+cd mcp-server
+npm run build
+cd ..
+
+cp -r mcp-server/dist "$DEPLOY_DIR/server/mcp-server/"
+cp mcp-server/package.json "$DEPLOY_DIR/server/mcp-server/"
+
+# --- ZIP ---
 echo "Creating ZIP archive..."
 cd "$DEPLOY_DIR"
-zip -r "../$ZIP_NAME" . -x "*.DS_Store" -x "*__MACOSX*"
+zip -r "../$ZIP_NAME" . -x "*.DS_Store" -x "*__MACOSX*" -x "*.git*"
 cd ..
 
 # Cleanup
@@ -88,16 +78,9 @@ rm -rf "$DEPLOY_DIR"
 
 # Report
 echo ""
-echo "=== Deployment Package Created ==="
+echo "=== SaaS Deployment Package Created ==="
 echo "File: $ZIP_NAME"
-echo "Size: $(du -h "$ZIP_NAME" | cut -f1)"
-echo ""
-echo "Next Steps:"
-echo "1. Login to NindoHost cPanel"
-echo "2. Open File Manager"
-echo "3. Navigate to public_html"
-echo "4. Upload $ZIP_NAME"
-echo "5. Extract the ZIP"
-echo "6. Delete the ZIP file"
-echo "7. Visit www.vocalia.ma"
+echo "Contents:"
+echo "  - / (Static Frontend)"
+echo "  - /server (Node.js Backend & Registry)"
 echo ""

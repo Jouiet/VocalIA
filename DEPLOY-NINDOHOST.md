@@ -19,6 +19,7 @@
 | **Clients notables** | Royal Air Maroc, Kitea, FRMF | lematin.ma |
 
 ### Services Inclus (Plan Mutualisé)
+
 - Serveur LiteSpeed haute performance
 - Certificat SSL gratuit (HTTPS à vie)
 - Nom de domaine gratuit 1ère année
@@ -60,23 +61,37 @@
 
 ---
 
-## ÉTAPE 1: CRÉER LE ZIP (FAIT ✅)
+## ÉTAPE 1: CRÉER LE ZIP (SAAS MODE ✅)
 
 ```bash
 # Depuis le dossier VocalIA
 bash scripts/create-deploy-zip.sh
 ```
 
-**Résultat:** `vocalia-website-YYYYMMDD-HHMMSS.zip` dans la racine du projet
+**Résultat:** `vocalia-saas-20260130-170009.zip`
+
+### Contenu du ZIP (SaaS Architecture)
+
+1. **Frontend/Vitrine** (Racine): HTML/CSS/JS statique pour `/public_html`.
+2. **Backend/Server** (`/server`):
+    - `core/client-registry.cjs`: Registre Multi-Tenant.
+    - `mcp-server/`: Build compilé du serveur MCP.
 
 ---
 
-## ÉTAPE 2: UPLOAD NINDOHOST
+## ÉTAPE 2: UPLOAD NINDOHOST (SPLIT-STACK)
 
-### 2.1 Connexion cPanel
+### 2.1 Frontend (cPanel)
 
-1. Allez sur **NindoHost cPanel** (URL fournie par votre hébergeur)
-2. Connectez-vous avec vos identifiants
+1. **Extraire le contenu de la racine du ZIP** vers `public_html`.
+2. Cela mettra en ligne la Vitrine (<www.vocalia.ma>).
+
+### 2.2 Backend (Node.js)
+>
+> [!NOTE]
+> Sur un hébergement cPanel standard, Node.js n'est pas toujours activé.
+> **Si Node.js dispo:** Upload du dossier `/server` hors public_html.
+> **Si VPS:** Transférer `/server` vers le VPS.
 
 ### 2.2 Gestionnaire de Fichiers
 
@@ -86,6 +101,7 @@ bash scripts/create-deploy-zip.sh
 ### 2.3 Nettoyage (Si nécessaire)
 
 Si `public_html` contient des fichiers existants:
+
 1. Sélectionnez tout (sauf `.htaccess` si vous l'avez personnalisé)
 2. Supprimez
 
@@ -212,6 +228,7 @@ Le fichier `.htaccess` inclut:
 ### Problème: HTTPS non actif
 
 **Solution:**
+
 1. cPanel > SSL/TLS > Install SSL
 2. Ou utilisez Let's Encrypt gratuit
 

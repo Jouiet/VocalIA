@@ -37,16 +37,16 @@ const execAsync = promisify(exec);
 
 // Session 245: A2A Protocol Integration
 // Import AgencyEventBus (CommonJS require in TS)
-const EVENT_BUS_PATH = path.join(process.cwd(), "..", "core", "AgencyEventBus.cjs");
-let eventBus: any = null;
+// const EVENT_BUS_PATH = path.join(process.cwd(), "..", "core", "AgencyEventBus.cjs");
+// let eventBus: any = null;
 
-try {
-  // Dynamic require to avoid TS build issues with outside modules
-  const busModule = require(EVENT_BUS_PATH);
-  eventBus = busModule;
-} catch (error) {
-  console.error("Failed to load AgencyEventBus:", error);
-}
+// try {
+//   // Dynamic require to avoid TS build issues with outside modules
+//   const busModule = require(EVENT_BUS_PATH);
+//   eventBus = busModule;
+// } catch (error) {
+//   console.error("Failed to load AgencyEventBus:", error);
+// }
 
 
 // Booking queue file path (real persistence)
