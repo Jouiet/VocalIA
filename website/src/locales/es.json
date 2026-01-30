@@ -1229,6 +1229,25 @@
     "accept_terms": "Acepto los términos",
     "contact_legal": "Contacto legal"
   },
+  "integrations_page": {
+    "hero_badge": "20+ Integraciones",
+    "hero_title": "Conecta VocalIA a",
+    "hero_title_accent": "tu stack existente",
+    "hero_subtitle": "Sincroniza tus datos de clientes, automatiza flujos de trabajo y enriquece las conversaciones IA con nuestras integraciones nativas.",
+    "cta_docs": "Documentación API",
+    "cta_request": "Solicitar una integración",
+    "section_crm": "CRM & Ventas",
+    "section_ecommerce": "E-commerce",
+    "section_communication": "Comunicación",
+    "section_calendar": "Calendarios",
+    "section_support": "Soporte al Cliente",
+    "section_automation": "Automatización",
+    "integrations_count": "integraciones",
+    "badge_native": "Nativo",
+    "badge_bidirectional": "Bidireccional",
+    "badge_zapier": "Vía Zapier",
+    "badge_webhook": "Webhook"
+  },
   "footer": {
     "tagline": "Agentes Vocales IA para Empresas",
     "product": "Producto",

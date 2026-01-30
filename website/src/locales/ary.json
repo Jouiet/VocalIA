@@ -1229,6 +1229,25 @@
     "accept_terms": "كنوافق على الشروط",
     "contact_legal": "الاتصال القانوني"
   },
+  "integrations_page": {
+    "hero_badge": "20+ تكاملات",
+    "hero_title": "ربط VocalIA مع",
+    "hero_title_accent": "الأدوات ديالك الحالية",
+    "hero_subtitle": "زامن بيانات الكليان ديالك، أوتوماتيزي الخدمة وزيد المحادثات ديال الذكاء الاصطناعي بتكاملاتنا الأصلية.",
+    "cta_docs": "وثائق API",
+    "cta_request": "طلب تكامل",
+    "section_crm": "CRM والمبيعات",
+    "section_ecommerce": "التجارة الإلكترونية",
+    "section_communication": "الاتصال",
+    "section_calendar": "الكالوندري",
+    "section_support": "دعم الكليان",
+    "section_automation": "الأوتوماتيزاسيون",
+    "integrations_count": "تكاملات",
+    "badge_native": "أصلي",
+    "badge_bidirectional": "ثنائي الاتجاه",
+    "badge_zapier": "عبر Zapier",
+    "badge_webhook": "Webhook"
+  },
   "footer": {
     "tagline": "وكيلات صوتية ذكية للشركات",
     "product": "المنتوج",

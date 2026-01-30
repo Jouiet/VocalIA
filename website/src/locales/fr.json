@@ -1313,6 +1313,25 @@
       "accept_terms": "J'accepte les conditions",
       "contact_legal": "Contact juridique"
     },
+    "integrations_page": {
+      "hero_badge": "20+ Intégrations",
+      "hero_title": "Connectez VocalIA à",
+      "hero_title_accent": "votre stack existant",
+      "hero_subtitle": "Synchronisez vos données client, automatisez vos workflows et enrichissez vos conversations IA avec nos intégrations natives.",
+      "cta_docs": "Documentation API",
+      "cta_request": "Demander une intégration",
+      "section_crm": "CRM & Sales",
+      "section_ecommerce": "E-commerce",
+      "section_communication": "Communication",
+      "section_calendar": "Calendriers",
+      "section_support": "Support Client",
+      "section_automation": "Automatisation",
+      "integrations_count": "intégrations",
+      "badge_native": "Natif",
+      "badge_bidirectional": "Bidirectionnel",
+      "badge_zapier": "Via Zapier",
+      "badge_webhook": "Webhook"
+    },
     "footer": {
       "tagline": "Agents Vocaux IA pour Entreprises",
       "product": "Produit",

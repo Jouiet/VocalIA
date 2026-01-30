@@ -1229,6 +1229,25 @@
     "accept_terms": "أوافق على الشروط",
     "contact_legal": "الاتصال القانوني"
   },
+  "integrations_page": {
+    "hero_badge": "20+ تكاملات",
+    "hero_title": "اربط VocalIA مع",
+    "hero_title_accent": "أدواتك الحالية",
+    "hero_subtitle": "زامن بيانات عملائك، أتمت سير العمل وأثر محادثات الذكاء الاصطناعي بتكاملاتنا الأصلية.",
+    "cta_docs": "وثائق API",
+    "cta_request": "اطلب تكاملاً",
+    "section_crm": "CRM والمبيعات",
+    "section_ecommerce": "التجارة الإلكترونية",
+    "section_communication": "الاتصال",
+    "section_calendar": "التقويمات",
+    "section_support": "دعم العملاء",
+    "section_automation": "الأتمتة",
+    "integrations_count": "تكاملات",
+    "badge_native": "أصلي",
+    "badge_bidirectional": "ثنائي الاتجاه",
+    "badge_zapier": "عبر Zapier",
+    "badge_webhook": "Webhook"
+  },
   "footer": {
     "tagline": "وكلاء صوتيون بالذكاء الاصطناعي للشركات",
     "product": "المنتج",
