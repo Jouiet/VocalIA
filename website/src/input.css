@@ -2925,3 +2925,39 @@ body.gsap-ready [data-reveal="scale"] {
 .animate-marquee-right:hover {
   animation-play-state: paused;
 }
+
+/* ==========================================================================
+   Tailwind Safelist - Session 229
+   Forces JIT to generate commonly needed opacity classes
+   Fix for Session 228.2 technical debt (inline style workarounds)
+   ========================================================================== */
+@layer utilities {
+  /* White with opacity variants (for light overlays on dark backgrounds) */
+  .bg-white\/15 { background-color: rgb(255 255 255 / 0.15); }
+  .bg-white\/20 { background-color: rgb(255 255 255 / 0.20); }
+  .bg-white\/25 { background-color: rgb(255 255 255 / 0.25); }
+  .bg-white\/30 { background-color: rgb(255 255 255 / 0.30); }
+  .bg-white\/40 { background-color: rgb(255 255 255 / 0.40); }
+  .bg-white\/50 { background-color: rgb(255 255 255 / 0.50); }
+
+  /* Slate with opacity variants (for subtle overlays) */
+  .bg-slate-500\/20 { background-color: rgb(100 116 139 / 0.20); }
+  .bg-slate-500\/30 { background-color: rgb(100 116 139 / 0.30); }
+  .bg-slate-500\/40 { background-color: rgb(100 116 139 / 0.40); }
+  .bg-slate-600\/20 { background-color: rgb(71 85 105 / 0.20); }
+  .bg-slate-700\/20 { background-color: rgb(51 65 85 / 0.20); }
+  .bg-slate-800\/50 { background-color: rgb(30 41 59 / 0.50); }
+  .bg-slate-800\/60 { background-color: rgb(30 41 59 / 0.60); }
+  .bg-slate-800\/70 { background-color: rgb(30 41 59 / 0.70); }
+  .bg-slate-800\/80 { background-color: rgb(30 41 59 / 0.80); }
+  .bg-slate-900\/50 { background-color: rgb(15 23 42 / 0.50); }
+  .bg-slate-900\/70 { background-color: rgb(15 23 42 / 0.70); }
+  .bg-slate-900\/80 { background-color: rgb(15 23 42 / 0.80); }
+  .bg-slate-900\/90 { background-color: rgb(15 23 42 / 0.90); }
+
+  /* Primary brand with opacity (for glows and accents) */
+  .bg-vocalia-600\/20 { background-color: oklch(54% 0.22 270 / 0.20); }
+  .bg-vocalia-600\/30 { background-color: oklch(54% 0.22 270 / 0.30); }
+  .bg-indigo-500\/20 { background-color: rgb(99 102 241 / 0.20); }
+  .bg-indigo-500\/30 { background-color: rgb(99 102 241 / 0.30); }
+}

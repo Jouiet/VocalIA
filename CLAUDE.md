@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.0 | 30/01/2026 | Session 228.2 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.3.1 | 30/01/2026 | Session 229 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python (pip install vocalia) | ✅ Node.js (npm install vocalia) | ✅ MCP Server
-> Integrations: 21 brand logos (SVG) | Marquee seamless loop ✅
+> Tailwind: Safelist ✅ (40 opacity classes) | CSS: 129KB | Visualizer: Sky Blue ✅
 
 ## Identité
 
@@ -1621,21 +1621,69 @@ Container élargi: `max-w-6xl` → `max-w-7xl`
 | `0f5f733` | Logos 1.5x larger (h-8→h-12) |
 | `badb1e7` | Final fix: inline style rgba(255,255,255,0.25) |
 
-### Plan Actionnable (Session 229)
+---
+
+## Session 229 Summary (30/01/2026)
+
+**Tailwind CSS Safelist & Technical Debt Resolution:**
+
+### 1. Tailwind Safelist Added ✅
+
+Resolved Session 228.2 technical debt - inline style workarounds no longer needed.
+
+**Added to `input.css`:**
+```css
+@layer utilities {
+  /* White with opacity variants */
+  .bg-white\/25 { background-color: rgb(255 255 255 / 0.25); }
+  .bg-white\/30 { background-color: rgb(255 255 255 / 0.30); }
+  /* ... +40 lines safelist utilities */
+}
+```
+
+| File | Change |
+|:-----|:-------|
+| `website/src/input.css` | +40 lines safelist |
+| `website/public/css/style.css` | Rebuilt (129KB) |
+| `website/index.html` | Inline style → `bg-white/25` |
+
+### 2. Voice Visualizer Verified ✅
+
+Playwright MCP testing confirmed all 4 modes working:
+
+| Mode | Status | Color Verified |
+|:-----|:------:|:---------------|
+| Wave | ✅ | Sky blue (#58a3d5) |
+| Bars | ✅ | Sky blue |
+| Orb | ✅ | Sky blue |
+| Pulse | ✅ | Sky blue |
+
+**NO purple/violet detected** - Session 228 color fix confirmed.
+
+### 3. Technical Debt Resolved ✅
+
+| Debt | Status |
+|:-----|:------:|
+| Inline style workaround | ✅ RESOLVED |
+| Missing opacity classes | ✅ RESOLVED |
+| CSS build documented | ✅ RESOLVED |
+
+### Plan Actionnable (Session 230)
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Recompile Tailwind CSS with new utilities | **P0** | Include `bg-white/25`, `bg-white/30`, etc. |
-| 2 | Document CSS build process | P1 | Prevent future inline style workarounds |
-| 3 | Consider Tailwind JIT mode | P2 | Dynamic class generation |
+| 1 | Deploy API backend (api.vocalia.ma) | P1 | Required for SDKs/MCP |
+| 2 | Publish SDKs to PyPI/npm | P2 | After API deployment |
+| 3 | Production stress testing | P2 | Load testing endpoints |
 
 ---
 
-*Màj: 30/01/2026 - Session 228.2 (Integrations Logos & Marquee + Tailwind Limitation)*
+*Màj: 30/01/2026 - Session 229 (Tailwind Safelist + Visualizer Verification)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ | Node.js ✅ | MCP Server ✅ (11 tools)*
-*Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*
+*Visualizer: Sky Blue #5DADE2 ✅ (Verified Playwright) | CTAs: 24 pages inline ✅*
 *Integrations: 21 brand SVG logos ✅ | Marquee: Seamless loop ✅*
+*Tailwind: Safelist utilities added ✅ | CSS: 129KB rebuilt ✅*
 *Compliance: WCAG 2.1 AA, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*

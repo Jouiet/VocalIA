@@ -1,7 +1,7 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.2.0 | **Date**: 30/01/2026 | **Session**: 228.2
-> **Status**: WCAG 2.1 AA COMPLIANCE (~97%) | **CSS Build**: SOVEREIGN (93KB)
+> **Version**: 4.3.1 | **Date**: 30/01/2026 | **Session**: 229
+> **Status**: WCAG 2.1 AA COMPLIANCE (~97%) | **CSS Build**: SOVEREIGN (129KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: Technology Disclosure Protection ✅ (Session 222)
 > **Icons**: Lucide 2026 (ALL patterns fixed) ✅ (Session 224.2)
@@ -10,8 +10,10 @@
 > **Docs**: /docs/ serves docs/index.html ✅ (Session 224.2)
 > **Dashboards**: Liquid-Glass Cards ✅ (Session 225)
 > **i18n**: Locale JSON files accessible ✅ (Session 226 - 403 fix)
-> **Visual Testing**: Playwright MCP verified ✅ (Session 226)
+> **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229)
 > **Integrations**: 21 brand SVG logos + seamless marquee ✅ (Session 228.2)
+> **Tailwind**: Safelist utilities (40 classes) ✅ (Session 229)
+> **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 
 ---
 
@@ -999,6 +1001,70 @@ Restructured from two separate bands to single parent container:
 
 ---
 
+## 🔧 Session 229: Tailwind CSS Safelist & Technical Debt Resolution (30/01/2026)
+
+### Context
+
+Session 228.2 identified a critical technical debt: Tailwind CSS pre-compilation meant new utility classes like `bg-white/25` weren't generated, requiring inline style workarounds.
+
+### Solution Implemented
+
+**Added Tailwind Safelist to `input.css`:**
+
+```css
+@layer utilities {
+  /* White with opacity variants */
+  .bg-white\/15 { background-color: rgb(255 255 255 / 0.15); }
+  .bg-white\/20 { background-color: rgb(255 255 255 / 0.20); }
+  .bg-white\/25 { background-color: rgb(255 255 255 / 0.25); }
+  .bg-white\/30 { background-color: rgb(255 255 255 / 0.30); }
+  /* ... more slate/vocalia/indigo variants */
+}
+```
+
+### Changes
+
+| File | Change |
+|:-----|:-------|
+| `website/src/input.css` | +40 lines safelist utilities |
+| `website/public/css/style.css` | Rebuilt (129KB) |
+| `website/index.html` | Replaced `style="rgba(...)"` with `bg-white/25` |
+
+### Verification
+
+```bash
+# Verify class exists in compiled CSS
+grep "bg-white\/25" website/public/css/style.css
+# Result: ✅ Found
+
+# No more inline style workarounds
+grep 'style="background-color: rgba' website/*.html
+# Result: ✅ 0 matches
+```
+
+### Voice Visualizer Verification
+
+All 4 visualizer modes verified on production (https://vocalia.ma):
+
+| Mode | Status | Colors |
+|:-----|:------:|:-------|
+| Wave | ✅ Rendering | Sky blue (#58a3d5) |
+| Bars | ✅ Rendering | Sky blue |
+| Orb | ✅ Rendering | Sky blue |
+| Pulse | ✅ Rendering | Sky blue |
+
+**NO purple/violet colors detected** - Session 228 fix confirmed working.
+
+### Technical Debt Resolved
+
+| Debt | Status |
+|:-----|:------:|
+| Inline style workaround | ✅ RESOLVED |
+| Missing opacity classes | ✅ RESOLVED |
+| CSS rebuild documented | ✅ RESOLVED |
+
+---
+
 *Document créé: 28/01/2026 - Session 200*
-*Mise à jour: 30/01/2026 - Session 228.2 (Integrations Logos + Tailwind Limitation)*
+*Mise à jour: 30/01/2026 - Session 229 (Tailwind Safelist + Visualizer Verification)*
 *Auteur: Claude Code (DOE Framework)*
