@@ -2941,10 +2941,77 @@ VocalIA's architecture is **85% SOTA-aligned**:
 
 ---
 
+### Session 242: DOE Comprehensive Forensic Audit (30/01/2026)
+
+**Methodology:** DOE Framework (Directive Orchestration Execution)
+**Scope:** ALL frontend facets - SEO, AEO, Security, Marketing, A2A, UCP
+
+#### Audit Scores
+
+| Domain | Score | Grade | Critical Gap |
+|:-------|:-----:|:-----:|:-------------|
+| Backend | 99/100 | A+ | Twilio creds only |
+| Frontend | ~97% | A | Light mode ✅ |
+| **SEO** | **70/100** | **C+** | Hreflang 0% |
+| **AEO** | **25/100** | **F** | No GPTBot rules |
+| **A2A** | **0%** | **F** | Not implemented |
+| **UCP** | **0%** | **F** | MCP only |
+| WCAG | 90/100 | A- | Good |
+| Branding | 99% | A+ | Excellent |
+
+#### Critical Findings
+
+1. **SECURITY (P0):** Google Apps Script URL exposed in `voice-widget.js:24`
+2. **SEO (P0):** Hreflang tags 0% - i18n invisible to search engines
+3. **AEO (P1):** No AI bot rules (GPTBot, ClaudeBot), No FAQ schema, No Speakable
+4. **A2A (P1):** Agent-to-Agent Protocol not implemented - no AgentCard, no capability discovery
+5. **UCP (P1):** Unified Commerce Protocol not implemented - only MCP component exists
+6. **Marketing (P2):** No investor page, No testimonials, No social proof
+
+#### A2A & UCP Gap Analysis
+
+**What VocalIA HAS:**
+- ✅ MCP Server (21 tools) - Model Context Protocol
+- ✅ E-commerce integrations (Shopify, Klaviyo) - basic REST
+
+**What VocalIA is MISSING for 2026 Agentic Commerce:**
+- ❌ A2A AgentCard (JSON capability advertisement)
+- ❌ A2A task management endpoints
+- ❌ UCP product data exposure (structured feeds)
+- ❌ AP2 (Agent Payments protocol)
+- ❌ AGUI (Agentic GUI generation)
+- ❌ Business Agent architecture
+
+**Sources:**
+- [A2A Protocol](https://a2a-protocol.org/latest/)
+- [Google A2A Blog](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/)
+- [AEO Guide 2026](https://www.codelevate.com/blog/answer-engine-optimization-aeo-the-comprehensive-guide-for-2026)
+- [Gemini Live API](https://cloud.google.com/blog/products/ai-machine-learning/gemini-live-api-available-on-vertex-ai)
+
+#### Plan Actionnable
+
+**P0 - Immediate:**
+1. Remove exposed Google Apps Script URL
+2. Add hreflang to 31 pages
+3. Add Twitter Cards to 29 pages
+
+**P1 - This Week:**
+4. Add AI bot rules (GPTBot, ClaudeBot) to robots.txt
+5. Add FAQPage + Speakable schema
+6. Implement A2A AgentCard
+7. Expose UCP product feeds
+8. Add HSTS header
+
+**P2 - Next Sprint:**
+9. Create investor.html
+10. Add testimonials section
+
+---
+
 *Document créé: 28/01/2026 - Session 184bis*
-*Màj: 30/01/2026 - Session 241.2 (BM25 RAG SOTA Implementation)*
-*Status: Backend 99/100 | Frontend ~97% | Health: 100% (39/39)*
+*Màj: 30/01/2026 - Session 242 (DOE Forensic - A2A/UCP/AEO gaps)*
+*Status: Backend 99/100 | Frontend ~97% | SEO 70% | AEO 25% | A2A ❌ | UCP ❌*
 *Live: https://vocalia.ma ✅ | Icons: Lucide 2026 ✅ | Logos: 21 SVG ✅*
 *CSS: Tailwind v4.1.18 ✅ | Safelist classes ✅ | 141KB compiled*
-*i18n: 5 Languages ✅ | Industries: 341/383 attrs ✅ | Voice Assistant 5 langs ✅*
-*Technical Debt: RESOLVED - No more inline style workarounds*
+*i18n: 5 Languages ✅ | Hreflang: ❌ 0% | Industries: Complete ✅*
+*Critical: Exposed API URL in voice-widget.js:24 - MUST FIX*

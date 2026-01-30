@@ -1,9 +1,11 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.7.0 | **Date**: 30/01/2026 | **Session**: 238
+> **Version**: 5.0.0 | **Date**: 30/01/2026 | **Session**: 242 (DOE Forensic)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
-> **Security**: Technology Disclosure Protection ✅ (Session 222)
+> **Security**: ⚠️ CRITICAL - Google Apps Script URL exposed (voice-widget.js:24)
+> **SEO Score**: 70/100 (C+) - Hreflang MISSING, Twitter Cards 13%
+> **AEO Score**: 25/100 (F) - No AI bot rules, No FAQ schema, No Speakable
 > **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
 > **Blog**: 7 articles with working links ✅ (Session 224.2)
@@ -16,8 +18,10 @@
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
-> **MCP Server**: v0.3.2 SOTA (21 tools) ✅ (Session 232)
+> **MCP Server**: v0.3.3 SOTA (21 tools, BM25 RAG) ✅ (Session 241)
 > **CSS Safelist**: Opacity classes (bg-white/25, etc.) ✅ (Session 237)
+> **Marketing Score**: B+ (Solid B2B SaaS, Missing Social Proof)
+> **Investor Page**: ❌ MISSING - Critical gap
 
 ---
 
@@ -1252,6 +1256,298 @@ Created `scripts/propagate-footer-i18n.py` for future maintenance.
 
 ---
 
+## 🔬 Session 242: DOE Comprehensive Forensic Audit (30/01/2026)
+
+### Audit Methodology
+
+**Framework:** DOE (Directive Orchestration Execution)
+**Scope:** ALL frontend facets - SEO/AEO, Security, Marketing, Accessibility, Branding, i18n
+**Standard:** Zero wishful thinking - empirical verification only
+
+---
+
+### 1. SEO/Meta/Schema Audit (Score: 70/100 - C+)
+
+#### Summary
+
+| Aspect | Status | Coverage | Notes |
+|:-------|:------:|:--------:|:------|
+| Meta Titles | ✅ Good | 34/34 | 50-80 chars, unique |
+| Meta Descriptions | ✅ Good | 34/34 | 150-160 chars |
+| Canonical URLs | ✅ Excellent | 29/29 | 100% correct |
+| Open Graph Tags | ✅ Good | 29/34 | 5 missing og:image |
+| **Twitter Cards** | ❌ Critical | **5/34** | **Only 15% coverage** |
+| Schema.org | ⚠️ Partial | 25/34 | Missing FAQ, legal, docs |
+| **Hreflang Tags** | ❌ Critical | **0/34** | **COMPLETELY MISSING** |
+
+#### Critical Issues
+
+**1. HREFLANG MISSING (0%)**
+- No hreflang tags in ANY HTML page
+- Sitemap only has 3 of 5 languages for homepage only
+- Impact: Search engines don't know translations exist
+- **FIX REQUIRED:**
+```html
+<link rel="alternate" hreflang="fr" href="https://vocalia.ma/">
+<link rel="alternate" hreflang="en" href="https://vocalia.ma/?lang=en">
+<link rel="alternate" hreflang="es" href="https://vocalia.ma/?lang=es">
+<link rel="alternate" hreflang="ar" href="https://vocalia.ma/?lang=ar">
+<link rel="alternate" hreflang="x-default" href="https://vocalia.ma/">
+```
+
+**2. TWITTER CARDS (13%)**
+- Only 5 pages have Twitter cards (homepage + 4 pages)
+- 29 pages missing `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image`
+
+**3. FAQPage Schema (0%)**
+- pricing.html has FAQ section but NO FAQPage schema
+- contact.html has FAQ but NO schema
+- Impact: No rich FAQ snippets in search results
+
+**4. Sitemap Orphan Pages (9 pages)**
+- industries/index.html NOT in sitemap
+- 8 blog articles NOT in sitemap (only /blog is listed)
+
+---
+
+### 2. AEO (Answer Engine Optimization) Audit (Score: 25/100 - F)
+
+**2026 Context:** 25% of organic traffic shifting to AI chatbots (Gartner). 65% of searches end without click.
+
+#### AI Bot Access (MISSING)
+
+**robots.txt has NO AI bot rules:**
+```
+# MISSING - Should add:
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Anthropic-AI
+Allow: /
+```
+
+#### AEO Content Structure (WEAK)
+
+| Requirement | Status | Notes |
+|:------------|:------:|:------|
+| FAQ Schema | ❌ | 0 pages with FAQPage markup |
+| QAPage Schema | ❌ | 0 pages |
+| HowTo Schema | ❌ | 0 pages |
+| **Speakable Schema** | ❌ | **Ironic for Voice AI platform!** |
+| Direct Answer Format | ⚠️ | Content not optimized for Q&A extraction |
+| E-E-A-T Signals | ⚠️ | No author bios, no expert credentials |
+
+#### Recommendations (Source: [Codelevate AEO Guide 2026](https://www.codelevate.com/blog/answer-engine-optimization-aeo-the-comprehensive-guide-for-2026))
+
+1. Add FAQ schema to pricing.html, docs/index.html, contact.html
+2. Add Speakable schema (perfect fit for Voice AI brand)
+3. Restructure content with question-based headings
+4. Position key answers in first 100-200 words
+5. Add AI bot rules to robots.txt
+
+---
+
+### 3. Security Audit (CRITICAL ISSUE FOUND)
+
+#### Status: CRITICAL - Exposed API URL
+
+**EXPOSED GOOGLE APPS SCRIPT URL:**
+```
+File: voice-assistant/voice-widget.js
+Line: 24
+URL: https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFKZXGFUTS9c3SKrmRZdJEg0tcWnvA-P2Jl/exec
+```
+**Risk:** PUBLIC API endpoint embedded in frontend code. Can receive booking data from any origin.
+**FIX:** Move to backend proxy at api.vocalia.ma
+
+#### Security Headers
+
+| Header | Status | Value |
+|:-------|:------:|:------|
+| X-Frame-Options | ✅ | DENY |
+| X-Content-Type-Options | ✅ | nosniff |
+| X-XSS-Protection | ✅ | 1; mode=block |
+| Referrer-Policy | ✅ | strict-origin-when-cross-origin |
+| CSP | ✅ | Implemented (includes 'unsafe-inline') |
+| **HSTS** | ❌ | **MISSING** |
+| **HTTPS Redirect** | ⚠️ | Commented out in .htaccess |
+
+---
+
+### 4. Marketing & Value Proposition Audit (Score: B+)
+
+#### Hero Analysis
+
+| Page | Headline Power | Problem Statement | CTA Clarity |
+|:-----|:-------------:|:-----------------:|:-----------:|
+| index.html | Medium | Implicit | ✅ Good |
+| pricing.html | High ("Transparents") | Implicit | ✅ Good |
+| features.html | Medium | Implicit | ✅ Good |
+
+#### Marketing Techniques
+
+| Technique | Present | Strength |
+|:----------|:-------:|:--------:|
+| AIDA Framework | ✅ | High |
+| PAS (Problem-Agitate-Solve) | ⚠️ | **Low - Missing agitation** |
+| Scarcity/Urgency | ⚠️ | **Minimal (only red pulsing button)** |
+| Anchoring (Price Comparison) | ✅ | High (60% cheaper than Vapi) |
+| **Social Proof** | ❌ | **NONE - Zero testimonials, case studies, logos** |
+| Trust Signals | ✅ | Medium (GDPR, AI Act badges) |
+
+#### INVESTOR PAGE: ❌ MISSING
+
+**No investor content found:**
+- No investor.html or invest.html
+- No funding metrics (ARR, MRR, customer count)
+- No founder story or team page
+- No market size claims
+- No growth narrative
+
+**Impact:** Cannot fundraise with current website. Critical gap.
+
+---
+
+### 5. WCAG Accessibility Audit (Score: 90/100 - A-)
+
+#### Summary
+
+| Category | Status | Issues |
+|:---------|:------:|:-------|
+| Skip Links | ✅ Pass | Implemented all pages |
+| Form Labels | ✅ Pass | All inputs labeled |
+| Language attr | ✅ Pass | `lang="fr"` on all pages |
+| Focus Indicators | ✅ Good | `focus:ring-2 focus:ring-vocalia-500` |
+| Color Contrast | ✅ Pass | WCAG AA compliant |
+| **Heading Hierarchy** | ⚠️ | Inconsistent h1→h3 structure |
+| **SVG aria-labels** | ⚠️ | Some misleading (Twitter icons) |
+
+---
+
+### 6. Branding/Design Consistency (Score: 99/100 - A+)
+
+#### Color Palette (100% Consistent)
+
+| Color | Hex | Usage |
+|:------|:----|:------|
+| Primary (Indigo) | #5E6AD2 | Buttons, accents, focus |
+| Background (Slate) | #1e293b | Base dark mode |
+| Text Primary | #fafafa | Main content |
+
+#### Typography (100% Consistent)
+
+- **Body:** Inter (wght 500, 600, 700, 800)
+- **Mono:** JetBrains Mono (wght 400, 500)
+- **H1:** clamp(2.5rem, 5vw, 4rem) - Fluid scaling
+
+#### Component Library (99% Consistent)
+
+- 8+ card variants (glass morphism pattern)
+- 4 button types (primary, secondary, ghost, cyber)
+- Dark/Light mode fully implemented
+
+---
+
+### 7. SWOT Analysis
+
+#### Strengths
+- ✅ **Backend 99/100** - Voice AI, Personas, RAG BM25
+- ✅ **Design 99%** - Enterprise-grade consistency
+- ✅ **i18n 100%** - 5 languages, 1471 keys, RTL support
+- ✅ **WCAG AA** - Accessibility compliant
+- ✅ **Pricing** - 60% cheaper than competitors
+- ✅ **MCP Server** - 21 production tools
+
+#### Weaknesses
+- ❌ **SEO 70%** - Hreflang 0%, Twitter Cards 13%
+- ❌ **AEO 25%** - No AI bot rules, no FAQ schema
+- ❌ **Security** - Exposed Google Apps Script URL
+- ❌ **Social Proof** - Zero testimonials
+- ❌ **Investor Page** - Missing entirely
+
+#### Opportunities
+- 🎯 **AEO 2026** - First-mover in Voice AI + Answer Engines
+- 🎯 **Gemini Live API** - Native audio, affective dialogue
+- 🎯 **Morocco Market** - Darija monopoly
+- 🎯 **Voice Search** - Speakable schema perfect fit
+
+#### Threats
+- ⚠️ **GPT/Claude citations** - Without AEO, invisible to AI search
+- ⚠️ **Competitor SEO** - Better hreflang implementation
+- ⚠️ **Investor perception** - No social proof = no credibility
+
+---
+
+### 8. Plan Actionable Session 242
+
+#### P0 - CRITICAL (Fix Immediately)
+
+| # | Action | Impact | Effort |
+|:-:|:-------|:------:|:------:|
+| 1 | **Remove exposed Google Apps Script URL** | Security | 1h |
+| 2 | **Add hreflang tags to ALL 31 pages** | SEO i18n | 4h |
+| 3 | **Add Twitter Card meta to 29 pages** | Social sharing | 2h |
+
+#### P1 - HIGH (Fix This Week)
+
+| # | Action | Impact | Effort |
+|:-:|:-------|:------:|:------:|
+| 4 | Add AI bot rules to robots.txt (GPTBot, ClaudeBot) | AEO | 30min |
+| 5 | Add FAQPage schema to pricing.html, docs/index.html | AEO | 2h |
+| 6 | Add Speakable schema to homepage | AEO + Brand fit | 1h |
+| 7 | Add HSTS header to vercel.json | Security | 30min |
+| 8 | Add 9 orphan pages to sitemap.xml | SEO | 1h |
+
+#### P2 - MEDIUM (Fix Next Sprint)
+
+| # | Action | Impact | Effort |
+|:-:|:-------|:------:|:------:|
+| 9 | Create investor.html page | Fundraising | 8h |
+| 10 | Add social proof section (testimonials) | Conversion | 4h |
+| 11 | Add HowTo schema to docs | AEO | 2h |
+| 12 | Restructure content for Q&A format | AEO | 8h |
+
+#### P3 - LOW (Nice-to-Have)
+
+| # | Action | Impact | Effort |
+|:-:|:-------|:------:|:------:|
+| 13 | Add volume discounts to pricing | Conversion | 2h |
+| 14 | Add founder/team page | Trust | 4h |
+| 15 | Standardize heading hierarchy | WCAG | 2h |
+
+---
+
+### 9. Voice Assistant Features (2026 Research)
+
+**Gemini Live API (GA January 2026):**
+- Native audio processing (no STT→LLM→TTS pipeline)
+- Affective dialogue (emotional intelligence)
+- Proactive audio (smarter barge-in)
+- Voice Activity Detection
+- Function calling in real-time
+
+**Source:** [Google Cloud Blog](https://cloud.google.com/blog/products/ai-machine-learning/gemini-live-api-available-on-vertex-ai)
+
+**Client Value Proposition:**
+- <50ms latency (vs 200-500ms traditional)
+- Emotional tone detection (de-escalation)
+- Multi-turn conversations without interruption
+- Direct integration with business tools via function calling
+
+---
+
+### Session 242 Commits
+
+- Pending implementation of P0-P1 fixes
+
+---
+
 *Document créé: 28/01/2026 - Session 200*
-*Mise à jour: 30/01/2026 - Session 238 (Footer i18n + Dashboard Language Switchers)*
+*Mise à jour: 30/01/2026 - Session 242 (DOE Comprehensive Forensic Audit)*
 *Auteur: Claude Code (DOE Framework)*

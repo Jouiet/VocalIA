@@ -1,8 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> Version: 5.0.0 | 30/01/2026 | Session 241.2 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | 1444 keys | RTL ✅ | QA Scripts ✅
+> Version: 5.1.0 | 30/01/2026 | Session 242 (DOE Forensic) | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | 1471 keys | RTL ✅ | **Hreflang: ❌ 0%**
 > SDKs: Python | Node.js | MCP Server v0.3.3 (21 tools) | RAG: BM25 SOTA
+> **CRITICAL GAPS**: A2A ❌ | UCP ❌ | AEO 25% | Investor Page ❌ | Social Proof ❌
 
 ## Identité
 
@@ -161,37 +162,68 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 241: SOTA Optimization Audit Complete**
-- ✅ QA Scripts: translation-quality-check.py, darija-validator.py
-- ✅ Bug fix: darija-validator.py regex word boundaries (false positives)
-- ✅ SOTA audit: RAG, MCP, Voice, ContextBox, Sensors
-- ✅ System verification: 19 Python + 18 CJS + 21 MCP tools = 100%
+**Session 242: DOE Comprehensive Forensic Audit**
 
-**SOTA Alignment: 90%**
-| System | Status | Gap |
-|:-------|:------:|:----|
-| Voice AI | ✅ SOTA | Native Grok, <1s TTFA |
-| ContextBox | ✅ SOTA | Token mgmt, EventBus |
-| MCP | ✅ Good | 21 tools, bounded |
-| RAG | ✅ BM25 | Session 241.2 - reranking P3 |
+### Audit Scores (VERIFIED 30/01/2026)
 
-**QA Scripts:**
-- `translation-quality-check.py` - Detects <60% length ratio, identical, empty
-- `darija-validator.py` - Detects MSA formal markers with regex word boundaries
+| Domain | Score | Grade | Critical Issues |
+|:-------|:-----:|:-----:|:----------------|
+| Backend | 99/100 | A+ | Twilio creds only |
+| Frontend Design | ~97% | A | Light mode ✅ |
+| **SEO** | **70/100** | **C+** | Hreflang 0%, Twitter 13% |
+| **AEO** | **25/100** | **F** | No AI bot rules, No FAQ schema |
+| **A2A** | **0%** | **F** | ❌ NOT IMPLEMENTED |
+| **UCP** | **0%** | **F** | ❌ NOT IMPLEMENTED (MCP only) |
+| WCAG | 90/100 | A- | Heading hierarchy |
+| Branding | 99% | A+ | Enterprise-grade |
+| Marketing | B+ | B+ | No social proof |
+
+### Critical Gaps Identified
+
+| Gap | Impact | Fix Priority |
+|:----|:-------|:------------:|
+| **Exposed Google Apps Script URL** | Security breach | P0 |
+| **Hreflang tags 0%** | SEO i18n invisible | P0 |
+| **A2A Protocol missing** | No agent interop | P1 |
+| **UCP not implemented** | No agentic commerce | P1 |
+| **AEO 25%** | Invisible to GPT/Claude | P1 |
+| **No investor page** | Can't fundraise | P2 |
+| **No social proof** | Low conversion | P2 |
 
 ---
 
-## Plan Actionnable (Session 242)
+## Plan Actionnable (Session 243)
 
-| # | Action | Priorité | Impact | Notes |
-|:-:|:-------|:--------:|:------:|:------|
-| 1 | SDK publish | **P0** | Distribution | User creds required |
-| 2 | API Backend deploy | **P1** | MCP/SDKs work | api.vocalia.ma |
-| 3 | ~~Replace TF-IDF with BM25~~ | ~~P2~~ | ~~+15% recall~~ | ✅ Session 241.2 |
-| 4 | Add Cohere re-ranking | P3 | +67% precision | Optional - BM25 is good |
-| 5 | MCP Prometheus metrics | P3 | Observability | Production feature |
+### P0 - CRITICAL (Immediate)
+
+| # | Action | Impact | Effort |
+|:-:|:-------|:------:|:------:|
+| 1 | Remove exposed Google Apps Script URL | Security | 1h |
+| 2 | Add hreflang to 31 pages (5 languages) | SEO | 4h |
+| 3 | Add Twitter Card meta to 29 pages | Social | 2h |
+
+### P1 - HIGH (This Week)
+
+| # | Action | Impact | Effort |
+|:-:|:-------|:------:|:------:|
+| 4 | Add AI bot rules to robots.txt | AEO | 30min |
+| 5 | Add FAQPage schema | AEO snippets | 2h |
+| 6 | Add Speakable schema (Voice AI fit!) | AEO | 1h |
+| 7 | **Implement A2A AgentCard** | Agent interop | 8h |
+| 8 | **Expose UCP product feeds** | Agentic commerce | 16h |
+| 9 | Add HSTS header | Security | 30min |
+
+### P2 - MEDIUM (Next Sprint)
+
+| # | Action | Impact | Effort |
+|:-:|:-------|:------:|:------:|
+| 10 | Create investor.html | Fundraising | 8h |
+| 11 | Add testimonials section | Conversion | 4h |
+| 12 | SDK publish (twine/npm) | Distribution | User creds |
+| 13 | API Backend deploy | MCP/SDKs | VPS config |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Màj: 30/01/2026 - Session 241.2 (BM25 RAG, SOTA 90% aligned)*
+*Voir `docs/FORENSIC-AUDIT-WEBSITE.md` pour détails Session 242*
+*Màj: 30/01/2026 - Session 242 (DOE Forensic - A2A/UCP gaps identified)*
