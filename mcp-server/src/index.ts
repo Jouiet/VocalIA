@@ -5,7 +5,7 @@
  *
  * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (63 tools - 11 always available, 52 require services):
+ * TOOL CATEGORIES (69 tools - 11 always available, 58 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -26,11 +26,12 @@
  * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
  * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
  * - Docs Tools (4): docs_get_document, docs_create_document, docs_append_text, docs_replace_text [REQUIRE GOOGLE]
+ * - Cal.com Tools (6): calcom_get_me, calcom_list_event_types, calcom_list_bookings, calcom_get_availability, calcom_cancel_booking, calcom_list_schedules [REQUIRE CALCOM]
  * - Calendly Tools (6): calendly_get_user, calendly_list_event_types, calendly_get_available_times, calendly_list_events, calendly_cancel_event, calendly_get_busy_times [REQUIRE CALENDLY]
  * - Freshdesk Tools (6): freshdesk_list_tickets, freshdesk_get_ticket, freshdesk_create_ticket, freshdesk_reply_ticket, freshdesk_update_ticket, freshdesk_search_contacts [REQUIRE FRESHDESK]
  * - Pipedrive Tools (7): pipedrive_list_deals, pipedrive_create_deal, pipedrive_update_deal, pipedrive_list_persons, pipedrive_create_person, pipedrive_search, pipedrive_list_activities [REQUIRE PIPEDRIVE]
  *
- * TOTAL: 63 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 69 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -52,6 +53,7 @@ import { calendlyTools } from "./tools/calendly.js";
 import { freshdeskTools } from "./tools/freshdesk.js";
 import { pipedriveTools } from "./tools/pipedrive.js";
 import { docsTools } from "./tools/docs.js";
+import { calcomTools } from "./tools/calcom.js";
 
 const execAsync = promisify(exec);
 
@@ -1048,7 +1050,7 @@ server.tool(
           mcp_server: {
             name: "vocalia",
             version: "0.5.0",
-            tools_count: 63,
+            tools_count: 69,
           },
           services: {
             voice_api: {
@@ -1216,6 +1218,17 @@ server.tool(docsTools.append_text.name, docsTools.append_text.parameters, docsTo
 server.tool(docsTools.replace_text.name, docsTools.replace_text.parameters, docsTools.replace_text.handler);
 
 // =============================================================================
+// CAL.COM TOOLS (6) - REQUIRE CALCOM API KEY
+// =============================================================================
+
+server.tool(calcomTools.get_me.name, calcomTools.get_me.parameters, calcomTools.get_me.handler);
+server.tool(calcomTools.list_event_types.name, calcomTools.list_event_types.parameters, calcomTools.list_event_types.handler);
+server.tool(calcomTools.list_bookings.name, calcomTools.list_bookings.parameters, calcomTools.list_bookings.handler);
+server.tool(calcomTools.get_availability.name, calcomTools.get_availability.parameters, calcomTools.get_availability.handler);
+server.tool(calcomTools.cancel_booking.name, calcomTools.cancel_booking.parameters, calcomTools.cancel_booking.handler);
+server.tool(calcomTools.list_schedules.name, calcomTools.list_schedules.parameters, calcomTools.list_schedules.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
@@ -1225,7 +1238,7 @@ async function main() {
   console.error("VocalIA MCP Server v0.5.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 63 (11 always available, 52 require external services)");
+  console.error("Tools: 69 (11 always available, 58 require external services)");
   console.error("Google Tools: Sheets (5), Drive (6), Docs (4), Calendar (2)");
   console.error("Integrations: Calendly (6), Freshdesk (6), Pipedrive (7)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
