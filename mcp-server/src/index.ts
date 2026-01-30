@@ -5,7 +5,7 @@
  *
  * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (69 tools - 11 always available, 58 require services):
+ * TOOL CATEGORIES (75 tools - 11 always available, 64 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -29,9 +29,10 @@
  * - Cal.com Tools (6): calcom_get_me, calcom_list_event_types, calcom_list_bookings, calcom_get_availability, calcom_cancel_booking, calcom_list_schedules [REQUIRE CALCOM]
  * - Calendly Tools (6): calendly_get_user, calendly_list_event_types, calendly_get_available_times, calendly_list_events, calendly_cancel_event, calendly_get_busy_times [REQUIRE CALENDLY]
  * - Freshdesk Tools (6): freshdesk_list_tickets, freshdesk_get_ticket, freshdesk_create_ticket, freshdesk_reply_ticket, freshdesk_update_ticket, freshdesk_search_contacts [REQUIRE FRESHDESK]
+ * - Zendesk Tools (6): zendesk_list_tickets, zendesk_get_ticket, zendesk_create_ticket, zendesk_add_comment, zendesk_update_ticket, zendesk_search_users [REQUIRE ZENDESK]
  * - Pipedrive Tools (7): pipedrive_list_deals, pipedrive_create_deal, pipedrive_update_deal, pipedrive_list_persons, pipedrive_create_person, pipedrive_search, pipedrive_list_activities [REQUIRE PIPEDRIVE]
  *
- * TOTAL: 69 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 75 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -54,6 +55,7 @@ import { freshdeskTools } from "./tools/freshdesk.js";
 import { pipedriveTools } from "./tools/pipedrive.js";
 import { docsTools } from "./tools/docs.js";
 import { calcomTools } from "./tools/calcom.js";
+import { zendeskTools } from "./tools/zendesk.js";
 
 const execAsync = promisify(exec);
 
@@ -1050,7 +1052,7 @@ server.tool(
           mcp_server: {
             name: "vocalia",
             version: "0.5.0",
-            tools_count: 69,
+            tools_count: 75,
           },
           services: {
             voice_api: {
@@ -1229,6 +1231,17 @@ server.tool(calcomTools.cancel_booking.name, calcomTools.cancel_booking.paramete
 server.tool(calcomTools.list_schedules.name, calcomTools.list_schedules.parameters, calcomTools.list_schedules.handler);
 
 // =============================================================================
+// ZENDESK TOOLS (6) - REQUIRE ZENDESK CREDENTIALS
+// =============================================================================
+
+server.tool(zendeskTools.list_tickets.name, zendeskTools.list_tickets.parameters, zendeskTools.list_tickets.handler);
+server.tool(zendeskTools.get_ticket.name, zendeskTools.get_ticket.parameters, zendeskTools.get_ticket.handler);
+server.tool(zendeskTools.create_ticket.name, zendeskTools.create_ticket.parameters, zendeskTools.create_ticket.handler);
+server.tool(zendeskTools.add_comment.name, zendeskTools.add_comment.parameters, zendeskTools.add_comment.handler);
+server.tool(zendeskTools.update_ticket.name, zendeskTools.update_ticket.parameters, zendeskTools.update_ticket.handler);
+server.tool(zendeskTools.search_users.name, zendeskTools.search_users.parameters, zendeskTools.search_users.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
@@ -1238,7 +1251,7 @@ async function main() {
   console.error("VocalIA MCP Server v0.5.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 69 (11 always available, 58 require external services)");
+  console.error("Tools: 75 (11 always available, 64 require external services)");
   console.error("Google Tools: Sheets (5), Drive (6), Docs (4), Calendar (2)");
   console.error("Integrations: Calendly (6), Freshdesk (6), Pipedrive (7)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
