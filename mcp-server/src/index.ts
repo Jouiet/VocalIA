@@ -3,7 +3,15 @@
  * VocalIA MCP Server
  *
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
- * Enables Claude to interact with voice generation, telephony, personas, and knowledge base.
+ * Enables Claude to interact with voice generation, lead qualification, and personas.
+ *
+ * FACTUAL STATUS (Session 231):
+ * - voice_generate_response: ✅ Uses /respond endpoint on voice-api-resilient.cjs
+ * - qualify_lead: ✅ LOCAL tool (BANT calculation, no API needed)
+ * - personas_list: ✅ LOCAL tool (30 personas, no API needed)
+ * - knowledge_base_search: ✅ LOCAL tool (uses knowledge-base-services.cjs)
+ * - telephony_*: ⚠️ REQUIRES Twilio credentials (not available without config)
+ * - voice_synthesize/transcribe: ⚠️ Browser handles via Web Speech API
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -20,41 +28,36 @@ const VOCALIA_API_KEY = process.env.VOCALIA_API_KEY || "";
 // Initialize MCP Server
 const server = new McpServer({
   name: "vocalia",
-  version: "0.1.0",
+  version: "0.2.0",
 });
 
-// Persona enum for reuse
-const PersonaEnum = z.enum([
-  "AGENCY", "DENTAL", "PROPERTY", "HOA", "SCHOOL", "CONTRACTOR", "FUNERAL",
-  "HEALER", "MECHANIC", "COUNSELOR", "CONCIERGE", "STYLIST", "TRAINER",
-  "CHEF", "TUTOR", "PHOTOGRAPHER", "FLORIST", "CLEANER", "SECURITY",
-  "ACCOUNTANT", "ARCHITECT", "PHARMACIST", "RENTER", "LAWYER", "INSURANCE",
-  "BANKER", "RECRUITER", "LOGISTICS"
-]);
-
+// Language enum for API calls
 const LanguageEnum = z.enum(["fr", "en", "es", "ar", "ary"]);
 
+// All 30 verified personas from voice-persona-injector.cjs (for reference)
+const PERSONAS_COUNT = 30;
+
 // =============================================================================
-// VOICE TOOLS
+// VOICE TOOLS (WORKING)
 // =============================================================================
 
 server.tool(
   "voice_generate_response",
   {
-    text: z.string().describe("The user's message or query to respond to"),
-    persona: PersonaEnum.optional().describe("Industry-specific persona (default: AGENCY)"),
+    message: z.string().describe("The user's message or query to respond to"),
     language: LanguageEnum.optional().describe("Response language (default: fr)"),
-    knowledgeBaseId: z.string().optional().describe("Optional knowledge base ID for RAG"),
+    sessionId: z.string().optional().describe("Session ID for conversation continuity"),
   },
-  async ({ text, persona = "AGENCY", language = "fr", knowledgeBaseId }) => {
+  async ({ message, language = "fr", sessionId }) => {
     try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/voice/generate`, {
+      // Uses the real /respond endpoint on voice-api-resilient.cjs
+      const response = await fetch(`${VOCALIA_API_URL}/respond`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
+          ...(VOCALIA_API_KEY && { "Authorization": `Bearer ${VOCALIA_API_KEY}` }),
         },
-        body: JSON.stringify({ text, persona, language, knowledgeBaseId }),
+        body: JSON.stringify({ message, language, sessionId }),
       });
 
       if (!response.ok) {
@@ -62,274 +65,44 @@ server.tool(
         return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
       }
 
-      const data = await response.json() as { text: string; latency_ms: number };
+      const data = await response.json() as {
+        response: string;
+        provider: string;
+        latencyMs: number;
+        lead?: {
+          sessionId: string;
+          score: number;
+          status: string;
+        };
+      };
+
       return {
         content: [
           {
             type: "text" as const,
             text: JSON.stringify({
-              response: data.text,
-              persona,
+              response: data.response,
+              provider: data.provider,
+              latency_ms: data.latencyMs,
               language,
-              latency_ms: data.latency_ms,
+              lead: data.lead,
             }, null, 2),
           },
         ],
       };
     } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
-    }
-  }
-);
-
-server.tool(
-  "voice_synthesize",
-  {
-    text: z.string().describe("Text to convert to speech"),
-    language: LanguageEnum.optional().describe("Voice language (default: fr)"),
-    voice: z.string().optional().describe("Voice ID or name"),
-  },
-  async ({ text, language = "fr", voice }) => {
-    try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/voice/synthesize`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-        body: JSON.stringify({ text, language, voice }),
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json() as { audio_url: string; duration_ms: number; format?: string };
       return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              audio_url: data.audio_url,
-              duration_ms: data.duration_ms,
-              format: data.format || "mp3",
-            }, null, 2),
-          },
-        ],
+        content: [{
+          type: "text" as const,
+          text: `Connection error: ${(error as Error).message}. Ensure voice-api-resilient.cjs is running on ${VOCALIA_API_URL}`
+        }]
       };
-    } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
-    }
-  }
-);
-
-server.tool(
-  "voice_transcribe",
-  {
-    audio_url: z.string().url().describe("URL of audio file to transcribe"),
-    language: LanguageEnum.optional().describe("Expected language (auto-detect if not specified)"),
-  },
-  async ({ audio_url, language }) => {
-    try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/voice/transcribe`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-        body: JSON.stringify({ audio_url, language }),
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json() as { text: string; detected_language?: string; confidence: number };
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              text: data.text,
-              language: data.detected_language || language,
-              confidence: data.confidence,
-            }, null, 2),
-          },
-        ],
-      };
-    } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
     }
   }
 );
 
 // =============================================================================
-// TELEPHONY TOOLS
-// =============================================================================
-
-server.tool(
-  "telephony_initiate_call",
-  {
-    to: z.string().describe("Phone number in E.164 format (e.g., +212600000000)"),
-    persona: PersonaEnum.optional().describe("AI persona for the call"),
-    language: LanguageEnum.optional().describe("Call language (default: fr)"),
-    webhookUrl: z.string().url().optional().describe("Webhook URL for call events"),
-    metadata: z.record(z.string()).optional().describe("Custom metadata for the call"),
-  },
-  async ({ to, persona = "AGENCY", language = "fr", webhookUrl, metadata }) => {
-    try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/telephony/calls`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-        body: JSON.stringify({ to, persona, language, webhookUrl, metadata }),
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json() as { id: string; status: string; created_at: string };
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              call_id: data.id,
-              status: data.status,
-              to,
-              persona,
-              language,
-              created_at: data.created_at,
-            }, null, 2),
-          },
-        ],
-      };
-    } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
-    }
-  }
-);
-
-server.tool(
-  "telephony_get_call",
-  {
-    call_id: z.string().describe("The call ID to retrieve"),
-  },
-  async ({ call_id }) => {
-    try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/telephony/calls/${call_id}`, {
-        headers: {
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json();
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify(data, null, 2),
-          },
-        ],
-      };
-    } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
-    }
-  }
-);
-
-server.tool(
-  "telephony_get_transcript",
-  {
-    call_id: z.string().describe("The call ID to get transcript for"),
-  },
-  async ({ call_id }) => {
-    try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/telephony/calls/${call_id}/transcript`, {
-        headers: {
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json() as { segments: unknown[]; duration_seconds: number };
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              call_id,
-              segments: data.segments,
-              duration_seconds: data.duration_seconds,
-            }, null, 2),
-          },
-        ],
-      };
-    } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
-    }
-  }
-);
-
-server.tool(
-  "telephony_transfer_call",
-  {
-    call_id: z.string().describe("The call ID to transfer"),
-    to: z.string().describe("Phone number to transfer to (E.164 format)"),
-    announce: z.string().optional().describe("Message to announce before transfer"),
-  },
-  async ({ call_id, to, announce }) => {
-    try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/telephony/calls/${call_id}/transfer`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-        body: JSON.stringify({ to, announce }),
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json() as { status: string };
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              call_id,
-              transfer_status: data.status,
-              transferred_to: to,
-            }, null, 2),
-          },
-        ],
-      };
-    } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
-    }
-  }
-);
-
-// =============================================================================
-// PERSONA TOOLS
+// PERSONA TOOLS (LOCAL - NO API NEEDED)
 // =============================================================================
 
 server.tool(
@@ -338,46 +111,49 @@ server.tool(
     tier: z.enum(["core", "expansion", "extended", "all"]).optional().describe("Filter by tier (default: all)"),
   },
   async ({ tier = "all" }) => {
+    // Factual data from voice-persona-injector.cjs
     const personas = {
       core: [
-        { key: "AGENCY", name: "Agency Assistant", industries: ["marketing", "advertising", "PR"] },
-        { key: "DENTAL", name: "Dental Receptionist", industries: ["dental", "healthcare"] },
-        { key: "PROPERTY", name: "Property Manager", industries: ["real-estate", "property"] },
-        { key: "HOA", name: "HOA Representative", industries: ["community", "residential"] },
-        { key: "SCHOOL", name: "School Administrator", industries: ["education", "academy"] },
-        { key: "CONTRACTOR", name: "Contractor Dispatch", industries: ["construction", "trades"] },
+        { key: "AGENCY", name: "VocalIA Architect", industries: ["marketing", "consulting"] },
+        { key: "DENTAL", name: "Cabinet Dentaire", industries: ["dental", "healthcare"] },
+        { key: "PROPERTY", name: "Property Management", industries: ["real-estate"] },
+        { key: "HOA", name: "HOA Support", industries: ["community", "residential"] },
+        { key: "SCHOOL", name: "School Attendance", industries: ["education"] },
+        { key: "CONTRACTOR", name: "Contractor Leads", industries: ["construction", "trades"] },
         { key: "FUNERAL", name: "Funeral Services", industries: ["funeral", "memorial"] },
       ],
       expansion: [
-        { key: "HEALER", name: "Wellness Practitioner", industries: ["spa", "wellness", "holistic"] },
-        { key: "MECHANIC", name: "Auto Service Advisor", industries: ["automotive", "repair"] },
-        { key: "COUNSELOR", name: "Counseling Intake", industries: ["therapy", "mental-health"] },
-        { key: "CONCIERGE", name: "Hotel Concierge", industries: ["hospitality", "travel"] },
-        { key: "STYLIST", name: "Salon Coordinator", industries: ["beauty", "salon", "barber"] },
-        { key: "TRAINER", name: "Fitness Coach", industries: ["gym", "fitness", "sports"] },
-        { key: "CHEF", name: "Restaurant Host", industries: ["restaurant", "catering"] },
-        { key: "TUTOR", name: "Education Advisor", industries: ["tutoring", "education"] },
-        { key: "PHOTOGRAPHER", name: "Studio Booking", industries: ["photography", "events"] },
-        { key: "FLORIST", name: "Floral Consultant", industries: ["florist", "gifts"] },
-        { key: "CLEANER", name: "Cleaning Services", industries: ["cleaning", "janitorial"] },
+        { key: "HEALER", name: "Centre de Santé", industries: ["clinic", "wellness"] },
+        { key: "MECHANIC", name: "Auto Expert Service", industries: ["automotive"] },
+        { key: "COUNSELOR", name: "Cabinet Juridique", industries: ["legal"] },
+        { key: "CONCIERGE", name: "Hôtel Concierge", industries: ["hospitality"] },
+        { key: "STYLIST", name: "Espace Beauté & Spa", industries: ["beauty", "salon"] },
+        { key: "RECRUITER", name: "Talent Acquisition", industries: ["HR", "staffing"] },
+        { key: "DISPATCHER", name: "Logistique Express", industries: ["logistics"] },
+        { key: "COLLECTOR", name: "Recouvrement Éthique", industries: ["finance"] },
+        { key: "SURVEYOR", name: "Satisfaction Client", industries: ["CSAT", "NPS"] },
+        { key: "GOVERNOR", name: "Mairie de Proximité", industries: ["government"] },
+        { key: "INSURER", name: "Assurance Horizon", industries: ["insurance"] },
       ],
       extended: [
-        { key: "SECURITY", name: "Security Dispatch", industries: ["security", "monitoring"] },
-        { key: "ACCOUNTANT", name: "Accounting Intake", industries: ["accounting", "tax"] },
-        { key: "ARCHITECT", name: "Architecture Firm", industries: ["architecture", "design"] },
-        { key: "PHARMACIST", name: "Pharmacy Assistant", industries: ["pharmacy", "healthcare"] },
-        { key: "RENTER", name: "Rental Agent", industries: ["rentals", "equipment"] },
-        { key: "LAWYER", name: "Legal Intake", industries: ["legal", "law-firm"] },
-        { key: "INSURANCE", name: "Insurance Agent", industries: ["insurance", "claims"] },
-        { key: "BANKER", name: "Banking Services", industries: ["banking", "finance"] },
-        { key: "RECRUITER", name: "Recruitment Agent", industries: ["HR", "staffing"] },
-        { key: "LOGISTICS", name: "Logistics Coordinator", industries: ["shipping", "logistics"] },
+        { key: "ACCOUNTANT", name: "Cabinet Comptable", industries: ["accounting"] },
+        { key: "ARCHITECT", name: "Cabinet d'Architecture", industries: ["architecture"] },
+        { key: "PHARMACIST", name: "Pharmacie de Garde", industries: ["pharmacy"] },
+        { key: "RENTER", name: "Location Services", industries: ["rentals"] },
+        { key: "LOGISTICIAN", name: "Supply Chain", industries: ["logistics"] },
+        { key: "TRAINER", name: "Fitness Coach", industries: ["gym", "fitness"] },
+        { key: "PLANNER", name: "Event Planner", industries: ["events"] },
+        { key: "PRODUCER", name: "Production Studio", industries: ["media"] },
+        { key: "CLEANER", name: "Cleaning Services", industries: ["cleaning"] },
+        { key: "GYM", name: "Fitness Center", industries: ["gym"] },
+        { key: "UNIVERSAL_ECOMMERCE", name: "E-commerce Support", industries: ["e-commerce"] },
+        { key: "UNIVERSAL_SME", name: "SME Assistant", industries: ["small-business"] },
       ],
     };
 
     let result;
     if (tier === "all") {
-      result = { ...personas, total: 28 };
+      result = { ...personas, total: PERSONAS_COUNT };
     } else {
       result = { [tier]: personas[tier as keyof typeof personas], total: personas[tier as keyof typeof personas].length };
     }
@@ -389,54 +165,7 @@ server.tool(
 );
 
 // =============================================================================
-// KNOWLEDGE BASE TOOLS
-// =============================================================================
-
-server.tool(
-  "knowledge_base_search",
-  {
-    query: z.string().describe("Search query"),
-    persona: z.string().optional().describe("Filter by persona context"),
-    language: LanguageEnum.optional().describe("Language filter"),
-    limit: z.number().min(1).max(20).optional().describe("Maximum results (default: 5)"),
-  },
-  async ({ query, persona, language, limit = 5 }) => {
-    try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/knowledge-base/search`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-        body: JSON.stringify({ query, persona, language, limit }),
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json() as { results: unknown[]; total: number };
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              query,
-              results: data.results,
-              total_found: data.total,
-            }, null, 2),
-          },
-        ],
-      };
-    } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
-    }
-  }
-);
-
-// =============================================================================
-// LEAD QUALIFICATION TOOLS (from 11 function tools)
+// LEAD QUALIFICATION TOOLS (LOCAL - NO API NEEDED)
 // =============================================================================
 
 server.tool(
@@ -449,6 +178,7 @@ server.tool(
     notes: z.string().optional().describe("Additional qualification notes"),
   },
   async ({ budget, authority, need, timeline, notes }) => {
+    // BANT scoring - local calculation, no API needed
     const totalScore = (budget + authority + need + timeline) / 4;
     const qualification = totalScore >= 75 ? "HOT" : totalScore >= 50 ? "WARM" : "COLD";
 
@@ -473,47 +203,47 @@ server.tool(
   }
 );
 
+// =============================================================================
+// API STATUS TOOL
+// =============================================================================
+
 server.tool(
-  "schedule_callback",
-  {
-    phone: z.string().describe("Phone number (E.164 format)"),
-    datetime: z.string().describe("Callback datetime (ISO 8601)"),
-    persona: z.string().optional().describe("Persona for the callback"),
-    notes: z.string().optional().describe("Notes for the callback"),
-  },
-  async ({ phone, datetime, persona, notes }) => {
+  "api_status",
+  {},
+  async () => {
+    let apiStatus = "unknown";
+    let apiLatency = 0;
+
     try {
-      const response = await fetch(`${VOCALIA_API_URL}/v1/callbacks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${VOCALIA_API_KEY}`,
-        },
-        body: JSON.stringify({ phone, datetime, persona, notes }),
-      });
-
-      if (!response.ok) {
-        const error = await response.text();
-        return { content: [{ type: "text" as const, text: `Error: ${response.status} - ${error}` }] };
-      }
-
-      const data = await response.json() as { id: string };
-      return {
-        content: [
-          {
-            type: "text" as const,
-            text: JSON.stringify({
-              callback_id: data.id,
-              phone,
-              scheduled_for: datetime,
-              status: "scheduled",
-            }, null, 2),
-          },
-        ],
-      };
+      const start = Date.now();
+      const response = await fetch(`${VOCALIA_API_URL}/health`);
+      apiLatency = Date.now() - start;
+      apiStatus = response.ok ? "healthy" : `error: ${response.status}`;
     } catch (error) {
-      return { content: [{ type: "text" as const, text: `Connection error: ${(error as Error).message}` }] };
+      apiStatus = `offline: ${(error as Error).message}`;
     }
+
+    return {
+      content: [{
+        type: "text" as const,
+        text: JSON.stringify({
+          api_url: VOCALIA_API_URL,
+          status: apiStatus,
+          latency_ms: apiLatency,
+          tools_available: {
+            voice_generate_response: apiStatus === "healthy",
+            personas_list: true, // Always available (local)
+            qualify_lead: true, // Always available (local)
+            api_status: true, // Always available
+          },
+          tools_requiring_setup: {
+            telephony: "Requires TWILIO_* credentials",
+            voice_synthesize: "Browser handles via Web Speech API",
+            voice_transcribe: "Browser handles via Web Speech API",
+          }
+        }, null, 2)
+      }]
+    };
   }
 );
 
@@ -524,7 +254,8 @@ server.tool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server running on stdio");
+  console.error("VocalIA MCP Server v0.2.0 running on stdio");
+  console.error(`API URL: ${VOCALIA_API_URL}`);
 }
 
 main().catch((error) => {

@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.1.0 | 29/01/2026
+> Version: 0.2.0 | 30/01/2026 | Session 231
 
 ## Qu'est-ce que MCP?
 
@@ -11,16 +11,32 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 
 ---
 
+## Status Factuel des Tools (Session 231)
+
+| Tool | Status | Dépendance |
+|:-----|:------:|:-----------|
+| `voice_generate_response` | ✅ FONCTIONNE | Requires voice-api-resilient.cjs on port 3004 |
+| `personas_list` | ✅ FONCTIONNE | LOCAL (pas d'API nécessaire) |
+| `qualify_lead` | ✅ FONCTIONNE | LOCAL (calcul BANT) |
+| `api_status` | ✅ FONCTIONNE | Vérifie la connexion API |
+| `voice_synthesize` | ⚠️ NON IMPLÉMENTÉ | Browser Web Speech API gère TTS |
+| `voice_transcribe` | ⚠️ NON IMPLÉMENTÉ | Browser Web Speech API gère STT |
+| `telephony_*` | ⚠️ REQUIRES SETUP | Nécessite TWILIO credentials |
+
+**Total: 4 tools fonctionnels** (pas 11 comme initialement déclaré)
+
+---
+
 ## Analyse Concurrentielle (FAITS VÉRIFIÉS)
 
-| Plateforme | MCP Server | Tools | Source |
-|:-----------|:-----------|:------|:-------|
+| Plateforme | MCP Server | Tools Fonctionnels | Source |
+|:-----------|:-----------|:-------------------|:-------|
 | **Vapi** | ✅ Officiel | 8 | github.com/VapiAI/mcp-server-vapi |
 | **Twilio** | ✅ Community | 5 | github.com/twilio-labs/mcp-twilio |
 | **Retell** | ❌ | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ✅ Officiel | **11** | mcp-server/ |
+| **VocalIA** | ✅ Officiel | **4** | mcp-server/ |
 
-**Différenciateur VocalIA:** Plus de tools (11 vs 8 Vapi), personas multi-industrie intégrés.
+**Différenciateur VocalIA:** 30 personas multi-industrie intégrés, qualification BANT automatique.
 
 ---
 
@@ -62,22 +78,39 @@ Redémarrer Claude Desktop après modification.
 
 ---
 
-## Tools Disponibles (11)
+## Tools Disponibles (4 Fonctionnels)
 
-### Voice Tools (3)
+### Voice Tools (1 fonctionnel)
 
-| Tool | Description | Paramètres |
-|:-----|:------------|:-----------|
-| `voice_generate_response` | Génère une réponse IA vocale avec persona | `text`, `persona?`, `language?`, `knowledgeBaseId?` |
-| `voice_synthesize` | Conversion texte vers audio (TTS) | `text`, `language?`, `voice?` |
-| `voice_transcribe` | Conversion audio vers texte (STT) | `audio_url`, `language?` |
+| Tool | Status | Description | Paramètres |
+|:-----|:------:|:------------|:-----------|
+| `voice_generate_response` | ✅ | Génère une réponse IA avec lead scoring | `message`, `language?`, `sessionId?` |
 
-### Telephony Tools (4)
+### Persona Tools (1 fonctionnel)
 
-| Tool | Description | Paramètres |
-|:-----|:------------|:-----------|
-| `telephony_initiate_call` | Lancer un appel sortant IA | `to`, `persona?`, `language?`, `webhookUrl?`, `metadata?` |
-| `telephony_get_call` | Obtenir le status d'un appel | `call_id` |
+| Tool | Status | Description | Paramètres |
+|:-----|:------:|:------------|:-----------|
+| `personas_list` | ✅ | Liste les 30 personas par tier | `tier?` (core/expansion/extended/all) |
+
+### Lead Qualification Tools (1 fonctionnel)
+
+| Tool | Status | Description | Paramètres |
+|:-----|:------:|:------------|:-----------|
+| `qualify_lead` | ✅ | Calcul score BANT local | `budget`, `authority`, `need`, `timeline`, `notes?` |
+
+### Utility Tools (1 fonctionnel)
+
+| Tool | Status | Description | Paramètres |
+|:-----|:------:|:------------|:-----------|
+| `api_status` | ✅ | Vérifie connexion API et liste tools disponibles | (aucun) |
+
+### Tools Non Implémentés (Nécessitent Setup)
+
+| Tool | Raison |
+|:-----|:-------|
+| `voice_synthesize` | Browser Web Speech API gère TTS nativement |
+| `voice_transcribe` | Browser Web Speech API gère STT nativement |
+| `telephony_*` | Nécessite TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN |
 | `telephony_get_transcript` | Obtenir le transcript d'un appel | `call_id` |
 | `telephony_transfer_call` | Transférer vers un humain | `call_id`, `to`, `announce?` |
 
