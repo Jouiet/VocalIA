@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.3.2 | **Date**: 30/01/2026 | **Session**: 229.2
+> **Version**: 4.3.5 | **Date**: 30/01/2026 | **Session**: 231.2
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (129KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: Technology Disclosure Protection ✅ (Session 222)
@@ -15,6 +15,7 @@
 > **Tailwind**: Safelist utilities (40 classes) ✅ (Session 229)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
+> **MCP Server**: v0.3.0 SOTA (21 tools) ✅ (Session 231.2)
 
 ---
 
