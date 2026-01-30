@@ -1,7 +1,7 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 2.1.0 | **Date**: 30/01/2026 | **Session**: 249.2
-> **Methodology**: Bottom-up forensic audit | **Status**: 🟡 PHASE 0 EN COURS (50%)
+> **Version**: 2.2.0 | **Date**: 30/01/2026 | **Session**: 249.2
+> **Methodology**: Bottom-up forensic audit | **Status**: 🟡 PHASE 0 EN COURS (71%)
 
 ---
 
@@ -14,11 +14,12 @@
 | SecretVault.cjs | ✅ DONE | `node core/SecretVault.cjs --health` → OK |
 | clients/ directory | ✅ DONE | 2 tenants: agency_internal, client_demo |
 | client-registry.cjs | ✅ DONE | Charge configs depuis clients/ |
+| Refactor HubSpot | ✅ DONE | getForTenant(), createForTenant() |
+| Refactor Calendar/Slack | ✅ DONE | _meta.tenantId support |
 | OAuth Gateway | ⏳ TODO | Connecter comptes clients externes |
 | Webhook handlers | ⏳ TODO | Recevoir data inbound |
-| Refactor integrations | ⏳ TODO | HubSpot, Calendar → TenantContext |
 
-**Progression Phase 0**: 3/6 (50%) | **Effort restant**: ~5-8 jours
+**Progression Phase 0**: 5/7 (71%) | **Effort restant**: ~4-6 jours
 
 ---
 
@@ -287,9 +288,10 @@ Effort = (Complexité API × Scope fonctionnel × Tests) + Documentation
 | clients/ structure | ✅ DONE | `ls clients/` → 2 tenants |
 | SecretVault.cjs | ✅ DONE | `node core/SecretVault.cjs --health` OK |
 | client-registry.cjs updated | ✅ DONE | Charge depuis clients/ |
-| OAuth Gateway | ⏳ TODO | - |
-| Refactor integrations | ⏳ TODO | - |
-| Webhook handlers | ⏳ TODO | - |
+| Refactor HubSpot | ✅ DONE | getForTenant(), createForTenant() |
+| Refactor Calendar/Slack | ✅ DONE | _meta.tenantId, getGoogleCredentials() |
+| OAuth Gateway | ⏳ TODO | Flow OAuth clients externes |
+| Webhook handlers | ⏳ TODO | Recevoir data inbound |
 
 **Vérification empirique (30/01/2026 17:55):**
 ```bash
