@@ -5,7 +5,7 @@
  *
  * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (59 tools - 11 always available, 48 require services):
+ * TOOL CATEGORIES (63 tools - 11 always available, 52 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -25,11 +25,12 @@
  * - UCP Tools (3): ucp_sync_preference, ucp_get_profile, ucp_list_profiles [REQUIRE UCP]
  * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
  * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
+ * - Docs Tools (4): docs_get_document, docs_create_document, docs_append_text, docs_replace_text [REQUIRE GOOGLE]
  * - Calendly Tools (6): calendly_get_user, calendly_list_event_types, calendly_get_available_times, calendly_list_events, calendly_cancel_event, calendly_get_busy_times [REQUIRE CALENDLY]
  * - Freshdesk Tools (6): freshdesk_list_tickets, freshdesk_get_ticket, freshdesk_create_ticket, freshdesk_reply_ticket, freshdesk_update_ticket, freshdesk_search_contacts [REQUIRE FRESHDESK]
  * - Pipedrive Tools (7): pipedrive_list_deals, pipedrive_create_deal, pipedrive_update_deal, pipedrive_list_persons, pipedrive_create_person, pipedrive_search, pipedrive_list_activities [REQUIRE PIPEDRIVE]
  *
- * TOTAL: 59 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 63 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -50,6 +51,7 @@ import { driveTools } from "./tools/drive.js";
 import { calendlyTools } from "./tools/calendly.js";
 import { freshdeskTools } from "./tools/freshdesk.js";
 import { pipedriveTools } from "./tools/pipedrive.js";
+import { docsTools } from "./tools/docs.js";
 
 const execAsync = promisify(exec);
 
@@ -1046,7 +1048,7 @@ server.tool(
           mcp_server: {
             name: "vocalia",
             version: "0.5.0",
-            tools_count: 59,
+            tools_count: 63,
           },
           services: {
             voice_api: {
@@ -1205,17 +1207,27 @@ server.tool(pipedriveTools.search.name, pipedriveTools.search.parameters, pipedr
 server.tool(pipedriveTools.list_activities.name, pipedriveTools.list_activities.parameters, pipedriveTools.list_activities.handler);
 
 // =============================================================================
+// GOOGLE DOCS TOOLS (4) - REQUIRE GOOGLE CREDENTIALS
+// =============================================================================
+
+server.tool(docsTools.get_document.name, docsTools.get_document.parameters, docsTools.get_document.handler);
+server.tool(docsTools.create_document.name, docsTools.create_document.parameters, docsTools.create_document.handler);
+server.tool(docsTools.append_text.name, docsTools.append_text.parameters, docsTools.append_text.handler);
+server.tool(docsTools.replace_text.name, docsTools.replace_text.parameters, docsTools.replace_text.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.4.0 running on stdio");
+  console.error("VocalIA MCP Server v0.5.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 32 (10 always available, 22 require external services)");
-  console.error("Google Tools: Sheets (5), Drive (6), Calendar (2)");
+  console.error("Tools: 63 (11 always available, 52 require external services)");
+  console.error("Google Tools: Sheets (5), Drive (6), Docs (4), Calendar (2)");
+  console.error("Integrations: Calendly (6), Freshdesk (6), Pipedrive (7)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
 }
 
