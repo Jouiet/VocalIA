@@ -2,8 +2,22 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 1.0 | **Date:** 27/01/2026 | **Session:** 180
+> **Version:** 1.2 | **Date:** 30/01/2026 | **Session:** 249
 > **Approche:** Bottom-Up Factuelle | **Méthodologie:** Recherche Web + Analyse Code Source
+
+---
+
+## 🔴 AUDIT SESSION 249: Gaps Critiques Identifiés
+
+| Composant Requis | État | Impact |
+|:-----------------|:----:|:-------|
+| `core/SecretVault.cjs` | ❌ N'existe pas | Credentials single-tenant |
+| `clients/` directory | ❌ N'existe pas | Pas d'isolation par client |
+| OAuth Gateway | ❌ N'existe pas | Clients ne peuvent pas connecter leurs apps |
+| Webhook handlers | ❌ Minimal | Pas de flux bidirectionnel |
+| Integrations multi-tenant | ❌ Toutes `process.env` | Tout partage les mêmes credentials |
+
+**Action:** Phase 0 du INTEGRATIONS-ROADMAP.md doit être implémentée AVANT toute nouvelle intégration.
 
 ---
 

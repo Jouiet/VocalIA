@@ -1,7 +1,22 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 1.0.0 | **Date**: 30/01/2026 | **Session**: 249
-> **Methodology**: Bottom-up forensic audit | **Status**: ACTIONABLE
+> **Version**: 2.0.0 | **Date**: 30/01/2026 | **Session**: 249.2
+> **Methodology**: Bottom-up forensic audit | **Status**: 🔴 BLOQUÉ PAR PHASE 0
+
+---
+
+## 🔴 ALERTE CRITIQUE: Gap Architectural Multi-Tenant
+
+**AVANT d'implémenter les intégrations, Phase 0 est REQUISE.**
+
+| Composant | Requis | État | Vérification |
+|:----------|:------:|:----:|:-------------|
+| SecretVault.cjs | ✅ | ❌ **N'EXISTE PAS** | `ls core/SecretVault.cjs` → not found |
+| clients/ directory | ✅ | ❌ **N'EXISTE PAS** | `ls clients/` → not found |
+| OAuth Gateway | ✅ | ❌ N'existe pas | - |
+| Integrations multi-tenant | ✅ | ❌ Toutes `process.env` | `grep "process.env" integrations/*.cjs` |
+
+**Impact**: Sans Phase 0, les intégrations sont SINGLE-TENANT (un seul jeu de credentials pour tous).
 
 ---
 
@@ -14,7 +29,8 @@
 | **Gap à combler** | 14 |
 | **Nouvelles demandées (Google Apps)** | 4 |
 | **Total à implémenter** | 18 |
-| **Effort estimé total** | 47-94 jours-homme |
+| **Phase 0 (Multi-Tenant)** | 🔴 10-15 jours BLOQUANT |
+| **Effort total (avec Phase 0)** | 60-110 jours-homme |
 
 ---
 
@@ -248,7 +264,32 @@ Effort = (Complexité API × Scope fonctionnel × Tests) + Documentation
 
 ## 5. PLANNING DÉTAILLÉ
 
-### 5.1 Phase 1: Quick Wins (Semaine 1-2)
+### 5.0 Phase 0: Fondations Multi-Tenant (BLOQUANT) ⚠️
+
+**Objectif**: Permettre isolation credentials par client (interne + externe)
+
+| Jour | Composant | Tâches | Livrables |
+|:----:|:----------|:-------|:----------|
+| J1 | clients/ structure | Créer répertoire, templates config.json | `clients/_template/config.json` |
+| J2-J3 | SecretVault.cjs | Per-tenant credential storage, encryption | `core/SecretVault.cjs` |
+| J4-J5 | OAuth Gateway | Flow pour connecter comptes clients | `core/OAuthGateway.cjs` |
+| J6-J8 | Refactor existants | HubSpot, Calendar, Slack → TenantContext | Mise à jour fichiers existants |
+| J9-J10 | Webhook handlers | Recevoir data inbound des systèmes | `core/WebhookRouter.cjs` |
+
+**Effort Phase 0**: 10-15 jours
+**Status**: 🔴 NON IMPLÉMENTÉ - BLOQUE TOUT LE RESTE
+
+**Vérification empirique actuelle:**
+```bash
+ls core/SecretVault.cjs           # DOES NOT EXIST
+ls clients/                       # DOES NOT EXIST
+grep "TenantContext" integrations/*.cjs  # 0 matches
+grep "process.env" integrations/*.cjs    # 12+ matches (PROBLÈME)
+```
+
+---
+
+### 5.1 Phase 1: Quick Wins (Semaine 3-4) - APRÈS Phase 0
 
 **Objectif**: 6 intégrations avec le meilleur ROI/effort
 

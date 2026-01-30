@@ -3465,16 +3465,56 @@ grep -roh 'data-i18n' *.html */*.html */*/*.html | wc -l  # 2016
 
 ---
 
-## Plan Actionnable (Session 250)
+### Session 249.2: Audit Intégrations Multi-Tenant (30/01/2026)
 
-| # | Action | Priorité | Blocker |
-|:-:|:-------|:--------:|:--------|
-| 1 | Google API Key renewal | P1 | User |
-| 2 | Calendar/Slack credentials | P2 | User |
-| 3 | SDK Publish (npm/PyPI) | P1 | User creds |
-| 4 | Social Proof content | P2 | User data |
+**Goal**: Audit forensique architecture intégrations pour support bidirectionnel multi-tenant.
+
+**Findings CRITIQUES:**
+
+| Composant | Requis | État Actuel | Verdict |
+|:----------|:------:|:-----------:|:-------:|
+| `SecretVault.cjs` | ✅ | ❌ N'existe pas | 🔴 BLOQUANT |
+| `clients/` directory | ✅ | ❌ N'existe pas | 🔴 BLOQUANT |
+| OAuth Gateway | ✅ | ❌ N'existe pas | 🔴 BLOQUANT |
+| Webhook handlers | ✅ | ⚠️ Minimal | 🟠 LIMITÉ |
+| TenantContext usage | ✅ | ❌ 0% integrations | 🔴 BLOQUANT |
+
+**Vérification empirique:**
+```bash
+ls core/SecretVault.cjs           # NOT FOUND
+ls clients/                       # NOT FOUND
+grep "TenantContext" integrations/*.cjs  # 0 matches
+grep "process.env" integrations/*.cjs    # 12+ matches
+```
+
+**Architecture actuelle vs requise:**
+- Actuel: Single-tenant (tout partage `.env`)
+- Requis: Multi-tenant (credentials isolés par client)
+
+**Décision**: Option A choisie - Phase 0 (Multi-Tenant) AVANT intégrations.
+
+**Document mis à jour**: `docs/INTEGRATIONS-ROADMAP.md` v2.0.0
 
 ---
 
-*Màj: 30/01/2026 - Session 249 (DOE Implementation)*
+## Plan Actionnable (Session 250)
+
+### Phase 0: Fondations Multi-Tenant (PRIORITÉ ABSOLUE)
+
+| # | Composant | Effort | Status |
+|:-:|:----------|:------:|:------:|
+| 1 | `clients/` structure + templates | 1j | ⏳ |
+| 2 | `core/SecretVault.cjs` | 2-3j | ⏳ |
+| 3 | `core/OAuthGateway.cjs` | 3-5j | ⏳ |
+| 4 | Refactor HubSpot → TenantContext | 1-2j | ⏳ |
+| 5 | Refactor Calendar/Slack → TenantContext | 1j | ⏳ |
+| 6 | `core/WebhookRouter.cjs` | 2-3j | ⏳ |
+
+**Effort total Phase 0**: 10-15 jours
+
+### Puis Phase 1-4: Intégrations (voir INTEGRATIONS-ROADMAP.md)
+
+---
+
+*Màj: 30/01/2026 - Session 249.2 (Audit Multi-Tenant)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
