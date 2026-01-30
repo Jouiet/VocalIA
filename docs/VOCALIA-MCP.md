@@ -511,6 +511,26 @@ curl http://localhost:3009/health
 
 ---
 
+## SOTA Comparison (Session 241 Audit)
+
+Comparaison vs [MCP Best Practices 2026](https://www.cdata.com/blog/mcp-server-best-practices-2026):
+
+| Best Practice | Standard 2026 | VocalIA | Status |
+|:--------------|:--------------|:--------|:------:|
+| **Single Responsibility** | 1 domaine par server | 1 domaine (Voice AI) | ✅ |
+| **Bounded Toolsets** | Focused, specific contracts | 21 tools, well-documented | ✅ |
+| **Auth (HTTP)** | OAuth 2.1 | N/A (stdio transport) | ✅ |
+| **Auth (stdio)** | API Keys acceptable | API Keys | ✅ |
+| **Zod Validation** | Schema validation | All inputs validated | ✅ |
+| **Error Handling** | Structured errors | try/catch, JSON response | ✅ |
+| **Monitoring** | Prometheus/Grafana | ❌ Not implemented | P3 |
+| **Streaming** | For long operations | ❌ Not implemented | P3 |
+| **Session State** | Per-conversation cache | File persistence | ✅ |
+
+**Score: 7/9 (78%)** - Missing only production monitoring features.
+
+---
+
 ## Roadmap
 
 | Version | Feature | Status |
@@ -518,8 +538,10 @@ curl http://localhost:3009/health
 | 0.1.0 | 4 tools de base | ✅ DONE |
 | 0.2.0 | Refactoring factuel | ✅ DONE |
 | 0.3.0 | 21 tools SOTA | ✅ DONE |
+| 0.3.3 | SOTA Audit compliance | ✅ Session 241 |
 | 0.4.0 | Resources (prompts, templates) | ⏳ Planifié |
 | 0.5.0 | Streaming audio en temps réel | ⏳ Planifié |
+| 0.6.0 | Prometheus metrics | ⏳ P3 |
 | 1.0.0 | Publication npm | ⏳ Après API deploy |
 
 ---
@@ -535,5 +557,5 @@ curl http://localhost:3009/health
 ---
 
 *Documentation créée: 29/01/2026 - Session 227*
-*Mise à jour: 30/01/2026 - Session 231.2 (21 tools SOTA)*
+*Mise à jour: 30/01/2026 - Session 241 (SOTA Audit: 78% compliant)*
 *Maintenu par: VocalIA Engineering*

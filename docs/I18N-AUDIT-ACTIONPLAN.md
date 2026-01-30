@@ -881,7 +881,19 @@ Copier le header de `components/header.html` (avec data-i18n) vers toutes les pa
 
 ## 10. Annexes
 
-### 10.1 Commandes Utiles
+### 10.1 Scripts QA (Session 241)
+
+| Script | Fonction | Commande |
+|:-------|:---------|:---------|
+| `translation-quality-check.py` | Détecte truncations, identiques | `python3 scripts/translation-quality-check.py` |
+| `darija-validator.py` | Détecte contamination MSA | `python3 scripts/darija-validator.py` |
+
+**Critères de Détection:**
+- Truncation: traduction < 60% longueur référence FR
+- Identique: traduction = FR (non traduite)
+- MSA: marqueurs formels arabes dans Darija (e.g., التي، الذي، لذلك)
+
+### 10.2 Commandes Utiles
 
 ```bash
 # Compter les pages avec i18n
@@ -893,8 +905,9 @@ for f in website/*.html; do echo "$f: $(grep -c 'data-i18n' $f)"; done
 # Valider tous les JSON
 for f in website/src/locales/*.json; do python3 -c "import json; json.load(open('$f'))" && echo "$f OK"; done
 
-# Compter les clés dans un JSON
-python3 -c "import json; print(len(str(json.load(open('fr.json')))))"
+# QA Traductions
+python3 scripts/translation-quality-check.py
+python3 scripts/darija-validator.py
 ```
 
 ### 10.2 Template data-i18n
@@ -930,6 +943,7 @@ python3 -c "import json; print(len(str(json.load(open('fr.json')))))"
 |:--------|:-----|:-------|:------------|
 | 1.0.0 | 30/01/2026 | Claude Opus 4.5 | Création initiale - Audit complet |
 | 2.1.0 | 30/01/2026 | Claude Opus 4.5 | Session 228.3 - Industries VERIFIED: 383 data-i18n, 237 keys |
+| 2.4.0 | 30/01/2026 | Claude Opus 4.5 | Session 241 - QA Scripts added (translation-quality-check.py, darija-validator.py) |
 
 ---
 
