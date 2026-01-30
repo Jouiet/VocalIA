@@ -1,0 +1,58 @@
+{
+  "tenant_id": "agency_internal",
+  "name": "VocalIA Internal",
+  "type": "agency",
+  "vertical": "voice_ai_saas",
+  "plan": "enterprise",
+  "status": "active",
+  "created_at": "2026-01-01T00:00:00Z",
+  "features": {
+    "voice_widget": true,
+    "voice_telephony": true,
+    "email_automation": true,
+    "sms_automation": true,
+    "crm_sync": true,
+    "calendar_sync": true,
+    "analytics": true,
+    "multi_language": true
+  },
+  "integrations": {
+    "hubspot": {
+      "enabled": true,
+      "credentials_key": "HUBSPOT_ACCESS_TOKEN",
+      "purpose": "Lead tracking, deal management"
+    },
+    "google": {
+      "enabled": true,
+      "scopes": ["calendar", "sheets", "drive", "gmail"],
+      "credentials_key": "GOOGLE_REFRESH_TOKEN",
+      "purpose": "Internal analytics, scheduling, notifications"
+    },
+    "slack": {
+      "enabled": true,
+      "credentials_key": "SLACK_WEBHOOK_URL",
+      "purpose": "Team notifications, alerts"
+    },
+    "twilio": {
+      "enabled": true,
+      "credentials_key": "TWILIO_AUTH_TOKEN",
+      "purpose": "Voice telephony PSTN"
+    }
+  },
+  "market_rules": {
+    "strict": true,
+    "markets": {
+      "MA": { "id": "maroc", "lang": "fr", "currency": "MAD", "symbol": "DH", "label": "Maroc" },
+      "DZ": { "id": "maghreb", "lang": "fr", "currency": "EUR", "symbol": "EUR", "label": "Maghreb" },
+      "TN": { "id": "maghreb", "lang": "fr", "currency": "EUR", "symbol": "EUR", "label": "Maghreb" },
+      "FR": { "id": "europe", "lang": "fr", "currency": "EUR", "symbol": "EUR", "label": "Europe" },
+      "AE": { "id": "mena", "lang": "en", "currency": "USD", "symbol": "$", "label": "MENA" },
+      "US": { "id": "intl", "lang": "en", "currency": "USD", "symbol": "$", "label": "International" }
+    },
+    "default": { "id": "intl", "lang": "en", "currency": "USD", "symbol": "$", "label": "International" }
+  },
+  "contact": {
+    "email": "contact@vocalia.ma",
+    "phone": "+212600000000"
+  }
+}

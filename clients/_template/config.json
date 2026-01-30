@@ -1,0 +1,55 @@
+{
+  "tenant_id": "REPLACE_WITH_TENANT_ID",
+  "name": "Client Name",
+  "type": "client",
+  "vertical": "shopify",
+  "plan": "essentials",
+  "status": "active",
+  "created_at": "2026-01-30T00:00:00Z",
+  "features": {
+    "voice_widget": true,
+    "voice_telephony": false,
+    "email_automation": false,
+    "sms_automation": false,
+    "crm_sync": false,
+    "calendar_sync": false
+  },
+  "integrations": {
+    "hubspot": {
+      "enabled": false,
+      "credentials_key": "HUBSPOT_ACCESS_TOKEN"
+    },
+    "shopify": {
+      "enabled": false,
+      "shop_domain": "",
+      "credentials_key": "SHOPIFY_ACCESS_TOKEN"
+    },
+    "klaviyo": {
+      "enabled": false,
+      "account_id": "",
+      "credentials_key": "KLAVIYO_API_KEY"
+    },
+    "google": {
+      "enabled": false,
+      "scopes": ["calendar", "sheets"],
+      "credentials_key": "GOOGLE_REFRESH_TOKEN"
+    },
+    "slack": {
+      "enabled": false,
+      "credentials_key": "SLACK_WEBHOOK_URL"
+    }
+  },
+  "market_rules": {
+    "strict": false,
+    "default": {
+      "id": "default",
+      "lang": "en",
+      "currency": "USD",
+      "symbol": "$"
+    }
+  },
+  "contact": {
+    "email": "",
+    "phone": ""
+  }
+}
