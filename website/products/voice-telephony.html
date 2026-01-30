@@ -603,11 +603,11 @@
       <!-- Breadcrumb -->
       <nav class="mb-8" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-2 text-sm text-zinc-400">
-          <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+          <li><a href="/" class="hover:text-white transition" data-i18n="voice_telephony_page.breadcrumb_home">Accueil</a></li>
           <li><span class="mx-2">/</span></li>
-          <li><a href="/features" class="hover:text-white transition">Produits</a></li>
+          <li><a href="/features" class="hover:text-white transition" data-i18n="voice_telephony_page.breadcrumb_products">Produits</a></li>
           <li><span class="mx-2">/</span></li>
-          <li class="text-white">Voice Telephony AI</li>
+          <li class="text-white" data-i18n="voice_telephony_page.breadcrumb_current">Voice Telephony AI</li>
         </ol>
       </nav>
 
@@ -616,24 +616,24 @@
         <div>
           <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-400 text-sm mb-6">
             <i data-lucide="phone" class="w-4 h-4"></i>
-            Enterprise Telephony
+            <span data-i18n="voice_telephony_page.badge">Enterprise Telephony</span>
           </div>
 
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-            <span class="violet-gradient-text">Voice Telephony AI</span>
+            <span class="violet-gradient-text" data-i18n="voice_telephony_page.title">Voice Telephony AI</span>
           </h1>
 
           <p class="text-xl text-zinc-400 mb-8">
-            Agents vocaux IA sur lignes téléphoniques réelles. Infrastructure PSTN + IA temps réel.
-            <strong class="text-white">Latence &lt;100ms</strong>, qualité enterprise.
+            <span data-i18n="voice_telephony_page.subtitle">Agents vocaux IA sur lignes téléphoniques réelles. Infrastructure PSTN + IA temps réel.</span>
+            <strong class="text-white" data-i18n="voice_telephony_page.subtitle_highlight">Latence &lt;100ms</strong><span data-i18n="voice_telephony_page.subtitle_suffix">, qualité enterprise.</span>
           </p>
 
           <div class="flex flex-wrap gap-4 mb-10">
-            <a href="/contact?product=telephony" class="inline-flex items-center px-6 py-3 rounded-xl bg-violet-500 hover:bg-violet-400 transition font-semibold">
+            <a href="/contact?product=telephony" class="inline-flex items-center px-6 py-3 rounded-xl bg-violet-500 hover:bg-violet-400 transition font-semibold" data-i18n="voice_telephony_page.cta_demo">
               Demander une Démo
               <i data-lucide="file-text" class="w-5 h-5 ml-2"></i>
             </a>
-            <a href="/docs/telephony" class="inline-flex items-center px-6 py-3 rounded-xl border border-slate-600 hover:border-slate-500 hover:bg-slate-700/50 transition font-semibold">
+            <a href="/docs/telephony" class="inline-flex items-center px-6 py-3 rounded-xl border border-slate-600 hover:border-slate-500 hover:bg-slate-700/50 transition font-semibold" data-i18n="voice_telephony_page.cta_docs">
               Documentation API
             </a>
           </div>
@@ -642,19 +642,19 @@
           <div class="grid grid-cols-4 gap-3">
             <div class="text-center p-3 rounded-xl bg-slate-700/30">
               <div class="text-xl font-bold text-violet-400">&lt;100ms</div>
-              <div class="text-xs text-zinc-400">Latence</div>
+              <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.stat_latency">Latence</div>
             </div>
             <div class="text-center p-3 rounded-xl bg-slate-700/30">
               <div class="text-xl font-bold text-violet-400">5</div>
-              <div class="text-xs text-zinc-400">Langues</div>
+              <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.stat_languages">Langues</div>
             </div>
             <div class="text-center p-3 rounded-xl bg-slate-700/30">
               <div class="text-xl font-bold text-violet-400">11</div>
-              <div class="text-xs text-zinc-400">Tools</div>
+              <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.stat_tools">Tools</div>
             </div>
             <div class="text-center p-3 rounded-xl bg-slate-700/30">
               <div class="text-xl font-bold text-emerald-400">0.06€</div>
-              <div class="text-xs text-zinc-400">/min</div>
+              <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.stat_price">/min</div>
             </div>
           </div>
         </div>
@@ -663,7 +663,7 @@
         <div class="relative">
           <div class="absolute -inset-4 bg-gradient-to-r from-violet-500/20 to-vocalia-400/10 rounded-3xl blur-2xl"></div>
           <div class="relative glass rounded-2xl p-8">
-            <h3 class="text-lg font-semibold mb-6 text-center">Architecture Temps Réel</h3>
+            <h3 class="text-lg font-semibold mb-6 text-center" data-i18n="voice_telephony_page.arch_title">Architecture Temps Réel</h3>
 
             <div class="space-y-4">
               <!-- Caller -->
@@ -674,8 +674,8 @@
             </svg>
                 </div>
                 <div>
-                  <div class="font-semibold">Appelant</div>
-                  <div class="text-xs text-zinc-400">Téléphone fixe ou mobile</div>
+                  <div class="font-semibold" data-i18n="voice_telephony_page.arch_caller">Appelant</div>
+                  <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.arch_caller_desc">Téléphone fixe ou mobile</div>
                 </div>
               </div>
 
@@ -687,8 +687,8 @@
                   <i data-lucide="phone" class="w-5 h-5 text-emerald-400"></i>
                 </div>
                 <div>
-                  <div class="font-semibold">PSTN Gateway</div>
-                  <div class="text-xs text-zinc-400">Numéro dédié, routage intelligent</div>
+                  <div class="font-semibold" data-i18n="voice_telephony_page.arch_pstn">PSTN Gateway</div>
+                  <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.arch_pstn_desc">Numéro dédié, routage intelligent</div>
                 </div>
               </div>
 
@@ -700,8 +700,8 @@
                   <i data-lucide="mic" class="w-5 h-5 text-white"></i>
                 </div>
                 <div>
-                  <div class="font-semibold text-violet-400">VocalIA Bridge</div>
-                  <div class="text-xs text-zinc-400">STT → AI → TTS en temps réel</div>
+                  <div class="font-semibold text-violet-400" data-i18n="voice_telephony_page.arch_bridge">VocalIA Bridge</div>
+                  <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.arch_bridge_desc">STT → AI → TTS en temps réel</div>
                 </div>
               </div>
 
@@ -713,8 +713,8 @@
                   <i data-lucide="bot" class="w-5 h-5 text-blue-400"></i>
                 </div>
                 <div>
-                  <div class="font-semibold">IA Engine</div>
-                  <div class="text-xs text-zinc-400">Multi-AI temps réel + fallbacks</div>
+                  <div class="font-semibold" data-i18n="voice_telephony_page.arch_ai">IA Engine</div>
+                  <div class="text-xs text-zinc-400" data-i18n="voice_telephony_page.arch_ai_desc">Multi-AI temps réel + fallbacks</div>
                 </div>
               </div>
             </div>
@@ -728,8 +728,8 @@
   <section class="py-20 bg-slate-900/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Pourquoi Voice Telephony AI?</h2>
-        <p class="text-lg text-zinc-400">La téléphonie IA de niveau enterprise, accessible</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_telephony_page.features_title">Pourquoi Voice Telephony AI?</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_telephony_page.features_subtitle">La téléphonie IA de niveau enterprise, accessible</p>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -740,8 +740,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Latence Ultra-Basse</h3>
-          <p class="text-zinc-400 text-sm">Réponses en moins de 100ms grâce au WebSocket IA et notre bridge optimisé. Conversation naturelle.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_telephony_page.feature1_title">Latence Ultra-Basse</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_telephony_page.feature1_desc">Réponses en moins de 100ms grâce au WebSocket IA et notre bridge optimisé. Conversation naturelle.</p>
         </div>
 
         <!-- Feature 2 -->
@@ -751,8 +751,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">5 Langues Natives</h3>
-          <p class="text-zinc-400 text-sm">Français, Anglais, Espagnol, Arabe MSA et Darija marocain. Détection automatique de la langue.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_telephony_page.feature2_title">5 Langues Natives</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_telephony_page.feature2_desc">Français, Anglais, Espagnol, Arabe MSA et Darija marocain. Détection automatique de la langue.</p>
         </div>
 
         <!-- Feature 3 -->
@@ -760,8 +760,8 @@
           <div class="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
             <i data-lucide="shield-check" class="w-6 h-6 text-violet-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Multi-AI Fallback</h3>
-          <p class="text-zinc-400 text-sm">5 niveaux de redondance IA. 99.9% uptime garanti avec basculement automatique en &lt;2s.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_telephony_page.feature3_title">Multi-AI Fallback</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_telephony_page.feature3_desc">5 niveaux de redondance IA. 99.9% uptime garanti avec basculement automatique en &lt;2s.</p>
         </div>
 
         <!-- Feature 4 -->
@@ -771,8 +771,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">11 Function Tools</h3>
-          <p class="text-zinc-400 text-sm">Booking, CRM sync, order lookup, lead qualification, payment, transfer humain, et plus.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_telephony_page.feature4_title">11 Function Tools</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_telephony_page.feature4_desc">Booking, CRM sync, order lookup, lead qualification, payment, transfer humain, et plus.</p>
         </div>
 
         <!-- Feature 5 -->
@@ -782,8 +782,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">30 Personas Métier</h3>
-          <p class="text-zinc-400 text-sm">Agents pré-configurés par secteur: dentiste, immobilier, e-commerce, support, RH, et plus.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_telephony_page.feature5_title">30 Personas Métier</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_telephony_page.feature5_desc">Agents pré-configurés par secteur: dentiste, immobilier, e-commerce, support, RH, et plus.</p>
         </div>
 
         <!-- Feature 6 -->
@@ -793,8 +793,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">HITL Controls</h3>
-          <p class="text-zinc-400 text-sm">Human-in-the-loop pour bookings, transfers, escalations. Seuils personnalisables.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_telephony_page.feature6_title">HITL Controls</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_telephony_page.feature6_desc">Human-in-the-loop pour bookings, transfers, escalations. Seuils personnalisables.</p>
         </div>
       </div>
     </div>
@@ -804,8 +804,8 @@
   <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">11 Function Tools Intégrés</h2>
-        <p class="text-lg text-zinc-400">Actions automatisées pendant les appels</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_telephony_page.tools_title">11 Function Tools Intégrés</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_telephony_page.tools_subtitle">Actions automatisées pendant les appels</p>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1050,14 +1050,14 @@
   <section class="py-24 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-violet-600 to-vocalia-500"></div>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold mb-6">Prêt à Automatiser Vos Appels?</h2>
-      <p class="text-xl text-white/80 mb-8">Demandez une démo personnalisée avec notre équipe.</p>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6" data-i18n="voice_telephony_page.cta_title">Prêt à Automatiser Vos Appels?</h2>
+      <p class="text-xl text-white/80 mb-8" data-i18n="voice_telephony_page.cta_subtitle">Demandez une démo personnalisée avec notre équipe.</p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="/contact?product=telephony" class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-violet-600 hover:bg-violet-100 transition font-semibold text-lg">
+        <a href="/contact?product=telephony" class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-violet-600 hover:bg-violet-100 transition font-semibold text-lg" data-i18n="voice_telephony_page.cta_button">
           Demander une Démo
           <i data-lucide="mail" class="w-5 h-5 ml-2"></i>
         </a>
-        <a href="/pricing" class="inline-flex items-center px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white hover:bg-white/20 transition font-semibold text-lg">
+        <a href="/pricing" class="inline-flex items-center px-8 py-4 rounded-xl bg-white/10 border border-white/30 text-white hover:bg-white/20 transition font-semibold text-lg" data-i18n="nav.pricing">
           Voir les Tarifs
         </a>
       </div>

@@ -605,12 +605,12 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="text-center max-w-3xl mx-auto">
           <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-vocalia-500/20 text-vocalia-300 text-sm font-medium mb-6">
-            <i data-lucide="mail" class="w-4 h-4 inline text-slate-400"></i> Contact
+            <i data-lucide="mail" class="w-4 h-4 inline text-slate-400"></i> <span data-i18n="contact_page.badge">Contact</span>
           </span>
           <h1 class="text-4xl md:text-5xl font-bold mb-6">
-            Parlons de Votre <span class="gradient-text">Projet</span>
+            <span data-i18n="contact_page.title">Parlons de Votre</span> <span class="gradient-text" data-i18n="contact_page.title_highlight">Projet</span>
           </h1>
-          <p class="text-xl text-vocalia-300">
+          <p class="text-xl text-vocalia-300" data-i18n="contact_page.subtitle">
             Demande de démo, devis personnalisé ou question technique —
             notre équipe vous répond sous 24h.
           </p>
@@ -624,69 +624,69 @@
         <div class="grid lg:grid-cols-2 gap-12">
           <!-- Contact Form -->
           <div class="glass rounded-2xl p-8">
-            <h2 class="text-2xl font-bold mb-6">Envoyez-nous un Message</h2>
+            <h2 class="text-2xl font-bold mb-6" data-i18n="contact_page.form_title">Envoyez-nous un Message</h2>
             <form action="#" method="POST" class="space-y-6">
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label for="firstName" class="block text-sm font-medium text-vocalia-300 mb-2">Prénom *</label>
+                  <label for="firstName" class="block text-sm font-medium text-vocalia-300 mb-2" data-i18n="contact_page.form_firstname">Prénom *</label>
                   <input type="text" id="firstName" name="firstName" required
                     class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-vocalia-500"
-                    placeholder="Jean">
+                    placeholder="Jean" data-i18n-placeholder="contact_page.form_firstname_placeholder">
                 </div>
                 <div>
-                  <label for="lastName" class="block text-sm font-medium text-vocalia-300 mb-2">Nom *</label>
+                  <label for="lastName" class="block text-sm font-medium text-vocalia-300 mb-2" data-i18n="contact_page.form_lastname">Nom *</label>
                   <input type="text" id="lastName" name="lastName" required
                     class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-vocalia-500"
-                    placeholder="Dupont">
+                    placeholder="Dupont" data-i18n-placeholder="contact_page.form_lastname_placeholder">
                 </div>
               </div>
 
               <div>
-                <label for="email" class="block text-sm font-medium text-vocalia-300 mb-2">Email Professionnel *</label>
+                <label for="email" class="block text-sm font-medium text-vocalia-300 mb-2" data-i18n="contact_page.form_email">Email Professionnel *</label>
                 <input type="email" id="email" name="email" required
                   class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-vocalia-500"
-                  placeholder="jean@entreprise.com">
+                  placeholder="jean@entreprise.com" data-i18n-placeholder="contact_page.form_email_placeholder">
               </div>
 
               <div>
-                <label for="company" class="block text-sm font-medium text-vocalia-300 mb-2">Entreprise</label>
+                <label for="company" class="block text-sm font-medium text-vocalia-300 mb-2" data-i18n="contact_page.form_company">Entreprise</label>
                 <input type="text" id="company" name="company"
                   class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-vocalia-500"
-                  placeholder="Nom de votre entreprise">
+                  placeholder="Nom de votre entreprise" data-i18n-placeholder="contact_page.form_company_placeholder">
               </div>
 
               <div>
-                <label for="subject" class="block text-sm font-medium text-vocalia-300 mb-2">Sujet *</label>
+                <label for="subject" class="block text-sm font-medium text-vocalia-300 mb-2" data-i18n="contact_page.form_subject">Sujet *</label>
                 <select id="subject" name="subject" required
                   class="form-input w-full px-4 py-3 rounded-xl text-white">
-                  <option value="" disabled selected>Sélectionnez un sujet</option>
-                  <option value="demo">Demande de démo</option>
-                  <option value="pricing">Devis personnalisé</option>
-                  <option value="technical">Question technique</option>
-                  <option value="partnership">Partenariat</option>
-                  <option value="support">Support</option>
-                  <option value="other">Autre</option>
+                  <option value="" disabled selected data-i18n="contact_page.form_subject_default">Sélectionnez un sujet</option>
+                  <option value="demo" data-i18n="contact_page.form_subject_demo">Demande de démo</option>
+                  <option value="pricing" data-i18n="contact_page.form_subject_pricing">Devis personnalisé</option>
+                  <option value="technical" data-i18n="contact_page.form_subject_technical">Question technique</option>
+                  <option value="partnership" data-i18n="contact_page.form_subject_partnership">Partenariat</option>
+                  <option value="support" data-i18n="contact_page.form_subject_support">Support</option>
+                  <option value="other" data-i18n="contact_page.form_subject_other">Autre</option>
                 </select>
               </div>
 
               <div>
-                <label for="message" class="block text-sm font-medium text-vocalia-300 mb-2">Message *</label>
+                <label for="message" class="block text-sm font-medium text-vocalia-300 mb-2" data-i18n="contact_page.form_message">Message *</label>
                 <textarea id="message" name="message" rows="5" required
                   class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-vocalia-500 resize-none"
-                  placeholder="Décrivez votre projet ou votre question..."></textarea>
+                  placeholder="Décrivez votre projet ou votre question..." data-i18n-placeholder="contact_page.form_message_placeholder"></textarea>
               </div>
 
               <div class="flex items-start space-x-3">
                 <input type="checkbox" id="privacy" name="privacy" required
                   class="mt-1 w-4 h-4 rounded border-vocalia-500 text-vocalia-500 focus:ring-vocalia-500">
-                <label for="privacy" class="text-sm text-vocalia-400">
+                <label for="privacy" class="text-sm text-vocalia-400" data-i18n="contact_page.form_privacy">
                   J'accepte la <a href="/privacy" class="text-vocalia-300 hover:text-white underline">politique de confidentialité</a>
                   et le traitement de mes données.
                 </label>
               </div>
 
               <button type="submit"
-                class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-vocalia-600 to-vocalia-500 text-white font-semibold text-lg hover:opacity-90 transition flex items-center justify-center">
+                class="w-full px-6 py-4 rounded-xl bg-gradient-to-r from-vocalia-600 to-vocalia-500 text-white font-semibold text-lg hover:opacity-90 transition flex items-center justify-center" data-i18n="contact_page.form_submit">
                 Envoyer le Message
                 <i data-lucide="mail" class="w-5 h-5 ml-2"></i>
               </button>
@@ -702,11 +702,11 @@
                   <i data-lucide="headphones" class="w-6 h-6 text-vocalia-400"></i>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-lg mb-1">Email</h3>
+                  <h3 class="font-semibold text-lg mb-1" data-i18n="contact_page.info_email">Email</h3>
                   <a href="mailto:contact@vocalia.ma" class="text-vocalia-300 hover:text-white transition">
                     contact@vocalia.ma
                   </a>
-                  <p class="text-sm text-vocalia-500 mt-1">Réponse sous 24h</p>
+                  <p class="text-sm text-vocalia-500 mt-1" data-i18n="contact_page.info_email_response">Réponse sous 24h</p>
                 </div>
               </div>
             </div>
@@ -718,11 +718,11 @@
                   <i data-lucide="clock" class="w-6 h-6 text-emerald-400"></i>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-lg mb-1">Ventes & Démos</h3>
+                  <h3 class="font-semibold text-lg mb-1" data-i18n="contact_page.info_sales">Ventes & Démos</h3>
                   <a href="mailto:sales@vocalia.ma" class="text-vocalia-300 hover:text-white transition">
                     sales@vocalia.ma
                   </a>
-                  <p class="text-sm text-vocalia-500 mt-1">Pour les devis et démonstrations</p>
+                  <p class="text-sm text-vocalia-500 mt-1" data-i18n="contact_page.info_sales_desc">Pour les devis et démonstrations</p>
                 </div>
               </div>
             </div>
@@ -734,11 +734,11 @@
                   <i data-lucide="map-pin" class="w-6 h-6 text-amber-400"></i>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-lg mb-1">Support Technique</h3>
+                  <h3 class="font-semibold text-lg mb-1" data-i18n="contact_page.info_support">Support Technique</h3>
                   <a href="mailto:support@vocalia.ma" class="text-vocalia-300 hover:text-white transition">
                     support@vocalia.ma
                   </a>
-                  <p class="text-sm text-vocalia-500 mt-1">Support 24/7 pour clients Pro/Enterprise</p>
+                  <p class="text-sm text-vocalia-500 mt-1" data-i18n="contact_page.info_support_desc">Support 24/7 pour clients Pro/Enterprise</p>
                 </div>
               </div>
             </div>
@@ -750,11 +750,11 @@
                   <i data-lucide="phone" class="w-6 h-6 text-rose-400"></i>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-lg mb-1">Bureau</h3>
+                  <h3 class="font-semibold text-lg mb-1" data-i18n="contact_page.info_office">Bureau</h3>
                   <p class="text-vocalia-300">
                     Maroc 🇲🇦
                   </p>
-                  <p class="text-sm text-vocalia-500 mt-1">Remote-first company</p>
+                  <p class="text-sm text-vocalia-500 mt-1" data-i18n="contact_page.info_office_desc">Remote-first company</p>
                 </div>
               </div>
             </div>
@@ -762,7 +762,7 @@
             <!-- Response Time -->
             <div class="glass rounded-2xl p-6 text-center">
               <div class="text-3xl font-bold text-white mb-2">{"<"} 24h</div>
-              <div class="text-vocalia-400">Temps de réponse moyen</div>
+              <div class="text-vocalia-400" data-i18n="contact_page.info_response_time">Temps de réponse moyen</div>
             </div>
           </div>
         </div>
@@ -773,16 +773,16 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold">Questions <span class="gradient-text">Fréquentes</span></h2>
+          <h2 class="text-3xl font-bold" data-i18n="contact_page.faq_title">Questions <span class="gradient-text" data-i18n="contact_page.faq_title_highlight">Fréquentes</span></h2>
         </div>
 
         <div class="space-y-4">
           <details class="glass rounded-xl group">
             <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-              <span class="font-semibold">Comment puis-je tester VocalIA ?</span>
+              <span class="font-semibold" data-i18n="contact_page.faq1_q">Comment puis-je tester VocalIA ?</span>
               <i data-lucide="chevron-down" class="w-5 h-5 text-vocalia-400 group-open:rotate-180 transition-transform"></i>
             </summary>
-            <div class="px-6 pb-6 text-vocalia-300">
+            <div class="px-6 pb-6 text-vocalia-300" data-i18n="contact_page.faq1_a">
               Vous pouvez essayer notre Voice Widget gratuitement directement sur notre site.
               Pour une démo complète de Voice Telephony AI, contactez-nous via ce formulaire.
             </div>
@@ -790,10 +790,10 @@
 
           <details class="glass rounded-xl group">
             <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-              <span class="font-semibold">Quels sont les délais d'intégration ?</span>
+              <span class="font-semibold" data-i18n="contact_page.faq2_q">Quels sont les délais d'intégration ?</span>
               <i data-lucide="chevron-down" class="w-5 h-5 text-vocalia-400 group-open:rotate-180 transition-transform"></i>
             </summary>
-            <div class="px-6 pb-6 text-vocalia-300">
+            <div class="px-6 pb-6 text-vocalia-300" data-i18n="contact_page.faq2_a">
               Le Voice Widget peut être intégré en moins de 5 minutes avec un simple snippet.
               Voice Telephony AI nécessite généralement 1 à 2 semaines selon la complexité de votre projet.
             </div>
@@ -801,10 +801,10 @@
 
           <details class="glass rounded-xl group">
             <summary class="flex items-center justify-between p-6 cursor-pointer list-none">
-              <span class="font-semibold">Proposez-vous un support en français ?</span>
+              <span class="font-semibold" data-i18n="contact_page.faq3_q">Proposez-vous un support en français ?</span>
               <i data-lucide="chevron-down" class="w-5 h-5 text-vocalia-400 group-open:rotate-180 transition-transform"></i>
             </summary>
-            <div class="px-6 pb-6 text-vocalia-300">
+            <div class="px-6 pb-6 text-vocalia-300" data-i18n="contact_page.faq3_a">
               Absolument ! Notre équipe est basée au Maroc et communique en français, anglais et arabe.
               Le support est disponible 24/7 pour les clients Pro et Enterprise.
             </div>
@@ -812,7 +812,7 @@
         </div>
 
         <div class="text-center mt-8">
-          <a href="/docs/faq" class="text-vocalia-400 hover:text-white transition inline-flex items-center">
+          <a href="/docs/faq" class="text-vocalia-400 hover:text-white transition inline-flex items-center" data-i18n="contact_page.faq_view_all">
             Voir toutes les FAQ
             <i data-lucide="chevron-right" class="w-4 h-4 ml-2"></i>
           </a>

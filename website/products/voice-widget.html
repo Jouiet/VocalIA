@@ -607,11 +607,11 @@
       <!-- Breadcrumb -->
       <nav class="mb-8" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-2 text-sm text-zinc-400">
-          <li><a href="/" class="hover:text-white transition">Accueil</a></li>
+          <li><a href="/" class="hover:text-white transition" data-i18n="voice_widget_page.breadcrumb_home">Accueil</a></li>
           <li><span class="mx-2">/</span></li>
-          <li><a href="/features" class="hover:text-white transition">Produits</a></li>
+          <li><a href="/features" class="hover:text-white transition" data-i18n="voice_widget_page.breadcrumb_products">Produits</a></li>
           <li><span class="mx-2">/</span></li>
-          <li class="text-white">Voice Widget</li>
+          <li class="text-white" data-i18n="voice_widget_page.breadcrumb_current">Voice Widget</li>
         </ol>
       </nav>
 
@@ -620,24 +620,24 @@
         <div>
           <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm mb-6">
             <i data-lucide="check" class="w-4 h-4"></i>
-            100% Gratuit
+            <span data-i18n="voice_widget_page.badge">100% Gratuit</span>
           </div>
 
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-            <span class="gradient-text">Voice Widget</span>
+            <span class="gradient-text" data-i18n="voice_widget_page.title">Voice Widget</span>
           </h1>
 
           <p class="text-xl text-zinc-400 mb-8">
-            Intégrez un assistant vocal IA intelligent sur votre site web en 2 minutes.
-            Utilise la Web Speech API native du navigateur: <strong class="text-white">0€ de coût API</strong>.
+            <span data-i18n="voice_widget_page.subtitle">Intégrez un assistant vocal IA intelligent sur votre site web en 2 minutes.
+            Utilise la Web Speech API native du navigateur:</span> <strong class="text-white" data-i18n="voice_widget_page.subtitle_highlight">0€ de coût API</strong>.
           </p>
 
           <div class="flex flex-wrap gap-4 mb-10">
-            <a href="/signup?product=widget" class="inline-flex items-center px-6 py-3 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition font-semibold">
+            <a href="/signup?product=widget" class="inline-flex items-center px-6 py-3 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition font-semibold" data-i18n="voice_widget_page.cta_start">
               Démarrer Gratuitement
               <i data-lucide="file-text" class="w-5 h-5 ml-2"></i>
             </a>
-            <a href="/docs/widget" class="inline-flex items-center px-6 py-3 rounded-xl border border-slate-600 hover:border-slate-500 hover:bg-slate-700/50 transition font-semibold">
+            <a href="/docs/widget" class="inline-flex items-center px-6 py-3 rounded-xl border border-slate-600 hover:border-slate-500 hover:bg-slate-700/50 transition font-semibold" data-i18n="voice_widget_page.cta_docs">
               Documentation
             </a>
           </div>
@@ -646,15 +646,15 @@
           <div class="grid grid-cols-3 gap-4">
             <div class="text-center p-4 rounded-xl bg-slate-700/30">
               <div class="text-2xl font-bold text-vocalia-400">30</div>
-              <div class="text-sm text-zinc-400">Personas</div>
+              <div class="text-sm text-zinc-400" data-i18n="voice_widget_page.stat_personas">Personas</div>
             </div>
             <div class="text-center p-4 rounded-xl bg-slate-700/30">
               <div class="text-2xl font-bold text-vocalia-400">5</div>
-              <div class="text-sm text-zinc-400">Langues</div>
+              <div class="text-sm text-zinc-400" data-i18n="voice_widget_page.stat_languages">Langues</div>
             </div>
             <div class="text-center p-4 rounded-xl bg-slate-700/30">
               <div class="text-2xl font-bold text-emerald-400">0€</div>
-              <div class="text-sm text-zinc-400">Coût API</div>
+              <div class="text-sm text-zinc-400" data-i18n="voice_widget_page.stat_api_cost">Coût API</div>
             </div>
           </div>
         </div>
@@ -673,10 +673,10 @@
             </svg>
                   </div>
                   <div>
-                    <div class="font-semibold text-white">Assistant VocalIA</div>
+                    <div class="font-semibold text-white" data-i18n="voice_widget_page.widget_assistant">Assistant VocalIA</div>
                     <div class="text-xs text-emerald-400 flex items-center gap-1">
                       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                      En ligne
+                      <span data-i18n="voice_widget_page.widget_online">En ligne</span>
                     </div>
                   </div>
                 </div>
@@ -692,12 +692,12 @@
                     <i data-lucide="bot" class="w-4 h-4 text-blue-400"></i>
                   </div>
                   <div class="bg-slate-800 rounded-xl rounded-tl-none p-3 max-w-[80%]">
-                    <p class="text-sm text-zinc-300">Bonjour! Je suis votre assistant vocal. Comment puis-je vous aider?</p>
+                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_greeting">Bonjour! Je suis votre assistant vocal. Comment puis-je vous aider?</p>
                   </div>
                 </div>
                 <div class="flex gap-3 justify-end">
                   <div class="bg-vocalia-500/20 rounded-xl rounded-tr-none p-3 max-w-[80%]">
-                    <p class="text-sm text-zinc-300">Quels sont vos horaires d'ouverture?</p>
+                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_user_q">Quels sont vos horaires d'ouverture?</p>
                   </div>
                 </div>
                 <div class="flex gap-3">
@@ -705,14 +705,14 @@
                     <i data-lucide="bot" class="w-4 h-4 text-blue-400"></i>
                   </div>
                   <div class="bg-slate-800 rounded-xl rounded-tl-none p-3 max-w-[80%]">
-                    <p class="text-sm text-zinc-300">Nous sommes ouverts du lundi au vendredi, de 9h à 18h. Souhaitez-vous prendre rendez-vous?</p>
+                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_response">Nous sommes ouverts du lundi au vendredi, de 9h à 18h. Souhaitez-vous prendre rendez-vous?</p>
                   </div>
                 </div>
               </div>
 
               <!-- Voice Button -->
               <div class="flex items-center gap-3">
-                <button class="flex-1 py-3 px-4 rounded-xl bg-slate-800 border border-slate-700 text-zinc-400 text-left text-sm">
+                <button class="flex-1 py-3 px-4 rounded-xl bg-slate-800 border border-slate-700 text-zinc-400 text-left text-sm" data-i18n="voice_widget_page.widget_placeholder">
                   Tapez ou parlez...
                 </button>
                 <button class="w-12 h-12 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition flex items-center justify-center">
@@ -732,8 +732,8 @@
   <section class="py-20 bg-slate-900/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Installation en 3 Étapes</h2>
-        <p class="text-lg text-zinc-400">Déployez votre assistant vocal en moins de 2 minutes</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.steps_title">Installation en 3 Étapes</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.steps_subtitle">Déployez votre assistant vocal en moins de 2 minutes</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-8 mb-16">
@@ -742,8 +742,8 @@
           <div class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
             <span class="text-2xl font-bold text-vocalia-400">1</span>
           </div>
-          <h3 class="text-xl font-semibold mb-3">Configurez</h3>
-          <p class="text-zinc-400">Choisissez votre persona, langue et personnalisez le design dans le dashboard.</p>
+          <h3 class="text-xl font-semibold mb-3" data-i18n="voice_widget_page.step1_title">Configurez</h3>
+          <p class="text-zinc-400" data-i18n="voice_widget_page.step1_desc">Choisissez votre persona, langue et personnalisez le design dans le dashboard.</p>
         </div>
 
         <!-- Step 2 -->
@@ -751,8 +751,8 @@
           <div class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
             <span class="text-2xl font-bold text-vocalia-400">2</span>
           </div>
-          <h3 class="text-xl font-semibold mb-3">Copiez le Code</h3>
-          <p class="text-zinc-400">Récupérez le snippet JavaScript généré automatiquement.</p>
+          <h3 class="text-xl font-semibold mb-3" data-i18n="voice_widget_page.step2_title">Copiez le Code</h3>
+          <p class="text-zinc-400" data-i18n="voice_widget_page.step2_desc">Récupérez le snippet JavaScript généré automatiquement.</p>
         </div>
 
         <!-- Step 3 -->
@@ -760,18 +760,18 @@
           <div class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
             <span class="text-2xl font-bold text-vocalia-400">3</span>
           </div>
-          <h3 class="text-xl font-semibold mb-3">Collez et Déployez</h3>
-          <p class="text-zinc-400">Ajoutez le script avant la balise &lt;/body&gt; de votre site.</p>
+          <h3 class="text-xl font-semibold mb-3" data-i18n="voice_widget_page.step3_title">Collez et Déployez</h3>
+          <p class="text-zinc-400" data-i18n="voice_widget_page.step3_desc">Ajoutez le script avant la balise &lt;/body&gt; de votre site.</p>
         </div>
       </div>
 
       <!-- Code Example -->
       <div class="max-w-3xl mx-auto">
         <div class="flex items-center justify-between mb-4">
-          <span class="text-sm text-zinc-400">Installation</span>
+          <span class="text-sm text-zinc-400" data-i18n="voice_widget_page.code_label">Installation</span>
           <button class="text-sm text-vocalia-400 hover:text-vocalia-300 flex items-center gap-1" onclick="copyCode()">
             <i data-lucide="sparkles" class="w-4 h-4"></i>
-            Copier
+            <span data-i18n="voice_widget_page.code_copy">Copier</span>
           </button>
         </div>
         <div class="code-block p-6">
@@ -794,8 +794,8 @@
   <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Fonctionnalités Incluses</h2>
-        <p class="text-lg text-zinc-400">Tout ce dont vous avez besoin, gratuitement</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.features_title">Fonctionnalités Incluses</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.features_subtitle">Tout ce dont vous avez besoin, gratuitement</p>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -804,8 +804,8 @@
           <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mb-4">
             <i data-lucide="code" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Web Speech API</h3>
-          <p class="text-zinc-400 text-sm">Reconnaissance et synthèse vocale natives du navigateur. Aucune API externe, 0€ de coût.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature1_title">Web Speech API</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature1_desc">Reconnaissance et synthèse vocale natives du navigateur. Aucune API externe, 0€ de coût.</p>
         </div>
 
         <!-- Feature 2 -->
@@ -815,8 +815,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">30 Personas Métier</h3>
-          <p class="text-zinc-400 text-sm">Agents pré-configurés: dentiste, immobilier, e-commerce, support, RH, et plus.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature2_title">30 Personas Métier</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature2_desc">Agents pré-configurés: dentiste, immobilier, e-commerce, support, RH, et plus.</p>
         </div>
 
         <!-- Feature 3 -->
@@ -826,8 +826,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">5 Langues</h3>
-          <p class="text-zinc-400 text-sm">Français, Anglais, Espagnol, Arabe MSA et Darija marocain avec détection automatique.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature3_title">5 Langues</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature3_desc">Français, Anglais, Espagnol, Arabe MSA et Darija marocain avec détection automatique.</p>
         </div>
 
         <!-- Feature 4 -->
@@ -837,8 +837,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Design Personnalisable</h3>
-          <p class="text-zinc-400 text-sm">Couleurs, position, avatar et style adaptés à votre charte graphique.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature4_title">Design Personnalisable</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature4_desc">Couleurs, position, avatar et style adaptés à votre charte graphique.</p>
         </div>
 
         <!-- Feature 5 -->
@@ -848,8 +848,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Analytics</h3>
-          <p class="text-zinc-400 text-sm">Tableau de bord avec sessions, durées, questions fréquentes et taux de résolution.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature5_title">Analytics</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature5_desc">Tableau de bord avec sessions, durées, questions fréquentes et taux de résolution.</p>
         </div>
 
         <!-- Feature 6 -->
@@ -859,8 +859,8 @@
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold mb-2">Mobile Responsive</h3>
-          <p class="text-zinc-400 text-sm">Interface adaptée automatiquement aux smartphones et tablettes.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature6_title">Mobile Responsive</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature6_desc">Interface adaptée automatiquement aux smartphones et tablettes.</p>
         </div>
       </div>
     </div>
@@ -870,8 +870,8 @@
   <section class="py-20 bg-slate-900/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4">Spécifications Techniques</h2>
-        <p class="text-lg text-zinc-400">Pour les développeurs qui veulent tout savoir</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.specs_title">Spécifications Techniques</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.specs_subtitle">Pour les développeurs qui veulent tout savoir</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8">
@@ -880,28 +880,28 @@
             <svg class="w-5 h-5 text-vocalia-400" viewBox="0 0 24 24" fill="currentColor" aria-label="X (Twitter)">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
-            Compatibilité
+            <span data-i18n="voice_widget_page.specs_compat_title">Compatibilité</span>
           </h3>
           <ul class="space-y-2 text-zinc-400 text-sm">
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Chrome 33+ (Desktop & Mobile)
+              <span data-i18n="voice_widget_page.specs_compat_chrome">Chrome 33+ (Desktop & Mobile)</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Safari 14.1+ (Desktop & iOS)
+              <span data-i18n="voice_widget_page.specs_compat_safari">Safari 14.1+ (Desktop & iOS)</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Firefox 92+
+              <span data-i18n="voice_widget_page.specs_compat_firefox">Firefox 92+</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Edge 79+
+              <span data-i18n="voice_widget_page.specs_compat_edge">Edge 79+</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-              IE11: Mode texte uniquement
+              <span data-i18n="voice_widget_page.specs_compat_ie">IE11: Mode texte uniquement</span>
             </li>
           </ul>
         </div>
@@ -911,28 +911,28 @@
             <svg class="w-5 h-5 text-vocalia-400" viewBox="0 0 24 24" fill="currentColor" aria-label="X (Twitter)">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
-            Performance
+            <span data-i18n="voice_widget_page.specs_perf_title">Performance</span>
           </h3>
           <ul class="space-y-2 text-zinc-400 text-sm">
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              Bundle size: ~45KB gzipped
+              <span data-i18n="voice_widget_page.specs_perf_bundle">Bundle size: ~45KB gzipped</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              Lazy loading automatique
+              <span data-i18n="voice_widget_page.specs_perf_lazy">Lazy loading automatique</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              Web Workers pour le traitement audio
+              <span data-i18n="voice_widget_page.specs_perf_workers">Web Workers pour le traitement audio</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              0 dépendances externes
+              <span data-i18n="voice_widget_page.specs_perf_deps">0 dépendances externes</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              CDN global (latence &lt;50ms)
+              <span data-i18n="voice_widget_page.specs_perf_cdn">CDN global (latence &lt;50ms)</span>
             </li>
           </ul>
         </div>
@@ -942,24 +942,24 @@
             <svg class="w-5 h-5 text-vocalia-400" viewBox="0 0 24 24" fill="currentColor" aria-label="X (Twitter)">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
             </svg>
-            Sécurité
+            <span data-i18n="voice_widget_page.specs_security_title">Sécurité</span>
           </h3>
           <ul class="space-y-2 text-zinc-400 text-sm">
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              HTTPS obligatoire (micro requis)
+              <span data-i18n="voice_widget_page.specs_security_https">HTTPS obligatoire (micro requis)</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Audio traité localement
+              <span data-i18n="voice_widget_page.specs_security_local">Audio traité localement</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Aucune donnée stockée côté VocalIA
+              <span data-i18n="voice_widget_page.specs_security_data">Aucune donnée stockée côté VocalIA</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              Conforme RGPD
+              <span data-i18n="voice_widget_page.specs_security_gdpr">Conforme RGPD</span>
             </li>
           </ul>
         </div>
@@ -967,7 +967,7 @@
         <div class="glass rounded-xl p-6">
           <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
             <i data-lucide="code" class="w-5 h-5 text-vocalia-400"></i>
-            API JavaScript
+            <span data-i18n="voice_widget_page.specs_api_title">API JavaScript</span>
           </h3>
           <ul class="space-y-2 text-zinc-400 text-sm">
             <li class="flex items-center gap-2">
@@ -996,9 +996,9 @@
   <section class="py-24 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-vocalia-600 to-vocalia-500"></div>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold mb-6">Prêt à Ajouter un Assistant Vocal?</h2>
-      <p class="text-xl text-white/80 mb-8">Gratuit, sans carte bancaire, déployé en 2 minutes.</p>
-      <a href="/signup?product=widget" class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6" data-i18n="voice_widget_page.cta_title">Prêt à Ajouter un Assistant Vocal?</h2>
+      <p class="text-xl text-white/80 mb-8" data-i18n="voice_widget_page.cta_subtitle">Gratuit, sans carte bancaire, déployé en 2 minutes.</p>
+      <a href="/signup?product=widget" class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg" data-i18n="voice_widget_page.cta_button">
         Créer Mon Widget Gratuit
         <i data-lucide="layout" class="w-5 h-5 ml-2"></i>
       </a>
