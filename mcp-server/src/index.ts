@@ -5,7 +5,10 @@
  *
  * Session 241.2 - v0.3.3 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (51 tools - 10 always available, 41 require services):
+ * TOOL CATEGORIES (59 tools - 11 always available, 48 require services):
+ *
+ * INLINE TOOLS (23):
+ * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
  * - Voice Tools (2): voice_generate_response, voice_providers_status [REQUIRE API]
  * - Persona Tools (3): personas_list, personas_get, personas_get_system_prompt [ALWAYS]
  * - Lead Tools (2): qualify_lead, lead_score_explain [ALWAYS]
@@ -13,17 +16,20 @@
  * - Telephony Tools (3): telephony_initiate_call, telephony_get_status, telephony_transfer_call [REQUIRE TWILIO]
  * - CRM Tools (2): crm_get_customer, crm_create_contact [REQUIRE HUBSPOT]
  * - E-commerce Tools (3): ecommerce_order_status, ecommerce_product_stock [SHOPIFY], ecommerce_customer_profile [KLAVIYO]
+ * - UCP Inline (1): ucp_sync [REQUIRE UCP]
  * - Booking Tools (2): booking_schedule_callback, booking_create [ALWAYS - FILE PERSISTENCE]
- * - System Tools (2): api_status, system_languages [ALWAYS]
+ *
+ * EXTERNAL MODULE TOOLS (36):
  * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
+ * - UCP Tools (3): ucp_sync_preference, ucp_get_profile, ucp_list_profiles [REQUIRE UCP]
  * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
  * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
  * - Calendly Tools (6): calendly_get_user, calendly_list_event_types, calendly_get_available_times, calendly_list_events, calendly_cancel_event, calendly_get_busy_times [REQUIRE CALENDLY]
  * - Freshdesk Tools (6): freshdesk_list_tickets, freshdesk_get_ticket, freshdesk_create_ticket, freshdesk_reply_ticket, freshdesk_update_ticket, freshdesk_search_contacts [REQUIRE FRESHDESK]
  * - Pipedrive Tools (7): pipedrive_list_deals, pipedrive_create_deal, pipedrive_update_deal, pipedrive_list_persons, pipedrive_create_person, pipedrive_search, pipedrive_list_activities [REQUIRE PIPEDRIVE]
  *
- * TOTAL: 51 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 59 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -1040,7 +1046,7 @@ server.tool(
           mcp_server: {
             name: "vocalia",
             version: "0.5.0",
-            tools_count: 51,
+            tools_count: 59,
           },
           services: {
             voice_api: {
