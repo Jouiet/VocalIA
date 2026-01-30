@@ -726,86 +726,110 @@
         <p class="text-lg text-zinc-400" data-i18n="features_page.all_features_subtitle">Tout ce dont vous avez besoin pour des agents vocaux de niveau enterprise</p>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Feature 1 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
-          <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+      <!-- Bento Grid Layout - SOTA 2026 (Asymmetric) -->
+      <div class="bento-grid bento-animated gap-4 lg:gap-6">
+        <!-- Feature 1: Latence - FEATURED (spans 2 cols, 2 rows on lg) -->
+        <div class="bento-large liquid-glass p-8 group hover:border-vocalia-500/30 transition flex flex-col justify-between" data-bento-item>
+          <div>
+            <div class="feature-icon mb-6 w-14 h-14">
+              <i data-lucide="zap" class="w-8 h-8 text-vocalia-400"></i>
+            </div>
+            <h3 class="text-2xl font-bold mb-3" data-i18n="features_page.feat_latency_title">Latence Ultra-Basse</h3>
+            <p class="text-zinc-400" data-i18n="features_page.feat_latency_desc">Réponses en moins de 100ms grâce à notre architecture IA + WebSocket optimisée.</p>
           </div>
-          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_latency_title">Latence Ultra-Basse</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_latency_desc">Réponses en moins de 100ms grâce à notre architecture IA + WebSocket optimisée.</p>
+          <div class="mt-6 flex items-center gap-2 text-vocalia-400">
+            <span class="text-4xl font-bold">&lt;100</span>
+            <span class="text-lg">ms</span>
+          </div>
         </div>
 
-        <!-- Feature 2 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
+        <!-- Feature 2: 5 Langues -->
+        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition" data-bento-item>
           <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+            <i data-lucide="globe" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_languages_title">5 Langues Natives</h3>
           <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_languages_desc">Français, Anglais, Espagnol, Arabe MSA et Darija marocain avec détection automatique.</p>
         </div>
 
-        <!-- Feature 3 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
+        <!-- Feature 3: 30 Personas -->
+        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition" data-bento-item>
           <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+            <i data-lucide="users" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_personas_title">30 Personas Métier</h3>
           <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_personas_desc">Agents pré-configurés: dentiste, immobilier, e-commerce, support, RH, finance, et plus.</p>
         </div>
 
-        <!-- Feature 4 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
-          <div class="feature-icon mb-4">
-            <i data-lucide="shield-check" class="w-6 h-6 text-vocalia-400"></i>
+        <!-- Feature 4: Multi-AI Fallback - WIDE (spans 2 cols) -->
+        <div class="bento-wide liquid-glass p-6 group hover:border-emerald-500/30 transition" data-bento-item>
+          <div class="flex items-start gap-6">
+            <div class="feature-icon shrink-0" style="background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.05)); border-color: rgba(16,185,129,0.3);">
+              <i data-lucide="shield-check" class="w-6 h-6 text-emerald-400"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_fallback_title">Multi-AI Fallback</h3>
+              <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_fallback_desc">5 niveaux de redondance IA. 99.9% uptime garanti grâce au fallback automatique.</p>
+            </div>
+            <div class="shrink-0 text-right">
+              <span class="text-3xl font-bold text-emerald-400">99.9%</span>
+              <span class="block text-xs text-zinc-500">uptime</span>
+            </div>
           </div>
-          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_fallback_title">Multi-AI Fallback</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_fallback_desc">5 niveaux de redondance IA. 99.9% uptime garanti grâce au fallback automatique.</p>
         </div>
 
-        <!-- Feature 5 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
+        <!-- Feature 5: Analytics -->
+        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition" data-bento-item>
           <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+            <i data-lucide="bar-chart-3" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_analytics_title">Analytics Temps Réel</h3>
           <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_analytics_desc">Tableau de bord avec métriques: durée appels, sentiment, taux conversion, coûts.</p>
         </div>
 
-        <!-- Feature 6 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
+        <!-- Feature 6: 11 Function Tools -->
+        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition" data-bento-item>
           <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+            <i data-lucide="wrench" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_tools_title">11 Function Tools</h3>
           <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_tools_desc">Booking, CRM sync, order lookup, lead qualification, payment, transfer, et plus.</p>
         </div>
 
-        <!-- Feature 7 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
+        <!-- Feature 7: RAG -->
+        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition" data-bento-item>
           <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+            <i data-lucide="brain" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_rag_title">Knowledge Base RAG</h3>
           <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_rag_desc">Base de connaissances vectorielle par secteur. Réponses contextuelles précises.</p>
         </div>
 
-        <!-- Feature 8 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
+        <!-- Feature 8: HITL -->
+        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition" data-bento-item>
           <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+            <i data-lucide="user-check" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_hitl_title">HITL Controls</h3>
           <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_hitl_desc">Human-in-the-loop pour les décisions critiques: bookings, transfers, escalations.</p>
         </div>
 
-        <!-- Feature 9 -->
-        <div class="liquid-glass p-6 group hover:border-vocalia-500/30 transition">
-          <div class="feature-icon mb-4">
-            <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
+        <!-- Feature 9: Intégrations CRM - WIDE (spans 2 cols) -->
+        <div class="bento-wide liquid-glass p-6 group hover:border-violet-500/30 transition" data-bento-item>
+          <div class="flex items-start gap-6">
+            <div class="feature-icon shrink-0" style="background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(139,92,246,0.05)); border-color: rgba(139,92,246,0.3);">
+              <i data-lucide="plug" class="w-6 h-6 text-violet-400"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_crm_title">Intégrations CRM</h3>
+              <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_crm_desc">HubSpot, Klaviyo, Shopify, Calendly. Sync bidirectionnel automatique.</p>
+            </div>
+            <div class="shrink-0 flex gap-2">
+              <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center"><i data-lucide="database" class="w-4 h-4 text-violet-400"></i></div>
+              <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center"><i data-lucide="shopping-cart" class="w-4 h-4 text-violet-400"></i></div>
+              <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center"><i data-lucide="calendar" class="w-4 h-4 text-violet-400"></i></div>
+            </div>
           </div>
-          <h3 class="text-lg font-semibold mb-2" data-i18n="features_page.feat_crm_title">Intégrations CRM</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="features_page.feat_crm_desc">HubSpot, Klaviyo, Shopify, Calendly. Sync bidirectionnel automatique.</p>
         </div>
       </div>
     </div>
