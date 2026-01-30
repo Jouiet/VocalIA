@@ -1,8 +1,8 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.15.0 | **Updated**: 30/01/2026 | **Session**: 248
+> **Version**: 3.16.0 | **Updated**: 30/01/2026 | **Session**: 249.2
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 4/16 (25%) - CRITICAL GAP DETECTED
+> **Integrations Check**: 8/20 (40%) | **MCP Tools**: 32 | **Phase 0**: COMPLETE | **Phase 1**: 40%
 
 ---
 
@@ -3465,35 +3465,50 @@ grep -roh 'data-i18n' *.html */*.html */*/*.html | wc -l  # 2016
 
 ---
 
-### Session 249.2: Audit Intégrations Multi-Tenant (30/01/2026)
+### Session 249.2: Multi-Tenant Architecture + Google Apps (30/01/2026)
 
-**Goal**: Audit forensique architecture intégrations pour support bidirectionnel multi-tenant.
+**Goal**: Implémenter Phase 0 (Multi-Tenant) + Phase 1 (Google Sheets/Drive)
 
-**Findings CRITIQUES:**
+**Phase 0 - Multi-Tenant COMPLETE (7/7 composants):**
 
-| Composant | Requis | État Actuel | Verdict |
-|:----------|:------:|:-----------:|:-------:|
-| `SecretVault.cjs` | ✅ | ❌ N'existe pas | 🔴 BLOQUANT |
-| `clients/` directory | ✅ | ❌ N'existe pas | 🔴 BLOQUANT |
-| OAuth Gateway | ✅ | ❌ N'existe pas | 🔴 BLOQUANT |
-| Webhook handlers | ✅ | ⚠️ Minimal | 🟠 LIMITÉ |
-| TenantContext usage | ✅ | ❌ 0% integrations | 🔴 BLOQUANT |
+| Composant | Fichier | Lignes | Port | Status |
+|:----------|:--------|:------:|:----:|:------:|
+| SecretVault | `core/SecretVault.cjs` | 347 | - | ✅ |
+| clients/ directory | `clients/` | 2 tenants | - | ✅ |
+| client-registry.cjs | `core/client-registry.cjs` | updated | - | ✅ |
+| OAuth Gateway | `core/OAuthGateway.cjs` | 401 | 3010 | ✅ |
+| WebhookRouter | `core/WebhookRouter.cjs` | 394 | 3011 | ✅ |
+| HubSpot refactor | `integrations/hubspot-b2b-crm.cjs` | +50 | - | ✅ |
+| MCP tools refactor | `mcp-server/src/tools/*.ts` | +100 | - | ✅ |
+
+**Phase 1 - Google Apps (2/5 integrations):**
+
+| Tool | Fichier | Functions | Status |
+|:-----|:--------|:----------|:------:|
+| Google Sheets | `mcp-server/src/tools/sheets.ts` | 5 (read, write, append, info, create) | ✅ |
+| Google Drive | `mcp-server/src/tools/drive.ts` | 6 (list, get, folder, upload, share, delete) | ✅ |
+| Calendly | - | - | ⏳ |
+| Freshdesk | - | - | ⏳ |
+| Pipedrive | - | - | ⏳ |
+
+**MCP Server v0.4.0:**
+- Total tools: **32** (was 21)
+- Google tools: 13 (Calendar 2, Sheets 5, Drive 6)
+- Multi-tenant: All tools support `_meta.tenantId`
 
 **Vérification empirique:**
 ```bash
-ls core/SecretVault.cjs           # NOT FOUND
-ls clients/                       # NOT FOUND
-grep "TenantContext" integrations/*.cjs  # 0 matches
-grep "process.env" integrations/*.cjs    # 12+ matches
+ls core/SecretVault.cjs core/OAuthGateway.cjs core/WebhookRouter.cjs  # ✅ EXISTS
+ls clients/  # agency_internal, client_demo, _template
+cd mcp-server && npm run build  # ✅ SUCCESS
 ```
 
-**Architecture actuelle vs requise:**
-- Actuel: Single-tenant (tout partage `.env`)
-- Requis: Multi-tenant (credentials isolés par client)
+**Commits:**
+- `feat(multi-tenant): Phase 0.5 - WebhookRouter for inbound webhooks`
+- `docs: Phase 0 Multi-Tenant Architecture 100% COMPLETE`
+- `feat(integrations): Phase 1 - Google Sheets & Drive MCP tools`
 
-**Décision**: Option A choisie - Phase 0 (Multi-Tenant) AVANT intégrations.
-
-**Document mis à jour**: `docs/INTEGRATIONS-ROADMAP.md` v2.0.0
+**Status**: Phase 0 100% COMPLETE | Phase 1 40% (Google Apps done, 3 remaining)
 
 ---
 
