@@ -5,7 +5,7 @@
  *
  * Session 249.5 - v0.5.1 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (94 tools - 11 always available, 83 require services):
+ * TOOL CATEGORIES (106 tools - 11 always available, 95 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -19,7 +19,7 @@
  * - UCP Inline (1): ucp_sync [REQUIRE UCP]
  * - Booking Tools (2): booking_schedule_callback, booking_create [ALWAYS - FILE PERSISTENCE]
  *
- * EXTERNAL MODULE TOOLS (71):
+ * EXTERNAL MODULE TOOLS (83):
  * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
  * - UCP Tools (3): ucp_sync_preference, ucp_get_profile, ucp_list_profiles [REQUIRE UCP]
@@ -34,8 +34,10 @@
  * - WooCommerce Tools (7): woocommerce_list_orders, woocommerce_get_order, woocommerce_update_order, woocommerce_list_products, woocommerce_get_product, woocommerce_list_customers, woocommerce_get_customer [REQUIRE WOOCOMMERCE]
  * - Intercom Tools (6): intercom_list_contacts, intercom_get_contact, intercom_search_contacts, intercom_list_conversations, intercom_get_conversation, intercom_reply_conversation [REQUIRE INTERCOM]
  * - Crisp Tools (6): crisp_list_conversations, crisp_get_conversation, crisp_get_messages, crisp_send_message, crisp_update_conversation_state, crisp_get_people_profile [REQUIRE CRISP]
+ * - Zoho CRM Tools (6): zoho_list_leads, zoho_get_lead, zoho_create_lead, zoho_list_contacts, zoho_list_deals, zoho_search_records [REQUIRE ZOHO]
+ * - Magento Tools (6): magento_list_orders, magento_get_order, magento_list_products, magento_get_product, magento_get_stock, magento_list_customers [REQUIRE MAGENTO]
  *
- * TOTAL: 94 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 106 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -62,6 +64,8 @@ import { zendeskTools } from "./tools/zendesk.js";
 import { woocommerceTools } from "./tools/woocommerce.js";
 import { intercomTools } from "./tools/intercom.js";
 import { crispTools } from "./tools/crisp.js";
+import { zohoTools } from "./tools/zoho.js";
+import { magentoTools } from "./tools/magento.js";
 
 const execAsync = promisify(exec);
 
@@ -1282,13 +1286,35 @@ server.tool(crispTools.update_conversation_state.name, crispTools.update_convers
 server.tool(crispTools.get_people_profile.name, crispTools.get_people_profile.parameters, crispTools.get_people_profile.handler);
 
 // =============================================================================
+// ZOHO CRM TOOLS (6) - REQUIRE ZOHO CREDENTIALS
+// =============================================================================
+
+server.tool(zohoTools.list_leads.name, zohoTools.list_leads.parameters, zohoTools.list_leads.handler);
+server.tool(zohoTools.get_lead.name, zohoTools.get_lead.parameters, zohoTools.get_lead.handler);
+server.tool(zohoTools.create_lead.name, zohoTools.create_lead.parameters, zohoTools.create_lead.handler);
+server.tool(zohoTools.list_contacts.name, zohoTools.list_contacts.parameters, zohoTools.list_contacts.handler);
+server.tool(zohoTools.list_deals.name, zohoTools.list_deals.parameters, zohoTools.list_deals.handler);
+server.tool(zohoTools.search_records.name, zohoTools.search_records.parameters, zohoTools.search_records.handler);
+
+// =============================================================================
+// MAGENTO TOOLS (6) - REQUIRE MAGENTO CREDENTIALS
+// =============================================================================
+
+server.tool(magentoTools.list_orders.name, magentoTools.list_orders.parameters, magentoTools.list_orders.handler);
+server.tool(magentoTools.get_order.name, magentoTools.get_order.parameters, magentoTools.get_order.handler);
+server.tool(magentoTools.list_products.name, magentoTools.list_products.parameters, magentoTools.list_products.handler);
+server.tool(magentoTools.get_product.name, magentoTools.get_product.parameters, magentoTools.get_product.handler);
+server.tool(magentoTools.get_stock.name, magentoTools.get_stock.parameters, magentoTools.get_stock.handler);
+server.tool(magentoTools.list_customers.name, magentoTools.list_customers.parameters, magentoTools.list_customers.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.5.0 running on stdio");
+  console.error("VocalIA MCP Server v0.5.1 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
   console.error("Tools: 75 (11 always available, 64 require external services)");
