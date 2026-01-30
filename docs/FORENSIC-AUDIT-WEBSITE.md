@@ -1,11 +1,11 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 5.3.0 | **Date**: 30/01/2026 | **Session**: 250 (SOTA Upgrades)
+> **Version**: 5.4.0 | **Date**: 30/01/2026 | **Session**: 249.11 (E-Commerce Expansion)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB → 3058 lines)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: ✅ FIXED - Exposed URL removed (Session 243)
 > **SEO Score**: 90/100 (A-) - Hreflang 100%, Twitter Cards 100% ✅
-> **Translation QA**: ⚠️ Script a 481 FAUX POSITIFS - Darija ✅ (Score 94)
+> **Translation QA**: ✅ 0 issues (Session 249.11 - Per-language ratios fixed)
 > **AEO Score**: 75/100 (B) - AI bot rules ✅, FAQ schema ✅, Speakable ✅
 > **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
@@ -15,11 +15,11 @@
 > **i18n**: 5 Languages (FR, EN, ES, AR, ARY) + RTL Support ✅ (Session 236)
 > **Footer i18n**: 30 keys × 29 pages (870 total) ✅ (Session 238)
 > **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229, 238)
-> **Integrations**: 22 factuelles + seamless marquee ✅ (Session 249.10)
+> **Integrations**: 26 factuelles (~64% e-commerce) + seamless marquee ✅ (Session 249.11)
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
-> **MCP Server**: v0.5.5 SOTA (116 tools, BM25 RAG) ✅ (Session 249.9)
+> **MCP Server**: v0.5.6 SOTA (143 tools, BM25 RAG) ✅ (Session 249.11)
 > **CSS Safelist**: Opacity classes (bg-white/25, etc.) ✅ (Session 237)
 > **Marketing Score**: B+ (Solid B2B SaaS, Missing Social Proof)
 > **Investor Page**: ✅ COMPLETE (Session 244) - investor.html
