@@ -3022,3 +3022,37 @@ body.gsap-ready [data-reveal="scale"] {
   font-family: 'Inter', 'Noto Sans Arabic', 'Segoe UI', system-ui, sans-serif;
   line-height: 1.8; /* Arabic needs more line height */
 }
+
+/* ==========================================================================
+   SAFELIST - Classes that MUST be included even if not in HTML
+   Session 237: Fix missing opacity classes for marquee band
+   ========================================================================== */
+
+/* White opacity variants for marquee and overlays */
+.safelist-white-opacity {
+  @apply bg-white/5 bg-white/10 bg-white/15 bg-white/20 bg-white/25 bg-white/30 bg-white/40 bg-white/50 bg-white/60 bg-white/70 bg-white/80 bg-white/90;
+}
+
+/* Slate opacity variants */
+.safelist-slate-opacity {
+  @apply bg-slate-500/20 bg-slate-500/30 bg-slate-500/40 bg-slate-500/50;
+  @apply bg-slate-700/30 bg-slate-700/40 bg-slate-700/50 bg-slate-700/60 bg-slate-700/70 bg-slate-700/80;
+  @apply bg-slate-800/30 bg-slate-800/40 bg-slate-800/50 bg-slate-800/60 bg-slate-800/70 bg-slate-800/80 bg-slate-800/90 bg-slate-800/95;
+}
+
+/* Black opacity variants */
+.safelist-black-opacity {
+  @apply bg-black/10 bg-black/20 bg-black/30 bg-black/40 bg-black/50 bg-black/60 bg-black/70 bg-black/80;
+}
+
+/* Vocalia brand opacity variants */
+.safelist-vocalia-opacity {
+  @apply bg-vocalia-500/10 bg-vocalia-500/20 bg-vocalia-500/30;
+  @apply bg-vocalia-600/10 bg-vocalia-600/20 bg-vocalia-600/30;
+}
+
+/* Border opacity variants */
+.safelist-border-opacity {
+  @apply border-white/10 border-white/20 border-white/30;
+  @apply border-slate-700/30 border-slate-700/50 border-slate-700/70;
+}
