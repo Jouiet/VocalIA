@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.8 | 30/01/2026 | Session 233 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.3.9 | 30/01/2026 | Session 234 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
@@ -1897,20 +1897,56 @@ cat data/booking-queue.json
 
 ---
 
-### Plan Actionnable (Session 234)
+## Session 234 Summary (30/01/2026)
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Publish SDKs to PyPI/npm | **P1** | Integration verified |
-| 2 | README MCP Server npm publish | P2 | Prep publication |
-| 3 | Add API keys for full provider testing | P3 | XAI_API_KEY, etc. |
+**P1 COMPLETE: SDKs Build Verified & Ready for Publication**
+
+### SDK Fixes Applied
+
+| SDK | Fix | Result |
+|:----|:----|:------:|
+| Node.js | ESM imports (.js extensions) | ✅ Build success |
+| Node.js | Dynamic imports in client.ts | ✅ Fixed |
+| Node.js | package.json exports order | ✅ types first |
+| Python | pyproject.toml verified | ✅ Build success |
+
+### Build Verification
+
+```bash
+# Python SDK
+python3 -m build  # → vocalia-0.1.0-py3-none-any.whl ✅
+
+# Node.js SDK
+npm run build     # → dist/index.js, dist/index.mjs, dist/index.d.ts ✅
+```
+
+### Publication (USER ACTION REQUIRED)
+
+| Registry | Command | Credential |
+|:---------|:--------|:-----------|
+| PyPI | `twine upload dist/*` | `~/.pypirc` or env vars |
+| npm | `npm publish` | `npm login` |
+
+### Commits
+
+- `ce7daf1` - fix(sdks): Node.js SDK ESM imports + build fixes
 
 ---
 
-*Màj: 30/01/2026 - Session 233 (Voice API Bugs Fixed)*
+### Plan Actionnable (Session 235)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | User: `twine upload` + `npm publish` | **P0** | Credentials required |
+| 2 | Add API keys for full provider testing | P1 | XAI_API_KEY, etc. |
+| 3 | MCP Server npm publish | P2 | After SDK publish |
+
+---
+
+*Màj: 30/01/2026 - Session 234 (SDKs Build Ready)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
-*SDKs: Python ✅ | Node.js ✅ | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS*
+*SDKs: Python ✅ BUILD READY | Node.js ✅ BUILD READY | MCP v0.3.2 (21 tools)*
 *MCP ↔ Voice API: ✅ Integration Verified (Session 233)*
 *Dashboards: Lucide Icons ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
 *Stats: < 100ms ✅ | 5 langues ✅ | 30 personas ✅ | 99.9% uptime ✅*
