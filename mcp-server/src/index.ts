@@ -1111,6 +1111,7 @@ server.tool(slackTools.send_notification.name, slackTools.send_notification.para
 
 server.tool(ucpTools.ucp_sync_preference.name, ucpTools.ucp_sync_preference.parameters, ucpTools.ucp_sync_preference.handler);
 server.tool(ucpTools.ucp_get_profile.name, ucpTools.ucp_get_profile.parameters, ucpTools.ucp_get_profile.handler);
+server.tool(ucpTools.ucp_list_profiles.name, ucpTools.ucp_list_profiles.parameters, ucpTools.ucp_list_profiles.handler);
 
 // =============================================================================
 // SERVER STARTUP
