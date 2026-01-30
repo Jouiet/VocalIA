@@ -3340,3 +3340,36 @@ grep -roh 'data-i18n' *.html */*.html */*/*.html | wc -l  # 2016
 - Darija Authenticity: ✅ 100% Authentic
 - Health Check: ✅ 39/39 (100%)
 - Deploy Ready: ✅ OUI
+
+---
+
+### Session 246: Integration Gap Closure & Global Localization (30/01/2026)
+
+**Goal**: Close the 75% Gap in Claimed Integrations + Enforce Strict Market Rules (Global Localization).
+
+**Actions**:
+
+1. **MCP Integration Tools (Gap Closure)**:
+    - **Google Calendar**: Implemented `calendar_check_availability` & `calendar_create_event` using real `googleapis`.
+    - **Slack**: Implemented `slack_send_notification` via Webhook.
+    - **Gap Status**: 100% Closed for Calendar/Slack.
+2. **Global Localization (Strict Market Rules)**:
+    - Implemented 4-Region Strategy:
+        - **Maroc**: FR + MAD (Default)
+        - **Europe/Maghreb**: FR + EUR (Strict)
+        - **MENA**: EN + USD
+        - **International**: EN + USD
+    - **Engine**: `src/lib/global-localization.js` (Frontend) + `ucp_sync_preference` (Backend MCP).
+3. **Unified Customer Profile (UCP)**:
+    - Created `ucp_sync_preference` tool to allow Agents to enforce these market rules in user profiles.
+4. **Verification**:
+    - `scripts/test-calendar-mcp.js`: ✅ PASSED
+    - `scripts/test-slack-mcp.js`: ✅ PASSED
+    - `scripts/test-global-localization.js`: ✅ PASSED
+    - `scripts/test-ucp-mcp.js`: ✅ PASSED
+
+**État Final**:
+
+- Integrations: ✅ Active (Real Code)
+- Global Engine: ✅ Active (Strict Rules)
+- UCP: ✅ Active (Sync Enabled)
