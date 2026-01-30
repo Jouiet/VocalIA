@@ -1,10 +1,10 @@
 # VocalIA - Voice AI Platform
 
-> Version: 5.5.0 | 30/01/2026 | Session 249.2 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 32 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.3.3 (27 tools) | RAG: BM25 SOTA
-> Integrations: 6/20 (30%) | **🔴 BLOCKER: Multi-Tenant Phase 0 requis**
-> SEO: ~90% ✅ | AEO: ~75% ✅ | UCP ✅ | QA ✅ | **GAPS**: SecretVault ❌ | OAuth Gateway ❌ | clients/ ❌
+> Version: 5.6.0 | 30/01/2026 | Session 249.2 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
+> SDKs: Python | Node.js | MCP Server v0.4.0 (**32 tools**) | RAG: BM25 SOTA
+> Integrations: **8/20 (40%)** | ✅ Multi-Tenant Phase 0 COMPLETE | Phase 1: 40%
+> SEO: ~90% ✅ | AEO: ~75% ✅ | UCP ✅ | QA ✅ | SecretVault ✅ | OAuth Gateway ✅ | clients/ ✅
 
 ## Identité
 
@@ -37,15 +37,21 @@
 
 ```
 VocalIA/
-├── core/           # Voice engine (14 fichiers)
+├── core/           # Voice engine (17 fichiers) + Multi-Tenant
+│   ├── SecretVault.cjs       # Per-tenant credentials (AES-256-GCM)
+│   ├── OAuthGateway.cjs      # OAuth 2.0 flows (port 3010)
+│   └── WebhookRouter.cjs     # Inbound webhooks (port 3011)
+├── clients/        # Per-tenant configurations
+│   ├── agency_internal/      # VocalIA internal
+│   └── client_demo/          # Demo tenant
 ├── widget/         # Browser widget
 ├── telephony/      # PSTN bridge
 ├── personas/       # 30 personas
-├── integrations/   # CRM/E-commerce
-├── website/        # 32 pages HTML
+├── integrations/   # CRM/E-commerce (multi-tenant)
+├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (21 tools)
+├── mcp-server/     # MCP Server (32 tools)
 └── docs/           # Documentation
 ```
 
@@ -58,6 +64,8 @@ VocalIA/
 | Voice API | 3004 | `node core/voice-api-resilient.cjs` |
 | Grok Realtime | 3007 | `node core/grok-voice-realtime.cjs` |
 | Telephony | 3009 | `node telephony/voice-telephony-bridge.cjs` |
+| OAuth Gateway | 3010 | `node core/OAuthGateway.cjs --start` |
+| Webhook Router | 3011 | `node core/WebhookRouter.cjs --start` |
 | Website | 8080 | `npx serve website` |
 
 ---
@@ -141,80 +149,86 @@ open http://localhost:8080?lang=ar
 |:---------|:------------|
 | `docs/SESSION-HISTORY.md` | Historique complet sessions |
 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | Reference technique |
-| `docs/VOCALIA-MCP.md` | MCP Server (21 tools) |
-| `docs/I18N-AUDIT-ACTIONPLAN.md` | Plan i18n |
+| `docs/VOCALIA-MCP.md` | MCP Server (32 tools) |
+| `docs/INTEGRATIONS-ROADMAP.md` | Phase 0 ✅ + Phase 1 planning |
+| `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant architecture |
+| `docs/I18N-AUDIT-ACTIONPLAN.md` | Plan i18n (100% COMPLETE) |
 
 ---
 
-## MCP Server (21 Tools)
+## MCP Server v0.4.0 (32 Tools)
 
 **Local Tools (10):**
-- voice_generate_response, voice_synthesize, voice_transcribe
-- telephony_initiate_call, telephony_get_call, telephony_transfer_call
-- personas_list, knowledge_base_search
-- qualify_lead, schedule_callback
+- personas_list, personas_get, personas_get_system_prompt
+- qualify_lead, lead_score_explain
+- knowledge_base_status, system_languages, api_status
+- booking_schedule_callback, booking_create
 
-**External Integrations (11):**
-- HubSpot: create_contact, get_contact, create_deal, update_deal
-- Klaviyo: track_event, add_to_list, get_profile
-- Shopify: get_order, update_order, get_inventory, search_products
+**Google Tools (13) - Multi-Tenant:**
+- Calendar: check_availability, create_event
+- Sheets: read_range, write_range, append_rows, get_info, create
+- Drive: list_files, get_file, create_folder, upload_file, share_file, delete_file
+
+**External Integrations (9):**
+- HubSpot: crm_get_customer, crm_create_contact
+- Shopify: ecommerce_order_status, ecommerce_product_stock
+- Klaviyo: ecommerce_customer_profile
+- Slack: slack_send_notification
+- UCP: ucp_sync_preference, ucp_get_profile, ucp_list_profiles
 
 ---
 
 ## Current Session Focus
 
-**Session 248: Audit Forensique Approfondi**
+**Session 249.2: Multi-Tenant + Google Apps**
 
-### Métriques Corrigées (Vérification Empirique)
+### Phase 0 - Multi-Tenant Architecture ✅ COMPLETE
 
-| Metric | Documenté | Réel | Vérification |
-|:-------|:---------:|:----:|:-------------|
-| Locale keys | 1,471 | **1,530** | `jq paths | length` |
-| data-i18n | ~2,000 | **2,016** | `grep -roh` |
-| MCP Tools | 21 | **26** | index.ts |
-| Core modules | 9,221 lignes | ✅ | `wc -l core/*.cjs` |
+| Composant | Fichier | Status |
+|:----------|:--------|:------:|
+| SecretVault | `core/SecretVault.cjs` (347 lignes) | ✅ |
+| OAuth Gateway | `core/OAuthGateway.cjs` (401 lignes) | ✅ |
+| WebhookRouter | `core/WebhookRouter.cjs` (394 lignes) | ✅ |
+| clients/ | 2 tenants | ✅ |
+| HubSpot refactor | TenantContext | ✅ |
+| MCP tools refactor | _meta.tenantId | ✅ |
 
-### DÉFAUTS CRITIQUES (Session 248)
+### Phase 1 - Google Apps ✅ PARTIAL (40%)
 
-| Défaut | Fichier | Impact | Fix |
-|:-------|:--------|:-------|:----|
-| `ucp_get_profile` NO PERSIST | ucp.ts:76 | UCP cassé | Implémenter storage |
-| QA Script 481 faux positifs | translation-quality-check.py | QA inutilisable | Seuil 60%→40% |
-| Google API Key invalid | .env | Embeddings cassés | User action |
+| Integration | Tools | Status |
+|:------------|:-----:|:------:|
+| Google Sheets | 5 | ✅ DONE |
+| Google Drive | 6 | ✅ DONE |
+| Calendly | - | ⏳ TODO |
+| Freshdesk | - | ⏳ TODO |
+| Pipedrive | - | ⏳ TODO |
 
-### Composants VALIDÉS (Fonctionnels)
+### Vérification Empirique
 
-| Composant | Status | Test |
-|:----------|:------:|:-----|
-| BM25 RAG | ✅ | `--search "voice AI"` |
-| Translation Supervisor | ✅ | EventBus + patterns |
-| Global Localization | ✅ | 4 régions strictes |
-| Darija Validator | ✅ | Score 94 |
-| MCP TypeScript | ✅ | `npm run build` |
+```bash
+# Multi-tenant components
+ls core/SecretVault.cjs core/OAuthGateway.cjs core/WebhookRouter.cjs  # ✅ EXISTS
+ls clients/  # agency_internal, client_demo, _template
 
-### Sessions 228-247 Summary
-
-- **+1,655 lignes** code nouveau (22 fichiers)
-- **+2,000 lignes** HTML modifié (SEO/i18n)
-- **195 hreflang** + **39 Twitter Cards**
-- **BM25 SOTA** implémenté (k1=1.5, b=0.75)
+# MCP build
+cd mcp-server && npm run build  # ✅ SUCCESS (32 tools)
+```
 
 ---
 
-## Plan Actionnable (Session 249)
+## Plan Actionnable (Session 250)
 
-| # | Task | Priority | Blocker | Effort |
-|:-:|:-----|:--------:|:--------|:------:|
-| 1 | **Fix `ucp_get_profile` persistence** | P0 | - | 2h |
-| 2 | **Fix QA script seuil (60%→40%)** | P1 | - | 30min |
-| 3 | Renouveler Google API Key | P1 | User | 10min |
-| 4 | Configurer Calendar/Slack creds | P2 | User | 30min |
-| 5 | SDK Publish (npm/PyPI) | P1 | User creds | 2h |
-| 6 | Social Proof content | P2 | User data | - |
+| # | Task | Priority | Effort |
+|:-:|:-----|:--------:|:------:|
+| 1 | Calendly integration | P1 | 2-3j |
+| 2 | Freshdesk integration | P1 | 2-3j |
+| 3 | Pipedrive integration | P1 | 3-5j |
+| 4 | SDK Publish (npm/PyPI) | P1 | User creds |
+| 5 | Gmail integration | P2 | 2-4j |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Voir `docs/FORENSIC-AUDIT-WEBSITE.md` pour détails audit*
-*Voir `docs/VOCALIA-MCP.md` pour UCP persistence gap*
-*Màj: 30/01/2026 - Session 248 (Audit forensique: 1530 keys, UCP no persist, QA 481 FP)*
+*Voir `docs/INTEGRATIONS-ROADMAP.md` pour planning détaillé*
+*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (32 tools)*
+*Màj: 30/01/2026 - Session 249.2 (Phase 0 COMPLETE, Phase 1 40%)*
