@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.7.0 | 30/01/2026 | Session 250 | Health: 100%
+> Version: 6.8.0 | 30/01/2026 | Session 249.11 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.5.5 (**116 tools**) | RAG: BM25 SOTA
+> SDKs: Python | Node.js | MCP Server v0.5.6 (**143 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **22 native** | WordPress Plugin ✅ | Frontend: **100% factuel** | 0 fake claims
-> Design: Bento Grid ✅ | WCAG 2.1 AA ✅ | OKLCH P3 ✅ | Liquid Glass ✅ | 3058 CSS lines
+> Integrations: **26 native** (~64% e-commerce market) | WordPress Plugin ✅ | Frontend: factuel
+> E-commerce: WooCommerce, Shopify, Magento, Wix, Squarespace, BigCommerce, PrestaShop
 
 ## Identité
 
@@ -52,7 +52,7 @@ VocalIA/
 ├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (116 tools)
+├── mcp-server/     # MCP Server (143 tools)
 └── docs/           # Documentation
 ```
 
@@ -190,45 +190,62 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 249.10: FACTUAL CLEANUP COMPLETE**
+**Session 249.11: STRATEGIC E-COMMERCE EXPANSION**
 
-### Session 249.9-249.10: Cleanup + Gmail
+### Session 249.11: +27 Tools (4 Platforms)
 
 | Action | Détail | Status |
 |:-------|:-------|:------:|
-| **MCP Cleanup** | Cal.com, Intercom, Crisp supprimés (-18 tools) | ✅ |
-| **Gmail API** | 7 tools OAuth2 (send, list, search, draft, labels) | ✅ |
-| **WordPress Plugin** | `plugins/wordpress/vocalia-voice-widget.php` (490 lignes) | ✅ |
-| **Frontend Cleanup** | Salesforce, Teams, WhatsApp, Outlook, Cal.com, Intercom, Crisp | ✅ |
-| **Locales Cleanup** | 5 fichiers × 5 keys corrigées = 25 corrections | ✅ |
+| **Wix Stores** | 6 tools (7.4% market, +32.6% YoY) | ✅ |
+| **Squarespace** | 7 tools (2.6% market, 16% USA) | ✅ |
+| **BigCommerce** | 7 tools (1% market, mid-market) | ✅ |
+| **PrestaShop** | 7 tools (1.91% market, 37% France) | ✅ |
+| **Translation QA** | Per-language ratios, 0 issues | ✅ |
+| **UCP Persistence** | File-based storage enabled | ✅ |
 
-### Intégrations Factuelles (22)
+### Intégrations Factuelles (26)
 
 | Catégorie | Intégrations |
 |:----------|:-------------|
 | **CRM** | HubSpot, Pipedrive, Zoho CRM |
 | **Support** | Zendesk, Freshdesk |
-| **E-commerce** | Shopify, WooCommerce, Magento, Klaviyo |
+| **E-commerce** | Shopify, WooCommerce, Magento, Klaviyo, **Wix, Squarespace, BigCommerce, PrestaShop** |
 | **Google** | Calendar, Sheets, Drive, Docs, Gmail |
 | **Calendrier** | Calendly |
 | **iPaaS** | Zapier, Make, n8n |
 | **Export** | CSV, XLSX, PDF, SMTP |
 | **Notification** | Slack |
 
+### E-commerce Market Coverage
+
+```
+Platform        Tools   Market Share
+─────────────────────────────────────
+WooCommerce      7      33-39% global
+Shopify          2      10.32% global
+Magento          6      8% global
+Wix Stores       6      7.4% global ← NEW
+Squarespace      7      2.6% global ← NEW
+PrestaShop       7      1.91% global ← NEW
+BigCommerce      7      1% global ← NEW
+─────────────────────────────────────
+TOTAL           43      ~64% coverage
+```
+
 ### Vérification Empirique
 
 ```bash
 # MCP tools count
-grep -c "server.tool(" mcp-server/src/index.ts  # 116 ✅
+grep -c "server.tool(" mcp-server/src/index.ts  # 143 ✅
 
-# WordPress plugin
-ls plugins/wordpress/*.php  # 2 files ✅
+# New e-commerce files
+ls mcp-server/src/tools/{wix,squarespace,bigcommerce,prestashop}.ts  # 4 files ✅
 
-# Gmail tools
-wc -l mcp-server/src/tools/gmail.ts  # 500 lines ✅
+# Translation QA
+python3 scripts/translation-quality-check.py  # 0 issues ✅
 
-# False integrations in frontend
-grep -c "Salesforce\|WhatsApp" website/integrations.html  # 0 ✅
+# UCP persistence
+ls data/ucp-profiles.json  # exists ✅
 ```
 
 ---
@@ -240,11 +257,11 @@ grep -c "Salesforce\|WhatsApp" website/integrations.html  # 0 ✅
 | 1 | SDK Publish (npm/PyPI) | P1 | User credentials required |
 | 2 | API Backend deploy (api.vocalia.ma) | P1 | Hosting setup |
 | 3 | WordPress Plugin → WordPress.org | P2 | Review process |
-| 4 | Phase 6: Blog i18n | P3 | Low priority (articles FR only) |
+| 4 | Frontend: Add 4 new e-commerce cards | P2 | Design review |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/INTEGRATIONS-ROADMAP.md` pour planning détaillé*
-*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (116 tools)*
-*Màj: 30/01/2026 - Session 249.10 (Factual Cleanup COMPLETE)*
+*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (143 tools)*
+*Màj: 30/01/2026 - Session 249.11 (Strategic E-commerce COMPLETE)*

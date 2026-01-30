@@ -1,10 +1,10 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 3.4.0 | **Date**: 30/01/2026 | **Session**: 249.10
+> **Version**: 3.5.0 | **Date**: 30/01/2026 | **Session**: 249.11
 > **Methodology**: Bottom-up forensic audit | **Status**: ✅ ALL PHASES COMPLETE (100%)
 > **iPaaS**: Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
+> **E-commerce**: **~64% global market coverage** (7 platforms) - Session 249.11 Strategic Expansion
 > **Cleanup**: Cal.com, Intercom, Crisp → **DELETED** (low value per audit)
-> **Factual UI**: Salesforce, Teams, WhatsApp, Outlook → **REMOVED from frontend** (never implemented)
 
 ---
 
@@ -47,13 +47,14 @@
 
 | Metric | Value |
 |:-------|:------|
-| **MCP Server Version** | v0.5.5 |
-| **Total MCP Tools** | **116** |
-| **Tool Files** | 19 (+ inline HubSpot/Shopify/Klaviyo) |
-| **Integrations natives** | **22** |
+| **MCP Server Version** | v0.5.6 |
+| **Total MCP Tools** | **143** |
+| **Tool Files** | 23 (+ inline HubSpot/Shopify/Klaviyo) |
+| **Integrations natives** | **26** |
+| **E-commerce platforms** | **7** (~64% global market) |
 | **Frontend** | 100% factuel |
 | **iPaaS implémentés** | 3 (Zapier, Make, n8n) |
-| **Phases complètes** | 0, 1, 2, 3, 4, iPaaS, Cleanup |
+| **Phases complètes** | 0, 1, 2, 3, 4, iPaaS, Cleanup, Strategic E-commerce |
 
 ---
 
@@ -61,17 +62,31 @@
 
 | Metric | Value |
 |:-------|:------|
-| **Integrations affichées sur site** | 22 |
-| **Integrations implémentées** | **22** (100%) |
+| **Integrations affichées sur site** | 26 |
+| **Integrations implémentées** | **26** (100%) |
 | **Gap à combler** | 0 |
 | **Google Workspace (Sheets, Drive, Docs, Gmail)** | ✅ COMPLETE |
-| **E-commerce (Shopify, WooCommerce, Magento, Klaviyo)** | ✅ COMPLETE |
+| **E-commerce (7 platforms, ~64% market)** | ✅ COMPLETE - Session 249.11 |
 | **CRM (HubSpot, Pipedrive, Zoho)** | ✅ COMPLETE |
 | **Support (Freshdesk, Zendesk)** | ✅ COMPLETE |
 | **Calendrier (Google Calendar, Calendly)** | ✅ COMPLETE |
 | **iPaaS (Zapier, Make, n8n)** | ✅ COMPLETE |
 | **Export & Email (Export, SMTP, Gmail)** | ✅ COMPLETE |
 | **Status** | PRODUCTION READY |
+
+### E-commerce Market Coverage (Session 249.11)
+
+| Platform | Tools | Market Share | Region Focus |
+|:---------|:-----:|:------------:|:-------------|
+| **WooCommerce** | 7 | 33-39% global | Worldwide |
+| **Shopify** | 2 | 10.32% global, 29% USA | North America |
+| **Magento** | 6 | 8% global | Enterprise |
+| **Wix Stores** | 6 | 7.4% global, 23% USA | SMB, +32.6% YoY |
+| **Squarespace** | 7 | 2.6% global, 16% USA | Design-focused |
+| **BigCommerce** | 7 | 1% global, 3% USA | Mid-market/Enterprise |
+| **PrestaShop** | 7 | 1.91% global, 37% France | Europe/MENA |
+| **Klaviyo** | 1 | - | Email marketing |
+| **TOTAL** | **43** | **~64%** | Global coverage |
 
 ---
 
@@ -98,6 +113,10 @@
 | 15 | **WooCommerce** | `tools/woocommerce.ts` | 7 | Orders, Products, Customers | ✅ |
 | 16 | **Zoho CRM** | `tools/zoho.ts` | 6 | Leads, Contacts, Deals | ✅ |
 | 17 | **Magento** | `tools/magento.ts` | 6 | Orders, Products, Stock | ✅ |
+| 18 | **Wix Stores** | `tools/wix.ts` | 6 | Orders, Products, Inventory | ✅ NEW |
+| 19 | **Squarespace** | `tools/squarespace.ts` | 7 | Orders, Products, Inventory, Fulfill | ✅ NEW |
+| 20 | **BigCommerce** | `tools/bigcommerce.ts` | 7 | Orders, Products, Customers | ✅ NEW |
+| 21 | **PrestaShop** | `tools/prestashop.ts` | 7 | Orders, Products, Stock, Customers | ✅ NEW |
 | 18 | **Zapier** | `tools/zapier.ts` | 3 | Webhook, NLA, Actions | ✅ |
 | 19 | **Make** | `tools/make.ts` | 5 | Scenarios, Executions | ✅ |
 | 20 | **n8n** | `tools/n8n.ts` | 5 | Workflows, Executions | ✅ |

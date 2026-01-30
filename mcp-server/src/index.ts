@@ -3,9 +3,9 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 249.8 - v0.5.4 - REAL Implementation (NO MOCKS) + BM25 RAG + iPaaS
+ * Session 249.11 - v0.5.6 - REAL Implementation (NO MOCKS) + BM25 RAG + iPaaS + Strategic Ecommerce
  *
- * TOOL CATEGORIES (127 tools - 11 always available, 116 require services):
+ * TOOL CATEGORIES (143 tools - 11 always available, 132 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -36,13 +36,18 @@
  * - Crisp Tools (6): crisp_list_conversations, crisp_get_conversation, crisp_get_messages, crisp_send_message, crisp_update_conversation_state, crisp_get_people_profile [REQUIRE CRISP]
  * - Zoho CRM Tools (6): zoho_list_leads, zoho_get_lead, zoho_create_lead, zoho_list_contacts, zoho_list_deals, zoho_search_records [REQUIRE ZOHO]
  * - Magento Tools (6): magento_list_orders, magento_get_order, magento_list_products, magento_get_product, magento_get_stock, magento_list_customers [REQUIRE MAGENTO]
+ * - Wix Tools (6): wix_list_orders, wix_get_order, wix_list_products, wix_get_product, wix_get_inventory, wix_update_inventory [REQUIRE WIX]
+ * - Squarespace Tools (7): squarespace_list_orders, squarespace_get_order, squarespace_fulfill_order, squarespace_list_products, squarespace_get_product, squarespace_list_inventory, squarespace_update_inventory [REQUIRE SQUARESPACE]
+ * - BigCommerce Tools (7): bigcommerce_list_orders, bigcommerce_get_order, bigcommerce_update_order_status, bigcommerce_list_products, bigcommerce_get_product, bigcommerce_list_customers, bigcommerce_get_customer [REQUIRE BIGCOMMERCE]
+ * - PrestaShop Tools (7): prestashop_list_orders, prestashop_get_order, prestashop_list_products, prestashop_get_product, prestashop_get_stock, prestashop_list_customers, prestashop_get_customer [REQUIRE PRESTASHOP]
  * - Export Tools (5): export_generate_csv, export_generate_xlsx, export_generate_pdf, export_generate_pdf_table, export_list_files [LOCAL]
  * - Email Tools (3): email_send, email_send_template, email_verify_smtp [REQUIRE SMTP]
  * - Zapier Tools (3): zapier_trigger_webhook, zapier_trigger_nla, zapier_list_actions [REQUIRE ZAPIER]
  * - Make Tools (5): make_trigger_webhook, make_list_scenarios, make_get_scenario, make_run_scenario, make_list_executions [REQUIRE MAKE]
  * - n8n Tools (5): n8n_trigger_webhook, n8n_list_workflows, n8n_get_workflow, n8n_activate_workflow, n8n_list_executions [REQUIRE N8N]
  *
- * TOTAL: 127 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 143 tools (SOTA - Vapi has 8, Twilio has 5)
+ * E-commerce coverage: ~64% of global market (WooCommerce+Shopify+Magento+Wix+Squarespace+BigCommerce+PrestaShop)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -74,6 +79,10 @@ import { gmailTools } from "./tools/gmail.js";
 import { zapierTools } from "./tools/zapier.js";
 import { makeTools } from "./tools/make.js";
 import { n8nTools } from "./tools/n8n.js";
+import { wixTools } from "./tools/wix.js";
+import { squarespaceTools } from "./tools/squarespace.js";
+import { bigcommerceTools } from "./tools/bigcommerce.js";
+import { prestashopTools } from "./tools/prestashop.js";
 
 const execAsync = promisify(exec);
 
@@ -1283,6 +1292,57 @@ server.tool(magentoTools.get_stock.name, magentoTools.get_stock.parameters, mage
 server.tool(magentoTools.list_customers.name, magentoTools.list_customers.parameters, magentoTools.list_customers.handler);
 
 // =============================================================================
+// WIX STORES TOOLS (6) - REQUIRE WIX CREDENTIALS - Session 249.11
+// Market: 7.4% global, 23% USA, +32.6% YoY (fastest growing)
+// =============================================================================
+
+server.tool(wixTools.list_orders.name, wixTools.list_orders.parameters, wixTools.list_orders.handler);
+server.tool(wixTools.get_order.name, wixTools.get_order.parameters, wixTools.get_order.handler);
+server.tool(wixTools.list_products.name, wixTools.list_products.parameters, wixTools.list_products.handler);
+server.tool(wixTools.get_product.name, wixTools.get_product.parameters, wixTools.get_product.handler);
+server.tool(wixTools.get_inventory.name, wixTools.get_inventory.parameters, wixTools.get_inventory.handler);
+server.tool(wixTools.update_inventory.name, wixTools.update_inventory.parameters, wixTools.update_inventory.handler);
+
+// =============================================================================
+// SQUARESPACE COMMERCE TOOLS (7) - REQUIRE SQUARESPACE CREDENTIALS - Session 249.11
+// Market: 2.6% global, 16% USA, design-focused merchants
+// =============================================================================
+
+server.tool(squarespaceTools.list_orders.name, squarespaceTools.list_orders.parameters, squarespaceTools.list_orders.handler);
+server.tool(squarespaceTools.get_order.name, squarespaceTools.get_order.parameters, squarespaceTools.get_order.handler);
+server.tool(squarespaceTools.fulfill_order.name, squarespaceTools.fulfill_order.parameters, squarespaceTools.fulfill_order.handler);
+server.tool(squarespaceTools.list_products.name, squarespaceTools.list_products.parameters, squarespaceTools.list_products.handler);
+server.tool(squarespaceTools.get_product.name, squarespaceTools.get_product.parameters, squarespaceTools.get_product.handler);
+server.tool(squarespaceTools.list_inventory.name, squarespaceTools.list_inventory.parameters, squarespaceTools.list_inventory.handler);
+server.tool(squarespaceTools.update_inventory.name, squarespaceTools.update_inventory.parameters, squarespaceTools.update_inventory.handler);
+
+// =============================================================================
+// BIGCOMMERCE TOOLS (7) - REQUIRE BIGCOMMERCE CREDENTIALS - Session 249.11
+// Market: 1% global, 3% USA, mid-market/enterprise focus (75% ARR = enterprise)
+// =============================================================================
+
+server.tool(bigcommerceTools.list_orders.name, bigcommerceTools.list_orders.parameters, bigcommerceTools.list_orders.handler);
+server.tool(bigcommerceTools.get_order.name, bigcommerceTools.get_order.parameters, bigcommerceTools.get_order.handler);
+server.tool(bigcommerceTools.update_order_status.name, bigcommerceTools.update_order_status.parameters, bigcommerceTools.update_order_status.handler);
+server.tool(bigcommerceTools.list_products.name, bigcommerceTools.list_products.parameters, bigcommerceTools.list_products.handler);
+server.tool(bigcommerceTools.get_product.name, bigcommerceTools.get_product.parameters, bigcommerceTools.get_product.handler);
+server.tool(bigcommerceTools.list_customers.name, bigcommerceTools.list_customers.parameters, bigcommerceTools.list_customers.handler);
+server.tool(bigcommerceTools.get_customer.name, bigcommerceTools.get_customer.parameters, bigcommerceTools.get_customer.handler);
+
+// =============================================================================
+// PRESTASHOP TOOLS (7) - REQUIRE PRESTASHOP CREDENTIALS - Session 249.11
+// Market: 1.91% global, 37% clients in France, strong in Europe
+// =============================================================================
+
+server.tool(prestashopTools.list_orders.name, prestashopTools.list_orders.parameters, prestashopTools.list_orders.handler);
+server.tool(prestashopTools.get_order.name, prestashopTools.get_order.parameters, prestashopTools.get_order.handler);
+server.tool(prestashopTools.list_products.name, prestashopTools.list_products.parameters, prestashopTools.list_products.handler);
+server.tool(prestashopTools.get_product.name, prestashopTools.get_product.parameters, prestashopTools.get_product.handler);
+server.tool(prestashopTools.get_stock.name, prestashopTools.get_stock.parameters, prestashopTools.get_stock.handler);
+server.tool(prestashopTools.list_customers.name, prestashopTools.list_customers.parameters, prestashopTools.list_customers.handler);
+server.tool(prestashopTools.get_customer.name, prestashopTools.get_customer.parameters, prestashopTools.get_customer.handler);
+
+// =============================================================================
 // EXPORT TOOLS (5) - Document Generation (CSV, XLSX, PDF)
 // =============================================================================
 
@@ -1343,12 +1403,12 @@ server.tool(n8nTools.list_executions.name, n8nTools.list_executions.parameters, 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.5.3 running on stdio");
+  console.error("VocalIA MCP Server v0.5.6 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 114 (11 always available, 103 require external services)");
-  console.error("Export: CSV, XLSX, PDF generation | Email: SMTP with templates");
-  console.error("Integrations: 19/20 (95%) + Export + Email");
+  console.error("Tools: 143 (11 always available, 132 require external services)");
+  console.error("E-commerce: Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop (~64% market)");
+  console.error("Integrations: 26 native + iPaaS (Zapier/Make/n8n → +7000 apps)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
 }
 

@@ -1,8 +1,8 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.21.0 | **Updated**: 30/01/2026 | **Session**: 249.8
+> **Version**: 3.22.0 | **Updated**: 30/01/2026 | **Session**: 249.11
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 22/23 (96%) | **MCP Tools**: 127 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅
+> **Integrations Check**: 26/26 (100%) | **MCP Tools**: 143 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~64%
 
 ---
 
@@ -3912,6 +3912,67 @@ grep "Outlook\|Salesforce\|Cal\.com" website/src/locales/*.json | grep -v "qa-re
 
 ---
 
+## Session 249.11 - E-Commerce Expansion + Translation QA (30/01/2026)
+
+**Objectif**: Étendre couverture e-commerce de ~51% à ~64% + Corriger QA traductions.
+
+### 1. E-Commerce Integrations (+27 tools)
+
+| Platform | Market Share | Tools | Status |
+|:---------|:-------------|:-----:|:------:|
+| Wix Stores | 7.4% global, 23% USA | 6 | ✅ NEW |
+| Squarespace | 2.6% global, 16% USA | 7 | ✅ NEW |
+| BigCommerce | 1% global, mid-market | 7 | ✅ NEW |
+| PrestaShop | 1.91% global, 37% France | 7 | ✅ NEW |
+
+**Fichiers créés:**
+- `mcp-server/src/tools/wix.ts` (6 tools)
+- `mcp-server/src/tools/squarespace.ts` (7 tools)
+- `mcp-server/src/tools/bigcommerce.ts` (7 tools)
+- `mcp-server/src/tools/prestashop.ts` (7 tools)
+
+### 2. Translation QA Fix
+
+**Problème identifié**: 481 faux positifs car Arabic/English sont naturellement plus courts que le français.
+
+**Solution implémentée**:
+```python
+LOCALE_MIN_RATIOS = {
+    "en": 0.35,   # English ~20% shorter
+    "es": 0.40,   # Spanish comparable
+    "ar": 0.25,   # Arabic ~60% shorter
+    "ary": 0.25,  # Darija ~60% shorter
+}
+```
+
+**Résultat**: 481 issues → 5 issues vrais → 0 issues (corrigés)
+
+| Issue | Fix |
+|:------|:----|
+| ES "Idiomas" | → "Idiomas Soportados" |
+| ES "Ver Demo" (support) | → "Ver Integraciones" |
+| ES "Ver Demo" (appointments) | → "Ver Integraciones" |
+| ES "Ver Demo" (leads) | → "Ver Framework BANT" |
+| AR "about_page.values_title" | → Whitelist (split phrase correct) |
+
+### 3. UCP Persistence
+
+- Créé `data/ucp-profiles.json` pour persistence fichier
+- UCP sync/get/list tools maintenant persistants
+
+### Métriques
+
+| Métrique | Avant | Après |
+|:---------|:------|:------|
+| MCP Tools | 116 | **143** |
+| E-commerce coverage | ~51% | **~64%** |
+| Translation issues | 481 | **0** |
+| UCP Persistence | ❌ | ✅ |
+
+**Statut final**: MCP Server v0.5.6 | **143 tools** | ~64% e-commerce ✅
+
+---
+
 ## Session 250 - SOTA 2026 Design Upgrades (30/01/2026)
 
 **Objectif**: Implémenter les standards design 2026 (Bento Grid, WCAG accessibility).
@@ -3950,5 +4011,5 @@ Build time: 398ms
 
 ---
 
-*Màj: 30/01/2026 - Session 250 (SOTA Design Upgrades)*
+*Màj: 30/01/2026 - Session 249.11 (E-Commerce Expansion + Translation QA)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

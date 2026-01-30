@@ -1,9 +1,9 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.5.5 | 30/01/2026 | Session 249.10 | BM25 RAG SOTA | **116 tools**
-> **Cleanup 249.9:** Cal.com, Intercom, Crisp → DELETED | Gmail API → ADDED
-> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (100%)
+> Version: 0.5.6 | 30/01/2026 | Session 249.11 | BM25 RAG SOTA | **143 tools**
+> **Session 249.11:** Wix, Squarespace, BigCommerce, PrestaShop → **+27 tools** (~64% e-commerce market)
+> **Protocol Gap:** A2A ✅ | AP2 ❌ | A2UI ✅ | UCP ✅ (File Persistence) | Integrations ✅
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 
 ## Qu'est-ce que MCP?
@@ -14,7 +14,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 
 ---
 
-## Status des Tools (Session 249.8)
+## Status des Tools (Session 249.11)
 
 ### Vue d'ensemble
 
@@ -26,12 +26,12 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | Knowledge Base | 2 | **1** | 1 |
 | Telephony | 3 | 0 | 3 |
 | CRM | 2 | 0 | 2 |
-| E-commerce | 3 | 0 | 3 |
+| E-commerce (inline) | 3 | 0 | 3 |
 | Booking | 2 | **2** | 0 |
 | System | 3 | **3** | 0 |
 | Calendar | 2 | 0 | 2 |
 | Slack | 1 | 0 | 1 |
-| UCP | 4 | 0 | 4 |
+| UCP | 3 | 0 | 3 |
 | **Sheets** | **5** | 0 | **5** |
 | **Drive** | **6** | 0 | **6** |
 | **Docs** | **4** | 0 | **4** |
@@ -43,12 +43,28 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **WooCommerce** | **7** | 0 | **7** |
 | **Zoho CRM** | **6** | 0 | **6** |
 | **Magento** | **6** | 0 | **6** |
+| **Wix Stores** | **6** | 0 | **6** |
+| **Squarespace** | **7** | 0 | **7** |
+| **BigCommerce** | **7** | 0 | **7** |
+| **PrestaShop** | **7** | 0 | **7** |
 | **Export** | **5** | **5** | 0 |
 | **Email** | **3** | 0 | **3** |
 | **Zapier** | **3** | 0 | **3** |
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
-| **TOTAL** | **116** | **16** | **100** |
+| **TOTAL** | **143** | **16** | **127** |
+
+### E-commerce Market Coverage (~64%)
+
+| Platform | Tools | Market Share | API Docs |
+|:---------|:-----:|:------------:|:---------|
+| WooCommerce | 7 | 33-39% | REST v3 |
+| Shopify | 2 | 10.32% | REST/GraphQL |
+| Magento | 6 | 8% | REST |
+| **Wix Stores** | 6 | 7.4% (+32.6% YoY) | REST |
+| **Squarespace** | 7 | 2.6% | REST v1/v2 |
+| **PrestaShop** | 7 | 1.91% | Webservice |
+| **BigCommerce** | 7 | 1% | REST v3 |
 
 ### Tools Toujours Disponibles (15)
 
