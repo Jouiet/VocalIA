@@ -94,8 +94,8 @@ ErrorDocument 500 /index.html
     </IfModule>
 </FilesMatch>
 
-# Allow locale JSON files for i18n
-<FilesMatch "^(fr|en|voice-fr|voice-en)\.json$">
+# Allow locale JSON files for i18n (5 languages: FR, EN, ES, AR, ARY)
+<FilesMatch "^(fr|en|es|ar|ary|voice-fr|voice-en|voice-es|voice-ar|voice-ary)\.json$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>
