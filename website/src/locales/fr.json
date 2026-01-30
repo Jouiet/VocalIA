@@ -149,6 +149,10 @@
       "ary": "Darija Marocain"
     }
   },
+  "integrations": {
+    "title": "Intégrations Natives",
+    "subtitle": "24 intégrations natives"
+  },
   "voice_demo": {
     "title": "Visualisez la Voix",
     "subtitle": "Notre technologie de traitement vocal en temps réel"
@@ -1491,7 +1495,7 @@
     "contact_legal": "Contact juridique"
   },
   "integrations_page": {
-    "hero_badge": "20+ Intégrations",
+    "hero_badge": "24 Intégrations Natives",
     "hero_title": "Connectez VocalIA à",
     "hero_title_accent": "votre stack existant",
     "hero_subtitle": "Synchronisez vos données client, automatisez vos workflows et enrichissez vos conversations IA avec nos intégrations natives.",

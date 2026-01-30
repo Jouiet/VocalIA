@@ -149,6 +149,10 @@
       "ary": "Moroccan Darija"
     }
   },
+  "integrations": {
+    "title": "Native Integrations",
+    "subtitle": "24 native integrations"
+  },
   "voice_demo": {
     "title": "Visualize Voice",
     "subtitle": "Our real-time voice processing technology"
@@ -1491,7 +1495,7 @@
     "contact_legal": "Legal contact"
   },
   "integrations_page": {
-    "hero_badge": "20+ Integrations",
+    "hero_badge": "24 Native Integrations",
     "hero_title": "Connect VocalIA to",
     "hero_title_accent": "your existing stack",
     "hero_subtitle": "Sync your customer data, automate workflows and enrich AI conversations with our native integrations.",
