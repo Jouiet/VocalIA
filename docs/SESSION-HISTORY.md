@@ -3373,3 +3373,23 @@ grep -roh 'data-i18n' *.html */*.html */*/*.html | wc -l  # 2016
 - Integrations: ✅ Active (Real Code)
 - Global Engine: ✅ Active (Strict Rules)
 - UCP: ✅ Active (Sync Enabled)
+
+---
+
+### Session 246 (Part 3): Multi-Tenant SaaS Foundation (30/01/2026)
+
+**Goal**: Transform VocalIA from Single-Tenant Agency Tool to Multi-Tenant SaaS Platform.
+
+**Actions**:
+
+1. **Client Registry**: Created `core/client-registry.cjs`.
+    - `agency_internal`: Strict Vitrine Rules.
+    - `client_demo`: Flexible SaaS Rules.
+2. **Middleware**: Implemented `mcp-server/src/middleware/tenant.ts`.
+    - Intercepts `x-tenant-id` or param `_meta`.
+    - Injects `context.tenant` into all tools.
+3. **Refactor**: Updated `ucp_sync_preference` to read from injected config.
+4. **Verification**:
+    - `scripts/test-multi-tenant.js`: Verified `agency_internal` gets MAD while `client_demo` gets USD for the same IP.
+
+**Status**: ✅ SaaS Architecture Live.

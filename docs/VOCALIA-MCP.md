@@ -378,6 +378,32 @@ Liste des 5 langues et 7 voix supportées.
 
 ---
 
+---
+
+## 4. Architecture Multi-Client (SaaS)
+
+> **Status:** ✅ Active (Session 246)
+
+L'architecture MCP est désormais **Multi-Tenant**. Chaque requête peut spécifier un contexte client.
+
+### 4.1 Identification du Tenant
+
+Le serveur MCP résout le client selon la priorité suivante :
+
+1. `args._meta.tenantId` (Injection Zod)
+2. `request.params._meta.tenantId` (JSON-RPC Raw)
+3. `x-tenant-id` Header (Transport HTTP)
+4. **Fallback**: `agency_internal` (Règles strictes Agence)
+
+### 4.2 Client Registry (`core/client-registry.cjs`)
+
+Source de vérité pour les configurations :
+
+- **agency_internal**: Règles Strictes (Maroc=FR/MAD, Europe=FR/EUR).
+- **client_demo**: Configuration SaaS standard (ex: USD partout).
+
+---
+
 ## 30 Personas Disponibles
 
 ### Tier 1 - Core (7)

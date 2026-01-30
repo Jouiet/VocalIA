@@ -546,59 +546,35 @@ export async function exchangeToken(code: string, verifier: string) {
 - [ ] Connect Klaviyo → Token stocké dans Infisical
 - [ ] Token refresh automatique avant expiration
 
-### 6.5 Phase 3: MCP Multi-Tenant (Semaines 7-8)
+### 6.5 Phase 3: MCP Multi-Tenant (Session 246 - DONE)
 
-**Objectif:** Rendre vocalia-mcp tenant-aware
+**Status:** ✅ COMPLETED (30/01/2026)
 
-**Source:** [MCP Multi-Tenant Discussion](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/193)
+**Implémentation Réalisée:**
 
-| Task | Fichiers | LOC |
-|:-----|:---------|:---:|
-| Session middleware | `mcp/src/middleware/tenant.js` | 150 |
-| Config resolver | `mcp/src/config/tenant-config.js` | 100 |
-| Update tool handlers | Multiple files | 300 |
+1. **Registry**: `core/client-registry.cjs` (Central Config Store).
+2. **Middleware**: `mcp-server/src/middleware/tenant.ts` (Dynamic Context Injection).
+3. **Refactor**: `ucp_sync_preference` moved from constants to dynamic config.
 
-**Tenant Middleware:**
+**Code Pattern:**
 
 ```javascript
-// middleware/tenant.js
-const SecretVault = require('../../agency/core/SecretVault.cjs');
+// Middleware
+export async function tenantMiddleware(request) {
+  const tenantId = request?.headers?.['x-tenant-id'] || 'agency_internal';
+  const config = ClientRegistry.getClient(tenantId);
+  return { id: config.id, config };
+}
 
-async function tenantMiddleware(request, context) {
-  // Extract tenant from header or session
-  const tenantId = request.headers['x-tenant-id'] ||
-                   request.meta?.tenantId ||
-                   'agency_internal';
-
-  // Load tenant config
-  const config = await loadTenantConfig(tenantId);
-
-  // Load tenant secrets
-  const secrets = {
-    SHOPIFY_ACCESS_TOKEN: await SecretVault.getSecret(tenantId, 'SHOPIFY_ACCESS_TOKEN'),
-    KLAVIYO_API_KEY: await SecretVault.getSecret(tenantId, 'KLAVIYO_API_KEY'),
-    // ... other secrets
-  };
-
-  // Inject into context
-  context.tenant = { id: tenantId, config, secrets };
-
-  return context;
+// Handler
+async function handler(args) {
+  const tenant = await tenantMiddleware(args);
+  const rules = tenant.config.marketRules; // Dynamic!
+  // ...
 }
 ```
 
-**Tool Handler Update Pattern:**
-
-```javascript
-// Before (single-tenant)
-const SHOPIFY_TOKEN = process.env.SHOPIFY_ACCESS_TOKEN;
-
-// After (multi-tenant)
-async function handler(params, context) {
-  const SHOPIFY_TOKEN = context.tenant.secrets.SHOPIFY_ACCESS_TOKEN;
-  // ... rest of handler
-}
-```
+**Next Step:** Implement Database-backed Registry (Phase 8).
 
 ### 6.6 Phase 4: Voice Plug-and-Play (Semaines 9-10)
 
