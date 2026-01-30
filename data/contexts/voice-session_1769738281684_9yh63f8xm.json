@@ -1,0 +1,23 @@
+{
+  "id": "voice-session_1769738281684_9yh63f8xm",
+  "created_at": "2026-01-30T01:58:01.684Z",
+  "updated_at": "2026-01-30T01:58:01.684Z",
+  "pillars": {
+    "identity": {},
+    "intent": {},
+    "qualification": {
+      "voiceSession": true,
+      "score": 0,
+      "complete": false
+    },
+    "sentiment": [],
+    "history": [],
+    "keyFacts": [],
+    "summary": null
+  },
+  "status": "active",
+  "metadata": {
+    "tokenEstimate": 38,
+    "lastCompaction": null
+  }
+}
