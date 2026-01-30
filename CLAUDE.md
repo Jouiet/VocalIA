@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.7 | 30/01/2026 | Session 232 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.3.8 | 30/01/2026 | Session 233 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
@@ -1870,20 +1870,48 @@ cat data/booking-queue.json
 
 ---
 
-### Plan Actionnable (Session 233)
+## Session 233 Summary (30/01/2026)
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Deploy voice-api-resilient.cjs | P1 | Test MCP avec API réelle |
-| 2 | Publish SDKs to PyPI/npm | P2 | Après tests API |
-| 3 | README MCP Server npm publish | P3 | Prep publication |
+**P1 COMPLETE: MCP ↔ Voice API Integration Verified**
+
+### Bugs Fixed in voice-api-resilient.cjs
+
+| Bug | Line | Fix |
+|:----|:----:|:----|
+| `undefined.industries` | 798 | Added fallback `{ topics: {}, industries: {}, defaults: {} }` |
+| `undefined.enabled` | 1044 | Removed 'openai' from baseOrder (not in PROVIDERS) |
+| Null check | 1051 | Added `!provider ||` before `!provider.enabled` |
+
+### Integration Test Results
+
+| Test | Result |
+|:-----|:------:|
+| Voice API /health | ✅ healthy |
+| MCP voice_generate_response | ✅ Response obtained |
+| MCP api_status detection | ✅ Voice API: healthy |
+| Lead qualification | ✅ Score: 2, Status: cold |
+
+### Commits
+
+- `8b0fa26` - fix(voice-api): Fix undefined provider and lang bugs
 
 ---
 
-*Màj: 30/01/2026 - Session 232 (MCP Server v0.3.2 NO MOCKS)*
+### Plan Actionnable (Session 234)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Publish SDKs to PyPI/npm | **P1** | Integration verified |
+| 2 | README MCP Server npm publish | P2 | Prep publication |
+| 3 | Add API keys for full provider testing | P3 | XAI_API_KEY, etc. |
+
+---
+
+*Màj: 30/01/2026 - Session 233 (Voice API Bugs Fixed)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ | Node.js ✅ | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS*
+*MCP ↔ Voice API: ✅ Integration Verified (Session 233)*
 *Dashboards: Lucide Icons ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
 *Stats: < 100ms ✅ | 5 langues ✅ | 30 personas ✅ | 99.9% uptime ✅*
 *Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*
