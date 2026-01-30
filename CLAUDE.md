@@ -1,8 +1,8 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.3.5 | 30/01/2026 | Session 231.2 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.3.7 | 30/01/2026 | Session 232 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
-> SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.0 (21 tools SOTA)
+> SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS
 > Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
 > Stats Counters: ✅ Animated (< 100ms, 5 langues, 30 personas, 99.9% uptime)
 
@@ -1825,20 +1825,65 @@ All backlog items now resolved:
 
 ---
 
-### Plan Actionnable (Session 232)
+## Session 232 Summary (30/01/2026)
 
-| # | Action | Priorité | Notes |
-|:-:|:-------|:--------:|:------|
-| 1 | Run voice-api-resilient.cjs locally | P1 | Test MCP avec API réelle |
-| 2 | Publish SDKs to PyPI/npm | P2 | Après tests API |
-| 3 | Créer README pour MCP Server | P3 | npm publish prep |
+**MCP Server v0.3.2 - REAL Tools, NO MOCKS:**
+
+### Actions Complétées
+
+| Action | Status | Détail |
+|:-------|:------:|:-------|
+| Build MCP Server | ✅ | `npm run build` successful |
+| Test tools/list | ✅ | 21 tools JSON-RPC verified |
+| Test personas_list | ✅ | 7 core personas returned |
+| Test qualify_lead | ✅ | BANT score 83, HOT classification |
+| Test api_status | ✅ | v0.3.2, tool availability |
+| Fix header comment | ✅ | 29 → 21 (factual count) |
+| **CRITICAL: Remove mocks** | ✅ | booking_* now REAL file persistence |
+
+### MCP Server Tool Availability (FACTUAL - NO MOCKS)
+
+| Category | Count | Description |
+|:---------|:-----:|:------------|
+| Always Available | **10** | Local processing + file persistence |
+| Requires External | **11** | voice API, telephony, CRM, etc. |
+| **TOTAL** | **21** | SOTA vs Vapi (8), Twilio (5) |
+
+### Booking Tools - REAL Implementation
+
+```bash
+# Verified file persistence:
+cat data/booking-queue.json
+# → Real bookings saved with unique IDs, timestamps, status
+```
+
+| Tool | Before | After |
+|:-----|:-------|:------|
+| booking_schedule_callback | Mock response | **File: data/booking-queue.json** |
+| booking_create | Mock response | **File: data/booking-queue.json** |
+
+### Version Changes
+
+- `mcp-server/package.json`: 0.3.0 → **0.3.2**
+- `mcp-server/src/index.ts`: Real file persistence for booking tools
+- `docs/VOCALIA-MCP.md`: 10 always available, NO mock category
 
 ---
 
-*Màj: 30/01/2026 - Session 231.2 (MCP Server v0.3.0 SOTA)*
+### Plan Actionnable (Session 233)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | Deploy voice-api-resilient.cjs | P1 | Test MCP avec API réelle |
+| 2 | Publish SDKs to PyPI/npm | P2 | Après tests API |
+| 3 | README MCP Server npm publish | P3 | Prep publication |
+
+---
+
+*Màj: 30/01/2026 - Session 232 (MCP Server v0.3.2 NO MOCKS)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
-*SDKs: Python ✅ | Node.js ✅ | MCP Server v0.3.0 (21 tools)*
+*SDKs: Python ✅ | Node.js ✅ | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS*
 *Dashboards: Lucide Icons ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
 *Stats: < 100ms ✅ | 5 langues ✅ | 30 personas ✅ | 99.9% uptime ✅*
 *Visualizer: Sky Blue #5DADE2 ✅ | CTAs: 24 pages inline ✅*

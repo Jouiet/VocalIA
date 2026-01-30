@@ -3,20 +3,20 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 231.2 - Professional Grade Implementation
+ * Session 232 - v0.3.2 - REAL Implementation (NO MOCKS)
  *
- * TOOL CATEGORIES:
- * - Voice Tools (3): Response generation, providers status
- * - Telephony Tools (5): Call management, SMS, transfer
- * - Persona Tools (3): 30 industry personas, system prompts
- * - Knowledge Base Tools (4): TF-IDF, hybrid search, graph
- * - Lead Qualification Tools (3): BANT scoring, session context
- * - CRM Tools (3): HubSpot integration
- * - E-commerce Tools (3): Shopify/Klaviyo integration
- * - Booking Tools (2): Callbacks, appointments
- * - System Tools (3): Health, languages, metrics
+ * TOOL CATEGORIES (21 tools - 10 always available, 11 require services):
+ * - Voice Tools (2): voice_generate_response, voice_providers_status [REQUIRE API]
+ * - Persona Tools (3): personas_list, personas_get, personas_get_system_prompt [ALWAYS]
+ * - Lead Tools (2): qualify_lead, lead_score_explain [ALWAYS]
+ * - Knowledge Base Tools (2): knowledge_search [API], knowledge_base_status [ALWAYS]
+ * - Telephony Tools (3): telephony_initiate_call, telephony_get_status, telephony_transfer_call [REQUIRE TWILIO]
+ * - CRM Tools (2): crm_get_customer, crm_create_contact [REQUIRE HUBSPOT]
+ * - E-commerce Tools (3): ecommerce_order_status, ecommerce_product_stock [SHOPIFY], ecommerce_customer_profile [KLAVIYO]
+ * - Booking Tools (2): booking_schedule_callback, booking_create [ALWAYS - FILE PERSISTENCE]
+ * - System Tools (2): api_status, system_languages [ALWAYS]
  *
- * TOTAL: 29 tools (SOTA competitive with Vapi's 8 tools)
+ * TOTAL: 21 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -25,6 +25,47 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import * as fs from "fs";
+import * as path from "path";
+
+// Booking queue file path (real persistence)
+const BOOKING_QUEUE_PATH = path.join(process.cwd(), "data", "booking-queue.json");
+
+// Ensure data directory exists
+function ensureDataDir() {
+  const dir = path.dirname(BOOKING_QUEUE_PATH);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+// Load booking queue from file
+function loadBookingQueue(): any[] {
+  try {
+    if (fs.existsSync(BOOKING_QUEUE_PATH)) {
+      return JSON.parse(fs.readFileSync(BOOKING_QUEUE_PATH, "utf-8"));
+    }
+  } catch {
+    // File doesn't exist or is invalid
+  }
+  return [];
+}
+
+// Save booking to queue file (REAL persistence)
+function saveToBookingQueue(booking: any): string {
+  ensureDataDir();
+  const queue = loadBookingQueue();
+  const id = `BK-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
+  const entry = {
+    id,
+    ...booking,
+    created_at: new Date().toISOString(),
+    status: "pending",
+  };
+  queue.push(entry);
+  fs.writeFileSync(BOOKING_QUEUE_PATH, JSON.stringify(queue, null, 2));
+  return id;
+}
 
 // Environment configuration
 const VOCALIA_API_URL = process.env.VOCALIA_API_URL || "http://localhost:3004";
@@ -773,28 +814,39 @@ server.tool(
     nextAction: z.enum(["call_back", "send_email", "send_sms_booking_link", "send_info_pack"]).optional(),
   },
   async ({ email, phone, preferredTime, notes, nextAction = "call_back" }) => {
+    // REAL: Save to persistent queue file
+    const bookingId = saveToBookingQueue({
+      type: "callback",
+      email,
+      phone,
+      preferredTime,
+      nextAction,
+      notes,
+    });
+
     return {
       content: [{
         type: "text" as const,
         text: JSON.stringify({
           action: "schedule_callback",
-          scheduled: {
+          booking_id: bookingId,
+          saved_to: BOOKING_QUEUE_PATH,
+          data: {
             email,
             phone,
             preferredTime,
             nextAction,
             notes,
           },
-          status: "callback_queued",
-          integration: "Google Apps Script / Calendar",
-          requirement: "GOOGLE_APPS_SCRIPT_URL environment variable",
+          status: "saved_to_queue",
+          next_step: "Process queue with external calendar integration or manually",
         }, null, 2),
       }],
     };
   }
 );
 
-// Tool 19: booking_create - Create a discovery call booking
+// Tool 19: booking_create - Create a discovery call booking (REAL file persistence)
 server.tool(
   "booking_create",
   {
@@ -807,12 +859,26 @@ server.tool(
     notes: z.string().optional(),
   },
   async ({ name, email, phone, slot, meetingType = "discovery_call", qualificationScore, notes }) => {
+    // REAL: Save to persistent queue file
+    const bookingId = saveToBookingQueue({
+      type: "booking",
+      name,
+      email,
+      phone,
+      slot,
+      meetingType,
+      qualificationScore,
+      notes,
+    });
+
     return {
       content: [{
         type: "text" as const,
         text: JSON.stringify({
           action: "create_booking",
-          booking: {
+          booking_id: bookingId,
+          saved_to: BOOKING_QUEUE_PATH,
+          data: {
             name,
             email,
             phone,
@@ -821,9 +887,8 @@ server.tool(
             qualificationScore,
             notes,
           },
-          status: "booking_created",
-          confirmation: "Email confirmation will be sent",
-          calendar_sync: "Google Calendar integration",
+          status: "saved_to_queue",
+          next_step: "Process queue with external calendar integration or manually",
         }, null, 2),
       }],
     };
@@ -867,7 +932,7 @@ server.tool(
         text: JSON.stringify({
           mcp_server: {
             name: "vocalia",
-            version: "0.3.0",
+            version: "0.3.2",
             tools_count: 21,
           },
           services: {
@@ -885,7 +950,8 @@ server.tool(
             always_available: [
               "personas_list", "personas_get", "personas_get_system_prompt",
               "qualify_lead", "lead_score_explain",
-              "knowledge_base_status", "system_languages", "api_status"
+              "knowledge_base_status", "system_languages", "api_status",
+              "booking_schedule_callback", "booking_create"
             ],
             requires_voice_api: ["voice_generate_response", "voice_providers_status", "knowledge_search"],
             requires_telephony: ["telephony_initiate_call", "telephony_get_status", "telephony_transfer_call"],
@@ -938,10 +1004,11 @@ server.tool(
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.3.0 running on stdio");
+  console.error("VocalIA MCP Server v0.3.2 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 21 (8 always available, 13 require external services)");
+  console.error("Tools: 21 (10 always available, 11 require external services)");
+  console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
 }
 
 main().catch((error) => {

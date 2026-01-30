@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.3.0 | 30/01/2026 | Session 231.2
+> Version: 0.3.2 | 30/01/2026 | Session 232
 
 ## Qu'est-ce que MCP?
 
@@ -30,20 +30,20 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 
 ### Tools Toujours Disponibles (10)
 
-Ces tools fonctionnent sans service externe:
+Ces tools fonctionnent sans aucun service externe:
 
-| Tool | Description |
-|:-----|:------------|
-| `personas_list` | Liste les 30 personas par tier |
-| `personas_get` | Détails d'un persona spécifique |
-| `personas_get_system_prompt` | System prompt dans une langue |
-| `qualify_lead` | Calcul BANT avec scoring avancé |
-| `lead_score_explain` | Documentation méthodologie BANT |
-| `knowledge_base_status` | Info sur la KB (119+ services) |
-| `booking_schedule_callback` | Planifier un rappel |
-| `booking_create` | Créer un RDV |
-| `api_status` | Health check complet |
-| `system_languages` | 5 langues + 7 voix |
+| Tool | Description | Persistence |
+|:-----|:------------|:------------|
+| `personas_list` | Liste les 30 personas par tier | Local |
+| `personas_get` | Détails d'un persona spécifique | Local |
+| `personas_get_system_prompt` | System prompt dans une langue | Local |
+| `qualify_lead` | Calcul BANT avec scoring avancé | Local |
+| `lead_score_explain` | Documentation méthodologie BANT | Local |
+| `knowledge_base_status` | Info sur la KB (119+ services) | Local |
+| `api_status` | Health check complet | Local |
+| `system_languages` | 5 langues + 7 voix | Local |
+| `booking_schedule_callback` | Planifier un rappel | **File: data/booking-queue.json** |
+| `booking_create` | Créer un RDV | **File: data/booking-queue.json** |
 
 ### Tools Nécessitant Services (11)
 
