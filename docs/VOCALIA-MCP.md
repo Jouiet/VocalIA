@@ -1,8 +1,8 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.4.0 | 30/01/2026 | Session 249.2 | BM25 RAG SOTA | Google Apps Integration
-> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (Phase 1 Complete)
+> Version: 0.5.0 | 30/01/2026 | Session 249.3 | BM25 RAG SOTA | Phase 1 COMPLETE (59 tools)
+> **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (55%)
 
 ## Qu'est-ce que MCP?
 
@@ -12,7 +12,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 
 ---
 
-## Status des Tools (Session 249.2)
+## Status des Tools (Session 249.3)
 
 ### Vue d'ensemble
 
@@ -31,7 +31,11 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | Slack | 1 | 0 | 1 |
 | **Sheets** | **5** | 0 | **5** |
 | **Drive** | **6** | 0 | **6** |
-| **TOTAL** | **32** | **10** | **22** |
+| **Calendly** | **6** | 0 | **6** |
+| **Freshdesk** | **6** | 0 | **6** |
+| **Pipedrive** | **7** | 0 | **7** |
+| UCP | 3 | 0 | 3 |
+| **TOTAL** | **59** | **10** | **49** |
 
 ### Tools Toujours Disponibles (10)
 
@@ -76,7 +80,7 @@ Ces tools fonctionnent sans aucun service externe:
 | **Twilio** | ✅ Community | 5 | [github.com/twilio-labs/mcp-twilio](https://github.com/twilio-labs/mcp-twilio) |
 | **Vonage** | ✅ Officiel | 2 | [github.com/Vonage-Community/telephony-mcp-server](https://github.com/Vonage-Community/telephony-mcp-server) |
 | **Retell** | ❌ | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ✅ Officiel | **21** | `mcp-server/` |
+| **VocalIA** | ✅ Officiel | **59** | `mcp-server/` |
 
 **Différenciateurs VocalIA:**
 
@@ -371,7 +375,7 @@ Health check complet de tous les services.
 
 ```json
 {
-  "mcp_server": { "name": "vocalia", "version": "0.3.0", "tools_count": 21 },
+  "mcp_server": { "name": "vocalia", "version": "0.5.0", "tools_count": 59 },
   "services": {
     "voice_api": { "url": "http://localhost:3004", "status": "healthy", "latency_ms": 45 },
     "telephony": { "url": "http://localhost:3009", "status": "offline" }
@@ -389,6 +393,210 @@ Health check complet de tous les services.
 #### `system_languages`
 
 Liste des 5 langues et 7 voix supportées.
+
+---
+
+### Calendly Tools (6) - Multi-Tenant
+
+#### `calendly_get_user`
+
+Obtenir les informations de l'utilisateur Calendly authentifié.
+
+**Prérequis:** `CALENDLY_ACCESS_TOKEN`
+
+#### `calendly_list_event_types`
+
+Lister tous les types d'événements (réunions) de l'utilisateur.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `active` | boolean | ❌ | Filtrer par statut actif |
+
+#### `calendly_get_available_times`
+
+Obtenir les créneaux disponibles pour un type d'événement.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `eventTypeUri` | string | ✅ | URI du type d'événement |
+| `startTime` | string | ✅ | Début de la plage (ISO format) |
+| `endTime` | string | ✅ | Fin de la plage (ISO format) |
+
+#### `calendly_list_events`
+
+Lister les événements planifiés de l'utilisateur.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `minStartTime` | string | ❌ | Filtrer après cette date |
+| `maxStartTime` | string | ❌ | Filtrer avant cette date |
+| `status` | enum | ❌ | active, canceled |
+| `count` | number | ❌ | Nombre d'événements (défaut: 20) |
+
+#### `calendly_cancel_event`
+
+Annuler un événement Calendly planifié.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `eventUuid` | string | ✅ | UUID de l'événement |
+| `reason` | string | ❌ | Motif d'annulation |
+
+#### `calendly_get_busy_times`
+
+Obtenir les créneaux occupés de l'utilisateur.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `startTime` | string | ✅ | Début de la plage |
+| `endTime` | string | ✅ | Fin de la plage |
+
+---
+
+### Freshdesk Tools (6) - Multi-Tenant
+
+#### `freshdesk_list_tickets`
+
+Lister les tickets de support depuis Freshdesk.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `filter` | enum | ❌ | new_and_my_open, watching, spam, deleted, all |
+| `status` | number | ❌ | 2=Open, 3=Pending, 4=Resolved, 5=Closed |
+| `priority` | number | ❌ | 1=Low, 2=Medium, 3=High, 4=Urgent |
+| `perPage` | number | ❌ | Tickets par page (max: 100) |
+
+**Prérequis:** `FRESHDESK_API_KEY`, `FRESHDESK_DOMAIN`
+
+#### `freshdesk_get_ticket`
+
+Obtenir les détails d'un ticket avec ses conversations.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `ticketId` | number | ✅ | ID du ticket |
+
+#### `freshdesk_create_ticket`
+
+Créer un nouveau ticket de support.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `subject` | string | ✅ | Sujet du ticket |
+| `description` | string | ✅ | Description (HTML supporté) |
+| `email` | string | ✅ | Email du demandeur |
+| `priority` | number | ❌ | 1=Low, 2=Medium, 3=High, 4=Urgent |
+| `status` | number | ❌ | 2=Open, 3=Pending, 4=Resolved, 5=Closed |
+| `type` | string | ❌ | Type de ticket |
+| `tags` | array | ❌ | Tags à ajouter |
+
+#### `freshdesk_reply_ticket`
+
+Répondre à un ticket existant.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `ticketId` | number | ✅ | ID du ticket |
+| `body` | string | ✅ | Contenu de la réponse (HTML supporté) |
+
+#### `freshdesk_update_ticket`
+
+Mettre à jour un ticket existant.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `ticketId` | number | ✅ | ID du ticket |
+| `status` | number | ❌ | Nouveau statut |
+| `priority` | number | ❌ | Nouvelle priorité |
+| `type` | string | ❌ | Nouveau type |
+| `tags` | array | ❌ | Nouveaux tags (remplace existants) |
+
+#### `freshdesk_search_contacts`
+
+Rechercher des contacts par email ou nom.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `query` | string | ✅ | Email ou nom à rechercher |
+
+---
+
+### Pipedrive Tools (7) - Multi-Tenant
+
+#### `pipedrive_list_deals`
+
+Lister les deals avec filtres optionnels.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `status` | enum | ❌ | open, won, lost, deleted, all_not_deleted |
+| `limit` | number | ❌ | Nombre de résultats (défaut: 50) |
+
+**Prérequis:** `PIPEDRIVE_API_TOKEN`, `PIPEDRIVE_DOMAIN`
+
+#### `pipedrive_create_deal`
+
+Créer un nouveau deal dans Pipedrive.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `title` | string | ✅ | Titre du deal |
+| `value` | number | ❌ | Valeur du deal |
+| `currency` | string | ❌ | Code devise (défaut: EUR) |
+| `person_id` | number | ❌ | ID de la personne associée |
+| `org_id` | number | ❌ | ID de l'organisation associée |
+| `status` | enum | ❌ | open, won, lost |
+
+#### `pipedrive_update_deal`
+
+Mettre à jour un deal existant.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `dealId` | number | ✅ | ID du deal |
+| `title` | string | ❌ | Nouveau titre |
+| `value` | number | ❌ | Nouvelle valeur |
+| `status` | enum | ❌ | Nouveau statut |
+| `stage_id` | number | ❌ | ID de l'étape |
+
+#### `pipedrive_list_persons`
+
+Lister les personnes (contacts) dans Pipedrive.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `limit` | number | ❌ | Nombre de résultats (défaut: 50) |
+
+#### `pipedrive_create_person`
+
+Créer un nouveau contact.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `name` | string | ✅ | Nom complet |
+| `email` | string | ❌ | Adresse email |
+| `phone` | string | ❌ | Numéro de téléphone |
+| `org_id` | number | ❌ | ID de l'organisation |
+
+#### `pipedrive_search`
+
+Recherche globale dans Pipedrive.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `term` | string | ✅ | Terme de recherche |
+| `item_types` | enum | ❌ | deal, person, organization, product, lead |
+| `limit` | number | ❌ | Nombre de résultats (défaut: 10) |
+
+#### `pipedrive_list_activities`
+
+Lister les activités (appels, réunions, tâches).
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `done` | boolean | ❌ | Filtrer par statut terminé |
+| `type` | string | ❌ | Type d'activité (call, meeting, task...) |
+| `limit` | number | ❌ | Nombre de résultats (défaut: 50) |
 
 ---
 
@@ -499,10 +707,14 @@ Dispatch une tâche à un autre agent via l'Agency Event Bus.
 ```
 mcp-server/
 ├── src/
-│   └── index.ts       # Serveur MCP (950 lignes, 21 tools)
+│   ├── index.ts       # Serveur MCP principal (1200+ lignes)
+│   └── tools/         # Tool modules (59 tools total)
+│       ├── calendar.ts, slack.ts, ucp.ts
+│       ├── sheets.ts, drive.ts
+│       └── calendly.ts, freshdesk.ts, pipedrive.ts
 ├── dist/
 │   └── index.js       # Build compilé
-├── package.json       # @vocalia/mcp-server v0.3.0
+├── package.json       # @vocalia/mcp-server v0.5.0
 ├── tsconfig.json      # Config TypeScript
 └── README.md          # Quick start
 ```
@@ -713,8 +925,10 @@ User → VocalIA Agent (MCP: tools internes)
 | 0.2.0 | Refactoring factuel | ✅ DONE |
 | 0.3.0 | 21 tools SOTA | ✅ DONE |
 | 0.3.3 | SOTA Audit compliance | ✅ Session 241 |
-| 0.4.0 | Resources (prompts, templates) | ⏳ Planifié |
-| 0.5.0 | Streaming audio en temps réel | ⏳ Planifié |
+| 0.4.0 | Multi-Tenant + Google Apps (Sheets, Drive) | ✅ Session 249.2 |
+| 0.5.0 | Phase 1 COMPLETE (59 tools) - Calendly, Freshdesk, Pipedrive | ✅ Session 249.3 |
+| 0.6.0 | Phase 2 - Communication (WhatsApp, Gmail, Docs) | ⏳ Planifié |
+| 0.7.0 | Streaming audio en temps réel | ⏳ P3 |
 | 0.6.0 | Prometheus metrics | ⏳ P3 |
 | 1.0.0 | Publication npm | ⏳ Après API deploy |
 
@@ -731,8 +945,9 @@ User → VocalIA Agent (MCP: tools internes)
 ---
 
 *Documentation créée: 29/01/2026 - Session 227*
-*Mise à jour: 30/01/2026 - Session 245 (A2A Dispatcher & Supervisor Active)*
+*Mise à jour: 30/01/2026 - Session 249.3 (Phase 1 COMPLETE - 59 tools)*
 *SOTA: MCP 78% | A2A 50% | AP2 0% | A2UI 0%*
+*Integrations: 11/20 (55%) | Phase 1: 100% | Phase 2: 0%*
 
 *Maintenu par: VocalIA Engineering*
 

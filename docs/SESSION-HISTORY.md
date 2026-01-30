@@ -1,8 +1,8 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.16.0 | **Updated**: 30/01/2026 | **Session**: 249.2
+> **Version**: 3.17.0 | **Updated**: 30/01/2026 | **Session**: 249.3
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 8/20 (40%) | **MCP Tools**: 32 | **Phase 0**: COMPLETE | **Phase 1**: 40%
+> **Integrations Check**: 11/20 (55%) | **MCP Tools**: 59 | **Phase 0**: COMPLETE | **Phase 1**: ✅ COMPLETE
 
 ---
 
@@ -3512,24 +3512,91 @@ cd mcp-server && npm run build  # ✅ SUCCESS
 
 ---
 
-## Plan Actionnable (Session 250)
+### Session 249.3: Phase 1 COMPLETE - Calendly, Freshdesk, Pipedrive (30/01/2026)
 
-### Phase 0: Fondations Multi-Tenant (PRIORITÉ ABSOLUE)
+**Goal**: Compléter Phase 1 integrations (100%)
 
-| # | Composant | Effort | Status |
-|:-:|:----------|:------:|:------:|
-| 1 | `clients/` structure + templates | 1j | ⏳ |
-| 2 | `core/SecretVault.cjs` | 2-3j | ⏳ |
-| 3 | `core/OAuthGateway.cjs` | 3-5j | ⏳ |
-| 4 | Refactor HubSpot → TenantContext | 1-2j | ⏳ |
-| 5 | Refactor Calendar/Slack → TenantContext | 1j | ⏳ |
-| 6 | `core/WebhookRouter.cjs` | 2-3j | ⏳ |
+**Nouvelles intégrations MCP (19 tools):**
 
-**Effort total Phase 0**: 10-15 jours
+| Integration | Fichier | Tools | Status |
+|:------------|:--------|:-----:|:------:|
+| Calendly | `mcp-server/src/tools/calendly.ts` | 6 | ✅ |
+| Freshdesk | `mcp-server/src/tools/freshdesk.ts` | 6 | ✅ |
+| Pipedrive | `mcp-server/src/tools/pipedrive.ts` | 7 | ✅ |
 
-### Puis Phase 1-4: Intégrations (voir INTEGRATIONS-ROADMAP.md)
+**Calendly Tools (6):**
+- `calendly_get_user` - Info utilisateur authentifié
+- `calendly_list_event_types` - Types d'événements
+- `calendly_get_available_times` - Créneaux disponibles
+- `calendly_list_events` - Événements planifiés
+- `calendly_cancel_event` - Annuler événement
+- `calendly_get_busy_times` - Créneaux occupés
+
+**Freshdesk Tools (6):**
+- `freshdesk_list_tickets` - Liste tickets support
+- `freshdesk_get_ticket` - Détails ticket
+- `freshdesk_create_ticket` - Créer ticket
+- `freshdesk_reply_ticket` - Répondre ticket
+- `freshdesk_update_ticket` - Mettre à jour ticket
+- `freshdesk_search_contacts` - Rechercher contacts
+
+**Pipedrive Tools (7):**
+- `pipedrive_list_deals` - Liste deals
+- `pipedrive_create_deal` - Créer deal
+- `pipedrive_update_deal` - Mettre à jour deal
+- `pipedrive_list_persons` - Liste contacts
+- `pipedrive_create_person` - Créer contact
+- `pipedrive_search` - Recherche globale
+- `pipedrive_list_activities` - Liste activités
+
+**Caractéristiques communes:**
+- Multi-tenant via `_meta.tenantId` + SecretVault
+- API v2 compliance (Calendly, Pipedrive)
+- TypeScript avec validation zod
+- Error handling robuste
+
+**Métriques finales:**
+- MCP Server: v0.4.0 → v0.5.0
+- Tools totaux: 32 → **59**
+- Integrations: 8/20 (40%) → **11/20 (55%)**
+- Phase 1: 40% → **100% COMPLETE**
+
+**Status**: Phase 0 ✅ COMPLETE | Phase 1 ✅ COMPLETE | Phase 2 ⏳ TODO
 
 ---
 
-*Màj: 30/01/2026 - Session 249.2 (Audit Multi-Tenant)*
+## Plan Actionnable (Session 250)
+
+### Phase 0: Multi-Tenant Architecture ✅ COMPLETE
+
+| # | Composant | Status |
+|:-:|:----------|:------:|
+| 1 | `clients/` structure + templates | ✅ |
+| 2 | `core/SecretVault.cjs` | ✅ |
+| 3 | `core/OAuthGateway.cjs` | ✅ |
+| 4 | Refactor HubSpot → TenantContext | ✅ |
+| 5 | Refactor Calendar/Slack → TenantContext | ✅ |
+| 6 | `core/WebhookRouter.cjs` | ✅ |
+
+### Phase 1: Quick Wins ✅ COMPLETE
+
+| Integration | Tools | Status |
+|:------------|:-----:|:------:|
+| Google Sheets | 5 | ✅ |
+| Google Drive | 6 | ✅ |
+| Calendly | 6 | ✅ |
+| Freshdesk | 6 | ✅ |
+| Pipedrive | 7 | ✅ |
+
+### Phase 2: Communication (NEXT)
+
+| Integration | Priorité | Effort |
+|:------------|:--------:|:------:|
+| WhatsApp Business | P1 | 3-5j |
+| Gmail | P2 | 2-4j |
+| Google Docs | P2 | 1-2j |
+
+---
+
+*Màj: 30/01/2026 - Session 249.3 (Phase 1 COMPLETE - 59 tools)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
