@@ -1,7 +1,8 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.5.4 | 30/01/2026 | Session 249.8 | BM25 RAG SOTA | **ALL PHASES COMPLETE (127 tools)**
+> Version: 0.5.5 | 30/01/2026 | Session 249.10 | BM25 RAG SOTA | **116 tools**
+> **Cleanup 249.9:** Cal.com, Intercom, Crisp → DELETED | Gmail API → ADDED
 > **Protocol Gap:** A2A ✅ (100%) | AP2 ❌ | A2UI ✅ | UCP ⚠️ (NO PERSISTENCE) | Integrations ✅ (100%)
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 
@@ -34,14 +35,12 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Sheets** | **5** | 0 | **5** |
 | **Drive** | **6** | 0 | **6** |
 | **Docs** | **4** | 0 | **4** |
+| **Gmail** | **7** | 0 | **7** |
 | **Calendly** | **6** | 0 | **6** |
-| **Cal.com** | **6** | 0 | **6** |
 | **Freshdesk** | **6** | 0 | **6** |
 | **Zendesk** | **6** | 0 | **6** |
 | **Pipedrive** | **7** | 0 | **7** |
 | **WooCommerce** | **7** | 0 | **7** |
-| **Intercom** | **6** | 0 | **6** |
-| **Crisp** | **6** | 0 | **6** |
 | **Zoho CRM** | **6** | 0 | **6** |
 | **Magento** | **6** | 0 | **6** |
 | **Export** | **5** | **5** | 0 |
@@ -49,7 +48,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Zapier** | **3** | 0 | **3** |
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
-| **TOTAL** | **127** | **16** | **111** |
+| **TOTAL** | **116** | **16** | **100** |
 
 ### Tools Toujours Disponibles (15)
 
