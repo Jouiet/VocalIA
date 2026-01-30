@@ -154,18 +154,22 @@ open http://localhost:8080?lang=ar
 
 ## Current Session Focus
 
-**Session 240.1: i18n Implementation Continued**
+**Session 240.1: i18n Implementation - Phase 5 COMPLETE**
 - ✅ Phase 4: Use Cases (4 pages) - translations + data-i18n
-- ✅ Phase 5: Docs page (docs/index.html) - translations + data-i18n
-- ✅ Phase 5: Legal translations (privacy_page, terms_page) added to locales
+- ✅ Phase 5: Docs (docs/index.html) - translations + data-i18n
+- ✅ Phase 5: Privacy (privacy.html) - translations + data-i18n
+- ✅ Phase 5: Terms (terms.html) - translations + data-i18n
+- ✅ Phase 5: Integrations (integrations.html) - translations + data-i18n
 
 **i18n Phases:**
-- ✅ Phase 1: Core pages
-- ✅ Phase 2: Products pages
-- ✅ Phase 3: Industries pages
+- ✅ Phase 1: Core pages (index, features, pricing, about, contact)
+- ✅ Phase 2: Products pages (voice-widget, voice-telephony)
+- ✅ Phase 3: Industries pages (5 pages)
 - ✅ Phase 4: Use Cases (4 pages)
-- ⏳ Phase 5: Privacy/Terms HTML data-i18n (translations done)
-- ⏳ Phase 6: Blog (8 pages) - Low priority
+- ✅ Phase 5: Docs & Legal (docs, privacy, terms, integrations)
+- ⏳ Phase 6: Blog (8 pages) - Low priority, UI only
+
+**i18n Coverage:** 24/29 pages (83%) - Blog pages remaining
 
 ---
 
@@ -173,12 +177,12 @@ open http://localhost:8080?lang=ar
 
 | # | Action | Priorité | Notes |
 |:-:|:-------|:--------:|:------|
-| 1 | Add data-i18n to privacy.html, terms.html | P1 | Translations ready |
-| 2 | User: SDK publish (twine, npm) | P1 | Requires user creds |
-| 3 | Deploy API backend (api.vocalia.ma) | P1 | For SDKs/MCP |
-| 4 | Phase 6: Blog i18n | P3 | UI only (articles FR) |
+| 1 | User: SDK publish (twine, npm) | P1 | Requires user creds |
+| 2 | Deploy API backend (api.vocalia.ma) | P1 | For SDKs/MCP |
+| 3 | Phase 6: Blog i18n | P3 | UI only (articles FR) |
+| 4 | Dashboards i18n | P3 | client.html, admin.html |
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Màj: 30/01/2026 - Session 240.1*
+*Màj: 30/01/2026 - Session 240.1 (Phase 5 Complete)*
