@@ -2979,12 +2979,27 @@ VocalIA's architecture is **85% SOTA-aligned**:
 - ❌ A2A task management endpoints
 - ❌ UCP product data exposure (structured feeds)
 - ❌ AP2 (Agent Payments protocol)
-- ❌ AGUI (Agentic GUI generation)
+- ❌ A2UI (Agentic GUI generation)
 - ❌ Business Agent architecture
+
+#### Protocol Value Analysis (Session 242.2)
+
+| Protocol | Use Case VocalIA | Impact Estimé | Effort |
+|:---------|:-----------------|:--------------|:-------|
+| **A2A** | VocalIA → Shopify Agent (stock+promo) | Interop multi-agent | 40h |
+| **AP2** | Paiement vocal pendant appel téléphonique | +200% conversion | 80h |
+| **A2UI** | Widget génère DatePicker dynamique | +40% complétion | 24h |
+
+**Recommandation Priorité:**
+1. **A2UI (P1)** - 24h, pas de dépendance externe, impact UX immédiat
+2. **AP2 (P1)** - 80h, dépend PSP (Stripe beta), revenue direct
+3. **A2A (P2)** - 40h, dépend écosystème (Shopify/HubSpot agents pas encore publics)
 
 **Sources:**
 - [A2A Protocol](https://a2a-protocol.org/latest/)
 - [Google A2A Blog](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/)
+- [Google AP2](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol)
+- [Google A2UI](https://developers.googleblog.com/introducing-a2ui-an-open-project-for-agent-driven-interfaces/)
 - [AEO Guide 2026](https://www.codelevate.com/blog/answer-engine-optimization-aeo-the-comprehensive-guide-for-2026)
 - [Gemini Live API](https://cloud.google.com/blog/products/ai-machine-learning/gemini-live-api-available-on-vertex-ai)
 

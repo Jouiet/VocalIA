@@ -1,7 +1,8 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.3.3 | 30/01/2026 | Session 241.2 | BM25 RAG SOTA
+> Version: 0.3.3 | 30/01/2026 | Session 242 | BM25 RAG SOTA
+> **Protocol Gap:** A2A ❌ | AP2 ❌ | A2UI ❌ (MCP only = 25% of UCP stack)
 
 ## Qu'est-ce que MCP?
 
@@ -531,6 +532,75 @@ Comparaison vs [MCP Best Practices 2026](https://www.cdata.com/blog/mcp-server-b
 
 ---
 
+## Protocol Ecosystem (Session 242 Analysis)
+
+### MCP vs A2A vs AP2 vs A2UI - Position VocalIA
+
+VocalIA possède **MCP** mais pas les protocoles complémentaires pour l'Agentic Commerce 2026.
+
+| Protocol | Standard | VocalIA | Fonction |
+|:---------|:---------|:-------:|:---------|
+| **MCP** | Model Context Protocol | ✅ 21 tools | AI Agent → Tools (équiper l'agent) |
+| **A2A** | Agent-to-Agent | ❌ | Agent → Agent (collaboration multi-agent) |
+| **AP2** | Agent Payments | ❌ | Agent → Paiement (transactions vocales) |
+| **A2UI** | Agent-to-UI | ❌ | Agent → Interface dynamique (génération UI) |
+
+### Complémentarité des Protocoles
+
+```
+User → VocalIA Agent (MCP: tools internes)
+              ↓
+         A2A: délègue à Shopify Agent, HubSpot Agent
+              ↓
+         A2UI: génère formulaire RDV dynamique
+              ↓
+         AP2: exécute paiement avec Mandate signé
+```
+
+### Use Cases A2A pour VocalIA
+
+| Scénario | Actuel | Avec A2A |
+|:---------|:-------|:---------|
+| Stock check | REST direct Shopify | Demande à Shopify Agent (contexte enrichi) |
+| CRM update | REST direct HubSpot | Délègue à HubSpot Agent |
+| Multi-step | Code custom | Chaîne d'agents standardisée |
+
+**Source:** [IBM A2A](https://www.ibm.com/think/topics/agent2agent-protocol), [Google A2A Blog](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/)
+
+### Use Cases AP2 pour VocalIA
+
+| Scénario | Actuel | Avec AP2 |
+|:---------|:-------|:---------|
+| Paiement téléphonique | ❌ Impossible | ✅ Mandate signé pendant appel |
+| Upsell vocal | Redirige vers web | ✅ "Ajoutez X" → paiement instant |
+| Abonnement | Checkout web | ✅ Souscription vocale |
+
+**Impact estimé:** +200% conversion e-commerce (pas d'abandon checkout)
+
+**Source:** [Google AP2](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol), [AP2 Spec](https://ap2-protocol.org/)
+
+### Use Cases A2UI pour VocalIA Widget
+
+| Scénario | Actuel | Avec A2UI |
+|:---------|:-------|:---------|
+| Prise RDV | 4 échanges vocaux | 1 clic (DatePicker généré) |
+| Lead form | Questions successives | Formulaire BANT contextuel |
+| Panier | Liste vocale | UI panier avec images |
+
+**Impact estimé:** +40% complétion actions
+
+**Source:** [Google A2UI](https://developers.googleblog.com/introducing-a2ui-an-open-project-for-agent-driven-interfaces/), [AG-UI Docs](https://docs.ag-ui.com/)
+
+### Roadmap Protocoles
+
+| Protocol | Priorité | Effort | Dépendance |
+|:---------|:--------:|:------:|:-----------|
+| **A2UI** | P1 | 24h | Aucune (client-side) |
+| **AP2** | P1 | 80h | PSP support (Stripe beta) |
+| **A2A** | P2 | 40h | Partenaires (Shopify/HubSpot agents) |
+
+---
+
 ## Roadmap
 
 | Version | Feature | Status |
@@ -557,5 +627,6 @@ Comparaison vs [MCP Best Practices 2026](https://www.cdata.com/blog/mcp-server-b
 ---
 
 *Documentation créée: 29/01/2026 - Session 227*
-*Mise à jour: 30/01/2026 - Session 241 (SOTA Audit: 78% compliant)*
+*Mise à jour: 30/01/2026 - Session 242 (A2A/AP2/A2UI gap analysis)*
+*SOTA: MCP 78% | A2A 0% | AP2 0% | A2UI 0%*
 *Maintenu par: VocalIA Engineering*
