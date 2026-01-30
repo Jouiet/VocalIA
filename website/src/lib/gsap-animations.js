@@ -341,71 +341,76 @@ class VocalIAAnimations {
 
   /**
    * Animated Number Counters
-   * Fixed Session 230: Elements already in view now animate immediately
+   * Session 230: Simplified, robust implementation
    */
   initCounters() {
-    document.querySelectorAll('[data-counter]').forEach(counter => {
-      const target = parseFloat(counter.dataset.counter);
-      const duration = parseFloat(counter.dataset.counterDuration) || 2;
-      const suffix = counter.dataset.counterSuffix || '';
-      const prefix = counter.dataset.counterPrefix || '';
-      const decimals = parseInt(counter.dataset.counterDecimals) || 0;
+    const counters = document.querySelectorAll('[data-counter]');
+    if (!counters.length) return;
 
-      // Set initial value
-      counter.textContent = prefix + '0' + suffix;
+    // Use a single IntersectionObserver for all counters
+    const animateCounter = (element) => {
+      const target = parseFloat(element.dataset.counter);
+      const duration = parseFloat(element.dataset.counterDuration) || 2000; // ms
+      const suffix = element.dataset.counterSuffix || '';
+      const prefix = element.dataset.counterPrefix || '';
+      const decimals = parseInt(element.dataset.counterDecimals) || 0;
 
-      // Check if already in view (above the fold)
-      const rect = counter.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      // Mark as animating to prevent double-runs
+      if (element.dataset.animating === 'true') return;
+      element.dataset.animating = 'true';
 
-      if (isVisible) {
-        // Small delay for visual effect even if already visible
-        setTimeout(() => {
-          this.animateCounter(counter, target, duration, prefix, suffix, decimals);
-        }, 100);
-        return; // Skip observer for this element
-      }
+      const startTime = Date.now();
 
-      // Create intersection observer for below-fold elements
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            this.animateCounter(counter, target, duration, prefix, suffix, decimals);
-            observer.unobserve(counter);
-          }
-        });
-      }, { threshold: 0.1, rootMargin: '50px' });
+      const tick = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
 
-      observer.observe(counter);
-      this.observers.push(observer);
-    });
-  }
+        // Ease out cubic - always positive
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const value = Math.max(0, target * ease); // Ensure non-negative
 
-  /**
-   * Animate a counter element
-   */
-  animateCounter(element, target, duration, prefix, suffix, decimals) {
-    const startTime = performance.now();
-    const startValue = 0;
+        element.textContent = prefix + value.toFixed(decimals) + suffix;
 
-    const update = (currentTime) => {
-      const elapsed = (currentTime - startTime) / 1000;
-      const progress = Math.min(elapsed / duration, 1);
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          // Final value - ensure accuracy
+          element.textContent = prefix + target.toFixed(decimals) + suffix;
+        }
+      };
 
-      // Ease out cubic
-      const easeProgress = 1 - Math.pow(1 - progress, 3);
-      const currentValue = startValue + (target - startValue) * easeProgress;
-
-      element.textContent = prefix + currentValue.toFixed(decimals) + suffix;
-
-      if (progress < 1) {
-        requestAnimationFrame(update);
-      } else {
-        element.textContent = prefix + target.toFixed(decimals) + suffix;
-      }
+      // Start immediately
+      tick();
     };
 
-    requestAnimationFrame(update);
+    // Create observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0, rootMargin: '50px' });
+
+    // Observe all counters and handle already-visible ones
+    counters.forEach(counter => {
+      // Set initial state
+      const suffix = counter.dataset.counterSuffix || '';
+      const prefix = counter.dataset.counterPrefix || '';
+      counter.textContent = prefix + '0' + suffix;
+
+      // Check if already in viewport
+      const rect = counter.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        // Animate immediately with tiny delay for visual effect
+        setTimeout(() => animateCounter(counter), 50);
+      } else {
+        // Observe for later
+        observer.observe(counter);
+        this.observers.push(observer);
+      }
+    });
   }
 
   /**
