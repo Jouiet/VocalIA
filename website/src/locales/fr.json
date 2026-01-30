@@ -233,15 +233,26 @@
     "footer": {
       "tagline": "Agents Vocaux IA pour Entreprises",
       "product": "Produit",
+      "solutions": "Solutions",
+      "resources": "Ressources",
       "company": "Entreprise",
       "legal": "Légal",
       "links": {
         "features": "Fonctionnalités",
         "pricing": "Tarifs",
+        "voice_widget": "Voice Widget",
+        "voice_telephony": "Voice Telephony",
+        "integrations": "Intégrations",
+        "ecommerce": "E-commerce",
+        "customer_support": "Service Client",
+        "healthcare": "Santé",
+        "real_estate": "Immobilier",
+        "darija_ai": "Darija AI",
         "docs": "Documentation",
-        "api": "API",
-        "about": "À propos",
+        "api": "API Reference",
         "blog": "Blog",
+        "status": "Status",
+        "about": "À propos",
         "careers": "Carrières",
         "contact": "Contact",
         "privacy": "Confidentialité",
@@ -250,9 +261,10 @@
       },
       "copyright": "© 2026 VocalIA. Tous droits réservés.",
       "trust": {
-        "gdpr": "Conforme RGPD",
+        "gdpr": "RGPD",
         "ai_act": "AI Act Ready",
-        "security": "Chiffrement AES-256",
+        "security": "AES-256",
+        "languages": "5 Langues",
         "reliability": "99.9% Uptime"
       }
     }

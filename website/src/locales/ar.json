@@ -233,15 +233,26 @@
   "footer": {
     "tagline": "وكلاء صوتيون بالذكاء الاصطناعي للشركات",
     "product": "المنتج",
+    "solutions": "الحلول",
+    "resources": "الموارد",
     "company": "الشركة",
     "legal": "القانوني",
     "links": {
       "features": "المميزات",
       "pricing": "الأسعار",
+      "voice_widget": "Voice Widget",
+      "voice_telephony": "Voice Telephony",
+      "integrations": "التكاملات",
+      "ecommerce": "التجارة الإلكترونية",
+      "customer_support": "خدمة العملاء",
+      "healthcare": "الصحة",
+      "real_estate": "العقارات",
+      "darija_ai": "الدارجة AI",
       "docs": "الوثائق",
-      "api": "API",
-      "about": "عن الشركة",
+      "api": "API Reference",
       "blog": "المدونة",
+      "status": "الحالة",
+      "about": "عن الشركة",
       "careers": "الوظائف",
       "contact": "اتصل بنا",
       "privacy": "الخصوصية",
@@ -250,9 +261,10 @@
     },
     "copyright": "© 2026 VocalIA. جميع الحقوق محفوظة.",
     "trust": {
-      "gdpr": "متوافق مع GDPR",
-      "ai_act": "جاهز لـ AI Act",
-      "security": "تشفير AES-256",
+      "gdpr": "GDPR",
+      "ai_act": "AI Act Ready",
+      "security": "AES-256",
+      "languages": "5 لغات",
       "reliability": "99.9% وقت التشغيل"
     }
   }

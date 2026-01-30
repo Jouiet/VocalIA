@@ -233,15 +233,26 @@
   "footer": {
     "tagline": "وكيلات صوتية ذكية للشركات",
     "product": "المنتوج",
+    "solutions": "الحلول",
+    "resources": "الموارد",
     "company": "الشركة",
     "legal": "القانوني",
     "links": {
       "features": "المميزات",
       "pricing": "الأثمان",
+      "voice_widget": "Voice Widget",
+      "voice_telephony": "Voice Telephony",
+      "integrations": "التكاملات",
+      "ecommerce": "التجارة الإلكترونية",
+      "customer_support": "خدمة الكليان",
+      "healthcare": "الصحة",
+      "real_estate": "العقار",
+      "darija_ai": "الدارجة AI",
       "docs": "الوثائق",
-      "api": "API",
-      "about": "على الشركة",
+      "api": "API Reference",
       "blog": "المدونة",
+      "status": "الحالة",
+      "about": "على الشركة",
       "careers": "الخدمة",
       "contact": "تواصل معانا",
       "privacy": "الخصوصية",
@@ -250,9 +261,10 @@
     },
     "copyright": "© 2026 VocalIA. جميع الحقوق محفوظة.",
     "trust": {
-      "gdpr": "متوافق مع GDPR",
-      "ai_act": "جاهز لـ AI Act",
-      "security": "تشفير AES-256",
+      "gdpr": "GDPR",
+      "ai_act": "AI Act Ready",
+      "security": "AES-256",
+      "languages": "5 لغات",
       "reliability": "99.9% وقت الخدمة"
     }
   }
