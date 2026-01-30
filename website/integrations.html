@@ -1032,24 +1032,41 @@
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="py-16">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold mb-6">Besoin d'une intégration personnalisée?</h2>
-        <p class="text-xl text-slate-300 mb-8">
-          Notre équipe peut développer des connecteurs sur mesure pour vos outils métier.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold text-lg transition-all transform hover:scale-105">
-            Contacter l'équipe
-          </a>
-          <a href="/docs" class="px-8 py-4 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold text-lg transition-colors">
-            Explorer l'API
-          </a>
-        </div>
+    <!-- CTA Section - Modern 2026 (Linear/Vercel inspired) -->
+  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900">
+    <!-- Soft radial glow - gradient as lighting -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]"></div>
+    <!-- Top border glow -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent"></div>
+    <!-- Bottom border glow -->
+    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-600/30 to-transparent"></div>
+
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <!-- Badge -->
+      <div class="inline-flex items-center px-3 py-1 rounded-full bg-vocalia-500/10 border border-vocalia-500/20 text-vocalia-300 text-sm mb-6">
+        <i data-lucide="zap" class="w-4 h-4 mr-2"></i>
+        <span data-i18n="cta.badge">Déploiement en 5 minutes</span>
       </div>
-    </section>
-  </main>
+
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer Votre Service Client?</h2>
+      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
+
+      <!-- CTA Buttons - Linear style -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <!-- Primary CTA -->
+        <a href="/pricing" class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25">
+          <span data-i18n="cta.button">Démarrer Maintenant</span>
+          <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+        </a>
+        <!-- Secondary CTA -->
+        <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 hover:border-white/20 transition-all duration-200">
+          <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
+          <span data-i18n="cta.demo">Demander une Démo</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
   <!-- Footer -->
   <!-- Newsletter CTA -->
   <section class="py-12 bg-slate-900/50" id="newsletter">
