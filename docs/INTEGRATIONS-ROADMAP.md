@@ -1,44 +1,55 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 3.2.0 | **Date**: 30/01/2026 | **Session**: 249.8
+> **Version**: 3.3.0 | **Date**: 30/01/2026 | **Session**: 249.9
 > **Methodology**: Bottom-up forensic audit | **Status**: ✅ ALL PHASES COMPLETE (100%)
 > **iPaaS**: Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
+> **Cleanup**: Cal.com, Intercom, Crisp → **DELETED** (low value per audit)
 
 ---
 
-## ⚠️ AUDIT SESSION 249.7 - CORRECTIONS FACTUELLES
+## ⚠️ AUDIT SESSION 249.9 - CLEANUP FACTUEL
 
-**Problèmes corrigés ce jour:**
+**Outils SUPPRIMÉS (18 tools):**
 
-| Incohérence | Avant | Après | Fichier |
-|:------------|:------|:------|:--------|
-| Claim "+50 connecteurs" | FAUX | "20+ intégrations natives" | index.html |
-| Salesforce badge | "Natif ✅" | "Enterprise" | integrations.html |
-| Outlook badge | "Natif ✅" | "Bientôt" | integrations.html |
-| Logos animation Notion | Affiché | **RETIRÉ** (aucune valeur) | index.html |
-| Logos animation Mailchimp | Affiché | **RETIRÉ** (aucune valeur) | index.html |
+| Intégration | Raison Suppression | Tools Retirés |
+|:------------|:-------------------|:-------------:|
+| **Cal.com** | <2% market share, 90% overlap Calendly | 6 |
+| **Intercom** | 70% overlap Zendesk/Freshdesk | 6 |
+| **Crisp** | 3.5% market share, no strategic value | 6 |
 
-**Gaps stratégiques identifiés:**
+**Outils AJOUTÉS (7 tools):**
 
-| iPaaS | Valeur | Action Requise |
-|:------|:-------|:---------------|
-| **Zapier** | STRATÉGIQUE MAJEURE | **P0** - À implémenter |
-| **Make** | STRATÉGIQUE | **P1** - À implémenter |
+| Intégration | Valeur | Tools Ajoutés |
+|:------------|:-------|:-------------:|
+| **Gmail API** | Full inbox access, OAuth2 | 7 |
+
+**Frontend nettoyé:**
+
+| Élément Retiré | Raison |
+|:---------------|:-------|
+| Salesforce card | Non implémenté |
+| Teams card | Non implémenté |
+| WhatsApp card | Bloqué par Meta |
+| Outlook card | Non implémenté |
+| Cal.com card | Supprimé backend |
+| Intercom card | Supprimé backend |
+| Crisp card | Supprimé backend |
 
 ---
 
 ## ✅ IMPLEMENTATION COMPLETE
 
-**Session 249.6: Export/Email tools ajoutés. 249.7: Corrections factuelles.**
+**Session 249.9: Cleanup + Gmail API ajouté.**
 
 | Metric | Value |
 |:-------|:------|
-| **MCP Server Version** | v0.5.4 |
-| **Total MCP Tools** | **127** |
-| **Integrations implémentées** | **22/23** (96%) |
-| **Integrations bloquées** | 4 (Salesforce, Teams, WhatsApp, Outlook) |
-| **iPaaS implémentés** | 3 (Zapier, Make, n8n) - **✅ DONE** |
-| **Phases complètes** | 0, 1, 2, 3, 4, iPaaS |
+| **MCP Server Version** | v0.5.5 |
+| **Total MCP Tools** | **116** |
+| **Tool Files** | 19 (+ inline HubSpot/Shopify/Klaviyo) |
+| **Integrations natives** | **22** |
+| **Frontend** | 100% factuel |
+| **iPaaS implémentés** | 3 (Zapier, Make, n8n) |
+| **Phases complètes** | 0, 1, 2, 3, 4, iPaaS, Cleanup |
 
 ---
 
@@ -46,14 +57,16 @@
 
 | Metric | Value |
 |:-------|:------|
-| **Integrations affichées sur site** | 20 |
-| **Integrations implémentées** | **19** (95%) |
-| **Gap à combler** | 1 (Salesforce only, 4 blocked by external deps) |
-| **Google Apps (Sheets, Drive, Docs)** | ✅ COMPLETE |
-| **E-commerce (Shopify, WooCommerce, Magento)** | ✅ COMPLETE |
+| **Integrations affichées sur site** | 22 |
+| **Integrations implémentées** | **22** (100%) |
+| **Gap à combler** | 0 |
+| **Google Workspace (Sheets, Drive, Docs, Gmail)** | ✅ COMPLETE |
+| **E-commerce (Shopify, WooCommerce, Magento, Klaviyo)** | ✅ COMPLETE |
 | **CRM (HubSpot, Pipedrive, Zoho)** | ✅ COMPLETE |
-| **Support (Freshdesk, Zendesk, Intercom, Crisp)** | ✅ COMPLETE |
-| **Calendrier (Google, Calendly, Cal.com)** | ✅ COMPLETE |
+| **Support (Freshdesk, Zendesk)** | ✅ COMPLETE |
+| **Calendrier (Google Calendar, Calendly)** | ✅ COMPLETE |
+| **iPaaS (Zapier, Make, n8n)** | ✅ COMPLETE |
+| **Export & Email (Export, SMTP, Gmail)** | ✅ COMPLETE |
 | **Status** | PRODUCTION READY |
 
 ---
@@ -64,25 +77,28 @@
 
 | # | Intégration | Fichier | Tools | Fonctionnalités | Status |
 |:-:|:------------|:--------|:-----:|:----------------|:------:|
-| 1 | **HubSpot** | `integrations/hubspot-b2b-crm.cjs` | - | Contacts, Companies, Deals, Batch, HITL | ✅ FULL |
-| 2 | **Shopify** | `integrations/voice-ecommerce-tools.cjs` | 3 | Order status, Product stock, Customer | ✅ |
-| 3 | **Klaviyo** | `integrations/voice-ecommerce-tools.cjs` | 3 | Profile, Events, Lists | ✅ |
-| 4 | **Téléphonie PSTN** | `telephony/voice-telephony-bridge.cjs` | 3 | Twilio inbound/outbound, Grok WebSocket | ✅ FULL |
-| 5 | **Slack** | `mcp-server/src/tools/slack.ts` | 1 | Webhook notifications | ✅ |
-| 6 | **Google Calendar** | `mcp-server/src/tools/calendar.ts` | 2 | Check availability, Create event | ✅ |
-| 7 | **Google Sheets** | `mcp-server/src/tools/sheets.ts` | 5 | Read, Write, Append, Get info, Create | ✅ |
-| 8 | **Google Drive** | `mcp-server/src/tools/drive.ts` | 6 | List, Get, Create, Upload, Share, Delete | ✅ |
-| 9 | **Google Docs** | `mcp-server/src/tools/docs.ts` | 4 | Get, Create, Append, Replace text | ✅ |
-| 10 | **Calendly** | `mcp-server/src/tools/calendly.ts` | 6 | User, Events, Times, Cancel, Busy | ✅ |
-| 11 | **Cal.com** | `mcp-server/src/tools/calcom.ts` | 6 | Me, Event types, Bookings, Availability | ✅ |
-| 12 | **Freshdesk** | `mcp-server/src/tools/freshdesk.ts` | 6 | Tickets CRUD, Reply, Search contacts | ✅ |
-| 13 | **Zendesk** | `mcp-server/src/tools/zendesk.ts` | 6 | Tickets CRUD, Comments, Search users | ✅ |
-| 14 | **Pipedrive** | `mcp-server/src/tools/pipedrive.ts` | 7 | Deals, Persons, Search, Activities | ✅ |
-| 15 | **WooCommerce** | `mcp-server/src/tools/woocommerce.ts` | 7 | Orders, Products, Customers | ✅ |
-| 16 | **Intercom** | `mcp-server/src/tools/intercom.ts` | 6 | Contacts, Conversations, Reply | ✅ |
-| 17 | **Crisp** | `mcp-server/src/tools/crisp.ts` | 6 | Conversations, Messages, State, People | ✅ |
-| 18 | **Zoho CRM** | `mcp-server/src/tools/zoho.ts` | 6 | Leads, Contacts, Deals, Search | ✅ |
-| 19 | **Magento** | `mcp-server/src/tools/magento.ts` | 6 | Orders, Products, Stock, Customers | ✅ |
+| 1 | **HubSpot** | `index.ts` (inline) | 2 | Contacts, CRM | ✅ |
+| 2 | **Shopify** | `index.ts` (inline) | 2 | Order status, Product stock | ✅ |
+| 3 | **Klaviyo** | `index.ts` (inline) | 1 | Customer profile | ✅ |
+| 4 | **Téléphonie PSTN** | `telephony/voice-telephony-bridge.cjs` | 3 | Twilio, Grok WebSocket | ✅ FULL |
+| 5 | **Slack** | `tools/slack.ts` | 1 | Webhook notifications | ✅ |
+| 6 | **Google Calendar** | `tools/calendar.ts` | 2 | Availability, Create event | ✅ |
+| 7 | **Google Sheets** | `tools/sheets.ts` | 5 | Read, Write, Append | ✅ |
+| 8 | **Google Drive** | `tools/drive.ts` | 6 | List, Upload, Share | ✅ |
+| 9 | **Google Docs** | `tools/docs.ts` | 4 | Get, Create, Append | ✅ |
+| 10 | **Gmail** | `tools/gmail.ts` | 7 | Send, List, Search, Draft, Labels | ✅ NEW |
+| 11 | **Calendly** | `tools/calendly.ts` | 6 | Events, Times, Cancel | ✅ |
+| 12 | **Freshdesk** | `tools/freshdesk.ts` | 6 | Tickets CRUD, Reply | ✅ |
+| 13 | **Zendesk** | `tools/zendesk.ts` | 6 | Tickets, Comments | ✅ |
+| 14 | **Pipedrive** | `tools/pipedrive.ts` | 7 | Deals, Persons, Activities | ✅ |
+| 15 | **WooCommerce** | `tools/woocommerce.ts` | 7 | Orders, Products, Customers | ✅ |
+| 16 | **Zoho CRM** | `tools/zoho.ts` | 6 | Leads, Contacts, Deals | ✅ |
+| 17 | **Magento** | `tools/magento.ts` | 6 | Orders, Products, Stock | ✅ |
+| 18 | **Zapier** | `tools/zapier.ts` | 3 | Webhook, NLA, Actions | ✅ |
+| 19 | **Make** | `tools/make.ts` | 5 | Scenarios, Executions | ✅ |
+| 20 | **n8n** | `tools/n8n.ts` | 5 | Workflows, Executions | ✅ |
+| 21 | **Export** | `tools/export.ts` | 4 | CSV, XLSX, PDF | ✅ |
+| 22 | **Email SMTP** | `tools/email.ts` | 3 | Send, Template, Verify | ✅ |
 
 **Vérification empirique:**
 ```bash

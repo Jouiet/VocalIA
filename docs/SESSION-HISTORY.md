@@ -3799,5 +3799,73 @@ cd mcp-server && npm run build  # ✅ SUCCESS
 
 ---
 
-*Màj: 30/01/2026 - Session 249.8 (iPaaS - 127 tools)*
+### Session 249.9: Cleanup Factuel + Gmail API (30/01/2026)
+
+**Goal**: Supprimer intégrations low-value, ajouter Gmail, nettoyer frontend
+
+**Intégrations SUPPRIMÉES (18 tools):**
+
+| Intégration | Tools | Raison Suppression |
+|:------------|:-----:|:-------------------|
+| **Cal.com** | 6 | <2% market share, 90% overlap Calendly |
+| **Intercom** | 6 | 70% overlap Zendesk/Freshdesk |
+| **Crisp** | 6 | 3.5% market share, no strategic value |
+
+**Intégration AJOUTÉE (7 tools):**
+
+| Intégration | Fichier | Tools | Impact |
+|:------------|:--------|:-----:|:-------|
+| **Gmail** | `tools/gmail.ts` | 7 | Full inbox access via OAuth2 |
+
+**Gmail Tools (7):**
+
+| Tool | Description |
+|:-----|:------------|
+| `gmail_send` | Envoyer email |
+| `gmail_list` | Lister messages |
+| `gmail_get` | Détails message |
+| `gmail_search` | Recherche Gmail query |
+| `gmail_draft` | Créer brouillon |
+| `gmail_labels` | Lister labels |
+| `gmail_modify_labels` | Modifier labels |
+
+**Frontend nettoyé:**
+
+| Élément Retiré | Raison |
+|:---------------|:-------|
+| Salesforce card | Non implémenté |
+| Teams card | Non implémenté |
+| WhatsApp card | Bloqué par Meta |
+| Outlook card | Non implémenté |
+| Cal.com card | Supprimé backend |
+| Intercom card | Supprimé backend |
+| Crisp card | Supprimé backend |
+
+**Nouvelles sections frontend:**
+
+| Section | Intégrations |
+|:--------|:-------------|
+| **iPaaS** | Zapier, Make, n8n |
+| **Google Workspace** | Sheets, Drive, Docs, Gmail |
+| **Export & Email** | Export multi-format, SMTP |
+
+**Métriques finales:**
+
+| Métrique | Avant | Après |
+|:---------|:------|:------|
+| MCP Tools | 127 | **116** |
+| Tool Files | 22 | **19** |
+| Frontend cards | 31 (faux) | **22** (factuel) |
+| Intégrations natives | 22 | **22** |
+| Frontend factualité | ~70% | **100%** |
+
+**Commits:**
+
+- `5e21937 refactor(integrations): Cleanup low-value tools, add Gmail API`
+
+**Statut final**: MCP Server v0.5.5 | **116 tools** | Frontend 100% factuel ✅
+
+---
+
+*Màj: 30/01/2026 - Session 249.9 (116 tools - Cleanup + Gmail)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

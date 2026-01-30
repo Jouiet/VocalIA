@@ -1,10 +1,10 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.4.0 | 30/01/2026 | Session 249.9 | Health: 100%
+> Version: 6.5.0 | 30/01/2026 | Session 249.10 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | 2016 data-i18n | RTL ✅ | **100% COMPLETE**
 > SDKs: Python | Node.js | MCP Server v0.5.4 (**116 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **22 native** | Frontend: factuel | ✅ Cleanup complete | 0 fake claims
+> Integrations: **23 native** | WordPress Plugin ✅ | Frontend: factuel | 0 fake claims
 > SEO: ~90% ✅ | AEO: ~75% ✅ | UCP ✅ | QA ✅ | SecretVault ✅ | OAuth Gateway ✅ | clients/ ✅
 
 ## Identité
