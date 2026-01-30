@@ -1088,36 +1088,38 @@
     </div>
   </section>
 
-  <!-- CTA Section - Premium Linear/Stripe Style -->
-  <section class="py-24 relative overflow-hidden">
-    <!-- Deep gradient base -->
-    <div class="absolute inset-0 bg-gradient-to-br from-slate-900 via-vocalia-900 to-slate-900"></div>
-    <!-- Centered radial glow -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-vocalia-600/40 via-vocalia-700/20 to-transparent"></div>
-    <!-- Subtle grid pattern -->
-    <div class="absolute inset-0 opacity-10">
-      <div class="absolute top-0 left-0 w-full h-full"
-        style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.15\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
-      </div>
-    </div>
-    <!-- Top edge glow -->
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-vocalia-400/50 to-transparent"></div>
+  <!-- CTA Section - Modern 2026 (Linear/Vercel inspired) -->
+  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900">
+    <!-- Soft radial glow - gradient as lighting -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]"></div>
+    <!-- Top border glow -->
+    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent"></div>
+    <!-- Bottom border glow -->
+    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-600/30 to-transparent"></div>
+
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer Votre Service
-        Client?</h2>
-      <p class="text-xl text-vocalia-200/80 mb-10" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5
-        minutes.</p>
-      <!-- Premium glass button with glow -->
-      <a href="/pricing"
-        class="group relative inline-flex items-center px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 hover:scale-105">
-        <!-- Button glow effect -->
-        <div class="absolute -inset-1 bg-gradient-to-r from-vocalia-400 to-vocalia-500 rounded-xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity"></div>
-        <!-- Button surface -->
-        <div class="relative flex items-center px-8 py-4 bg-white rounded-xl text-vocalia-700 group-hover:text-vocalia-800">
+      <!-- Badge -->
+      <div class="inline-flex items-center px-3 py-1 rounded-full bg-vocalia-500/10 border border-vocalia-500/20 text-vocalia-300 text-sm mb-6">
+        <i data-lucide="zap" class="w-4 h-4 mr-2"></i>
+        <span>Déploiement en 5 minutes</span>
+      </div>
+
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer Votre Service Client?</h2>
+      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
+
+      <!-- CTA Buttons - Linear style -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <!-- Primary CTA -->
+        <a href="/pricing" class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25">
           <span data-i18n="cta.button">Démarrer Maintenant</span>
-          <i data-lucide="sparkles" class="w-5 h-5 ml-2 group-hover:animate-pulse"></i>
-        </div>
-      </a>
+          <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+        </a>
+        <!-- Secondary CTA -->
+        <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 hover:border-white/20 transition-all duration-200">
+          <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
+          <span data-i18n="cta.demo">Demander une Démo</span>
+        </a>
+      </div>
     </div>
   </section>
   <!-- Newsletter CTA -->
