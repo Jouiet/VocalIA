@@ -5,7 +5,7 @@
  *
  * Session 249.5 - v0.5.1 - REAL Implementation (NO MOCKS) + BM25 RAG
  *
- * TOOL CATEGORIES (106 tools - 11 always available, 95 require services):
+ * TOOL CATEGORIES (114 tools - 11 always available, 103 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -19,7 +19,7 @@
  * - UCP Inline (1): ucp_sync [REQUIRE UCP]
  * - Booking Tools (2): booking_schedule_callback, booking_create [ALWAYS - FILE PERSISTENCE]
  *
- * EXTERNAL MODULE TOOLS (83):
+ * EXTERNAL MODULE TOOLS (91):
  * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
  * - UCP Tools (3): ucp_sync_preference, ucp_get_profile, ucp_list_profiles [REQUIRE UCP]
@@ -36,8 +36,10 @@
  * - Crisp Tools (6): crisp_list_conversations, crisp_get_conversation, crisp_get_messages, crisp_send_message, crisp_update_conversation_state, crisp_get_people_profile [REQUIRE CRISP]
  * - Zoho CRM Tools (6): zoho_list_leads, zoho_get_lead, zoho_create_lead, zoho_list_contacts, zoho_list_deals, zoho_search_records [REQUIRE ZOHO]
  * - Magento Tools (6): magento_list_orders, magento_get_order, magento_list_products, magento_get_product, magento_get_stock, magento_list_customers [REQUIRE MAGENTO]
+ * - Export Tools (5): export_generate_csv, export_generate_xlsx, export_generate_pdf, export_generate_pdf_table, export_list_files [LOCAL]
+ * - Email Tools (3): email_send, email_send_template, email_verify_smtp [REQUIRE SMTP]
  *
- * TOTAL: 106 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 114 tools (SOTA - Vapi has 8, Twilio has 5)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
  * All logging must use console.error.
@@ -66,6 +68,8 @@ import { intercomTools } from "./tools/intercom.js";
 import { crispTools } from "./tools/crisp.js";
 import { zohoTools } from "./tools/zoho.js";
 import { magentoTools } from "./tools/magento.js";
+import { exportTools } from "./tools/export.js";
+import { emailTools } from "./tools/email.js";
 
 const execAsync = promisify(exec);
 
@@ -1308,18 +1312,36 @@ server.tool(magentoTools.get_stock.name, magentoTools.get_stock.parameters, mage
 server.tool(magentoTools.list_customers.name, magentoTools.list_customers.parameters, magentoTools.list_customers.handler);
 
 // =============================================================================
+// EXPORT TOOLS (5) - Document Generation (CSV, XLSX, PDF)
+// =============================================================================
+
+server.tool(exportTools.generate_csv.name, exportTools.generate_csv.parameters, exportTools.generate_csv.handler);
+server.tool(exportTools.generate_xlsx.name, exportTools.generate_xlsx.parameters, exportTools.generate_xlsx.handler);
+server.tool(exportTools.generate_pdf.name, exportTools.generate_pdf.parameters, exportTools.generate_pdf.handler);
+server.tool(exportTools.generate_pdf_table.name, exportTools.generate_pdf_table.parameters, exportTools.generate_pdf_table.handler);
+server.tool(exportTools.list_exports.name, exportTools.list_exports.parameters, exportTools.list_exports.handler);
+
+// =============================================================================
+// EMAIL TOOLS (3) - SMTP Email Sending
+// =============================================================================
+
+server.tool(emailTools.send_email.name, emailTools.send_email.parameters, emailTools.send_email.handler);
+server.tool(emailTools.send_email_with_template.name, emailTools.send_email_with_template.parameters, emailTools.send_email_with_template.handler);
+server.tool(emailTools.verify_smtp.name, emailTools.verify_smtp.parameters, emailTools.verify_smtp.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.5.1 running on stdio");
+  console.error("VocalIA MCP Server v0.5.3 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 75 (11 always available, 64 require external services)");
-  console.error("Google Tools: Sheets (5), Drive (6), Docs (4), Calendar (2)");
-  console.error("Integrations: Calendly (6), Freshdesk (6), Pipedrive (7)");
+  console.error("Tools: 114 (11 always available, 103 require external services)");
+  console.error("Export: CSV, XLSX, PDF generation | Email: SMTP with templates");
+  console.error("Integrations: 19/20 (95%) + Export + Email");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
 }
 
