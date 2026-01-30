@@ -1,6 +1,6 @@
 # VocalIA - Design & Branding System
 
-> **Version**: 4.5.0 | **Date**: 30/01/2026 | **Session**: 228.2
+> **Version**: 4.6.0 | **Date**: 30/01/2026 | **Session**: 249.13
 > **Palette**: OKLCH P3 Wide-Gamut "4K" Colors | **Brand Assets**: Complete ✅
 > **Research**: Apple Liquid Glass, GitHub ihlamury/design-skills, LogRocket OKLCH, CodePen 3D Tilt
 > **Security**: Technology Disclosure Protection (Session 222)
@@ -373,6 +373,23 @@ transition: all 0.3s ease;
 | Focus States | `ring-vocalia-500` visible outline |
 | Skip Links | "Aller au contenu principal" |
 | ARIA Labels | All interactive elements |
+| **Touch Targets** | **min 44×44px** (WCAG 2.5.5) |
+
+### Touch Target Standards (Session 249.13)
+
+| Element | Classes | Minimum Size |
+|:--------|:--------|:-------------|
+| Mobile hamburger | `min-h-[44px] min-w-[44px]` | 44×44px |
+| Icon buttons | `p-3` or `w-12 h-12` | 44×44px |
+| Form buttons | `py-3 px-6` | Height ≥44px |
+| Close buttons | `w-10 h-10` → `w-12 h-12` | 44×44px |
+
+**Implementation Pattern:**
+```html
+<button class="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center">
+  <i data-lucide="menu" class="w-6 h-6"></i>
+</button>
+```
 
 ### Color Contrast Verification
 
