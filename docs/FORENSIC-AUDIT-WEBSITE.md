@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 4.6.0 | **Date**: 30/01/2026 | **Session**: 237
+> **Version**: 4.7.0 | **Date**: 30/01/2026 | **Session**: 238
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: Technology Disclosure Protection ✅ (Session 222)
@@ -8,9 +8,10 @@
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
 > **Blog**: 7 articles with working links ✅ (Session 224.2)
 > **Docs**: /docs/ serves docs/index.html ✅ (Session 224.2)
-> **Dashboards**: Liquid-Glass + Light Mode + Semantic Icons ✅ (Session 235)
+> **Dashboards**: Liquid-Glass + Light Mode + Language Switcher ✅ (Session 238)
 > **i18n**: 5 Languages (FR, EN, ES, AR, ARY) + RTL Support ✅ (Session 236)
-> **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229, 237)
+> **Footer i18n**: 30 keys × 29 pages (870 total) ✅ (Session 238)
+> **Visual Testing**: Playwright MCP verified ✅ (Session 226, 229, 238)
 > **Integrations**: 21 brand SVG logos + seamless marquee ✅ (Session 228.2)
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
@@ -1125,6 +1126,132 @@ User requested full 5-language support for website (FR, EN, ES, AR, ARY) and mod
 
 ---
 
+## 🌍 Session 236: Complete Voice Assistant i18n (30/01/2026)
+
+### Context
+
+Extended voice assistant to support all 5 languages with complete translations.
+
+### New Voice Assistant Language Files
+
+| File | Language | Keys | RTL |
+|:-----|:---------|:----:|:---:|
+| `voice-es.json` | Spanish | 143 | No |
+| `voice-ar.json` | Arabic MSA | 143 | Yes |
+| `voice-ary.json` | Darija | 143 | Yes |
+
+### Language Switcher Propagation
+
+Propagated 5-language switcher to all pages:
+- 21 core pages
+- 7 blog articles
+- **Total: 28 files**
+
+### Commits Session 236
+
+- `bc661d1` - feat(i18n): Complete 5-language support (+1,776 lines)
+
+---
+
+## 🔧 Session 237: Tailwind CSS Safelist Fix (30/01/2026)
+
+### Context
+
+Tailwind CSS v4 pre-compilation was missing opacity classes not originally used in HTML.
+
+### Problem
+
+- `bg-white/25`, `bg-white/30` needed for marquee band
+- Workaround was inline `style="background-color: rgba(255,255,255,0.25)"`
+
+### Solution
+
+Added comprehensive safelist utilities to `input.css`:
+
+```css
+.safelist-white-opacity { @apply bg-white/5 ... bg-white/90; }
+.safelist-slate-opacity { @apply bg-slate-500/20 ... bg-slate-800/95; }
+.safelist-black-opacity { @apply bg-black/10 ... bg-black/80; }
+.safelist-vocalia-opacity { @apply bg-vocalia-500/10 ... bg-vocalia-600/30; }
+.safelist-border-opacity { @apply border-white/10 ... border-slate-700/70; }
+```
+
+### Metrics
+
+| Metric | Before | After |
+|:-------|:------:|:-----:|
+| CSS file size | 130KB | **141KB** |
+| Opacity classes | ~20 | **60+** |
+| Inline style workarounds | 1 | **0** |
+
+### Commits Session 237
+
+- `acf97d4` - fix(css): Add safelist for opacity classes
+
+---
+
+## 🌍 Session 238: Footer i18n + Dashboard Language Switchers (30/01/2026)
+
+### Context
+
+Completed full internationalization of footer across all 29 pages.
+
+### 1. Footer i18n Keys (Complete)
+
+Added 30 `data-i18n` attributes to footer:
+
+| Category | Keys Added |
+|:---------|:-----------|
+| Headings | `footer.product`, `footer.solutions`, `footer.resources`, `footer.company` |
+| Links | `footer.links.*` (17 keys: features, pricing, voice_widget, etc.) |
+| Trust | `footer.trust.*` (5 keys: gdpr, ai_act, security, languages, reliability) |
+| Meta | `footer.tagline`, `footer.copyright` |
+
+**Total:** 30 keys × 29 pages = **870 i18n attributes**
+
+### 2. Locale Files Extended
+
+All 5 locale files updated with expanded footer section:
+- `fr.json`, `en.json`, `es.json`, `ar.json`, `ary.json`
+
+### 3. Dashboard Language Switchers
+
+Added 5-language switcher to both dashboards:
+- `dashboard/client.html` - Language switcher in header
+- `dashboard/admin.html` - Language switcher in header
+
+### 4. Propagation Script
+
+Created `scripts/propagate-footer-i18n.py` for future maintenance.
+
+### Verification (Playwright MCP)
+
+| Test | Result |
+|:-----|:------:|
+| Footer FR display | ✅ |
+| Language switch FR→EN | ✅ |
+| Footer EN translation | ✅ All 30 keys translated |
+| Trust badges translated | ✅ GDPR, AI Act, 5 Languages, etc. |
+
+### Files Updated
+
+29 HTML files with standardized footer i18n:
+- 6 core pages (index, features, pricing, about, contact, integrations)
+- 2 product pages
+- 4 use-case pages
+- 5 industry pages
+- 2 docs pages
+- 2 legal pages
+- 7 blog articles
+- 1 blog index
+
+### Commits Session 238
+
+- `ac6381e` - feat(dashboard): Add 5-language switcher to dashboards
+- `ee02759` - feat(i18n): Add complete footer i18n keys to 29 pages
+
+---
+
 *Document créé: 28/01/2026 - Session 200*
-*Mise à jour: 30/01/2026 - Session 235 (5-Language Support + Icon Modernization)*
+*Mise à jour: 30/01/2026 - Session 238 (Footer i18n + Dashboard Language Switchers)*
 *Auteur: Claude Code (DOE Framework)*

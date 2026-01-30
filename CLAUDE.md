@@ -1,10 +1,10 @@
 # VocalIA - Voice AI Platform
 >
-> Version: 4.6.0 | 30/01/2026 | Session 237 | Backend: 99/100 | Frontend: ~97% | Health: 100%
+> Version: 4.7.0 | 30/01/2026 | Session 238 | Backend: 99/100 | Frontend: ~97% | Health: 100%
 > CI/CD: ✅ VocalIA CI (30s) | ✅ Deploy (14s) | Live Site Verified ✅
 > SDKs: ✅ Python | ✅ Node.js | MCP Server v0.3.2 (21 tools: 10 local, 11 ext) NO MOCKS
-> Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅
-> i18n: ✅ 5 Languages (FR, EN, ES, AR, ARY) | RTL ✅ | 37 pages ✅ | Voice Assistant 5 langs ✅
+> Dashboards: Lucide Icons ✅ (25 SVG) | Light/Dark Toggle ✅ | Liquid-Glass Cards ✅ | Language Switcher ✅
+> i18n: ✅ 5 Languages (FR, EN, ES, AR, ARY) | RTL ✅ | 29 pages ✅ | Footer i18n 30 keys ✅
 > CSS: Tailwind v4.1.18 ✅ | Safelist opacity classes ✅ | 141KB compiled
 
 ## Identité
@@ -2023,12 +2023,70 @@ Added safelist utilities to `input.css`:
 
 ---
 
-*Màj: 30/01/2026 - Session 237 (CSS Safelist Fix)*
+## Session 238 Summary
+
+**Footer i18n + Dashboard Language Switchers:**
+
+### 1. Footer i18n Keys (Complete)
+
+Added 30 `data-i18n` attributes to footer across all 29 pages:
+
+| Category | Keys Added |
+|:---------|:-----------|
+| Headings | `footer.product`, `footer.solutions`, `footer.resources`, `footer.company` |
+| Links | `footer.links.*` (17 keys: features, pricing, voice_widget, etc.) |
+| Trust | `footer.trust.*` (5 keys: gdpr, ai_act, security, languages, reliability) |
+| Meta | `footer.tagline`, `footer.copyright` |
+
+**Total:** 30 keys × 29 pages = **870 i18n attributes**
+
+### 2. Locale Files Extended
+
+All 5 locale files updated with expanded footer section:
+- `fr.json`, `en.json`, `es.json`, `ar.json`, `ary.json`
+
+### 3. Dashboard Language Switchers
+
+Added 5-language switcher to both dashboards:
+- `dashboard/client.html` - Language switcher in header
+- `dashboard/admin.html` - Language switcher in header
+
+### 4. Propagation Script
+
+Created `scripts/propagate-footer-i18n.py` for future maintenance.
+
+### Verification (Playwright MCP)
+
+| Test | Result |
+|:-----|:------:|
+| Footer FR display | ✅ |
+| Language switch FR→EN | ✅ |
+| Footer EN translation | ✅ All 30 keys translated |
+| Trust badges translated | ✅ GDPR, AI Act, 5 Languages, etc. |
+
+### Commits Session 238
+
+- `ac6381e` - feat(dashboard): Add 5-language switcher to dashboards
+- `ee02759` - feat(i18n): Add complete footer i18n keys to 29 pages
+
+---
+
+### Plan Actionnable (Session 239)
+
+| # | Action | Priorité | Notes |
+|:-:|:-------|:--------:|:------|
+| 1 | User: `twine upload` + `npm publish` | **P0** | Requires user credentials |
+| 2 | Deploy API backend (api.vocalia.ma) | P1 | For SDKs/MCP to work in production |
+| 3 | MCP Server npm publish | P2 | After API deploy |
+
+---
+
+*Màj: 30/01/2026 - Session 238 (Footer i18n + Dashboard Language Switchers)*
 *Status: Backend 99/100 ✅ | Frontend ~97% ✅ | Health 100% (39/39)*
 *Live: https://vocalia.ma ✅ | Deployment: NindoHost FTP via GitHub Actions*
 *SDKs: Python ✅ BUILD READY | Node.js ✅ BUILD READY | MCP v0.3.2 (21 tools)*
-*i18n: 5 Languages ✅ | 37 pages ✅ | Voice Assistant 5 langs ✅ | RTL Support ✅*
-*Dashboards: Lucide Icons ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
+*i18n: 5 Languages ✅ | 29 pages ✅ | Footer 870 keys ✅ | RTL Support ✅*
+*Dashboards: Language Switcher ✅ | Light/Dark Toggle ✅ | Liquid-Glass ✅*
 *Stats: < 100ms ✅ | 5 langues ✅ | 30 personas ✅ | 99.9% uptime ✅*
 *Compliance: WCAG 2.1 AA 100%, GDPR, AI Act, HIPAA, PCI DSS, Loi 09-08*
 *Voir: docs/FORENSIC-AUDIT-WEBSITE.md pour audit complet*
