@@ -1,6 +1,6 @@
 # VocalIA Frontend Forensic Audit - Complete Analysis
 
-> **Version**: 1.1.0 | **Date**: 31/01/2026 | **Session**: 250.21
+> **Version**: 1.2.0 | **Date**: 31/01/2026 | **Session**: 250.21
 > **Auditor**: Claude Code Forensic Analysis
 > **Methodology**: Direct tool verification (Grep, Read, Bash) - No agents
 

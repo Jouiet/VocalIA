@@ -5022,7 +5022,33 @@ grep -r '178' --include='*.html' | grep -i 'tool\|MCP' | wc -l  # 20+ ✅
 
 **Statut final**: Session 250.21 | Marketing Copy 100% Factuel ✅
 
+### 6. Audit Approfondi (Deep Forensic)
+
+| Issue | Action | Fichiers |
+|:------|:-------|:---------|
+| **Case Studies fictifs** | Disclaimers ajoutés (benchmarks sectoriels) | 2 blog articles |
+| **ROI 250%/300%/900%** | "ROI potentiel" + footnote sources | academie-business |
+| **"Unique sur le marché"** | Reformulé factuel | pricing, voice-telephony, academie |
+| **Darija 30M** | Corrigé → **40M locuteurs** | pricing, locales |
+
+### 7. Sources Citées (Légitimité)
+
+- MGMA Healthcare Benchmarks 2024
+- NAR Real Estate Technology Survey 2024
+- Gartner Customer Service Report 2025
+
+### 8. Vérification Cohérence Prix
+
+| Prix | Occurrences | Contexte |
+|:-----|:-----------:|:---------|
+| 0.06€ | 23 | VocalIA tarif |
+| 0.33€ | 5 | Concurrent (Vapi max) |
+| 0.31€ | 3 | Concurrent (Retell max) |
+| 0.09€ | 2 | Concurrent (Bland) |
+
+**Commits**: 89c8aad + 8c774b3
+
 ---
 
-*Màj: 31/01/2026 - Session 250.21 (Marketing Copy Forensic Audit)*
+*Màj: 31/01/2026 - Session 250.21 (Marketing Copy Forensic Audit - Deep)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
