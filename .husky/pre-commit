@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# VocalIA Pre-commit Hook
+# Runs tests and lint checks before allowing commit
+
+echo "🔍 Running pre-commit checks..."
+
+# Run tests
+echo "📋 Running tests..."
+npm test || exit 1
+
+# Check JSON validity
+echo "📄 Checking JSON files..."
+for f in package.json telephony/knowledge_base.json; do
+  node -e "JSON.parse(require('fs').readFileSync('$f'))" || exit 1
+done
+
+echo "✅ All pre-commit checks passed!"

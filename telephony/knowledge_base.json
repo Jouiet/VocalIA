@@ -18,11 +18,6 @@
         "offre_nouveau_patient": "Le forfait 'Nouveau Patient' à 99€ comprend l'examen, les radios et le détartrage.",
         "dentiste": "Le Dr. Lumière est notre dentiste principal, spécialiste en implantologie et esthétique dentaire."
     },
-    "hoa_support_v1": {
-        "poubelles": "Le ramassage des ordures a lieu le mardi matin. Le recyclage un mardi sur deux.",
-        "piscine": "La piscine communautaire est ouverte de 8h à 22h tous les jours. Badge requis.",
-        "parking": "Le stationnement des invités est limité à 48 heures. Permis requis pour les séjours plus longs."
-    },
     "agency_v2": {
         "services": "VocalIA propose des agents IA vocaux, des automatisations e-commerce (Shopify) et des systèmes de marketing agentique Level 5.",
         "mission": "Notre mission est de transformer les agences et boutiques en moteurs autonomes ultra-performants.",
@@ -76,18 +71,6 @@
         "echeancier": "Des facilités de paiement peuvent être accordées après étude de votre dossier.",
         "contact_litiges": "Pour toute contestation, envoyez un email à recouvrement@service-ethique.fr.",
         "horaires": "Service disponible du lundi au vendredi de 9h à 17h."
-    },
-    "surveyor_v1": {
-        "enquete": "Nous réalisons des enquêtes NPS pour mesurer la satisfaction globale.",
-        "confidentialite": "Toutes vos réponses sont anonymes et traitées de manière agrégée.",
-        "recompense": "Participez à notre tirage au sort mensuel après avoir complété le questionnaire.",
-        "usage": "Vos retours nous aident à améliorer nos services en continu."
-    },
-    "governor_v1": {
-        "etat_civil": "Demandes d'actes de naissance, mariage ou décès possibles en ligne.",
-        "urbanisme": "Dépôt de permis de construire le lundi et mercredi matin uniquement.",
-        "dechets": "Collecte sélective le mercredi soir, encombrants le premier vendredi du mois.",
-        "contact": "Accueil général ouverts aux horaires de bureau habituels."
     },
     "insurer_v1": {
         "sinistre": "Déclarez votre sinistre sous 5 jours ouvrés via l'application mobile ou par téléphone.",

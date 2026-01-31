@@ -29,12 +29,15 @@ providers: [
 // Trigger: Latency > 15s OR Status != 200
 ```
 
-## 30 Personas (voice-persona-injector.cjs)
+## 41 Personas (voice-persona-injector.cjs) - Session 250.6
 | Tier | Count | Examples |
 |:-----|:-----:|:---------|
-| Tier 1 (Core) | 7 | AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL |
-| Tier 2 (Expansion) | 11 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST... |
-| Tier 3 (Extended) | 12 | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER... |
+| Tier 1 (Core) | 5 | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
+| Tier 2 (Expansion) | 17 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER... |
+| Tier 3 (Universal) | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
+| Tier 4 (NEW Economy) | 15 | RETAILER, BUILDER, DRIVER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, DOCTOR, NOTARY, BAKERY... |
+
+**Removed (Session 250.6):** GOVERNOR, SCHOOL, HOA, SURVEYOR (admin personas outside business scope)
 
 ## 11 Function Tools (voice-telephony-bridge.cjs)
 | Tool | Ligne | Purpose |

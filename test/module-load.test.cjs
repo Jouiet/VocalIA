@@ -105,18 +105,13 @@ describe('Widget Modules', () => {
 });
 
 describe('Knowledge Base Modules', () => {
-  test('vector-store loads', () => {
-    const mod = require('../knowledge-base/src/vector-store.cjs');
+  test('knowledge-base-services loads', () => {
+    const mod = require('../core/knowledge-base-services.cjs');
     assert.ok(mod, 'Module should export something');
   });
 
-  test('rag-query loads', () => {
-    const mod = require('../knowledge-base/src/rag-query.cjs');
-    assert.ok(mod, 'Module should export something');
-  });
-
-  test('catalog-extractor loads', () => {
-    const mod = require('../knowledge-base/src/catalog-extractor.cjs');
+  test('knowledge-embedding-service loads', () => {
+    const mod = require('../core/knowledge-embedding-service.cjs');
     assert.ok(mod, 'Module should export something');
   });
 });

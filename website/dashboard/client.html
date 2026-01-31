@@ -28,6 +28,12 @@
     rel="stylesheet">
 
 
+  <style>
+    .glass {
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
+  </style>
 </head>
 
 <body class="bg-slate-800 text-white min-h-screen">
@@ -92,7 +98,8 @@
           <p class="text-sm font-medium truncate">Jean Dupont</p>
           <p class="text-xs text-vocalia-400 truncate">Pro Plan</p>
         </div>
-        <button class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
+        <button
+          class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
           <i data-lucide="activity" class="w-5 h-5 text-vocalia-400"></i>
         </button>
       </div>
@@ -112,16 +119,34 @@
         <div class="flex items-center space-x-4">
           <!-- Language Switcher -->
           <div class="relative">
-            <button onclick="toggleLangDropdown()" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <button onclick="toggleLangDropdown()"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
+              aria-label="Changer de langue">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
               <span id="currentLang" class="text-sm font-medium">FR</span>
             </button>
-            <div id="langDropdown" class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-slate-700/95 backdrop-blur-xl border border-slate-600/50 shadow-xl z-50 overflow-hidden">
-              <button onclick="switchLang('fr')" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">FR - Français</button>
-              <button onclick="switchLang('en')" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">EN - English</button>
-              <button onclick="switchLang('es')" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">ES - Español</button>
-              <button onclick="switchLang('ar')" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">العربية - AR</button>
-              <button onclick="switchLang('ary')" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">الدارجة - ARY</button>
+            <div id="langDropdown"
+              class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-slate-700/95 backdrop-blur-xl border border-slate-600/50 shadow-xl z-50 overflow-hidden">
+              <button onclick="switchLang('fr')"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">FR
+                - Français</button>
+              <button onclick="switchLang('en')"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">EN
+                - English</button>
+              <button onclick="switchLang('es')"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">ES
+                - Español</button>
+              <button onclick="switchLang('ar')" dir="rtl"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">العربية
+                - AR</button>
+              <button onclick="switchLang('ary')" dir="rtl"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">الدارجة
+                - ARY</button>
             </div>
           </div>
           <!-- Theme Toggle -->
@@ -172,7 +197,7 @@
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.minutes_used">Minutes utilisées</p>
             <!-- Progress bar -->
             <div class="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full" style="width: 73%">
+              <div class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full w-[73%]">
               </div>
             </div>
           </div>
@@ -219,38 +244,38 @@
           <!-- Simple Chart -->
           <div class="flex items-end justify-between h-48 gap-2">
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
-                style="height: 60%; animation-delay: 0s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg h-[60%]"
+                style="animation-delay: 0s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Lun</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
-                style="height: 80%; animation-delay: 0.1s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg h-[80%]"
+                style="animation-delay: 0.1s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Mar</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
-                style="height: 45%; animation-delay: 0.2s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg h-[45%]"
+                style="animation-delay: 0.2s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Mer</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
-                style="height: 90%; animation-delay: 0.3s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg h-[90%]"
+                style="animation-delay: 0.3s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Jeu</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
-                style="height: 75%; animation-delay: 0.4s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg h-[75%]"
+                style="animation-delay: 0.4s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Ven</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
-                style="height: 30%; animation-delay: 0.5s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg h-[30%]"
+                style="animation-delay: 0.5s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Sam</span>
             </div>
             <div class="flex-1 flex flex-col items-center">
-              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg"
-                style="height: 25%; animation-delay: 0.6s;"></div>
+              <div class="chart-bar w-full bg-gradient-to-t from-vocalia-600 to-vocalia-400 rounded-t-lg h-[25%]"
+                style="animation-delay: 0.6s;"></div>
               <span class="text-xs text-vocalia-400 mt-2">Dim</span>
             </div>
           </div>
@@ -266,7 +291,7 @@
                 <span class="text-vocalia-400">62%</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-500 rounded-full" style="width: 62%"></div>
+                <div class="h-full bg-vocalia-500 rounded-full w-[62%]"></div>
               </div>
             </div>
             <div>
@@ -275,7 +300,7 @@
                 <span class="text-vocalia-400">18%</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-400 rounded-full" style="width: 18%"></div>
+                <div class="h-full bg-vocalia-400 rounded-full w-[18%]"></div>
               </div>
             </div>
             <div>
@@ -284,7 +309,7 @@
                 <span class="text-vocalia-400">12%</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-300 rounded-full" style="width: 12%"></div>
+                <div class="h-full bg-vocalia-300 rounded-full w-[12%]"></div>
               </div>
             </div>
             <div>
@@ -293,7 +318,7 @@
                 <span class="text-vocalia-400">5%</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-200 rounded-full" style="width: 5%"></div>
+                <div class="h-full bg-vocalia-200 rounded-full w-[5%]"></div>
               </div>
             </div>
             <div>
@@ -302,7 +327,7 @@
                 <span class="text-vocalia-400">3%</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-100 rounded-full" style="width: 3%"></div>
+                <div class="h-full bg-vocalia-100 rounded-full w-[3%]"></div>
               </div>
             </div>
           </div>
@@ -321,8 +346,7 @@
           </div>
           <div class="space-y-4">
             <!-- Agent 1 -->
-            <div
-              class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-400/20 flex items-center justify-center">
@@ -334,15 +358,15 @@
                 </div>
               </div>
               <div class="flex items-center space-x-3">
-                <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle" class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
+                <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
+                    class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
                 <button class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400"></i>
                 </button>
               </div>
             </div>
             <!-- Agent 2 -->
-            <div
-              class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-400/20 flex items-center justify-center">
@@ -354,15 +378,15 @@
                 </div>
               </div>
               <div class="flex items-center space-x-3">
-                <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle" class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
+                <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
+                    class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
                 <button class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400"></i>
                 </button>
               </div>
             </div>
             <!-- Agent 3 -->
-            <div
-              class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-400/20 flex items-center justify-center">
@@ -374,7 +398,8 @@
                 </div>
               </div>
               <div class="flex items-center space-x-3">
-                <span class="flex items-center text-sm text-yellow-400"><i data-lucide="pause-circle" class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Pause</span>
+                <span class="flex items-center text-sm text-yellow-400"><i data-lucide="pause-circle"
+                    class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Pause</span>
                 <button class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400"></i>
                 </button>
@@ -425,9 +450,11 @@
             <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-700/30 transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                  <svg class="w-5 h-5 w-400 text-yellow-400" viewBox="0 0 24 24" fill="currentColor" aria-label="X (Twitter)">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
+                  <svg class="w-5 h-5 w-400 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"
+                    aria-label="X (Twitter)">
+                    <path
+                      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
                 </div>
                 <div>
                   <p class="font-medium">+212 6XX XXX XX3</p>
@@ -576,13 +603,13 @@
     })();
   </script>
 
-    <!-- Lucide Icons 2026 -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-      });
-    </script>
+  <!-- Lucide Icons 2026 -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+  </script>
 </body>
 
 </html>

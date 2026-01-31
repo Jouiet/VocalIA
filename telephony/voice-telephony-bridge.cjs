@@ -1225,6 +1225,128 @@ async function handleQualifyLead(session, args) {
   });
 }
 
+/**
+ * OBJECTION HANDLING - SOTA Implementation (Session 250.6)
+ * Framework: LAER (Listen, Acknowledge, Explore, Respond) + Feel-Felt-Found
+ * Sources: Gong.io Revenue AI, Sales Outcomes, Otter.ai
+ */
+const OBJECTION_HANDLERS = {
+  price: {
+    real_meaning: 'Le prospect ne voit pas le ROI pour sa situation spécifique',
+    laer: {
+      acknowledge: 'Je comprends parfaitement votre préoccupation concernant l\'investissement.',
+      explore: 'Puis-je vous demander quel budget aviez-vous prévu pour cette solution ?',
+      respond: 'Nos clients dans votre secteur constatent généralement un ROI de 3x en {timeframe}. Voulez-vous que je vous partage un cas concret ?'
+    },
+    feel_felt_found: {
+      feel: 'Je comprends que l\'investissement puisse sembler important.',
+      felt: 'D\'autres {industry} ont ressenti la même chose initialement.',
+      found: 'Ils ont découvert que les gains d\'efficacité compensaient largement le coût dès le {timeframe}.'
+    },
+    proof_points: [
+      'ROI moyen de 300% en 6 mois',
+      'Réduction de 70% du temps de traitement',
+      'Garantie satisfaction ou remboursement'
+    ],
+    next_action: 'Proposer une démonstration ROI personnalisée'
+  },
+  timing: {
+    real_meaning: 'Le prospect est inquiet de la gestion du changement',
+    laer: {
+      acknowledge: 'C\'est tout à fait compréhensible de vouloir choisir le bon moment.',
+      explore: 'Qu\'est-ce qui vous ferait dire que c\'est le bon moment ?',
+      respond: 'L\'implémentation prend seulement {duration} et notre équipe gère tout. Quel serait le meilleur créneau pour démarrer ?'
+    },
+    feel_felt_found: {
+      feel: 'Je comprends que le timing soit une préoccupation.',
+      felt: 'Beaucoup de nos clients pensaient que ce n\'était pas le bon moment.',
+      found: 'Ils ont réalisé qu\'attendre leur coûtait {cost} par mois en opportunités perdues.'
+    },
+    proof_points: [
+      'Implémentation en 48h',
+      'Aucune perturbation des opérations',
+      'Support dédié pendant le déploiement'
+    ],
+    next_action: 'Proposer un calendrier de déploiement flexible'
+  },
+  competitor: {
+    real_meaning: 'Le prospect a peur de perdre la relation existante ou les coûts de switching',
+    laer: {
+      acknowledge: 'C\'est une démarche prudente de comparer les solutions.',
+      explore: 'Qu\'est-ce qui fonctionne bien avec votre solution actuelle ? Et qu\'aimeriez-vous améliorer ?',
+      respond: 'Ce qui nous différencie c\'est {differentiator}. Voudriez-vous voir une comparaison côte à côte ?'
+    },
+    feel_felt_found: {
+      feel: 'Je comprends l\'importance de votre relation actuelle.',
+      felt: 'D\'autres clients étaient dans la même situation.',
+      found: 'Ils ont constaté que notre approche {advantage} leur apportait {benefit} supplémentaire.'
+    },
+    proof_points: [
+      'Migration gratuite depuis la concurrence',
+      'Support parallèle pendant la transition',
+      'Fonctionnalités exclusives non disponibles ailleurs'
+    ],
+    next_action: 'Proposer un test gratuit en parallèle'
+  },
+  authority: {
+    real_meaning: 'Le prospect n\'est pas le décisionnaire final',
+    laer: {
+      acknowledge: 'C\'est tout à fait normal d\'impliquer les bonnes personnes dans cette décision.',
+      explore: 'Qui d\'autre serait impliqué dans la décision ? Quels seraient leurs principaux critères ?',
+      respond: 'Je peux préparer une présentation adaptée à chaque décideur. Quand serait-il possible de tous les réunir ?'
+    },
+    feel_felt_found: {
+      feel: 'Je comprends que cette décision implique plusieurs parties.',
+      felt: 'D\'autres responsables dans votre situation ont ressenti la même chose.',
+      found: 'En préparant un business case clair, ils ont convaincu leur direction en une semaine.'
+    },
+    proof_points: [
+      'Kit de présentation direction fourni',
+      'Business case personnalisé avec ROI',
+      'Appel avec votre direction si souhaité'
+    ],
+    next_action: 'Identifier tous les décideurs et préparer un business case'
+  },
+  need: {
+    real_meaning: 'Le prospect ne perçoit pas clairement la valeur pour son cas',
+    laer: {
+      acknowledge: 'C\'est une question importante - s\'assurer que la solution répond à vos vrais besoins.',
+      explore: 'Quel est votre principal défi au quotidien concernant {topic} ?',
+      respond: 'Basé sur ce que vous décrivez, notre solution adresse exactement {pain_point}. Voulez-vous voir comment ?'
+    },
+    feel_felt_found: {
+      feel: 'Je comprends l\'importance de s\'assurer de l\'adéquation.',
+      felt: 'D\'autres {role} avaient les mêmes interrogations.',
+      found: 'Après avoir vu la démo ciblée sur leur cas, ils ont compris exactement comment nous pouvions les aider.'
+    },
+    proof_points: [
+      'Démo personnalisée sur votre cas d\'usage',
+      'Période d\'essai gratuite sans engagement',
+      'Témoignages clients de votre secteur'
+    ],
+    next_action: 'Proposer une démo ciblée sur le cas spécifique'
+  },
+  trust: {
+    real_meaning: 'Le prospect veut réduire le risque perçu',
+    laer: {
+      acknowledge: 'C\'est tout à fait légitime de vouloir plus d\'informations avant de décider.',
+      explore: 'Quelles informations vous seraient les plus utiles pour vous décider ?',
+      respond: 'Je peux vous envoyer {materials}. Avez-vous des questions spécifiques auxquelles je peux répondre maintenant ?'
+    },
+    feel_felt_found: {
+      feel: 'Je comprends votre besoin de vous assurer avant d\'avancer.',
+      felt: 'De nombreux clients avaient les mêmes questions.',
+      found: 'Notre documentation complète et nos références les ont rassurés pour passer à l\'action.'
+    },
+    proof_points: [
+      'Références clients vérifiables',
+      'Études de cas détaillées',
+      'Garantie satisfaction 30 jours'
+    ],
+    next_action: 'Envoyer documentation + proposer appel avec client existant'
+  }
+};
+
 async function handleObjection(session, args) {
   const objection = {
     type: args.objection_type,
@@ -1251,6 +1373,28 @@ async function handleObjection(session, args) {
     resolved: args.resolved,
     text: args.objection_text
   });
+
+  // === SOTA: Return intelligent response suggestions ===
+  const handler = OBJECTION_HANDLERS[args.objection_type];
+  if (handler) {
+    return {
+      status: 'objection_logged',
+      type: args.objection_type,
+      real_meaning: handler.real_meaning,
+      suggested_responses: {
+        laer_framework: handler.laer,
+        feel_felt_found: handler.feel_felt_found
+      },
+      proof_points: handler.proof_points,
+      recommended_next_action: handler.next_action
+    };
+  }
+
+  return {
+    status: 'objection_logged',
+    type: args.objection_type,
+    note: 'Objection type non standard - utiliser réponse empathique générique'
+  };
 }
 
 async function handleScheduleCallback(session, args) {

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+*.min.js
+*.min.css
+website/public/css/style.css
+mcp-server/node_modules/
+mcp-server/dist/
+sdks/node/node_modules/
+sdks/node/dist/
+package-lock.json
+*.md

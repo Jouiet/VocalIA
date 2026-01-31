@@ -2,7 +2,7 @@
 ## Rapport Complet, Factuel et Vérifiable
 
 > **Date:** 31/01/2026
-> **Session:** 250.3 (Version Complète)
+> **Session:** 250.6 (Tests Expansion)
 > **Méthode:** Bottom-up (faits → conclusions)
 > **Auditeur:** Claude Opus 4.5
 > **Durée:** ~60 minutes d'analyse
@@ -48,13 +48,13 @@
 | **Security** | 88/100 | 29 fonctions, RateLimiter, CSRF, XSS protection |
 | **Frontend/SEO** | 85/100 | Solide mais lacunes critiques |
 | **i18n** | 78/100 | Structure OK, traductions incomplètes |
-| **Tests** | 25/100 | 21 smoke tests, ~5% coverage |
+| **Tests** | 45/100 | 87 tests (SecretVault 11, RateLimiter 55, Module 21) |
 | **CI/CD** | 75/100 | 2 workflows, manque coverage gate |
 | **SDKs** | 80/100 | Python + Node complets, docs manquantes |
 | **Conversion** | 70/100 | Signup créé ✅, forms fake restants |
 | **Fonctionnel** | 60/100 | Dashboards mockups |
 | **Documentation** | 95/100 | Claims corrigés cette session |
-| **GLOBAL** | **79/100** | P0 fixés, tests insuffisants |
+| **GLOBAL** | **81/100** | P0 fixés, P1 tests en cours |
 
 ## Chiffres Clés Vérifiés
 
@@ -1188,17 +1188,17 @@ TOTAL: 652 lignes - Plugin complet
 | # | Action | Fichier | Effort | Impact |
 |:-:|:-------|:--------|:------:|:------:|
 | 7 | Implémenter newsletter | 20+ pages | 4h | CRM |
-| 8 | Ajouter lazy loading | Toutes images | 2h | LCP |
-| 9 | Traduire pricing EN/ES | locales/*.json | 3h | i18n |
+| 8 | ~~Ajouter lazy loading~~ | Toutes images | ✅ 108 images |
+| 9 | ~~Traduire pricing EN/ES~~ | locales/*.json | ✅ Déjà fait |
 | 10 | Connecter dashboard API | dashboard/*.html | 8h | Fonctionnel |
 
 ### Tests (CRITIQUE - 5% → 60% coverage)
 
 | # | Action | Fichier | Target Coverage |
 |:-:|:-------|:--------|:---------------:|
-| 11 | Unit tests SecretVault | test/secret-vault.test.cjs | 80% |
+| 11 | ~~Unit tests SecretVault~~ | test/secret-vault.test.cjs | ✅ 11 tests |
 | 12 | Unit tests voice-api | test/voice-api.test.cjs | 70% |
-| 13 | Unit tests RateLimiter | test/rate-limiter.test.cjs | 90% |
+| 13 | ~~Unit tests RateLimiter~~ | test/rate-limiter.test.cjs | ✅ 55 tests |
 | 14 | Integration tests MCP | test/mcp-tools.test.ts | 60% |
 | 15 | E2E tests Widget | test/e2e/widget.spec.js | 50% |
 
@@ -1206,9 +1206,9 @@ TOTAL: 652 lignes - Plugin complet
 
 | # | Action | Fichier | Impact |
 |:-:|:-------|:--------|:------:|
-| 16 | ESLint config | .eslintrc.json | Code quality |
-| 17 | Prettier config | .prettierrc | Formatting |
-| 18 | Husky pre-commit | .husky/pre-commit | CI gate |
+| 16 | ~~ESLint config~~ | .eslintrc.json | ✅ Created |
+| 17 | ~~Prettier config~~ | .prettierrc | ✅ Created |
+| 18 | ~~Husky pre-commit~~ | .husky/pre-commit | ✅ Created |
 | 19 | nyc/istanbul coverage | package.json, .nycrc | Metrics |
 
 ## P2 - MOYENNE (Ce Mois)
