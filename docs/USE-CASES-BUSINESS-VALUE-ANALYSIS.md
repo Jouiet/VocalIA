@@ -1,7 +1,7 @@
 # VocalIA - Analyse Valeur Business des Use Cases
 
 > **Version**: 2.1.0 | **Date**: 31/01/2026 | **Session**: 249.22
-> **MCP Server**: v0.7.0 | **254 Tools** | **28 Intégrations Natives** | **4 Sensors** | **3 Agents**
+> **MCP Server**: v0.7.0 | **178 Tools** | **28 Intégrations Natives** | **4 Sensors** | **3 Agents**
 > **Approche**: Bottom-up factuelle, vérifié contre code source
 > **Session 249.21**: Stripe Payment Links (19 tools) - Cycle transactionnel COMPLET
 > **E-commerce**: 7 plateformes FULL CRUD (~64% marché mondial)
@@ -504,7 +504,7 @@ TEMPS: <3 minutes | ROI: Pipeline +€5,000
 
 ### 5.3 Valeur Ajoutée Quantifiable
 
-| Métrique | Sans VocalIA | Avec VocalIA (162 tools) | Économie |
+| Métrique | Sans VocalIA | Avec VocalIA (178 tools) | Économie |
 |:---------|:-------------|:-------------------------|:---------|
 | **Temps qualification lead** | 15-30 min | 2-3 min | **-90%** |
 | **Coût par lead qualifié** | €15-30 | €2-5 | **-80%** |

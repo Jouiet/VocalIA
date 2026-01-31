@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.7.0 | 31/01/2026 | Session 249.21 | BM25 RAG SOTA | **162 tools**
+> Version: 0.7.0 | 31/01/2026 | Session 249.21 | BM25 RAG SOTA | **178 tools**
 > **Session 249.21**: Stripe Payment Links (19 tools) - Complete transactional cycle
 > **Session 249.20**: Shopify FULL CRUD (8 tools) - GraphQL Admin API 2026-01
 > **Protocol Gap:** A2A ✅ | AP2 ❌ | A2UI ✅ | UCP ✅ (File Persistence) | Integrations ✅
@@ -56,7 +56,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
 | **Stripe** | **19** | 0 | **19** |
-| **TOTAL** | **162** | **16** | **146** |
+| **TOTAL** | **178** | **16** | **162** |
 
 ### E-commerce Market Coverage (~64%)
 
