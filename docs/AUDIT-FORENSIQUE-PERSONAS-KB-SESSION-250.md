@@ -771,13 +771,11 @@ const score = 1 / (i + 60);
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │          OPPORTUNITIES              │              THREATS                │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
-│ 🚀 Enrichir chunks → RAG            │ ⚠️ RAG inutile si contenu pauvre    │
-│    fonctionnel                      │ ⚠️ Concurrents avec ColBERT/        │
-│ 🚀 Graph RAG implementation         │    SPLADE reranking                 │
+│ 🚀 Enrichir chunks automation       │ ⚠️ RAG inutile si contenu pauvre    │
+│    (12 chunks avec champs vides)    │ ⚠️ 12/12 chunks sans strategic/     │
+│ 🚀 Graph RAG implementation         │    business/marketing fields        │
 │                                     │ ⚠️ Latence si hybrid activé sans    │
 │                                     │    optimisation                     │
-│ 🚀 ColBERT reranker → +25%          │                                     │
-│    precision                        │                                     │
 └─────────────────────────────────────┴─────────────────────────────────────┘
 ```
 
@@ -1046,7 +1044,7 @@ DENTAL: {
 | 3.1 | Merger legacy KB dans RAG | 4h | `knowledge-base-services.cjs` | 165 FAQ entries from 40 personas | ✅ DONE (Session 250.15) |
 | 3.2 | Créer knowledge-graph.json | 1j | `data/knowledge-base/` | 23 nodes, 38 edges | ✅ DONE |
 | 3.3 | Créer policies.json | 4h | `data/knowledge-base/` | 10 policies, policy boosting actif | ✅ DONE (Session 250.15) |
-| 3.4 | Implémenter ColBERT reranker | 3j | Nouveau fichier | +25% precision (optionnel) | 🔶 OPTIONNEL |
+| 3.4 | ~~Implémenter ColBERT reranker~~ | ~~3j~~ | - | **SUPPRIMÉ** - ROI insuffisant (193 chunks, latence GPU, complexité) | ❌ REJETÉ |
 
 **Template knowledge-graph.json**:
 ```json
@@ -1088,7 +1086,7 @@ DENTAL: {
 │  └── Créer policies.json (4h)                                         │
 │                                                                       │
 │  JOUR 6+ (OPTIONNEL)                                                  │
-│  └── ColBERT reranker (3j)                                            │
+│  └── ~~ColBERT reranker~~ SUPPRIMÉ - ROI insuffisant                  │
 │                                                                       │
 └──────────────────────────────────────────────────────────────────────┘
 ```
@@ -1110,6 +1108,112 @@ DENTAL: {
 | Vocabulary size | 44 | **415** | 200+ | ✅ `jq '.vocabulary \| length' tfidf_index.json` |
 | Avg doc length | 6.6 | **~65** | 50+ | ✅ Enrichi avec semantic_description |
 | Graph RAG | ❌ | **✅** | ✅ | ✅ `ls data/knowledge-base/knowledge-graph.json` |
+
+### 7.7 Plan Enrichissement Chunks - Session 250.16
+
+#### 7.7.1 Diagnostic Factuel (31/01/2026)
+
+**État actuel des 12 chunks automation:**
+
+| Champ | Rempli | Vide | Taux |
+|:------|:------:|:----:|:----:|
+| `id` | 12 | 0 | 100% |
+| `title` / `title_fr` | 12 | 0 | 100% |
+| `benefit_en` | 12 | 0 | **100%** ✅ |
+| `benefit_fr` | 12 | 0 | **100%** ✅ |
+| `strategic_intent` | 0 | 12 | **0%** ❌ |
+| `business_outcome` | 0 | 12 | **0%** ❌ |
+| `marketing_science` | 0 | 12 | **0%** ❌ |
+
+**Longueur moyenne text:** 575 chars (acceptable pour BM25)
+
+#### 7.7.2 Analyse ROI - Pourquoi ColBERT est REJETÉ
+
+| Critère | Valeur VocalIA | Seuil Minimum SOTA | Verdict |
+|:--------|:--------------:|:------------------:|:-------:|
+| Corpus size | **193 chunks** | 10,000+ chunks | ❌ 51x trop petit |
+| Latency budget | <100ms (voice) | 50-100ms ColBERT | ❌ Latence critique |
+| GPU requirement | Aucun | GPU obligatoire | ❌ Infrastructure |
+| Maintenance | Minimal | Fine-tuning requis | ❌ Complexité |
+| BM25 baseline | 62% recall | - | ✅ Suffisant |
+
+**Conclusion:** ColBERT apporte +10-25% precision mais au coût de latence GPU incompatible avec voice real-time.
+**Recommandation:** Enrichir le contenu des chunks existants (ROI supérieur, 0 latence ajoutée).
+
+#### 7.7.3 Plan d'Action Enrichissement (P1)
+
+| # | Action | Fichier Source | Champs à Remplir | Effort | Priorité |
+|:-:|:-------|:---------------|:-----------------|:------:|:--------:|
+| E.1 | Enrichir automations-registry.json | `automations-registry.json` | strategic_intent (12) | 2h | P1 |
+| E.2 | Ajouter business_outcome | `automations-registry.json` | business_outcome (12) | 2h | P1 |
+| E.3 | Ajouter marketing_science | `automations-registry.json` | marketing_science (12) | 1h | P2 |
+| E.4 | Rebuild KB | CLI | - | 5min | - |
+| E.5 | Valider enrichissement | CLI | - | 10min | - |
+
+**Total effort:** ~5h
+
+#### 7.7.4 Templates d'Enrichissement par Catégorie
+
+**Voice Core (4 scripts):**
+```json
+{
+  "strategic_intent": "Enable real-time voice AI interactions with sub-100ms latency and 99.9% uptime",
+  "business_outcome": "Reduce customer support costs, increase lead conversion rates, 24/7 availability",
+  "marketing_science": "BANT qualification, AIDA conversion funnel, customer journey mapping"
+}
+```
+
+**Integrations (2 scripts):**
+```json
+{
+  "strategic_intent": "Seamless data flow between voice AI and business systems",
+  "business_outcome": "Unified customer view, automated CRM updates, reduced manual data entry",
+  "marketing_science": "Lead scoring integration, customer lifecycle tracking"
+}
+```
+
+**Sensors (4 scripts):**
+```json
+{
+  "strategic_intent": "Real-time monitoring and optimization of voice AI performance",
+  "business_outcome": "Proactive issue detection, cost optimization, churn prevention",
+  "marketing_science": "Customer health scoring, retention analytics, ROI tracking"
+}
+```
+
+**Widget (2 scripts):**
+```json
+{
+  "strategic_intent": "Zero-friction voice AI deployment on any website",
+  "business_outcome": "Immediate engagement, reduced bounce rates, increased conversions",
+  "marketing_science": "User engagement analytics, A/B testing capabilities"
+}
+```
+
+#### 7.7.5 Commandes de Validation
+
+```bash
+# Avant enrichissement
+jq '[.[] | select(.type == "automation") | select(.strategic_intent == "")] | length' data/knowledge-base/chunks.json
+# Résultat attendu: 12 (tous vides)
+
+# Après enrichissement et rebuild
+jq '[.[] | select(.type == "automation") | select(.strategic_intent != "")] | length' data/knowledge-base/chunks.json
+# Résultat attendu: 12 (tous remplis)
+
+# Vérification complète
+jq '[.[] | select(.type == "automation") | {id, strategic: (.strategic_intent != ""), outcome: (.business_outcome != ""), marketing: (.marketing_science != "")}]' data/knowledge-base/chunks.json
+```
+
+#### 7.7.6 Métriques de Succès Enrichissement
+
+| Métrique | Avant | Cible | Validation |
+|:---------|:-----:|:-----:|:-----------|
+| strategic_intent rempli | 0/12 | 12/12 | jq count ≠ "" |
+| business_outcome rempli | 0/12 | 12/12 | jq count ≠ "" |
+| marketing_science rempli | 0/12 | 12/12 | jq count ≠ "" |
+| Avg text length | 575 | 800+ | jq avg length |
+| Vocabulary size | 1444 | 1800+ | tfidf_index.json |
 
 ---
 
@@ -1239,4 +1343,5 @@ node core/knowledge-base-services.cjs --search "voice assistant"
 *✅ Legacy KB merged: 165 FAQ entries from 40 personas*
 *✅ Policies.json créé: 10 policy boosting rules*
 *⚠️ BLOQUÉ: Dense embeddings (nécessite GOOGLE_GENERATIVE_AI_API_KEY)*
-*🔶 OPTIONNEL: ColBERT reranker (3j), 3A-Shelf sync (30min)*
+*❌ ColBERT REJETÉ: ROI insuffisant (193 chunks << 10K minimum, latence GPU 50-100ms, complexité maintenance)*
+*🔶 OPTIONNEL: 3A-Shelf sync (30min)*
