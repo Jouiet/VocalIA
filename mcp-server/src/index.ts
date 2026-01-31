@@ -381,7 +381,7 @@ server.tool(
 // PERSONA TOOLS (3) - LOCAL, NO API NEEDED
 // =============================================================================
 
-// Tool 3: personas_list - List all 30 personas by tier
+// Tool 3: personas_list - List all 40 personas by tier
 server.tool(
   "personas_list",
   {
