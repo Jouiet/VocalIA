@@ -34,6 +34,9 @@ WHITELIST = {
         "about_page.tech_title_highlight",  # "Stack" is intentional
         "docs_api_page.sidebar_webhooks_setup",  # "Setup" is correct EN
     },
+    "es": {
+        "status.today",  # "Hoy" is correct Spanish for "Aujourd'hui"
+    },
     "ar": {
         "dashboard.health.operational",  # "يعمل" = operational (correct)
         "pricing_page.free_period",  # "للأبد" = forever (correct)

@@ -48,13 +48,13 @@
 | **Security** | 88/100 | 29 fonctions, RateLimiter, CSRF, XSS protection |
 | **Frontend/SEO** | 85/100 | Solide mais lacunes critiques |
 | **i18n** | 78/100 | Structure OK, traductions incomplètes |
-| **Tests** | 70/100 | 243 tests (SecretVault 11, RateLimiter 55, Module 21, i18n 18, EventBus 20, KB 31, VoiceAPI 34, MCP 53) |
+| **Tests** | 75/100 | 243 tests + c8 coverage configured |
 | **CI/CD** | 75/100 | 2 workflows, manque coverage gate |
 | **SDKs** | 80/100 | Python + Node complets, docs manquantes |
 | **Conversion** | 70/100 | Signup créé ✅, forms fake restants |
 | **Fonctionnel** | 60/100 | Dashboards mockups |
 | **Documentation** | 95/100 | Claims corrigés cette session |
-| **GLOBAL** | **88/100** | P0 fixés, P1/P2 tests +156 |
+| **GLOBAL** | **90/100** | P0 fixés, P1/P2 +OpenAPI +Security |
 
 ## Chiffres Clés Vérifiés
 
@@ -1212,7 +1212,7 @@ TOTAL: 652 lignes - Plugin complet
 | 16 | ~~ESLint config~~ | .eslintrc.json | ✅ Created |
 | 17 | ~~Prettier config~~ | .prettierrc | ✅ Created |
 | 18 | ~~Husky pre-commit~~ | .husky/pre-commit | ✅ Created |
-| 19 | nyc/istanbul coverage | package.json, .nycrc | Metrics |
+| 19 | ~~c8 coverage~~ | package.json, .c8rc.json | ✅ Configured |
 
 ## P2 - MOYENNE (Ce Mois)
 
@@ -1232,8 +1232,8 @@ TOTAL: 652 lignes - Plugin complet
 |:-:|:-------|:--------|:------:|
 | 25 | ~~SDK Python docs~~ | sdks/python/README.md | ✅ Complete |
 | 26 | ~~SDK Node.js docs~~ | sdks/node/README.md | ✅ Complete |
-| 27 | OpenAPI spec | docs/openapi.yaml | API docs |
-| 28 | Security audit report | docs/SECURITY.md | Compliance |
+| 27 | ~~OpenAPI spec~~ | docs/openapi.yaml | ✅ Complete (4 endpoints) |
+| 28 | ~~Security audit report~~ | docs/SECURITY.md | ✅ Complete (84/100) |
 
 ### Tests Additionnels
 

@@ -1,0 +1,414 @@
+openapi: 3.1.0
+info:
+  title: VocalIA Voice API
+  version: 1.0.0
+  description: |
+    VocalIA Voice AI Platform API - Resilient multi-provider voice AI with BANT lead qualification.
+
+    ## Features
+    - Multi-AI fallback (Grok → Gemini → Anthropic → Atlas → Local)
+    - BANT lead qualification (Budget, Authority, Need, Timeline)
+    - HubSpot CRM integration
+    - 5 languages support (FR, EN, ES, AR, Darija)
+    - Rate limiting (60 req/min per IP)
+
+    ## Authentication
+    CORS-protected. Allowed origins: vocalia.ma, localhost:8080
+  contact:
+    name: VocalIA Support
+    email: contact@vocalia.ma
+    url: https://vocalia.ma
+  license:
+    name: Proprietary
+    url: https://vocalia.ma/terms
+
+servers:
+  - url: https://api.vocalia.ma
+    description: Production server
+  - url: http://localhost:3004
+    description: Development server
+
+paths:
+  /health:
+    get:
+      summary: Health Check
+      description: Returns API health status including provider availability and lead qualification status
+      operationId: getHealth
+      tags:
+        - System
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                healthy: true
+                providers:
+                  grok:
+                    name: "Grok (xAI)"
+                    configured: true
+                  gemini:
+                    name: "Gemini 3 Flash"
+                    configured: true
+                  anthropic:
+                    name: "Claude Opus 4.5"
+                    configured: false
+                  atlas:
+                    name: "Atlas-Chat-9B (Darija)"
+                    configured: true
+                localFallback: true
+                leadQualification:
+                  enabled: true
+                  hubspotIntegration: false
+                  activeSessions: 5
+                  maxSessions: 1000
+                  thresholds:
+                    hot: 75
+                    warm: 50
+                    cool: 25
+
+  /respond:
+    post:
+      summary: Voice Response + Lead Qualification
+      description: |
+        Main endpoint for voice AI responses. Automatically qualifies leads based on conversation.
+
+        ## Fallback Chain
+        1. Grok (grok-4-1-fast-reasoning) - Primary
+        2. Gemini 3 Flash - Fallback 1
+        3. Claude Opus 4.5 - Fallback 2
+        4. Atlas-Chat-9B - Darija only
+        5. Local rule-based - Emergency
+
+        ## Lead Qualification
+        Automatically extracts BANT data:
+        - **Budget**: Amount mentioned (€, $, MAD)
+        - **Authority**: Decision maker indicators
+        - **Need**: Industry/urgency signals
+        - **Timeline**: Time-sensitive language
+      operationId: postRespond
+      tags:
+        - Voice
+        - Lead Qualification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RespondRequest'
+            example:
+              message: "Je cherche une solution pour mon cabinet dentaire, budget autour de 500€/mois"
+              sessionId: "session_123"
+              language: "fr"
+              history: []
+      responses:
+        '200':
+          description: AI response with lead qualification data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespondResponse'
+        '400':
+          description: Bad request (missing message or invalid JSON)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '413':
+          description: Request body too large (max 1MB)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded (max 60 req/min)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitResponse'
+
+  /qualify:
+    post:
+      summary: Explicit Lead Qualification
+      description: |
+        Manually qualify a lead with explicit data injection.
+        Use this endpoint when you have structured lead data to score.
+      operationId: postQualify
+      tags:
+        - Lead Qualification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QualifyRequest'
+            example:
+              sessionId: "session_123"
+              email: "contact@dentiste.ma"
+              phone: "+212520000000"
+              name: "Dr. Ahmed"
+              budget: 500
+              timeline: "urgent"
+              industry: "dentaire"
+              syncToHubspot: true
+      responses:
+        '200':
+          description: Lead qualification result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QualifyResponse'
+        '400':
+          description: Missing sessionId or email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /lead/{sessionId}:
+    get:
+      summary: Get Lead Session Data
+      description: Retrieve lead qualification data for a specific session
+      operationId: getLead
+      tags:
+        - Lead Qualification
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          description: The session ID to retrieve
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lead session data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadResponse'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        healthy:
+          type: boolean
+          description: Overall health status
+        providers:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              name:
+                type: string
+              configured:
+                type: boolean
+        localFallback:
+          type: boolean
+          description: Local fallback availability (always true)
+        leadQualification:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            hubspotIntegration:
+              type: boolean
+            activeSessions:
+              type: integer
+            maxSessions:
+              type: integer
+            thresholds:
+              type: object
+              properties:
+                hot:
+                  type: integer
+                warm:
+                  type: integer
+                cool:
+                  type: integer
+
+    RespondRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: User message to process
+          maxLength: 10000
+        sessionId:
+          type: string
+          description: Session ID for lead tracking (auto-generated if not provided)
+        language:
+          type: string
+          enum: [fr, en, es, ar, ary]
+          default: fr
+          description: Response language
+        history:
+          type: array
+          description: Conversation history
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+                enum: [user, assistant]
+              content:
+                type: string
+
+    RespondResponse:
+      type: object
+      properties:
+        response:
+          type: string
+          description: AI-generated response
+        provider:
+          type: string
+          description: AI provider that generated the response
+        latency:
+          type: number
+          description: Response time in milliseconds
+        lead:
+          $ref: '#/components/schemas/LeadData'
+
+    QualifyRequest:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: Session ID (required if email not provided)
+        email:
+          type: string
+          format: email
+          description: Lead email (required if sessionId not provided)
+        phone:
+          type: string
+          description: Lead phone number
+        name:
+          type: string
+          description: Lead name
+        budget:
+          type: number
+          description: Monthly budget in EUR
+        timeline:
+          type: string
+          description: Timeline urgency (urgent, soon, later)
+        industry:
+          type: string
+          description: Industry sector
+        syncToHubspot:
+          type: boolean
+          default: false
+          description: Sync to HubSpot CRM
+
+    QualifyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        lead:
+          $ref: '#/components/schemas/LeadData'
+
+    LeadResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        lead:
+          allOf:
+            - $ref: '#/components/schemas/LeadData'
+            - type: object
+              properties:
+                messagesCount:
+                  type: integer
+                createdAt:
+                  type: integer
+                  description: Unix timestamp
+
+    LeadData:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Lead score (0-100)
+        status:
+          type: string
+          enum: [hot, warm, cool, cold]
+          description: Lead temperature based on score
+        scoreBreakdown:
+          type: object
+          properties:
+            budget:
+              type: integer
+              description: Budget score (0-30)
+            timeline:
+              type: integer
+              description: Timeline score (0-20)
+            decisionMaker:
+              type: integer
+              description: Authority score (0-20)
+            industryFit:
+              type: integer
+              description: Industry fit score (0-15)
+            engagement:
+              type: integer
+              description: Engagement score (0-15)
+        extractedData:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+            name:
+              type: string
+            budget:
+              type: object
+            timeline:
+              type: object
+            industry:
+              type: string
+        qualificationComplete:
+          type: boolean
+        hubspotSync:
+          type: string
+          nullable: true
+          description: HubSpot sync status (null if not synced)
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+
+    RateLimitResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Too many requests. Max 60/min."
+        remaining:
+          type: integer
+          description: Remaining requests in current window
+
+tags:
+  - name: System
+    description: Health and status endpoints
+  - name: Voice
+    description: Voice AI response endpoints
+  - name: Lead Qualification
+    description: BANT lead qualification endpoints

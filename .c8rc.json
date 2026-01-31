@@ -1,0 +1,27 @@
+{
+  "all": true,
+  "include": [
+    "core/**/*.cjs",
+    "telephony/**/*.cjs",
+    "sensors/**/*.cjs",
+    "lib/**/*.cjs"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "test/**",
+    "**/*.test.cjs",
+    "coverage/**",
+    "mcp-server/**",
+    "website/**",
+    "scripts/**",
+    "plugins/**",
+    "sdks/**"
+  ],
+  "reporter": ["text", "html", "lcov"],
+  "report-dir": "coverage",
+  "check-coverage": false,
+  "lines": 30,
+  "functions": 30,
+  "branches": 30,
+  "statements": 30
+}
