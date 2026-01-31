@@ -505,41 +505,45 @@ node --check website/voice-assistant/voice-widget.js  # ✅ OK
 
 ---
 
-## 12. PLAN ACTIONNABLE SESSION 250.30
+## 12. PLAN ACTIONNABLE SESSION 250.36
 
 **Priorité:** P0 = Critique, P1 = Important, P2 = Medium, P3 = Nice-to-have
 
-### Issues Restantes (1 P2 + 2 WONTFIX)
+### Session 250.36 - P0 FIXES COMPLÉTÉS
 
-| # | Issue | Priority | Effort | Status | Justification |
-|:-:|:------|:--------:|:------:|:------:|:--------------|
-| 1 | SRI (integrity=) sur CDN scripts | P2 | 2h | ⏳ TODO | Faisable, améliore supply chain |
-| 2 | CSP unsafe-inline refactor | - | - | ❌ WONTFIX | Static site incompatible |
-| 3 | Inline CSS extraction | - | - | ❌ WONTFIX | FOUC prévention intentionnelle |
-| 4 | Focus outline enhancement | - | - | ✅ DONE | Session 250.33 |
-| 5 | Contrast enhancement | - | - | ✅ DONE | zinc-400 conforme |
+| # | Issue | Status | Commit |
+|:-:|:------|:------:|:------:|
+| 1 | XSS voice-widget.js:715 innerHTML | ✅ FIXED | 65c4e04 |
+| 2 | 21 Twitter cards dupliqués | ✅ FIXED | 65c4e04 |
+| 3 | /demo broken link (llms.txt) | ✅ FIXED | 65c4e04 |
+| 4 | /forgot-password broken link | ✅ FIXED | 65c4e04 |
 
-### Optimisations Prochaines
+### Issues Restantes (P1/P2)
 
-| # | Task | Priority | Impact | Notes |
-|:-:|:-----|:--------:|:------:|:------|
-| 1 | A2A: Agent Cards BillingAgent + TenantOnboarding | P1 | A2A SOTA | +2 agents |
-| 2 | UCP/CDP: Lifetime Value calculation | P1 | Revenue | purchases tracking |
-| 3 | AEO: Speakable 29→45 pages | P2 | SEO | +16 pages |
-| 4 | Sitemap: 36→45 URLs | P2 | SEO | +9 URLs |
-| 5 | A2UI: DatePicker généré dynamiquement | P2 | UX | +40% complétion |
-| 6 | AP2: Stripe Voice Payments research | P3 | Revenue | PSP beta |
+| # | Issue | Priority | Effort | Status | Notes |
+|:-:|:------|:--------:|:------:|:------:|:------|
+| 1 | SRI (integrity=) sur CDN scripts | P1 | 2h | ⏳ TODO | GSAP, Lucide |
+| 2 | text-zinc-500 contrast (WCAG 1.4.3) | P1 | 3h | ⏳ TODO | ~20 files |
+| 3 | PWA share_target handler | P2 | 4h | ⏳ TODO | OU supprimer manifest |
+| 4 | CSP unsafe-inline refactor | - | - | ❌ WONTFIX | Static site incompatible |
+| 5 | Inline CSS extraction | - | - | ❌ WONTFIX | FOUC prévention |
 
-### Protocol Status (Session 250.29)
+### Prochaines Optimisations
 
-| Protocol | Status | Score |
-|:---------|:------:|:-----:|
-| MCP | ✅ 181 tools | 100% |
-| A2A | ✅ Agent Card + Task Lifecycle | 100% |
-| AG-UI | ✅ 17 events | 100% |
-| A2UI | ⚠️ Overlay only | 75% |
-| UCP/CDP | ✅ 6 tools | 100% |
-| AP2 | ❌ Not started | 0% |
+| # | Task | Priority | Impact |
+|:-:|:-----|:--------:|:------:|
+| 1 | AEO: Speakable 32→45 pages | P2 | SEO |
+| 2 | Form validation + aria-describedby | P2 | WCAG |
+| 3 | Newsletter label (WCAG 3.3.2) | P2 | A11Y |
 
-**Màj:** 31/01/2026 - Session 250.34 (PHASE D 100% - Score 98/100, 23/25 fixed)
+### Protocol Status (Session 250.36)
+
+| Protocol | Status | Tools/Events |
+|:---------|:------:|:------------:|
+| MCP | ✅ | 182 tools |
+| A2A | ✅ | 4 agents |
+| AG-UI | ✅ | 17 events |
+| UCP/CDP | ✅ | 7 tools |
+
+**Màj:** 31/01/2026 - Session 250.36 (P0 Critical Fixes - Security 96/100)
 

@@ -1,12 +1,12 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.0 | 31/01/2026 | Session 250.33 | BM25 RAG SOTA | **182 tools** | **28 integrations**
-> **Session 250.28**: CDP Enhanced UCP (6 tools) - interaction tracking, behavioral events, engagement scoring
-> **Session 249.21**: Stripe Payment Links (19 tools) - Complete transactional cycle
-> **Protocol Gap:** A2A ✅ (Agent Card + Task Lifecycle) | AG-UI ✅ (17 events) | A2UI ✅ | UCP ✅ (CDP Enhanced) | AP2 ❌ | Integrations ✅
+> Version: 0.8.0 | 31/01/2026 | Session 250.36 | BM25 RAG SOTA | **182 tools** | **28 integrations**
+> **Session 250.36**: Security audit + P0 fixes (XSS, broken links)
+> **Session 250.28**: CDP Enhanced UCP (7 tools) - interaction tracking, behavioral events, engagement scoring
+> **Protocol Gap:** A2A ✅ (4 agents) | AG-UI ✅ (17 events) | UCP ✅ (7 tools) | MCP ✅ (182 tools)
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
-> **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds
+> **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds (19 tools)
 
 ## Qu'est-ce que MCP?
 

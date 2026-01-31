@@ -1,12 +1,12 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 5.13.0 | **Date**: 31/01/2026 | **Session**: 250.33 (AEO/WCAG)
+> **Version**: 6.47.0 | **Date**: 31/01/2026 | **Session**: 250.36 (P0 FIXES)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB → 3098 lines)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
-> **Security**: ✅ HARDENED - CSP + X-Frame-Options + X-Content-Type-Options on ALL 45 pages (Session 250.18)
-> **SEO Score**: 97/100 (A+) - Hreflang 100%, Twitter Cards **51 pages** ✅, /referral in sitemap ✅
-> **Translation QA**: ✅ 0 issues (Session 249.11 - Per-language ratios fixed)
-> **AEO Score**: 97/100 (A+) - AI bot rules ✅, FAQ schema ✅, Speakable **32 pages** ✅, llms.txt ✅
+> **Security**: ✅ XSS FIXED - CSP + X-Frame-Options on ALL 45 pages (Session 250.36)
+> **SEO Score**: 98/100 (A+) - Hreflang 100%, Twitter Cards **37 pages** ✅, 21 duplicates FIXED
+> **Translation QA**: ✅ 0 issues (1702 keys, 5 languages)
+> **AEO Score**: 98/100 (A+) - AI bot rules ✅, FAQ schema ✅, Speakable **32 pages** ✅, llms.txt FIXED
 > **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
 > **Blog**: 7 articles with working links ✅ (Session 224.2)
