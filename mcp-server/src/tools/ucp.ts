@@ -283,6 +283,12 @@ export const ucpTools = {
             profile.totalInteractions = (profile.totalInteractions || 0) + 1;
             profile.lastInteraction = interaction.timestamp;
 
+            // CDP: Calculate Lifetime Value for purchases/bookings
+            if (args.interactionType === 'purchase' || args.interactionType === 'booking') {
+                const amount = args.metadata?.amount || args.metadata?.value || 0;
+                profile.lifetimeValue = (profile.lifetimeValue || 0) + amount;
+            }
+
             // Update preferred channel based on frequency
             const channelCounts: Record<string, number> = {};
             profile.interactionHistory.forEach((i: UCPInteraction) => {
@@ -438,6 +444,7 @@ export const ucpTools = {
                             lastInteraction: profile.lastInteraction,
                             preferredChannel: profile.preferredChannel,
                             lifetimeValue: profile.lifetimeValue || 0,
+                            ltvTier: getLTVTier(profile.lifetimeValue || 0),
                             recencyDays,
                             channelBreakdown,
                             topEvents: Object.entries(eventSummary)
@@ -449,5 +456,77 @@ export const ucpTools = {
                 }]
             };
         }
+    },
+
+    ucp_update_ltv: {
+        name: 'ucp_update_ltv',
+        description: 'Update customer Lifetime Value (LTV) directly',
+        parameters: {
+            userId: z.string().describe('User ID'),
+            amount: z.number().describe('Transaction amount to add to LTV'),
+            transactionType: z.enum(['purchase', 'subscription', 'refund', 'adjustment']).describe('Type of transaction'),
+            currency: z.string().optional().describe('Currency code (EUR, MAD, USD)'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional()
+        },
+        handler: async (args: any) => {
+            const tenant = await tenantMiddleware(args);
+            const storage = loadProfiles();
+            const key = profileKey(tenant.id, args.userId);
+
+            let profile = storage.profiles[key];
+            if (!profile) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            message: "Profile not found. Use ucp_sync_preference first."
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            // Calculate LTV change
+            const previousLTV = profile.lifetimeValue || 0;
+            let ltvChange = args.amount;
+
+            // Refunds decrease LTV
+            if (args.transactionType === 'refund') {
+                ltvChange = -Math.abs(args.amount);
+            }
+
+            profile.lifetimeValue = Math.max(0, previousLTV + ltvChange);
+
+            storage.profiles[key] = profile;
+            saveProfiles(storage);
+
+            return {
+                content: [{
+                    type: "text" as const,
+                    text: JSON.stringify({
+                        status: "success",
+                        userId: args.userId,
+                        transactionType: args.transactionType,
+                        amount: args.amount,
+                        previousLTV,
+                        newLTV: profile.lifetimeValue,
+                        ltvTier: getLTVTier(profile.lifetimeValue),
+                        currency: args.currency || profile.currency
+                    }, null, 2)
+                }]
+            };
+        }
     }
 };
+
+/**
+ * Calculate LTV Tier based on value
+ * Tiers: Bronze (<100), Silver (100-500), Gold (500-2000), Platinum (2000-10000), Diamond (>10000)
+ */
+function getLTVTier(ltv: number): string {
+    if (ltv >= 10000) return 'diamond';
+    if (ltv >= 2000) return 'platinum';
+    if (ltv >= 500) return 'gold';
+    if (ltv >= 100) return 'silver';
+    return 'bronze';
+}

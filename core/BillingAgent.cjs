@@ -13,9 +13,76 @@
  * - Multi-Agent Coordination: Emits events for cross-module reactions
  * - State Machine: LangGraph-inspired state tracking
  *
+ * A2A Protocol Compliance: Agent Card + Task Lifecycle (Session 250.30)
+ *
  * Integrates with Meta CAPI for closed-loop attribution.
  * Source: Stripe Billing Best Practices 2025, Growin EDA 2025
  */
+
+// ─────────────────────────────────────────────────────────────────────────────
+// A2A AGENT CARD (Google A2A Protocol Spec)
+// https://a2a-protocol.org/latest/specification/
+// ─────────────────────────────────────────────────────────────────────────────
+
+const AGENT_CARD = {
+    name: "BillingAgent",
+    version: "3.1.0",
+    description: "Autonomous billing orchestration - Stripe/Payzone customer and invoice management",
+    provider: {
+        organization: "VocalIA",
+        url: "https://vocalia.ma"
+    },
+    capabilities: {
+        streaming: false,
+        pushNotifications: true,
+        stateTransitionHistory: true
+    },
+    skills: [
+        {
+            id: "customer_creation",
+            name: "Customer Creation",
+            description: "Creates Stripe/Payzone customers with idempotency",
+            inputModes: ["application/json"],
+            outputModes: ["application/json"]
+        },
+        {
+            id: "invoice_drafting",
+            name: "Invoice Drafting",
+            description: "Generates draft invoices for qualified leads",
+            inputModes: ["application/json"],
+            outputModes: ["application/json"]
+        },
+        {
+            id: "payment_processing",
+            name: "Payment Processing",
+            description: "Handles payment webhooks and status updates",
+            inputModes: ["application/json"],
+            outputModes: ["application/json"]
+        },
+        {
+            id: "currency_routing",
+            name: "Currency Routing",
+            description: "Routes MAD to Payzone, EUR/USD to Stripe",
+            inputModes: ["text"],
+            outputModes: ["application/json"]
+        }
+    ],
+    authentication: {
+        schemes: ["bearer"]
+    },
+    defaultInputModes: ["application/json"],
+    defaultOutputModes: ["application/json"]
+};
+
+// A2A Task States
+const TASK_STATES = {
+    SUBMITTED: 'submitted',
+    WORKING: 'working',
+    INPUT_REQUIRED: 'input-required',
+    COMPLETED: 'completed',
+    FAILED: 'failed',
+    CANCELED: 'canceled'
+};
 
 const fs = require('fs');
 const path = require('path');
@@ -57,6 +124,48 @@ class BillingAgent {
         // Product pricing fallback (Essentials Pack)
         this.defaultPrice = options.defaultPrice || 50000; // €500.00
         this.currency = options.currency || 'eur';
+
+        // A2A: Task state history
+        this.taskHistory = new Map();
+
+        console.log(`[BillingAgent] A2A Agent Active - ${AGENT_CARD.name} v${AGENT_CARD.version}`);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // A2A PROTOCOL METHODS
+    // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * A2A: Get Agent Card (metadata about this agent)
+     */
+    getAgentCard() {
+        return AGENT_CARD;
+    }
+
+    /**
+     * A2A: Get task state history for a correlation ID
+     */
+    getTaskHistory(correlationId) {
+        return this.taskHistory.get(correlationId) || [];
+    }
+
+    /**
+     * A2A: Record task state transition
+     */
+    recordTaskState(correlationId, state, details = {}) {
+        if (!this.taskHistory.has(correlationId)) {
+            this.taskHistory.set(correlationId, []);
+        }
+        this.taskHistory.get(correlationId).push({
+            state,
+            timestamp: new Date().toISOString(),
+            ...details
+        });
+        // Cleanup old entries (keep last 500)
+        if (this.taskHistory.size > 500) {
+            const firstKey = this.taskHistory.keys().next().value;
+            this.taskHistory.delete(firstKey);
+        }
     }
 
     /**
