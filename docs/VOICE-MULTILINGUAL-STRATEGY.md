@@ -173,9 +173,9 @@ MULTI-TENANT DIRECTOR - Session 166sexies FIX
 
 | Fichier | Chemin | Langues | Statut |
 |---------|--------|---------|--------|
-| `knowledge_base.json` | `automations/agency/core/` | FR (119 automations) | ✅ **HYBRID V3.0** |
-| `knowledge_base_ary.json` | `automations/agency/core/` | ARY (Darija) | ✅ **HYBRID V3.0** |
-| `dialplus-knowledge-base.json` | `automations/shared-components/` | FR | ✅ |
+| `knowledge_base.json` | `telephony/` | FR (40 personas) | ✅ **V3.0** |
+| `chunks.json` | `data/knowledge-base/` | FR/EN (12 automations) | ✅ **BM25 RAG** |
+| `tfidf_index.json` | `data/knowledge-base/` | FR/EN | ✅ **415 vocabulary** |
 
 ### 2.5 Credentials Status (Voice-Related)
 

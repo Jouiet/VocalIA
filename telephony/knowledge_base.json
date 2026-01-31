@@ -18,11 +18,12 @@
         "offre_nouveau_patient": "Le forfait 'Nouveau Patient' à 99€ comprend l'examen, les radios et le détartrage.",
         "dentiste": "Le Dr. Lumière est notre dentiste principal, spécialiste en implantologie et esthétique dentaire."
     },
-    "agency_v2": {
-        "services": "VocalIA propose des agents IA vocaux, des automatisations e-commerce (Shopify) et des systèmes de marketing agentique Level 5.",
-        "mission": "Notre mission est de transformer les agences et boutiques en moteurs autonomes ultra-performants.",
-        "contact": "Contactez-nous via le site vocalia.ma ou par téléphone au +212 6 00 00 00 00.",
-        "expertise": "Experts en RAG, Grok, Gemini 3 Pro et déploiements holistiques."
+    "agency_v3": {
+        "produits": "VocalIA propose 2 produits Voice AI: Voice Widget (assistant vocal 24/7 pour sites web) et Voice Telephony (ligne téléphonique IA via Twilio).",
+        "personas": "40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
+        "langues": "5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain).",
+        "contact": "Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma.",
+        "tarifs": "Gratuit (Widget limité), Pro 990 DH/mois, Enterprise sur devis."
     },
     "healer_v1": {
         "specialites": "Généraliste, Pédiatrie, Gynécologie, Kinésithérapie, Cardiologie.",
