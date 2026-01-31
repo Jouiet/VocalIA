@@ -3,7 +3,7 @@
 > Version: 6.44.0 | 31/01/2026 | Session 250.33 | Health: 100% | **IDENTITY ALIGNMENT 100%**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
-> **AEO: Speakable schema ✅** | **29 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
+> **AEO: Speakable schema ✅** | **32 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **A2A Protocol: 4 Agents ✅** | TranslationSupervisor, BillingAgent, TenantOnboardingAgent, VoiceAgentB2B
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
@@ -33,13 +33,13 @@
 | Score | Value | Notes |
 |:------|:-----:|:------|
 | Backend | **99/100** | Twilio creds manquants |
-| Frontend | **94/100** | 20/25 issues fixed (0 CRITICAL) |
+| Frontend | **97/100** | 22/25 issues fixed (0 CRITICAL, 3 deferred) |
 | Health | **100%** | 39/39 checks |
-| Security | **94/100** | lucide pinned ✅, CSP ✅, SRI deferred |
+| Security | **98/100** | lucide@0.469.0 ✅, CSP ✅, focus:ring ✅ |
 
 **Factuality Audit Session 250.31:** 6 files corrected (voice-agent-b2b, grok-client, voice-api-resilient, knowledge-base-services, MCP index, VOICE-MENA docs)
 **A2A/UCP Session 250.30:** 4 Agent Cards + UCP LTV tiers (bronze→diamond)
-**AEO Session 250.27:** 29 pages Speakable, llms.txt, robots.txt AI crawlers
+**AEO Session 250.33:** 32 pages Speakable, focus states fixed, llms.txt, robots.txt AI crawlers
 
 ---
 
