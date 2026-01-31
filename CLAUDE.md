@@ -8,11 +8,11 @@
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
-> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 13 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
-> E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 6, PrestaShop 7, BigCommerce 7, Wix 6, Squarespace 7)
+> E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 10, PrestaShop 10, BigCommerce 9, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
 > **Website: 45 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅

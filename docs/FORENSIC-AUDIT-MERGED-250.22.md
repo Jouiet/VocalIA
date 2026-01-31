@@ -18,7 +18,7 @@
 | **TOTAL FIXED** | **23/25** (2 WONTFIX) |
 | Score Global | **98/100** |
 | Factuality Audit | **100%** |
-| SEO/Twitter | **51 pages** |
+| SEO/Twitter | **37 pages** |
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
 
@@ -43,7 +43,7 @@
 - PHASE D: 75% COMPLETE (3/4 items done)
 
 **Session 250.32 Update:** SEO/TWITTER COMPLETE
-- twitter:site ajouté sur **23 pages** supplémentaires (total: 51)
+- twitter:site présent sur **37 pages** (pages publiques indexées)
 - Sitemap cleanup: /status retiré (noindex)
 - Script scripts/add-twitter-site.py créé
 - PHASE A + PHASE B = **100% COMPLETE**
@@ -73,17 +73,17 @@ Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind,
 ## 1. INVENTAIRE FACTUEL VÉRIFIÉ
 
 ```bash
-# Vérifications exécutées (Session 250.28)
+# Vérifications exécutées (Session 250.35)
 find website -name "*.html" | wc -l                    # 45 pages
-grep -c "server.tool(" mcp-server/src/index.ts         # 181 MCP tools
-ls src/locales/ | wc -l                                # 5 locales
-grep -c '<loc>' sitemap.xml                            # 36 URLs
+grep -c "server.tool(" mcp-server/src/index.ts         # 182 MCP tools
+ls website/src/locales/ | wc -l                        # 5 locales
+grep -c '<loc>' website/sitemap.xml                    # 35 URLs
 ```
 
 | Asset | Attendu | Réel | Delta |
 |:------|:-------:|:----:|:-----:|
-| Pages HTML | 43 | 43 | ✅ |
-| URLs Sitemap | 43 | 36 | **-7** |
+| Pages HTML | 45 | 45 | ✅ |
+| URLs Sitemap | 35 | 35 | ✅ (10 excluded: 404, status, investor, 3 dashboard, 4 components) |
 | Locales | 5 | 5 | ✅ |
 | OG Images | 6 | 1 | **-5** |
 | PWA Screenshots | 2 | 0 | **-2** |
@@ -298,7 +298,7 @@ MODÈLE FREEMIUM VÉRIFIÉ:
 ### PHASE B - HIGH (48h) ✅ 100% COMPLETE
 | # | Action | Effort | Fichiers | Status |
 |:-:|:-------|:------:|:---------|:------:|
-| 6 | Ajouter `twitter:site` meta | 1h | *.html | ✅ 51 pages |
+| 6 | Ajouter `twitter:site` meta | 1h | *.html | ✅ 37 pages |
 | 7 | Supprimer /dashboard/* du sitemap | 30m | sitemap.xml | ✅ DONE |
 | 8 | Créer PWA screenshots/icons | 2h | public/images/ | ✅ EXISTS |
 | 9 | Supprimer console.log prod | 30m | pricing.html, index.html | ✅ Docs only |
