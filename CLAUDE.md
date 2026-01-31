@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.13.0 | 31/01/2026 | Session 249.18 | Health: 100%
+> Version: 6.14.0 | 31/01/2026 | Session 249.19 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
 > SDKs: Python | Node.js | MCP Server v0.5.7 (**117 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
@@ -280,8 +280,23 @@ ls data/ucp-profiles.json  # exists ✅
 |:-:|:-----|:--------:|:------:|:--------|:------:|
 | 1 | Shopify MCP tools WRITE | P0 | 5j | mcp-server/src/tools/shopify.ts | ❌ |
 | 2 | ~~Twilio SMS fallback~~ | ~~P0~~ | ~~2-3j~~ | ~~telephony/voice-telephony-bridge.cjs~~ | ✅ DONE |
-| 3 | Page Use Cases website | P1 | 2j | website/use-cases/index.html | ❌ |
+| 3 | ~~Page Use Cases website~~ | ~~P1~~ | ~~2j~~ | ~~website/use-cases/index.html~~ | ✅ DONE |
 | 4 | Stripe Payment Links | P1 | 3j | core/stripe-payments.cjs | ❌ |
+
+---
+
+## Session 249.19 - Use Cases Index Page CRÉÉE
+
+**Nouvelle page**: `website/use-cases/index.html`
+- 4 use cases: Lead Qualification, E-commerce, Appointments, Customer Support
+- Workflow diagram (4 steps)
+- Integration stack (6 categories)
+- CTA section
+
+**Traductions i18n** (5 langues):
+- FR, EN, ES, AR, ARY - `usecases_index_page.*` keys
+
+**Website pages**: 32 (was 31)
 
 ---
 

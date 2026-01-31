@@ -451,7 +451,7 @@ Maroc-first                   →      Afrique francophone
 |:-:|:-------|:-------------------------|:------:|:-------|
 | 1 | Créer Shopify MCP tools WRITE | `mcp-server/src/tools/shopify.ts` | 5j | Cancel/Refund orders |
 | 2 | ~~Implémenter Twilio SMS fallback~~ | `telephony/voice-telephony-bridge.cjs` | ~~2-3j~~ | ✅ **FAIT** Session 249.18 |
-| 3 | Créer page Use Cases website | `website/use-cases/index.html` | 2j | Marketing |
+| 3 | ~~Créer page Use Cases website~~ | `website/use-cases/index.html` | ~~2j~~ | ✅ **FAIT** Session 249.19 |
 
 ### Actions Moyen Terme (Semaines 3-6)
 
