@@ -2,7 +2,7 @@
 ## Rapport Complet, Factuel et Vérifiable
 
 > **Date:** 31/01/2026
-> **Session:** 250.11 (WCAG Audit Reconciliation)
+> **Session:** 250.12 (P3 Compliance: GDPR + SOC2)
 > **Méthode:** Bottom-up (faits → conclusions)
 > **Auditeur:** Claude Opus 4.5
 > **Durée:** ~60 minutes d'analyse
@@ -1252,8 +1252,8 @@ TOTAL: 652 lignes - Plugin complet
 | 34 | Mobile app wrapper | 24h |
 | 35 | Multi-currency Stripe | 8h |
 | 36 | Referral program | 16h |
-| 37 | GDPR compliance doc | 4h |
-| 38 | SOC2 preparation | 40h |
+| 37 | ~~GDPR compliance doc~~ | ~~4h~~ | ✅ docs/GDPR-COMPLIANCE.md |
+| 38 | ~~SOC2 preparation~~ | ~~40h~~ | ✅ docs/SOC2-PREPARATION.md (checklist) |
 | 39 | Load testing (k6) | 8h |
 | 40 | Chaos engineering | 16h |
 
