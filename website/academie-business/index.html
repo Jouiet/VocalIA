@@ -4,44 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Académie Business - VocalIA | Transformez vos Conversations en Résultats</title>
-  <meta name="description" content="Découvrez comment VocalIA transforme chaque conversation vocale en résultat business mesurable. 254 outils, 31 personas, 28 intégrations natives.">
+  <title>Académie Business VocalIA | Apprenez à Automatiser vos Conversations</title>
+  <meta name="description" content="Formation complète pour exploiter VocalIA: use cases détaillés par secteur, guides d'intégration, workflows métier et ROI mesurable. Pour décideurs et managers.">
   <link rel="canonical" href="https://vocalia.ma/academie-business" />
 
   <!-- Hreflang -->
   <link rel="alternate" hreflang="fr" href="https://vocalia.ma/academie-business?lang=fr" />
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/academie-business?lang=en" />
-  <link rel="alternate" hreflang="es" href="https://vocalia.ma/academie-business?lang=es" />
-  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/academie-business?lang=ar" />
   <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/academie-business" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://vocalia.ma/academie-business" />
-  <meta property="og:title" content="Académie Business VocalIA - Transformez vos Conversations en Résultats" />
-  <meta property="og:description" content="254 outils intelligents, 31 personas métier, 28 intégrations natives. Découvrez la puissance de l'automatisation vocale." />
-  <meta property="og:image" content="https://vocalia.ma/public/images/og-academie.webp" />
+  <meta property="og:title" content="Académie Business VocalIA - Formation Voice AI pour Décideurs" />
+  <meta property="og:description" content="Apprenez à transformer vos conversations en résultats business. Use cases par secteur, intégrations, ROI." />
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#5E6AD2">
-
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Académie Business VocalIA",
-    "description": "Guide complet pour comprendre et exploiter la plateforme VocalIA",
-    "url": "https://vocalia.ma/academie-business",
-    "provider": {
-      "@type": "Organization",
-      "name": "VocalIA",
-      "url": "https://vocalia.ma"
-    }
-  }
-  </script>
 
   <!-- CSS -->
   <style>body{background:#0f172a;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
@@ -65,51 +46,82 @@
       backdrop-filter: blur(20px);
       border: 1px solid rgba(148, 163, 184, 0.15);
     }
-    .stat-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
-      border: 1px solid rgba(148, 163, 184, 0.1);
-      transition: all 0.3s ease;
-    }
-    .stat-card:hover {
-      border-color: rgba(99, 102, 241, 0.4);
-      transform: translateY(-4px);
-    }
-    .capability-card {
+    .lesson-card {
       background: rgba(30, 41, 59, 0.6);
       border: 1px solid rgba(148, 163, 184, 0.1);
       transition: all 0.3s ease;
     }
-    .capability-card:hover {
+    .lesson-card:hover {
       background: rgba(30, 41, 59, 0.8);
       border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .workflow-arrow {
+      color: #6366f1;
+      font-size: 20px;
+    }
+    .roi-highlight {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .warning-box {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .limitation-box {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .toc-link {
+      transition: all 0.2s;
+    }
+    .toc-link:hover {
+      color: white;
+      padding-left: 8px;
+    }
+    .section-anchor {
+      scroll-margin-top: 100px;
     }
     .workflow-step {
       position: relative;
+      padding-left: 24px;
+      border-left: 2px solid rgba(99, 102, 241, 0.3);
     }
-    .workflow-step::after {
+    .workflow-step::before {
       content: '';
       position: absolute;
-      top: 50%;
-      right: -1rem;
-      width: 2rem;
-      height: 2px;
-      background: linear-gradient(90deg, #6366f1, transparent);
+      left: -6px;
+      top: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #6366f1;
     }
-    .workflow-step:last-child::after {
-      display: none;
+    .sector-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(30, 41, 59, 0.4));
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      transition: all 0.3s ease;
     }
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+    .sector-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-4px);
     }
   </style>
 </head>
 
 <body class="bg-slate-900 text-white antialiased">
-  <!-- Skip Link -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg">
-    Aller au contenu principal
-  </a>
 
   <!-- Navigation -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass">
@@ -133,897 +145,1246 @@
   </nav>
 
   <!-- Main Content -->
-  <main id="main-content" class="pt-16">
+  <main class="pt-16">
 
-    <!-- Hero Section -->
-    <section class="relative py-20 overflow-hidden">
+    <!-- Hero -->
+    <section class="relative py-16 overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-slate-900 to-purple-900/20"></div>
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/5 rounded-full blur-3xl"></div>
-
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div class="text-center">
-          <span class="inline-flex items-center px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-8">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="text-center mb-12">
+          <span class="inline-flex items-center px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-6">
             <i data-lucide="graduation-cap" class="w-4 h-4 mr-2"></i>
-            Académie Business
+            Formation Business Complète
           </span>
-
-          <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Chaque Conversation<br>
-            <span class="gradient-text">Devient un Résultat</span>
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">
+            Académie <span class="gradient-text">Business</span>
           </h1>
-
-          <p class="text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed">
-            VocalIA n'est pas un simple outil vocal. C'est un écosystème complet qui transforme
-            vos interactions clients en actions automatisées, mesurables et rentables.
+          <p class="text-xl text-slate-300 max-w-3xl mx-auto">
+            Cette académie vous apprend <strong>exactement</strong> comment utiliser VocalIA pour votre secteur d'activité.
+            Workflows concrets, intégrations expliquées, ROI mesurable. Pas de théorie - que du pratique.
           </p>
+        </div>
 
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="#puissance" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold">
-              Découvrir la Plateforme
-            </a>
-            <a href="/contact" class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition font-semibold">
-              Parler à un Expert
-            </a>
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
+          <div class="text-center p-4 rounded-xl bg-slate-800/50">
+            <div class="text-2xl font-bold text-indigo-400">8</div>
+            <div class="text-xs text-slate-400">Secteurs couverts</div>
+          </div>
+          <div class="text-center p-4 rounded-xl bg-slate-800/50">
+            <div class="text-2xl font-bold text-emerald-400">33</div>
+            <div class="text-xs text-slate-400">Use cases détaillés</div>
+          </div>
+          <div class="text-center p-4 rounded-xl bg-slate-800/50">
+            <div class="text-2xl font-bold text-amber-400">31</div>
+            <div class="text-xs text-slate-400">Personas métier</div>
+          </div>
+          <div class="text-center p-4 rounded-xl bg-slate-800/50">
+            <div class="text-2xl font-bold text-purple-400">28</div>
+            <div class="text-xs text-slate-400">Intégrations natives</div>
+          </div>
+          <div class="text-center p-4 rounded-xl bg-slate-800/50">
+            <div class="text-2xl font-bold text-rose-400">254</div>
+            <div class="text-xs text-slate-400">Outils MCP</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- La Puissance en Chiffres -->
-    <section id="puissance" class="py-20 bg-slate-900/50">
+    <!-- Content with Sidebar -->
+    <section class="py-12">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            La <span class="gradient-text">Puissance</span> en Chiffres
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Chaque composant a été conçu pour résoudre un problème business précis.
-            Ensemble, ils forment la plateforme Voice AI la plus complète du marché.
-          </p>
-        </div>
+        <div class="grid lg:grid-cols-4 gap-8">
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-4xl md:text-5xl font-bold text-indigo-400 mb-2">254</div>
-            <div class="text-slate-300 font-medium">Outils MCP</div>
-            <p class="text-slate-500 text-sm mt-2">Automatisations prêtes à l'emploi</p>
-          </div>
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-4xl md:text-5xl font-bold text-emerald-400 mb-2">31</div>
-            <div class="text-slate-300 font-medium">Personas Métier</div>
-            <p class="text-slate-500 text-sm mt-2">Agents pré-configurés par industrie</p>
-          </div>
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-4xl md:text-5xl font-bold text-amber-400 mb-2">28</div>
-            <div class="text-slate-300 font-medium">Intégrations</div>
-            <p class="text-slate-500 text-sm mt-2">CRM, E-commerce, Paiement...</p>
-          </div>
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-4xl md:text-5xl font-bold text-rose-400 mb-2">+7000</div>
-            <div class="text-slate-300 font-medium">Apps Connectables</div>
-            <p class="text-slate-500 text-sm mt-2">Via Zapier, Make, n8n</p>
-          </div>
-        </div>
+          <!-- Table of Contents (Sidebar) -->
+          <aside class="lg:col-span-1">
+            <div class="glass rounded-xl p-6 sticky top-24">
+              <h3 class="font-bold text-sm uppercase text-indigo-400 mb-4">Sommaire</h3>
+              <nav class="space-y-2 text-sm">
+                <a href="#comprendre" class="toc-link block text-slate-400 hover:text-white">1. Comprendre VocalIA</a>
+                <a href="#ecommerce" class="toc-link block text-slate-400 hover:text-white">2. E-commerce</a>
+                <a href="#immobilier" class="toc-link block text-slate-400 hover:text-white">3. Immobilier</a>
+                <a href="#sante" class="toc-link block text-slate-400 hover:text-white">4. Santé</a>
+                <a href="#agence" class="toc-link block text-slate-400 hover:text-white">5. Agences & Services</a>
+                <a href="#rh" class="toc-link block text-slate-400 hover:text-white">6. RH & Recrutement</a>
+                <a href="#finance" class="toc-link block text-slate-400 hover:text-white">7. Finance</a>
+                <a href="#chaines" class="toc-link block text-slate-400 hover:text-white">8. Chaînes d'Intégration</a>
+                <a href="#personas" class="toc-link block text-slate-400 hover:text-white">9. Les 31 Personas</a>
+                <a href="#limites" class="toc-link block text-slate-400 hover:text-white">10. Limites & Transparence</a>
+                <a href="#roi" class="toc-link block text-slate-400 hover:text-white">11. Calculer votre ROI</a>
+                <a href="#demarrer" class="toc-link block text-slate-400 hover:text-white">12. Comment Démarrer</a>
+              </nav>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-3xl font-bold text-cyan-400 mb-2">4</div>
-            <div class="text-slate-300 font-medium text-sm">Sensors Temps Réel</div>
-          </div>
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-3xl font-bold text-purple-400 mb-2">3</div>
-            <div class="text-slate-300 font-medium text-sm">Agents Autonomes</div>
-          </div>
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-3xl font-bold text-pink-400 mb-2">12</div>
-            <div class="text-slate-300 font-medium text-sm">Function Tools</div>
-          </div>
-          <div class="stat-card rounded-2xl p-6 text-center">
-            <div class="text-3xl font-bold text-sky-400 mb-2">5</div>
-            <div class="text-slate-300 font-medium text-sm">Langues Natives</div>
-          </div>
-        </div>
-      </div>
-    </section>
+              <div class="mt-8 pt-6 border-t border-slate-700">
+                <p class="text-xs text-slate-500 mb-3">Besoin d'aide personnalisée?</p>
+                <a href="/contact" class="block w-full py-2 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-center text-sm font-medium transition">
+                  Parler à un expert
+                </a>
+              </div>
+            </div>
+          </aside>
 
-    <div class="section-divider"></div>
+          <!-- Main Content -->
+          <div class="lg:col-span-3 space-y-20">
 
-    <!-- Qu'est-ce que VocalIA peut faire pour vous ? -->
-    <section class="py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            Qu'est-ce que VocalIA peut <span class="gradient-text">faire pour vous</span> ?
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Votre assistant vocal ne se contente pas de répondre. Il agit, décide et exécute.
-          </p>
-        </div>
+            <!-- ============================================ -->
+            <!-- MODULE 1: COMPRENDRE VOCALIA -->
+            <!-- ============================================ -->
+            <section id="comprendre" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">1</div>
+                <h2 class="text-2xl font-bold">Comprendre VocalIA</h2>
+              </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Qualifier vos leads -->
-          <div class="capability-card rounded-2xl p-8">
-            <div class="w-14 h-14 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-6">
-              <i data-lucide="target" class="w-7 h-7 text-indigo-400"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-3">Qualifier vos Leads Automatiquement</h3>
-            <p class="text-slate-400 mb-4">
-              Chaque appel est analysé selon la méthode BANT (Budget, Authority, Need, Timeline).
-              Les leads chauds sont identifiés et transférés immédiatement à vos commerciaux.
-            </p>
-            <div class="flex items-center text-emerald-400 text-sm font-medium">
-              <i data-lucide="trending-up" class="w-4 h-4 mr-2"></i>
-              +40% de taux de conversion
-            </div>
-          </div>
+              <div class="prose prose-invert max-w-none">
+                <p class="text-lg text-slate-300 mb-6">
+                  VocalIA n'est pas un simple chatbot vocal. C'est une plateforme qui permet à vos clients de <strong>parler</strong>
+                  à votre entreprise, et à votre entreprise d'<strong>agir automatiquement</strong> en réponse.
+                  La différence? VocalIA ne fait pas que répondre - il exécute des actions dans vos outils métier.
+                </p>
 
-          <!-- Prendre des RDV -->
-          <div class="capability-card rounded-2xl p-8">
-            <div class="w-14 h-14 rounded-xl bg-amber-500/20 flex items-center justify-center mb-6">
-              <i data-lucide="calendar-check" class="w-7 h-7 text-amber-400"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-3">Prendre des Rendez-vous 24/7</h3>
-            <p class="text-slate-400 mb-4">
-              Synchronisation directe avec Google Calendar et Calendly. Rappels automatiques
-              par SMS et WhatsApp. Reprogrammation vocale sans intervention humaine.
-            </p>
-            <div class="flex items-center text-emerald-400 text-sm font-medium">
-              <i data-lucide="trending-down" class="w-4 h-4 mr-2"></i>
-              -65% de no-shows
-            </div>
-          </div>
+                <!-- Les 2 Produits -->
+                <h3 class="text-xl font-semibold mb-4 text-white">Les 2 produits VocalIA</h3>
 
-          <!-- Support Client -->
-          <div class="capability-card rounded-2xl p-8">
-            <div class="w-14 h-14 rounded-xl bg-rose-500/20 flex items-center justify-center mb-6">
-              <i data-lucide="headphones" class="w-7 h-7 text-rose-400"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-3">Gérer votre Support Client</h3>
-            <p class="text-slate-400 mb-4">
-              Création automatique de tickets dans Freshdesk ou Zendesk. Recherche intelligente
-              dans votre base de connaissances. Escalade vers un humain quand nécessaire.
-            </p>
-            <div class="flex items-center text-emerald-400 text-sm font-medium">
-              <i data-lucide="trending-down" class="w-4 h-4 mr-2"></i>
-              -70% de tickets niveau 1
-            </div>
-          </div>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                  <div class="lesson-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                      <div class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                        <i data-lucide="mic" class="w-6 h-6 text-indigo-400"></i>
+                      </div>
+                      <div>
+                        <h4 class="font-bold">Voice Widget</h4>
+                        <span class="text-emerald-400 text-sm font-medium">Gratuit - $0</span>
+                      </div>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-4">
+                      Un bouton sur votre site web. Les visiteurs cliquent, parlent, et l'IA répond.
+                      Basé sur Web Speech API du navigateur - aucun coût d'infrastructure.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1">
+                      <li>• Installation en 5 minutes (1 ligne de code)</li>
+                      <li>• Fonctionne sur tous les navigateurs modernes</li>
+                      <li>• Idéal pour: Sites web, landing pages, support en ligne</li>
+                    </ul>
+                  </div>
 
-          <!-- E-commerce -->
-          <div class="capability-card rounded-2xl p-8">
-            <div class="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-6">
-              <i data-lucide="shopping-cart" class="w-7 h-7 text-emerald-400"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-3">Automatiser votre E-commerce</h3>
-            <p class="text-slate-400 mb-4">
-              Suivi de commandes, gestion des retours, vérification de stock en temps réel.
-              Compatible Shopify, WooCommerce, Magento, PrestaShop, BigCommerce, Wix et Squarespace.
-            </p>
-            <div class="flex items-center text-emerald-400 text-sm font-medium">
-              <i data-lucide="check-circle" class="w-4 h-4 mr-2"></i>
-              7 plateformes supportées
-            </div>
-          </div>
+                  <div class="lesson-card rounded-xl p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                      <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                        <i data-lucide="phone" class="w-6 h-6 text-purple-400"></i>
+                      </div>
+                      <div>
+                        <h4 class="font-bold">Voice Telephony</h4>
+                        <span class="text-slate-400 text-sm">~0.06€/min</span>
+                      </div>
+                    </div>
+                    <p class="text-slate-400 text-sm mb-4">
+                      Des appels téléphoniques réels via Twilio PSTN. Vos clients appellent un numéro,
+                      l'IA répond comme un humain, qualifie, prend des RDV, transfère si nécessaire.
+                    </p>
+                    <ul class="text-xs text-slate-500 space-y-1">
+                      <li>• Numéro de téléphone dédié</li>
+                      <li>• 60% moins cher que les concurrents (Vapi, Retell)</li>
+                      <li>• Idéal pour: Standard téléphonique, prospection, SAV</li>
+                    </ul>
+                  </div>
+                </div>
 
-          <!-- Encaisser des Paiements -->
-          <div class="capability-card rounded-2xl p-8">
-            <div class="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center mb-6">
-              <i data-lucide="credit-card" class="w-7 h-7 text-green-400"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-3">Encaisser des Paiements</h3>
-            <p class="text-slate-400 mb-4">
-              Génération de liens de paiement Stripe pendant l'appel. Envoi par SMS ou WhatsApp.
-              Le client paie en un clic, vous êtes notifié instantanément.
-            </p>
-            <div class="flex items-center text-emerald-400 text-sm font-medium">
-              <i data-lucide="zap" class="w-4 h-4 mr-2"></i>
-              29 outils Stripe intégrés
-            </div>
-          </div>
+                <!-- Ce qui rend VocalIA différent -->
+                <h3 class="text-xl font-semibold mb-4 text-white">Ce qui rend VocalIA différent</h3>
 
-          <!-- Synchroniser vos CRM -->
-          <div class="capability-card rounded-2xl p-8">
-            <div class="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6">
-              <i data-lucide="database" class="w-7 h-7 text-blue-400"></i>
-            </div>
-            <h3 class="text-xl font-bold mb-3">Synchroniser vos CRM</h3>
-            <p class="text-slate-400 mb-4">
-              Création automatique de contacts et deals dans Pipedrive, Zoho ou HubSpot.
-              Chaque interaction est loggée, chaque lead est suivi.
-            </p>
-            <div class="flex items-center text-emerald-400 text-sm font-medium">
-              <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>
-              Sync bidirectionnelle temps réel
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+                <div class="space-y-4 mb-8">
+                  <div class="flex items-start gap-4 p-4 rounded-lg bg-slate-800/50">
+                    <i data-lucide="puzzle" class="w-6 h-6 text-indigo-400 mt-1"></i>
+                    <div>
+                      <h4 class="font-semibold mb-1">28 intégrations natives + 254 outils</h4>
+                      <p class="text-slate-400 text-sm">
+                        VocalIA se connecte directement à vos outils: Shopify (9 outils), Stripe (29 outils),
+                        Pipedrive (11 outils), Calendly (8 outils), Zendesk, Gmail... L'IA peut <strong>lire</strong>
+                        vos données ET <strong>agir</strong> dessus: annuler une commande, créer un remboursement,
+                        prendre un RDV, envoyer un SMS.
+                      </p>
+                    </div>
+                  </div>
 
-    <div class="section-divider"></div>
+                  <div class="flex items-start gap-4 p-4 rounded-lg bg-slate-800/50">
+                    <i data-lucide="users" class="w-6 h-6 text-amber-400 mt-1"></i>
+                    <div>
+                      <h4 class="font-semibold mb-1">31 personas métier pré-configurés</h4>
+                      <p class="text-slate-400 text-sm">
+                        Des agents pré-configurés pour chaque industrie: e-commerce, immobilier, santé, agences,
+                        recrutement, finance... Chaque persona connaît le vocabulaire, les objections typiques,
+                        et les processus de son métier. Déploiement en 5 minutes, pas en 5 semaines.
+                      </p>
+                    </div>
+                  </div>
 
-    <!-- Les 31 Personas Métier -->
-    <section class="py-20 bg-slate-900/50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            <span class="gradient-text">31 Personas</span> Métier Prêts à l'Emploi
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Chaque persona est un agent vocal expert dans son domaine. Vocabulaire adapté,
-            réponses pertinentes, comportement professionnel. Déployez en 5 minutes.
-          </p>
-        </div>
+                  <div class="flex items-start gap-4 p-4 rounded-lg bg-slate-800/50">
+                    <i data-lucide="zap" class="w-6 h-6 text-emerald-400 mt-1"></i>
+                    <div>
+                      <h4 class="font-semibold mb-1">+7000 apps via iPaaS (Zapier, Make, n8n)</h4>
+                      <p class="text-slate-400 text-sm">
+                        Au-delà des 28 intégrations natives, VocalIA peut déclencher des actions dans
+                        pratiquement n'importe quelle application: ERP, comptabilité, marketing automation,
+                        HRIS, CRM spécialisés...
+                      </p>
+                    </div>
+                  </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-          <!-- Tier 1 -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">TIER 1</span>
-              <span class="text-slate-400 text-sm">7 Personas Core</span>
-            </div>
-            <div class="space-y-3">
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="building-2" class="w-5 h-5 text-indigo-400"></i>
-                <div>
-                  <div class="font-medium">AGENCY</div>
-                  <div class="text-xs text-slate-500">Agences marketing & conseil</div>
+                  <div class="flex items-start gap-4 p-4 rounded-lg bg-slate-800/50">
+                    <i data-lucide="globe" class="w-6 h-6 text-rose-400 mt-1"></i>
+                    <div>
+                      <h4 class="font-semibold mb-1">5 langues dont Darija (unique sur le marché)</h4>
+                      <p class="text-slate-400 text-sm">
+                        Français, English, Español, العربية (MSA), et <strong>الدارجة</strong> (Darija marocain).
+                        VocalIA est le seul à supporter nativement le dialecte marocain via Atlas-Chat-9B.
+                        45 millions de locuteurs, zéro concurrent.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="warning-box rounded-xl p-6">
+                  <div class="flex items-start gap-3">
+                    <i data-lucide="lightbulb" class="w-6 h-6 text-amber-400 mt-1"></i>
+                    <div>
+                      <h4 class="font-semibold text-amber-400 mb-2">Point clé à retenir</h4>
+                      <p class="text-slate-300 text-sm">
+                        VocalIA ne fait pas que répondre aux questions. Il <strong>agit</strong>:
+                        il crée des contacts dans votre CRM, prend des RDV dans votre calendrier,
+                        envoie des SMS de confirmation, génère des liens de paiement, annule des commandes,
+                        crée des tickets support. C'est cette capacité d'<strong>action</strong> qui génère le ROI.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="heart-pulse" class="w-5 h-5 text-rose-400"></i>
-                <div>
-                  <div class="font-medium">DENTAL</div>
-                  <div class="text-xs text-slate-500">Cabinets dentaires</div>
-                </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 2: E-COMMERCE -->
+            <!-- ============================================ -->
+            <section id="ecommerce" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">2</div>
+                <h2 class="text-2xl font-bold">E-commerce</h2>
               </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="home" class="w-5 h-5 text-amber-400"></i>
-                <div>
-                  <div class="font-medium">PROPERTY</div>
-                  <div class="text-xs text-slate-500">Agences immobilières</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="users" class="w-5 h-5 text-cyan-400"></i>
-                <div>
-                  <div class="font-medium">HOA</div>
-                  <div class="text-xs text-slate-500">Syndics & copropriétés</div>
-                </div>
-              </div>
-              <div class="text-center text-slate-500 text-sm mt-2">+ 3 autres</div>
-            </div>
-          </div>
 
-          <!-- Tier 2 -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold">TIER 2</span>
-              <span class="text-slate-400 text-sm">12 Personas Expansion</span>
-            </div>
-            <div class="space-y-3">
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="shopping-bag" class="w-5 h-5 text-emerald-400"></i>
-                <div>
-                  <div class="font-medium">UNIVERSAL_ECOMMERCE</div>
-                  <div class="text-xs text-slate-500">Boutiques en ligne</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="briefcase" class="w-5 h-5 text-blue-400"></i>
-                <div>
-                  <div class="font-medium">UNIVERSAL_SME</div>
-                  <div class="text-xs text-slate-500">PME & TPE</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="car" class="w-5 h-5 text-slate-400"></i>
-                <div>
-                  <div class="font-medium">MECHANIC</div>
-                  <div class="text-xs text-slate-500">Garages & mécanique</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="user-check" class="w-5 h-5 text-purple-400"></i>
-                <div>
-                  <div class="font-medium">RECRUITER</div>
-                  <div class="text-xs text-slate-500">Cabinets de recrutement</div>
-                </div>
-              </div>
-              <div class="text-center text-slate-500 text-sm mt-2">+ 8 autres</div>
-            </div>
-          </div>
-
-          <!-- Tier 3 -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-xs font-bold">TIER 3</span>
-              <span class="text-slate-400 text-sm">12 Personas Extended</span>
-            </div>
-            <div class="space-y-3">
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="calculator" class="w-5 h-5 text-green-400"></i>
-                <div>
-                  <div class="font-medium">ACCOUNTANT</div>
-                  <div class="text-xs text-slate-500">Cabinets comptables</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="ruler" class="w-5 h-5 text-orange-400"></i>
-                <div>
-                  <div class="font-medium">ARCHITECT</div>
-                  <div class="text-xs text-slate-500">Cabinets d'architecture</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="pill" class="w-5 h-5 text-teal-400"></i>
-                <div>
-                  <div class="font-medium">PHARMACIST</div>
-                  <div class="text-xs text-slate-500">Pharmacies</div>
-                </div>
-              </div>
-              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50">
-                <i data-lucide="shield" class="w-5 h-5 text-sky-400"></i>
-                <div>
-                  <div class="font-medium">INSURER</div>
-                  <div class="text-xs text-slate-500">Assurances</div>
-                </div>
-              </div>
-              <div class="text-center text-slate-500 text-sm mt-2">+ 8 autres</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Les 28 Intégrations Natives -->
-    <section class="py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            <span class="gradient-text">28 Intégrations</span> Natives
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Pas de code, pas de configuration complexe. VocalIA se connecte directement
-            à vos outils existants et les fait travailler ensemble.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- E-commerce -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                <i data-lucide="shopping-cart" class="w-5 h-5 text-emerald-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">E-commerce</div>
-                <div class="text-xs text-slate-500">7 plateformes</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Shopify</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> WooCommerce</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Magento</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> PrestaShop</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> + 3 autres</div>
-            </div>
-          </div>
-
-          <!-- CRM -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                <i data-lucide="users" class="w-5 h-5 text-blue-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">CRM</div>
-                <div class="text-xs text-slate-500">3 plateformes</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Pipedrive</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Zoho CRM</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> HubSpot</div>
-            </div>
-          </div>
-
-          <!-- Paiements -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
-                <i data-lucide="credit-card" class="w-5 h-5 text-green-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">Paiements</div>
-                <div class="text-xs text-slate-500">29 outils</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Payment Links</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Checkout Sessions</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Factures</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Remboursements</div>
-            </div>
-          </div>
-
-          <!-- Scheduling -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                <i data-lucide="calendar" class="w-5 h-5 text-amber-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">Scheduling</div>
-                <div class="text-xs text-slate-500">2 plateformes</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Google Calendar</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Calendly</div>
-            </div>
-          </div>
-
-          <!-- Support -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-rose-500/20 flex items-center justify-center">
-                <i data-lucide="headphones" class="w-5 h-5 text-rose-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">Support</div>
-                <div class="text-xs text-slate-500">2 plateformes</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Freshdesk</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Zendesk</div>
-            </div>
-          </div>
-
-          <!-- Communication -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                <i data-lucide="message-circle" class="w-5 h-5 text-purple-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">Communication</div>
-                <div class="text-xs text-slate-500">4 canaux</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Gmail</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Slack</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> SMS (Twilio)</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> WhatsApp</div>
-            </div>
-          </div>
-
-          <!-- Productivity -->
-          <div class="glass rounded-2xl p-6">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                <i data-lucide="file-spreadsheet" class="w-5 h-5 text-cyan-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">Productivité</div>
-                <div class="text-xs text-slate-500">3 outils</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Google Sheets</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Google Drive</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Google Docs</div>
-            </div>
-          </div>
-
-          <!-- iPaaS -->
-          <div class="glass rounded-2xl p-6 border-2 border-indigo-500/30">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                <i data-lucide="zap" class="w-5 h-5 text-indigo-400"></i>
-              </div>
-              <div>
-                <div class="font-semibold">iPaaS</div>
-                <div class="text-xs text-indigo-400 font-medium">+7000 apps</div>
-              </div>
-            </div>
-            <div class="space-y-2 text-sm text-slate-400">
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Zapier</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Make</div>
-              <div class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> n8n</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Comment ça fonctionne : Les Workflows -->
-    <section class="py-20 bg-slate-900/50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            Comment ça <span class="gradient-text">Fonctionne</span>
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            VocalIA enchaîne automatiquement les actions. Une conversation déclenche
-            une cascade d'automatisations qui transforment un prospect en client payant.
-          </p>
-        </div>
-
-        <!-- Workflow 1: Voice-to-Cash -->
-        <div class="glass rounded-2xl p-8 mb-8">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-              <i data-lucide="banknote" class="w-6 h-6 text-emerald-400"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold">Voice-to-Cash</h3>
-              <p class="text-slate-400">Du premier appel au paiement encaissé</p>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-6">
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="phone" class="w-4 h-4 text-indigo-400"></i>
-              Appel entrant
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="target" class="w-4 h-4 text-amber-400"></i>
-              Qualification BANT
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="database" class="w-4 h-4 text-blue-400"></i>
-              CRM: Création contact
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="credit-card" class="w-4 h-4 text-green-400"></i>
-              Stripe: Lien paiement
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500/20 text-emerald-400 font-medium">
-              <i data-lucide="check-circle" class="w-4 h-4"></i>
-              Paiement reçu
-            </div>
-          </div>
-
-          <p class="text-slate-500 text-sm">
-            <strong class="text-slate-300">Résultat:</strong> En un seul appel, le prospect est qualifié, enregistré dans votre CRM,
-            reçoit un lien de paiement par SMS et paie. Tout est automatique.
-          </p>
-        </div>
-
-        <!-- Workflow 2: Lead-to-Meeting -->
-        <div class="glass rounded-2xl p-8 mb-8">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-              <i data-lucide="calendar-check" class="w-6 h-6 text-amber-400"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold">Lead-to-Meeting</h3>
-              <p class="text-slate-400">Du visiteur web au rendez-vous confirmé</p>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-6">
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="mic" class="w-4 h-4 text-indigo-400"></i>
-              Voice Widget
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="target" class="w-4 h-4 text-amber-400"></i>
-              Score BANT
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="calendar" class="w-4 h-4 text-cyan-400"></i>
-              Calendly: Créneaux
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="calendar-plus" class="w-4 h-4 text-purple-400"></i>
-              Google Calendar
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-500/20 text-amber-400 font-medium">
-              <i data-lucide="check-circle" class="w-4 h-4"></i>
-              RDV confirmé
-            </div>
-          </div>
-
-          <p class="text-slate-500 text-sm">
-            <strong class="text-slate-300">Résultat:</strong> Le visiteur parle au widget, choisit un créneau proposé vocalement,
-            l'événement est créé dans le calendrier et le deal est ouvert dans le CRM.
-          </p>
-        </div>
-
-        <!-- Workflow 3: Support-to-Resolution -->
-        <div class="glass rounded-2xl p-8">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-12 h-12 rounded-xl bg-rose-500/20 flex items-center justify-center">
-              <i data-lucide="life-buoy" class="w-6 h-6 text-rose-400"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold">Support-to-Resolution</h3>
-              <p class="text-slate-400">Du problème client à la résolution</p>
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-4 mb-6">
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="phone-incoming" class="w-4 h-4 text-indigo-400"></i>
-              Appel support
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="search" class="w-4 h-4 text-amber-400"></i>
-              RAG: Recherche KB
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="ticket" class="w-4 h-4 text-rose-400"></i>
-              Freshdesk: Ticket
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 text-slate-300">
-              <i data-lucide="message-square" class="w-4 h-4 text-green-400"></i>
-              SMS: Confirmation
-            </div>
-            <i data-lucide="arrow-right" class="w-5 h-5 text-slate-600"></i>
-            <div class="flex items-center gap-2 px-4 py-2 rounded-lg bg-rose-500/20 text-rose-400 font-medium">
-              <i data-lucide="check-circle" class="w-4 h-4"></i>
-              Client satisfait
-            </div>
-          </div>
-
-          <p class="text-slate-500 text-sm">
-            <strong class="text-slate-300">Résultat:</strong> Le problème est identifié via la base de connaissances,
-            un ticket est créé automatiquement et le client reçoit une confirmation SMS avec le numéro de suivi.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- L'Architecture Invisible -->
-    <section class="py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            L'Architecture <span class="gradient-text">Invisible</span>
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Derrière chaque conversation, des composants travaillent en silence
-            pour garantir fiabilité, sécurité et performance.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- Sensors -->
-          <div class="capability-card rounded-2xl p-6">
-            <div class="w-12 h-12 rounded-xl bg-rose-500/20 flex items-center justify-center mb-4">
-              <i data-lucide="activity" class="w-6 h-6 text-rose-400"></i>
-            </div>
-            <h3 class="text-lg font-bold mb-2">4 Sensors Temps Réel</h3>
-            <p class="text-slate-400 text-sm mb-4">
-              Surveillance continue de vos coûts, de la qualité vocale,
-              de la vélocité des leads et du taux de rétention.
-            </p>
-            <div class="space-y-1 text-xs text-slate-500">
-              <div>cost-tracking-sensor</div>
-              <div>voice-quality-sensor</div>
-              <div>lead-velocity-sensor</div>
-              <div>retention-sensor</div>
-            </div>
-          </div>
-
-          <!-- Agents -->
-          <div class="capability-card rounded-2xl p-6">
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4">
-              <i data-lucide="bot" class="w-6 h-6 text-indigo-400"></i>
-            </div>
-            <h3 class="text-lg font-bold mb-2">3 Agents Autonomes</h3>
-            <p class="text-slate-400 text-sm mb-4">
-              Des agents qui travaillent sans supervision pour la facturation,
-              l'onboarding clients et la qualification B2B.
-            </p>
-            <div class="space-y-1 text-xs text-slate-500">
-              <div>BillingAgent</div>
-              <div>TenantOnboardingAgent</div>
-              <div>VoiceAgentB2B</div>
-            </div>
-          </div>
-
-          <!-- Frameworks -->
-          <div class="capability-card rounded-2xl p-6">
-            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4">
-              <i data-lucide="layers" class="w-6 h-6 text-purple-400"></i>
-            </div>
-            <h3 class="text-lg font-bold mb-2">4 Frameworks Core</h3>
-            <p class="text-slate-400 text-sm mb-4">
-              RAG pour la recherche intelligente, Multi-Tenant pour l'isolation,
-              Event-Driven pour la réactivité, HITL pour le contrôle humain.
-            </p>
-            <div class="space-y-1 text-xs text-slate-500">
-              <div>RAG/BM25</div>
-              <div>Multi-Tenant</div>
-              <div>Event-Driven</div>
-              <div>Human-In-The-Loop</div>
-            </div>
-          </div>
-
-          <!-- Security -->
-          <div class="capability-card rounded-2xl p-6">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
-              <i data-lucide="shield-check" class="w-6 h-6 text-emerald-400"></i>
-            </div>
-            <h3 class="text-lg font-bold mb-2">Sécurité Enterprise</h3>
-            <p class="text-slate-400 text-sm mb-4">
-              Chiffrement AES-256-GCM, OAuth 2.0 Gateway,
-              isolation des données par tenant.
-            </p>
-            <div class="space-y-1 text-xs text-slate-500">
-              <div>SecretVault</div>
-              <div>OAuthGateway</div>
-              <div>WebhookRouter</div>
-              <div>TenantContext</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- 5 Langues Natives -->
-    <section class="py-20 bg-slate-900/50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            <span class="gradient-text">5 Langues</span> Natives
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Parlez à vos clients dans leur langue. Y compris le Darija marocain,
-            une exclusivité VocalIA.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-6">
-          <div class="glass rounded-2xl p-6 text-center">
-            <div class="text-4xl mb-3">&#127467;&#127479;</div>
-            <div class="font-semibold">Français</div>
-            <div class="text-xs text-slate-500 mt-1">France, Belgique, Suisse, Maroc</div>
-          </div>
-          <div class="glass rounded-2xl p-6 text-center">
-            <div class="text-4xl mb-3">&#127468;&#127463;</div>
-            <div class="font-semibold">English</div>
-            <div class="text-xs text-slate-500 mt-1">Global</div>
-          </div>
-          <div class="glass rounded-2xl p-6 text-center">
-            <div class="text-4xl mb-3">&#127466;&#127480;</div>
-            <div class="font-semibold">Español</div>
-            <div class="text-xs text-slate-500 mt-1">Espagne, Amérique Latine</div>
-          </div>
-          <div class="glass rounded-2xl p-6 text-center" dir="rtl">
-            <div class="text-4xl mb-3">&#127480;&#127462;</div>
-            <div class="font-semibold">العربية</div>
-            <div class="text-xs text-slate-500 mt-1">Arabe Standard</div>
-          </div>
-          <div class="glass rounded-2xl p-6 text-center border-2 border-indigo-500/30" dir="rtl">
-            <div class="text-4xl mb-3">&#127474;&#127462;</div>
-            <div class="font-semibold">الدارجة</div>
-            <div class="text-xs text-indigo-400 mt-1 font-medium">Exclusivité VocalIA</div>
-          </div>
-        </div>
-
-        <div class="mt-12 glass rounded-2xl p-8 max-w-3xl mx-auto">
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center shrink-0">
-              <span class="text-2xl">&#127474;&#127462;</span>
-            </div>
-            <div>
-              <h3 class="text-xl font-bold mb-2">Darija: Premier du Marché</h3>
-              <p class="text-slate-400">
-                VocalIA est la seule plateforme Voice AI à supporter nativement le dialecte marocain,
-                grâce à Atlas-Chat-9B. Parlez à 45 millions de Marocains et à leur diaspora dans leur langue du quotidien.
+              <p class="text-slate-300 mb-6">
+                <strong>Couverture marché: ~64%</strong> (WooCommerce 33-39%, Shopify 10%, Magento 8%, Wix 7%, Squarespace 3%, PrestaShop 2%, BigCommerce 1%)
               </p>
-            </div>
+
+              <div class="glass rounded-xl p-4 mb-8">
+                <div class="flex flex-wrap gap-3">
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">Shopify (9 outils)</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">WooCommerce (18 outils)</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">Magento (19 outils)</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">PrestaShop (17 outils)</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">BigCommerce (22 outils)</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">Wix (9 outils)</span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm">Squarespace (9 outils)</span>
+                  <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm">Stripe (29 outils)</span>
+                </div>
+              </div>
+
+              <!-- Use Case 2.1 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-emerald-400">2.1</span> Suivi de commande automatique
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le problème:</strong> 40% des appels SAV concernent le statut
+                  d'une commande. Vos agents passent leur temps à chercher des infos basiques.
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">Client:</strong> "Bonjour, où en est ma commande?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bien sûr, quel est votre numéro de commande ou l'email utilisé?"</p>
+                    <p><strong class="text-slate-300">Client:</strong> "C'est jean@email.com"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "J'ai trouvé votre commande #12345. Elle a été expédiée hier avec Chronopost et devrait arriver demain avant 18h. Je vous envoie le lien de suivi par SMS."</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">shopify_get_order</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">shopify_list_orders</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send (SMS)</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">-70% de tickets "où est ma commande" | Réponse instantanée 24/7 | 0€ de coût humain</p>
+                </div>
+              </div>
+
+              <!-- Use Case 2.2 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-emerald-400">2.2</span> Annulation et remboursement en direct
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le problème:</strong> Les demandes d'annulation nécessitent plusieurs
+                  allers-retours email et prennent 24-48h à traiter. Le client est frustré.
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">Client:</strong> "Je veux annuler ma commande"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. Puis-je avoir votre numéro de commande?"</p>
+                    <p><strong class="text-slate-300">Client:</strong> "#12345"</p>
+                    <p class="text-slate-300"><strong>VocalIA:</strong> "Commande #12345, 89€, passée hier. Elle n'est pas encore expédiée. Confirmez-vous l'annulation?"</p>
+                    <p><strong class="text-slate-300">Client:</strong> "Oui"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est fait. Votre commande est annulée et le remboursement de 89€ sera sur votre compte sous 3-5 jours ouvrés. Vous recevez une confirmation par email."</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">shopify_get_order</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">shopify_cancel_order</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_create_refund</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">gmail_send</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">Annulation + remboursement en 2 minutes vs 24-48h | Satisfaction client +35%</p>
+                </div>
+              </div>
+
+              <!-- Use Case 2.3 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-emerald-400">2.3</span> Paiement vocal instantané
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le problème:</strong> Un client appelle pour payer une facture ou finaliser une commande.
+                  Impossible de prendre le paiement pendant l'appel - il faut envoyer un email, attendre, relancer...
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">Client:</strong> "Je veux payer ma facture de 250€"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Parfait. Je vous envoie un lien de paiement sécurisé par SMS. Vous n'avez qu'à cliquer et payer avec votre carte."</p>
+                    <p class="text-slate-500">[VocalIA génère le lien Stripe et l'envoie par SMS en 2 secondes]</p>
+                    <p class="text-slate-500">[Le client reçoit le SMS, clique, paie sur son téléphone]</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Paiement reçu, merci! Votre facture est soldée et vous recevez le reçu par email."</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_create_payment_link</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_get_checkout_session</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">-70% d'abandon de paiement | Conversion instantanée vs 24-48h | 135+ devises supportées</p>
+                </div>
+              </div>
+
+              <!-- Use Case 2.4 -->
+              <div class="lesson-card rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-emerald-400">2.4</span> Vérification stock en temps réel
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le problème:</strong> Un client appelle pour savoir si un produit est disponible.
+                  Votre équipe doit aller vérifier manuellement dans le back-office.
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">Client:</strong> "Vous avez encore le modèle X en stock?"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Oui, le modèle X est en stock. Il nous reste 12 unités au prix de 149€. Souhaitez-vous que je vous envoie un lien pour commander?"</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">shopify_get_product</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">check_product_stock</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">+20% conversion sur clients high-intent | Réponse instantanée vs "je vérifie et je vous rappelle"</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 3: IMMOBILIER -->
+            <!-- ============================================ -->
+            <section id="immobilier" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">3</div>
+                <h2 class="text-2xl font-bold">Immobilier</h2>
+              </div>
+
+              <p class="text-slate-300 mb-6">
+                <strong>Personas disponibles:</strong> PROPERTY (agent immobilier), RENTER (gestionnaire locatif)
+              </p>
+
+              <div class="glass rounded-xl p-4 mb-8">
+                <div class="flex flex-wrap gap-3">
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">Pipedrive CRM</span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">Calendly</span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">Google Calendar</span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">Gmail</span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm">Slack</span>
+                </div>
+              </div>
+
+              <!-- Use Case 3.1 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-blue-400">3.1</span> Qualification prospect et prise de visite
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le workflow complet:</strong>
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">Prospect:</strong> "Je cherche un appartement T3 à Casablanca"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Très bien. Quel est votre budget approximatif?"</p>
+                    <p><strong class="text-slate-300">Prospect:</strong> "Entre 1.5 et 2 millions de dirhams"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Et vous êtes le décisionnaire pour cet achat?"</p>
+                    <p><strong class="text-slate-300">Prospect:</strong> "Oui, c'est pour moi"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Dans quel délai souhaitez-vous emménager?"</p>
+                    <p><strong class="text-slate-300">Prospect:</strong> "D'ici 3 mois"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Parfait. J'ai un T3 de 95m² à Maarif qui correspond exactement à vos critères, à 1.8M DH. Je peux vous proposer une visite demain à 14h ou après-demain à 10h. Quelle heure vous convient?"</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">qualify_lead (BANT)</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">search_knowledge_base</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_get_available_times</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">create_booking</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_create_deal</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">+50% visites qualifiées | -70% temps agents sur appels | +35% taux de closing</p>
+                </div>
+              </div>
+
+              <!-- Use Case 3.2 -->
+              <div class="lesson-card rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-blue-400">3.2</span> Gestion des réclamations locataires
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le workflow complet:</strong>
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">Locataire:</strong> "Il y a une fuite dans la salle de bain"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. C'est une fuite importante ou un goutte-à-goutte?"</p>
+                    <p><strong class="text-slate-300">Locataire:</strong> "Un goutte-à-goutte au niveau du robinet"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Je crée un ticket maintenance. Un plombier vous contactera dans les 24h. Vous recevez un SMS avec le numéro du ticket pour suivre l'avancement."</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">freshdesk_create_ticket</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">Traitement 24/7 | Historique complet | Satisfaction locataire +40%</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 4: SANTÉ -->
+            <!-- ============================================ -->
+            <section id="sante" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">4</div>
+                <h2 class="text-2xl font-bold">Santé</h2>
+              </div>
+
+              <p class="text-slate-300 mb-6">
+                <strong>Personas disponibles:</strong> DENTAL (cabinet dentaire), HEALER (praticien), PHARMACIST (pharmacie)
+              </p>
+
+              <div class="glass rounded-xl p-4 mb-8">
+                <div class="flex flex-wrap gap-3">
+                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Calendly</span>
+                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Google Calendar</span>
+                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Gmail</span>
+                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Twilio SMS</span>
+                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Google Sheets</span>
+                </div>
+              </div>
+
+              <!-- Use Case 4.1 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-rose-400">4.1</span> Prise de RDV 24/7 avec rappels automatiques
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le problème:</strong> Votre secrétariat est débordé.
+                  Les patients qui appellent après 18h ne peuvent pas prendre RDV. Les no-shows vous coûtent cher.
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p class="text-slate-500">[22h30 - Cabinet fermé]</p>
+                    <p><strong class="text-slate-300">Patient:</strong> "Je voudrais prendre rendez-vous avec le Dr Martin"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bien sûr. Est-ce pour une consultation de routine ou un problème urgent?"</p>
+                    <p><strong class="text-slate-300">Patient:</strong> "Une douleur dentaire depuis 2 jours"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. J'ai un créneau urgent demain à 9h ou à 11h30. Quelle heure préférez-vous?"</p>
+                    <p><strong class="text-slate-300">Patient:</strong> "9h"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est réservé. Dr Martin, demain 9h. Vous recevez une confirmation par SMS avec l'adresse. Et vous recevrez un rappel demain matin à 7h."</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_get_available_times</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">create_booking</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendar_create_event</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send (confirmation)</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">schedule_callback (rappel J-1)</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">+40% RDV pris hors heures | -65% no-shows grâce aux rappels SMS | Secrétariat déchargé</p>
+                </div>
+              </div>
+
+              <!-- Use Case 4.2 -->
+              <div class="lesson-card rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-rose-400">4.2</span> Triage et escalade urgences
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le workflow:</strong> L'IA détecte les urgences et les escalade immédiatement.
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">Patient:</strong> "J'ai très mal et ma joue est gonflée depuis hier"</p>
+                    <p class="text-amber-400"><strong>VocalIA:</strong> "Je comprends que c'est douloureux. Un gonflement avec douleur nécessite une consultation rapide. Je transfère votre appel au Dr Martin directement."</p>
+                    <p class="text-slate-500">[Transfert immédiat + notification Slack à l'équipe]</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">transfer_call</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">Urgences détectées et escaladées | Sécurité patient préservée</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 5: AGENCES & SERVICES -->
+            <!-- ============================================ -->
+            <section id="agence" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">5</div>
+                <h2 class="text-2xl font-bold">Agences & Services B2B</h2>
+              </div>
+
+              <p class="text-slate-300 mb-6">
+                <strong>Personas disponibles:</strong> AGENCY (agence marketing), UNIVERSAL_SME (PME généraliste), CONCIERGE (conciergerie)
+              </p>
+
+              <!-- Use Case 5.1 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-purple-400">5.1</span> Qualification BANT automatique des leads
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le problème:</strong> Vos commerciaux passent 60% de leur temps
+                  à qualifier des leads qui ne sont pas prêts à acheter.
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <p class="text-sm text-slate-400 mb-3">VocalIA pose les questions BANT (Budget, Authority, Need, Timeline) et calcule un score de 0 à 100:</p>
+                  <div class="space-y-2 text-sm">
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Quel budget avez-vous prévu pour ce projet?"</p>
+                    <p><strong class="text-slate-300">Lead:</strong> "Environ 15 000€"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Et vous êtes le décisionnaire final?"</p>
+                    <p><strong class="text-slate-300">Lead:</strong> "Oui, c'est moi qui signe"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Dans quel délai souhaitez-vous démarrer?"</p>
+                    <p><strong class="text-slate-300">Lead:</strong> "Ce mois-ci idéalement"</p>
+                    <p class="text-emerald-400 font-semibold mt-3">[Score BANT calculé: 87/100 - HOT LEAD]</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">qualify_lead</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_create_deal</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification (#hot-leads)</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_book_meeting</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">+40% de conversion | -60% temps de qualification | Commerciaux focalisés sur les hot leads uniquement</p>
+                </div>
+              </div>
+
+              <!-- Use Case 5.2 -->
+              <div class="lesson-card rounded-xl p-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-purple-400">5.2</span> Sync CRM automatique après chaque appel
+                </h3>
+
+                <p class="text-slate-400 mb-4">
+                  <strong class="text-white">Le problème:</strong> Après chaque appel, il faut saisir manuellement
+                  les infos dans le CRM. Ça prend 5-10 minutes par appel et c'est souvent mal fait.
+                </p>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4 text-sm">
+                  <p class="text-slate-400 mb-2">Après l'appel, VocalIA a automatiquement:</p>
+                  <ul class="space-y-1 text-slate-300">
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Créé le contact "Jean Dupont" dans Pipedrive avec email et téléphone</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Créé le deal "Projet refonte site - 15 000€" avec étape "Qualifié"</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Ajouté la note de conversation avec le transcript et le score BANT</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Logué dans Google Sheets pour le reporting</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Envoyé une alerte Slack à l'équipe commerciale</li>
+                  </ul>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">0 saisie manuelle | CRM toujours à jour | Historique complet des conversations</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 6: RH & RECRUTEMENT -->
+            <!-- ============================================ -->
+            <section id="rh" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">6</div>
+                <h2 class="text-2xl font-bold">RH & Recrutement</h2>
+              </div>
+
+              <p class="text-slate-300 mb-6">
+                <strong>Personas disponibles:</strong> RECRUITER (recruteur), TRAINER (formateur)
+              </p>
+
+              <!-- Use Case 6.1 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-amber-400">6.1</span> Screening candidat automatisé
+                </h3>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bonjour, je suis l'assistant recrutement de [Entreprise]. Je vais vous poser quelques questions sur votre parcours. Quel est votre niveau d'expérience sur le poste de développeur Python?"</p>
+                    <p><strong class="text-slate-300">Candidat:</strong> "J'ai 4 ans d'expérience, principalement sur Django et FastAPI"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Avez-vous travaillé avec des bases de données NoSQL comme MongoDB?"</p>
+                    <p><strong class="text-slate-300">Candidat:</strong> "Oui, sur mon dernier projet"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Excellent. Votre profil correspond bien au poste. Je vous propose un entretien avec notre CTO. Êtes-vous disponible mardi à 15h?"</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">qualify_lead (adapté candidat)</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_create_person</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_book_meeting</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">sheets_append_rows</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">+200% volume d'entretiens | RH focalisés sur candidats pré-qualifiés | Processus 24/7</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 7: FINANCE -->
+            <!-- ============================================ -->
+            <section id="finance" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">7</div>
+                <h2 class="text-2xl font-bold">Finance & Comptabilité</h2>
+              </div>
+
+              <p class="text-slate-300 mb-6">
+                <strong>Personas disponibles:</strong> ACCOUNTANT (comptable), INSURER (assureur), COLLECTOR (recouvrement)
+              </p>
+
+              <!-- Use Case 7.1 -->
+              <div class="lesson-card rounded-xl p-6 mb-6">
+                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                  <span class="text-green-400">7.1</span> Relance impayé automatique avec paiement
+                </h3>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
+                  <div class="space-y-3 text-sm">
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bonjour M. Dupont. Je vous appelle concernant la facture #4521 de 890€ échue depuis 15 jours."</p>
+                    <p><strong class="text-slate-300">Client:</strong> "Ah oui, j'ai oublié de la régler"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Pas de souci. Je peux vous envoyer un lien de paiement par SMS pour régler immédiatement. Vous avez juste à cliquer."</p>
+                    <p><strong class="text-slate-300">Client:</strong> "D'accord, envoyez-moi le lien"</p>
+                    <p class="text-slate-500">[VocalIA génère le lien Stripe et l'envoie par SMS]</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est envoyé. Dès réception du paiement, vous recevrez un reçu par email."</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_create_payment_link</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_update_deal</span>
+                </div>
+
+                <div class="roi-highlight rounded-lg p-4">
+                  <div class="flex items-center gap-2 text-emerald-400 font-semibold mb-1">
+                    <i data-lucide="trending-up" class="w-4 h-4"></i>
+                    Résultat mesuré
+                  </div>
+                  <p class="text-sm text-slate-300">+35% taux de recouvrement | Paiement instantané pendant l'appel | 0 friction</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 8: CHAÎNES D'INTÉGRATION -->
+            <!-- ============================================ -->
+            <section id="chaines" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">8</div>
+                <h2 class="text-2xl font-bold">Chaînes d'Intégration Complètes</h2>
+              </div>
+
+              <p class="text-slate-300 mb-8">
+                La vraie puissance de VocalIA vient de la combinaison des intégrations.
+                Voici 3 chaînes éprouvées qui génèrent le maximum de ROI.
+              </p>
+
+              <!-- Chain 1: Voice-to-Cash -->
+              <div class="glass rounded-xl p-6 mb-6 border-2 border-emerald-500/30">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i data-lucide="banknote" class="w-5 h-5 text-emerald-400"></i>
+                    Chaîne "Voice-to-Cash"
+                  </h3>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold">ROI ∞</span>
+                </div>
+
+                <p class="text-slate-400 mb-4">Du premier appel à l'encaissement, entièrement automatisé.</p>
+
+                <div class="space-y-4 mb-4">
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">1. Qualification</div>
+                    <p class="text-sm text-slate-400">Client appelle → <code class="text-indigo-400">qualify_lead</code> calcule score BANT → Score 86/100 = HOT LEAD</p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">2. Produit</div>
+                    <p class="text-sm text-slate-400">"Je cherche le produit X" → <code class="text-indigo-400">shopify_get_product</code> → "Disponible, 99€, 42 en stock"</p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">3. Paiement</div>
+                    <p class="text-sm text-slate-400">"Je veux l'acheter" → <code class="text-indigo-400">stripe_create_payment_link</code> → <code class="text-indigo-400">messaging_send</code> (SMS) → Client paie sur mobile</p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-0">
+                    <div class="font-semibold text-white mb-1">4. Confirmation</div>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">shopify_create_fulfillment</code> → <code class="text-indigo-400">gmail_send</code> → Commande expédiée + email confirmation</p>
+                  </div>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 text-sm">
+                  <strong class="text-emerald-400">Résultat:</strong> Lead → Vente → Livraison en 1 appel de 5 minutes<br>
+                  <strong class="text-slate-400">Tools utilisés:</strong> 8 | <strong class="text-slate-400">Intégrations:</strong> Shopify + Stripe + Gmail + Twilio
+                </div>
+              </div>
+
+              <!-- Chain 2: Support-to-Resolution -->
+              <div class="glass rounded-xl p-6 mb-6 border-2 border-blue-500/30">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i data-lucide="headphones" class="w-5 h-5 text-blue-400"></i>
+                    Chaîne "Support-to-Resolution"
+                  </h3>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold">ROI 250%</span>
+                </div>
+
+                <p class="text-slate-400 mb-4">Du problème client à la résolution complète avec remboursement si nécessaire.</p>
+
+                <div class="space-y-4 mb-4">
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">1. Identification</div>
+                    <p class="text-sm text-slate-400">Client appelle → <code class="text-indigo-400">stripe_get_customer</code> → Client VIP identifié (€2,340 LTV)</p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">2. Diagnostic</div>
+                    <p class="text-sm text-slate-400">"Ma commande n'est pas arrivée" → <code class="text-indigo-400">shopify_get_order</code> → Statut: En transit depuis 7 jours</p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">3. Résolution</div>
+                    <p class="text-sm text-slate-400">Option A: Attendre → <code class="text-indigo-400">schedule_callback</code> dans 48h<br>
+                    Option B: Remboursement → <code class="text-indigo-400">shopify_cancel_order</code> + <code class="text-indigo-400">stripe_create_refund</code></p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-0">
+                    <div class="font-semibold text-white mb-1">4. Suivi</div>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">zendesk_create_ticket</code> → <code class="text-indigo-400">gmail_send</code> → <code class="text-indigo-400">sheets_append_rows</code></p>
+                  </div>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 text-sm">
+                  <strong class="text-blue-400">Résultat:</strong> Problème → Résolution → Client retenu (€2,340 LTV sauvé)<br>
+                  <strong class="text-slate-400">Tools utilisés:</strong> 12 | <strong class="text-slate-400">Temps:</strong> &lt;10 minutes
+                </div>
+              </div>
+
+              <!-- Chain 3: Lead-to-Meeting -->
+              <div class="glass rounded-xl p-6 border-2 border-purple-500/30">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-lg font-bold flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-5 h-5 text-purple-400"></i>
+                    Chaîne "Lead-to-Meeting"
+                  </h3>
+                  <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold">ROI 300%</span>
+                </div>
+
+                <p class="text-slate-400 mb-4">Du visiteur anonyme au RDV qualifié dans le CRM.</p>
+
+                <div class="space-y-4 mb-4">
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">1. Capture</div>
+                    <p class="text-sm text-slate-400">Visiteur sur Widget → "Je veux en savoir plus" → <code class="text-indigo-400">qualify_lead</code> → Score 66/100 = WARM</p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">2. Enrichissement</div>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">pipedrive_create_person</code> + <code class="text-indigo-400">pipedrive_create_deal</code> (€5,000)</p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-4">
+                    <div class="font-semibold text-white mb-1">3. Booking</div>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">calendly_get_available_times</code> → <code class="text-indigo-400">create_booking</code> → <code class="text-indigo-400">calendar_create_event</code></p>
+                  </div>
+                  <div class="workflow-step pl-6 pb-0">
+                    <div class="font-semibold text-white mb-1">4. Confirmation multi-canal</div>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">gmail_send</code> + <code class="text-indigo-400">messaging_send</code> (SMS) + <code class="text-indigo-400">slack_send_notification</code></p>
+                  </div>
+                </div>
+
+                <div class="bg-slate-800/50 rounded-lg p-4 text-sm">
+                  <strong class="text-purple-400">Résultat:</strong> Visiteur anonyme → RDV qualifié en CRM en &lt;3 minutes<br>
+                  <strong class="text-slate-400">Tools utilisés:</strong> 10 | <strong class="text-slate-400">Pipeline:</strong> +€5,000
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 9: LES 31 PERSONAS -->
+            <!-- ============================================ -->
+            <section id="personas" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">9</div>
+                <h2 class="text-2xl font-bold">Les 31 Personas Métier</h2>
+              </div>
+
+              <p class="text-slate-300 mb-8">
+                Chaque persona est un agent pré-configuré avec le vocabulaire, les objections typiques,
+                et les processus de son industrie. Déploiement en 5 minutes - pas besoin de prompt engineering.
+              </p>
+
+              <div class="grid md:grid-cols-3 gap-4 mb-8">
+                <!-- Tier 1 -->
+                <div class="lesson-card rounded-xl p-4">
+                  <h4 class="font-bold text-indigo-400 mb-3 text-sm uppercase">Tier 1 - Core (7)</h4>
+                  <ul class="space-y-2 text-sm text-slate-400">
+                    <li><strong class="text-white">AGENCY</strong> - Agence marketing</li>
+                    <li><strong class="text-white">DENTAL</strong> - Cabinet dentaire</li>
+                    <li><strong class="text-white">PROPERTY</strong> - Agent immobilier</li>
+                    <li><strong class="text-white">HOA</strong> - Syndic copropriété</li>
+                    <li><strong class="text-white">SCHOOL</strong> - Établissement scolaire</li>
+                    <li><strong class="text-white">CONTRACTOR</strong> - Entrepreneur BTP</li>
+                    <li><strong class="text-white">FUNERAL</strong> - Pompes funèbres</li>
+                  </ul>
+                </div>
+
+                <!-- Tier 2 -->
+                <div class="lesson-card rounded-xl p-4">
+                  <h4 class="font-bold text-amber-400 mb-3 text-sm uppercase">Tier 2 - Expansion (11)</h4>
+                  <ul class="space-y-2 text-sm text-slate-400">
+                    <li><strong class="text-white">UNIVERSAL_ECOMMERCE</strong></li>
+                    <li><strong class="text-white">UNIVERSAL_SME</strong></li>
+                    <li><strong class="text-white">HEALER</strong> - Praticien santé</li>
+                    <li><strong class="text-white">MECHANIC</strong> - Garage auto</li>
+                    <li><strong class="text-white">COUNSELOR</strong> - Conseiller</li>
+                    <li><strong class="text-white">CONCIERGE</strong> - Conciergerie</li>
+                    <li><strong class="text-white">STYLIST</strong> - Salon coiffure</li>
+                    <li><strong class="text-white">DISPATCHER</strong> - Logistique</li>
+                    <li><strong class="text-white">RECRUITER</strong> - Recrutement</li>
+                    <li><strong class="text-white">TRAINER</strong> - Formation</li>
+                    <li><strong class="text-white">GYM</strong> - Salle de sport</li>
+                  </ul>
+                </div>
+
+                <!-- Tier 3 -->
+                <div class="lesson-card rounded-xl p-4">
+                  <h4 class="font-bold text-emerald-400 mb-3 text-sm uppercase">Tier 3 - Extended (13)</h4>
+                  <ul class="space-y-2 text-sm text-slate-400">
+                    <li><strong class="text-white">ACCOUNTANT</strong> - Comptable</li>
+                    <li><strong class="text-white">ARCHITECT</strong> - Architecte</li>
+                    <li><strong class="text-white">PHARMACIST</strong> - Pharmacien</li>
+                    <li><strong class="text-white">RENTER</strong> - Gestion locative</li>
+                    <li><strong class="text-white">INSURER</strong> - Assureur</li>
+                    <li><strong class="text-white">PRODUCER</strong> - Production</li>
+                    <li><strong class="text-white">LOGISTICIAN</strong> - Logistique</li>
+                    <li><strong class="text-white">COLLECTOR</strong> - Recouvrement</li>
+                    <li><strong class="text-white">PLANNER</strong> - Événementiel</li>
+                    <li><strong class="text-white">SURVEYOR</strong> - Expert</li>
+                    <li><strong class="text-white">GOVERNOR</strong> - Secteur public</li>
+                    <li><strong class="text-white">RESTAURATEUR</strong></li>
+                    <li><strong class="text-white">HOTELIER</strong></li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="warning-box rounded-xl p-6">
+                <div class="flex items-start gap-3">
+                  <i data-lucide="info" class="w-6 h-6 text-amber-400 mt-1"></i>
+                  <div>
+                    <h4 class="font-semibold text-amber-400 mb-2">Comment choisir son persona</h4>
+                    <p class="text-slate-300 text-sm">
+                      Choisissez le persona le plus proche de votre activité. Par exemple, un cabinet de kinésithérapie
+                      utilisera <strong>HEALER</strong>, une agence web utilisera <strong>AGENCY</strong>, un courtier immobilier
+                      utilisera <strong>PROPERTY</strong>. Les personas <strong>UNIVERSAL_SME</strong> et <strong>UNIVERSAL_ECOMMERCE</strong>
+                      sont des options génériques si aucun autre ne correspond.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 10: LIMITES & TRANSPARENCE -->
+            <!-- ============================================ -->
+            <section id="limites" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">10</div>
+                <h2 class="text-2xl font-bold">Limites & Transparence</h2>
+              </div>
+
+              <p class="text-slate-300 mb-8">
+                Nous croyons à la transparence totale. Voici ce que VocalIA peut et ne peut <strong>pas</strong> faire.
+              </p>
+
+              <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Ce que VocalIA PEUT faire -->
+                <div class="roi-highlight rounded-xl p-6">
+                  <h3 class="font-bold mb-4 flex items-center gap-2 text-emerald-400">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    Ce que VocalIA PEUT faire
+                  </h3>
+                  <ul class="space-y-2 text-sm text-slate-300">
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Qualification leads BANT automatique</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Prise de RDV 24/7 avec rappels</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Suivi commandes e-commerce (7 plateformes)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Annulation + remboursement automatique</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Paiement vocal via Stripe (135+ devises)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Support client niveau 1 (FAQ, KB)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> CRM sync bidirectionnelle temps réel</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> 5 langues dont Darija marocain</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Fallback multi-AI (Grok, Gemini, Claude)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> iPaaS vers +7000 apps</li>
+                  </ul>
+                </div>
+
+                <!-- Ce que VocalIA NE PEUT PAS faire -->
+                <div class="limitation-box rounded-xl p-6">
+                  <h3 class="font-bold mb-4 flex items-center gap-2 text-rose-400">
+                    <i data-lucide="x-circle" class="w-5 h-5"></i>
+                    Ce que VocalIA NE PEUT PAS faire
+                  </h3>
+                  <ul class="space-y-2 text-sm text-slate-300">
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Compliance HIPAA/SOC2</strong> - Pas certifié</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Transactions bancaires</strong> - Pas d'intégration bancaire directe</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Urgences médicales</strong> - Non certifié urgence</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Services gouvernementaux</strong> - Pas d'API publiques</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Scale 1M+ appels</strong> - Non testé à cette échelle</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Voice cloning</strong> - Non implémenté</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Sentiment analysis ML</strong> - Non implémenté</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Video calls</strong> - Voix uniquement</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Scoring financier</strong> - Pas d'éligibilité prêt</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Authentification biométrique</strong> - Non implémenté</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="glass rounded-xl p-6">
+                <h3 class="font-bold mb-4">Couverture Use Cases: 73% (33/45)</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <div class="text-emerald-400 font-semibold">E-commerce</div>
+                    <div class="text-slate-400">5/5 = 100%</div>
+                  </div>
+                  <div>
+                    <div class="text-emerald-400 font-semibold">Sales</div>
+                    <div class="text-slate-400">5/5 = 100%</div>
+                  </div>
+                  <div>
+                    <div class="text-emerald-400 font-semibold">Real Estate</div>
+                    <div class="text-slate-400">5/5 = 100%</div>
+                  </div>
+                  <div>
+                    <div class="text-amber-400 font-semibold">Healthcare</div>
+                    <div class="text-slate-400">3/5 = 60%</div>
+                  </div>
+                  <div>
+                    <div class="text-amber-400 font-semibold">Finance</div>
+                    <div class="text-slate-400">3/5 = 60%</div>
+                  </div>
+                  <div>
+                    <div class="text-emerald-400 font-semibold">Restaurants</div>
+                    <div class="text-slate-400">4/5 = 80%</div>
+                  </div>
+                  <div>
+                    <div class="text-emerald-400 font-semibold">HR</div>
+                    <div class="text-slate-400">4/5 = 80%</div>
+                  </div>
+                  <div>
+                    <div class="text-emerald-400 font-semibold">Logistics</div>
+                    <div class="text-slate-400">4/5 = 80%</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 11: CALCULER VOTRE ROI -->
+            <!-- ============================================ -->
+            <section id="roi" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">11</div>
+                <h2 class="text-2xl font-bold">Calculer votre ROI</h2>
+              </div>
+
+              <div class="glass rounded-xl p-6 mb-8">
+                <h3 class="font-bold mb-4">Formule de base</h3>
+                <div class="bg-slate-800/50 rounded-lg p-4 mb-4 font-mono text-sm">
+                  <p class="text-slate-300">ROI = (Économies + Revenus générés) / Coût VocalIA</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 class="font-semibold mb-2 flex items-center gap-2">
+                      <i data-lucide="minus-circle" class="w-4 h-4 text-rose-400"></i>
+                      Économies typiques
+                    </h4>
+                    <ul class="text-sm text-slate-400 space-y-1">
+                      <li>-70% tickets support niveau 1</li>
+                      <li>-60% temps de qualification leads</li>
+                      <li>-65% no-shows (rappels SMS)</li>
+                      <li>0€ secrétariat hors heures</li>
+                      <li>0€ saisie CRM manuelle</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="font-semibold mb-2 flex items-center gap-2">
+                      <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i>
+                      Revenus générés
+                    </h4>
+                    <ul class="text-sm text-slate-400 space-y-1">
+                      <li>+40% conversion leads qualifiés</li>
+                      <li>+40% RDV pris hors heures</li>
+                      <li>+70% conversion paiement vocal</li>
+                      <li>Ventes récupérées 24/7</li>
+                      <li>Clients retenus (LTV sauvé)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="roi-highlight rounded-xl p-6">
+                <h3 class="font-bold mb-4 text-emerald-400">Exemple concret: E-commerce 1000 appels/mois</h3>
+                <div class="grid md:grid-cols-2 gap-6 text-sm mb-6">
+                  <div>
+                    <div class="font-medium mb-2">Sans VocalIA</div>
+                    <ul class="space-y-1 text-slate-400">
+                      <li>Agent support: 2500€/mois</li>
+                      <li>700 appels "où est ma commande"</li>
+                      <li>Horaires: 9h-18h</li>
+                      <li>Paiements: email → 24-48h</li>
+                      <li>No-shows: 25%</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <div class="font-medium mb-2">Avec VocalIA</div>
+                    <ul class="space-y-1 text-slate-400">
+                      <li>VocalIA: ~200€/mois (3000 min)</li>
+                      <li>70% appels automatisés = 490</li>
+                      <li>Horaires: 24/7</li>
+                      <li>Paiements: instant vocal</li>
+                      <li>No-shows: 10% (rappels SMS)</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="pt-4 border-t border-emerald-500/30">
+                  <div class="text-lg font-bold text-emerald-400">
+                    Économie mensuelle: ~2000€ | ROI: 900%+
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ============================================ -->
+            <!-- MODULE 12: COMMENT DÉMARRER -->
+            <!-- ============================================ -->
+            <section id="demarrer" class="section-anchor">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="step-number">12</div>
+                <h2 class="text-2xl font-bold">Comment Démarrer</h2>
+              </div>
+
+              <div class="space-y-6 mb-8">
+                <div class="lesson-card rounded-xl p-6">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                      <span class="font-bold text-indigo-400">1</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold mb-2">Créez votre compte (gratuit)</h4>
+                      <p class="text-slate-400 text-sm">
+                        Inscrivez-vous sur le dashboard. Pas de carte bancaire requise pour le Voice Widget.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="lesson-card rounded-xl p-6">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                      <span class="font-bold text-indigo-400">2</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold mb-2">Choisissez votre persona</h4>
+                      <p class="text-slate-400 text-sm">
+                        Sélectionnez le persona le plus proche de votre activité parmi les 31 disponibles.
+                        Personnalisez si nécessaire (nom, ton, instructions spécifiques).
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="lesson-card rounded-xl p-6">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                      <span class="font-bold text-indigo-400">3</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold mb-2">Connectez vos intégrations</h4>
+                      <p class="text-slate-400 text-sm">
+                        Connectez votre CRM, calendrier, e-commerce, etc. via OAuth ou clés API.
+                        Configuration guidée, pas besoin de développeur.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="lesson-card rounded-xl p-6">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                      <span class="font-bold text-indigo-400">4</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold mb-2">Déployez le Widget ou Telephony</h4>
+                      <p class="text-slate-400 text-sm">
+                        <strong>Widget:</strong> Copiez 1 ligne de code sur votre site.<br>
+                        <strong>Telephony:</strong> Obtenez un numéro de téléphone dédié.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="lesson-card rounded-xl p-6">
+                  <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                      <span class="font-bold text-emerald-400">5</span>
+                    </div>
+                    <div>
+                      <h4 class="font-bold mb-2">Testez et itérez</h4>
+                      <p class="text-slate-400 text-sm">
+                        Faites quelques appels tests. Ajustez le persona si nécessaire.
+                        Consultez les analytics pour mesurer les résultats.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CTA Final -->
+              <div class="glass rounded-xl p-8 text-center">
+                <h2 class="text-2xl font-bold mb-4">Prêt à commencer?</h2>
+                <p class="text-slate-300 mb-6 max-w-xl mx-auto">
+                  Déployez votre premier agent vocal en 5 minutes. Le Voice Widget est gratuit.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                  <a href="/dashboard" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold">
+                    Commencer gratuitement
+                  </a>
+                  <a href="/contact" class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition font-semibold">
+                    Parler à un expert
+                  </a>
+                </div>
+              </div>
+            </section>
+
           </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- Pricing Advantage -->
-    <section class="py-20">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            <span class="gradient-text">60% Moins Cher</span> que la Concurrence
-          </h2>
-          <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            Pas de frais cachés. Le Voice Widget est gratuit.
-            La téléphonie coûte ~0.06€/minute, tout compris.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div class="glass rounded-2xl p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center">
-                <i data-lucide="mic" class="w-6 h-6 text-indigo-400"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold">Voice Widget</h3>
-                <p class="text-slate-400 text-sm">Pour votre site web</p>
-              </div>
-            </div>
-            <div class="text-5xl font-bold text-emerald-400 mb-4">0€</div>
-            <p class="text-slate-400 mb-6">
-              Basé sur le Web Speech API du navigateur.
-              Aucun coût d'infrastructure, aucune limite d'utilisation.
-            </p>
-            <ul class="space-y-2 text-sm text-slate-300">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Illimité</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> 5 langues</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> 31 personas</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Toutes intégrations</li>
-            </ul>
-          </div>
-
-          <div class="glass rounded-2xl p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                <i data-lucide="phone" class="w-6 h-6 text-purple-400"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold">Voice Telephony</h3>
-                <p class="text-slate-400 text-sm">Appels PSTN entrants/sortants</p>
-              </div>
-            </div>
-            <div class="text-5xl font-bold text-white mb-4">~0.06€<span class="text-xl text-slate-400">/min</span></div>
-            <p class="text-slate-400 mb-6">
-              IA (0.05€) + Télécom (0.01€). Pas de frais cachés.
-              Comparez: Vapi 0.15-0.33€, Retell 0.13-0.31€.
-            </p>
-            <ul class="space-y-2 text-sm text-slate-300">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Multi-AI fallback</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> 12 function tools</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> HITL intégré</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Transfert humain</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-20 bg-gradient-to-br from-indigo-900/30 via-slate-900 to-purple-900/30">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-6">
-          Prêt à Transformer vos <span class="gradient-text">Conversations</span> ?
-        </h2>
-        <p class="text-xl text-slate-300 mb-10">
-          254 outils, 31 personas, 28 intégrations. Déployez en 5 minutes.
-        </p>
-        <div class="flex flex-wrap justify-center gap-4">
-          <a href="/dashboard" class="px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold text-lg">
-            Commencer Gratuitement
-          </a>
-          <a href="/contact" class="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition font-semibold text-lg">
-            Parler à un Expert
-          </a>
         </div>
       </div>
     </section>
@@ -1031,7 +1392,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800 py-12">
+  <footer class="bg-slate-900 border-t border-slate-800 py-12 mt-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col md:flex-row justify-between items-center gap-6">
         <a href="/" class="flex items-center space-x-2">
@@ -1040,13 +1401,15 @@
           </div>
           <span class="text-xl font-bold gradient-text">VocalIA</span>
         </a>
-        <div class="flex gap-6 text-sm text-slate-400">
+        <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400">
           <a href="/docs" class="hover:text-white transition">Documentation</a>
+          <a href="/use-cases" class="hover:text-white transition">Use Cases</a>
           <a href="/pricing" class="hover:text-white transition">Tarifs</a>
+          <a href="/integrations" class="hover:text-white transition">Intégrations</a>
+          <a href="/academie-business" class="hover:text-white transition font-medium text-indigo-400">Académie Business</a>
           <a href="/contact" class="hover:text-white transition">Contact</a>
-          <a href="/privacy" class="hover:text-white transition">Confidentialité</a>
         </div>
-        <p class="text-slate-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+        <p class="text-slate-500 text-sm">© 2026 VocalIA</p>
       </div>
     </div>
   </footer>
