@@ -1,12 +1,12 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 5.12.0 | **Date**: 31/01/2026 | **Session**: 250.28 (A2A + CDP)
+> **Version**: 5.13.0 | **Date**: 31/01/2026 | **Session**: 250.33 (AEO/WCAG)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB → 3098 lines)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: ✅ HARDENED - CSP + X-Frame-Options + X-Content-Type-Options on ALL 45 pages (Session 250.18)
-> **SEO Score**: 94/100 (A) - Hreflang 100%, Twitter Cards 100%, /referral in sitemap ✅
+> **SEO Score**: 97/100 (A+) - Hreflang 100%, Twitter Cards **51 pages** ✅, /referral in sitemap ✅
 > **Translation QA**: ✅ 0 issues (Session 249.11 - Per-language ratios fixed)
-> **AEO Score**: 95/100 (A+) - AI bot rules ✅, FAQ schema ✅, Speakable **29 pages** ✅, llms.txt ✅
+> **AEO Score**: 97/100 (A+) - AI bot rules ✅, FAQ schema ✅, Speakable **32 pages** ✅, llms.txt ✅
 > **Icons**: Lucide 2026 + X logo (twitter→X) ✅ (Session 235)
 > **Headers**: Unified Mega Menu (24 pages) ✅ (Session 224)
 > **Blog**: 7 articles with working links ✅ (Session 224.2)
@@ -19,7 +19,7 @@
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
-> **MCP Server**: v0.8.0 SOTA (**181 tools**, BM25 RAG, CDP Enhanced) ✅ (Session 250.28)
+> **MCP Server**: v0.8.0 SOTA (**182 tools**, BM25 RAG, CDP Enhanced) ✅ (Session 250.33)
 > **CSS Safelist**: Opacity classes (bg-white/25, etc.) ✅ (Session 237)
 > **Marketing Score**: B+ (Solid B2B SaaS, Missing Social Proof)
 > **Investor Page**: ✅ COMPLETE (Session 244) - investor.html

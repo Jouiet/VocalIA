@@ -1,9 +1,9 @@
 # VocalIA - Analyse Valeur Business des Use Cases
 
-> **Version**: 2.2.0 | **Date**: 31/01/2026 | **Session**: 250.22
-> **MCP Server**: v0.8.0 | **178 Tools** | **28 Intégrations Natives** | **4 Sensors** | **3 Agents**
+> **Version**: 2.3.0 | **Date**: 31/01/2026 | **Session**: 250.33
+> **MCP Server**: v0.8.0 | **182 Tools** | **28 Intégrations Natives** | **4 Sensors** | **3 Agents**
 > **Approche**: Bottom-up factuelle, vérifié contre code source
-> **Session 249.21**: Stripe Payment Links (19 tools) - Cycle transactionnel COMPLET
+> **Session 250.33**: AEO 32 Speakable pages, WCAG focus states fixed
 > **E-commerce**: 7 plateformes FULL CRUD (~64% marché mondial)
 
 ---
