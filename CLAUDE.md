@@ -303,12 +303,18 @@ ls data/ucp-profiles.json  # exists ✅
 
 ---
 
-## Session 250 - Footer Cleanup + Audit MCP Tools
+## Session 250 - Footer Cleanup + Security Fix + Audit MCP Tools
 
 **Footer Cleanup** (31 fichiers):
 - Supprimé: `/careers` - pas de page recrutement
 - Supprimé: `/status` - pas de page status
+- Supprimé: "Powered by xAI" - security disclosure fix
 - Footer propre avec 4 sections: Produit, Solutions, Ressources, Entreprise
+
+**Security Fix**:
+- Suppression "Powered by xAI" de 31 fichiers HTML
+- Aucune divulgation de stack technologique (Grok, Gemini, xAI) sur pages publiques
+- Conforme DESIGN-BRANDING-SYSTEM.md règles d'obfuscation
 
 **Audit MCP Tools VÉRIFIÉ**:
 
@@ -319,11 +325,16 @@ ls data/ucp-profiles.json  # exists ✅
 | **E-commerce total** | 76 | ✅ 7 platforms |
 | **Total MCP Server** | 178 | ✅ Build OK |
 
+**Scripts créés**:
+- `scripts/propagate-footer.py` - Synchronise footer depuis components/
+- `scripts/propagate-header.py` - Déjà existant, vérifié
+
 **Vérification empirique**:
 ```bash
 grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
 grep -rl 'href="/careers"' --include='*.html' | wc -l  # 0 ✅
 grep -rl 'href="/status"' --include='*.html' | wc -l  # 0 ✅
+grep -rl 'Powered by' --include='*.html' | wc -l  # 0 ✅
 cd mcp-server && npm run build  # ✅ OK
 ```
 
