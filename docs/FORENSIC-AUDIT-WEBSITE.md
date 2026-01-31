@@ -19,7 +19,7 @@
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
-> **MCP Server**: v0.7.0 SOTA (**178 tools**, BM25 RAG) ✅ (Session 250)
+> **MCP Server**: v0.8.0 SOTA (**178 tools**, BM25 RAG) ✅ (Session 250.22)
 > **CSS Safelist**: Opacity classes (bg-white/25, etc.) ✅ (Session 237)
 > **Marketing Score**: B+ (Solid B2B SaaS, Missing Social Proof)
 > **Investor Page**: ✅ COMPLETE (Session 244) - investor.html
@@ -1740,7 +1740,7 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 | **Languages** | 5 (incl. Darija) | EN mainly | VocalIA |
 | **Personas** | 30 pré-configurés | Custom scripts | VocalIA |
 | **API/SDK** | ✅ Python + Node.js | ❌ | VocalIA |
-| **MCP Server** | ✅ 21 tools | ❌ | VocalIA |
+| **MCP Server** | ✅ 178 tools | ❌ | VocalIA |
 | **Self-Service** | ✅ | ❌ White-glove | VocalIA |
 | **Target Market** | B2B Multi-industry | Service business | Tie |
 

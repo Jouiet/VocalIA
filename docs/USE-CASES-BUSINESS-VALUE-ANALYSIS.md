@@ -1,7 +1,7 @@
 # VocalIA - Analyse Valeur Business des Use Cases
 
-> **Version**: 2.1.0 | **Date**: 31/01/2026 | **Session**: 249.22
-> **MCP Server**: v0.7.0 | **178 Tools** | **28 Intégrations Natives** | **4 Sensors** | **3 Agents**
+> **Version**: 2.2.0 | **Date**: 31/01/2026 | **Session**: 250.22
+> **MCP Server**: v0.8.0 | **178 Tools** | **28 Intégrations Natives** | **4 Sensors** | **3 Agents**
 > **Approche**: Bottom-up factuelle, vérifié contre code source
 > **Session 249.21**: Stripe Payment Links (19 tools) - Cycle transactionnel COMPLET
 > **E-commerce**: 7 plateformes FULL CRUD (~64% marché mondial)
@@ -35,12 +35,12 @@
 | **Alertes Fraude** | Slack + Email | Pas de detection ML | ↓ Temps réponse | Élevé |
 | **Gestion Waitlist Restaurant** | Sheets + Slack | Pas d'intégration POS | ↓ Congestion | Moyen |
 
-#### TIER 3: USE CASES NON COUVERTS (Gaps critiques)
+#### TIER 3: USE CASES RÉSIDUS (Gaps restants)
 
 | Use Case | Intégrations Manquantes | Blocage | Impact Business Perdu |
 |:---------|:------------------------|:--------|:----------------------|
-| **Paiement par Téléphone** | Stripe | Pas de `collect_payment` | Conversion abandonnée |
-| **SMS Confirmation** | Twilio | Pas de `send_sms` | Taux no-show élevé |
+| ~~**Paiement par Téléphone**~~ | ~~Stripe~~ | ~~Pas de `collect_payment`~~ | ✅ **RÉSOLU** (19 Stripe tools) |
+| ~~**SMS Confirmation**~~ | ~~Twilio~~ | ~~Pas de `send_sms`~~ | ✅ **RÉSOLU** (Twilio SMS fallback) |
 | **Éligibilité Prêt** | Plaid/Scoring API | Pas de scoring financier | Marché fintech inaccessible |
 | **Solde Congés RH** | BambooHR/Workday | Pas de HRIS | Marché enterprise RH perdu |
 | **Authentification Vocale** | - | Pas de `voice_biometrics` | Sécurité limitée |

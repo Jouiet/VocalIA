@@ -5,7 +5,7 @@
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options on ALL 43 pages ✅**
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
-> SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
+> SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 6, PrestaShop 7, BigCommerce 7, Wix 6, Squarespace 7)
