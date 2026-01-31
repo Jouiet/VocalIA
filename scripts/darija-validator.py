@@ -8,7 +8,9 @@ import json
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path("/Users/mac/Desktop/VocalIA")
+# Use relative paths for portability
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
 LOCALES_DIR = PROJECT_ROOT / "website/src/locales"
 VOICE_LANG_DIR = PROJECT_ROOT / "website/voice-assistant/lang"
 KB_DIR = PROJECT_ROOT / "telephony"
