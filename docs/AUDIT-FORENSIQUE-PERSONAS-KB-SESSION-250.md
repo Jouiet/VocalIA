@@ -13,6 +13,8 @@
 | **marketing_science ajouté** | 12/12 automations enrichies dans registry | ✅ DONE |
 | **Rebuild KB** | 183 chunks, 1355 termes | ✅ DONE |
 | **Enrichissement validé** | 36/36 champs = 100% (strategic + outcome + marketing) | ✅ **100%** |
+| **Keywords contextuels** | +12 arrays de keywords (Maroc, Darija, industries, Voice AI) | ✅ DONE |
+| **Vocabulary enrichi** | 1326 → **1701 termes** (+301, dépasse cible 1400+) | ✅ **+28%** |
 | **SWOT mis à jour** | Supprimé mentions ColBERT, ajouté enrichissement chunks | ✅ |
 
 **Justification suppression ColBERT:**
@@ -1232,8 +1234,15 @@ jq '[.[] | select(.type == "automation") | {id, strategic: (.strategic_intent !=
 | strategic_intent | 0/12 | **12/12** | 12/12 | ✅ |
 | business_outcome | 0/12 | **12/12** | 12/12 | ✅ |
 | marketing_science | 0/12 | **12/12** | 12/12 | ✅ |
-| Vocabulary size | 1326 | **1355** | 1400+ | ✅ |
-| Total chunks | 183 | 183 | 180+ | ✅ |
+| Vocabulary size | 1326 | **1701** | 1400+ | ✅ (+301) |
+| Total chunks | 183 | **193** | 180+ | ✅ |
+
+**Enrichissement vocabulaire contextuel (+177 termes):**
+- Termes géographiques: maroc, morocco, mena, casablanca, rabat, maghrebi
+- Termes linguistiques: darija, dialecte-marocain, arabic, multilingual, rtl
+- Industries cibles: dental, dentiste, immobilier, restaurant, ecommerce, hotel
+- Voice AI: conversational-ai, speech-recognition, tts, stt, nlu, intent-detection
+- Business: bant, lead, qualification, scoring, roi, conversion, funnel
 
 ---
 

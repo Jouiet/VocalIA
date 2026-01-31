@@ -409,7 +409,7 @@ class ServiceKnowledgeBase {
       const diagnosticTruth = auto.diagnostic_truth || meta.truth || '';
       const systemicRisk = auto.systemic_risk || meta.risk || '';
 
-      // Build rich text for BM25 indexing
+      // Build rich text for BM25 indexing (Session 250.16: + keywords for vocabulary enrichment)
       const textParts = [
         auto.name_en || auto.name || '',
         auto.name_fr || '',
@@ -421,7 +421,10 @@ class ServiceKnowledgeBase {
         auto.category || '',
         (auto.capabilities || []).join(' '),
         (auto.features || []).join(' '),
-        (auto.platforms || []).join(' ')
+        (auto.platforms || []).join(' '),
+        (auto.use_cases || []).join(' '),
+        (auto.integrations || []).join(' '),
+        (auto.keywords || []).join(' ')  // SESSION 250.16: Context-specific keywords
       ];
 
       const chunk = {
