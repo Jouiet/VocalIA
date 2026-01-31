@@ -514,5 +514,5 @@ node --check website/voice-assistant/voice-widget.js  # ✅ OK
 | UCP/CDP | ✅ 6 tools | 100% |
 | AP2 | ❌ Not started | 0% |
 
-**Màj:** 31/01/2026 - Session 250.29 (AG-UI Protocol Implementation)
+**Màj:** 31/01/2026 - Session 250.31 (FACTUALITY AUDIT 100% COMPLETE - KB + RAG verified)
 
