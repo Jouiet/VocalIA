@@ -1,11 +1,12 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.31.0 | 31/01/2026 | Session 250.14 | Health: 100% | **P0-P3 COMPLETE**
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1574 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
+> Version: 6.32.0 | 31/01/2026 | Session 250.15 | Health: 100% | **P0-P3 COMPLETE**
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1619 keys** | RTL ✅ | **Structure 100% | Traductions ~82%**
+> **Social Proof ✅** (testimonials section) | **Volume Discounts ✅** (pricing tiers) | **40 Personas ✅**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 12 Function Tools ✅
+> Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 6, PrestaShop 7, BigCommerce 7, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
@@ -60,7 +61,7 @@ VocalIA/
 │   ├── agency_internal/      # VocalIA internal
 │   └── client_demo/          # Demo tenant
 ├── widget/         # Browser widget (2 files)
-├── telephony/      # PSTN bridge (12 function tools)
+├── telephony/      # PSTN bridge (13 function tools)
 ├── personas/       # 40 personas SOTA
 ├── integrations/   # CRM/E-commerce (multi-tenant)
 ├── website/        # 36 pages HTML

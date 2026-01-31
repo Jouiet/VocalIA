@@ -74,7 +74,7 @@
 │  ├─────────────────────────────────────────────────────────────────────┤    │
 │  │  voice-api-resilient.cjs    (1,508 L) - Multi-AI text generation    │    │
 │  │  grok-voice-realtime.cjs    (1,112 L) - WebSocket PCM16 audio       │    │
-│  │  voice-persona-injector.cjs   (648 L) - 30 personas multi-tenant    │    │
+│  │  voice-persona-injector.cjs   (648 L) - 40 personas multi-tenant    │    │
 │  │  voice-agent-b2b.cjs          (719 L) - B2B specific flows          │    │
 │  │  voice-widget-templates.cjs   (800 L) - Widget configurations       │    │
 │  │  voice-ecommerce-tools.cjs    (149 L) - Shopify/Klaviyo integration │    │
@@ -95,7 +95,7 @@
 | voice-widget-core.js | 1,012 | Browser widget (Web Speech) | - |
 | voice-widget-templates.cjs | 800 | Widget configs | - |
 | voice-agent-b2b.cjs | 719 | B2B flows | - |
-| voice-persona-injector.cjs | 648 | 30 personas | - |
+| voice-persona-injector.cjs | 648 | 40 personas | - |
 | voice-quality-sensor.cjs | 282 | Health checks | - |
 | voice-ecommerce-tools.cjs | 149 | Shopify/Klaviyo | - |
 | voice-crm-tools.cjs | 104 | HubSpot | - |
@@ -457,7 +457,7 @@ geminiVoices: ['Kore', 'Puck', 'Zephyr', 'Enceladus', 'Algieba', 'Sulafat', 'Aoe
 | **Maqsam** | MENA | ✅ Arabic AI | - | Customer service software, built for MENA | [maqsam.com](https://maqsam.com/) |
 | **Lahajati** | - | ✅ 108 dialectes | - | TTS/STT, 99% accuracy | [lahajati.ai](https://lahajati.ai/en) |
 | **DataQueue** | MENA | ✅ Gulf/Egyptian/Levantine | - | First avec DID MENA | [zawya.com](https://www.zawya.com/en/press-release/companies-news/the-first-arabic-voice-ai-that-understands-every-dialect-launched-ndy1b4qf) |
-| **3A** | Maroc/FR | ✅ Atlas-Chat-9B | Self-funded | Widget+Telephony, 30 personas | Local |
+| **3A** | Maroc/FR | ✅ Atlas-Chat-9B | Self-funded | Widget+Telephony, 40 personas | Local |
 
 **Menace concurrentielle MENA:**
 - **SAWT IA** = Concurrent direct Maroc (même marché cible)
@@ -466,7 +466,7 @@ geminiVoices: ['Kore', 'Puck', 'Zephyr', 'Enceladus', 'Algieba', 'Sulafat', 'Aoe
 
 **Différenciateur 3A vs MENA:**
 - Widget + Telephony combinés (unique)
-- Multi-tenant 30 personas (unique)
+- Multi-tenant 40 personas (unique)
 - Open-source-based (Atlas-Chat-9B) vs proprietary
 
 ---
@@ -628,7 +628,7 @@ node automations/agency/core/voice-telephony-bridge.cjs &
 | `voice-widget-core.js` | 1,012 | Widget browser (Web Speech API, $0) |
 | `voice-widget-templates.cjs` | 800+ | Templates industrie (e-commerce, B2B, agency) |
 | `voice-agent-b2b.cjs` | 719 | B2B dual-role assistant (Sales 60% / Support 40%) |
-| `voice-persona-injector.cjs` | 648 | 30 personas, 5 langues, marketing science |
+| `voice-persona-injector.cjs` | 648 | 40 personas, 5 langues, marketing science |
 | `voice-quality-sensor.cjs` | 282 | Health monitoring GPM |
 | `voice-ecommerce-tools.cjs` | 149 | Shopify + Klaviyo integration |
 | `voice-crm-tools.cjs` | 104 | HubSpot CRM sync |

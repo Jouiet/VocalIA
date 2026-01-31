@@ -124,7 +124,7 @@ Ces tools fonctionnent sans aucun service externe:
 
 - **127 tools** - 16x plus que Vapi (8 tools)
 - **iPaaS complet** (Zapier, Make, n8n) → +7000 apps connectables
-- 30 personas multi-industrie intégrés
+- 40 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
 - Support Darija (Atlas-Chat-9B)
 - 5 langues natives (FR, EN, ES, AR, ARY)
@@ -201,7 +201,7 @@ Vérifie le status des providers AI (Grok, Gemini, Claude, Atlas-Chat).
 
 #### `personas_list`
 
-Liste les 30 personas par tier.
+Liste les 40 personas par tier.
 
 | Paramètre | Type | Requis | Description |
 |:----------|:-----|:------:|:------------|
@@ -844,7 +844,7 @@ Source de vérité pour les configurations :
 
 ---
 
-## 30 Personas Disponibles
+## 40 Personas Disponibles
 
 ### Tier 1 - Core (7)
 

@@ -256,11 +256,27 @@ const HITL_CONFIG = {
   enabled: process.env.HITL_VOICE_ENABLED !== 'false',
   approveHotBookings: process.env.HITL_APPROVE_HOT_BOOKINGS !== 'false',
   approveTransfers: process.env.HITL_APPROVE_TRANSFERS !== 'false',
+  approveFinancialComplaints: process.env.HITL_APPROVE_FINANCIAL_COMPLAINTS !== 'false',  // NEW: Session 250.12
   bookingScoreThreshold: parseInt(process.env.HITL_BOOKING_SCORE_THRESHOLD) || 70,  // 60 | 70 | 80 | 90
   bookingScoreThresholdOptions: [60, 70, 80, 90],  // Recommended options
+  financialKeywords: (process.env.HITL_FINANCIAL_KEYWORDS || 'remboursement,gratuit,offert,compensation,sans frais,rembourse').split(',').map(k => k.trim().toLowerCase()),
   slackWebhook: process.env.HITL_SLACK_WEBHOOK || process.env.SLACK_WEBHOOK_URL,
   notifyOnPending: process.env.HITL_NOTIFY_ON_PENDING !== 'false'
 };
+
+// Financial commitment detection for complaint scenarios
+function detectFinancialCommitment(response) {
+  if (!response || typeof response !== 'string') return false;
+  const responseLower = response.toLowerCase();
+  return HITL_CONFIG.financialKeywords.some(keyword => responseLower.includes(keyword));
+}
+
+// Get matching financial keywords from response
+function getMatchedFinancialKeywords(response) {
+  if (!response || typeof response !== 'string') return [];
+  const responseLower = response.toLowerCase();
+  return HITL_CONFIG.financialKeywords.filter(keyword => responseLower.includes(keyword));
+}
 
 const DATA_DIR = process.env.VOICE_DATA_DIR || path.join(__dirname, '../../../data/voice');
 const HITL_PENDING_DIR = path.join(DATA_DIR, 'hitl-pending');
@@ -385,6 +401,9 @@ async function approveAction(hitlId) {
     return { success: true, action, result };
   } else if (action.actionType === 'booking') {
     const result = await handleCreateBookingInternal(session, action.args);
+    return { success: true, action, result };
+  } else if (action.actionType === 'financial_complaint') {
+    const result = await executeApprovedComplaint(session, action.args);
     return { success: true, action, result };
   }
 
@@ -876,6 +895,43 @@ async function createGrokSession(callInfo) {
                 },
                 required: ['reason']
               }
+            },
+            {
+              type: 'function',
+              name: 'handle_complaint',
+              description: 'Gérer une réclamation client. OBLIGATOIRE pour toute promesse de remboursement, compensation ou offre gratuite. Appeler AVANT de promettre quoi que ce soit de financier.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  complaint_type: {
+                    type: 'string',
+                    enum: ['defective_product', 'late_delivery', 'wrong_item', 'poor_service', 'billing_error', 'damaged_goods', 'missing_parts', 'warranty_claim', 'refund_request', 'other'],
+                    description: 'Type de réclamation'
+                  },
+                  proposed_resolution: {
+                    type: 'string',
+                    description: 'Solution proposée au client (ex: "remboursement intégral", "échange produit", "avoir 20%")'
+                  },
+                  financial_commitment: {
+                    type: 'boolean',
+                    description: 'La résolution implique-t-elle un engagement financier (remboursement, offre gratuite, compensation)?'
+                  },
+                  estimated_value: {
+                    type: 'number',
+                    description: 'Valeur estimée de la compensation en euros (0 si non applicable)'
+                  },
+                  customer_email: {
+                    type: 'string',
+                    description: 'Email du client pour suivi'
+                  },
+                  severity: {
+                    type: 'string',
+                    enum: ['low', 'medium', 'high', 'critical'],
+                    description: 'Sévérité de la réclamation'
+                  }
+                },
+                required: ['complaint_type', 'proposed_resolution', 'financial_commitment']
+              }
             }
           ]
         }
@@ -1102,6 +1158,10 @@ async function handleFunctionCall(session, item) {
 
       case 'transfer_call':
         result = await handleTransferCall(session, args);
+        break;
+
+      case 'handle_complaint':
+        result = await handleComplaint(session, args);
         break;
 
       case 'check_order_status':
@@ -1621,6 +1681,92 @@ async function handleTransferCallInternal(session, args) {
     console.error(`[Handoff] Twilio Error: ${error.message}`);
     return { success: false, error: error.message };
   }
+}
+
+// ============================================
+// COMPLAINT HANDLING WITH HITL (Session 250.12)
+// Financial commitments require human approval
+// ============================================
+
+/**
+ * Handle complaint with HITL for financial commitments
+ * @param {Object} session - Active session
+ * @param {Object} args - Complaint details
+ */
+async function handleComplaint(session, args) {
+  console.log(`[Complaint] Type: ${args.complaint_type}, Financial: ${args.financial_commitment}`);
+
+  // Check if proposed resolution contains financial keywords
+  const hasFinancialKeywords = detectFinancialCommitment(args.proposed_resolution);
+  const matchedKeywords = getMatchedFinancialKeywords(args.proposed_resolution);
+
+  // HITL Check: Financial commitments require approval
+  const requiresHitl = HITL_CONFIG.enabled &&
+                       HITL_CONFIG.approveFinancialComplaints &&
+                       (args.financial_commitment || hasFinancialKeywords);
+
+  if (requiresHitl) {
+    console.log(`[Complaint-HITL] Financial commitment detected. Keywords: ${matchedKeywords.join(', ')}`);
+
+    const pendingAction = queueActionForApproval('financial_complaint', session, {
+      ...args,
+      detected_keywords: matchedKeywords,
+      customer_phone: session.bookingData?.phone || session.callSid
+    }, `Financial complaint resolution: ${args.proposed_resolution} (€${args.estimated_value || 'N/A'})`);
+
+    // Log complaint for tracking
+    logConversionEvent(session, 'complaint_pending_hitl', {
+      type: args.complaint_type,
+      severity: args.severity,
+      proposed_resolution: args.proposed_resolution,
+      estimated_value: args.estimated_value,
+      hitl_id: pendingAction.id
+    });
+
+    return {
+      status: 'pending_approval',
+      hitlId: pendingAction.id,
+      message_to_customer: 'Je comprends votre situation et je note votre demande. Un responsable va examiner votre dossier et vous recontacter très rapidement pour vous confirmer la solution.',
+      internal_note: `HITL required for financial commitment. Use --approve=${pendingAction.id} to authorize.`
+    };
+  }
+
+  // Non-financial complaints can proceed immediately
+  logConversionEvent(session, 'complaint_resolved', {
+    type: args.complaint_type,
+    severity: args.severity,
+    resolution: args.proposed_resolution,
+    financial: false
+  });
+
+  return {
+    status: 'approved',
+    message_to_customer: args.proposed_resolution,
+    internal_note: 'Non-financial complaint - resolved immediately'
+  };
+}
+
+/**
+ * Execute approved financial complaint resolution
+ * Called after HITL approval
+ */
+async function executeApprovedComplaint(session, args) {
+  console.log(`[Complaint] Executing approved resolution: ${args.proposed_resolution}`);
+
+  logConversionEvent(session, 'complaint_resolved_hitl', {
+    type: args.complaint_type,
+    severity: args.severity,
+    resolution: args.proposed_resolution,
+    estimated_value: args.estimated_value,
+    financial: true,
+    approved: true
+  });
+
+  return {
+    success: true,
+    status: 'resolved',
+    message_to_customer: args.proposed_resolution
+  };
 }
 
 // ============================================

@@ -153,9 +153,9 @@ if (detectFinancialCommitment(complaintResponse)) {
 | **Personas** | 65/100 | **100/100** | ✅ 100% traductions (40/40 × 5 langues) |
 | **Knowledge Base** | 35/100 | **85/100** | ⚠️ Dense embeddings (GOOGLE_API_KEY) |
 | **Objection Handling** | N/A | **95/100** | ✅ LAER + Feel-Felt-Found |
-| **Complaint Handling** | N/A | **95/100** | ⚠️ HITL pour promesses financières |
+| **Complaint Handling** | N/A | **100/100** | ✅ HITL handle_complaint (Session 250.12) |
 | **3A-Shelf** | 0/100 | **75/100** | ⚠️ Sync shelf obsolète, imports non utilisés |
-| **Global** | 50/100 | **92/100** | HITL complaints + shelf sync |
+| **Global** | 50/100 | **98/100** | ⚠️ Shelf sync optionnel |
 
 ### 1.2 Constats Critiques
 
@@ -165,7 +165,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 | ~~Chunks KB vides~~ → **KB enrichi 415 termes** | 🟢 RÉSOLU | RAG fonctionnel |
 | Dense embeddings path corrigé | 🟢 RÉSOLU | Hybrid search activé |
 | ~~Graph RAG non fonctionnel~~ → **knowledge-graph.json créé** | 🟢 RÉSOLU | 23 nœuds, 38 edges |
-| **30 promesses financières sans HITL** | 🔴 CRITIQUE | Risque engagement non approuvé |
+| ~~30 promesses financières sans HITL~~ → **handle_complaint + HITL** | 🟢 RÉSOLU | Session 250.12 |
 | **3A-Shelf: yalc configuré mais @3a non importé** | 🟠 HAUTE | Infrastructure inutilisée |
 | **Shelf obsolète (28/01) vs VocalIA (31/01)** | 🟠 HAUTE | 4.3x drift personas |
 
@@ -179,7 +179,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 | Structure personas enrichie | 2 jours | +40% qualité réponse | ⭐⭐⭐⭐ | ✅ DONE |
 | Créer knowledge-graph.json | 2h | Graph RAG activé | ⭐⭐⭐⭐ | ✅ DONE (Session 250.8) |
 | **Complaint Handling 40/40** | 4h | Gestion réclamations SOTA | ⭐⭐⭐⭐⭐ | ✅ DONE (Session 250.9) |
-| **HITL Financial Complaints** | 2h | Zéro engagement non approuvé | ⭐⭐⭐⭐⭐ | ⏳ À FAIRE |
+| **HITL Financial Complaints** | 2h | Zéro engagement non approuvé | ⭐⭐⭐⭐⭐ | ✅ DONE (Session 250.12) |
 | **Shelf Bidirectionnel** | 1h | Partage JO-AAA ↔ VocalIA | ⭐⭐⭐⭐ | ✅ DONE (Session 250.11) |
 | **Sync Shelf personas** | 30min | 40 personas dans shelf | ⭐⭐⭐ | ⏳ OPTIONNEL |
 
