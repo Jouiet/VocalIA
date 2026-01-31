@@ -1,8 +1,9 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.26.0 | **Updated**: 30/01/2026 | **Session**: 249.15
+> **Version**: 3.29.0 | **Updated**: 31/01/2026 | **Session**: 249.18
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 24/24 (100%) | **MCP Tools**: 143 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~64%
+> **Integrations Check**: 21/21 (100%) | **MCP Tools**: 117 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~64%
+> **Session 249.18**: Twilio SMS Fallback IMPLÉMENTÉ (+sendTwilioSMS, +sendMessage, +messaging_send MCP)
 
 ---
 
@@ -3969,7 +3970,7 @@ LOCALE_MIN_RATIOS = {
 | Translation issues | 481 | **0** |
 | UCP Persistence | ❌ | ✅ |
 
-**Statut final**: MCP Server v0.5.6 | **143 tools** | ~64% e-commerce ✅
+**Statut final**: MCP Server v0.5.6 | **116 tools** | ~64% e-commerce ✅
 
 ---
 
@@ -4281,5 +4282,169 @@ grep -c 'data-lucide="mic"' website/use-cases/customer-support.html
 
 ---
 
-*Màj: 30/01/2026 - Session 249.15 (Use Cases Strategic Analysis)*
+## Session 249.16 - Audit Factuel & Corrections Critiques (31/01/2026)
+
+**Objectif**: Vérification empirique des 3 documents Use Cases et corrections des erreurs.
+
+### 1. Bugs Critiques Fixés
+
+| Bug | Fichier | Ligne | Fix |
+|:----|:--------|:-----:|:----|
+| 4 function tools orphelins | voice-telephony-bridge.cjs | 1119-1134 | Ajout 4 case statements |
+| "143 tools" fantômes | index.ts, CLAUDE.md, docs/* | - | Corrigé → 116 tools réels |
+| Cal.com/Intercom/Crisp fake | index.ts | 29, 35-36 | Supprimé des commentaires |
+
+### 2. Vérités Rétablies (Audit Codebase)
+
+| Claim Faux | Vérité Empirique | Preuve |
+|:-----------|:-----------------|:-------|
+| "HubSpot = webhook-only" | Full CRUD bidirectionnel | hubspot-b2b-crm.cjs (25+ méthodes) |
+| "WhatsApp pas implémenté" | ✅ Implémenté | voice-telephony-bridge.cjs:2042-2091 |
+| "12 function tools" | 11 (booking_confirmation = template) | Grep case statements |
+| "Shopify Production" | READ-ONLY (pas cancel/refund) | voice-ecommerce-tools.cjs |
+
+### 3. Documents Améliorés
+
+| Document | Corrections | Plan Actionnable |
+|:---------|:------------|:-----------------|
+| USE-CASES-STRATEGIC-ANALYSIS.md | v1.1.0, SWOT, 11 tools | ✅ Ajouté |
+| INTEGRATIONS-USE-CASES-MATRIX.md | v1.1.0, HubSpot=Full | ✅ Ajouté |
+| USE-CASES-BUSINESS-VALUE-ANALYSIS.md | v1.1.0, WhatsApp=OK | ✅ Ajouté |
+| CLAUDE.md | v6.11.0, Session 249.16 | ✅ Màj |
+
+### 4. Prochaines Actions (Session 250)
+
+| # | Action | Priorité | Effort |
+|:-:|:-------|:--------:|:------:|
+| 1 | Shopify MCP tools WRITE | P0 | 5j |
+| 2 | Twilio SMS fallback | P0 | 3j |
+| 3 | Page Use Cases website | P1 | 2j |
+| 4 | Stripe Payment Links | P1 | 3j |
+
+**Statut final**: Audit ✅ | 4 bugs fixés ✅ | 3 docs améliorés ✅ | Plan actionnable ✅
+
+---
+
+## Session 249.17 - Audit Twilio/TwiML & Corrections (31/01/2026)
+
+**Objectif**: Vérification factuelle intégration Twilio et correction bugs découverts.
+
+### 1. Audit Twilio/TwiML - Résultat
+
+| Composant | Status | Preuve |
+|:----------|:------:|:-------|
+| **TwiML Voice** | ✅ COMPLET | 5 fonctions (lignes 216-1862) |
+| **Twilio SDK** | ✅ INSTALLÉ | package.json: "twilio": "^4.19.0" |
+| **MCP Telephony** | ✅ 3 tools | index.ts lignes 648-749 |
+| **Twilio SMS** | ❌ NON IMPLÉMENTÉ | sendWhatsAppMessage ≠ SMS |
+| **WhatsApp** | ✅ IMPLÉMENTÉ | lignes 1486-1533 |
+
+**TwiML Fonctions Vérifiées:**
+- `getTwiMLLanguage()` - Conversion codes langues
+- `getTwiMLMessage()` - Messages localisés
+- `generateTwiML()` - XML pour appels entrants
+- `generateErrorTwiML()` - XML pour erreurs
+- `generateOutboundTwiML()` - XML pour appels sortants
+
+### 2. Bugs Corrigés
+
+| Bug | Fichier | Fix |
+|:----|:--------|:----|
+| "TELEPHONY TOOLS (5)" | mcp-server/src/index.ts:645 | → "(3)" |
+| `sendGenericSMS` mal nommé | voice-telephony-bridge.cjs:1486 | → `sendWhatsAppMessage()` |
+| Logs "[SMS]" trompeurs | voice-telephony-bridge.cjs | → "[WhatsApp]" |
+| Appels à sendGenericSMS | voice-telephony-bridge.cjs:1545,1577 | → sendWhatsAppMessage |
+
+### 3. Découverte: twimlai.com
+
+| Site | Contenu |
+|:-----|:--------|
+| twilio.com/docs/voice/twiml | ✅ Documentation officielle TwiML |
+| **twimlai.com** | ❌ Podcast ML/AI "The Voice of Machine Learning" - AUCUN lien avec Twilio |
+
+### 4. Documentation Mise à Jour
+
+| Document | Modification |
+|:---------|:-------------|
+| USE-CASES-BUSINESS-VALUE-ANALYSIS.md | sendWhatsAppMessage(), TwiML status |
+| INTEGRATIONS-USE-CASES-MATRIX.md | Twilio SMS effort 2-3j, SDK déjà installé |
+| USE-CASES-STRATEGIC-ANALYSIS.md | Effort corrigé 2-3j |
+| CLAUDE.md | v6.12.0, Session 249.17, TwiML COMPLET |
+
+### 5. Plan Actionnable Révisé
+
+| # | Action | Priorité | Effort | Note |
+|:-:|:-------|:--------:|:------:|:-----|
+| 1 | Shopify MCP tools WRITE | P0 | 5j | GraphQL mutations |
+| 2 | Twilio SMS fallback | P0 | **2-3j** | SDK déjà installé! |
+| 3 | Page Use Cases website | P1 | 2j | Marketing |
+| 4 | Stripe Payment Links | P1 | 3j | Paiements vocaux |
+
+**Statut final**: Audit Twilio ✅ | 4 bugs fixés ✅ | TwiML=COMPLET ✅ | SMS=À FAIRE
+
+---
+
+## Session 249.18 - Twilio SMS Fallback IMPLÉMENTÉ (31/01/2026)
+
+**Objectif**: Implémenter P0 - Twilio SMS comme fallback de WhatsApp.
+
+### 1. Code Implémenté
+
+| Fichier | Fonction | Description |
+|:--------|:---------|:------------|
+| voice-telephony-bridge.cjs | `sendTwilioSMS()` | Twilio REST API + SDK |
+| voice-telephony-bridge.cjs | `sendMessage()` | Unified: WhatsApp → SMS fallback |
+| voice-telephony-bridge.cjs | `/messaging/send` | HTTP endpoint |
+| mcp-server/src/index.ts | `messaging_send` | MCP tool |
+
+### 2. Chaîne de Fallback
+
+```
+sendMessage(to, body)
+    ↓
+[1] sendWhatsAppMessage()  ← Gratuit
+    ↓ Si échec
+[2] sendTwilioSMS()  ← $0.0083/msg US, $0.07/msg FR
+    ↓
+{ success: boolean, channel: 'whatsapp'|'twilio_sms'|'none' }
+```
+
+### 3. Fonctions Refactorisées
+
+| Fonction | Avant | Après |
+|:---------|:------|:------|
+| `sendSMSBookingLink()` | sendWhatsAppMessage | sendMessage (fallback) |
+| `handleSendPaymentDetails()` | sendWhatsAppMessage | sendMessage (fallback) |
+| `sendRecoverySMS()` | Code dupliqué | sendMessage (fallback) |
+
+### 4. Vérification Empirique
+
+```bash
+node -e "require('./telephony/voice-telephony-bridge.cjs')"  # ✅ Module loads
+cd mcp-server && npm run build  # ✅ TypeScript compile
+grep "sendTwilioSMS" telephony/*.cjs  # ✅ Function exists
+```
+
+### 5. MCP Server Updates
+
+| Métrique | Avant | Après |
+|:---------|:-----:|:-----:|
+| Version | 0.5.6 | 0.5.7 |
+| Tools | 116 | **117** |
+| Nouveau tool | - | `messaging_send` |
+
+### 6. Plan Actionnable Mis à Jour
+
+| # | Task | Priority | Status |
+|:-:|:-----|:--------:|:------:|
+| 1 | Shopify MCP tools WRITE | P0 | ❌ À FAIRE |
+| 2 | ~~Twilio SMS fallback~~ | ~~P0~~ | ✅ **FAIT** |
+| 3 | Page Use Cases website | P1 | ❌ À FAIRE |
+| 4 | Stripe Payment Links | P1 | ❌ À FAIRE |
+
+**Statut final**: P0 Twilio SMS ✅ IMPLÉMENTÉ | 117 MCP tools | Build OK
+
+---
+
+*Màj: 31/01/2026 - Session 249.18 (Twilio SMS Fallback IMPLÉMENTÉ)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

@@ -5,7 +5,7 @@
  *
  * Session 249.11 - v0.5.6 - REAL Implementation (NO MOCKS) + BM25 RAG + iPaaS + Strategic Ecommerce
  *
- * TOOL CATEGORIES (143 tools - 11 always available, 132 require services):
+ * TOOL CATEGORIES (117 tools - 11 always available, 106 require services):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -19,21 +19,18 @@
  * - UCP Inline (1): ucp_sync [REQUIRE UCP]
  * - Booking Tools (2): booking_schedule_callback, booking_create [ALWAYS - FILE PERSISTENCE]
  *
- * EXTERNAL MODULE TOOLS (91):
+ * EXTERNAL MODULE TOOLS (93):
  * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
  * - UCP Tools (3): ucp_sync_preference, ucp_get_profile, ucp_list_profiles [REQUIRE UCP]
  * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
  * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
  * - Docs Tools (4): docs_get_document, docs_create_document, docs_append_text, docs_replace_text [REQUIRE GOOGLE]
- * - Cal.com Tools (6): calcom_get_me, calcom_list_event_types, calcom_list_bookings, calcom_get_availability, calcom_cancel_booking, calcom_list_schedules [REQUIRE CALCOM]
  * - Calendly Tools (6): calendly_get_user, calendly_list_event_types, calendly_get_available_times, calendly_list_events, calendly_cancel_event, calendly_get_busy_times [REQUIRE CALENDLY]
  * - Freshdesk Tools (6): freshdesk_list_tickets, freshdesk_get_ticket, freshdesk_create_ticket, freshdesk_reply_ticket, freshdesk_update_ticket, freshdesk_search_contacts [REQUIRE FRESHDESK]
  * - Zendesk Tools (6): zendesk_list_tickets, zendesk_get_ticket, zendesk_create_ticket, zendesk_add_comment, zendesk_update_ticket, zendesk_search_users [REQUIRE ZENDESK]
  * - Pipedrive Tools (7): pipedrive_list_deals, pipedrive_create_deal, pipedrive_update_deal, pipedrive_list_persons, pipedrive_create_person, pipedrive_search, pipedrive_list_activities [REQUIRE PIPEDRIVE]
  * - WooCommerce Tools (7): woocommerce_list_orders, woocommerce_get_order, woocommerce_update_order, woocommerce_list_products, woocommerce_get_product, woocommerce_list_customers, woocommerce_get_customer [REQUIRE WOOCOMMERCE]
- * - Intercom Tools (6): intercom_list_contacts, intercom_get_contact, intercom_search_contacts, intercom_list_conversations, intercom_get_conversation, intercom_reply_conversation [REQUIRE INTERCOM]
- * - Crisp Tools (6): crisp_list_conversations, crisp_get_conversation, crisp_get_messages, crisp_send_message, crisp_update_conversation_state, crisp_get_people_profile [REQUIRE CRISP]
  * - Zoho CRM Tools (6): zoho_list_leads, zoho_get_lead, zoho_create_lead, zoho_list_contacts, zoho_list_deals, zoho_search_records [REQUIRE ZOHO]
  * - Magento Tools (6): magento_list_orders, magento_get_order, magento_list_products, magento_get_product, magento_get_stock, magento_list_customers [REQUIRE MAGENTO]
  * - Wix Tools (6): wix_list_orders, wix_get_order, wix_list_products, wix_get_product, wix_get_inventory, wix_update_inventory [REQUIRE WIX]
@@ -46,7 +43,7 @@
  * - Make Tools (5): make_trigger_webhook, make_list_scenarios, make_get_scenario, make_run_scenario, make_list_executions [REQUIRE MAKE]
  * - n8n Tools (5): n8n_trigger_webhook, n8n_list_workflows, n8n_get_workflow, n8n_activate_workflow, n8n_list_executions [REQUIRE N8N]
  *
- * TOTAL: 143 tools (SOTA - Vapi has 8, Twilio has 5)
+ * TOTAL: 117 tools (SOTA - Vapi has 8, Twilio has 5)
  * E-commerce coverage: ~64% of global market (WooCommerce+Shopify+Magento+Wix+Squarespace+BigCommerce+PrestaShop)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
@@ -645,7 +642,7 @@ server.tool(
 );
 
 // =============================================================================
-// TELEPHONY TOOLS (5) - REQUIRE TWILIO CREDENTIALS
+// TELEPHONY TOOLS (3) - REQUIRE TWILIO CREDENTIALS
 // =============================================================================
 
 // Tool 10: telephony_initiate_call - Start outbound call
@@ -752,10 +749,57 @@ server.tool(
 );
 
 // =============================================================================
+// MESSAGING TOOLS (1) - Session 249.18
+// =============================================================================
+
+// Tool 13: messaging_send - Send message via WhatsApp or Twilio SMS fallback
+server.tool(
+  "messaging_send",
+  {
+    to: z.string().describe("Phone number in E.164 format (e.g., +33612345678)"),
+    message: z.string().describe("Message content to send"),
+    channel: z.enum(["auto", "whatsapp", "sms"]).optional().describe("Channel preference (default: auto with fallback)"),
+  },
+  async ({ to, message, channel = "auto" }) => {
+    try {
+      const response = await fetch(`${VOCALIA_TELEPHONY_URL}/messaging/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ to, message, channel }),
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        return { content: [{ type: "text" as const, text: `Messaging error: ${response.status} - ${error}` }] };
+      }
+
+      const data = await response.json();
+      return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] };
+    } catch (error) {
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            status: "messaging_service_offline",
+            error: (error as Error).message,
+            fallback_chain: ["WhatsApp Business API", "Twilio SMS ($0.0083/msg US)"],
+            requirements: {
+              whatsapp: ["WHATSAPP_ACCESS_TOKEN", "WHATSAPP_PHONE_NUMBER_ID"],
+              twilio_sms: ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "TWILIO_PHONE_NUMBER"],
+            },
+            note: "Requires voice-telephony-bridge.cjs running on port 3009",
+          }, null, 2),
+        }],
+      };
+    }
+  }
+);
+
+// =============================================================================
 // CRM TOOLS (3) - REQUIRE HUBSPOT CREDENTIALS
 // =============================================================================
 
-// Tool 13: crm_get_customer - Get customer context from HubSpot
+// Tool 14: crm_get_customer - Get customer context from HubSpot (number corrected from 13)
 server.tool(
   "crm_get_customer",
   {

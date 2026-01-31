@@ -1,11 +1,12 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.10.0 | 30/01/2026 | Session 249.13 | Health: 100%
+> Version: 6.13.0 | 31/01/2026 | Session 249.18 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.5.6 (**143 tools**) | RAG: BM25 SOTA
+> SDKs: Python | Node.js | MCP Server v0.5.7 (**117 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **24 native** (~64% e-commerce) | WordPress Plugin ✅ | Cross-browser ✅ | WCAG Touch ✅
-> E-commerce: WooCommerce, Shopify, Magento, Wix, Squarespace, BigCommerce, PrestaShop
+> Integrations: **21 native** (117 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
+> E-commerce: WooCommerce (CRUD), Shopify (READ), Magento, Wix, Squarespace, BigCommerce, PrestaShop
+> Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅ IMPLÉMENTÉ** | MCP 4 tools
 
 ## Identité
 
@@ -52,7 +53,7 @@ VocalIA/
 ├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (143 tools)
+├── mcp-server/     # MCP Server (116 tools)
 └── docs/           # Documentation
 ```
 
@@ -250,18 +251,74 @@ ls data/ucp-profiles.json  # exists ✅
 
 ---
 
+## Session 249.16 - Corrections Critiques (31/01/2026)
+
+### Bugs Fixés
+
+| Bug | Fix | Vérification |
+|:----|:----|:-------------|
+| 4 function tools orphelins | Ajout 4 case statements (lignes 1119-1134) | 11/11 tools OK |
+| "143 tools" fantômes | Corrigé → 116 tools réels | grep "116 tools" ✅ |
+| Cal.com/Intercom/Crisp fake | Supprimé des commentaires index.ts | Build OK |
+
+### Vérités Rétablies
+
+| Claim Faux | Vérité |
+|:-----------|:-------|
+| HubSpot = webhook-only | Full CRUD via hubspot-b2b-crm.cjs |
+| WhatsApp = pas implémenté | ✅ Implémenté (needs credentials) |
+| Shopify = Production | READ-ONLY (pas de cancel/refund) |
+| sendGenericSMS = SMS | ❌ C'était WhatsApp! Renommé sendWhatsAppMessage |
+| MCP "5 telephony tools" | ✅ Corrigé → 3 tools |
+| TwiML = pas implémenté | ✅ COMPLET (5 fonctions voice) |
+
+---
+
 ## Plan Actionnable (Session 250)
 
-| # | Task | Priority | Blocker |
-|:-:|:-----|:--------:|:--------|
-| 1 | SDK Publish (npm/PyPI) | P1 | User credentials required |
-| 2 | API Backend deploy (api.vocalia.ma) | P1 | Hosting setup |
-| 3 | WordPress Plugin → WordPress.org | P2 | Review process |
-| 4 | Frontend: Add 4 new e-commerce cards | P2 | Design review |
+| # | Task | Priority | Effort | Fichier | Status |
+|:-:|:-----|:--------:|:------:|:--------|:------:|
+| 1 | Shopify MCP tools WRITE | P0 | 5j | mcp-server/src/tools/shopify.ts | ❌ |
+| 2 | ~~Twilio SMS fallback~~ | ~~P0~~ | ~~2-3j~~ | ~~telephony/voice-telephony-bridge.cjs~~ | ✅ DONE |
+| 3 | Page Use Cases website | P1 | 2j | website/use-cases/index.html | ❌ |
+| 4 | Stripe Payment Links | P1 | 3j | core/stripe-payments.cjs | ❌ |
+
+---
+
+## Session 249.18 - Twilio SMS Fallback IMPLÉMENTÉ
+
+**Nouvelles fonctions** (voice-telephony-bridge.cjs):
+- `sendTwilioSMS()` - Twilio REST API + SDK ($0.0083/msg US)
+- `sendMessage()` - Unified avec fallback: WhatsApp → Twilio SMS
+- `/messaging/send` - HTTP endpoint pour MCP
+
+**MCP Tool ajouté**:
+- `messaging_send` - Channel auto/whatsapp/sms
+
+**Fonctions mises à jour**:
+- `sendSMSBookingLink()` → utilise sendMessage()
+- `handleSendPaymentDetails()` → utilise sendMessage()
+- `sendRecoverySMS()` → utilise sendMessage()
+
+**Vérification**:
+```bash
+node -e "require('./telephony/voice-telephony-bridge.cjs')"  # ✅ Module loads
+cd mcp-server && npm run build  # ✅ Build OK
+```
+
+---
+
+## Session 249.17 - Audit Twilio/TwiML
+
+**TwiML Voice - COMPLET** (5 fonctions):
+- `getTwiMLLanguage()`, `getTwiMLMessage()`
+- `generateTwiML()`, `generateErrorTwiML()`, `generateOutboundTwiML()`
+
+**Twilio SDK installé**: `"twilio": "^4.19.0"` (package.json)
 
 ---
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
-*Voir `docs/INTEGRATIONS-ROADMAP.md` pour planning détaillé*
-*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (143 tools)*
-*Màj: 30/01/2026 - Session 249.12 (Homepage Cleanup + Doc Sync)*
+*Voir `docs/USE-CASES-STRATEGIC-ANALYSIS.md` pour SWOT et stratégie*
+*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (117 tools)*
+*Màj: 31/01/2026 - Session 249.18 (Twilio SMS Fallback IMPLÉMENTÉ)*

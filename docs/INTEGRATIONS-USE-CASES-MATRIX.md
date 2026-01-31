@@ -1,7 +1,8 @@
 # VocalIA - Matrice Intégrations × Use Cases
 
-> **Version**: 1.0.0 | **Date**: 30/01/2026 | **Session**: 249.15
-> **23 Intégrations natives + 3 iPaaS = Potentiel illimité**
+> **Version**: 1.1.0 | **Date**: 31/01/2026 | **Session**: 249.16
+> **21 Intégrations natives réelles + 3 iPaaS = 116 MCP Tools**
+> **VÉRIFIÉ**: Audit codebase 31/01/2026 - Corrections appliquées
 
 ---
 
@@ -31,13 +32,21 @@ COMMUNICATION (3)     WEBSITE (2)       PRODUCTIVITY (3)    iPaaS (3)
 
 ### 2.1 E-commerce (5 intégrations)
 
-| Intégration | Use Cases Directs | Function Tools | Personas |
-|:------------|:------------------|:---------------|:---------|
-| **Shopify** | Order tracking, Stock check, Customer lookup | check_order_status, check_product_stock | UNIVERSAL_ECOMMERCE |
-| **WooCommerce** | Order tracking, Product info | check_order_status | UNIVERSAL_ECOMMERCE |
-| **Magento** | Enterprise e-commerce, B2B | - | UNIVERSAL_ECOMMERCE |
-| **PrestaShop** | EU e-commerce | - | UNIVERSAL_ECOMMERCE |
-| **BigCommerce** | Multi-channel retail | - | UNIVERSAL_ECOMMERCE |
+| Intégration | READ | WRITE | Cancel/Refund | MCP Tools |
+|:------------|:----:|:-----:|:-------------:|:---------:|
+| **Shopify** | ✅ | ❌ | ❌ | 0 (inline stubs) |
+| **WooCommerce** | ✅ | ✅ | ✅ | 7 |
+| **Magento** | ✅ | ❌ | ❌ | 6 |
+| **PrestaShop** | ✅ | ❌ | ❌ | 7 |
+| **BigCommerce** | ✅ | ✅ | ⚠️ Partiel | 7 |
+
+> **⚠️ LIMITATION CRITIQUE**: Shopify est READ-ONLY dans VocalIA
+> - `check_order_status` = lecture seule
+> - `check_product_stock` = lecture seule
+> - **PAS de** cancel_order, refund_order, update_shipping
+> - **Solution**: Implémenter GraphQL mutations `orderCancel`, `refundCreate`
+>
+> **✅ WooCommerce** peut modifier status à 'cancelled' ou 'refunded' via `woocommerce_update_order`
 
 #### Workflows E-commerce
 
@@ -53,9 +62,14 @@ COMMUNICATION (3)     WEBSITE (2)       PRODUCTIVITY (3)    iPaaS (3)
 
 | Intégration | Use Cases Directs | Sync Bidirectionnel | Personas |
 |:------------|:------------------|:--------------------|:---------|
-| **Pipedrive** | Lead management, Deal tracking, Activity log | ✅ Full | AGENCY, UNIVERSAL_SME |
-| **Zoho CRM** | Contact management, Pipeline | ✅ Full | AGENCY, UNIVERSAL_SME |
-| **HubSpot** | Inbound marketing, Contact sync | Webhook (unidirectionnel) | AGENCY |
+| **Pipedrive** | Lead management, Deal tracking, Activity log | ✅ Full (7 MCP tools) | AGENCY, UNIVERSAL_SME |
+| **Zoho CRM** | Contact management, Pipeline | ✅ Full (6 MCP tools) | AGENCY, UNIVERSAL_SME |
+| **HubSpot** | Inbound marketing, Contact sync | ✅ Full CRUD (hubspot-b2b-crm.cjs) | AGENCY |
+
+> **CORRECTION 31/01/2026**: HubSpot a une API bidirectionnelle COMPLÈTE via `hubspot-b2b-crm.cjs`:
+> - `searchContacts()`, `upsertContact()`, `batchCreateContacts()`, `batchUpdateContacts()`
+> - `createDeal()`, `updateDealStage()`, `updateLeadScore()`
+> - HITL support pour high-value deals
 
 #### Workflows CRM
 
@@ -284,23 +298,62 @@ Avec Zapier/Make/n8n, la couverture potentielle passe à:
 
 ---
 
-## 7. Conclusion
+## 7. Conclusion (CORRIGÉE)
 
-### Forces Intégrations VocalIA
+### Forces VÉRIFIÉES
 
-1. **E-commerce solide**: 5 plateformes majeures
-2. **CRM complet**: Pipedrive + Zoho + HubSpot
-3. **Scheduling natif**: Calendly + Google Calendar
-4. **iPaaS triple**: Zapier + Make + n8n = flexibilité totale
+| Force | Preuve Code | Impact Client |
+|:------|:------------|:--------------|
+| **CRM complet** | Pipedrive (7), Zoho (6), HubSpot (full CRUD) | Sales automation |
+| **Scheduling natif** | Calendly (6), Calendar (2) | Booking 24/7 |
+| **iPaaS triple** | Zapier (3), Make (5), n8n (5) | 7000+ apps |
+| **WooCommerce Full** | 7 tools avec refund/cancel | E-commerce EU |
 
-### Axes d'Amélioration
+### Faiblesses VÉRIFIÉES
 
-1. **Communication**: Ajouter Twilio SMS, WhatsApp
-2. **Paiement**: Intégrer Stripe pour transactions
-3. **Healthcare**: Partenariat Doctolib
-4. **Enterprise**: Salesforce, Microsoft 365
+| Faiblesse | Impact | Priorité Fix |
+|:----------|:-------|:------------:|
+| **Shopify READ-ONLY** | Pas de cancel/refund | P0 |
+| **WhatsApp needs creds** | Pas de fallback SMS | P0 |
+| **Stripe webhook only** | Pas de payment initiation | P1 |
 
 ---
 
-*Document généré: 30/01/2026 - Session 249.15*
-*23 intégrations natives + 3 iPaaS = 7000+ apps accessibles*
+## 8. Plan Actionnable (Session 249.16)
+
+### Priorité 1: Shopify WRITE (5 jours)
+
+```
+Créer: mcp-server/src/tools/shopify.ts
+- shopify_cancel_order (GraphQL orderCancel mutation)
+- shopify_create_refund (GraphQL refundCreate mutation)
+- shopify_update_order (GraphQL orderUpdate mutation)
+Dépendance: SHOPIFY_ACCESS_TOKEN avec scopes write_orders
+```
+
+### ~~Priorité 2: Twilio SMS Fallback~~ ✅ FAIT (Session 249.18)
+
+```
+✅ IMPLÉMENTÉ: telephony/voice-telephony-bridge.cjs
+- sendTwilioSMS() - Twilio REST API + SDK
+- sendMessage() - Unified: WhatsApp → SMS fallback
+- /messaging/send - HTTP endpoint
+- messaging_send - MCP tool (117 total)
+Coût: $0.0083/SMS US, $0.07/SMS FR
+```
+
+### Priorité 3: Page Use Cases Website (2 jours)
+
+```
+Créer: website/use-cases/index.html
+Contenu basé sur ce document:
+- 5 combos principaux (Sales, E-commerce, Booking, Darija, Agency)
+- Workflows visuels
+- ROI par secteur
+```
+
+---
+
+*Document mis à jour: 31/01/2026 - Session 249.16*
+*21 intégrations natives réelles + 3 iPaaS = 116 MCP tools*
+*Corrections: HubSpot=Full CRUD, Shopify=READ-ONLY, WhatsApp=Implémenté*

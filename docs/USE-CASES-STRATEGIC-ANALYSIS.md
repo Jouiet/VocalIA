@@ -1,8 +1,8 @@
 # VocalIA - Analyse Stratégique des Use Cases
 
-> **Version**: 1.0.0 | **Date**: 30/01/2026 | **Session**: 249.15
-> **Statut**: EXPLORATION & DOCUMENTATION (pas d'implémentation)
-> **Approche**: Bottom-up factuelle, vérification empirique
+> **Version**: 1.1.0 | **Date**: 31/01/2026 | **Session**: 249.16
+> **Statut**: VÉRIFIÉ EMPIRIQUEMENT (audit codebase 31/01/2026)
+> **Approche**: Bottom-up factuelle, vérification contre code source
 
 ---
 
@@ -50,22 +50,25 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | **Productivity** | Sheets, Drive, Docs | 3 |
 | **iPaaS** | Zapier, Make, n8n | 3 |
 
-### 2.3 Function Tools Telephony (12)
+### 2.3 Function Tools Telephony (11 FONCTIONNELS)
 
-| Tool | Catégorie | Use Case |
-|:-----|:----------|:---------|
-| `qualify_lead` | Sales | BANT scoring en temps réel |
-| `handle_objection` | Sales | Gestion objections avec analytics |
-| `check_order_status` | E-commerce | Suivi commande Shopify |
-| `check_product_stock` | E-commerce | Vérification inventaire |
-| `get_customer_tags` | CRM | Profil client Klaviyo |
-| `schedule_callback` | Scheduling | Planification rappel |
-| `create_booking` | Scheduling | Réservation RDV |
-| `track_conversion_event` | Analytics | Suivi conversions |
-| `search_knowledge_base` | RAG | Recherche KB BM25 |
-| `send_payment_details` | Payment | Envoi infos paiement |
-| `transfer_call` | HITL | Transfert vers humain |
-| `booking_confirmation` | Scheduling | Confirmation RDV |
+> **VÉRIFIÉ 31/01/2026**: 11 tools avec case statements dans switch (ligne 1090-1135 voice-telephony-bridge.cjs)
+
+| Tool | Catégorie | Status | Use Case |
+|:-----|:----------|:------:|:---------|
+| `qualify_lead` | Sales | ✅ | BANT scoring en temps réel |
+| `handle_objection` | Sales | ✅ | Gestion objections avec analytics |
+| `check_order_status` | E-commerce | ✅ | Suivi commande Shopify (READ-ONLY) |
+| `check_product_stock` | E-commerce | ✅ | Vérification inventaire (READ-ONLY) |
+| `get_customer_tags` | CRM | ✅ | Profil client Klaviyo |
+| `schedule_callback` | Scheduling | ✅ | Planification rappel |
+| `create_booking` | Scheduling | ✅ | Réservation RDV |
+| `track_conversion_event` | Analytics | ✅ | Suivi conversions |
+| `search_knowledge_base` | RAG | ✅ | Recherche KB BM25 |
+| `send_payment_details` | Payment | ✅ | Envoi infos paiement (via WhatsApp) |
+| `transfer_call` | HITL | ✅ | Transfert vers humain |
+
+> **Note**: `booking_confirmation` n'est PAS un function tool - c'est un template WhatsApp interne.
 
 ### 2.4 Personas (30)
 
@@ -387,6 +390,88 @@ Maroc-first                   →      Afrique francophone
 
 ---
 
-*Document généré: 30/01/2026 - Session 249.15*
-*Approche: Bottom-up factuelle, vérification empirique*
-*Statut: EXPLORATION - Pas d'implémentation*
+## 10. SWOT Analysis (VÉRIFIÉ)
+
+### Forces (Strengths) ✅
+
+| Force | Preuve | Impact |
+|:------|:-------|:-------|
+| **Darija unique** | Atlas-Chat-9B implémenté (voice-api-resilient.cjs:109-119) | Monopole Maroc 45M personnes |
+| **Pricing compétitif** | $0.06/min vs $0.07-0.33 concurrents | Acquisition PME |
+| **30 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
+| **Widget + Telephony** | Seul à offrir les 2 nativement | Omnichannel complet |
+| **iPaaS triple** | Zapier + Make + n8n (3 modules MCP) | 7000+ apps accessibles |
+| **11 Function Tools** | voice-telephony-bridge.cjs (lignes 1090-1135) | Automatisation avancée |
+| **HubSpot Full CRUD** | hubspot-b2b-crm.cjs (25+ méthodes) | CRM enterprise ready |
+
+### Faiblesses (Weaknesses) ❌
+
+| Faiblesse | Impact | Solution |
+|:----------|:-------|:---------|
+| **Shopify READ-ONLY** | Pas de cancel/refund order | Implémenter GraphQL mutations |
+| **Pas de send_sms natif** | Dépendance WhatsApp | Ajouter Twilio SMS |
+| **Pas de collect_payment** | Cycle transactionnel incomplet | Intégrer Stripe |
+| **5 langues seulement** | Marché limité | Ajouter Wolof, Amazigh |
+| **Pas de compliance** | Exclusion enterprise | SOC2 Type I |
+
+### Opportunités (Opportunities) 🎯
+
+| Opportunité | TAM | Effort |
+|:------------|:----|:-------|
+| Marché Maroc Darija | 45M personnes, 0 concurrent | Marketing ciblé |
+| PME françaises | 4M entreprises | Package "clé en main" |
+| E-commerce support | €50B marché EU | Upsell Zendesk combo |
+| Healthcare booking | €2B France | Calendly + Gmail combo |
+| Real Estate | €100B transactions/an | Pipedrive + Calendly combo |
+
+### Menaces (Threats) ⚠️
+
+| Menace | Probabilité | Mitigation |
+|:-------|:-----------:|:-----------|
+| Vapi open-source momentum | Haute | Différenciation Darija + pricing |
+| Retell enterprise push | Moyenne | SOC2 certification |
+| Twilio AI native launch | Haute | Partenariat ou pivot iPaaS |
+| Réglementation AI EU | Moyenne | Compliance proactive |
+
+---
+
+## 11. Plan Actionnable (Session 249.16)
+
+### Actions Immédiates (Cette semaine)
+
+| # | Action | Fichier | Effort | Vérification |
+|:-:|:-------|:--------|:------:|:-------------|
+| 1 | ~~Fix 4 function tools orphelins~~ | voice-telephony-bridge.cjs | ✅ FAIT | 11/11 tools fonctionnels |
+| 2 | ~~Corriger "143 tools" → "116 tools"~~ | index.ts, CLAUDE.md | ✅ FAIT | grep "116 tools" |
+| 3 | ~~Supprimer Cal.com/Intercom/Crisp fantômes~~ | index.ts | ✅ FAIT | Commentaires nettoyés |
+
+### Actions Court Terme (Semaines 1-2)
+
+| # | Action | Fichier à créer/modifier | Effort | Valeur |
+|:-:|:-------|:-------------------------|:------:|:-------|
+| 1 | Créer Shopify MCP tools WRITE | `mcp-server/src/tools/shopify.ts` | 5j | Cancel/Refund orders |
+| 2 | ~~Implémenter Twilio SMS fallback~~ | `telephony/voice-telephony-bridge.cjs` | ~~2-3j~~ | ✅ **FAIT** Session 249.18 |
+| 3 | Créer page Use Cases website | `website/use-cases/index.html` | 2j | Marketing |
+
+### Actions Moyen Terme (Semaines 3-6)
+
+| # | Action | Dépendance | Effort | ROI |
+|:-:|:-------|:-----------|:------:|:----|
+| 1 | Stripe Payment Links | Compte Stripe | 3j | Paiements vocaux |
+| 2 | Sentiment Analysis | API OpenAI/Google | 15j | Escalade intelligente |
+| 3 | Survey via Zapier | Config Zapier | 1j | NPS tracking |
+
+### Métriques de Succès
+
+| KPI | Actuel | Cible S+2 | Cible S+6 |
+|:----|:------:|:---------:|:---------:|
+| Function tools | 11 | 13 (+SMS, +Payment) | 18 |
+| MCP tools | 116 | 123 (+Shopify WRITE) | 140 |
+| E-commerce coverage | READ-ONLY | Cancel/Refund | Full CRUD |
+| Compliance | 0 | - | SOC2 Type I |
+
+---
+
+*Document mis à jour: 31/01/2026 - Session 249.16*
+*Approche: Bottom-up factuelle, vérification contre code source*
+*Corrections: 4 tools orphelins fixés, 143→116 tools, HubSpot=Full CRUD*

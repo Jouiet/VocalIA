@@ -1116,6 +1116,22 @@ async function handleFunctionCall(session, item) {
         result = await handleGetCustomerTags(session, args);
         break;
 
+      case 'schedule_callback':
+        result = await handleScheduleCallback(session, args);
+        break;
+
+      case 'create_booking':
+        result = await handleCreateBooking(session, args);
+        break;
+
+      case 'track_conversion_event':
+        result = await handleTrackConversion(session, args);
+        break;
+
+      case 'send_payment_details':
+        result = await handleSendPaymentDetails(session, args);
+        break;
+
       default:
         console.log(`[Cognitive-Tools] Unknown function: ${item.name}`);
         result = { success: false, error: `Function ${item.name} not implemented` };
@@ -1465,15 +1481,83 @@ async function handleTransferCallInternal(session, args) {
 
 // ============================================
 // FOLLOW-UP & MESSAGING ACTIONS
+// Session 249.18: Unified messaging with WhatsApp → Twilio SMS fallback
 // ============================================
 
-async function sendGenericSMS(to, body) {
-  if (!CONFIG.whatsapp.accessToken || !CONFIG.whatsapp.phoneNumberId) {
-    console.log('[SMS] WhatsApp credentials not configured, skipping SMS');
+/**
+ * Send SMS via Twilio API
+ * Uses Twilio SDK (already installed: "twilio": "^4.19.0")
+ * @param {string} to - Phone number (E.164 format, e.g., +33612345678)
+ * @param {string} body - Message text
+ * @returns {Promise<boolean>} Success status
+ */
+async function sendTwilioSMS(to, body) {
+  if (!CONFIG.twilio.accountSid || !CONFIG.twilio.authToken || !CONFIG.twilio.phoneNumber) {
+    console.log('[Twilio SMS] Credentials not configured');
     return false;
   }
 
-  console.log(`[SMS] Sending to ${to}: "${body.substring(0, 50)}..."`);
+  console.log(`[Twilio SMS] Sending to ${to}: "${body.substring(0, 50)}..."`);
+
+  try {
+    // Use Twilio SDK if available
+    if (twilio) {
+      const client = twilio(CONFIG.twilio.accountSid, CONFIG.twilio.authToken);
+      const message = await client.messages.create({
+        body: body,
+        from: CONFIG.twilio.phoneNumber,
+        to: to
+      });
+      console.log(`[Twilio SMS] Sent successfully (SID: ${message.sid})`);
+      return true;
+    }
+
+    // Fallback: Direct REST API call
+    const auth = Buffer.from(`${CONFIG.twilio.accountSid}:${CONFIG.twilio.authToken}`).toString('base64');
+    const response = await fetch(
+      `https://api.twilio.com/2010-04-01/Accounts/${CONFIG.twilio.accountSid}/Messages.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Basic ${auth}`,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          To: to,
+          From: CONFIG.twilio.phoneNumber,
+          Body: body
+        }),
+        signal: AbortSignal.timeout(10000)
+      }
+    );
+
+    const result = await response.json();
+    if (result.sid) {
+      console.log(`[Twilio SMS] Sent successfully (SID: ${result.sid})`);
+      return true;
+    } else {
+      console.error('[Twilio SMS] Error:', JSON.stringify(result));
+      return false;
+    }
+  } catch (error) {
+    console.error(`[Twilio SMS] Error: ${error.message}`);
+    return false;
+  }
+}
+
+/**
+ * Send message via WhatsApp Business API
+ * @param {string} to - Phone number (E.164 format)
+ * @param {string} body - Message text
+ * @returns {Promise<boolean>} Success status
+ */
+async function sendWhatsAppMessage(to, body) {
+  if (!CONFIG.whatsapp.accessToken || !CONFIG.whatsapp.phoneNumberId) {
+    console.log('[WhatsApp] Credentials not configured');
+    return false;
+  }
+
+  console.log(`[WhatsApp] Sending to ${to}: "${body.substring(0, 50)}..."`);
 
   try {
     const response = await fetch(
@@ -1496,16 +1580,44 @@ async function sendGenericSMS(to, body) {
 
     const result = await response.json();
     if (result.messages) {
-      console.log('[SMS] Message sent successfully');
+      console.log('[WhatsApp] Message sent successfully');
       return true;
     } else {
-      console.error('[SMS] Error:', JSON.stringify(result));
+      console.error('[WhatsApp] Error:', JSON.stringify(result));
       return false;
     }
   } catch (error) {
-    console.error(`[SMS] Error: ${error.message}`);
+    console.error(`[WhatsApp] Error: ${error.message}`);
     return false;
   }
+}
+
+/**
+ * Unified message sender with fallback chain
+ * Priority: 1. WhatsApp (free for businesses) → 2. Twilio SMS ($0.0083/msg)
+ * @param {string} to - Phone number (E.164 format)
+ * @param {string} body - Message text
+ * @returns {Promise<{success: boolean, channel: string}>}
+ */
+async function sendMessage(to, body) {
+  // Ensure E.164 format
+  const phone = to.startsWith('+') ? to : `+${to.replace(/\D/g, '')}`;
+
+  // Try WhatsApp first (free)
+  const whatsappSent = await sendWhatsAppMessage(phone, body);
+  if (whatsappSent) {
+    return { success: true, channel: 'whatsapp' };
+  }
+
+  // Fallback to Twilio SMS
+  console.log('[Messaging] WhatsApp failed, trying Twilio SMS fallback...');
+  const smsSent = await sendTwilioSMS(phone, body);
+  if (smsSent) {
+    return { success: true, channel: 'twilio_sms' };
+  }
+
+  console.error('[Messaging] All channels failed');
+  return { success: false, channel: 'none' };
 }
 
 async function sendSMSBookingLink(session) {
@@ -1513,12 +1625,12 @@ async function sendSMSBookingLink(session) {
   const phone = session.bookingData.phone?.replace(/\D/g, '');
 
   if (!phone) {
-    console.log('[SMS] No phone number available for booking link');
-    return;
+    console.log('[Booking] No phone number available for booking link');
+    return { success: false, channel: 'none' };
   }
 
   const body = `Bonjour ! Voici le lien pour réserver votre appel découverte avec VocalIA: ${bookingLink}\n\nÀ très vite !`;
-  await sendGenericSMS(phone, body);
+  return await sendMessage(phone, body);
 }
 
 async function handleSendPaymentDetails(session, args) {
@@ -1550,18 +1662,19 @@ async function handleSendPaymentDetails(session, args) {
     const phone = session.bookingData.phone?.replace(/\D/g, '');
     if (!phone) throw new Error("No phone number available");
 
-    const sent = await sendGenericSMS(phone, message);
+    const result = await sendMessage(phone, message);
 
-    if (sent) {
+    if (result.success) {
       logConversionEvent(session, 'payment_details_sent', {
         amount,
         currency,
         method,
-        description
+        description,
+        channel: result.channel
       });
-      return { success: true, message: "Les détails ont été envoyés par SMS." };
+      return { success: true, message: `Les détails ont été envoyés via ${result.channel}.`, channel: result.channel };
     } else {
-      return { success: false, error: "sms_failed" };
+      return { success: false, error: "messaging_failed" };
     }
   } catch (error) {
     console.error(`[Payment] Error: ${error.message}`);
@@ -2216,58 +2329,43 @@ async function finalizeSession(sessionId, wasAbandoned = false) {
 }
 
 // ============================================
-// RECOVERY SMS FOR ABANDONED LEADS
+// RECOVERY MESSAGE FOR ABANDONED LEADS
+// Session 249.18: Unified messaging with WhatsApp → Twilio SMS fallback
 // ============================================
 async function sendRecoverySMS(session) {
   const phone = session.bookingData.phone;
   if (!phone) {
-    console.log(`[Recovery] No phone number, skipping SMS`);
-    return;
+    console.log(`[Recovery] No phone number, skipping message`);
+    return { success: false, channel: 'none' };
   }
 
-  // Use WhatsApp if available, else log for manual follow-up
-  if (CONFIG.whatsapp.accessToken && CONFIG.whatsapp.phoneNumberId) {
-    try {
-      const bookingLink = 'https://vocalia.ma/reserver';
-      const message = session.bookingData.name
-        ? `Bonjour ${session.bookingData.name}, nous avons été coupés! Réservez votre appel découverte ici: ${bookingLink}`
-        : `Bonjour, réservez votre appel découverte VocalIA: ${bookingLink}`;
+  const bookingLink = 'https://vocalia.ma/reserver';
+  const message = session.bookingData.name
+    ? `Bonjour ${session.bookingData.name}, nous avons été coupés! Réservez votre appel découverte ici: ${bookingLink}`
+    : `Bonjour, réservez votre appel découverte VocalIA: ${bookingLink}`;
 
-      const response = await fetch(
-        `https://graph.facebook.com/v22.0/${CONFIG.whatsapp.phoneNumberId}/messages`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${CONFIG.whatsapp.accessToken}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            messaging_product: 'whatsapp',
-            to: phone.replace(/\D/g, ''),
-            type: 'text',
-            text: { body: message }
-          }),
-          signal: AbortSignal.timeout(10000)
-        }
-      );
+  try {
+    const result = await sendMessage(phone, message);
 
-      const result = await response.json();
-      if (result.messages) {
-        console.log(`[Recovery] SMS sent successfully to ${phone}`);
-        logConversionEvent(session, 'recovery_sms_sent', { phone, message });
-      } else {
-        console.error(`[Recovery] SMS failed: ${JSON.stringify(result)}`);
-      }
-    } catch (error) {
-      console.error(`[Recovery] SMS error: ${error.message}`);
+    if (result.success) {
+      console.log(`[Recovery] Message sent successfully to ${phone} via ${result.channel}`);
+      logConversionEvent(session, 'recovery_message_sent', {
+        phone,
+        message,
+        channel: result.channel
+      });
+    } else {
+      console.log(`[Recovery] All messaging channels failed for ${phone}`);
+      logConversionEvent(session, 'recovery_message_failed', {
+        phone,
+        reason: 'all_channels_failed',
+        qualification_score: session.qualification.score
+      });
     }
-  } else {
-    console.log(`[Recovery] WhatsApp not configured - manual follow-up required for ${phone}`);
-    logConversionEvent(session, 'recovery_sms_pending', {
-      phone,
-      reason: 'whatsapp_not_configured',
-      qualification_score: session.qualification.score
-    });
+    return result;
+  } catch (error) {
+    console.error(`[Recovery] Error: ${error.message}`);
+    return { success: false, channel: 'none', error: error.message };
   }
 }
 
@@ -2375,6 +2473,45 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/voice/outbound-twiml' && req.method === 'POST') {
       const body = await parseBody(req); // To get CallSid if needed
       await handleOutboundTwiML(req, res, body);
+      return;
+    }
+
+    // Messaging endpoint (Session 249.18: WhatsApp + Twilio SMS fallback)
+    if (pathname === '/messaging/send' && req.method === 'POST') {
+      const body = await parseBody(req);
+      const { to, message, channel = 'auto' } = body;
+
+      if (!to || !message) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Missing required fields: to, message' }));
+        return;
+      }
+
+      try {
+        let result;
+        if (channel === 'whatsapp') {
+          const success = await sendWhatsAppMessage(to, message);
+          result = { success, channel: success ? 'whatsapp' : 'none' };
+        } else if (channel === 'sms') {
+          const success = await sendTwilioSMS(to, message);
+          result = { success, channel: success ? 'twilio_sms' : 'none' };
+        } else {
+          // Auto: WhatsApp first, then SMS fallback
+          result = await sendMessage(to, message);
+        }
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          status: result.success ? 'sent' : 'failed',
+          channel: result.channel,
+          to,
+          message_preview: message.substring(0, 50) + (message.length > 50 ? '...' : ''),
+          timestamp: new Date().toISOString()
+        }));
+      } catch (error) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: error.message }));
+      }
       return;
     }
 
