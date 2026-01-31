@@ -358,7 +358,7 @@
     "faq3_q": "Is the Voice Widget really free?",
     "faq3_a": "Yes. The Widget uses the browser's native Web Speech API, which is free. VocalIA has no API cost to pass on to you. Only VocalIA branding is displayed on the free plan.",
     "faq4_q": "What is Darija support?",
-    "faq4_a": "Darija is the Moroccan dialect spoken by 30+ million people. VocalIA uses Atlas-Chat-9B, a specialized model, to offer unique native support in the market.",
+    "faq4_a": "Darija is the Moroccan dialect spoken by 40 million speakers. VocalIA uses Atlas-Chat-9B, a specialized model, to offer unique native support in the market.",
     "faq5_q": "How does the self-hosted option work?",
     "faq5_a": "For Enterprise clients, we provide Docker containers and deployment scripts to install VocalIA on your own infrastructure (VPS, private cloud, on-premise). You keep full control of your data.",
     "cta_title": "Ready to Automate Your Calls?",
