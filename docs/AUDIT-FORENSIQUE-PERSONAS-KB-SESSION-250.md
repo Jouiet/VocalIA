@@ -214,11 +214,11 @@ if (detectFinancialCommitment(complaintResponse)) {
 | Volet | Score Avant | Score Après | Gap Restant |
 |:------|:-----------:|:-----------:|:-----------:|
 | **Personas** | 65/100 | **100/100** | ✅ 100% traductions (40/40 × 5 langues) |
-| **Knowledge Base** | 35/100 | **85/100** | ⚠️ Dense embeddings (GOOGLE_API_KEY) |
+| **Knowledge Base** | 35/100 | **95/100** | ⚠️ Dense embeddings bloqué (GOOGLE_API_KEY) |
 | **Objection Handling** | N/A | **95/100** | ✅ LAER + Feel-Felt-Found |
 | **Complaint Handling** | N/A | **100/100** | ✅ HITL handle_complaint (Session 250.12) |
 | **3A-Shelf** | 0/100 | **75/100** | ⚠️ Sync shelf obsolète, imports non utilisés |
-| **Global** | 50/100 | **98/100** | ⚠️ Shelf sync optionnel |
+| **Global** | 50/100 | **99/100** | ⚠️ Dense embeddings bloqué |
 
 ### 1.2 Constats Critiques
 
@@ -1233,7 +1233,10 @@ node core/knowledge-base-services.cjs --search "voice assistant"
 *Document généré automatiquement - Session 250.8*
 *Méthodologie: Audit forensique bottom-up factuel*
 *Aucun claim sans vérification empirique*
-*MÀJ: 31/01/2026 - Session 250.8*
+*MÀJ: 31/01/2026 - Session 250.15*
 *✅ Personas: 40/40 SOTA structure, 100% traductions (5 langues)*
-*✅ KB: 415 termes vocabulary (+843%), knowledge-graph.json créé (23 nodes, 38 edges)*
-*⚠️ TODO: Dense embeddings (nécessite GOOGLE_GENERATIVE_AI_API_KEY), policies.json*
+*✅ KB: 1265 termes vocabulary, knowledge-graph.json créé (23 nodes, 38 edges)*
+*✅ Legacy KB merged: 165 FAQ entries from 40 personas*
+*✅ Policies.json créé: 10 policy boosting rules*
+*⚠️ BLOQUÉ: Dense embeddings (nécessite GOOGLE_GENERATIVE_AI_API_KEY)*
+*🔶 OPTIONNEL: ColBERT reranker (3j), 3A-Shelf sync (30min)*
