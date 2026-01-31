@@ -1161,9 +1161,9 @@ const PERSONAS = {
         ],
         complaint_scenarios: [
             { type: 'room_not_ready', response: 'Je suis sincèrement désolé pour cet inconvénient. Permettez-moi de vous installer au bar avec une boisson offerte pendant que nous finalisons votre chambre.' },
-            { type: 'noisy_room', response: 'Je comprends, une nuit de sommeil est précieuse. Je vous propose immédiatement un changement de chambre ou une compensation.' },
+            { type: 'noisy_room', response: 'Je comprends, une nuit de sommeil est précieuse. Je vous propose immédiatement un changement de chambre. Pour tout geste commercial, je transmets à la direction qui vous confirmera rapidement.' },
             { type: 'service_slow', response: 'Mes excuses pour ce service en dessous de nos standards. Je transmets au responsable et vous offre un geste commercial.' },
-            { type: 'amenities_missing', response: 'C\'est inacceptable et je m\'en excuse. Je fais monter les équipements immédiatement et ajoute une attention en compensation.' },
+            { type: 'amenities_missing', response: 'C\'est inacceptable et je m\'en excuse. Je fais monter les équipements immédiatement. Je transmets votre dossier pour un geste commercial que la direction vous confirmera.' },
             { type: 'booking_error', response: 'C\'est notre erreur. Je vous installe dans une chambre supérieure au même tarif avec nos excuses.' }
         ],
         example_dialogues: [
@@ -1287,7 +1287,7 @@ const PERSONAS = {
         ],
         complaint_scenarios: [
             { type: 'delivery_delay', response: 'Je m\'excuse sincèrement pour ce retard. Votre colis est notre priorité. Laissez-moi vérifier son statut exact.' },
-            { type: 'package_damaged', response: 'C\'est inacceptable et je m\'en excuse. Je lance immédiatement la procédure de remboursement ou remplacement.' },
+            { type: 'package_damaged', response: 'C\'est inacceptable et je m\'en excuse. Je transmets immédiatement votre dossier pour validation. Un responsable vous confirmera le remboursement ou remplacement très rapidement.' },
             { type: 'wrong_delivery', response: 'Je suis vraiment désolé pour cette erreur. Je coordonne la récupération et la bonne livraison immédiatement.' },
             { type: 'no_notification', response: 'Vous avez raison, vous auriez dû être informé. Je vérifie pourquoi et m\'assure que cela ne se reproduise pas.' }
         ],
@@ -1548,7 +1548,7 @@ const PERSONAS = {
         complaint_scenarios: [
             { type: 'dirty_vehicle', response: 'Je m\'excuse sincèrement. Nous allons échanger le véhicule immédiatement ou vous offrir une remise.' },
             { type: 'mechanical_issue', response: 'Votre sécurité est prioritaire. Je vous envoie un véhicule de remplacement et une assistance.' },
-            { type: 'wrong_category', response: 'C\'est notre erreur. Je vous attribue immédiatement le bon véhicule ou un upgrade gratuit.' },
+            { type: 'wrong_category', response: 'C\'est notre erreur. Je vous attribue immédiatement le bon véhicule. Pour tout surclassement, je transmets pour validation rapide.' },
             { type: 'hidden_fees', response: 'Je comprends votre frustration. Laissez-moi vérifier votre contrat et clarifier ces frais.' }
         ],
         example_dialogues: [
@@ -1760,7 +1760,7 @@ const PERSONAS = {
         ],
         complaint_scenarios: [
             { type: 'poor_cleaning', response: 'Je m\'excuse sincèrement pour ce service en dessous de nos standards. J\'envoie une équipe pour un passage de rattrapage immédiat, sans frais.' },
-            { type: 'missed_service', response: 'C\'est inacceptable et je comprends votre frustration. Je vous programme une intervention prioritaire et offre une prestation gratuite.' },
+            { type: 'missed_service', response: 'C\'est inacceptable et je comprends votre frustration. Je vous programme une intervention prioritaire. Je transmets votre demande pour un geste commercial qui vous sera confirmé.' },
             { type: 'damage_property', response: 'C\'est très grave. Je fais venir notre responsable pour constater les dégâts et notre assurance prendra en charge les réparations.' },
             { type: 'staff_behavior', response: 'Ce comportement ne représente pas nos valeurs. Je transmets à la direction et m\'assure que cela ne se reproduise pas.' },
             { type: 'billing_error', response: 'Je vérifie immédiatement et corrige cette erreur de facturation. Mes excuses pour le désagrément.' }
@@ -1850,9 +1850,9 @@ const PERSONAS = {
             { condition: 'legal_threat', action: 'transfer_service_client', message: 'Je vous mets en relation avec notre responsable client.' }
         ],
         complaint_scenarios: [
-            { type: 'late_delivery', response: 'Je suis vraiment désolé pour ce retard. Je localise votre colis et vous offre un code promo en compensation.' },
+            { type: 'late_delivery', response: 'Je suis vraiment désolé pour ce retard. Je localise votre colis et je transmets votre dossier pour un geste commercial. Vous serez recontacté rapidement.' },
             { type: 'wrong_item', response: 'Ce n\'est pas ce que vous aviez commandé? Je m\'en excuse. Je lance l\'échange immédiatement avec envoi express offert.' },
-            { type: 'damaged_product', response: 'C\'est inacceptable. Envoyez-moi une photo et je procède au remplacement ou remboursement immédiat.' },
+            { type: 'damaged_product', response: 'C\'est inacceptable. Envoyez-moi une photo et je transmets votre dossier. Un responsable vous confirmera la solution (remplacement ou remboursement) très rapidement.' },
             { type: 'return_refused', response: 'Je comprends votre frustration. Laissez-moi vérifier votre dossier et trouver une solution satisfaisante.' },
             { type: 'payment_issue', response: 'Je comprends, c\'est stressant. Je vérifie immédiatement avec notre service paiement et vous recontacte.' }
         ],
@@ -1937,7 +1937,7 @@ const PERSONAS = {
             { condition: 'bulk_order', action: 'transfer_commercial', message: 'Je vous mets en relation avec notre service commercial.' }
         ],
         complaint_scenarios: [
-            { type: 'defective_product', response: 'Je suis vraiment désolé pour ce désagrément. Nous allons procéder à l\'échange ou au remboursement immédiatement. Avez-vous votre ticket de caisse?' },
+            { type: 'defective_product', response: 'Je suis vraiment désolé pour ce désagrément. Je transmets votre dossier pour validation de l\'échange ou remboursement. Avez-vous votre ticket de caisse?' },
             { type: 'wrong_price', response: 'Je vérifie immédiatement le prix. Si c\'est notre erreur, nous appliquerons le prix affiché. Excusez-nous pour cette confusion.' },
             { type: 'poor_service', response: 'Je suis sincèrement désolé que votre expérience n\'ait pas été à la hauteur. Votre retour est précieux pour nous améliorer.' },
             { type: 'out_of_stock', response: 'Je comprends votre frustration. Je peux vérifier la disponibilité dans d\'autres magasins ou vous prévenir dès la réception.' },
@@ -2034,7 +2034,7 @@ const PERSONAS = {
         ],
         complaint_scenarios: [
             { type: 'cold_food', response: 'Je suis vraiment désolé. Je fais réchauffer votre plat immédiatement ou je peux vous préparer un nouveau plat si vous préférez.' },
-            { type: 'long_wait', response: 'Toutes mes excuses pour l\'attente. Je vérifie avec la cuisine et vous offre un apéritif en compensation.' },
+            { type: 'long_wait', response: 'Toutes mes excuses pour l\'attente. Je vérifie avec la cuisine. Je transmets votre remarque pour un geste commercial qui vous sera proposé.' },
             { type: 'wrong_order', response: 'C\'est notre erreur. Je corrige cela immédiatement et le bon plat sera en priorité. Celui-ci est offert.' },
             { type: 'reservation_not_found', response: 'Je suis confus pour ce désagrément. Laissez-moi vous installer à une table disponible immédiatement.' },
             { type: 'noise_level', response: 'Je comprends. Je peux vous proposer une table plus calme si vous le souhaitez.' },
@@ -2084,7 +2084,7 @@ const PERSONAS = {
         complaint_scenarios: [
             { type: 'flight_cancelled', response: 'Je comprends le stress de cette situation. Je recherche immédiatement des alternatives et contacte la compagnie pour vous.' },
             { type: 'hotel_not_as_described', response: 'C\'est inacceptable. Je contacte l\'hôtel immédiatement et recherche un hébergement alternatif si nécessaire, à nos frais.' },
-            { type: 'tour_cancelled', response: 'Je suis vraiment désolé. Je vous propose soit un remboursement complet, soit une excursion alternative équivalente.' },
+            { type: 'tour_cancelled', response: 'Je suis vraiment désolé. Je transmets immédiatement votre dossier. Un responsable vous confirmera les options: remboursement ou excursion alternative.' },
             { type: 'booking_error', response: 'C\'est notre erreur et je m\'en excuse. Je corrige immédiatement et m\'assure que tout est en ordre.' },
             { type: 'hidden_fees', response: 'Je comprends votre frustration. Laissez-moi vérifier et si c\'est une erreur de notre part, nous corrigeons immédiatement.' }
         ],
@@ -2514,7 +2514,7 @@ const PERSONAS = {
             { condition: 'complaint', action: 'transfer_owner', message: 'Je transfère au propriétaire du salon pour résoudre cela personnellement.' }
         ],
         complaint_scenarios: [
-            { type: 'bad_haircut', response: 'Je suis vraiment désolé que vous ne soyez pas satisfait. Venez immédiatement pour une retouche gratuite avec notre meilleur coiffeur.' },
+            { type: 'bad_haircut', response: 'Je suis vraiment désolé que vous ne soyez pas satisfait. Je transmets à notre responsable qui vous rappellera pour organiser une correction rapidement.' },
             { type: 'color_wrong', response: 'La couleur ne correspond pas à vos attentes? Notre coloriste vous reçoit en priorité pour corriger, sans frais supplémentaires.' },
             { type: 'long_wait', response: 'Toutes mes excuses pour cette attente. Puis-je vous offrir un café ou un soin en attendant? Votre prochaine visite bénéficiera d\'une remise.' },
             { type: 'damaged_hair', response: 'C\'est très préoccupant. Notre responsable technique va évaluer la situation et nous proposerons un traitement réparateur complet offert.' },
@@ -2565,10 +2565,10 @@ const PERSONAS = {
         ],
         complaint_scenarios: [
             { type: 'late_delivery', response: 'Je suis vraiment désolé pour ce retard. Je localise votre livreur immédiatement et vous offre un bon de réduction pour votre prochaine commande.' },
-            { type: 'missing_items', response: 'Je m\'excuse pour ces articles manquants. Je lance un remboursement immédiat et ils seront prioritaires sur votre prochaine commande.' },
-            { type: 'damaged_products', response: 'C\'est inacceptable. Je vous rembourse ces articles immédiatement et ajoute un crédit en compensation.' },
+            { type: 'missing_items', response: 'Je m\'excuse pour ces articles manquants. Je transmets votre dossier pour validation du remboursement. Un responsable vous confirmera très rapidement.' },
+            { type: 'damaged_products', response: 'C\'est inacceptable. Je transmets votre dossier pour remboursement et geste commercial. Un responsable vous confirmera la solution rapidement.' },
             { type: 'wrong_substitution', response: 'Je comprends que ce n\'est pas ce que vous aviez commandé. Je rembourse la différence et note vos préférences pour l\'avenir.' },
-            { type: 'quality_issue', response: 'La fraîcheur de nos produits est primordiale. Je vous rembourse et signale ce lot à notre équipe qualité.' },
+            { type: 'quality_issue', response: 'La fraîcheur de nos produits est primordiale. Je transmets votre dossier pour remboursement et signale ce lot à notre équipe qualité.' },
             { type: 'delivery_driver_issue', response: 'Je suis vraiment désolé pour cette expérience. Je note votre retour et m\'assure que cela ne se reproduise pas.' }
         ],
         example_dialogues: [

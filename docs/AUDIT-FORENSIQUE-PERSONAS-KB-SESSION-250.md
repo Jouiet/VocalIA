@@ -1,8 +1,28 @@
 # AUDIT FORENSIQUE - PERSONAS & KNOWLEDGE BASE VocalIA
 
-> **Version**: 2.5.0 | **Date**: 31/01/2026 | **Session**: 250.11
+> **Version**: 2.6.0 | **Date**: 31/01/2026 | **Session**: 250.13
 > **Auditeur**: Claude Opus 4.5 | **Méthodologie**: Bottom-up factuelle
-> **Statut**: ✅ COMPLET + IMPLÉMENTÉ (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Gap Documenté, 3A-Shelf Bidirectionnel)
+> **Statut**: ✅ COMPLET + IMPLÉMENTÉ (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Financial 100%, Personas HITL-Compliant)
+
+### Changements Session 250.13 - Personas HITL-Compliant
+
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **Personas HITL-compliant** | 14 complaint_scenarios corrigés (promesses financières → transmission pour validation) | ✅ |
+| **Forbidden behaviors** | Déjà présent: "Giving refunds without proper process" (2 personas) | ✅ |
+| **Pattern unifié** | "Je transmets votre dossier pour validation" au lieu de "remboursement immédiat" | ✅ |
+
+**Corrections appliquées:**
+- DISPATCHER: package_damaged → transmission pour validation
+- UNIVERSAL_ECOMMERCE: late_delivery, damaged_product → transmission HITL
+- CONCIERGE: noisy_room, amenities_missing → transmission direction
+- CLEANER: missed_service → transmission geste commercial
+- RETAILER: defective_product → transmission validation
+- RESTAURATEUR: long_wait → transmission geste commercial
+- TRAVEL_AGENT: tour_cancelled → transmission responsable
+- HAIRDRESSER: bad_haircut → transmission responsable
+- GROCERY: missing_items, damaged_products, quality_issue → transmission remboursement
+- RENTER: wrong_category → transmission surclassement
 
 ### Changements Session 250.11 - Audit Complet 3A-Shelf + HITL
 
