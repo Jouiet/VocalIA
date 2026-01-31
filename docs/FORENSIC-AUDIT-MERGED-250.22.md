@@ -372,7 +372,7 @@ logs=$(grep -r 'console.log' website/*.html 2>/dev/null | grep -v docs/ | wc -l)
 | SEO-01 | 🔴 | SEO | hreflang ary absent | ✅ FIXED (35 pages) |
 | SEO-02 | 🟠 | SEO | twitter:site absent | ✅ FIXED (10 pages) |
 | SEO-03 | 🟠 | SEO | sitemap/robots conflict | ✅ FIXED |
-| SEO-04 | 🟡 | SEO | 9 pages sans og:image | ⚠️ PARTIAL |
+| SEO-04 | 🟡 | SEO | 9 pages sans og:image | ✅ FIXED (4 public) |
 | CODE-01 | 🟠 | Code | HTML invalid (108x) | ✅ FIXED |
 | CODE-02 | 🟡 | Code | console.log prod | ✅ FIXED |
 | CODE-03 | 🟡 | Code | Inline CSS 208 lines | ⚠️ DEFERRED |
