@@ -1709,5 +1709,29 @@
     "cta_subtitle": "Contact us to receive our full pitch deck and schedule a product demo.",
     "cta_email": "Contact the Team",
     "cta_docs": "View Documentation"
+  },
+  "error_page": {
+    "title": "Page not found",
+    "message": "Sorry, the page you're looking for doesn't exist or has been moved.",
+    "back_home": "Back to home",
+    "contact_us": "Contact us",
+    "popular_pages": "Popular pages:"
+  },
+  "signup_page": {
+    "title": "Create your account",
+    "subtitle": "Start for free, upgrade when you want",
+    "select_plan": "1. Choose your plan",
+    "your_info": "2. Your information",
+    "company": "Company name",
+    "fullname": "Full name",
+    "email": "Professional email",
+    "password": "Password",
+    "terms_agree": "I accept the",
+    "terms_and": "and the",
+    "create_account": "Create my account",
+    "or": "or",
+    "already_account": "Already have an account?",
+    "login": "Log in",
+    "popular": "Popular"
   }
 }

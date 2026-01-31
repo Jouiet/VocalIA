@@ -1,15 +1,15 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.21.0 | 31/01/2026 | Session 250.2 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 37 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 31 Personas | 4 Frameworks | 12 Func. Tools | 23 Core Modules**
+> Version: 6.22.0 | 31/01/2026 | Session 250.4 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 38 pages | **1566 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
+> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 30 Personas | 4 Frameworks | 12 Func. Tools | 28 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 12 Function Tools ✅
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 6, PrestaShop 7, BigCommerce 7, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
-> **Website: 37 pages** | Académie Business ✅ | /industries/ ✅ | /use-cases/ ✅ | Footer Clean ✅
+> **Website: 38 pages** | Signup ✅ | 404 ✅ | Académie Business ✅ | /industries/ ✅ | /use-cases/ ✅
 
 ## Identité
 
@@ -42,7 +42,7 @@
 
 ```
 VocalIA/
-├── core/           # 23 modules (voice engine + multi-tenant)
+├── core/           # 28 modules (23 core + 5 gateways)
 │   ├── SecretVault.cjs       # Per-tenant credentials (AES-256-GCM)
 │   ├── OAuthGateway.cjs      # OAuth 2.0 flows (port 3010)
 │   ├── WebhookRouter.cjs     # Inbound webhooks (port 3011)
@@ -300,6 +300,36 @@ ls data/ucp-profiles.json  # exists ✅
 | 8 | ~~Supprimer /status du footer~~ | ~~P2~~ | ~~10m~~ | ~~31 fichiers~~ | ✅ DONE |
 | 9 | ~~Supprimer /careers du footer~~ | ~~P2~~ | ~~10m~~ | ~~31 fichiers~~ | ✅ DONE |
 | 10 | ~~Académie Business enrichie~~ | ~~P0~~ | ~~4h~~ | ~~website/academie-business/index.html~~ | ✅ DONE |
+
+---
+
+## Session 250.4 - P0 Frontend Fixes + Pages Critiques (31/01/2026)
+
+**Tâches P0 Complétées:**
+
+| # | Task | Fichier | Status |
+|:-:|:-----|:--------|:------:|
+| 1 | ~~Supprimer console.log~~ | index.html, admin.html | ✅ 0 occurrences |
+| 2 | ~~Fixer placeholder téléphone~~ | contact.html:52 | ✅ +212520000000 |
+| 3 | ~~Fixer localhost widget~~ | voice-widget.js:26 | ✅ api.vocalia.ma |
+| 4 | ~~Créer page 404~~ | website/404.html | ✅ 8.2 KB |
+| 5 | ~~Créer page signup~~ | website/signup.html | ✅ 21.7 KB |
+| 6 | ~~Mettre à jour sitemap~~ | sitemap.xml | ✅ 35 URLs |
+| 7 | ~~i18n nouvelles pages~~ | 5 locales | ✅ +20 keys |
+
+**Nouvelles Métriques:**
+- Pages HTML: 38 (was 37)
+- i18n Keys: 1566 (was 1546)
+- Sitemap URLs: 35 (was 32)
+
+**Vérification Empirique:**
+```bash
+grep -c "console.log" website/index.html website/dashboard/admin.html  # 0
+grep "XXX" website/contact.html  # 0 matches
+grep "localhost:" website/voice-assistant/voice-widget.js  # 0 matches
+ls website/404.html website/signup.html  # exist ✅
+grep -c '<url>' website/sitemap.xml  # 35
+```
 
 ---
 

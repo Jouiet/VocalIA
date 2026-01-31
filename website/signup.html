@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription - Créer un compte | VocalIA</title>
+  <meta name="description" content="Créez votre compte VocalIA et commencez à utiliser des agents vocaux IA. Widget gratuit disponible immédiatement.">
+  <link rel="canonical" href="https://vocalia.ma/signup" />
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/signup?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/signup?lang=en" />
+  <link rel="alternate" hreflang="es" href="https://vocalia.ma/signup?lang=es" />
+  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/signup?lang=ar" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/signup" />
+
+  <!-- OG -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/signup" />
+  <meta property="og:title" content="Inscription - Créer un compte | VocalIA" />
+  <meta property="og:description" content="Créez votre compte VocalIA et commencez à utiliser des agents vocaux IA." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:title" content="Inscription | VocalIA" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <style>
+    .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
+    .gradient-text { background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .vocalia-gradient { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+
+    /* Plan cards */
+    .plan-card {
+      transition: all 0.3s ease;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+    .plan-card:hover, .plan-card.selected {
+      border-color: rgba(99, 102, 241, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.25);
+    }
+    .plan-card.selected {
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    /* Form styling */
+    .form-input {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(71, 85, 105, 0.5);
+      transition: all 0.2s ease;
+    }
+    .form-input:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      outline: none;
+    }
+
+    /* Animated background */
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-900 text-white font-inter min-h-screen">
+  <!-- Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
+    Aller au contenu principal
+  </a>
+
+  <!-- Minimal Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl vocalia-gradient flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold gradient-text">VocalIA</span>
+        </a>
+        <div class="flex items-center gap-4">
+          <span class="text-zinc-400 text-sm hidden sm:block" data-i18n="signup_page.already_account">Déjà un compte ?</span>
+          <a href="/contact" class="px-4 py-2 rounded-lg border border-slate-600 hover:border-slate-500 transition font-medium text-sm" data-i18n="signup_page.login">
+            Connexion
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content" class="pt-24 pb-16 bg-grid min-h-screen">
+    <div class="max-w-4xl mx-auto px-4">
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-bold mb-3" data-i18n="signup_page.title">
+          Créer votre compte
+        </h1>
+        <p class="text-zinc-400 text-lg" data-i18n="signup_page.subtitle">
+          Commencez gratuitement, upgradez quand vous voulez
+        </p>
+      </div>
+
+      <!-- Plan Selection -->
+      <div class="mb-10">
+        <h2 class="text-sm font-semibold text-zinc-500 uppercase tracking-wider mb-4 text-center" data-i18n="signup_page.select_plan">
+          1. Choisissez votre plan
+        </h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          <!-- Free Plan -->
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="free" onclick="selectPlan('free')">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-white">Free</h3>
+                <p class="text-2xl font-bold text-white">0<span class="text-sm font-normal text-zinc-400" id="free-currency">/mois</span></p>
+              </div>
+              <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
+                <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <ul class="text-sm text-zinc-400 space-y-1">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Voice Widget illimité
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                5 langues
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <span class="text-zinc-500">Pas de téléphonie</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Starter Plan -->
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="starter" onclick="selectPlan('starter')">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-white">Starter</h3>
+                <p class="text-2xl font-bold text-white"><span id="starter-price">99</span><span class="text-sm font-normal text-zinc-400" id="starter-currency">€/mois</span></p>
+              </div>
+              <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
+                <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <ul class="text-sm text-zinc-400 space-y-1">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                100 min téléphonie
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                1 persona
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Email support
+              </li>
+            </ul>
+          </div>
+
+          <!-- Pro Plan -->
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer relative" data-plan="pro" onclick="selectPlan('pro')">
+            <div class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-500 text-white text-xs font-semibold rounded-full" data-i18n="signup_page.popular">
+              Populaire
+            </div>
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-white">Pro</h3>
+                <p class="text-2xl font-bold text-white"><span id="pro-price">299</span><span class="text-sm font-normal text-zinc-400" id="pro-currency">€/mois</span></p>
+              </div>
+              <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
+                <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <ul class="text-sm text-zinc-400 space-y-1">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                500 min téléphonie
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                5 personas
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Intégrations CRM
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signup Form -->
+      <div class="max-w-md mx-auto">
+        <h2 class="text-sm font-semibold text-zinc-500 uppercase tracking-wider mb-4 text-center" data-i18n="signup_page.your_info">
+          2. Vos informations
+        </h2>
+        <form id="signupForm" class="space-y-4">
+          <input type="hidden" id="selectedPlan" name="plan" value="free">
+
+          <!-- Company Name -->
+          <div>
+            <label for="company" class="block text-sm font-medium text-zinc-300 mb-1.5" data-i18n="signup_page.company">
+              Nom de l'entreprise
+            </label>
+            <input type="text" id="company" name="company" required
+              class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-zinc-500"
+              placeholder="VotreSociété SARL">
+          </div>
+
+          <!-- Full Name -->
+          <div>
+            <label for="fullname" class="block text-sm font-medium text-zinc-300 mb-1.5" data-i18n="signup_page.fullname">
+              Nom complet
+            </label>
+            <input type="text" id="fullname" name="fullname" required
+              class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-zinc-500"
+              placeholder="Jean Dupont">
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-medium text-zinc-300 mb-1.5" data-i18n="signup_page.email">
+              Email professionnel
+            </label>
+            <input type="email" id="email" name="email" required
+              class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-zinc-500"
+              placeholder="vous@entreprise.com">
+          </div>
+
+          <!-- Password -->
+          <div>
+            <label for="password" class="block text-sm font-medium text-zinc-300 mb-1.5" data-i18n="signup_page.password">
+              Mot de passe
+            </label>
+            <input type="password" id="password" name="password" required minlength="8"
+              class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-zinc-500"
+              placeholder="8 caractères minimum">
+          </div>
+
+          <!-- Terms -->
+          <div class="flex items-start gap-3">
+            <input type="checkbox" id="terms" name="terms" required
+              class="mt-1 w-4 h-4 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-slate-900">
+            <label for="terms" class="text-sm text-zinc-400">
+              <span data-i18n="signup_page.terms_agree">J'accepte les</span>
+              <a href="/terms" class="text-indigo-400 hover:text-indigo-300">CGU</a>
+              <span data-i18n="signup_page.terms_and">et la</span>
+              <a href="/privacy" class="text-indigo-400 hover:text-indigo-300">politique de confidentialité</a>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit"
+            class="w-full py-3.5 px-6 rounded-xl vocalia-gradient hover:opacity-90 transition font-semibold flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <span data-i18n="signup_page.create_account">Créer mon compte</span>
+          </button>
+
+          <!-- Or separator -->
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-slate-700"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-4 bg-slate-900 text-zinc-500" data-i18n="signup_page.or">ou</span>
+            </div>
+          </div>
+
+          <!-- Google Sign In -->
+          <button type="button" onclick="signInWithGoogle()"
+            class="w-full py-3 px-6 rounded-xl bg-white hover:bg-zinc-100 transition font-medium text-slate-900 flex items-center justify-center gap-3">
+            <svg class="w-5 h-5" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            <span>Continuer avec Google</span>
+          </button>
+        </form>
+
+        <!-- Trust Badges -->
+        <div class="mt-8 pt-6 border-t border-slate-800">
+          <div class="flex flex-wrap justify-center gap-4 text-xs text-zinc-500">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+              <span>RGPD Compliant</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+              <span>AES-256 Encryption</span>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <img src="/public/images/logos/stripe-badge.svg" alt="Stripe" class="h-5 w-auto" onerror="this.style.display='none'">
+              <span>Paiement sécurisé</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer class="py-6 border-t border-slate-800 bg-slate-900">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/src/lib/geo-detect.js"></script>
+  <script src="/src/lib/global-localization.js"></script>
+  <script>
+    // Plan selection
+    let currentPlan = 'free';
+
+    function selectPlan(plan) {
+      currentPlan = plan;
+      document.getElementById('selectedPlan').value = plan;
+
+      // Update UI
+      document.querySelectorAll('.plan-card').forEach(card => {
+        const isSelected = card.dataset.plan === plan;
+        card.classList.toggle('selected', isSelected);
+        const check = card.querySelector('.plan-check svg');
+        if (check) check.classList.toggle('hidden', !isSelected);
+        card.querySelector('.plan-check').classList.toggle('border-indigo-500', isSelected);
+        card.querySelector('.plan-check').classList.toggle('bg-indigo-500/20', isSelected);
+      });
+    }
+
+    // Get plan from URL
+    function getPlanFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('plan') || 'free';
+    }
+
+    // Form submission
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData);
+
+      // Here you would send to your API
+      // For now, redirect to Stripe checkout for paid plans
+      if (data.plan === 'starter' || data.plan === 'pro') {
+        // Redirect to Stripe Checkout
+        window.location.href = `/api/checkout?plan=${data.plan}&email=${encodeURIComponent(data.email)}`;
+      } else {
+        // Free plan - direct signup
+        window.location.href = `/dashboard/client?welcome=true`;
+      }
+    });
+
+    // Google Sign In placeholder
+    function signInWithGoogle() {
+      // OAuth flow would go here
+      alert('Google Sign-In sera disponible prochainement');
+    }
+
+    // Update prices based on geo
+    function updatePrices(geo) {
+      const prices = {
+        MAD: { starter: '990', pro: '2990', symbol: ' MAD' },
+        EUR: { starter: '99', pro: '299', symbol: '€' },
+        USD: { starter: '109', pro: '329', symbol: '$' }
+      };
+      const p = prices[geo.currency] || prices.EUR;
+
+      document.getElementById('starter-price').textContent = p.starter;
+      document.getElementById('pro-price').textContent = p.pro;
+      document.getElementById('starter-currency').textContent = p.symbol + '/mois';
+      document.getElementById('pro-currency').textContent = p.symbol + '/mois';
+      document.getElementById('free-currency').textContent = '/mois';
+    }
+
+    // Initialize
+    (async function init() {
+      const geo = await VocaliaGeo.getGeo();
+      await VocaliaI18n.initI18n(geo.lang);
+      VocaliaI18n.translatePage();
+      updatePrices(geo);
+
+      // Select plan from URL
+      const planFromURL = getPlanFromURL();
+      if (['free', 'starter', 'pro'].includes(planFromURL)) {
+        selectPlan(planFromURL);
+      } else {
+        selectPlan('free');
+      }
+    })();
+  </script>
+</body>
+</html>

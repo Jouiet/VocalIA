@@ -1709,5 +1709,29 @@
     "cta_subtitle": "Contactez-nous pour recevoir notre pitch deck complet et planifier une démo produit.",
     "cta_email": "Contacter l'Équipe",
     "cta_docs": "Voir la Documentation"
+  },
+  "error_page": {
+    "title": "Page non trouvée",
+    "message": "Désolé, la page que vous recherchez n'existe pas ou a été déplacée.",
+    "back_home": "Retour à l'accueil",
+    "contact_us": "Nous contacter",
+    "popular_pages": "Pages populaires :"
+  },
+  "signup_page": {
+    "title": "Créer votre compte",
+    "subtitle": "Commencez gratuitement, upgradez quand vous voulez",
+    "select_plan": "1. Choisissez votre plan",
+    "your_info": "2. Vos informations",
+    "company": "Nom de l'entreprise",
+    "fullname": "Nom complet",
+    "email": "Email professionnel",
+    "password": "Mot de passe",
+    "terms_agree": "J'accepte les",
+    "terms_and": "et la",
+    "create_account": "Créer mon compte",
+    "or": "ou",
+    "already_account": "Déjà un compte ?",
+    "login": "Connexion",
+    "popular": "Populaire"
   }
 }

@@ -217,6 +217,30 @@
         <priority>0.6</priority>
     </url>
 
+    <!-- Signup (Critical for conversion) -->
+    <url>
+        <loc>https://vocalia.ma/signup</loc>
+        <lastmod>2026-01-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Use Cases Index -->
+    <url>
+        <loc>https://vocalia.ma/use-cases/</loc>
+        <lastmod>2026-01-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Académie Business -->
+    <url>
+        <loc>https://vocalia.ma/academie-business/</loc>
+        <lastmod>2026-01-31</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
     <!-- Dashboard (noindex but in sitemap for crawl budget) -->
     <url>
         <loc>https://vocalia.ma/dashboard/client</loc>

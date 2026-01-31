@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page non trouvée | VocalIA</title>
+  <meta name="description" content="Page non trouvée. Retournez à l'accueil VocalIA pour découvrir nos agents vocaux IA.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://vocalia.ma/404" />
+
+  <!-- Hreflang for i18n SEO -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/404?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/404?lang=en" />
+  <link rel="alternate" hreflang="es" href="https://vocalia.ma/404?lang=es" />
+  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/404?lang=ar" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/404" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <style>
+    .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
+    .gradient-text { background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .vocalia-gradient { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+
+    /* Animated 404 */
+    .error-code {
+      font-size: clamp(8rem, 20vw, 16rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5)); }
+      50% { opacity: 0.8; filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.8)); }
+    }
+
+    /* Voice wave animation */
+    .voice-wave {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 40px;
+    }
+    .voice-wave span {
+      width: 4px;
+      background: linear-gradient(to top, #6366f1, #8b5cf6);
+      border-radius: 2px;
+      animation: wave 1.2s ease-in-out infinite;
+    }
+    .voice-wave span:nth-child(1) { animation-delay: 0s; height: 10px; }
+    .voice-wave span:nth-child(2) { animation-delay: 0.1s; height: 20px; }
+    .voice-wave span:nth-child(3) { animation-delay: 0.2s; height: 30px; }
+    .voice-wave span:nth-child(4) { animation-delay: 0.3s; height: 20px; }
+    .voice-wave span:nth-child(5) { animation-delay: 0.4s; height: 10px; }
+
+    @keyframes wave {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.5); }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-900 text-white font-inter min-h-screen flex flex-col">
+  <!-- Skip Link -->
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
+    Aller au contenu principal
+  </a>
+
+  <!-- Minimal Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-10 h-10 rounded-xl vocalia-gradient flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold gradient-text">VocalIA</span>
+        </a>
+        <a href="/" class="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 transition font-medium text-sm" data-i18n="error_page.back_home">
+          Retour à l'accueil
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content" class="flex-1 flex items-center justify-center px-4 pt-16">
+    <div class="text-center max-w-2xl mx-auto">
+      <!-- Animated 404 -->
+      <div class="error-code mb-4" aria-hidden="true">404</div>
+
+      <!-- Voice Wave Animation -->
+      <div class="voice-wave mb-8" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <!-- Message -->
+      <h1 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="error_page.title">
+        Page non trouvée
+      </h1>
+      <p class="text-zinc-400 text-lg mb-8 max-w-md mx-auto" data-i18n="error_page.message">
+        Désolé, la page que vous recherchez n'existe pas ou a été déplacée.
+      </p>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl vocalia-gradient hover:opacity-90 transition font-semibold">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          <span data-i18n="error_page.back_home">Retour à l'accueil</span>
+        </a>
+        <a href="/contact" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition font-medium">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          <span data-i18n="error_page.contact_us">Nous contacter</span>
+        </a>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="mt-12 pt-8 border-t border-slate-800">
+        <p class="text-zinc-500 text-sm mb-4" data-i18n="error_page.popular_pages">Pages populaires :</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <a href="/features" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+            Fonctionnalités
+          </a>
+          <a href="/pricing" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+            Tarifs
+          </a>
+          <a href="/docs" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+            Documentation
+          </a>
+          <a href="/blog" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+            Blog
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Minimal Footer -->
+  <footer class="py-6 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- i18n -->
+  <script src="/src/lib/geo-detect.js"></script>
+  <script src="/src/lib/global-localization.js"></script>
+  <script>
+    (async function() {
+      const geo = await VocaliaGeo.getGeo();
+      await VocaliaI18n.initI18n(geo.lang);
+      VocaliaI18n.translatePage();
+    })();
+  </script>
+</body>
+</html>

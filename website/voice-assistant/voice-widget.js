@@ -23,7 +23,7 @@
     LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
     // Security: API Config
     BOOKING_API: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking',
-    VOICE_API: window.VOCALIA_VOICE_API || 'http://localhost:3004/respond', // Connect to Real AI
+    VOICE_API: window.VOCALIA_VOICE_API || 'https://api.vocalia.ma/v1/voice',
 
     // Branding
     primaryColor: '#4FBAF1',
