@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.25.0 | 31/01/2026 | Session 250.8 | Health: 100%
+> Version: 6.26.0 | 31/01/2026 | Session 250.9 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 38 pages | **1566 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 28 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
@@ -11,7 +11,7 @@
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
 > **Website: 38 pages** | Signup ✅ | 404 ✅ | Status ✅ | Académie Business ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 37 pages tracked | CTA events ✅
-> **Tests: 243** | Coverage: c8 configured | OpenAPI: ✅ | Security: 84/100
+> **Tests: 243** | Coverage: c8 configured | OpenAPI: ✅ | Security: 84/100 | **Dashboard API: ✅**
 
 ## Identité
 
@@ -61,7 +61,7 @@ VocalIA/
 │   └── client_demo/          # Demo tenant
 ├── widget/         # Browser widget (2 files)
 ├── telephony/      # PSTN bridge (12 function tools)
-├── personas/       # 31 personas
+├── personas/       # 40 personas SOTA
 ├── integrations/   # CRM/E-commerce (multi-tenant)
 ├── website/        # 36 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
@@ -305,6 +305,36 @@ ls data/ucp-profiles.json  # exists ✅
 
 ---
 
+## Session 250.8 - KB Enrichment + Knowledge Graph (31/01/2026)
+
+**KB Enrichment COMPLET** (`automations-registry.json`):
+- 12 automations enrichies avec benefit_en, benefit_fr, semantic_description
+- Vocabulary BM25: 44 → **415** termes (+843%)
+- Avg doc length: 6.6 → **~65** tokens
+
+**Knowledge Graph CRÉÉ** (`data/knowledge-base/knowledge-graph.json`):
+- 23 nodes (services, modules, widgets, integrations, sensors, providers)
+- 38 edges (relationships: uses_primary, depends_on, monitors, etc.)
+- 21 relation types définies
+
+**Personas Traductions 100% VÉRIFIÉES**:
+- 40/40 personas × 5 langues (FR, EN, ES, AR, ARY) = 200 traductions
+- SYSTEM_PROMPTS structure complète
+
+**Audit Document MÀJ** (`docs/AUDIT-FORENSIQUE-PERSONAS-KB-SESSION-250.md`):
+- Corrigé contradictions (100% vs 47.5% traductions)
+- Métriques KB actualisées
+- Phase 1 & 2 marquées COMPLET
+
+**Vérification empirique**:
+```bash
+jq '.vocabulary | length' data/knowledge-base/tfidf_index.json  # 415 ✅
+ls data/knowledge-base/knowledge-graph.json  # exists ✅
+grep -c "^        fr:" personas/voice-persona-injector.cjs  # 40 ✅
+```
+
+---
+
 ## Session 250.4 - P0 Frontend Fixes + Pages Critiques (31/01/2026)
 
 **Tâches P0 Complétées:**
@@ -453,5 +483,6 @@ cd mcp-server && npm run build  # ✅ Build OK
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/USE-CASES-STRATEGIC-ANALYSIS.md` pour SWOT et stratégie*
-*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (144 tools)*
-*Màj: 31/01/2026 - Session 249.24 (Académie Business + Audit Orphan Pages)*
+*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (178 tools)*
+*Voir `docs/AUDIT-FORENSIQUE-PERSONAS-KB-SESSION-250.md` pour audit personas + KB*
+*Màj: 31/01/2026 - Session 250.8 (KB Enrichment + Knowledge Graph)*

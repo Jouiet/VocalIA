@@ -195,6 +195,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /dashboard/metrics:
+    get:
+      summary: Dashboard Metrics
+      description: |
+        Returns aggregated metrics for the client dashboard.
+        Includes call stats, lead qualification summary, and chart data.
+        Auto-refreshes monthly.
+      operationId: getDashboardMetrics
+      tags:
+        - Dashboard
+      responses:
+        '200':
+          description: Dashboard metrics
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardMetricsResponse'
+              example:
+                stats:
+                  totalCalls: 1247
+                  minutesUsed: 1456
+                  conversionRate: 34.2
+                  nps: 87
+                leads:
+                  hot: 42
+                  warm: 89
+                  cool: 156
+                  cold: 78
+                  total: 365
+                charts:
+                  dailyCalls:
+                    - date: "2026-01-25"
+                      calls: 45
+                    - date: "2026-01-26"
+                      calls: 67
+                  languages:
+                    fr: 62
+                    en: 25
+                    ar: 8
+                    es: 3
+                    ary: 2
+                provider: "Grok 4.1 Fast Reasoning"
+                avgLatencyMs: 245
+                lastUpdated: 1738339200000
+
 components:
   schemas:
     HealthResponse:
@@ -388,6 +433,65 @@ components:
           nullable: true
           description: HubSpot sync status (null if not synced)
 
+    DashboardMetricsResponse:
+      type: object
+      properties:
+        stats:
+          type: object
+          properties:
+            totalCalls:
+              type: integer
+              description: Total calls this month
+            minutesUsed:
+              type: integer
+              description: Total minutes used this month
+            conversionRate:
+              type: number
+              description: Hot leads / total qualified leads (%)
+            nps:
+              type: integer
+              description: Net Promoter Score (-100 to 100)
+        leads:
+          type: object
+          properties:
+            hot:
+              type: integer
+            warm:
+              type: integer
+            cool:
+              type: integer
+            cold:
+              type: integer
+            total:
+              type: integer
+        charts:
+          type: object
+          properties:
+            dailyCalls:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                  calls:
+                    type: integer
+            languages:
+              type: object
+              additionalProperties:
+                type: integer
+              description: Language distribution (%)
+        provider:
+          type: string
+          description: Last AI provider used
+        avgLatencyMs:
+          type: integer
+          description: Average response latency in ms
+        lastUpdated:
+          type: integer
+          description: Unix timestamp of last update
+
     ErrorResponse:
       type: object
       properties:
@@ -412,3 +516,5 @@ tags:
     description: Voice AI response endpoints
   - name: Lead Qualification
     description: BANT lead qualification endpoints
+  - name: Dashboard
+    description: Client dashboard metrics endpoints

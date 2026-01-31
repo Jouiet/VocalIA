@@ -2,7 +2,7 @@
 ## Rapport Complet, Factuel et Vérifiable
 
 > **Date:** 31/01/2026
-> **Session:** 250.6 (Tests Expansion)
+> **Session:** 250.9 (Dashboard API)
 > **Méthode:** Bottom-up (faits → conclusions)
 > **Auditeur:** Claude Opus 4.5
 > **Durée:** ~60 minutes d'analyse
@@ -52,7 +52,7 @@
 | **CI/CD** | 75/100 | 2 workflows, manque coverage gate |
 | **SDKs** | 80/100 | Python + Node complets, docs manquantes |
 | **Conversion** | 70/100 | Signup créé ✅, forms fake restants |
-| **Fonctionnel** | 60/100 | Dashboards mockups |
+| **Fonctionnel** | 75/100 | Dashboard API connected ✅ |
 | **Documentation** | 95/100 | Claims corrigés cette session |
 | **GLOBAL** | **90/100** | P0 fixés, P1/P2 +OpenAPI +Security |
 
@@ -1154,7 +1154,7 @@ TOTAL: 652 lignes - Plugin complet
 
 ## OPPORTUNITIES (Opportunités)
 
-1. Connecter dashboards à API réelle (core/voice-api-resilient.cjs existe)
+1. ~~Connecter dashboards à API réelle~~ ✅ /dashboard/metrics endpoint
 2. Implémenter newsletter via Mailchimp/SendGrid
 3. Créer signup avec Stripe Checkout (19 tools Stripe disponibles)
 4. Marketplace WordPress (40% du web)
@@ -1193,7 +1193,7 @@ TOTAL: 652 lignes - Plugin complet
 | 7 | ~~Implémenter newsletter~~ | components/newsletter-cta.html | ✅ Done |
 | 8 | ~~Ajouter lazy loading~~ | Toutes images | ✅ 108 images |
 | 9 | ~~Traduire pricing EN/ES~~ | locales/*.json | ✅ Déjà fait |
-| 10 | Connecter dashboard API | dashboard/*.html | 8h | Fonctionnel |
+| 10 | ~~Connecter dashboard API~~ | dashboard/*.html | ✅ /dashboard/metrics endpoint |
 
 ### Tests (CRITIQUE - 5% → 60% coverage)
 

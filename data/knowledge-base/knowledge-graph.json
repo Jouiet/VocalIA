@@ -1,0 +1,436 @@
+{
+  "version": "1.0.0",
+  "created": "2026-01-31",
+  "description": "VocalIA Knowledge Graph for Graph RAG",
+  "nodes": [
+    {
+      "id": "voice-api-resilient",
+      "label": "Voice API Resilient",
+      "type": "service",
+      "category": "voice",
+      "tenant_id": "agency_internal",
+      "port": 3004,
+      "strategic_intent": "core_infrastructure"
+    },
+    {
+      "id": "grok-voice-realtime",
+      "label": "Grok Voice Realtime",
+      "type": "service",
+      "category": "voice",
+      "tenant_id": "agency_internal",
+      "port": 3007,
+      "strategic_intent": "realtime_voice"
+    },
+    {
+      "id": "voice-telephony-bridge",
+      "label": "Voice Telephony Bridge",
+      "type": "service",
+      "category": "telephony",
+      "tenant_id": "agency_internal",
+      "port": 3009,
+      "strategic_intent": "telephony_automation"
+    },
+    {
+      "id": "voice-persona-injector",
+      "label": "Voice Persona Injector",
+      "type": "module",
+      "category": "personas",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "persona_differentiation"
+    },
+    {
+      "id": "voice-widget-core",
+      "label": "Voice Widget Core",
+      "type": "widget",
+      "category": "widget",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "freemium_acquisition"
+    },
+    {
+      "id": "voice-widget-templates",
+      "label": "Voice Widget Templates",
+      "type": "widget",
+      "category": "widget",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "rapid_deployment"
+    },
+    {
+      "id": "hubspot-b2b-crm",
+      "label": "HubSpot B2B CRM",
+      "type": "integration",
+      "category": "integrations",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "crm_automation"
+    },
+    {
+      "id": "voice-ecommerce-tools",
+      "label": "Voice E-commerce Tools",
+      "type": "integration",
+      "category": "integrations",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "ecommerce_voice"
+    },
+    {
+      "id": "voice-quality-sensor",
+      "label": "Voice Quality Sensor",
+      "type": "sensor",
+      "category": "sensors",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "observability"
+    },
+    {
+      "id": "cost-tracking-sensor",
+      "label": "Cost Tracking Sensor",
+      "type": "sensor",
+      "category": "sensors",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "cost_control"
+    },
+    {
+      "id": "lead-velocity-sensor",
+      "label": "Lead Velocity Sensor",
+      "type": "sensor",
+      "category": "sensors",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "sales_optimization"
+    },
+    {
+      "id": "retention-sensor",
+      "label": "Retention Sensor",
+      "type": "sensor",
+      "category": "sensors",
+      "tenant_id": "agency_internal",
+      "strategic_intent": "customer_success"
+    },
+    {
+      "id": "provider-xai-grok",
+      "label": "xAI Grok",
+      "type": "provider",
+      "category": "external",
+      "pricing": "$0.05/min"
+    },
+    {
+      "id": "provider-google-gemini",
+      "label": "Google Gemini",
+      "type": "provider",
+      "category": "external",
+      "pricing": "fallback"
+    },
+    {
+      "id": "provider-anthropic-claude",
+      "label": "Anthropic Claude",
+      "type": "provider",
+      "category": "external",
+      "pricing": "fallback"
+    },
+    {
+      "id": "provider-atlas-chat",
+      "label": "Atlas Chat 9B",
+      "type": "provider",
+      "category": "external",
+      "pricing": "darija-only"
+    },
+    {
+      "id": "provider-twilio",
+      "label": "Twilio PSTN",
+      "type": "provider",
+      "category": "external",
+      "pricing": "$0.01/min"
+    },
+    {
+      "id": "category-voice",
+      "label": "Voice Services",
+      "type": "category",
+      "category": "meta"
+    },
+    {
+      "id": "category-telephony",
+      "label": "Telephony Services",
+      "type": "category",
+      "category": "meta"
+    },
+    {
+      "id": "category-personas",
+      "label": "Persona Engineering",
+      "type": "category",
+      "category": "meta"
+    },
+    {
+      "id": "category-widget",
+      "label": "Widget Components",
+      "type": "category",
+      "category": "meta"
+    },
+    {
+      "id": "category-integrations",
+      "label": "Third-party Integrations",
+      "type": "category",
+      "category": "meta"
+    },
+    {
+      "id": "category-sensors",
+      "label": "Observability Sensors",
+      "type": "category",
+      "category": "meta"
+    }
+  ],
+  "edges": [
+    {
+      "from": "voice-api-resilient",
+      "to": "provider-xai-grok",
+      "relation": "uses_primary",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-api-resilient",
+      "to": "provider-google-gemini",
+      "relation": "uses_fallback",
+      "weight": 0.8
+    },
+    {
+      "from": "voice-api-resilient",
+      "to": "provider-anthropic-claude",
+      "relation": "uses_fallback",
+      "weight": 0.6
+    },
+    {
+      "from": "voice-api-resilient",
+      "to": "provider-atlas-chat",
+      "relation": "uses_darija",
+      "weight": 0.4
+    },
+    {
+      "from": "grok-voice-realtime",
+      "to": "provider-xai-grok",
+      "relation": "streams_audio",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-telephony-bridge",
+      "to": "voice-api-resilient",
+      "relation": "depends_on",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-telephony-bridge",
+      "to": "grok-voice-realtime",
+      "relation": "streams_via",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-telephony-bridge",
+      "to": "provider-twilio",
+      "relation": "uses_pstn",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-telephony-bridge",
+      "to": "voice-persona-injector",
+      "relation": "injects_persona",
+      "weight": 0.9
+    },
+    {
+      "from": "voice-api-resilient",
+      "to": "voice-persona-injector",
+      "relation": "injects_persona",
+      "weight": 0.9
+    },
+    {
+      "from": "voice-widget-core",
+      "to": "voice-api-resilient",
+      "relation": "calls_api",
+      "weight": 0.8
+    },
+    {
+      "from": "voice-widget-core",
+      "to": "voice-persona-injector",
+      "relation": "uses_persona",
+      "weight": 0.7
+    },
+    {
+      "from": "voice-widget-templates",
+      "to": "voice-widget-core",
+      "relation": "extends",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-widget-templates",
+      "to": "voice-persona-injector",
+      "relation": "configures_for",
+      "weight": 0.9
+    },
+    {
+      "from": "voice-telephony-bridge",
+      "to": "hubspot-b2b-crm",
+      "relation": "syncs_to",
+      "weight": 0.7
+    },
+    {
+      "from": "voice-telephony-bridge",
+      "to": "voice-ecommerce-tools",
+      "relation": "queries",
+      "weight": 0.6
+    },
+    {
+      "from": "voice-quality-sensor",
+      "to": "voice-api-resilient",
+      "relation": "monitors",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-quality-sensor",
+      "to": "grok-voice-realtime",
+      "relation": "monitors",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-quality-sensor",
+      "to": "voice-telephony-bridge",
+      "relation": "monitors",
+      "weight": 1.0
+    },
+    {
+      "from": "cost-tracking-sensor",
+      "to": "provider-xai-grok",
+      "relation": "tracks_cost",
+      "weight": 1.0
+    },
+    {
+      "from": "cost-tracking-sensor",
+      "to": "provider-google-gemini",
+      "relation": "tracks_cost",
+      "weight": 0.8
+    },
+    {
+      "from": "cost-tracking-sensor",
+      "to": "provider-twilio",
+      "relation": "tracks_cost",
+      "weight": 0.9
+    },
+    {
+      "from": "lead-velocity-sensor",
+      "to": "voice-telephony-bridge",
+      "relation": "analyzes",
+      "weight": 1.0
+    },
+    {
+      "from": "lead-velocity-sensor",
+      "to": "hubspot-b2b-crm",
+      "relation": "reports_to",
+      "weight": 0.7
+    },
+    {
+      "from": "retention-sensor",
+      "to": "voice-persona-injector",
+      "relation": "triggers_gpm",
+      "weight": 0.9
+    },
+    {
+      "from": "retention-sensor",
+      "to": "hubspot-b2b-crm",
+      "relation": "reads_health",
+      "weight": 0.6
+    },
+    {
+      "from": "voice-api-resilient",
+      "to": "category-voice",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "grok-voice-realtime",
+      "to": "category-voice",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-telephony-bridge",
+      "to": "category-telephony",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-persona-injector",
+      "to": "category-personas",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-widget-core",
+      "to": "category-widget",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-widget-templates",
+      "to": "category-widget",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "hubspot-b2b-crm",
+      "to": "category-integrations",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-ecommerce-tools",
+      "to": "category-integrations",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "voice-quality-sensor",
+      "to": "category-sensors",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "cost-tracking-sensor",
+      "to": "category-sensors",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "lead-velocity-sensor",
+      "to": "category-sensors",
+      "relation": "belongs_to",
+      "weight": 1.0
+    },
+    {
+      "from": "retention-sensor",
+      "to": "category-sensors",
+      "relation": "belongs_to",
+      "weight": 1.0
+    }
+  ],
+  "relation_types": {
+    "uses_primary": "Primary provider connection",
+    "uses_fallback": "Fallback provider for resilience",
+    "uses_darija": "Specialized Moroccan Arabic provider",
+    "uses_pstn": "PSTN telephony provider",
+    "streams_audio": "Real-time audio streaming",
+    "depends_on": "Hard dependency",
+    "streams_via": "Audio stream passthrough",
+    "injects_persona": "Persona injection for voice",
+    "calls_api": "HTTP/WebSocket API consumer",
+    "uses_persona": "Uses persona configuration",
+    "extends": "Extends base functionality",
+    "configures_for": "Provides industry configurations",
+    "syncs_to": "CRM data synchronization",
+    "queries": "Data lookup queries",
+    "monitors": "Health and metrics monitoring",
+    "tracks_cost": "Cost and usage tracking",
+    "analyzes": "Performance analysis",
+    "reports_to": "Reporting integration",
+    "triggers_gpm": "Triggers GPM override",
+    "reads_health": "Reads health metrics",
+    "belongs_to": "Category membership"
+  },
+  "stats": {
+    "total_nodes": 23,
+    "total_edges": 38,
+    "node_types": ["service", "module", "widget", "integration", "sensor", "provider", "category"],
+    "relation_types_count": 21
+  }
+}

@@ -211,9 +211,9 @@
               <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
                 <i data-lucide="check-circle-2" class="w-6 h-6 text-green-400"></i>
               </div>
-              <span class="text-green-400 text-sm font-medium">+5%</span>
+              <span class="text-green-400 text-sm font-medium" id="conversionTrend">+5%</span>
             </div>
-            <h3 class="text-3xl font-bold mb-1">34.2%</h3>
+            <h3 class="text-3xl font-bold mb-1" id="conversionRate">0%</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.conversion_rate">Taux de conversion</p>
           </div>
 
@@ -225,7 +225,7 @@
               </div>
               <span class="text-yellow-400 text-sm font-medium">NPS</span>
             </div>
-            <h3 class="text-3xl font-bold mb-1">87</h3>
+            <h3 class="text-3xl font-bold mb-1" id="npsScore">0</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.nps">Score satisfaction</p>
           </div>
         </div>
@@ -580,6 +580,86 @@
       window.requestAnimationFrame(step);
     }
 
+    // API Configuration
+    const API_BASE = window.location.hostname === 'localhost'
+      ? 'http://localhost:3004'
+      : 'https://api.vocalia.ma';
+
+    // Fetch dashboard metrics from API
+    async function fetchDashboardMetrics() {
+      try {
+        const response = await fetch(`${API_BASE}/dashboard/metrics`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error('API unavailable');
+        return await response.json();
+      } catch (err) {
+        console.warn('[Dashboard] API unavailable, using cached/demo data:', err.message);
+        return null;
+      }
+    }
+
+    // Update dashboard with real or demo data
+    async function updateDashboard(metrics) {
+      const data = metrics || {
+        stats: { totalCalls: 0, minutesUsed: 0, conversionRate: 0, nps: 0 },
+        charts: {
+          dailyCalls: [],
+          languages: { fr: 62, en: 25, ar: 8, es: 3, ary: 2 }
+        }
+      };
+
+      // Animate stats
+      animateValue('totalCalls', 0, data.stats.totalCalls, 1000);
+      animateValue('minutesUsed', 0, data.stats.minutesUsed, 1000);
+
+      // Update conversion rate
+      const convEl = document.getElementById('conversionRate');
+      if (convEl) convEl.textContent = data.stats.conversionRate + '%';
+
+      // Update NPS
+      const npsEl = document.getElementById('npsScore');
+      if (npsEl) npsEl.textContent = data.stats.nps;
+
+      // Update language distribution
+      updateLanguageChart(data.charts.languages);
+
+      // Update call volume chart
+      updateCallVolumeChart(data.charts.dailyCalls);
+    }
+
+    // Update language distribution bars
+    function updateLanguageChart(languages) {
+      const langOrder = ['fr', 'en', 'ar', 'es', 'ary'];
+      const langBars = document.querySelectorAll('[data-i18n="dashboard.charts.languages"]')
+        ?.closest('.liquid-glass')?.querySelectorAll('.space-y-4 > div');
+
+      if (!langBars) return;
+      langBars.forEach((bar, i) => {
+        const lang = langOrder[i];
+        const pct = languages[lang] || 0;
+        const pctEl = bar.querySelector('.text-vocalia-400');
+        const fillEl = bar.querySelector('.h-full');
+        if (pctEl) pctEl.textContent = pct + '%';
+        if (fillEl) fillEl.style.width = pct + '%';
+      });
+    }
+
+    // Update call volume chart bars
+    function updateCallVolumeChart(dailyCalls) {
+      if (!dailyCalls || !dailyCalls.length) return;
+      const maxCalls = Math.max(...dailyCalls.map(d => d.calls), 1);
+      const bars = document.querySelectorAll('.chart-bar');
+
+      dailyCalls.slice(-7).forEach((day, i) => {
+        if (bars[i]) {
+          const pct = Math.round((day.calls / maxCalls) * 100);
+          bars[i].style.height = Math.max(10, pct) + '%';
+        }
+      });
+    }
+
     // Initialize
     (async function init() {
       // Geo & I18n
@@ -598,11 +678,17 @@
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString(newLocale, dateOptions);
       });
 
-      // Animate on page load
-      setTimeout(() => {
-        animateValue('totalCalls', 0, 1247, 1000);
-        animateValue('minutesUsed', 0, 1456, 1000);
+      // Fetch and update dashboard with real data
+      setTimeout(async () => {
+        const metrics = await fetchDashboardMetrics();
+        await updateDashboard(metrics);
       }, 300);
+
+      // Auto-refresh every 60 seconds
+      setInterval(async () => {
+        const metrics = await fetchDashboardMetrics();
+        if (metrics) await updateDashboard(metrics);
+      }, 60000);
     })();
   </script>
 

@@ -194,6 +194,22 @@ const latencyMetrics = {
   callCount: 0
 };
 
+// Session 250: Dashboard metrics tracking
+const dashboardMetrics = {
+  totalCalls: 0,
+  totalMinutes: 0,
+  hotLeads: 0,
+  warmLeads: 0,
+  coolLeads: 0,
+  coldLeads: 0,
+  totalLeadsQualified: 0,
+  languageDistribution: { fr: 0, en: 0, es: 0, ar: 0, ary: 0 },
+  dailyCalls: {},
+  monthStartDate: new Date().toISOString().slice(0, 7),
+  npsResponses: [],
+  lastUpdated: Date.now()
+};
+
 // Initialize Cognitive Modules
 const KB = new KB_MOD.ServiceKnowledgeBase();
 KB.load();
@@ -304,6 +320,137 @@ function recordLatency(provider, latencyMs) {
   } else {
     console.log(`[Voice][LATENCY] ${provider}: ${latencyMs}ms ✓`);
   }
+}
+
+/**
+ * Session 250: Update dashboard metrics after each interaction
+ * @param {string} language - Language of the interaction
+ * @param {number} durationMs - Duration of the interaction in ms
+ * @param {Object} session - Lead session with qualification data
+ */
+function updateDashboardMetrics(language, durationMs, session) {
+  const now = new Date();
+  const currentMonth = now.toISOString().slice(0, 7);
+  const today = now.toISOString().slice(0, 10);
+
+  // Reset monthly stats if new month
+  if (dashboardMetrics.monthStartDate !== currentMonth) {
+    dashboardMetrics.totalCalls = 0;
+    dashboardMetrics.totalMinutes = 0;
+    dashboardMetrics.hotLeads = 0;
+    dashboardMetrics.warmLeads = 0;
+    dashboardMetrics.coolLeads = 0;
+    dashboardMetrics.coldLeads = 0;
+    dashboardMetrics.totalLeadsQualified = 0;
+    dashboardMetrics.languageDistribution = { fr: 0, en: 0, es: 0, ar: 0, ary: 0 };
+    dashboardMetrics.dailyCalls = {};
+    dashboardMetrics.monthStartDate = currentMonth;
+  }
+
+  // Update call counts
+  dashboardMetrics.totalCalls++;
+  dashboardMetrics.totalMinutes += Math.ceil(durationMs / 60000);
+
+  // Update daily calls for chart
+  dashboardMetrics.dailyCalls[today] = (dashboardMetrics.dailyCalls[today] || 0) + 1;
+
+  // Update language distribution
+  const lang = language || 'fr';
+  if (dashboardMetrics.languageDistribution[lang] !== undefined) {
+    dashboardMetrics.languageDistribution[lang]++;
+  }
+
+  // Update lead qualification stats
+  if (session && session.score > 0) {
+    dashboardMetrics.totalLeadsQualified++;
+    if (session.status === 'hot') dashboardMetrics.hotLeads++;
+    else if (session.status === 'warm') dashboardMetrics.warmLeads++;
+    else if (session.status === 'cool') dashboardMetrics.coolLeads++;
+    else dashboardMetrics.coldLeads++;
+  }
+
+  dashboardMetrics.lastUpdated = Date.now();
+}
+
+/**
+ * Session 250: Get dashboard metrics for API response
+ * @returns {Object} Aggregated dashboard metrics
+ */
+function getDashboardMetrics() {
+  const now = new Date();
+  const last7Days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    last7Days.push(d.toISOString().slice(0, 10));
+  }
+
+  // Calculate conversion rate (hot leads / qualified leads)
+  const conversionRate = dashboardMetrics.totalLeadsQualified > 0
+    ? Math.round((dashboardMetrics.hotLeads / dashboardMetrics.totalLeadsQualified) * 1000) / 10
+    : 0;
+
+  // Calculate NPS from responses or estimate from lead quality
+  const nps = dashboardMetrics.npsResponses.length > 0
+    ? calculateNPS(dashboardMetrics.npsResponses)
+    : estimateNPS(dashboardMetrics.hotLeads, dashboardMetrics.warmLeads, dashboardMetrics.totalLeadsQualified);
+
+  // Language distribution as percentages
+  const totalLangCalls = Object.values(dashboardMetrics.languageDistribution).reduce((a, b) => a + b, 0) || 1;
+  const languagePercentages = {};
+  for (const [lang, count] of Object.entries(dashboardMetrics.languageDistribution)) {
+    languagePercentages[lang] = Math.round((count / totalLangCalls) * 100);
+  }
+
+  // Daily calls for chart (last 7 days)
+  const dailyCallsChart = last7Days.map(date => ({
+    date,
+    calls: dashboardMetrics.dailyCalls[date] || 0
+  }));
+
+  return {
+    stats: {
+      totalCalls: dashboardMetrics.totalCalls,
+      minutesUsed: dashboardMetrics.totalMinutes,
+      conversionRate,
+      nps
+    },
+    leads: {
+      hot: dashboardMetrics.hotLeads,
+      warm: dashboardMetrics.warmLeads,
+      cool: dashboardMetrics.coolLeads,
+      cold: dashboardMetrics.coldLeads,
+      total: dashboardMetrics.totalLeadsQualified
+    },
+    charts: {
+      dailyCalls: dailyCallsChart,
+      languages: languagePercentages
+    },
+    provider: latencyMetrics.lastProvider,
+    avgLatencyMs: latencyMetrics.avgLatencyMs,
+    lastUpdated: dashboardMetrics.lastUpdated
+  };
+}
+
+/**
+ * Calculate NPS from actual responses
+ */
+function calculateNPS(responses) {
+  if (!responses.length) return 0;
+  const promoters = responses.filter(r => r >= 9).length;
+  const detractors = responses.filter(r => r <= 6).length;
+  return Math.round(((promoters - detractors) / responses.length) * 100);
+}
+
+/**
+ * Estimate NPS from lead quality metrics
+ */
+function estimateNPS(hotLeads, warmLeads, totalLeads) {
+  if (totalLeads === 0) return 0;
+  const promoterRatio = hotLeads / totalLeads;
+  const passiveRatio = warmLeads / totalLeads;
+  const detractorRatio = 1 - promoterRatio - passiveRatio;
+  return Math.round((promoterRatio - Math.max(0, detractorRatio)) * 100);
 }
 
 
@@ -1264,6 +1411,14 @@ function startServer(port = 3004) {
       return;
     }
 
+    // Session 250: Dashboard metrics endpoint
+    if (req.url === '/dashboard/metrics' && req.method === 'GET') {
+      const metrics = getDashboardMetrics();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(metrics, null, 2));
+      return;
+    }
+
     // Main respond endpoint with lead qualification
     if ((req.url === '/respond' || req.url === '/') && req.method === 'POST') {
       let body = '';
@@ -1316,6 +1471,9 @@ function startServer(port = 3004) {
           if (session.qualificationComplete && session.status === 'hot') {
             hubspotSync = await syncLeadToHubSpot(session);
           }
+
+          // Session 250: Update dashboard metrics
+          updateDashboardMetrics(language, result.latencyMs || 0, session);
 
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({
