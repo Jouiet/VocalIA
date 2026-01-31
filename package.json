@@ -16,6 +16,7 @@
     "test": "node --test 'test/**/*.test.cjs'",
     "test:coverage": "c8 --reporter=text --reporter=html node --test 'test/**/*.test.cjs'",
     "test:ci": "c8 --reporter=lcov node --test 'test/**/*.test.cjs'",
+    "test:load": "node test/k6/smoke-test.cjs",
     "lint": "eslint . --ext .js,.cjs",
     "lint:fix": "eslint . --ext .js,.cjs --fix",
     "format": "prettier --write .",

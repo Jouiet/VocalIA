@@ -1254,7 +1254,7 @@ TOTAL: 652 lignes - Plugin complet
 | 36 | Referral program | 16h |
 | 37 | ~~GDPR compliance doc~~ | ~~4h~~ | ✅ docs/GDPR-COMPLIANCE.md |
 | 38 | ~~SOC2 preparation~~ | ~~40h~~ | ✅ docs/SOC2-PREPARATION.md (checklist) |
-| 39 | Load testing (k6) | 8h |
+| 39 | ~~Load testing (k6)~~ | ~~8h~~ | ✅ test/k6/ (k6 + Node.js) |
 | 40 | Chaos engineering | 16h |
 
 ---
