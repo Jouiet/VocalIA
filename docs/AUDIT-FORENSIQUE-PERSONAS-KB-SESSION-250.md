@@ -1,8 +1,24 @@
 # AUDIT FORENSIQUE - PERSONAS & KNOWLEDGE BASE VocalIA
 
-> **Version**: 2.7.0 | **Date**: 31/01/2026 | **Session**: 250.14
+> **Version**: 2.8.0 | **Date**: 31/01/2026 | **Session**: 250.16
 > **Auditeur**: Claude Opus 4.5 | **Méthodologie**: Bottom-up factuelle
-> **Statut**: ✅ 100% COMPLET (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Financial 100%, Personas HITL-Compliant, **i18n 100%**)
+> **Statut**: ✅ 100% COMPLET (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Financial 100%, Personas HITL-Compliant, **i18n 100%**, **ColBERT REJETÉ**)
+
+### Changements Session 250.16 - ColBERT SUPPRIMÉ + Plan Enrichissement
+
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **ColBERT REJETÉ** | ROI insuffisant: 193 chunks << 10K min, latence GPU 50-100ms incompatible voice | ❌ SUPPRIMÉ |
+| **Diagnostic chunks** | 12/12 automation chunks avec strategic/outcome/marketing VIDES | ⚠️ IDENTIFIÉ |
+| **Plan enrichissement** | Section 7.7 ajoutée avec plan rigoureux (~5h effort) | ✅ PLANIFIÉ |
+| **SWOT mis à jour** | Supprimé mentions ColBERT, ajouté enrichissement chunks | ✅ |
+| **Calendrier mis à jour** | ColBERT barré avec justification ROI | ✅ |
+
+**Justification suppression ColBERT:**
+- Corpus 193 chunks vs 10K+ minimum recommandé SOTA
+- Latence GPU 50-100ms incompatible avec voice real-time (<100ms budget)
+- BM25 baseline 62% recall suffisant pour corpus de cette taille
+- ROI enrichissement chunks >> ROI ColBERT reranker
 
 ### Changements Session 250.14 - Personas i18n 100% COMPLET
 
