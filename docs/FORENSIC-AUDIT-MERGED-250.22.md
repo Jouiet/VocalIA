@@ -20,9 +20,9 @@
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
 
-**Session 250.25 Update:** 20 issues corrigées, 5 différées (architecture/design)
+**Session 250.26 Update:** 20 issues corrigées, 5 différées (architecture/design)
 - SEO-04: og:image ajouté aux 4 pages publiques indexées
-- AEO: llms.txt créé, Speakable schema sur 6 pages
+- AEO: llms.txt créé, Speakable schema sur **12 pages** (6+6 nouvelles)
 
 Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind, GSAP) et un SEO/AEO avancé, mais souffre de **dette technique critique**: assets 404, vulnérabilités supply chain, et incohérences SEO.
 
@@ -291,7 +291,7 @@ MODÈLE FREEMIUM VÉRIFIÉ:
 |:------|:------:|:-----------|:---------|
 | robots.txt AI crawlers | ✅ | robots.txt | GPTBot, ClaudeBot, PerplexityBot, Meta-ExternalAgent allowed |
 | llms.txt | ✅ | llms.txt | Format officiel llmstxt.org, Markdown structuré |
-| Speakable schema | ✅ | 6 pages | index, features, pricing, integrations, voice-widget, voice-telephony |
+| Speakable schema | ✅ | **12 pages** | index, features, pricing, integrations, voice-widget, voice-telephony, about, contact, investor, use-cases/index, industries/index, blog/index |
 | FAQPage schema | ✅ | pricing.html | 5 FAQ items structurés |
 | BreadcrumbList | ✅ | 6+ pages | Navigation hierarchy |
 | WebPage schema | ✅ | 10+ pages | mainEntity, author, publisher |
@@ -309,7 +309,7 @@ ls -la website/llms.txt
 
 # Speakable schema count
 grep -l '"SpeakableSpecification"' website/*.html website/products/*.html | wc -l
-# 6 pages
+# 12 pages
 ```
 
 ### Conformité llms.txt (llmstxt.org spec)

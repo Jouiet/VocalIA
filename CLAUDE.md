@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.40.2 | 31/01/2026 | Session 250.25 | Health: 100% | **FORENSIC AUDIT 94/100**
+> Version: 6.40.3 | 31/01/2026 | Session 250.26 | Health: 100% | **FORENSIC AUDIT 94/100**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
-> **AEO: Speakable schema ✅** | 6 pages | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
+> **AEO: Speakable schema ✅** | **12 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
@@ -34,7 +34,8 @@
 | Health | **100%** | 39/39 checks |
 | Security | **94/100** | lucide pinned ✅, CSP ✅, SRI deferred |
 
-**Audit Forensique Session 250.24:** `docs/FORENSIC-AUDIT-MERGED-250.22.md` (20/25 FIXED)
+**Audit Forensique Session 250.26:** `docs/FORENSIC-AUDIT-MERGED-250.22.md` (20/25 FIXED)
+**AEO Session 250.26:** 12 pages Speakable, llms.txt, robots.txt AI crawlers
 
 ---
 
