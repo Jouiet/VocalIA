@@ -51,10 +51,10 @@
 | **Tests** | 25/100 | 21 smoke tests, ~5% coverage |
 | **CI/CD** | 75/100 | 2 workflows, manque coverage gate |
 | **SDKs** | 80/100 | Python + Node complets, docs manquantes |
-| **Conversion** | 40/100 | Pages signup manquantes, forms fake |
+| **Conversion** | 70/100 | Signup créé ✅, forms fake restants |
 | **Fonctionnel** | 60/100 | Dashboards mockups |
 | **Documentation** | 95/100 | Claims corrigés cette session |
-| **GLOBAL** | **76/100** | Structurellement solide, tests insuffisants |
+| **GLOBAL** | **79/100** | P0 fixés, tests insuffisants |
 
 ## Chiffres Clés Vérifiés
 
@@ -1168,18 +1168,18 @@ TOTAL: 652 lignes - Plugin complet
 
 # 7. PLAN ACTIONNABLE
 
-## P0 - CRITIQUE (Faire Maintenant)
+## P0 - CRITIQUE ✅ COMPLETE (Session 250.4)
 
 ### Frontend Bloquant
 
-| # | Action | Fichier | Effort | Impact |
-|:-:|:-------|:--------|:------:|:------:|
-| 1 | Créer page signup | website/signup.html | 2h | Conversion |
-| 2 | Fixer numéro téléphone | contact.html:52 | 5min | Crédibilité |
-| 3 | Ajouter 5 pages sitemap | sitemap.xml | 15min | SEO |
-| 4 | Créer page 404 | website/404.html | 1h | UX |
-| 5 | Supprimer console.log | index.html, admin.html | 10min | Production |
-| 6 | Fixer localhost widget | voice-widget.js:26 | 5min | Production |
+| # | Action | Fichier | Status |
+|:-:|:-------|:--------|:------:|
+| 1 | ~~Créer page signup~~ | website/signup.html | ✅ 21.7KB |
+| 2 | ~~Fixer numéro téléphone~~ | contact.html:52 | ✅ +212520000000 |
+| 3 | ~~Ajouter pages sitemap~~ | sitemap.xml | ✅ 35 URLs |
+| 4 | ~~Créer page 404~~ | website/404.html | ✅ 8.2KB |
+| 5 | ~~Supprimer console.log~~ | index.html, admin.html | ✅ 0 found |
+| 6 | ~~Fixer localhost widget~~ | voice-widget.js:26 | ✅ api.vocalia.ma |
 
 ## P1 - HAUTE (Cette Semaine)
 
