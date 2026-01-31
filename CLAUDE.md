@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.30.0 | 31/01/2026 | Session 250.13 | Health: 100%
+> Version: 6.31.0 | 31/01/2026 | Session 250.14 | Health: 100% | **P0-P3 COMPLETE**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1574 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅

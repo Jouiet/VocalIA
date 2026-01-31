@@ -1,8 +1,104 @@
 # AUDIT FORENSIQUE - PERSONAS & KNOWLEDGE BASE VocalIA
 
-> **Version**: 2.3.0 | **Date**: 31/01/2026 | **Session**: 250.9
+> **Version**: 2.5.0 | **Date**: 31/01/2026 | **Session**: 250.11
 > **Auditeur**: Claude Opus 4.5 | **Méthodologie**: Bottom-up factuelle
-> **Statut**: ✅ COMPLET + IMPLÉMENTÉ (KB enrichi, Graph RAG créé, Complaint Handling 100%)
+> **Statut**: ✅ COMPLET + IMPLÉMENTÉ (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Gap Documenté, 3A-Shelf Bidirectionnel)
+
+### Changements Session 250.11 - Audit Complet 3A-Shelf + HITL
+
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **Audit 3A-Shelf complet** | Vérification 3 projets (JO-AAA, VocalIA, CinematicAds) | ✅ |
+| **Diagnostic yalc** | Package installé mais NON importé (0% utilisation) | 🔴 IDENTIFIÉ |
+| **Divergence BillingAgent** | VocalIA +Payzone MAD (62 lignes diff) | ✅ DOCUMENTÉ |
+| **Architecture bidirectionnelle** | patterns/ + discoveries/ + CONTRIBUTIONS-LOG.md | ✅ IMPLÉMENTÉ |
+| **Pattern HITL documenté** | `3A-Shelf/patterns/from-joaaa/hitl-approval-pattern.md` | ✅ |
+| **Pattern Persona documenté** | `3A-Shelf/patterns/from-vocalia/persona-sota-structure.md` | ✅ |
+
+### Audit 3A-Shelf - État Factuel
+
+**3 Projets Concernés:**
+
+| Projet | .yalc | yalc.lock | Importe @3a? | Copies locales? |
+|:-------|:-----:|:---------:|:------------:|:---------------:|
+| JO-AAA | ❌ | ❌ | N/A (source) | N/A |
+| VocalIA | ✅ | ✅ | ❌ **NON** | ✅ dans core/ |
+| CinematicAds | ✅ | ✅ | ❌ **NON** | ? |
+
+**Comparaison Shelf vs VocalIA (Drift):**
+
+| Fichier | Shelf (28/01) | VocalIA (31/01) | Status |
+|:--------|:-------------:|:---------------:|:------:|
+| voice-persona-injector.cjs | 648 lignes | **2768 lignes** | ❌ 4.3x obsolète |
+| BillingAgent.cjs | Vanilla | +Payzone MAD | ❌ Divergent |
+| AgencyEventBus.cjs | 22030 bytes | 22030 bytes | ✅ Identique |
+
+**Solution Implémentée: Shelf Bidirectionnel**
+
+```
+3A-Shelf/
+├── CONTRIBUTIONS-LOG.md     # ✅ NEW - Traçabilité
+├── patterns/
+│   ├── from-joaaa/
+│   │   └── hitl-approval-pattern.md  # ✅ Pour VocalIA
+│   └── from-vocalia/
+│       └── persona-sota-structure.md # ✅ Pour JO-AAA
+└── discoveries/
+    ├── economic/
+    ├── analytics/
+    └── technical/
+```
+
+### Changements Session 250.10 - Audit HITL Complaint Handling
+
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **Audit HITL** | Vérification intégration HITL complaint handling | ✅ AUDITÉ |
+| **Gap HITL identifié** | 30 promesses financières sans approbation | 🔴 CRITIQUE |
+| **Web Research** | Best practices HITL 2025-2026 (Parseur, IBM, Phantasm) | ✅ |
+| **Solution documentée** | Option B+C hybride (detection + queueActionForApproval) | ✅ |
+| **JO-AAA HITL review** | 18/18 scripts HITL analysés | ✅ |
+| **3A-Shelf vérifié** | Système étagère opérationnel (yalc) | ✅ |
+
+### ⚠️ GAP CRITIQUE HITL - Financial Commitments
+
+**Constat**: Les `complaint_scenarios` contiennent **30 promesses financières** exécutées SANS approbation HITL:
+
+| Keyword | Occurrences | Risque |
+|:--------|:-----------:|:------:|
+| "remboursement" | 12 | 🔴 CRITIQUE |
+| "gratuit" / "offert" | 8 | 🔴 CRITIQUE |
+| "compensation" | 5 | 🔴 CRITIQUE |
+| "sans frais" | 5 | 🟠 ÉLEVÉ |
+
+**HITL Existant VocalIA** (couvert):
+- ✅ Bookings (BANT >= 70) → `queueActionForApproval('booking')`
+- ✅ Transfers → `queueActionForApproval('transfer')`
+- ❌ **Financial complaints → AUCUN HITL**
+
+**Solution Recommandée** (Option B+C Hybride):
+```javascript
+// .env
+HITL_APPROVE_FINANCIAL_COMPLAINTS=true
+HITL_FINANCIAL_KEYWORDS=remboursement,gratuit,offert,compensation,sans frais
+
+// Détection automatique
+function detectFinancialCommitment(response) {
+  const keywords = process.env.HITL_FINANCIAL_KEYWORDS?.split(',') || [];
+  return keywords.some(k => response.toLowerCase().includes(k.trim()));
+}
+
+// Interception avant envoi
+if (detectFinancialCommitment(complaintResponse)) {
+  queueActionForApproval('financial_commitment', session, { response, scenario }, 'Financial promise detected');
+}
+```
+
+**Sources Best Practices**:
+- [Parseur HITL Guide 2026](https://parseur.com/blog/human-in-the-loop-ai): "Supervisor reviews, approves for refunds/policy exceptions"
+- [Phantasm GitHub](https://github.com/phantasmlabs/phantasm): "Delay critical actions until human approves"
+- [IBM HITL](https://www.ibm.com/think/topics/human-in-the-loop): "HITL for big repercussions—financial or reputational"
+- [n8n HITL](https://blog.n8n.io/human-in-the-loop-automation/): "Approval steps for financial transactions above threshold"
 
 ### Changements Session 250.9 - Complaint Handling
 
@@ -50,25 +146,28 @@
 
 ## 1. Résumé Exécutif
 
-### 1.1 Scores Globaux (MÀJ Session 250.9)
+### 1.1 Scores Globaux (MÀJ Session 250.11)
 
 | Volet | Score Avant | Score Après | Gap Restant |
 |:------|:-----------:|:-----------:|:-----------:|
 | **Personas** | 65/100 | **100/100** | ✅ 100% traductions (40/40 × 5 langues) |
 | **Knowledge Base** | 35/100 | **85/100** | ⚠️ Dense embeddings (GOOGLE_API_KEY) |
 | **Objection Handling** | N/A | **95/100** | ✅ LAER + Feel-Felt-Found |
-| **Complaint Handling** | N/A | **100/100** | ✅ 40/40 personas avec escalation + scénarios |
-| **Global** | 50/100 | **98/100** | Dense retrieval pending |
+| **Complaint Handling** | N/A | **95/100** | ⚠️ HITL pour promesses financières |
+| **3A-Shelf** | 0/100 | **75/100** | ⚠️ Sync shelf obsolète, imports non utilisés |
+| **Global** | 50/100 | **92/100** | HITL complaints + shelf sync |
 
 ### 1.2 Constats Critiques
 
 | Constat | Sévérité | Impact Business |
 |:--------|:--------:|:----------------|
 | ~~23/30 personas sans traductions~~ → **40/40 SYSTEM_PROMPTS ✅** | 🟢 RÉSOLU | 100% couverture 5 langues |
-| Chunks KB vides de contenu sémantique | 🔴 CRITIQUE | RAG quasi-inutile |
+| ~~Chunks KB vides~~ → **KB enrichi 415 termes** | 🟢 RÉSOLU | RAG fonctionnel |
 | Dense embeddings path corrigé | 🟢 RÉSOLU | Hybrid search activé |
-| Legacy KB plus riche que RAG moderne | 🟡 HAUTE | Incohérence architecturale |
-| Graph RAG non fonctionnel | 🟡 MOYENNE | Fonctionnalité manquante |
+| ~~Graph RAG non fonctionnel~~ → **knowledge-graph.json créé** | 🟢 RÉSOLU | 23 nœuds, 38 edges |
+| **30 promesses financières sans HITL** | 🔴 CRITIQUE | Risque engagement non approuvé |
+| **3A-Shelf: yalc configuré mais @3a non importé** | 🟠 HAUTE | Infrastructure inutilisée |
+| **Shelf obsolète (28/01) vs VocalIA (31/01)** | 🟠 HAUTE | 4.3x drift personas |
 
 ### 1.3 ROI Potentiel des Optimisations
 
@@ -80,6 +179,9 @@
 | Structure personas enrichie | 2 jours | +40% qualité réponse | ⭐⭐⭐⭐ | ✅ DONE |
 | Créer knowledge-graph.json | 2h | Graph RAG activé | ⭐⭐⭐⭐ | ✅ DONE (Session 250.8) |
 | **Complaint Handling 40/40** | 4h | Gestion réclamations SOTA | ⭐⭐⭐⭐⭐ | ✅ DONE (Session 250.9) |
+| **HITL Financial Complaints** | 2h | Zéro engagement non approuvé | ⭐⭐⭐⭐⭐ | ⏳ À FAIRE |
+| **Shelf Bidirectionnel** | 1h | Partage JO-AAA ↔ VocalIA | ⭐⭐⭐⭐ | ✅ DONE (Session 250.11) |
+| **Sync Shelf personas** | 30min | 40 personas dans shelf | ⭐⭐⭐ | ⏳ OPTIONNEL |
 
 ---
 

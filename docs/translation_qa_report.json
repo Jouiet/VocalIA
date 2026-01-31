@@ -1,10 +1,10 @@
 {
   "timestamp": "2026-01-30",
   "metrics": {
-    "checked": 5976,
-    "issues": 5,
-    "whitelisted": 8,
-    "skipped_short": 652
+    "checked": 6320,
+    "issues": 1,
+    "whitelisted": 10,
+    "skipped_short": 684
   },
   "thresholds": {
     "en": 0.35,
@@ -15,53 +15,13 @@
   "issues": [
     {
       "locale": "es",
-      "key": "usecases_ecommerce_page.stat_languages",
-      "fr": "Langues supportées",
-      "loc": "Idiomas",
-      "fr_len": 18,
-      "loc_len": 7,
-      "ratio": 0.39,
-      "threshold": 0.4
-    },
-    {
-      "locale": "es",
-      "key": "usecases_support_page.hero_cta_secondary",
-      "fr": "Voir les intégrations",
-      "loc": "Ver Demo",
-      "fr_len": 21,
-      "loc_len": 8,
-      "ratio": 0.38,
-      "threshold": 0.4
-    },
-    {
-      "locale": "es",
-      "key": "usecases_appointments_page.hero_cta_secondary",
-      "fr": "Voir les intégrations",
-      "loc": "Ver Demo",
-      "fr_len": 21,
-      "loc_len": 8,
-      "ratio": 0.38,
-      "threshold": 0.4
-    },
-    {
-      "locale": "es",
-      "key": "usecases_leads_page.hero_cta_secondary",
-      "fr": "Voir le framework BANT",
-      "loc": "Ver Demo",
-      "fr_len": 22,
-      "loc_len": 8,
-      "ratio": 0.36,
-      "threshold": 0.4
-    },
-    {
-      "locale": "ar",
-      "key": "about_page.values_title",
-      "fr": "Ce qui nous",
-      "loc": "ما",
+      "key": "status.today",
+      "fr": "Aujourd'hui",
+      "loc": "Hoy",
       "fr_len": 11,
-      "loc_len": 2,
-      "ratio": 0.18,
-      "threshold": 0.25
+      "loc_len": 3,
+      "ratio": 0.27,
+      "threshold": 0.4
     }
   ]
 }
