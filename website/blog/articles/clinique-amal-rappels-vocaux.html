@@ -65,479 +65,33 @@
 </head>
 <body class="bg-slate-800 text-white antialiased">
   <!-- Simple Nav -->
-  <!-- Skip Link -->
-
-    <a href="#main-content"
-
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg" data-i18n="a11y.skip_to_content">Aller au contenu principal</a>
-
-
-    <!-- Navigation -->
-
-    <nav class="fixed top-0 left-0 right-0 z-50 glass">
-
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-        <div class="flex items-center justify-between h-16">
-
-          <!-- Logo -->
-
-          <a href="/" class="flex items-center space-x-2">
-
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
-
-              <i data-lucide="mic" class="w-6 h-6 text-white"></i>
-
-            </div>
-
-            <span class="text-xl font-bold gradient-text">VocalIA</span>
-
-          </a>
-
-
-          <!-- Desktop Nav with Mega Menu -->
-
-          <div class="hidden md:flex items-center space-x-1">
-
-            <!-- Products Dropdown -->
-
-            <div class="relative group">
-
-              <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.products">
-
-                Produits
-
-                <i data-lucide="box" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
-
-              </button>
-
-              <div class="absolute top-full left-0 mt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
-
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
-
-                  <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
-
-                    <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center shrink-0">
-
-                      <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
-
-                    </div>
-
-                    <div>
-
-                      <div class="font-semibold text-white">Voice Widget</div>
-
-                      <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web gratuit</div>
-
-                    </div>
-
-                  </a>
-
-                  <a href="/products/voice-telephony" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
-
-                    <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
-
-                      <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
-
-                    </div>
-
-                    <div>
-
-                      <div class="font-semibold text-white">Voice Telephony AI</div>
-
-                      <div class="text-sm text-zinc-400" data-i18n="products_menu.telephony_subtitle">Téléphonie IA B2B</div>
-
-                    </div>
-
-                  </a>
-
-                  <hr class="border-slate-600/50 my-2">
-
-                  <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
-
-                    <i data-lucide="lightbulb" class="w-5 h-5"></i>
-
-                    <span data-i18n="nav.features">Toutes les fonctionnalités</span>
-
-                  </a>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <!-- Solutions Dropdown -->
-
-            <div class="relative group">
-
-              <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.solutions">
-
-                Solutions
-
-                <i data-lucide="lightbulb" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
-
-              </button>
-
-              <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[780px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
-
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
-
-                  <div class="grid grid-cols-3 gap-6">
-
-                    <!-- Column 1: Use Cases -->
-
-                    <div>
-
-                      <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="solutions_menu.by_use_case">Par Cas d'Usage</div>
-
-                      <a href="/use-cases/e-commerce" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-400"></i>
-
-                        <span data-i18n="solutions_menu.ecommerce">E-commerce</span>
-
-                      </a>
-
-                      <a href="/use-cases/customer-support" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
-
-                        <span data-i18n="solutions_menu.customer_support">Service Client</span>
-
-                      </a>
-
-                      <a href="/use-cases/appointments" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i>
-
-                        <span data-i18n="solutions_menu.appointments">Prise de RDV</span>
-
-                      </a>
-
-                      <a href="/use-cases/lead-qualification" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
-
-                        <span data-i18n="solutions_menu.lead_qualification">Qualification Leads</span>
-
-                      </a>
-
-                      <hr class="border-slate-600/30 my-2">
-
-                      <a href="/use-cases/" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
-
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-
-                        <span data-i18n="solutions_menu.all_use_cases">Tous les cas d'usage</span>
-
-                      </a>
-
-                    </div>
-
-                    <!-- Column 2: Industries -->
-
-                    <div>
-
-                      <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="solutions_menu.by_industry">Par Industrie</div>
-
-                      <a href="/industries/healthcare" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400"></i>
-
-                        <span data-i18n="solutions_menu.healthcare">Santé & Médical</span>
-
-                      </a>
-
-                      <a href="/industries/real-estate" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="building-2" class="w-4 h-4 text-emerald-400"></i>
-
-                        <span data-i18n="solutions_menu.real_estate">Immobilier</span>
-
-                      </a>
-
-                      <a href="/industries/finance" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="landmark" class="w-4 h-4 text-emerald-400"></i>
-
-                        <span data-i18n="solutions_menu.finance">Services Financiers</span>
-
-                      </a>
-
-                      <a href="/industries/retail" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-400"></i>
-
-                        <span data-i18n="solutions_menu.retail">Retail & Commerce</span>
-
-                      </a>
-
-                    </div>
-
-                    <!-- Column 3: Featured -->
-
-                    <div class="bg-slate-700/30 rounded-lg p-4">
-
-                      <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3" data-i18n="solutions_menu.popular">Populaire</div>
-
-                      <div class="space-y-3">
-
-                        <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
-
-                          <div class="flex items-center gap-2 mb-1">
-
-                            <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
-
-                            <span class="text-white font-medium text-sm" data-i18n="solutions_menu.multilanguage">Multi-Langue (5 langues)</span>
-
-                          </div>
-
-                          <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija</p>
-
-                        </a>
-
-                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
-
-                          <div class="flex items-center gap-2 mb-1">
-
-                            <span class="text-lg">🇲🇦</span>
-
-                            <span class="text-white font-medium text-sm" data-i18n="solutions_menu.darija_ai">Darija AI</span>
-
-                          </div>
-
-                          <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija</p>
-
-                        </a>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition" data-i18n="nav.pricing">Tarifs</a>
-
-
-            <!-- Resources Dropdown -->
-
-            <div class="relative group">
-
-              <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.resources">
-
-                Ressources
-
-                <i data-lucide="book-open" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
-
-              </button>
-
-              <div class="absolute top-full right-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
-
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
-
-                  <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white" data-i18n="resources_menu.docs">Documentation</a>
-
-                  <a href="/integrations" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white" data-i18n="resources_menu.integrations">Intégrations</a>
-
-                  <a href="/blog" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white" data-i18n="resources_menu.blog">Blog</a></div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-          <!-- CTA + Mobile -->
-
-          <div class="flex items-center space-x-3">
-
-            <a href="/dashboard"
-
-              class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition font-medium" data-i18n="nav.login">Connexion</a>
-
-
-            <!-- Mobile Hamburger Button -->
-
-            <button id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
-
-              <i data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
-
-              <i data-lucide="menu" class="w-6 h-6 text-vocalia-200 hidden"></i>
-
-            </button>
-
-          </div>
-
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
+    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-2">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+          <i data-lucide="mic" class="w-5 h-5 text-white"></i>
         </div>
-
-      </div>
-
-
-      <!-- Mobile Menu Drawer -->
-
-      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
-
-        <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
-
-          <!-- Products Section -->
-
-          <div class="mb-6">
-
-            <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="nav.products">Produits</h3>
-
-            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
-
-              <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
-
-                <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
-
-              </div>
-
-              <div>
-
-                <div class="font-medium text-white">Voice Widget</div>
-
-                <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web gratuit</div>
-
-              </div>
-
-            </a>
-
-            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
-
-              <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
-
-                <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
-
-              </div>
-
-              <div>
-
-                <div class="font-medium text-white">Voice Telephony AI</div>
-
-                <div class="text-sm text-zinc-400" data-i18n="products_menu.telephony_subtitle">Téléphonie IA B2B</div>
-
-              </div>
-
-            </a>
-
+        <span class="font-bold gradient-text">VocalIA</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <div class="relative">
+          <button onclick="toggleLangDropdown()" class="flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-700/50 transition text-sm">
+            <span id="currentLang">FR</span>
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 rounded-lg bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50">
+            <button onclick="switchLang('fr')" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm">Francais</button>
+            <button onclick="switchLang('en')" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm">English</button>
+            <button onclick="switchLang('es')" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm">Espanol</button>
+            <button onclick="switchLang('ar')" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">العربية</button>
+            <button onclick="switchLang('ary')" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">الدارجة</button>
           </div>
-
-
-          <!-- Solutions Section -->
-
-          <div class="mb-6">
-
-            <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="nav.solutions">Solutions</h3>
-
-            <div class="grid grid-cols-2 gap-2">
-
-              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.ecommerce">E-commerce</a>
-
-              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.healthcare">Santé & Médical</a>
-
-              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.customer_support">Service Client</a>
-
-              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.real_estate">Immobilier</a>
-
-            </div>
-
-          </div>
-
-
-          <!-- Resources Section -->
-
-          <div class="mb-6">
-
-            <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="nav.resources">Ressources</h3>
-
-            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="resources_menu.docs">Documentation</a>
-
-            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="resources_menu.integrations">Intégrations</a>
-
-            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="resources_menu.blog">Blog</a></div>
-
-
-          <!-- Mobile CTA -->
-
-          <div class="space-y-3">
-
-            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white" data-i18n="nav.pricing">
-
-              Tarifs
-
-            </a>
-
-            <a href="/dashboard" class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white" data-i18n="nav.login">
-
-              Connexion
-
-            </a>
-
-          </div>
-
         </div>
-
+        <a href="/blog" class="text-vocalia-300 hover:text-white transition text-sm">← Retour au blog</a>
       </div>
+    </div>
+  </nav>
 
-    </nav>
-
-
-    <!-- Mobile Menu Script -->
-
-    <script>
-
-      (function() {
-
-        const btn = document.getElementById('mobileMenuBtn');
-
-        const menu = document.getElementById('mobileMenu');
-
-        const iconOpen = document.getElementById('menuIconOpen');
-
-        const iconClose = document.getElementById('menuIconClose');
-
-        if (btn && menu) {
-
-          btn.addEventListener('click', function() {
-
-            const isOpen = !menu.classList.contains('translate-x-full');
-
-            if (isOpen) {
-
-              menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-
-              iconOpen.classList.remove('hidden');
-
-              iconClose.classList.add('hidden');
-
-            } else {
-
-              menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-
-              iconOpen.classList.add('hidden');
-
-              iconClose.classList.remove('hidden');
-
-            }
-
-          });
-
-        }
-
-      })();
-
-    </script>
   <main class="pt-24 pb-16">
     <article class="max-w-4xl mx-auto px-4">
       <!-- Header -->
@@ -778,3 +332,116 @@
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
+        </div>
+
+      <!-- Categories Row - Inline with proper spacing -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
+        <!-- Product -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Produit</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/features" class="hover:text-white transition">Fonctionnalités</a></li>
+            <li><a href="/pricing" class="hover:text-white transition">Tarifs</a></li>
+            <li><a href="/products/voice-widget" class="hover:text-white transition">Voice Widget</a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition">Voice Telephony</a></li>
+            <li><a href="/integrations" class="hover:text-white transition">Intégrations</a></li>
+          </ul>
+        </div>
+
+        <!-- Solutions -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Solutions</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/use-cases" class="hover:text-white transition">Cas d'Usage</a></li>
+            <li><a href="/industries/" class="hover:text-white transition">Par Industrie</a></li>
+            <li><a href="/use-cases/e-commerce" class="hover:text-white transition">E-commerce</a></li>
+            <li><a href="/use-cases/customer-support" class="hover:text-white transition">Service Client</a></li>
+            <li><a href="/industries/healthcare" class="hover:text-white transition">Santé</a></li>
+          </ul>
+        </div>
+
+        <!-- Ressources -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Ressources</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
+            <li><a href="/docs/api" class="hover:text-white transition">API Reference</a></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+            <li><a href="/academie-business" class="hover:text-white transition">Académie Business</a></li>
+          </ul>
+        </div>
+
+        <!-- Entreprise -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Entreprise</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/about" class="hover:text-white transition">À propos</a></li>
+            <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+            <li><a href="/privacy" class="hover:text-white transition">Confidentialité</a></li>
+            <li><a href="/terms" class="hover:text-white transition">CGU</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-slate-800 mt-8 pt-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+
+          <!-- Trust Badges -->
+          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              <span>RGPD</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
+              <span>AI Act Ready</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
+              <span>AES-256</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
+              <span>5 Langues</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
+              <span>99.9% Uptime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+<!-- Lucide Icons 2026 -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      });
+    </script>
+
+  <script>
+    const LANG_LABELS = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'دارجة' };
+    function toggleLangDropdown() { document.getElementById('langDropdown').classList.toggle('hidden'); }
+    function switchLang(lang) {
+      document.getElementById('currentLang').textContent = LANG_LABELS[lang] || lang.toUpperCase();
+      document.getElementById('langDropdown').classList.add('hidden');
+      localStorage.setItem('vocalia_lang', lang);
+    }
+    document.addEventListener('click', (e) => {
+      const d = document.getElementById('langDropdown');
+      if (!e.target.closest('[onclick*="toggleLangDropdown"]') && d && !d.contains(e.target)) d.classList.add('hidden');
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      const l = localStorage.getItem('vocalia_lang') || 'fr';
+      document.getElementById('currentLang').textContent = LANG_LABELS[l] || l.toUpperCase();
+    });
+  </script>
+  <!-- i18n System -->
+  <script src="/src/lib/geo-detect.js?v=240"></script>
+  <script src="/src/lib/i18n.js?v=240"></script>
+</body>
+</html>

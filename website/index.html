@@ -1190,3 +1190,329 @@
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
+        </div>
+
+      <!-- Categories Row - Inline with proper spacing -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
+        <!-- Product -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Produit</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/features" class="hover:text-white transition">Fonctionnalités</a></li>
+            <li><a href="/pricing" class="hover:text-white transition">Tarifs</a></li>
+            <li><a href="/products/voice-widget" class="hover:text-white transition">Voice Widget</a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition">Voice Telephony</a></li>
+            <li><a href="/integrations" class="hover:text-white transition">Intégrations</a></li>
+          </ul>
+        </div>
+
+        <!-- Solutions -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Solutions</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/use-cases" class="hover:text-white transition">Cas d'Usage</a></li>
+            <li><a href="/industries/" class="hover:text-white transition">Par Industrie</a></li>
+            <li><a href="/use-cases/e-commerce" class="hover:text-white transition">E-commerce</a></li>
+            <li><a href="/use-cases/customer-support" class="hover:text-white transition">Service Client</a></li>
+            <li><a href="/industries/healthcare" class="hover:text-white transition">Santé</a></li>
+          </ul>
+        </div>
+
+        <!-- Ressources -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Ressources</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/docs" class="hover:text-white transition">Documentation</a></li>
+            <li><a href="/docs/api" class="hover:text-white transition">API Reference</a></li>
+            <li><a href="/blog" class="hover:text-white transition">Blog</a></li>
+            <li><a href="/academie-business" class="hover:text-white transition">Académie Business</a></li>
+          </ul>
+        </div>
+
+        <!-- Entreprise -->
+        <div>
+          <h4 class="font-semibold text-white text-base mb-4">Entreprise</h4>
+          <ul class="space-y-3 text-sm text-zinc-400">
+            <li><a href="/about" class="hover:text-white transition">À propos</a></li>
+            <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+            <li><a href="/privacy" class="hover:text-white transition">Confidentialité</a></li>
+            <li><a href="/terms" class="hover:text-white transition">CGU</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-slate-800 mt-8 pt-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+
+          <!-- Trust Badges -->
+          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+              <span>RGPD</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
+              <span>AI Act Ready</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
+              <span>AES-256</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
+              <span>5 Langues</span>
+            </div>
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+              <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
+              <span>99.9% Uptime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts - Core libs (no defer, needed immediately) -->
+  <script src="/src/lib/geo-detect.js?v=240"></script>
+  <script src="/src/lib/i18n.js?v=240"></script>
+  <script>
+    // VocalIA Main Site - Dark Mode Only (no theme toggle)
+    // Theme toggle available only in dashboards
+
+    // Language dropdown
+    const langBtn = document.getElementById('langBtn');
+    const langDropdown = document.getElementById('langDropdown');
+    langBtn.addEventListener('click', () => langDropdown.classList.toggle('hidden'));
+
+    // Close dropdown on click outside
+    document.addEventListener('click', (e) => {
+      if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+        langDropdown.classList.add('hidden');
+      }
+    });
+
+    // Switch language (5 languages: fr, en, es, ar, ary)
+    const LANG_LABELS = {
+      fr: 'FR',
+      en: 'EN',
+      es: 'ES',
+      ar: 'AR',
+      ary: 'دارجة'
+    };
+
+    async function switchLang(lang) {
+      await VocaliaI18n.setLocale(lang);
+      document.getElementById('currentLang').textContent = LANG_LABELS[lang] || lang.toUpperCase();
+      langDropdown.classList.add('hidden');
+      VocaliaI18n.translatePage();
+
+      // Store preference
+      localStorage.setItem('vocalia_lang', lang);
+    }
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIconOpen = document.getElementById('menuIconOpen');
+    const menuIconClose = document.getElementById('menuIconClose');
+
+    // Helper functions for mobile menu
+    function openMobileMenu() {
+      mobileMenu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      mobileMenuBtn.setAttribute('aria-expanded', 'true');
+      menuIconOpen.classList.add('hidden');
+      menuIconClose.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMobileMenu() {
+      mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+      mobileMenu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      menuIconOpen.classList.remove('hidden');
+      menuIconClose.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.contains('translate-x-0');
+        isOpen ? closeMobileMenu() : openMobileMenu();
+      });
+
+      // Close menu on link click
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMobileMenu);
+      });
+
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && mobileMenu.classList.contains('translate-x-0')) {
+          closeMobileMenu();
+        }
+      });
+
+      // Close on backdrop click (outside menu content)
+      mobileMenu.addEventListener('click', (e) => {
+        if (e.target === mobileMenu) {
+          closeMobileMenu();
+        }
+      });
+    }
+
+    // Update prices based on geo (homepage doesn't show prices - see /pricing page)
+    function updatePrices(geo) {
+      // Pricing details are on the dedicated /pricing page
+    }
+
+    // Modal Logic
+    const modal = document.getElementById('demoModal');
+    const backdrop = document.getElementById('modalBackdrop');
+    const panel = document.getElementById('modalPanel');
+
+    function openDemoModal() {
+      modal.classList.remove('hidden');
+      // Small delay for transition
+      setTimeout(() => {
+        backdrop.classList.remove('opacity-0');
+        panel.classList.remove('opacity-0', 'scale-95');
+        panel.classList.add('opacity-100', 'scale-100');
+      }, 10);
+    }
+
+    function closeDemoModal() {
+      backdrop.classList.remove('opacity-100');
+      panel.classList.remove('opacity-100', 'scale-100');
+      panel.classList.add('opacity-0', 'scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal || e.target === backdrop) {
+        closeDemoModal();
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeDemoModal();
+      }
+    });
+
+    // Initialize
+    (async function init() {
+      // Geo detection
+      const geo = await VocaliaGeo.getGeo();
+      console.log('[VocalIA] Geo detected:', geo);
+
+      // i18n
+      await VocaliaI18n.initI18n(geo.lang);
+      document.getElementById('currentLang').textContent = VocaliaI18n.getLocale().toUpperCase();
+      VocaliaI18n.translatePage();
+
+      // Prices
+      updatePrices(geo);
+
+      // Listen for locale changes
+      window.addEventListener('localeChanged', () => {
+        VocaliaI18n.translatePage();
+      });
+    })();
+  </script>
+
+  <!-- VocalIA GSAP Animation System -->
+  <script src="/src/lib/gsap-animations.js?v=231" defer></script>
+  <script>
+    // Scroll Progress Indicator
+    window.addEventListener('scroll', () => {
+      const scrollProgress = document.getElementById('scrollProgress');
+      if (scrollProgress) {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / docHeight) * 100;
+        scrollProgress.style.width = progress + '%';
+      }
+    });
+  </script>
+
+  <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
+  <script src="/src/lib/voice-visualizer.js?v=222" defer></script>
+  <script src="/src/lib/card-tilt.js" defer></script>
+  <script>
+    // Lazy load visualizers only when visible (performance optimization)
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof VoiceVisualizer === 'undefined') return;
+
+      const visualizerConfigs = [
+        { id: '#visualizer-wave', mode: 'wave', barCount: null },
+        { id: '#visualizer-bars', mode: 'bars', barCount: 24 },
+        { id: '#visualizer-orb', mode: 'orb', barCount: null },
+        { id: '#visualizer-pulse', mode: 'pulse', barCount: null }
+      ];
+
+      const loadedVisualizers = new Map();
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const canvas = entry.target;
+          const config = visualizerConfigs.find(c => document.querySelector(c.id) === canvas);
+
+          if (entry.isIntersecting && config && !loadedVisualizers.has(config.id)) {
+            // Initialize only when visible
+            const viz = new VoiceVisualizer(config.id, {
+              mode: config.mode,
+              primaryColor: '#5DADE2',
+              secondaryColor: '#85C1E9',
+              accentColor: '#5DADE2',
+              glowColor: '#5DADE2',
+              barCount: config.barCount || 24,
+              demo: true
+            });
+            loadedVisualizers.set(config.id, viz);
+          } else if (!entry.isIntersecting && loadedVisualizers.has(config?.id)) {
+            // Pause when not visible
+            const viz = loadedVisualizers.get(config.id);
+            if (viz && viz.pause) viz.pause();
+          } else if (entry.isIntersecting && loadedVisualizers.has(config?.id)) {
+            // Resume when visible again
+            const viz = loadedVisualizers.get(config.id);
+            if (viz && viz.resume) viz.resume();
+          }
+        });
+      }, { rootMargin: '100px', threshold: 0.1 });
+
+      // Observe all visualizer canvases
+      visualizerConfigs.forEach(config => {
+        const canvas = document.querySelector(config.id);
+        if (canvas) observer.observe(canvas);
+      });
+
+      console.log('[VocalIA] Lazy loading visualizers enabled');
+    });
+
+    // Hero video is now integrated in Voice Widget card with native loop attribute
+  </script>
+
+  <!-- VocalIA Voice Widget - Try our product! -->
+  <script src="/voice-assistant/voice-widget.js" defer></script>
+
+    <!-- Lucide Icons 2026 -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      });
+    </script>
+</body>
+
+</html><!-- CI Test Thu Jan 29 18:51:28 +01 2026 -->
+<!-- Deploy verified Thu Jan 29 19:34:31 +01 2026 -->
