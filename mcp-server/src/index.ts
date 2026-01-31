@@ -3,7 +3,7 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 249.11 - v0.5.6 - REAL Implementation (NO MOCKS) + BM25 RAG + iPaaS + Strategic Ecommerce
+ * Session 249.21 - v0.7.0 - REAL Implementation + Stripe Payment Links + E-commerce CRUD Complete
  *
  * TOOL CATEGORIES (117 tools - 11 always available, 106 require services):
  *
@@ -81,6 +81,7 @@ import { squarespaceTools } from "./tools/squarespace.js";
 import { bigcommerceTools } from "./tools/bigcommerce.js";
 import { prestashopTools } from "./tools/prestashop.js";
 import { shopifyTools } from "./tools/shopify.js";
+import { stripeTools } from "./tools/stripe.js";
 
 const execAsync = promisify(exec);
 
@@ -1409,18 +1410,44 @@ server.tool(n8nTools.activate_workflow.name, n8nTools.activate_workflow.paramete
 server.tool(n8nTools.list_executions.name, n8nTools.list_executions.parameters, n8nTools.list_executions.handler);
 
 // =============================================================================
+// STRIPE TOOLS (20) - Payment Processing - Session 249.21
+// Complete transactional cycle: Payment Links, Customers, Products, Invoices
+// =============================================================================
+
+server.tool(stripeTools.create_payment_link.name, stripeTools.create_payment_link.parameters, stripeTools.create_payment_link.handler);
+server.tool(stripeTools.list_payment_links.name, stripeTools.list_payment_links.parameters, stripeTools.list_payment_links.handler);
+server.tool(stripeTools.deactivate_payment_link.name, stripeTools.deactivate_payment_link.parameters, stripeTools.deactivate_payment_link.handler);
+server.tool(stripeTools.create_customer.name, stripeTools.create_customer.parameters, stripeTools.create_customer.handler);
+server.tool(stripeTools.get_customer.name, stripeTools.get_customer.parameters, stripeTools.get_customer.handler);
+server.tool(stripeTools.list_customers.name, stripeTools.list_customers.parameters, stripeTools.list_customers.handler);
+server.tool(stripeTools.create_product.name, stripeTools.create_product.parameters, stripeTools.create_product.handler);
+server.tool(stripeTools.list_products.name, stripeTools.list_products.parameters, stripeTools.list_products.handler);
+server.tool(stripeTools.create_price.name, stripeTools.create_price.parameters, stripeTools.create_price.handler);
+server.tool(stripeTools.create_checkout_session.name, stripeTools.create_checkout_session.parameters, stripeTools.create_checkout_session.handler);
+server.tool(stripeTools.get_checkout_session.name, stripeTools.get_checkout_session.parameters, stripeTools.get_checkout_session.handler);
+server.tool(stripeTools.create_invoice.name, stripeTools.create_invoice.parameters, stripeTools.create_invoice.handler);
+server.tool(stripeTools.add_invoice_item.name, stripeTools.add_invoice_item.parameters, stripeTools.add_invoice_item.handler);
+server.tool(stripeTools.finalize_invoice.name, stripeTools.finalize_invoice.parameters, stripeTools.finalize_invoice.handler);
+server.tool(stripeTools.send_invoice.name, stripeTools.send_invoice.parameters, stripeTools.send_invoice.handler);
+server.tool(stripeTools.create_payment_intent.name, stripeTools.create_payment_intent.parameters, stripeTools.create_payment_intent.handler);
+server.tool(stripeTools.get_payment_intent.name, stripeTools.get_payment_intent.parameters, stripeTools.get_payment_intent.handler);
+server.tool(stripeTools.create_refund.name, stripeTools.create_refund.parameters, stripeTools.create_refund.handler);
+server.tool(stripeTools.get_balance.name, stripeTools.get_balance.parameters, stripeTools.get_balance.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.5.6 running on stdio");
+  console.error("VocalIA MCP Server v0.7.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 143 (11 always available, 132 require external services)");
+  console.error("Tools: 162 (11 always available, 151 require external services)");
   console.error("E-commerce: Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop (~64% market)");
-  console.error("Integrations: 26 native + iPaaS (Zapier/Make/n8n → +7000 apps)");
+  console.error("Payments: Stripe (22 tools - Payment Links, Checkout, Invoices, Refunds)");
+  console.error("Integrations: 28 native + iPaaS (Zapier/Make/n8n → +7000 apps)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
 }
 

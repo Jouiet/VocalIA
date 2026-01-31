@@ -1,12 +1,13 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.15.0 | 31/01/2026 | Session 249.20 | Health: 100%
+> Version: 6.16.0 | 31/01/2026 | Session 249.21 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.6.0 (**159 tools**) | RAG: BM25 SOTA
+> SDKs: Python | Node.js | MCP Server v0.7.0 (**162 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **21 native** (150 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
-> E-commerce: WooCommerce (CRUD), **Shopify (FULL CRUD - 8 tools)**, Magento, Wix, Squarespace, BigCommerce, PrestaShop
-> Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅ IMPLÉMENTÉ** | MCP 4 tools
+> Integrations: **22 native** (162 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
+> E-commerce: WooCommerce, **Shopify**, Magento, Wix, Squarespace, BigCommerce, PrestaShop (ALL CRUD)
+> **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds
+> Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
 
 ## Identité
 
@@ -53,7 +54,7 @@ VocalIA/
 ├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (159 tools)
+├── mcp-server/     # MCP Server (162 tools)
 └── docs/           # Documentation
 ```
 
