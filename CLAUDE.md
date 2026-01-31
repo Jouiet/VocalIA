@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.14.0 | 31/01/2026 | Session 249.19 | Health: 100%
+> Version: 6.15.0 | 31/01/2026 | Session 249.20 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.5.7 (**117 tools**) | RAG: BM25 SOTA
+> SDKs: Python | Node.js | MCP Server v0.5.9 (**150 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **21 native** (117 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
-> E-commerce: WooCommerce (CRUD), Shopify (READ), Magento, Wix, Squarespace, BigCommerce, PrestaShop
+> Integrations: **21 native** (150 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
+> E-commerce: WooCommerce (CRUD), **Shopify (FULL CRUD - 8 tools)**, Magento, Wix, Squarespace, BigCommerce, PrestaShop
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅ IMPLÉMENTÉ** | MCP 4 tools
 
 ## Identité
@@ -53,7 +53,7 @@ VocalIA/
 ├── website/        # 31 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (116 tools)
+├── mcp-server/     # MCP Server (150 tools)
 └── docs/           # Documentation
 ```
 
@@ -258,7 +258,7 @@ ls data/ucp-profiles.json  # exists ✅
 | Bug | Fix | Vérification |
 |:----|:----|:-------------|
 | 4 function tools orphelins | Ajout 4 case statements (lignes 1119-1134) | 11/11 tools OK |
-| "143 tools" fantômes | Corrigé → 116 tools réels | grep "116 tools" ✅ |
+| "143 tools" fantômes | Corrigé → 144 tools réels | grep "144 tools" ✅ |
 | Cal.com/Intercom/Crisp fake | Supprimé des commentaires index.ts | Build OK |
 
 ### Vérités Rétablies
@@ -335,5 +335,5 @@ cd mcp-server && npm run build  # ✅ Build OK
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/USE-CASES-STRATEGIC-ANALYSIS.md` pour SWOT et stratégie*
-*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (117 tools)*
+*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (144 tools)*
 *Màj: 31/01/2026 - Session 249.18 (Twilio SMS Fallback IMPLÉMENTÉ)*

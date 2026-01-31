@@ -1,7 +1,8 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.5.7 | 31/01/2026 | Session 249.18 | BM25 RAG SOTA | **117 tools**
+> Version: 0.5.9 | 31/01/2026 | Session 249.20 | BM25 RAG SOTA | **150 tools**
+> **Session 249.20**: Shopify FULL CRUD (8 tools) - GraphQL Admin API 2026-01
 > **Session 249.18:** +messaging_send (WhatsApp → Twilio SMS fallback)
 > **Protocol Gap:** A2A ✅ | AP2 ❌ | A2UI ✅ | UCP ✅ (File Persistence) | Integrations ✅
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
@@ -53,14 +54,14 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Zapier** | **3** | 0 | **3** |
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
-| **TOTAL** | **143** | **16** | **127** |
+| **TOTAL** | **150** | **16** | **134** |
 
 ### E-commerce Market Coverage (~64%)
 
 | Platform | Tools | Market Share | API Docs |
 |:---------|:-----:|:------------:|:---------|
 | WooCommerce | 7 | 33-39% | REST v3 |
-| Shopify | 2 | 10.32% | REST/GraphQL |
+| Shopify | 8 | 10.32% | GraphQL Admin API 2026-01 |
 | Magento | 6 | 8% | REST |
 | **Wix Stores** | 6 | 7.4% (+32.6% YoY) | REST |
 | **Squarespace** | 7 | 2.6% | REST v1/v2 |

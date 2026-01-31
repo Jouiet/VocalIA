@@ -80,6 +80,7 @@ import { wixTools } from "./tools/wix.js";
 import { squarespaceTools } from "./tools/squarespace.js";
 import { bigcommerceTools } from "./tools/bigcommerce.js";
 import { prestashopTools } from "./tools/prestashop.js";
+import { shopifyTools } from "./tools/shopify.js";
 
 const execAsync = promisify(exec);
 
@@ -856,69 +857,11 @@ server.tool(
 );
 
 // =============================================================================
-// E-COMMERCE TOOLS (3) - REQUIRE SHOPIFY/KLAVIYO CREDENTIALS
+// E-COMMERCE TOOLS (1) - KLAVIYO CUSTOMER PROFILE
+// Note: Shopify tools moved to shopify.ts with full GraphQL Admin API support (8 tools)
 // =============================================================================
 
-// Tool 15: ecommerce_order_status - Check order status from Shopify
-server.tool(
-  "ecommerce_order_status",
-  {
-    email: z.string().email().describe("Customer email to look up orders"),
-    orderId: z.string().optional().describe("Specific order ID (optional)"),
-  },
-  async ({ email, orderId }) => {
-    return {
-      content: [{
-        type: "text" as const,
-        text: JSON.stringify({
-          action: "get_order_status",
-          email,
-          orderId,
-          status: "requires_shopify_credentials",
-          requirements: {
-            credentials: ["SHOPIFY_ACCESS_TOKEN", "SHOPIFY_SHOP_NAME"],
-            setup: "Shopify Admin → Settings → Apps → Develop apps",
-          },
-          capabilities: {
-            order_lookup: "Find orders by email",
-            fulfillment_status: "Processing, Shipped, Delivered",
-            tracking_url: "Carrier tracking link",
-            financial_status: "Paid, Pending, Refunded",
-          },
-        }, null, 2),
-      }],
-    };
-  }
-);
-
-// Tool 16: ecommerce_product_stock - Check product availability
-server.tool(
-  "ecommerce_product_stock",
-  {
-    query: z.string().describe("Product name or description to search"),
-  },
-  async ({ query }) => {
-    return {
-      content: [{
-        type: "text" as const,
-        text: JSON.stringify({
-          action: "check_product_stock",
-          query,
-          status: "requires_shopify_credentials",
-          requirements: ["SHOPIFY_ACCESS_TOKEN", "SHOPIFY_SHOP_NAME"],
-          returns: {
-            title: "Product name",
-            price: "Product price",
-            inStock: "Boolean availability",
-            variants: "Available variants",
-          },
-        }, null, 2),
-      }],
-    };
-  }
-);
-
-// Tool 17: ecommerce_customer_profile - Get profile from Klaviyo
+// Tool: ecommerce_customer_profile - Get profile from Klaviyo
 server.tool(
   "ecommerce_customer_profile",
   {
@@ -1312,6 +1255,19 @@ server.tool(woocommerceTools.list_products.name, woocommerceTools.list_products.
 server.tool(woocommerceTools.get_product.name, woocommerceTools.get_product.parameters, woocommerceTools.get_product.handler);
 server.tool(woocommerceTools.list_customers.name, woocommerceTools.list_customers.parameters, woocommerceTools.list_customers.handler);
 server.tool(woocommerceTools.get_customer.name, woocommerceTools.get_customer.parameters, woocommerceTools.get_customer.handler);
+
+// =============================================================================
+// SHOPIFY TOOLS (8) - REQUIRE SHOPIFY CREDENTIALS - Session 249.20
+// =============================================================================
+
+server.tool(shopifyTools.get_order.name, shopifyTools.get_order.parameters, shopifyTools.get_order.handler);
+server.tool(shopifyTools.list_orders.name, shopifyTools.list_orders.parameters, shopifyTools.list_orders.handler);
+server.tool(shopifyTools.get_product.name, shopifyTools.get_product.parameters, shopifyTools.get_product.handler);
+server.tool(shopifyTools.cancel_order.name, shopifyTools.cancel_order.parameters, shopifyTools.cancel_order.handler);
+server.tool(shopifyTools.create_refund.name, shopifyTools.create_refund.parameters, shopifyTools.create_refund.handler);
+server.tool(shopifyTools.update_order.name, shopifyTools.update_order.parameters, shopifyTools.update_order.handler);
+server.tool(shopifyTools.create_fulfillment.name, shopifyTools.create_fulfillment.parameters, shopifyTools.create_fulfillment.handler);
+server.tool(shopifyTools.search_customers.name, shopifyTools.search_customers.parameters, shopifyTools.search_customers.handler);
 
 // =============================================================================
 // ZOHO CRM TOOLS (6) - REQUIRE ZOHO CREDENTIALS

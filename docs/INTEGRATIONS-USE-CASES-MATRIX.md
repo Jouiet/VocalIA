@@ -1,7 +1,7 @@
 # VocalIA - Matrice Intégrations × Use Cases
 
 > **Version**: 1.1.0 | **Date**: 31/01/2026 | **Session**: 249.16
-> **21 Intégrations natives réelles + 3 iPaaS = 116 MCP Tools**
+> **21 Intégrations natives réelles + 3 iPaaS = 150 MCP Tools**
 > **VÉRIFIÉ**: Audit codebase 31/01/2026 - Corrections appliquées
 
 ---
@@ -34,17 +34,19 @@ COMMUNICATION (3)     WEBSITE (2)       PRODUCTIVITY (3)    iPaaS (3)
 
 | Intégration | READ | WRITE | Cancel/Refund | MCP Tools |
 |:------------|:----:|:-----:|:-------------:|:---------:|
-| **Shopify** | ✅ | ❌ | ❌ | 0 (inline stubs) |
+| **Shopify** | ✅ | ✅ | ✅ | **8** |
 | **WooCommerce** | ✅ | ✅ | ✅ | 7 |
 | **Magento** | ✅ | ❌ | ❌ | 6 |
 | **PrestaShop** | ✅ | ❌ | ❌ | 7 |
 | **BigCommerce** | ✅ | ✅ | ⚠️ Partiel | 7 |
 
-> **⚠️ LIMITATION CRITIQUE**: Shopify est READ-ONLY dans VocalIA
-> - `check_order_status` = lecture seule
-> - `check_product_stock` = lecture seule
-> - **PAS de** cancel_order, refund_order, update_shipping
-> - **Solution**: Implémenter GraphQL mutations `orderCancel`, `refundCreate`
+> **✅ SHOPIFY FULL CRUD** (Session 249.20):
+> - `shopify_get_order`, `shopify_list_orders` = lecture commandes
+> - `shopify_get_product`, `shopify_search_customers` = lecture produits/clients
+> - **`shopify_cancel_order`** = GraphQL orderCancel mutation ✅
+> - **`shopify_create_refund`** = GraphQL refundCreate mutation ✅
+> - **`shopify_update_order`** = GraphQL orderUpdate mutation ✅
+> - **`shopify_create_fulfillment`** = Mark shipped with tracking ✅
 >
 > **✅ WooCommerce** peut modifier status à 'cancelled' ou 'refunded' via `woocommerce_update_order`
 
@@ -313,7 +315,7 @@ Avec Zapier/Make/n8n, la couverture potentielle passe à:
 
 | Faiblesse | Impact | Priorité Fix |
 |:----------|:-------|:------------:|
-| **Shopify READ-ONLY** | Pas de cancel/refund | P0 |
+| ~~**Shopify READ-ONLY**~~ | ~~Pas de cancel/refund~~ | ✅ FAIT (249.20) |
 | **WhatsApp needs creds** | Pas de fallback SMS | P0 |
 | **Stripe webhook only** | Pas de payment initiation | P1 |
 

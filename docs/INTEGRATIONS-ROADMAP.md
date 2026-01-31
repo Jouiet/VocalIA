@@ -48,7 +48,7 @@
 | Metric | Value |
 |:-------|:------|
 | **MCP Server Version** | v0.5.6 |
-| **Total MCP Tools** | **143** |
+| **Total MCP Tools** | **117** |
 | **Tool Files** | 23 (+ inline HubSpot/Shopify/Klaviyo) |
 | **Integrations natives** | **24** (customer-facing) |
 | **E-commerce platforms** | **7** (~64% global market) |

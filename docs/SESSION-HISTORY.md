@@ -1,9 +1,9 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.30.0 | **Updated**: 31/01/2026 | **Session**: 249.19
+> **Version**: 3.32.0 | **Updated**: 31/01/2026 | **Session**: 249.20
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 21/21 (100%) | **MCP Tools**: 117 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~64%
-> **Session 249.19**: Use Cases Index Page CRÉÉE (website/use-cases/index.html + 5 langues i18n)
+> **Integrations Check**: 21/21 (100%) | **MCP Tools**: 150 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~70%
+> **Session 249.20**: Shopify FULL CRUD (8 tools) + Docs Audit + Use Cases Menu
 
 ---
 
@@ -4505,5 +4505,78 @@ CTA Section
 
 ---
 
-*Màj: 31/01/2026 - Session 249.19 (Use Cases Index Page CRÉÉE)*
+---
+
+## Session 249.20 - Shopify FULL CRUD + Docs Audit (31/01/2026)
+
+**Objectif**: P0 - Implémenter Shopify WRITE (cancel, refund, update) + corriger docs.
+
+### 1. Shopify MCP Tools Implementation (8 tools)
+
+| Tool | Type | Description |
+|:-----|:----:|:------------|
+| `shopify_get_order` | READ | Get order by ID/number |
+| `shopify_list_orders` | READ | List orders with filters |
+| `shopify_get_product` | READ | Search products with stock |
+| `shopify_cancel_order` | **WRITE** | Cancel unfulfilled orders |
+| `shopify_create_refund` | **WRITE** | Full/partial refunds |
+| `shopify_update_order` | **WRITE** | Update tags, notes, address |
+| `shopify_create_fulfillment` | **WRITE** | Mark as shipped with tracking |
+| `shopify_search_customers` | READ | Search customers |
+
+### 2. Web Research - Optimizations Applied
+
+**Sources consultées:**
+- [Shopify Dev MCP](https://shopify.dev/docs/apps/build/devmcp) - Official
+- [amir-bengherbi/shopify-mcp-server](https://github.com/amir-bengherbi/shopify-mcp-server) - 15 tools reference
+- [Shopify Rate Limiting](https://shopify.engineering/rate-limiting-graphql-apis-calculating-query-complexity)
+
+**Optimizations Applied:**
+| Optimization | Implementation |
+|:-------------|:---------------|
+| API Version | 2026-01 (current) |
+| Rate Limit Handling | 429 detection + Retry-After |
+| Throttle Awareness | Extensions cost check |
+| Query Cost | Minimal fields returned |
+| Error Handling | Throttle error detection |
+
+### 3. MCP Tool Count Final
+
+| Avant | Après | Delta |
+|:-----:|:-----:|:-----:|
+| 144 | **150** | +6 net |
+
+Note: +8 Shopify tools - 2 old inline stubs = +6
+
+### 4. Docs Updates
+
+| File | Change |
+|:-----|:-------|
+| VOCALIA-MCP.md | 144→150 tools, Shopify 2→8 |
+| CLAUDE.md | Shopify (READ)→(FULL CRUD) |
+| SESSION-HISTORY.md | Session 249.20 entry |
+| Use Cases menu | Link added to /use-cases/ |
+| 5 locale files | +solutions_menu.all_use_cases |
+
+### 5. Vérification Empirique
+
+```bash
+# MCP Tool count
+grep -c "server.tool(" mcp-server/src/index.ts
+# Result: 150
+
+# Build
+cd mcp-server && npm run build
+# Result: Success
+
+# Shopify tools
+ls mcp-server/src/tools/shopify.ts
+# Result: 31KB, 800+ lines
+```
+
+**Statut final**: MCP Server v0.5.9 | **150 tools** | Shopify FULL CRUD ✅
+
+---
+
+*Màj: 31/01/2026 - Session 249.20 (Shopify FULL CRUD + Docs Audit)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

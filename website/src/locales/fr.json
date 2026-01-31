@@ -257,7 +257,8 @@
     "retail": "Retail & Commerce",
     "hospitality": "Hôtellerie & Tourisme",
     "multilanguage": "Multi-Langue (5 langues)",
-    "darija_ai": "Darija AI"
+    "darija_ai": "Darija AI",
+    "all_use_cases": "Tous les cas d'usage"
   },
   "resources_menu": {
     "docs": "Documentation",
