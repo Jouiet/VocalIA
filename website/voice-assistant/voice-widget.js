@@ -87,6 +87,228 @@
   const needsTextFallback = !hasSpeechRecognition || isFirefox || isSafari;
 
   // ============================================================
+  // AG-UI PROTOCOL (Agent-User Interaction Protocol)
+  // https://docs.ag-ui.com/ - CopilotKit Open Standard
+  // Session 250.29 - SOTA Implementation
+  // ============================================================
+
+  const AGUI = {
+    // AG-UI Event Types (17 standard events)
+    EventType: {
+      TEXT_MESSAGE_START: 'TEXT_MESSAGE_START',
+      TEXT_MESSAGE_CONTENT: 'TEXT_MESSAGE_CONTENT',
+      TEXT_MESSAGE_END: 'TEXT_MESSAGE_END',
+      TOOL_CALL_START: 'TOOL_CALL_START',
+      TOOL_CALL_ARGS: 'TOOL_CALL_ARGS',
+      TOOL_CALL_END: 'TOOL_CALL_END',
+      TOOL_CALL_RESULT: 'TOOL_CALL_RESULT',
+      STATE_SNAPSHOT: 'STATE_SNAPSHOT',
+      STATE_DELTA: 'STATE_DELTA',
+      MESSAGES_SNAPSHOT: 'MESSAGES_SNAPSHOT',
+      RAW: 'RAW',
+      CUSTOM: 'CUSTOM',
+      RUN_STARTED: 'RUN_STARTED',
+      RUN_FINISHED: 'RUN_FINISHED',
+      RUN_ERROR: 'RUN_ERROR',
+      STEP_STARTED: 'STEP_STARTED',
+      STEP_FINISHED: 'STEP_FINISHED'
+    },
+
+    // Current run context
+    currentRun: null,
+    messageCounter: 0,
+    toolCallCounter: 0,
+
+    // Event listeners
+    listeners: new Map(),
+
+    /**
+     * Generate unique IDs
+     */
+    generateId(prefix) {
+      return `${prefix}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    },
+
+    /**
+     * Subscribe to AG-UI events
+     */
+    on(eventType, callback) {
+      if (!this.listeners.has(eventType)) {
+        this.listeners.set(eventType, []);
+      }
+      this.listeners.get(eventType).push(callback);
+    },
+
+    /**
+     * Emit AG-UI event
+     */
+    emit(event) {
+      const baseEvent = {
+        timestamp: new Date().toISOString(),
+        threadId: this.currentRun?.threadId || 'thread_default',
+        runId: this.currentRun?.runId || null,
+        ...event
+      };
+
+      // Notify listeners
+      const typeListeners = this.listeners.get(event.type) || [];
+      const allListeners = this.listeners.get('*') || [];
+      [...typeListeners, ...allListeners].forEach(cb => cb(baseEvent));
+
+      // Debug logging (can be disabled in production)
+      if (CONFIG.AGUI_DEBUG) {
+        console.log('[AG-UI]', baseEvent.type, baseEvent);
+      }
+
+      // Dispatch custom DOM event for external integrations
+      window.dispatchEvent(new CustomEvent('vocalia:agui', { detail: baseEvent }));
+
+      return baseEvent;
+    },
+
+    /**
+     * Start a new agent run
+     */
+    startRun(input = {}) {
+      const runId = this.generateId('run');
+      const threadId = input.threadId || this.generateId('thread');
+
+      this.currentRun = { runId, threadId, startedAt: Date.now() };
+
+      return this.emit({
+        type: this.EventType.RUN_STARTED,
+        runId,
+        threadId
+      });
+    },
+
+    /**
+     * Finish current run
+     */
+    finishRun() {
+      if (!this.currentRun) return null;
+
+      const event = this.emit({
+        type: this.EventType.RUN_FINISHED,
+        runId: this.currentRun.runId,
+        duration: Date.now() - this.currentRun.startedAt
+      });
+
+      this.currentRun = null;
+      return event;
+    },
+
+    /**
+     * Report run error
+     */
+    errorRun(error) {
+      const event = this.emit({
+        type: this.EventType.RUN_ERROR,
+        runId: this.currentRun?.runId,
+        error: error.message || String(error)
+      });
+
+      this.currentRun = null;
+      return event;
+    },
+
+    /**
+     * Emit text message events (streaming pattern)
+     */
+    textMessage(content, role = 'assistant') {
+      const messageId = this.generateId('msg');
+
+      // START
+      this.emit({
+        type: this.EventType.TEXT_MESSAGE_START,
+        messageId,
+        role
+      });
+
+      // CONTENT (single chunk for non-streaming)
+      this.emit({
+        type: this.EventType.TEXT_MESSAGE_CONTENT,
+        messageId,
+        delta: content
+      });
+
+      // END
+      return this.emit({
+        type: this.EventType.TEXT_MESSAGE_END,
+        messageId
+      });
+    },
+
+    /**
+     * Emit tool call events
+     */
+    toolCall(toolName, args, result) {
+      const toolCallId = this.generateId('tool');
+
+      // START
+      this.emit({
+        type: this.EventType.TOOL_CALL_START,
+        toolCallId,
+        toolCallName: toolName
+      });
+
+      // ARGS
+      this.emit({
+        type: this.EventType.TOOL_CALL_ARGS,
+        toolCallId,
+        args: JSON.stringify(args)
+      });
+
+      // END
+      this.emit({
+        type: this.EventType.TOOL_CALL_END,
+        toolCallId
+      });
+
+      // RESULT
+      return this.emit({
+        type: this.EventType.TOOL_CALL_RESULT,
+        toolCallId,
+        result: JSON.stringify(result)
+      });
+    },
+
+    /**
+     * Emit state snapshot
+     */
+    stateSnapshot(snapshot) {
+      return this.emit({
+        type: this.EventType.STATE_SNAPSHOT,
+        snapshot
+      });
+    },
+
+    /**
+     * Emit state delta (RFC 6902 JSON Patch)
+     */
+    stateDelta(delta) {
+      return this.emit({
+        type: this.EventType.STATE_DELTA,
+        delta
+      });
+    },
+
+    /**
+     * Emit custom event
+     */
+    custom(name, data) {
+      return this.emit({
+        type: this.EventType.CUSTOM,
+        name,
+        data
+      });
+    }
+  };
+
+  // Add AG-UI debug flag to CONFIG
+  CONFIG.AGUI_DEBUG = false; // Set to true for development
+
+  // ============================================================
   // LANGUAGE DETECTION & LOADING
   // ============================================================
 
@@ -661,6 +883,13 @@
   }
 
   async function submitBooking(data) {
+    // AG-UI: Tool call start
+    AGUI.emit({
+      type: AGUI.EventType.TOOL_CALL_START,
+      toolCallId: AGUI.generateId('tool'),
+      toolCallName: 'booking_create'
+    });
+
     try {
       const response = await fetch(CONFIG.BOOKING_API, {
         method: 'POST',
@@ -668,9 +897,26 @@
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(data)
       });
-      return await response.json();
+      const result = await response.json();
+
+      // AG-UI: Tool call result
+      AGUI.emit({
+        type: AGUI.EventType.TOOL_CALL_RESULT,
+        toolCallId: AGUI.generateId('tool'),
+        result: JSON.stringify({ success: result.success })
+      });
+
+      return result;
     } catch (error) {
       console.error('[VocalIA] Booking error:', error);
+
+      // AG-UI: Tool call error
+      AGUI.emit({
+        type: AGUI.EventType.TOOL_CALL_RESULT,
+        toolCallId: AGUI.generateId('tool'),
+        result: JSON.stringify({ success: false, error: error.message })
+      });
+
       return { success: false, message: error.message };
     }
   }
@@ -977,28 +1223,58 @@
   async function sendMessage(text) {
     if (!text.trim()) return;
 
+    // AG-UI: Start run
+    AGUI.startRun({ threadId: state.conversationContext.sessionId });
+
+    // AG-UI: User message
+    AGUI.textMessage(text, 'user');
+
     addMessage(text, 'user');
     document.getElementById('va-input').value = '';
     showTyping();
 
+    // AG-UI: State snapshot before processing
+    AGUI.stateSnapshot({
+      conversationLength: state.conversationHistory.length,
+      bookingActive: state.conversationContext.bookingFlow.active,
+      language: state.currentLang
+    });
+
     try {
-      try {
-        const result = await getAIResponse(text);
-        hideTyping();
+      const result = await getAIResponse(text);
+      hideTyping();
 
-        const responseText = result.text || result; // Handle backward compat (though we updated all returns)
-        addMessage(responseText, 'assistant');
+      const responseText = result.text || result;
 
-        // Update A2UI
-        if (result.a2ui) {
-          updateA2UI(result.a2ui);
-        }
-      } catch (error) {
-        hideTyping();
-        addMessage(state.langData.ui.errorMessage, 'assistant');
-        console.error('[VocalIA] Response error:', error);
+      // AG-UI: Assistant message
+      AGUI.textMessage(responseText, 'assistant');
+
+      addMessage(responseText, 'assistant');
+
+      // Update A2UI
+      if (result.a2ui) {
+        updateA2UI(result.a2ui);
+        // AG-UI: Custom event for A2UI
+        AGUI.custom('a2ui_update', result.a2ui);
       }
+
+      // AG-UI: Tool call if booking flow triggered
+      if (result.toolCall) {
+        AGUI.toolCall(result.toolCall.name, result.toolCall.args, result.toolCall.result);
+      }
+
+      // AG-UI: Finish run
+      AGUI.finishRun();
+
+    } catch (error) {
+      hideTyping();
+      addMessage(state.langData.ui.errorMessage, 'assistant');
+      console.error('[VocalIA] Response error:', error);
+
+      // AG-UI: Error run
+      AGUI.errorRun(error);
     }
+  }
 
   // ============================================================
   // A2UI RENDERER (Agentic UI)
@@ -1105,14 +1381,34 @@
         await loadLanguage(lang);
         console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
 
+        // Generate session ID for AG-UI threading
+        state.conversationContext.sessionId = AGUI.generateId('session');
+
         captureAttribution(); // Session 177: MarEng Injector
         createWidget();
         trackEvent('voice_widget_loaded', { language: state.currentLang });
+
+        // AG-UI: Initial state snapshot
+        AGUI.stateSnapshot({
+          version: '2.1.0',
+          language: state.currentLang,
+          capabilities: {
+            speechRecognition: hasSpeechRecognition,
+            speechSynthesis: hasSpeechSynthesis,
+            textFallback: needsTextFallback
+          },
+          sessionId: state.conversationContext.sessionId
+        });
+
+        console.log('[VocalIA] AG-UI Protocol initialized');
 
       } catch (error) {
         console.error('[VocalIA] Init error:', error);
       }
     }
+
+    // Expose AG-UI module for external integrations
+    window.VocaliaAGUI = AGUI;
 
     // Start
     if (document.readyState === 'loading') {
@@ -1121,4 +1417,4 @@
       init();
     }
 
-  }) ();
+  })();

@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.49.0 | **Updated**: 31/01/2026 | **Session**: 250.28
+> **Version**: 3.50.0 | **Updated**: 31/01/2026 | **Session**: 250.29
 > **Backend Score**: 99/100 | **Frontend Score**: 97/100 | **Health Check**: 100% (39/39)
 > **Security**: 98/100 - CSP + X-Frame-Options + X-Content-Type-Options on ALL 45 pages
 > **MCP Server**: v0.8.0 | **MCP Tools**: 181 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
@@ -5131,5 +5131,83 @@ grep "AGENT_CARD" core/translation-supervisor.cjs  # Found ✅
 
 ---
 
-*Màj: 31/01/2026 - Session 250.28 (A2A Protocol + CDP UCP Enhancement)*
+## Session 250.29 - AG-UI Protocol Implementation (31/01/2026)
+
+### 1. AG-UI Protocol Research
+
+**Sources consultées:**
+- [AG-UI Protocol Docs](https://docs.ag-ui.com/)
+- [AG-UI GitHub](https://github.com/ag-ui-protocol/ag-ui)
+- [CopilotKit Blog](https://www.copilotkit.ai/blog/master-the-17-ag-ui-event-types-for-building-agents-the-right-way)
+- [@ag-ui/core NPM](https://www.npmjs.com/package/@ag-ui/core)
+
+### 2. AG-UI Implementation
+
+**Fichier:** `website/voice-assistant/voice-widget.js`
+
+| Composant | Lines | Status |
+|:----------|:-----:|:------:|
+| EventType enum (17 events) | +50 | ✅ |
+| AGUI module | +170 | ✅ |
+| Event emission | +30 | ✅ |
+| State synchronization | +20 | ✅ |
+| Global exposure | +5 | ✅ |
+
+**17 AG-UI Event Types Implemented:**
+```javascript
+EventType: {
+  TEXT_MESSAGE_START, TEXT_MESSAGE_CONTENT, TEXT_MESSAGE_END,
+  TOOL_CALL_START, TOOL_CALL_ARGS, TOOL_CALL_END, TOOL_CALL_RESULT,
+  STATE_SNAPSHOT, STATE_DELTA, MESSAGES_SNAPSHOT,
+  RAW, CUSTOM,
+  RUN_STARTED, RUN_FINISHED, RUN_ERROR,
+  STEP_STARTED, STEP_FINISHED
+}
+```
+
+### 3. Integration Points
+
+| Function | AG-UI Events | Description |
+|:---------|:-------------|:------------|
+| `sendMessage()` | RUN_STARTED, TEXT_MESSAGE_*, STATE_SNAPSHOT, RUN_FINISHED | Message flow |
+| `submitBooking()` | TOOL_CALL_START, TOOL_CALL_RESULT | Booking tool |
+| `init()` | STATE_SNAPSHOT | Initial state |
+| `updateA2UI()` | CUSTOM | A2UI overlay |
+
+### 4. External API
+
+```javascript
+// Subscribe to all AG-UI events
+window.VocaliaAGUI.on('*', callback);
+
+// DOM event
+window.addEventListener('vocalia:agui', (e) => e.detail);
+```
+
+### 5. Documentation Updated
+
+| Document | Changes |
+|:---------|:--------|
+| VOCALIA-MCP.md | Protocol table, AG-UI section |
+| CLAUDE.md | AG-UI Protocol line |
+| SESSION-HISTORY.md | Session 250.29 entry |
+
+### 6. Vérification Empirique
+
+```bash
+# Syntax check
+node --check website/voice-assistant/voice-widget.js  # ✅ OK
+
+# AG-UI module present
+grep -c "EventType:" website/voice-assistant/voice-widget.js  # 1 ✅
+
+# Global export
+grep "VocaliaAGUI" website/voice-assistant/voice-widget.js  # Found ✅
+```
+
+**Commit**: [pending]
+
+---
+
+*Màj: 31/01/2026 - Session 250.29 (AG-UI Protocol Implementation)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

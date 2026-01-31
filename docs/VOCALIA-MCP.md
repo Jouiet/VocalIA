@@ -4,7 +4,7 @@
 > Version: 0.8.0 | 31/01/2026 | Session 250.28 | BM25 RAG SOTA | **181 tools** | **28 integrations**
 > **Session 250.28**: CDP Enhanced UCP (6 tools) - interaction tracking, behavioral events, engagement scoring
 > **Session 249.21**: Stripe Payment Links (19 tools) - Complete transactional cycle
-> **Protocol Gap:** A2A ✅ (Agent Card + Task Lifecycle) | AP2 ❌ | A2UI ✅ | UCP ✅ (CDP Enhanced) | Integrations ✅
+> **Protocol Gap:** A2A ✅ (Agent Card + Task Lifecycle) | AG-UI ✅ (17 events) | A2UI ✅ | UCP ✅ (CDP Enhanced) | AP2 ❌ | Integrations ✅
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds
 
@@ -1105,16 +1105,17 @@ Comparaison vs [MCP Best Practices 2026](https://www.cdata.com/blog/mcp-server-b
 
 ## Protocol Ecosystem (Session 242 Analysis)
 
-### MCP vs A2A vs AP2 vs A2UI - Position VocalIA
+### MCP vs A2A vs AG-UI vs A2UI vs AP2 - Position VocalIA
 
-VocalIA possède **MCP** mais pas les protocoles complémentaires pour l'Agentic Commerce 2026.
+VocalIA possède **MCP**, **A2A**, **AG-UI**, et **A2UI** pour l'Agentic Commerce 2026.
 
 | Protocol | Standard | VocalIA | Fonction |
 |:---------|:---------|:-------:|:---------|
-| **MCP** | Model Context Protocol | ✅ 21 tools | AI Agent → Tools (équiper l'agent) |
-| **A2A** | Agent-to-Agent | ❌ | Agent → Agent (collaboration multi-agent) |
+| **MCP** | Model Context Protocol | ✅ 181 tools | AI Agent → Tools (équiper l'agent) |
+| **A2A** | Agent-to-Agent | ✅ Session 250.28 | Agent → Agent (Agent Card + Task Lifecycle) |
+| **AG-UI** | Agent-User Interaction | ✅ Session 250.29 | Agent → Frontend (17 events, SSE) |
+| **A2UI** | Agent-to-UI | ✅ 75% | Agent → Interface dynamique (génération UI) |
 | **AP2** | Agent Payments | ❌ | Agent → Paiement (transactions vocales) |
-| **A2UI** | Agent-to-UI | ❌ | Agent → Interface dynamique (génération UI) |
 
 ### Complémentarité des Protocoles
 
@@ -1162,13 +1163,46 @@ User → VocalIA Agent (MCP: tools internes)
 
 **Source:** [Google A2UI](https://developers.googleblog.com/introducing-a2ui-an-open-project-for-agent-driven-interfaces/), [AG-UI Docs](https://docs.ag-ui.com/)
 
+### AG-UI Implementation (Session 250.29)
+
+VocalIA implémente le protocole [AG-UI](https://docs.ag-ui.com/) (CopilotKit Open Standard) dans le Voice Widget.
+
+**Fichier:** `website/voice-assistant/voice-widget.js`
+
+| Composant | Status | Description |
+|:----------|:------:|:------------|
+| EventType Enum | ✅ | 17 event types standard |
+| RUN_STARTED/FINISHED/ERROR | ✅ | Lifecycle run |
+| TEXT_MESSAGE_* | ✅ | Message streaming pattern |
+| TOOL_CALL_* | ✅ | Tool call events (booking) |
+| STATE_SNAPSHOT/DELTA | ✅ | State synchronization |
+| CUSTOM events | ✅ | A2UI updates |
+| DOM event dispatch | ✅ | `vocalia:agui` custom event |
+| Global exposure | ✅ | `window.VocaliaAGUI` |
+
+**Usage externe:**
+```javascript
+// Subscribe to AG-UI events
+window.VocaliaAGUI.on('*', (event) => {
+  console.log('AG-UI Event:', event.type, event);
+});
+
+// Or via DOM
+window.addEventListener('vocalia:agui', (e) => {
+  console.log('AG-UI DOM Event:', e.detail);
+});
+```
+
+**Source:** [AG-UI Protocol](https://docs.ag-ui.com/), [AG-UI GitHub](https://github.com/ag-ui-protocol/ag-ui)
+
 ### Roadmap Protocoles
 
-| Protocol | Priorité | Effort | Dépendance |
-|:---------|:--------:|:------:|:-----------|
-| **A2UI** | P1 | 24h | Aucune (client-side) |
-| **AP2** | P1 | 80h | PSP support (Stripe beta) |
-| **A2A** | P2 | 40h | Partenaires (Shopify/HubSpot agents) |
+| Protocol | Priorité | Effort | Status |
+|:---------|:--------:|:------:|:------:|
+| **A2A** | P1 | 40h | ✅ DONE (Session 250.28) |
+| **AG-UI** | P1 | 8h | ✅ DONE (Session 250.29) |
+| **A2UI** | P1 | 24h | ⚠️ 75% (overlay only) |
+| **AP2** | P2 | 80h | ❌ Pending PSP support |
 
 ---
 
@@ -1201,7 +1235,7 @@ User → VocalIA Agent (MCP: tools internes)
 
 *Documentation créée: 29/01/2026 - Session 227*
 *Mise à jour: 30/01/2026 - Session 249.6 (ALL PHASES COMPLETE - 114 tools)*
-*SOTA: MCP 100% | A2A 100% | AP2 0% | A2UI 0%*
+*SOTA: MCP 100% | A2A 100% | AG-UI 100% (Session 250.29) | A2UI 75% | AP2 0%*
 *Integrations: 19/20 (95%) | All Phases: 100% | Blocked: 4 (Salesforce, Teams, WhatsApp, Outlook)*
 *Export: CSV, XLSX, PDF | Email: SMTP templates*
 

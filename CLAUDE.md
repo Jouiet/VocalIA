@@ -1,10 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.40.5 | 31/01/2026 | Session 250.28 | Health: 100% | **FORENSIC AUDIT 94/100**
+> Version: 6.41.0 | 31/01/2026 | Session 250.29 | Health: 100% | **FORENSIC AUDIT 94/100**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
 > **AEO: Speakable schema ✅** | **29 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **A2A Protocol: Translation Supervisor ✅** | Agent Card | Task Lifecycle | State History
+> **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 6 tools** | record_interaction | track_event | get_insights | Engagement scoring
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
 > **Platform: 181 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
