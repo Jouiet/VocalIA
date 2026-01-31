@@ -1,13 +1,14 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.16.0 | 31/01/2026 | Session 249.21 | Health: 100%
+> Version: 6.17.0 | 31/01/2026 | Session 249.22 | Health: 100%
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
 > SDKs: Python | Node.js | MCP Server v0.7.0 (**162 tools**) | RAG: BM25 SOTA
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **22 native** (162 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
+> Integrations: **28 native** (162 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
 > E-commerce: WooCommerce, **Shopify**, Magento, Wix, Squarespace, BigCommerce, PrestaShop (ALL CRUD)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
+> **Website: /docs/ Académie Business ✅** - Use Cases, Workflows Inter-Intégrations, ROI
 
 ## Identité
 

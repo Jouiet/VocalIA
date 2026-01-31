@@ -645,7 +645,7 @@
         </div>
 
         <!-- Quick Links -->
-        <div class="grid md:grid-cols-3 gap-6 mt-12">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
           <a href="#quickstart" class="doc-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="code" class="w-6 h-6 text-emerald-400"></i>
@@ -664,10 +664,18 @@
 
           <a href="#examples" class="doc-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center mb-4">
-              <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-400"></i>
+              <i data-lucide="code-2" class="w-6 h-6 text-amber-400"></i>
             </div>
             <h3 class="font-semibold text-lg mb-2" data-i18n="docs_page.examples_title">Exemples</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="docs_page.examples_desc">Code prêt à l'emploi</p>
+          </a>
+
+          <a href="#academie-business" class="doc-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center mb-4">
+              <i data-lucide="graduation-cap" class="w-6 h-6 text-rose-400"></i>
+            </div>
+            <h3 class="font-semibold text-lg mb-2">Académie Business</h3>
+            <p class="text-vocalia-400 text-sm">Use cases et workflows ROI</p>
           </a>
         </div>
       </div>
@@ -702,6 +710,12 @@
                 </a>
                 <a href="#sdk" class="sidebar-link block px-3 py-2 rounded-lg text-vocalia-300">
                   SDKs
+                </a>
+                <a href="#academie-business" class="sidebar-link block px-3 py-2 rounded-lg text-vocalia-300">
+                  Académie Business
+                </a>
+                <a href="#workflows" class="sidebar-link block px-3 py-2 rounded-lg text-vocalia-300">
+                  Workflows
                 </a>
               </nav>
 
@@ -1078,6 +1092,262 @@
                     </div>
                   </div>
                   <div class="text-sm text-emerald-400"><i data-lucide="check-circle" class="w-4 h-4 inline text-emerald-400"></i> Disponible</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Académie Business -->
+            <section id="academie-business">
+              <h2 class="text-3xl font-bold mb-6">
+                <span class="gradient-text">Académie</span> Business
+              </h2>
+              <p class="text-vocalia-300 mb-8">
+                VocalIA n'est pas qu'une API technique. C'est un moteur de valeur business qui combine 162 outils MCP pour automatiser des processus complets. Découvrez comment transformer chaque conversation en résultat mesurable.
+              </p>
+
+              <!-- Stats Bar -->
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="glass rounded-lg p-4 text-center">
+                  <div class="text-2xl font-bold text-vocalia-400">162</div>
+                  <div class="text-xs text-vocalia-300">MCP Tools</div>
+                </div>
+                <div class="glass rounded-lg p-4 text-center">
+                  <div class="text-2xl font-bold text-emerald-400">28</div>
+                  <div class="text-xs text-vocalia-300">Intégrations</div>
+                </div>
+                <div class="glass rounded-lg p-4 text-center">
+                  <div class="text-2xl font-bold text-amber-400">+7000</div>
+                  <div class="text-xs text-vocalia-300">Apps via iPaaS</div>
+                </div>
+                <div class="glass rounded-lg p-4 text-center">
+                  <div class="text-2xl font-bold text-rose-400">5</div>
+                  <div class="text-xs text-vocalia-300">Langues</div>
+                </div>
+              </div>
+
+              <!-- Use Case Cards -->
+              <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- E-commerce -->
+                <a href="/use-cases/e-commerce" class="doc-card rounded-xl p-6 group">
+                  <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
+                      <i data-lucide="shopping-cart" class="w-6 h-6 text-emerald-400"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-lg mb-2 group-hover:text-vocalia-400 transition">E-commerce & Retail</h3>
+                      <p class="text-vocalia-400 text-sm mb-3">Suivi commandes, retours, SAV automatisé 24/7. Connexion Shopify, WooCommerce, Magento, PrestaShop, BigCommerce, Squarespace, Wix.</p>
+                      <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs">70% déviation tickets</span>
+                        <span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs">7 plateformes</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+                <!-- Lead Qualification -->
+                <a href="/use-cases/lead-qualification" class="doc-card rounded-xl p-6 group">
+                  <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-indigo-500/20 flex items-center justify-center shrink-0">
+                      <i data-lucide="target" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-lg mb-2 group-hover:text-vocalia-400 transition">Qualification de Leads</h3>
+                      <p class="text-vocalia-400 text-sm mb-3">Scoring BANT automatique, détection d'intention, transfert à chaud aux commerciaux. Sync CRM temps réel.</p>
+                      <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 text-xs">+40% conversion</span>
+                        <span class="px-2 py-1 rounded bg-indigo-500/10 text-indigo-400 text-xs">Score 0-100</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+                <!-- Appointments -->
+                <a href="/use-cases/appointments" class="doc-card rounded-xl p-6 group">
+                  <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center shrink-0">
+                      <i data-lucide="calendar" class="w-6 h-6 text-amber-400"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-lg mb-2 group-hover:text-vocalia-400 transition">Prise de Rendez-vous</h3>
+                      <p class="text-vocalia-400 text-sm mb-3">Réservation 24/7, sync Google Calendar/Calendly, rappels SMS/WhatsApp, reprogrammation vocale.</p>
+                      <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-amber-500/10 text-amber-400 text-xs">-65% no-shows</span>
+                        <span class="px-2 py-1 rounded bg-amber-500/10 text-amber-400 text-xs">Multi-praticiens</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+
+                <!-- Customer Support -->
+                <a href="/use-cases/customer-support" class="doc-card rounded-xl p-6 group">
+                  <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-lg bg-rose-500/20 flex items-center justify-center shrink-0">
+                      <i data-lucide="headphones" class="w-6 h-6 text-rose-400"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-semibold text-lg mb-2 group-hover:text-vocalia-400 transition">Service Client</h3>
+                      <p class="text-vocalia-400 text-sm mb-3">Ticketing automatisé, escalade intelligente, base de connaissances RAG. Freshdesk, Zendesk natifs.</p>
+                      <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-rose-500/10 text-rose-400 text-xs">-50% tickets</span>
+                        <span class="px-2 py-1 rounded bg-rose-500/10 text-rose-400 text-xs">24/7 multilingue</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </section>
+
+            <!-- Inter-Integration Workflows -->
+            <section id="workflows">
+              <h2 class="text-3xl font-bold mb-6">Workflows Inter-Intégrations</h2>
+              <p class="text-vocalia-300 mb-8">
+                La puissance de VocalIA réside dans les chaînes d'outils qui transforment une conversation en actions business automatisées.
+              </p>
+
+              <!-- Workflow 1: Voice-to-Cash -->
+              <div class="glass rounded-xl p-6 mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                    <i data-lucide="banknote" class="w-5 h-5 text-emerald-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-lg">Voice-to-Cash</h3>
+                    <p class="text-sm text-vocalia-400">Lead entrant jusqu'au paiement encaissé</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-sm mb-4">
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Voice Widget</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">qualify_lead</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">HubSpot create_contact</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Stripe create_payment_link</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Gmail send_email</span>
+                </div>
+                <div class="text-sm text-vocalia-400">
+                  <strong class="text-emerald-400">Résultat:</strong> Client qualifié, enregistré dans CRM, lien de paiement envoyé, confirmation email automatique.
+                </div>
+              </div>
+
+              <!-- Workflow 2: Support-to-Resolution -->
+              <div class="glass rounded-xl p-6 mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 rounded-lg bg-rose-500/20 flex items-center justify-center">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-rose-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-lg">Support-to-Resolution</h3>
+                    <p class="text-sm text-vocalia-400">Ticket support jusqu'à résolution et suivi</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-sm mb-4">
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Appel PSTN</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Freshdesk create_ticket</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">knowledge_base_search</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Shopify order_status</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Twilio send_sms</span>
+                </div>
+                <div class="text-sm text-vocalia-400">
+                  <strong class="text-rose-400">Résultat:</strong> Ticket créé, problème identifié via RAG, statut commande vérifié, client notifié par SMS.
+                </div>
+              </div>
+
+              <!-- Workflow 3: Lead-to-Meeting -->
+              <div class="glass rounded-xl p-6 mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                    <i data-lucide="calendar-check" class="w-5 h-5 text-amber-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-lg">Lead-to-Meeting</h3>
+                    <p class="text-sm text-vocalia-400">Prospect jusqu'à RDV confirmé</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-sm mb-4">
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Voice Widget</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">qualify_lead (BANT)</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Calendly get_available_times</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Google Calendar create_event</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Pipedrive create_deal</span>
+                </div>
+                <div class="text-sm text-vocalia-400">
+                  <strong class="text-amber-400">Résultat:</strong> Lead qualifié, créneau proposé, RDV créé dans calendrier, deal ouvert dans CRM.
+                </div>
+              </div>
+
+              <!-- Workflow 4: Order-to-Delivery -->
+              <div class="glass rounded-xl p-6 mb-6">
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                    <i data-lucide="truck" class="w-5 h-5 text-indigo-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-lg">Order-to-Delivery</h3>
+                    <p class="text-sm text-vocalia-400">Commande jusqu'à livraison trackée</p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2 text-sm mb-4">
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Appel client</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Shopify get_order</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">get_tracking_info</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">WhatsApp send_message</span>
+                  <span class="text-vocalia-500">→</span>
+                  <span class="px-3 py-1.5 rounded-lg bg-slate-700 text-vocalia-300">Google Sheets log</span>
+                </div>
+                <div class="text-sm text-vocalia-400">
+                  <strong class="text-indigo-400">Résultat:</strong> Statut commande récupéré, tracking partagé, client notifié, interaction loggée.
+                </div>
+              </div>
+
+              <!-- Integration Stack -->
+              <div class="bg-slate-900/50 rounded-xl p-6">
+                <h3 class="font-semibold text-lg mb-4">Stack d'Intégrations Natives</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">CRM</div>
+                    <div class="text-xs text-vocalia-400">HubSpot, Pipedrive, Zoho</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">E-commerce</div>
+                    <div class="text-xs text-vocalia-400">Shopify, WooCommerce, +5</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">Scheduling</div>
+                    <div class="text-xs text-vocalia-400">Calendly, Google Calendar</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">Support</div>
+                    <div class="text-xs text-vocalia-400">Freshdesk, Zendesk</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">Messaging</div>
+                    <div class="text-xs text-vocalia-400">Twilio, WhatsApp, Slack</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">Payments</div>
+                    <div class="text-xs text-vocalia-400">Stripe (19 tools)</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">Productivity</div>
+                    <div class="text-xs text-vocalia-400">Sheets, Drive, Gmail</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-sm font-medium text-vocalia-300 mb-2">iPaaS</div>
+                    <div class="text-xs text-vocalia-400">Zapier, Make, n8n</div>
+                  </div>
                 </div>
               </div>
             </section>
