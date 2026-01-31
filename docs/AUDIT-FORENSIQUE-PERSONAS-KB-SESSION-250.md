@@ -1039,13 +1039,13 @@ DENTAL: {
 }
 ```
 
-### 7.4 Phase 3: KB Avancé (3-5 jours) - 🔶 EN COURS
+### 7.4 Phase 3: KB Avancé (3-5 jours) - ✅ COMPLET
 
 | # | Action | Effort | Fichier | Validation | Status |
 |:-:|:-------|:------:|:--------|:-----------|:------:|
-| 3.1 | Merger legacy KB dans RAG | 4h | `knowledge-base-services.cjs` | 40 personas FAQ | 🔶 TODO |
+| 3.1 | Merger legacy KB dans RAG | 4h | `knowledge-base-services.cjs` | 165 FAQ entries from 40 personas | ✅ DONE (Session 250.15) |
 | 3.2 | Créer knowledge-graph.json | 1j | `data/knowledge-base/` | 23 nodes, 38 edges | ✅ DONE |
-| 3.3 | Créer policies.json | 4h | `data/knowledge-base/` | Policy boosting actif | 🔶 TODO |
+| 3.3 | Créer policies.json | 4h | `data/knowledge-base/` | 10 policies, policy boosting actif | ✅ DONE (Session 250.15) |
 | 3.4 | Implémenter ColBERT reranker | 3j | Nouveau fichier | +25% precision (optionnel) | 🔶 OPTIONNEL |
 
 **Template knowledge-graph.json**:

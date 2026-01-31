@@ -26,6 +26,7 @@ const KB_INDEX_FILE = path.join(KNOWLEDGE_BASE_DIR, 'tfidf_index.json');
 const KB_STATUS_FILE = path.join(KNOWLEDGE_BASE_DIR, 'status.json');
 const KB_GRAPH_FILE = path.join(KNOWLEDGE_BASE_DIR, 'knowledge-graph.json');
 const KB_POLICY_FILE = path.join(KNOWLEDGE_BASE_DIR, 'knowledge_base_policies.json');
+const LEGACY_KB_FILE = path.join(__dirname, '../telephony/knowledge_base.json');
 
 /**
  * ARCHITECTURAL AUTHORITY DATA (Session 167 HARDENING)
@@ -473,6 +474,54 @@ class ServiceKnowledgeBase {
         ].join(' ')
       };
       this.chunks.push(chunk);
+    }
+
+    // Merge Legacy Knowledge Base (Session 250.15 - 40 Personas FAQ)
+    if (fs.existsSync(LEGACY_KB_FILE)) {
+      console.log('   Merging legacy knowledge base (persona FAQ)...');
+      const legacyKB = JSON.parse(fs.readFileSync(LEGACY_KB_FILE, 'utf8'));
+      let faqCount = 0;
+
+      for (const [personaId, faqEntries] of Object.entries(legacyKB)) {
+        for (const [topic, answer] of Object.entries(faqEntries)) {
+          // Generate English title from topic (snake_case to Title Case)
+          const titleEn = topic.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+          const titleFr = topic.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+          // Build searchable text (multilingual - answer is usually French)
+          const searchText = [
+            personaId.replace(/_v\d+$/, '').replace(/_/g, ' '),
+            titleEn,
+            topic,
+            answer,
+            // Add common synonyms for key topics
+            topic.includes('livraison') ? 'delivery shipping transport' : '',
+            topic.includes('retour') ? 'return refund exchange' : '',
+            topic.includes('paiement') ? 'payment pay credit card' : '',
+            topic.includes('urgence') ? 'urgency emergency critical' : '',
+            topic.includes('rdv') ? 'appointment booking schedule' : '',
+            topic.includes('horaires') ? 'hours schedule opening time' : '',
+            topic.includes('tarif') ? 'price pricing cost fee' : ''
+          ].filter(Boolean).join(' ');
+
+          const faqChunk = {
+            id: `faq_${personaId}_${topic}`,
+            type: 'faq',
+            title: `${titleEn} FAQ`,
+            title_fr: `FAQ ${titleFr}`,
+            category: 'faq',
+            persona_id: personaId,
+            topic: topic,
+            answer_fr: answer,
+            tenant_id: 'agency_internal',
+            text: searchText
+          };
+
+          this.chunks.push(faqChunk);
+          faqCount++;
+        }
+      }
+      console.log(`   Merged ${faqCount} FAQ entries from ${Object.keys(legacyKB).length} personas`);
     }
 
     console.log(`   Created ${this.chunks.length} searchable chunks`);

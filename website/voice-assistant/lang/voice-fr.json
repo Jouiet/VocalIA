@@ -47,7 +47,7 @@
     },
     "languages": {
       "keywords": ["langue", "langues", "multilingue", "arabe", "darija", "anglais", "espagnol"],
-      "response": "VocalIA supporte 5 langues : Français, Anglais, Espagnol, Arabe classique et Darija marocaine. Nous sommes la seule solution au Maroc avec un support natif du Darija grâce à Atlas-Chat-9B."
+      "response": "VocalIA supporte 5 langues : Français, Anglais, Espagnol, Arabe classique et Darija marocaine. Nous sommes la seule solution au Maroc avec un support natif du Darija."
     },
     "competitors": {
       "keywords": ["vapi", "retell", "bland", "concurrent", "alternative", "comparaison"],

@@ -1,0 +1,62 @@
+{
+  "urgency": {
+    "text": "Emergency and urgent matters require immediate attention. For medical emergencies call 15 (SAMU) or 112. For dental emergencies, same-day slots are available between 11h-12h and 15h-16h. For property emergencies (water leak, electrical failure), call the 24/7 emergency number.",
+    "keywords": ["urgent", "urgence", "emergency", "immediate", "critical", "ASAP", "now", "tout de suite", "immédiat", "danger", "help", "aide"],
+    "priority": 100,
+    "tenant_id": "agency_internal"
+  },
+  "pricing": {
+    "text": "VocalIA offers competitive and transparent pricing. Our voice solutions are significantly more affordable than market alternatives, with savings of up to 60%. Contact sales for detailed pricing tailored to your business needs.",
+    "keywords": ["price", "pricing", "cost", "tarif", "prix", "how much", "combien", "fee", "charge", "budget", "devis", "estimate"],
+    "priority": 80,
+    "tenant_id": "agency_internal"
+  },
+  "hours": {
+    "text": "Operating hours vary by business type. Most services operate Monday-Friday 9h-18h. Some offer Saturday hours. 24/7 services include emergency hotlines and automated voice assistants. Check specific business hours in the knowledge base.",
+    "keywords": ["hours", "horaires", "open", "ouvert", "close", "fermé", "when", "quand", "schedule", "disponible", "available"],
+    "priority": 70,
+    "tenant_id": "agency_internal"
+  },
+  "contact": {
+    "text": "Contact VocalIA via website vocalia.ma or phone +212 6 00 00 00 00. For technical support, email support@vocalia.ma. Business inquiries go to contact@vocalia.ma. Response time is typically within 24 business hours.",
+    "keywords": ["contact", "phone", "telephone", "email", "reach", "joindre", "appeler", "call", "message", "write"],
+    "priority": 60,
+    "tenant_id": "agency_internal"
+  },
+  "data_privacy": {
+    "text": "VocalIA is GDPR compliant. We use privacy-first analytics with no cookies. Customer data is encrypted with enterprise-grade security. Voice interactions are processed in real-time with full data isolation. Data requests can be submitted to privacy@vocalia.ma.",
+    "keywords": ["privacy", "GDPR", "data", "donnees", "protection", "confidential", "secure", "security", "encryption", "cookies"],
+    "priority": 90,
+    "tenant_id": "agency_internal"
+  },
+  "refund": {
+    "text": "Refund and return policies vary by merchant. Standard e-commerce offers 30-day returns for unused items in original packaging. Digital services may have different terms. Contact the specific merchant for their return policy details.",
+    "keywords": ["refund", "return", "remboursement", "retour", "exchange", "échange", "cancel", "annuler", "money back"],
+    "priority": 75,
+    "tenant_id": "agency_internal"
+  },
+  "booking": {
+    "text": "Appointment booking is available through multiple channels: voice assistant, online calendar, phone call, or messaging. Bookings require name, contact info, preferred date/time, and service type. Confirmation is sent via SMS or email. Cancellations should be made 24h in advance.",
+    "keywords": ["book", "booking", "appointment", "rdv", "rendez-vous", "schedule", "reserve", "réserver", "slot", "créneau", "calendar"],
+    "priority": 85,
+    "tenant_id": "agency_internal"
+  },
+  "delivery": {
+    "text": "Delivery options include standard (3-5 business days, free over 50€), express (1-2 days, 15€), and same-day for select areas. Real-time tracking via SMS link. If absent, packages go to nearest pickup point. Contact logistics for international shipping.",
+    "keywords": ["delivery", "livraison", "shipping", "ship", "track", "suivi", "colis", "package", "transport", "receive"],
+    "priority": 70,
+    "tenant_id": "agency_internal"
+  },
+  "payment": {
+    "text": "Accepted payment methods include Visa, Mastercard, Amex, PayPal, and Apple Pay. Secure payment processing is handled with enterprise-grade encryption. Payment links and invoices are available. Installment plans (3-4x sans frais) offered by some merchants.",
+    "keywords": ["payment", "paiement", "pay", "payer", "card", "carte", "visa", "mastercard", "paypal", "invoice", "facture"],
+    "priority": 80,
+    "tenant_id": "agency_internal"
+  },
+  "language_support": {
+    "text": "VocalIA supports 5 languages: French (FR), English (EN), Spanish (ES), Arabic (AR/MSA), and Moroccan Darija (ARY). Language is auto-detected or can be specified. All personas have full multilingual translations.",
+    "keywords": ["language", "langue", "french", "english", "arabic", "darija", "spanish", "translate", "traduction", "multilingual"],
+    "priority": 65,
+    "tenant_id": "agency_internal"
+  }
+}

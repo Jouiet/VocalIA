@@ -1884,7 +1884,7 @@ async function sendWhatsAppMessage(to, body) {
 
 /**
  * Unified message sender with fallback chain
- * Priority: 1. WhatsApp (free for businesses) → 2. Twilio SMS ($0.0083/msg)
+ * Priority: 1. WhatsApp Business → 2. Twilio SMS (fallback)
  * @param {string} to - Phone number (E.164 format)
  * @param {string} body - Message text
  * @returns {Promise<{success: boolean, channel: string}>}

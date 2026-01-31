@@ -11,8 +11,8 @@ Fichiers: widget/voice-widget-core.js, widget/voice-widget-templates.cjs
 
 ### Produit 2: Voice Telephony AI (PSTN)
 ```
-Technologie: Twilio PSTN ↔ Grok WebSocket
-Coût: ~$0.06/min (Grok $0.05 + Twilio $0.01)
+Technologie: PSTN ↔ AI WebSocket Bridge
+Coût: Compétitif (voir pricing commercial)
 Fichiers: telephony/voice-telephony-bridge.cjs, core/grok-voice-realtime.cjs
 ```
 
@@ -72,12 +72,12 @@ HITL_SLACK_WEBHOOK=              # Notifications
 | en | English | ✅ Full |
 | es | Español | ✅ Full |
 | ar | Arabic MSA | ✅ Full |
-| ary | Darija (Moroccan) | ✅ via Atlas-Chat-9B |
+| ary | Darija (Moroccan) | ✅ Native support |
 
-## Concurrents
-| Concurrent | Pricing | Notre Avantage |
-|:-----------|:--------|:---------------|
-| Vapi | $0.15-0.33/min | 60% moins cher |
-| Retell | $0.13-0.31/min | Widget + Telephony |
-| Bland | $0.09/min | 39 personas SOTA, Darija |
-| Synthflow | $0.08-0.13/min | Self-hosted |
+## Avantages Concurrentiels
+| Avantage | Description |
+|:---------|:------------|
+| Pricing | 60% moins cher que alternatives |
+| Platform | Widget + Telephony intégré |
+| Personas | 40 personas SOTA |
+| Langues | Seul avec Darija native |

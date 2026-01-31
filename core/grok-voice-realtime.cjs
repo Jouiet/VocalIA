@@ -7,7 +7,7 @@
  *   2. Gemini 2.5 Flash TTS (REST API) - Text→Audio only (degraded mode)
  *
  * Audio: PCM16, 24000Hz, mono, little-endian, base64 encoded
- * Pricing: Grok $0.05/min | Gemini ~$0.001/1K chars
+ * Pricing: See commercial pricing documentation
  *
  * Date: 2025-12-29
  * Version: 2.0.0 (with Gemini TTS fallback)
@@ -916,7 +916,6 @@ async function runHealthCheck() {
 
   console.log(`\nGrok voices: ${Object.keys(CONFIG.voices).join(', ')}`);
   console.log(`Gemini voices: ${Object.keys(GEMINI_CONFIG.voices).join(', ')}`);
-  console.log(`Grok pricing: $0.05/min | Gemini: ~$0.001/1K chars`);
 
   return grokOk || geminiOk;
 }
@@ -1051,10 +1050,6 @@ Environment:
 
 Grok Voices:    ara, eve, leo, sal, rex, mika, valentin
 Gemini Voices:  Kore, Puck, Zephyr, Enceladus, Algieba, Sulafat, Aoede, Charon
-
-Pricing:
-  Grok:   $0.05/min connection time
-  Gemini: ~$0.001/1K characters
 
 Examples:
   node grok-voice-realtime.cjs --health
