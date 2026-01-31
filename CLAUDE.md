@@ -35,10 +35,10 @@
 
 ## 2 Produits
 
-| Produit | Technologie | Coût |
-|:--------|:------------|:-----|
-| Voice Widget | Web Speech API | $0 |
-| Voice Telephony | Twilio PSTN ↔ Grok | ~$0.06/min |
+| Produit | Type | Pricing |
+|:--------|:-----|:--------|
+| Voice Widget | Browser-based | Free tier |
+| Voice Telephony | PSTN AI Bridge | Competitive per-minute |
 
 ---
 
@@ -151,13 +151,13 @@ open http://localhost:8080?lang=ar
 
 ## Différenciateurs
 
-| Feature | Vapi | Retell | VocalIA |
-|:--------|:----:|:------:|:-------:|
-| Pricing | $0.15-0.33/min | $0.13-0.31/min | **$0.06/min** |
-| Widget + Telephony | ❌ | ❌ | ✅ |
-| 40 Personas SOTA | ❌ | ❌ | ✅ |
-| Darija Support | ❌ | ❌ | ✅ |
-| 5 Languages | ❌ | ❌ | ✅ |
+| Feature | Alternatives | VocalIA |
+|:--------|:------------:|:-------:|
+| Pricing | Higher cost | **60% savings** |
+| Widget + Telephony | Separate | ✅ Unified |
+| 40 Personas SOTA | Limited | ✅ |
+| Darija Support | ❌ | ✅ |
+| 5 Languages | Varies | ✅ |
 
 ---
 
@@ -487,7 +487,7 @@ grep -rl 'href="/solutions/darija"' --include='*.html' | wc -l  # 0 ✅
 ## Session 249.18 - Twilio SMS Fallback IMPLÉMENTÉ
 
 **Nouvelles fonctions** (voice-telephony-bridge.cjs):
-- `sendTwilioSMS()` - Twilio REST API + SDK ($0.0083/msg US)
+- `sendTwilioSMS()` - Twilio REST API + SDK
 - `sendMessage()` - Unified avec fallback: WhatsApp → Twilio SMS
 - `/messaging/send` - HTTP endpoint pour MCP
 
