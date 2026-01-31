@@ -3566,7 +3566,7 @@ cd mcp-server && npm run build  # ✅ SUCCESS
 - Integrations: 8/20 (40%) → **11/20 (55%)**
 - Phase 1: 40% → **100% COMPLETE**
 
-**Status**: Phase 0 ✅ COMPLETE | Phase 1 ✅ COMPLETE | Phase 2 ⏳ TODO
+**Status**: Phase 0 ✅ COMPLETE | Phase 1 ✅ COMPLETE | Phase 2 🔶 ROADMAP (Salesforce, SOC2)
 
 ---
 
@@ -4441,10 +4441,10 @@ grep "sendTwilioSMS" telephony/*.cjs  # ✅ Function exists
 
 | # | Task | Priority | Status |
 |:-:|:-----|:--------:|:------:|
-| 1 | Shopify MCP tools WRITE | P0 | ❌ À FAIRE |
+| 1 | Shopify MCP tools WRITE | P0 | ✅ FAIT (8 tools) |
 | 2 | ~~Twilio SMS fallback~~ | ~~P0~~ | ✅ **FAIT** |
-| 3 | Page Use Cases website | P1 | ❌ À FAIRE |
-| 4 | Stripe Payment Links | P1 | ❌ À FAIRE |
+| 3 | Page Use Cases website | P1 | ✅ FAIT |
+| 4 | Stripe Payment Links | P1 | ✅ FAIT (19 tools) |
 
 **Statut final**: P0 Twilio SMS ✅ IMPLÉMENTÉ | 117 MCP tools | Build OK
 
@@ -4500,10 +4500,10 @@ CTA Section
 
 | # | Task | Priority | Status |
 |:-:|:-----|:--------:|:------:|
-| 1 | Shopify MCP tools WRITE | P0 | ❌ À FAIRE |
+| 1 | Shopify MCP tools WRITE | P0 | ✅ FAIT (8 tools) |
 | 2 | ~~Twilio SMS fallback~~ | ~~P0~~ | ✅ FAIT |
 | 3 | ~~Page Use Cases website~~ | ~~P1~~ | ✅ **FAIT** |
-| 4 | Stripe Payment Links | P1 | ❌ À FAIRE |
+| 4 | Stripe Payment Links | P1 | ✅ FAIT (19 tools) |
 
 **Statut final**: P1 Use Cases Page ✅ CRÉÉE | 32 pages website | 5 langues i18n
 

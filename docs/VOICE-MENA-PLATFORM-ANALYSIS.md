@@ -2011,9 +2011,9 @@ Raisons:
 | # | Action | Owner | Deadline | Status |
 |---|--------|-------|----------|--------|
 | 1 | ~~Deploy Atlas-Chat-9B sur RunPod/Vast.ai~~ **Intégré via HuggingFace Inference API** | Dev | Session 170 | ✅ **DONE** |
-| 2 | Tester Mistral Saba API pour Darija | Dev | J+2 | ⏳ TODO |
-| 3 | Provisioning premier DID Telnyx +212 | Ops | J+1 | ⏳ TODO |
-| 4 | Intégrer WhatsApp Business Calling API | Dev | J+7 | ⏳ TODO |
+| 2 | Tester Mistral Saba API pour Darija | Dev | J+2 | 🔶 ROADMAP (needs API access) |
+| 3 | Provisioning premier DID Telnyx +212 | Ops | J+1 | 🔶 ROADMAP (needs Telnyx account) |
+| 4 | Intégrer WhatsApp Business Calling API | Dev | J+7 | 🔶 ROADMAP (needs Meta approval) |
 
 ### Actions P1 (Ce mois)
 
