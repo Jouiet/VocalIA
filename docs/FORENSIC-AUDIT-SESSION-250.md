@@ -48,13 +48,13 @@
 | **Security** | 88/100 | 29 fonctions, RateLimiter, CSRF, XSS protection |
 | **Frontend/SEO** | 85/100 | Solide mais lacunes critiques |
 | **i18n** | 78/100 | Structure OK, traductions incomplètes |
-| **Tests** | 60/100 | 156 tests (SecretVault 11, RateLimiter 55, Module 21, i18n 18, EventBus 20, KB 31) |
+| **Tests** | 65/100 | 190 tests (SecretVault 11, RateLimiter 55, Module 21, i18n 18, EventBus 20, KB 31, VoiceAPI 34) |
 | **CI/CD** | 75/100 | 2 workflows, manque coverage gate |
 | **SDKs** | 80/100 | Python + Node complets, docs manquantes |
 | **Conversion** | 70/100 | Signup créé ✅, forms fake restants |
 | **Fonctionnel** | 60/100 | Dashboards mockups |
 | **Documentation** | 95/100 | Claims corrigés cette session |
-| **GLOBAL** | **85/100** | P0 fixés, P1/P2 tests +69 |
+| **GLOBAL** | **86/100** | P0 fixés, P1/P2 tests +103 |
 
 ## Chiffres Clés Vérifiés
 
@@ -451,21 +451,22 @@ wc -l test/module-load.test.cjs
 
 | Métrique | Valeur |
 |:---------|:------:|
-| Tests existants | 156 total |
+| Tests existants | 190 total |
 | - Module smoke tests | 21 |
 | - SecretVault unit tests | 11 |
 | - RateLimiter unit tests | 55 |
 | - i18n tests | 18 |
 | - EventBus tests | 20 |
 | - Knowledge Base tests | 31 |
-| **Coverage estimé** | **~20%** |
+| - Voice API tests | 34 |
+| **Coverage estimé** | **~25%** |
 
 ### Exécution
 
 ```bash
 # Commande:
 node --test test/
-# Status: ✅ 156/156 passing (21 module + 11 vault + 55 rate + 18 i18n + 20 eventbus + 31 kb)
+# Status: ✅ 190/190 passing (21 module + 11 vault + 55 rate + 18 i18n + 20 eventbus + 31 kb + 34 voice)
 ```
 
 ## 3.10 CI/CD Pipelines
@@ -1198,7 +1199,7 @@ TOTAL: 652 lignes - Plugin complet
 | # | Action | Fichier | Target Coverage |
 |:-:|:-------|:--------|:---------------:|
 | 11 | ~~Unit tests SecretVault~~ | test/secret-vault.test.cjs | ✅ 11 tests |
-| 12 | Unit tests voice-api | test/voice-api.test.cjs | 70% |
+| 12 | ~~Unit tests voice-api~~ | test/voice-api.test.cjs | ✅ 34 tests (structure) |
 | 13 | ~~Unit tests RateLimiter~~ | test/rate-limiter.test.cjs | ✅ 55 tests |
 | 14 | Integration tests MCP | test/mcp-tools.test.ts | 60% |
 | 15 | E2E tests Widget | test/e2e/widget.spec.js | 50% |
