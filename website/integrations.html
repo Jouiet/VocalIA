@@ -52,6 +52,27 @@
   }
   </script>
 
+  <!-- Schema.org WebPage with Speakable (AEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Intégrations VocalIA - CRM, E-commerce, Support",
+    "url": "https://vocalia.ma/integrations",
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", ".integration-title", ".integration-description"]
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+        {"@type": "ListItem", "position": 2, "name": "Intégrations", "item": "https://vocalia.ma/integrations"}
+      ]
+    }
+  }
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">

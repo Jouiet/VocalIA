@@ -55,6 +55,28 @@
     }
   </script>
 
+  <!-- Schema.org WebPage with Speakable (AEO) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Voice Telephony - Agents Vocaux IA PSTN",
+      "url": "https://vocalia.ma/products/voice-telephony",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", ".product-description", ".feature-list"]
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+          {"@type": "ListItem", "position": 2, "name": "Produits", "item": "https://vocalia.ma/products"},
+          {"@type": "ListItem", "position": 3, "name": "Voice Telephony", "item": "https://vocalia.ma/products/voice-telephony"}
+        ]
+      }
+    }
+  </script>
+
   <!-- Critical CSS -->
   <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
