@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.32.0 | 31/01/2026 | Session 250.15 | Health: 100% | **P0-P3 COMPLETE**
+> Version: 6.33.0 | 31/01/2026 | Session 250.16 | Health: 100% | **P0-P3 COMPLETE** | **HITL Financial ✅**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1619 keys** | RTL ✅ | **Structure 100% | Traductions ~82%**
 > **Social Proof ✅** (testimonials section) | **Volume Discounts ✅** (pricing tiers) | **40 Personas ✅**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
