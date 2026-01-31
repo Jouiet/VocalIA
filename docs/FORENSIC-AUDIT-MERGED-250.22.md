@@ -438,45 +438,68 @@ logs=$(grep -r 'console.log' website/*.html 2>/dev/null | grep -v docs/ | wc -l)
 
 ---
 
-## 11. PLAN ACTIONNABLE SESSION 250.29
+## 11. SESSION 250.29 - AG-UI PROTOCOL ✅
 
-**Priorité:** P0 = Critique (avant push), P1 = Important (cette semaine), P2 = Medium, P3 = Nice-to-have
+### Completed This Session
+
+| # | Task | Status | Commit |
+|:-:|:-----|:------:|:------:|
+| 1 | AG-UI Protocol Implementation | ✅ DONE | f47ec9e |
+| 2 | 17 Event Types in voice-widget.js | ✅ DONE | f47ec9e |
+| 3 | State synchronization (SNAPSHOT/DELTA) | ✅ DONE | f47ec9e |
+| 4 | DOM event dispatch (vocalia:agui) | ✅ DONE | f47ec9e |
+| 5 | Global exposure (window.VocaliaAGUI) | ✅ DONE | f47ec9e |
+
+### Vérification Session 250.29
+
+```bash
+# AG-UI Module
+grep -c "EventType:" website/voice-assistant/voice-widget.js  # 1 ✅
+
+# Global Export
+grep "VocaliaAGUI" website/voice-assistant/voice-widget.js  # Found ✅
+
+# Syntax valid
+node --check website/voice-assistant/voice-widget.js  # ✅ OK
+```
+
+---
+
+## 12. PLAN ACTIONNABLE SESSION 250.30
+
+**Priorité:** P0 = Critique, P1 = Important, P2 = Medium, P3 = Nice-to-have
 
 ### Issues Restantes (5 Deferred)
 
 | # | Issue | Priority | Effort | Status |
 |:-:|:------|:--------:|:------:|:------:|
-| 1 | SRI (integrity=) sur CDN scripts | P2 | 2h | DEFERRED - Maintenance lourde |
-| 2 | CSP unsafe-inline refactor | P2 | 4h | DEFERRED - Nécessite refactor JS |
-| 3 | Inline CSS extraction | P3 | 3h | DEFERRED - Design acceptable |
-| 4 | Focus outline enhancement | P3 | 1h | DEFERRED - WCAG baseline OK |
-| 5 | Contrast enhancement | P3 | 2h | DEFERRED - WCAG AA atteint |
+| 1 | SRI (integrity=) sur CDN scripts | P2 | 2h | DEFERRED |
+| 2 | CSP unsafe-inline refactor | P2 | 4h | DEFERRED |
+| 3 | Inline CSS extraction | P3 | 3h | DEFERRED |
+| 4 | Focus outline enhancement | P3 | 1h | DEFERRED |
+| 5 | Contrast enhancement | P3 | 2h | DEFERRED |
 
-### Optimisations Futures
+### Optimisations Prochaines
 
 | # | Task | Priority | Impact | Notes |
 |:-:|:-----|:--------:|:------:|:------|
-| 1 | A2A: Ajouter Agent Cards aux autres agents | P1 | A2A SOTA | BillingAgent, TenantOnboarding |
-| 2 | UCP/CDP: Lifetime Value calculation | P1 | Revenue | Intégrer avec bookings/purchases |
-| 3 | AEO: Expand Speakable to remaining 16 pages | P2 | SEO | 29→45 pages |
-| 4 | Sitemap: Ajouter pages manquantes | P2 | SEO | 36→45 URLs |
-| 5 | PWA: Screenshots réels | P3 | UX | Actuellement stubs |
+| 1 | A2A: Agent Cards BillingAgent + TenantOnboarding | P1 | A2A SOTA | +2 agents |
+| 2 | UCP/CDP: Lifetime Value calculation | P1 | Revenue | purchases tracking |
+| 3 | AEO: Speakable 29→45 pages | P2 | SEO | +16 pages |
+| 4 | Sitemap: 36→45 URLs | P2 | SEO | +9 URLs |
+| 5 | A2UI: DatePicker généré dynamiquement | P2 | UX | +40% complétion |
+| 6 | AP2: Stripe Voice Payments research | P3 | Revenue | PSP beta |
 
-### Vérification Session 250.28
+### Protocol Status (Session 250.29)
 
-```bash
-# A2A Agent Card
-grep -c "AGENT_CARD" core/translation-supervisor.cjs  # 1 ✅
+| Protocol | Status | Score |
+|:---------|:------:|:-----:|
+| MCP | ✅ 181 tools | 100% |
+| A2A | ✅ Agent Card + Task Lifecycle | 100% |
+| AG-UI | ✅ 17 events | 100% |
+| A2UI | ⚠️ Overlay only | 75% |
+| UCP/CDP | ✅ 6 tools | 100% |
+| AP2 | ❌ Not started | 0% |
 
-# CDP Tools  
-grep -c "ucp_record_interaction\|ucp_track_event\|ucp_get_insights" mcp-server/src/index.ts  # 3 ✅
-
-# MCP Tools Total
-grep -c "server.tool(" mcp-server/src/index.ts  # 181 ✅
-
-# Build
-cd mcp-server && npm run build  # ✅ OK
-```
-
-**Màj:** 31/01/2026 - Session 250.28 (A2A + CDP Enhancement)
+**Màj:** 31/01/2026 - Session 250.29 (AG-UI Protocol Implementation)
 
