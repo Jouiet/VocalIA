@@ -1,29 +1,36 @@
 #!/bin/sh
 
-# VocalIA Pre-commit Hook (Optimized)
-# Runs tests only when code files change, skips for docs-only
+# VocalIA Pre-commit Hook (FAST - ~5 seconds)
+# Quick syntax check only. Full tests via CI/CD or manual `npm test`
 
-echo "🔍 Running pre-commit checks..."
+echo "🔍 Quick pre-commit checks..."
 
 # Get list of staged files
 STAGED_FILES=$(git diff --cached --name-only)
 
-# Check if any code files are staged (not just docs/markdown)
-CODE_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.(js|cjs|ts|json)$' | grep -v 'package-lock.json' | grep -v 'translation_qa_report.json' || true)
+# Check if any JS/CJS files are staged
+JS_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.(js|cjs)$' || true)
 
-if [ -n "$CODE_CHANGED" ]; then
-  echo "📋 Code changes detected, running tests..."
-  npm test || exit 1
-else
-  echo "📝 Documentation-only changes, skipping tests"
+if [ -n "$JS_CHANGED" ]; then
+  echo "📋 Checking JS syntax..."
+  # Quick syntax check - just verify files parse (no full test suite)
+  for f in $JS_CHANGED; do
+    if [ -f "$f" ]; then
+      node --check "$f" 2>/dev/null || {
+        echo "❌ Syntax error in $f"
+        exit 1
+      }
+    fi
+  done
 fi
 
-# Always check JSON validity for critical files
-echo "📄 Checking JSON files..."
-for f in package.json telephony/knowledge_base.json; do
+# Check JSON validity for critical files
+CRITICAL_JSON="package.json telephony/knowledge_base.json"
+for f in $CRITICAL_JSON; do
   if echo "$STAGED_FILES" | grep -q "$f"; then
+    echo "📄 Validating $f..."
     node -e "JSON.parse(require('fs').readFileSync('$f'))" || exit 1
   fi
 done
 
-echo "✅ All pre-commit checks passed!"
+echo "✅ Pre-commit OK (run 'npm test' for full suite)"

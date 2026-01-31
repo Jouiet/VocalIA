@@ -59,7 +59,7 @@
     },
     "personas": {
       "keywords": ["persona", "agent", "personnalité", "voix", "ton"],
-      "response": "VocalIA propose 30 personas pré-configurés pour différents secteurs : Immobilier, Dentaire, E-commerce, Hôtellerie... Chaque persona a son ton, vocabulaire et expertise métier. Quel secteur vous intéresse ?"
+      "response": "VocalIA propose 40 personas pré-configurés pour différents secteurs : Immobilier, Dentaire, E-commerce, Hôtellerie... Chaque persona a son ton, vocabulaire et expertise métier. Quel secteur vous intéresse ?"
     },
     "yes": {
       "keywords": ["oui", "ok", "d'accord", "yes", "absolument", "bien sûr", "pourquoi pas"],

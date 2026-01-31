@@ -1,8 +1,34 @@
 # AUDIT FORENSIQUE - PERSONAS & KNOWLEDGE BASE VocalIA
 
-> **Version**: 2.6.0 | **Date**: 31/01/2026 | **Session**: 250.13
+> **Version**: 2.7.0 | **Date**: 31/01/2026 | **Session**: 250.14
 > **Auditeur**: Claude Opus 4.5 | **Méthodologie**: Bottom-up factuelle
-> **Statut**: ✅ COMPLET + IMPLÉMENTÉ (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Financial 100%, Personas HITL-Compliant)
+> **Statut**: ✅ 100% COMPLET (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Financial 100%, Personas HITL-Compliant, **i18n 100%**)
+
+### Changements Session 250.14 - Personas i18n 100% COMPLET
+
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **40/40 personas traduits** | escalation_triggers, complaint_scenarios, example_dialogues | ✅ |
+| **5 langues** | FR, EN, ES, AR, ARY (Darija) | ✅ |
+| **Format multilingue** | `{fr, en, es, ar, ary}` object format | ✅ |
+| **getLocalizedText()** | Helper function pour backward compatibility | ✅ |
+| **Module validation** | `node -e` load test successful | ✅ |
+
+**Métriques finales i18n:**
+- **40 personas** avec behavioral context traduit
+- **~175 complaint_scenarios** traduits × 5 langues = **~875 traductions**
+- **~120 escalation_triggers** traduits × 5 langues = **~600 traductions**
+- **~50 example_dialogues** (user+assistant) × 5 langues = **~500 traductions**
+- **Total: ~1,975 traductions** de behavioral context
+
+**Tiers traduits:**
+| Tier | Personas | Status |
+|:-----|:--------:|:------:|
+| Tier 1 (Core) | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL | ✅ |
+| Tier 2 (Expansion) | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER | ✅ |
+| Tier 3 (Specialized) | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM | ✅ |
+| Universal | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME | ✅ |
+| Tier 4 (NEW Economy) | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY, BAKERY, SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY | ✅ |
 
 ### Changements Session 250.13 - Personas HITL-Compliant (AUDIT COMPLET)
 

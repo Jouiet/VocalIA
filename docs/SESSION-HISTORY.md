@@ -1,10 +1,10 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.44.0 | **Updated**: 31/01/2026 | **Session**: 250.20
-> **Backend Score**: 99/100 | **Frontend Score**: 96/100 | **Health Check**: 100% (39/39)
+> **Version**: 3.45.0 | **Updated**: 31/01/2026 | **Session**: 250.21
+> **Backend Score**: 99/100 | **Frontend Score**: 97/100 | **Health Check**: 100% (39/39)
 > **Security**: 98/100 - CSP + X-Frame-Options + X-Content-Type-Options on ALL 43 pages
 > **MCP Server**: v0.7.0 | **MCP Tools**: 178 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
-> **Session 250.20**: Forensic Audit P0-P3 100% COMPLETE
+> **Session 250.21**: Marketing Copy Forensic Audit 100% COMPLETE | All claims factual
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
 > **Translation QA**: 0 issues | **Schema.org**: 35/39 pages
 
@@ -4975,5 +4975,54 @@ Both SDKs already had complete documentation. Updated persona count from 28 to 4
 
 ---
 
-*Màj: 31/01/2026 - Session 250.7 (Analytics + SDK Docs + Status Page)*
+## Session 250.21 - Marketing Copy Forensic Audit (31/01/2026)
+
+### 1. Claims Factuels Corrigés
+
+| Claim | Avant | Après | Vérification |
+|:------|:-----:|:-----:|:-------------|
+| **Personas** | 30/31 (mixed) | **40** | `grep "40 personas" --include="*.html"` |
+| **MCP Tools** | 21/117/254 | **178** | `grep "server.tool(" index.ts \| wc -l` |
+| **Intégrations** | 24/28 | **28** | CLAUDE.md source of truth |
+
+### 2. Tiers Personas Renommés (Segmentation Factuelle)
+
+| Tier | Ancien Nom | Nouveau Nom | Personas |
+|:----:|:-----------|:------------|:--------:|
+| 1 | Core Business | **B2B Premium** | 5 |
+| 2 | Expansion | **Services & Métiers** | 21 |
+| 3 | Extended | **PME Économie Réelle** | 14 |
+
+### 3. E-commerce Tools Corrigés (academie-business)
+
+| Platform | Faux | Réel |
+|:---------|:----:|:----:|
+| Shopify | 9 | **8** |
+| WooCommerce | 18 | **7** |
+| Magento | 19 | **6** |
+| Stripe | 29 | **19** |
+
+### 4. Fichiers Modifiés
+
+- **HTML**: 15+ pages (index, features, pricing, investor, industries, use-cases, etc.)
+- **Locales**: fr.json, en.json, es.json, ar.json, ary.json (5 fichiers × 10+ corrections)
+- **Code**: personas/voice-persona-injector.cjs (tier names)
+- **Docs**: FORENSIC-AUDIT-FRONTEND-COMPLETE.md
+
+### 5. Vérification Finale
+
+```bash
+# Personas - tous à 40
+grep -r '40 personas' --include='*.html' | wc -l  # 65 ✅
+grep -r '30 personas' --include='*.html' | wc -l  # 0 ✅
+
+# MCP Tools - tous à 178
+grep -r '178' --include='*.html' | grep -i 'tool\|MCP' | wc -l  # 20+ ✅
+```
+
+**Statut final**: Session 250.21 | Marketing Copy 100% Factuel ✅
+
+---
+
+*Màj: 31/01/2026 - Session 250.21 (Marketing Copy Forensic Audit)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

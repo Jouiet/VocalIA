@@ -59,7 +59,7 @@
     },
     "personas": {
       "keywords": ["persona", "agente", "personalidad", "voz", "tono"],
-      "response": "VocalIA ofrece 30 personas preconfiguradas para diferentes industrias: Inmobiliaria, Dental, E-commerce, Hosteleria... Cada persona tiene su propio tono, vocabulario y experiencia del sector. Que industria te interesa?"
+      "response": "VocalIA ofrece 40 personas preconfiguradas para diferentes industrias: Inmobiliaria, Dental, E-commerce, Hosteleria... Cada persona tiene su propio tono, vocabulario y experiencia del sector. Que industria te interesa?"
     },
     "yes": {
       "keywords": ["si", "ok", "claro", "por supuesto", "vale", "de acuerdo"],
