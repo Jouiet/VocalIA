@@ -45,5 +45,4 @@ VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels 
 - [Signup](https://vocalia.ma/signup): Creation compte
 - [Login](https://vocalia.ma/login): Connexion
 - [Contact](https://vocalia.ma/contact): Formulaire contact
-- [Demo](https://vocalia.ma/demo): Demande demonstration
 - [Referral](https://vocalia.ma/referral): Programme parrainage

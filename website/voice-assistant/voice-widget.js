@@ -712,7 +712,10 @@
     const messagesContainer = document.getElementById('va-messages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `va-message ${type}`;
-    messageDiv.innerHTML = `<div class="va-message-content">${text}</div>`;
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'va-message-content';
+    contentDiv.textContent = text;
+    messageDiv.appendChild(contentDiv);
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
