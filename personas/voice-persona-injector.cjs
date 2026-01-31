@@ -5,6 +5,31 @@
  * Role: Decouple the "Soul" (Persona/Instructions) from the "Brain" (Voice Bridge Code).
  * This module enables Multi-Tenancy: A single Engine running SME-focused Verticals.
  *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * ARCHITECTURE DECISION: DUAL STRUCTURE (NOT DUPLICATION)
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * Ce fichier contient DEUX structures pour chaque persona. C'est INTENTIONNEL
+ * et aligné avec les pratiques industry (Character.AI, NVIDIA PersonaPlex).
+ *
+ * 1. SYSTEM_PROMPTS[KEY] = Prompts MULTILINGUES (fr, en, es, ar, ary)
+ *    → Utilisé comme source PRIMAIRE pour le texte du prompt
+ *    → Permet le support de 5 langues authentiques
+ *
+ * 2. PERSONAS[KEY] = METADATA + systemPrompt fallback (EN)
+ *    → id, name, voice, personality_traits, background
+ *    → tone_guidelines, forbidden_behaviors, escalation_triggers
+ *    → example_dialogues, complaint_scenarios
+ *    → systemPrompt: FALLBACK si SYSTEM_PROMPTS n'a pas la langue
+ *
+ * FLUX D'EXÉCUTION (lignes ~5055-5062):
+ *   1. basePrompt = PERSONAS[key].systemPrompt (fallback EN)
+ *   2. SI SYSTEM_PROMPTS[key][lang] existe → OVERRIDE avec version multilingue
+ *
+ * Sources: Character.AI Blog, NVIDIA PersonaPlex, XPersona (Hugging Face)
+ * Documenté: Session 250.31 - NE PAS MODIFIER SANS RECHERCHE
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * PERSONAS (40 total):
  * TIER 1 - B2B Premium (5): AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL
  *   → High-value professional services with complex sales cycles
@@ -19,6 +44,7 @@
  *   SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY
  *   → Based on OMPIC/Eurostat 2024 SME economic data
  *
+ * Session 250.31 - AGENCY persona rewritten for Voice AI (was automation agency)
  * Session 250.6 - Removed 5 personas: GOVERNOR, SCHOOL, HOA, SURVEYOR (admin), DRIVER (hors scope B2B)
  * Session 250.6 - Added 14 new personas based on SME economic data (OMPIC/Eurostat 2024)
  * Session 250.6 - GROCERY reinstated: $128M Maroc + $59B Europe grocery delivery market
