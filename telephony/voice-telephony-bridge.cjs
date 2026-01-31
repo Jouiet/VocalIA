@@ -1572,19 +1572,109 @@ const RAG_MESSAGES = {
   }
 };
 
+// =============================================================================
+// QUERY TRANSLATION (tRAG) - Session 250.16
+// Translates non-FR/EN queries to French for BM25 lexical matching
+// Research: https://aclanthology.org/2025.findings-acl.295.pdf
+// =============================================================================
+
+/**
+ * Detect if query contains non-Latin script (Arabic, etc.) or Spanish
+ * @param {string} query - The search query
+ * @returns {string} Detected language code or 'fr' if Latin
+ */
+function detectQueryLanguage(query) {
+  // Arabic script detection (covers AR + ARY Darija)
+  const arabicPattern = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+  if (arabicPattern.test(query)) {
+    return 'ar'; // Arabic or Darija
+  }
+
+  // Spanish detection: special chars + common Spanish words not shared with French
+  // Words like "el/la/de/en" exist in both, so we use Spanish-specific terms
+  const spanishChars = /[ñÑ¿¡]/;
+  const spanishWords = /\b(pedido|entrega|envío|precio|quiero|dónde|cuándo|cuánto|tengo|necesito|ayuda|gracias|hola|buenos|buenas|cómo|está|están|muy|también|ahora|siempre|nunca|todo|nada|algo)\b/i;
+
+  if (spanishChars.test(query) || spanishWords.test(query)) {
+    return 'es';
+  }
+
+  // Default: assume French or English (both work with BM25)
+  return 'fr';
+}
+
+/**
+ * Translate query to French using Grok API (lightweight, fast model)
+ * @param {string} query - Original query in any language
+ * @param {string} sourceLang - Detected source language
+ * @returns {Promise<string>} Translated query in French
+ */
+async function translateQueryToFrench(query, sourceLang) {
+  if (!CONFIG.grok.apiKey) {
+    console.warn('[tRAG] No Grok API key, skipping translation');
+    return query;
+  }
+
+  try {
+    const response = await fetch('https://api.x.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${CONFIG.grok.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'grok-3-mini', // Fast, cheap model for translation
+        messages: [{
+          role: 'user',
+          content: `Translate this search query to French. Return ONLY the French translation, nothing else.\n\nQuery: ${query}`
+        }],
+        max_tokens: 100,
+        temperature: 0.1 // Low temperature for consistent translation
+      })
+    });
+
+    if (!response.ok) {
+      console.error(`[tRAG] Translation API error: ${response.status}`);
+      return query;
+    }
+
+    const data = await response.json();
+    const translated = data.choices?.[0]?.message?.content?.trim();
+
+    if (translated && translated.length > 0) {
+      console.log(`[tRAG] Translated "${query}" → "${translated}"`);
+      return translated.toLowerCase();
+    }
+
+    return query;
+  } catch (error) {
+    console.error(`[tRAG] Translation error: ${error.message}`);
+    return query;
+  }
+}
+
 async function handleSearchKnowledgeBase(session, args) {
   const kbId = session.metadata?.knowledge_base_id || session.metadata?.persona_id || 'agency_v2';
   const sessionLang = session.metadata?.language || CONFIG.defaultLanguage;
-  const query = args.query.toLowerCase();
+  let query = args.query.toLowerCase();
+  const originalQuery = query;
 
   console.log(`[Cognitive-RAG] Semantic search for ${kbId}: "${query}" (lang: ${sessionLang})`);
+
+  // SESSION 250.16: Query Translation (tRAG) for cross-lingual retrieval
+  // BM25 only matches FR/EN terms - translate AR/ES/ARY queries to French
+  const detectedLang = detectQueryLanguage(query);
+  if (detectedLang !== 'fr' && detectedLang !== 'en') {
+    console.log(`[tRAG] Non-FR/EN query detected (${detectedLang}), translating...`);
+    query = await translateQueryToFrench(query, detectedLang);
+  }
 
   // 1. Semantic Search using TF-IDF Index (v3.0)
   try {
     const results = KB.search(query, 3);
     if (results && results.length > 0) {
       const bestMatch = KB.formatForVoice(results, sessionLang);
-      console.log(`[Cognitive-RAG] Found semantic matches: ${results.length}`);
+      console.log(`[Cognitive-RAG] Found semantic matches: ${results.length}${originalQuery !== query ? ` (translated: "${query}")` : ''}`);
       return { found: true, result: bestMatch };
     }
   } catch (e) {

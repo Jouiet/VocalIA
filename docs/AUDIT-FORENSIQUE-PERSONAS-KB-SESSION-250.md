@@ -15,6 +15,7 @@
 | **Enrichissement validé** | 36/36 champs = 100% (strategic + outcome + marketing) | ✅ **100%** |
 | **Keywords contextuels** | +12 arrays de keywords (Maroc, Darija, industries, Voice AI) | ✅ DONE |
 | **Vocabulary enrichi** | 1326 → **1701 termes** (+301, dépasse cible 1400+) | ✅ **+28%** |
+| **Query Translation (tRAG)** | Cross-lingual AR/ES/ARY → FR avant BM25 | ✅ DONE |
 | **SWOT mis à jour** | Supprimé mentions ColBERT, ajouté enrichissement chunks | ✅ |
 
 **Justification suppression ColBERT:**
@@ -1243,6 +1244,35 @@ jq '[.[] | select(.type == "automation") | {id, strategic: (.strategic_intent !=
 - Industries cibles: dental, dentiste, immobilier, restaurant, ecommerce, hotel
 - Voice AI: conversational-ai, speech-recognition, tts, stt, nlu, intent-detection
 - Business: bant, lead, qualification, scoring, roi, conversion, funnel
+
+#### 7.7.7 Query Translation (tRAG) - Cross-Lingual RAG
+
+**Problème identifié (test empirique):**
+| Langue | Query | Résultats BM25 |
+|:-------|:------|:--------------:|
+| FR | "commande livraison" | 5 ✅ |
+| EN | "order delivery" | 5 ✅ |
+| AR | "طلب توصيل" | **0** ❌ |
+| ES | "pedido entrega" | **0** ❌ |
+| ARY | "بغيت نعرف فين وصلات الكوموند" | **0** ❌ |
+
+**Solution implémentée:** Query Translation (tRAG)
+- Fichier: `telephony/voice-telephony-bridge.cjs:1576-1666`
+- Fonction: `detectQueryLanguage()` - Détecte AR/ES via patterns Unicode
+- Fonction: `translateQueryToFrench()` - Traduit via Grok API (grok-3-mini)
+- Intégration: `handleSearchKnowledgeBase()` - Traduction automatique avant BM25
+
+**Test de détection (10/10):**
+```
+✅ "commande livraison" → fr
+✅ "order delivery" → fr
+✅ "طلب توصيل" → ar (Arabic)
+✅ "pedido entrega" → es (Spanish)
+✅ "الطلبية والتوصيل" → ar (Arabic)
+✅ "بغيت نعرف فين وصلات الكوموند" → ar (Darija)
+```
+
+**Référence SOTA:** [ACL 2025 - Multilingual RAG Language Preference](https://aclanthology.org/2025.findings-acl.295.pdf)
 
 ---
 
