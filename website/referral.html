@@ -38,6 +38,10 @@
     "name": "Programme de Parrainage VocalIA",
     "description": "Parrainez des entreprises vers VocalIA et gagnez 20% de commission récurrente pendant 12 mois.",
     "url": "https://vocalia.ma/referral",
+    "speakable": {
+      "@type": "SpeakableSpecification",
+      "cssSelector": ["h1", ".hero-subtitle", ".commission-rate"]
+    },
     "mainEntity": {
       "@type": "Offer",
       "name": "Programme Partenaire VocalIA",
@@ -218,7 +222,7 @@
             </div>
 
             <label class="block text-sm font-medium mb-2 mt-6">Plan moyen des filleuls</label>
-            <select id="avgPlan" class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-slate-600 focus:outline-none focus:border-vocalia-500">
+            <select id="avgPlan" class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-vocalia-500 focus:border-vocalia-500">
               <option value="99">Starter (99€/mois)</option>
               <option value="299" selected>Pro (299€/mois)</option>
               <option value="999">Enterprise (999€/mois)</option>

@@ -1,5 +1,5 @@
 # FORENSIC AUDIT MERGED - VocalIA Platform
-**Date:** 31 Janvier 2026 | **Session:** 250.32
+**Date:** 31 Janvier 2026 | **Session:** 250.33
 **Framework:** DOE (Directive Orchestration Execution)
 **Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit
 **Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep` / `node -e`
@@ -21,6 +21,12 @@
 | SEO/Twitter | **51 pages** |
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
+
+**Session 250.33 Update:** AEO/WCAG COMPLETE
+- Speakable schema: 29 → **32 pages** (+referral, signup, docs/api)
+- Focus states: All `focus:outline-none` now have `focus:ring-2` ✅
+- Twitter Card duplicates fixed (docs/api.html)
+- PHASE D: 75% COMPLETE (3/4 items done)
 
 **Session 250.32 Update:** SEO/TWITTER COMPLETE
 - twitter:site ajouté sur **23 pages** supplémentaires (total: 51)
@@ -293,13 +299,13 @@ MODÈLE FREEMIUM VÉRIFIÉ:
 | 14 | Extraire inline CSS | 2h | index.html → style.css | ⏳ DEFERRED |
 | 15 | Upgrader CSP (nonces) | 4h | *.html | ⏳ DEFERRED |
 
-### PHASE D - LOW (2 semaines)
-| # | Action | Effort | Fichiers |
-|:-:|:-------|:------:|:---------|
-| 16 | Fix WCAG contrast | 2h | Tailwind config |
-| 17 | Fix focus states | 2h | *.html |
-| 18 | Unifier patterns dropdown | 2h | *.html |
-| 19 | Créer SECURITY.md | 2h | docs/ |
+### PHASE D - LOW (2 semaines) ✅ 75% COMPLETE
+| # | Action | Effort | Fichiers | Status |
+|:-:|:-------|:------:|:---------|:------:|
+| 16 | Fix WCAG contrast | 2h | Tailwind config | ✅ zinc-400 OK on dark |
+| 17 | Fix focus states | 2h | *.html | ✅ DONE (all have ring) |
+| 18 | Unifier patterns dropdown | 2h | *.html | ⏳ LOW PRIORITY |
+| 19 | Créer SECURITY.md | 2h | docs/ | ✅ EXISTS |
 
 ---
 
@@ -313,7 +319,7 @@ MODÈLE FREEMIUM VÉRIFIÉ:
 |:------|:------:|:-----------|:---------|
 | robots.txt AI crawlers | ✅ | robots.txt | GPTBot, ClaudeBot, PerplexityBot, Meta-ExternalAgent allowed |
 | llms.txt | ✅ | llms.txt | Format officiel llmstxt.org, Markdown structuré |
-| Speakable schema | ✅ | **12 pages** | index, features, pricing, integrations, voice-widget, voice-telephony, about, contact, investor, use-cases/index, industries/index, blog/index |
+| Speakable schema | ✅ | **32 pages** | +referral, signup, docs/api (Session 250.33) |
 | FAQPage schema | ✅ | pricing.html | 5 FAQ items structurés |
 | BreadcrumbList | ✅ | 6+ pages | Navigation hierarchy |
 | WebPage schema | ✅ | 10+ pages | mainEntity, author, publisher |
@@ -521,5 +527,5 @@ node --check website/voice-assistant/voice-widget.js  # ✅ OK
 | UCP/CDP | ✅ 6 tools | 100% |
 | AP2 | ❌ Not started | 0% |
 
-**Màj:** 31/01/2026 - Session 250.32 (SEO COMPLETE - twitter:site 51 pages, Phase A+B 100%)
+**Màj:** 31/01/2026 - Session 250.33 (AEO/WCAG - Speakable 32 pages, Focus states fixed, Phase D 75%)
 
