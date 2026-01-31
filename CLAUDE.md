@@ -1,8 +1,8 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.39.0 | 31/01/2026 | Session 250.22 | Health: 100% | **MARKETING COPY AUDIT 100% COMPLETE**
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1685 keys** | RTL ✅ | **100% COMPLETE**
-> **Security: CSP + X-Frame-Options + X-Content-Type-Options on ALL 43 pages ✅**
+> Version: 6.40.0 | 31/01/2026 | Session 250.23 | Health: 100% | **FORENSIC AUDIT 92/100**
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
+> **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
@@ -11,9 +11,10 @@
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 6, PrestaShop 7, BigCommerce 7, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
-> **Website: 43 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
-> **Analytics: Plausible (GDPR)** | 43 pages tracked | CTA events ✅ | **A/B Testing ✅**
-> **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: 98/100 | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
+> **Website: 45 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
+> **Analytics: Plausible (GDPR)** | 45 pages tracked | CTA events ✅ | **A/B Testing ✅**
+> **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: **92/100** | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
+> **FORENSIC AUDIT:** 19/25 fixed (0 CRITICAL, 0 HIGH) - voir `docs/FORENSIC-AUDIT-MERGED-250.22.md`
 
 ## Identité
 
@@ -28,8 +29,11 @@
 | Score | Value | Notes |
 |:------|:-----:|:------|
 | Backend | **99/100** | Twilio creds manquants |
-| Frontend | **~97%** | Light Mode ✅ |
+| Frontend | **92/100** | 19/25 issues fixed (0 CRITICAL) |
 | Health | **100%** | 39/39 checks |
+| Security | **92/100** | lucide pinned ✅, SRI deferred |
+
+**Audit Forensique Session 250.23:** `docs/FORENSIC-AUDIT-MERGED-250.22.md` (updated)
 
 ---
 
@@ -167,10 +171,11 @@ open http://localhost:8080?lang=ar
 |:---------|:------------|
 | `docs/SESSION-HISTORY.md` | Historique complet sessions |
 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | Reference technique |
-| `docs/VOCALIA-MCP.md` | MCP Server (114 tools) |
+| `docs/VOCALIA-MCP.md` | MCP Server (178 tools) |
 | `docs/INTEGRATIONS-ROADMAP.md` | Phase 0 ✅ + Phase 1 ✅ COMPLETE |
 | `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant architecture |
 | `docs/I18N-AUDIT-ACTIONPLAN.md` | Plan i18n (100% COMPLETE) |
+| `docs/FORENSIC-AUDIT-MERGED-250.22.md` | **Audit Frontend DOE (25 issues)** |
 
 ---
 
