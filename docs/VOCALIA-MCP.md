@@ -1,9 +1,9 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.0 | 31/01/2026 | Session 250.36 | BM25 RAG SOTA | **182 tools** | **28 integrations**
-> **Session 250.36**: Security audit + P0 fixes (XSS, broken links)
-> **Session 250.28**: CDP Enhanced UCP (7 tools) - interaction tracking, behavioral events, engagement scoring
+> Version: 0.8.0 | 01/02/2026 | Session 250.38 | BM25 RAG SOTA | **182 tools** | **28 integrations**
+> **Session 250.38**: ALL ISSUES FIXED - i18n, WCAG, security 99/100
+> **Session 250.37**: P1/P2 complete - SRI, forms, AEO
 > **Protocol Gap:** A2A ✅ (4 agents) | AG-UI ✅ (17 events) | UCP ✅ (7 tools) | MCP ✅ (182 tools)
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds (19 tools)
