@@ -76,7 +76,7 @@ Ces tools fonctionnent sans aucun service externe:
 
 | Tool | Description | Persistence |
 |:-----|:------------|:------------|
-| `personas_list` | Liste les 30 personas par tier | Local |
+| `personas_list` | Liste les 40 personas par tier | Local |
 | `personas_get` | Détails d'un persona spécifique | Local |
 | `personas_get_system_prompt` | System prompt dans une langue | Local |
 | `qualify_lead` | Calcul BANT avec scoring avancé | Local |
