@@ -1,8 +1,8 @@
-# FORENSIC AUDIT MERGED - VocalIA Frontend
-**Date:** 31 Janvier 2026 | **Session:** 250.28
+# FORENSIC AUDIT MERGED - VocalIA Platform
+**Date:** 31 Janvier 2026 | **Session:** 250.31
 **Framework:** DOE (Directive Orchestration Execution)
-**Sources:** Audit Antigravity + Audit Claude Opus 4.5
-**Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep`
+**Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit
+**Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep` / `node -e`
 
 ---
 
@@ -17,13 +17,26 @@
 | Issues LOW | ~~3~~ **4** |
 | **TOTAL FIXED** | **20/25** |
 | Score Global | **94/100** |
+| Factuality Audit | **100%** |
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
+
+**Session 250.31 Update:** FACTUALITY AUDIT COMPLET
+- **7 fichiers corrigés** - Suppression claims "automation agency"
+- voice-agent-b2b.cjs v2.0.0 - Réécrit complet
+- grok-client.cjs - System prompt Voice AI
+- voice-api-resilient.cjs - SYSTEM_PROMPT + Darija corrigés
+- personas/voice-persona-injector.cjs - AGENCY persona corrigé (5 langues)
+- mcp-server/src/index.ts - "12 knowledge articles" (était "119 automations")
+- Patterns éliminés: "automation ecosystem" (0), "flywheel" (0), "profit leak" (0)
+
+**Session 250.30 Update:** A2A Protocol + UCP/CDP
+- A2A Agent Cards: 4 agents (BillingAgent, TenantOnboardingAgent, VoiceAgentB2B, TranslationSupervisor)
+- UCP: ucp_update_ltv tool, LTV tiers (bronze→diamond)
 
 **Session 250.28 Update:** 20 issues corrigées, 5 différées (architecture/design)
 - SEO-04: og:image ajouté aux 4 pages publiques indexées
 - AEO: llms.txt créé, Speakable schema sur **29 pages** (12→29)
-- A2A: Agent Card + Task Lifecycle dans TranslationSupervisor
 - UCP/CDP: 3 nouveaux tools (record_interaction, track_event, get_insights)
 
 Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind, GSAP) et un SEO/AEO avancé, mais souffre de **dette technique critique**: assets 404, vulnérabilités supply chain, et incohérences SEO.
