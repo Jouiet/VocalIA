@@ -5,7 +5,7 @@
  *
  * Session 250.28 - v0.8.0 - CDP Enhanced UCP + A2A Protocol Compliance
  *
- * TOOL CATEGORIES (181 tools - 23 inline, 158 external modules):
+ * TOOL CATEGORIES (182 tools - 23 inline, 159 external modules):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -22,7 +22,7 @@
  * EXTERNAL MODULE TOOLS (93):
  * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
- * - UCP Tools (6): ucp_sync_preference, ucp_get_profile, ucp_list_profiles, ucp_record_interaction, ucp_track_event, ucp_get_insights [REQUIRE UCP]
+ * - UCP Tools (7): ucp_sync_preference, ucp_get_profile, ucp_list_profiles, ucp_record_interaction, ucp_track_event, ucp_get_insights, ucp_update_ltv [REQUIRE UCP]
  * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
  * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
  * - Docs Tools (4): docs_get_document, docs_create_document, docs_append_text, docs_replace_text [REQUIRE GOOGLE]
@@ -621,10 +621,10 @@ server.tool(
         type: "text" as const,
         text: JSON.stringify({
           knowledge_base: {
-            type: "TF-IDF + Hybrid Dense Retrieval",
+            type: "BM25 + TF-IDF Hybrid Retrieval",
             source: "automations-registry.json",
-            chunks: "119+ automation services",
-            categories: 15,
+            chunks: "12 automation knowledge articles",
+            categories: 12,
             languages: ["en", "fr"],
           },
           search_modes: {
@@ -1173,6 +1173,7 @@ server.tool(ucpTools.ucp_list_profiles.name, ucpTools.ucp_list_profiles.paramete
 server.tool(ucpTools.ucp_record_interaction.name, ucpTools.ucp_record_interaction.parameters, ucpTools.ucp_record_interaction.handler);
 server.tool(ucpTools.ucp_track_event.name, ucpTools.ucp_track_event.parameters, ucpTools.ucp_track_event.handler);
 server.tool(ucpTools.ucp_get_insights.name, ucpTools.ucp_get_insights.parameters, ucpTools.ucp_get_insights.handler);
+server.tool(ucpTools.ucp_update_ltv.name, ucpTools.ucp_update_ltv.parameters, ucpTools.ucp_update_ltv.handler);
 
 // =============================================================================
 // GOOGLE SHEETS TOOLS (5) - REQUIRE GOOGLE CREDENTIALS

@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /**
- * VocalIA - Knowledge Base for Services (B2B)
+ * VocalIA - Knowledge Base Search Engine (BM25/TF-IDF)
  *
- * Role: TF-IDF based search for 119 automation services
- * Purpose: Powers Voice AI assistant with service knowledge
+ * Role: Semantic search for Voice AI knowledge retrieval
+ * Purpose: Powers Voice Widget & Telephony with contextual answers
  *
- * Adapted from MyDealz product KB via Technology Shelf
- * Original: MyDealz scripts/knowledge_base_simple.py
+ * Note: STRATEGIC_META contains category metadata for RAG enrichment.
+ * These are NOT VocalIA product offerings - they're knowledge domains
+ * the Voice AI can discuss when helping client businesses.
  *
- * Version: 1.0.0 | Session 144 | 23/01/2026
+ * Version: 2.0.0 | Session 250.31 | 31/01/2026
  */
 
 const fs = require('fs');

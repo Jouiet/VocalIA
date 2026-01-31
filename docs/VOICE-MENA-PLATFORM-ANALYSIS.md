@@ -87,7 +87,7 @@
 
 | Critère | SAWT IA | **3A Voice** | Avantage |
 |---------|---------|--------------|----------|
-| **Entreprise** | Sensei Prod (10 ans, marketing) | VocalIA (AI Agency) | - |
+| **Entreprise** | Sensei Prod (10 ans, marketing) | VocalIA (Voice AI Platform) | - |
 | **Lancement** | Nov 2025 | Jan 2026 | SAWT IA (+2 mois) |
 | **Technologie** | ML in-house (propriétaire) | Stack ouvert (Grok+ElevenLabs) | 3A (flexibilité) |
 | **Langues** | Darija, FR, autres | Darija, FR, EN, ES, AR (5) | 3A (documenté) |
