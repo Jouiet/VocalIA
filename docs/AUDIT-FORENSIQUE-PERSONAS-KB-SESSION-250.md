@@ -11,7 +11,7 @@
 | **ColBERT REJETÉ** | ROI insuffisant: 193 chunks << 10K min, latence GPU 50-100ms incompatible voice | ❌ SUPPRIMÉ |
 | **Fix KB build** | Priorité registry values sur STRATEGIC_META (ligne 403) | ✅ FIX |
 | **marketing_science ajouté** | 12/12 automations enrichies dans registry | ✅ DONE |
-| **Rebuild KB** | 183 chunks, 1355 termes | ✅ DONE |
+| **Rebuild KB** | 193 chunks, 1701 termes | ✅ DONE |
 | **Enrichissement validé** | 36/36 champs = 100% (strategic + outcome + marketing) | ✅ **100%** |
 | **Keywords contextuels** | +12 arrays de keywords (Maroc, Darija, industries, Voice AI) | ✅ DONE |
 | **Vocabulary enrichi** | 1326 → **1701 termes** (+301, dépasse cible 1400+) | ✅ **+28%** |
@@ -1396,11 +1396,13 @@ node core/knowledge-base-services.cjs --search "voice assistant"
 *Document généré automatiquement - Session 250.8*
 *Méthodologie: Audit forensique bottom-up factuel*
 *Aucun claim sans vérification empirique*
-*MÀJ: 31/01/2026 - Session 250.15*
+*MÀJ: 31/01/2026 - Session 250.16*
 *✅ Personas: 40/40 SOTA structure, 100% traductions (5 langues)*
-*✅ KB: 1265 termes vocabulary, knowledge-graph.json créé (23 nodes, 38 edges)*
+*✅ KB: **1701 termes** vocabulary (+28%), 193 chunks, knowledge-graph.json créé (23 nodes, 38 edges)*
 *✅ Legacy KB merged: 165 FAQ entries from 40 personas*
 *✅ Policies.json créé: 10 policy boosting rules*
+*✅ Enrichissement 100%: strategic_intent 12/12, business_outcome 12/12, marketing_science 12/12*
+*✅ Query Translation (tRAG): Cross-lingual AR/ES/ARY → FR avant BM25*
 *⚠️ BLOQUÉ: Dense embeddings (nécessite GOOGLE_GENERATIVE_AI_API_KEY)*
-*❌ ColBERT REJETÉ: ROI insuffisant (193 chunks << 10K minimum, latence GPU 50-100ms, complexité maintenance)*
+*❌ ColBERT REJETÉ: ROI insuffisant (193 chunks << 10K minimum, latence GPU 50-100ms)*
 *🔶 OPTIONNEL: 3A-Shelf sync (30min)*
