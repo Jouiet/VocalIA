@@ -209,13 +209,15 @@
         <priority>0.7</priority>
     </url>
 
-    <!-- Investor Page -->
+    <!-- Referral Program -->
     <url>
-        <loc>https://vocalia.ma/investor</loc>
-        <lastmod>2026-01-30</lastmod>
+        <loc>https://vocalia.ma/referral</loc>
+        <lastmod>2026-01-31</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
+        <priority>0.7</priority>
     </url>
+
+    <!-- Note: /investor removed from sitemap (has noindex meta tag) -->
 
     <!-- Signup (Critical for conversion) -->
     <url>

@@ -897,6 +897,57 @@
           <span class="text-zinc-300" data-i18n="pricing_page.overage_note">Minutes supplémentaires téléphonie: <strong class="text-white">0.06€/min</strong></span>
         </div>
       </div>
+
+      <!-- Volume Discounts Section -->
+      <div class="mt-16 max-w-4xl mx-auto">
+        <div class="glass rounded-2xl p-8 border border-slate-700/50">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
+              <i data-lucide="trending-up" class="w-6 h-6 text-vocalia-400"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white" data-i18n="pricing_page.volume_title">Remises Volume</h3>
+              <p class="text-zinc-400 text-sm" data-i18n="pricing_page.volume_subtitle">Plus vous utilisez, plus vous économisez</p>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-4">
+            <!-- Tier 1 -->
+            <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 text-center">
+              <div class="text-2xl font-bold text-white mb-1">1,000+</div>
+              <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
+              <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount1">-10%</div>
+              <div class="text-xs text-zinc-500 mt-1" data-i18n="pricing_page.volume_rate1">0.054€/min</div>
+            </div>
+
+            <!-- Tier 2 -->
+            <div class="p-4 rounded-xl bg-vocalia-500/10 border border-vocalia-500/30 text-center">
+              <div class="absolute -top-2 left-1/2 -translate-x-1/2">
+                <span class="px-2 py-0.5 rounded-full bg-vocalia-500 text-white text-xs font-semibold" data-i18n="pricing_page.volume_popular">Populaire</span>
+              </div>
+              <div class="text-2xl font-bold text-white mb-1">5,000+</div>
+              <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
+              <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount2">-20%</div>
+              <div class="text-xs text-zinc-500 mt-1" data-i18n="pricing_page.volume_rate2">0.048€/min</div>
+            </div>
+
+            <!-- Tier 3 -->
+            <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 text-center">
+              <div class="text-2xl font-bold text-white mb-1">10,000+</div>
+              <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
+              <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount3">-30%</div>
+              <div class="text-xs text-zinc-500 mt-1" data-i18n="pricing_page.volume_rate3">0.042€/min</div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <a href="/contact?subject=volume" class="inline-flex items-center gap-2 text-vocalia-400 hover:text-vocalia-300 transition font-medium">
+              <span data-i18n="pricing_page.volume_cta">Demander un devis personnalisé</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1139,16 +1190,16 @@
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70"loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
