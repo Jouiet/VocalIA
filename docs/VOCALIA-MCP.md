@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.5.9 | 31/01/2026 | Session 249.20 | BM25 RAG SOTA | **150 tools**
+> Version: 0.6.0 | 31/01/2026 | Session 249.20 | BM25 RAG SOTA | **159 tools**
 > **Session 249.20**: Shopify FULL CRUD (8 tools) - GraphQL Admin API 2026-01
 > **Session 249.18:** +messaging_send (WhatsApp → Twilio SMS fallback)
 > **Protocol Gap:** A2A ✅ | AP2 ❌ | A2UI ✅ | UCP ✅ (File Persistence) | Integrations ✅
@@ -44,17 +44,17 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Pipedrive** | **7** | 0 | **7** |
 | **WooCommerce** | **7** | 0 | **7** |
 | **Zoho CRM** | **6** | 0 | **6** |
-| **Magento** | **6** | 0 | **6** |
+| **Magento** | **10** | 0 | **10** |
 | **Wix Stores** | **6** | 0 | **6** |
 | **Squarespace** | **7** | 0 | **7** |
-| **BigCommerce** | **7** | 0 | **7** |
-| **PrestaShop** | **7** | 0 | **7** |
+| **BigCommerce** | **9** | 0 | **9** |
+| **PrestaShop** | **10** | 0 | **10** |
 | **Export** | **5** | **5** | 0 |
 | **Email** | **3** | 0 | **3** |
 | **Zapier** | **3** | 0 | **3** |
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
-| **TOTAL** | **150** | **16** | **134** |
+| **TOTAL** | **159** | **16** | **143** |
 
 ### E-commerce Market Coverage (~64%)
 
@@ -62,11 +62,11 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 |:---------|:-----:|:------------:|:---------|
 | WooCommerce | 7 | 33-39% | REST v3 |
 | Shopify | 8 | 10.32% | GraphQL Admin API 2026-01 |
-| Magento | 6 | 8% | REST |
+| Magento | 10 | 8% | REST v1 (FULL CRUD) |
 | **Wix Stores** | 6 | 7.4% (+32.6% YoY) | REST |
 | **Squarespace** | 7 | 2.6% | REST v1/v2 |
-| **PrestaShop** | 7 | 1.91% | Webservice |
-| **BigCommerce** | 7 | 1% | REST v3 |
+| **PrestaShop** | 10 | 1.91% | Webservice (FULL CRUD) |
+| **BigCommerce** | 9 | 1% | REST v2/v3 (FULL CRUD) |
 
 ### Tools Toujours Disponibles (15)
 

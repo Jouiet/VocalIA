@@ -743,5 +743,276 @@ export const prestashopTools = {
                 };
             }
         }
+    },
+
+    // ==========================================================================
+    // WRITE OPERATIONS - Session 249.20
+    // Sources: https://github.com/latinogino/prestashop-mcp
+    //          https://devdocs.prestashop-project.org/8/webservice/
+    // ==========================================================================
+
+    update_order_status: {
+        name: 'prestashop_update_order_status',
+        description: 'Update the status of a PrestaShop order (e.g., processing, shipped, delivered, cancelled).',
+        parameters: {
+            order_id: z.number().describe('PrestaShop order ID'),
+            new_status_id: z.number().describe('New order state ID (1=Awaiting payment, 2=Payment accepted, 3=Processing, 4=Shipped, 5=Delivered, 6=Cancelled, 7=Refunded)'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, new_status_id, _meta }: {
+            order_id: number;
+            new_status_id: number;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getPrestaShopCredentials(tenantId);
+
+            if (!creds.url || !creds.apiKey) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing PrestaShop credentials",
+                            requirements: ["PRESTASHOP_URL", "PRESTASHOP_API_KEY"]
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                // PrestaShop requires XML for updates, but we can use JSON output_format
+                // First get the order to ensure it exists
+                const order = await prestashopRequest(creds.url, creds.apiKey, `/orders/${order_id}`);
+
+                if (!order?.order) {
+                    throw new Error(`Order ${order_id} not found`);
+                }
+
+                // Create order history entry to change status
+                const historyXml = `<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+    <order_history>
+        <id_order>${order_id}</id_order>
+        <id_order_state>${new_status_id}</id_order_state>
+    </order_history>
+</prestashop>`;
+
+                // POST to order_histories to update status
+                const url = `${creds.url.replace(/\/$/, '')}/api/order_histories`;
+                const auth = Buffer.from(`${creds.apiKey}:`).toString('base64');
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Basic ${auth}`,
+                        'Content-Type': 'application/xml'
+                    },
+                    body: historyXml
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`PrestaShop API error ${response.status}: ${errorText}`);
+                }
+
+                const statusNames: Record<number, string> = {
+                    1: 'Awaiting check payment',
+                    2: 'Payment accepted',
+                    3: 'Processing in progress',
+                    4: 'Shipped',
+                    5: 'Delivered',
+                    6: 'Cancelled',
+                    7: 'Refunded',
+                    8: 'Payment error',
+                    9: 'On backorder (paid)',
+                    10: 'Awaiting bank wire payment',
+                    11: 'Remote payment accepted',
+                    12: 'On backorder (not paid)'
+                };
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            new_status_id,
+                            new_status_name: statusNames[new_status_id] || `Status ${new_status_id}`,
+                            message: `Order ${order_id} status updated to ${statusNames[new_status_id] || new_status_id}`
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            order_id,
+                            message: error.message
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
+    },
+
+    cancel_order: {
+        name: 'prestashop_cancel_order',
+        description: 'Cancel a PrestaShop order by setting its status to Cancelled (state 6).',
+        parameters: {
+            order_id: z.number().describe('PrestaShop order ID to cancel'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, _meta }: {
+            order_id: number;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getPrestaShopCredentials(tenantId);
+
+            if (!creds.url || !creds.apiKey) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing PrestaShop credentials"
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                // Cancel = set status to 6
+                const historyXml = `<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+    <order_history>
+        <id_order>${order_id}</id_order>
+        <id_order_state>6</id_order_state>
+    </order_history>
+</prestashop>`;
+
+                const url = `${creds.url.replace(/\/$/, '')}/api/order_histories`;
+                const auth = Buffer.from(`${creds.apiKey}:`).toString('base64');
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Basic ${auth}`,
+                        'Content-Type': 'application/xml'
+                    },
+                    body: historyXml
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`PrestaShop API error ${response.status}: ${errorText}`);
+                }
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            cancelled: true,
+                            message: `Order ${order_id} has been cancelled`
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            order_id,
+                            message: error.message
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
+    },
+
+    refund_order: {
+        name: 'prestashop_refund_order',
+        description: 'Mark a PrestaShop order as refunded by setting its status to Refunded (state 7).',
+        parameters: {
+            order_id: z.number().describe('PrestaShop order ID to refund'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, _meta }: {
+            order_id: number;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getPrestaShopCredentials(tenantId);
+
+            if (!creds.url || !creds.apiKey) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing PrestaShop credentials"
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                // Refunded = set status to 7
+                const historyXml = `<?xml version="1.0" encoding="UTF-8"?>
+<prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+    <order_history>
+        <id_order>${order_id}</id_order>
+        <id_order_state>7</id_order_state>
+    </order_history>
+</prestashop>`;
+
+                const url = `${creds.url.replace(/\/$/, '')}/api/order_histories`;
+                const auth = Buffer.from(`${creds.apiKey}:`).toString('base64');
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Basic ${auth}`,
+                        'Content-Type': 'application/xml'
+                    },
+                    body: historyXml
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`PrestaShop API error ${response.status}: ${errorText}`);
+                }
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            refunded: true,
+                            message: `Order ${order_id} has been marked as refunded`
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            order_id,
+                            message: error.message
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
     }
 };

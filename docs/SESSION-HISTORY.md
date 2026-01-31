@@ -1,9 +1,9 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.32.0 | **Updated**: 31/01/2026 | **Session**: 249.20
+> **Version**: 3.33.0 | **Updated**: 31/01/2026 | **Session**: 249.20
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 21/21 (100%) | **MCP Tools**: 150 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~70%
-> **Session 249.20**: Shopify FULL CRUD (8 tools) + Docs Audit + Use Cases Menu
+> **Integrations Check**: 21/21 (100%) | **MCP Tools**: 159 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~80%
+> **Session 249.20**: ALL E-COMMERCE FULL CRUD - Shopify(8), Magento(10), PrestaShop(10), BigCommerce(9)
 
 ---
 
@@ -4574,7 +4574,21 @@ ls mcp-server/src/tools/shopify.ts
 # Result: 31KB, 800+ lines
 ```
 
-**Statut final**: MCP Server v0.5.9 | **150 tools** | Shopify FULL CRUD ✅
+### 6. E-Commerce FULL CRUD Complete (All Platforms)
+
+| Platform | Before | After | New Tools |
+|:---------|:------:|:-----:|:----------|
+| Magento | 6 (READ) | **10** | cancel_order, create_refund, hold_order, unhold_order |
+| PrestaShop | 7 (READ) | **10** | update_order_status, cancel_order, refund_order |
+| BigCommerce | 7 (partial) | **9** | cancel_order, refund_order |
+
+**Sources recherchées:**
+- [latinogino/prestashop-mcp](https://github.com/latinogino/prestashop-mcp) - PrestaShop patterns
+- [isaacgounton/bigcommerce-api-mcp](https://github.com/isaacgounton/bigcommerce-api-mcp) - BigCommerce patterns
+- [boldcommerce/magento2-mcp](https://github.com/boldcommerce/magento2-mcp) - Magento patterns
+- [MCP Best Practices](https://mcp-best-practice.github.io/mcp-best-practice/best-practice/)
+
+**Statut final**: MCP Server v0.6.0 | **159 tools** | ALL E-COMMERCE FULL CRUD ✅
 
 ---
 

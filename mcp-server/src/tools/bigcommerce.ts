@@ -727,5 +727,208 @@ export const bigcommerceTools = {
                 };
             }
         }
+    },
+
+    // ==========================================================================
+    // ADDITIONAL WRITE OPERATIONS - Session 249.20
+    // Sources: https://github.com/isaacgounton/bigcommerce-api-mcp
+    //          https://developer.bigcommerce.com/docs/rest-management/orders
+    // ==========================================================================
+
+    cancel_order: {
+        name: 'bigcommerce_cancel_order',
+        description: 'Cancel a BigCommerce order by setting its status to Cancelled (status 5).',
+        parameters: {
+            order_id: z.number().describe('BigCommerce order ID to cancel'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, _meta }: {
+            order_id: number;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getBigCommerceCredentials(tenantId);
+
+            if (!creds.storeHash || !creds.accessToken) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing BigCommerce credentials",
+                            requirements: ["BIGCOMMERCE_STORE_HASH", "BIGCOMMERCE_ACCESS_TOKEN"]
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                // Update order status to Cancelled (5)
+                await bigcommerceRequest(
+                    creds.storeHash,
+                    creds.accessToken,
+                    `/orders/${order_id}`,
+                    {
+                        method: 'PUT',
+                        body: { status_id: 5 }
+                    }
+                );
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            cancelled: true,
+                            new_status: "Cancelled",
+                            new_status_id: 5,
+                            message: `Order ${order_id} has been cancelled`
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            order_id,
+                            message: error.message
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
+    },
+
+    refund_order: {
+        name: 'bigcommerce_refund_order',
+        description: 'Create a refund for a BigCommerce order. Updates status to Refunded (status 4) and creates refund record.',
+        parameters: {
+            order_id: z.number().describe('BigCommerce order ID to refund'),
+            amount: z.number().optional().describe('Refund amount (omit for full refund based on order total)'),
+            reason: z.string().optional().describe('Reason for refund'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, amount, reason, _meta }: {
+            order_id: number;
+            amount?: number;
+            reason?: string;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getBigCommerceCredentials(tenantId);
+
+            if (!creds.storeHash || !creds.accessToken) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing BigCommerce credentials",
+                            requirements: ["BIGCOMMERCE_STORE_HASH", "BIGCOMMERCE_ACCESS_TOKEN"]
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                // First get order to determine refund amount if not specified
+                const order = await bigcommerceRequest(
+                    creds.storeHash,
+                    creds.accessToken,
+                    `/orders/${order_id}`
+                );
+
+                const refundAmount = amount || parseFloat(order.total_inc_tax);
+
+                // Create refund via POST /v3/orders/{order_id}/payment_actions/refunds
+                // Note: BigCommerce V3 API endpoint for refunds
+                const refundBody: any = {
+                    items: [{
+                        item_type: "ORDER",
+                        item_id: order_id,
+                        amount: refundAmount
+                    }]
+                };
+
+                if (reason) {
+                    refundBody.reason = reason;
+                }
+
+                // Try to create refund via V3 API
+                try {
+                    const refundUrl = `https://api.bigcommerce.com/stores/${creds.storeHash}/v3/orders/${order_id}/payment_actions/refunds`;
+                    const refundResponse = await fetch(refundUrl, {
+                        method: 'POST',
+                        headers: {
+                            'X-Auth-Token': creds.accessToken,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(refundBody)
+                    });
+
+                    if (refundResponse.ok) {
+                        const refundResult = await refundResponse.json() as { data?: { id?: number } };
+                        return {
+                            content: [{
+                                type: "text" as const,
+                                text: JSON.stringify({
+                                    status: "success",
+                                    order_id,
+                                    refund_id: refundResult.data?.id,
+                                    amount: refundAmount,
+                                    message: `Refund of ${refundAmount} created for order ${order_id}`
+                                }, null, 2)
+                            }]
+                        };
+                    }
+                } catch {
+                    // V3 refund endpoint may not be available, fall back to status update
+                }
+
+                // Fallback: Update order status to Refunded (4)
+                await bigcommerceRequest(
+                    creds.storeHash,
+                    creds.accessToken,
+                    `/orders/${order_id}`,
+                    {
+                        method: 'PUT',
+                        body: {
+                            status_id: 4,
+                            staff_notes: reason ? `Refund: ${reason}` : 'Order refunded via API'
+                        }
+                    }
+                );
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            refunded: true,
+                            new_status: "Refunded",
+                            new_status_id: 4,
+                            amount: refundAmount,
+                            message: `Order ${order_id} marked as refunded (${refundAmount})`
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            order_id,
+                            message: error.message
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
     }
 };

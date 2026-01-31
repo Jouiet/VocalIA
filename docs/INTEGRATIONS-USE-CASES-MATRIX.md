@@ -1,7 +1,7 @@
 # VocalIA - Matrice Intégrations × Use Cases
 
 > **Version**: 1.1.0 | **Date**: 31/01/2026 | **Session**: 249.16
-> **21 Intégrations natives réelles + 3 iPaaS = 150 MCP Tools**
+> **21 Intégrations natives réelles + 3 iPaaS = 159 MCP Tools**
 > **VÉRIFIÉ**: Audit codebase 31/01/2026 - Corrections appliquées
 
 ---
@@ -36,9 +36,9 @@ COMMUNICATION (3)     WEBSITE (2)       PRODUCTIVITY (3)    iPaaS (3)
 |:------------|:----:|:-----:|:-------------:|:---------:|
 | **Shopify** | ✅ | ✅ | ✅ | **8** |
 | **WooCommerce** | ✅ | ✅ | ✅ | 7 |
-| **Magento** | ✅ | ❌ | ❌ | 6 |
-| **PrestaShop** | ✅ | ❌ | ❌ | 7 |
-| **BigCommerce** | ✅ | ✅ | ⚠️ Partiel | 7 |
+| **Magento** | ✅ | ✅ | ✅ | **10** |
+| **PrestaShop** | ✅ | ✅ | ✅ | **10** |
+| **BigCommerce** | ✅ | ✅ | ✅ | **9** |
 
 > **✅ SHOPIFY FULL CRUD** (Session 249.20):
 > - `shopify_get_order`, `shopify_list_orders` = lecture commandes

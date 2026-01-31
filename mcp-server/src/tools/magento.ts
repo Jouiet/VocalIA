@@ -3,13 +3,23 @@ import * as path from 'path';
 import { createRequire } from 'module';
 
 /**
- * Magento MCP Tools - Session 249.5
+ * Magento MCP Tools - Session 249.20
  *
  * API Reference: https://developer.adobe.com/commerce/webapi/rest/
- * API Version: REST API
+ * API Version: REST API v1
  * Auth: Bearer Token (Integration Access Token)
  *
  * Multi-tenant support via SecretVault
+ *
+ * WRITE Operations Added (Session 249.20):
+ * - magento_cancel_order: POST /V1/order/{orderId}/cancel
+ * - magento_create_refund: POST /V1/order/{orderId}/refund
+ * - magento_hold_order: POST /V1/orders/{orderId}/hold
+ * - magento_unhold_order: POST /V1/orders/{orderId}/unhold
+ *
+ * Sources:
+ * - https://github.com/boldcommerce/magento2-mcp
+ * - https://developer.adobe.com/commerce/webapi/rest/use-rest/performing-searches/
  */
 
 const require = createRequire(import.meta.url);
@@ -527,6 +537,291 @@ export const magentoTools = {
                             current_page,
                             page_size,
                             customers
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            message: error.message
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
+    },
+
+    // ==========================================================================
+    // WRITE OPERATIONS - Session 249.20
+    // ==========================================================================
+
+    cancel_order: {
+        name: 'magento_cancel_order',
+        description: 'Cancel a Magento order. Only works for orders that have not been invoiced.',
+        parameters: {
+            order_id: z.number().describe('Magento order entity ID'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, _meta }: {
+            order_id: number;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getMagentoCredentials(tenantId);
+
+            if (!creds.url || !creds.accessToken) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing Magento credentials",
+                            requirements: ["MAGENTO_URL", "MAGENTO_ACCESS_TOKEN"]
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                // POST /V1/orders/{id}/cancel
+                const result = await magentoRequest(
+                    creds.url,
+                    creds.accessToken,
+                    `/orders/${order_id}/cancel`,
+                    { method: 'POST' }
+                );
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            cancelled: result === true,
+                            message: result === true ? `Order ${order_id} cancelled successfully` : 'Cancellation may have failed'
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            order_id,
+                            message: error.message,
+                            hint: "Order may already be invoiced or shipped. Only pending orders can be cancelled."
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
+    },
+
+    create_refund: {
+        name: 'magento_create_refund',
+        description: 'Create a refund (credit memo) for an invoiced Magento order.',
+        parameters: {
+            order_id: z.number().describe('Magento order entity ID'),
+            items: z.array(z.object({
+                order_item_id: z.number().describe('Order item ID to refund'),
+                qty: z.number().describe('Quantity to refund')
+            })).optional().describe('Specific items to refund (omit for full refund)'),
+            notify_customer: z.boolean().optional().describe('Send refund email to customer (default: true)'),
+            adjustment_positive: z.number().optional().describe('Adjustment refund amount (add to refund)'),
+            adjustment_negative: z.number().optional().describe('Adjustment fee (subtract from refund)'),
+            comment: z.string().optional().describe('Comment for the credit memo'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, items, notify_customer = true, adjustment_positive, adjustment_negative, comment, _meta }: {
+            order_id: number;
+            items?: Array<{ order_item_id: number; qty: number }>;
+            notify_customer?: boolean;
+            adjustment_positive?: number;
+            adjustment_negative?: number;
+            comment?: string;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getMagentoCredentials(tenantId);
+
+            if (!creds.url || !creds.accessToken) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing Magento credentials",
+                            requirements: ["MAGENTO_URL", "MAGENTO_ACCESS_TOKEN"]
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                // Build refund request body
+                const refundBody: any = {
+                    notify: notify_customer
+                };
+
+                if (items && items.length > 0) {
+                    refundBody.items = items;
+                }
+
+                if (adjustment_positive !== undefined) {
+                    refundBody.adjustmentPositive = adjustment_positive;
+                }
+
+                if (adjustment_negative !== undefined) {
+                    refundBody.adjustmentNegative = adjustment_negative;
+                }
+
+                if (comment) {
+                    refundBody.comment = {
+                        comment: comment,
+                        is_visible_on_front: 1
+                    };
+                }
+
+                // POST /V1/order/{orderId}/refund
+                const result = await magentoRequest(
+                    creds.url,
+                    creds.accessToken,
+                    `/order/${order_id}/refund`,
+                    { method: 'POST', body: refundBody }
+                );
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            creditmemo_id: result,
+                            message: `Credit memo ${result} created for order ${order_id}`
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            order_id,
+                            message: error.message,
+                            hint: "Order must be invoiced before creating a refund."
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
+    },
+
+    hold_order: {
+        name: 'magento_hold_order',
+        description: 'Place a Magento order on hold.',
+        parameters: {
+            order_id: z.number().describe('Magento order entity ID'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, _meta }: {
+            order_id: number;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getMagentoCredentials(tenantId);
+
+            if (!creds.url || !creds.accessToken) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing Magento credentials"
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                const result = await magentoRequest(
+                    creds.url,
+                    creds.accessToken,
+                    `/orders/${order_id}/hold`,
+                    { method: 'POST' }
+                );
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            on_hold: result === true,
+                            message: `Order ${order_id} placed on hold`
+                        }, null, 2)
+                    }]
+                };
+            } catch (error: any) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            message: error.message
+                        }, null, 2)
+                    }]
+                };
+            }
+        }
+    },
+
+    unhold_order: {
+        name: 'magento_unhold_order',
+        description: 'Release a Magento order from hold status.',
+        parameters: {
+            order_id: z.number().describe('Magento order entity ID'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional().describe('Tenant context'),
+        },
+        handler: async ({ order_id, _meta }: {
+            order_id: number;
+            _meta?: { tenantId?: string };
+        }) => {
+            const tenantId = _meta?.tenantId || 'agency_internal';
+            const creds = await getMagentoCredentials(tenantId);
+
+            if (!creds.url || !creds.accessToken) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            error: "Missing Magento credentials"
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            try {
+                const result = await magentoRequest(
+                    creds.url,
+                    creds.accessToken,
+                    `/orders/${order_id}/unhold`,
+                    { method: 'POST' }
+                );
+
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "success",
+                            order_id,
+                            released: result === true,
+                            message: `Order ${order_id} released from hold`
                         }, null, 2)
                     }]
                 };

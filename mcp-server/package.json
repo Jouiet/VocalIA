@@ -1,6 +1,6 @@
 {
   "name": "@vocalia/mcp-server",
-  "version": "0.5.9",
+  "version": "0.6.0",
   "description": "VocalIA MCP Server - Voice AI Platform Integration for Claude",
   "main": "dist/index.js",
   "bin": {

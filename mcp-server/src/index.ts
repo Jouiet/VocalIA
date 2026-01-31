@@ -1290,6 +1290,11 @@ server.tool(magentoTools.list_products.name, magentoTools.list_products.paramete
 server.tool(magentoTools.get_product.name, magentoTools.get_product.parameters, magentoTools.get_product.handler);
 server.tool(magentoTools.get_stock.name, magentoTools.get_stock.parameters, magentoTools.get_stock.handler);
 server.tool(magentoTools.list_customers.name, magentoTools.list_customers.parameters, magentoTools.list_customers.handler);
+// Magento WRITE operations - Session 249.20
+server.tool(magentoTools.cancel_order.name, magentoTools.cancel_order.parameters, magentoTools.cancel_order.handler);
+server.tool(magentoTools.create_refund.name, magentoTools.create_refund.parameters, magentoTools.create_refund.handler);
+server.tool(magentoTools.hold_order.name, magentoTools.hold_order.parameters, magentoTools.hold_order.handler);
+server.tool(magentoTools.unhold_order.name, magentoTools.unhold_order.parameters, magentoTools.unhold_order.handler);
 
 // =============================================================================
 // WIX STORES TOOLS (6) - REQUIRE WIX CREDENTIALS - Session 249.11
@@ -1328,6 +1333,9 @@ server.tool(bigcommerceTools.list_products.name, bigcommerceTools.list_products.
 server.tool(bigcommerceTools.get_product.name, bigcommerceTools.get_product.parameters, bigcommerceTools.get_product.handler);
 server.tool(bigcommerceTools.list_customers.name, bigcommerceTools.list_customers.parameters, bigcommerceTools.list_customers.handler);
 server.tool(bigcommerceTools.get_customer.name, bigcommerceTools.get_customer.parameters, bigcommerceTools.get_customer.handler);
+// BigCommerce WRITE operations - Session 249.20
+server.tool(bigcommerceTools.cancel_order.name, bigcommerceTools.cancel_order.parameters, bigcommerceTools.cancel_order.handler);
+server.tool(bigcommerceTools.refund_order.name, bigcommerceTools.refund_order.parameters, bigcommerceTools.refund_order.handler);
 
 // =============================================================================
 // PRESTASHOP TOOLS (7) - REQUIRE PRESTASHOP CREDENTIALS - Session 249.11
@@ -1341,6 +1349,10 @@ server.tool(prestashopTools.get_product.name, prestashopTools.get_product.parame
 server.tool(prestashopTools.get_stock.name, prestashopTools.get_stock.parameters, prestashopTools.get_stock.handler);
 server.tool(prestashopTools.list_customers.name, prestashopTools.list_customers.parameters, prestashopTools.list_customers.handler);
 server.tool(prestashopTools.get_customer.name, prestashopTools.get_customer.parameters, prestashopTools.get_customer.handler);
+// PrestaShop WRITE operations - Session 249.20
+server.tool(prestashopTools.update_order_status.name, prestashopTools.update_order_status.parameters, prestashopTools.update_order_status.handler);
+server.tool(prestashopTools.cancel_order.name, prestashopTools.cancel_order.parameters, prestashopTools.cancel_order.handler);
+server.tool(prestashopTools.refund_order.name, prestashopTools.refund_order.parameters, prestashopTools.refund_order.handler);
 
 // =============================================================================
 // EXPORT TOOLS (5) - Document Generation (CSV, XLSX, PDF)
