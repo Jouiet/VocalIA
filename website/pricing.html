@@ -14,6 +14,7 @@
   <link rel="alternate" hreflang="en" href="https://vocalia.ma/pricing?lang=en" />
   <link rel="alternate" hreflang="es" href="https://vocalia.ma/pricing?lang=es" />
   <link rel="alternate" hreflang="ar" href="https://vocalia.ma/pricing?lang=ar" />
+  <link rel="alternate" hreflang="ary" href="https://vocalia.ma/pricing?lang=ary" />
   <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/pricing" />
 
   <!-- Open Graph -->
@@ -31,7 +32,7 @@
   <meta name="twitter:title" content="Tarifs - VocalIA | Agents Vocaux IA" />
   <meta name="twitter:description" content="Agents Vocaux IA pour Entreprises" />
   <meta name="twitter:image" content="https://vocalia.ma/public/images/og-pricing.webp" />
-
+  <meta name="twitter:site" content="@VocalIA_ma" />
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
@@ -1192,7 +1193,7 @@
           <!-- Social Links -->
           <div class="flex space-x-3">
             <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
-              <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70"loading="lazy" >
+              <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
             <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
@@ -1368,10 +1369,8 @@
           currentSymbol = geo.symbol || '€';
           currentPricing = geo.pricing || { starter: 49, pro: 149, overage: 0.06 };
 
-          console.log(`[Pricing] Currency: ${currentCurrency}, Region: ${geo.region}`);
           updatePriceDisplay();
         } catch (e) {
-          console.error('[Pricing] Geo detection failed:', e);
           updatePriceDisplay();
         }
       }
@@ -1398,7 +1397,7 @@
     })();
   </script>
 <!-- Lucide Icons 2026 -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@0.469.0"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') lucide.createIcons();

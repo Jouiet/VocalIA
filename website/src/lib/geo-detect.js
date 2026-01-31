@@ -22,7 +22,7 @@ const GEO_CONFIG = {
   LU: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-LU', region: 'europe' },
   DE: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-DE', region: 'europe' },
   IT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-IT', region: 'europe' },
-  ES: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-ES', region: 'europe' }, // Strict Rule: FR for Europe
+  ES: { lang: 'es', currency: 'EUR', symbol: '€', locale: 'es-ES', region: 'europe' }, // Spanish users get Spanish
   PT: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-PT', region: 'europe' },
   NL: { lang: 'fr', currency: 'EUR', symbol: '€', locale: 'fr-NL', region: 'europe' },
 
