@@ -1,11 +1,12 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.6.0 | 31/01/2026 | Session 249.20 | BM25 RAG SOTA | **159 tools**
+> Version: 0.7.0 | 31/01/2026 | Session 249.21 | BM25 RAG SOTA | **162 tools**
+> **Session 249.21**: Stripe Payment Links (19 tools) - Complete transactional cycle
 > **Session 249.20**: Shopify FULL CRUD (8 tools) - GraphQL Admin API 2026-01
-> **Session 249.18:** +messaging_send (WhatsApp → Twilio SMS fallback)
 > **Protocol Gap:** A2A ✅ | AP2 ❌ | A2UI ✅ | UCP ✅ (File Persistence) | Integrations ✅
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
+> **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds
 
 ## Qu'est-ce que MCP?
 
@@ -54,7 +55,8 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Zapier** | **3** | 0 | **3** |
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
-| **TOTAL** | **159** | **16** | **143** |
+| **Stripe** | **19** | 0 | **19** |
+| **TOTAL** | **162** | **16** | **146** |
 
 ### E-commerce Market Coverage (~64%)
 
@@ -715,6 +717,46 @@ Liste tous les fichiers exportés dans le répertoire exports.
     { "filename": "leads.csv", "size_bytes": 2048, "type": "CSV", ... }
   ]
 }
+```
+
+---
+
+### Stripe Tools (19) - Payment Processing
+
+> Session 249.21: Complete transactional cycle for voice commerce
+> API Version: 2024-12-18.acacia | Rate Limits: 100 req/s
+
+| Tool | Description |
+|:-----|:------------|
+| `stripe_create_payment_link` | Create Payment Link (one-click checkout) |
+| `stripe_list_payment_links` | List payment links |
+| `stripe_deactivate_payment_link` | Deactivate a payment link |
+| `stripe_create_customer` | Create Stripe customer |
+| `stripe_get_customer` | Get customer by ID or email |
+| `stripe_list_customers` | List customers |
+| `stripe_create_product` | Create product in catalog |
+| `stripe_list_products` | List products |
+| `stripe_create_price` | Create price for product |
+| `stripe_create_checkout_session` | Hosted checkout session |
+| `stripe_get_checkout_session` | Get session status |
+| `stripe_create_invoice` | Create invoice for customer |
+| `stripe_add_invoice_item` | Add line item to invoice |
+| `stripe_finalize_invoice` | Finalize draft invoice |
+| `stripe_send_invoice` | Send invoice to customer |
+| `stripe_create_payment_intent` | Custom payment flow |
+| `stripe_get_payment_intent` | Get payment intent status |
+| `stripe_create_refund` | Create full/partial refund |
+| `stripe_get_balance` | Get account balance |
+
+**Prérequis:** `STRIPE_SECRET_KEY` (Multi-tenant: `STRIPE_SECRET_KEY_<TENANT>`)
+
+**Voice Commerce Flow:**
+```
+Caller: "Je veux payer"
+→ stripe_create_payment_link (product_name: "Consultation", amount: 5000)
+→ messaging_send (to: +33612345678, message: "Votre lien de paiement: https://buy.stripe.com/xxx")
+→ Client paie sur son téléphone
+→ stripe_get_checkout_session → payment_status: "paid"
 ```
 
 ---
