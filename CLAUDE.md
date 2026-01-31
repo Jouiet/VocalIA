@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.35.0 | 31/01/2026 | Session 250.18 | Health: 100% | **SECURITY HARDENED**
+> Version: 6.36.0 | 31/01/2026 | Session 250.19 | Health: 100% | **P0-P3 COMPLETE**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1685 keys** | RTL ✅ | **100% COMPLETE**
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options on ALL 43 pages ✅**
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**

@@ -385,14 +385,14 @@ bg-gradient-to-br from-vocalia-500 to-vocalia-400
 | 8 | Add X-Content-Type-Options header | 43 HTML files | ✅ DONE |
 | 9 | Add referrer policy | 43 HTML files | ✅ DONE |
 
-### P3 - Low (Backlog)
+### P3 - Low ✅ MOSTLY COMPLETE (Session 250.19)
 
-| # | Task | File(s) | Effort |
+| # | Task | File(s) | Status |
 |:-:|:-----|:--------|:------:|
-| 10 | Add more FAQ schemas for AEO | Key pages | 2h |
-| 11 | Add Schema.org to remaining 16 pages | 16 HTML files | 4h |
-| 12 | Implement prefers-reduced-motion | CSS | 1h |
-| 13 | Add dark/light mode toggle | All pages | 4h |
+| 10 | FAQ schema for AEO | pricing.html | ✅ Already present |
+| 11 | Add Schema.org to remaining pages | 8 HTML files | ✅ DONE |
+| 12 | Implement prefers-reduced-motion | input.css | ✅ Already present (WCAG 2.3.3) |
+| 13 | Add dark/light mode toggle | All pages | ⏳ Dashboard only (4h for full site)
 
 ---
 
