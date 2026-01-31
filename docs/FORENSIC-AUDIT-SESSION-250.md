@@ -2,7 +2,7 @@
 ## Rapport Complet, Factuel et Vérifiable
 
 > **Date:** 31/01/2026
-> **Session:** 250.9 (Dashboard API)
+> **Session:** 250.10 (Widget E2E Tests)
 > **Méthode:** Bottom-up (faits → conclusions)
 > **Auditeur:** Claude Opus 4.5
 > **Durée:** ~60 minutes d'analyse
@@ -48,7 +48,7 @@
 | **Security** | 88/100 | 29 fonctions, RateLimiter, CSRF, XSS protection |
 | **Frontend/SEO** | 85/100 | Solide mais lacunes critiques |
 | **i18n** | 78/100 | Structure OK, traductions incomplètes |
-| **Tests** | 75/100 | 243 tests + c8 coverage configured |
+| **Tests** | 80/100 | 305 tests + c8 coverage + Widget E2E ✅ |
 | **CI/CD** | 75/100 | 2 workflows, manque coverage gate |
 | **SDKs** | 80/100 | Python + Node complets, docs manquantes |
 | **Conversion** | 70/100 | Signup créé ✅, forms fake restants |
@@ -1203,7 +1203,7 @@ TOTAL: 652 lignes - Plugin complet
 | 12 | ~~Unit tests voice-api~~ | test/voice-api.test.cjs | ✅ 34 tests (structure) |
 | 13 | ~~Unit tests RateLimiter~~ | test/rate-limiter.test.cjs | ✅ 55 tests |
 | 14 | ~~Integration tests MCP~~ | test/mcp-server.test.cjs | ✅ 53 tests (structure) |
-| 15 | E2E tests Widget | test/e2e/widget.spec.js | 50% |
+| 15 | ~~E2E tests Widget~~ | test/widget.test.cjs | ✅ 62 tests passing |
 
 ### Tooling
 
