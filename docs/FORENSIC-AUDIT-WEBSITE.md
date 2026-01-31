@@ -419,7 +419,7 @@ Icons audit revealed VocalIA was using Heroicons v1 (2019-2020 style) with `stro
 
 | Feature | Implementation |
 |:--------|:---------------|
-| All 30 Personas | Listed by Tier (1/2/3) |
+| All 40 Personas | Listed by Tier (1/2/3/4) |
 | 4 Featured Cards | Finance, Healthcare, Real Estate, Retail |
 | Schema.org | CollectionPage structured data |
 | Standardized Footer | Newsletter + Trust Badges |

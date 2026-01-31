@@ -121,7 +121,7 @@
       "price": "Free",
       "features": [
         "Native Web Speech API",
-        "30 industry personas",
+        "40 industry personas",
         "5 languages supported",
         "2-minute integration"
       ]
@@ -158,7 +158,7 @@
     "subtitle": "Our real-time voice processing technology"
   },
   "personas": {
-    "title": "30 Industry Personas",
+    "title": "40 Industry Personas",
     "subtitle": "Specialized agents for every sector",
     "list": [
       "E-commerce",
@@ -1688,7 +1688,7 @@
     "badge": "Investment Opportunity",
     "title_1": "The Voice AI Platform",
     "title_2": "60% Cheaper Than Competition",
-    "subtitle": "VocalIA combines Web Widget + AI Telephony in a single platform. 30 industry personas. 5 languages including Darija. Proprietary technology.",
+    "subtitle": "VocalIA combines Web Widget + AI Telephony in a single platform. 40 industry personas. 5 languages including Darija. Proprietary technology.",
     "metric_cost": "Cost per minute",
     "metric_personas": "Industry Personas",
     "metric_personas_sub": "Pre-configured",
@@ -1709,7 +1709,7 @@
     "table_feature": "Feature",
     "table_pricing": "Pricing /min",
     "table_widget_tel": "Widget + Telephony",
-    "table_personas": "30 Industry Personas",
+    "table_personas": "40 Industry Personas",
     "table_darija": "Darija Support",
     "table_mcp": "MCP Server (178 tools)",
     "table_languages": "5 Native Languages",

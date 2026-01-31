@@ -2,7 +2,7 @@
 /**
  * Plugin Name: VocalIA Voice Widget
  * Plugin URI: https://vocalia.ma/integrations/wordpress
- * Description: Add AI-powered voice assistant to your WordPress site. Supports 5 languages (FR, EN, ES, AR, Darija) with 30 industry personas.
+ * Description: Add AI-powered voice assistant to your WordPress site. Supports 5 languages (FR, EN, ES, AR, Darija) with 40 industry personas.
  * Version: 1.0.0
  * Author: VocalIA
  * Author URI: https://vocalia.ma
@@ -404,7 +404,7 @@ class VocalIA_Voice_Widget {
 
                         <h4 style="color: #94a3b8; margin-bottom: 10px;"><?php _e('Features', 'vocalia-voice-widget'); ?></h4>
                         <ul style="color: #cbd5e1; font-size: 13px; line-height: 1.8; padding-left: 20px;">
-                            <li>30 industry personas</li>
+                            <li>40 industry personas</li>
                             <li>5 languages (FR, EN, ES, AR, Darija)</li>
                             <li>Web Speech API ($0 cost)</li>
                             <li>RTL support for Arabic</li>

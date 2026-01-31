@@ -474,52 +474,52 @@
     "text": "dental intake Dentiste dentiste Le Dr. Lumière est notre dentiste principal, spécialiste en implantologie et esthétique dentaire."
   },
   {
-    "id": "faq_agency_v2_services",
+    "id": "faq_agency_v3_products",
     "type": "faq",
-    "title": "Services FAQ",
-    "title_fr": "FAQ Services",
+    "title": "Products FAQ",
+    "title_fr": "FAQ Produits",
     "category": "faq",
-    "persona_id": "agency_v2",
-    "topic": "services",
-    "answer_fr": "VocalIA propose des agents IA vocaux, des automatisations e-commerce (Shopify) et des systèmes de marketing agentique Level 5.",
+    "persona_id": "agency_v3",
+    "topic": "products",
+    "answer_fr": "VocalIA propose 2 produits Voice AI: Voice Widget (assistant vocal 24/7 pour sites web) et Voice Telephony (ligne téléphonique IA via Twilio).",
     "tenant_id": "agency_internal",
-    "text": "agency Services services VocalIA propose des agents IA vocaux, des automatisations e-commerce (Shopify) et des systèmes de marketing agentique Level 5."
+    "text": "agency Products produits VocalIA propose 2 produits Voice AI: Voice Widget (assistant vocal 24/7 pour sites web) et Voice Telephony (ligne téléphonique IA via Twilio)."
   },
   {
-    "id": "faq_agency_v2_mission",
+    "id": "faq_agency_v3_personas",
     "type": "faq",
-    "title": "Mission FAQ",
-    "title_fr": "FAQ Mission",
+    "title": "Personas FAQ",
+    "title_fr": "FAQ Personas",
     "category": "faq",
-    "persona_id": "agency_v2",
-    "topic": "mission",
-    "answer_fr": "Notre mission est de transformer les agences et boutiques en moteurs autonomes ultra-performants.",
+    "persona_id": "agency_v3",
+    "topic": "personas",
+    "answer_fr": "40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
     "tenant_id": "agency_internal",
-    "text": "agency Mission mission Notre mission est de transformer les agences et boutiques en moteurs autonomes ultra-performants."
+    "text": "agency Personas personas 40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus."
   },
   {
-    "id": "faq_agency_v2_contact",
+    "id": "faq_agency_v3_languages",
+    "type": "faq",
+    "title": "Languages FAQ",
+    "title_fr": "FAQ Langues",
+    "category": "faq",
+    "persona_id": "agency_v3",
+    "topic": "languages",
+    "answer_fr": "5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain).",
+    "tenant_id": "agency_internal",
+    "text": "agency Languages langues 5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain)."
+  },
+  {
+    "id": "faq_agency_v3_contact",
     "type": "faq",
     "title": "Contact FAQ",
     "title_fr": "FAQ Contact",
     "category": "faq",
-    "persona_id": "agency_v2",
+    "persona_id": "agency_v3",
     "topic": "contact",
-    "answer_fr": "Contactez-nous via le site vocalia.ma ou par téléphone au +212 6 00 00 00 00.",
+    "answer_fr": "Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma.",
     "tenant_id": "agency_internal",
-    "text": "agency Contact contact Contactez-nous via le site vocalia.ma ou par téléphone au +212 6 00 00 00 00."
-  },
-  {
-    "id": "faq_agency_v2_expertise",
-    "type": "faq",
-    "title": "Expertise FAQ",
-    "title_fr": "FAQ Expertise",
-    "category": "faq",
-    "persona_id": "agency_v2",
-    "topic": "expertise",
-    "answer_fr": "Experts en RAG, Grok, Gemini 3 Pro et déploiements holistiques.",
-    "tenant_id": "agency_internal",
-    "text": "agency Expertise expertise Experts en RAG, Grok, Gemini 3 Pro et déploiements holistiques."
+    "text": "agency Contact contact Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma."
   },
   {
     "id": "faq_healer_v1_specialites",

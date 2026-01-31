@@ -134,7 +134,7 @@ class RevenueScience {
     }
 
     /**
-     * Holistic ROI: Connects Ad Cost (Marketing) to Deal Value (Sales)
+     * Full-Funnel ROI: Connects Ad Cost (Marketing) to Deal Value (Sales)
      */
     calculateSectorROI(sectorData) {
         const { spend, revenue, customerCount } = sectorData;

@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.43.0 | 31/01/2026 | Session 250.31 | Health: 100% | **FACTUALITY AUDIT 100%**
+> Version: 6.44.0 | 31/01/2026 | Session 250.33 | Health: 100% | **IDENTITY ALIGNMENT 100%**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
 > **AEO: Speakable schema ✅** | **29 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
@@ -18,7 +18,7 @@
 > **Website: 45 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 45 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: **92/100** | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
-> **FACTUALITY AUDIT:** 100% (Session 250.31) - All "agency" claims removed, VocalIA = Voice AI Platform only
+> **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
 
 ## Identité
 

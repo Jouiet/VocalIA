@@ -1654,7 +1654,7 @@ async function translateQueryToFrench(query, sourceLang) {
 }
 
 async function handleSearchKnowledgeBase(session, args) {
-  const kbId = session.metadata?.knowledge_base_id || session.metadata?.persona_id || 'agency_v2';
+  const kbId = session.metadata?.knowledge_base_id || session.metadata?.persona_id || 'agency_v3';
   const sessionLang = session.metadata?.language || CONFIG.defaultLanguage;
   let query = args.query.toLowerCase();
   const originalQuery = query;

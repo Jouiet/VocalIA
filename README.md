@@ -29,7 +29,7 @@ VocalIA is a comprehensive Voice AI platform combining:
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │                   SHARED COMPONENTS                      │   │
 │  ├─────────────────────────────────────────────────────────┤   │
-│  │  • 30 Multi-Tenant Personas                             │   │
+│  │  • 40 Multi-Tenant Personas                             │   │
 │  │  • 5 Languages (FR, EN, ES, AR, ARY/Darija)            │   │
 │  │  • Marketing Science (BANT, PAS, CIALDINI, AIDA)       │   │
 │  │  • CRM Integration (HubSpot + Klaviyo + Shopify)       │   │

@@ -5053,7 +5053,7 @@ class VoicePersonaInjector {
             sensitivity: archetype.sensitivity,
             systemPrompt: archetype.systemPrompt,
             // Custom Fields for RAG/Payments
-            knowledge_base_id: clientConfig?.knowledge_base_id || 'agency_v2', // RAG Key
+            knowledge_base_id: clientConfig?.knowledge_base_id || 'agency_v3', // RAG Key
             payment_config: {
                 currency: clientConfig?.currency || 'EUR',
                 method: clientConfig?.payment_method || 'BANK_TRANSFER', // Default

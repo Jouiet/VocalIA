@@ -8,7 +8,7 @@ Stable tag: 1.0.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Add an AI-powered voice assistant to your WordPress site. Supports 5 languages and 30 industry personas.
+Add an AI-powered voice assistant to your WordPress site. Supports 5 languages and 40 industry personas.
 
 == Description ==
 
@@ -16,7 +16,7 @@ VocalIA Voice Widget brings conversational AI to your WordPress site. Your visit
 
 = Key Features =
 
-* **30 Industry Personas** - Pre-configured AI personalities for dental, real estate, e-commerce, SaaS, healthcare, and more
+* **40 Industry Personas** - Pre-configured AI personalities for dental, real estate, e-commerce, SaaS, healthcare, and more
 * **5 Languages** - French, English, Spanish, Arabic (MSA), and Moroccan Darija
 * **Zero API Costs** - Uses Web Speech API (browser-native)
 * **RTL Support** - Full right-to-left support for Arabic languages
@@ -94,7 +94,7 @@ Yes. In settings, you can specify page IDs or slugs where the widget should not 
 
 = 1.0.0 =
 * Initial release
-* 30 industry personas
+* 40 industry personas
 * 5 language support
 * Customizable appearance
 * Page exclusion rules

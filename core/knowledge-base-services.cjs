@@ -64,9 +64,9 @@ const STRATEGIC_META = {
     risk: "Plugin conflicts can break webhook reliability."
   },
   'analytics': {
-    intent: "Holistic vision of the business thermodynamic matrix.",
+    intent: "Comprehensive visibility into business performance metrics.",
     framework: "Data-Driven Decision Making",
-    outcome: "Identification of profit gaps and resource misallocation.",
+    outcome: "Identification of performance gaps and resource optimization.",
     truth: "Reports are useless without an action plan; data without decision is just noise.",
     risk: "Attribution bias can lead to false positives on channel performance."
   },
@@ -80,7 +80,7 @@ const STRATEGIC_META = {
   // === SESSION 168 EXTENSION - 100% Coverage ===
   'content': {
     intent: "Create scalable content assets that compound organic reach over time.",
-    framework: "Content Flywheel (Create → Distribute → Repurpose)",
+    framework: "Content Lifecycle (Create → Distribute → Repurpose)",
     outcome: "Reduced content production cost by 60% through AI-assisted generation.",
     truth: "Quality trumps quantity; one viral piece beats 100 mediocre posts.",
     risk: "AI-generated content without human review can damage brand credibility."
@@ -109,7 +109,7 @@ const STRATEGIC_META = {
   'marketing': {
     intent: "Orchestrate multi-channel campaigns with unified attribution.",
     framework: "Full-Funnel Marketing (Awareness → Consideration → Decision)",
-    outcome: "Holistic view of customer journey across all touchpoints.",
+    outcome: "Unified view of customer journey across all touchpoints.",
     truth: "Marketing without measurement is gambling; always close the attribution loop.",
     risk: "Channel silos create blind spots; integration is non-negotiable."
   },
@@ -164,9 +164,9 @@ const STRATEGIC_META = {
     risk: "Algorithmic updates can penalize over-optimized or thin content."
   },
   'Analytics & Reporting': {
-    intent: "Holistic vision of the business thermodynamic matrix.",
+    intent: "Comprehensive visibility into business performance metrics.",
     framework: "Data-Driven Decision Making",
-    outcome: "Identification of profit gaps and resource misallocation.",
+    outcome: "Identification of performance gaps and resource optimization.",
     truth: "Reports are useless without an action plan; data without decision is just noise.",
     risk: "Attribution bias can lead to false positives on channel performance."
   },
@@ -183,7 +183,7 @@ const SPECIFIC_OUTCOMES = {
   'abandoned-cart': "Benchmark: 10-15% recovery on lost revenue.",
   'welcome-series': "Benchmark: 40-50% Open Rate on brand indoctrination.",
   'meta-leads-sync': "Immediate sync eliminates lead decay (decay starts after 5 mins).",
-  'system-audit': "Full gap analysis identifying at least 3 high-leverage profit leaks."
+  'system-audit': "Full gap analysis identifying at least 3 high-leverage optimization opportunities."
 };
 
 /**

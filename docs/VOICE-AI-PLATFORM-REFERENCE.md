@@ -223,7 +223,7 @@ turn_detection: {
 
 ---
 
-## 4. MULTI-TENANT: 30 PERSONAS
+## 4. MULTI-TENANT: 40 PERSONAS
 
 ### 4.1 Tier 1: Gold Rush (7 personas)
 
