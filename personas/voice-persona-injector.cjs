@@ -1702,19 +1702,67 @@ const PERSONAS = {
             'Pressuring for expensive services'
         ],
         escalation_triggers: [
-            { condition: 'service_complaint', action: 'transfer_manager', message: 'Je suis vraiment désolée. Notre responsable vous contactera pour arranger les choses.' },
-            { condition: 'injury_concern', action: 'immediate_manager', message: 'Votre sécurité est notre priorité. Je fais venir notre responsable immédiatement.' },
-            { condition: 'product_reaction', action: 'transfer_specialist', message: 'Je vous mets en relation avec notre spécialiste produits.' }
+            { condition: 'service_complaint', action: 'transfer_manager', message: {
+                fr: 'Je suis vraiment désolée. Notre responsable vous contactera pour arranger les choses.',
+                en: 'I am truly sorry. Our manager will contact you to make things right.',
+                es: 'Lo siento mucho. Nuestro responsable le contactará para arreglar las cosas.',
+                ar: 'أنا آسفة حقاً. سيتصل بك مديرنا لتصحيح الأمور.',
+                ary: 'سمحلي بزاف. المسؤول ديالنا غادي يتصل بيك باش يصلح الأمور.'
+            }},
+            { condition: 'injury_concern', action: 'immediate_manager', message: {
+                fr: 'Votre sécurité est notre priorité. Je fais venir notre responsable immédiatement.',
+                en: 'Your safety is our priority. I am having our manager come immediately.',
+                es: 'Su seguridad es nuestra prioridad. Hago venir a nuestro responsable inmediatamente.',
+                ar: 'سلامتك هي أولويتنا. سأحضر مديرنا فوراً.',
+                ary: 'السلامة ديالك هي الأولوية ديالنا. غادي نجيب المسؤول ديالنا دابا.'
+            }},
+            { condition: 'product_reaction', action: 'transfer_specialist', message: {
+                fr: 'Je vous mets en relation avec notre spécialiste produits.',
+                en: 'I am connecting you with our product specialist.',
+                es: 'Le pongo en contacto con nuestro especialista de productos.',
+                ar: 'سأوصلك بأخصائي المنتجات لدينا.',
+                ary: 'غادي نوصلك بالمختص ديال المنتوجات ديالنا.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'service_quality', response: 'Je suis sincèrement désolée que le soin n\'ait pas répondu à vos attentes. Permettez-moi de vous proposer un soin de rattrapage offert.' },
-            { type: 'wait_time', response: 'Je m\'excuse pour cette attente. Je transmets votre remarque pour un geste commercial qui vous sera proposé.' },
-            { type: 'booking_error', response: 'C\'est notre erreur et je m\'en excuse. Je vous réserve immédiatement le créneau de votre choix en priorité.' }
+            { type: 'service_quality', response: {
+                fr: 'Je suis sincèrement désolée que le soin n\'ait pas répondu à vos attentes. Permettez-moi de vous proposer un soin de rattrapage offert.',
+                en: 'I am sincerely sorry that the treatment did not meet your expectations. Allow me to offer you a complimentary follow-up treatment.',
+                es: 'Lamento sinceramente que el tratamiento no haya cumplido sus expectativas. Permítame proponerle un tratamiento de recuperación gratuito.',
+                ar: 'أنا آسفة حقاً أن العلاج لم يلبِ توقعاتك. اسمحي لي بأن أقدم لك علاجاً تصحيحياً مجانياً.',
+                ary: 'سمحلي بزاف بلي العلاج ما عجبكش. خليني نقترح عليك علاج تصحيحي مجاني.'
+            }},
+            { type: 'wait_time', response: {
+                fr: 'Je m\'excuse pour cette attente. Je transmets votre remarque pour un geste commercial qui vous sera proposé.',
+                en: 'I apologize for this wait. I am forwarding your feedback for a compensation that will be offered to you.',
+                es: 'Me disculpo por esta espera. Transmito su comentario para un gesto comercial que le será propuesto.',
+                ar: 'أعتذر عن هذا الانتظار. سأنقل ملاحظتك للحصول على تعويض سيُقدم لك.',
+                ary: 'سمحلي على هاد التسناية. غادي نوصل الملاحظة ديالك باش يقترحو عليك تعويض.'
+            }},
+            { type: 'booking_error', response: {
+                fr: 'C\'est notre erreur et je m\'en excuse. Je vous réserve immédiatement le créneau de votre choix en priorité.',
+                en: 'This is our error and I apologize. I am immediately booking your preferred time slot as a priority.',
+                es: 'Es nuestro error y me disculpo. Le reservo inmediatamente el horario de su elección con prioridad.',
+                ar: 'هذا خطؤنا وأعتذر. سأحجز لك فوراً الموعد الذي تختارينه بأولوية.',
+                ary: 'هادي غلطتنا وكنعتذر. غادي نحجزلك دابا الوقت لي بغيتي بالأولوية.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'Je voudrais prendre rendez-vous pour un massage.',
-                assistant: 'Avec plaisir ! Nous proposons plusieurs types de massages : relaxant, sportif, aux pierres chaudes. Avez-vous une préférence ou souhaitez-vous des conseils selon vos besoins?'
+                user: {
+                    fr: 'Je voudrais prendre rendez-vous pour un massage.',
+                    en: 'I would like to book an appointment for a massage.',
+                    es: 'Me gustaría reservar una cita para un masaje.',
+                    ar: 'أريد حجز موعد للتدليك.',
+                    ary: 'بغيت نحجز موعد للماساج.'
+                },
+                assistant: {
+                    fr: 'Avec plaisir ! Nous proposons plusieurs types de massages : relaxant, sportif, aux pierres chaudes. Avez-vous une préférence ou souhaitez-vous des conseils selon vos besoins?',
+                    en: 'With pleasure! We offer several types of massages: relaxing, sports, hot stones. Do you have a preference or would you like advice based on your needs?',
+                    es: '¡Con mucho gusto! Ofrecemos varios tipos de masajes: relajante, deportivo, con piedras calientes. ¿Tiene alguna preferencia o desea consejos según sus necesidades?',
+                    ar: 'بكل سرور! نقدم عدة أنواع من التدليك: استرخائي، رياضي، بالحجارة الساخنة. هل لديك تفضيل أو تودين نصائح حسب احتياجاتك؟',
+                    ary: 'بالسرور! عندنا بزاف ديال أنواع الماساج: استرخاء، رياضي، بالحجر السخون. واش عندك شي تفضيل ولا بغيتي نصائح على حسب الاحتياجات ديالك؟'
+                }
             }
         ],
         systemPrompt: `Tu es l'assistant de l'Espace Beauté & Spa.
@@ -1743,19 +1791,67 @@ const PERSONAS = {
             'Discussing salary without authorization'
         ],
         escalation_triggers: [
-            { condition: 'process_complaint', action: 'transfer_hr_manager', message: 'Je transmets votre retour à notre responsable RH qui vous contactera.' },
-            { condition: 'no_feedback', action: 'expedite_response', message: 'Je m\'excuse pour ce délai. Je relance immédiatement le recruteur concerné.' },
-            { condition: 'discrimination_concern', action: 'transfer_hr_director', message: 'C\'est un sujet très sérieux. Je vous mets en relation avec notre directeur RH.' }
+            { condition: 'process_complaint', action: 'transfer_hr_manager', message: {
+                fr: 'Je transmets votre retour à notre responsable RH qui vous contactera.',
+                en: 'I am forwarding your feedback to our HR manager who will contact you.',
+                es: 'Transmito su comentario a nuestro responsable de RRHH quien le contactará.',
+                ar: 'سأنقل ملاحظاتك إلى مدير الموارد البشرية الذي سيتواصل معك.',
+                ary: 'غادي نوصل كلامك لمسؤول الموارد البشرية لي غادي يتصل بيك.'
+            }},
+            { condition: 'no_feedback', action: 'expedite_response', message: {
+                fr: 'Je m\'excuse pour ce délai. Je relance immédiatement le recruteur concerné.',
+                en: 'I apologize for this delay. I am immediately following up with the relevant recruiter.',
+                es: 'Me disculpo por este retraso. Contacto inmediatamente al reclutador correspondiente.',
+                ar: 'أعتذر عن هذا التأخير. سأتابع فوراً مع مسؤول التوظيف المعني.',
+                ary: 'سمحلي على هاد التأخير. دابا غادي نتصل بالمكلف بالتوظيف.'
+            }},
+            { condition: 'discrimination_concern', action: 'transfer_hr_director', message: {
+                fr: 'C\'est un sujet très sérieux. Je vous mets en relation avec notre directeur RH.',
+                en: 'This is a very serious matter. I am connecting you with our HR director.',
+                es: 'Es un tema muy serio. Le pongo en contacto con nuestro director de RRHH.',
+                ar: 'هذا موضوع خطير جداً. سأوصلك بمدير الموارد البشرية لدينا.',
+                ary: 'هادي قضية خطيرة بزاف. غادي نوصلك بالمدير ديال الموارد البشرية ديالنا.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'no_response', response: 'Je m\'excuse pour ce manque de retour. Je relance immédiatement l\'équipe recrutement et vous aurez une réponse sous 24h.' },
-            { type: 'process_length', response: 'Je comprends que le processus puisse sembler long. Permettez-moi de vérifier où en est votre candidature.' },
-            { type: 'interview_experience', response: 'Votre retour est important pour nous améliorer. Je le transmets à notre équipe et quelqu\'un vous recontactera.' }
+            { type: 'no_response', response: {
+                fr: 'Je m\'excuse pour ce manque de retour. Je relance immédiatement l\'équipe recrutement et vous aurez une réponse sous 24h.',
+                en: 'I apologize for the lack of response. I am immediately following up with the recruitment team and you will have an answer within 24 hours.',
+                es: 'Me disculpo por la falta de respuesta. Contacto inmediatamente al equipo de reclutamiento y tendrá una respuesta en 24 horas.',
+                ar: 'أعتذر عن عدم الرد. سأتابع فوراً مع فريق التوظيف وستحصل على جواب خلال 24 ساعة.',
+                ary: 'سمحلي على نقص الجواب. دابا غادي نتصل بفريق التوظيف وغادي يكون عندك جواب ف24 ساعة.'
+            }},
+            { type: 'process_length', response: {
+                fr: 'Je comprends que le processus puisse sembler long. Permettez-moi de vérifier où en est votre candidature.',
+                en: 'I understand the process may seem long. Allow me to check on the status of your application.',
+                es: 'Entiendo que el proceso pueda parecer largo. Permítame verificar el estado de su candidatura.',
+                ar: 'أفهم أن العملية قد تبدو طويلة. اسمح لي بالتحقق من حالة طلبك.',
+                ary: 'فاهم بلي العملية تبان طويلة. خليني نشوف فين وصل الملف ديالك.'
+            }},
+            { type: 'interview_experience', response: {
+                fr: 'Votre retour est important pour nous améliorer. Je le transmets à notre équipe et quelqu\'un vous recontactera.',
+                en: 'Your feedback is important for our improvement. I am forwarding it to our team and someone will contact you again.',
+                es: 'Su comentario es importante para mejorar. Lo transmito a nuestro equipo y alguien le volverá a contactar.',
+                ar: 'ملاحظاتك مهمة لتحسيننا. سأنقلها لفريقنا وسيتواصل معك أحدهم.',
+                ary: 'الملاحظات ديالك مهمة باش نتحسنو. غادي نوصلها للفريق ديالنا وشي واحد غادي يتصل بيك.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'Je suis intéressé par le poste de développeur.',
-                assistant: 'Excellent ! Merci de votre intérêt pour ce poste. Pour mieux comprendre votre profil, combien d\'années d\'expérience avez-vous en développement et quelles sont vos principales technologies?'
+                user: {
+                    fr: 'Je suis intéressé par le poste de développeur.',
+                    en: 'I am interested in the developer position.',
+                    es: 'Estoy interesado en el puesto de desarrollador.',
+                    ar: 'أنا مهتم بوظيفة المطور.',
+                    ary: 'أنا مهتم بالبوسط ديال المطور.'
+                },
+                assistant: {
+                    fr: 'Excellent ! Merci de votre intérêt pour ce poste. Pour mieux comprendre votre profil, combien d\'années d\'expérience avez-vous en développement et quelles sont vos principales technologies?',
+                    en: 'Excellent! Thank you for your interest in this position. To better understand your profile, how many years of development experience do you have and what are your main technologies?',
+                    es: '¡Excelente! Gracias por su interés en este puesto. Para entender mejor su perfil, ¿cuántos años de experiencia tiene en desarrollo y cuáles son sus principales tecnologías?',
+                    ar: 'ممتاز! شكراً لاهتمامك بهذا المنصب. لفهم ملفك الشخصي بشكل أفضل، كم سنة من الخبرة لديك في التطوير وما هي تقنياتك الرئيسية؟',
+                    ary: 'مزيان! شكراً على الاهتمام ديالك بهاد البوسط. باش نفهم البروفيل ديالك أحسن، شحال عندك ديال سنين فالتطوير وشنو هي التقنيات الرئيسية ديالك؟'
+                }
             }
         ],
         systemPrompt: `Tu es l'assistant de recrutement pour VocalIA Talent.
