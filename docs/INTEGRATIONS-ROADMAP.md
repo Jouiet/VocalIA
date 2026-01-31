@@ -1,10 +1,11 @@
 # VocalIA Integrations Roadmap - Forensic Analysis
 
-> **Version**: 3.5.0 | **Date**: 30/01/2026 | **Session**: 249.11
-> **Methodology**: Bottom-up forensic audit | **Status**: ✅ ALL PHASES COMPLETE (100%)
+> **Version**: 4.1.0 | **Date**: 31/01/2026 | **Session**: 250
+> **MCP Server**: v0.7.0 | **178 Tools** | **28 Intégrations Natives**
+> **Methodology**: Bottom-up forensic audit | **Status**: ✅ ALL PHASES COMPLETE
 > **iPaaS**: Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
-> **E-commerce**: **~64% global market coverage** (7 platforms) - Session 249.11 Strategic Expansion
-> **Cleanup**: Cal.com, Intercom, Crisp → **DELETED** (low value per audit)
+> **Payments**: Stripe ✅ (19 tools) - Session 249.21 - CYCLE TRANSACTIONNEL COMPLET
+> **E-commerce**: **~64% global market** (7 platforms) - ALL FULL CRUD
 
 ---
 
@@ -43,36 +44,44 @@
 
 ## ✅ IMPLEMENTATION COMPLETE
 
-**Session 249.9: Cleanup + Gmail API ajouté.**
+**Session 249.21: Stripe Payment Links (19 tools) + E-commerce FULL CRUD**
 
-| Metric | Value |
-|:-------|:------|
-| **MCP Server Version** | v0.5.6 |
-| **Total MCP Tools** | **117** |
-| **Tool Files** | 23 (+ inline HubSpot/Shopify/Klaviyo) |
-| **Integrations natives** | **24** (customer-facing) |
-| **E-commerce platforms** | **7** (~64% global market) |
-| **Frontend** | 100% factuel |
-| **iPaaS implémentés** | 3 (Zapier, Make, n8n) |
-| **Phases complètes** | 0, 1, 2, 3, 4, iPaaS, Cleanup, Strategic E-commerce |
+| Metric | Value | Delta vs 249.11 |
+|:-------|:------|:---------------:|
+| **MCP Server Version** | **v0.7.0** | +1.1 |
+| **Total MCP Tools** | **162** | +45 |
+| **Integrations natives** | **28** | +4 |
+| **E-commerce platforms** | **7** (ALL FULL CRUD) | ✅ |
+| **Payments** | **Stripe (19 tools)** | NEW |
+| **Cycle transactionnel** | **COMPLET** | NEW |
 
 ---
 
 ## Executive Summary
 
-| Metric | Value |
-|:-------|:------|
-| **Integrations affichées sur site** | 24 |
-| **Integrations implémentées** | **24** (100% customer-facing) |
-| **Gap à combler** | 0 |
-| **Google Workspace (Sheets, Drive, Docs, Gmail)** | ✅ COMPLETE |
-| **E-commerce (7 platforms, ~64% market)** | ✅ COMPLETE - Session 249.11 |
-| **CRM (HubSpot, Pipedrive, Zoho)** | ✅ COMPLETE |
-| **Support (Freshdesk, Zendesk)** | ✅ COMPLETE |
-| **Calendrier (Google Calendar, Calendly)** | ✅ COMPLETE |
-| **iPaaS (Zapier, Make, n8n)** | ✅ COMPLETE |
-| **Export & Email (Export, SMTP, Gmail)** | ✅ COMPLETE |
-| **Status** | PRODUCTION READY |
+| Metric | Value | Status |
+|:-------|:------|:------:|
+| **MCP Tools Total** | **178** | ✅ |
+| **Integrations natives** | **28** | ✅ |
+| **Google Workspace** | Sheets, Drive, Docs, Gmail, Calendar | ✅ |
+| **E-commerce** | 7 platforms, ~64% market, ALL FULL CRUD | ✅ |
+| **Payments** | **Stripe (19 tools)** - Payment Links, Checkout, Invoices | ✅ NEW |
+| **CRM** | HubSpot, Pipedrive, Zoho | ✅ |
+| **Support** | Freshdesk, Zendesk | ✅ |
+| **Scheduling** | Google Calendar, Calendly | ✅ |
+| **iPaaS** | Zapier, Make, n8n (+7000 apps) | ✅ |
+| **Messaging** | WhatsApp + Twilio SMS fallback | ✅ |
+| **Export** | CSV, XLSX, PDF | ✅ |
+| **Status** | **PRODUCTION READY** | ✅ |
+
+### SESSION 249.21 HIGHLIGHTS
+
+| Feature | Before | After | Impact |
+|:--------|:-------|:------|:-------|
+| **Stripe** | ❌ | ✅ 19 tools | Voice payments enabled |
+| **Shopify** | READ-ONLY | ✅ FULL CRUD (8 tools) | Cancel/refund orders |
+| **E-commerce** | Partial CRUD | ✅ ALL 7 FULL CRUD | Complete lifecycle |
+| **Cycle transactionnel** | Incomplet | ✅ COMPLET | Lead→Pay→Fulfill |
 
 ### E-commerce Market Coverage (Session 249.11)
 

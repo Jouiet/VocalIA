@@ -1,15 +1,15 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.18.0 | 31/01/2026 | Session 249.23 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 36 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> **Platform: 254 MCP Tools | 4 Sensors | 3 Agents | 31 Personas | 4 Frameworks | 12 Func. Tools | 23 Core Modules**
+> Version: 6.20.0 | 31/01/2026 | Session 250 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 37 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
+> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 31 Personas | 4 Frameworks | 12 Func. Tools | 23 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 12 Function Tools ✅
-> E-commerce: 7 platforms CRUD (Shopify, WooCommerce, Magento, PrestaShop, BigCommerce, Wix, Squarespace)
-> **Payments: Stripe (29 tools)** - Payment Links, Checkout, Invoices, Refunds
+> E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 6, PrestaShop 7, BigCommerce 7, Wix 6, Squarespace 7)
+> **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
-> **Website: /docs/ Académie Business ✅** - Full Platform Inventory, Use Cases, Workflows, ROI
+> **Website: 37 pages** | Académie Business ✅ | /industries/ ✅ | /use-cases/ ✅ | Footer Clean ✅
 
 ## Identité
 
@@ -279,21 +279,84 @@ ls data/ucp-profiles.json  # exists ✅
 |:-----------|:-------|
 | HubSpot = webhook-only | Full CRUD via hubspot-b2b-crm.cjs |
 | WhatsApp = pas implémenté | ✅ Implémenté (needs credentials) |
-| Shopify = Production | READ-ONLY (pas de cancel/refund) |
+| ~~Shopify = READ-ONLY~~ | ✅ **FULL CRUD 8 tools** (cancel/refund/fulfill) |
 | sendGenericSMS = SMS | ❌ C'était WhatsApp! Renommé sendWhatsAppMessage |
 | MCP "5 telephony tools" | ✅ Corrigé → 3 tools |
 | TwiML = pas implémenté | ✅ COMPLET (5 fonctions voice) |
 
 ---
 
-## Plan Actionnable (Session 250)
+## Plan Actionnable (Session 250) - **100% COMPLETE**
 
 | # | Task | Priority | Effort | Fichier | Status |
 |:-:|:-----|:--------:|:------:|:--------|:------:|
-| 1 | Shopify MCP tools WRITE | P0 | 5j | mcp-server/src/tools/shopify.ts | ❌ |
+| 1 | ~~Shopify MCP tools WRITE~~ | ~~P0~~ | ~~5j~~ | ~~mcp-server/src/tools/shopify.ts~~ | ✅ 8 tools |
 | 2 | ~~Twilio SMS fallback~~ | ~~P0~~ | ~~2-3j~~ | ~~telephony/voice-telephony-bridge.cjs~~ | ✅ DONE |
 | 3 | ~~Page Use Cases website~~ | ~~P1~~ | ~~2j~~ | ~~website/use-cases/index.html~~ | ✅ DONE |
-| 4 | Stripe Payment Links | P1 | 3j | core/stripe-payments.cjs | ❌ |
+| 4 | ~~Stripe Payment Links~~ | ~~P1~~ | ~~3j~~ | ~~mcp-server/src/tools/stripe.ts~~ | ✅ 19 tools |
+| 5 | ~~Page orpheline /industries/~~ | ~~P0~~ | ~~1h~~ | ~~website/**.html (32 files)~~ | ✅ DONE |
+| 6 | ~~Liens cassés /solutions/darija~~ | ~~P0~~ | ~~1h~~ | ~~23 fichiers nav~~ | ✅ DONE |
+| 7 | ~~Liens cassés /solutions/multilingual~~ | ~~P1~~ | ~~30m~~ | ~~23 fichiers nav~~ | ✅ DONE |
+| 8 | ~~Supprimer /status du footer~~ | ~~P2~~ | ~~10m~~ | ~~31 fichiers~~ | ✅ DONE |
+| 9 | ~~Supprimer /careers du footer~~ | ~~P2~~ | ~~10m~~ | ~~31 fichiers~~ | ✅ DONE |
+| 10 | ~~Académie Business enrichie~~ | ~~P0~~ | ~~4h~~ | ~~website/academie-business/index.html~~ | ✅ DONE |
+
+---
+
+## Session 250 - Footer Cleanup + Audit MCP Tools
+
+**Footer Cleanup** (31 fichiers):
+- Supprimé: `/careers` - pas de page recrutement
+- Supprimé: `/status` - pas de page status
+- Footer propre avec 4 sections: Produit, Solutions, Ressources, Entreprise
+
+**Audit MCP Tools VÉRIFIÉ**:
+
+| Catégorie | Tools | Status |
+|:----------|:-----:|:------:|
+| **Stripe** | 19 | ✅ Payment Links, Checkout, Invoices, PaymentIntents, Refunds |
+| **Shopify** | 8 | ✅ FULL CRUD (cancel, refund, fulfill, update) |
+| **E-commerce total** | 76 | ✅ 7 platforms |
+| **Total MCP Server** | 178 | ✅ Build OK |
+
+**Vérification empirique**:
+```bash
+grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
+grep -rl 'href="/careers"' --include='*.html' | wc -l  # 0 ✅
+grep -rl 'href="/status"' --include='*.html' | wc -l  # 0 ✅
+cd mcp-server && npm run build  # ✅ OK
+```
+
+---
+
+## Session 249.24 - Académie Business + Audit Orphan Pages
+
+**Académie Business REFONTE COMPLÈTE** (`website/academie-business/index.html`):
+- 12 modules de formation complets (was: cards avec chiffres)
+- Contenu éducatif enrichi depuis 3 docs .md
+- Chaînes d'intégration: Voice-to-Cash, Support-to-Resolution, Lead-to-Meeting
+- Transparence: limites et pages à créer clairement documentées
+- ROI Calculator interactif
+- 1425 lignes (was: 1039)
+
+**Audit Pages Orphelines/Cassées**:
+
+| Type | Page | Action | Status |
+|:-----|:-----|:-------|:------:|
+| ORPHELINE | /industries/ | Ajout 32 liens nav+footer | ✅ |
+| CASSÉ | /solutions/darija (54 liens!) | → /blog/articles/vocalia-lance-support-darija | ✅ |
+| CASSÉ | /solutions/multilingual (23 liens) | → /features | ✅ |
+| CASSÉ | /industries/hospitality (1 lien) | → /industries/ | ✅ |
+
+**Footer mis à jour** (32 fichiers):
+- Ajout liens: /use-cases, /industries/
+- Suppression liens cassés: /solutions/darija, /industries/real-estate
+
+**Vérification empirique**:
+```bash
+grep -rl 'href="/industries/"' --include='*.html' | wc -l  # 32 ✅
+grep -rl 'href="/solutions/darija"' --include='*.html' | wc -l  # 0 ✅
+```
 
 ---
 
@@ -348,4 +411,4 @@ cd mcp-server && npm run build  # ✅ Build OK
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/USE-CASES-STRATEGIC-ANALYSIS.md` pour SWOT et stratégie*
 *Voir `docs/VOCALIA-MCP.md` pour documentation MCP (144 tools)*
-*Màj: 31/01/2026 - Session 249.18 (Twilio SMS Fallback IMPLÉMENTÉ)*
+*Màj: 31/01/2026 - Session 249.24 (Académie Business + Audit Orphan Pages)*

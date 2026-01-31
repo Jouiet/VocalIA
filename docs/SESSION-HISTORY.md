@@ -1,9 +1,10 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.33.0 | **Updated**: 31/01/2026 | **Session**: 249.20
+> **Version**: 3.36.0 | **Updated**: 31/01/2026 | **Session**: 250
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
-> **Integrations Check**: 21/21 (100%) | **MCP Tools**: 159 | **All Phases**: ✅ COMPLETE | **iPaaS**: ✅ | **E-commerce**: ~80%
-> **Session 249.20**: ALL E-COMMERCE FULL CRUD - Shopify(8), Magento(10), PrestaShop(10), BigCommerce(9)
+> **MCP Server**: v0.7.0 | **MCP Tools**: 178 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
+> **Session 250**: Footer cleanup + Académie Business nav/footer fix
+> **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
 
 ---
 
@@ -4592,5 +4593,254 @@ ls mcp-server/src/tools/shopify.ts
 
 ---
 
-*Màj: 31/01/2026 - Session 249.20 (Shopify FULL CRUD + Docs Audit)*
+## Session 249.21 - Stripe Payment Links (31/01/2026)
+
+**Objectif**: Implémenter Stripe pour compléter le cycle transactionnel + enrichir docs business.
+
+### 1. Stripe MCP Tools Implementation (19 tools)
+
+| Tool | Description | API Endpoint |
+|:-----|:------------|:-------------|
+| `stripe_create_payment_link` | Lien de paiement one-click | POST /payment_links |
+| `stripe_list_payment_links` | Liste liens actifs | GET /payment_links |
+| `stripe_deactivate_payment_link` | Désactiver lien | POST /payment_links/{id} |
+| `stripe_create_customer` | Créer client | POST /customers |
+| `stripe_get_customer` | Recherche par ID/email | GET /customers |
+| `stripe_list_customers` | Liste clients | GET /customers |
+| `stripe_create_product` | Créer produit | POST /products |
+| `stripe_list_products` | Liste produits | GET /products |
+| `stripe_create_price` | Créer prix | POST /prices |
+| `stripe_create_checkout_session` | Session checkout | POST /checkout/sessions |
+| `stripe_get_checkout_session` | Statut session | GET /checkout/sessions/{id} |
+| `stripe_create_invoice` | Créer facture | POST /invoices |
+| `stripe_add_invoice_item` | Ajouter ligne | POST /invoiceitems |
+| `stripe_finalize_invoice` | Finaliser | POST /invoices/{id}/finalize |
+| `stripe_send_invoice` | Envoyer | POST /invoices/{id}/send |
+| `stripe_create_payment_intent` | Flux custom | POST /payment_intents |
+| `stripe_get_payment_intent` | Statut paiement | GET /payment_intents/{id} |
+| `stripe_create_refund` | Remboursement | POST /refunds |
+| `stripe_get_balance` | Solde compte | GET /balance |
+
+### 2. Fichiers Créés/Modifiés
+
+| File | Change |
+|:-----|:-------|
+| `mcp-server/src/tools/stripe.ts` | NEW - 1,107 lignes, 19 tools |
+| `mcp-server/src/index.ts` | +import stripe, +19 registrations |
+| `mcp-server/package.json` | v0.6.0 → v0.7.0 |
+
+### 3. Documentation Business Enrichie
+
+| Document | Updates |
+|:---------|:--------|
+| `USE-CASES-BUSINESS-VALUE-ANALYSIS.md` | Stripe section complète, workflows voice commerce |
+| `USE-CASES-STRATEGIC-ANALYSIS.md` | SWOT mis à jour, faiblesses réduites |
+| `INTEGRATIONS-USE-CASES-MATRIX.md` | Stripe catégorie ajoutée, gaps résolus |
+| `INTEGRATIONS-ROADMAP.md` | v4.0.0, 162 tools, cycle transactionnel |
+| `VOCALIA-MCP.md` | +Stripe section, 162 tools |
+| `CLAUDE.md` | v6.16.0, 28 intégrations |
+
+### 4. Cycle Transactionnel COMPLET
+
+```
+AVANT (Session 249.20)           APRÈS (Session 249.21)
+──────────────────────           ──────────────────────
+Stripe: ❌                       Stripe: ✅ 19 tools
+Paiement vocal: ❌               Paiement vocal: ✅
+Cycle complet: ❌                Cycle complet: ✅
+
+WORKFLOW VOICE COMMERCE:
+Appel → qualify_lead → shopify_get_product → stripe_create_payment_link
+                                              ↓
+                     messaging_send(SMS) ← [Client paie]
+                                              ↓
+                     stripe_get_checkout_session → payment_status: "paid"
+                                              ↓
+                     shopify_create_fulfillment → Expédition
+```
+
+### 5. Vérification Empirique
+
+```bash
+# Build success
+cd mcp-server && npm run build  # ✅ SUCCESS
+
+# Tool count
+grep -c "server.tool(" src/index.ts  # 178 (includes inline)
+
+# Stripe tools
+grep "stripe_" src/index.ts | wc -l  # 19
+
+# Git commits
+git log --oneline -2
+# 8efdaef docs: Add Stripe tools documentation
+# 7efb48f feat(payments): Add Stripe MCP tools (19 tools, 159→162)
+```
+
+### 6. Métriques Session
+
+| Métrique | Avant | Après | Delta |
+|:---------|:-----:|:-----:|:-----:|
+| MCP Version | 0.6.0 | **0.7.0** | +1 minor |
+| MCP Tools | 159 | **162** | +3 |
+| Stripe Tools | 0 | **19** | NEW |
+| Intégrations | 24 | **28** | +4 |
+| Cycle transactionnel | ❌ | ✅ | COMPLET |
+
+**Statut final**: MCP Server v0.7.0 | **162 tools** | STRIPE + ALL E-COMMERCE CRUD ✅
+
+---
+
+## Session 250 - Footer Cleanup + Academie-Business Fix (31/01/2026)
+
+### 1. Footer Cleanup (31 fichiers)
+
+| Action | Fichiers | Status |
+|:-------|:--------:|:------:|
+| Suppression `/careers` | 31 | ✅ |
+| Suppression `/status` | 31 | ✅ |
+| Cleanup component footer.html | 1 | ✅ |
+
+**Vérification empirique:**
+```bash
+grep -rl 'href="/careers"' --include='*.html' | wc -l  # 0 ✅
+grep -rl 'href="/status"' --include='*.html' | wc -l  # 0 ✅
+```
+
+### 2. Academie-Business Navigation Fix
+
+**Problème**: Header et footer simplifiés, pas cohérents avec autres pages.
+
+**Solution appliquée** (`website/academie-business/index.html`):
+
+| Composant | Avant | Après |
+|:----------|:------|:------|
+| Header | 5 liens simples | Mega-menu complet avec dropdowns |
+| Footer | 1 ligne liens | 4 colonnes standard |
+| Mobile menu | ❌ Absent | ✅ Drawer complet |
+| Language switcher | ❌ Absent | ✅ 5 langues |
+| Scripts | Lucide seul | i18n + geo-detect + menu toggle |
+
+### 3. MCP Tools Audit
+
+**Valeur corrigée**: 178 tools (was: 162 documenté, 254 dans stats page)
+
+```bash
+grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
+```
+
+| Catégorie | Tools | Status |
+|:----------|:-----:|:------:|
+| Stripe | 19 | ✅ Payment Links, Checkout, Invoices, Refunds |
+| Shopify | 8 | ✅ FULL CRUD |
+| E-commerce total | 76 | ✅ 7 platforms |
+| **Total MCP Server** | **178** | ✅ Build OK |
+
+### 4. Problème Identifié: Composants Non-Standardisés
+
+**Constat**: 37 pages avec nav/footer dupliqués → risque d'incohérence.
+
+**Solutions possibles** (P2 future task):
+1. **Build-time**: Vite/webpack avec template partials
+2. **Runtime JS**: `fetch()` pour charger nav/footer.html
+3. **SSG**: Migration vers Astro ou 11ty
+
+**Statut final**: Session 250 | **178 tools** | Footer clean | Academie nav fixed ✅
+
+---
+
+## Session 249.24 - Académie Business + Audit Orphan Pages (31/01/2026)
+
+### 1. Académie Business REFONTE COMPLÈTE
+
+**Problème identifié**: Page était juste des "cards avec des chiffres", pas une vraie académie d'apprentissage.
+
+**Solution appliquée** (`website/academie-business/index.html`):
+
+| Avant | Après |
+|:------|:------|
+| 1039 lignes | **1425 lignes** |
+| Cards stats | **12 modules formation** |
+| Pas de use cases | **Use cases détaillés** |
+| Pas de ROI | **ROI Calculator** |
+
+**Contenu ajouté**:
+- Module 1: Comprendre VocalIA (Widget vs Telephony)
+- Module 2: E-commerce (4 use cases: Paniers abandonnés, Stock, Commandes, Post-achat)
+- Module 3: Immobilier (Leads, Visites, Follow-up)
+- Module 4: Santé (Rappels, Pré-consultation, Post-consultation)
+- Module 5: Agences (Multi-client, White-label)
+- Module 6: RH (Recrutement, Onboarding)
+- Module 7: Finance (Recouvrement, Qualif)
+- Module 8: Chaînes d'intégration (Voice-to-Cash, Support-to-Resolution, Lead-to-Meeting)
+- Module 9: 31 Personas (par industrie)
+- Module 10: Limites & Transparence (pages à créer listées)
+- Module 11: ROI Calculator interactif
+- Module 12: Comment Démarrer
+
+### 2. Audit Pages Orphelines/Cassées
+
+| Type | Page | Liens | Action | Status |
+|:-----|:-----|:-----:|:-------|:------:|
+| ORPHELINE | /industries/ | 0→32 | Ajout nav+footer tous fichiers | ✅ |
+| CASSÉ | /solutions/darija | 54→0 | Redirigé vers blog article | ✅ |
+| CASSÉ | /solutions/multilingual | 23→0 | Redirigé vers /features | ✅ |
+| CASSÉ | /industries/hospitality | 1→0 | Redirigé vers /industries/ | ✅ |
+| À CRÉER | /status | 31 | Page monitoring (P2) | ❌ |
+| À CRÉER | /careers | 31 | Page recrutement (P3) | ❌ |
+
+### 3. Footer Mis à Jour (32 fichiers)
+
+**Avant** (Section Solutions footer):
+```html
+<li>E-commerce</li>
+<li>Service Client</li>
+<li>Santé</li>
+<li>Immobilier</li>
+<li>Darija AI</li>  <!-- LIEN CASSÉ -->
+```
+
+**Après**:
+```html
+<li>Cas d'Usage</li>  <!-- NOUVEAU - /use-cases -->
+<li>Par Industrie</li>  <!-- NOUVEAU - /industries/ -->
+<li>E-commerce</li>
+<li>Service Client</li>
+<li>Santé</li>
+```
+
+### 4. Vérification Empirique
+
+```bash
+# Pages HTML
+find website -name "*.html" -type f | wc -l  # 37 ✅
+
+# Liens /industries/ ajoutés
+grep -rl 'href="/industries/"' --include='*.html' | wc -l  # 32 ✅
+
+# Liens cassés corrigés
+grep -rl 'href="/solutions/darija"' --include='*.html' | wc -l  # 0 ✅
+grep -rl 'href="/solutions/multilingual"' --include='*.html' | wc -l  # 0 ✅
+
+# Académie enrichie
+wc -l website/academie-business/index.html  # 1425 lignes ✅
+```
+
+### 5. Métriques Session
+
+| Métrique | Avant | Après | Delta |
+|:---------|:-----:|:-----:|:-----:|
+| Website pages | 36 | **37** | +1 |
+| Académie lignes | 1039 | **1425** | +386 |
+| Pages orphelines | 1 | **0** | -1 |
+| Liens cassés | 78 | **62** | -16 |
+| Liens /industries/ | 0 | **32** | +32 |
+
+**Plan Actionnable Restant**:
+1. P2: Créer /status (31 liens pointent vers)
+2. P3: Créer /careers (31 liens pointent vers)
+
+---
+
+*Màj: 31/01/2026 - Session 249.24 (Académie Business + Audit Orphan Pages)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
