@@ -400,7 +400,14 @@ class ServiceKnowledgeBase {
     this.chunks = [];
     for (const auto of automations) {
       const categoryInfo = categories[auto.category] || {};
-      const meta = STRATEGIC_META[auto.category] || { intent: "", framework: "", outcome: "" };
+      const meta = STRATEGIC_META[auto.category] || { intent: "", framework: "", outcome: "", truth: "", risk: "" };
+
+      // SESSION 250.16: Direct registry values take priority over STRATEGIC_META fallback
+      const strategicIntent = auto.strategic_intent || meta.intent || '';
+      const businessOutcome = auto.business_outcome || SPECIFIC_OUTCOMES[auto.id] || meta.outcome || '';
+      const marketingScience = auto.marketing_science || meta.framework || '';
+      const diagnosticTruth = auto.diagnostic_truth || meta.truth || '';
+      const systemicRisk = auto.systemic_risk || meta.risk || '';
 
       // Build rich text for BM25 indexing
       const textParts = [
@@ -433,21 +440,21 @@ class ServiceKnowledgeBase {
         // IP SHIELD: We include the ID for reference but never full script logic in RAG
         script_ref: auto.script ? path.basename(auto.script) : null,
 
-        // ARCHITECTURAL AUTHORITY INJECTION
-        strategic_intent: meta.intent,
-        business_outcome: SPECIFIC_OUTCOMES[auto.id] || meta.outcome,
-        marketing_science: meta.framework,
-        diagnostic_truth: meta.truth,
-        systemic_risk: meta.risk,
+        // ARCHITECTURAL AUTHORITY INJECTION (registry values take priority)
+        strategic_intent: strategicIntent,
+        business_outcome: businessOutcome,
+        marketing_science: marketingScience,
+        diagnostic_truth: diagnosticTruth,
+        systemic_risk: systemicRisk,
         tenant_id: 'agency_internal', // Default for agency-wide knowledge
 
         text: [
           ...textParts,
-          meta.intent,
-          meta.framework,
-          SPECIFIC_OUTCOMES[auto.id] || meta.outcome,
-          meta.truth,
-          meta.risk,
+          strategicIntent,
+          marketingScience,
+          businessOutcome,
+          diagnosticTruth,
+          systemicRisk,
           "Architectural Priority: " + (auto.agentic_level > 2 ? "High Systemic Impact" : "Structural Foundation")
         ].filter(Boolean).join(' ')
       };

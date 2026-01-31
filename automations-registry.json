@@ -17,6 +17,7 @@
       "semantic_description": "Mission-critical real-time conversational AI system implementing multi-provider fallback chain. Handles provider outages transparently while maintaining sub-second latency for voice interactions.",
       "strategic_intent": "core_infrastructure",
       "business_outcome": "Eliminate voice service interruptions, reduce support costs by 40%, increase customer satisfaction scores",
+      "marketing_science": "Service reliability as trust driver, uptime as competitive differentiator",
       "capabilities": ["real-time-streaming", "multi-provider-fallback", "sub-500ms-latency", "grok-primary", "gemini-fallback", "claude-fallback", "atlas-darija"],
       "use_cases": ["customer-support", "lead-qualification", "appointment-booking", "ivr-replacement", "faq-automation"],
       "integrations": ["xai-grok", "google-gemini", "anthropic-claude", "atlas-chat-9b"]
@@ -35,6 +36,7 @@
       "semantic_description": "High-performance WebSocket server enabling real-time bidirectional audio streaming. Optimized for voice-first applications requiring instant response.",
       "strategic_intent": "realtime_voice",
       "business_outcome": "60% cost reduction vs market alternatives, real-time voice interactions",
+      "marketing_science": "Latency as user experience, real-time as engagement driver",
       "capabilities": ["websocket-streaming", "bidirectional-audio", "low-latency", "browser-native", "grok-4-1-fast"],
       "use_cases": ["live-voice-chat", "telephony-bridge", "voice-widget", "realtime-transcription"],
       "integrations": ["xai-grok", "twilio", "web-speech-api"]
@@ -54,6 +56,7 @@
       "semantic_description": "Enterprise-grade PSTN to AI bridge connecting traditional phone lines to Grok voice AI. Includes BANT qualification, booking, payment processing, and human handoff capabilities.",
       "strategic_intent": "telephony_automation",
       "business_outcome": "Replace IVR systems, automate 70% of inbound calls, reduce call center costs by 50%",
+      "marketing_science": "BANT qualification, call automation as cost lever, 24/7 availability as value prop",
       "capabilities": ["pstn-bridge", "twiml-voice", "sms-fallback", "whatsapp-integration", "11-function-tools", "bant-scoring", "human-handoff"],
       "use_cases": ["inbound-calls", "outbound-campaigns", "appointment-reminders", "payment-collection", "lead-qualification"],
       "integrations": ["twilio", "xai-grok", "whatsapp-business", "stripe"],
@@ -72,6 +75,7 @@
       "semantic_description": "SOTA persona engineering system providing 40 industry-specific AI personalities with complete SOTA structure: personality_traits, background, tone_guidelines, forbidden_behaviors, example_dialogues. Multi-tenant ready with GPM override for churn rescue.",
       "strategic_intent": "persona_differentiation",
       "business_outcome": "40% improvement in response quality, industry-specific compliance, Moroccan market advantage with Darija",
+      "marketing_science": "BANT scoring, PAS framework, CIALDINI principles, AIDA funnel, LAER objection handling",
       "capabilities": ["40-personas", "5-languages", "sota-structure", "marketing-frameworks", "multi-tenant", "gpm-override", "darija-native"],
       "use_cases": ["dental-clinics", "real-estate", "contractors", "funeral-services", "ecommerce", "restaurants", "consultants"],
       "integrations": ["voice-api-resilient", "voice-telephony-bridge", "mcp-server"],
@@ -90,6 +94,7 @@
       "semantic_description": "Lightweight browser-based voice assistant leveraging Web Speech API for transcription and synthesis. Zero infrastructure cost, instant deployment for any website.",
       "strategic_intent": "freemium_acquisition",
       "business_outcome": "Free tier acquisition, website conversion optimization, upsell to telephony",
+      "marketing_science": "Freemium conversion funnel, PLG (Product-Led Growth), zero-friction onboarding",
       "capabilities": ["web-speech-api", "zero-cost", "drop-in-widget", "customizable-ui", "multi-language"],
       "use_cases": ["website-assistant", "product-search", "faq-bot", "lead-capture"],
       "integrations": ["voice-api-resilient", "persona-injector", "google-chrome", "safari", "edge"]
@@ -107,6 +112,7 @@
       "semantic_description": "Library of production-ready voice widget configurations tailored for specific industries including dental, real estate, restaurants, and ecommerce.",
       "strategic_intent": "rapid_deployment",
       "business_outcome": "Reduce onboarding time from days to minutes, increase client activation rate",
+      "marketing_science": "Time-to-value optimization, industry-specific templates as trust signals",
       "capabilities": ["20-industry-presets", "customizable-themes", "rtl-support", "responsive-design"],
       "use_cases": ["dental-websites", "restaurant-ordering", "real-estate-inquiry", "ecommerce-support"],
       "integrations": ["voice-widget-core", "persona-injector"]
@@ -125,6 +131,7 @@
       "semantic_description": "Enterprise CRM integration enabling voice agents to create, read, update HubSpot records during conversations. Automatic lead capture and deal pipeline management.",
       "strategic_intent": "crm_automation",
       "business_outcome": "Eliminate manual data entry, 100% lead capture, sales pipeline visibility",
+      "marketing_science": "Lead lifecycle management, sales funnel optimization, pipeline velocity",
       "capabilities": ["contact-crud", "deal-management", "note-creation", "real-time-sync", "multi-tenant"],
       "use_cases": ["lead-capture", "sales-calls", "customer-service", "pipeline-management"],
       "integrations": ["hubspot-api-v3", "voice-telephony-bridge"]
@@ -143,6 +150,7 @@
       "semantic_description": "E-commerce voice integration connecting Shopify and Klaviyo to enable order tracking, inventory queries, and customer segmentation during voice interactions.",
       "strategic_intent": "ecommerce_voice",
       "business_outcome": "Reduce WISMO calls by 60%, increase repeat purchases, personalized voice experience",
+      "marketing_science": "Customer segmentation, RFM analysis, WISMO automation, repeat purchase optimization",
       "capabilities": ["order-status", "stock-check", "customer-tags", "klaviyo-segments", "shopify-admin-api"],
       "use_cases": ["order-tracking", "product-availability", "customer-service", "reorder-automation"],
       "integrations": ["shopify-admin-api", "klaviyo-api", "voice-telephony-bridge"]
@@ -160,6 +168,7 @@
       "semantic_description": "Observability sensor monitoring voice API health metrics including latency percentiles, error rates, and provider availability. Triggers alerts before customer impact.",
       "strategic_intent": "observability",
       "business_outcome": "Reduce MTTR by 70%, proactive incident detection, SLA compliance",
+      "marketing_science": "SLA as trust driver, proactive monitoring as competitive advantage",
       "capabilities": ["latency-p50-p99", "error-rate-tracking", "provider-health", "slack-alerts", "health-endpoint"],
       "use_cases": ["sla-monitoring", "incident-detection", "capacity-planning", "provider-comparison"],
       "integrations": ["voice-api-resilient", "slack-webhooks", "prometheus-compatible"]
@@ -177,6 +186,7 @@
       "semantic_description": "Financial observability sensor tracking API consumption costs across all integrated providers. Provides burn rate analysis, budget forecasting, and cost anomaly detection.",
       "strategic_intent": "cost_control",
       "business_outcome": "Prevent cost overruns, optimize provider selection, accurate client billing",
+      "marketing_science": "Cost transparency as trust driver, ROI tracking, budget predictability",
       "capabilities": ["multi-provider-cost", "burn-rate", "budget-alerts", "cost-per-call", "daily-reports"],
       "use_cases": ["budget-management", "client-billing", "cost-optimization", "provider-selection"],
       "integrations": ["xai-api", "google-api", "twilio-api", "stripe-metering"]
@@ -194,6 +204,7 @@
       "semantic_description": "Sales performance sensor measuring lead qualification velocity through the voice funnel. Tracks BANT scores, conversion rates, and identifies bottlenecks in the qualification process.",
       "strategic_intent": "sales_optimization",
       "business_outcome": "Increase qualified lead rate by 35%, optimize persona performance, identify training needs",
+      "marketing_science": "BANT scoring analytics, conversion funnel optimization, lead velocity metrics",
       "capabilities": ["bant-distribution", "conversion-funnel", "persona-comparison", "time-to-qualify", "hot-lead-alerts"],
       "use_cases": ["sales-performance", "persona-optimization", "training-identification", "forecast-accuracy"],
       "integrations": ["voice-telephony-bridge", "hubspot-crm", "slack-alerts"]
@@ -211,6 +222,7 @@
       "semantic_description": "Customer success sensor monitoring client health indicators and predicting churn risk. Integrates with GPM override system to trigger retention interventions.",
       "strategic_intent": "customer_success",
       "business_outcome": "Reduce churn by 25%, increase LTV, proactive customer success",
+      "marketing_science": "Churn prediction models, customer health scoring, LTV optimization, retention marketing",
       "capabilities": ["churn-prediction", "gpm-integration", "health-scoring", "intervention-triggers", "cohort-analysis"],
       "use_cases": ["churn-prevention", "customer-health", "success-planning", "renewal-forecasting"],
       "integrations": ["persona-injector-gpm", "slack-alerts", "hubspot-crm"]

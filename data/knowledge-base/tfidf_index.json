@@ -194,5588 +194,5908 @@
       47
     ],
     [
-      "architectural",
+      "core_infrastructure",
       48
     ],
     [
-      "priority",
+      "service",
       49
     ],
     [
-      "structural",
+      "reliability",
       50
     ],
     [
-      "foundation",
+      "trust",
       51
     ],
     [
-      "grok",
+      "driver",
       52
     ],
     [
-      "realtime",
+      "competitive",
       53
     ],
     [
-      "voix",
+      "differentiator",
       54
     ],
     [
-      "temps",
+      "eliminate",
       55
     ],
     [
-      "reel",
+      "interruptions",
       56
     ],
     [
-      "ultra-low",
+      "reduce",
       57
     ],
     [
-      "streaming",
+      "support",
       58
     ],
     [
-      "sub-100ms",
+      "costs",
       59
     ],
     [
-      "response",
+      "increase",
       60
     ],
     [
-      "native",
+      "customer",
       61
     ],
     [
-      "websocket",
+      "satisfaction",
       62
     ],
     [
-      "support",
+      "scores",
       63
     ],
     [
-      "seamless",
+      "architectural",
       64
     ],
     [
-      "browser",
+      "priority",
       65
     ],
     [
-      "integration",
+      "structural",
       66
     ],
     [
-      "ultra-faible",
+      "foundation",
       67
     ],
     [
-      "latence",
+      "grok",
       68
     ],
     [
-      "reponse",
+      "realtime",
       69
     ],
     [
-      "natif",
+      "voix",
       70
     ],
     [
-      "pour",
+      "temps",
       71
     ],
     [
-      "navigateur",
+      "reel",
       72
     ],
     [
-      "transparente",
+      "ultra-low",
       73
     ],
     [
-      "high-performance",
+      "streaming",
       74
     ],
     [
-      "server",
+      "sub-100ms",
       75
     ],
     [
-      "enabling",
+      "response",
       76
     ],
     [
-      "bidirectional",
+      "native",
       77
     ],
     [
-      "audio",
+      "websocket",
       78
     ],
     [
-      "optimized",
+      "seamless",
       79
     ],
     [
-      "voice-first",
+      "browser",
       80
     ],
     [
-      "applications",
+      "integration",
       81
     ],
     [
-      "requiring",
+      "ultra-faible",
       82
     ],
     [
-      "instant",
+      "latence",
       83
     ],
     [
-      "websocket-streaming",
+      "reponse",
       84
     ],
     [
-      "bidirectional-audio",
+      "natif",
       85
     ],
     [
-      "low-latency",
+      "pour",
       86
     ],
     [
-      "browser-native",
+      "navigateur",
       87
     ],
     [
-      "grok-4-1-fast",
+      "transparente",
       88
     ],
     [
-      "telephony",
+      "high-performance",
       89
     ],
     [
-      "bridge",
+      "server",
       90
     ],
     [
-      "pont",
+      "enabling",
       91
     ],
     [
-      "telephonie",
+      "bidirectional",
       92
     ],
     [
-      "complete",
+      "audio",
       93
     ],
     [
-      "phone",
+      "optimized",
       94
     ],
     [
-      "automation",
+      "voice-first",
       95
     ],
     [
-      "competitive",
+      "applications",
       96
     ],
     [
-      "per-minute",
+      "requiring",
       97
     ],
     [
-      "pricing",
+      "instant",
       98
     ],
     [
-      "built-in",
+      "websocket-streaming",
       99
     ],
     [
-      "function",
+      "bidirectional-audio",
       100
     ],
     [
-      "tools",
+      "low-latency",
       101
     ],
     [
-      "booking",
+      "browser-native",
       102
     ],
     [
-      "payments",
+      "grok-4-1-fast",
       103
     ],
     [
-      "transfers",
+      "realtime_voice",
       104
     ],
     [
-      "automatisation",
+      "user",
       105
     ],
     [
-      "telephonique",
+      "experience",
       106
     ],
     [
-      "tarification",
+      "engagement",
       107
     ],
     [
-      "minute",
+      "cost",
       108
     ],
     [
-      "outils",
+      "reduction",
       109
     ],
     [
-      "fonction",
+      "market",
       110
     ],
     [
-      "integres",
+      "alternatives",
       111
     ],
     [
-      "reservations",
+      "telephony",
       112
     ],
     [
-      "paiements",
+      "bridge",
       113
     ],
     [
-      "transferts",
+      "pont",
       114
     ],
     [
-      "enterprise-grade",
+      "telephonie",
       115
     ],
     [
-      "pstn",
+      "complete",
       116
     ],
     [
-      "connecting",
+      "phone",
       117
     ],
     [
-      "traditional",
+      "automation",
       118
     ],
     [
-      "lines",
+      "per-minute",
       119
     ],
     [
-      "includes",
+      "pricing",
       120
     ],
     [
-      "bant",
+      "built-in",
       121
     ],
     [
-      "qualification",
+      "function",
       122
     ],
     [
-      "payment",
+      "tools",
       123
     ],
     [
-      "processing",
+      "booking",
       124
     ],
     [
-      "and",
+      "payments",
       125
     ],
     [
-      "human",
+      "transfers",
       126
     ],
     [
-      "handoff",
+      "automatisation",
       127
     ],
     [
-      "capabilities",
+      "telephonique",
       128
     ],
     [
-      "pstn-bridge",
+      "tarification",
       129
     ],
     [
-      "twiml-voice",
+      "minute",
       130
     ],
     [
-      "sms-fallback",
+      "outils",
       131
     ],
     [
-      "whatsapp-integration",
+      "fonction",
       132
     ],
     [
-      "11-function-tools",
+      "integres",
       133
     ],
     [
-      "bant-scoring",
+      "reservations",
       134
     ],
     [
-      "human-handoff",
+      "paiements",
       135
     ],
     [
-      "persona",
+      "transferts",
       136
     ],
     [
-      "injector",
+      "enterprise-grade",
       137
     ],
     [
-      "injecteur",
+      "pstn",
       138
     ],
     [
-      "industry-specific",
+      "connecting",
       139
     ],
     [
-      "personalities",
+      "traditional",
       140
     ],
     [
-      "pas",
+      "lines",
       141
     ],
     [
-      "cialdini",
+      "includes",
       142
     ],
     [
-      "aida",
+      "bant",
       143
     ],
     [
-      "laer",
+      "qualification",
       144
     ],
     [
-      "frameworks",
+      "payment",
       145
     ],
     [
-      "100",
+      "processing",
       146
     ],
     [
-      "translations",
+      "and",
       147
     ],
     [
-      "languages",
+      "human",
       148
     ],
     [
-      "personnalites",
+      "handoff",
       149
     ],
     [
-      "specifiques",
+      "capabilities",
       150
     ],
     [
-      "par",
+      "pstn-bridge",
       151
     ],
     [
-      "secteur",
+      "twiml-voice",
       152
     ],
     [
-      "traductions",
+      "sms-fallback",
       153
     ],
     [
-      "langues",
+      "whatsapp-integration",
       154
     ],
     [
-      "sota",
+      "11-function-tools",
       155
     ],
     [
-      "engineering",
+      "bant-scoring",
       156
     ],
     [
-      "providing",
+      "human-handoff",
       157
     ],
     [
-      "structure",
+      "telephony_automation",
       158
     ],
     [
-      "personality_traits",
+      "call",
       159
     ],
     [
-      "background",
+      "lever",
       160
     ],
     [
-      "tone_guidelines",
+      "availability",
       161
     ],
     [
-      "forbidden_behaviors",
+      "value",
       162
     ],
     [
-      "example_dialogues",
+      "prop",
       163
     ],
     [
-      "multi-tenant",
+      "replace",
       164
     ],
     [
-      "ready",
+      "ivr",
       165
     ],
     [
-      "gpm",
+      "systems",
       166
     ],
     [
-      "override",
+      "automate",
       167
     ],
     [
-      "churn",
+      "inbound",
       168
     ],
     [
-      "rescue",
+      "calls",
       169
     ],
     [
-      "personas",
+      "center",
       170
     ],
     [
-      "40-personas",
+      "persona",
       171
     ],
     [
-      "5-languages",
+      "injector",
       172
     ],
     [
-      "sota-structure",
+      "injecteur",
       173
     ],
     [
-      "marketing-frameworks",
+      "industry-specific",
       174
     ],
     [
-      "gpm-override",
+      "personalities",
       175
     ],
     [
-      "darija-native",
+      "pas",
       176
     ],
     [
-      "widget",
+      "cialdini",
       177
     ],
     [
-      "core",
+      "aida",
       178
     ],
     [
-      "vocal",
+      "laer",
       179
     ],
     [
-      "zero-cost",
+      "frameworks",
       180
     ],
     [
-      "assistant",
+      "100",
       181
     ],
     [
-      "using",
+      "translations",
       182
     ],
     [
-      "apis",
+      "languages",
       183
     ],
     [
-      "drop-in",
+      "personnalites",
       184
     ],
     [
-      "code",
+      "specifiques",
       185
     ],
     [
-      "cout",
+      "par",
       186
     ],
     [
-      "utilisant",
+      "secteur",
       187
     ],
     [
-      "natives",
+      "traductions",
       188
     ],
     [
-      "instantanee",
+      "langues",
       189
     ],
     [
-      "lignes",
+      "sota",
       190
     ],
     [
-      "lightweight",
+      "engineering",
       191
     ],
     [
-      "browser-based",
+      "providing",
       192
     ],
     [
-      "leveraging",
+      "structure",
       193
     ],
     [
-      "web",
+      "personality_traits",
       194
     ],
     [
-      "speech",
+      "background",
       195
     ],
     [
-      "transcription",
+      "tone_guidelines",
       196
     ],
     [
-      "synthesis",
+      "forbidden_behaviors",
       197
     ],
     [
-      "infrastructure",
+      "example_dialogues",
       198
     ],
     [
-      "cost",
+      "multi-tenant",
       199
     ],
     [
-      "deployment",
+      "ready",
       200
     ],
     [
-      "any",
+      "gpm",
       201
     ],
     [
-      "website",
+      "override",
       202
     ],
     [
-      "web-speech-api",
+      "churn",
       203
     ],
     [
-      "drop-in-widget",
+      "rescue",
       204
     ],
     [
-      "customizable-ui",
+      "personas",
       205
     ],
     [
-      "multi-language",
+      "40-personas",
       206
     ],
     [
-      "templates",
+      "5-languages",
       207
     ],
     [
-      "pre-configured",
+      "sota-structure",
       208
     ],
     [
-      "widgets",
+      "marketing-frameworks",
       209
     ],
     [
-      "industries",
+      "gpm-override",
       210
     ],
     [
-      "5-minute",
+      "darija-native",
       211
     ],
     [
-      "prompts",
+      "persona_differentiation",
       212
     ],
     [
-      "vocaux",
+      "scoring",
       213
     ],
     [
-      "pre-configures",
+      "framework",
       214
     ],
     [
-      "secteurs",
+      "principles",
       215
     ],
     [
-      "deploiement",
+      "funnel",
       216
     ],
     [
-      "minutes",
+      "objection",
       217
     ],
     [
-      "library",
+      "handling",
       218
     ],
     [
-      "production-ready",
+      "improvement",
       219
     ],
     [
-      "configurations",
+      "quality",
       220
     ],
     [
-      "tailored",
+      "compliance",
       221
     ],
     [
-      "specific",
+      "moroccan",
       222
     ],
     [
-      "including",
+      "advantage",
       223
     ],
     [
-      "dental",
+      "darija",
       224
     ],
     [
-      "real",
+      "widget",
       225
     ],
     [
-      "estate",
+      "core",
       226
     ],
     [
-      "restaurants",
+      "vocal",
       227
     ],
     [
-      "ecommerce",
+      "zero-cost",
       228
     ],
     [
-      "20-industry-presets",
+      "assistant",
       229
     ],
     [
-      "customizable-themes",
+      "using",
       230
     ],
     [
-      "rtl-support",
+      "apis",
       231
     ],
     [
-      "responsive-design",
+      "drop-in",
       232
     ],
     [
-      "hubspot",
+      "code",
       233
     ],
     [
-      "b2b",
+      "cout",
       234
     ],
     [
-      "crm",
+      "utilisant",
       235
     ],
     [
-      "sync",
+      "natives",
       236
     ],
     [
-      "calls",
+      "instantanee",
       237
     ],
     [
-      "create",
+      "lignes",
       238
     ],
     [
-      "contacts",
+      "lightweight",
       239
     ],
     [
-      "deals",
+      "browser-based",
       240
     ],
     [
-      "notes",
+      "leveraging",
       241
     ],
     [
-      "synchronisation",
+      "web",
       242
     ],
     [
-      "pendant",
+      "speech",
       243
     ],
     [
-      "les",
+      "transcription",
       244
     ],
     [
-      "appels",
+      "synthesis",
       245
     ],
     [
-      "creation",
+      "infrastructure",
       246
     ],
     [
-      "enterprise",
+      "deployment",
       247
     ],
     [
-      "agents",
+      "any",
       248
     ],
     [
-      "read",
+      "website",
       249
     ],
     [
-      "update",
+      "web-speech-api",
       250
     ],
     [
-      "records",
+      "drop-in-widget",
       251
     ],
     [
-      "conversations",
+      "customizable-ui",
       252
     ],
     [
-      "lead",
+      "multi-language",
       253
     ],
     [
-      "capture",
+      "freemium_acquisition",
       254
     ],
     [
-      "deal",
+      "freemium",
       255
     ],
     [
-      "pipeline",
+      "conversion",
       256
     ],
     [
-      "management",
+      "plg",
       257
     ],
     [
-      "integrations",
+      "product-led",
       258
     ],
     [
-      "contact-crud",
+      "growth",
       259
     ],
     [
-      "deal-management",
+      "zero-friction",
       260
     ],
     [
-      "note-creation",
+      "onboarding",
       261
     ],
     [
-      "real-time-sync",
+      "free",
       262
     ],
     [
-      "e-commerce",
+      "tier",
       263
     ],
     [
-      "voice-enabled",
+      "acquisition",
       264
     ],
     [
-      "order",
+      "optimization",
       265
     ],
     [
-      "status",
+      "upsell",
       266
     ],
     [
-      "stock",
+      "templates",
       267
     ],
     [
-      "checks",
+      "pre-configured",
       268
     ],
     [
-      "customer",
+      "widgets",
       269
     ],
     [
-      "profile",
+      "industries",
       270
     ],
     [
-      "lookups",
+      "5-minute",
       271
     ],
     [
-      "inventory",
+      "prompts",
       272
     ],
     [
-      "statut",
+      "vocaux",
       273
     ],
     [
-      "commande",
+      "pre-configures",
       274
     ],
     [
-      "verification",
+      "secteurs",
       275
     ],
     [
-      "profils",
+      "deploiement",
       276
     ],
     [
-      "clients",
+      "minutes",
       277
     ],
     [
-      "gestion",
+      "library",
       278
     ],
     [
-      "inventaire",
+      "production-ready",
       279
     ],
     [
-      "commandes",
+      "configurations",
       280
     ],
     [
-      "shopify",
+      "tailored",
       281
     ],
     [
-      "klaviyo",
+      "specific",
       282
     ],
     [
-      "enable",
+      "including",
       283
     ],
     [
-      "tracking",
+      "dental",
       284
     ],
     [
-      "queries",
+      "real",
       285
     ],
     [
-      "segmentation",
+      "estate",
       286
     ],
     [
-      "order-status",
+      "restaurants",
       287
     ],
     [
-      "stock-check",
+      "ecommerce",
       288
     ],
     [
-      "customer-tags",
+      "20-industry-presets",
       289
     ],
     [
-      "klaviyo-segments",
+      "customizable-themes",
       290
     ],
     [
-      "shopify-admin-api",
+      "rtl-support",
       291
     ],
     [
-      "quality",
+      "responsive-design",
       292
     ],
     [
-      "sensor",
+      "rapid_deployment",
       293
     ],
     [
-      "capteur",
+      "time-to-value",
       294
     ],
     [
-      "qualite",
+      "signals",
       295
     ],
     [
-      "proactive",
+      "time",
       296
     ],
     [
-      "alerting",
+      "from",
       297
     ],
     [
-      "degradation",
+      "days",
       298
     ],
     [
-      "p50",
+      "client",
       299
     ],
     [
-      "p99",
+      "activation",
       300
     ],
     [
-      "across",
+      "rate",
       301
     ],
     [
-      "all",
+      "hubspot",
       302
     ],
     [
-      "providers",
+      "b2b",
       303
     ],
     [
-      "alertes",
+      "crm",
       304
     ],
     [
-      "proactives",
+      "sync",
       305
     ],
     [
-      "sur",
+      "create",
       306
     ],
     [
-      "suivi",
+      "contacts",
       307
     ],
     [
-      "tous",
+      "deals",
       308
     ],
     [
-      "fournisseurs",
+      "notes",
       309
     ],
     [
-      "observability",
+      "synchronisation",
       310
     ],
     [
-      "monitoring",
+      "pendant",
       311
     ],
     [
-      "health",
+      "les",
       312
     ],
     [
-      "metrics",
+      "appels",
       313
     ],
     [
-      "percentiles",
+      "creation",
       314
     ],
     [
-      "error",
+      "enterprise",
       315
     ],
     [
-      "rates",
+      "agents",
       316
     ],
     [
-      "availability",
+      "read",
       317
     ],
     [
-      "triggers",
+      "update",
       318
     ],
     [
-      "alerts",
+      "records",
       319
     ],
     [
-      "before",
+      "conversations",
       320
     ],
     [
-      "impact",
+      "lead",
       321
     ],
     [
-      "sensors",
+      "capture",
       322
     ],
     [
-      "latency-p50-p99",
+      "deal",
       323
     ],
     [
-      "error-rate-tracking",
+      "pipeline",
       324
     ],
     [
-      "provider-health",
+      "management",
       325
     ],
     [
-      "slack-alerts",
+      "integrations",
       326
     ],
     [
-      "health-endpoint",
+      "contact-crud",
       327
     ],
     [
-      "couts",
+      "deal-management",
       328
     ],
     [
-      "spend",
+      "note-creation",
       329
     ],
     [
-      "gemini",
+      "real-time-sync",
       330
     ],
     [
-      "twilio",
+      "crm_automation",
       331
     ],
     [
-      "budget",
+      "lifecycle",
       332
     ],
     [
-      "optimization",
+      "sales",
       333
     ],
     [
-      "recommendations",
+      "velocity",
       334
     ],
     [
-      "depenses",
+      "manual",
       335
     ],
     [
-      "recommandations",
+      "data",
       336
     ],
     [
-      "optimisation",
+      "entry",
       337
     ],
     [
-      "financial",
+      "visibility",
       338
     ],
     [
-      "consumption",
+      "e-commerce",
       339
     ],
     [
-      "costs",
+      "voice-enabled",
       340
     ],
     [
-      "integrated",
+      "order",
       341
     ],
     [
-      "provides",
+      "status",
       342
     ],
     [
-      "burn",
+      "stock",
       343
     ],
     [
-      "rate",
+      "checks",
       344
     ],
     [
-      "analysis",
+      "profile",
       345
     ],
     [
-      "forecasting",
+      "lookups",
       346
     ],
     [
-      "anomaly",
+      "inventory",
       347
     ],
     [
-      "detection",
+      "statut",
       348
     ],
     [
-      "multi-provider-cost",
+      "commande",
       349
     ],
     [
-      "burn-rate",
+      "verification",
       350
     ],
     [
-      "budget-alerts",
+      "profils",
       351
     ],
     [
-      "cost-per-call",
+      "clients",
       352
     ],
     [
-      "daily-reports",
+      "gestion",
       353
     ],
     [
-      "velocity",
+      "inventaire",
       354
     ],
     [
-      "velocite",
+      "commandes",
       355
     ],
     [
-      "leads",
+      "shopify",
       356
     ],
     [
-      "track",
+      "klaviyo",
       357
     ],
     [
-      "score",
+      "enable",
       358
     ],
     [
-      "distribution",
+      "tracking",
       359
     ],
     [
-      "time-to-qualification",
+      "queries",
       360
     ],
     [
-      "scores",
+      "segmentation",
       361
     ],
     [
-      "taux",
+      "order-status",
       362
     ],
     [
-      "temps-de-qualification",
+      "stock-check",
       363
     ],
     [
-      "sales",
+      "customer-tags",
       364
     ],
     [
-      "performance",
+      "klaviyo-segments",
       365
     ],
     [
-      "measuring",
+      "shopify-admin-api",
       366
     ],
     [
-      "through",
+      "ecommerce_voice",
       367
     ],
     [
-      "the",
+      "rfm",
       368
     ],
     [
-      "funnel",
+      "analysis",
       369
     ],
     [
-      "tracks",
+      "wismo",
       370
     ],
     [
-      "conversion",
+      "repeat",
       371
     ],
     [
-      "identifies",
+      "purchase",
       372
     ],
     [
-      "bottlenecks",
+      "purchases",
       373
     ],
     [
-      "process",
+      "personalized",
       374
     ],
     [
-      "bant-distribution",
+      "sensor",
       375
     ],
     [
-      "conversion-funnel",
+      "capteur",
       376
     ],
     [
-      "persona-comparison",
+      "qualite",
       377
     ],
     [
-      "time-to-qualify",
+      "proactive",
       378
     ],
     [
-      "hot-lead-alerts",
+      "alerting",
       379
     ],
     [
-      "retention",
+      "degradation",
       380
     ],
     [
-      "early",
+      "p50",
       381
     ],
     [
-      "global",
+      "p99",
       382
     ],
     [
-      "pressure",
+      "across",
       383
     ],
     [
-      "matrix",
+      "all",
       384
     ],
     [
-      "trigger",
+      "providers",
       385
     ],
     [
-      "workflows",
+      "alertes",
       386
     ],
     [
-      "client",
+      "proactives",
       387
     ],
     [
-      "loss",
+      "sur",
       388
     ],
     [
-      "precoce",
+      "suivi",
       389
     ],
     [
-      "matrice",
+      "tous",
       390
     ],
     [
-      "pression",
+      "fournisseurs",
       391
     ],
     [
-      "globale",
+      "observability",
       392
     ],
     [
-      "declenchement",
+      "monitoring",
       393
     ],
     [
-      "avant",
+      "health",
       394
     ],
     [
-      "perte",
+      "metrics",
       395
     ],
     [
-      "success",
+      "percentiles",
       396
     ],
     [
-      "indicators",
+      "error",
       397
     ],
     [
-      "predicting",
+      "rates",
       398
     ],
     [
-      "risk",
+      "triggers",
       399
     ],
     [
-      "integrates",
+      "alerts",
       400
     ],
     [
-      "interventions",
+      "before",
       401
     ],
     [
-      "churn-prediction",
+      "impact",
       402
     ],
     [
-      "gpm-integration",
+      "sensors",
       403
     ],
     [
-      "health-scoring",
+      "latency-p50-p99",
       404
     ],
     [
-      "intervention-triggers",
+      "error-rate-tracking",
       405
     ],
     [
-      "cohort-analysis",
+      "provider-health",
       406
     ],
     [
-      "automations",
+      "slack-alerts",
       407
     ],
     [
-      "voice-api-resilient",
+      "health-endpoint",
       408
     ],
     [
-      "grok-voice-realtime",
+      "sla",
       409
     ],
     [
-      "voice-telephony-bridge",
+      "mttr",
       410
     ],
     [
-      "voice-persona-injector",
+      "incident",
       411
     ],
     [
-      "voice-widget-core",
+      "detection",
       412
     ],
     [
-      "voice-widget-templates",
+      "couts",
       413
     ],
     [
-      "hubspot-b2b-crm",
+      "spend",
       414
     ],
     [
-      "voice-ecommerce-tools",
+      "gemini",
       415
     ],
     [
-      "voice-quality-sensor",
+      "twilio",
       416
     ],
     [
-      "cost-tracking-sensor",
+      "budget",
       417
     ],
     [
-      "lead-velocity-sensor",
+      "recommendations",
       418
     ],
     [
-      "retention-sensor",
+      "depenses",
       419
     ],
     [
-      "universal",
+      "recommandations",
       420
     ],
     [
-      "ecom",
+      "optimisation",
       421
     ],
     [
-      "livraison",
+      "financial",
       422
     ],
     [
-      "standard",
+      "consumption",
       423
     ],
     [
-      "prend",
+      "integrated",
       424
     ],
     [
-      "3-5",
+      "provides",
       425
     ],
     [
-      "jours",
+      "burn",
       426
     ],
     [
-      "ouvrés",
+      "forecasting",
       427
     ],
     [
-      "gratuite",
+      "anomaly",
       428
     ],
     [
-      "dès",
+      "multi-provider-cost",
       429
     ],
     [
-      "express",
+      "burn-rate",
       430
     ],
     [
-      "1-2",
+      "budget-alerts",
       431
     ],
     [
-      "delivery",
+      "cost-per-call",
       432
     ],
     [
-      "shipping",
+      "daily-reports",
       433
     ],
     [
-      "transport",
+      "cost_control",
       434
     ],
     [
-      "retours",
+      "transparency",
       435
     ],
     [
-      "nous",
+      "roi",
       436
     ],
     [
-      "offrons",
+      "predictability",
       437
     ],
     [
-      "une",
+      "prevent",
       438
     ],
     [
-      "politique",
+      "overruns",
       439
     ],
     [
-      "retour",
+      "optimize",
       440
     ],
     [
-      "articles",
+      "selection",
       441
     ],
     [
-      "non",
+      "accurate",
       442
     ],
     [
-      "utilisés",
+      "billing",
       443
     ],
     [
-      "dans",
+      "velocite",
       444
     ],
     [
-      "leur",
+      "leads",
       445
     ],
     [
-      "emballage",
+      "track",
       446
     ],
     [
-      "origine",
+      "score",
       447
     ],
     [
-      "frais",
+      "distribution",
       448
     ],
     [
-      "sont",
+      "time-to-qualification",
       449
     ],
     [
-      "gratuits",
+      "taux",
       450
     ],
     [
-      "return",
+      "temps-de-qualification",
       451
     ],
     [
-      "refund",
+      "performance",
       452
     ],
     [
-      "exchange",
+      "measuring",
       453
     ],
     [
-      "acceptons",
+      "through",
       454
     ],
     [
-      "visa",
+      "the",
       455
     ],
     [
-      "mastercard",
+      "tracks",
       456
     ],
     [
-      "amex",
+      "identifies",
       457
     ],
     [
-      "paypal",
+      "bottlenecks",
       458
     ],
     [
-      "apple",
+      "process",
       459
     ],
     [
-      "pay",
+      "bant-distribution",
       460
     ],
     [
-      "credit",
+      "conversion-funnel",
       461
     ],
     [
-      "card",
+      "persona-comparison",
       462
     ],
     [
-      "email",
+      "time-to-qualify",
       463
     ],
     [
-      "client_domain",
+      "hot-lead-alerts",
       464
     ],
     [
-      "horaires",
+      "sales_optimization",
       465
     ],
     [
-      "lundi-vendredi",
+      "analytics",
       466
     ],
     [
-      "9h-17h",
+      "qualified",
       467
     ],
     [
-      "hours",
+      "identify",
       468
     ],
     [
-      "schedule",
+      "training",
       469
     ],
     [
-      "opening",
+      "needs",
       470
     ],
     [
-      "time",
+      "retention",
       471
     ],
     [
-      "sme",
+      "early",
       472
     ],
     [
-      "8h-18h",
+      "global",
       473
     ],
     [
-      "samedi",
+      "pressure",
       474
     ],
     [
-      "9h-13h",
+      "matrix",
       475
     ],
     [
-      "services",
+      "trigger",
       476
     ],
     [
-      "proposons",
+      "workflows",
       477
     ],
     [
-      "des",
+      "loss",
       478
     ],
     [
-      "consultations",
+      "precoce",
       479
     ],
     [
-      "réparations",
+      "matrice",
       480
     ],
     [
-      "maintenance",
+      "pression",
       481
     ],
     [
-      "tarifs",
+      "globale",
       482
     ],
     [
-      "déduits",
+      "declenchement",
       483
     ],
     [
-      "facture",
+      "avant",
       484
     ],
     [
-      "finale",
+      "perte",
       485
     ],
     [
-      "tarif",
+      "success",
       486
     ],
     [
-      "horaire",
+      "indicators",
       487
     ],
     [
-      "est",
+      "predicting",
       488
     ],
     [
-      "heure",
+      "risk",
       489
     ],
     [
-      "price",
+      "integrates",
       490
     ],
     [
-      "fee",
+      "interventions",
       491
     ],
     [
-      "adresse",
+      "churn-prediction",
       492
     ],
     [
-      "123",
+      "gpm-integration",
       493
     ],
     [
-      "rue",
+      "health-scoring",
       494
     ],
     [
-      "principale",
+      "intervention-triggers",
       495
     ],
     [
-      "quartier",
+      "cohort-analysis",
       496
     ],
     [
-      "affaires",
+      "customer_success",
       497
     ],
     [
-      "intake",
+      "prediction",
       498
     ],
     [
-      "urgence",
+      "models",
       499
     ],
     [
-      "dentaire",
+      "ltv",
       500
     ],
     [
-      "urgence_dentaire",
+      "marketing",
       501
     ],
     [
-      "toute",
+      "automations",
       502
     ],
     [
-      "douleur",
+      "voice-api-resilient",
       503
     ],
     [
-      "intense",
+      "grok-voice-realtime",
       504
     ],
     [
-      "traumatisme",
+      "voice-telephony-bridge",
       505
     ],
     [
-      "créneaux",
+      "voice-persona-injector",
       506
     ],
     [
-      "jour",
+      "voice-widget-core",
       507
     ],
     [
-      "même",
+      "voice-widget-templates",
       508
     ],
     [
-      "entre",
+      "hubspot-b2b-crm",
       509
     ],
     [
-      "11h-12h",
+      "voice-ecommerce-tools",
       510
     ],
     [
-      "15h-16h",
+      "voice-quality-sensor",
       511
     ],
     [
-      "urgency",
+      "cost-tracking-sensor",
       512
     ],
     [
-      "emergency",
+      "lead-velocity-sensor",
       513
     ],
     [
-      "critical",
+      "retention-sensor",
       514
     ],
     [
-      "assurances",
+      "universal",
       515
     ],
     [
-      "cnops",
+      "ecom",
       516
     ],
     [
-      "cnss",
+      "livraison",
       517
     ],
     [
-      "principales",
+      "standard",
       518
     ],
     [
-      "mutuelles",
+      "prend",
       519
     ],
     [
-      "privées",
+      "3-5",
       520
     ],
     [
-      "aussi",
+      "jours",
       521
     ],
     [
-      "facilités",
+      "ouvrés",
       522
     ],
     [
-      "paiement",
+      "gratuite",
       523
     ],
     [
-      "offre",
+      "dès",
       524
     ],
     [
-      "nouveau",
+      "express",
       525
     ],
     [
-      "patient",
+      "1-2",
       526
     ],
     [
-      "offre_nouveau_patient",
+      "delivery",
       527
     ],
     [
-      "forfait",
+      "shipping",
       528
     ],
     [
-      "comprend",
+      "transport",
       529
     ],
     [
-      "examen",
+      "retours",
       530
     ],
     [
-      "radios",
+      "nous",
       531
     ],
     [
-      "détartrage",
+      "offrons",
       532
     ],
     [
-      "dentiste",
+      "une",
       533
     ],
     [
-      "lumière",
+      "politique",
       534
     ],
     [
-      "notre",
+      "retour",
       535
     ],
     [
-      "principal",
+      "articles",
       536
     ],
     [
-      "spécialiste",
+      "non",
       537
     ],
     [
-      "implantologie",
+      "utilisés",
       538
     ],
     [
-      "esthétique",
+      "dans",
       539
     ],
     [
-      "agency",
+      "leur",
       540
     ],
     [
-      "vocalia",
+      "emballage",
       541
     ],
     [
-      "propose",
+      "origine",
       542
     ],
     [
-      "automatisations",
+      "frais",
       543
     ],
     [
-      "systèmes",
+      "sont",
       544
     ],
     [
-      "marketing",
+      "gratuits",
       545
     ],
     [
-      "agentique",
+      "return",
       546
     ],
     [
-      "level",
+      "refund",
       547
     ],
     [
-      "mission",
+      "exchange",
       548
     ],
     [
-      "transformer",
+      "acceptons",
       549
     ],
     [
-      "agences",
+      "visa",
       550
     ],
     [
-      "boutiques",
+      "mastercard",
       551
     ],
     [
-      "moteurs",
+      "amex",
       552
     ],
     [
-      "autonomes",
+      "paypal",
       553
     ],
     [
-      "ultra-performants",
+      "apple",
       554
     ],
     [
-      "contact",
+      "pay",
       555
     ],
     [
-      "contactez-nous",
+      "credit",
       556
     ],
     [
-      "via",
+      "card",
       557
     ],
     [
-      "site",
+      "email",
       558
     ],
     [
-      "téléphone",
+      "client_domain",
       559
     ],
     [
-      "212",
+      "horaires",
       560
     ],
     [
-      "expertise",
+      "lundi-vendredi",
       561
     ],
     [
-      "experts",
+      "9h-17h",
       562
     ],
     [
-      "rag",
+      "hours",
       563
     ],
     [
-      "pro",
+      "schedule",
       564
     ],
     [
-      "déploiements",
+      "opening",
       565
     ],
     [
-      "holistiques",
+      "sme",
       566
     ],
     [
-      "healer",
+      "8h-18h",
       567
     ],
     [
-      "specialites",
+      "samedi",
       568
     ],
     [
-      "généraliste",
+      "9h-13h",
       569
     ],
     [
-      "pédiatrie",
+      "services",
       570
     ],
     [
-      "gynécologie",
+      "proposons",
       571
     ],
     [
-      "kinésithérapie",
+      "des",
       572
     ],
     [
-      "cardiologie",
+      "consultations",
       573
     ],
     [
-      "8h-20h",
+      "réparations",
       574
     ],
     [
-      "8h-12h",
+      "maintenance",
       575
     ],
     [
-      "contactez",
+      "tarifs",
       576
     ],
     [
-      "urgences",
+      "déduits",
       577
     ],
     [
-      "vitales",
+      "facture",
       578
     ],
     [
-      "cabinet",
+      "finale",
       579
     ],
     [
-      "appelez",
+      "tarif",
       580
     ],
     [
-      "ouverture",
+      "horaire",
       581
     ],
     [
-      "rdv",
+      "est",
       582
     ],
     [
-      "prise",
+      "heure",
       583
     ],
     [
-      "rendez-vous",
+      "price",
       584
     ],
     [
-      "possible",
+      "fee",
       585
     ],
     [
-      "portail",
+      "adresse",
       586
     ],
     [
-      "appointment",
+      "123",
       587
     ],
     [
-      "mechanic",
+      "rue",
       588
     ],
     [
-      "révision",
+      "principale",
       589
     ],
     [
-      "freins",
+      "quartier",
       590
     ],
     [
-      "pneus",
+      "affaires",
       591
     ],
     [
-      "batterie",
+      "intake",
       592
     ],
     [
-      "diagnostic",
+      "urgence",
       593
     ],
     [
-      "électronique",
+      "dentaire",
       594
     ],
     [
-      "contrôle",
+      "urgence_dentaire",
       595
     ],
     [
-      "technique",
+      "toute",
       596
     ],
     [
-      "8h30-18h00",
+      "douleur",
       597
     ],
     [
-      "9h-12h",
+      "intense",
       598
     ],
     [
-      "vehicule",
+      "traumatisme",
       599
     ],
     [
-      "courtoisie",
+      "créneaux",
       600
     ],
     [
-      "vehicule_courtoisie",
+      "jour",
       601
     ],
     [
-      "prêtons",
+      "même",
       602
     ],
     [
-      "véhicule",
+      "entre",
       603
     ],
     [
-      "réservation",
+      "11h-12h",
       604
     ],
     [
-      "préalable",
+      "15h-16h",
       605
     ],
     [
-      "toutes",
+      "urgency",
       606
     ],
     [
-      "nos",
+      "emergency",
       607
     ],
     [
-      "garanties",
+      "critical",
       608
     ],
     [
-      "pièces",
+      "assurances",
       609
     ],
     [
-      "main",
+      "cnops",
       610
     ],
     [
-      "uvre",
+      "cnss",
       611
     ],
     [
-      "counselor",
+      "principales",
       612
     ],
     [
-      "domaines",
+      "mutuelles",
       613
     ],
     [
-      "droit",
+      "privées",
       614
     ],
     [
-      "travail",
+      "aussi",
       615
     ],
     [
-      "famille",
+      "facilités",
       616
     ],
     [
-      "immobilier",
+      "paiement",
       617
     ],
     [
-      "honoraires",
+      "offre",
       618
     ],
     [
-      "première",
+      "nouveau",
       619
     ],
     [
-      "consultation",
+      "patient",
       620
     ],
     [
-      "facturée",
+      "offre_nouveau_patient",
       621
     ],
     [
-      "documents",
+      "forfait",
       622
     ],
     [
-      "veuillez",
+      "comprend",
       623
     ],
     [
-      "apporter",
+      "examen",
       624
     ],
     [
-      "tout",
+      "radios",
       625
     ],
     [
-      "contrat",
+      "détartrage",
       626
     ],
     [
-      "correspondance",
+      "dentiste",
       627
     ],
     [
-      "lié",
+      "lumière",
       628
     ],
     [
-      "votre",
+      "notre",
       629
     ],
     [
-      "affaire",
+      "principal",
       630
     ],
     [
-      "premier",
+      "spécialiste",
       631
     ],
     [
-      "localisation",
+      "implantologie",
       632
     ],
     [
-      "bureaux",
+      "esthétique",
       633
     ],
     [
-      "situés",
+      "agency",
       634
     ],
     [
-      "centre-ville",
+      "vocalia",
       635
     ],
     [
-      "parking",
+      "propose",
       636
     ],
     [
-      "disponible",
+      "automatisations",
       637
     ],
     [
-      "concierge",
+      "systèmes",
       638
     ],
     [
-      "petit",
+      "agentique",
       639
     ],
     [
-      "dejeuner",
+      "level",
       640
     ],
     [
-      "petit_dejeuner",
+      "mission",
       641
     ],
     [
-      "servi",
+      "transformer",
       642
     ],
     [
-      "10h30",
+      "agences",
       643
     ],
     [
-      "restaurant",
+      "boutiques",
       644
     ],
     [
-      "horizon",
+      "moteurs",
       645
     ],
     [
-      "check",
+      "autonomes",
       646
     ],
     [
-      "out",
+      "ultra-performants",
       647
     ],
     [
-      "check_in_out",
+      "contact",
       648
     ],
     [
-      "check-in",
+      "contactez-nous",
       649
     ],
     [
-      "partir",
+      "via",
       650
     ],
     [
-      "15h",
+      "site",
       651
     ],
     [
-      "check-out",
+      "téléphone",
       652
     ],
     [
-      "jusqu",
+      "212",
       653
     ],
     [
-      "11h",
+      "expertise",
       654
     ],
     [
-      "wifi",
+      "experts",
       655
     ],
     [
-      "gratuit",
+      "rag",
       656
     ],
     [
-      "haut",
+      "pro",
       657
     ],
     [
-      "débit",
+      "déploiements",
       658
     ],
     [
-      "établissement",
+      "holistiques",
       659
     ],
     [
-      "privé",
+      "healer",
       660
     ],
     [
-      "sécurisé",
+      "specialites",
       661
     ],
     [
-      "nuit",
+      "généraliste",
       662
     ],
     [
-      "stylist",
+      "pédiatrie",
       663
     ],
     [
-      "soins",
+      "gynécologie",
       664
     ],
     [
-      "coiffure",
+      "kinésithérapie",
       665
     ],
     [
-      "massages",
+      "cardiologie",
       666
     ],
     [
-      "visage",
+      "8h-20h",
       667
     ],
     [
-      "manucure",
+      "8h-12h",
       668
     ],
     [
-      "hammam",
+      "contactez",
       669
     ],
     [
-      "mardi-samedi",
+      "urgences",
       670
     ],
     [
-      "10h-19h",
+      "vitales",
       671
     ],
     [
-      "nocturne",
+      "cabinet",
       672
     ],
     [
-      "jeudi",
+      "appelez",
       673
     ],
     [
-      "21h",
+      "ouverture",
       674
     ],
     [
-      "produits",
+      "rdv",
       675
     ],
     [
-      "utilisons",
+      "prise",
       676
     ],
     [
-      "exclusivement",
+      "rendez-vous",
       677
     ],
     [
-      "bio",
+      "possible",
       678
     ],
     [
-      "éco-responsables",
+      "portail",
       679
     ],
     [
-      "annulation",
+      "appointment",
       680
     ],
     [
-      "doit",
+      "mechanic",
       681
     ],
     [
-      "être",
+      "révision",
       682
     ],
     [
-      "faite",
+      "freins",
       683
     ],
     [
-      "24h",
+      "pneus",
       684
     ],
     [
-      "avance",
+      "batterie",
       685
     ],
     [
-      "éviter",
+      "diagnostic",
       686
     ],
     [
-      "facturation",
+      "électronique",
       687
     ],
     [
-      "recruiter",
+      "contrôle",
       688
     ],
     [
-      "postes",
+      "technique",
       689
     ],
     [
-      "recrutons",
+      "8h30-18h00",
       690
     ],
     [
-      "actuellement",
+      "9h-12h",
       691
     ],
     [
-      "développeurs",
+      "vehicule",
       692
     ],
     [
-      "managers",
+      "courtoisie",
       693
     ],
     [
-      "spécialistes",
+      "vehicule_courtoisie",
       694
     ],
     [
-      "screening",
+      "prêtons",
       695
     ],
     [
-      "téléphonique",
+      "véhicule",
       696
     ],
     [
-      "test",
+      "réservation",
       697
     ],
     [
-      "cas",
+      "préalable",
       698
     ],
     [
-      "pratique",
+      "toutes",
       699
     ],
     [
-      "entretien",
+      "nos",
       700
     ],
     [
-      "direction",
+      "garanties",
       701
     ],
     [
-      "valeurs",
+      "pièces",
       702
     ],
     [
-      "innovation",
+      "main",
       703
     ],
     [
-      "autonomie",
+      "uvre",
       704
     ],
     [
-      "excellence",
+      "counselor",
       705
     ],
     [
-      "candidature",
+      "domaines",
       706
     ],
     [
-      "envoyez",
+      "droit",
       707
     ],
     [
-      "jobs",
+      "travail",
       708
     ],
     [
-      "dispatcher",
+      "famille",
       709
     ],
     [
-      "utilisez",
+      "immobilier",
       710
     ],
     [
-      "lien",
+      "honoraires",
       711
     ],
     [
-      "reçu",
+      "première",
       712
     ],
     [
-      "sms",
+      "consultation",
       713
     ],
     [
-      "suivre",
+      "facturée",
       714
     ],
     [
-      "colis",
+      "documents",
       715
     ],
     [
-      "réel",
+      "veuillez",
       716
     ],
     [
-      "zone",
+      "apporter",
       717
     ],
     [
-      "zone_livraison",
+      "tout",
       718
     ],
     [
-      "livrons",
+      "contrat",
       719
     ],
     [
-      "pays",
+      "correspondance",
       720
     ],
     [
-      "sous",
+      "lié",
       721
     ],
     [
-      "48h",
+      "votre",
       722
     ],
     [
-      "problemes",
+      "affaire",
       723
     ],
     [
-      "absence",
+      "premier",
       724
     ],
     [
-      "déposé",
+      "localisation",
       725
     ],
     [
-      "point",
+      "bureaux",
       726
     ],
     [
-      "relais",
+      "situés",
       727
     ],
     [
-      "plus",
+      "centre-ville",
       728
     ],
     [
-      "proche",
+      "parking",
       729
     ],
     [
-      "collector",
+      "disponible",
       730
     ],
     [
-      "ligne",
+      "concierge",
       731
     ],
     [
-      "paiement_ligne",
+      "petit",
       732
     ],
     [
-      "réglez",
+      "dejeuner",
       733
     ],
     [
-      "vos",
+      "petit_dejeuner",
       734
     ],
     [
-      "factures",
+      "servi",
       735
     ],
     [
-      "sécurité",
+      "10h30",
       736
     ],
     [
-      "envoyé",
+      "restaurant",
       737
     ],
     [
-      "espace",
+      "horizon",
       738
     ],
     [
-      "echeancier",
+      "check",
       739
     ],
     [
-      "peuvent",
+      "out",
       740
     ],
     [
-      "accordées",
+      "check_in_out",
       741
     ],
     [
-      "après",
+      "check-in",
       742
     ],
     [
-      "étude",
+      "partir",
       743
     ],
     [
-      "dossier",
+      "15h",
       744
     ],
     [
-      "litiges",
+      "check-out",
       745
     ],
     [
-      "contact_litiges",
+      "jusqu",
       746
     ],
     [
-      "contestation",
+      "11h",
       747
     ],
     [
-      "recouvrement",
+      "wifi",
       748
     ],
     [
-      "service-ethique",
+      "gratuit",
       749
     ],
     [
-      "service",
+      "haut",
       750
     ],
     [
-      "lundi",
+      "débit",
       751
     ],
     [
-      "vendredi",
+      "établissement",
       752
     ],
     [
-      "17h",
+      "privé",
       753
     ],
     [
-      "insurer",
+      "sécurisé",
       754
     ],
     [
-      "sinistre",
+      "nuit",
       755
     ],
     [
-      "déclarez",
+      "stylist",
       756
     ],
     [
-      "application",
+      "soins",
       757
     ],
     [
-      "mobile",
+      "coiffure",
       758
     ],
     [
-      "devis",
+      "massages",
       759
     ],
     [
-      "obtenez",
+      "visage",
       760
     ],
     [
-      "auto",
+      "manucure",
       761
     ],
     [
-      "habitation",
+      "hammam",
       762
     ],
     [
-      "assistance",
+      "mardi-samedi",
       763
     ],
     [
-      "numéro",
+      "10h-19h",
       764
     ],
     [
-      "vert",
+      "nocturne",
       765
     ],
     [
-      "indiqué",
+      "jeudi",
       766
     ],
     [
-      "dos",
+      "21h",
       767
     ],
     [
-      "carte",
+      "produits",
       768
     ],
     [
-      "verte",
+      "utilisons",
       769
     ],
     [
-      "reseau",
+      "exclusivement",
       770
     ],
     [
-      "1500",
+      "bio",
       771
     ],
     [
-      "garagistes",
+      "éco-responsables",
       772
     ],
     [
-      "partenaires",
+      "annulation",
       773
     ],
     [
-      "sans",
+      "doit",
       774
     ],
     [
-      "grocery",
+      "être",
       775
     ],
     [
-      "heures",
+      "faite",
       776
     ],
     [
-      "selon",
+      "24h",
       777
     ],
     [
-      "créneau",
+      "avance",
       778
     ],
     [
-      "suivez",
+      "éviter",
       779
     ],
     [
-      "notifications",
+      "facturation",
       780
     ],
     [
-      "chaque",
+      "recruiter",
       781
     ],
     [
-      "étape",
+      "postes",
       782
     ],
     [
-      "manquants",
+      "recrutons",
       783
     ],
     [
-      "produits_manquants",
+      "actuellement",
       784
     ],
     [
-      "produit",
+      "développeurs",
       785
     ],
     [
-      "indisponible",
+      "managers",
       786
     ],
     [
-      "vous",
+      "spécialistes",
       787
     ],
     [
-      "équivalent",
+      "screening",
       788
     ],
     [
-      "avoir",
+      "téléphonique",
       789
     ],
     [
-      "réclamation",
+      "test",
       790
     ],
     [
-      "défectueux",
+      "cas",
       791
     ],
     [
-      "remboursement",
+      "pratique",
       792
     ],
     [
-      "immédiat",
+      "entretien",
       793
     ],
     [
-      "creneaux",
+      "direction",
       794
     ],
     [
-      "22h",
+      "valeurs",
       795
     ],
     [
-      "minimum",
+      "innovation",
       796
     ],
     [
-      "minimum_commande",
+      "autonomie",
       797
     ],
     [
-      "espèces",
+      "excellence",
       798
     ],
     [
-      "tpe",
+      "candidature",
       799
     ],
     [
-      "reorder",
+      "envoyez",
       800
     ],
     [
-      "retrouvez",
+      "jobs",
       801
     ],
     [
-      "précédentes",
+      "dispatcher",
       802
     ],
     [
-      "mes",
+      "utilisez",
       803
     ],
     [
-      "favoris",
+      "lien",
       804
     ],
     [
-      "recomande",
+      "reçu",
       805
     ],
     [
-      "clic",
+      "sms",
       806
     ],
     [
-      "property",
+      "suivre",
       807
     ],
     [
-      "urgence_maintenance",
+      "colis",
       808
     ],
     [
-      "fuite",
+      "réel",
       809
     ],
     [
-      "eau",
+      "zone",
       810
     ],
     [
-      "panne",
+      "zone_livraison",
       811
     ],
     [
-      "électrique",
+      "livrons",
       812
     ],
     [
-      "demande",
+      "pays",
       813
     ],
     [
-      "reparation",
+      "sous",
       814
     ],
     [
-      "demande_reparation",
+      "48h",
       815
     ],
     [
-      "soumettez",
+      "problemes",
       816
     ],
     [
-      "demandes",
+      "absence",
       817
     ],
     [
-      "locataire",
+      "déposé",
       818
     ],
     [
-      "délai",
+      "point",
       819
     ],
     [
-      "intervention",
+      "relais",
       820
     ],
     [
-      "24-72h",
+      "plus",
       821
     ],
     [
-      "reglement",
+      "proche",
       822
     ],
     [
-      "loyer",
+      "collector",
       823
     ],
     [
-      "reglement_loyer",
+      "ligne",
       824
     ],
     [
-      "1er",
+      "paiement_ligne",
       825
     ],
     [
-      "mois",
+      "réglez",
       826
     ],
     [
-      "virement",
+      "vos",
       827
     ],
     [
-      "prélèvement",
+      "factures",
       828
     ],
     [
-      "gestionnaire",
+      "sécurité",
       829
     ],
     [
-      "contact_gestionnaire",
+      "envoyé",
       830
     ],
     [
-      "18h",
+      "espace",
       831
     ],
     [
-      "contractor",
+      "echeancier",
       832
     ],
     [
-      "devis_gratuit",
+      "peuvent",
       833
     ],
     [
-      "visite",
+      "accordées",
       834
     ],
     [
-      "travaux",
+      "après",
       835
     ],
     [
-      "garantie_travaux",
+      "étude",
       836
     ],
     [
-      "garantis",
+      "dossier",
       837
     ],
     [
-      "ans",
+      "litiges",
       838
     ],
     [
-      "décennale",
+      "contact_litiges",
       839
     ],
     [
-      "assurés",
+      "contestation",
       840
     ],
     [
-      "delai",
+      "recouvrement",
       841
     ],
     [
-      "delai_intervention",
+      "service-ethique",
       842
     ],
     [
-      "semaines",
+      "lundi",
       843
     ],
     [
-      "type",
+      "vendredi",
       844
     ],
     [
-      "financement",
+      "17h",
       845
     ],
     [
-      "possibilité",
+      "insurer",
       846
     ],
     [
-      "fois",
+      "sinistre",
       847
     ],
     [
-      "funeral",
+      "déclarez",
       848
     ],
     [
-      "premier_contact",
+      "application",
       849
     ],
     [
-      "équipe",
+      "mobile",
       850
     ],
     [
-      "accompagner",
+      "devis",
       851
     ],
     [
-      "ces",
+      "obtenez",
       852
     ],
     [
-      "moments",
+      "auto",
       853
     ],
     [
-      "difficiles",
+      "habitation",
       854
     ],
     [
-      "organisation",
+      "assistance",
       855
     ],
     [
-      "occupons",
+      "numéro",
       856
     ],
     [
-      "démarches",
+      "vert",
       857
     ],
     [
-      "administratives",
+      "indiqué",
       858
     ],
     [
-      "logistiques",
+      "dos",
       859
     ],
     [
-      "personnalisation",
+      "carte",
       860
     ],
     [
-      "cérémonie",
+      "verte",
       861
     ],
     [
-      "peut",
+      "reseau",
       862
     ],
     [
-      "personnalisée",
+      "1500",
       863
     ],
     [
-      "souhaits",
+      "garagistes",
       864
     ],
     [
-      "croyances",
+      "partenaires",
       865
     ],
     [
-      "accompagnement",
+      "sans",
       866
     ],
     [
-      "conseiller",
+      "grocery",
       867
     ],
     [
-      "dédié",
+      "heures",
       868
     ],
     [
-      "accompagne",
+      "selon",
       869
     ],
     [
-      "long",
+      "créneau",
       870
     ],
     [
-      "processus",
+      "suivez",
       871
     ],
     [
-      "accountant",
+      "notifications",
       872
     ],
     [
-      "comptabilité",
+      "chaque",
       873
     ],
     [
-      "générale",
+      "étape",
       874
     ],
     [
-      "déclarations",
+      "manquants",
       875
     ],
     [
-      "fiscales",
+      "produits_manquants",
       876
     ],
     [
-      "bulletins",
+      "produit",
       877
     ],
     [
-      "paie",
+      "indisponible",
       878
     ],
     [
-      "création",
+      "vous",
       879
     ],
     [
-      "entreprise",
+      "équivalent",
       880
     ],
     [
-      "forfaits",
+      "avoir",
       881
     ],
     [
-      "mensuels",
+      "réclamation",
       882
     ],
     [
-      "150",
+      "défectueux",
       883
     ],
     [
-      "taille",
+      "remboursement",
       884
     ],
     [
-      "évaluer",
+      "immédiat",
       885
     ],
     [
-      "besoins",
+      "creneaux",
       886
     ],
     [
-      "declarations",
+      "22h",
       887
     ],
     [
-      "delai_declarations",
+      "minimum",
       888
     ],
     [
-      "respectons",
+      "minimum_commande",
       889
     ],
     [
-      "délais",
+      "espèces",
       890
     ],
     [
-      "légaux",
+      "tpe",
       891
     ],
     [
-      "rappels",
+      "reorder",
       892
     ],
     [
-      "automatiques",
+      "retrouvez",
       893
     ],
     [
-      "architect",
+      "précédentes",
       894
     ],
     [
-      "prestations",
+      "mes",
       895
     ],
     [
-      "conception",
+      "favoris",
       896
     ],
     [
-      "permis",
+      "recomande",
       897
     ],
     [
-      "construire",
+      "clic",
       898
     ],
     [
-      "chantier",
+      "property",
       899
     ],
     [
-      "rénovation",
+      "urgence_maintenance",
       900
     ],
     [
-      "énergétique",
+      "fuite",
       901
     ],
     [
-      "montant",
+      "eau",
       902
     ],
     [
-      "premiere",
+      "panne",
       903
     ],
     [
-      "rencontre",
+      "électrique",
       904
     ],
     [
-      "premiere_rencontre",
+      "demande",
       905
     ],
     [
-      "discuter",
+      "reparation",
       906
     ],
     [
-      "projet",
+      "demande_reparation",
       907
     ],
     [
-      "delai_permis",
+      "soumettez",
       908
     ],
     [
-      "moyen",
+      "demandes",
       909
     ],
     [
-      "2-3",
+      "locataire",
       910
     ],
     [
-      "pharmacist",
+      "délai",
       911
     ],
     [
-      "medicaments",
+      "intervention",
       912
     ],
     [
-      "disponibilite_medicaments",
+      "24-72h",
       913
     ],
     [
-      "vérifiez",
+      "reglement",
       914
     ],
     [
-      "disponibilité",
+      "loyer",
       915
     ],
     [
-      "déplacer",
+      "reglement_loyer",
       916
     ],
     [
-      "ordonnance",
+      "1er",
       917
     ],
     [
-      "ordonnances",
+      "mois",
       918
     ],
     [
-      "électroniques",
+      "virement",
       919
     ],
     [
-      "papier",
+      "prélèvement",
       920
     ],
     [
-      "garde",
+      "gestionnaire",
       921
     ],
     [
-      "pharmacie",
+      "contact_gestionnaire",
       922
     ],
     [
-      "dimanches",
+      "18h",
       923
     ],
     [
-      "fériés",
+      "contractor",
       924
     ],
     [
-      "consulter",
+      "devis_gratuit",
       925
     ],
     [
-      "planning",
+      "visite",
       926
     ],
     [
-      "vaccination",
+      "travaux",
       927
     ],
     [
-      "tension",
+      "garantie_travaux",
       928
     ],
     [
-      "conseil",
+      "garantis",
       929
     ],
     [
-      "personnalisé",
+      "ans",
       930
     ],
     [
-      "préparations",
+      "décennale",
       931
     ],
     [
-      "magistrales",
+      "assurés",
       932
     ],
     [
-      "renter",
+      "delai",
       933
     ],
     [
-      "vehicules",
+      "delai_intervention",
       934
     ],
     [
-      "citadines",
+      "semaines",
       935
     ],
     [
-      "berlines",
+      "type",
       936
     ],
     [
-      "suv",
+      "financement",
       937
     ],
     [
-      "utilitaires",
+      "possibilité",
       938
     ],
     [
-      "minibus",
+      "fois",
       939
     ],
     [
-      "disponibles",
+      "funeral",
       940
     ],
     [
-      "conduire",
+      "premier_contact",
       941
     ],
     [
-      "valide",
+      "équipe",
       942
     ],
     [
-      "identité",
+      "accompagner",
       943
     ],
     [
-      "bancaire",
+      "ces",
       944
     ],
     [
-      "requis",
+      "moments",
       945
     ],
     [
-      "assurance",
+      "difficiles",
       946
     ],
     [
-      "risques",
+      "organisation",
       947
     ],
     [
-      "incluse",
+      "occupons",
       948
     ],
     [
-      "franchise",
+      "démarches",
       949
     ],
     [
-      "800",
+      "administratives",
       950
     ],
     [
-      "rachetable",
+      "logistiques",
       951
     ],
     [
-      "inclus",
+      "personnalisation",
       952
     ],
     [
-      "km_inclus",
+      "cérémonie",
       953
     ],
     [
-      "200",
+      "peut",
       954
     ],
     [
-      "kilomètre",
+      "personnalisée",
       955
     ],
     [
-      "supplémentaire",
+      "souhaits",
       956
     ],
     [
-      "logistician",
+      "croyances",
       957
     ],
     [
-      "expedition",
+      "accompagnement",
       958
     ],
     [
-      "suivi_expedition",
+      "conseiller",
       959
     ],
     [
-      "zones",
+      "dédié",
       960
     ],
     [
-      "zones_livraison",
+      "accompagne",
       961
     ],
     [
-      "couverture",
+      "long",
       962
     ],
     [
-      "nationale",
+      "processus",
       963
     ],
     [
-      "internationale",
+      "accountant",
       964
     ],
     [
-      "europe",
+      "comptabilité",
       965
     ],
     [
-      "afrique",
+      "générale",
       966
     ],
     [
-      "nord",
+      "déclarations",
       967
     ],
     [
-      "delais",
+      "fiscales",
       968
     ],
     [
-      "national",
+      "bulletins",
       969
     ],
     [
-      "5-10",
+      "paie",
       970
     ],
     [
-      "international",
+      "création",
       971
     ],
     [
-      "volume",
+      "entreprise",
       972
     ],
     [
-      "tarifs_volume",
+      "forfaits",
       973
     ],
     [
-      "remises",
+      "mensuels",
       974
     ],
     [
-      "progressives",
+      "150",
       975
     ],
     [
-      "mensuel",
+      "taille",
       976
     ],
     [
-      "expédié",
+      "évaluer",
       977
     ],
     [
-      "trainer",
+      "besoins",
       978
     ],
     [
-      "formations",
+      "declarations",
       979
     ],
     [
-      "bureautique",
+      "delai_declarations",
       980
     ],
     [
-      "développement",
+      "respectons",
       981
     ],
     [
-      "personnel",
+      "délais",
       982
     ],
     [
-      "techniques",
+      "légaux",
       983
     ],
     [
-      "métier",
+      "rappels",
       984
     ],
     [
-      "certification",
+      "automatiques",
       985
     ],
     [
-      "certifiantes",
+      "architect",
       986
     ],
     [
-      "éligibles",
+      "prestations",
       987
     ],
     [
-      "cpf",
+      "conception",
       988
     ],
     [
-      "modalites",
+      "permis",
       989
     ],
     [
-      "présentiel",
+      "construire",
       990
     ],
     [
-      "distanciel",
+      "chantier",
       991
     ],
     [
-      "mixte",
+      "rénovation",
       992
     ],
     [
-      "préférences",
+      "énergétique",
       993
     ],
     [
-      "charge",
+      "montant",
       994
     ],
     [
-      "opco",
+      "premiere",
       995
     ],
     [
-      "plan",
+      "rencontre",
       996
     ],
     [
-      "formation",
+      "premiere_rencontre",
       997
     ],
     [
-      "planner",
+      "discuter",
       998
     ],
     [
-      "evenements",
+      "projet",
       999
     ],
     [
-      "mariages",
+      "delai_permis",
       1000
     ],
     [
-      "anniversaires",
+      "moyen",
       1001
     ],
     [
-      "séminaires",
+      "2-3",
       1002
     ],
     [
-      "conférences",
+      "pharmacist",
       1003
     ],
     [
-      "lancements",
+      "medicaments",
       1004
     ],
     [
-      "brief",
+      "disponibilite_medicaments",
       1005
     ],
     [
-      "détaillé",
+      "vérifiez",
       1006
     ],
     [
-      "adaptons",
+      "disponibilité",
       1007
     ],
     [
-      "budgets",
+      "déplacer",
       1008
     ],
     [
-      "prestataires",
+      "ordonnance",
       1009
     ],
     [
-      "réseau",
+      "ordonnances",
       1010
     ],
     [
-      "qualifiés",
+      "électroniques",
       1011
     ],
     [
-      "traiteurs",
+      "papier",
       1012
     ],
     [
-      "photographes",
+      "garde",
       1013
     ],
     [
-      "décorateurs",
+      "pharmacie",
       1014
     ],
     [
-      "producer",
+      "dimanches",
       1015
     ],
     [
-      "fruits",
+      "fériés",
       1016
     ],
     [
-      "légumes",
+      "consulter",
       1017
     ],
     [
-      "saison",
+      "planning",
       1018
     ],
     [
-      "ufs",
+      "vaccination",
       1019
     ],
     [
-      "fermiers",
+      "tension",
       1020
     ],
     [
-      "miel",
+      "conseil",
       1021
     ],
     [
-      "fromages",
+      "personnalisé",
       1022
     ],
     [
-      "artisanaux",
+      "préparations",
       1023
     ],
     [
-      "commandez",
+      "magistrales",
       1024
     ],
     [
-      "mercredi",
+      "renter",
       1025
     ],
     [
-      "domicile",
+      "vehicules",
       1026
     ],
     [
-      "retrait",
+      "citadines",
       1027
     ],
     [
-      "ferme",
+      "berlines",
       1028
     ],
     [
-      "16h",
+      "suv",
       1029
     ],
     [
-      "19h",
+      "utilitaires",
       1030
     ],
     [
-      "labels",
+      "minibus",
       1031
     ],
     [
-      "agriculture",
+      "disponibles",
       1032
     ],
     [
-      "biologique",
+      "conduire",
       1033
     ],
     [
-      "certifiée",
+      "valide",
       1034
     ],
     [
-      "circuit",
+      "identité",
       1035
     ],
     [
-      "court",
+      "bancaire",
       1036
     ],
     [
-      "production",
+      "requis",
       1037
     ],
     [
-      "locale",
+      "assurance",
       1038
     ],
     [
-      "cleaner",
+      "risques",
       1039
     ],
     [
-      "ménage",
+      "incluse",
       1040
     ],
     [
-      "régulier",
+      "franchise",
       1041
     ],
     [
-      "grand",
+      "800",
       1042
     ],
     [
-      "nettoyage",
+      "rachetable",
       1043
     ],
     [
-      "fin",
+      "inclus",
       1044
     ],
     [
-      "vitrerie",
+      "km_inclus",
       1045
     ],
     [
-      "désinfection",
+      "200",
       1046
     ],
     [
-      "charges",
+      "kilomètre",
       1047
     ],
     [
-      "comprises",
+      "supplémentaire",
       1048
     ],
     [
-      "frequence",
+      "logistician",
       1049
     ],
     [
-      "ponctuelles",
+      "expedition",
       1050
     ],
     [
-      "contrats",
+      "suivi_expedition",
       1051
     ],
     [
-      "hebdomadaires",
+      "zones",
       1052
     ],
     [
-      "surcoût",
+      "zones_livraison",
       1053
     ],
     [
-      "gym",
+      "couverture",
       1054
     ],
     [
-      "abonnements",
+      "nationale",
       1055
     ],
     [
-      "engagement",
+      "internationale",
       1056
     ],
     [
-      "pass",
+      "europe",
       1057
     ],
     [
-      "journée",
+      "afrique",
       1058
     ],
     [
-      "ouvert",
+      "nord",
       1059
     ],
     [
-      "23h",
+      "delais",
       1060
     ],
     [
-      "accès",
+      "national",
       1061
     ],
     [
-      "membres",
+      "5-10",
       1062
     ],
     [
-      "premium",
+      "international",
       1063
     ],
     [
-      "equipements",
+      "volume",
       1064
     ],
     [
-      "cardio",
+      "tarifs_volume",
       1065
     ],
     [
-      "musculation",
+      "remises",
       1066
     ],
     [
-      "fonctionnel",
+      "progressives",
       1067
     ],
     [
-      "cours",
+      "mensuel",
       1068
     ],
     [
-      "collectifs",
+      "expédié",
       1069
     ],
     [
-      "essai",
+      "trainer",
       1070
     ],
     [
-      "séance",
+      "formations",
       1071
     ],
     [
-      "coach",
+      "bureautique",
       1072
     ],
     [
-      "découvrir",
+      "développement",
       1073
     ],
     [
-      "installations",
+      "personnel",
       1074
     ],
     [
-      "retailer",
+      "techniques",
       1075
     ],
     [
-      "9h30",
+      "métier",
       1076
     ],
     [
-      "19h30",
+      "certification",
       1077
     ],
     [
-      "échange",
+      "certifiantes",
       1078
     ],
     [
-      "ticket",
+      "éligibles",
       1079
     ],
     [
-      "caisse",
+      "cpf",
       1080
     ],
     [
-      "fidelite",
+      "modalites",
       1081
     ],
     [
-      "fidélité",
+      "présentiel",
       1082
     ],
     [
-      "points",
+      "distanciel",
       1083
     ],
     [
-      "réduction",
+      "mixte",
       1084
     ],
     [
-      "builder",
+      "préférences",
       1085
     ],
     [
-      "projets",
+      "charge",
       1086
     ],
     [
-      "construction",
+      "opco",
       1087
     ],
     [
-      "neuve",
+      "plan",
       1088
     ],
     [
-      "extension",
+      "formation",
       1089
     ],
     [
-      "complète",
+      "planner",
       1090
     ],
     [
-      "surélévation",
+      "evenements",
       1091
     ],
     [
-      "dommages-ouvrage",
+      "mariages",
       1092
     ],
     [
-      "parfait",
+      "anniversaires",
       1093
     ],
     [
-      "achèvement",
+      "séminaires",
       1094
     ],
     [
-      "etapes",
+      "conférences",
       1095
     ],
     [
-      "ccmi",
+      "lancements",
       1096
     ],
     [
-      "maison",
+      "brief",
       1097
     ],
     [
-      "individuelle",
+      "détaillé",
       1098
     ],
     [
-      "10-14",
+      "adaptons",
       1099
     ],
     [
-      "restaurateur",
+      "budgets",
       1100
     ],
     [
-      "conseillée",
+      "prestataires",
       1101
     ],
     [
-      "week-end",
+      "réseau",
       1102
     ],
     [
-      "tables",
+      "qualifiés",
       1103
     ],
     [
-      "personnes",
+      "traiteurs",
       1104
     ],
     [
-      "menu",
+      "photographes",
       1105
     ],
     [
-      "entrée-plat",
+      "décorateurs",
       1106
     ],
     [
-      "plat-dessert",
+      "producer",
       1107
     ],
     [
-      "allergenes",
+      "fruits",
       1108
     ],
     [
-      "plats",
+      "légumes",
       1109
     ],
     [
-      "adaptables",
+      "saison",
       1110
     ],
     [
-      "allergies",
+      "ufs",
       1111
     ],
     [
-      "régimes",
+      "fermiers",
       1112
     ],
     [
-      "spéciaux",
+      "miel",
       1113
     ],
     [
-      "privatisation",
+      "fromages",
       1114
     ],
     [
-      "événements",
+      "artisanaux",
       1115
     ],
     [
-      "travel",
+      "commandez",
       1116
     ],
     [
-      "agent",
+      "mercredi",
       1117
     ],
     [
-      "destinations",
+      "domicile",
       1118
     ],
     [
-      "séjours",
+      "retrait",
       1119
     ],
     [
-      "balnéaires",
+      "ferme",
       1120
     ],
     [
-      "circuits",
+      "16h",
       1121
     ],
     [
-      "culturels",
+      "19h",
       1122
     ],
     [
-      "croisières",
+      "labels",
       1123
     ],
     [
-      "voyages",
+      "agriculture",
       1124
     ],
     [
-      "mesure",
+      "biologique",
       1125
     ],
     [
-      "acompte",
+      "certifiée",
       1126
     ],
     [
-      "solde",
+      "circuit",
       1127
     ],
     [
-      "départ",
+      "court",
       1128
     ],
     [
-      "rapatriement",
+      "production",
       1129
     ],
     [
-      "recommandée",
+      "locale",
       1130
     ],
     [
-      "voyage",
+      "cleaner",
       1131
     ],
     [
-      "consultant",
+      "ménage",
       1132
     ],
     [
-      "stratégie",
+      "régulier",
       1133
     ],
     [
-      "transformation",
+      "grand",
       1134
     ],
     [
-      "digitale",
+      "nettoyage",
       1135
     ],
     [
-      "methode",
+      "fin",
       1136
     ],
     [
-      "initial",
+      "vitrerie",
       1137
     ],
     [
-      "action",
+      "désinfection",
       1138
     ],
     [
-      "terrain",
+      "charges",
       1139
     ],
     [
-      "résultats",
+      "comprises",
       1140
     ],
     [
-      "800-1500",
+      "frequence",
       1141
     ],
     [
-      "references",
+      "ponctuelles",
       1142
     ],
     [
-      "missions",
+      "contrats",
       1143
     ],
     [
-      "réalisées",
+      "hebdomadaires",
       1144
     ],
     [
-      "auprès",
+      "surcoût",
       1145
     ],
     [
-      "pme",
+      "gym",
       1146
     ],
     [
-      "eti",
+      "abonnements",
       1147
     ],
     [
-      "distance",
+      "pass",
       1148
     ],
     [
-      "informatique",
+      "journée",
       1149
     ],
     [
-      "cybersécurité",
+      "ouvert",
       1150
     ],
     [
-      "cloud",
+      "23h",
       1151
     ],
     [
-      "sauvegarde",
+      "accès",
       1152
     ],
     [
-      "ponctuelle",
+      "membres",
       1153
     ],
     [
-      "sla",
+      "premium",
       1154
     ],
     [
-      "réponse",
+      "equipements",
       1155
     ],
     [
-      "garanti",
+      "cardio",
       1156
     ],
     [
-      "ouvrées",
+      "musculation",
       1157
     ],
     [
-      "week-ends",
+      "fonctionnel",
       1158
     ],
     [
-      "manufacturer",
+      "cours",
       1159
     ],
     [
-      "fabrication",
+      "collectifs",
       1160
     ],
     [
-      "métal",
+      "essai",
       1161
     ],
     [
-      "bois",
+      "séance",
       1162
     ],
     [
-      "plastique",
+      "coach",
       1163
     ],
     [
-      "plans",
+      "découvrir",
       1164
     ],
     [
-      "cahier",
+      "installations",
       1165
     ],
     [
-      "1-4",
+      "retailer",
       1166
     ],
     [
-      "complexité",
+      "9h30",
       1167
     ],
     [
-      "quantité",
+      "19h30",
       1168
     ],
     [
-      "prototypage",
+      "échange",
       1169
     ],
     [
-      "rapide",
+      "ticket",
       1170
     ],
     [
-      "validation",
+      "caisse",
       1171
     ],
     [
-      "unitaires",
+      "fidelite",
       1172
     ],
     [
-      "doctor",
+      "fidélité",
       1173
     ],
     [
-      "acceptées",
+      "points",
       1174
     ],
     [
-      "teleconsultation",
+      "réduction",
       1175
     ],
     [
-      "téléconsultation",
+      "builder",
       1176
     ],
     [
-      "plateforme",
+      "projets",
       1177
     ],
     [
-      "sécurisée",
+      "construction",
       1178
     ],
     [
-      "vaccinations",
+      "neuve",
       1179
     ],
     [
-      "courantes",
+      "extension",
       1180
     ],
     [
-      "grippe",
+      "complète",
       1181
     ],
     [
-      "covid",
+      "surélévation",
       1182
     ],
     [
-      "vitale",
+      "dommages-ouvrage",
       1183
     ],
     [
-      "mutuelle",
+      "parfait",
       1184
     ],
     [
-      "requises",
+      "achèvement",
       1185
     ],
     [
-      "tiers",
+      "etapes",
       1186
     ],
     [
-      "payant",
+      "ccmi",
       1187
     ],
     [
-      "accepté",
+      "maison",
       1188
     ],
     [
-      "notary",
+      "individuelle",
       1189
     ],
     [
-      "actes",
+      "10-14",
       1190
     ],
     [
-      "ventes",
+      "restaurateur",
       1191
     ],
     [
-      "immobilières",
+      "conseillée",
       1192
     ],
     [
-      "donations",
+      "week-end",
       1193
     ],
     [
-      "successions",
+      "tables",
       1194
     ],
     [
-      "mariage",
+      "personnes",
       1195
     ],
     [
-      "pacs",
+      "menu",
       1196
     ],
     [
-      "notaire",
+      "entrée-plat",
       1197
     ],
     [
-      "réglementés",
+      "plat-dessert",
       1198
     ],
     [
-      "incluent",
+      "allergenes",
       1199
     ],
     [
-      "taxes",
+      "plats",
       1200
     ],
     [
-      "émoluments",
+      "adaptables",
       1201
     ],
     [
-      "information",
+      "allergies",
       1202
     ],
     [
-      "vente",
+      "régimes",
       1203
     ],
     [
-      "immobilière",
+      "spéciaux",
       1204
     ],
     [
-      "bakery",
+      "privatisation",
       1205
     ],
     [
-      "pains",
+      "événements",
       1206
     ],
     [
-      "traditionnels",
+      "travel",
       1207
     ],
     [
-      "viennoiseries",
+      "agent",
       1208
     ],
     [
-      "pâtisseries",
+      "destinations",
       1209
     ],
     [
-      "traiteur",
+      "séjours",
       1210
     ],
     [
-      "salé",
+      "balnéaires",
       1211
     ],
     [
-      "spéciales",
+      "circuits",
       1212
     ],
     [
-      "gâteaux",
+      "culturels",
       1213
     ],
     [
-      "montées",
+      "croisières",
       1214
     ],
     [
-      "6h30",
+      "voyages",
       1215
     ],
     [
-      "sauf",
+      "mesure",
       1216
     ],
     [
-      "ingredients",
+      "acompte",
       1217
     ],
     [
-      "farines",
+      "solde",
       1218
     ],
     [
-      "françaises",
+      "départ",
       1219
     ],
     [
-      "beurre",
+      "rapatriement",
       1220
     ],
     [
-      "aop",
+      "recommandée",
       1221
     ],
     [
-      "levain",
+      "voyage",
       1222
     ],
     [
-      "naturel",
+      "consultant",
       1223
     ],
     [
-      "specialist",
+      "stratégie",
       1224
     ],
     [
-      "specialite",
+      "transformation",
       1225
     ],
     [
-      "spécialisée",
+      "digitale",
       1226
     ],
     [
-      "uniquement",
+      "methode",
       1227
     ],
     [
-      "delai_rdv",
+      "initial",
       1228
     ],
     [
-      "2-4",
+      "action",
       1229
     ],
     [
-      "apportez",
+      "terrain",
       1230
     ],
     [
-      "courrier",
+      "résultats",
       1231
     ],
     [
-      "adressage",
+      "800-1500",
       1232
     ],
     [
-      "examens",
+      "references",
       1233
     ],
     [
-      "récents",
+      "missions",
       1234
     ],
     [
-      "historique",
+      "réalisées",
       1235
     ],
     [
-      "médical",
+      "auprès",
       1236
     ],
     [
-      "compte-rendu",
+      "pme",
       1237
     ],
     [
-      "médecin",
+      "eti",
       1238
     ],
     [
-      "traitant",
+      "distance",
       1239
     ],
     [
-      "estimation",
+      "informatique",
       1240
     ],
     [
-      "mandat",
+      "cybersécurité",
       1241
     ],
     [
-      "recherche",
+      "cloud",
       1242
     ],
     [
-      "acquéreur",
+      "sauvegarde",
       1243
     ],
     [
-      "complet",
+      "ponctuelle",
       1244
     ],
     [
-      "commission",
+      "réponse",
       1245
     ],
     [
-      "4-6",
+      "garanti",
       1246
     ],
     [
-      "transaction",
+      "ouvrées",
       1247
     ],
     [
-      "visites",
+      "week-ends",
       1248
     ],
     [
-      "possibles",
+      "manufacturer",
       1249
     ],
     [
-      "semaine",
+      "fabrication",
       1250
     ],
     [
-      "bien",
+      "métal",
       1251
     ],
     [
-      "hairdresser",
+      "bois",
       1252
     ],
     [
-      "coupe",
+      "plastique",
       1253
     ],
     [
-      "coloration",
+      "plans",
       1254
     ],
     [
-      "balayage",
+      "cahier",
       1255
     ],
     [
-      "lissage",
+      "1-4",
       1256
     ],
     [
-      "événementielle",
+      "complexité",
       1257
     ],
     [
-      "femme",
+      "quantité",
       1258
     ],
     [
-      "homme",
+      "prototypage",
       1259
     ],
     [
-      "walk-in",
+      "rapide",
       1260
     ],
     [
-      "professionnels",
+      "validation",
       1261
     ],
     [
-      "oréal",
+      "unitaires",
       1262
     ],
     [
-      "kérastase",
+      "doctor",
       1263
     ],
     [
-      "wella",
+      "acceptées",
       1264
     ],
     [
-      "urgent",
+      "teleconsultation",
       1265
     ],
     [
-      "matters",
+      "téléconsultation",
       1266
     ],
     [
-      "require",
+      "plateforme",
       1267
     ],
     [
-      "immediate",
+      "sécurisée",
       1268
     ],
     [
-      "attention",
+      "vaccinations",
       1269
     ],
     [
-      "medical",
+      "courantes",
       1270
     ],
     [
-      "emergencies",
+      "grippe",
       1271
     ],
     [
-      "call",
+      "covid",
       1272
     ],
     [
-      "samu",
+      "vitale",
       1273
     ],
     [
-      "112",
+      "mutuelle",
       1274
     ],
     [
-      "same-day",
+      "requises",
       1275
     ],
     [
-      "slots",
+      "tiers",
       1276
     ],
     [
-      "are",
+      "payant",
       1277
     ],
     [
-      "available",
+      "accepté",
       1278
     ],
     [
-      "between",
+      "notary",
       1279
     ],
     [
-      "water",
+      "actes",
       1280
     ],
     [
-      "leak",
+      "ventes",
       1281
     ],
     [
-      "electrical",
+      "immobilières",
       1282
     ],
     [
-      "failure",
+      "donations",
       1283
     ],
     [
-      "number",
+      "successions",
       1284
     ],
     [
-      "asap",
+      "mariage",
       1285
     ],
     [
-      "now",
+      "pacs",
       1286
     ],
     [
-      "suite",
+      "notaire",
       1287
     ],
     [
-      "danger",
+      "réglementés",
       1288
     ],
     [
-      "help",
+      "incluent",
       1289
     ],
     [
-      "aide",
+      "taxes",
       1290
     ],
     [
-      "offers",
+      "émoluments",
       1291
     ],
     [
-      "transparent",
+      "information",
       1292
     ],
     [
-      "our",
+      "vente",
       1293
     ],
     [
-      "solutions",
+      "immobilière",
       1294
     ],
     [
-      "significantly",
+      "bakery",
       1295
     ],
     [
-      "more",
+      "pains",
       1296
     ],
     [
-      "affordable",
+      "traditionnels",
       1297
     ],
     [
-      "than",
+      "viennoiseries",
       1298
     ],
     [
-      "market",
+      "pâtisseries",
       1299
     ],
     [
-      "alternatives",
+      "traiteur",
       1300
     ],
     [
-      "savings",
+      "salé",
       1301
     ],
     [
-      "detailed",
+      "spéciales",
       1302
     ],
     [
-      "your",
+      "gâteaux",
       1303
     ],
     [
-      "business",
+      "montées",
       1304
     ],
     [
-      "needs",
+      "6h30",
       1305
     ],
     [
-      "prix",
+      "sauf",
       1306
     ],
     [
-      "how",
+      "ingredients",
       1307
     ],
     [
-      "much",
+      "farines",
       1308
     ],
     [
-      "combien",
+      "françaises",
       1309
     ],
     [
-      "estimate",
+      "beurre",
       1310
     ],
     [
-      "operating",
+      "aop",
       1311
     ],
     [
-      "vary",
+      "levain",
       1312
     ],
     [
-      "most",
+      "naturel",
       1313
     ],
     [
-      "operate",
+      "specialist",
       1314
     ],
     [
-      "monday-friday",
+      "specialite",
       1315
     ],
     [
-      "9h-18h",
+      "spécialisée",
       1316
     ],
     [
-      "some",
+      "uniquement",
       1317
     ],
     [
-      "offer",
+      "delai_rdv",
       1318
     ],
     [
-      "saturday",
+      "2-4",
       1319
     ],
     [
-      "include",
+      "apportez",
       1320
     ],
     [
-      "hotlines",
+      "courrier",
       1321
     ],
     [
-      "automated",
+      "adressage",
       1322
     ],
     [
-      "assistants",
+      "examens",
       1323
     ],
     [
-      "knowledge",
+      "récents",
       1324
     ],
     [
-      "base",
+      "historique",
       1325
     ],
     [
-      "open",
+      "médical",
       1326
     ],
     [
-      "close",
+      "compte-rendu",
       1327
     ],
     [
-      "fermé",
+      "médecin",
       1328
     ],
     [
-      "when",
+      "traitant",
       1329
     ],
     [
-      "quand",
+      "estimation",
       1330
     ],
     [
-      "technical",
+      "mandat",
       1331
     ],
     [
-      "inquiries",
+      "recherche",
       1332
     ],
     [
-      "typically",
+      "acquéreur",
       1333
     ],
     [
-      "within",
+      "complet",
       1334
     ],
     [
-      "telephone",
+      "commission",
       1335
     ],
     [
-      "reach",
+      "4-6",
       1336
     ],
     [
-      "joindre",
+      "transaction",
       1337
     ],
     [
-      "appeler",
+      "visites",
       1338
     ],
     [
-      "message",
+      "possibles",
       1339
     ],
     [
-      "write",
+      "semaine",
       1340
     ],
     [
-      "gdpr",
+      "bien",
       1341
     ],
     [
-      "compliant",
+      "hairdresser",
       1342
     ],
     [
-      "use",
+      "coupe",
       1343
     ],
     [
-      "privacy-first",
+      "coloration",
       1344
     ],
     [
-      "analytics",
+      "balayage",
       1345
     ],
     [
-      "cookies",
+      "lissage",
       1346
     ],
     [
-      "data",
+      "événementielle",
       1347
     ],
     [
-      "encrypted",
+      "femme",
       1348
     ],
     [
-      "security",
+      "homme",
       1349
     ],
     [
-      "processed",
+      "walk-in",
       1350
     ],
     [
-      "full",
+      "professionnels",
       1351
     ],
     [
-      "isolation",
+      "oréal",
       1352
     ],
     [
-      "requests",
+      "kérastase",
       1353
     ],
     [
-      "can",
+      "wella",
       1354
     ],
     [
-      "submitted",
+      "urgent",
       1355
     ],
     [
-      "privacy",
+      "matters",
       1356
     ],
     [
-      "donnees",
+      "require",
       1357
     ],
     [
-      "protection",
+      "immediate",
       1358
     ],
     [
-      "confidential",
+      "attention",
       1359
     ],
     [
-      "secure",
+      "medical",
       1360
     ],
     [
-      "encryption",
+      "emergencies",
       1361
     ],
     [
-      "policies",
+      "samu",
       1362
     ],
     [
-      "merchant",
+      "112",
       1363
     ],
     [
-      "30-day",
+      "same-day",
       1364
     ],
     [
-      "returns",
+      "slots",
       1365
     ],
     [
-      "unused",
+      "are",
       1366
     ],
     [
-      "items",
+      "available",
       1367
     ],
     [
-      "original",
+      "between",
       1368
     ],
     [
-      "packaging",
+      "water",
       1369
     ],
     [
-      "digital",
+      "leak",
       1370
     ],
     [
-      "may",
+      "electrical",
       1371
     ],
     [
-      "have",
+      "failure",
       1372
     ],
     [
-      "different",
+      "number",
       1373
     ],
     [
-      "terms",
+      "asap",
       1374
     ],
     [
-      "their",
+      "now",
       1375
     ],
     [
-      "policy",
+      "suite",
       1376
     ],
     [
-      "details",
+      "danger",
       1377
     ],
     [
-      "cancel",
+      "help",
       1378
     ],
     [
-      "annuler",
+      "aide",
       1379
     ],
     [
-      "money",
+      "offers",
       1380
     ],
     [
-      "back",
+      "transparent",
       1381
     ],
     [
-      "multiple",
+      "our",
       1382
     ],
     [
-      "channels",
+      "solutions",
       1383
     ],
     [
-      "online",
+      "significantly",
       1384
     ],
     [
-      "calendar",
+      "more",
       1385
     ],
     [
-      "messaging",
+      "affordable",
       1386
     ],
     [
-      "bookings",
+      "than",
       1387
     ],
     [
-      "name",
+      "savings",
       1388
     ],
     [
-      "info",
+      "detailed",
       1389
     ],
     [
-      "preferred",
+      "your",
       1390
     ],
     [
-      "date",
+      "business",
       1391
     ],
     [
-      "confirmation",
+      "prix",
       1392
     ],
     [
-      "sent",
+      "how",
       1393
     ],
     [
-      "cancellations",
+      "much",
       1394
     ],
     [
-      "should",
+      "combien",
       1395
     ],
     [
-      "made",
+      "estimate",
       1396
     ],
     [
-      "advance",
+      "operating",
       1397
     ],
     [
-      "book",
+      "vary",
       1398
     ],
     [
-      "reserve",
+      "most",
       1399
     ],
     [
-      "réserver",
+      "operate",
       1400
     ],
     [
-      "slot",
+      "monday-friday",
       1401
     ],
     [
-      "options",
+      "9h-18h",
       1402
     ],
     [
-      "days",
+      "some",
       1403
     ],
     [
-      "free",
+      "offer",
       1404
     ],
     [
-      "over",
+      "saturday",
       1405
     ],
     [
-      "select",
+      "include",
       1406
     ],
     [
-      "areas",
+      "hotlines",
       1407
     ],
     [
-      "link",
+      "automated",
       1408
     ],
     [
-      "absent",
+      "assistants",
       1409
     ],
     [
-      "packages",
+      "knowledge",
       1410
     ],
     [
-      "nearest",
+      "base",
       1411
     ],
     [
-      "pickup",
+      "open",
       1412
     ],
     [
-      "logistics",
+      "close",
       1413
     ],
     [
-      "ship",
+      "fermé",
       1414
     ],
     [
-      "package",
+      "when",
       1415
     ],
     [
-      "receive",
+      "quand",
       1416
     ],
     [
-      "accepted",
+      "technical",
       1417
     ],
     [
-      "methods",
+      "inquiries",
       1418
     ],
     [
-      "handled",
+      "typically",
       1419
     ],
     [
-      "links",
+      "within",
       1420
     ],
     [
-      "invoices",
+      "telephone",
       1421
     ],
     [
-      "installment",
+      "reach",
       1422
     ],
     [
-      "3-4x",
+      "joindre",
       1423
     ],
     [
-      "offered",
+      "appeler",
       1424
     ],
     [
-      "merchants",
+      "message",
       1425
     ],
     [
-      "payer",
+      "write",
       1426
     ],
     [
-      "invoice",
+      "gdpr",
       1427
     ],
     [
-      "supports",
+      "compliant",
       1428
     ],
     [
-      "french",
+      "use",
       1429
     ],
     [
-      "english",
+      "privacy-first",
       1430
     ],
     [
-      "spanish",
+      "cookies",
       1431
     ],
     [
-      "arabic",
+      "encrypted",
       1432
     ],
     [
-      "msa",
+      "security",
       1433
     ],
     [
-      "moroccan",
+      "processed",
       1434
     ],
     [
-      "darija",
+      "full",
       1435
     ],
     [
-      "ary",
+      "isolation",
       1436
     ],
     [
-      "language",
+      "requests",
       1437
     ],
     [
-      "auto-detected",
+      "can",
       1438
     ],
     [
-      "specified",
+      "submitted",
       1439
     ],
     [
-      "multilingual",
+      "privacy",
       1440
     ],
     [
-      "langue",
+      "donnees",
       1441
     ],
     [
-      "translate",
+      "protection",
       1442
     ],
     [
-      "traduction",
+      "confidential",
       1443
+    ],
+    [
+      "secure",
+      1444
+    ],
+    [
+      "encryption",
+      1445
+    ],
+    [
+      "policies",
+      1446
+    ],
+    [
+      "merchant",
+      1447
+    ],
+    [
+      "30-day",
+      1448
+    ],
+    [
+      "returns",
+      1449
+    ],
+    [
+      "unused",
+      1450
+    ],
+    [
+      "items",
+      1451
+    ],
+    [
+      "original",
+      1452
+    ],
+    [
+      "packaging",
+      1453
+    ],
+    [
+      "digital",
+      1454
+    ],
+    [
+      "may",
+      1455
+    ],
+    [
+      "have",
+      1456
+    ],
+    [
+      "different",
+      1457
+    ],
+    [
+      "terms",
+      1458
+    ],
+    [
+      "their",
+      1459
+    ],
+    [
+      "policy",
+      1460
+    ],
+    [
+      "details",
+      1461
+    ],
+    [
+      "cancel",
+      1462
+    ],
+    [
+      "annuler",
+      1463
+    ],
+    [
+      "money",
+      1464
+    ],
+    [
+      "back",
+      1465
+    ],
+    [
+      "multiple",
+      1466
+    ],
+    [
+      "channels",
+      1467
+    ],
+    [
+      "online",
+      1468
+    ],
+    [
+      "calendar",
+      1469
+    ],
+    [
+      "messaging",
+      1470
+    ],
+    [
+      "bookings",
+      1471
+    ],
+    [
+      "name",
+      1472
+    ],
+    [
+      "info",
+      1473
+    ],
+    [
+      "preferred",
+      1474
+    ],
+    [
+      "date",
+      1475
+    ],
+    [
+      "confirmation",
+      1476
+    ],
+    [
+      "sent",
+      1477
+    ],
+    [
+      "cancellations",
+      1478
+    ],
+    [
+      "should",
+      1479
+    ],
+    [
+      "made",
+      1480
+    ],
+    [
+      "advance",
+      1481
+    ],
+    [
+      "book",
+      1482
+    ],
+    [
+      "reserve",
+      1483
+    ],
+    [
+      "réserver",
+      1484
+    ],
+    [
+      "slot",
+      1485
+    ],
+    [
+      "options",
+      1486
+    ],
+    [
+      "over",
+      1487
+    ],
+    [
+      "select",
+      1488
+    ],
+    [
+      "areas",
+      1489
+    ],
+    [
+      "link",
+      1490
+    ],
+    [
+      "absent",
+      1491
+    ],
+    [
+      "packages",
+      1492
+    ],
+    [
+      "nearest",
+      1493
+    ],
+    [
+      "pickup",
+      1494
+    ],
+    [
+      "logistics",
+      1495
+    ],
+    [
+      "ship",
+      1496
+    ],
+    [
+      "package",
+      1497
+    ],
+    [
+      "receive",
+      1498
+    ],
+    [
+      "accepted",
+      1499
+    ],
+    [
+      "methods",
+      1500
+    ],
+    [
+      "handled",
+      1501
+    ],
+    [
+      "links",
+      1502
+    ],
+    [
+      "invoices",
+      1503
+    ],
+    [
+      "installment",
+      1504
+    ],
+    [
+      "3-4x",
+      1505
+    ],
+    [
+      "offered",
+      1506
+    ],
+    [
+      "merchants",
+      1507
+    ],
+    [
+      "payer",
+      1508
+    ],
+    [
+      "invoice",
+      1509
+    ],
+    [
+      "supports",
+      1510
+    ],
+    [
+      "french",
+      1511
+    ],
+    [
+      "english",
+      1512
+    ],
+    [
+      "spanish",
+      1513
+    ],
+    [
+      "arabic",
+      1514
+    ],
+    [
+      "msa",
+      1515
+    ],
+    [
+      "ary",
+      1516
+    ],
+    [
+      "language",
+      1517
+    ],
+    [
+      "auto-detected",
+      1518
+    ],
+    [
+      "specified",
+      1519
+    ],
+    [
+      "multilingual",
+      1520
+    ],
+    [
+      "langue",
+      1521
+    ],
+    [
+      "translate",
+      1522
+    ],
+    [
+      "traduction",
+      1523
     ]
   ],
   "idf": [
@@ -5817,7 +6137,7 @@
     ],
     [
       "provider",
-      4.351567427189173
+      4.01509519056796
     ],
     [
       "failover",
@@ -5941,7 +6261,7 @@
     ],
     [
       "interactions",
-      4.01509519056796
+      3.763780762287054
     ],
     [
       "real-time-streaming",
@@ -5970,6 +6290,70 @@
     [
       "atlas-darija",
       4.862393050955164
+    ],
+    [
+      "core_infrastructure",
+      4.862393050955164
+    ],
+    [
+      "service",
+      4.01509519056796
+    ],
+    [
+      "reliability",
+      4.862393050955164
+    ],
+    [
+      "trust",
+      3.763780762287054
+    ],
+    [
+      "driver",
+      3.763780762287054
+    ],
+    [
+      "competitive",
+      3.763780762287054
+    ],
+    [
+      "differentiator",
+      4.862393050955164
+    ],
+    [
+      "eliminate",
+      4.351567427189173
+    ],
+    [
+      "interruptions",
+      4.862393050955164
+    ],
+    [
+      "reduce",
+      3.396055982161737
+    ],
+    [
+      "support",
+      3.563110066824903
+    ],
+    [
+      "costs",
+      4.01509519056796
+    ],
+    [
+      "increase",
+      3.563110066824903
+    ],
+    [
+      "customer",
+      3.563110066824903
+    ],
+    [
+      "satisfaction",
+      4.862393050955164
+    ],
+    [
+      "scores",
+      4.351567427189173
     ],
     [
       "architectural",
@@ -6021,7 +6405,7 @@
     ],
     [
       "response",
-      4.351567427189173
+      4.01509519056796
     ],
     [
       "native",
@@ -6030,10 +6414,6 @@
     [
       "websocket",
       4.862393050955164
-    ],
-    [
-      "support",
-      3.763780762287054
     ],
     [
       "seamless",
@@ -6136,8 +6516,40 @@
       4.862393050955164
     ],
     [
-      "telephony",
+      "realtime_voice",
+      4.862393050955164
+    ],
+    [
+      "user",
+      4.862393050955164
+    ],
+    [
+      "experience",
       4.351567427189173
+    ],
+    [
+      "engagement",
+      4.351567427189173
+    ],
+    [
+      "cost",
+      2.7421295147550726
+    ],
+    [
+      "reduction",
+      4.862393050955164
+    ],
+    [
+      "market",
+      4.01509519056796
+    ],
+    [
+      "alternatives",
+      4.351567427189173
+    ],
+    [
+      "telephony",
+      4.01509519056796
     ],
     [
       "bridge",
@@ -6161,10 +6573,6 @@
     ],
     [
       "automation",
-      4.862393050955164
-    ],
-    [
-      "competitive",
       4.351567427189173
     ],
     [
@@ -6324,6 +6732,58 @@
       4.862393050955164
     ],
     [
+      "telephony_automation",
+      4.862393050955164
+    ],
+    [
+      "call",
+      3.763780762287054
+    ],
+    [
+      "lever",
+      4.862393050955164
+    ],
+    [
+      "availability",
+      4.351567427189173
+    ],
+    [
+      "value",
+      4.862393050955164
+    ],
+    [
+      "prop",
+      4.862393050955164
+    ],
+    [
+      "replace",
+      4.862393050955164
+    ],
+    [
+      "ivr",
+      4.862393050955164
+    ],
+    [
+      "systems",
+      4.862393050955164
+    ],
+    [
+      "automate",
+      4.862393050955164
+    ],
+    [
+      "inbound",
+      4.862393050955164
+    ],
+    [
+      "calls",
+      4.01509519056796
+    ],
+    [
+      "center",
+      4.862393050955164
+    ],
+    [
       "persona",
       4.351567427189173
     ],
@@ -6365,7 +6825,7 @@
     ],
     [
       "100",
-      4.351567427189173
+      4.01509519056796
     ],
     [
       "translations",
@@ -6488,6 +6948,58 @@
       4.862393050955164
     ],
     [
+      "persona_differentiation",
+      4.862393050955164
+    ],
+    [
+      "scoring",
+      4.01509519056796
+    ],
+    [
+      "framework",
+      4.862393050955164
+    ],
+    [
+      "principles",
+      4.862393050955164
+    ],
+    [
+      "funnel",
+      3.763780762287054
+    ],
+    [
+      "objection",
+      4.862393050955164
+    ],
+    [
+      "handling",
+      4.862393050955164
+    ],
+    [
+      "improvement",
+      4.862393050955164
+    ],
+    [
+      "quality",
+      4.351567427189173
+    ],
+    [
+      "compliance",
+      4.351567427189173
+    ],
+    [
+      "moroccan",
+      4.351567427189173
+    ],
+    [
+      "advantage",
+      4.351567427189173
+    ],
+    [
+      "darija",
+      4.351567427189173
+    ],
+    [
       "widget",
       4.01509519056796
     ],
@@ -6576,10 +7088,6 @@
       4.862393050955164
     ],
     [
-      "cost",
-      2.91648290189985
-    ],
-    [
       "deployment",
       4.351567427189173
     ],
@@ -6605,6 +7113,58 @@
     ],
     [
       "multi-language",
+      4.862393050955164
+    ],
+    [
+      "freemium_acquisition",
+      4.862393050955164
+    ],
+    [
+      "freemium",
+      4.862393050955164
+    ],
+    [
+      "conversion",
+      4.351567427189173
+    ],
+    [
+      "plg",
+      4.862393050955164
+    ],
+    [
+      "product-led",
+      4.862393050955164
+    ],
+    [
+      "growth",
+      4.862393050955164
+    ],
+    [
+      "zero-friction",
+      4.862393050955164
+    ],
+    [
+      "onboarding",
+      4.351567427189173
+    ],
+    [
+      "free",
+      4.351567427189173
+    ],
+    [
+      "tier",
+      4.862393050955164
+    ],
+    [
+      "acquisition",
+      4.862393050955164
+    ],
+    [
+      "optimization",
+      3.2529551385210635
+    ],
+    [
+      "upsell",
       4.862393050955164
     ],
     [
@@ -6712,6 +7272,42 @@
       4.862393050955164
     ],
     [
+      "rapid_deployment",
+      4.862393050955164
+    ],
+    [
+      "time-to-value",
+      4.862393050955164
+    ],
+    [
+      "signals",
+      4.862393050955164
+    ],
+    [
+      "time",
+      2.7421295147550726
+    ],
+    [
+      "from",
+      4.862393050955164
+    ],
+    [
+      "days",
+      4.351567427189173
+    ],
+    [
+      "client",
+      3.563110066824903
+    ],
+    [
+      "activation",
+      4.862393050955164
+    ],
+    [
+      "rate",
+      4.01509519056796
+    ],
+    [
       "hubspot",
       4.862393050955164
     ],
@@ -6725,10 +7321,6 @@
     ],
     [
       "sync",
-      4.862393050955164
-    ],
-    [
-      "calls",
       4.862393050955164
     ],
     [
@@ -6832,6 +7424,38 @@
       4.862393050955164
     ],
     [
+      "crm_automation",
+      4.862393050955164
+    ],
+    [
+      "lifecycle",
+      4.862393050955164
+    ],
+    [
+      "sales",
+      3.763780762287054
+    ],
+    [
+      "velocity",
+      4.351567427189173
+    ],
+    [
+      "manual",
+      4.862393050955164
+    ],
+    [
+      "data",
+      4.351567427189173
+    ],
+    [
+      "entry",
+      4.862393050955164
+    ],
+    [
+      "visibility",
+      4.862393050955164
+    ],
+    [
       "e-commerce",
       4.01509519056796
     ],
@@ -6854,10 +7478,6 @@
     [
       "checks",
       4.862393050955164
-    ],
-    [
-      "customer",
-      3.763780762287054
     ],
     [
       "profile",
@@ -6948,7 +7568,35 @@
       4.862393050955164
     ],
     [
-      "quality",
+      "ecommerce_voice",
+      4.862393050955164
+    ],
+    [
+      "rfm",
+      4.862393050955164
+    ],
+    [
+      "analysis",
+      4.351567427189173
+    ],
+    [
+      "wismo",
+      4.862393050955164
+    ],
+    [
+      "repeat",
+      4.862393050955164
+    ],
+    [
+      "purchase",
+      4.862393050955164
+    ],
+    [
+      "purchases",
+      4.862393050955164
+    ],
+    [
+      "personalized",
       4.862393050955164
     ],
     [
@@ -6965,7 +7613,7 @@
     ],
     [
       "proactive",
-      4.862393050955164
+      4.351567427189173
     ],
     [
       "alerting",
@@ -7033,7 +7681,7 @@
     ],
     [
       "metrics",
-      4.862393050955164
+      4.351567427189173
     ],
     [
       "percentiles",
@@ -7046,10 +7694,6 @@
     [
       "rates",
       4.351567427189173
-    ],
-    [
-      "availability",
-      4.862393050955164
     ],
     [
       "triggers",
@@ -7092,6 +7736,22 @@
       4.862393050955164
     ],
     [
+      "sla",
+      4.351567427189173
+    ],
+    [
+      "mttr",
+      4.862393050955164
+    ],
+    [
+      "incident",
+      4.862393050955164
+    ],
+    [
+      "detection",
+      4.01509519056796
+    ],
+    [
       "couts",
       4.862393050955164
     ],
@@ -7110,10 +7770,6 @@
     [
       "budget",
       4.01509519056796
-    ],
-    [
-      "optimization",
-      4.862393050955164
     ],
     [
       "recommendations",
@@ -7140,10 +7796,6 @@
       4.862393050955164
     ],
     [
-      "costs",
-      4.862393050955164
-    ],
-    [
       "integrated",
       4.862393050955164
     ],
@@ -7156,24 +7808,12 @@
       4.862393050955164
     ],
     [
-      "rate",
-      4.351567427189173
-    ],
-    [
-      "analysis",
-      4.862393050955164
-    ],
-    [
       "forecasting",
       4.862393050955164
     ],
     [
       "anomaly",
       4.862393050955164
-    ],
-    [
-      "detection",
-      4.351567427189173
     ],
     [
       "multi-provider-cost",
@@ -7196,7 +7836,43 @@
       4.862393050955164
     ],
     [
-      "velocity",
+      "cost_control",
+      4.862393050955164
+    ],
+    [
+      "transparency",
+      4.862393050955164
+    ],
+    [
+      "roi",
+      4.862393050955164
+    ],
+    [
+      "predictability",
+      4.862393050955164
+    ],
+    [
+      "prevent",
+      4.862393050955164
+    ],
+    [
+      "overruns",
+      4.862393050955164
+    ],
+    [
+      "optimize",
+      4.351567427189173
+    ],
+    [
+      "selection",
+      4.862393050955164
+    ],
+    [
+      "accurate",
+      4.862393050955164
+    ],
+    [
+      "billing",
       4.862393050955164
     ],
     [
@@ -7224,20 +7900,12 @@
       4.862393050955164
     ],
     [
-      "scores",
-      4.862393050955164
-    ],
-    [
       "taux",
       4.862393050955164
     ],
     [
       "temps-de-qualification",
       4.862393050955164
-    ],
-    [
-      "sales",
-      4.01509519056796
     ],
     [
       "performance",
@@ -7256,15 +7924,7 @@
       3.763780762287054
     ],
     [
-      "funnel",
-      4.862393050955164
-    ],
-    [
       "tracks",
-      4.862393050955164
-    ],
-    [
-      "conversion",
       4.862393050955164
     ],
     [
@@ -7300,6 +7960,30 @@
       4.862393050955164
     ],
     [
+      "sales_optimization",
+      4.862393050955164
+    ],
+    [
+      "analytics",
+      4.351567427189173
+    ],
+    [
+      "qualified",
+      4.862393050955164
+    ],
+    [
+      "identify",
+      4.862393050955164
+    ],
+    [
+      "training",
+      4.862393050955164
+    ],
+    [
+      "needs",
+      4.351567427189173
+    ],
+    [
       "retention",
       4.862393050955164
     ],
@@ -7326,10 +8010,6 @@
     [
       "workflows",
       4.862393050955164
-    ],
-    [
-      "client",
-      4.01509519056796
     ],
     [
       "loss",
@@ -7406,6 +8086,26 @@
     [
       "cohort-analysis",
       4.862393050955164
+    ],
+    [
+      "customer_success",
+      4.862393050955164
+    ],
+    [
+      "prediction",
+      4.862393050955164
+    ],
+    [
+      "models",
+      4.862393050955164
+    ],
+    [
+      "ltv",
+      4.862393050955164
+    ],
+    [
+      "marketing",
+      4.351567427189173
     ],
     [
       "automations",
@@ -7662,10 +8362,6 @@
     [
       "opening",
       3.016566360456833
-    ],
-    [
-      "time",
-      2.825511123694124
     ],
     [
       "sme",
@@ -7957,10 +8653,6 @@
     ],
     [
       "systèmes",
-      4.862393050955164
-    ],
-    [
-      "marketing",
       4.862393050955164
     ],
     [
@@ -8778,10 +9470,6 @@
     [
       "service-ethique",
       4.862393050955164
-    ],
-    [
-      "service",
-      4.351567427189173
     ],
     [
       "lundi",
@@ -10004,10 +10692,6 @@
       4.862393050955164
     ],
     [
-      "engagement",
-      4.862393050955164
-    ],
-    [
       "pass",
       4.862393050955164
     ],
@@ -10393,10 +11077,6 @@
     ],
     [
       "ponctuelle",
-      4.862393050955164
-    ],
-    [
-      "sla",
       4.862393050955164
     ],
     [
@@ -10868,10 +11548,6 @@
       4.862393050955164
     ],
     [
-      "call",
-      4.01509519056796
-    ],
-    [
       "samu",
       4.862393050955164
     ],
@@ -10976,14 +11652,6 @@
       4.862393050955164
     ],
     [
-      "market",
-      4.862393050955164
-    ],
-    [
-      "alternatives",
-      4.862393050955164
-    ],
-    [
       "savings",
       4.862393050955164
     ],
@@ -10998,10 +11666,6 @@
     [
       "business",
       3.763780762287054
-    ],
-    [
-      "needs",
-      4.862393050955164
     ],
     [
       "prix",
@@ -11160,15 +11824,7 @@
       4.862393050955164
     ],
     [
-      "analytics",
-      4.862393050955164
-    ],
-    [
       "cookies",
-      4.862393050955164
-    ],
-    [
-      "data",
       4.862393050955164
     ],
     [
@@ -11392,14 +12048,6 @@
       4.862393050955164
     ],
     [
-      "days",
-      4.862393050955164
-    ],
-    [
-      "free",
-      4.862393050955164
-    ],
-    [
       "over",
       4.862393050955164
     ],
@@ -11516,14 +12164,6 @@
       4.862393050955164
     ],
     [
-      "moroccan",
-      4.862393050955164
-    ],
-    [
-      "darija",
-      4.862393050955164
-    ],
-    [
       "ary",
       4.862393050955164
     ],
@@ -11560,7 +12200,7 @@
     [
       [
         "voice",
-        3
+        4
       ],
       [
         "api",
@@ -11580,7 +12220,7 @@
       ],
       [
         "uptime",
-        1
+        2
       ],
       [
         "guarantee",
@@ -11751,6 +12391,70 @@
         1
       ],
       [
+        "core_infrastructure",
+        1
+      ],
+      [
+        "service",
+        2
+      ],
+      [
+        "reliability",
+        1
+      ],
+      [
+        "trust",
+        1
+      ],
+      [
+        "driver",
+        1
+      ],
+      [
+        "competitive",
+        1
+      ],
+      [
+        "differentiator",
+        1
+      ],
+      [
+        "eliminate",
+        1
+      ],
+      [
+        "interruptions",
+        1
+      ],
+      [
+        "reduce",
+        1
+      ],
+      [
+        "support",
+        1
+      ],
+      [
+        "costs",
+        1
+      ],
+      [
+        "increase",
+        1
+      ],
+      [
+        "customer",
+        1
+      ],
+      [
+        "satisfaction",
+        1
+      ],
+      [
+        "scores",
+        1
+      ],
+      [
         "architectural",
         1
       ],
@@ -11774,7 +12478,7 @@
       ],
       [
         "voice",
-        3
+        4
       ],
       [
         "realtime",
@@ -11798,7 +12502,7 @@
       ],
       [
         "latency",
-        1
+        2
       ],
       [
         "streaming",
@@ -11890,7 +12594,7 @@
       ],
       [
         "real-time",
-        1
+        3
       ],
       [
         "bidirectional",
@@ -11938,6 +12642,46 @@
       ],
       [
         "grok-4-1-fast",
+        1
+      ],
+      [
+        "realtime_voice",
+        1
+      ],
+      [
+        "user",
+        1
+      ],
+      [
+        "experience",
+        1
+      ],
+      [
+        "engagement",
+        1
+      ],
+      [
+        "driver",
+        1
+      ],
+      [
+        "cost",
+        1
+      ],
+      [
+        "reduction",
+        1
+      ],
+      [
+        "market",
+        1
+      ],
+      [
+        "alternatives",
+        1
+      ],
+      [
+        "interactions",
         1
       ],
       [
@@ -11996,7 +12740,7 @@
       ],
       [
         "automation",
-        1
+        2
       ],
       [
         "with",
@@ -12120,11 +12864,11 @@
       ],
       [
         "bant",
-        1
+        2
       ],
       [
         "qualification",
-        1
+        2
       ],
       [
         "payment",
@@ -12179,6 +12923,70 @@
         1
       ],
       [
+        "telephony_automation",
+        1
+      ],
+      [
+        "call",
+        2
+      ],
+      [
+        "cost",
+        1
+      ],
+      [
+        "lever",
+        1
+      ],
+      [
+        "availability",
+        1
+      ],
+      [
+        "value",
+        1
+      ],
+      [
+        "prop",
+        1
+      ],
+      [
+        "replace",
+        1
+      ],
+      [
+        "ivr",
+        1
+      ],
+      [
+        "systems",
+        1
+      ],
+      [
+        "automate",
+        1
+      ],
+      [
+        "inbound",
+        1
+      ],
+      [
+        "calls",
+        1
+      ],
+      [
+        "reduce",
+        1
+      ],
+      [
+        "center",
+        1
+      ],
+      [
+        "costs",
+        1
+      ],
+      [
         "architectural",
         1
       ],
@@ -12218,7 +13026,7 @@
       ],
       [
         "industry-specific",
-        2
+        3
       ],
       [
         "personalities",
@@ -12226,27 +13034,27 @@
       ],
       [
         "with",
-        3
+        4
       ],
       [
         "bant",
-        2
+        3
       ],
       [
         "pas",
-        2
+        3
       ],
       [
         "cialdini",
-        2
+        3
       ],
       [
         "aida",
-        2
+        3
       ],
       [
         "laer",
-        2
+        3
       ],
       [
         "frameworks",
@@ -12390,6 +13198,66 @@
       ],
       [
         "darija-native",
+        1
+      ],
+      [
+        "persona_differentiation",
+        1
+      ],
+      [
+        "scoring",
+        1
+      ],
+      [
+        "framework",
+        1
+      ],
+      [
+        "principles",
+        1
+      ],
+      [
+        "funnel",
+        1
+      ],
+      [
+        "objection",
+        1
+      ],
+      [
+        "handling",
+        1
+      ],
+      [
+        "improvement",
+        1
+      ],
+      [
+        "response",
+        1
+      ],
+      [
+        "quality",
+        1
+      ],
+      [
+        "compliance",
+        1
+      ],
+      [
+        "moroccan",
+        1
+      ],
+      [
+        "market",
+        1
+      ],
+      [
+        "advantage",
+        1
+      ],
+      [
+        "darija",
         1
       ],
       [
@@ -12564,7 +13432,7 @@
       ],
       [
         "website",
-        1
+        2
       ],
       [
         "web-speech-api",
@@ -12580,6 +13448,66 @@
       ],
       [
         "multi-language",
+        1
+      ],
+      [
+        "freemium_acquisition",
+        1
+      ],
+      [
+        "freemium",
+        1
+      ],
+      [
+        "conversion",
+        2
+      ],
+      [
+        "funnel",
+        1
+      ],
+      [
+        "plg",
+        1
+      ],
+      [
+        "product-led",
+        1
+      ],
+      [
+        "growth",
+        1
+      ],
+      [
+        "zero-friction",
+        1
+      ],
+      [
+        "onboarding",
+        1
+      ],
+      [
+        "free",
+        1
+      ],
+      [
+        "tier",
+        1
+      ],
+      [
+        "acquisition",
+        1
+      ],
+      [
+        "optimization",
+        1
+      ],
+      [
+        "upsell",
+        1
+      ],
+      [
+        "telephony",
         1
       ],
       [
@@ -12610,7 +13538,7 @@
       ],
       [
         "templates",
-        2
+        3
       ],
       [
         "vocal",
@@ -12646,7 +13574,7 @@
       ],
       [
         "industry-specific",
-        1
+        2
       ],
       [
         "prompts",
@@ -12674,7 +13602,7 @@
       ],
       [
         "minutes",
-        1
+        2
       ],
       [
         "avec",
@@ -12750,6 +13678,62 @@
       ],
       [
         "responsive-design",
+        1
+      ],
+      [
+        "rapid_deployment",
+        1
+      ],
+      [
+        "time-to-value",
+        1
+      ],
+      [
+        "optimization",
+        1
+      ],
+      [
+        "trust",
+        1
+      ],
+      [
+        "signals",
+        1
+      ],
+      [
+        "reduce",
+        1
+      ],
+      [
+        "onboarding",
+        1
+      ],
+      [
+        "time",
+        1
+      ],
+      [
+        "from",
+        1
+      ],
+      [
+        "days",
+        1
+      ],
+      [
+        "increase",
+        1
+      ],
+      [
+        "client",
+        1
+      ],
+      [
+        "activation",
+        1
+      ],
+      [
+        "rate",
         1
       ],
       [
@@ -12888,11 +13872,11 @@
       ],
       [
         "lead",
-        1
+        3
       ],
       [
         "capture",
-        1
+        2
       ],
       [
         "and",
@@ -12904,11 +13888,11 @@
       ],
       [
         "pipeline",
-        1
+        3
       ],
       [
         "management",
-        1
+        2
       ],
       [
         "integrations",
@@ -12935,6 +13919,54 @@
         1
       ],
       [
+        "crm_automation",
+        1
+      ],
+      [
+        "lifecycle",
+        1
+      ],
+      [
+        "sales",
+        2
+      ],
+      [
+        "funnel",
+        1
+      ],
+      [
+        "optimization",
+        1
+      ],
+      [
+        "velocity",
+        1
+      ],
+      [
+        "eliminate",
+        1
+      ],
+      [
+        "manual",
+        1
+      ],
+      [
+        "data",
+        1
+      ],
+      [
+        "entry",
+        1
+      ],
+      [
+        "100",
+        1
+      ],
+      [
+        "visibility",
+        1
+      ],
+      [
         "architectural",
         1
       ],
@@ -12954,7 +13986,7 @@
     [
       [
         "voice",
-        3
+        4
       ],
       [
         "e-commerce",
@@ -12998,7 +14030,7 @@
       ],
       [
         "customer",
-        2
+        3
       ],
       [
         "profile",
@@ -13098,7 +14130,7 @@
       ],
       [
         "segmentation",
-        1
+        2
       ],
       [
         "during",
@@ -13130,6 +14162,62 @@
       ],
       [
         "shopify-admin-api",
+        1
+      ],
+      [
+        "ecommerce_voice",
+        1
+      ],
+      [
+        "rfm",
+        1
+      ],
+      [
+        "analysis",
+        1
+      ],
+      [
+        "wismo",
+        2
+      ],
+      [
+        "automation",
+        1
+      ],
+      [
+        "repeat",
+        2
+      ],
+      [
+        "purchase",
+        1
+      ],
+      [
+        "optimization",
+        1
+      ],
+      [
+        "reduce",
+        1
+      ],
+      [
+        "calls",
+        1
+      ],
+      [
+        "increase",
+        1
+      ],
+      [
+        "purchases",
+        1
+      ],
+      [
+        "personalized",
+        1
+      ],
+      [
+        "experience",
         1
       ],
       [
@@ -13176,7 +14264,7 @@
       ],
       [
         "proactive",
-        1
+        3
       ],
       [
         "alerting",
@@ -13252,11 +14340,11 @@
       ],
       [
         "observability",
-        1
+        2
       ],
       [
         "monitoring",
-        1
+        2
       ],
       [
         "health",
@@ -13339,6 +14427,46 @@
         1
       ],
       [
+        "sla",
+        2
+      ],
+      [
+        "trust",
+        1
+      ],
+      [
+        "driver",
+        1
+      ],
+      [
+        "competitive",
+        1
+      ],
+      [
+        "advantage",
+        1
+      ],
+      [
+        "reduce",
+        1
+      ],
+      [
+        "mttr",
+        1
+      ],
+      [
+        "incident",
+        1
+      ],
+      [
+        "detection",
+        1
+      ],
+      [
+        "compliance",
+        1
+      ],
+      [
         "architectural",
         1
       ],
@@ -13358,11 +14486,11 @@
     [
       [
         "cost",
-        3
+        5
       ],
       [
         "tracking",
-        3
+        4
       ],
       [
         "sensor",
@@ -13410,7 +14538,7 @@
       ],
       [
         "budget",
-        3
+        4
       ],
       [
         "alerts",
@@ -13533,6 +14661,62 @@
         1
       ],
       [
+        "cost_control",
+        1
+      ],
+      [
+        "transparency",
+        1
+      ],
+      [
+        "trust",
+        1
+      ],
+      [
+        "driver",
+        1
+      ],
+      [
+        "roi",
+        1
+      ],
+      [
+        "predictability",
+        1
+      ],
+      [
+        "prevent",
+        1
+      ],
+      [
+        "overruns",
+        1
+      ],
+      [
+        "optimize",
+        1
+      ],
+      [
+        "provider",
+        1
+      ],
+      [
+        "selection",
+        1
+      ],
+      [
+        "accurate",
+        1
+      ],
+      [
+        "client",
+        1
+      ],
+      [
+        "billing",
+        1
+      ],
+      [
         "architectural",
         1
       ],
@@ -13552,11 +14736,11 @@
     [
       [
         "lead",
-        2
+        4
       ],
       [
         "velocity",
-        2
+        3
       ],
       [
         "sensor",
@@ -13580,7 +14764,7 @@
       ],
       [
         "bant",
-        3
+        4
       ],
       [
         "score",
@@ -13596,7 +14780,7 @@
       ],
       [
         "rate",
-        1
+        2
       ],
       [
         "and",
@@ -13636,7 +14820,7 @@
       ],
       [
         "persona",
-        1
+        2
       ],
       [
         "sales",
@@ -13644,7 +14828,7 @@
       ],
       [
         "performance",
-        1
+        2
       ],
       [
         "measuring",
@@ -13664,7 +14848,7 @@
       ],
       [
         "funnel",
-        1
+        2
       ],
       [
         "tracks",
@@ -13672,7 +14856,7 @@
       ],
       [
         "conversion",
-        1
+        2
       ],
       [
         "rates",
@@ -13715,6 +14899,50 @@
         1
       ],
       [
+        "sales_optimization",
+        1
+      ],
+      [
+        "scoring",
+        1
+      ],
+      [
+        "analytics",
+        1
+      ],
+      [
+        "optimization",
+        1
+      ],
+      [
+        "metrics",
+        1
+      ],
+      [
+        "increase",
+        1
+      ],
+      [
+        "qualified",
+        1
+      ],
+      [
+        "optimize",
+        1
+      ],
+      [
+        "identify",
+        1
+      ],
+      [
+        "training",
+        1
+      ],
+      [
+        "needs",
+        1
+      ],
+      [
         "architectural",
         1
       ],
@@ -13734,7 +14962,7 @@
     [
       [
         "retention",
-        5
+        6
       ],
       [
         "sensor",
@@ -13750,7 +14978,7 @@
       ],
       [
         "churn",
-        3
+        5
       ],
       [
         "detection",
@@ -13830,11 +15058,11 @@
       ],
       [
         "customer",
-        1
+        3
       ],
       [
         "success",
-        1
+        2
       ],
       [
         "monitoring",
@@ -13842,7 +15070,7 @@
       ],
       [
         "health",
-        1
+        2
       ],
       [
         "indicators",
@@ -13898,6 +15126,46 @@
       ],
       [
         "cohort-analysis",
+        1
+      ],
+      [
+        "customer_success",
+        1
+      ],
+      [
+        "prediction",
+        1
+      ],
+      [
+        "models",
+        1
+      ],
+      [
+        "scoring",
+        1
+      ],
+      [
+        "ltv",
+        2
+      ],
+      [
+        "optimization",
+        1
+      ],
+      [
+        "marketing",
+        1
+      ],
+      [
+        "reduce",
+        1
+      ],
+      [
+        "increase",
+        1
+      ],
+      [
+        "proactive",
         1
       ],
       [
@@ -22573,18 +23841,18 @@
     ]
   ],
   "docLengths": [
-    60,
-    60,
-    66,
-    68,
-    61,
-    52,
-    59,
-    61,
-    60,
-    64,
-    57,
-    61,
+    79,
+    74,
+    86,
+    90,
+    78,
+    69,
+    78,
+    80,
+    75,
+    82,
+    77,
+    79,
     4,
     3,
     3,
@@ -22767,7 +24035,7 @@
     43,
     32
   ],
-  "avgDocLength": 15.989637305699482,
+  "avgDocLength": 17.11917098445596,
   "k1": 1.5,
   "b": 0.75,
   "document_count": 193
