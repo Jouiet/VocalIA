@@ -1,0 +1,49 @@
+# VocalIA - Voice AI Platform
+
+> VocalIA est une plateforme Voice AI B2B pour entreprises. Deux produits: Voice Widget (browser, gratuit) et Voice Telephony (PSTN, payant). 40 personas IA, 5 langues (FR, EN, ES, AR, Darija), 28 integrations natives. Marche cible: PME Maroc, Europe, International.
+
+VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels entrants et sortants. La plateforme se distingue par son support natif du Darija (dialecte marocain), son pricing 60% moins cher que les alternatives, et son architecture multi-tenant plug-and-play.
+
+## Produits
+
+- [Voice Widget](https://vocalia.ma/products/voice-widget): Widget vocal browser-based gratuit. Web Speech API, zero cout infra.
+- [Voice Telephony](https://vocalia.ma/products/voice-telephony): Bridge PSTN-AI pour telephonie professionnelle. Twilio, TwiML, SMS fallback.
+
+## Fonctionnalites
+
+- [Features](https://vocalia.ma/features): Liste complete des fonctionnalites - qualification BANT, RAG, multi-AI fallback, HITL.
+- [Integrations](https://vocalia.ma/integrations): 28 integrations natives - CRM (HubSpot, Pipedrive, Zoho), E-commerce (Shopify, WooCommerce, Magento), Support (Zendesk, Freshdesk).
+- [Pricing](https://vocalia.ma/pricing): Modele freemium. Widget gratuit. Telephonie competitive par minute.
+
+## Industries
+
+- [Industries](https://vocalia.ma/industries/): 8 secteurs - E-commerce, Immobilier, Sante, Hospitality, Finance, Services Pro, Retail, Construction.
+- [Use Cases](https://vocalia.ma/use-cases/): Qualification leads, Support client, Prise RDV, Suivi commandes.
+
+## Ressources
+
+- [Academie Business](https://vocalia.ma/academie-business/): Formation Voice AI pour decideurs. 12 modules, ROI calculator.
+- [Blog](https://vocalia.ma/blog/): Articles techniques et etudes de cas.
+- [Documentation API](https://vocalia.ma/docs/): Reference API, SDK Python, SDK Node.js, MCP Server.
+
+## Conformite
+
+- [Politique Confidentialite](https://vocalia.ma/privacy): RGPD, protection donnees.
+- [Conditions Utilisation](https://vocalia.ma/terms): CGU, CGV.
+- [Politique Cookies](https://vocalia.ma/cookie-policy): Gestion cookies, consentement.
+
+## Technique
+
+- Architecture: Multi-AI fallback (Grok > Gemini > Claude > Atlas)
+- Langues: Francais, English, Espanol, Arabic MSA, Darija
+- Personas: 40 personas SOTA (e-commerce, immobilier, sante, services...)
+- MCP Server: 178 tools, 25 categories
+- Security: CSP, HTTPS, AES-256-GCM pour credentials
+
+## Optional
+
+- [Signup](https://vocalia.ma/signup): Creation compte
+- [Login](https://vocalia.ma/login): Connexion
+- [Contact](https://vocalia.ma/contact): Formulaire contact
+- [Demo](https://vocalia.ma/demo): Demande demonstration
+- [Referral](https://vocalia.ma/referral): Programme parrainage

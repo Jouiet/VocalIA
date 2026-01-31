@@ -20,8 +20,9 @@
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
 
-**Session 250.24 Update:** 20 issues corrigées, 5 différées (architecture/design)
+**Session 250.25 Update:** 20 issues corrigées, 5 différées (architecture/design)
 - SEO-04: og:image ajouté aux 4 pages publiques indexées
+- AEO: llms.txt créé, Speakable schema sur 6 pages
 
 Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind, GSAP) et un SEO/AEO avancé, mais souffre de **dette technique critique**: assets 404, vulnérabilités supply chain, et incohérences SEO.
 
@@ -277,6 +278,54 @@ MODÈLE FREEMIUM VÉRIFIÉ:
 | 17 | Fix focus states | 2h | *.html |
 | 18 | Unifier patterns dropdown | 2h | *.html |
 | 19 | Créer SECURITY.md | 2h | docs/ |
+
+---
+
+## 7.1 AEO AUDIT (Answer Engine Optimization) - Session 250.25
+
+**Objectif:** Optimisation pour AI search engines (ChatGPT, Perplexity, Claude, Grok)
+
+### Implémentations Vérifiées
+
+| Asset | Status | Fichier(s) | Evidence |
+|:------|:------:|:-----------|:---------|
+| robots.txt AI crawlers | ✅ | robots.txt | GPTBot, ClaudeBot, PerplexityBot, Meta-ExternalAgent allowed |
+| llms.txt | ✅ | llms.txt | Format officiel llmstxt.org, Markdown structuré |
+| Speakable schema | ✅ | 6 pages | index, features, pricing, integrations, voice-widget, voice-telephony |
+| FAQPage schema | ✅ | pricing.html | 5 FAQ items structurés |
+| BreadcrumbList | ✅ | 6+ pages | Navigation hierarchy |
+| WebPage schema | ✅ | 10+ pages | mainEntity, author, publisher |
+
+### Vérification AEO
+
+```bash
+# robots.txt AI crawlers
+grep -E "(GPTBot|ClaudeBot|PerplexityBot)" website/robots.txt
+# User-agent: GPTBot, ClaudeBot, PerplexityBot (Allow)
+
+# llms.txt exists
+ls -la website/llms.txt
+# -rw-r--r-- llms.txt (2.5KB)
+
+# Speakable schema count
+grep -l '"SpeakableSpecification"' website/*.html website/products/*.html | wc -l
+# 6 pages
+```
+
+### Conformité llms.txt (llmstxt.org spec)
+
+| Requirement | Status |
+|:------------|:------:|
+| H1 Project Name | ✅ |
+| Blockquote Summary | ✅ |
+| H2 Sections | ✅ (8 sections) |
+| Markdown Links [name](url) | ✅ |
+| Optional Section | ✅ |
+
+### Sources AEO Best Practices
+- [llmstxt.org](https://llmstxt.org/) - Official specification
+- [Schema.org Speakable](https://schema.org/speakable) - Voice assistant optimization
+- [Google Search Central](https://developers.google.com/search/docs/appearance/structured-data/speakable) - Speakable guidelines
 
 ---
 
