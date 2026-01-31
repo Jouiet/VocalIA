@@ -104,13 +104,14 @@ async with AsyncVocalIA(api_key="your-api-key") as client:
 
 ## Personas
 
-VocalIA supports 28 industry-specific personas:
+VocalIA supports 40 industry-specific personas:
 
 | Tier | Personas |
 |------|----------|
-| Core | AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL |
-| Expansion | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST... |
-| Extended | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER... |
+| Core | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
+| Expansion | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER... |
+| Universal | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
+| Economy | RETAILER, BUILDER, RESTAURATEUR, CONSULTANT, DOCTOR, NOTARY... |
 
 ## Languages
 

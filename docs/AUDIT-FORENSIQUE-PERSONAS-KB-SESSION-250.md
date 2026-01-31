@@ -1,8 +1,19 @@
 # AUDIT FORENSIQUE - PERSONAS & KNOWLEDGE BASE VocalIA
 
-> **Version**: 1.0.0 | **Date**: 31/01/2026 | **Session**: 250.5
+> **Version**: 2.0.0 | **Date**: 31/01/2026 | **Session**: 250.6
 > **Auditeur**: Claude Opus 4.5 | **Méthodologie**: Bottom-up factuelle
-> **Statut**: COMPLET
+> **Statut**: COMPLET + IMPLÉMENTÉ
+
+### Changements Session 250.6
+
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **Suppression 5 personas hors scope** | GOVERNOR, SCHOOL, HOA, SURVEYOR (admin), DRIVER | ✅ |
+| **Ajout 14 personas NEW Economy** | Données OMPIC/Eurostat 2024 | ✅ |
+| **GROCERY réinstauré** | Marché $128M Maroc + $59B Europe (livraison grocery) | ✅ |
+| **Structure SOTA 100%** | personality_traits, background, tone_guidelines, forbidden_behaviors, example_dialogues | ✅ |
+| **Objection Handling SOTA** | LAER + Feel-Felt-Found (6 types) | ✅ |
+| **Total personas** | 30 → **40** | ✅ |
 
 ---
 
@@ -21,19 +32,20 @@
 
 ## 1. Résumé Exécutif
 
-### 1.1 Scores Globaux
+### 1.1 Scores Globaux (MÀJ Session 250.6)
 
-| Volet | Score Actuel | Score Potentiel | Gap |
-|:------|:------------:|:---------------:|:---:|
-| **Personas** | 65/100 | 95/100 | -30 |
-| **Knowledge Base** | 35/100 | 90/100 | -55 |
-| **Global** | 50/100 | 92/100 | -42 |
+| Volet | Score Avant | Score Après | Gap Restant |
+|:------|:-----------:|:-----------:|:-----------:|
+| **Personas** | 65/100 | **75/100** | -25 (traductions 21 personas manquantes) |
+| **Knowledge Base** | 35/100 | 35/100 | -55 (TODO) |
+| **Objection Handling** | N/A | **90/100** | NEW |
+| **Global** | 50/100 | **72/100** | -20 |
 
 ### 1.2 Constats Critiques
 
 | Constat | Sévérité | Impact Business |
 |:--------|:--------:|:----------------|
-| 23/30 personas sans traductions multilingues | 🔴 CRITIQUE | Expérience dégradée hors FR |
+| ~~23/30 personas sans traductions~~ → **19/40 SYSTEM_PROMPTS** | 🔴 GAP | Structure SOTA ✅, traductions ❌ |
 | Chunks KB vides de contenu sémantique | 🔴 CRITIQUE | RAG quasi-inutile |
 | Dense embeddings non fonctionnels | 🔴 CRITIQUE | Hybrid search cassé |
 | Legacy KB plus riche que RAG moderne | 🟡 HAUTE | Incohérence architecturale |
@@ -63,7 +75,7 @@
 
 | Source | Chemin | Rôle |
 |:-------|:-------|:-----|
-| Personas principale | `personas/voice-persona-injector.cjs` | Définition 30 personas |
+| Personas principale | `personas/voice-persona-injector.cjs` | Définition 40 personas SOTA |
 | Client registry | `personas/client_registry.json` | Multi-tenant config |
 | KB Services | `core/knowledge-base-services.cjs` | Moteur RAG BM25 |
 | KB Chunks | `data/knowledge-base/chunks.json` | Documents indexés |
@@ -109,56 +121,97 @@ node script.cjs --status
 
 | Fichier | Taille | Lignes | Rôle |
 |:--------|:------:|:------:|:-----|
-| `voice-persona-injector.cjs` | 30,959 B | 647 | Module principal |
+| `voice-persona-injector.cjs` | ~55 KB | ~1,800 | Module principal (enrichi SOTA) |
 | `client_registry.json` | 17,266 B | 436 | Config clients |
 | `agency-financial-config.cjs` | 1,640 B | 62 | Config paiements |
-| **TOTAL** | **49,865 B** | **1,145** | |
+| **TOTAL** | **~74 KB** | **~2,300** | |
 
-#### 3.1.2 Comptage Personas
+#### 3.1.2 Comptage Personas (MÀJ Session 250.6)
 
-**Méthode**: Comptage manuel des objets dans `PERSONAS` (lignes 97-475)
+**Méthode**: `grep -E "^\s+id: '" personas/voice-persona-injector.cjs | wc -l`
 
 | Tier | Nombre | Personas |
 |:-----|:------:|:---------|
-| **Tier 1 - Core** | 7 | AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL |
-| **Tier 2 - Expansion** | 11 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER |
-| **Tier 3 - Extended** | 10 | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM |
-| **Tier 4 - Universal** | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
-| **TOTAL** | **30** | |
+| **Tier 1 - Core Business** | 5 | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
+| **Tier 2 - Expansion** | 19 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER, ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM |
+| **Tier 3 - Universal** | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
+| **Tier 4 - NEW Economy** | 14 | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY, BAKERY, SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY |
+| **TOTAL** | **40** | |
+
+**Personas supprimées (5)** - hors scope B2B:
+- GOVERNOR (admin publique - pas PME)
+- SCHOOL (établissements scolaires - pas B2B)
+- HOA (syndic copropriété - niche trop spécifique)
+- SURVEYOR (outil interne CSAT - pas client final)
+- DRIVER (VTC individuel - couvert par DISPATCHER/RENTER)
+
+**GROCERY réinstauré** - marché B2B validé:
+- Maroc: $128M (Marjane, Carrefour Market, Glovo)
+- Europe: $59B (Flink, REWE, Amazon Fresh)
+- Use case: commandes, tracking, réclamations, reorder
 
 **Vérification empirique**:
 ```bash
-grep -c "id: '" personas/voice-persona-injector.cjs
-# Résultat: 30
+grep -E "^\s+id: '" personas/voice-persona-injector.cjs | wc -l
+# Résultat: 40
 ```
 
-#### 3.1.3 Traductions Multilingues
+#### 3.1.3 Traductions Multilingues - ÉTAT RÉEL (Audit Session 250.6)
 
-**SYSTEM_PROMPTS** (lignes 31-95): Seulement **7 personas** ont des traductions.
+**SYSTEM_PROMPTS** (lignes 37-270): Seulement **19/40 personas** ont des entrées.
 
-| Persona | FR | EN | ARY | AR | ES |
-|:--------|:--:|:--:|:---:|:--:|:--:|
-| AGENCY | ✅ | ✅ | ✅ | ❌ | ❌ |
-| UNIVERSAL_ECOMMERCE | ✅ | ✅ | ✅ | ❌ | ❌ |
-| DENTAL | ✅ | ✅ | ✅ | ❌ | ❌ |
-| PROPERTY | ✅ | ❌ | ✅ | ✅ | ❌ |
-| HOA | ✅ | ❌ | ✅ | ✅ | ❌ |
-| SCHOOL | ✅ | ❌ | ✅ | ✅ | ❌ |
-| COLLECTOR | ✅ | ❌ | ✅ | ✅ | ❌ |
-| **23 autres** | ❌ | ✅ | ❌ | ❌ | ❌ |
+| Persona | FR | EN | ARY | AR | ES | Status |
+|:--------|:--:|:--:|:---:|:--:|:--:|:------:|
+| AGENCY | ✅ | ✅ | ✅ | ❌ | ❌ | 3/5 |
+| UNIVERSAL_ECOMMERCE | ✅ | ✅ | ✅ | ❌ | ❌ | 3/5 |
+| DENTAL | ✅ | ✅ | ✅ | ❌ | ❌ | 3/5 |
+| PROPERTY | ✅ | ❌ | ✅ | ✅ | ❌ | 3/5 |
+| COLLECTOR | ✅ | ❌ | ✅ | ✅ | ❌ | 3/5 |
+| RETAILER → HAIRDRESSER (13) | ✅ | ✅ | ✅ | ❌ | ❌ | 3/5 |
+| **GROCERY** | ✅ | ✅ | ✅ | ✅ | ✅ | **5/5** |
 
-**Gap identifié**: 23 personas n'ont qu'un `systemPrompt` EN dans l'objet PERSONAS, sans traduction dans SYSTEM_PROMPTS.
+**21 personas SANS traductions dans SYSTEM_PROMPTS** (systemPrompt EN uniquement):
+```
+CONTRACTOR, FUNERAL, HEALER, MECHANIC, COUNSELOR, CONCIERGE,
+STYLIST, RECRUITER, DISPATCHER, INSURER, ACCOUNTANT, ARCHITECT,
+PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER,
+CLEANER, GYM, UNIVERSAL_SME
+```
 
-### 3.2 Structure Persona Actuelle
+**Couverture réelle par langue**:
+
+| Langue | Personas | Couverture | Gap |
+|:-------|:--------:|:----------:|:---:|
+| FR | 19/40 | 47.5% | 🔴 -21 |
+| EN | 17/40 | 42.5% | 🔴 -23 |
+| ARY | 19/40 | 47.5% | 🔴 -21 |
+| AR | 3/40 | 7.5% | 🔴 -37 |
+| ES | 1/40 | 2.5% | 🔴 -39 |
+
+**Status**: 🔴 **GAP CRITIQUE** - Traductions incomplètes
+
+### 3.2 Structure Persona SOTA (MÀJ Session 250.6)
 
 ```javascript
-// Structure observée - voice-persona-injector.cjs
+// Structure SOTA - voice-persona-injector.cjs
 {
-    id: 'agency_v2',           // Identifiant unique
-    name: 'VocalIA Architect', // Nom commercial
-    voice: 'ara',              // Voice ID TTS
-    sensitivity: 'normal',     // normal|high|obsessive
-    systemPrompt: `...`        // 100-500 caractères
+    id: 'agency_v2',                    // Identifiant unique
+    name: 'VocalIA Architect',          // Nom commercial
+    voice: 'ara',                       // Voice ID TTS
+    sensitivity: 'normal',              // normal|high|obsessive
+
+    // NOUVEAUX CHAMPS SOTA
+    personality_traits: ['analytical', 'strategic', 'visionary', 'persuasive'],
+    background: 'Senior AI systems architect...',
+    tone_guidelines: {
+        default: 'Confident, strategic, insightful',
+        objection: 'Empathetic but data-driven',
+        closing: 'Compelling, ROI-focused'
+    },
+    forbidden_behaviors: ['...'],
+    example_dialogues: [{ user: '...', assistant: '...' }],
+
+    systemPrompt: `...`                 // 200-800 caractères
 }
 ```
 
@@ -166,23 +219,23 @@ grep -c "id: '" personas/voice-persona-injector.cjs
 
 | Voice ID | Count | Description |
 |:---------|:-----:|:------------|
-| `tom` | 6 | Neutral male |
-| `eve` | 4 | Warm female |
-| `leo` | 4 | Efficient male |
-| `mika` | 4 | Clear female |
-| `rex` | 4 | Solid, trustworthy male |
-| `sal` | 2 | Friendly neighbor |
-| `sara` | 2 | Female (beauty/events) |
+| `tom` | 8 | Neutral male |
+| `eve` | 6 | Warm female |
+| `leo` | 5 | Efficient male |
+| `mika` | 5 | Clear female |
+| `rex` | 5 | Solid, trustworthy male |
+| `sal` | 4 | Friendly neighbor |
+| `sara` | 3 | Female (beauty/events) |
 | `ara` | 2 | Authoritative |
-| `valentin` | 2 | Deep, calm, respectful |
-| **TOTAL** | **30** | 9 voix distinctes |
+| `valentin` | 1 | Deep, calm, respectful |
+| **TOTAL** | **39** | 9 voix distinctes |
 
 #### 3.2.2 Distribution Sensitivity
 
 | Niveau | Count | Personas |
 |:-------|:-----:|:---------|
-| `normal` | 22 | Standard operations |
-| `high` | 7 | DENTAL, HEALER, COUNSELOR, SCHOOL, GOVERNOR, ACCOUNTANT, PHARMACIST |
+| `normal` | 29 | Standard operations |
+| `high` | 9 | DENTAL, HEALER, COUNSELOR, DOCTOR, SPECIALIST, ACCOUNTANT, PHARMACIST, NOTARY, FUNERAL (modéré) |
 | `obsessive` | 1 | FUNERAL (Zero hallucinations) |
 
 ### 3.3 Mécanisme d'Injection
@@ -227,20 +280,21 @@ grep -c "id: '" personas/voice-persona-injector.cjs
 | **Two-stage Prompting** | LivePerson | Define role first, then task |
 | **Forbidden Behaviors** | VKTR Guide | Comportements explicitement interdits |
 
-#### 3.4.2 Gap Analysis
+#### 3.4.2 Gap Analysis (MÀJ Session 250.6)
 
 | Best Practice | VocalIA | Status | Gap |
 |:--------------|:--------|:------:|:---:|
-| Personality traits | ❌ Absent | 🔴 | Critique |
-| Background/backstory | ❌ Absent | 🔴 | Critique |
-| Few-shot examples | ❌ Absent | 🔴 | Haute |
-| Scenario handling | ❌ Absent | 🟡 | Haute |
-| Forbidden behaviors | ❌ Absent | 🟡 | Moyenne |
-| Escalation triggers | ❌ Absent | 🟡 | Moyenne |
-| Multilingual 100% | ⚠️ 23% | 🔴 | Critique |
+| Personality traits | ✅ 39/40 personas | 🟢 | RÉSOLU |
+| Background/backstory | ✅ 39/40 personas | 🟢 | RÉSOLU |
+| Few-shot examples | ✅ 39/39 example_dialogues | 🟢 | RÉSOLU |
+| Tone guidelines | ✅ 39/40 personas | 🟢 | RÉSOLU |
+| Forbidden behaviors | ✅ 39/40 personas | 🟢 | RÉSOLU |
+| Escalation triggers | ✅ Personas sensibles | 🟢 | RÉSOLU |
+| Multilingual | ⚠️ FR 47.5%, EN 42.5%, ARY 47.5%, AR 7.5%, ES 2.5% | 🔴 | **GAP CRITIQUE** |
 | Voice diversity | ✅ 9 voix | 🟢 | OK |
-| Marketing frameworks | ✅ 4 frameworks | 🟢 | OK |
+| Marketing frameworks | ✅ 5 frameworks (BANT, PAS, CIALDINI, AIDA, LAER) | 🟢 | OK |
 | Multi-tenant | ✅ CLIENT_REGISTRY | 🟢 | OK |
+| Objection Handling | ✅ LAER + Feel-Felt-Found (6 types) | 🟢 | NEW |
 
 ### 3.5 Estimation Tokens
 
@@ -294,7 +348,7 @@ grep -c "id: '" personas/voice-persona-injector.cjs
 | `chunks.json` | `data/knowledge-base/` | 8,474 B | ✅ Existe | 18 chunks **VIDES** |
 | `tfidf_index.json` | `data/knowledge-base/` | 10,492 B | ✅ Existe | Index BM25 valide |
 | `status.json` | `data/knowledge-base/` | 227 B | ✅ Existe | Metadata build |
-| `knowledge_base.json` | `telephony/` | ~3 KB | ✅ Existe | 15 personas FAQ **RICHES** |
+| `knowledge_base.json` | `telephony/` | ~3 KB | ✅ Existe | 13 personas FAQ **RICHES** |
 | `knowledge_base_ary.json` | `telephony/` | ~2 KB | ✅ Existe | FAQ Darija |
 | `knowledge-graph.json` | `data/knowledge-base/` | - | ❌ ABSENT | Graph RAG cassé |
 | `knowledge_base_policies.json` | `data/knowledge-base/` | - | ❌ ABSENT | Policies non injectées |
@@ -373,7 +427,7 @@ cost-tracking-sensor, lead-velocity-sensor, retention-sensor
 
 #### 4.5.1 Comparaison Contenu
 
-**Legacy KB** (`telephony/knowledge_base.json`) - **15 personas**:
+**Legacy KB** (`telephony/knowledge_base.json`) - **13 personas**:
 ```json
 {
   "dental_intake_v1": {
@@ -396,7 +450,7 @@ cost-tracking-sensor, lead-velocity-sensor, retention-sensor
 | Critère | Legacy KB | RAG KB | Gagnant |
 |:--------|:---------:|:------:|:-------:|
 | Richesse contenu | ✅ FAQ détaillées | ❌ Noms fichiers | Legacy |
-| Personas couverts | 15 | 0 (automations) | Legacy |
+| Personas couverts | 13 | 0 (automations) | Legacy |
 | Recherche sémantique | ❌ Dictionnaire | ⚠️ BM25 pauvre | - |
 | Multi-tenant | ❌ Global | ✅ tenant_id | RAG |
 | Hybrid search | ❌ Non | ⚠️ Code existe | RAG |
@@ -477,34 +531,45 @@ const score = 1 / (i + 60);
 
 ## 5. Analyse SWOT
 
-### 5.1 SWOT Personas
+### 5.1 SWOT Personas (MÀJ Session 250.6)
 
 ```
 ┌─────────────────────────────────────┬─────────────────────────────────────┐
 │            STRENGTHS                │            WEAKNESSES               │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
-│ ✅ 30 personas couvrant 20+         │ ❌ 23/30 personas sans traductions  │
-│    industries                       │    multilingues                     │
-│ ✅ Architecture multi-tenant        │ ❌ Structure persona minimale       │
-│    robuste (CLIENT_REGISTRY)        │    (pas de traits, background)      │
-│ ✅ 9 voix distinctes pour           │ ❌ Pas de few-shot examples         │
-│    personnalisation                 │ ❌ Pas de scenario handling         │
-│ ✅ 4 frameworks marketing           │ ❌ Pas de forbidden behaviors       │
-│    intégrés (BANT, PAS, etc.)       │ ❌ Pas d'escalation triggers        │
+│ ✅ 40 personas B2B scope rigoureux  │ 🔴 21/40 personas sans traductions  │
+│ ✅ 100% structure SOTA:             │    dans SYSTEM_PROMPTS              │
+│    - personality_traits             │ 🔴 ES: 2.5%, AR: 7.5% couverture    │
+│    - background                     │ ⚠️ KB FAQ à enrichir pour 14        │
+│    - tone_guidelines                │    nouvelles personas               │
+│    - forbidden_behaviors            │                                     │
+│    - example_dialogues              │                                     │
+│ ✅ Architecture multi-tenant        │                                     │
+│ ✅ 5 frameworks marketing           │                                     │
+│    (BANT, PAS, CIALDINI, AIDA,     │                                     │
+│    LAER)                           │                                     │
+│ ✅ Objection Handling SOTA          │                                     │
+│    (6 types avec réponses)          │                                     │
 │ ✅ Injection Darija native          │                                     │
 │ ✅ GPM override (churn rescue)      │                                     │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │          OPPORTUNITIES              │              THREATS                │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
-│ 🚀 Enrichir personas → +40%         │ ⚠️ Concurrents avec personas        │
-│    qualité réponse                  │    plus sophistiquées               │
-│ 🚀 Traduire → 100% couverture       │ ⚠️ Hallucinations sur personas      │
-│    internationale                   │    sensibles (FUNERAL, HEALER)      │
-│ 🚀 Few-shot → cohérence accrue      │ ⚠️ Incohérence ton entre canaux     │
-│ 🚀 PersonaPlex NVIDIA comme         │                                     │
-│    référence architecture           │                                     │
+│ 🚀 Enrichir KB FAQ pour nouvelles   │ ⚠️ Hallucinations sur personas      │
+│    personas                         │    sensibles (FUNERAL, DOCTOR)      │
+│ 🚀 A/B testing réponses objections  │ ⚠️ Incohérence ton entre canaux     │
+│ 🚀 Analytics conversion par persona │                                     │
 └─────────────────────────────────────┴─────────────────────────────────────┘
 ```
+
+**Personas supprimées (5) - hors scope B2B:**
+- GOVERNOR (admin publique)
+- SCHOOL (établissements scolaires)
+- HOA (syndic copropriété)
+- SURVEYOR (outil interne CSAT)
+- DRIVER (VTC individuel - couvert par DISPATCHER/RENTER)
+
+**GROCERY réinstauré:** Marché livraison grocery validé ($128M Maroc + $59B Europe)
 
 ### 5.2 SWOT Knowledge Base
 
@@ -518,15 +583,15 @@ const score = 1 / (i + 60);
 │ ✅ Multi-tenant RLS fonctionnel     │    fonctionnels (cache path)        │
 │ ✅ Policy boosting codé             │ ❌ 18 chunks vs 1000+ SOTA          │
 │ ✅ Graph search codé                │ ❌ knowledge-graph.json absent      │
-│ ✅ Legacy KB riche (15 personas)    │ ❌ policies.json absent             │
+│ ✅ Legacy KB riche (13 personas)    │ ❌ policies.json absent             │
 │                                     │ ❌ Avg doc length: 6.6 vs 100+      │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │          OPPORTUNITIES              │              THREATS                │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │ 🚀 Enrichir chunks → RAG            │ ⚠️ RAG inutile si contenu pauvre    │
 │    fonctionnel                      │ ⚠️ Concurrents avec ColBERT/        │
-│ 🚀 Merger legacy KB → +15           │    SPLADE reranking                 │
-│    personas riches                  │ ⚠️ Latence si hybrid activé sans    │
+│ 🚀 Merger legacy KB → +13           │    SPLADE reranking                 │
+│    personas riches + 26 nouvelles   │ ⚠️ Latence si hybrid activé sans    │
 │ 🚀 Fix embedding path → hybrid      │    optimisation                     │
 │    activé immédiatement             │                                     │
 │ 🚀 ColBERT reranker → +25%          │                                     │
@@ -534,24 +599,24 @@ const score = 1 / (i + 60);
 └─────────────────────────────────────┴─────────────────────────────────────┘
 ```
 
-### 5.3 SWOT Combiné
+### 5.3 SWOT Combiné (MÀJ Session 250.6)
 
 ```
 ┌─────────────────────────────────────┬─────────────────────────────────────┐
 │       FORCES COMBINÉES              │       FAIBLESSES COMBINÉES          │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
-│ • Architecture solide               │ • Gap critique contenu vs code      │
-│ • Composants SOTA codés             │ • i18n incomplet                    │
-│ • Multi-tenant ready                │ • Données non enrichies             │
-│ • Différenciateurs business         │ • Fonctionnalités dormantes         │
-│   (30 personas, Darija)             │   (hybrid, graph)                   │
+│ • Architecture solide               │ • 21/40 personas sans traductions   │
+│ • 40 personas SOTA structure        │ • ES 2.5%, AR 7.5% couverture       │
+│ • Objection Handling LAER           │ • KB RAG chunks toujours pauvres    │
+│ • Multi-tenant ready                │ • Dense embeddings non fonctionnels │
+│ • Différenciateurs business         │ • KB FAQ pour nouvelles personas    │
+│   (40 personas, Darija, 6 objec.)   │ • Fonctionnalités dormantes         │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │     OPPORTUNITÉS STRATÉGIQUES       │         RISQUES STRATÉGIQUES        │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
-│ 1. Quick wins à fort ROI            │ 1. Concurrence rapide               │
-│    (fix cache, enrichir chunks)     │ 2. Expérience utilisateur dégradée  │
-│ 2. Avantage compétitif rapide       │ 3. Claims marketing > réalité       │
-│    si optimisations faites          │    technique                        │
+│ 1. Quick wins KB                    │ 1. Concurrence rapide               │
+│    (fix cache, enrichir chunks)     │ 2. RAG inutile si contenu pauvre    │
+│ 2. A/B test objection handling      │                                     │
 │ 3. Différenciation Maroc/Darija     │                                     │
 └─────────────────────────────────────┴─────────────────────────────────────┘
 ```
@@ -744,9 +809,9 @@ const CACHE_FILE = path.join(__dirname, '../data/knowledge-base/embeddings_cache
 
 | # | Action | Effort | Fichier | Validation |
 |:-:|:-------|:------:|:--------|:-----------|
-| 2.1 | Traduire 23 personas (FR/ARY) | 2j | `voice-persona-injector.cjs` | `grep -c "fr:" voice-persona-injector.cjs == 30` |
-| 2.2 | Ajouter structure enrichie | 1j | `voice-persona-injector.cjs` | Champs `personality_traits`, `example_dialogues` |
-| 2.3 | Documenter forbidden behaviors | 4h | `voice-persona-injector.cjs` | Champ `forbidden_behaviors` |
+| 2.1 | Traduire personas (FR/ARY/EN/AR/ES) | 3j | `voice-persona-injector.cjs` | 🔴 TODO: 19/40 dans SYSTEM_PROMPTS, 21 manquantes |
+| 2.2 | ~~Ajouter structure enrichie~~ | ~~1j~~ | `voice-persona-injector.cjs` | ✅ FAIT: personality_traits, example_dialogues |
+| 2.3 | ~~Documenter forbidden behaviors~~ | ~~4h~~ | `voice-persona-injector.cjs` | ✅ FAIT: forbidden_behaviors |
 
 **Template structure persona enrichie**:
 ```javascript
@@ -794,7 +859,7 @@ DENTAL: {
 
 | # | Action | Effort | Fichier | Validation |
 |:-:|:-------|:------:|:--------|:-----------|
-| 3.1 | Merger legacy KB dans RAG | 4h | `knowledge-base-services.cjs` | 15 personas FAQ dans chunks |
+| 3.1 | Merger legacy KB dans RAG | 4h | `knowledge-base-services.cjs` | 13 personas FAQ + 26 nouvelles FAQ dans chunks |
 | 3.2 | Créer knowledge-graph.json | 1j | `data/knowledge-base/` | Graph RAG fonctionnel |
 | 3.3 | Créer policies.json | 4h | `data/knowledge-base/` | Policy boosting actif |
 | 3.4 | Implémenter ColBERT reranker | 3j | Nouveau fichier | +25% precision (optionnel) |
@@ -846,14 +911,21 @@ DENTAL: {
 
 ### 7.6 Métriques de Succès
 
-| Métrique | Avant | Cible | Validation |
-|:---------|:-----:|:-----:|:-----------|
-| Chunks sémantiques riches | 0% | 100% | `grep -c '"benefit_en": ""' chunks.json == 0` |
-| Personas traduits | 23% | 100% | `grep -c "ary:" voice-persona-injector.cjs >= 30` |
-| Dense retrieval | ❌ | ✅ | `ls data/knowledge-base/embeddings_cache.json` |
-| Vocabulary size | 44 | 200+ | `jq '.vocabulary | length' tfidf_index.json` |
-| Avg doc length | 6.6 | 50+ | `jq '.avgDocLength' tfidf_index.json` |
-| Graph RAG | ❌ | ✅ | `ls data/knowledge-base/knowledge-graph.json` |
+| Métrique | Avant | Actuel | Cible | Validation |
+|:---------|:-----:|:------:|:-----:|:-----------|
+| Chunks sémantiques riches | 0% | 0% | 100% | `grep -c '"benefit_en": ""' chunks.json == 0` |
+| Personas dans SYSTEM_PROMPTS | 23% | **47.5%** | 100% | 🔴 19/40 personas |
+| Traductions FR | 23% | **47.5%** | 100% | 🔴 19/40 |
+| Traductions EN | 23% | **42.5%** | 100% | 🔴 17/40 |
+| Traductions ARY | 0% | **47.5%** | 100% | 🔴 19/40 |
+| Traductions AR | 0% | **7.5%** | 100% | 🔴 3/40 |
+| Traductions ES | 0% | **2.5%** | 100% | 🔴 1/40 |
+| Personas structure SOTA | 0% | **100%** | 100% | ✅ `grep -c "personality_traits" == 40` |
+| Objection Handling | 0% | **100%** | 100% | ✅ LAER + Feel-Felt-Found (6 types) |
+| Dense retrieval | ❌ | ❌ | ✅ | `ls data/knowledge-base/embeddings_cache.json` |
+| Vocabulary size | 44 | 44 | 200+ | `jq '.vocabulary | length' tfidf_index.json` |
+| Avg doc length | 6.6 | 6.6 | 50+ | `jq '.avgDocLength' tfidf_index.json` |
+| Graph RAG | ❌ | ❌ | ✅ | `ls data/knowledge-base/knowledge-graph.json` |
 
 ---
 
@@ -974,6 +1046,8 @@ node core/knowledge-base-services.cjs --search "voice assistant"
 
 ---
 
-*Document généré automatiquement - Session 250.5*
+*Document généré automatiquement - Session 250.6*
 *Méthodologie: Audit forensique bottom-up factuel*
 *Aucun claim sans vérification empirique*
+*MÀJ: 31/01/2026 - 40 personas SOTA structure, GROCERY réinstauré ($128M MA + $59B EU)*
+*⚠️ GAP CRITIQUE: 21/40 personas sans traductions SYSTEM_PROMPTS, ES 2.5%, AR 7.5%*

@@ -22,7 +22,7 @@
 | voice-api-resilient.cjs | Multi-AI voice responses | 3004 | core/ |
 | grok-voice-realtime.cjs | WebSocket audio streaming | 3007 | core/ |
 | voice-telephony-bridge.cjs | PSTN ↔ Grok bridge | 3009 | telephony/ |
-| voice-persona-injector.cjs | 30 personas injection | - | personas/ |
+| voice-persona-injector.cjs | 40 personas SOTA injection | - | personas/ |
 | voice-quality-sensor.cjs | Health monitoring | - | sensors/ |
 | stitch-api.cjs | UI generation (MCP) | - | core/ |
 | cost-tracking-sensor.cjs | API cost monitoring | - | sensors/ |

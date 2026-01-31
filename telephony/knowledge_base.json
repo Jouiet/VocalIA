@@ -77,5 +77,15 @@
         "devis": "Obtenez un devis gratuit en ligne pour votre auto ou votre habitation.",
         "assistance": "Assistance 24h/24 et 7j/7 au numéro vert indiqué au dos de votre carte verte.",
         "reseau": "Plus de 1500 garagistes partenaires pour des réparations sans avance de frais."
+    },
+    "grocery_v1": {
+        "livraison": "Livraison en 30 minutes à 2 heures selon votre créneau. Livraison express disponible en 15 minutes (+2€).",
+        "suivi": "Suivez votre commande en temps réel via l'application. Notifications SMS à chaque étape.",
+        "produits_manquants": "En cas de produit indisponible, nous vous proposons un équivalent ou un avoir automatique.",
+        "retours": "Réclamation sous 24h pour les produits défectueux. Remboursement immédiat ou avoir.",
+        "creneaux": "Créneaux de livraison de 8h à 22h, 7 jours sur 7.",
+        "minimum_commande": "Commande minimum de 20€. Livraison gratuite dès 50€.",
+        "paiement": "Paiement à la commande (CB, Apple Pay) ou à la livraison (espèces, TPE).",
+        "reorder": "Retrouvez vos commandes précédentes dans 'Mes favoris' pour une recomande en un clic."
     }
 }

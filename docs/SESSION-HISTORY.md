@@ -1,9 +1,9 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.37.0 | **Updated**: 31/01/2026 | **Session**: 250.2
+> **Version**: 3.38.0 | **Updated**: 31/01/2026 | **Session**: 250.6
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
 > **MCP Server**: v0.7.0 | **MCP Tools**: 178 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
-> **Session 250.2**: Security fixes + Stripe logo + Investor link + Orphan pages audit
+> **Session 250.6**: Personas SOTA (40) + Objection Handling LAER/Feel-Felt-Found
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
 
 ---
@@ -21,7 +21,7 @@ Toutes les informations sont **vérifiables empiriquement** via les commandes li
 |:-----------|:---:|:-------:|:-------------|:-----|
 | **Voice Widget** | 15 | **15** | `node widget/voice-widget-templates.cjs` | Web Speech API, $0 |
 | **Voice Telephony** | 15 | **12** | `node telephony/voice-telephony-bridge.cjs` loads | Code OK, TWILIO creds missing |
-| **Multi-Persona** | 15 | **15** | 30 personas verified | BANT, PAS, CIALDINI |
+| **Multi-Persona** | 15 | **15** | 40 personas SOTA verified | BANT, PAS, CIALDINI, LAER |
 | **Integrations** | 15 | **12** | 3/3 modules load | Creds missing for full function |
 | **Documentation** | 10 | **10** | 5 rules + CLAUDE.md | Complete |
 | **Infrastructure** | 15 | **15** | MCP ✅ Registry ✅ GPM ✅ | VocalIA-Ops integrated |
@@ -4746,6 +4746,78 @@ grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
 3. **SSG**: Migration vers Astro ou 11ty
 
 **Statut final**: Session 250 | **178 tools** | Footer clean | Academie nav fixed ✅
+
+---
+
+## Session 250.6 - Personas SOTA + Objection Handling (31/01/2026)
+
+### 1. Restructuration Personas (30 → 40)
+
+| Action | Détail | Status |
+|:-------|:-------|:------:|
+| **Suppression 5 personas** | GOVERNOR, SCHOOL, HOA, SURVEYOR (admin), DRIVER (hors scope B2B) | ✅ |
+| **Ajout 14 personas NEW Economy** | Données OMPIC/Eurostat 2024 | ✅ |
+| **Structure SOTA 100%** | personality_traits, background, tone_guidelines, forbidden_behaviors | ✅ |
+
+**Nouvelles personas par région:**
+- **Maroc (4)**: RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT
+- **Europe (5)**: CONSULTANT, IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY
+- **International (5)**: BAKERY, GROCERY, SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER
+
+**Vérification empirique:**
+```bash
+node -e "const m = require('./personas/voice-persona-injector.cjs'); console.log(Object.keys(m.PERSONAS).length);"
+# Résultat: 40 ✅
+```
+
+### 2. Objection Handling SOTA Implementation
+
+**Constat AVANT**: `handleObjection()` = logging analytics seulement, 0 intelligence.
+
+**Solution APRÈS**: Implementation LAER + Feel-Felt-Found (Sources: Gong.io, Sales Outcomes, Otter.ai)
+
+| Type Objection | Real Meaning | Technique |
+|:---------------|:-------------|:----------|
+| `price` | "Je ne vois pas le ROI pour ma situation" | LAER + proof points ROI |
+| `timing` | "Inquiet gestion du changement" | Feel-Felt-Found + implementation rapide |
+| `competitor` | "Peur de perdre relation existante" | Comparaison côte-à-côte + test parallèle |
+| `authority` | "Pas le décisionnaire final" | Business case + présentation direction |
+| `need` | "Ne perçoit pas la valeur" | Démo ciblée sur cas spécifique |
+| `trust` | "Veut réduire le risque" | Documentation + références vérifiables |
+
+**Code enrichi** (`telephony/voice-telephony-bridge.cjs`):
+```javascript
+const OBJECTION_HANDLERS = {
+  price: { real_meaning, laer: {acknowledge, explore, respond}, feel_felt_found, proof_points, next_action },
+  // ... 6 types
+};
+
+async function handleObjection(session, args) {
+  // ... logging existant ...
+  // NEW: Return intelligent response suggestions
+  const handler = OBJECTION_HANDLERS[args.objection_type];
+  return { suggested_responses: handler.laer, proof_points: handler.proof_points };
+}
+```
+
+### 3. Knowledge Base Cleanup
+
+| Action | Fichier | Status |
+|:-------|:--------|:------:|
+| Suppression SURVEYOR | telephony/knowledge_base.json | ✅ |
+| Suppression GOVERNOR | telephony/knowledge_base.json | ✅ |
+| Suppression HOA | telephony/knowledge_base.json | ✅ |
+
+### 4. Documentation Updated
+
+| Document | Changement |
+|:---------|:-----------|
+| CLAUDE.md | 30 → 41 personas |
+| .claude/rules/voice-platform.md | Nouvelle structure tiers |
+| .claude/rules/factuality.md | Source de vérité mise à jour |
+| docs/FORENSIC-AUDIT-SESSION-250.md | Section 3.4 mise à jour |
+
+**Statut final**: Session 250.6 | **40 personas SOTA** | Objection Handling LAER ✅
 
 ---
 

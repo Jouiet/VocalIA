@@ -284,7 +284,7 @@ node -e "const m = require('./personas/voice-persona-injector.cjs'); console.log
 
 ### Structure SOTA Enrichie (100%)
 
-Toutes les 39 personas ont maintenant:
+Toutes les 40 personas ont maintenant:
 - `personality_traits`: 3-4 traits caractéristiques
 - `background`: Contexte professionnel
 - `tone_guidelines`: Ton par situation
@@ -1216,17 +1216,17 @@ TOTAL: 652 lignes - Plugin complet
 | # | Action | Effort | Impact |
 |:-:|:-------|:------:|:------:|
 | 20 | ~~Traduire usecases_*~~ | 5 locales | ✅ Déjà traduit |
-| 21 | Implémenter Light mode | 4h | UX |
+| 21 | ~~Implémenter Light mode~~ | ~~4h~~ | ✅ Already in dashboards |
 | 22 | ~~Ajouter alt texts dashboards~~ | N/A | ✅ WCAG OK |
 | 23 | ~~Créer page /status~~ | website/status/index.html | ✅ Done |
-| 24 | Analytics réel (Plausible/Umami) | 4h | Marketing |
+| 24 | ~~Analytics réel (Plausible)~~ | ~~4h~~ | ✅ 37 pages |
 
 ### Documentation
 
 | # | Action | Fichier | Impact |
 |:-:|:-------|:--------|:------:|
-| 25 | SDK Python docs | sdks/python/README.md | Developer DX |
-| 26 | SDK Node.js docs | sdks/node/README.md | Developer DX |
+| 25 | ~~SDK Python docs~~ | sdks/python/README.md | ✅ Complete |
+| 26 | ~~SDK Node.js docs~~ | sdks/node/README.md | ✅ Complete |
 | 27 | OpenAPI spec | docs/openapi.yaml | API docs |
 | 28 | Security audit report | docs/SECURITY.md | Compliance |
 

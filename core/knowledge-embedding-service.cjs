@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const CACHE_FILE = path.join(__dirname, '../../../knowledge_base/embeddings_cache.json');
+const CACHE_FILE = path.join(__dirname, '../data/knowledge-base/embeddings_cache.json');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
 

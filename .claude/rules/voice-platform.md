@@ -29,15 +29,16 @@ providers: [
 // Trigger: Latency > 15s OR Status != 200
 ```
 
-## 41 Personas (voice-persona-injector.cjs) - Session 250.6
+## 40 Personas (voice-persona-injector.cjs) - Session 250.6
 | Tier | Count | Examples |
 |:-----|:-----:|:---------|
 | Tier 1 (Core) | 5 | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
-| Tier 2 (Expansion) | 17 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER... |
+| Tier 2 (Expansion) | 19 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER... |
 | Tier 3 (Universal) | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
-| Tier 4 (NEW Economy) | 15 | RETAILER, BUILDER, DRIVER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, DOCTOR, NOTARY, BAKERY... |
+| Tier 4 (NEW Economy) | 14 | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, DOCTOR, NOTARY, BAKERY, GROCERY... |
 
-**Removed (Session 250.6):** GOVERNOR, SCHOOL, HOA, SURVEYOR (admin personas outside business scope)
+**Removed (Session 250.6):** GOVERNOR, SCHOOL, HOA, SURVEYOR (admin), DRIVER (hors scope B2B)
+**GROCERY reinstated:** Marché livraison grocery $128M Maroc + $59B Europe
 
 ## 11 Function Tools (voice-telephony-bridge.cjs)
 | Tool | Ligne | Purpose |
@@ -78,5 +79,5 @@ HITL_SLACK_WEBHOOK=              # Notifications
 |:-----------|:--------|:---------------|
 | Vapi | $0.15-0.33/min | 60% moins cher |
 | Retell | $0.13-0.31/min | Widget + Telephony |
-| Bland | $0.09/min | 30 personas, Darija |
+| Bland | $0.09/min | 39 personas SOTA, Darija |
 | Synthflow | $0.08-0.13/min | Self-hosted |

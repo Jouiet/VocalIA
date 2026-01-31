@@ -15,7 +15,7 @@
 ## Source de Vérité VocalIA
 | Source | Données |
 |:-------|:--------|
-| `voice-persona-injector.cjs` | 41 personas (SOTA structure) |
+| `voice-persona-injector.cjs` | 40 personas (SOTA structure) |
 | `voice-telephony-bridge.cjs` | 11 function tools (lignes 605-844) |
 | `scripts/voice-quality-sensor.cjs --health` | Runtime status |
 | `.env` | Credentials status |

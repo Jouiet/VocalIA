@@ -1,0 +1,56 @@
+<!-- VocalIA Analytics - Privacy-Respecting (Plausible)
+     GDPR Compliant: No cookies, no personal data collection
+     Self-hosted option: Change src to your Plausible instance URL
+     Docs: https://plausible.io/docs -->
+
+<!-- Plausible Analytics (Privacy-First) -->
+<script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
+
+<!-- Custom Events Helper -->
+<script>
+  window.plausible = window.plausible || function() {
+    (window.plausible.q = window.plausible.q || []).push(arguments)
+  };
+
+  // Track important business events
+  window.trackEvent = function(eventName, props) {
+    if (window.plausible) {
+      plausible(eventName, { props: props });
+    }
+  };
+
+  // Auto-track CTA clicks
+  document.addEventListener('DOMContentLoaded', function() {
+    // Track signup CTA clicks
+    document.querySelectorAll('a[href*="/signup"]').forEach(function(el) {
+      el.addEventListener('click', function() {
+        trackEvent('CTA Click', { type: 'signup', plan: el.href.includes('plan=') ? new URL(el.href).searchParams.get('plan') : 'default' });
+      });
+    });
+
+    // Track pricing CTA clicks
+    document.querySelectorAll('a[href*="/pricing"]').forEach(function(el) {
+      el.addEventListener('click', function() {
+        trackEvent('CTA Click', { type: 'pricing' });
+      });
+    });
+
+    // Track demo requests
+    document.querySelectorAll('a[href*="/contact"], button[data-action="demo"]').forEach(function(el) {
+      el.addEventListener('click', function() {
+        trackEvent('CTA Click', { type: 'demo_request' });
+      });
+    });
+
+    // Track language switches
+    var langSwitcher = document.getElementById('langDropdown');
+    if (langSwitcher) {
+      langSwitcher.querySelectorAll('button').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var lang = btn.textContent.trim().split(' ')[0];
+          trackEvent('Language Switch', { to: lang });
+        });
+      });
+    }
+  });
+</script>
