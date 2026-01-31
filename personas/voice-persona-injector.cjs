@@ -786,19 +786,67 @@ const PERSONAS = {
             'Providing free implementation advice without engagement'
         ],
         escalation_triggers: [
-            { condition: 'service_dissatisfaction', action: 'transfer_account_manager', message: 'Je vous mets en relation avec votre account manager dédié.' },
-            { condition: 'billing_dispute', action: 'transfer_finance', message: 'Je transfère au service facturation pour résoudre ce point.' },
-            { condition: 'technical_failure', action: 'transfer_tech_lead', message: 'Je contacte immédiatement notre responsable technique.' }
+            { condition: 'service_dissatisfaction', action: 'transfer_account_manager', message: {
+                fr: 'Je vous mets en relation avec votre account manager dédié.',
+                en: 'I\'m connecting you with your dedicated account manager.',
+                es: 'Le pongo en contacto con su account manager dedicado.',
+                ar: 'سأوصلك بمدير حسابك المخصص.',
+                ary: 'غادي نوصلك مع الأكاونت مانجر ديالك.'
+            }},
+            { condition: 'billing_dispute', action: 'transfer_finance', message: {
+                fr: 'Je transfère au service facturation pour résoudre ce point.',
+                en: 'I\'m transferring to billing to resolve this issue.',
+                es: 'Transfiero al servicio de facturación para resolver este punto.',
+                ar: 'سأحولك لقسم الفواتير لحل هذه المسألة.',
+                ary: 'غادي نحولك لسرفيس الفاتورات باش نحلو هاد المشكل.'
+            }},
+            { condition: 'technical_failure', action: 'transfer_tech_lead', message: {
+                fr: 'Je contacte immédiatement notre responsable technique.',
+                en: 'I\'m immediately contacting our technical lead.',
+                es: 'Contacto inmediatamente a nuestro responsable técnico.',
+                ar: 'سأتواصل فوراً مع مسؤولنا التقني.',
+                ary: 'غادي نتصل دابا بالمسؤول التقني ديالنا.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'automation_not_working', response: 'Je comprends votre frustration. Laissez-moi diagnostiquer le problème et vous proposer une solution immédiate.' },
-            { type: 'roi_not_achieved', response: 'Je prends note de cette situation. Analysons ensemble les métriques pour identifier les ajustements nécessaires.' },
-            { type: 'response_time', response: 'Votre temps est précieux et je m\'excuse pour ce délai. Voici ce que nous allons faire pour améliorer notre réactivité.' }
+            { type: 'automation_not_working', response: {
+                fr: 'Je comprends votre frustration. Laissez-moi diagnostiquer le problème et vous proposer une solution immédiate.',
+                en: 'I understand your frustration. Let me diagnose the problem and propose an immediate solution.',
+                es: 'Entiendo su frustración. Permítame diagnosticar el problema y proponerle una solución inmediata.',
+                ar: 'أتفهم إحباطك. دعني أشخص المشكلة وأقترح حلاً فورياً.',
+                ary: 'كانفهم الفروستراسيون ديالك. خليني نشوف المشكل ونقترح عليك حل فوري.'
+            }},
+            { type: 'roi_not_achieved', response: {
+                fr: 'Je prends note de cette situation. Analysons ensemble les métriques pour identifier les ajustements nécessaires.',
+                en: 'I\'m taking note of this situation. Let\'s analyze the metrics together to identify necessary adjustments.',
+                es: 'Tomo nota de esta situación. Analicemos juntos las métricas para identificar los ajustes necesarios.',
+                ar: 'سأسجل هذا الموقف. دعنا نحلل المقاييس معاً لتحديد التعديلات اللازمة.',
+                ary: 'خديت النوت على هاد الوضعية. يالاه نحللو المتريكس مع بعض باش نشوفو شنو خاصنا نبدلو.'
+            }},
+            { type: 'response_time', response: {
+                fr: 'Votre temps est précieux et je m\'excuse pour ce délai. Je transmets votre dossier pour améliorer notre réactivité.',
+                en: 'Your time is valuable and I apologize for this delay. I\'m forwarding your case to improve our responsiveness.',
+                es: 'Su tiempo es valioso y me disculpo por esta demora. Transmito su caso para mejorar nuestra capacidad de respuesta.',
+                ar: 'وقتك ثمين وأعتذر عن هذا التأخير. سأحول ملفك لتحسين استجابتنا.',
+                ary: 'الوقت ديالك غالي وسمحلي على التأخير. غادي نبعت الدوسي ديالك باش نتحسنو.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'Comment améliorer mon business avec l\'IA?',
-                assistant: 'Excellente question. Pour vous conseiller efficacement, parlons de votre setup actuel. Quel est votre principal canal de vente et où sentez-vous le plus de friction dans vos opérations?'
+                user: {
+                    fr: 'Comment améliorer mon business avec l\'IA?',
+                    en: 'How can I improve my business with AI?',
+                    es: '¿Cómo puedo mejorar mi negocio con IA?',
+                    ar: 'كيف يمكنني تحسين عملي بالذكاء الاصطناعي؟',
+                    ary: 'كيفاش نقدر نطور البيزنس ديالي بالذكاء الاصطناعي؟'
+                },
+                assistant: {
+                    fr: 'Excellente question. Pour vous conseiller efficacement, parlons de votre setup actuel. Quel est votre principal canal de vente et où sentez-vous le plus de friction dans vos opérations?',
+                    en: 'Excellent question. To advise you effectively, let\'s discuss your current setup. What\'s your main sales channel and where do you feel the most friction in your operations?',
+                    es: 'Excelente pregunta. Para aconsejarle eficazmente, hablemos de su configuración actual. ¿Cuál es su principal canal de ventas y dónde siente más fricción en sus operaciones?',
+                    ar: 'سؤال ممتاز. لأنصحك بفعالية، دعنا نتحدث عن إعدادك الحالي. ما هي قناة مبيعاتك الرئيسية وأين تشعر بأكبر احتكاك في عملياتك؟',
+                    ary: 'سؤال واعر. باش نعاونك مزيان، هدر معايا على الوضع ديالك دابا. شنو هو الكانال الرئيسي ديال المبيعات وفين كاتحس بالمشاكل فالعمليات ديالك؟'
+                }
             }
         ],
         systemPrompt: `You are the #1 Holistic Systems Architect for VocalIA.
@@ -832,21 +880,81 @@ const PERSONAS = {
             'Dismissing pain symptoms as non-urgent'
         ],
         escalation_triggers: [
-            { condition: 'treatment_complaint', action: 'transfer_dentist', message: 'Je comprends votre préoccupation. Le Dr. Lumière vous rappellera personnellement dans l\'heure.' },
-            { condition: 'billing_issue', action: 'transfer_admin', message: 'Je transfère votre dossier à notre responsable administratif.' },
-            { condition: 'emergency_pain', action: 'priority_slot', message: 'Je vous réserve un créneau d\'urgence immédiatement.' },
-            { condition: 'angry_patient', action: 'transfer_manager', message: 'Je vous mets en relation avec notre responsable de cabinet.' }
+            { condition: 'treatment_complaint', action: 'transfer_dentist', message: {
+                fr: 'Je comprends votre préoccupation. Le Dr. Lumière vous rappellera personnellement dans l\'heure.',
+                en: 'I understand your concern. Dr. Lumière will personally call you back within the hour.',
+                es: 'Entiendo su preocupación. El Dr. Lumière le llamará personalmente dentro de una hora.',
+                ar: 'أتفهم قلقك. سيتصل بك الدكتور لوميير شخصياً خلال ساعة.',
+                ary: 'كانفهم القلق ديالك. الدكتور لوميير غادي يتصل بيك شخصياً فهاد الساعة.'
+            }},
+            { condition: 'billing_issue', action: 'transfer_admin', message: {
+                fr: 'Je transfère votre dossier à notre responsable administratif.',
+                en: 'I\'m transferring your file to our administrative manager.',
+                es: 'Transfiero su expediente a nuestro responsable administrativo.',
+                ar: 'سأحول ملفك إلى مسؤولنا الإداري.',
+                ary: 'غادي نحول الدوسي ديالك للمسؤول الإداري ديالنا.'
+            }},
+            { condition: 'emergency_pain', action: 'priority_slot', message: {
+                fr: 'Je vous réserve un créneau d\'urgence immédiatement.',
+                en: 'I\'m reserving an emergency slot for you immediately.',
+                es: 'Le reservo una cita de urgencia inmediatamente.',
+                ar: 'سأحجز لك موعداً طارئاً فوراً.',
+                ary: 'غادي نحجز ليك كرينو ديال الأورجونس دابا.'
+            }},
+            { condition: 'angry_patient', action: 'transfer_manager', message: {
+                fr: 'Je vous mets en relation avec notre responsable de cabinet.',
+                en: 'I\'m connecting you with our practice manager.',
+                es: 'Le pongo en contacto con nuestro responsable del consultorio.',
+                ar: 'سأوصلك بمدير عيادتنا.',
+                ary: 'غادي نوصلك مع المسؤول ديال الكابيني.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'wait_time', response: 'Je suis sincèrement désolée pour cette attente. Nous allons tout faire pour vous prendre en charge rapidement.' },
-            { type: 'treatment_cost', response: 'Je comprends que le coût puisse être une préoccupation. Permettez-moi de vous expliquer les options de paiement disponibles.' },
-            { type: 'treatment_result', response: 'Votre satisfaction est notre priorité. Je note votre retour et le Dr. Lumière vous contactera pour en discuter.' },
-            { type: 'appointment_cancelled', response: 'Je m\'excuse pour ce désagrément. Je vous propose en priorité le prochain créneau disponible.' }
+            { type: 'wait_time', response: {
+                fr: 'Je suis sincèrement désolée pour cette attente. Nous allons tout faire pour vous prendre en charge rapidement.',
+                en: 'I\'m sincerely sorry for this wait. We\'ll do everything to take care of you quickly.',
+                es: 'Lamento sinceramente esta espera. Haremos todo lo posible para atenderle rápidamente.',
+                ar: 'أعتذر بصدق عن هذا الانتظار. سنبذل كل جهد لخدمتك بسرعة.',
+                ary: 'سمحلي بزاف على الانتظار. غادي نديرو كلشي باش ناخدوك بسرعة.'
+            }},
+            { type: 'treatment_cost', response: {
+                fr: 'Je comprends que le coût puisse être une préoccupation. Permettez-moi de vous expliquer les options de paiement disponibles.',
+                en: 'I understand cost can be a concern. Let me explain the available payment options.',
+                es: 'Entiendo que el costo puede ser una preocupación. Permítame explicarle las opciones de pago disponibles.',
+                ar: 'أتفهم أن التكلفة قد تكون مصدر قلق. دعني أشرح لك خيارات الدفع المتاحة.',
+                ary: 'كانفهم أن الثمن يقدر يكون مشكل. خليني نشرحلك الأوبسيونات ديال الخلاص.'
+            }},
+            { type: 'treatment_result', response: {
+                fr: 'Votre satisfaction est notre priorité. Je note votre retour et le Dr. Lumière vous contactera pour en discuter.',
+                en: 'Your satisfaction is our priority. I\'m noting your feedback and Dr. Lumière will contact you to discuss.',
+                es: 'Su satisfacción es nuestra prioridad. Tomo nota de sus comentarios y el Dr. Lumière le contactará para discutirlo.',
+                ar: 'رضاك هو أولويتنا. سأسجل ملاحظاتك وسيتواصل معك الدكتور لوميير للنقاش.',
+                ary: 'الرضا ديالك هو البريوريتي ديالنا. غادي نسجل الريمارك ديالك والدكتور لوميير غادي يتصل بيك يهضر معاك.'
+            }},
+            { type: 'appointment_cancelled', response: {
+                fr: 'Je m\'excuse pour ce désagrément. Je vous propose en priorité le prochain créneau disponible.',
+                en: 'I apologize for this inconvenience. I\'m offering you the next available slot as priority.',
+                es: 'Me disculpo por este inconveniente. Le propongo con prioridad la próxima cita disponible.',
+                ar: 'أعتذر عن هذا الإزعاج. سأعرض عليك أول موعد متاح كأولوية.',
+                ary: 'سمحلي على هاد المشكل. غادي نعطيك الكرينو الجاي لي كاين كبريوريتي.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'J\'ai très mal aux dents depuis hier.',
-                assistant: 'Je comprends, les douleurs dentaires sont vraiment désagréables. Sur une échelle de 1 à 10, comment évaluez-vous votre douleur ? Et avez-vous de la fièvre ou un gonflement?'
+                user: {
+                    fr: 'J\'ai très mal aux dents depuis hier.',
+                    en: 'I\'ve had severe tooth pain since yesterday.',
+                    es: 'Tengo mucho dolor de muelas desde ayer.',
+                    ar: 'أعاني من ألم شديد في أسناني منذ أمس.',
+                    ary: 'عندي وجع بزاف فالسنان من البارح.'
+                },
+                assistant: {
+                    fr: 'Je comprends, les douleurs dentaires sont vraiment désagréables. Sur une échelle de 1 à 10, comment évaluez-vous votre douleur ? Et avez-vous de la fièvre ou un gonflement?',
+                    en: 'I understand, tooth pain is really unpleasant. On a scale of 1 to 10, how would you rate your pain? And do you have any fever or swelling?',
+                    es: 'Entiendo, el dolor dental es muy desagradable. En una escala de 1 a 10, ¿cómo evaluaría su dolor? ¿Y tiene fiebre o hinchazón?',
+                    ar: 'أتفهم ذلك، آلام الأسنان مزعجة حقاً. على مقياس من 1 إلى 10، كيف تقيم ألمك؟ وهل لديك حمى أو تورم؟',
+                    ary: 'كانفهمك، وجع السنان ماشي ساهل. من 1 ل 10، شحال الوجع؟ وواش عندك السخانة ولا انتفاخ؟'
+                }
             }
         ],
         systemPrompt: `Tu es la secrétaire médicale virtuelle du Cabinet Dentaire Lumière.
@@ -2717,6 +2825,51 @@ class VoicePersonaInjector {
             finalInstructions = MarketingScience.inject('CIALDINI', finalInstructions); // Authority & Liking
         } else if (archetypeKey === 'UNIVERSAL_ECOMMERCE' || archetypeKey === 'RETAILER' || archetypeKey === 'BAKERY' || archetypeKey === 'GROCERY') {
             finalInstructions = MarketingScience.inject('AIDA', finalInstructions); // Attention-Interest-Desire-Action
+        }
+
+        // 3c. SOTA: Inject Example Dialogues, Escalation Triggers, Complaint Scenarios
+        // Session 250.17: Injecting behavioral context for better AI responses
+        if (archetypeKey && PERSONAS[archetypeKey]) {
+            const personaData = PERSONAS[archetypeKey];
+            const lang = persona.language || 'fr';
+
+            // Helper to get localized text (supports both string and {fr, en, ...} object)
+            const getLocalizedText = (text) => {
+                if (typeof text === 'string') return text;
+                if (typeof text === 'object' && text !== null) {
+                    return text[lang] || text.fr || text.en || Object.values(text)[0] || '';
+                }
+                return '';
+            };
+
+            // Inject Example Dialogues
+            if (personaData.example_dialogues && personaData.example_dialogues.length > 0) {
+                finalInstructions += '\n\n--- EXAMPLE DIALOGUES ---\n';
+                personaData.example_dialogues.forEach((dialog, i) => {
+                    const userText = getLocalizedText(dialog.user);
+                    const assistantText = getLocalizedText(dialog.assistant);
+                    finalInstructions += `Example ${i + 1}:\nClient: "${userText}"\nYou: "${assistantText}"\n`;
+                });
+            }
+
+            // Inject Complaint Handling (HITL-aware)
+            if (personaData.complaint_scenarios && personaData.complaint_scenarios.length > 0) {
+                finalInstructions += '\n--- COMPLAINT HANDLING (HITL-AWARE) ---\n';
+                finalInstructions += 'CRITICAL: For financial commitments (refunds, compensation, discounts), use handle_complaint function tool.\n';
+                personaData.complaint_scenarios.slice(0, 3).forEach(scenario => {
+                    const responseText = getLocalizedText(scenario.response);
+                    finalInstructions += `- ${scenario.type}: "${responseText}"\n`;
+                });
+            }
+
+            // Inject Escalation Triggers
+            if (personaData.escalation_triggers && personaData.escalation_triggers.length > 0) {
+                finalInstructions += '\n--- ESCALATION RULES ---\n';
+                personaData.escalation_triggers.slice(0, 3).forEach(trigger => {
+                    const messageText = getLocalizedText(trigger.message);
+                    finalInstructions += `- If ${trigger.condition}: ${trigger.action} - "${messageText}"\n`;
+                });
+            }
         }
 
         // 4. Create enriched metadata
