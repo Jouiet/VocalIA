@@ -1,14 +1,15 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.17.0 | 31/01/2026 | Session 249.22 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 31 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> SDKs: Python | Node.js | MCP Server v0.7.0 (**162 tools**) | RAG: BM25 SOTA
+> Version: 6.18.0 | 31/01/2026 | Session 249.23 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 36 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
+> **Platform: 254 MCP Tools | 4 Sensors | 3 Agents | 31 Personas | 4 Frameworks | 12 Func. Tools | 23 Core Modules**
+> SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
-> Integrations: **28 native** (162 MCP tools) | WordPress Plugin ✅ | WhatsApp ✅ | 11 Function Tools ✅
-> E-commerce: WooCommerce, **Shopify**, Magento, Wix, Squarespace, BigCommerce, PrestaShop (ALL CRUD)
-> **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds
+> Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 12 Function Tools ✅
+> E-commerce: 7 platforms CRUD (Shopify, WooCommerce, Magento, PrestaShop, BigCommerce, Wix, Squarespace)
+> **Payments: Stripe (29 tools)** - Payment Links, Checkout, Invoices, Refunds
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
-> **Website: /docs/ Académie Business ✅** - Use Cases, Workflows Inter-Intégrations, ROI
+> **Website: /docs/ Académie Business ✅** - Full Platform Inventory, Use Cases, Workflows, ROI
 
 ## Identité
 
@@ -41,21 +42,30 @@
 
 ```
 VocalIA/
-├── core/           # Voice engine (17 fichiers) + Multi-Tenant
+├── core/           # 23 modules (voice engine + multi-tenant)
 │   ├── SecretVault.cjs       # Per-tenant credentials (AES-256-GCM)
 │   ├── OAuthGateway.cjs      # OAuth 2.0 flows (port 3010)
-│   └── WebhookRouter.cjs     # Inbound webhooks (port 3011)
+│   ├── WebhookRouter.cjs     # Inbound webhooks (port 3011)
+│   ├── BillingAgent.cjs      # Autonomous billing agent
+│   ├── TenantOnboardingAgent.cjs  # Client setup agent
+│   └── voice-agent-b2b.cjs   # B2B qualification agent
+├── sensors/        # 4 real-time sensors
+│   ├── cost-tracking-sensor.cjs
+│   ├── lead-velocity-sensor.cjs
+│   ├── retention-sensor.cjs
+│   └── voice-quality-sensor.cjs
 ├── clients/        # Per-tenant configurations
 │   ├── agency_internal/      # VocalIA internal
 │   └── client_demo/          # Demo tenant
-├── widget/         # Browser widget
-├── telephony/      # PSTN bridge
-├── personas/       # 30 personas
+├── widget/         # Browser widget (2 files)
+├── telephony/      # PSTN bridge (12 function tools)
+├── personas/       # 31 personas
 ├── integrations/   # CRM/E-commerce (multi-tenant)
-├── website/        # 31 pages HTML
+├── website/        # 36 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (162 tools)
+├── mcp-server/     # MCP Server (254 tools / 25 categories)
+├── scripts/        # 30 utility scripts
 └── docs/           # Documentation
 ```
 

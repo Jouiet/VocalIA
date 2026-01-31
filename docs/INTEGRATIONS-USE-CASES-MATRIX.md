@@ -1,30 +1,49 @@
 # VocalIA - Matrice Intégrations × Use Cases
 
-> **Version**: 1.1.0 | **Date**: 31/01/2026 | **Session**: 249.16
-> **21 Intégrations natives réelles + 3 iPaaS = 159 MCP Tools**
-> **VÉRIFIÉ**: Audit codebase 31/01/2026 - Corrections appliquées
+> **Version**: 2.1.0 | **Date**: 31/01/2026 | **Session**: 249.22
+> **28 Intégrations natives + 3 iPaaS = 254 MCP Tools**
+> **VÉRIFIÉ**: Audit codebase 31/01/2026
+> **Session 249.21**: +Stripe (19 tools) - Cycle transactionnel COMPLET
 
 ---
 
 ## 1. Vue d'Ensemble
 
-### Intégrations Natives (23)
+### Intégrations Natives (28)
 
 ```
-E-COMMERCE (5)        CRM (3)           SCHEDULING (2)      SUPPORT (2)
-├── Shopify           ├── Pipedrive     ├── Calendar        ├── Freshdesk
-├── WooCommerce       ├── Zoho          └── Calendly        └── Zendesk
-├── Magento           └── HubSpot*
-├── PrestaShop
-└── BigCommerce
+E-COMMERCE (7)        CRM (3)           SCHEDULING (2)      SUPPORT (2)
+├── Shopify (8)       ├── Pipedrive     ├── Calendar        ├── Freshdesk
+├── WooCommerce (7)   ├── Zoho          └── Calendly        └── Zendesk
+├── Magento (10)      └── HubSpot*
+├── PrestaShop (10)
+├── BigCommerce (9)
+├── Wix (6)
+└── Squarespace (7)
 
-COMMUNICATION (3)     WEBSITE (2)       PRODUCTIVITY (3)    iPaaS (3)
-├── Slack             ├── Wix           ├── Sheets          ├── Zapier (+7000)
-├── Gmail             └── Squarespace   ├── Drive           ├── Make
-└── Email                               └── Docs            └── n8n
+PAYMENTS (1)          COMMUNICATION (3)  PRODUCTIVITY (3)    iPaaS (3)
+└── **Stripe (19)**   ├── Slack          ├── Sheets          ├── Zapier (+7000)
+    Payment Links     ├── Gmail          ├── Drive           ├── Make
+    Checkout          └── Email          └── Docs            └── n8n
+    Invoices
+    Refunds
 
 * HubSpot via WebhookRouter
 ```
+
+### E-commerce Market Coverage: ~64%
+
+| Plateforme | Part Marché | MCP Tools | CRUD Status |
+|:-----------|:-----------:|:---------:|:-----------:|
+| WooCommerce | 33-39% | 7 | ✅ FULL |
+| Shopify | 10.32% | 8 | ✅ FULL |
+| Magento | 8% | 10 | ✅ FULL |
+| Wix | 7.4% | 6 | ✅ FULL |
+| Squarespace | 2.6% | 7 | ✅ FULL |
+| PrestaShop | 1.91% | 10 | ✅ FULL |
+| BigCommerce | 1% | 9 | ✅ FULL |
+
+**Session 249.21**: Toutes les plateformes ont maintenant cancel/refund operations.
 
 ---
 
@@ -245,29 +264,55 @@ VocalIA (order inquiry)
 
 ---
 
-## 5. Gaps & Opportunités
+## 5. Gaps & Opportunités (MIS À JOUR Session 249.21)
 
-### 5.1 Intégrations Manquantes (Haute Valeur)
+### 5.1 Intégrations P0/P1 - TOUTES COMPLÉTÉES ✅
 
-| Intégration | Impact | Effort | Priorité |
-|:------------|:------:|:------:|:--------:|
-| Twilio SMS | ⭐⭐⭐ | ⭐ | P1 |
-| WhatsApp Business | ⭐⭐⭐ | ⭐⭐ | P1 |
-| Stripe (paiements) | ⭐⭐⭐ | ⭐⭐ | P1 |
-| Doctolib | ⭐⭐ | ⭐⭐⭐ | P2 |
-| Salesforce | ⭐⭐⭐ | ⭐⭐⭐ | P2 |
-| Microsoft Teams | ⭐⭐ | ⭐⭐ | P3 |
-| Notion | ⭐⭐ | ⭐ | P3 |
+| Intégration | Impact | Status | Session |
+|:------------|:------:|:------:|:-------:|
+| ~~Twilio SMS~~ | ⭐⭐⭐ | ✅ **FAIT** | 249.18 |
+| ~~WhatsApp Business~~ | ⭐⭐⭐ | ✅ **FAIT** | Déjà implémenté |
+| ~~Stripe (paiements)~~ | ⭐⭐⭐ | ✅ **FAIT** | 249.21 (19 tools) |
+| ~~Shopify CRUD~~ | ⭐⭐⭐ | ✅ **FAIT** | 249.20 (8 tools) |
+| ~~E-commerce CRUD~~ | ⭐⭐⭐ | ✅ **FAIT** | 249.20 (7 plateformes) |
 
-### 5.2 Function Tools Manquants
+### 5.2 Intégrations Restantes (P2/P3)
 
-| Tool | Use Case | Priorité |
-|:-----|:---------|:--------:|
-| `send_sms` | Confirmations SMS | P1 |
-| `collect_payment` | Paiement par téléphone | P1 |
-| `create_survey` | Post-call feedback | P2 |
-| `sentiment_analysis` | Analyse temps réel | P2 |
-| `voice_biometrics` | Authentification vocale | P3 |
+| Intégration | Impact | Effort | Priorité | ROI Potentiel |
+|:------------|:------:|:------:|:--------:|:--------------|
+| Salesforce | ⭐⭐⭐ | ⭐⭐⭐ | P2 | Marché enterprise US |
+| Doctolib | ⭐⭐ | ⭐⭐⭐ | P2 | Santé France |
+| Microsoft Teams | ⭐⭐ | ⭐⭐ | P2 | Corporate comms |
+| Notion | ⭐⭐ | ⭐ | P3 | KB alternative |
+| Cal.com | ⭐⭐ | ⭐⭐ | P3 | Self-hosted scheduling |
+
+### 5.3 Function Tools - État Actuel
+
+| Tool | Use Case | Status |
+|:-----|:---------|:------:|
+| ~~`send_sms`~~ | Confirmations SMS | ✅ `messaging_send` |
+| ~~`collect_payment`~~ | Paiement par téléphone | ✅ `stripe_create_payment_link` |
+| `create_survey` | Post-call feedback | ⏳ Via Zapier → Typeform |
+| `sentiment_analysis` | Analyse temps réel | ⏳ P2 (OpenAI/Google NLP) |
+| `voice_biometrics` | Authentification vocale | ⏳ P3 |
+
+### 5.4 Valeur Business Débloquée (Session 249.21)
+
+```
+AVANT (Session 249.16)          APRÈS (Session 249.21)
+──────────────────────          ──────────────────────
+Stripe: ❌ À FAIRE              Stripe: ✅ 19 tools
+Shopify: READ-ONLY              Shopify: ✅ FULL CRUD
+E-commerce: Partiel             E-commerce: ✅ 7 plateformes CRUD
+SMS: ❌                         SMS: ✅ Twilio fallback
+Cycle transactionnel: ❌        Cycle transactionnel: ✅ COMPLET
+
+USE CASE DÉBLOQUÉ: Voice Commerce End-to-End
+─────────────────────────────────────────────
+Appel → Qualification → Commande → Paiement → Livraison → Support
+  ↓         ↓             ↓          ↓          ↓          ↓
+VocalIA → BANT → Shopify → Stripe → Fulfillment → Zendesk
+```
 
 ---
 
