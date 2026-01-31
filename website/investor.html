@@ -82,8 +82,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" defer></script>
 
   <!-- Security -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
@@ -321,9 +321,9 @@
               <tr class="competitor-row vocalia">
                 <td class="py-4 px-6 text-zinc-300" data-i18n="investor.table_languages">5 Langues natives</td>
                 <td class="py-4 px-6 text-center"><i data-lucide="check" class="w-5 h-5 text-emerald-400 inline"></i></td>
-                <td class="py-4 px-6 text-center text-zinc-500">Limité</td>
-                <td class="py-4 px-6 text-center text-zinc-500">Limité</td>
-                <td class="py-4 px-6 text-center text-zinc-500">Limité</td>
+                <td class="py-4 px-6 text-center text-zinc-400">Limité</td>
+                <td class="py-4 px-6 text-center text-zinc-400">Limité</td>
+                <td class="py-4 px-6 text-center text-zinc-400">Limité</td>
               </tr>
             </tbody>
           </table>
@@ -590,10 +590,10 @@
       <!-- Bottom Bar -->
       <div class="border-t border-slate-800 mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+          <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
-          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
             <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
@@ -633,7 +633,7 @@
   </script>
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@0.469.0"></script>
+  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       if (typeof lucide !== 'undefined') lucide.createIcons();

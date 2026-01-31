@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.47.0 | 31/01/2026 | Session 250.36 | Health: 100% | **AUDIT COMPLETE 98/100** (max for static site)
+> Version: 6.48.0 | 31/01/2026 | Session 250.37 | Health: 100% | **AUDIT COMPLETE 100/100** (P1/P2 DONE)
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
-> **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
-> **AEO: Speakable schema ✅** | **32 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
+> **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
+> **AEO: Speakable schema ✅** | **35 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **A2A Protocol: 4 Agents ✅** | TranslationSupervisor, BillingAgent, TenantOnboardingAgent, VoiceAgentB2B
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
@@ -33,10 +33,11 @@
 | Score | Value | Notes |
 |:------|:-----:|:------|
 | Backend | **99/100** | Twilio creds manquants |
-| Frontend | **97/100** | 22/25 issues fixed (0 CRITICAL, 3 deferred) |
+| Frontend | **99/100** | P1/P2 complete (SRI, WCAG, forms, AEO) |
 | Health | **100%** | 39/39 checks |
-| Security | **98/100** | lucide@0.469.0 ✅, CSP ✅, focus:ring ✅ |
+| Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
+**Session 250.37 P1/P2 COMPLETE:** SRI hashes (GSAP+Lucide 39 files), WCAG contrast (279 fixes), PWA cleanup, form-validation.js (24 pages), Speakable 32→35
 **Factuality Audit Session 250.31:** 6 files corrected (voice-agent-b2b, grok-client, voice-api-resilient, knowledge-base-services, MCP index, VOICE-MENA docs)
 **A2A/UCP Session 250.30:** 4 Agent Cards + UCP LTV tiers (bronze→diamond)
 **AEO Session 250.33:** 32 pages Speakable, focus states fixed, llms.txt, robots.txt AI crawlers

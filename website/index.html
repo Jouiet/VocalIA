@@ -123,8 +123,8 @@
     content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 
   <!-- GSAP Animation Library - Loaded async for performance -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" defer></script>
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -382,7 +382,7 @@
                 <div class="grid grid-cols-3 gap-6">
                   <!-- Column 1: Use Cases -->
                   <div>
-                    <div class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3"
+                    <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"
                       data-i18n="solutions_menu.by_use_case">Par Cas d'Usage</div>
                     <a href="/use-cases/e-commerce"
                       class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
@@ -413,7 +413,7 @@
                   <!-- Column 2: Industries -->
                   <div>
                     <a href="/industries/"
-                      class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3 hover:text-indigo-400 transition flex items-center gap-1"
+                      class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3 hover:text-indigo-400 transition flex items-center gap-1"
                       data-i18n="solutions_menu.by_industry">
                       Par Industrie
                       <i data-lucide="arrow-right" class="w-3 h-3 opacity-0 group-hover:opacity-100 transition"></i>
@@ -564,7 +564,7 @@
       <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
         <!-- Products Section -->
         <div class="mb-6">
-          <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="nav.products">
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.products">
             Produits</h3>
           <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
             <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
@@ -594,7 +594,7 @@
 
         <!-- Solutions Section -->
         <div class="mb-6">
-          <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="nav.solutions">
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.solutions">
             Solutions</h3>
           <div class="grid grid-cols-2 gap-2">
             <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
@@ -618,7 +618,7 @@
 
         <!-- Resources Section -->
         <div class="mb-6">
-          <h3 class="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3" data-i18n="nav.resources">
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.resources">
             Ressources</h3>
           <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
             data-i18n="resources_menu.docs">Documentation</a>
@@ -898,7 +898,7 @@
               </div>
               <div class="flex items-baseline gap-1">
                 <span id="telephonyPrice" class="text-2xl font-bold text-white">0.06€</span>
-                <span class="text-zinc-500 text-sm" data-i18n="features.telephony.price">/min</span>
+                <span class="text-zinc-400 text-sm" data-i18n="features.telephony.price">/min</span>
               </div>
             </div>
             <h3
@@ -1299,7 +1299,7 @@
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name1">Karim M.</div>
-              <div class="text-sm text-zinc-500" data-i18n="testimonials.role1">CEO, Boutique E-commerce • Casablanca</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role1">CEO, Boutique E-commerce • Casablanca</div>
             </div>
           </div>
         </div>
@@ -1322,7 +1322,7 @@
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name2">Dr. Sara B.</div>
-              <div class="text-sm text-zinc-500" data-i18n="testimonials.role2">Directrice, Clinique Dentaire Amal • Rabat</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role2">Directrice, Clinique Dentaire Amal • Rabat</div>
             </div>
           </div>
         </div>
@@ -1345,7 +1345,7 @@
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name3">Youssef E.</div>
-              <div class="text-sm text-zinc-500" data-i18n="testimonials.role3">Directeur Commercial, Agence Immo • Marrakech</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role3">Directeur Commercial, Agence Immo • Marrakech</div>
             </div>
           </div>
         </div>
@@ -1548,10 +1548,10 @@
       <!-- Bottom Bar -->
       <div class="border-t border-slate-800 mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+          <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
-          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-500">
+          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
             <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
@@ -1809,7 +1809,7 @@
   <script src="/voice-assistant/voice-widget.js" defer></script>
 
   <!-- Lucide Icons 2026 -->
-  <script src="https://unpkg.com/lucide@0.469.0" defer></script>
+  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -1841,6 +1841,7 @@
       deferredPrompt = null;
     };
   </script>
+  <script src="/src/lib/form-validation.js" defer></script>
 </body>
 
 </html><!-- CI Test Thu Jan 29 18:51:28 +01 2026 -->
