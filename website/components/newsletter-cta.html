@@ -5,25 +5,127 @@
     <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
       <div class="text-center mb-6">
         <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
-          <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
+          <span data-i18n="common.newsletter_title">Restez informé des actualités</span> <span class="gradient-text" data-i18n="common.newsletter_highlight">Voice AI</span>
         </h3>
-        <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
+        <p class="text-slate-400 text-sm" data-i18n="common.newsletter_subtitle">
           Articles, guides et études de cas. Pas de spam.
         </p>
       </div>
-      <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); this.querySelector('button').textContent = '✓ Inscrit!'; this.querySelector('button').disabled = true;">
+      <form id="newsletter-form" class="flex flex-col sm:flex-row gap-3">
         <input
           type="email"
+          id="newsletter-email"
           placeholder="votre@email.com"
-          data-i18n-placeholder="newsletter.placeholder"
+          data-i18n-placeholder="common.newsletter_placeholder"
           class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
           required
           aria-label="Adresse email"
         >
-        <button type="submit" class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap" data-i18n="newsletter.button">
-          S'inscrire
+        <button
+          type="submit"
+          id="newsletter-submit"
+          class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap flex items-center justify-center gap-2 min-w-[120px]"
+          data-i18n="common.newsletter_button"
+        >
+          <span class="btn-text">S'inscrire</span>
+          <svg class="animate-spin h-4 w-4 hidden" id="newsletter-spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
         </button>
       </form>
+      <!-- Success message -->
+      <div id="newsletter-success" class="hidden mt-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-center">
+        <div class="flex items-center justify-center gap-2 text-emerald-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <span data-i18n="common.newsletter_success">Merci ! Vous êtes inscrit.</span>
+        </div>
+      </div>
+      <!-- Error message -->
+      <div id="newsletter-error" class="hidden mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg text-center">
+        <div class="flex items-center justify-center gap-2 text-red-400">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span data-i18n="common.newsletter_error">Une erreur est survenue. Réessayez.</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+(function() {
+  const form = document.getElementById('newsletter-form');
+  const emailInput = document.getElementById('newsletter-email');
+  const submitBtn = document.getElementById('newsletter-submit');
+  const spinner = document.getElementById('newsletter-spinner');
+  const successDiv = document.getElementById('newsletter-success');
+  const errorDiv = document.getElementById('newsletter-error');
+
+  // Webhook URL - Configure in production
+  const WEBHOOK_URL = window.VOCALIA_NEWSLETTER_WEBHOOK || '';
+
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+    if (!email) return;
+
+    // Reset states
+    successDiv.classList.add('hidden');
+    errorDiv.classList.add('hidden');
+    spinner.classList.remove('hidden');
+    submitBtn.disabled = true;
+
+    try {
+      // If webhook URL configured, send to backend
+      if (WEBHOOK_URL) {
+        const response = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email,
+            source: 'website',
+            timestamp: new Date().toISOString(),
+            page: window.location.pathname,
+            locale: document.documentElement.lang || 'fr'
+          })
+        });
+
+        if (!response.ok) throw new Error('Subscription failed');
+      }
+
+      // Store locally for analytics/backup
+      const subscribers = JSON.parse(localStorage.getItem('vocalia_subscribers') || '[]');
+      if (!subscribers.includes(email)) {
+        subscribers.push(email);
+        localStorage.setItem('vocalia_subscribers', JSON.stringify(subscribers));
+      }
+
+      // Show success
+      spinner.classList.add('hidden');
+      successDiv.classList.remove('hidden');
+      form.classList.add('hidden');
+
+      // Track event if analytics available
+      if (window.gtag) {
+        gtag('event', 'newsletter_subscribe', { email_domain: email.split('@')[1] });
+      }
+      if (window.plausible) {
+        plausible('Newsletter Subscribe');
+      }
+
+    } catch (error) {
+      console.error('[Newsletter]', error);
+      spinner.classList.add('hidden');
+      errorDiv.classList.remove('hidden');
+      submitBtn.disabled = false;
+    }
+  });
+})();
+</script>

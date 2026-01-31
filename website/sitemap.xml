@@ -254,4 +254,12 @@
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
     </url>
+
+    <!-- Status Page -->
+    <url>
+        <loc>https://vocalia.ma/status</loc>
+        <lastmod>2026-01-31</lastmod>
+        <changefreq>hourly</changefreq>
+        <priority>0.5</priority>
+    </url>
 </urlset>

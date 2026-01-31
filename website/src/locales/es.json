@@ -1642,12 +1642,13 @@
     "base_url_production": "Producción"
   },
   "common": {
-    "newsletter_title": "Restez informé des actualités",
+    "newsletter_title": "Mantente informado sobre",
     "newsletter_highlight": "Voice AI",
-    "newsletter_subtitle": "Articles, guides et études de cas. Pas de spam.",
-    "newsletter_placeholder": "votre@email.com",
-    "newsletter_button": "S'inscrire",
-    "newsletter_success": "Inscrit !"
+    "newsletter_subtitle": "Artículos, guías y casos de estudio. Sin spam.",
+    "newsletter_placeholder": "tu@email.com",
+    "newsletter_button": "Suscribirse",
+    "newsletter_success": "¡Suscrito!",
+    "newsletter_error": "Ha ocurrido un error. Inténtalo de nuevo."
   },
   "investor": {
     "back_to_site": "Volver al sitio",
@@ -1733,5 +1734,28 @@
     "already_account": "¿Ya tienes cuenta?",
     "login": "Iniciar sesión",
     "popular": "Popular"
+  },
+  "status": {
+    "meta_title": "Estado del Sistema - VocalIA",
+    "meta_description": "Estado en tiempo real de los servicios VocalIA. 99.9% de disponibilidad garantizada.",
+    "title": "Estado",
+    "all_operational": "Todos los sistemas operativos",
+    "last_update": "Última actualización: hace unos segundos",
+    "services_title": "Servicios",
+    "operational": "Operativo",
+    "partial": "Degradado",
+    "outage": "Caído",
+    "uptime_title": "Historial de Disponibilidad",
+    "last_90_days": "Últimos 90 días",
+    "90_days_ago": "Hace 90 días",
+    "today": "Hoy",
+    "metrics_title": "Métricas",
+    "uptime_30d": "Disponibilidad 30 días",
+    "avg_response": "Latencia promedio",
+    "incidents_30d": "Incidentes 30 días",
+    "incidents_title": "Incidentes Recientes",
+    "no_incidents": "Sin incidentes en los últimos 30 días.",
+    "all_rights": "Todos los derechos reservados.",
+    "contact_support": "Contactar soporte"
   }
 }

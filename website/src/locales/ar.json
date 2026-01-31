@@ -1642,12 +1642,13 @@
     "base_url_production": "الإنتاج"
   },
   "common": {
-    "newsletter_title": "Restez informé des actualités",
+    "newsletter_title": "ابقَ على اطلاع بأخبار",
     "newsletter_highlight": "Voice AI",
-    "newsletter_subtitle": "Articles, guides et études de cas. Pas de spam.",
-    "newsletter_placeholder": "votre@email.com",
-    "newsletter_button": "S'inscrire",
-    "newsletter_success": "Inscrit !"
+    "newsletter_subtitle": "مقالات ودراسات حالة. بدون إزعاج.",
+    "newsletter_placeholder": "بريدك@الإلكتروني.com",
+    "newsletter_button": "اشترك",
+    "newsletter_success": "تم الاشتراك!",
+    "newsletter_error": "حدث خطأ. يرجى المحاولة مرة أخرى."
   },
   "investor": {
     "back_to_site": "العودة للموقع",
@@ -1733,5 +1734,28 @@
     "already_account": "لديك حساب؟",
     "login": "تسجيل الدخول",
     "popular": "شائع"
+  },
+  "status": {
+    "meta_title": "حالة النظام - VocalIA",
+    "meta_description": "حالة خدمات VocalIA في الوقت الفعلي. توفر 99.9% مضمون.",
+    "title": "الحالة",
+    "all_operational": "جميع الأنظمة تعمل",
+    "last_update": "آخر تحديث: منذ ثوانٍ",
+    "services_title": "الخدمات",
+    "operational": "يعمل",
+    "partial": "متدهور",
+    "outage": "معطل",
+    "uptime_title": "سجل التوفر",
+    "last_90_days": "آخر 90 يوم",
+    "90_days_ago": "قبل 90 يوم",
+    "today": "اليوم",
+    "metrics_title": "المقاييس",
+    "uptime_30d": "التوفر 30 يوم",
+    "avg_response": "متوسط الاستجابة",
+    "incidents_30d": "الحوادث 30 يوم",
+    "incidents_title": "الحوادث الأخيرة",
+    "no_incidents": "لا توجد حوادث في آخر 30 يوم.",
+    "all_rights": "جميع الحقوق محفوظة.",
+    "contact_support": "اتصل بالدعم"
   }
 }

@@ -1642,12 +1642,13 @@
     "base_url_production": "الإنتاج"
   },
   "common": {
-    "newsletter_title": "Restez informé des actualités",
+    "newsletter_title": "بقا على اطلاع بأخبار",
     "newsletter_highlight": "Voice AI",
-    "newsletter_subtitle": "Articles, guides et études de cas. Pas de spam.",
-    "newsletter_placeholder": "votre@email.com",
-    "newsletter_button": "S'inscrire",
-    "newsletter_success": "Inscrit !"
+    "newsletter_subtitle": "مقالات ودراسات حالة. بلا spam.",
+    "newsletter_placeholder": "الإيميل ديالك",
+    "newsletter_button": "اشترك",
+    "newsletter_success": "مشترك!",
+    "newsletter_error": "وقع شي خطأ. عاود حاول."
   },
   "investor": {
     "back_to_site": "رجوع للموقع",
@@ -1733,5 +1734,28 @@
     "already_account": "عندك حساب؟",
     "login": "دخل",
     "popular": "مشهور"
+  },
+  "status": {
+    "meta_title": "حالة النظام - VocalIA",
+    "meta_description": "حالة الخدمات ديال VocalIA في الوقت الفعلي. توفر 99.9% مضمون.",
+    "title": "الحالة",
+    "all_operational": "كلشي خدام مزيان",
+    "last_update": "آخر تحديث: دابا",
+    "services_title": "الخدمات",
+    "operational": "خدام",
+    "partial": "فيه شي مشاكل",
+    "outage": "واقف",
+    "uptime_title": "تاريخ التوفر",
+    "last_90_days": "90 يوم الأخيرين",
+    "90_days_ago": "90 يوم",
+    "today": "اليوم",
+    "metrics_title": "الأرقام",
+    "uptime_30d": "التوفر 30 يوم",
+    "avg_response": "السرعة المتوسطة",
+    "incidents_30d": "المشاكل 30 يوم",
+    "incidents_title": "المشاكل الأخيرة",
+    "no_incidents": "ما كاينش تا مشكل فـ 30 يوم الأخيرين.",
+    "all_rights": "جميع الحقوق محفوظة.",
+    "contact_support": "تواصل مع الدعم"
   }
 }

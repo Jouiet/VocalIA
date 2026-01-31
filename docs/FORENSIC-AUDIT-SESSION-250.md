@@ -18,7 +18,7 @@
    - 3.1 Structure du Projet
    - 3.2 MCP Server (178 tools)
    - 3.3 Core Modules (28 modules)
-   - 3.4 Personas (30)
+   - 3.4 Personas (39 - Session 250.6)
    - 3.5 Telephony (12 function tools)
    - 3.6 Code Mort
    - 3.7 Sensors (4)
@@ -64,7 +64,7 @@
 | Pages HTML | 37 | 37 | 0 | N/A |
 | i18n Keys | 1530 | 1546 | +16 | ✅ |
 | Traductions | 100% | 71-81% | -20% | ✅ |
-| Personas | 31 | 30 | -1 | ✅ |
+| Personas | 30 | **40** | +10 | ✅ Session 250.6 |
 | Core Modules | 23 | 28 | +5 | ✅ |
 | Function Tools | 12 | 12 | 0 | N/A |
 | Sensors | 4 | 4 | 0 | N/A |
@@ -242,63 +242,61 @@ node -e "require('./telephony/voice-telephony-bridge.cjs')"
 # Résultat: ✅ OK (EventBus v3.0 initialized)
 ```
 
-## 3.4 Personas - Comptage Exact
+## 3.4 Personas - Comptage Exact (Session 250.6 Update)
 
 ### Vérification
 
 ```bash
 # Commande exécutée:
-grep -E "^\s{4}[A-Z][A-Z_]+:\s*\{" personas/voice-persona-injector.cjs | sort -u | wc -l
-# Résultat: 30
+node -e "const m = require('./personas/voice-persona-injector.cjs'); console.log(Object.keys(m.PERSONAS).length);"
+# Résultat: 40
 ```
 
-### Liste des 30 Personas
+### Restructuration Session 250.6
 
-**TIER 1 - Gold Rush (7):**
-1. AGENCY
-2. DENTAL
-3. PROPERTY
-4. HOA
-5. SCHOOL
-6. CONTRACTOR
-7. FUNERAL
+**Supprimées (5):**
+- GOVERNOR, SCHOOL, HOA, SURVEYOR (Admin publique/syndic hors scope business PME)
+- DRIVER (VTC individuel hors scope B2B - couvert par DISPATCHER/RENTER)
 
-**TIER 2 - Expansion (21):**
-8. HEALER
-9. MECHANIC
-10. COUNSELOR
-11. CONCIERGE
-12. STYLIST
-13. RECRUITER
-14. DISPATCHER
-15. COLLECTOR
-16. SURVEYOR
-17. GOVERNOR
-18. INSURER
-19. ACCOUNTANT
-20. ARCHITECT
-21. PHARMACIST
-22. RENTER
-23. LOGISTICIAN
-24. TRAINER
-25. PLANNER
-26. PRODUCER
-27. CLEANER
-28. GYM
+**Ajoutées (14):** Basées sur données économiques OMPIC/Eurostat 2024
+- Maroc (4): RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT
+- Europe (5): CONSULTANT, IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY
+- International (5): BAKERY, GROCERY, SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER
+
+### Liste des 40 Personas
+
+**TIER 1 - Core Business (5):**
+1. AGENCY, 2. DENTAL, 3. PROPERTY, 4. CONTRACTOR, 5. FUNERAL
+
+**TIER 2 - Expansion (17):**
+6. HEALER, 7. MECHANIC, 8. COUNSELOR, 9. CONCIERGE, 10. STYLIST, 11. RECRUITER,
+12. DISPATCHER, 13. COLLECTOR, 14. INSURER, 15. ACCOUNTANT, 16. ARCHITECT,
+17. PHARMACIST, 18. RENTER, 19. LOGISTICIAN, 20. TRAINER, 21. PLANNER, 22. PRODUCER,
+23. CLEANER, 24. GYM
 
 **TIER 3 - Universal (2):**
-29. UNIVERSAL_ECOMMERCE
-30. UNIVERSAL_SME
+25. UNIVERSAL_ECOMMERCE, 26. UNIVERSAL_SME
 
-### Anomalie Corrigée
+**TIER 4 - NEW Economy (14):**
+27. RETAILER, 28. BUILDER, 29. RESTAURATEUR, 30. TRAVEL_AGENT,
+31. CONSULTANT, 32. IT_SERVICES, 33. MANUFACTURER, 34. DOCTOR, 35. NOTARY,
+36. BAKERY, 37. GROCERY, 38. SPECIALIST, 39. REAL_ESTATE_AGENT, 40. HAIRDRESSER
 
-```
-CLAUDE.md AVANT: "31 Personas"
-CLAUDE.md APRÈS: "30 Personas"
+### Structure SOTA Enrichie (100%)
 
-Header voice-persona-injector.cjs AVANT: Liste incomplète (1,2,3,4,5,7)
-Header voice-persona-injector.cjs APRÈS: Liste complète par tiers
-```
+Toutes les 39 personas ont maintenant:
+- `personality_traits`: 3-4 traits caractéristiques
+- `background`: Contexte professionnel
+- `tone_guidelines`: Ton par situation
+- `forbidden_behaviors`: 3-5 comportements interdits
+- `example_dialogues`: Exemples de conversations
+
+### Note Importante sur les Tiers
+
+Les "Tiers" sont une **catégorisation interne de développement uniquement**.
+- Un client n'achète JAMAIS "un Tier"
+- Un client reçoit 1-2 personas configurées pour SON secteur
+- Ex: Dentiste → persona DENTAL configurée, pas accès aux 39
 
 ## 3.5 Telephony - Function Tools
 
@@ -315,7 +313,7 @@ grep -c "name: '" telephony/voice-telephony-bridge.cjs
 | # | Tool | Ligne | Purpose |
 |:-:|:-----|:-----:|:--------|
 | 1 | qualify_lead | 624 | BANT scoring |
-| 2 | handle_objection | 664 | Objection logging |
+| 2 | handle_objection | 664 | **SOTA: LAER + Feel-Felt-Found** (Session 250.6) |
 | 3 | check_order_status | 684 | Shopify lookup |
 | 4 | check_product_stock | 699 | Inventory |
 | 5 | get_customer_tags | 714 | Klaviyo |
@@ -1046,7 +1044,7 @@ cat website/public/site.webmanifest
 
 ```markdown
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 37 pages | **1546 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
-> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 30 Personas | 4 Frameworks | 12 Func. Tools | 28 Core Modules**
+> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 39 Personas SOTA | 5 Frameworks | 12 Func. Tools | 28 Core Modules**
 ```
 
 ### Architecture Section
@@ -1105,7 +1103,7 @@ TOTAL: 652 lignes - Plugin complet
 
 **Fonctionnalités (plugin original):**
 - Settings page WordPress admin
-- 30 personas configurables
+- 40 personas configurables (Session 250.6)
 - 5 langues supportées (FR, EN, ES, AR, Darija)
 - Position/thème/couleur personnalisables
 - Shortcode `[vocalia_widget]`
@@ -1187,7 +1185,7 @@ TOTAL: 652 lignes - Plugin complet
 
 | # | Action | Fichier | Effort | Impact |
 |:-:|:-------|:--------|:------:|:------:|
-| 7 | Implémenter newsletter | 20+ pages | 4h | CRM |
+| 7 | ~~Implémenter newsletter~~ | components/newsletter-cta.html | ✅ Done |
 | 8 | ~~Ajouter lazy loading~~ | Toutes images | ✅ 108 images |
 | 9 | ~~Traduire pricing EN/ES~~ | locales/*.json | ✅ Déjà fait |
 | 10 | Connecter dashboard API | dashboard/*.html | 8h | Fonctionnel |
@@ -1217,10 +1215,10 @@ TOTAL: 652 lignes - Plugin complet
 
 | # | Action | Effort | Impact |
 |:-:|:-------|:------:|:------:|
-| 20 | Traduire usecases_* | 6h | i18n complet |
+| 20 | ~~Traduire usecases_*~~ | 5 locales | ✅ Déjà traduit |
 | 21 | Implémenter Light mode | 4h | UX |
-| 22 | Ajouter alt texts dashboards | 1h | WCAG |
-| 23 | Créer page /status | 2h | Trust |
+| 22 | ~~Ajouter alt texts dashboards~~ | N/A | ✅ WCAG OK |
+| 23 | ~~Créer page /status~~ | website/status/index.html | ✅ Done |
 | 24 | Analytics réel (Plausible/Umami) | 4h | Marketing |
 
 ### Documentation

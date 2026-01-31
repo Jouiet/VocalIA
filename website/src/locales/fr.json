@@ -1647,7 +1647,8 @@
     "newsletter_subtitle": "Articles, guides et études de cas. Pas de spam.",
     "newsletter_placeholder": "votre@email.com",
     "newsletter_button": "S'inscrire",
-    "newsletter_success": "Inscrit !"
+    "newsletter_success": "Inscrit !",
+    "newsletter_error": "Une erreur est survenue. Réessayez."
   },
   "investor": {
     "back_to_site": "Retour au site",
@@ -1733,5 +1734,28 @@
     "already_account": "Déjà un compte ?",
     "login": "Connexion",
     "popular": "Populaire"
+  },
+  "status": {
+    "meta_title": "Statut Système - VocalIA",
+    "meta_description": "Statut en temps réel des services VocalIA. Uptime 99.9% garanti.",
+    "title": "Statut",
+    "all_operational": "Tous les systèmes opérationnels",
+    "last_update": "Dernière mise à jour: il y a quelques secondes",
+    "services_title": "Services",
+    "operational": "Opérationnel",
+    "partial": "Dégradé",
+    "outage": "Panne",
+    "uptime_title": "Historique Uptime",
+    "last_90_days": "90 derniers jours",
+    "90_days_ago": "90 jours",
+    "today": "Aujourd'hui",
+    "metrics_title": "Métriques",
+    "uptime_30d": "Uptime 30 jours",
+    "avg_response": "Latence moyenne",
+    "incidents_30d": "Incidents 30 jours",
+    "incidents_title": "Incidents Récents",
+    "no_incidents": "Aucun incident ces 30 derniers jours.",
+    "all_rights": "Tous droits réservés.",
+    "contact_support": "Contacter le support"
   }
 }
