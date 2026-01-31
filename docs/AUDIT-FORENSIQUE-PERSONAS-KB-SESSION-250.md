@@ -4,25 +4,42 @@
 > **Auditeur**: Claude Opus 4.5 | **Méthodologie**: Bottom-up factuelle
 > **Statut**: ✅ COMPLET + IMPLÉMENTÉ (KB enrichi, Graph RAG créé, Complaint Handling 100%, HITL Financial 100%, Personas HITL-Compliant)
 
-### Changements Session 250.13 - Personas HITL-Compliant
+### Changements Session 250.13 - Personas HITL-Compliant (AUDIT COMPLET)
 
 | Action | Détail | Status |
 |:-------|:-------|:------:|
-| **Personas HITL-compliant** | 14 complaint_scenarios corrigés (promesses financières → transmission pour validation) | ✅ |
+| **Personas HITL-compliant** | **23 complaint_scenarios corrigés** (promesses financières → transmission pour validation) | ✅ |
 | **Forbidden behaviors** | Déjà présent: "Giving refunds without proper process" (2 personas) | ✅ |
 | **Pattern unifié** | "Je transmets votre dossier pour validation" au lieu de "remboursement immédiat" | ✅ |
+| **Vérification exhaustive** | 40/40 personas auditées, 175 scénarios vérifiés | ✅ |
 
-**Corrections appliquées:**
-- DISPATCHER: package_damaged → transmission pour validation
-- UNIVERSAL_ECOMMERCE: late_delivery, damaged_product → transmission HITL
-- CONCIERGE: noisy_room, amenities_missing → transmission direction
-- CLEANER: missed_service → transmission geste commercial
-- RETAILER: defective_product → transmission validation
-- RESTAURATEUR: long_wait → transmission geste commercial
-- TRAVEL_AGENT: tour_cancelled → transmission responsable
-- HAIRDRESSER: bad_haircut → transmission responsable
-- GROCERY: missing_items, damaged_products, quality_issue → transmission remboursement
-- RENTER: wrong_category → transmission surclassement
+**Métriques finales:**
+- 27 scénarios avec pattern HITL "Je transmets"
+- 175 scénarios total (pas tous financiers)
+- **0 promesses directes sans HITL**
+
+**Corrections appliquées (23 total):**
+
+*Session 250.12 (14 scénarios):*
+- DISPATCHER: package_damaged
+- UNIVERSAL_ECOMMERCE: late_delivery, damaged_product
+- CONCIERGE: noisy_room, amenities_missing
+- CLEANER: missed_service
+- RETAILER: defective_product
+- RESTAURATEUR: long_wait
+- TRAVEL_AGENT: tour_cancelled
+- HAIRDRESSER: bad_haircut
+- GROCERY: missing_items, damaged_products, quality_issue
+- RENTER: wrong_category
+
+*Session 250.13 (9 scénarios additionnels):*
+- STYLIST: wait_time
+- RENTER: dirty_vehicle
+- BAKERY: stale_product, order_not_ready
+- HAIRDRESSER: long_wait (doublon corrigé)
+- GROCERY: late_delivery, wrong_substitution
+- CONCIERGE: service_slow
+- GYM: overcrowded_peak_hours
 
 ### Changements Session 250.11 - Audit Complet 3A-Shelf + HITL
 
