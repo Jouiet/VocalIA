@@ -20,9 +20,9 @@
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
 
-**Session 250.26 Update:** 20 issues corrigées, 5 différées (architecture/design)
+**Session 250.27 Update:** 20 issues corrigées, 5 différées (architecture/design)
 - SEO-04: og:image ajouté aux 4 pages publiques indexées
-- AEO: llms.txt créé, Speakable schema sur **12 pages** (6+6 nouvelles)
+- AEO: llms.txt créé, Speakable schema sur **29 pages** (12→29, +17 cette session)
 
 Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind, GSAP) et un SEO/AEO avancé, mais souffre de **dette technique critique**: assets 404, vulnérabilités supply chain, et incohérences SEO.
 
