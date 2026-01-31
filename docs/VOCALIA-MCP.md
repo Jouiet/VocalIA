@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.7.0 | 31/01/2026 | Session 249.21 | BM25 RAG SOTA | **178 tools**
+> Version: 0.8.0 | 31/01/2026 | Session 250.22 | BM25 RAG SOTA | **178 tools** | **28 integrations**
 > **Session 249.21**: Stripe Payment Links (19 tools) - Complete transactional cycle
 > **Session 249.20**: Shopify FULL CRUD (8 tools) - GraphQL Admin API 2026-01
 > **Protocol Gap:** A2A ✅ | AP2 ❌ | A2UI ✅ | UCP ✅ (File Persistence) | Integrations ✅
@@ -118,11 +118,11 @@ Ces tools fonctionnent sans aucun service externe:
 | **Twilio** | ✅ Community | 5 | [github.com/twilio-labs/mcp-twilio](https://github.com/twilio-labs/mcp-twilio) |
 | **Vonage** | ✅ Officiel | 2 | [github.com/Vonage-Community/telephony-mcp-server](https://github.com/Vonage-Community/telephony-mcp-server) |
 | **Retell** | ❌ | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ✅ Officiel | **127** | `mcp-server/` |
+| **VocalIA** | ✅ Officiel | **178** | `mcp-server/` |
 
 **Différenciateurs VocalIA (SOTA):**
 
-- **127 tools** - 16x plus que Vapi (8 tools)
+- **178 tools** - 22x plus que Vapi (8 tools)
 - **iPaaS complet** (Zapier, Make, n8n) → +7000 apps connectables
 - 40 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
