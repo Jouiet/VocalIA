@@ -237,7 +237,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 | **Knowledge Base** | 35/100 | **95/100** | ⚠️ Dense embeddings bloqué (GOOGLE_API_KEY) |
 | **Objection Handling** | N/A | **95/100** | ✅ LAER + Feel-Felt-Found |
 | **Complaint Handling** | N/A | **100/100** | ✅ HITL handle_complaint (Session 250.12) |
-| **3A-Shelf** | 0/100 | **75/100** | ⚠️ Sync shelf obsolète, imports non utilisés |
+| **3A-Shelf** | 0/100 | **95/100** | ✅ Synced Session 250.16 (imports non utilisés = non-critique) |
 | **Global** | 50/100 | **99/100** | ⚠️ Dense embeddings bloqué |
 
 ### 1.2 Constats Critiques
@@ -264,7 +264,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 | **Complaint Handling 40/40** | 4h | Gestion réclamations SOTA | ⭐⭐⭐⭐⭐ | ✅ DONE (Session 250.9) |
 | **HITL Financial Complaints** | 2h | Zéro engagement non approuvé | ⭐⭐⭐⭐⭐ | ✅ DONE (Session 250.12) |
 | **Shelf Bidirectionnel** | 1h | Partage JO-AAA ↔ VocalIA | ⭐⭐⭐⭐ | ✅ DONE (Session 250.11) |
-| **Sync Shelf personas** | 30min | 40 personas dans shelf | ⭐⭐⭐ | ⏳ OPTIONNEL |
+| **Sync Shelf personas** | 30min | 40 personas dans shelf | ⭐⭐⭐ | ✅ DONE (Session 250.16) |
 
 ---
 
@@ -1405,4 +1405,4 @@ node core/knowledge-base-services.cjs --search "voice assistant"
 *✅ Query Translation (tRAG): Cross-lingual AR/ES/ARY → FR avant BM25*
 *⚠️ BLOQUÉ: Dense embeddings (nécessite GOOGLE_GENERATIVE_AI_API_KEY)*
 *❌ ColBERT REJETÉ: ROI insuffisant (193 chunks << 10K minimum, latence GPU 50-100ms)*
-*🔶 OPTIONNEL: 3A-Shelf sync (30min)*
+*✅ 3A-Shelf sync: DONE (5181 lignes personas, Payzone MAD, tRAG pattern)*
