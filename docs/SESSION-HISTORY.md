@@ -1,9 +1,9 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.36.0 | **Updated**: 31/01/2026 | **Session**: 250
+> **Version**: 3.37.0 | **Updated**: 31/01/2026 | **Session**: 250.2
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
 > **MCP Server**: v0.7.0 | **MCP Tools**: 178 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
-> **Session 250**: Footer cleanup + Académie Business nav/footer fix
+> **Session 250.2**: Security fixes + Stripe logo + Investor link + Orphan pages audit
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
 
 ---
