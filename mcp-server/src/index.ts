@@ -3,9 +3,9 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 249.21 - v0.7.0 - REAL Implementation + Stripe Payment Links + E-commerce CRUD Complete
+ * Session 250.28 - v0.8.0 - CDP Enhanced UCP + A2A Protocol Compliance
  *
- * TOOL CATEGORIES (178 tools - 23 inline, 155 external modules):
+ * TOOL CATEGORIES (181 tools - 23 inline, 158 external modules):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -22,7 +22,7 @@
  * EXTERNAL MODULE TOOLS (93):
  * - Calendar Tools (2): calendar_check_availability, calendar_create_event [REQUIRE GOOGLE]
  * - Slack Tools (1): slack_send_notification [REQUIRE WEBHOOK]
- * - UCP Tools (3): ucp_sync_preference, ucp_get_profile, ucp_list_profiles [REQUIRE UCP]
+ * - UCP Tools (6): ucp_sync_preference, ucp_get_profile, ucp_list_profiles, ucp_record_interaction, ucp_track_event, ucp_get_insights [REQUIRE UCP]
  * - Sheets Tools (5): sheets_read_range, sheets_write_range, sheets_append_rows, sheets_get_info, sheets_create [REQUIRE GOOGLE]
  * - Drive Tools (6): drive_list_files, drive_get_file, drive_create_folder, drive_upload_file, drive_share_file, drive_delete_file [REQUIRE GOOGLE]
  * - Docs Tools (4): docs_get_document, docs_create_document, docs_append_text, docs_replace_text [REQUIRE GOOGLE]
@@ -1169,6 +1169,10 @@ server.tool(slackTools.send_notification.name, slackTools.send_notification.para
 server.tool(ucpTools.ucp_sync_preference.name, ucpTools.ucp_sync_preference.parameters, ucpTools.ucp_sync_preference.handler);
 server.tool(ucpTools.ucp_get_profile.name, ucpTools.ucp_get_profile.parameters, ucpTools.ucp_get_profile.handler);
 server.tool(ucpTools.ucp_list_profiles.name, ucpTools.ucp_list_profiles.parameters, ucpTools.ucp_list_profiles.handler);
+// CDP Enhanced Tools (Session 250.28)
+server.tool(ucpTools.ucp_record_interaction.name, ucpTools.ucp_record_interaction.parameters, ucpTools.ucp_record_interaction.handler);
+server.tool(ucpTools.ucp_track_event.name, ucpTools.ucp_track_event.parameters, ucpTools.ucp_track_event.handler);
+server.tool(ucpTools.ucp_get_insights.name, ucpTools.ucp_get_insights.parameters, ucpTools.ucp_get_insights.handler);
 
 // =============================================================================
 // GOOGLE SHEETS TOOLS (5) - REQUIRE GOOGLE CREDENTIALS

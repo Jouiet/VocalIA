@@ -7,6 +7,22 @@ import * as path from 'path';
 const DATA_DIR = path.join(process.cwd(), '..', 'data');
 const UCP_PROFILES_FILE = path.join(DATA_DIR, 'ucp-profiles.json');
 
+interface UCPInteraction {
+    type: 'voice_call' | 'widget_chat' | 'api_request' | 'booking' | 'purchase';
+    timestamp: string;
+    channel: string;
+    duration?: number;
+    outcome?: string;
+    metadata?: Record<string, any>;
+}
+
+interface UCPBehavioralEvent {
+    event: string;
+    timestamp: string;
+    value?: any;
+    source: 'voice' | 'widget' | 'web' | 'api';
+}
+
 interface UCPProfile {
     userId: string;
     tenantId: string;
@@ -17,6 +33,13 @@ interface UCPProfile {
     currencySymbol: string;
     enforced: boolean;
     timestamp: string;
+    // Enhanced CDP fields (Session 250.28)
+    interactionHistory: UCPInteraction[];
+    behavioralEvents: UCPBehavioralEvent[];
+    totalInteractions: number;
+    lastInteraction?: string;
+    preferredChannel?: string;
+    lifetimeValue?: number;
 }
 
 interface UCPStorage {
@@ -90,7 +113,9 @@ export const ucpTools = {
                 rule = config.marketRules.default;
             }
 
-            // 3. Create profile
+            // 3. Load existing storage and create/update profile
+            const storage = loadProfiles();
+            const existingProfile = storage.profiles[profileKey(tenant.id, userId)];
             const profile: UCPProfile = {
                 userId,
                 tenantId: tenant.id,
@@ -100,11 +125,17 @@ export const ucpTools = {
                 currency: rule.currency,
                 currencySymbol: rule.symbol,
                 enforced: true,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                // Preserve or initialize CDP fields
+                interactionHistory: existingProfile?.interactionHistory || [],
+                behavioralEvents: existingProfile?.behavioralEvents || [],
+                totalInteractions: existingProfile?.totalInteractions || 0,
+                lastInteraction: existingProfile?.lastInteraction,
+                preferredChannel: existingProfile?.preferredChannel,
+                lifetimeValue: existingProfile?.lifetimeValue || 0
             };
 
             // 4. PERSIST to file
-            const storage = loadProfiles();
             const key = profileKey(tenant.id, userId);
             storage.profiles[key] = profile;
             const saved = saveProfiles(storage);
@@ -194,6 +225,226 @@ export const ucpTools = {
                         count: tenantProfiles.length,
                         profiles: tenantProfiles,
                         lastUpdated: storage.lastUpdated
+                    }, null, 2)
+                }]
+            };
+        }
+    },
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // CDP ENHANCED TOOLS (Session 250.28)
+    // ─────────────────────────────────────────────────────────────────────────
+
+    ucp_record_interaction: {
+        name: 'ucp_record_interaction',
+        description: 'Record a customer interaction (voice call, widget chat, booking, purchase) to build interaction history',
+        parameters: {
+            userId: z.string().describe('User ID'),
+            interactionType: z.enum(['voice_call', 'widget_chat', 'api_request', 'booking', 'purchase']).describe('Type of interaction'),
+            channel: z.string().describe('Channel (e.g. telephony, web_widget, api)'),
+            duration: z.number().optional().describe('Duration in seconds'),
+            outcome: z.string().optional().describe('Outcome (e.g. resolved, escalated, converted)'),
+            metadata: z.record(z.any()).optional().describe('Additional metadata'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional()
+        },
+        handler: async (args: any) => {
+            const tenant = await tenantMiddleware(args);
+            const storage = loadProfiles();
+            const key = profileKey(tenant.id, args.userId);
+
+            let profile = storage.profiles[key];
+            if (!profile) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            message: "Profile not found. Use ucp_sync_preference first."
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            // Initialize arrays if missing (migration for old profiles)
+            if (!profile.interactionHistory) profile.interactionHistory = [];
+            if (!profile.behavioralEvents) profile.behavioralEvents = [];
+
+            // Add interaction
+            const interaction: UCPInteraction = {
+                type: args.interactionType,
+                timestamp: new Date().toISOString(),
+                channel: args.channel,
+                duration: args.duration,
+                outcome: args.outcome,
+                metadata: args.metadata
+            };
+
+            profile.interactionHistory.push(interaction);
+            profile.totalInteractions = (profile.totalInteractions || 0) + 1;
+            profile.lastInteraction = interaction.timestamp;
+
+            // Update preferred channel based on frequency
+            const channelCounts: Record<string, number> = {};
+            profile.interactionHistory.forEach((i: UCPInteraction) => {
+                channelCounts[i.channel] = (channelCounts[i.channel] || 0) + 1;
+            });
+            profile.preferredChannel = Object.entries(channelCounts)
+                .sort(([, a], [, b]) => b - a)[0]?.[0];
+
+            // Keep only last 100 interactions
+            if (profile.interactionHistory.length > 100) {
+                profile.interactionHistory = profile.interactionHistory.slice(-100);
+            }
+
+            storage.profiles[key] = profile;
+            saveProfiles(storage);
+
+            return {
+                content: [{
+                    type: "text" as const,
+                    text: JSON.stringify({
+                        status: "success",
+                        message: `Interaction recorded for ${args.userId}`,
+                        totalInteractions: profile.totalInteractions,
+                        preferredChannel: profile.preferredChannel
+                    }, null, 2)
+                }]
+            };
+        }
+    },
+
+    ucp_track_event: {
+        name: 'ucp_track_event',
+        description: 'Track a behavioral event for analytics and personalization',
+        parameters: {
+            userId: z.string().describe('User ID'),
+            event: z.string().describe('Event name (e.g. pricing_viewed, demo_requested, feature_explored)'),
+            source: z.enum(['voice', 'widget', 'web', 'api']).describe('Event source'),
+            value: z.any().optional().describe('Event value'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional()
+        },
+        handler: async (args: any) => {
+            const tenant = await tenantMiddleware(args);
+            const storage = loadProfiles();
+            const key = profileKey(tenant.id, args.userId);
+
+            let profile = storage.profiles[key];
+            if (!profile) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "error",
+                            message: "Profile not found. Use ucp_sync_preference first."
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            // Initialize if missing
+            if (!profile.behavioralEvents) profile.behavioralEvents = [];
+
+            // Add event
+            const event: UCPBehavioralEvent = {
+                event: args.event,
+                timestamp: new Date().toISOString(),
+                source: args.source,
+                value: args.value
+            };
+
+            profile.behavioralEvents.push(event);
+
+            // Keep only last 200 events
+            if (profile.behavioralEvents.length > 200) {
+                profile.behavioralEvents = profile.behavioralEvents.slice(-200);
+            }
+
+            storage.profiles[key] = profile;
+            saveProfiles(storage);
+
+            return {
+                content: [{
+                    type: "text" as const,
+                    text: JSON.stringify({
+                        status: "success",
+                        event: args.event,
+                        totalEvents: profile.behavioralEvents.length
+                    }, null, 2)
+                }]
+            };
+        }
+    },
+
+    ucp_get_insights: {
+        name: 'ucp_get_insights',
+        description: 'Get customer insights and analytics from UCP profile',
+        parameters: {
+            userId: z.string().describe('User ID'),
+            _meta: z.object({ tenantId: z.string().optional() }).optional()
+        },
+        handler: async (args: any) => {
+            const tenant = await tenantMiddleware(args);
+            const storage = loadProfiles();
+            const key = profileKey(tenant.id, args.userId);
+
+            const profile = storage.profiles[key];
+            if (!profile) {
+                return {
+                    content: [{
+                        type: "text" as const,
+                        text: JSON.stringify({
+                            status: "not_found",
+                            message: "Profile not found"
+                        }, null, 2)
+                    }]
+                };
+            }
+
+            // Calculate insights
+            const interactions = profile.interactionHistory || [];
+            const events = profile.behavioralEvents || [];
+
+            // Engagement score (0-100)
+            const recencyDays = profile.lastInteraction
+                ? Math.floor((Date.now() - new Date(profile.lastInteraction).getTime()) / (1000 * 60 * 60 * 24))
+                : 999;
+            const recencyScore = Math.max(0, 100 - recencyDays * 5);
+            const frequencyScore = Math.min(100, (profile.totalInteractions || 0) * 10);
+            const engagementScore = Math.round((recencyScore + frequencyScore) / 2);
+
+            // Channel breakdown
+            const channelBreakdown: Record<string, number> = {};
+            interactions.forEach((i: UCPInteraction) => {
+                channelBreakdown[i.channel] = (channelBreakdown[i.channel] || 0) + 1;
+            });
+
+            // Event summary
+            const eventSummary: Record<string, number> = {};
+            events.forEach((e: UCPBehavioralEvent) => {
+                eventSummary[e.event] = (eventSummary[e.event] || 0) + 1;
+            });
+
+            return {
+                content: [{
+                    type: "text" as const,
+                    text: JSON.stringify({
+                        status: "success",
+                        userId: args.userId,
+                        market: profile.market,
+                        locale: profile.locale,
+                        insights: {
+                            engagementScore,
+                            totalInteractions: profile.totalInteractions || 0,
+                            lastInteraction: profile.lastInteraction,
+                            preferredChannel: profile.preferredChannel,
+                            lifetimeValue: profile.lifetimeValue || 0,
+                            recencyDays,
+                            channelBreakdown,
+                            topEvents: Object.entries(eventSummary)
+                                .sort(([, a], [, b]) => (b as number) - (a as number))
+                                .slice(0, 5)
+                                .map(([event, count]) => ({ event, count }))
+                        }
                     }, null, 2)
                 }]
             };

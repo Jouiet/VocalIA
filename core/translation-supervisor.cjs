@@ -1,18 +1,78 @@
 /**
  * Translation Supervisor Agent (A2A Pattern)
- * VocalIA - Session 245
- * 
+ * VocalIA - Session 245, Optimized Session 250.28
+ *
  * " The Policeman of Language "
  * Intercepts voice generation events to prevent hallucinations and ensure language consistency.
- * 
+ *
  * Capabilities:
  * 1. Hallucination Detection (e.g. "As an AI language model")
  * 2. Language Consistency Code (e.g. No English in Darija/French sessions)
  * 3. Length Supervision (Prevent monologues)
  * 4. Formatting Cleanup (Remove markdown, bullets, emojis for TTS)
+ *
+ * A2A Compliance: Agent Card + Task Lifecycle (Session 250.28)
  */
 
 const eventBus = require('./AgencyEventBus.cjs');
+
+// ─────────────────────────────────────────────────────────────────────────────
+// A2A AGENT CARD (Google A2A Protocol Spec)
+// https://a2a-protocol.org/latest/specification/
+// ─────────────────────────────────────────────────────────────────────────────
+
+const AGENT_CARD = {
+    name: "TranslationSupervisor",
+    version: "1.1.0",
+    description: "Voice AI language quality guardian - prevents hallucinations, enforces language consistency",
+    provider: {
+        organization: "VocalIA",
+        url: "https://vocalia.ma"
+    },
+    capabilities: {
+        streaming: false,
+        pushNotifications: false,
+        stateTransitionHistory: true
+    },
+    skills: [
+        {
+            id: "hallucination_detection",
+            name: "Hallucination Detection",
+            description: "Detects AI boilerplate phrases in FR/EN/AR/ES/ARY",
+            inputModes: ["text"],
+            outputModes: ["text"]
+        },
+        {
+            id: "language_consistency",
+            name: "Language Consistency",
+            description: "Enforces target language purity, especially Darija",
+            inputModes: ["text"],
+            outputModes: ["text"]
+        },
+        {
+            id: "tts_formatting",
+            name: "TTS Formatting",
+            description: "Cleans markdown, emojis, excessive whitespace for speech synthesis",
+            inputModes: ["text"],
+            outputModes: ["text"]
+        }
+    ],
+    authentication: {
+        schemes: ["none"]
+    },
+    defaultInputModes: ["text"],
+    defaultOutputModes: ["text"]
+};
+
+// A2A Task States
+const TASK_STATES = {
+    SUBMITTED: 'submitted',
+    WORKING: 'working',
+    INPUT_REQUIRED: 'input-required',
+    COMPLETED: 'completed',
+    FAILED: 'failed',
+    CANCELED: 'canceled'
+};
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIGURATION
@@ -50,8 +110,43 @@ const DARIJA_FORBIDDEN = [
 
 class TranslationSupervisor {
     constructor() {
+        this.taskHistory = new Map(); // A2A Task state history
         this.setupSubscriptions();
         console.log('[TranslationSupervisor] A2A Agent Active - Guarding Language Quality');
+        console.log(`[TranslationSupervisor] Agent Card: ${AGENT_CARD.name} v${AGENT_CARD.version}`);
+    }
+
+    /**
+     * A2A: Get Agent Card (metadata about this agent)
+     */
+    getAgentCard() {
+        return AGENT_CARD;
+    }
+
+    /**
+     * A2A: Get task state history for a correlation ID
+     */
+    getTaskHistory(correlationId) {
+        return this.taskHistory.get(correlationId) || [];
+    }
+
+    /**
+     * A2A: Record task state transition
+     */
+    recordTaskState(correlationId, state, details = {}) {
+        if (!this.taskHistory.has(correlationId)) {
+            this.taskHistory.set(correlationId, []);
+        }
+        this.taskHistory.get(correlationId).push({
+            state,
+            timestamp: new Date().toISOString(),
+            ...details
+        });
+        // Cleanup old entries (keep last 1000)
+        if (this.taskHistory.size > 1000) {
+            const firstKey = this.taskHistory.keys().next().value;
+            this.taskHistory.delete(firstKey);
+        }
     }
 
     setupSubscriptions() {
@@ -65,14 +160,23 @@ class TranslationSupervisor {
         const { text, language, sessionId } = event.payload;
         const correlationId = event.metadata.correlationId;
 
+        // A2A: Record task submitted
+        this.recordTaskState(correlationId, TASK_STATES.SUBMITTED, { text: text.substring(0, 50) });
+        this.recordTaskState(correlationId, TASK_STATES.WORKING, { skill: 'tts_formatting' });
+
         // 1. Structural Cleanup (Always apply)
         let processedText = this.cleanTextForTTS(text);
 
         // 2. Hallucination Check
+        this.recordTaskState(correlationId, TASK_STATES.WORKING, { skill: 'hallucination_detection' });
         if (this.detectHallucination(processedText)) {
             console.warn(`[Supervisor] Hallucination detected in: "${processedText.substring(0, 50)}..."`);
             processedText = this.generateFallback(language);
 
+            this.recordTaskState(correlationId, TASK_STATES.COMPLETED, {
+                action: 'corrected',
+                reason: 'hallucination_detected'
+            });
             await eventBus.publish('voice.generation.corrected', {
                 text: processedText,
                 reason: 'hallucination_detected'
@@ -82,20 +186,29 @@ class TranslationSupervisor {
 
         // 3. Language Consistency (Darija specific)
         if (language === 'ary') {
+            this.recordTaskState(correlationId, TASK_STATES.WORKING, { skill: 'language_consistency' });
             const corrected = this.enforceDarijaAuthenticity(processedText);
             if (corrected !== processedText) {
                 console.log(`[Supervisor] Darija adjustment: "${processedText}" -> "${corrected}"`);
                 processedText = corrected;
 
+                this.recordTaskState(correlationId, TASK_STATES.COMPLETED, {
+                    action: 'corrected',
+                    reason: 'darija_enforcement'
+                });
                 await eventBus.publish('voice.generation.corrected', {
                     text: processedText,
-                    reason: 'marija_enforcement'
+                    reason: 'darija_enforcement'
                 }, { correlationId });
                 return;
             }
         }
 
         // 4. Approval
+        this.recordTaskState(correlationId, TASK_STATES.COMPLETED, {
+            action: 'approved',
+            reason: 'passed_all_checks'
+        });
         await eventBus.publish('voice.generation.approved', {
             text: processedText
         }, { correlationId });
