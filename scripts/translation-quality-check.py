@@ -12,9 +12,11 @@ UPDATED: Per-language ratios to account for linguistic differences
 import json
 import sys
 from pathlib import Path
+from datetime import datetime
 
-# Use absolute path for reliability
-PROJECT_ROOT = Path("/Users/mac/Desktop/VocalIA")
+# Use relative path from script location for portability
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
 LOCALES_DIR = PROJECT_ROOT / "website/src/locales"
 
 # Per-language minimum ratios (character-count based)
@@ -157,16 +159,18 @@ if __name__ == "__main__":
         if len(issues) > 20:
             print(f"... and {len(issues) - 20} more issues (see report)")
 
-        # Save report
-        report_path = PROJECT_ROOT / "docs/translation_qa_report.json"
+        # Save compact report (issues only, not full strings)
+        report_path = PROJECT_ROOT / "data/translation_qa_report.json"
+        report_path.parent.mkdir(exist_ok=True)
         with open(report_path, "w", encoding="utf-8") as f:
             json.dump({
-                "timestamp": "2026-01-30",
+                "timestamp": datetime.now().isoformat()[:19],
                 "metrics": metrics,
                 "thresholds": LOCALE_MIN_RATIOS,
-                "issues": issues
+                "issues_count": len(issues),
+                "issues_summary": [{"locale": i["locale"], "key": i["key"], "ratio": i["ratio"]} for i in issues[:50]]
             }, f, indent=2, ensure_ascii=False)
-        print(f"\n📄 Full report saved to {report_path}")
+        print(f"\n📄 Compact report saved to {report_path}")
 
         # Exit with warning (not error) if under 50 issues
         if len(issues) < 50:
