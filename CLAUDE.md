@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.40.0 | 31/01/2026 | Session 250.23 | Health: 100% | **FORENSIC AUDIT 92/100**
+> Version: 6.40.1 | 31/01/2026 | Session 250.24 | Health: 100% | **FORENSIC AUDIT 94/100**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
@@ -14,7 +14,7 @@
 > **Website: 45 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 45 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: **92/100** | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
-> **FORENSIC AUDIT:** 19/25 fixed (0 CRITICAL, 0 HIGH) - voir `docs/FORENSIC-AUDIT-MERGED-250.22.md`
+> **FORENSIC AUDIT:** 20/25 fixed (0 CRITICAL, 0 HIGH, 5 deferred) - voir `docs/FORENSIC-AUDIT-MERGED-250.22.md`
 
 ## Identité
 
@@ -29,11 +29,11 @@
 | Score | Value | Notes |
 |:------|:-----:|:------|
 | Backend | **99/100** | Twilio creds manquants |
-| Frontend | **92/100** | 19/25 issues fixed (0 CRITICAL) |
+| Frontend | **94/100** | 20/25 issues fixed (0 CRITICAL) |
 | Health | **100%** | 39/39 checks |
-| Security | **92/100** | lucide pinned ✅, SRI deferred |
+| Security | **94/100** | lucide pinned ✅, CSP ✅, SRI deferred |
 
-**Audit Forensique Session 250.23:** `docs/FORENSIC-AUDIT-MERGED-250.22.md` (updated)
+**Audit Forensique Session 250.24:** `docs/FORENSIC-AUDIT-MERGED-250.22.md` (20/25 FIXED)
 
 ---
 

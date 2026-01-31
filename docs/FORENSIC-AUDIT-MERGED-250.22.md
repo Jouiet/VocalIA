@@ -15,12 +15,13 @@
 | Issues HIGH | ~~6~~ **0** |
 | Issues MEDIUM | ~~7~~ **2** |
 | Issues LOW | ~~3~~ **4** |
-| **TOTAL FIXED** | **19/25** |
-| Score Global | **92/100** |
+| **TOTAL FIXED** | **20/25** |
+| Score Global | **94/100** |
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
 
-**Session 250.23 Update:** 19 issues corrigées, 6 différées (low priority)
+**Session 250.24 Update:** 20 issues corrigées, 5 différées (architecture/design)
+- SEO-04: og:image ajouté aux 4 pages publiques indexées
 
 Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind, GSAP) et un SEO/AEO avancé, mais souffre de **dette technique critique**: assets 404, vulnérabilités supply chain, et incohérences SEO.
 
