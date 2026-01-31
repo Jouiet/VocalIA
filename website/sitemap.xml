@@ -243,13 +243,7 @@
         <priority>0.7</priority>
     </url>
 
-    <!-- Status Page -->
-    <url>
-        <loc>https://vocalia.ma/status</loc>
-        <lastmod>2026-01-31</lastmod>
-        <changefreq>hourly</changefreq>
-        <priority>0.5</priority>
-    </url>
+    <!-- Note: /status page has noindex meta tag, excluded from sitemap -->
 
     <!-- Cookie Policy -->
     <url>
