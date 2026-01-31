@@ -2,7 +2,7 @@
 ## Rapport Complet, Factuel et Vérifiable
 
 > **Date:** 31/01/2026
-> **Session:** 250.10 (Widget E2E Tests)
+> **Session:** 250.11 (WCAG Audit Reconciliation)
 > **Méthode:** Bottom-up (faits → conclusions)
 > **Auditeur:** Claude Opus 4.5
 > **Durée:** ~60 minutes d'analyse

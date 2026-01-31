@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 5.6.0 | **Date**: 31/01/2026 | **Session**: 250.10 (E2E Tests + Integration Update)
+> **Version**: 5.7.0 | **Date**: 31/01/2026 | **Session**: 250.11 (WCAG Audit Reconciliation)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB → 3098 lines)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: ✅ FIXED - Exposed URL removed (Session 243)
@@ -63,12 +63,12 @@ Audit basé sur:
 | **Bento Grid Layout** | 10 | **3** | Grid standard `grid-cols-2`, pas asymétrique |
 | **Animations GPU-Only** | 10 | **4** | `background-position`, `box-shadow` = repaints |
 | **Dashboards Customisables** | 10 | **2** | Layout statique, 0 drag-and-drop |
-| **Accessibilité (couleur)** | 10 | **5** | Status dots = couleur seule (WCAG violation) |
+| **Accessibilité (couleur)** | 10 | **10** | ✅ FIXED Session 250: Icons + sr-only + text |
 | **Light Mode** | 10 | **6** | Basique, pas de variables LCH |
 | **Micro-interactions** | 10 | **5** | Hover basiques, pas de feedback haptic-style |
 | **CSS Architecture** | 10 | **8** | `@theme` OK, mais `!important` présents |
 | **Voice UI Patterns** | 10 | **6** | Widget OK, pas de waveform/visualizer avancé |
-| **TOTAL** | **80** | **39** | **48.75%** |
+| **TOTAL** | **80** | **44** | **55%** (was 39/48.75% pre-Session 250) |
 
 ### Issues Critiques Détectées
 
@@ -931,10 +931,10 @@ website/                              # 2,500+ lignes
 | ARIA Hidden | ✅ | Decorative SVGs |
 | Focus States | ✅ | ring-vocalia-500 |
 | Color Contrast | ✅ | Verified via palette |
-| **Color-Only Indicators** | ❌ | Status dots sans icône ni label textuel |
+| **Color-Only Indicators** | ✅ | ✅ FIXED Session 250: check-circle/pause-circle icons + sr-only text |
 | **Non-Text Contrast** | ⚠️ | Certains borders < 3:1 ratio |
 
-**Note Session 209:** Les indicateurs de statut (points verts/rouges) utilisent la couleur seule, ce qui viole WCAG 2.1 Success Criterion 1.4.1 (Use of Color).
+**Note Session 250:** Les indicateurs de statut ont été corrigés - chaque status a maintenant: icône Lucide (check-circle, pause-circle, alert-circle) + `<span class="sr-only">Statut:</span>` + texte visible (Actif, Pause, etc.). Conforme WCAG 2.1 Success Criterion 1.4.1.
 
 ---
 
