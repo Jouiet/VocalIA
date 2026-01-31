@@ -62,7 +62,6 @@ async function detectCountry() {
   const params = new URLSearchParams(window.location.search);
   const testCountry = params.get('test_country');
   if (testCountry && GEO_CONFIG[testCountry.toUpperCase()]) {
-    console.log(`[VocaliaGeo] Override: ${testCountry}`);
     return testCountry.toUpperCase();
   }
 

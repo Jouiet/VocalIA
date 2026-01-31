@@ -903,15 +903,12 @@
             </div>
             <div class="code-content">
               <pre>VocalIA.on(<span class="token-string">'conversationStart'</span>, (data) => {
-  console.log(<span class="token-string">'Conversation démarrée:'</span>, data.conversationId);
 });
 
 VocalIA.on(<span class="token-string">'message'</span>, (data) => {
-  console.log(<span class="token-string">'Message:'</span>, data.role, data.content);
 });
 
 VocalIA.on(<span class="token-string">'conversationEnd'</span>, (data) => {
-  console.log(<span class="token-string">'Durée:'</span>, data.duration, <span class="token-string">'secondes'</span>);
 });
 
 VocalIA.on(<span class="token-string">'error'</span>, (error) => {

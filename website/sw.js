@@ -37,11 +37,9 @@ const NETWORK_ONLY = [
 
 // Install event - cache static assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing...');
   event.waitUntil(
     caches.open(STATIC_CACHE)
       .then((cache) => {
-        console.log('[SW] Caching static assets');
         return cache.addAll(STATIC_ASSETS);
       })
       .then(() => self.skipWaiting())
@@ -51,7 +49,6 @@ self.addEventListener('install', (event) => {
 
 // Activate event - cleanup old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating...');
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
@@ -59,7 +56,6 @@ self.addEventListener('activate', (event) => {
           cacheNames
             .filter((name) => name !== STATIC_CACHE && name !== DYNAMIC_CACHE)
             .map((name) => {
-              console.log('[SW] Deleting old cache:', name);
               return caches.delete(name);
             })
         );
@@ -297,5 +293,3 @@ async function syncLeads() {
     }
   }
 }
-
-console.log('[SW] Service Worker loaded');

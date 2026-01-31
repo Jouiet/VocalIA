@@ -236,7 +236,15 @@
   "cta": {
     "title": "Prêt à Transformer Votre Service Client?",
     "subtitle": "Déployez votre premier agent vocal IA en moins de 5 minutes.",
-    "button": "Démarrer Maintenant"
+    "button": "Démarrer Maintenant",
+    "badge": "Déploiement en 5 minutes",
+    "demo": "Demander une Démo"
+  },
+  "newsletter": {
+    "title": "Restez informé des actualités",
+    "subtitle": "Recevez nos conseils Voice AI et mises à jour produit.",
+    "button": "S'inscrire",
+    "placeholder": "votre@email.com"
   },
   "products_menu": {
     "widget_subtitle": "Assistant vocal web gratuit",

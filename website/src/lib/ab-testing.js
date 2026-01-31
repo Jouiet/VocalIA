@@ -264,7 +264,6 @@
 
     // Also log to console in development
     if (window.location.hostname === 'localhost') {
-      console.log('[AB]', eventType, experiment, variant, data);
     }
 
     // Push to dataLayer for GTM/GA4 integration
@@ -364,7 +363,6 @@
     const data = getAssignments();
     data.assignments[experiment] = variant;
     saveAssignments(data);
-    console.log(`[AB] Forced ${experiment} = ${variant}`);
   }
 
   /**
@@ -372,7 +370,6 @@
    */
   function reset() {
     localStorage.removeItem(STORAGE_KEY);
-    console.log('[AB] All assignments reset');
   }
 
   // Initialize on DOMContentLoaded

@@ -81,7 +81,6 @@ class VocalIAAnimations {
     }
 
     this.initialized = true;
-    console.log('[VocalIA] Animation system initialized');
   }
 
   /**
@@ -123,7 +122,6 @@ class VocalIAAnimations {
       el.style.opacity = '1';
       el.style.transform = 'none';
     });
-    console.log('[VocalIA] Fallback: All elements revealed');
   }
 
   /**
@@ -891,5 +889,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // Voice AI animations should represent: sound waves, voice activity, conversations
   // Random particles/orbs are visual noise without marketing meaning
 
-  console.log('[VocalIA] Animations initialized (Voice AI focused)');
 });

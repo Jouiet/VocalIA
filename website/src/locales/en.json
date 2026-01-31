@@ -236,7 +236,15 @@
   "cta": {
     "title": "Ready to Transform Your Customer Service?",
     "subtitle": "Deploy your first AI voice agent in under 5 minutes.",
-    "button": "Get Started Now"
+    "button": "Get Started Now",
+    "badge": "Deploy in 5 minutes",
+    "demo": "Request a Demo"
+  },
+  "newsletter": {
+    "title": "Stay informed about",
+    "subtitle": "Get our Voice AI tips and product updates.",
+    "button": "Subscribe",
+    "placeholder": "your@email.com"
   },
   "products_menu": {
     "widget_subtitle": "Free web voice assistant",

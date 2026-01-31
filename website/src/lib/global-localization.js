@@ -66,7 +66,6 @@ class GlobalLocalization {
             const params = new URLSearchParams(window.location.search);
             const testCountry = params.get('test_country');
             if (testCountry && MARKET_RULES[testCountry.toUpperCase()]) {
-                console.log(`[GlobalLocalization] Using URL override: ${testCountry}`);
                 return testCountry.toUpperCase();
             }
         }

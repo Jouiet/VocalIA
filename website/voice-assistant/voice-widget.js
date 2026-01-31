@@ -157,7 +157,6 @@
 
       // Debug logging (can be disabled in production)
       if (CONFIG.AGUI_DEBUG) {
-        console.log('[AG-UI]', baseEvent.type, baseEvent);
       }
 
       // Dispatch custom DOM event for external integrations
@@ -388,7 +387,6 @@
     }
 
     // SOTA: Signal bridge to backend (Agent Ops Dashboard ingestion)
-    console.log(`[VocalIA] SOTA Signal: ${eventName}`, eventData);
   }
 
   /**
@@ -405,7 +403,6 @@
     attr.fbclid = urlParams.get('fbclid') || attr.fbclid;
 
     if (attr.gclid || attr.fbclid) {
-      console.log('[VocalIA] Attribution Captured:', attr);
     }
   }
 
@@ -415,7 +412,6 @@
 
   function createWidget() {
     if (document.getElementById('voice-assistant-widget')) {
-      console.log('[VocalIA] Widget already exists');
       return;
     }
 
@@ -1379,11 +1375,7 @@
     async function init() {
       try {
         const lang = detectLanguage();
-        console.log(`[VocalIA] Detected language: ${lang}`);
-
         await loadLanguage(lang);
-        console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
-
         // Generate session ID for AG-UI threading
         state.conversationContext.sessionId = AGUI.generateId('session');
 
@@ -1402,9 +1394,6 @@
           },
           sessionId: state.conversationContext.sessionId
         });
-
-        console.log('[VocalIA] AG-UI Protocol initialized');
-
       } catch (error) {
         console.error('[VocalIA] Init error:', error);
       }
