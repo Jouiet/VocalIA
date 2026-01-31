@@ -1,7 +1,7 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.0 | 31/01/2026 | Session 250.28 | BM25 RAG SOTA | **181 tools** | **28 integrations**
+> Version: 0.8.0 | 31/01/2026 | Session 250.30 | BM25 RAG SOTA | **182 tools** | **28 integrations**
 > **Session 250.28**: CDP Enhanced UCP (6 tools) - interaction tracking, behavioral events, engagement scoring
 > **Session 249.21**: Stripe Payment Links (19 tools) - Complete transactional cycle
 > **Protocol Gap:** A2A ✅ (Agent Card + Task Lifecycle) | AG-UI ✅ (17 events) | A2UI ✅ | UCP ✅ (CDP Enhanced) | AP2 ❌ | Integrations ✅
@@ -34,7 +34,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | System | 3 | **3** | 0 |
 | Calendar | 2 | 0 | 2 |
 | Slack | 1 | 0 | 1 |
-| UCP/CDP | 6 | 0 | 6 |
+| UCP/CDP | 7 | 0 | 7 |
 | **Sheets** | **5** | 0 | **5** |
 | **Drive** | **6** | 0 | **6** |
 | **Docs** | **4** | 0 | **4** |
@@ -56,7 +56,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
 | **Stripe** | **19** | 0 | **19** |
-| **TOTAL** | **181** | **16** | **165** |
+| **TOTAL** | **182** | **16** | **166** |
 
 ### E-commerce Market Coverage (~64%)
 

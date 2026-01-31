@@ -1,14 +1,14 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.41.0 | 31/01/2026 | Session 250.29 | Health: 100% | **FORENSIC AUDIT 94/100**
+> Version: 6.43.0 | 31/01/2026 | Session 250.31 | Health: 100% | **FACTUALITY AUDIT 100%**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + lucide@0.469.0** ✅
 > **AEO: Speakable schema ✅** | **29 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
-> **A2A Protocol: Translation Supervisor ✅** | Agent Card | Task Lifecycle | State History
+> **A2A Protocol: 4 Agents ✅** | TranslationSupervisor, BillingAgent, TenantOnboardingAgent, VoiceAgentB2B
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
-> **UCP/CDP: 6 tools** | record_interaction | track_event | get_insights | Engagement scoring
+> **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
-> **Platform: 181 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
@@ -18,7 +18,7 @@
 > **Website: 45 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 45 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: **92/100** | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
-> **FORENSIC AUDIT:** 20/25 fixed (0 CRITICAL, 0 HIGH, 5 deferred) - voir `docs/FORENSIC-AUDIT-MERGED-250.22.md`
+> **FACTUALITY AUDIT:** 100% (Session 250.31) - All "agency" claims removed, VocalIA = Voice AI Platform only
 
 ## Identité
 
@@ -37,9 +37,9 @@
 | Health | **100%** | 39/39 checks |
 | Security | **94/100** | lucide pinned ✅, CSP ✅, SRI deferred |
 
-**Audit Forensique Session 250.28:** `docs/FORENSIC-AUDIT-MERGED-250.22.md` (20/25 FIXED)
+**Factuality Audit Session 250.31:** 6 files corrected (voice-agent-b2b, grok-client, voice-api-resilient, knowledge-base-services, MCP index, VOICE-MENA docs)
+**A2A/UCP Session 250.30:** 4 Agent Cards + UCP LTV tiers (bronze→diamond)
 **AEO Session 250.27:** 29 pages Speakable, llms.txt, robots.txt AI crawlers
-**A2A/UCP Session 250.28:** Agent Card + Task Lifecycle + CDP tools (record_interaction, track_event, get_insights)
 
 ---
 

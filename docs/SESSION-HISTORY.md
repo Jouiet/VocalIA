@@ -1,6 +1,6 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.50.0 | **Updated**: 31/01/2026 | **Session**: 250.29
+> **Version**: 3.51.0 | **Updated**: 31/01/2026 | **Session**: 250.30
 > **Backend Score**: 99/100 | **Frontend Score**: 97/100 | **Health Check**: 100% (39/39)
 > **Security**: 98/100 - CSP + X-Frame-Options + X-Content-Type-Options on ALL 45 pages
 > **MCP Server**: v0.8.0 | **MCP Tools**: 181 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
@@ -5205,9 +5205,62 @@ grep -c "EventType:" website/voice-assistant/voice-widget.js  # 1 ✅
 grep "VocaliaAGUI" website/voice-assistant/voice-widget.js  # Found ✅
 ```
 
+**Commit**: f47ec9e
+
+---
+
+## Session 250.30 - A2A Agents + UCP LTV Enhancement (31/01/2026)
+
+### 1. A2A Agent Cards Completion
+
+| Agent | Status | Skills |
+|:------|:------:|:-------|
+| TranslationSupervisor | ✅ Session 250.28 | hallucination_detection, language_consistency, tts_formatting |
+| BillingAgent | ✅ NEW | customer_creation, invoice_drafting, payment_processing, currency_routing |
+| TenantOnboardingAgent | ✅ NEW | directory_provisioning, crm_sync, integration_setup |
+| VoiceAgentB2B | ✅ NEW | sales_assistant, customer_support, rag_knowledge, booking_scheduler |
+
+**Total: 4/4 Agents with A2A Agent Cards**
+
+### 2. UCP/CDP LTV Enhancement
+
+**Fichier:** `mcp-server/src/tools/ucp.ts`
+
+| Feature | Status | Description |
+|:--------|:------:|:------------|
+| Auto LTV calculation | ✅ | purchase/booking interactions add to LTV |
+| ucp_update_ltv tool | ✅ NEW | Direct LTV updates (purchase, subscription, refund, adjustment) |
+| LTV Tiers | ✅ | bronze (<100), silver (100-500), gold (500-2000), platinum (2000-10000), diamond (>10000) |
+
+### 3. MCP Tools Update
+
+| Métrique | Avant | Après | Delta |
+|:---------|:-----:|:-----:|:-----:|
+| MCP Tools | 181 | **182** | +1 |
+| UCP Tools | 6 | **7** | +1 |
+| A2A Agents | 1 | **4** | +3 |
+
+### 4. Vérification Empirique
+
+```bash
+# A2A Agent Cards count
+grep -l "AGENT_CARD" core/*.cjs | wc -l  # 4 ✅
+
+# MCP tools
+grep -c "server.tool(" mcp-server/src/index.ts  # 182 ✅
+
+# Build
+cd mcp-server && npm run build  # ✅ OK
+
+# Syntax check
+node --check core/BillingAgent.cjs  # ✅
+node --check core/TenantOnboardingAgent.cjs  # ✅
+node --check core/voice-agent-b2b.cjs  # ✅
+```
+
 **Commit**: [pending]
 
 ---
 
-*Màj: 31/01/2026 - Session 250.29 (AG-UI Protocol Implementation)*
+*Màj: 31/01/2026 - Session 250.30 (A2A Agents + UCP LTV)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
