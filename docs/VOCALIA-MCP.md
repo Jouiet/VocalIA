@@ -1,10 +1,10 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.0 | 31/01/2026 | Session 250.22 | BM25 RAG SOTA | **178 tools** | **28 integrations**
+> Version: 0.8.0 | 31/01/2026 | Session 250.28 | BM25 RAG SOTA | **181 tools** | **28 integrations**
+> **Session 250.28**: CDP Enhanced UCP (6 tools) - interaction tracking, behavioral events, engagement scoring
 > **Session 249.21**: Stripe Payment Links (19 tools) - Complete transactional cycle
-> **Session 249.20**: Shopify FULL CRUD (8 tools) - GraphQL Admin API 2026-01
-> **Protocol Gap:** A2A ✅ | AP2 ❌ | A2UI ✅ | UCP ✅ (File Persistence) | Integrations ✅
+> **Protocol Gap:** A2A ✅ (Agent Card + Task Lifecycle) | AP2 ❌ | A2UI ✅ | UCP ✅ (CDP Enhanced) | Integrations ✅
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds
 
@@ -34,7 +34,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | System | 3 | **3** | 0 |
 | Calendar | 2 | 0 | 2 |
 | Slack | 1 | 0 | 1 |
-| UCP | 3 | 0 | 3 |
+| UCP/CDP | 6 | 0 | 6 |
 | **Sheets** | **5** | 0 | **5** |
 | **Drive** | **6** | 0 | **6** |
 | **Docs** | **4** | 0 | **4** |
@@ -56,7 +56,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
 | **Stripe** | **19** | 0 | **19** |
-| **TOTAL** | **178** | **16** | **162** |
+| **TOTAL** | **181** | **16** | **165** |
 
 ### E-commerce Market Coverage (~64%)
 
@@ -118,11 +118,11 @@ Ces tools fonctionnent sans aucun service externe:
 | **Twilio** | ✅ Community | 5 | [github.com/twilio-labs/mcp-twilio](https://github.com/twilio-labs/mcp-twilio) |
 | **Vonage** | ✅ Officiel | 2 | [github.com/Vonage-Community/telephony-mcp-server](https://github.com/Vonage-Community/telephony-mcp-server) |
 | **Retell** | ❌ | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ✅ Officiel | **178** | `mcp-server/` |
+| **VocalIA** | ✅ Officiel | **181** | `mcp-server/` |
 
 **Différenciateurs VocalIA (SOTA):**
 
-- **178 tools** - 22x plus que Vapi (8 tools)
+- **181 tools** - 22x plus que Vapi (8 tools)
 - **iPaaS complet** (Zapier, Make, n8n) → +7000 apps connectables
 - 40 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
@@ -357,9 +357,13 @@ Profil client depuis Klaviyo.
 
 ---
 
-### UCP Tools (2)
+### UCP/CDP Tools (6) - Session 250.28
 
-#### `ucp_sync_preference`
+**Architecture:** File-based persistence (`data/ucp-profiles.json`)
+
+#### Core UCP Tools (3)
+
+##### `ucp_sync_preference`
 
 Synchronise les préférences utilisateur avec les Règles de Marché Strictes.
 
@@ -374,19 +378,52 @@ Synchronise les préférences utilisateur avec les Règles de Marché Strictes.
 - `FR/ES/DZ` -> `market: europe`, `lang: fr`, `currency: EUR`
 - `US/AE` -> `market: intr`, `lang: en`, `currency: USD`
 
-#### `ucp_get_profile`
+##### `ucp_get_profile`
 
-Récupère le profil unifié actuel.
+Récupère le profil unifié depuis le stockage persistant.
 
-**⚠️ DÉFAUT CRITIQUE (Session 248):**
-```typescript
-// mcp-server/src/tools/ucp.ts:76-77
-// TOUJOURS retourne "not_found" - PAS DE PERSISTENCE!
-status: "not_found",
-hint: "Use ucp_sync_preference to create a profile first."
-```
+##### `ucp_list_profiles`
 
-**Action requise:** Implémenter stockage réel (file-based ou database).
+Liste tous les profils UCP pour un tenant.
+
+#### CDP Enhanced Tools (3) - NEW Session 250.28
+
+##### `ucp_record_interaction`
+
+Enregistre une interaction client pour construire l'historique.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `userId` | string | ✅ | ID utilisateur |
+| `interactionType` | enum | ✅ | voice_call, widget_chat, api_request, booking, purchase |
+| `channel` | string | ✅ | Canal (telephony, web_widget, api) |
+| `duration` | number | ❌ | Durée en secondes |
+| `outcome` | string | ❌ | Résultat (resolved, escalated, converted) |
+| `metadata` | object | ❌ | Métadonnées additionnelles |
+
+##### `ucp_track_event`
+
+Suit un événement comportemental pour analytics et personnalisation.
+
+| Paramètre | Type | Requis | Description |
+|:----------|:-----|:------:|:------------|
+| `userId` | string | ✅ | ID utilisateur |
+| `event` | string | ✅ | Nom événement (pricing_viewed, demo_requested, feature_explored) |
+| `source` | enum | ✅ | voice, widget, web, api |
+| `value` | any | ❌ | Valeur de l'événement |
+
+##### `ucp_get_insights`
+
+Retourne les insights client et analytics depuis le profil UCP.
+
+| Retour | Description |
+|:-------|:------------|
+| `engagementScore` | Score 0-100 basé sur recency + frequency |
+| `totalInteractions` | Nombre total d'interactions |
+| `preferredChannel` | Canal le plus utilisé |
+| `channelBreakdown` | Répartition par canal |
+| `topEvents` | Top 5 événements comportementaux |
+| `recencyDays` | Jours depuis dernière interaction |
 
 ---
 

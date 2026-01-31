@@ -1,9 +1,9 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 5.11.0 | **Date**: 31/01/2026 | **Session**: 250.27 (29 Speakable Pages)
+> **Version**: 5.12.0 | **Date**: 31/01/2026 | **Session**: 250.28 (A2A + CDP)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB → 3098 lines)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
-> **Security**: ✅ HARDENED - CSP + X-Frame-Options + X-Content-Type-Options on ALL 43 pages (Session 250.18)
+> **Security**: ✅ HARDENED - CSP + X-Frame-Options + X-Content-Type-Options on ALL 45 pages (Session 250.18)
 > **SEO Score**: 94/100 (A) - Hreflang 100%, Twitter Cards 100%, /referral in sitemap ✅
 > **Translation QA**: ✅ 0 issues (Session 249.11 - Per-language ratios fixed)
 > **AEO Score**: 95/100 (A+) - AI bot rules ✅, FAQ schema ✅, Speakable **29 pages** ✅, llms.txt ✅
@@ -19,7 +19,7 @@
 > **Tailwind**: Safelist utilities (60+ classes) ✅ (Session 237)
 > **Visualizer**: Sky Blue #5DADE2 verified ✅ (Session 229)
 > **Light Mode**: Dashboard toggle working ✅ (Session 229.2)
-> **MCP Server**: v0.8.0 SOTA (**178 tools**, BM25 RAG) ✅ (Session 250.22)
+> **MCP Server**: v0.8.0 SOTA (**181 tools**, BM25 RAG, CDP Enhanced) ✅ (Session 250.28)
 > **CSS Safelist**: Opacity classes (bg-white/25, etc.) ✅ (Session 237)
 > **Marketing Score**: B+ (Solid B2B SaaS, Missing Social Proof)
 > **Investor Page**: ✅ COMPLETE (Session 244) - investor.html

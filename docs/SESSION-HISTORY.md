@@ -1,13 +1,13 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.48.0 | **Updated**: 31/01/2026 | **Session**: 250.22
+> **Version**: 3.49.0 | **Updated**: 31/01/2026 | **Session**: 250.28
 > **Backend Score**: 99/100 | **Frontend Score**: 97/100 | **Health Check**: 100% (39/39)
-> **Security**: 98/100 - CSP + X-Frame-Options + X-Content-Type-Options on ALL 43 pages
-> **MCP Server**: v0.8.0 | **MCP Tools**: 178 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
+> **Security**: 98/100 - CSP + X-Frame-Options + X-Content-Type-Options on ALL 45 pages
+> **MCP Server**: v0.8.0 | **MCP Tools**: 181 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 95/100 - 193 chunks, 1444 terms, 165 FAQ merged, 10 policies
-> **Session 250.22**: Audit documentation 100% complete, 40 personas, 0 QA issues
+> **Session 250.28**: A2A Protocol + CDP UCP (6 tools) + AEO 29 Speakable pages
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
-> **Translation QA**: 0 issues | **Schema.org**: 35/39 pages
+> **Translation QA**: 0 issues | **Schema.org**: 35/39 pages | **AEO**: 29 Speakable pages
 
 ---
 
@@ -5051,5 +5051,85 @@ grep -r '178' --include='*.html' | grep -i 'tool\|MCP' | wc -l  # 20+ ✅
 
 ---
 
-*Màj: 31/01/2026 - Session 250.21 (Marketing Copy Forensic Audit - Deep)*
+## Session 250.28 - A2A Protocol + CDP UCP Enhancement (31/01/2026)
+
+### 1. A2A Protocol Optimization
+
+**Fichier:** `core/translation-supervisor.cjs`
+
+| Composant | Status | Description |
+|:----------|:------:|:------------|
+| Agent Card | ✅ | Google A2A Protocol compliant |
+| Task Lifecycle | ✅ | submitted → working → completed/failed |
+| State History | ✅ | Map avec max 1000 entries |
+| Skills | ✅ | hallucination_detection, language_consistency, tts_formatting |
+
+**Code ajouté:**
+```javascript
+const AGENT_CARD = {
+    name: "TranslationSupervisor",
+    version: "1.1.0",
+    capabilities: { streaming: false, stateTransitionHistory: true },
+    skills: [
+        { id: "hallucination_detection", ... },
+        { id: "language_consistency", ... },
+        { id: "tts_formatting", ... }
+    ]
+};
+```
+
+### 2. UCP/CDP Enhancement (3 nouveaux tools MCP)
+
+**Fichier:** `mcp-server/src/tools/ucp.ts`
+
+| Tool | Purpose | Status |
+|:-----|:--------|:------:|
+| `ucp_record_interaction` | Track voice_call, widget_chat, booking, purchase | ✅ |
+| `ucp_track_event` | Behavioral events (pricing_viewed, demo_requested) | ✅ |
+| `ucp_get_insights` | Engagement scoring + analytics | ✅ |
+
+**Interfaces CDP ajoutées:**
+```typescript
+interface UCPInteraction {
+    type: 'voice_call' | 'widget_chat' | 'api_request' | 'booking' | 'purchase';
+    timestamp: string;
+    channel: string;
+    duration?: number;
+    outcome?: string;
+}
+
+interface UCPBehavioralEvent {
+    event: string;
+    timestamp: string;
+    source: 'voice' | 'widget' | 'web' | 'api';
+    value?: any;
+}
+```
+
+### 3. Métriques Session
+
+| Métrique | Avant | Après | Delta |
+|:---------|:-----:|:-----:|:-----:|
+| MCP Tools | 178 | **181** | +3 |
+| UCP Tools | 3 | **6** | +3 |
+| A2A Skills | 0 | **3** | +3 |
+
+### 4. Vérification Empirique
+
+```bash
+# Build MCP
+cd mcp-server && npm run build  # ✅ OK
+
+# Tools count
+grep -c "server.tool(" mcp-server/src/index.ts  # 181 ✅
+
+# A2A Agent Card
+grep "AGENT_CARD" core/translation-supervisor.cjs  # Found ✅
+```
+
+**Commit**: 232c8ed
+
+---
+
+*Màj: 31/01/2026 - Session 250.28 (A2A Protocol + CDP UCP Enhancement)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*

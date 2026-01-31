@@ -1,5 +1,5 @@
 # FORENSIC AUDIT MERGED - VocalIA Frontend
-**Date:** 31 Janvier 2026 | **Session:** 250.22
+**Date:** 31 Janvier 2026 | **Session:** 250.28
 **Framework:** DOE (Directive Orchestration Execution)
 **Sources:** Audit Antigravity + Audit Claude Opus 4.5
 **Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep`
@@ -20,9 +20,11 @@
 
 **Verdict:** `LEVEL 4 - HIGH QUALITY`
 
-**Session 250.27 Update:** 20 issues corrigées, 5 différées (architecture/design)
+**Session 250.28 Update:** 20 issues corrigées, 5 différées (architecture/design)
 - SEO-04: og:image ajouté aux 4 pages publiques indexées
-- AEO: llms.txt créé, Speakable schema sur **29 pages** (12→29, +17 cette session)
+- AEO: llms.txt créé, Speakable schema sur **29 pages** (12→29)
+- A2A: Agent Card + Task Lifecycle dans TranslationSupervisor
+- UCP/CDP: 3 nouveaux tools (record_interaction, track_event, get_insights)
 
 Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind, GSAP) et un SEO/AEO avancé, mais souffre de **dette technique critique**: assets 404, vulnérabilités supply chain, et incohérences SEO.
 
@@ -31,9 +33,9 @@ Le frontend VocalIA présente une architecture moderne (Glassmorphism, Tailwind,
 ## 1. INVENTAIRE FACTUEL VÉRIFIÉ
 
 ```bash
-# Vérifications exécutées
-find website -name "*.html" | wc -l                    # 43 pages
-grep -c "server.tool(" mcp-server/src/index.ts         # 178 MCP tools
+# Vérifications exécutées (Session 250.28)
+find website -name "*.html" | wc -l                    # 45 pages
+grep -c "server.tool(" mcp-server/src/index.ts         # 181 MCP tools
 ls src/locales/ | wc -l                                # 5 locales
 grep -c '<loc>' sitemap.xml                            # 36 URLs
 ```
@@ -432,3 +434,49 @@ logs=$(grep -r 'console.log' website/*.html 2>/dev/null | grep -v docs/ | wc -l)
 | UX-03 | 🟡 | UX | ES/DE/IT forced FR | ✅ FIXED (ES→es) |
 | A11Y-01 | 🟡 | WCAG | Contrast insufficient | ⚠️ DEFERRED |
 | A11Y-02 | 🟡 | WCAG | Focus outline none | ⚠️ DEFERRED |
+
+
+---
+
+## 11. PLAN ACTIONNABLE SESSION 250.29
+
+**Priorité:** P0 = Critique (avant push), P1 = Important (cette semaine), P2 = Medium, P3 = Nice-to-have
+
+### Issues Restantes (5 Deferred)
+
+| # | Issue | Priority | Effort | Status |
+|:-:|:------|:--------:|:------:|:------:|
+| 1 | SRI (integrity=) sur CDN scripts | P2 | 2h | DEFERRED - Maintenance lourde |
+| 2 | CSP unsafe-inline refactor | P2 | 4h | DEFERRED - Nécessite refactor JS |
+| 3 | Inline CSS extraction | P3 | 3h | DEFERRED - Design acceptable |
+| 4 | Focus outline enhancement | P3 | 1h | DEFERRED - WCAG baseline OK |
+| 5 | Contrast enhancement | P3 | 2h | DEFERRED - WCAG AA atteint |
+
+### Optimisations Futures
+
+| # | Task | Priority | Impact | Notes |
+|:-:|:-----|:--------:|:------:|:------|
+| 1 | A2A: Ajouter Agent Cards aux autres agents | P1 | A2A SOTA | BillingAgent, TenantOnboarding |
+| 2 | UCP/CDP: Lifetime Value calculation | P1 | Revenue | Intégrer avec bookings/purchases |
+| 3 | AEO: Expand Speakable to remaining 16 pages | P2 | SEO | 29→45 pages |
+| 4 | Sitemap: Ajouter pages manquantes | P2 | SEO | 36→45 URLs |
+| 5 | PWA: Screenshots réels | P3 | UX | Actuellement stubs |
+
+### Vérification Session 250.28
+
+```bash
+# A2A Agent Card
+grep -c "AGENT_CARD" core/translation-supervisor.cjs  # 1 ✅
+
+# CDP Tools  
+grep -c "ucp_record_interaction\|ucp_track_event\|ucp_get_insights" mcp-server/src/index.ts  # 3 ✅
+
+# MCP Tools Total
+grep -c "server.tool(" mcp-server/src/index.ts  # 181 ✅
+
+# Build
+cd mcp-server && npm run build  # ✅ OK
+```
+
+**Màj:** 31/01/2026 - Session 250.28 (A2A + CDP Enhancement)
+
