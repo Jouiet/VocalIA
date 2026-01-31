@@ -1239,24 +1239,111 @@
 
   <!-- Scripts -->
   <script>
-    // Billing Toggle
-    const toggle = document.getElementById('billingToggle');
-    const options = toggle.querySelectorAll('.toggle-option');
+    /**
+     * Multi-Currency Pricing Controller
+     * Integrates with VocaliaGeo for dynamic price display
+     * Session 250 - Task #35
+     */
+    (function() {
+      let currentCurrency = 'EUR';
+      let currentSymbol = '€';
+      let currentPricing = { starter: 49, pro: 149, overage: 0.06 };
+      let isAnnual = false;
 
-    options.forEach(option => {
-      option.addEventListener('click', () => {
-        options.forEach(o => o.classList.remove('active'));
-        option.classList.add('active');
+      // Annual discount: 20%
+      const ANNUAL_DISCOUNT = 0.20;
 
-        const isAnnual = option.dataset.period === 'annual';
+      function formatPrice(amount, symbol, currency) {
+        if (currency === 'MAD') return `${amount} ${symbol}`;
+        return `${symbol}${amount}`;
+      }
 
-        // Update prices (20% discount for annual)
-        document.getElementById('starterPrice').textContent = isAnnual ? '79' : '99';
-        document.getElementById('proPrice').textContent = isAnnual ? '239' : '299';
-        document.getElementById('starterAnnual').textContent = isAnnual ? 'facturé annuellement' : 'ou 79€/mois (annuel)';
-        document.getElementById('proAnnual').textContent = isAnnual ? 'facturé annuellement' : 'ou 239€/mois (annuel)';
+      function updatePriceDisplay() {
+        const starterMonthly = currentPricing.starter;
+        const proMonthly = currentPricing.pro;
+        const starterAnnual = Math.round(starterMonthly * (1 - ANNUAL_DISCOUNT));
+        const proAnnual = Math.round(proMonthly * (1 - ANNUAL_DISCOUNT));
+
+        // Update main prices
+        const starterEl = document.getElementById('starterPrice');
+        const proEl = document.getElementById('proPrice');
+        const starterAnnualEl = document.getElementById('starterAnnual');
+        const proAnnualEl = document.getElementById('proAnnual');
+
+        if (isAnnual) {
+          if (starterEl) starterEl.textContent = starterAnnual;
+          if (proEl) proEl.textContent = proAnnual;
+          if (starterAnnualEl) starterAnnualEl.textContent = window.VocaliaI18n ? window.VocaliaI18n.t('pricing_page.billed_annually') : 'facturé annuellement';
+          if (proAnnualEl) proAnnualEl.textContent = window.VocaliaI18n ? window.VocaliaI18n.t('pricing_page.billed_annually') : 'facturé annuellement';
+        } else {
+          if (starterEl) starterEl.textContent = starterMonthly;
+          if (proEl) proEl.textContent = proMonthly;
+          const starterAnnualText = `ou ${formatPrice(starterAnnual, currentSymbol, currentCurrency)}/mois (annuel)`;
+          const proAnnualText = `ou ${formatPrice(proAnnual, currentSymbol, currentCurrency)}/mois (annuel)`;
+          if (starterAnnualEl) starterAnnualEl.textContent = starterAnnualText;
+          if (proAnnualEl) proAnnualEl.textContent = proAnnualText;
+        }
+
+        // Update currency symbol in period labels
+        const periodSymbol = currentCurrency === 'MAD' ? 'DH' : currentSymbol;
+        const periodText = `${periodSymbol}/mois`;
+        document.querySelectorAll('[data-i18n="pricing_page.starter_period"]').forEach(el => {
+          el.textContent = periodText;
+        });
+        document.querySelectorAll('[data-i18n="pricing_page.pro_period"]').forEach(el => {
+          el.textContent = periodText;
+        });
+
+        // Update overage note
+        const overageNote = document.querySelector('[data-i18n="pricing_page.overage_note"]');
+        if (overageNote) {
+          const overageFormatted = formatPrice(currentPricing.overage.toFixed(2), currentSymbol, currentCurrency);
+          overageNote.innerHTML = `Minutes supplémentaires téléphonie: <strong class="text-white">${overageFormatted}/min</strong>`;
+        }
+      }
+
+      async function initMultiCurrencyPricing() {
+        // Wait for VocaliaGeo to be available
+        if (typeof window.VocaliaGeo === 'undefined') {
+          console.warn('[Pricing] VocaliaGeo not loaded, using default EUR');
+          updatePriceDisplay();
+          return;
+        }
+
+        try {
+          const geo = await window.VocaliaGeo.getGeo();
+          currentCurrency = geo.currency || 'EUR';
+          currentSymbol = geo.symbol || '€';
+          currentPricing = geo.pricing || { starter: 49, pro: 149, overage: 0.06 };
+
+          console.log(`[Pricing] Currency: ${currentCurrency}, Region: ${geo.region}`);
+          updatePriceDisplay();
+        } catch (e) {
+          console.error('[Pricing] Geo detection failed:', e);
+          updatePriceDisplay();
+        }
+      }
+
+      // Billing Toggle
+      document.addEventListener('DOMContentLoaded', () => {
+        const toggle = document.getElementById('billingToggle');
+        if (!toggle) return;
+
+        const options = toggle.querySelectorAll('.toggle-option');
+
+        options.forEach(option => {
+          option.addEventListener('click', () => {
+            options.forEach(o => o.classList.remove('active'));
+            option.classList.add('active');
+            isAnnual = option.dataset.period === 'annual';
+            updatePriceDisplay();
+          });
+        });
+
+        // Initialize with geo-detected currency
+        initMultiCurrencyPricing();
       });
-    });
+    })();
   </script>
 <!-- Lucide Icons 2026 -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -1266,7 +1353,8 @@
       });
     </script>
   <!-- i18n System -->
-  <script src="/src/lib/geo-detect.js?v=240"></script>
-  <script src="/src/lib/i18n.js?v=240"></script>
+  <script src="/src/lib/geo-detect.js?v=250"></script>
+  <script src="/src/lib/i18n.js?v=250"></script>
+  <script src="/src/lib/ab-testing.js?v=250"></script>
 </body>
 </html>

@@ -390,7 +390,11 @@
     "val_docs": "Docs",
     "val_email": "Email",
     "val_priority": "Prioritaire",
-    "val_247": "24/7 Dédié"
+    "val_247": "24/7 Dédié",
+    "billed_annually": "facturé annuellement",
+    "currency_mad": "DH/mois",
+    "currency_eur": "€/mois",
+    "currency_usd": "$/mois"
   },
   "contact_page": {
     "meta_title": "Contact - VocalIA | Contactez-nous",

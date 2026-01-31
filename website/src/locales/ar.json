@@ -390,7 +390,11 @@
     "val_docs": "الوثائق",
     "val_email": "البريد",
     "val_priority": "أولوية",
-    "val_247": "24/7 مخصص"
+    "val_247": "24/7 مخصص",
+    "billed_annually": "يُفوتر سنوياً",
+    "currency_mad": "درهم/شهر",
+    "currency_eur": "€/شهر",
+    "currency_usd": "$/شهر"
   },
   "contact_page": {
     "meta_title": "اتصل بنا - VocalIA | تواصل معنا",

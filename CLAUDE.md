@@ -1,17 +1,17 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.29.0 | 31/01/2026 | Session 250.12 | Health: 100%
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 38 pages | **1566 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
-> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 28 Core Modules**
+> Version: 6.30.0 | 31/01/2026 | Session 250.13 | Health: 100%
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1574 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
+> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 12 Function Tools ✅
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 6, PrestaShop 7, BigCommerce 7, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
-> **Website: 38 pages** | Signup ✅ | 404 ✅ | Status ✅ | Académie Business ✅ | /industries/ ✅ | /use-cases/ ✅
-> **Analytics: Plausible (GDPR)** | 37 pages tracked | CTA events ✅
-> **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: 84/100 | Dashboard API: ✅ | **Widget E2E: 62 tests**
+> **Website: 40 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
+> **Analytics: Plausible (GDPR)** | 40 pages tracked | CTA events ✅ | **A/B Testing ✅**
+> **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: 84/100 | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
 
 ## Identité
 
@@ -305,6 +305,40 @@ ls data/ucp-profiles.json  # exists ✅
 
 ---
 
+## Session 250.13 - P3 Tasks Complete (31/01/2026)
+
+**All P3 Tasks Implemented:**
+
+| # | Task | Status | Files Created |
+|:-:|:-----|:------:|:--------------|
+| 32 | A/B testing CTAs | ✅ | `src/lib/ab-testing.js`, `core/ab-analytics.cjs` |
+| 33 | Voice Widget analytics dashboard | ✅ | `dashboard/widget-analytics.html` |
+| 34 | Mobile app wrapper (PWA) | ✅ | `manifest.json`, `sw.js` |
+| 35 | Multi-currency Stripe | ✅ | Updated `geo-detect.js`, `pricing.html` |
+| 36 | Referral program | ✅ | `referral.html` |
+| 40 | Chaos engineering | ✅ | `core/chaos-engineering.cjs` |
+
+**New Infrastructure:**
+- **A/B Testing Framework**: 4 experiments (hero-cta, pricing-cta, demo-request, newsletter)
+- **PWA Support**: Offline caching, install prompt, push notifications
+- **Multi-Currency**: MAD/EUR/USD with geo-detection (990 DH / 99€ / $99)
+- **Load Testing**: k6 suite with 4 scenarios (smoke, normal, stress, spike)
+- **Chaos Engineering**: 10 experiments for resilience testing
+
+**Vérification empirique:**
+```bash
+# New files created
+ls website/referral.html website/dashboard/widget-analytics.html website/manifest.json website/sw.js
+# A/B testing
+grep "VocaliaAB" website/src/lib/ab-testing.js | head -1
+# PWA manifest
+cat website/manifest.json | jq '.name'
+# Chaos engineering
+node core/chaos-engineering.cjs --list | head -5
+```
+
+---
+
 ## Session 250.8 - KB Enrichment + Knowledge Graph (31/01/2026)
 
 **KB Enrichment COMPLET** (`automations-registry.json`):
@@ -485,4 +519,6 @@ cd mcp-server && npm run build  # ✅ Build OK
 *Voir `docs/USE-CASES-STRATEGIC-ANALYSIS.md` pour SWOT et stratégie*
 *Voir `docs/VOCALIA-MCP.md` pour documentation MCP (178 tools)*
 *Voir `docs/AUDIT-FORENSIQUE-PERSONAS-KB-SESSION-250.md` pour audit personas + KB*
-*Màj: 31/01/2026 - Session 250.8 (KB Enrichment + Knowledge Graph)*
+*Voir `docs/SOC2-PREPARATION.md` pour préparation SOC2 Type II*
+*Voir `docs/GDPR-COMPLIANCE.md` pour conformité RGPD*
+*Màj: 31/01/2026 - Session 250.13 (P3 Tasks Complete: A/B Testing, PWA, Chaos Engineering)*

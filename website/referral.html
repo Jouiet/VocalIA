@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programme de Parrainage - VocalIA | Gagnez 20% de Commission</title>
+  <meta name="description" content="Parrainez des entreprises vers VocalIA et gagnez 20% de commission récurrente pendant 12 mois. Programme de parrainage pour agences et partenaires.">
+  <link rel="canonical" href="https://vocalia.ma/referral" />
+
+  <!-- Hreflang -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/referral?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/referral?lang=en" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/referral" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vocalia.ma/referral" />
+  <meta property="og:title" content="Programme de Parrainage VocalIA - 20% Commission" />
+  <meta property="og:description" content="Parrainez des entreprises et gagnez 20% de commission récurrente." />
+  <meta property="og:image" content="https://vocalia.ma/public/images/og-referral.webp" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Tailwind CSS -->
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Security -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <style>
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass {
+      background: rgba(51, 65, 85, 0.6);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    .reward-card {
+      background: rgba(51, 65, 85, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+    }
+    .reward-card:hover {
+      border-color: rgba(94, 106, 210, 0.4);
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white">
+  <!-- Header (minimal for landing page) -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-slate-700/50">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center space-x-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-400 flex items-center justify-center">
+          <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+        </div>
+        <span class="text-xl font-bold gradient-text">VocalIA</span>
+      </a>
+      <a href="/signup?ref=referral" class="px-6 py-2.5 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold transition">
+        Devenir Partenaire
+      </a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-vocalia-500/10 to-transparent"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-medium mb-6">
+          <i data-lucide="gift" class="w-4 h-4"></i>
+          Programme de Parrainage
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+          Gagnez <span class="gradient-text">20% de Commission</span> Récurrente
+        </h1>
+        <p class="text-xl text-zinc-400 mb-10">
+          Parrainez des entreprises vers VocalIA et recevez 20% de leurs paiements mensuels pendant 12 mois. Pas de limite de parrainages.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/signup?ref=referral&type=partner" class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all">
+            <span>Rejoindre le Programme</span>
+            <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </a>
+          <a href="#how-it-works" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 transition-all">
+            Comment ça marche?
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="py-12 border-y border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <div class="text-4xl font-bold gradient-text mb-2">20%</div>
+          <div class="text-zinc-400">Commission récurrente</div>
+        </div>
+        <div>
+          <div class="text-4xl font-bold text-emerald-400 mb-2">12 mois</div>
+          <div class="text-zinc-400">Durée des commissions</div>
+        </div>
+        <div>
+          <div class="text-4xl font-bold text-amber-400 mb-2">0€</div>
+          <div class="text-zinc-400">Frais d'inscription</div>
+        </div>
+        <div>
+          <div class="text-4xl font-bold text-sky-400 mb-2">30 jours</div>
+          <div class="text-zinc-400">Cookie de tracking</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-4">Comment Ça Marche?</h2>
+      <p class="text-zinc-400 text-center mb-12 max-w-2xl mx-auto">En 3 étapes simples, commencez à générer des revenus passifs avec VocalIA.</p>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="reward-card p-8 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-vocalia-500/20 flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl font-bold text-vocalia-400">1</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Inscrivez-vous</h3>
+          <p class="text-zinc-400">Créez votre compte partenaire gratuitement et obtenez votre lien de parrainage unique.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="reward-card p-8 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-500/20 flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl font-bold text-emerald-400">2</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Partagez</h3>
+          <p class="text-zinc-400">Partagez votre lien avec votre réseau: clients, partenaires, sur votre blog ou réseaux sociaux.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="reward-card p-8 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-amber-500/20 flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl font-bold text-amber-400">3</span>
+          </div>
+          <h3 class="text-xl font-semibold mb-4">Gagnez</h3>
+          <p class="text-zinc-400">Recevez 20% de commission sur chaque paiement de vos filleuls pendant 12 mois.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Earnings Calculator -->
+  <section class="py-20 bg-slate-900/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-4">Calculez Vos Gains Potentiels</h2>
+      <p class="text-zinc-400 text-center mb-12">Simulez vos revenus en fonction du nombre de parrainages.</p>
+
+      <div class="glass rounded-2xl p-8">
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Input -->
+          <div>
+            <label class="block text-sm font-medium mb-2">Nombre de parrainages / mois</label>
+            <input type="range" id="referralCount" min="1" max="50" value="5" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+            <div class="flex justify-between text-sm text-zinc-400 mt-2">
+              <span>1</span>
+              <span id="referralValue" class="text-white font-bold">5</span>
+              <span>50</span>
+            </div>
+
+            <label class="block text-sm font-medium mb-2 mt-6">Plan moyen des filleuls</label>
+            <select id="avgPlan" class="w-full px-4 py-3 rounded-xl bg-slate-700/50 border border-slate-600 focus:outline-none focus:border-vocalia-500">
+              <option value="99">Starter (99€/mois)</option>
+              <option value="299" selected>Pro (299€/mois)</option>
+              <option value="999">Enterprise (999€/mois)</option>
+            </select>
+          </div>
+
+          <!-- Results -->
+          <div class="flex flex-col justify-center">
+            <div class="text-center">
+              <div class="text-sm text-zinc-400 mb-2">Revenus mensuels estimés</div>
+              <div class="text-5xl font-bold gradient-text mb-4" id="monthlyEarnings">299€</div>
+              <div class="text-sm text-zinc-400 mb-1">Revenus annuels (sur 12 mois)</div>
+              <div class="text-2xl font-semibold text-emerald-400" id="yearlyEarnings">3,588€</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-slate-700 text-center">
+          <p class="text-zinc-400 text-sm mb-4">
+            <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+            Les commissions sont cumulatives. 5 parrainages Pro = 5 × 299€ × 20% = 299€/mois.
+          </p>
+          <a href="/signup?ref=referral&type=partner" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold transition-all">
+            Commencer Maintenant
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Partner Types -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-4">Pour Qui Est Ce Programme?</h2>
+      <p class="text-zinc-400 text-center mb-12 max-w-2xl mx-auto">Notre programme est ouvert à tous ceux qui souhaitent recommander VocalIA.</p>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="reward-card p-6">
+          <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mb-4">
+            <i data-lucide="building-2" class="w-6 h-6 text-vocalia-400"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Agences Digitales</h3>
+          <p class="text-zinc-400 text-sm">Proposez VocalIA à vos clients et générez des revenus additionnels.</p>
+        </div>
+
+        <div class="reward-card p-6">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+            <i data-lucide="users" class="w-6 h-6 text-emerald-400"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Consultants</h3>
+          <p class="text-zinc-400 text-sm">Recommandez VocalIA à vos clients B2B et gagnez sur chaque deal.</p>
+        </div>
+
+        <div class="reward-card p-6">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center mb-4">
+            <i data-lucide="pen-tool" class="w-6 h-6 text-amber-400"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Créateurs de Contenu</h3>
+          <p class="text-zinc-400 text-sm">Monétisez votre audience avec des recommandations authentiques.</p>
+        </div>
+
+        <div class="reward-card p-6">
+          <div class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center mb-4">
+            <i data-lucide="heart-handshake" class="w-6 h-6 text-sky-400"></i>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Clients Satisfaits</h3>
+          <p class="text-zinc-400 text-sm">Partagez votre expérience et soyez récompensé pour chaque parrainage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Terms -->
+  <section class="py-20 bg-slate-900/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-12">Conditions du Programme</h2>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>20% de commission sur tous les paiements</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>Commissions versées pendant 12 mois par client</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>Pas de limite de parrainages</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>Cookie de tracking 30 jours</span>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>Paiement mensuel via virement (min. 50€)</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>Dashboard de suivi en temps réel</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>Matériel marketing fourni</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+            <span>Support partenaire dédié</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl font-bold mb-4">Prêt à Générer des Revenus Passifs?</h2>
+      <p class="text-zinc-400 mb-8">Rejoignez notre programme de parrainage et commencez à gagner dès aujourd'hui.</p>
+      <a href="/signup?ref=referral&type=partner" class="inline-flex items-center justify-center px-10 py-5 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all">
+        Devenir Partenaire — C'est Gratuit
+      </a>
+    </div>
+  </section>
+
+  <!-- Simple Footer -->
+  <footer class="py-8 border-t border-slate-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <p class="text-zinc-500 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+      <div class="flex items-center gap-6 text-sm text-zinc-400">
+        <a href="/terms" class="hover:text-white transition">CGU</a>
+        <a href="/privacy" class="hover:text-white transition">Confidentialité</a>
+        <a href="/contact" class="hover:text-white transition">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Earnings Calculator
+      const referralInput = document.getElementById('referralCount');
+      const planSelect = document.getElementById('avgPlan');
+      const referralValue = document.getElementById('referralValue');
+      const monthlyEarnings = document.getElementById('monthlyEarnings');
+      const yearlyEarnings = document.getElementById('yearlyEarnings');
+
+      function updateEarnings() {
+        const count = parseInt(referralInput.value);
+        const planPrice = parseInt(planSelect.value);
+        const commission = 0.20;
+
+        const monthly = count * planPrice * commission;
+        const yearly = monthly * 12;
+
+        referralValue.textContent = count;
+        monthlyEarnings.textContent = monthly.toLocaleString('fr-FR') + '€';
+        yearlyEarnings.textContent = yearly.toLocaleString('fr-FR') + '€';
+      }
+
+      referralInput.addEventListener('input', updateEarnings);
+      planSelect.addEventListener('change', updateEarnings);
+      updateEarnings();
+    });
+  </script>
+
+  <!-- i18n System -->
+  <script src="/src/lib/geo-detect.js?v=250"></script>
+  <script src="/src/lib/i18n.js?v=250"></script>
+</body>
+</html>

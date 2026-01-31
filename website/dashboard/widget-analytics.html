@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Widget Analytics - VocalIA Dashboard</title>
+  <meta name="robots" content="noindex">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Tailwind CSS -->
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Security Headers -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    .glass { backdrop-filter: blur(16px); background: rgba(51, 65, 85, 0.6); }
+    .stat-card { background: rgba(51, 65, 85, 0.6); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 16px; }
+    .stat-card:hover { border-color: rgba(94, 106, 210, 0.3); }
+    .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .chart-container { height: 250px; background: rgba(51, 65, 85, 0.4); border-radius: 12px; }
+  </style>
+</head>
+
+<body class="bg-slate-800 text-white min-h-screen">
+  <!-- Sidebar -->
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40">
+    <div class="p-6 border-b border-slate-600">
+      <a href="/" class="flex items-center space-x-2">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+          <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+        </div>
+        <span class="text-xl font-bold gradient-text">VocalIA</span>
+      </a>
+    </div>
+
+    <nav class="p-4 space-y-1">
+      <a href="/dashboard/client" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+        <span>Vue d'ensemble</span>
+      </a>
+      <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-vocalia-500/20 text-white">
+        <i data-lucide="message-square" class="w-5 h-5"></i>
+        <span>Widget Analytics</span>
+      </a>
+      <a href="/dashboard/client#calls" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+        <i data-lucide="phone" class="w-5 h-5"></i>
+        <span>Appels</span>
+      </a>
+      <a href="/dashboard/client#agents" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+        <i data-lucide="bot" class="w-5 h-5"></i>
+        <span>Agents IA</span>
+      </a>
+      <a href="/dashboard/client#billing" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+        <i data-lucide="credit-card" class="w-5 h-5"></i>
+        <span>Facturation</span>
+      </a>
+    </nav>
+
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+      <div class="flex items-center space-x-3 px-2">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">JD</div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-medium truncate">Jean Dupont</p>
+          <p class="text-xs text-zinc-400 truncate">Pro Plan</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="ml-64 min-h-screen">
+    <!-- Top Bar -->
+    <header class="sticky top-0 z-30 bg-slate-800/80 backdrop-blur-xl border-b border-slate-600">
+      <div class="flex items-center justify-between px-8 py-4">
+        <div>
+          <h1 class="text-2xl font-bold">Voice Widget Analytics</h1>
+          <p class="text-zinc-400 text-sm">Analysez les performances de votre widget vocal</p>
+        </div>
+        <div class="flex items-center space-x-4">
+          <!-- Date Range Selector -->
+          <select id="dateRange" class="px-4 py-2 rounded-xl bg-slate-700/50 border border-slate-600 text-sm focus:outline-none focus:border-vocalia-500">
+            <option value="7d">7 derniers jours</option>
+            <option value="30d" selected>30 derniers jours</option>
+            <option value="90d">90 derniers jours</option>
+            <option value="1y">Cette année</option>
+          </select>
+          <!-- Export Button -->
+          <button class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white text-sm font-medium transition flex items-center gap-2">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Exporter CSV
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="p-8">
+      <!-- KPI Cards -->
+      <section class="mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Total Sessions -->
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
+                <i data-lucide="users" class="w-6 h-6 text-vocalia-400"></i>
+              </div>
+              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                +18%
+              </span>
+            </div>
+            <h3 class="text-3xl font-bold mb-1" id="totalSessions">3,847</h3>
+            <p class="text-zinc-400 text-sm">Sessions Widget</p>
+          </div>
+
+          <!-- Avg Session Duration -->
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
+                <i data-lucide="clock" class="w-6 h-6 text-amber-400"></i>
+              </div>
+              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                +8%
+              </span>
+            </div>
+            <h3 class="text-3xl font-bold mb-1" id="avgDuration">2:34</h3>
+            <p class="text-zinc-400 text-sm">Durée moyenne</p>
+          </div>
+
+          <!-- Completion Rate -->
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
+              </div>
+              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                +5%
+              </span>
+            </div>
+            <h3 class="text-3xl font-bold mb-1" id="completionRate">87%</h3>
+            <p class="text-zinc-400 text-sm">Taux de complétion</p>
+          </div>
+
+          <!-- Leads Generated -->
+          <div class="stat-card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center">
+                <i data-lucide="target" class="w-6 h-6 text-sky-400"></i>
+              </div>
+              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="trending-up" class="w-4 h-4"></i>
+                +23%
+              </span>
+            </div>
+            <h3 class="text-3xl font-bold mb-1" id="leadsGenerated">142</h3>
+            <p class="text-zinc-400 text-sm">Leads qualifiés</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Charts Row -->
+      <section class="grid lg:grid-cols-2 gap-6 mb-8">
+        <!-- Sessions Over Time -->
+        <div class="stat-card p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold">Sessions par jour</h3>
+            <div class="flex items-center gap-4 text-sm">
+              <span class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-vocalia-500"></span>
+                Sessions
+              </span>
+              <span class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                Conversions
+              </span>
+            </div>
+          </div>
+          <div class="chart-container flex items-end justify-between px-4 pt-4" id="sessionsChart">
+            <!-- Chart bars rendered by JS -->
+          </div>
+          <div class="flex justify-between text-xs text-zinc-500 mt-2 px-4">
+            <span>1 Jan</span>
+            <span>8 Jan</span>
+            <span>15 Jan</span>
+            <span>22 Jan</span>
+            <span>30 Jan</span>
+          </div>
+        </div>
+
+        <!-- Language Distribution -->
+        <div class="stat-card p-6">
+          <h3 class="text-lg font-semibold mb-6">Distribution par langue</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium">FR</span>
+              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                <div class="h-full bg-vocalia-500 rounded-lg" style="width: 52%"></div>
+              </div>
+              <span class="w-12 text-sm text-right">52%</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium">EN</span>
+              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                <div class="h-full bg-sky-500 rounded-lg" style="width: 28%"></div>
+              </div>
+              <span class="w-12 text-sm text-right">28%</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium">AR</span>
+              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                <div class="h-full bg-amber-500 rounded-lg" style="width: 12%"></div>
+              </div>
+              <span class="w-12 text-sm text-right">12%</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium">ES</span>
+              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-lg" style="width: 5%"></div>
+              </div>
+              <span class="w-12 text-sm text-right">5%</span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="w-8 text-sm font-medium">ARY</span>
+              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                <div class="h-full bg-rose-500 rounded-lg" style="width: 3%"></div>
+              </div>
+              <span class="w-12 text-sm text-right">3%</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Persona Performance & Device Stats -->
+      <section class="grid lg:grid-cols-2 gap-6 mb-8">
+        <!-- Top Personas -->
+        <div class="stat-card p-6">
+          <h3 class="text-lg font-semibold mb-6">Performance par Persona</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-zinc-400 border-b border-slate-700">
+                  <th class="pb-3">Persona</th>
+                  <th class="pb-3 text-right">Sessions</th>
+                  <th class="pb-3 text-right">Conversion</th>
+                  <th class="pb-3 text-right">Durée moy.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-slate-700/50">
+                  <td class="py-3 font-medium">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
+                        <i data-lucide="building-2" class="w-4 h-4 text-vocalia-400"></i>
+                      </div>
+                      AGENCY
+                    </div>
+                  </td>
+                  <td class="py-3 text-right">892</td>
+                  <td class="py-3 text-right text-emerald-400">12.4%</td>
+                  <td class="py-3 text-right">3:12</td>
+                </tr>
+                <tr class="border-b border-slate-700/50">
+                  <td class="py-3 font-medium">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center">
+                        <i data-lucide="stethoscope" class="w-4 h-4 text-sky-400"></i>
+                      </div>
+                      DENTAL
+                    </div>
+                  </td>
+                  <td class="py-3 text-right">654</td>
+                  <td class="py-3 text-right text-emerald-400">18.2%</td>
+                  <td class="py-3 text-right">2:45</td>
+                </tr>
+                <tr class="border-b border-slate-700/50">
+                  <td class="py-3 font-medium">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                        <i data-lucide="home" class="w-4 h-4 text-amber-400"></i>
+                      </div>
+                      PROPERTY
+                    </div>
+                  </td>
+                  <td class="py-3 text-right">521</td>
+                  <td class="py-3 text-right text-emerald-400">9.8%</td>
+                  <td class="py-3 text-right">4:01</td>
+                </tr>
+                <tr class="border-b border-slate-700/50">
+                  <td class="py-3 font-medium">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                        <i data-lucide="shopping-cart" class="w-4 h-4 text-emerald-400"></i>
+                      </div>
+                      ECOMMERCE
+                    </div>
+                  </td>
+                  <td class="py-3 text-right">487</td>
+                  <td class="py-3 text-right text-emerald-400">15.7%</td>
+                  <td class="py-3 text-right">2:18</td>
+                </tr>
+                <tr>
+                  <td class="py-3 font-medium">
+                    <div class="flex items-center gap-2">
+                      <div class="w-8 h-8 rounded-lg bg-rose-500/20 flex items-center justify-center">
+                        <i data-lucide="heart-pulse" class="w-4 h-4 text-rose-400"></i>
+                      </div>
+                      HEALER
+                    </div>
+                  </td>
+                  <td class="py-3 text-right">312</td>
+                  <td class="py-3 text-right text-emerald-400">21.3%</td>
+                  <td class="py-3 text-right">5:22</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Device & Browser Stats -->
+        <div class="stat-card p-6">
+          <h3 class="text-lg font-semibold mb-6">Appareils & Navigateurs</h3>
+          <div class="grid grid-cols-2 gap-6">
+            <!-- Devices -->
+            <div>
+              <h4 class="text-sm text-zinc-400 mb-4">Appareils</h4>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="monitor" class="w-4 h-4 text-zinc-400"></i>
+                    <span class="text-sm">Desktop</span>
+                  </div>
+                  <span class="text-sm font-medium">58%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="smartphone" class="w-4 h-4 text-zinc-400"></i>
+                    <span class="text-sm">Mobile</span>
+                  </div>
+                  <span class="text-sm font-medium">36%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="tablet" class="w-4 h-4 text-zinc-400"></i>
+                    <span class="text-sm">Tablet</span>
+                  </div>
+                  <span class="text-sm font-medium">6%</span>
+                </div>
+              </div>
+            </div>
+            <!-- Browsers -->
+            <div>
+              <h4 class="text-sm text-zinc-400 mb-4">Navigateurs</h4>
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded-full bg-sky-500"></div>
+                    <span class="text-sm">Chrome</span>
+                  </div>
+                  <span class="text-sm font-medium">64%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded-full bg-orange-500"></div>
+                    <span class="text-sm">Safari</span>
+                  </div>
+                  <span class="text-sm font-medium">22%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded-full bg-amber-500"></div>
+                    <span class="text-sm">Firefox</span>
+                  </div>
+                  <span class="text-sm font-medium">9%</span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-4 h-4 rounded-full bg-zinc-500"></div>
+                    <span class="text-sm">Autre</span>
+                  </div>
+                  <span class="text-sm font-medium">5%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Speech API Support -->
+          <div class="mt-6 pt-6 border-t border-slate-700">
+            <h4 class="text-sm text-zinc-400 mb-3">Support Web Speech API</h4>
+            <div class="flex items-center gap-4">
+              <div class="flex-1 h-4 bg-slate-700/50 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style="width: 94%"></div>
+              </div>
+              <span class="text-sm font-medium text-emerald-400">94%</span>
+            </div>
+            <p class="text-xs text-zinc-500 mt-2">6% des visiteurs utilisent un navigateur non compatible</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Sessions Table -->
+      <section class="stat-card p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold">Sessions récentes</h3>
+          <button class="text-sm text-vocalia-400 hover:text-vocalia-300 transition">Voir tout</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left text-zinc-400 border-b border-slate-700">
+                <th class="pb-3">Session ID</th>
+                <th class="pb-3">Persona</th>
+                <th class="pb-3">Langue</th>
+                <th class="pb-3">Durée</th>
+                <th class="pb-3">Messages</th>
+                <th class="pb-3">Status</th>
+                <th class="pb-3">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
+                <td class="py-3 font-mono text-xs">sess_abc123</td>
+                <td class="py-3">AGENCY</td>
+                <td class="py-3">FR</td>
+                <td class="py-3">3:45</td>
+                <td class="py-3">12</td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
+                <td class="py-3 text-zinc-400">Il y a 5 min</td>
+              </tr>
+              <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
+                <td class="py-3 font-mono text-xs">sess_def456</td>
+                <td class="py-3">DENTAL</td>
+                <td class="py-3">EN</td>
+                <td class="py-3">2:12</td>
+                <td class="py-3">8</td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs">Completed</span></td>
+                <td class="py-3 text-zinc-400">Il y a 12 min</td>
+              </tr>
+              <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
+                <td class="py-3 font-mono text-xs">sess_ghi789</td>
+                <td class="py-3">PROPERTY</td>
+                <td class="py-3">AR</td>
+                <td class="py-3">5:34</td>
+                <td class="py-3">18</td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
+                <td class="py-3 text-zinc-400">Il y a 23 min</td>
+              </tr>
+              <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
+                <td class="py-3 font-mono text-xs">sess_jkl012</td>
+                <td class="py-3">ECOMMERCE</td>
+                <td class="py-3">FR</td>
+                <td class="py-3">1:08</td>
+                <td class="py-3">4</td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs">Abandoned</span></td>
+                <td class="py-3 text-zinc-400">Il y a 31 min</td>
+              </tr>
+              <tr class="hover:bg-slate-700/30 transition">
+                <td class="py-3 font-mono text-xs">sess_mno345</td>
+                <td class="py-3">HEALER</td>
+                <td class="py-3">ARY</td>
+                <td class="py-3">6:22</td>
+                <td class="py-3">24</td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
+                <td class="py-3 text-zinc-400">Il y a 45 min</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Render simple bar chart
+      const chartContainer = document.getElementById('sessionsChart');
+      if (chartContainer) {
+        const data = [85, 92, 78, 95, 110, 88, 105, 120, 98, 135, 142, 128, 145, 152, 138, 160, 155, 148, 165, 172, 158, 180, 175, 168, 185, 192, 178, 200, 195, 188];
+        const max = Math.max(...data);
+
+        data.forEach((val, i) => {
+          const bar = document.createElement('div');
+          bar.className = 'flex flex-col items-center gap-1';
+          bar.style.width = '3%';
+          bar.innerHTML = `
+            <div class="w-full bg-vocalia-500/80 rounded-t transition-all hover:bg-vocalia-400" style="height: ${(val / max * 200)}px"></div>
+          `;
+          chartContainer.appendChild(bar);
+        });
+      }
+    });
+  </script>
+
+  <!-- i18n System -->
+  <script src="/src/lib/geo-detect.js?v=250"></script>
+  <script src="/src/lib/i18n.js?v=250"></script>
+</body>
+</html>

@@ -49,9 +49,9 @@ const GEO_CONFIG = {
 };
 
 const PRICING = {
-  MAD: { starter: 499, pro: 1499, overage: 0.60 },
-  EUR: { starter: 49, pro: 149, overage: 0.06 },
-  USD: { starter: 49, pro: 149, overage: 0.06 }
+  MAD: { starter: 990, pro: 2990, overage: 0.60 },
+  EUR: { starter: 99, pro: 299, overage: 0.06 },
+  USD: { starter: 99, pro: 299, overage: 0.06 }
 };
 
 /**
