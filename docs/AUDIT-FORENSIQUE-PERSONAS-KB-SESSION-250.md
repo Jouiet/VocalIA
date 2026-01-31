@@ -36,29 +36,29 @@
 
 | Volet | Score Avant | Score Après | Gap Restant |
 |:------|:-----------:|:-----------:|:-----------:|
-| **Personas** | 65/100 | **75/100** | -25 (traductions 21 personas manquantes) |
+| **Personas** | 65/100 | **95/100** | ✅ 100% traductions (40/40 × 5 langues) |
 | **Knowledge Base** | 35/100 | 35/100 | -55 (TODO) |
 | **Objection Handling** | N/A | **90/100** | NEW |
-| **Global** | 50/100 | **72/100** | -20 |
+| **Global** | 50/100 | **85/100** | -10 (KB seul) |
 
 ### 1.2 Constats Critiques
 
 | Constat | Sévérité | Impact Business |
 |:--------|:--------:|:----------------|
-| ~~23/30 personas sans traductions~~ → **19/40 SYSTEM_PROMPTS** | 🔴 GAP | Structure SOTA ✅, traductions ❌ |
+| ~~23/30 personas sans traductions~~ → **40/40 SYSTEM_PROMPTS ✅** | 🟢 RÉSOLU | 100% couverture 5 langues |
 | Chunks KB vides de contenu sémantique | 🔴 CRITIQUE | RAG quasi-inutile |
-| Dense embeddings non fonctionnels | 🔴 CRITIQUE | Hybrid search cassé |
+| Dense embeddings path corrigé | 🟢 RÉSOLU | Hybrid search activé |
 | Legacy KB plus riche que RAG moderne | 🟡 HAUTE | Incohérence architecturale |
 | Graph RAG non fonctionnel | 🟡 MOYENNE | Fonctionnalité manquante |
 
 ### 1.3 ROI Potentiel des Optimisations
 
-| Optimisation | Effort | Impact | ROI |
-|:-------------|:------:|:------:|:---:|
-| Enrichir chunks KB | 1 jour | +50% qualité RAG | ⭐⭐⭐⭐⭐ |
-| Fix embedding cache path | 10 min | Hybrid search activé | ⭐⭐⭐⭐⭐ |
-| Traduire personas | 3 jours | 100% couverture i18n | ⭐⭐⭐⭐ |
-| Structure personas enrichie | 2 jours | +40% qualité réponse | ⭐⭐⭐⭐ |
+| Optimisation | Effort | Impact | ROI | Status |
+|:-------------|:------:|:------:|:---:|:------:|
+| Enrichir chunks KB | 1 jour | +50% qualité RAG | ⭐⭐⭐⭐⭐ | TODO |
+| Fix embedding cache path | 10 min | Hybrid search activé | ⭐⭐⭐⭐⭐ | ✅ DONE |
+| Traduire personas | 3 jours | 100% couverture i18n | ⭐⭐⭐⭐ | ✅ DONE |
+| Structure personas enrichie | 2 jours | +40% qualité réponse | ⭐⭐⭐⭐ | ✅ DONE |
 
 ---
 

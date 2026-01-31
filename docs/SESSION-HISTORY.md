@@ -1,9 +1,9 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 3.38.0 | **Updated**: 31/01/2026 | **Session**: 250.6
+> **Version**: 3.39.0 | **Updated**: 31/01/2026 | **Session**: 250.7
 > **Backend Score**: 99/100 | **Frontend Score**: ~97% | **Health Check**: 100% (39/39)
 > **MCP Server**: v0.7.0 | **MCP Tools**: 178 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
-> **Session 250.6**: Personas SOTA (40) + Objection Handling LAER/Feel-Felt-Found
+> **Session 250.7**: Analytics (Plausible 37 pages) + Status Page + SDK Docs Updated
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
 
 ---
@@ -4914,5 +4914,64 @@ wc -l website/academie-business/index.html  # 1425 lignes ✅
 
 ---
 
-*Màj: 31/01/2026 - Session 249.24 (Académie Business + Audit Orphan Pages)*
+---
+
+## Session 250.7 - Analytics + SDK Docs + Status Page (31/01/2026)
+
+### 1. Plausible Analytics Added (37 pages)
+
+**Problem**: No privacy-respecting analytics on website.
+
+**Solution**: Added Plausible (GDPR compliant, no cookies).
+
+| File | Action |
+|:-----|:-------|
+| scripts/add-analytics.py | Created propagation script |
+| website/components/analytics.html | Event tracking helpers |
+| 37 HTML pages | Analytics script added |
+
+**Events tracked**:
+- CTA clicks (signup, pricing, demo)
+- Language switches
+- Newsletter subscriptions
+
+### 2. SDK Documentation Updated
+
+Both SDKs already had complete documentation. Updated persona count from 28 to 40:
+
+| SDK | File | Change |
+|:----|:-----|:-------|
+| Python | sdks/python/README.md | Personas: 28 → 40 |
+| Node.js | sdks/node/README.md | Personas: 28 → 40 |
+
+### 3. Status Page Created (Session 250.5)
+
+| File | Lines | Features |
+|:-----|:-----:|:---------|
+| website/status/index.html | ~400 | 5 services, 90-day uptime, i18n |
+
+**i18n added**: 23 keys × 5 languages = 115 translations
+
+### 4. Tasks Completed
+
+| Task | Status |
+|:-----|:------:|
+| #21 Light mode (dashboards) | ✅ Already implemented |
+| #23 Create /status page | ✅ Done |
+| #24 Analytics (Plausible) | ✅ 37 pages |
+| #25-26 SDK documentation | ✅ Complete (updated) |
+
+### 5. Documentation Updated
+
+| Document | Change |
+|:---------|:-------|
+| docs/FORENSIC-AUDIT-SESSION-250.md | Tasks marked complete |
+| docs/VOCALIA-MCP.md | Personas: 30 → 40 |
+| sdks/*/README.md | Personas: 28 → 40 |
+
+**Statut final**: Session 250.7 | Analytics ✅ | Status Page ✅ | SDK Docs ✅
+
+---
+
+*Màj: 31/01/2026 - Session 250.7 (Analytics + SDK Docs + Status Page)*
 *Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
