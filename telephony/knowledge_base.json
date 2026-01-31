@@ -87,5 +87,161 @@
         "minimum_commande": "Commande minimum de 20€. Livraison gratuite dès 50€.",
         "paiement": "Paiement à la commande (CB, Apple Pay) ou à la livraison (espèces, TPE).",
         "reorder": "Retrouvez vos commandes précédentes dans 'Mes favoris' pour une recomande en un clic."
+    },
+    "property_v1": {
+        "urgence_maintenance": "Pour les urgences (fuite d'eau, panne électrique), appelez le numéro d'urgence 24h/24.",
+        "demande_reparation": "Soumettez vos demandes via le portail locataire ou par téléphone. Délai d'intervention 24-72h.",
+        "reglement_loyer": "Le loyer est dû le 1er du mois. Paiement par virement, prélèvement ou carte.",
+        "contact_gestionnaire": "Votre gestionnaire est disponible du lundi au vendredi de 9h à 18h."
+    },
+    "contractor_v1": {
+        "devis_gratuit": "Nous proposons des devis gratuits sous 48h après visite technique.",
+        "garantie_travaux": "Tous nos travaux sont garantis 10 ans (décennale) et assurés.",
+        "delai_intervention": "Intervention sous 1-2 semaines selon le type de travaux.",
+        "financement": "Possibilité de paiement en 3 ou 4 fois sans frais."
+    },
+    "funeral_v1": {
+        "premier_contact": "Notre équipe est disponible 24h/24 pour vous accompagner dans ces moments difficiles.",
+        "organisation": "Nous nous occupons de toutes les démarches administratives et logistiques.",
+        "personnalisation": "Chaque cérémonie peut être personnalisée selon vos souhaits et croyances.",
+        "accompagnement": "Un conseiller dédié vous accompagne tout au long du processus."
+    },
+    "accountant_v1": {
+        "services": "Comptabilité générale, déclarations fiscales, bulletins de paie, création d'entreprise.",
+        "tarifs": "Forfaits mensuels à partir de 150€ HT selon la taille de votre entreprise.",
+        "rdv": "Première consultation gratuite de 30 minutes pour évaluer vos besoins.",
+        "delai_declarations": "Nous respectons tous les délais légaux avec rappels automatiques."
+    },
+    "architect_v1": {
+        "prestations": "Conception, permis de construire, suivi de chantier, rénovation énergétique.",
+        "honoraires": "Honoraires de 8% à 12% du montant des travaux selon la mission.",
+        "premiere_rencontre": "Première rencontre gratuite pour discuter de votre projet.",
+        "delai_permis": "Délai moyen pour un permis de construire: 2-3 mois."
+    },
+    "pharmacist_v1": {
+        "disponibilite_medicaments": "Vérifiez la disponibilité par téléphone avant de vous déplacer.",
+        "ordonnance": "Nous acceptons les ordonnances électroniques et papier.",
+        "garde": "Pharmacie de garde disponible les dimanches et jours fériés (consulter le planning).",
+        "services": "Vaccination, prise de tension, conseil personnalisé, préparations magistrales."
+    },
+    "renter_v1": {
+        "vehicules": "Citadines, berlines, SUV, utilitaires et minibus disponibles.",
+        "documents": "Permis de conduire valide, carte d'identité et carte bancaire requis.",
+        "assurance": "Assurance tous risques incluse avec franchise de 800€ (rachetable à 15€/jour).",
+        "km_inclus": "200 km inclus par jour. Kilomètre supplémentaire: 0,25€."
+    },
+    "logistician_v1": {
+        "suivi_expedition": "Tracking en temps réel disponible via notre portail client.",
+        "zones_livraison": "Couverture nationale et internationale (Europe, Afrique du Nord).",
+        "delais": "J+1 national, 3-5 jours Europe, 5-10 jours international.",
+        "tarifs_volume": "Remises progressives selon le volume mensuel expédié."
+    },
+    "trainer_v1": {
+        "formations": "Management, bureautique, langues, développement personnel, techniques métier.",
+        "certification": "Toutes nos formations sont certifiantes et éligibles CPF.",
+        "modalites": "Présentiel, distanciel ou mixte selon vos préférences.",
+        "financement": "Prise en charge possible par OPCO, CPF ou plan de formation."
+    },
+    "planner_v1": {
+        "evenements": "Mariages, anniversaires, séminaires, conférences, lancements produits.",
+        "devis": "Devis personnalisé sous 48h après brief détaillé.",
+        "budget": "Nous adaptons nos prestations à tous les budgets.",
+        "prestataires": "Réseau de prestataires qualifiés (traiteurs, DJ, photographes, décorateurs)."
+    },
+    "producer_v1": {
+        "produits": "Fruits et légumes de saison, œufs fermiers, miel, fromages artisanaux.",
+        "commande": "Commandez en ligne ou par téléphone avant mercredi pour livraison vendredi.",
+        "livraison": "Livraison à domicile ou retrait à la ferme le vendredi de 16h à 19h.",
+        "labels": "Agriculture biologique certifiée, circuit court, production locale."
+    },
+    "cleaner_v1": {
+        "services": "Ménage régulier, grand nettoyage, fin de chantier, vitrerie, désinfection.",
+        "tarifs": "À partir de 25€/heure charges comprises. Devis gratuit.",
+        "frequence": "Interventions ponctuelles ou contrats hebdomadaires/mensuels.",
+        "produits": "Produits éco-responsables sur demande sans surcoût."
+    },
+    "gym_v1": {
+        "abonnements": "Sans engagement à 39€/mois, 12 mois à 29€/mois, Pass journée à 15€.",
+        "horaires": "Ouvert 7j/7 de 6h à 23h. Accès 24h/24 pour membres Premium.",
+        "equipements": "Cardio, musculation, espace fonctionnel, cours collectifs inclus.",
+        "essai": "Séance d'essai gratuite avec coach pour découvrir nos installations."
+    },
+    "retailer_v1": {
+        "horaires": "Ouvert du lundi au samedi de 9h30 à 19h30, nocturne le jeudi jusqu'à 21h.",
+        "stock": "Vérifiez la disponibilité par téléphone ou sur notre site avant de vous déplacer.",
+        "retours": "Échange ou remboursement sous 30 jours avec ticket de caisse.",
+        "fidelite": "Carte fidélité gratuite: 1€ = 1 point, 100 points = 5€ de réduction."
+    },
+    "builder_v1": {
+        "projets": "Construction neuve, extension, rénovation complète, surélévation.",
+        "garanties": "Garantie décennale, dommages-ouvrage, parfait achèvement.",
+        "etapes": "1. Étude gratuite, 2. Devis détaillé, 3. Contrat CCMI, 4. Suivi chantier.",
+        "delais": "Délai moyen construction maison individuelle: 10-14 mois."
+    },
+    "restaurateur_v1": {
+        "reservations": "Réservation conseillée le week-end. Tables disponibles jusqu'à 8 personnes.",
+        "menu": "Menu du jour à 18€ (entrée-plat ou plat-dessert), carte complète disponible.",
+        "allergenes": "Tous nos plats sont adaptables pour allergies et régimes spéciaux sur demande.",
+        "privatisation": "Privatisation possible pour événements jusqu'à 50 personnes."
+    },
+    "travel_agent_v1": {
+        "destinations": "Séjours balnéaires, circuits culturels, croisières, voyages sur mesure.",
+        "paiement": "Acompte de 30% à la réservation, solde 30 jours avant départ.",
+        "assurance": "Assurance annulation et rapatriement recommandée (à partir de 35€).",
+        "urgence": "Numéro d'urgence 24h/24 pendant votre voyage."
+    },
+    "consultant_v1": {
+        "expertise": "Stratégie d'entreprise, transformation digitale, optimisation des processus, management.",
+        "methode": "Diagnostic initial, plan d'action, accompagnement terrain, mesure des résultats.",
+        "tarifs": "Facturation à la journée (800-1500€ HT) ou au forfait projet.",
+        "references": "Plus de 50 missions réalisées auprès de PME et ETI."
+    },
+    "it_services_v1": {
+        "support": "Support technique par téléphone, email ou prise en main à distance.",
+        "services": "Maintenance informatique, cybersécurité, cloud, sauvegarde, réseau.",
+        "contrats": "Forfaits mensuels à partir de 99€ ou intervention ponctuelle.",
+        "sla": "Temps de réponse garanti: 4h en heures ouvrées, 8h les week-ends."
+    },
+    "manufacturer_v1": {
+        "fabrication": "Pièces sur mesure en métal, bois, plastique selon vos plans ou cahier des charges.",
+        "delais": "Délai de fabrication: 1-4 semaines selon complexité et quantité.",
+        "prototypage": "Prototypage rapide disponible pour validation avant production.",
+        "minimum": "Pas de minimum de commande pour les pièces unitaires."
+    },
+    "doctor_v1": {
+        "consultations": "Consultation générale sur rendez-vous. Urgences acceptées selon disponibilité.",
+        "teleconsultation": "Téléconsultation disponible via notre plateforme sécurisée.",
+        "vaccinations": "Vaccinations courantes sur rendez-vous (grippe, COVID, rappels).",
+        "documents": "Carte vitale et mutuelle requises. Tiers payant accepté."
+    },
+    "notary_v1": {
+        "actes": "Ventes immobilières, donations, successions, contrats de mariage, PACS.",
+        "frais": "Les frais de notaire sont réglementés et incluent taxes et émoluments.",
+        "rdv": "Premier rendez-vous d'information gratuit de 30 minutes.",
+        "delais": "Délai moyen pour une vente immobilière: 2-3 mois."
+    },
+    "bakery_v1": {
+        "produits": "Pains traditionnels, viennoiseries, pâtisseries maison, traiteur salé.",
+        "commandes": "Commandes spéciales (gâteaux, pièces montées) sous 48h.",
+        "horaires": "Ouvert tous les jours de 6h30 à 19h30 sauf lundi.",
+        "ingredients": "Farines françaises, beurre AOP, levain naturel."
+    },
+    "specialist_v1": {
+        "specialite": "Consultation spécialisée sur rendez-vous uniquement.",
+        "delai_rdv": "Délai moyen pour un premier rendez-vous: 2-4 semaines.",
+        "documents": "Apportez votre courrier d'adressage, examens récents et historique médical.",
+        "correspondance": "Compte-rendu envoyé à votre médecin traitant sous 48h."
+    },
+    "real_estate_agent_v1": {
+        "services": "Estimation gratuite, mandat de vente, recherche acquéreur, accompagnement complet.",
+        "honoraires": "Commission de 4-6% selon le montant de la transaction.",
+        "visites": "Visites possibles en semaine et le samedi sur rendez-vous.",
+        "estimation": "Estimation de votre bien sous 48h après visite."
+    },
+    "hairdresser_v1": {
+        "prestations": "Coupe, coloration, balayage, lissage, coiffure événementielle.",
+        "tarifs": "Coupe femme à partir de 35€, homme à partir de 20€.",
+        "rdv": "Réservation conseillée, walk-in accepté selon disponibilité.",
+        "produits": "Produits professionnels L'Oréal, Kérastase, Wella."
     }
 }
