@@ -1790,5 +1790,24 @@
     "no_incidents": "ما كاينش تا مشكل فـ 30 يوم الأخيرين.",
     "all_rights": "جميع الحقوق محفوظة.",
     "contact_support": "تواصل مع الدعم"
+  },
+  "login_page": {
+    "title": "دخول",
+    "subtitle": "دخل للوحة ديالك",
+    "email": "إيميل",
+    "password": "كلمة السر",
+    "forgot": "نسيتي كلمة السر؟",
+    "remember": "تفكرني",
+    "submit": "دخل",
+    "or": "ولا",
+    "google": "كمل مع Google",
+    "github": "كمل مع GitHub",
+    "no_account": "ما عندكش كونط؟",
+    "signup": "كري كونط جديد",
+    "security": "اتصال آمن SSL"
+  },
+  "cookie_policy_page": {
+    "title": "سياسة الكوكيز",
+    "description": "كيفاش كنستعملو الكوكيز"
   }
 }

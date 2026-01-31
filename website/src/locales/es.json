@@ -1790,5 +1790,24 @@
     "no_incidents": "Sin incidentes en los últimos 30 días.",
     "all_rights": "Todos los derechos reservados.",
     "contact_support": "Contactar soporte"
+  },
+  "login_page": {
+    "title": "Iniciar sesión",
+    "subtitle": "Accede a tu panel de control",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "forgot": "¿Olvidaste tu contraseña?",
+    "remember": "Recordarme",
+    "submit": "Iniciar sesión",
+    "or": "o",
+    "google": "Continuar con Google",
+    "github": "Continuar con GitHub",
+    "no_account": "¿No tienes cuenta?",
+    "signup": "Crear una cuenta",
+    "security": "Conexión segura con cifrado SSL"
+  },
+  "cookie_policy_page": {
+    "title": "Política de Cookies",
+    "description": "Cómo usamos las cookies"
   }
 }

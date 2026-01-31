@@ -1790,5 +1790,24 @@
     "no_incidents": "No incidents in the last 30 days.",
     "all_rights": "All rights reserved.",
     "contact_support": "Contact support"
+  },
+  "login_page": {
+    "title": "Login",
+    "subtitle": "Access your dashboard",
+    "email": "Email address",
+    "password": "Password",
+    "forgot": "Forgot password?",
+    "remember": "Remember me",
+    "submit": "Sign in",
+    "or": "or",
+    "google": "Continue with Google",
+    "github": "Continue with GitHub",
+    "no_account": "No account yet?",
+    "signup": "Create an account",
+    "security": "Secure connection with SSL encryption"
+  },
+  "cookie_policy_page": {
+    "title": "Cookie Policy",
+    "description": "How we use cookies"
   }
 }
