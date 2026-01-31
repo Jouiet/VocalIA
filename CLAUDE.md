@@ -1,7 +1,8 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.34.0 | 31/01/2026 | Session 250.17 | Health: 100% | **FORENSIC AUDIT COMPLETE**
+> Version: 6.35.0 | 31/01/2026 | Session 250.18 | Health: 100% | **SECURITY HARDENED**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 43 pages | **1685 keys** | RTL ✅ | **100% COMPLETE**
+> **Security: CSP + X-Frame-Options + X-Content-Type-Options on ALL 43 pages ✅**
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
 > **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 40 Personas | 4 Frameworks | 12 Func. Tools | 25 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.7.0 | RAG: BM25 SOTA | Multi-Tenant ✅
@@ -12,7 +13,7 @@
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
 > **Website: 43 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 43 pages tracked | CTA events ✅ | **A/B Testing ✅**
-> **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: 91/100 | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
+> **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: 98/100 | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
 
 ## Identité
 

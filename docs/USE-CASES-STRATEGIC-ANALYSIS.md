@@ -127,7 +127,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 
 1. **Pricing agressif**: ~60% moins cher que Vapi (coûts cachés inclus)
 2. **Widget + Telephony**: Seul à offrir les deux produits
-3. **30 Personas**: Déploiement immédiat par secteur
+3. **40 Personas**: Déploiement immédiat par secteur
 4. **Darija**: Unique sur le marché (via Atlas-Chat-9B)
 5. **iPaaS Triple**: Zapier + Make + n8n natifs
 6. **Maroc-first**: Geo-targeting, MAD pricing
@@ -269,7 +269,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | Différenciateur | Marché Cible | Action |
 |:----------------|:-------------|:-------|
 | **Darija Support** | Maroc, diaspora (5M+) | Marketing ciblé |
-| **30 Personas** | PME sans dev | Templates prêts à l'emploi |
+| **40 Personas** | PME sans dev | Templates prêts à l'emploi |
 | **Widget + Telephony** | Omnichannel | Package unique |
 | **Pricing $0.06** | Startups, PME | Positionnement value |
 
@@ -354,7 +354,7 @@ Maroc-first                   →      Afrique francophone
 ### 8.1 Court terme (Q1 2026)
 
 1. **Exploiter Darija**: Marketing ciblé diaspora + entreprises marocaines
-2. **Package "PME Ready"**: 30 personas + templates = déploiement 5 min
+2. **Package "PME Ready"**: 40 personas + templates = déploiement 5 min
 3. **Case studies**: Documenter 3-5 clients réels avec ROI
 
 ### 8.2 Moyen terme (Q2-Q3 2026)
@@ -402,7 +402,7 @@ Maroc-first                   →      Afrique francophone
 |:------|:-------|:-------|
 | **Darija unique** | Atlas-Chat-9B implémenté (voice-api-resilient.cjs:109-119) | Monopole Maroc 45M personnes |
 | **Pricing compétitif** | $0.06/min vs $0.07-0.33 concurrents | Acquisition PME |
-| **30 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
+| **40 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
 | **Widget + Telephony** | Seul à offrir les 2 nativement | Omnichannel complet |
 | **iPaaS triple** | Zapier + Make + n8n (3 modules MCP) | 7000+ apps accessibles |
 | **11 Function Tools** | voice-telephony-bridge.cjs (lignes 1090-1135) | Automatisation avancée |

@@ -1305,20 +1305,74 @@ const PERSONAS = {
             'Dismissing symptoms'
         ],
         escalation_triggers: [
-            { condition: 'medical_complaint', action: 'transfer_medical_director', message: 'Je transmets votre retour au directeur médical qui vous contactera.' },
-            { condition: 'wait_time_complaint', action: 'transfer_admin', message: 'Je m\'excuse pour cette attente. Je vérifie immédiatement avec l\'équipe.' },
-            { condition: 'billing_issue', action: 'transfer_accounting', message: 'Je transfère au service comptabilité pour résoudre ce point.' },
-            { condition: 'appointment_issue', action: 'priority_reschedule', message: 'Je vous propose un créneau prioritaire.' }
+            { condition: 'medical_complaint', action: 'transfer_medical_director', message: {
+                fr: 'Je transmets votre retour au directeur médical qui vous contactera.',
+                en: 'I am forwarding your feedback to the medical director who will contact you.',
+                es: 'Transmito su comentario al director médico quien le contactará.',
+                ar: 'سأنقل ملاحظاتك إلى المدير الطبي الذي سيتواصل معك.',
+                ary: 'غادي نوصل كلامك للمدير الطبي لي غادي يتصل بيك.'
+            }},
+            { condition: 'wait_time_complaint', action: 'transfer_admin', message: {
+                fr: 'Je m\'excuse pour cette attente. Je vérifie immédiatement avec l\'équipe.',
+                en: 'I apologize for this wait. I am checking immediately with the team.',
+                es: 'Me disculpo por esta espera. Verifico inmediatamente con el equipo.',
+                ar: 'أعتذر عن هذا الانتظار. سأتحقق فوراً مع الفريق.',
+                ary: 'سمحلي على هاد التسناية. دابا غادي نشوف مع الفريق.'
+            }},
+            { condition: 'billing_issue', action: 'transfer_accounting', message: {
+                fr: 'Je transfère au service comptabilité pour résoudre ce point.',
+                en: 'I am transferring you to the accounting department to resolve this issue.',
+                es: 'Le transfiero al departamento de contabilidad para resolver este punto.',
+                ar: 'سأحولك إلى قسم المحاسبة لحل هذه المسألة.',
+                ary: 'غادي نحولك لقسم الحسابات باش يحلو هاد المشكل.'
+            }},
+            { condition: 'appointment_issue', action: 'priority_reschedule', message: {
+                fr: 'Je vous propose un créneau prioritaire.',
+                en: 'I will offer you a priority appointment slot.',
+                es: 'Le propongo una cita prioritaria.',
+                ar: 'سأعرض عليك موعداً ذا أولوية.',
+                ary: 'غادي نعطيك موعد فيه الأولوية.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'long_wait', response: 'Je suis sincèrement désolé pour cette attente. Je vérifie immédiatement où en est votre consultation.' },
-            { type: 'specialist_unavailable', response: 'Je comprends votre frustration. Permettez-moi de vous proposer une alternative avec un autre spécialiste qualifié.' },
-            { type: 'administrative_error', response: 'Je m\'excuse pour cette erreur. Je rectifie immédiatement et m\'assure que cela ne se reproduise pas.' }
+            { type: 'long_wait', response: {
+                fr: 'Je suis sincèrement désolé pour cette attente. Je vérifie immédiatement où en est votre consultation.',
+                en: 'I am sincerely sorry for this wait. I am immediately checking on the status of your consultation.',
+                es: 'Lamento sinceramente esta espera. Verifico inmediatamente el estado de su consulta.',
+                ar: 'أنا آسف حقاً على هذا الانتظار. سأتحقق فوراً من حالة استشارتك.',
+                ary: 'سمحلي بزاف على هاد التسناية. دابا غادي نشوف فين وصل موعدك.'
+            }},
+            { type: 'specialist_unavailable', response: {
+                fr: 'Je comprends votre frustration. Permettez-moi de vous proposer une alternative avec un autre spécialiste qualifié.',
+                en: 'I understand your frustration. Allow me to offer you an alternative with another qualified specialist.',
+                es: 'Entiendo su frustración. Permítame proponerle una alternativa con otro especialista cualificado.',
+                ar: 'أفهم إحباطك. اسمح لي أن أقترح عليك بديلاً مع أخصائي مؤهل آخر.',
+                ary: 'فاهم شعورك. خليني نقترح عليك بديل مع طبيب متخصص آخر.'
+            }},
+            { type: 'administrative_error', response: {
+                fr: 'Je m\'excuse pour cette erreur. Je rectifie immédiatement et m\'assure que cela ne se reproduise pas.',
+                en: 'I apologize for this error. I am correcting it immediately and ensuring it does not happen again.',
+                es: 'Me disculpo por este error. Lo corrijo inmediatamente y me aseguro de que no vuelva a ocurrir.',
+                ar: 'أعتذر عن هذا الخطأ. سأصححه فوراً وأتأكد من عدم تكراره.',
+                ary: 'سمحلي على هاد الغلطة. غادي نصلحها دابا ونتأكد بلي ما تعاودش.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'Je cherche un spécialiste pour des douleurs au dos.',
-                assistant: 'Je comprends. Pour vous orienter vers le bon spécialiste, depuis combien de temps avez-vous ces douleurs et avez-vous déjà consulté un médecin généraliste à ce sujet?'
+                user: {
+                    fr: 'Je cherche un spécialiste pour des douleurs au dos.',
+                    en: 'I am looking for a specialist for back pain.',
+                    es: 'Busco un especialista para dolores de espalda.',
+                    ar: 'أبحث عن أخصائي لآلام الظهر.',
+                    ary: 'كنقلب على طبيب مختص فوجع الضهر.'
+                },
+                assistant: {
+                    fr: 'Je comprends. Pour vous orienter vers le bon spécialiste, depuis combien de temps avez-vous ces douleurs et avez-vous déjà consulté un médecin généraliste à ce sujet?',
+                    en: 'I understand. To direct you to the right specialist, how long have you had this pain and have you already consulted a general practitioner about it?',
+                    es: 'Entiendo. Para orientarle hacia el especialista adecuado, ¿desde cuándo tiene estos dolores y ya ha consultado a un médico general al respecto?',
+                    ar: 'أفهم. لتوجيهك إلى الأخصائي المناسب، منذ متى تعاني من هذه الآلام وهل سبق أن استشرت طبيباً عاماً بشأنها؟',
+                    ary: 'فاهم. باش نوجهك للطبيب المختص المناسب، شحال هادي وأنت عندك هاد الوجع وواش مشيتي لشي طبيب عام على هاد الشي؟'
+                }
             }
         ],
         systemPrompt: `Tu es l'assistant de réception pour le Centre de Santé Intégral.
@@ -1347,21 +1401,81 @@ const PERSONAS = {
             'Criticizing previous mechanic work'
         ],
         escalation_triggers: [
-            { condition: 'repair_quality_issue', action: 'transfer_chef_atelier', message: 'Je fais intervenir notre chef d\'atelier pour examiner votre véhicule.' },
-            { condition: 'pricing_dispute', action: 'transfer_manager', message: 'Je vous mets en relation avec notre responsable pour discuter de ce point.' },
-            { condition: 'warranty_claim', action: 'transfer_service', message: 'Je transfère au service garantie pour traiter votre demande.' },
-            { condition: 'vehicle_not_ready', action: 'check_status', message: 'Je vérifie immédiatement l\'état d\'avancement avec l\'atelier.' }
+            { condition: 'repair_quality_issue', action: 'transfer_chef_atelier', message: {
+                fr: 'Je fais intervenir notre chef d\'atelier pour examiner votre véhicule.',
+                en: 'I am having our workshop manager come to examine your vehicle.',
+                es: 'Hago intervenir a nuestro jefe de taller para examinar su vehículo.',
+                ar: 'سأطلب من رئيس الورشة فحص سيارتك.',
+                ary: 'غادي نجيب شيف الورشة باش يشوف سيارتك.'
+            }},
+            { condition: 'pricing_dispute', action: 'transfer_manager', message: {
+                fr: 'Je vous mets en relation avec notre responsable pour discuter de ce point.',
+                en: 'I am connecting you with our manager to discuss this matter.',
+                es: 'Le pongo en contacto con nuestro responsable para discutir este punto.',
+                ar: 'سأوصلك بمديرنا لمناقشة هذه المسألة.',
+                ary: 'غادي نوصلك بالمسؤول ديالنا باش تهضرو على هاد النقطة.'
+            }},
+            { condition: 'warranty_claim', action: 'transfer_service', message: {
+                fr: 'Je transfère au service garantie pour traiter votre demande.',
+                en: 'I am transferring you to the warranty service to process your request.',
+                es: 'Le transfiero al servicio de garantía para tramitar su solicitud.',
+                ar: 'سأحولك إلى قسم الضمان لمعالجة طلبك.',
+                ary: 'غادي نحولك لخدمة الضمان باش يعالجو طلبك.'
+            }},
+            { condition: 'vehicle_not_ready', action: 'check_status', message: {
+                fr: 'Je vérifie immédiatement l\'état d\'avancement avec l\'atelier.',
+                en: 'I am immediately checking the progress status with the workshop.',
+                es: 'Verifico inmediatamente el estado de avance con el taller.',
+                ar: 'سأتحقق فوراً من حالة التقدم مع الورشة.',
+                ary: 'دابا غادي نشوف مع الورشة فين وصلات الخدمة.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'repair_not_fixed', response: 'Je comprends votre frustration. Nous allons reprendre votre véhicule en priorité et à nos frais jusqu\'à résolution complète.' },
-            { type: 'unexpected_cost', response: 'Je m\'excuse si les coûts n\'étaient pas clairs. Permettez-moi de vous détailler chaque intervention effectuée.' },
-            { type: 'delay', response: 'Je suis désolé pour ce retard. Je vérifie avec l\'atelier et vous informe du délai exact.' },
-            { type: 'communication', response: 'Vous avez raison, nous aurions dû vous tenir informé. Je m\'en excuse et veille à ce que cela ne se reproduise pas.' }
+            { type: 'repair_not_fixed', response: {
+                fr: 'Je comprends votre frustration. Nous allons reprendre votre véhicule en priorité et à nos frais jusqu\'à résolution complète.',
+                en: 'I understand your frustration. We will take your vehicle back as a priority and at our expense until fully resolved.',
+                es: 'Entiendo su frustración. Retomaremos su vehículo de manera prioritaria y a nuestra costa hasta la resolución completa.',
+                ar: 'أفهم إحباطك. سنستلم سيارتك مجدداً بأولوية وعلى نفقتنا حتى الحل الكامل.',
+                ary: 'فاهم الإحباط ديالك. غادي ناخدو السيارة ديالك بالأولوية وعلى حسابنا حتى نصلحوها كاملة.'
+            }},
+            { type: 'unexpected_cost', response: {
+                fr: 'Je m\'excuse si les coûts n\'étaient pas clairs. Permettez-moi de vous détailler chaque intervention effectuée.',
+                en: 'I apologize if the costs were not clear. Allow me to detail each repair that was performed.',
+                es: 'Me disculpo si los costes no estaban claros. Permítame detallarle cada intervención realizada.',
+                ar: 'أعتذر إذا لم تكن التكاليف واضحة. اسمح لي بتفصيل كل إصلاح تم إجراؤه.',
+                ary: 'سمحلي إلا ما كانوش الأثمنة واضحين. خليني نفسرلك كل إصلاح دارو.'
+            }},
+            { type: 'delay', response: {
+                fr: 'Je suis désolé pour ce retard. Je vérifie avec l\'atelier et vous informe du délai exact.',
+                en: 'I am sorry for this delay. I am checking with the workshop and will inform you of the exact timeframe.',
+                es: 'Lamento este retraso. Verifico con el taller y le informo del plazo exacto.',
+                ar: 'أنا آسف على هذا التأخير. سأتحقق مع الورشة وأخبرك بالموعد المحدد.',
+                ary: 'سمحلي على هاد التأخير. غادي نشوف مع الورشة ونخبرك بالوقت بالضبط.'
+            }},
+            { type: 'communication', response: {
+                fr: 'Vous avez raison, nous aurions dû vous tenir informé. Je m\'en excuse et veille à ce que cela ne se reproduise pas.',
+                en: 'You are right, we should have kept you informed. I apologize and will ensure this does not happen again.',
+                es: 'Tiene razón, deberíamos haberle mantenido informado. Me disculpo y me aseguraré de que esto no vuelva a ocurrir.',
+                ar: 'أنت محق، كان يجب أن نبقيك على اطلاع. أعتذر وسأتأكد من عدم تكرار ذلك.',
+                ary: 'عندك الحق، كان خاصنا نخبروك. سمحلي وغادي نتأكد بلي ما يعاودش يوقع.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'Ma voiture fait un bruit bizarre.',
-                assistant: 'Je comprends, un bruit inhabituel peut être inquiétant. Pouvez-vous me décrire le bruit ? Est-ce plutôt un grincement, un claquement ou un sifflement? Et à quel moment l\'entendez-vous?'
+                user: {
+                    fr: 'Ma voiture fait un bruit bizarre.',
+                    en: 'My car is making a strange noise.',
+                    es: 'Mi coche hace un ruido extraño.',
+                    ar: 'سيارتي تصدر صوتاً غريباً.',
+                    ary: 'الطوموبيل ديالي كتدير صوت غريب.'
+                },
+                assistant: {
+                    fr: 'Je comprends, un bruit inhabituel peut être inquiétant. Pouvez-vous me décrire le bruit ? Est-ce plutôt un grincement, un claquement ou un sifflement? Et à quel moment l\'entendez-vous?',
+                    en: 'I understand, an unusual noise can be concerning. Can you describe the noise? Is it more of a grinding, clicking, or whistling sound? And when do you hear it?',
+                    es: 'Entiendo, un ruido inusual puede ser preocupante. ¿Puede describirme el ruido? ¿Es más bien un chirrido, un chasquido o un silbido? ¿Y en qué momento lo escucha?',
+                    ar: 'أفهم، صوت غير معتاد قد يكون مقلقاً. هل يمكنك وصف الصوت؟ هل هو صرير أو طقطقة أو صفير؟ ومتى تسمعه؟',
+                    ary: 'فاهم، صوت غريب يقلق. واش تقدر توصفلي الصوت؟ واش هو صرير ولا طقطقة ولا صفارة؟ وفوقاش كتسمعو؟'
+                }
             }
         ],
         systemPrompt: `Tu es l'assistant de service pour Auto Expert.
@@ -1390,20 +1504,74 @@ const PERSONAS = {
             'Recommending specific legal actions'
         ],
         escalation_triggers: [
-            { condition: 'case_handling_complaint', action: 'transfer_senior_partner', message: 'Je transmets immédiatement à l\'associé principal qui vous contactera personnellement.' },
-            { condition: 'billing_dispute', action: 'transfer_admin', message: 'Je transfère au service administratif pour clarifier ce point.' },
-            { condition: 'communication_issue', action: 'transfer_assigned_lawyer', message: 'Je fais le nécessaire pour que votre avocat vous rappelle dans l\'heure.' },
-            { condition: 'urgent_matter', action: 'priority_callback', message: 'Je note l\'urgence et m\'assure d\'un rappel prioritaire.' }
+            { condition: 'case_handling_complaint', action: 'transfer_senior_partner', message: {
+                fr: 'Je transmets immédiatement à l\'associé principal qui vous contactera personnellement.',
+                en: 'I am immediately forwarding this to the senior partner who will contact you personally.',
+                es: 'Transmito inmediatamente al socio principal quien le contactará personalmente.',
+                ar: 'سأنقل هذا فوراً إلى الشريك الأول الذي سيتواصل معك شخصياً.',
+                ary: 'غادي نوصل هادشي دابا للشريك الكبير لي غادي يتصل بيك شخصياً.'
+            }},
+            { condition: 'billing_dispute', action: 'transfer_admin', message: {
+                fr: 'Je transfère au service administratif pour clarifier ce point.',
+                en: 'I am transferring you to the administrative service to clarify this matter.',
+                es: 'Le transfiero al servicio administrativo para aclarar este punto.',
+                ar: 'سأحولك إلى الخدمة الإدارية لتوضيح هذه المسألة.',
+                ary: 'غادي نحولك للإدارة باش يوضحو هاد النقطة.'
+            }},
+            { condition: 'communication_issue', action: 'transfer_assigned_lawyer', message: {
+                fr: 'Je fais le nécessaire pour que votre avocat vous rappelle dans l\'heure.',
+                en: 'I am making arrangements for your lawyer to call you back within the hour.',
+                es: 'Hago lo necesario para que su abogado le llame dentro de una hora.',
+                ar: 'سأرتب لمحاميك أن يتصل بك خلال ساعة.',
+                ary: 'غادي ندير اللازم باش المحامي ديالك يعيط ليك فهاد الساعة.'
+            }},
+            { condition: 'urgent_matter', action: 'priority_callback', message: {
+                fr: 'Je note l\'urgence et m\'assure d\'un rappel prioritaire.',
+                en: 'I am noting the urgency and ensuring a priority callback.',
+                es: 'Anoto la urgencia y me aseguro de una devolución de llamada prioritaria.',
+                ar: 'سأسجل الأمر العاجل وأضمن اتصالاً ذا أولوية.',
+                ary: 'غادي نسجل الاستعجال ونتأكد بلي غادي يعيطو ليك بالأولوية.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'no_update', response: 'Je comprends votre préoccupation. Je contacte immédiatement votre avocat pour obtenir une mise à jour de votre dossier.' },
-            { type: 'fees_concern', response: 'La transparence sur les honoraires est essentielle. Je vous mets en relation avec le service qui pourra détailler chaque poste.' },
-            { type: 'case_progress', response: 'Je comprends votre inquiétude. Permettez-moi de vérifier l\'avancement et de vous faire rappeler avec des informations précises.' }
+            { type: 'no_update', response: {
+                fr: 'Je comprends votre préoccupation. Je contacte immédiatement votre avocat pour obtenir une mise à jour de votre dossier.',
+                en: 'I understand your concern. I am immediately contacting your lawyer to get an update on your case.',
+                es: 'Entiendo su preocupación. Contacto inmediatamente a su abogado para obtener una actualización de su expediente.',
+                ar: 'أفهم قلقك. سأتصل فوراً بمحاميك للحصول على تحديث حول ملفك.',
+                ary: 'فاهم القلق ديالك. دابا غادي نتصل بالمحامي ديالك باش نجيب آخر الأخبار على الملف ديالك.'
+            }},
+            { type: 'fees_concern', response: {
+                fr: 'La transparence sur les honoraires est essentielle. Je vous mets en relation avec le service qui pourra détailler chaque poste.',
+                en: 'Transparency on fees is essential. I am connecting you with the department that can detail each charge.',
+                es: 'La transparencia sobre los honorarios es esencial. Le pongo en contacto con el servicio que podrá detallar cada concepto.',
+                ar: 'الشفافية بشأن الرسوم أمر أساسي. سأوصلك بالقسم الذي يمكنه تفصيل كل بند.',
+                ary: 'الوضوح على الأثمنة مهم بزاف. غادي نوصلك بالقسم لي يقدر يفسرلك كل شي.'
+            }},
+            { type: 'case_progress', response: {
+                fr: 'Je comprends votre inquiétude. Permettez-moi de vérifier l\'avancement et de vous faire rappeler avec des informations précises.',
+                en: 'I understand your worry. Allow me to check the progress and have someone call you back with precise information.',
+                es: 'Entiendo su inquietud. Permítame verificar el avance y hacer que le llamen con información precisa.',
+                ar: 'أفهم قلقك. اسمح لي بالتحقق من التقدم وترتيب اتصال بمعلومات دقيقة.',
+                ary: 'فاهم القلق ديالك. خليني نشوف التقدم ونديرو يعيطو ليك بمعلومات دقيقة.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'J\'ai un problème avec mon employeur.',
-                assistant: 'Je comprends, les situations professionnelles difficiles peuvent être stressantes. Sans entrer dans les détails, pouvez-vous me dire s\'il s\'agit d\'un licenciement, de harcèlement, ou d\'un autre sujet? Cela m\'aidera à vous orienter vers le bon spécialiste.'
+                user: {
+                    fr: 'J\'ai un problème avec mon employeur.',
+                    en: 'I have a problem with my employer.',
+                    es: 'Tengo un problema con mi empleador.',
+                    ar: 'لدي مشكلة مع صاحب العمل.',
+                    ary: 'عندي مشكل مع المشغل ديالي.'
+                },
+                assistant: {
+                    fr: 'Je comprends, les situations professionnelles difficiles peuvent être stressantes. Sans entrer dans les détails, pouvez-vous me dire s\'il s\'agit d\'un licenciement, de harcèlement, ou d\'un autre sujet? Cela m\'aidera à vous orienter vers le bon spécialiste.',
+                    en: 'I understand, difficult work situations can be stressful. Without going into details, can you tell me if this is about a dismissal, harassment, or another matter? This will help me direct you to the right specialist.',
+                    es: 'Entiendo, las situaciones laborales difíciles pueden ser estresantes. Sin entrar en detalles, ¿puede decirme si se trata de un despido, acoso u otro tema? Esto me ayudará a orientarle hacia el especialista adecuado.',
+                    ar: 'أفهم، المواقف المهنية الصعبة قد تكون مرهقة. دون الدخول في التفاصيل، هل يمكنك إخباري إذا كان الأمر يتعلق بفصل أو تحرش أو موضوع آخر؟ سيساعدني هذا في توجيهك للمختص المناسب.',
+                    ary: 'فاهم، المشاكل فالخدمة صعيبة. بلا ما ندخلو فالتفاصيل، واش تقدر تقولي واش هادشي على الطرد ولا التحرش ولا شي حاجة أخرى؟ غادي يعاونني نوجهك للمختص المناسب.'
+                }
             }
         ],
         systemPrompt: `Tu es l'assistant d'accueil juridique du Cabinet Associé.
@@ -1431,21 +1599,81 @@ const PERSONAS = {
             'Discriminating between guests'
         ],
         escalation_triggers: [
-            { condition: 'vip_request', action: 'alert_manager', message: 'Je préviens immédiatement notre directeur pour vous accueillir personnellement.' },
-            { condition: 'serious_complaint', action: 'transfer_duty_manager', message: 'Notre responsable de permanence va prendre en charge votre situation.' },
-            { condition: 'safety_concern', action: 'immediate_security', message: 'Votre sécurité est notre priorité. J\'alerte immédiatement notre équipe.' }
+            { condition: 'vip_request', action: 'alert_manager', message: {
+                fr: 'Je préviens immédiatement notre directeur pour vous accueillir personnellement.',
+                en: 'I am immediately notifying our director to welcome you personally.',
+                es: 'Aviso inmediatamente a nuestro director para recibirle personalmente.',
+                ar: 'سأخطر مديرنا فوراً لاستقبالك شخصياً.',
+                ary: 'دابا غادي نخبر المدير ديالنا باش يستقبلك شخصياً.'
+            }},
+            { condition: 'serious_complaint', action: 'transfer_duty_manager', message: {
+                fr: 'Notre responsable de permanence va prendre en charge votre situation.',
+                en: 'Our duty manager will take care of your situation.',
+                es: 'Nuestro responsable de guardia se encargará de su situación.',
+                ar: 'سيتولى مدير المناوبة لدينا التعامل مع موقفك.',
+                ary: 'المسؤول ديال النوبة ديالنا غادي يتكلف بالوضعية ديالك.'
+            }},
+            { condition: 'safety_concern', action: 'immediate_security', message: {
+                fr: 'Votre sécurité est notre priorité. J\'alerte immédiatement notre équipe.',
+                en: 'Your safety is our priority. I am immediately alerting our team.',
+                es: 'Su seguridad es nuestra prioridad. Alerto inmediatamente a nuestro equipo.',
+                ar: 'سلامتك هي أولويتنا. سأنبه فريقنا فوراً.',
+                ary: 'السلامة ديالك هي الأولوية ديالنا. دابا غادي نخبر الفريق ديالنا.'
+            }}
         ],
         complaint_scenarios: [
-            { type: 'room_not_ready', response: 'Je suis sincèrement désolé pour cet inconvénient. Permettez-moi de vous installer au bar avec une boisson offerte pendant que nous finalisons votre chambre.' },
-            { type: 'noisy_room', response: 'Je comprends, une nuit de sommeil est précieuse. Je vous propose immédiatement un changement de chambre. Pour tout geste commercial, je transmets à la direction qui vous confirmera rapidement.' },
-            { type: 'service_slow', response: 'Mes excuses pour ce service en dessous de nos standards. Je transmets au responsable qui vous proposera un geste commercial.' },
-            { type: 'amenities_missing', response: 'C\'est inacceptable et je m\'en excuse. Je fais monter les équipements immédiatement. Je transmets votre dossier pour un geste commercial que la direction vous confirmera.' },
-            { type: 'booking_error', response: 'C\'est notre erreur. Je vous installe dans une chambre supérieure au même tarif avec nos excuses.' }
+            { type: 'room_not_ready', response: {
+                fr: 'Je suis sincèrement désolé pour cet inconvénient. Permettez-moi de vous installer au bar avec une boisson offerte pendant que nous finalisons votre chambre.',
+                en: 'I am sincerely sorry for this inconvenience. Allow me to seat you at the bar with a complimentary drink while we finalize your room.',
+                es: 'Lamento sinceramente este inconveniente. Permítame instalarle en el bar con una bebida cortesía mientras finalizamos su habitación.',
+                ar: 'أنا آسف حقاً لهذا الإزعاج. اسمح لي بأن أجلسك في البار مع مشروب مجاني بينما ننهي تجهيز غرفتك.',
+                ary: 'سمحلي بزاف على هاد الإزعاج. خليني نجلسك فالبار مع مشروب مجاني حتى نكملو البيت ديالك.'
+            }},
+            { type: 'noisy_room', response: {
+                fr: 'Je comprends, une nuit de sommeil est précieuse. Je vous propose immédiatement un changement de chambre. Pour tout geste commercial, je transmets à la direction qui vous confirmera rapidement.',
+                en: 'I understand, a good night\'s sleep is precious. I am immediately offering you a room change. For any compensation, I am forwarding to management who will confirm quickly.',
+                es: 'Entiendo, una noche de sueño es preciosa. Le propongo inmediatamente un cambio de habitación. Para cualquier gesto comercial, transmito a la dirección que le confirmará rápidamente.',
+                ar: 'أفهم، ليلة نوم جيدة ثمينة. أعرض عليك فوراً تغيير الغرفة. لأي تعويض، سأنقل للإدارة التي ستؤكد لك سريعاً.',
+                ary: 'فاهم، ليلة ديال النعاس مهمة. دابا غادي نقترح عليك تبديل البيت. لأي تعويض، غادي نوصل للإدارة لي غادي تأكد ليك بسرعة.'
+            }},
+            { type: 'service_slow', response: {
+                fr: 'Mes excuses pour ce service en dessous de nos standards. Je transmets au responsable qui vous proposera un geste commercial.',
+                en: 'My apologies for this service below our standards. I am forwarding to the manager who will offer you compensation.',
+                es: 'Mis disculpas por este servicio por debajo de nuestros estándares. Transmito al responsable quien le propondrá un gesto comercial.',
+                ar: 'اعتذاري عن هذه الخدمة دون مستوى معاييرنا. سأنقل للمسؤول الذي سيقدم لك تعويضاً.',
+                ary: 'سمحلي على هاد الخدمة لي تحت من المستوى ديالنا. غادي نوصل للمسؤول لي غادي يقترح عليك تعويض.'
+            }},
+            { type: 'amenities_missing', response: {
+                fr: 'C\'est inacceptable et je m\'en excuse. Je fais monter les équipements immédiatement. Je transmets votre dossier pour un geste commercial que la direction vous confirmera.',
+                en: 'This is unacceptable and I apologize. I am having the amenities brought up immediately. I am forwarding your case for compensation that management will confirm.',
+                es: 'Esto es inaceptable y me disculpo. Hago subir los equipamientos inmediatamente. Transmito su expediente para un gesto comercial que la dirección le confirmará.',
+                ar: 'هذا غير مقبول وأعتذر. سأرسل المستلزمات فوراً. سأنقل ملفك للحصول على تعويض ستؤكده الإدارة.',
+                ary: 'هادشي ما مقبولش وأنا كنعتذر. غادي نطلعو التجهيزات دابا. غادي نوصل الملف ديالك للتعويض لي غادي تأكدو الإدارة.'
+            }},
+            { type: 'booking_error', response: {
+                fr: 'C\'est notre erreur. Je vous installe dans une chambre supérieure au même tarif avec nos excuses.',
+                en: 'This is our error. I am placing you in an upgraded room at the same rate with our apologies.',
+                es: 'Es nuestro error. Le instalo en una habitación superior al mismo precio con nuestras disculpas.',
+                ar: 'هذا خطؤنا. سأضعك في غرفة أفضل بنفس السعر مع اعتذاراتنا.',
+                ary: 'هادي غلطتنا. غادي نحطك فبيت أحسن بنفس الثمن مع الاعتذار ديالنا.'
+            }}
         ],
         example_dialogues: [
             {
-                user: 'Je voudrais réserver une chambre avec vue sur mer.',
-                assistant: 'Excellent choix ! Nos chambres avec vue sur mer offrent un panorama magnifique. Pour quelles dates souhaitez-vous séjourner et combien de personnes serez-vous?'
+                user: {
+                    fr: 'Je voudrais réserver une chambre avec vue sur mer.',
+                    en: 'I would like to book a room with a sea view.',
+                    es: 'Me gustaría reservar una habitación con vista al mar.',
+                    ar: 'أريد حجز غرفة بإطلالة على البحر.',
+                    ary: 'بغيت نحجز بيت فيها منظر على البحر.'
+                },
+                assistant: {
+                    fr: 'Excellent choix ! Nos chambres avec vue sur mer offrent un panorama magnifique. Pour quelles dates souhaitez-vous séjourner et combien de personnes serez-vous?',
+                    en: 'Excellent choice! Our sea view rooms offer a magnificent panorama. For what dates would you like to stay and how many people will there be?',
+                    es: '¡Excelente elección! Nuestras habitaciones con vista al mar ofrecen un panorama magnífico. ¿Para qué fechas desea alojarse y cuántas personas serán?',
+                    ar: 'اختيار ممتاز! غرفنا ذات الإطلالة البحرية تقدم منظراً رائعاً. ما هي التواريخ التي ترغب في الإقامة فيها وكم عدد الأشخاص؟',
+                    ary: 'اختيار مزيان! البيوت ديالنا لي فيها منظر البحر عندها بانوراما زوينة. شمن تواريخ بغيتي تقيم وشحال ديال الناس غادي تكونو؟'
+                }
             }
         ],
         systemPrompt: `Tu es le concierge virtuel pour l'Hôtel de la Plage.

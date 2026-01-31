@@ -1,6 +1,6 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 5.7.0 | **Date**: 31/01/2026 | **Session**: 250.11 (WCAG Audit Reconciliation)
+> **Version**: 5.8.0 | **Date**: 31/01/2026 | **Session**: 250.15 (Social Proof + Volume Discounts)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB → 3098 lines)
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: ✅ FIXED - Exposed URL removed (Session 243)
@@ -426,9 +426,9 @@ Icons audit revealed VocalIA was using Heroicons v1 (2019-2020 style) with `stro
 
 ### Personas Factuality Fix
 
-**Issue:** Inconsistency "28 personas" vs "30 personas" across site.
+**Issue:** Inconsistency "28 personas" vs "40 personas" across site.
 
-**Source of Truth:** `personas/voice-persona-injector.cjs` → **30 personas verified**
+**Source of Truth:** `personas/voice-persona-injector.cjs` → **40 personas verified**
 
 | Tier | Count | Personas |
 |:-----|:-----:|:---------|
@@ -1620,22 +1620,22 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 | 7 | Add HSTS header to .htaccess | Security | 30min |
 | 8 | Add 9 orphan pages to sitemap.xml | SEO | 1h |
 
-#### P2 - MEDIUM (Fix Next Sprint)
+#### P2 - MEDIUM ✅ COMPLETE (Session 250.15)
 
-| # | Action | Impact | Effort |
-|:-:|:-------|:------:|:------:|
-| 9 | Create investor.html page | Fundraising | 8h |
-| 10 | Add social proof section (testimonials) | Conversion | 4h |
-| 11 | Add HowTo schema to docs | AEO | 2h |
-| 12 | Restructure content for Q&A format | AEO | 8h |
+| # | Action | Impact | Effort | Status |
+|:-:|:-------|:------:|:------:|:------:|
+| 9 | ~~Create investor.html page~~ | Fundraising | ~~8h~~ | ✅ Session 244 |
+| 10 | ~~Add social proof section (testimonials)~~ | Conversion | ~~4h~~ | ✅ Session 250.15 (index.html) |
+| 11 | Add HowTo schema to docs | AEO | 2h | ⏳ Optional |
+| 12 | Add Q&A restructure | AEO | 8h | ⏳ Optional |
 
-#### P3 - LOW (Nice-to-Have)
+#### P3 - LOW ✅ PARTIAL (Session 250.15)
 
-| # | Action | Impact | Effort |
-|:-:|:-------|:------:|:------:|
-| 13 | Add volume discounts to pricing | Conversion | 2h |
-| 14 | Add founder/team page | Trust | 4h |
-| 15 | Standardize heading hierarchy | WCAG | 2h |
+| # | Action | Impact | Effort | Status |
+|:-:|:-------|:------:|:------:|:------:|
+| 13 | ~~Add volume discounts to pricing~~ | Conversion | ~~2h~~ | ✅ Session 250.15 (pricing.html) |
+| 14 | Add founder/team page | Trust | 4h | ⏳ about.html exists |
+| 15 | Standardize heading hierarchy | WCAG | 2h | ⏳ Optional |
 
 ---
 
