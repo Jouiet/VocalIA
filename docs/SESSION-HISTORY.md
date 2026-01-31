@@ -2218,7 +2218,7 @@ gh run list --limit 3
 
 **Content:**
 
-- All 30 personas listed by tier
+- All 40 personas listed by tier (updated Session 250.6)
 - 4 featured industry cards (Finance, Healthcare, Real Estate, Retail)
 - Schema.org CollectionPage structured data
 - Standardized footer with newsletter + trust badges
@@ -2230,7 +2230,7 @@ gh run list --limit 3
 
 **Source of Truth:** `personas/voice-persona-injector.cjs`
 
-**Verified Count:** **30 personas** (NOT 28)
+**Verified Count:** **40 personas** (updated Session 250.6)
 
 - Tier 1: 7 personas (AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL)
 - Tier 2: 11 personas (HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER)
@@ -4272,7 +4272,7 @@ grep -c 'data-lucide="mic"' website/use-cases/customer-support.html
 
 **Court terme (Q1):**
 - Exploiter Darija (diaspora + entreprises marocaines)
-- Package "PME Ready" (30 personas + templates)
+- Package "PME Ready" (40 personas + templates)
 
 **Moyen terme (Q2-Q3):**
 - SOC2 Certification
