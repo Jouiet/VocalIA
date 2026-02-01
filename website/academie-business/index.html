@@ -182,7 +182,7 @@
         <div class="hidden md:flex items-center space-x-1">
           <!-- Products Dropdown -->
           <div class="relative group">
-            <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.products">
+            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.products">
               Produits
               <i data-lucide="box" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
@@ -217,7 +217,7 @@
 
           <!-- Solutions Dropdown -->
           <div class="relative group">
-            <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.solutions">
+            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.solutions">
               Solutions
               <i data-lucide="lightbulb" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
@@ -295,7 +295,7 @@
 
           <!-- Resources Dropdown -->
           <div class="relative group">
-            <button class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.resources">
+            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.resources">
               Ressources
               <i data-lucide="book-open" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
@@ -314,7 +314,7 @@
         <div class="flex items-center space-x-3">
           <!-- Language Switcher -->
           <div class="relative">
-            <button id="langBtn" aria-label="Choisir la langue"
+            <button type="button" id="langBtn" aria-label="Choisir la langue"
               class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-slate-800/50 hover:bg-slate-700/50 transition text-sm">
               <i data-lucide="globe" class="w-4 h-4 text-vocalia-400"></i>
               <span id="currentLang">FR</span>
@@ -322,27 +322,27 @@
             </button>
             <div id="langDropdown"
               class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl shadow-2xl border border-slate-600/50 overflow-hidden z-50">
-              <button onclick="switchLang('fr')"
+              <button type="button" onclick="switchLang('fr')"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition">
                 <span class="text-base">🇫🇷</span>
                 <span>Français</span>
               </button>
-              <button onclick="switchLang('en')"
+              <button type="button" onclick="switchLang('en')"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition">
                 <span class="text-base">🇬🇧</span>
                 <span>English</span>
               </button>
-              <button onclick="switchLang('es')"
+              <button type="button" onclick="switchLang('es')"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition">
                 <span class="text-base">🇪🇸</span>
                 <span>Español</span>
               </button>
-              <button onclick="switchLang('ar')"
+              <button type="button" onclick="switchLang('ar')"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition" dir="rtl">
                 <span class="text-base">🇸🇦</span>
                 <span>العربية</span>
               </button>
-              <button onclick="switchLang('ary')"
+              <button type="button" onclick="switchLang('ary')"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition" dir="rtl">
                 <span class="text-base">🇲🇦</span>
                 <span>الدارجة</span>
@@ -355,7 +355,7 @@
             data-i18n="nav.login">Connexion</a>
 
           <!-- Mobile Hamburger Button -->
-          <button id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile" aria-expanded="false" aria-controls="mobileMenu">
+          <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile" aria-expanded="false" aria-controls="mobileMenu">
             <i data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
           </button>
         </div>

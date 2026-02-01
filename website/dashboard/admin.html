@@ -120,7 +120,7 @@
         <div class="flex items-center space-x-4">
           <!-- Language Switcher -->
           <div class="relative">
-            <button onclick="toggleLangDropdown()"
+            <button type="button" onclick="toggleLangDropdown()"
               class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
               aria-label="Changer de langue">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -133,25 +133,25 @@
             </button>
             <div id="langDropdown"
               class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-slate-700/95 backdrop-blur-xl border border-slate-600/50 shadow-xl z-50 overflow-hidden">
-              <button onclick="switchLang('fr')"
+              <button type="button" onclick="switchLang('fr')"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">FR
                 - Français</button>
-              <button onclick="switchLang('en')"
+              <button type="button" onclick="switchLang('en')"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">EN
                 - English</button>
-              <button onclick="switchLang('es')"
+              <button type="button" onclick="switchLang('es')"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">ES
                 - Español</button>
-              <button onclick="switchLang('ar')" dir="rtl"
+              <button type="button" onclick="switchLang('ar')" dir="rtl"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">العربية
                 - AR</button>
-              <button onclick="switchLang('ary')" dir="rtl"
+              <button type="button" onclick="switchLang('ary')" dir="rtl"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">الدارجة
                 - ARY</button>
             </div>
           </div>
           <!-- Theme Toggle -->
-          <button id="themeToggle" aria-label="Basculer le mode sombre/clair" class="theme-toggle">
+          <button type="button" id="themeToggle" aria-label="Basculer le mode sombre/clair" class="theme-toggle">
             <i data-lucide="sun" class="w-5 h-5 icon-sun"></i>
             <i data-lucide="moon" class="w-5 h-5 icon-moon"></i>
           </button>
@@ -164,7 +164,7 @@
             </span>
           </div>
           <!-- Refresh -->
-          <button onclick="location.reload()"
+          <button type="button" onclick="location.reload()"
             class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
             <i data-lucide="sparkles" class="w-5 h-5 text-vocalia-400"></i>
           </button>
@@ -359,7 +359,7 @@
         <div id="tenants" class="lg:col-span-2 liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.tenants.title">Top Tenants</h3>
-            <button class="text-vocalia-400 hover:text-white text-sm transition"
+            <button type="button" class="text-vocalia-400 hover:text-white text-sm transition"
               data-i18n="dashboard.calls.view_all">Voir tous →</button>
           </div>
           <div class="overflow-x-auto">
@@ -617,22 +617,22 @@
       <section class="rounded-2xl bg-slate-800/80 border border-slate-600 p-6">
         <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.quick_actions.title">Actions rapides</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="plus" class="w-6 h-6 text-vocalia-400 mb-2"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.new_tenant">Nouveau Tenant</p>
             <p class="text-xs text-vocalia-400">Ajouter un client</p>
           </button>
-          <button class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="refresh-cw" class="w-6 h-6 text-vocalia-400 mb-2"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.restart">Restart Services</p>
             <p class="text-xs text-vocalia-400">Redémarrer les APIs</p>
           </button>
-          <button class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="download" class="w-6 h-6 text-vocalia-400 mb-2"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.logs">Export Logs</p>
             <p class="text-xs text-vocalia-400">Télécharger logs</p>
           </button>
-          <button class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="settings" class="w-6 h-6 text-vocalia-400 mb-2"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.config">Configuration</p>
             <p class="text-xs text-vocalia-400">Paramètres système</p>
