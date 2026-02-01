@@ -646,7 +646,7 @@
           <!-- Contact Form -->
           <div class="glass rounded-2xl p-8">
             <h2 class="text-2xl font-bold mb-6" data-i18n="contact_page.form_title">Envoyez-nous un Message</h2>
-            <form id="contact-form" class="space-y-6" onsubmit="event.preventDefault(); if(this.checkValidity()) { const btn = this.querySelector('button[type=submit]'); btn.innerHTML = '<i data-lucide=&quot;check&quot; class=&quot;w-5 h-5 mr-2&quot;></i> Message Envoyé!'; btn.disabled = true; btn.classList.add('opacity-75'); lucide.createIcons(); }">
+            <form id="contact-form" class="space-y-6" data-form-action="submitContactForm">
               <div class="grid md:grid-cols-2 gap-6">
                 <div>
                   <label for="firstName" class="block text-sm font-medium text-vocalia-300 mb-2" data-i18n="contact_page.form_firstname">Prénom *</label>

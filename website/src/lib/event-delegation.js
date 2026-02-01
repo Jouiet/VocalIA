@@ -18,9 +18,15 @@
 
   // Action registry
   const actions = {
-    // Language switching - Direct implementation
-    switchLang: function(lang) {
+    // Language switching - Uses VocaliaI18n if available
+    switchLang: async function(lang) {
       if (!lang) return;
+
+      // Use VocaliaI18n if available (primary method)
+      if (typeof window.VocaliaI18n !== 'undefined' && typeof window.VocaliaI18n.setLocale === 'function') {
+        await window.VocaliaI18n.setLocale(lang);
+        window.VocaliaI18n.translatePage();
+      }
 
       // Update localStorage
       localStorage.setItem('vocalia_lang', lang);
@@ -29,27 +35,16 @@
       document.documentElement.lang = lang;
       document.documentElement.dir = (lang === 'ar' || lang === 'ary') ? 'rtl' : 'ltr';
 
-      // Update current lang display
+      // Update current lang display with proper labels
+      const LANG_LABELS = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'دارجة' };
       const currentLangEl = document.getElementById('currentLang');
       if (currentLangEl) {
-        currentLangEl.textContent = lang.toUpperCase();
+        currentLangEl.textContent = LANG_LABELS[lang] || lang.toUpperCase();
       }
 
       // Close dropdown
       const dropdown = document.getElementById('langDropdown');
       if (dropdown) dropdown.classList.add('hidden');
-
-      // Trigger i18n update if available
-      if (typeof window.VocaliaI18n !== 'undefined') {
-        window.VocaliaI18n.setLanguage(lang);
-      } else if (typeof window.updatePageTranslations === 'function') {
-        window.updatePageTranslations(lang);
-      }
-
-      // Update URL if needed
-      const url = new URL(window.location);
-      url.searchParams.set('lang', lang);
-      window.history.replaceState({}, '', url);
     },
 
     toggleLangDropdown: function() {
@@ -212,6 +207,14 @@
       alert('Création nouvel agent - fonctionnalité à venir');
     },
 
+    // Dashboard logs filter
+    filterLogs: function(selectEl) {
+      const value = selectEl.value;
+      if (typeof window.filterLogs === 'function') {
+        window.filterLogs(value);
+      }
+    },
+
     // Code copy
     copyCode: function(el) {
       if (typeof window.copyCode === 'function') {
@@ -251,6 +254,17 @@
     if (action && actions[action]) {
       e.preventDefault();
       actions[action](form);
+    }
+  });
+
+  // Select change delegation
+  document.addEventListener('change', function(e) {
+    const target = e.target.closest('select[data-action]');
+    if (!target) return;
+
+    const action = target.dataset.action;
+    if (actions[action]) {
+      actions[action](target);
     }
   });
 
