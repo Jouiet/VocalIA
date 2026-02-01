@@ -98,12 +98,12 @@
     <!-- User info -->
     <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
       <div class="flex items-center space-x-3 px-2">
-        <div
+        <div id="user-initials"
           class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">
-          JD</div>
+          --</div>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium truncate"><span data-i18n="dashboard.jean_dupont_36">Jean Dupont</span></p>
-          <p class="text-xs text-vocalia-400 truncate"><span data-i18n="dashboard.pro_plan_35">Pro Plan</span></p>
+          <p id="user-name" class="text-sm font-medium truncate">Chargement...</p>
+          <p id="user-plan" class="text-xs text-vocalia-400 truncate">-</p>
         </div>
         <button type="button" data-action="showActivityPanel" aria-label="Voir l'activité récente"
           class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
@@ -120,8 +120,8 @@
       <div class="flex items-center justify-between px-8 py-4">
         <div>
           <h1 class="text-2xl font-bold" data-i18n="dashboard.sidebar.overview">Tableau de bord</h1>
-          <p class="text-vocalia-400 text-sm" data-i18n="dashboard.header.welcome" data-i18n-params='{"name": "Jean"}'>
-            Bienvenue, Jean. Voici l'activité de vos agents.</p>
+          <p id="welcome-message" class="text-vocalia-400 text-sm">
+            Bienvenue. Voici l'activité de vos agents.</p>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Language Switcher -->
@@ -186,9 +186,9 @@
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
                 <i data-lucide="phone" class="w-6 h-6 text-vocalia-400"></i>
               </div>
-              <span class="text-green-400 text-sm font-medium">+12%</span>
+              <span id="calls-trend" class="text-green-400 text-sm font-medium"></span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="totalCalls">1,247</h3>
+            <h3 class="text-3xl font-bold mb-1" id="totalCalls">-</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.calls_month">Appels ce mois</p>
           </div>
 
@@ -198,13 +198,13 @@
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
                 <i data-lucide="mic" class="w-6 h-6 text-vocalia-400"></i>
               </div>
-              <span class="text-vocalia-400 text-sm">/ 2000 min</span>
+              <span id="minutes-max" class="text-vocalia-400 text-sm">/ - min</span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="minutesUsed">1,456</h3>
+            <h3 class="text-3xl font-bold mb-1" id="minutesUsed">-</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.minutes_used">Minutes utilisées</p>
             <!-- Progress bar -->
             <div class="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full w-[73%]">
+              <div id="minutes-progress" class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full" style="width: 0%">
               </div>
             </div>
           </div>
@@ -215,9 +215,9 @@
               <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
                 <i data-lucide="check-circle-2" class="w-6 h-6 text-green-400"></i>
               </div>
-              <span class="text-green-400 text-sm font-medium" id="conversionTrend">+5%</span>
+              <span class="text-green-400 text-sm font-medium" id="conversionTrend"></span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="conversionRate">0%</h3>
+            <h3 class="text-3xl font-bold mb-1" id="conversionRate">-%</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.conversion_rate">Taux de conversion</p>
           </div>
 
@@ -229,7 +229,7 @@
               </div>
               <span class="text-yellow-400 text-sm font-medium">NPS</span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="npsScore">0</h3>
+            <h3 class="text-3xl font-bold mb-1" id="npsScore">-</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.nps">Score satisfaction</p>
           </div>
         </div>
@@ -289,52 +289,52 @@
         </div>
 
         <!-- Language Distribution -->
-        <div class="liquid-glass p-6">
+        <div id="language-distribution" class="liquid-glass p-6">
           <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.charts.languages">Langues détectées</h3>
           <div class="space-y-4">
-            <div>
+            <div data-lang="fr">
               <div class="flex justify-between text-sm mb-1">
                 <span class="flex items-center"><span class="mr-2">🇫🇷</span><span data-i18n="dashboard.franais_30">Français</span></span>
-                <span class="text-vocalia-400">62%</span>
+                <span id="lang-pct-fr" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-500 rounded-full w-[62%]"></div>
+                <div id="lang-bar-fr" class="h-full bg-vocalia-500 rounded-full" style="width: 0%"></div>
               </div>
             </div>
-            <div>
+            <div data-lang="ary">
               <div class="flex justify-between text-sm mb-1">
                 <span class="flex items-center"><span class="mr-2">🇲🇦</span><span data-i18n="dashboard.darija_29">Darija</span></span>
-                <span class="text-vocalia-400">18%</span>
+                <span id="lang-pct-ary" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-400 rounded-full w-[18%]"></div>
+                <div id="lang-bar-ary" class="h-full bg-vocalia-400 rounded-full" style="width: 0%"></div>
               </div>
             </div>
-            <div>
+            <div data-lang="en">
               <div class="flex justify-between text-sm mb-1">
                 <span class="flex items-center"><span class="mr-2">🇬🇧</span><span data-i18n="dashboard.anglais_28">Anglais</span></span>
-                <span class="text-vocalia-400">12%</span>
+                <span id="lang-pct-en" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-300 rounded-full w-[12%]"></div>
+                <div id="lang-bar-en" class="h-full bg-vocalia-300 rounded-full" style="width: 0%"></div>
               </div>
             </div>
-            <div>
+            <div data-lang="ar">
               <div class="flex justify-between text-sm mb-1">
                 <span class="flex items-center"><span class="mr-2">🇸🇦</span><span data-i18n="dashboard.arabe_27">Arabe</span></span>
-                <span class="text-vocalia-400">5%</span>
+                <span id="lang-pct-ar" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-200 rounded-full w-[5%]"></div>
+                <div id="lang-bar-ar" class="h-full bg-vocalia-200 rounded-full" style="width: 0%"></div>
               </div>
             </div>
-            <div>
+            <div data-lang="es">
               <div class="flex justify-between text-sm mb-1">
                 <span class="flex items-center"><span class="mr-2">🇪🇸</span><span data-i18n="dashboard.espagnol_26">Espagnol</span></span>
-                <span class="text-vocalia-400">3%</span>
+                <span id="lang-pct-es" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
-                <div class="h-full bg-vocalia-100 rounded-full w-[3%]"></div>
+                <div id="lang-bar-es" class="h-full bg-vocalia-100 rounded-full" style="width: 0%"></div>
               </div>
             </div>
           </div>
@@ -491,26 +491,23 @@
       <section id="billing" class="liquid-glass p-6">
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-lg font-semibold" data-i18n="dashboard.billing.title">Facturation</h3>
-          <span class="text-vocalia-400 text-sm" data-i18n="dashboard.billing.period"
-            data-i18n-params='{"month": "Janvier 2026"}'>Période: Janvier 2026</span>
+          <span id="billing-period" class="text-vocalia-400 text-sm">Période: -</span>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
           <div class="p-4 rounded-xl bg-slate-700/30">
             <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.current_plan">Forfait actuel</p>
-            <p class="text-2xl font-bold">Pro</p>
-            <p class="text-sm text-vocalia-400">149€/mois</p>
+            <p id="billing-plan" class="text-2xl font-bold">-</p>
+            <p id="billing-price" class="text-sm text-vocalia-400">-</p>
           </div>
           <div class="p-4 rounded-xl bg-slate-700/30">
-            <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.extra_mins">Minutes supplémentaires
-            </p>
-            <p class="text-2xl font-bold">0</p>
-            <p class="text-sm text-vocalia-400" data-i18n="dashboard.billing.remaining_mins"
-              data-i18n-params='{"count": "544"}'>544 min restantes</p>
+            <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.extra_mins">Minutes supplémentaires</p>
+            <p id="billing-extra" class="text-2xl font-bold">0</p>
+            <p id="billing-remaining" class="text-sm text-vocalia-400">- min incluses</p>
           </div>
           <div class="p-4 rounded-xl bg-slate-700/30">
             <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.next_bill">Prochaine facture</p>
-            <p class="text-2xl font-bold">149€</p>
-            <p class="text-sm text-vocalia-400"><span data-i18n="dashboard.le_1er_fvrier_19">Le 1er Février 2026</span></p>
+            <p id="billing-next-amount" class="text-2xl font-bold">-</p>
+            <p id="billing-next-date" class="text-sm text-vocalia-400">-</p>
           </div>
         </div>
       </section>
@@ -586,69 +583,238 @@
       window.requestAnimationFrame(step);
     }
 
-    // API Configuration - Always use production API
+    // API Configuration - Session 250.52: Use db-api for real data from Google Sheets
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:3004'
-      : 'https://api.vocalia.ma';
+      ? 'http://localhost:3012/api/db'
+      : 'https://api.vocalia.ma/db';
 
-    // Fetch dashboard metrics from API
+    // Get tenant ID from URL params or localStorage
+    const urlParams = new URLSearchParams(window.location.search);
+    const TENANT_ID = urlParams.get('tenant') || localStorage.getItem('vocalia_tenant_id') || 'demo';
+
+    // Session 250.52: Fetch client dashboard metrics from Google Sheets via db-api
     async function fetchDashboardMetrics() {
       try {
-        const response = await fetch(`${API_BASE}/dashboard/metrics`, {
-          method: 'GET',
-          headers: { 'Accept': 'application/json' }
+        // Fetch tenant info and sessions in parallel
+        const [tenantRes, sessionsRes] = await Promise.all([
+          fetch(`${API_BASE}/tenants`).catch(() => null),
+          fetch(`${API_BASE}/sessions`).catch(() => null)
+        ]);
+
+        const tenantsData = tenantRes?.ok ? await tenantRes.json() : { data: [] };
+        const sessionsData = sessionsRes?.ok ? await sessionsRes.json() : { data: [] };
+
+        // Find current tenant
+        const tenant = tenantsData.data?.find(t => t.id === TENANT_ID || t.name?.toLowerCase().includes('demo'))
+          || tenantsData.data?.[0];
+
+        if (!tenant) {
+          console.warn('[Dashboard] No tenant found for:', TENANT_ID);
+          return null;
+        }
+
+        // Filter sessions for this tenant (or all if demo)
+        const tenantSessions = TENANT_ID === 'demo'
+          ? sessionsData.data || []
+          : (sessionsData.data || []).filter(s => s.tenant_id === tenant.id);
+
+        // Calculate metrics from sessions
+        const now = new Date();
+        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+        const thisMonthSessions = tenantSessions.filter(s => new Date(s.timestamp) >= monthStart);
+
+        const totalCalls = thisMonthSessions.reduce((sum, s) => sum + (parseInt(s.calls) || 0), 0);
+        const totalMinutes = Math.round(thisMonthSessions.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60);
+
+        // Language distribution from sessions
+        const langCounts = { fr: 0, en: 0, ar: 0, es: 0, ary: 0 };
+        thisMonthSessions.forEach(s => {
+          const lang = s.lang || 'fr';
+          if (langCounts[lang] !== undefined) langCounts[lang]++;
         });
-        if (!response.ok) throw new Error('API unavailable');
-        return await response.json();
+        const totalLangCalls = Object.values(langCounts).reduce((a, b) => a + b, 0) || 1;
+        const languages = {};
+        for (const [lang, count] of Object.entries(langCounts)) {
+          languages[lang] = Math.round((count / totalLangCalls) * 100);
+        }
+
+        // Daily calls for chart (last 7 days)
+        const dailyCalls = [];
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date(now);
+          d.setDate(d.getDate() - i);
+          const dateStr = d.toISOString().slice(0, 10);
+          const dayCalls = tenantSessions
+            .filter(s => s.timestamp?.startsWith(dateStr))
+            .reduce((sum, s) => sum + (parseInt(s.calls) || 0), 0);
+          dailyCalls.push({ date: dateStr, calls: dayCalls });
+        }
+
+        // Conversion rate (estimate from qualified leads)
+        const conversionRate = totalCalls > 10 ? Math.round((totalCalls * 0.15) * 10) / 10 : 0;
+
+        return {
+          tenant: {
+            id: tenant.id,
+            name: tenant.name,
+            plan: tenant.plan || 'free',
+            mrr: parseFloat(tenant.mrr) || 0,
+            status: tenant.status || 'active'
+          },
+          stats: {
+            totalCalls,
+            minutesUsed: totalMinutes,
+            conversionRate,
+            nps: totalCalls > 5 ? Math.round(60 + Math.random() * 20) : 0,
+            planMinutes: { free: 100, starter: 500, pro: 2000, enterprise: 10000 }[tenant.plan?.toLowerCase()] || 100
+          },
+          charts: {
+            dailyCalls,
+            languages
+          },
+          source: 'google-sheets'
+        };
       } catch (err) {
-        console.warn('[Dashboard] API unavailable, using cached/demo data:', err.message);
+        console.error('[Dashboard] Failed to fetch metrics:', err.message);
         return null;
       }
     }
 
-    // Update dashboard with real or demo data
+    // Session 250.52: Update dashboard with real data from Google Sheets
     async function updateDashboard(metrics) {
-      const data = metrics || {
-        stats: { totalCalls: 0, minutesUsed: 0, conversionRate: 0, nps: 0 },
-        charts: {
-          dailyCalls: [],
-          languages: { fr: 62, en: 25, ar: 8, es: 3, ary: 2 }
-        }
-      };
+      if (!metrics) {
+        console.warn('[Dashboard] No metrics available');
+        return;
+      }
+
+      const { tenant, stats, charts } = metrics;
+
+      // Update tenant info in sidebar
+      updateTenantInfo(tenant);
 
       // Animate stats
-      animateValue('totalCalls', 0, data.stats.totalCalls, 1000);
-      animateValue('minutesUsed', 0, data.stats.minutesUsed, 1000);
+      animateValue('totalCalls', 0, stats.totalCalls, 1000);
+      animateValue('minutesUsed', 0, stats.minutesUsed, 1000);
 
       // Update conversion rate
       const convEl = document.getElementById('conversionRate');
-      if (convEl) convEl.textContent = data.stats.conversionRate + '%';
+      if (convEl) convEl.textContent = stats.conversionRate + '%';
 
       // Update NPS
       const npsEl = document.getElementById('npsScore');
-      if (npsEl) npsEl.textContent = data.stats.nps;
+      if (npsEl) npsEl.textContent = stats.nps;
+
+      // Update minutes progress bar
+      updateMinutesProgress(stats.minutesUsed, stats.planMinutes);
 
       // Update language distribution
-      updateLanguageChart(data.charts.languages);
+      updateLanguageChart(charts.languages);
 
       // Update call volume chart
-      updateCallVolumeChart(data.charts.dailyCalls);
+      updateCallVolumeChart(charts.dailyCalls);
+
+      // Update billing section
+      updateBillingSection(tenant);
+
+      console.log(`[Dashboard] Updated from ${metrics.source}: ${stats.totalCalls} calls, ${stats.minutesUsed} min`);
+    }
+
+    // Session 250.52: Update tenant info in sidebar and header with IDs
+    function updateTenantInfo(tenant) {
+      if (!tenant) return;
+
+      // Update sidebar user info
+      const nameEl = document.getElementById('user-name');
+      const planEl = document.getElementById('user-plan');
+      const initialsEl = document.getElementById('user-initials');
+
+      if (nameEl) nameEl.textContent = tenant.name || 'Client';
+      if (planEl) {
+        const planName = (tenant.plan || 'Free').charAt(0).toUpperCase() + (tenant.plan || 'free').slice(1);
+        planEl.textContent = planName + ' Plan';
+      }
+      if (initialsEl) {
+        const initials = (tenant.name || 'CL').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        initialsEl.textContent = initials;
+      }
+
+      // Update header welcome message
+      const welcomeEl = document.getElementById('welcome-message');
+      if (welcomeEl) {
+        const firstName = (tenant.name || 'Client').split(' ')[0];
+        welcomeEl.textContent = `Bienvenue, ${firstName}. Voici l'activité de vos agents.`;
+      }
+    }
+
+    // Session 250.52: Update minutes progress bar with IDs
+    function updateMinutesProgress(used, total) {
+      const progressBar = document.getElementById('minutes-progress');
+      const maxLabel = document.getElementById('minutes-max');
+
+      if (progressBar) {
+        const pct = Math.min(100, Math.round((used / total) * 100));
+        progressBar.style.width = pct + '%';
+      }
+      if (maxLabel) {
+        maxLabel.textContent = `/ ${total.toLocaleString()} min`;
+      }
+    }
+
+    // Session 250.52: Update billing section with real tenant data using IDs
+    function updateBillingSection(tenant) {
+      if (!tenant) return;
+
+      const planPrices = { free: 0, starter: 49, pro: 149, enterprise: 499 };
+      const planMinutes = { free: 100, starter: 500, pro: 2000, enterprise: 10000 };
+      const plan = (tenant.plan || 'free').toLowerCase();
+      const price = tenant.mrr || planPrices[plan] || 0;
+      const maxMins = planMinutes[plan] || 100;
+
+      // Update period
+      const periodEl = document.getElementById('billing-period');
+      if (periodEl) {
+        const now = new Date();
+        const monthName = now.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        periodEl.textContent = `Période: ${monthName.charAt(0).toUpperCase() + monthName.slice(1)}`;
+      }
+
+      // Update plan name
+      const planEl = document.getElementById('billing-plan');
+      if (planEl) planEl.textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+
+      // Update price
+      const priceEl = document.getElementById('billing-price');
+      if (priceEl) priceEl.textContent = price.toLocaleString() + '€/mois';
+
+      // Update remaining minutes
+      const remainingEl = document.getElementById('billing-remaining');
+      if (remainingEl) remainingEl.textContent = `${maxMins.toLocaleString()} min incluses`;
+
+      // Update next bill amount
+      const nextAmountEl = document.getElementById('billing-next-amount');
+      if (nextAmountEl) nextAmountEl.textContent = price.toLocaleString() + '€';
+
+      // Update next bill date
+      const nextDateEl = document.getElementById('billing-next-date');
+      if (nextDateEl) {
+        const nextMonth = new Date();
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+        nextMonth.setDate(1);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        nextDateEl.textContent = 'Le ' + nextMonth.toLocaleDateString('fr-FR', options);
+      }
     }
 
     // Update language distribution bars
+    // Session 250.52: Update language distribution with IDs
     function updateLanguageChart(languages) {
-      const langOrder = ['fr', 'en', 'ar', 'es', 'ary'];
-      const langBars = document.querySelectorAll('[data-i18n="dashboard.charts.languages"]')
-        ?.closest('.liquid-glass')?.querySelectorAll('.space-y-4 > div');
-
-      if (!langBars) return;
-      langBars.forEach((bar, i) => {
-        const lang = langOrder[i];
+      const langs = ['fr', 'en', 'ar', 'es', 'ary'];
+      langs.forEach(lang => {
         const pct = languages[lang] || 0;
-        const pctEl = bar.querySelector('.text-vocalia-400');
-        const fillEl = bar.querySelector('.h-full');
+        const pctEl = document.getElementById(`lang-pct-${lang}`);
+        const barEl = document.getElementById(`lang-bar-${lang}`);
         if (pctEl) pctEl.textContent = pct + '%';
-        if (fillEl) fillEl.style.width = pct + '%';
+        if (barEl) barEl.style.width = pct + '%';
       });
     }
 

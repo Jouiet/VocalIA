@@ -74,10 +74,10 @@
 
     <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
       <div class="flex items-center space-x-3 px-2">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">JD</div>
+        <div id="wa-user-initials" class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">--</div>
         <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium truncate"><span data-i18n="analytics.jean_dupont_21">Jean Dupont</span></p>
-          <p class="text-xs text-vocalia-400 truncate"><span data-i18n="analytics.pro_plan_20">Pro Plan</span></p>
+          <p id="wa-user-name" class="text-sm font-medium truncate">Chargement...</p>
+          <p id="wa-user-plan" class="text-xs text-vocalia-400 truncate">-</p>
         </div>
       </div>
     </div>
@@ -120,12 +120,12 @@
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
                 <i data-lucide="users" class="w-6 h-6 text-vocalia-400"></i>
               </div>
-              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
-                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                +18%
+              <span id="wa-sessions-trend" class="text-vocalia-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="minus" class="w-4 h-4"></i>
+                --%
               </span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="totalSessions">3,847</h3>
+            <h3 class="text-3xl font-bold mb-1" id="totalSessions">--</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.sessions">Sessions Widget</p>
           </div>
 
@@ -135,12 +135,12 @@
               <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
                 <i data-lucide="clock" class="w-6 h-6 text-amber-400"></i>
               </div>
-              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
-                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                +8%
+              <span id="wa-duration-trend" class="text-vocalia-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="minus" class="w-4 h-4"></i>
+                --%
               </span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="avgDuration">2:34</h3>
+            <h3 class="text-3xl font-bold mb-1" id="avgDuration">--:--</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.avg_duration">Durée moyenne</p>
           </div>
 
@@ -150,12 +150,12 @@
               <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
                 <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
               </div>
-              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
-                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                +5%
+              <span id="wa-completion-trend" class="text-vocalia-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="minus" class="w-4 h-4"></i>
+                --%
               </span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="completionRate">87%</h3>
+            <h3 class="text-3xl font-bold mb-1" id="completionRate">--%</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.completion_rate">Taux de complétion</p>
           </div>
 
@@ -165,12 +165,12 @@
               <div class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center">
                 <i data-lucide="target" class="w-6 h-6 text-sky-400"></i>
               </div>
-              <span class="text-emerald-400 text-sm font-medium flex items-center gap-1">
-                <i data-lucide="trending-up" class="w-4 h-4"></i>
-                +23%
+              <span id="wa-leads-trend" class="text-vocalia-400 text-sm font-medium flex items-center gap-1">
+                <i data-lucide="minus" class="w-4 h-4"></i>
+                --%
               </span>
             </div>
-            <h3 class="text-3xl font-bold mb-1" id="leadsGenerated">142</h3>
+            <h3 class="text-3xl font-bold mb-1" id="leadsGenerated">--</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.leads">Leads qualifiés</p>
           </div>
         </div>
@@ -212,37 +212,37 @@
             <div class="flex items-center gap-4">
               <span class="w-8 text-sm font-medium">FR</span>
               <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div class="h-full bg-vocalia-500 rounded-lg" style="width: 52%"></div>
+                <div id="wa-lang-bar-fr" class="h-full bg-vocalia-500 rounded-lg transition-all" style="width: 0%"></div>
               </div>
-              <span class="w-12 text-sm text-right">52%</span>
+              <span id="wa-lang-pct-fr" class="w-12 text-sm text-right">--%</span>
             </div>
             <div class="flex items-center gap-4">
               <span class="w-8 text-sm font-medium">EN</span>
               <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div class="h-full bg-sky-500 rounded-lg" style="width: 28%"></div>
+                <div id="wa-lang-bar-en" class="h-full bg-sky-500 rounded-lg transition-all" style="width: 0%"></div>
               </div>
-              <span class="w-12 text-sm text-right">28%</span>
+              <span id="wa-lang-pct-en" class="w-12 text-sm text-right">--%</span>
             </div>
             <div class="flex items-center gap-4">
               <span class="w-8 text-sm font-medium">AR</span>
               <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div class="h-full bg-amber-500 rounded-lg" style="width: 12%"></div>
+                <div id="wa-lang-bar-ar" class="h-full bg-amber-500 rounded-lg transition-all" style="width: 0%"></div>
               </div>
-              <span class="w-12 text-sm text-right">12%</span>
+              <span id="wa-lang-pct-ar" class="w-12 text-sm text-right">--%</span>
             </div>
             <div class="flex items-center gap-4">
               <span class="w-8 text-sm font-medium">ES</span>
               <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div class="h-full bg-emerald-500 rounded-lg" style="width: 5%"></div>
+                <div id="wa-lang-bar-es" class="h-full bg-emerald-500 rounded-lg transition-all" style="width: 0%"></div>
               </div>
-              <span class="w-12 text-sm text-right">5%</span>
+              <span id="wa-lang-pct-es" class="w-12 text-sm text-right">--%</span>
             </div>
             <div class="flex items-center gap-4">
               <span class="w-8 text-sm font-medium">ARY</span>
               <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div class="h-full bg-rose-500 rounded-lg" style="width: 3%"></div>
+                <div id="wa-lang-bar-ary" class="h-full bg-rose-500 rounded-lg transition-all" style="width: 0%"></div>
               </div>
-              <span class="w-12 text-sm text-right">3%</span>
+              <span id="wa-lang-pct-ary" class="w-12 text-sm text-right">--%</span>
             </div>
           </div>
         </div>
@@ -264,72 +264,8 @@
                   <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.avg_duration">Durée moy.</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr class="border-b border-slate-700/50">
-                  <td class="py-3 font-medium">
-                    <div class="flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
-                        <i data-lucide="building-2" class="w-4 h-4 text-vocalia-400"></i>
-                      </div>
-                      AGENCY
-                    </div>
-                  </td>
-                  <td class="py-3 text-right">892</td>
-                  <td class="py-3 text-right text-emerald-400">12.4%</td>
-                  <td class="py-3 text-right">3:12</td>
-                </tr>
-                <tr class="border-b border-slate-700/50">
-                  <td class="py-3 font-medium">
-                    <div class="flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center">
-                        <i data-lucide="stethoscope" class="w-4 h-4 text-sky-400"></i>
-                      </div>
-                      DENTAL
-                    </div>
-                  </td>
-                  <td class="py-3 text-right">654</td>
-                  <td class="py-3 text-right text-emerald-400">18.2%</td>
-                  <td class="py-3 text-right">2:45</td>
-                </tr>
-                <tr class="border-b border-slate-700/50">
-                  <td class="py-3 font-medium">
-                    <div class="flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                        <i data-lucide="home" class="w-4 h-4 text-amber-400"></i>
-                      </div>
-                      PROPERTY
-                    </div>
-                  </td>
-                  <td class="py-3 text-right">521</td>
-                  <td class="py-3 text-right text-emerald-400">9.8%</td>
-                  <td class="py-3 text-right">4:01</td>
-                </tr>
-                <tr class="border-b border-slate-700/50">
-                  <td class="py-3 font-medium">
-                    <div class="flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                        <i data-lucide="shopping-cart" class="w-4 h-4 text-emerald-400"></i>
-                      </div>
-                      ECOMMERCE
-                    </div>
-                  </td>
-                  <td class="py-3 text-right">487</td>
-                  <td class="py-3 text-right text-emerald-400">15.7%</td>
-                  <td class="py-3 text-right">2:18</td>
-                </tr>
-                <tr>
-                  <td class="py-3 font-medium">
-                    <div class="flex items-center gap-2">
-                      <div class="w-8 h-8 rounded-lg bg-rose-500/20 flex items-center justify-center">
-                        <i data-lucide="heart-pulse" class="w-4 h-4 text-rose-400"></i>
-                      </div>
-                      HEALER
-                    </div>
-                  </td>
-                  <td class="py-3 text-right">312</td>
-                  <td class="py-3 text-right text-emerald-400">21.3%</td>
-                  <td class="py-3 text-right">5:22</td>
-                </tr>
+              <tbody id="wa-personas-table">
+                <tr><td colspan="4" class="py-4 text-center text-vocalia-400">Chargement des données...</td></tr>
               </tbody>
             </table>
           </div>
@@ -637,6 +573,210 @@
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
 
   <script>
+    // API Configuration
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3012/api/db'
+      : 'https://api.vocalia.ma/db';
+    const urlParams = new URLSearchParams(window.location.search);
+    const TENANT_ID = urlParams.get('tenant') || localStorage.getItem('vocalia_tenant_id') || 'demo';
+
+    // Fetch widget analytics from Google Sheets DB
+    async function fetchWidgetAnalytics() {
+      try {
+        const [tenantsRes, sessionsRes] = await Promise.all([
+          fetch(`${API_BASE}/tenants`).catch(() => ({ ok: false })),
+          fetch(`${API_BASE}/sessions`).catch(() => ({ ok: false }))
+        ]);
+
+        let tenant = null;
+        let sessions = [];
+
+        if (tenantsRes.ok) {
+          const data = await tenantsRes.json();
+          const tenants = data.data || [];
+          tenant = tenants.find(t => t.id === TENANT_ID) || tenants[0] || null;
+        }
+
+        if (sessionsRes.ok) {
+          const data = await sessionsRes.json();
+          sessions = (data.data || []).filter(s => s.tenant_id === TENANT_ID || !s.tenant_id);
+        }
+
+        return { tenant, sessions };
+      } catch (e) {
+        console.warn('[Widget Analytics] Error fetching data:', e.message);
+        return { tenant: null, sessions: [] };
+      }
+    }
+
+    // Update UI with real data
+    function updateWidgetAnalytics(data) {
+      const { tenant, sessions } = data;
+
+      // Update user info
+      if (tenant) {
+        const initials = (tenant.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+        const el1 = document.getElementById('wa-user-initials');
+        const el2 = document.getElementById('wa-user-name');
+        const el3 = document.getElementById('wa-user-plan');
+        if (el1) el1.textContent = initials;
+        if (el2) el2.textContent = tenant.name || 'Utilisateur';
+        if (el3) el3.textContent = (tenant.plan || 'Free').charAt(0).toUpperCase() + (tenant.plan || 'free').slice(1) + ' Plan';
+      }
+
+      // Calculate metrics from sessions
+      const totalSessions = sessions.length;
+      const totalDuration = sessions.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0);
+      const avgDurationSec = totalSessions > 0 ? Math.round(totalDuration / totalSessions) : 0;
+      const avgMinutes = Math.floor(avgDurationSec / 60);
+      const avgSeconds = avgDurationSec % 60;
+
+      // Count completed sessions (assume sessions with duration > 30s are completed)
+      const completedSessions = sessions.filter(s => (parseInt(s.duration_sec) || 0) > 30).length;
+      const completionRate = totalSessions > 0 ? Math.round((completedSessions / totalSessions) * 100) : 0;
+
+      // Count leads (sessions with lead_qualified flag or high score)
+      const leadsGenerated = sessions.filter(s => s.lead_qualified || (parseInt(s.lead_score) || 0) > 70).length;
+
+      // Update stats
+      const elSessions = document.getElementById('totalSessions');
+      const elDuration = document.getElementById('avgDuration');
+      const elCompletion = document.getElementById('completionRate');
+      const elLeads = document.getElementById('leadsGenerated');
+
+      if (elSessions) elSessions.textContent = totalSessions.toLocaleString('fr-FR');
+      if (elDuration) elDuration.textContent = `${avgMinutes}:${avgSeconds.toString().padStart(2, '0')}`;
+      if (elCompletion) elCompletion.textContent = completionRate + '%';
+      if (elLeads) elLeads.textContent = leadsGenerated.toLocaleString('fr-FR');
+
+      // Calculate language distribution
+      const langCounts = { fr: 0, en: 0, ar: 0, es: 0, ary: 0 };
+      sessions.forEach(s => {
+        const lang = (s.language || 'fr').toLowerCase();
+        if (langCounts.hasOwnProperty(lang)) langCounts[lang]++;
+      });
+      const totalLangSessions = Object.values(langCounts).reduce((a, b) => a + b, 0) || 1;
+
+      // Update language bars
+      Object.entries(langCounts).forEach(([lang, count]) => {
+        const pct = Math.round((count / totalLangSessions) * 100);
+        const barEl = document.getElementById(`wa-lang-bar-${lang}`);
+        const pctEl = document.getElementById(`wa-lang-pct-${lang}`);
+        if (barEl) barEl.style.width = pct + '%';
+        if (pctEl) pctEl.textContent = pct + '%';
+      });
+
+      // Render sessions chart
+      renderSessionsChart(sessions);
+
+      // Update personas table
+      updatePersonasTable(sessions);
+    }
+
+    // Update personas performance table
+    function updatePersonasTable(sessions) {
+      const tbody = document.getElementById('wa-personas-table');
+      if (!tbody) return;
+
+      // Group sessions by persona
+      const personaStats = {};
+      sessions.forEach(s => {
+        const persona = (s.persona || 'UNKNOWN').toUpperCase();
+        if (!personaStats[persona]) {
+          personaStats[persona] = { sessions: 0, totalDuration: 0, converted: 0 };
+        }
+        personaStats[persona].sessions++;
+        personaStats[persona].totalDuration += parseInt(s.duration_sec) || 0;
+        if (s.lead_qualified || (parseInt(s.lead_score) || 0) > 70) {
+          personaStats[persona].converted++;
+        }
+      });
+
+      // Sort by sessions count
+      const sorted = Object.entries(personaStats).sort((a, b) => b[1].sessions - a[1].sessions).slice(0, 5);
+
+      if (sorted.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-vocalia-400">Aucune donnée disponible</td></tr>';
+        return;
+      }
+
+      // Icons and colors for personas
+      const personaStyles = {
+        'AGENCY': { icon: 'building-2', color: 'vocalia' },
+        'DENTAL': { icon: 'stethoscope', color: 'sky' },
+        'PROPERTY': { icon: 'home', color: 'amber' },
+        'ECOMMERCE': { icon: 'shopping-cart', color: 'emerald' },
+        'HEALER': { icon: 'heart-pulse', color: 'rose' },
+        'MECHANIC': { icon: 'wrench', color: 'orange' },
+        'RESTAURATEUR': { icon: 'utensils', color: 'red' },
+        'DEFAULT': { icon: 'bot', color: 'slate' }
+      };
+
+      tbody.innerHTML = sorted.map(([persona, stats]) => {
+        const style = personaStyles[persona] || personaStyles['DEFAULT'];
+        const avgDuration = stats.sessions > 0 ? Math.round(stats.totalDuration / stats.sessions) : 0;
+        const avgMin = Math.floor(avgDuration / 60);
+        const avgSec = avgDuration % 60;
+        const convRate = stats.sessions > 0 ? ((stats.converted / stats.sessions) * 100).toFixed(1) : '0.0';
+
+        return '<tr class="border-b border-slate-700/50">' +
+          '<td class="py-3 font-medium">' +
+            '<div class="flex items-center gap-2">' +
+              '<div class="w-8 h-8 rounded-lg bg-' + style.color + '-500/20 flex items-center justify-center">' +
+                '<i data-lucide="' + style.icon + '" class="w-4 h-4 text-' + style.color + '-400"></i>' +
+              '</div>' +
+              persona +
+            '</div>' +
+          '</td>' +
+          '<td class="py-3 text-right">' + stats.sessions + '</td>' +
+          '<td class="py-3 text-right text-emerald-400">' + convRate + '%</td>' +
+          '<td class="py-3 text-right">' + avgMin + ':' + avgSec.toString().padStart(2, '0') + '</td>' +
+        '</tr>';
+      }).join('');
+
+      // Re-initialize Lucide icons
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // Render bar chart from session data
+    function renderSessionsChart(sessions) {
+      const chartContainer = document.getElementById('sessionsChart');
+      if (!chartContainer) return;
+
+      // Clear existing
+      chartContainer.innerHTML = '';
+
+      // Group sessions by day (last 30 days)
+      const dailyCounts = {};
+      const now = new Date();
+      for (let i = 29; i >= 0; i--) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
+        const key = date.toISOString().split('T')[0];
+        dailyCounts[key] = 0;
+      }
+
+      sessions.forEach(s => {
+        if (s.timestamp) {
+          const key = new Date(s.timestamp).toISOString().split('T')[0];
+          if (dailyCounts.hasOwnProperty(key)) dailyCounts[key]++;
+        }
+      });
+
+      const data = Object.values(dailyCounts);
+      const max = Math.max(...data, 1);
+
+      data.forEach((val) => {
+        const bar = document.createElement('div');
+        bar.className = 'flex flex-col items-center gap-1';
+        bar.style.width = '3%';
+        bar.innerHTML = `
+          <div class="w-full bg-vocalia-500/80 rounded-t transition-all hover:bg-vocalia-400" style="height: ${(val / max * 200)}px"></div>
+        `;
+        chartContainer.appendChild(bar);
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
       // Initialize Lucide icons
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -647,28 +787,14 @@
         await VocaliaI18n.initI18n(geo.lang);
         VocaliaI18n.translatePage();
 
-        // Listen for locale changes
         window.addEventListener('localeChanged', () => {
           VocaliaI18n.translatePage();
         });
       }
 
-      // Render simple bar chart
-      const chartContainer = document.getElementById('sessionsChart');
-      if (chartContainer) {
-        const data = [85, 92, 78, 95, 110, 88, 105, 120, 98, 135, 142, 128, 145, 152, 138, 160, 155, 148, 165, 172, 158, 180, 175, 168, 185, 192, 178, 200, 195, 188];
-        const max = Math.max(...data);
-
-        data.forEach((val, i) => {
-          const bar = document.createElement('div');
-          bar.className = 'flex flex-col items-center gap-1';
-          bar.style.width = '3%';
-          bar.innerHTML = `
-            <div class="w-full bg-vocalia-500/80 rounded-t transition-all hover:bg-vocalia-400" style="height: ${(val / max * 200)}px"></div>
-          `;
-          chartContainer.appendChild(bar);
-        });
-      }
+      // Fetch and display real data from Google Sheets
+      const analytics = await fetchWidgetAnalytics();
+      updateWidgetAnalytics(analytics);
     });
   </script>
   </body>

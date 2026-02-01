@@ -95,6 +95,11 @@
         <i data-lucide="users" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.users">Utilisateurs</span>
       </a>
+      <a href="#database"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        <i data-lucide="database" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.sidebar.database">Base de données</span>
+      </a>
       <a href="#videos"
         class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="video" class="w-5 h-5"></i>
@@ -293,67 +298,22 @@
         <div class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold"><span data-i18n="admin.health_check_52">Health Check</span></h3>
-            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">26/26</span>
+            <span id="health-total" class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">-/-</span>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="p-3 rounded-xl bg-slate-700/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-vocalia-300">Core</span>
-                <span class="text-green-400 text-sm">7/7</span>
-              </div>
-              <div class="h-1.5 bg-slate-600 rounded-full overflow-hidden">
-                <div class="h-full bg-green-400 rounded-full w-full"></div>
-              </div>
+          <div id="health-categories" class="grid grid-cols-2 gap-4">
+            <!-- Populated dynamically by JS -->
+            <div class="p-3 rounded-xl bg-slate-700/30 animate-pulse">
+              <div class="h-4 bg-slate-600 rounded mb-2"></div>
+              <div class="h-1.5 bg-slate-600 rounded-full"></div>
             </div>
-            <div class="p-3 rounded-xl bg-slate-700/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-vocalia-300"><span data-i18n="admin.integrations_51">Integrations</span></span>
-                <span class="text-green-400 text-sm">3/3</span>
-              </div>
-              <div class="h-1.5 bg-slate-600 rounded-full overflow-hidden">
-                <div class="h-full bg-green-400 rounded-full w-full"></div>
-              </div>
-            </div>
-            <div class="p-3 rounded-xl bg-slate-700/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-vocalia-300"><span data-i18n="admin.personas_50">Personas</span></span>
-                <span class="text-green-400 text-sm">2/2</span>
-              </div>
-              <div class="h-1.5 bg-slate-600 rounded-full overflow-hidden">
-                <div class="h-full bg-green-400 rounded-full w-full"></div>
-              </div>
-            </div>
-            <div class="p-3 rounded-xl bg-slate-700/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-vocalia-300"><span data-i18n="admin.sensors_49">Sensors</span></span>
-                <span class="text-green-400 text-sm">4/4</span>
-              </div>
-              <div class="h-1.5 bg-slate-600 rounded-full overflow-hidden">
-                <div class="h-full bg-green-400 rounded-full w-full"></div>
-              </div>
-            </div>
-            <div class="p-3 rounded-xl bg-slate-700/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-vocalia-300"><span data-i18n="admin.knowledge_base_48">Knowledge Base</span></span>
-                <span class="text-green-400 text-sm">5/5</span>
-              </div>
-              <div class="h-1.5 bg-slate-600 rounded-full overflow-hidden">
-                <div class="h-full bg-green-400 rounded-full w-full"></div>
-              </div>
-            </div>
-            <div class="p-3 rounded-xl bg-slate-700/30">
-              <div class="flex items-center justify-between mb-2">
-                <span class="text-sm text-vocalia-300">Website</span>
-                <span class="text-green-400 text-sm">5/5</span>
-              </div>
-              <div class="h-1.5 bg-slate-600 rounded-full overflow-hidden">
-                <div class="h-full bg-green-400 rounded-full w-full"></div>
-              </div>
+            <div class="p-3 rounded-xl bg-slate-700/30 animate-pulse">
+              <div class="h-4 bg-slate-600 rounded mb-2"></div>
+              <div class="h-1.5 bg-slate-600 rounded-full"></div>
             </div>
           </div>
-          <div class="mt-4 p-3 rounded-xl bg-green-500/10 border border-green-500/30">
-            <p class="text-sm text-green-400 font-mono">$ node scripts/health-check.cjs</p>
-            <p class="text-xs text-vocalia-400 mt-1">Dernier check: il y a 2 minutes</p>
+          <div id="health-status-bar" class="mt-4 p-3 rounded-xl bg-slate-700/30 border border-slate-600">
+            <p class="text-sm text-vocalia-400 font-mono">$ Chargement...</p>
+            <p id="health-last-check" class="text-xs text-vocalia-400 mt-1">-</p>
           </div>
         </div>
       </section>
@@ -432,7 +392,7 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <p class="font-semibold">45,231</p>
+                  <p id="api-usage-primary" class="font-semibold">-</p>
                   <p class="text-xs text-vocalia-400"><span data-i18n="admin.requtes_39"><span data-i18n="admin.requtes_42">requêtes</span></span></p>
                 </div>
               </div>
@@ -447,7 +407,7 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <p class="font-semibold">3,421</p>
+                  <p id="api-usage-fallback" class="font-semibold">-</p>
                   <p class="text-xs text-vocalia-400">requêtes</p>
                 </div>
               </div>
@@ -462,7 +422,7 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <p class="font-semibold">12,892</p>
+                  <p id="api-usage-pstn" class="font-semibold">-</p>
                   <p class="text-xs text-vocalia-400"><span data-i18n="admin.minutes_37">minutes</span></p>
                 </div>
               </div>
@@ -477,7 +437,7 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <p class="font-semibold">8,543</p>
+                  <p id="api-usage-tts" class="font-semibold">-</p>
                   <p class="text-xs text-vocalia-400"><span data-i18n="admin.caractres_35">caractères</span></p>
                 </div>
               </div>
@@ -506,6 +466,197 @@
           </div>
         </div>
       </section>
+
+      <!-- Database Management (Google Sheets) -->
+      <section id="database" class="mb-8">
+        <div class="liquid-glass p-6">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                <i data-lucide="database" class="w-5 h-5 text-emerald-400"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold" data-i18n="dashboard.sidebar.database">Base de données</h3>
+                <p class="text-xs text-vocalia-400">Google Sheets CRUD</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span id="db-health-status" class="px-3 py-1 rounded-full bg-slate-600 text-slate-300 text-sm font-medium">Checking...</span>
+              <a href="https://docs.google.com/spreadsheets/d/1USAmFgxpXh9yvtAFxvg0_CpmWVop1pOTmxALEE8M4PM/edit" target="_blank"
+                 class="p-2 rounded-lg hover:bg-slate-700/50 transition text-vocalia-400 hover:text-emerald-400" title="Ouvrir Google Sheets">
+                <i data-lucide="external-link" class="w-4 h-4"></i>
+              </a>
+              <button type="button" data-action="refreshDBData" class="p-2 rounded-lg hover:bg-slate-700/50 transition" title="Actualiser">
+                <i data-lucide="refresh-cw" class="w-4 h-4 text-vocalia-400"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- DB Stats -->
+          <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="p-3 rounded-xl bg-slate-700/30 text-center">
+              <div class="text-2xl font-bold" id="db-stat-tenants">-</div>
+              <div class="text-xs text-vocalia-400">Tenants</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-700/30 text-center">
+              <div class="text-2xl font-bold" id="db-stat-sessions">-</div>
+              <div class="text-xs text-vocalia-400">Sessions</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-700/30 text-center">
+              <div class="text-2xl font-bold" id="db-stat-users">-</div>
+              <div class="text-xs text-vocalia-400">Users</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-700/30 text-center">
+              <div class="text-2xl font-bold text-emerald-400" id="db-stat-mrr">-</div>
+              <div class="text-xs text-vocalia-400">MRR Total</div>
+            </div>
+          </div>
+
+          <!-- DB Tabs -->
+          <div class="border-b border-slate-600 mb-4">
+            <nav class="flex space-x-1">
+              <button type="button" data-action="switchDBTab" data-params="db-tenants" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-emerald-500 text-emerald-400">
+                Tenants
+              </button>
+              <button type="button" data-action="switchDBTab" data-params="db-sessions" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
+                Sessions
+              </button>
+              <button type="button" data-action="switchDBTab" data-params="db-users" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
+                Users
+              </button>
+              <button type="button" data-action="switchDBTab" data-params="db-logs" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
+                Logs
+              </button>
+            </nav>
+          </div>
+
+          <!-- DB Tenants Tab -->
+          <div id="db-tenants" class="db-tab-content">
+            <div class="flex justify-between items-center mb-4">
+              <h4 class="text-sm font-medium text-vocalia-300">Gestion des Tenants</h4>
+              <button type="button" data-action="showDBModal" data-params="tenant-create" class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded text-sm">
+                + Ajouter Tenant
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-700/50">
+                  <tr>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">ID</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Nom</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Email</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Plan</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">MRR</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Status</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="db-tenants-table" class="divide-y divide-slate-700">
+                  <tr><td colspan="7" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- DB Sessions Tab -->
+          <div id="db-sessions" class="db-tab-content hidden">
+            <h4 class="text-sm font-medium text-vocalia-300 mb-4">Sessions Voice</h4>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-700/50">
+                  <tr>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">ID</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Tenant</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Appels</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Durée</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Coût</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Persona</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Date</th>
+                  </tr>
+                </thead>
+                <tbody id="db-sessions-table" class="divide-y divide-slate-700">
+                  <tr><td colspan="7" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- DB Users Tab -->
+          <div id="db-users" class="db-tab-content hidden">
+            <div class="flex justify-between items-center mb-4">
+              <h4 class="text-sm font-medium text-vocalia-300">Gestion des Utilisateurs</h4>
+              <button type="button" data-action="showDBModal" data-params="user-create" class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded text-sm">
+                + Ajouter User
+              </button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-700/50">
+                  <tr>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">ID</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Email</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Role</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Tenant</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Dernier Login</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="db-users-table" class="divide-y divide-slate-700">
+                  <tr><td colspan="6" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- DB Logs Tab -->
+          <div id="db-logs" class="db-tab-content hidden">
+            <div class="flex justify-between items-center mb-4">
+              <h4 class="text-sm font-medium text-vocalia-300">Logs Système</h4>
+              <select id="db-log-filter" class="bg-slate-700 border border-slate-600 rounded px-3 py-1.5 text-sm">
+                <option value="">Tous les niveaux</option>
+                <option value="error">Erreurs</option>
+                <option value="warn">Warnings</option>
+                <option value="info">Info</option>
+              </select>
+            </div>
+            <div class="overflow-x-auto max-h-96 overflow-y-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-700/50 sticky top-0">
+                  <tr>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Date</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Niveau</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Service</th>
+                    <th class="px-3 py-2 text-left text-xs font-medium text-vocalia-400">Message</th>
+                  </tr>
+                </thead>
+                <tbody id="db-logs-table" class="divide-y divide-slate-700">
+                  <tr><td colspan="4" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DB Modal -->
+      <div id="db-modal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50">
+        <div class="bg-slate-800 rounded-lg p-6 w-full max-w-md mx-4 border border-slate-600">
+          <h3 id="db-modal-title" class="text-lg font-semibold mb-4">Créer un enregistrement</h3>
+          <form id="db-modal-form">
+            <div id="db-modal-fields" class="space-y-4">
+              <!-- Dynamic fields -->
+            </div>
+            <div class="flex justify-end gap-3 mt-6">
+              <button type="button" data-action="closeDBModal" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 rounded">
+                Annuler
+              </button>
+              <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded">
+                Enregistrer
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
 
       <!-- Video Generation (Remotion + HITL) -->
       <section id="videos" class="mb-8">
@@ -1070,6 +1221,7 @@
             callsToday: callsToday,
             durationToday: durationToday
           },
+          rawSessions: sessions,
           logs: logs.slice(0, 50),
           source: 'google-sheets'
         };
@@ -1143,6 +1295,11 @@
       // Update logs from DB
       if (metrics.logs && metrics.logs.length > 0) {
         updateLogsFromDB(metrics.logs);
+      }
+
+      // Session 250.51: Update API usage from sessions
+      if (metrics.rawSessions) {
+        updateApiUsage(metrics.rawSessions);
       }
 
       // Show data source indicator
@@ -1240,6 +1397,489 @@
       // Re-init lucide icons for new content
       if (typeof lucide !== 'undefined') lucide.createIcons();
     }
+
+    // Session 250.51: Update API Usage section from sessions data
+    function updateApiUsage(sessions) {
+      // Calculate usage from session data
+      let primaryRequests = 0;
+      let fallbackRequests = 0;
+      let pstnMinutes = 0;
+      let ttsChars = 0;
+
+      const today = new Date().toISOString().split('T')[0];
+      const todaySessions = (sessions || []).filter(s => s.timestamp?.startsWith(today));
+
+      todaySessions.forEach(s => {
+        const calls = parseInt(s.calls) || 0;
+        // If ai_requests column exists, use it; otherwise estimate from calls
+        // Each call typically generates ~3-5 AI requests (greeting, responses, farewell)
+        primaryRequests += parseInt(s.ai_requests) || (calls * 4);
+        // Fallback is typically ~5% of primary
+        fallbackRequests += parseInt(s.fallback_requests) || Math.round(calls * 0.2);
+        // PSTN minutes from duration
+        pstnMinutes += Math.round((parseInt(s.duration_sec) || 0) / 60);
+        // TTS characters: estimate ~150 chars per minute of call
+        ttsChars += parseInt(s.tts_chars) || Math.round((parseInt(s.duration_sec) || 0) * 2.5);
+      });
+
+      // Update DOM elements
+      const primaryEl = document.getElementById('api-usage-primary');
+      const fallbackEl = document.getElementById('api-usage-fallback');
+      const pstnEl = document.getElementById('api-usage-pstn');
+      const ttsEl = document.getElementById('api-usage-tts');
+
+      if (primaryEl) primaryEl.textContent = primaryRequests.toLocaleString();
+      if (fallbackEl) fallbackEl.textContent = fallbackRequests.toLocaleString();
+      if (pstnEl) pstnEl.textContent = pstnMinutes.toLocaleString();
+      if (ttsEl) ttsEl.textContent = ttsChars.toLocaleString();
+    }
+
+    // Session 250.51: Fetch and display health check results
+    async function fetchHealthCheck() {
+      const healthCategories = [
+        { name: 'Database', checks: ['google-sheets'] },
+        { name: 'Voice API', checks: ['port-3004'] },
+        { name: 'Grok Realtime', checks: ['port-3007'] },
+        { name: 'Telephony', checks: ['port-3009'] },
+        { name: 'Website', checks: ['port-8080'] },
+        { name: 'MCP Server', checks: ['mcp-tools'] }
+      ];
+
+      const results = [];
+      let totalPassed = 0;
+      let totalChecks = 0;
+
+      // Check DB API (port 3012)
+      try {
+        const dbRes = await fetch(`${API_BASE}/health`, { signal: AbortSignal.timeout(3000) });
+        results.push({ name: 'Database', passed: dbRes.ok ? 1 : 0, total: 1 });
+        if (dbRes.ok) totalPassed++;
+        totalChecks++;
+      } catch {
+        results.push({ name: 'Database', passed: 0, total: 1 });
+        totalChecks++;
+      }
+
+      // Check Voice API (port 3004)
+      try {
+        const voiceRes = await fetch(`${VOICE_API}/health`, { signal: AbortSignal.timeout(3000) });
+        results.push({ name: 'Voice API', passed: voiceRes.ok ? 1 : 0, total: 1 });
+        if (voiceRes.ok) totalPassed++;
+        totalChecks++;
+      } catch {
+        results.push({ name: 'Voice API', passed: 0, total: 1 });
+        totalChecks++;
+      }
+
+      // Check Grok Realtime (port 3007)
+      try {
+        const grokRes = await fetch('http://localhost:3007/health', { signal: AbortSignal.timeout(3000) });
+        results.push({ name: 'Grok Realtime', passed: grokRes.ok ? 1 : 0, total: 1 });
+        if (grokRes.ok) totalPassed++;
+        totalChecks++;
+      } catch {
+        results.push({ name: 'Grok Realtime', passed: 0, total: 1 });
+        totalChecks++;
+      }
+
+      // Check Telephony (port 3009)
+      try {
+        const telRes = await fetch('http://localhost:3009/health', { signal: AbortSignal.timeout(3000) });
+        results.push({ name: 'Telephony', passed: telRes.ok ? 1 : 0, total: 1 });
+        if (telRes.ok) totalPassed++;
+        totalChecks++;
+      } catch {
+        results.push({ name: 'Telephony', passed: 0, total: 1 });
+        totalChecks++;
+      }
+
+      // Update UI
+      updateHealthCheckUI(results, totalPassed, totalChecks);
+    }
+
+    function updateHealthCheckUI(results, passed, total) {
+      const totalEl = document.getElementById('health-total');
+      const categoriesEl = document.getElementById('health-categories');
+      const statusBar = document.getElementById('health-status-bar');
+      const lastCheckEl = document.getElementById('health-last-check');
+
+      // Update total badge
+      if (totalEl) {
+        totalEl.textContent = `${passed}/${total}`;
+        const allGood = passed === total;
+        totalEl.className = `px-3 py-1 rounded-full text-sm font-medium ${allGood ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'}`;
+      }
+
+      // Update categories grid
+      if (categoriesEl) {
+        categoriesEl.innerHTML = results.map(r => {
+          const allPassed = r.passed === r.total;
+          const color = allPassed ? 'green' : 'yellow';
+          const width = r.total > 0 ? Math.round((r.passed / r.total) * 100) : 0;
+          return `
+            <div class="p-3 rounded-xl bg-slate-700/30">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-vocalia-300">${escapeHtml(r.name)}</span>
+                <span class="text-${color}-400 text-sm">${r.passed}/${r.total}</span>
+              </div>
+              <div class="h-1.5 bg-slate-600 rounded-full overflow-hidden">
+                <div class="h-full bg-${color}-400 rounded-full" style="width: ${width}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Update status bar
+      if (statusBar) {
+        const allGood = passed === total;
+        statusBar.className = `mt-4 p-3 rounded-xl ${allGood ? 'bg-green-500/10 border border-green-500/30' : 'bg-yellow-500/10 border border-yellow-500/30'}`;
+        statusBar.innerHTML = `
+          <p class="text-sm ${allGood ? 'text-green-400' : 'text-yellow-400'} font-mono">
+            ${allGood ? '✓ Tous les services opérationnels' : '⚠ Certains services indisponibles'}
+          </p>
+          <p id="health-last-check" class="text-xs text-vocalia-400 mt-1">Dernier check: ${new Date().toLocaleTimeString('fr-FR')}</p>
+        `;
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DATABASE CRUD (Google Sheets) - Merged from db-admin.html
+    // ═══════════════════════════════════════════════════════════════════════════
+    const dbData = {
+      tenants: [],
+      sessions: [],
+      users: [],
+      logs: []
+    };
+    let dbCurrentTab = 'db-tenants';
+    let dbEditingId = null;
+    let dbEditingSheet = null;
+
+    // Check DB health and update status
+    async function checkDBHealth() {
+      try {
+        const res = await fetch(`${API_BASE}/health`, { signal: AbortSignal.timeout(3000) });
+        const health = await res.json();
+        const el = document.getElementById('db-health-status');
+        if (el) {
+          el.textContent = health.status === 'ok' ? 'Connecté' : 'Erreur';
+          el.className = health.status === 'ok'
+            ? 'px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-medium'
+            : 'px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-sm font-medium';
+        }
+      } catch (e) {
+        const el = document.getElementById('db-health-status');
+        if (el) {
+          el.textContent = 'Offline';
+          el.className = 'px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-sm font-medium';
+        }
+      }
+    }
+
+    // Refresh all DB data
+    async function refreshDBData() {
+      try {
+        const [tenantsRes, sessionsRes, usersRes, logsRes] = await Promise.all([
+          fetch(`${API_BASE}/tenants`).catch(() => ({ ok: false })),
+          fetch(`${API_BASE}/sessions`).catch(() => ({ ok: false })),
+          fetch(`${API_BASE}/users`).catch(() => ({ ok: false })),
+          fetch(`${API_BASE}/logs`).catch(() => ({ ok: false }))
+        ]);
+
+        if (tenantsRes.ok) dbData.tenants = (await tenantsRes.json()).data || [];
+        if (sessionsRes.ok) dbData.sessions = (await sessionsRes.json()).data || [];
+        if (usersRes.ok) dbData.users = (await usersRes.json()).data || [];
+        if (logsRes.ok) dbData.logs = (await logsRes.json()).data || [];
+
+        updateDBStats();
+        renderDBTable(dbCurrentTab.replace('db-', ''));
+      } catch (e) {
+        console.warn('[DB] Error loading data:', e.message);
+      }
+    }
+
+    // Update DB stats display
+    function updateDBStats() {
+      const statTenants = document.getElementById('db-stat-tenants');
+      const statSessions = document.getElementById('db-stat-sessions');
+      const statUsers = document.getElementById('db-stat-users');
+      const statMrr = document.getElementById('db-stat-mrr');
+
+      if (statTenants) statTenants.textContent = dbData.tenants.length;
+      if (statSessions) statSessions.textContent = dbData.sessions.length;
+      if (statUsers) statUsers.textContent = dbData.users.length;
+
+      if (statMrr) {
+        const mrr = dbData.tenants.reduce((sum, t) => sum + (parseFloat(t.mrr) || 0), 0);
+        statMrr.textContent = mrr.toLocaleString('fr-FR') + '€';
+      }
+    }
+
+    // Switch DB tab
+    function switchDBTab(tabId) {
+      dbCurrentTab = tabId;
+      const sheet = tabId.replace('db-', '');
+
+      // Update tab buttons
+      document.querySelectorAll('.db-tab-btn').forEach(btn => {
+        btn.classList.remove('border-emerald-500', 'text-emerald-400');
+        btn.classList.add('border-transparent', 'text-vocalia-400');
+      });
+      const activeBtn = document.querySelector(`[data-params="${tabId}"]`);
+      if (activeBtn) {
+        activeBtn.classList.add('border-emerald-500', 'text-emerald-400');
+        activeBtn.classList.remove('border-transparent', 'text-vocalia-400');
+      }
+
+      // Show/hide content
+      document.querySelectorAll('.db-tab-content').forEach(el => el.classList.add('hidden'));
+      const tabContent = document.getElementById(tabId);
+      if (tabContent) tabContent.classList.remove('hidden');
+
+      renderDBTable(sheet);
+    }
+
+    // Render DB table
+    function renderDBTable(sheet) {
+      const tbody = document.getElementById(`db-${sheet}-table`);
+      const records = dbData[sheet] || [];
+
+      if (!tbody) return;
+
+      if (records.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" class="px-3 py-4 text-center text-vocalia-400">Aucun enregistrement</td></tr>`;
+        return;
+      }
+
+      switch (sheet) {
+        case 'tenants':
+          tbody.innerHTML = records.map(r => `
+            <tr class="hover:bg-slate-700/50">
+              <td class="px-3 py-2 text-xs font-mono text-vocalia-400">${escapeHtml(r.id || '-')}</td>
+              <td class="px-3 py-2 font-medium">${escapeHtml(r.name || '-')}</td>
+              <td class="px-3 py-2 text-vocalia-300">${escapeHtml(r.email || '-')}</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs ${r.plan === 'enterprise' ? 'bg-purple-500/20 text-purple-400' : r.plan === 'pro' ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-600 text-slate-300'}">${escapeHtml(r.plan || 'free')}</span></td>
+              <td class="px-3 py-2 text-emerald-400">${parseFloat(r.mrr || 0).toLocaleString('fr-FR')}€</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs ${r.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">${escapeHtml(r.status || 'active')}</span></td>
+              <td class="px-3 py-2">
+                <button type="button" onclick="editDBRecord('tenants', '${escapeHtml(r.id)}')" class="text-blue-400 hover:text-blue-300 text-xs mr-2">Éditer</button>
+                <button type="button" onclick="deleteDBRecord('tenants', '${escapeHtml(r.id)}')" class="text-red-400 hover:text-red-300 text-xs">Suppr.</button>
+              </td>
+            </tr>
+          `).join('');
+          break;
+
+        case 'sessions':
+          tbody.innerHTML = records.map(r => `
+            <tr class="hover:bg-slate-700/50">
+              <td class="px-3 py-2 text-xs font-mono text-vocalia-400">${escapeHtml(r.id || '-')}</td>
+              <td class="px-3 py-2">${escapeHtml(r.tenant_id || '-')}</td>
+              <td class="px-3 py-2">${r.calls || 0}</td>
+              <td class="px-3 py-2">${r.duration_sec || 0}s</td>
+              <td class="px-3 py-2 text-emerald-400">$${parseFloat(r.cost_usd || 0).toFixed(3)}</td>
+              <td class="px-3 py-2">${escapeHtml(r.persona || '-')}</td>
+              <td class="px-3 py-2 text-vocalia-400 text-xs">${r.timestamp ? new Date(r.timestamp).toLocaleString('fr-FR') : '-'}</td>
+            </tr>
+          `).join('');
+          break;
+
+        case 'users':
+          tbody.innerHTML = records.map(r => `
+            <tr class="hover:bg-slate-700/50">
+              <td class="px-3 py-2 text-xs font-mono text-vocalia-400">${escapeHtml(r.id || '-')}</td>
+              <td class="px-3 py-2">${escapeHtml(r.email || '-')}</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs ${r.role === 'admin' ? 'bg-purple-500/20 text-purple-400' : 'bg-slate-600 text-slate-300'}">${escapeHtml(r.role || 'user')}</span></td>
+              <td class="px-3 py-2">${escapeHtml(r.tenant_id || '-')}</td>
+              <td class="px-3 py-2 text-vocalia-400 text-xs">${r.last_login ? new Date(r.last_login).toLocaleString('fr-FR') : 'Jamais'}</td>
+              <td class="px-3 py-2">
+                <button type="button" onclick="editDBRecord('users', '${escapeHtml(r.id)}')" class="text-blue-400 hover:text-blue-300 text-xs mr-2">Éditer</button>
+                <button type="button" onclick="deleteDBRecord('users', '${escapeHtml(r.id)}')" class="text-red-400 hover:text-red-300 text-xs">Suppr.</button>
+              </td>
+            </tr>
+          `).join('');
+          break;
+
+        case 'logs':
+          const filter = document.getElementById('db-log-filter')?.value || '';
+          const filtered = filter ? records.filter(r => r.level === filter) : records;
+          tbody.innerHTML = filtered.slice(0, 100).map(r => `
+            <tr class="hover:bg-slate-700/50">
+              <td class="px-3 py-2 text-vocalia-400 text-xs">${r.timestamp ? new Date(r.timestamp).toLocaleString('fr-FR') : '-'}</td>
+              <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs ${r.level === 'error' ? 'bg-red-500/20 text-red-400' : r.level === 'warn' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-blue-500/20 text-blue-400'}">${escapeHtml(r.level || 'info')}</span></td>
+              <td class="px-3 py-2">${escapeHtml(r.service || '-')}</td>
+              <td class="px-3 py-2 text-xs">${escapeHtml(r.message || '-')}</td>
+            </tr>
+          `).join('');
+          break;
+      }
+    }
+
+    // DB Modal - Form fields configuration
+    const dbFormFields = {
+      tenants: ['name', 'email', 'phone', 'plan', 'mrr', 'status'],
+      users: ['email', 'password_hash', 'role', 'tenant_id']
+    };
+
+    // Show DB Modal
+    function showDBModal(type) {
+      dbEditingId = null;
+      const [sheet, action] = type.split('-');
+      dbEditingSheet = sheet === 'tenant' ? 'tenants' : 'users';
+
+      const modal = document.getElementById('db-modal');
+      const title = document.getElementById('db-modal-title');
+      const fieldsContainer = document.getElementById('db-modal-fields');
+
+      if (title) title.textContent = sheet === 'tenant' ? 'Créer un Tenant' : 'Créer un Utilisateur';
+
+      const fields = dbFormFields[dbEditingSheet] || [];
+      if (fieldsContainer) {
+        fieldsContainer.innerHTML = fields.map(f => `
+          <div>
+            <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+            <input name="${f}" type="${f.includes('password') ? 'password' : 'text'}"
+                   class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                   ${['name', 'email'].includes(f) ? 'required' : ''}>
+          </div>
+        `).join('');
+      }
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    // Edit DB Record
+    function editDBRecord(sheet, id) {
+      const record = dbData[sheet]?.find(r => r.id === id);
+      if (!record) return;
+
+      dbEditingId = id;
+      dbEditingSheet = sheet;
+
+      const modal = document.getElementById('db-modal');
+      const title = document.getElementById('db-modal-title');
+      const fieldsContainer = document.getElementById('db-modal-fields');
+
+      if (title) title.textContent = `Modifier ${sheet === 'tenants' ? 'le Tenant' : "l'Utilisateur"}`;
+
+      const fields = dbFormFields[sheet] || [];
+      if (fieldsContainer) {
+        fieldsContainer.innerHTML = fields.map(f => `
+          <div>
+            <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+            <input name="${f}" type="${f.includes('password') ? 'password' : 'text'}"
+                   class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                   value="${escapeHtml(record[f] || '')}">
+          </div>
+        `).join('');
+      }
+
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    }
+
+    // Close DB Modal
+    function closeDBModal() {
+      const modal = document.getElementById('db-modal');
+      const form = document.getElementById('db-modal-form');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+      if (form) form.reset();
+      dbEditingId = null;
+      dbEditingSheet = null;
+    }
+
+    // Delete DB Record
+    async function deleteDBRecord(sheet, id) {
+      if (!confirm('Supprimer cet enregistrement?')) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/${sheet}/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          await refreshDBData();
+          // Also refresh main admin dashboard
+          const metrics = await fetchAdminMetrics();
+          if (metrics) updateAdminDashboard(metrics);
+        } else {
+          const data = await res.json();
+          alert('Erreur: ' + (data.error || 'Suppression échouée'));
+        }
+      } catch (e) {
+        alert('Erreur API: ' + e.message);
+      }
+    }
+
+    // Submit DB Form
+    document.getElementById('db-modal-form')?.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        let res;
+        if (dbEditingId) {
+          res = await fetch(`${API_BASE}/${dbEditingSheet}/${dbEditingId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        } else {
+          res = await fetch(`${API_BASE}/${dbEditingSheet}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        }
+
+        if (res.ok) {
+          closeDBModal();
+          await refreshDBData();
+          // Also refresh main admin dashboard
+          const metrics = await fetchAdminMetrics();
+          if (metrics) updateAdminDashboard(metrics);
+        } else {
+          const result = await res.json();
+          alert('Erreur: ' + (result.error || 'Opération échouée'));
+        }
+      } catch (e) {
+        alert('Erreur API: ' + e.message);
+      }
+    });
+
+    // Filter DB logs
+    document.getElementById('db-log-filter')?.addEventListener('change', function() {
+      renderDBTable('logs');
+    });
+
+    // Handle DB actions via data-action
+    function handleDBAction(action, params) {
+      switch (action) {
+        case 'switchDBTab':
+          switchDBTab(params);
+          break;
+        case 'showDBModal':
+          showDBModal(params);
+          break;
+        case 'closeDBModal':
+          closeDBModal();
+          break;
+        case 'refreshDBData':
+          refreshDBData();
+          checkDBHealth();
+          break;
+      }
+    }
+
+    // Expose DB functions globally
+    window.editDBRecord = editDBRecord;
+    window.deleteDBRecord = deleteDBRecord;
 
     function quickAction(action) {
 
@@ -1363,16 +2003,24 @@
       // Initialize HITL queue
       refreshHITLQueue();
 
+      // Initialize Database section (merged from db-admin.html)
+      checkDBHealth();
+      refreshDBData();
+
       // Fetch and update admin dashboard with real data
       setTimeout(async () => {
         const metrics = await fetchAdminMetrics();
         updateAdminDashboard(metrics);
+        // Session 250.51: Also run health check
+        fetchHealthCheck();
       }, 300);
 
       // Auto-refresh every 30 seconds
       setInterval(async () => {
         const metrics = await fetchAdminMetrics();
         if (metrics) updateAdminDashboard(metrics);
+        // Refresh health check too
+        fetchHealthCheck();
       }, 30000);
     })();
   </script>
@@ -1450,17 +2098,65 @@
       localStorage.setItem('vocalia_lang', lang);
     };
 
+    // Global click handler for data-action buttons
+    function initActionHandler() {
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('[data-action]');
+        if (!btn) return;
+
+        var action = btn.getAttribute('data-action');
+        var params = btn.getAttribute('data-params');
+
+        switch (action) {
+          case 'toggleLangDropdown':
+            if (typeof toggleLangDropdown === 'function') toggleLangDropdown();
+            break;
+          case 'switchLang':
+            if (typeof switchLang === 'function') switchLang(params);
+            break;
+          case 'queueVideo':
+            if (typeof queueVideo === 'function') queueVideo(params);
+            break;
+          case 'quickAction':
+            if (typeof quickAction === 'function') quickAction(params);
+            break;
+          case 'viewAllTenants':
+            if (typeof viewAllTenants === 'function') viewAllTenants();
+            break;
+          case 'refreshHITLQueue':
+            if (typeof refreshHITLQueue === 'function') refreshHITLQueue();
+            break;
+          // DB Actions (merged from db-admin.html)
+          case 'switchDBTab':
+            if (typeof switchDBTab === 'function') switchDBTab(params);
+            break;
+          case 'showDBModal':
+            if (typeof showDBModal === 'function') showDBModal(params);
+            break;
+          case 'closeDBModal':
+            if (typeof closeDBModal === 'function') closeDBModal();
+            break;
+          case 'refreshDBData':
+            if (typeof refreshDBData === 'function') refreshDBData();
+            if (typeof checkDBHealth === 'function') checkDBHealth();
+            break;
+        }
+      });
+    }
+
     // Init on DOM ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initLucide();
         initMobileMenu();
         initI18n();
+        initActionHandler();
       });
     } else {
       initLucide();
       initMobileMenu();
       initI18n();
+      initActionHandler();
     }
 
     // Re-init on load
