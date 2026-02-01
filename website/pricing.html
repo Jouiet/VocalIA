@@ -1330,8 +1330,17 @@
         if (isAnnual) {
           if (starterEl) starterEl.textContent = starterAnnual;
           if (proEl) proEl.textContent = proAnnual;
-          if (starterAnnualEl) starterAnnualEl.textContent = window.VocaliaI18n ? window.VocaliaI18n.t('pricing_page.billed_annually') : 'facturé annuellement';
-          if (proAnnualEl) proAnnualEl.textContent = window.VocaliaI18n ? window.VocaliaI18n.t('pricing_page.billed_annually') : 'facturé annuellement';
+          // Get translated text with proper fallback
+          let billedAnnuallyText = 'facturé annuellement';
+          if (window.VocaliaI18n && typeof window.VocaliaI18n.t === 'function') {
+            const translated = window.VocaliaI18n.t('pricing_page.billed_annually');
+            // Only use if translation was found (not the raw key)
+            if (translated && !translated.includes('pricing_page.')) {
+              billedAnnuallyText = translated;
+            }
+          }
+          if (starterAnnualEl) starterAnnualEl.textContent = billedAnnuallyText;
+          if (proAnnualEl) proAnnualEl.textContent = billedAnnuallyText;
         } else {
           if (starterEl) starterEl.textContent = starterMonthly;
           if (proEl) proEl.textContent = proMonthly;
