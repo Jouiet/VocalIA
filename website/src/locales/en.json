@@ -1693,7 +1693,11 @@
       "contact": "Contact",
       "privacy": "Privacy",
       "terms": "Terms",
-      "cookies": "Cookies"
+      "cookies": "Cookies",
+      "use_cases": "Use Cases",
+      "industries": "By Industry",
+      "academy": "Business Academy",
+      "investors": "Investors"
     },
     "copyright": "© 2026 VocalIA. All rights reserved.",
     "trust": {
