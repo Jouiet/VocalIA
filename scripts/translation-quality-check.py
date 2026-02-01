@@ -35,6 +35,7 @@ WHITELIST = {
     "en": {
         "about_page.tech_title_highlight",  # "Stack" is intentional
         "docs_api_page.sidebar_webhooks_setup",  # "Setup" is correct EN
+        "features_page.title",  # "All" + title_highlight "Features" = split phrase pattern
     },
     "es": {
         "status.today",  # "Hoy" is correct Spanish for "Aujourd'hui"

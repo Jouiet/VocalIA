@@ -15,13 +15,18 @@
   // ============================================================
 
   const CONFIG = {
-    // Supported languages - FR/EN Focus
-    SUPPORTED_LANGS: ['fr', 'en'],
+    // Supported languages - All 5 languages
+    SUPPORTED_LANGS: ['fr', 'en', 'es', 'ar', 'ary'],
     DEFAULT_LANG: 'fr',
 
     // Paths
     LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
     BOOKING_API: 'https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFKZXGFUTS9c3SKrmRZdJEg0tcWnvA-P2Jl/exec',
+
+    // Voice API (AI Mode)
+    VOICE_API_URL: 'https://api.vocalia.ma/respond',
+    AI_MODE: true, // true = use Voice API with personas, false = pattern matching fallback
+    API_TIMEOUT: 10000, // 10 seconds
 
     // Branding
     primaryColor: '#4FBAF1',
@@ -55,6 +60,7 @@
     conversationHistory: [],
     currentLang: null,
     langData: null,
+    sessionId: `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     availableSlotsCache: { slots: [], timestamp: 0 },
     conversationContext: {
       industry: null,
@@ -822,37 +828,71 @@
     return null;
   }
 
-  async function getAIResponse(userMessage) {
+  /**
+   * Call Voice API with persona-powered AI response
+   * Falls back to pattern matching if API fails or AI_MODE is disabled
+   */
+  async function callVoiceAPI(userMessage) {
+    if (!CONFIG.AI_MODE) return null;
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+
+      const response = await fetch(CONFIG.VOICE_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMessage,
+          language: state.currentLang,
+          sessionId: state.sessionId || `widget_${Date.now()}`,
+          history: state.conversationHistory.slice(-10).map(m => ({
+            role: m.role,
+            content: m.content
+          }))
+        }),
+        signal: controller.signal
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        console.warn('[VocalIA] API error:', response.status);
+        return null;
+      }
+
+      const data = await response.json();
+      if (data.response) {
+        trackEvent('voice_api_response', { language: state.currentLang, latency: data.latencyMs });
+        return data.response;
+      }
+      return null;
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        console.warn('[VocalIA] API timeout');
+      } else {
+        console.warn('[VocalIA] API error:', err.message);
+      }
+      return null;
+    }
+  }
+
+  /**
+   * Pattern matching fallback (offline mode)
+   */
+  function getPatternMatchResponse(userMessage) {
     const L = state.langData;
     const lower = userMessage.toLowerCase();
     const ctx = state.conversationContext;
 
-    // 1. Active booking flow takes priority
-    if (ctx.bookingFlow.active) {
-      const bookingResponse = await handleBookingFlow(userMessage);
-      if (ctx.bookingFlow.step === 'submitting') {
-        return await processBookingConfirmation();
-      }
-      if (bookingResponse) return bookingResponse;
-    }
-
-    // 2. Check for booking intent
-    if (isBookingIntent(lower)) {
-      ctx.bookingFlow.active = true;
-      ctx.bookingFlow.step = 'name';
-      ctx.bookingFlow.data.service = L.booking.service;
-      trackEvent('voice_booking_started', { step: 'name' });
-      return L.booking.messages.start;
-    }
-
-    // 3. Update context with detected industry/need
+    // Update context with detected industry/need
     const detectedIndustry = detectIndustry(userMessage);
     if (detectedIndustry) ctx.industry = detectedIndustry;
 
     const detectedNeed = detectNeed(userMessage);
     if (detectedNeed) ctx.need = detectedNeed;
 
-    // 4. Check for "yes" confirmation based on last topic
+    // Check for "yes" confirmation based on last topic
     if (L.topics.yes.keywords.some(kw => lower.includes(kw))) {
       const yesResponses = L.topics.yes.responses;
       if (ctx.lastTopic && yesResponses[ctx.lastTopic]) {
@@ -861,14 +901,13 @@
       return yesResponses.default;
     }
 
-    // 5. Check all topics
+    // Check all topics
     for (const [topic, data] of Object.entries(L.topics)) {
-      if (topic === 'yes') continue; // Already handled above
+      if (topic === 'yes') continue;
 
       if (data.keywords.some(kw => lower.includes(kw))) {
         ctx.lastTopic = topic;
 
-        // Special case: leads -> adapt to industry
         if (topic === 'leads' && ctx.industry && L.industries[ctx.industry]?.leads) {
           return L.industries[ctx.industry].leads + L.defaults.leadsFollowup;
         }
@@ -877,36 +916,67 @@
       }
     }
 
-    // 6. Industry-specific response
+    // Industry-specific response
     if (ctx.industry && L.industries[ctx.industry]) {
       const industryData = L.industries[ctx.industry];
 
-      // If asking about services
       if (lower.includes('service') || lower.includes('automation') || lower.includes('أتمتة') || lower.includes('automatisation')) {
         ctx.lastTopic = 'services';
         return industryData.services + L.defaults.servicesFollowup;
       }
 
-      // First time mentioning industry
       const introStart = industryData.intro.substring(0, 30);
       if (!state.conversationHistory.some(m => m.content.includes(introStart))) {
         return industryData.intro + L.defaults.industryFollowup;
       }
     }
 
-    // 7. If quote need detected
+    // Quote need
     if (ctx.need === 'quote') {
       ctx.lastTopic = 'pricing';
       return L.topics.pricing.response;
     }
 
-    // 8. Industry-based smart default
+    // Industry-based smart default
     if (ctx.industry) {
       return L.defaults.industryResponse.replace('{industry}', ctx.industry.toUpperCase());
     }
 
-    // 9. True default - qualification question
+    // True default
     return L.defaults.qualificationQuestion;
+  }
+
+  async function getAIResponse(userMessage) {
+    const L = state.langData;
+    const lower = userMessage.toLowerCase();
+    const ctx = state.conversationContext;
+
+    // 1. Active booking flow takes priority (always local)
+    if (ctx.bookingFlow.active) {
+      const bookingResponse = await handleBookingFlow(userMessage);
+      if (ctx.bookingFlow.step === 'submitting') {
+        return await processBookingConfirmation();
+      }
+      if (bookingResponse) return bookingResponse;
+    }
+
+    // 2. Check for booking intent (always local)
+    if (isBookingIntent(lower)) {
+      ctx.bookingFlow.active = true;
+      ctx.bookingFlow.step = 'name';
+      ctx.bookingFlow.data.service = L.booking.service;
+      trackEvent('voice_booking_started', { step: 'name' });
+      return L.booking.messages.start;
+    }
+
+    // 3. Try Voice API first (AI Mode with 40 personas)
+    const apiResponse = await callVoiceAPI(userMessage);
+    if (apiResponse) {
+      return apiResponse;
+    }
+
+    // 4. Fallback to pattern matching (offline mode)
+    return getPatternMatchResponse(userMessage);
   }
 
   // ============================================================
