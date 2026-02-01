@@ -100,7 +100,7 @@ VocalIA/
 | Telephony | 3009 | `node telephony/voice-telephony-bridge.cjs` |
 | OAuth Gateway | 3010 | `node core/OAuthGateway.cjs --start` |
 | Webhook Router | 3011 | `node core/WebhookRouter.cjs --start` |
-| DB API | 3012 | `node core/db-api.cjs` |
+| DB API | 3013 | `node core/db-api.cjs` |
 | Website | 8080 | `npx serve website` |
 
 ---

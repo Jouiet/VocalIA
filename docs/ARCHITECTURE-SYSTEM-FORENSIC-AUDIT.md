@@ -17,20 +17,20 @@
 | **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` | ✅ |
 | **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | ✅ |
 | **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ✅ |
-| **DB API** | 3012 | `core/db-api.cjs` | ⚠️ CONFLIT |
-| **Remotion HITL** | 3012 | `core/remotion-hitl.cjs` | ⚠️ CONFLIT |
+| **DB API** | 3013 | `core/db-api.cjs` | ✅ |
+| **Remotion HITL** | 3012 | `core/remotion-hitl.cjs` | ✅ |
 | **Website** | 8080 | `npx serve website` | ✅ |
 
-### 1.2 Modules Core (27,067 lignes)
+### 1.2 Modules Core (27,238 lignes)
 
 | Module | Lignes | Fonction |
 |:-------|:------:|:---------|
-| `voice-persona-injector.cjs` | 5,217 | 40 Personas + Injection |
+| `voice-persona-injector.cjs` | 5,219 | 40 Personas + Injection |
 | `voice-telephony-bridge.cjs` | 3,194 | PSTN ↔ AI Bridge |
-| `voice-api-resilient.cjs` | 2,119 | Multi-Provider Fallback |
+| `voice-api-resilient.cjs` | 2,285 | Multi-Provider Fallback |
 | `hubspot-b2b-crm.cjs` | 1,226 | CRM Integration |
 | `grok-voice-realtime.cjs` | 1,107 | WebSocket Audio |
-| `voice-widget-core.js` | 1,082 | Browser Widget |
+| `voice-widget-core.js` | 1,085 | Browser Widget |
 | `knowledge-base-services.cjs` | 907 | RAG + GraphRAG |
 | `remotion-service.cjs` | 773 | Video Generation |
 | `chaos-engineering.cjs` | 768 | Resilience Testing |
@@ -50,13 +50,13 @@
 │                         ▼                                        │
 │              widget/voice-widget-core.js                         │
 │                         │                                        │
-│              sendMessage(text) [L986]                            │
+│              sendMessage(text) [L989]                            │
 │                         │                                        │
-│              getAIResponse(text) [L949]                          │
+│              getAIResponse(text) [L952]                          │
 │                    │         │                                   │
 │          [Booking Flow]  [AI Response]                           │
 │                              │                                   │
-│              callVoiceAPI(text) [L835]                           │
+│              callVoiceAPI(text) [L838]                           │
 │                              │                                   │
 │              ┌───────────────┴────────────────┐                  │
 │              │  POST https://api.vocalia.ma/respond               │
@@ -68,16 +68,16 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │              core/voice-api-resilient.cjs (port 3004)            │
 │                               │                                  │
-│              /respond endpoint [L1696]                           │
+│              /respond endpoint [L1753]                           │
 │                               │                                  │
 │    ┌──────────────────────────┼────────────────────────────┐    │
 │    │  VoicePersonaInjector.getPersona(null, null, sessionId)    │
-│    │  [L1735] → Returns: {id, systemPrompt, knowledge_base_id}  │
+│    │  [L1792] → Returns: {id, systemPrompt, knowledge_base_id}  │
 │    └──────────────────────────┼────────────────────────────┘    │
 │                               │                                  │
 │    ┌──────────────────────────▼────────────────────────────┐    │
 │    │  getResilisentResponse(msg, history, session, lang)       │
-│    │  [L1365]                                                   │
+│    │  [L1366]                                                   │
 │    │                                                             │
 │    │  1. RAG Context: KB.searchHybrid() [L1370]                 │
 │    │  2. GraphRAG: KB.graphSearch() [L1374]                     │
@@ -93,10 +93,10 @@
 │              AI PROVIDERS (Fallback Chain)                       │
 │                                                                  │
 │  Standard Order:                                                 │
-│    1. Grok (grok-4-1-fast-reasoning) [L91-99]                   │
-│    2. Gemini (gemini-3-flash-preview) [L100-106]                │
-│    3. Claude (claude-opus-4-5-20251101) [L107-114]              │
-│    4. Local Fallback [L1477-1492]                               │
+│    1. Grok (grok-4-1-fast-reasoning) [L93-100]                  │
+│    2. Gemini (gemini-3-flash-preview) [L101-107]                │
+│    3. Claude (claude-opus-4-5-20251101) [L108-115]              │
+│    4. Local Fallback [L1488-1492]                               │
 │                                                                  │
 │  Darija Order (ary):                                             │
 │    1. Grok → 2. Atlas-Chat-9B → 3. Gemini → 4. Claude → Local  │
@@ -117,7 +117,7 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │         telephony/voice-telephony-bridge.cjs (port 3009)        │
 │                    │                                             │
-│         createGrokSession() [L867]                               │
+│         createGrokSession() [L588]                               │
 │                    │                                             │
 │    ┌───────────────▼────────────────────────────────────┐       │
 │    │  VoicePersonaInjector.getPersona(from, to, clientId)       │
@@ -125,12 +125,12 @@
 │    │                                                             │
 │    │  VoicePersonaInjector.inject(sessionConfig, persona)       │
 │    │  [L951] → FULL INJECTION including:                        │
-│    │    - SYSTEM_PROMPTS[archetypeKey][language] [L5088]       │
-│    │    - Darija-specific instructions [L5092-5096]            │
-│    │    - Marketing Psychology (BANT/AIDA/PAS) [L5116-5124]    │
-│    │    - Example Dialogues [L5142-5148]                       │
-│    │    - Complaint Scenarios [L5151-5158]                     │
-│    │    - Escalation Triggers [L5161-5168]                     │
+│    │    - SYSTEM_PROMPTS[archetypeKey][language] [L5089-5090]  │
+│    │    - Darija-specific instructions [L5094-5095]            │
+│    │    - Marketing Psychology (BANT/AIDA/PAS) [L5119-5125]    │
+│    │    - Example Dialogues [L5143-5151]                       │
+│    │    - Complaint Scenarios [L5153-5161]                     │
+│    │    - Escalation Triggers [L5163-5170]                     │
 │    └────────────────────────────────────────────────────────────┘
 │                    │                                             │
 │         ws.send(JSON.stringify(finalConfig)) [L953]             │
@@ -149,30 +149,30 @@
 
 ---
 
-## 3. PROBLÈMES CRITIQUES IDENTIFIÉS
+## 3. PROBLÈMES CRITIQUES IDENTIFIÉS - ✅ ALL RESOLVED (Session 250.54)
 
-### 🔴 P0 - CRITIQUE
+### 🟢 P0 - CRITIQUE (RESOLVED)
 
-| # | Problème | Fichier | Ligne | Impact |
-|:-:|:---------|:--------|:-----:|:-------|
-| 1 | **Widget ignores Persona systemPrompt** | `voice-api-resilient.cjs` | 1417 | 40 personas NON utilisés |
-| 2 | **Port Conflict 3012** | `db-api.cjs` + `remotion-hitl.cjs` | 23, 23 | Services ne peuvent pas coexister |
-| 3 | **CORS missing localhost:8080** | `voice-api-resilient.cjs` | 41-47 | Dev local impossible |
+| # | Problème | Fichier | Status |
+|:-:|:---------|:--------|:------:|
+| 1 | ~~Widget ignores Persona systemPrompt~~ | `voice-api-resilient.cjs:1809` | ✅ FIXED |
+| 2 | ~~Port Conflict 3012~~ | `db-api.cjs:23` → port 3013 | ✅ FIXED |
+| 3 | ~~CORS missing localhost:8080~~ | `voice-api-resilient.cjs` | ✅ FIXED |
 
-### 🟠 P1 - MAJEUR
+### 🟢 P1 - MAJEUR (RESOLVED)
+
+| # | Problème | Fichier | Status |
+|:-:|:---------|:--------|:------:|
+| 4 | ~~Widget VOICE_API_URL hardcoded~~ | `voice-widget-core.js:27` | ✅ FIXED (auto dev/prod) |
+| 5 | ~~No health check on startup~~ | `voice-api-resilient.cjs` | ✅ FIXED |
+| 6 | ~~session.metadata.systemPrompt unused~~ | `voice-api-resilient.cjs:1809` | ✅ FIXED |
+
+### 🟡 P2 - MINEUR (Known)
 
 | # | Problème | Fichier | Impact |
 |:-:|:---------|:--------|:-------|
-| 4 | Widget VOICE_API_URL hardcoded production | `voice-widget-core.js:27` | Pas de config dev/prod |
-| 5 | No health check on startup | `voice-api-resilient.cjs` | Silent failures |
-| 6 | session.metadata.systemPrompt unused | `voice-api-resilient.cjs:1737` | Persona injection broken |
-
-### 🟡 P2 - MINEUR
-
-| # | Problème | Fichier | Impact |
-|:-:|:---------|:--------|:-------|
-| 7 | Deprecation warning punycode | All Node.js | Console noise |
-| 8 | SecretVault default key | `SecretVault.cjs` | Security in dev |
+| 7 | Deprecation warning punycode | All Node.js | Console noise (harmless) |
+| 8 | SecretVault default key | `SecretVault.cjs` | Use VOCALIA_VAULT_KEY in prod |
 
 ---
 
@@ -183,7 +183,7 @@
 ```javascript
 // personas/voice-persona-injector.cjs
 
-// STRUCTURE 1: SYSTEM_PROMPTS (Lignes 42-779)
+// STRUCTURE 1: SYSTEM_PROMPTS (Lignes 68-805)
 // Prompts MULTILINGUES - Source primaire
 SYSTEM_PROMPTS = {
   AGENCY: {
@@ -196,7 +196,7 @@ SYSTEM_PROMPTS = {
   // ... 40 personas × 5 langues = 200 prompts
 }
 
-// STRUCTURE 2: PERSONAS (Lignes 781-5010)
+// STRUCTURE 2: PERSONAS (Lignes 807-5000)
 // Metadata + Fallback EN + Behavioral Context
 PERSONAS = {
   AGENCY: {
@@ -215,7 +215,7 @@ PERSONAS = {
 ### 4.2 Flux d'Injection (inject())
 
 ```
-inject(sessionConfig, persona) [L5079]
+inject(sessionConfig, persona) [L5080]
 │
 ├─1. Base Prompt Selection
 │   └─ SYSTEM_PROMPTS[archetypeKey][language] || fallback
@@ -489,11 +489,13 @@ Pour activer les 40 personas en production:
 | Change | Impact |
 |:-------|:-------|
 | archetypeKey propagation fix | 5 langues fonctionnent |
+| Port conflict fix (db-api → 3013) | Services peuvent coexister |
 | Startup health check | 3 checks automatiques |
 | Request tracing | X-Trace-Id pour debugging |
 | /metrics endpoint | Monitoring production |
 | Graceful shutdown | Reliability accrue |
 | E2E test suite | 8 tests automatisés |
+| Document line number audit | All references verified |
 
 ---
 
