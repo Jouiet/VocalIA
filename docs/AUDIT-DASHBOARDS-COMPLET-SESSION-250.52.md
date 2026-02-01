@@ -57,10 +57,10 @@ widget-analytics.html           └── widget-analytics.html (sub-page)
 
 ```
 /Users/mac/Desktop/VocalIA/website/dashboard/
-├── admin.html              76,940 bytes   1582 lignes
-├── client.html             48,133 bytes    919 lignes
-├── db-admin.html           19,807 bytes    467 lignes
-└── widget-analytics.html   34,360 bytes    675 lignes
+├── admin.html              104,356 bytes  2168 lignes (MÀJ Session 250.54)
+├── client.html              55,261 bytes  1085 lignes (MÀJ Session 250.54)
+├── db-admin.html.archived   19,807 bytes   467 lignes (ARCHIVÉ)
+└── widget-analytics.html    39,470 bytes   801 lignes (MÀJ Session 250.54)
 ```
 
 ### 2.2 Vérification Empirique

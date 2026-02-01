@@ -455,7 +455,36 @@ graphSearch(query, {tenantId}) [knowledge-base-services.cjs]
 
 ---
 
-## 13. CHANGELOG SESSION 250.54
+## 13. ÉTAT DÉPLOIEMENT PRODUCTION
+
+### 13.1 api.vocalia.ma (Vérifié 01/02/2026)
+
+| Endpoint | Status | Réponse |
+|:---------|:------:|:--------|
+| GET /health | ✅ HTTP 200 | healthy: true |
+| POST /respond | ✅ HTTP 200 | Fonctionne |
+
+### 13.2 Configuration Production
+
+| Provider | Configuré | Impact |
+|:---------|:---------:|:-------|
+| Grok | ❌ Non | XAI_API_KEY manquant |
+| Gemini | ❌ Non | GEMINI_API_KEY manquant |
+| Claude | ❌ Non | ANTHROPIC_API_KEY manquant |
+| Atlas-Chat | ❌ Non | HUGGINGFACE_API_KEY manquant |
+| Local Fallback | ✅ Oui | Utilisé par défaut |
+
+**Conséquence:** En production, toutes les réponses utilisent le fallback local (pattern matching), PAS les 40 personas avec AI.
+
+### 13.3 Action Requise (Ops)
+
+Pour activer les 40 personas en production:
+1. Configurer les variables d'environnement sur le serveur VPS
+2. Redémarrer le service voice-api-resilient
+
+---
+
+## 14. CHANGELOG SESSION 250.54
 
 | Change | Impact |
 |:-------|:-------|
