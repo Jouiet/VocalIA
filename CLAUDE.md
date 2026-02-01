@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Version: 6.51.0 | 01/02/2026 | Session 250.54 | Health: 100% | **ARCHITECTURE AUDIT 100% COMPLETE**
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **45 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **50 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **35 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **A2A Protocol: 4 Agents ✅** | TranslationSupervisor, BillingAgent, TenantOnboardingAgent, VoiceAgentB2B
@@ -15,8 +15,8 @@
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 10, PrestaShop 10, BigCommerce 9, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
-> **Website: 45 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
-> **Analytics: Plausible (GDPR)** | 45 pages tracked | CTA events ✅ | **A/B Testing ✅**
+> **Website: 50 pages** | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
+> **Analytics: Plausible (GDPR)** | 50 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** (XSS fixed, CSP hardened) | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
 > **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
 
@@ -61,7 +61,7 @@
 
 ```
 VocalIA/
-├── core/           # 28 modules (23 core + 5 gateways)
+├── core/           # 30 modules (25 core + 5 gateways)
 │   ├── SecretVault.cjs       # Per-tenant credentials (AES-256-GCM)
 │   ├── OAuthGateway.cjs      # OAuth 2.0 flows (port 3010)
 │   ├── WebhookRouter.cjs     # Inbound webhooks (port 3011)
@@ -80,7 +80,7 @@ VocalIA/
 ├── telephony/      # PSTN bridge (13 function tools)
 ├── personas/       # 40 personas SOTA
 ├── integrations/   # CRM/E-commerce (multi-tenant)
-├── website/        # 45 pages HTML
+├── website/        # 50 pages HTML
 │   ├── dashboard/     # 3 dashboards (admin, client, widget-analytics)
 │   └── src/locales/   # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
@@ -395,7 +395,7 @@ grep -c "^        fr:" personas/voice-persona-injector.cjs  # 40 ✅
 | 3 | ~~Fixer localhost widget~~ | voice-widget.js:26 | ✅ api.vocalia.ma |
 | 4 | ~~Créer page 404~~ | website/404.html | ✅ 8.2 KB |
 | 5 | ~~Créer page signup~~ | website/signup.html | ✅ 21.7 KB |
-| 6 | ~~Mettre à jour sitemap~~ | sitemap.xml | ✅ 35 URLs |
+| 6 | ~~Mettre à jour sitemap~~ | sitemap.xml | ✅ 40 URLs |
 | 7 | ~~i18n nouvelles pages~~ | 5 locales | ✅ +20 keys |
 
 **Nouvelles Métriques:**

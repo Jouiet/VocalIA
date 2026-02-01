@@ -24,7 +24,9 @@
 Tous les dashboards (admin, client, widget-analytics) sont configurés pour port 3013.
 | **Website** | 8080 | `npx serve website` | ✅ |
 
-### 1.2 Modules Core (27,238 lignes)
+### 1.2 Modules Core (25,759 lignes)
+
+> Vérifié: core/*.cjs (15,378) + telephony/*.cjs (3,194) + personas/*.cjs (5,280) + widget/*.js (1,085) + sensors/*.cjs (822)
 
 | Module | Lignes | Fonction |
 |:-------|:------:|:---------|

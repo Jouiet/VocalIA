@@ -24,9 +24,9 @@
 
 | Claim | Document | Vérifié | Écart |
 |:------|:---------|:-------:|:-----:|
-| Core modules | 28 | 30 | +2 |
-| Website pages | 45 | 50 | +5 |
-| Sitemap URLs | 35 | 40 | +5 |
+| Core modules | ~~28~~ → 30 | 30 | ✅ CORRIGÉ |
+| Website pages | ~~45~~ → 50 | 50 | ✅ CORRIGÉ |
+| Sitemap URLs | ~~35~~ → 40 | 40 | ✅ CORRIGÉ |
 | Personas | 40 | 40 | ✅ |
 | MCP tools | 182 | 182 | ✅ |
 | Sensors | 4 | 4 | ✅ |
@@ -90,14 +90,15 @@
 | 1 | **Dashboards port 3012 vs db-api 3013** | Dashboards cassés | Changer dashboards à 3013 OU db-api à 3012 |
 | 2 | **db-api.cjs header vs code mismatch** | Confusion doc | Synchroniser @port avec const PORT |
 
-### P1 - DOCUMENTATION (Métriques incorrectes)
+### P1 - DOCUMENTATION (Métriques incorrectes) - ✅ CORRIGÉ
 
-| # | Problème | Valeur Doc | Valeur Réelle |
-|:-:|:---------|:----------:|:-------------:|
-| 1 | Core modules | 28 | 30 |
-| 2 | Website pages | 45 | 50 |
-| 3 | Sitemap URLs | 35 | 40 |
-| 4 | MCP version confusion | v0.5.0 (59 tools) / v0.8.0 | ? |
+| # | Problème | Valeur Doc | Valeur Réelle | Status |
+|:-:|:---------|:----------:|:-------------:|:------:|
+| 1 | Core modules | ~~28~~ | 30 | ✅ MÀJ |
+| 2 | Website pages | ~~45~~ | 50 | ✅ MÀJ |
+| 3 | Sitemap URLs | ~~35~~ | 40 | ✅ MÀJ |
+| 4 | MCP version | ~~v0.5.0~~ | v0.8.0 (182 tools) | ✅ MÀJ |
+| 5 | Total lines | ~~27,238~~ | 25,759 | ✅ MÀJ |
 
 ---
 
