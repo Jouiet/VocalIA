@@ -45,7 +45,7 @@ RewriteRule ^dashboard/?$ /dashboard/client.html [L]
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
     # CSP (Content Security Policy)
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma https://*.vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'"
 </IfModule>
 
 # Caching - Static Assets
@@ -90,8 +90,8 @@ ErrorDocument 500 /404.html
     </IfModule>
 </FilesMatch>
 
-# Allow specific JS files
-<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|components)\.js$">
+# Allow specific JS files in /src/lib/
+<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization)\.js$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>
@@ -99,6 +99,13 @@ ErrorDocument 500 /404.html
 
 # Allow locale JSON files for i18n (5 languages: FR, EN, ES, AR, ARY)
 <FilesMatch "^(fr|en|es|ar|ary|voice-fr|voice-en|voice-es|voice-ar|voice-ary)\.json$">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+</FilesMatch>
+
+# Allow PWA manifest
+<FilesMatch "^manifest\.json$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>
