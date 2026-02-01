@@ -73,7 +73,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -170,7 +170,7 @@
         </h2>
         <div class="grid md:grid-cols-3 gap-4">
           <!-- Free Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="free" onclick="selectPlan('free')">
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="free" data-action="selectPlan" data-params="free">
             <div class="flex justify-between items-start mb-3">
               <div>
                 <h3 class="font-semibold text-white">Free</h3>
@@ -199,7 +199,7 @@
           </div>
 
           <!-- Starter Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="starter" onclick="selectPlan('starter')">
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="starter" data-action="selectPlan" data-params="starter">
             <div class="flex justify-between items-start mb-3">
               <div>
                 <h3 class="font-semibold text-white">Starter</h3>
@@ -228,7 +228,7 @@
           </div>
 
           <!-- Pro Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer relative" data-plan="pro" onclick="selectPlan('pro')">
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer relative" data-plan="pro" data-action="selectPlan" data-params="pro">
             <div class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-500 text-white text-xs font-semibold rounded-full" data-i18n="signup_page.popular">
               Populaire
             </div>
@@ -341,7 +341,7 @@
           </div>
 
           <!-- Google Sign In -->
-          <button type="button" onclick="signInWithGoogle()"
+          <button type="button" data-action="signInWithGoogle"
             class="w-full py-3 px-6 rounded-xl bg-white hover:bg-zinc-100 transition font-medium text-slate-900 flex items-center justify-center gap-3">
             <svg class="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -469,5 +469,6 @@
     })();
   </script>
   <script src="/src/lib/form-validation.js" defer></script>
-</body>
+  <script src="/src/lib/event-delegation.js" defer></script>
+  </body>
 </html>

@@ -1,22 +1,24 @@
+version: '3.8'
+
 services:
   vocalia-api:
     image: node:20-alpine
     container_name: vocalia-api
     restart: unless-stopped
     working_dir: /app
+    volumes:
+      - ./core:/app/core:ro
+      - ./telephony:/app/telephony:ro
+      - ./personas:/app/personas:ro
+      - ./integrations:/app/integrations:ro
+      - ./data:/app/data
+      - ./.env:/app/.env:ro
+    command: node /app/core/voice-api-resilient.cjs --server --port=3004
     environment:
       - NODE_ENV=production
       - PORT=3004
-    command: >
-      sh -c "
-        apk add --no-cache git curl &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || cd /app &&
-        cd /app &&
-        npm install --production --ignore-scripts 2>/dev/null || true &&
-        node core/voice-api-resilient.cjs --server --port=3004
-      "
-    ports:
-      - "3004:3004"
+    expose:
+      - "3004"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.vocalia-api.rule=Host(`api.vocalia.ma`)"
@@ -24,9 +26,15 @@ services:
       - "traefik.http.routers.vocalia-api.tls=true"
       - "traefik.http.routers.vocalia-api.tls.certresolver=letsencrypt"
       - "traefik.http.services.vocalia-api.loadbalancer.server.port=3004"
+    networks:
+      - traefik-public
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:3004/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
+      start_period: 40s
+
+networks:
+  traefik-public:
+    external: true

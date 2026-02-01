@@ -64,7 +64,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <!-- Security Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
@@ -183,7 +183,7 @@
                 placeholder="••••••••"
                 class="input-field w-full pl-11 pr-12 py-3 rounded-xl text-white placeholder-slate-500"
               >
-              <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+              <button type="button" data-action="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
                 <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
               </button>
             </div>
@@ -272,5 +272,6 @@
     }
   </script>
   <script src="/src/lib/form-validation.js" defer></script>
-</body>
+  <script src="/src/lib/event-delegation.js" defer></script>
+  </body>
 </html>

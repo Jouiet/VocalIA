@@ -120,7 +120,7 @@
 
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 
   <!-- GSAP Animation Library - Loaded async for performance -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" defer></script>
@@ -512,28 +512,28 @@
             </button>
             <div id="langDropdown"
               class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl shadow-2xl border border-slate-600/50 overflow-hidden z-50">
-              <button type="button" onclick="switchLang('fr')"
+              <button type="button" data-action="switchLang" data-params="fr"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition">
                 <span class="text-base">🇫🇷</span>
                 <span>Français</span>
               </button>
-              <button type="button" onclick="switchLang('en')"
+              <button type="button" data-action="switchLang" data-params="en"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition">
                 <span class="text-base">🇬🇧</span>
                 <span>English</span>
               </button>
-              <button type="button" onclick="switchLang('es')"
+              <button type="button" data-action="switchLang" data-params="es"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition">
                 <span class="text-base">🇪🇸</span>
                 <span>Español</span>
               </button>
-              <button type="button" onclick="switchLang('ar')"
+              <button type="button" data-action="switchLang" data-params="ar"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition"
                 dir="rtl">
                 <span class="text-base">🇸🇦</span>
                 <span>العربية</span>
               </button>
-              <button type="button" onclick="switchLang('ary')"
+              <button type="button" data-action="switchLang" data-params="ary"
                 class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition"
                 dir="rtl">
                 <span class="text-base">🇲🇦</span>
@@ -706,7 +706,7 @@
             <span data-i18n="hero.cta_primary">Essai Gratuit</span>
             <i data-lucide="lock" class="w-5 h-5 inline-block ml-2 group-hover:translate-x-1 transition-transform"></i>
           </a>
-          <button type="button" onclick="openDemoModal()"
+          <button type="button" data-action="openDemoModal"
             class="px-8 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all font-semibold text-lg flex items-center group hover:scale-105"
             data-animate="cta" data-magnetic>
             <span class="relative flex h-3 w-3 mr-3" aria-hidden="true">
@@ -730,7 +730,7 @@
                 class="relative transform overflow-hidden rounded-2xl bg-black text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-5xl border border-vocalia-700 opacity-0 scale-95"
                 id="modalPanel">
                 <!-- Close button -->
-                <button type="button" onclick="closeDemoModal()" aria-label="Fermer la démo"
+                <button type="button" data-action="closeDemoModal" aria-label="Fermer la démo"
                   class="absolute top-4 right-4 z-20 p-2 rounded-full bg-black/50 text-white hover:bg-vocalia-600 transition">
                   <i data-lucide="sparkles" class="w-6 h-6"></i>
                 </button>
@@ -873,7 +873,7 @@
               </video>
               <!-- Sound toggle overlay - appears on hover -->
               <button type="button" id="videoSoundToggle"
-                onclick="const v=document.getElementById('heroVideo'); v.muted=!v.muted; this.querySelector('.icon-muted').classList.toggle('hidden',!v.muted); this.querySelector('.icon-unmuted').classList.toggle('hidden',v.muted);"
+                data-action="toggleVideoMute"
                 class="absolute bottom-3 right-3 w-10 h-10 bg-slate-900/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-slate-700/50 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-200 group"
                 aria-label="Activer/désactiver le son">
                 <i data-lucide="volume-x"
@@ -1431,7 +1431,7 @@
           </p>
         </div>
         <form class="flex flex-col sm:flex-row gap-3"
-          onsubmit="event.preventDefault(); this.querySelector('button').textContent = '✓ Inscrit!'; this.querySelector('button').disabled = true;">
+          data-form-action="submitNewsletter">
           <input type="email" placeholder="votre@email.com" data-i18n-placeholder="newsletter.placeholder"
             class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required aria-label="Adresse email">
@@ -1842,7 +1842,8 @@
     };
   </script>
   <script src="/src/lib/form-validation.js" defer></script>
-</body>
+  <script src="/src/lib/event-delegation.js" defer></script>
+  </body>
 
 </html><!-- CI Test Thu Jan 29 18:51:28 +01 2026 -->
 <!-- Deploy verified Thu Jan 29 19:34:31 +01 2026 -->

@@ -17,7 +17,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma http://localhost:3004 https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma http://localhost:3004 https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -108,7 +108,7 @@
           <p class="text-sm font-medium truncate">Jean Dupont</p>
           <p class="text-xs text-vocalia-400 truncate">Pro Plan</p>
         </div>
-        <button type="button" onclick="showActivityPanel()" aria-label="Voir l'activité récente"
+        <button type="button" data-action="showActivityPanel" aria-label="Voir l'activité récente"
           class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
           <i data-lucide="activity" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
         </button>
@@ -129,7 +129,7 @@
         <div class="flex items-center space-x-4">
           <!-- Language Switcher -->
           <div class="relative">
-            <button type="button" id="langToggleBtn" onclick="toggleLangDropdown()"
+            <button type="button" id="langToggleBtn" data-action="toggleLangDropdown"
               class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
               aria-label="Changer de langue" aria-expanded="false" aria-haspopup="true" aria-controls="langDropdown">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -142,19 +142,19 @@
             </button>
             <div id="langDropdown"
               class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-slate-700/95 backdrop-blur-xl border border-slate-600/50 shadow-xl z-50 overflow-hidden">
-              <button type="button" onclick="switchLang('fr')"
+              <button type="button" data-action="switchLang" data-params="fr"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">FR
                 - Français</button>
-              <button type="button" onclick="switchLang('en')"
+              <button type="button" data-action="switchLang" data-params="en"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">EN
                 - English</button>
-              <button type="button" onclick="switchLang('es')"
+              <button type="button" data-action="switchLang" data-params="es"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm">ES
                 - Español</button>
-              <button type="button" onclick="switchLang('ar')" dir="rtl"
+              <button type="button" data-action="switchLang" data-params="ar" dir="rtl"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">العربية
                 - AR</button>
-              <button type="button" onclick="switchLang('ary')" dir="rtl"
+              <button type="button" data-action="switchLang" data-params="ary" dir="rtl"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">الدارجة
                 - ARY</button>
             </div>
@@ -350,7 +350,7 @@
         <div id="agents" class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.agents.title">Agents IA actifs</h3>
-            <button type="button" onclick="configureAgents()" aria-label="Configurer les agents IA" class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
+            <button type="button" data-action="configureAgents" aria-label="Configurer les agents IA" class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
               data-i18n="dashboard.agents.configure">+
               Configurer</button>
           </div>
@@ -370,7 +370,7 @@
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
-                <button type="button" onclick="agentSettings('universal_ecom_v1')" aria-label="Paramètres agent E-commerce" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                <button type="button" data-action="agentSettings" data-params="universal_ecom_v1" aria-label="Paramètres agent E-commerce" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
@@ -390,7 +390,7 @@
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
-                <button type="button" onclick="agentSettings('dental_intake_v1')" aria-label="Paramètres agent RDV" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                <button type="button" data-action="agentSettings" data-params="dental_intake_v1" aria-label="Paramètres agent RDV" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
@@ -410,7 +410,7 @@
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-yellow-400"><i data-lucide="pause-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Pause</span>
-                <button type="button" onclick="agentSettings('concierge_v1')" aria-label="Paramètres agent Conciergerie" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                <button type="button" data-action="agentSettings" data-params="concierge_v1" aria-label="Paramètres agent Conciergerie" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
@@ -422,7 +422,7 @@
         <div id="calls" class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.calls.recent">Appels récents</h3>
-            <button type="button" onclick="viewAllCalls()" aria-label="Voir tous les appels" class="text-vocalia-400 hover:text-white text-sm transition"
+            <button type="button" data-action="viewAllCalls" aria-label="Voir tous les appels" class="text-vocalia-400 hover:text-white text-sm transition"
               data-i18n="dashboard.calls.view_all">Voir tout →</button>
           </div>
           <div class="space-y-3">
@@ -706,7 +706,7 @@
               </div>
             </div>
           </div>
-          <button onclick="this.closest('.fixed').remove(); if(typeof lucide !== 'undefined') lucide.createIcons();" class="mt-6 w-full px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">Fermer</button>
+          <button data-action="closeModal" class="mt-6 w-full px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">Fermer</button>
         </div>
       `;
       modal.onclick = (e) => { if (e.target === modal) { modal.remove(); if(typeof lucide !== 'undefined') lucide.createIcons(); } };
@@ -723,22 +723,22 @@
           <h3 class="text-xl font-semibold mb-4">Configurer les Agents IA</h3>
           <p class="text-vocalia-400 mb-6">Sélectionnez un agent à configurer ou créez-en un nouveau.</p>
           <div class="space-y-3 mb-6">
-            <button onclick="agentSettings('universal_ecom_v1')" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+            <button data-action="agentSettings" data-params="universal_ecom_v1" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
               <span class="font-medium">Support E-commerce</span>
               <span class="text-sm text-vocalia-400 block">universal_ecom_v1</span>
             </button>
-            <button onclick="agentSettings('dental_intake_v1')" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+            <button data-action="agentSettings" data-params="dental_intake_v1" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
               <span class="font-medium">Prise de RDV</span>
               <span class="text-sm text-vocalia-400 block">dental_intake_v1</span>
             </button>
-            <button onclick="agentSettings('concierge_v1')" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+            <button data-action="agentSettings" data-params="concierge_v1" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
               <span class="font-medium">Conciergerie</span>
               <span class="text-sm text-vocalia-400 block">concierge_v1</span>
             </button>
           </div>
           <div class="flex gap-3">
-            <button onclick="this.closest('.fixed').remove()" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Fermer</button>
-            <button onclick="alert('Création nouvel agent - fonctionnalité à venir')" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">+ Nouveau</button>
+            <button data-action="closeModal" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Fermer</button>
+            <button data-action="newAgentPlaceholder" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">+ Nouveau</button>
           </div>
         </div>
       `;
@@ -776,8 +776,8 @@
             </div>
           </div>
           <div class="flex gap-3">
-            <button onclick="this.closest('.fixed').remove()" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Annuler</button>
-            <button onclick="alert('Paramètres sauvegardés!'); this.closest('.fixed').remove()" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">Sauvegarder</button>
+            <button data-action="closeModal" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Annuler</button>
+            <button data-action="saveSettings" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">Sauvegarder</button>
           </div>
         </div>
       `;
@@ -836,6 +836,7 @@
       if (typeof lucide !== 'undefined') lucide.createIcons();
     });
   </script>
-</body>
+  <script src="/src/lib/event-delegation.js" defer></script>
+  </body>
 
 </html>

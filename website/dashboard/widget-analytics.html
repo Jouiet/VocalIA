@@ -16,7 +16,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Security Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma http://localhost:3004 https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma http://localhost:3004 https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -102,7 +102,7 @@
             <option value="1y" data-i18n="widget_analytics.date_range.1y">Cette année</option>
           </select>
           <!-- Export Button -->
-          <button type="button" onclick="exportWidgetAnalytics()" aria-label="Exporter les données en CSV" class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white text-sm font-medium transition flex items-center gap-2">
+          <button type="button" data-action="exportWidgetAnalytics" aria-label="Exporter les données en CSV" class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white text-sm font-medium transition flex items-center gap-2">
             <i data-lucide="download" class="w-4 h-4" aria-hidden="true"></i>
             <span data-i18n="widget_analytics.export_csv">Exporter CSV</span>
           </button>
@@ -420,7 +420,7 @@
       <section class="stat-card p-6">
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-lg font-semibold" data-i18n="widget_analytics.tables.recent_sessions">Sessions récentes</h3>
-          <button type="button" onclick="viewAllSessions()" aria-label="Voir toutes les sessions" class="text-sm text-vocalia-400 hover:text-vocalia-300 transition" data-i18n="widget_analytics.tables.view_all">Voir tout</button>
+          <button type="button" data-action="viewAllSessions" aria-label="Voir toutes les sessions" class="text-sm text-vocalia-400 hover:text-vocalia-300 transition" data-i18n="widget_analytics.tables.view_all">Voir tout</button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm" role="table">
@@ -587,5 +587,6 @@
       }
     });
   </script>
-</body>
+  <script src="/src/lib/event-delegation.js" defer></script>
+  </body>
 </html>

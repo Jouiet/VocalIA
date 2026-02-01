@@ -79,7 +79,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 
   <!-- Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
@@ -439,29 +439,29 @@
 
             <!-- Language Switcher -->
             <div class="relative">
-              <button type="button" onclick="toggleLangDropdown()" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
+              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 <span id="currentLang" class="text-sm font-medium">FR</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
               </button>
               <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
-                <button type="button" onclick="switchLang('fr')" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
                   <span class="text-lg">&#127467;&#127479;</span>
                   <span class="text-sm">Francais</span>
                 </button>
-                <button type="button" onclick="switchLang('en')" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
                   <span class="text-lg">&#127468;&#127463;</span>
                   <span class="text-sm">English</span>
                 </button>
-                <button type="button" onclick="switchLang('es')" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
                   <span class="text-lg">&#127466;&#127480;</span>
                   <span class="text-sm">Espanol</span>
                 </button>
-                <button type="button" onclick="switchLang('ar')" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
                   <span class="text-lg">&#127480;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
                 </button>
-                <button type="button" onclick="switchLang('ary')" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
                   <span class="text-lg">&#127474;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
                 </button>
@@ -756,7 +756,7 @@
                   <div class="code-block">
                     <div class="code-header">
                       <span class="text-vocalia-400 text-sm">HTML</span>
-                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" onclick="copyCode(this)">Copier</button>
+                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode">Copier</button>
                     </div>
                     <div class="code-content">
                       <code class="text-emerald-400">&lt;script src="https://cdn.vocalia.ma/widget/v1/voice-widget.js"&gt;&lt;/script&gt;</code>
@@ -772,7 +772,7 @@
                   <div class="code-block">
                     <div class="code-header">
                       <span class="text-vocalia-400 text-sm">JavaScript</span>
-                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" onclick="copyCode(this)">Copier</button>
+                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode">Copier</button>
                     </div>
                     <div class="code-content">
 <pre><code class="text-vocalia-300"><span class="text-vocalia-500">// Initialisation basique</span>
@@ -810,7 +810,7 @@
               <div class="code-block mb-8">
                 <div class="code-header">
                   <span class="text-vocalia-400 text-sm">JavaScript</span>
-                  <button type="button" class="text-vocalia-400 hover:text-white text-sm" onclick="copyCode(this)">Copier</button>
+                  <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode">Copier</button>
                 </div>
                 <div class="code-content">
 <pre><code class="text-vocalia-300"><span class="text-amber-400">VocaliaWidget</span>.<span class="text-emerald-400">init</span>({
@@ -1020,7 +1020,7 @@
                   <div class="code-block">
                     <div class="code-header">
                       <span class="text-vocalia-400 text-sm">React</span>
-                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" onclick="copyCode(this)">Copier</button>
+                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode">Copier</button>
                     </div>
                     <div class="code-content">
 <pre><code class="text-vocalia-300"><span class="text-rose-400">import</span> { useEffect } <span class="text-rose-400">from</span> <span class="text-emerald-400">'react'</span>;
@@ -1052,7 +1052,7 @@
                   <div class="code-block">
                     <div class="code-header">
                       <span class="text-vocalia-400 text-sm">Vue 3</span>
-                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" onclick="copyCode(this)">Copier</button>
+                      <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode">Copier</button>
                     </div>
                     <div class="code-content">
 <pre><code class="text-vocalia-300">&lt;<span class="text-rose-400">script</span> setup&gt;
@@ -1143,7 +1143,7 @@
             Articles, guides et études de cas. Pas de spam.
           </p>
         </div>
-        <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); this.querySelector('button').textContent = '✓ Inscrit!'; this.querySelector('button').disabled = true;">
+        <form class="flex flex-col sm:flex-row gap-3" data-form-action="submitNewsletter">
           <input
             type="email"
             placeholder="votre@email.com"
@@ -1302,5 +1302,6 @@
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>
   <script src="/src/lib/form-validation.js" defer></script>
-</body>
+  <script src="/src/lib/event-delegation.js" defer></script>
+  </body>
 </html>
