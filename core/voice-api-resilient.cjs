@@ -43,8 +43,13 @@ const CORS_WHITELIST = [
   'https://www.vocalia.ma',
   'https://dashboard.vocalia.ma',
   'http://localhost:3000',
-  'http://localhost:5173'
+  'http://localhost:5173',
+  'http://localhost:8080' // Website dev server
 ];
+
+// Session 250.51: Google Sheets Database Integration
+const { GoogleSheetsDB, getDB } = require('./GoogleSheetsDB.cjs');
+let sheetsDB = null;
 
 // Session 245: A2A Translation Supervisor
 // Lazy load to ensure initialization
@@ -220,7 +225,7 @@ const adminMetrics = {
     voiceApi: 'operational',
     grokRealtime: 'operational',
     telephony: 'operational',
-    database: 'operational',
+    database: 'checking',
     mcp: 'operational'
   },
   totalMRR: 0,
@@ -228,16 +233,43 @@ const adminMetrics = {
   lastHealthCheck: Date.now()
 };
 
-// Seed initial tenants for demo (production would load from database)
-const seedTenants = [
-  { id: 'tenant_marocshop', name: 'MarocShop', plan: 'enterprise', mrr: 2500, callsToday: 12450, status: 'active' },
-  { id: 'tenant_alaoui', name: 'Dr. Alaoui Cabinet', plan: 'pro', mrr: 149, callsToday: 3200, status: 'active' },
-  { id: 'tenant_riad', name: 'Hotel Riad Fes', plan: 'pro', mrr: 149, callsToday: 1890, status: 'active' },
-  { id: 'tenant_auto', name: 'AutoService Casablanca', plan: 'starter', mrr: 49, callsToday: 456, status: 'active' }
-];
-seedTenants.forEach(t => {
-  adminMetrics.tenants.set(t.id, { ...t, createdAt: new Date().toISOString() });
-  adminMetrics.totalMRR += t.mrr;
+// Session 250.51: Load tenants from Google Sheets Database
+async function loadTenantsFromDB() {
+  try {
+    sheetsDB = await getDB();
+    const tenants = await sheetsDB.findAll('tenants');
+    adminMetrics.tenants.clear();
+    adminMetrics.totalMRR = 0;
+
+    for (const t of tenants) {
+      adminMetrics.tenants.set(t.id, {
+        id: t.id,
+        name: t.name,
+        plan: t.plan || 'free',
+        mrr: parseFloat(t.mrr) || 0,
+        callsToday: parseInt(t.calls_today) || 0,
+        status: t.status || 'active',
+        email: t.email,
+        phone: t.phone,
+        createdAt: t.created_at
+      });
+      adminMetrics.totalMRR += parseFloat(t.mrr) || 0;
+    }
+
+    adminMetrics.systemHealth.database = 'operational';
+    addSystemLog('INFO', `Loaded ${tenants.length} tenants from Google Sheets DB`);
+    return true;
+  } catch (error) {
+    adminMetrics.systemHealth.database = 'error';
+    addSystemLog('ERROR', `Failed to load tenants from DB: ${error.message}`);
+    // Fallback to empty state - no mock data
+    return false;
+  }
+}
+
+// Initialize DB connection (called at server start)
+loadTenantsFromDB().catch(err => {
+  console.error('❌ [AdminMetrics] DB init failed:', err.message);
 });
 
 // System logs buffer (keeps last 100 logs)
@@ -306,21 +338,58 @@ function getAdminMetrics() {
 }
 
 // Register a tenant (called via API)
-function registerTenant(tenantId, name, plan = 'starter') {
-  const plans = { widget: 0, starter: 499, pro: 999, enterprise: 2500 };
+// Session 250.51: Register tenant in Google Sheets DB
+async function registerTenant(tenantId, name, plan = 'starter', email = '') {
+  const plans = { widget: 0, free: 0, starter: 499, pro: 999, enterprise: 2500 };
+  const mrr = plans[plan] || 0;
+
+  // Write to Google Sheets DB
+  if (sheetsDB) {
+    try {
+      const dbTenant = await sheetsDB.create('tenants', {
+        name,
+        plan,
+        mrr,
+        status: 'active',
+        email: email || `${tenantId}@vocalia.ma`
+      });
+
+      const tenant = {
+        id: dbTenant.id,
+        name: dbTenant.name,
+        plan: dbTenant.plan,
+        mrr: parseFloat(dbTenant.mrr) || 0,
+        callsThisMonth: 0,
+        callsToday: 0,
+        status: dbTenant.status,
+        email: dbTenant.email,
+        createdAt: dbTenant.created_at
+      };
+
+      adminMetrics.tenants.set(tenant.id, tenant);
+      adminMetrics.totalMRR += tenant.mrr;
+      addSystemLog('INFO', `New tenant registered in DB: ${name}`, { tenantId: tenant.id, plan });
+      return tenant;
+    } catch (error) {
+      addSystemLog('ERROR', `Failed to create tenant in DB: ${error.message}`);
+      throw error;
+    }
+  }
+
+  // Fallback to memory-only (DB not available)
   const tenant = {
-    id: tenantId,
+    id: tenantId || `tenant_${Date.now()}`,
     name,
     plan,
-    mrr: plans[plan] || 0,
+    mrr,
     callsThisMonth: 0,
     callsToday: 0,
     status: 'active',
     createdAt: new Date().toISOString()
   };
-  adminMetrics.tenants.set(tenantId, tenant);
+  adminMetrics.tenants.set(tenant.id, tenant);
   adminMetrics.totalMRR += tenant.mrr;
-  addSystemLog('INFO', `New tenant registered: ${name}`, { tenantId, plan });
+  addSystemLog('WARN', `Tenant registered in memory only (DB unavailable): ${name}`, { tenantId: tenant.id, plan });
   return tenant;
 }
 
@@ -1345,8 +1414,18 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
     }
   }
 
-  // 3. Dynamic Prompt Construction (Session 176ter: Language-aware prompts)
-  const basePrompt = getSystemPromptForLanguage(language);
+  // 3. Dynamic Prompt Construction (Session 250.54: Use persona systemPrompt if available)
+  // Priority: 1. session.metadata injected prompt (from VoicePersonaInjector)
+  //           2. Fallback to language-specific static prompt
+  let basePrompt;
+  if (session?.metadata?.systemPrompt) {
+    // Use persona-injected systemPrompt (includes multilingual SYSTEM_PROMPTS + behavioral context)
+    basePrompt = session.metadata.systemPrompt;
+    console.log(`[Voice API] Using persona prompt: ${session.metadata.persona_id || 'unknown'} (${language})`);
+  } else {
+    // Fallback to static language prompt
+    basePrompt = getSystemPromptForLanguage(language);
+  }
   const fullSystemPrompt = `${basePrompt}\n\nRELEVANT_SYSTEMS (RLS Isolated):\n${ragContext}${graphContext}${toolContext}${crmContext}\n\nTENANT_ID: ${tenantId}`;
 
   // Fallback order: Grok → [Atlas-Chat for Darija] → Gemini → Anthropic → Local
@@ -1503,6 +1582,42 @@ function startServer(port = 3004) {
       return;
     }
 
+    // Session 250.51: GET /admin/tenants - List all tenants from DB
+    if (req.url === '/admin/tenants' && req.method === 'GET') {
+      try {
+        if (sheetsDB) {
+          const tenants = await sheetsDB.findAll('tenants');
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ tenants, source: 'google-sheets' }, null, 2));
+        } else {
+          const tenants = Array.from(adminMetrics.tenants.values());
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ tenants, source: 'memory' }, null, 2));
+        }
+      } catch (e) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+      return;
+    }
+
+    // Session 250.51: POST /admin/refresh - Reload data from Google Sheets
+    if (req.url === '/admin/refresh' && req.method === 'POST') {
+      try {
+        await loadTenantsFromDB();
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({
+          success: true,
+          tenantsCount: adminMetrics.tenants.size,
+          totalMRR: adminMetrics.totalMRR
+        }));
+      } catch (e) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+      return;
+    }
+
     // Session 250.44: Admin logs endpoint
     if (req.url === '/admin/logs' && req.method === 'GET') {
       res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -1543,19 +1658,19 @@ function startServer(port = 3004) {
     }
 
     // Session 250.44: Register tenant endpoint
+    // Session 250.51: Register tenant in Google Sheets DB
     if (req.url === '/admin/tenants' && req.method === 'POST') {
       let body = '';
       req.on('data', chunk => body += chunk);
-      req.on('end', () => {
+      req.on('end', async () => {
         try {
-          const { name, plan, tenantId } = JSON.parse(body);
-          const id = tenantId || `tenant_${Date.now()}`;
-          const tenant = registerTenant(id, name, plan || 'starter');
+          const { name, plan, tenantId, email } = JSON.parse(body);
+          const tenant = await registerTenant(tenantId, name, plan || 'starter', email);
           res.writeHead(201, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify(tenant, null, 2));
         } catch (e) {
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Invalid JSON body' }));
+          res.writeHead(e.message.includes('Invalid JSON') ? 400 : 500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: e.message || 'Failed to create tenant' }));
         }
       });
       return;
@@ -1626,11 +1741,26 @@ function startServer(port = 3004) {
           const session = getOrCreateLeadSession(leadSessionId);
           processQualificationData(session, message, language);
 
-          // Get Persona for metadata (RLS Context)
+          // Get Persona with full injection (Session 250.54: Fixed Widget persona injection)
           const { VoicePersonaInjector } = require('../personas/voice-persona-injector.cjs');
-          const persona = VoicePersonaInjector.getPersona(null, null, sessionId); // We assume sessionId is the clientId here for RAG isolation
+          const persona = VoicePersonaInjector.getPersona(null, null, sessionId);
 
-          const result = await getResilisentResponse(message, history, { ...session, metadata: persona }, language);
+          // Set persona language to request language for proper SYSTEM_PROMPTS lookup
+          persona.language = language;
+
+          // Apply full injection (multilingual prompts + marketing psychology + behavioral context)
+          const baseConfig = { session: { metadata: {} } };
+          const injectedConfig = VoicePersonaInjector.inject(baseConfig, persona);
+
+          // Extract the injected systemPrompt from the config
+          const injectedMetadata = {
+            ...persona,
+            systemPrompt: injectedConfig.session?.instructions || injectedConfig.instructions,
+            persona_id: persona.id,
+            persona_name: persona.name
+          };
+
+          const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language);
 
           // Add AI response to session
           session.messages.push({ role: 'assistant', content: result.response, timestamp: Date.now() });

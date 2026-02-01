@@ -5048,6 +5048,7 @@ class VoicePersonaInjector {
         // If clientConfig exists, override specific details. If not, use Archetype defaults.
         const identity = {
             id: clientId || archetype.id,
+            archetypeKey: archetypeKey, // Session 250.54: Store for inject() SYSTEM_PROMPTS lookup
             name: clientConfig?.name || archetype.name,
             voice: archetype.voice, // Voice is usually tied to Archetype, but could be overridden
             sensitivity: archetype.sensitivity,
@@ -5081,8 +5082,9 @@ class VoicePersonaInjector {
         let basePrompt = persona.systemPrompt;
 
         // Find Archetype key to look up in SYSTEM_PROMPTS
-        // We look for a key in PERSONAS that has the same ID
-        const archetypeKey = Object.keys(PERSONAS).find(key => PERSONAS[key].id === persona.id || persona.id?.startsWith(PERSONAS[key].id.split('_v')[0]));
+        // Session 250.54: Use persona.archetypeKey if available (set by getPersona())
+        // Fallback: look for a key in PERSONAS that has the same ID
+        const archetypeKey = persona.archetypeKey || Object.keys(PERSONAS).find(key => PERSONAS[key].id === persona.id || persona.id?.startsWith(PERSONAS[key].id.split('_v')[0]));
 
         if (archetypeKey && SYSTEM_PROMPTS[archetypeKey]) {
             basePrompt = SYSTEM_PROMPTS[archetypeKey][persona.language] || SYSTEM_PROMPTS[archetypeKey]['fr'] || basePrompt;

@@ -24,7 +24,10 @@
     BOOKING_API: 'https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFKZXGFUTS9c3SKrmRZdJEg0tcWnvA-P2Jl/exec',
 
     // Voice API (AI Mode)
-    VOICE_API_URL: 'https://api.vocalia.ma/respond',
+    // Auto-detect: localhost = dev, otherwise = prod
+    VOICE_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3004/respond'  // Dev: local Voice API
+      : 'https://api.vocalia.ma/respond', // Prod: deployed API
     AI_MODE: true, // true = use Voice API with personas, false = pattern matching fallback
     API_TIMEOUT: 10000, // 10 seconds
 
