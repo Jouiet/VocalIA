@@ -120,7 +120,7 @@
 
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 
   <!-- GSAP Animation Library - Loaded async for performance -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" defer></script>
@@ -303,7 +303,7 @@
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };</script>
+  
 </head>
 
 <body class="bg-slate-800 text-white antialiased">
@@ -796,7 +796,6 @@
       </div>
 
     </div>
-
 
     <!-- Scroll indicator -->
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
@@ -1578,270 +1577,28 @@
     </div>
   </footer>
 
-  <!-- Scripts - Core libs (no defer, needed immediately) -->
+  <!-- Scripts - Core libs -->
   <script src="/src/lib/geo-detect.js?v=250"></script>
   <script src="/src/lib/i18n.js?v=250"></script>
   <script src="/src/lib/ab-testing.js?v=250"></script>
-  <script>
-    // VocalIA Main Site - Dark Mode Only (no theme toggle)
-    // Theme toggle available only in dashboards
-
-    // Language dropdown
-    const langBtn = document.getElementById('langBtn');
-    const langDropdown = document.getElementById('langDropdown');
-    langBtn.addEventListener('click', () => langDropdown.classList.toggle('hidden'));
-
-    // Close dropdown on click outside
-    document.addEventListener('click', (e) => {
-      if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
-        langDropdown.classList.add('hidden');
-      }
-    });
-
-    // Switch language (5 languages: fr, en, es, ar, ary)
-    const LANG_LABELS = {
-      fr: 'FR',
-      en: 'EN',
-      es: 'ES',
-      ar: 'AR',
-      ary: 'دارجة'
-    };
-
-    async function switchLang(lang) {
-      await VocaliaI18n.setLocale(lang);
-      document.getElementById('currentLang').textContent = LANG_LABELS[lang] || lang.toUpperCase();
-      langDropdown.classList.add('hidden');
-      VocaliaI18n.translatePage();
-
-      // Store preference
-      localStorage.setItem('vocalia_lang', lang);
-    }
-
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const menuIconOpen = document.getElementById('menuIconOpen');
-    const menuIconClose = document.getElementById('menuIconClose');
-
-    // Helper functions for mobile menu
-    function openMobileMenu() {
-      mobileMenu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-      mobileMenu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      mobileMenuBtn.setAttribute('aria-expanded', 'true');
-      menuIconOpen.classList.add('hidden');
-      menuIconClose.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeMobileMenu() {
-      mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-      mobileMenu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      mobileMenuBtn.setAttribute('aria-expanded', 'false');
-      menuIconOpen.classList.remove('hidden');
-      menuIconClose.classList.add('hidden');
-      document.body.style.overflow = '';
-    }
-
-    if (mobileMenuBtn && mobileMenu) {
-      mobileMenuBtn.addEventListener('click', () => {
-        const isOpen = mobileMenu.classList.contains('translate-x-0');
-        isOpen ? closeMobileMenu() : openMobileMenu();
-      });
-
-      // Close menu on link click
-      mobileMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', closeMobileMenu);
-      });
-
-      // Close on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && mobileMenu.classList.contains('translate-x-0')) {
-          closeMobileMenu();
-        }
-      });
-
-      // Close on backdrop click (outside menu content)
-      mobileMenu.addEventListener('click', (e) => {
-        if (e.target === mobileMenu) {
-          closeMobileMenu();
-        }
-      });
-    }
-
-    // Update prices based on geo (homepage doesn't show prices - see /pricing page)
-    function updatePrices(geo) {
-      // Pricing details are on the dedicated /pricing page
-    }
-
-    // Modal Logic
-    const modal = document.getElementById('demoModal');
-    const backdrop = document.getElementById('modalBackdrop');
-    const panel = document.getElementById('modalPanel');
-
-    function openDemoModal() {
-      modal.classList.remove('hidden');
-      // Small delay for transition
-      setTimeout(() => {
-        backdrop.classList.remove('opacity-0');
-        panel.classList.remove('opacity-0', 'scale-95');
-        panel.classList.add('opacity-100', 'scale-100');
-      }, 10);
-    }
-
-    function closeDemoModal() {
-      backdrop.classList.remove('opacity-100');
-      panel.classList.remove('opacity-100', 'scale-100');
-      panel.classList.add('opacity-0', 'scale-95');
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 300);
-    }
-
-    // Close on backdrop click
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal || e.target === backdrop) {
-        closeDemoModal();
-      }
-    });
-
-    // Close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        closeDemoModal();
-      }
-    });
-
-    // Initialize
-    (async function init() {
-      // Geo detection
-      const geo = await VocaliaGeo.getGeo();
-
-      // i18n
-      await VocaliaI18n.initI18n(geo.lang);
-      document.getElementById('currentLang').textContent = VocaliaI18n.getLocale().toUpperCase();
-      VocaliaI18n.translatePage();
-
-      // Prices
-      updatePrices(geo);
-
-      // Listen for locale changes
-      window.addEventListener('localeChanged', () => {
-        VocaliaI18n.translatePage();
-      });
-    })();
-  </script>
 
   <!-- VocalIA GSAP Animation System -->
   <script src="/src/lib/gsap-animations.js?v=231" defer></script>
-  <script>
-    // Scroll Progress Indicator
-    window.addEventListener('scroll', () => {
-      const scrollProgress = document.getElementById('scrollProgress');
-      if (scrollProgress) {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = (scrollTop / docHeight) * 100;
-        scrollProgress.style.width = progress + '%';
-      }
-    });
-  </script>
 
   <!-- VocalIA Voice Visualizer - Lazy Loaded for Performance -->
   <script src="/src/lib/voice-visualizer.js?v=222" defer></script>
   <script src="/src/lib/card-tilt.js" defer></script>
-  <script>
-    // Lazy load visualizers only when visible (performance optimization)
-    document.addEventListener('DOMContentLoaded', function () {
-      if (typeof VoiceVisualizer === 'undefined') return;
-
-      const visualizerConfigs = [
-        { id: '#visualizer-wave', mode: 'wave', barCount: null },
-        { id: '#visualizer-bars', mode: 'bars', barCount: 24 },
-        { id: '#visualizer-orb', mode: 'orb', barCount: null },
-        { id: '#visualizer-pulse', mode: 'pulse', barCount: null }
-      ];
-
-      const loadedVisualizers = new Map();
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          const canvas = entry.target;
-          const config = visualizerConfigs.find(c => document.querySelector(c.id) === canvas);
-
-          if (entry.isIntersecting && config && !loadedVisualizers.has(config.id)) {
-            // Initialize only when visible
-            const viz = new VoiceVisualizer(config.id, {
-              mode: config.mode,
-              primaryColor: '#5DADE2',
-              secondaryColor: '#85C1E9',
-              accentColor: '#5DADE2',
-              glowColor: '#5DADE2',
-              barCount: config.barCount || 24,
-              demo: true
-            });
-            loadedVisualizers.set(config.id, viz);
-          } else if (!entry.isIntersecting && loadedVisualizers.has(config?.id)) {
-            // Pause when not visible
-            const viz = loadedVisualizers.get(config.id);
-            if (viz && viz.pause) viz.pause();
-          } else if (entry.isIntersecting && loadedVisualizers.has(config?.id)) {
-            // Resume when visible again
-            const viz = loadedVisualizers.get(config.id);
-            if (viz && viz.resume) viz.resume();
-          }
-        });
-      }, { rootMargin: '100px', threshold: 0.1 });
-
-      // Observe all visualizer canvases
-      visualizerConfigs.forEach(config => {
-        const canvas = document.querySelector(config.id);
-        if (canvas) observer.observe(canvas);
-      });
-
-    });
-
-    // Hero video is now integrated in Voice Widget card with native loop attribute
-  </script>
 
   <!-- VocalIA Voice Widget - Try our product! -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
 
   <!-- Lucide Icons 2026 -->
-  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous" defer></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    });
-  </script>
+  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
 
-  <!-- PWA Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      });
-    }
-
-    // PWA Install Prompt
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      // Show install button if needed
-      const installBtn = document.getElementById('pwaInstallBtn');
-      if (installBtn) installBtn.classList.remove('hidden');
-    });
-
-    window.installPWA = async () => {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-    };
-  </script>
+  <!-- Homepage specific scripts (CSP compliant - all inline code externalized) -->
+  <script src="/src/lib/home-page.js"></script>
   <script src="/src/lib/form-validation.js" defer></script>
+  <script src="/src/lib/site-init.js"></script>
   <script src="/src/lib/event-delegation.js" defer></script>
   </body>
 
