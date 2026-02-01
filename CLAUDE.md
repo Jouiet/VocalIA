@@ -38,6 +38,7 @@
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
 **Session 250.54 ARCHITECTURE AUDIT COMPLETE:** 9/9 tasks done - Widget 5 langues, archetypeKey fix, startup health check, request tracing (X-Trace-Id), /metrics endpoint, graceful shutdown, E2E tests (8/8 pass)
+**Session 250.52 DASHBOARDS 100% COMPLETE:** 4 phases done - client.html connecté Google Sheets (0 hardcodés), widget-analytics.html connecté, db-admin.html fusionné dans admin.html, commit 4db7e72
 **Session 250.39 MARKETING COPY AUDIT:** 200+ French accent fixes in 7 blog articles, fix-french-accents.py script created
 **Session 250.38 ALL ISSUES FIXED:** i18n (newsletter+cta.badge+demo 5 locales), main-content (41/41 pages), HTTPS redirect, ErrorDocument 404, console.log cleanup (23 removed)
 **Session 250.37 P1/P2 COMPLETE:** SRI hashes (GSAP+Lucide 39 files), WCAG contrast (279 fixes), PWA cleanup, form-validation.js (24 pages), Speakable 32→35
@@ -79,8 +80,9 @@ VocalIA/
 ├── telephony/      # PSTN bridge (13 function tools)
 ├── personas/       # 40 personas SOTA
 ├── integrations/   # CRM/E-commerce (multi-tenant)
-├── website/        # 36 pages HTML
-│   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
+├── website/        # 45 pages HTML
+│   ├── dashboard/     # 3 dashboards (admin, client, widget-analytics)
+│   └── src/locales/   # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
 ├── mcp-server/     # MCP Server (182 tools / 25 categories)
 ├── scripts/        # 30 utility scripts
@@ -98,6 +100,7 @@ VocalIA/
 | Telephony | 3009 | `node telephony/voice-telephony-bridge.cjs` |
 | OAuth Gateway | 3010 | `node core/OAuthGateway.cjs --start` |
 | Webhook Router | 3011 | `node core/WebhookRouter.cjs --start` |
+| DB API | 3012 | `node core/db-api.cjs` |
 | Website | 8080 | `npx serve website` |
 
 ---
