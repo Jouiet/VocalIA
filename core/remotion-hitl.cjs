@@ -347,10 +347,25 @@ async function parseBody(req) {
 /**
  * Send JSON response
  */
-function sendJson(res, data, status = 200) {
+// Session 250.43: CORS whitelist instead of '*'
+const CORS_ALLOWED_ORIGINS = [
+  'https://vocalia.ma',
+  'https://www.vocalia.ma',
+  'https://api.vocalia.ma',
+  'http://localhost:8080',
+  'http://localhost:3000'
+];
+
+function getCorsOrigin(req) {
+  const origin = req.headers?.origin || req.headers?.referer?.replace(/\/$/, '') || '';
+  return CORS_ALLOWED_ORIGINS.includes(origin) ? origin : CORS_ALLOWED_ORIGINS[0];
+}
+
+function sendJson(res, data, status = 200, req = null) {
+  const corsOrigin = req ? getCorsOrigin(req) : CORS_ALLOWED_ORIGINS[0];
   res.writeHead(status, {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': corsOrigin,
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization'
   });
@@ -366,8 +381,9 @@ async function handleRequest(req, res) {
 
   // CORS preflight
   if (method === 'OPTIONS') {
+    const corsOrigin = getCorsOrigin(req);
     res.writeHead(204, {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': corsOrigin,
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     });

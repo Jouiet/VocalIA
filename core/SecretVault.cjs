@@ -22,6 +22,11 @@ const CLIENTS_DIR = path.join(process.cwd(), 'clients');
 const ENCRYPTION_KEY = process.env.VOCALIA_VAULT_KEY || 'default-dev-key-change-in-prod';
 const ALGORITHM = 'aes-256-gcm';
 
+// Session 250.43: Warn if using default encryption key
+if (!process.env.VOCALIA_VAULT_KEY) {
+  console.warn('⚠️ [SecretVault] VOCALIA_VAULT_KEY not set - using default dev key. DO NOT USE IN PRODUCTION!');
+}
+
 class SecretVault {
   constructor() {
     this.cache = new Map();

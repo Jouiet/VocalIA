@@ -1360,11 +1360,15 @@
           el.textContent = periodText;
         });
 
-        // Update overage note
+        // Update overage note - Session 250.43: DOM building instead of innerHTML
         const overageNote = document.querySelector('[data-i18n="pricing_page.overage_note"]');
         if (overageNote) {
           const overageFormatted = formatPrice(currentPricing.overage.toFixed(2), currentSymbol, currentCurrency);
-          overageNote.innerHTML = `Minutes supplémentaires téléphonie: <strong class="text-white">${overageFormatted}/min</strong>`;
+          overageNote.textContent = 'Minutes supplémentaires téléphonie: ';
+          const strong = document.createElement('strong');
+          strong.className = 'text-white';
+          strong.textContent = overageFormatted + '/min';
+          overageNote.appendChild(strong);
         }
       }
 

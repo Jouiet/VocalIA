@@ -227,6 +227,21 @@ class WebhookRouter {
       // Extract tenant ID
       const tenantId = this.extractTenantId(provider, req.headers, body);
 
+      // Session 250.43: Verify webhook signature if secret configured
+      const webhookSecret = process.env[`${provider.toUpperCase()}_WEBHOOK_SECRET`];
+      if (webhookSecret && config.verifySignature) {
+        const signature = req.headers[config.signatureHeader?.toLowerCase()];
+        if (!signature) {
+          console.warn(`[WebhookRouter] Missing signature header for ${provider}`);
+          return res.status(401).json({ error: 'Missing signature' });
+        }
+        const isValid = config.verifySignature(rawBody, signature, webhookSecret);
+        if (!isValid) {
+          console.error(`[WebhookRouter] Invalid signature for ${provider}/${tenantId}`);
+          return res.status(401).json({ error: 'Invalid signature' });
+        }
+      }
+
       // Get event type
       const eventType = this.getEventType(provider, req.headers, body);
 
