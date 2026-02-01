@@ -9,18 +9,60 @@
 (function() {
   'use strict';
 
+  // Initialize Lucide icons on DOM ready
+  function initLucide() {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  }
+
   // Action registry
   const actions = {
-    // Language switching
+    // Language switching - Direct implementation
     switchLang: function(lang) {
-      if (typeof window.switchLang === 'function') {
-        window.switchLang(lang);
+      if (!lang) return;
+
+      // Update localStorage
+      localStorage.setItem('vocalia_lang', lang);
+
+      // Update HTML lang attribute
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'ar' || lang === 'ary') ? 'rtl' : 'ltr';
+
+      // Update current lang display
+      const currentLangEl = document.getElementById('currentLang');
+      if (currentLangEl) {
+        currentLangEl.textContent = lang.toUpperCase();
       }
+
+      // Close dropdown
+      const dropdown = document.getElementById('langDropdown');
+      if (dropdown) dropdown.classList.add('hidden');
+
+      // Trigger i18n update if available
+      if (typeof window.VocaliaI18n !== 'undefined') {
+        window.VocaliaI18n.setLanguage(lang);
+      } else if (typeof window.updatePageTranslations === 'function') {
+        window.updatePageTranslations(lang);
+      }
+
+      // Update URL if needed
+      const url = new URL(window.location);
+      url.searchParams.set('lang', lang);
+      window.history.replaceState({}, '', url);
     },
 
     toggleLangDropdown: function() {
-      if (typeof window.toggleLangDropdown === 'function') {
-        window.toggleLangDropdown();
+      const dropdown = document.getElementById('langDropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('hidden');
+
+        // Update aria-expanded
+        const btn = document.querySelector('[data-action="toggleLangDropdown"]');
+        if (btn) {
+          const isExpanded = !dropdown.classList.contains('hidden');
+          btn.setAttribute('aria-expanded', isExpanded);
+        }
       }
     },
 
@@ -52,8 +94,15 @@
     },
 
     togglePassword: function() {
-      if (typeof window.togglePassword === 'function') {
-        window.togglePassword();
+      const input = document.getElementById('password');
+      const icon = document.querySelector('[data-action="togglePassword"] i');
+      if (input) {
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        if (icon) {
+          icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+          initLucide();
+        }
       }
     },
 
@@ -86,7 +135,7 @@
           btn.innerHTML = '<i data-lucide="check" class="w-5 h-5 mr-2"></i> Message Envoyé!';
           btn.disabled = true;
           btn.classList.add('opacity-75');
-          if (typeof lucide !== 'undefined') lucide.createIcons();
+          initLucide();
         }
       }
     },
@@ -95,7 +144,7 @@
     closeModal: function(el) {
       const modal = el.closest('.fixed');
       if (modal) modal.remove();
-      if (typeof lucide !== 'undefined') lucide.createIcons();
+      initLucide();
     },
 
     closeConfigModal: function() {
@@ -205,7 +254,29 @@
     }
   });
 
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('[data-action="toggleLangDropdown"]') &&
+        !e.target.closest('#langDropdown')) {
+      const dropdown = document.getElementById('langDropdown');
+      if (dropdown && !dropdown.classList.contains('hidden')) {
+        dropdown.classList.add('hidden');
+      }
+    }
+  });
+
+  // Initialize Lucide on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLucide);
+  } else {
+    // DOM already loaded, init now and also after a small delay for defer scripts
+    initLucide();
+    setTimeout(initLucide, 100);
+  }
+
   // Export for direct calls if needed
   window.VocaliaActions = actions;
+  window.switchLang = actions.switchLang;
+  window.toggleLangDropdown = actions.toggleLangDropdown;
 
 })();
