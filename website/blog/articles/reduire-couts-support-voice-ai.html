@@ -150,107 +150,811 @@
         </div>
       </header>
 
+      <!-- Table of Contents -->
+      <nav class="glass rounded-xl p-6 mb-12" aria-label="Sommaire">
+        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="list" class="w-5 h-5 text-vocalia-400"></i>
+          Sommaire
+        </h2>
+        <ol class="space-y-2 text-slate-300">
+          <li><a href="#cout-reel" class="hover:text-vocalia-400 transition">1. Le coût réel du support client traditionnel</a></li>
+          <li><a href="#anatomie-couts" class="hover:text-vocalia-400 transition">2. Anatomie détaillée des coûts cachés</a></li>
+          <li><a href="#comment-voice-ai" class="hover:text-vocalia-400 transition">3. Comment Voice AI réduit les coûts</a></li>
+          <li><a href="#comparaison" class="hover:text-vocalia-400 transition">4. Comparaison : Humain vs Voice AI vs Chatbot</a></li>
+          <li><a href="#calcul-roi" class="hover:text-vocalia-400 transition">5. Calcul du ROI avec exemples concrets</a></li>
+          <li><a href="#par-industrie" class="hover:text-vocalia-400 transition">6. Économies par industrie</a></li>
+          <li><a href="#implementation" class="hover:text-vocalia-400 transition">7. Mise en place en 5 étapes</a></li>
+          <li><a href="#resultats" class="hover:text-vocalia-400 transition">8. Résultats clients VocalIA</a></li>
+          <li><a href="#erreurs" class="hover:text-vocalia-400 transition">9. Les 7 erreurs à éviter</a></li>
+          <li><a href="#faq" class="hover:text-vocalia-400 transition">10. FAQ</a></li>
+        </ol>
+      </nav>
+
       <!-- Content -->
       <div class="prose">
         <p class="text-xl text-slate-300 mb-8">
-          Les coûts de support client représentent en moyenne 15-20% du budget opérationnel des entreprises.
-          L'IA vocale permet de réduire ces coûts de 70% tout en améliorant la satisfaction client. Voici comment.
+          Les coûts de support client représentent en moyenne <strong>15-20% du budget opérationnel</strong> des entreprises.
+          L'IA vocale permet de réduire ces coûts de 70% tout en améliorant la satisfaction client de 25%.
+          Ce guide complet vous montre comment, avec des calculs ROI détaillés et des exemples concrets.
         </p>
 
-        <h2>Le coût réel du support client traditionnel</h2>
+        <!-- Key Stats -->
+        <div class="grid md:grid-cols-4 gap-4 my-8">
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-emerald-400 mb-1">70%</div>
+            <div class="text-xs text-slate-400">Réduction coûts</div>
+          </div>
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-vocalia-400 mb-1">24/7</div>
+            <div class="text-xs text-slate-400">Disponibilité</div>
+          </div>
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-amber-400 mb-1">0.06€</div>
+            <div class="text-xs text-slate-400">Par minute</div>
+          </div>
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-sky-400 mb-1">+25%</div>
+            <div class="text-xs text-slate-400">CSAT amélioré</div>
+          </div>
+        </div>
+
+        <h2 id="cout-reel">1. Le coût réel du support client traditionnel</h2>
 
         <p>
-          Un agent de support client coûte en moyenne <strong>35 000€/an</strong> (salaire + charges + formation).
-          Avec un taux d'occupation de 60%, chaque interaction coûte environ <strong>8-12€</strong>.
+          Un agent de support client coûte en moyenne <strong>35 000€/an</strong> au Maroc (salaire + charges + formation).
+          En Europe, ce coût monte à <strong>45 000-55 000€/an</strong>. Mais ce n'est que la partie visible de l'iceberg.
         </p>
 
         <div class="grid md:grid-cols-3 gap-4 my-8">
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">35 000€</div>
-            <div class="text-sm text-slate-400">Coût annuel / agent</div>
+            <div class="text-sm text-slate-400">Coût annuel / agent (Maroc)</div>
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">8-12€</div>
-            <div class="text-sm text-slate-400">Par interaction</div>
+            <div class="text-sm text-slate-400">Par interaction téléphonique</div>
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">60%</div>
-            <div class="text-sm text-slate-400">Taux d'occupation</div>
+            <div class="text-sm text-slate-400">Taux d'occupation réel</div>
           </div>
         </div>
 
-        <h2>Comment Voice AI réduit les coûts</h2>
+        <h2 id="anatomie-couts">2. Anatomie détaillée des coûts cachés</h2>
 
-        <h3>1. Automatisation des requêtes répétitives (40-60%)</h3>
         <p>
-          Les questions fréquentes (FAQ, statut commande, horaires, tarifs) représentent 40-60% des interactions.
-          Un agent vocal IA les traite instantanément 24/7 à <strong>0.06€/min</strong> vs 8€/interaction humaine.
+          Au-delà du salaire brut, le support client traditionnel engendre de nombreux coûts invisibles
+          qui peuvent doubler la facture réelle :
         </p>
-
-        <h3>2. Réduction du temps de traitement (-50%)</h3>
-        <p>
-          L'IA accède instantanément aux données client (CRM, historique commandes) sans temps de recherche.
-          Le temps moyen de traitement passe de 6 minutes à 3 minutes.
-        </p>
-
-        <h3>3. Disponibilité 24/7 sans surcoût</h3>
-        <p>
-          Les appels hors horaires (20-30% du volume) sont traités automatiquement.
-          Plus besoin d'équipes de nuit ou de week-end.
-        </p>
-
-        <h2>Calcul du ROI</h2>
 
         <div class="glass rounded-xl p-6 my-8">
-          <h3 class="text-lg font-semibold mb-4">Exemple : 10 000 appels/mois</h3>
+          <h3 class="text-lg font-semibold mb-4">Décomposition du coût total par agent</h3>
           <div class="space-y-3">
             <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Coût actuel (8€ × 10 000)</span>
-              <span class="text-white font-semibold">80 000€/mois</span>
+              <span class="text-slate-400">Salaire brut annuel</span>
+              <span class="text-white font-semibold">24 000€</span>
             </div>
             <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Automatisation IA (60% × 3min × 0.06€)</span>
+              <span class="text-slate-400">Charges sociales (42%)</span>
+              <span class="text-white font-semibold">10 080€</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Formation initiale (3 semaines)</span>
+              <span class="text-white font-semibold">2 500€</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Formation continue (24h/an)</span>
+              <span class="text-white font-semibold">1 200€</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Équipement (PC, casque, licence)</span>
+              <span class="text-white font-semibold">1 500€</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Supervision (ratio 1:8)</span>
+              <span class="text-white font-semibold">4 375€</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Locaux (8m² × 150€/m²)</span>
+              <span class="text-white font-semibold">1 200€</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Turnover (30%, recrutement)</span>
+              <span class="text-white font-semibold">3 500€</span>
+            </div>
+            <div class="flex justify-between pt-2 bg-slate-700/30 -mx-6 px-6 py-3 rounded-b-xl">
+              <span class="text-white font-bold">COÛT TOTAL RÉEL</span>
+              <span class="text-rose-400 font-bold text-xl">48 355€/an</span>
+            </div>
+          </div>
+        </div>
+
+        <p>
+          <strong>Conclusion :</strong> Le coût réel d'un agent est 38% plus élevé que le salaire brut.
+          Et ce calcul n'inclut pas encore les coûts d'absentéisme, les congés maladie, ou les pics saisonniers
+          nécessitant des intérimaires.
+        </p>
+
+        <h3>Le problème du taux d'occupation</h3>
+
+        <p>
+          Un agent support ne traite pas des appels 8 heures par jour. Le taux d'occupation réel est de 60-65% :
+        </p>
+
+        <ul>
+          <li><strong>Temps productif :</strong> 4.8h/jour sur 8h (60%)</li>
+          <li><strong>Temps entre appels :</strong> 1.5h/jour (attente, wrap-up)</li>
+          <li><strong>Pauses réglementaires :</strong> 1h/jour</li>
+          <li><strong>Réunions, formation :</strong> 0.7h/jour</li>
+        </ul>
+
+        <p>
+          Résultat : chaque interaction coûte <strong>8-12€</strong> (48 355€ ÷ 4 800 interactions/an).
+        </p>
+
+        <h2 id="comment-voice-ai">3. Comment Voice AI réduit les coûts</h2>
+
+        <h3>3.1 Automatisation des requêtes répétitives (40-60%)</h3>
+        <p>
+          Les études montrent que <strong>40-60% des appels</strong> concernent des questions simples et répétitives :
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-4 my-6">
+          <div class="glass rounded-lg p-4">
+            <h4 class="font-semibold text-vocalia-400 mb-2">Automatisable immédiatement</h4>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>✓ Statut de commande (15-20%)</li>
+              <li>✓ Horaires et adresses (8-12%)</li>
+              <li>✓ FAQ produits/services (10-15%)</li>
+              <li>✓ Prise de rendez-vous (8-12%)</li>
+              <li>✓ Rappels et confirmations (5-8%)</li>
+            </ul>
+          </div>
+          <div class="glass rounded-lg p-4">
+            <h4 class="font-semibold text-amber-400 mb-2">Nécessite un humain</h4>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>→ Réclamations complexes (15-20%)</li>
+              <li>→ Négociations commerciales (5-10%)</li>
+              <li>→ Support technique avancé (10-15%)</li>
+              <li>→ Situations émotionnelles (5%)</li>
+            </ul>
+          </div>
+        </div>
+
+        <p>
+          Un agent vocal IA traite ces requêtes simples instantanément 24/7 à <strong>0.06€/min</strong>
+          vs 8€/interaction humaine. C'est une réduction de <strong>96%</strong> du coût unitaire.
+        </p>
+
+        <h3>3.2 Réduction du temps de traitement (-50%)</h3>
+        <p>
+          L'IA accède instantanément aux données client sans temps de recherche :
+        </p>
+
+        <table class="w-full my-6 text-sm">
+          <thead>
+            <tr class="border-b border-slate-600">
+              <th class="text-left py-2 text-slate-400">Étape</th>
+              <th class="text-center py-2 text-slate-400">Agent humain</th>
+              <th class="text-center py-2 text-vocalia-400">Voice AI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-slate-700">
+              <td class="py-2">Identification client</td>
+              <td class="text-center">30-60 sec</td>
+              <td class="text-center text-emerald-400">Instant</td>
+            </tr>
+            <tr class="border-b border-slate-700">
+              <td class="py-2">Recherche historique</td>
+              <td class="text-center">45-90 sec</td>
+              <td class="text-center text-emerald-400">Instant</td>
+            </tr>
+            <tr class="border-b border-slate-700">
+              <td class="py-2">Recherche base de connaissances</td>
+              <td class="text-center">30-120 sec</td>
+              <td class="text-center text-emerald-400">0.5 sec</td>
+            </tr>
+            <tr class="border-b border-slate-700">
+              <td class="py-2">Saisie ticket/CRM</td>
+              <td class="text-center">60-90 sec</td>
+              <td class="text-center text-emerald-400">Auto</td>
+            </tr>
+            <tr>
+              <td class="py-2 font-semibold">TOTAL moyen</td>
+              <td class="text-center font-semibold">6 min</td>
+              <td class="text-center font-semibold text-emerald-400">2-3 min</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>3.3 Disponibilité 24/7 sans surcoût</h3>
+        <p>
+          Les appels hors horaires représentent <strong>20-30% du volume total</strong> :
+        </p>
+
+        <ul>
+          <li><strong>18h-22h :</strong> 15% des appels (clients rentrant du travail)</li>
+          <li><strong>Week-end :</strong> 10% des appels</li>
+          <li><strong>Nuit (22h-8h) :</strong> 5% des appels (urgences, e-commerce)</li>
+        </ul>
+
+        <p>
+          Aujourd'hui, ces appels sont perdus ou traités par des services coûteux.
+          Avec Voice AI, ils sont automatisés au même tarif : <strong>0.06€/min</strong>.
+        </p>
+
+        <h3>3.4 Élimination des pics de charge</h3>
+        <p>
+          Les centres d'appels traditionnels doivent dimensionner pour les pics (lundi matin, promotions, rentrée).
+          Cela signifie 20-30% de capacité inutilisée en moyenne.
+        </p>
+
+        <p>
+          <strong>Voice AI absorbe les pics instantanément</strong> sans coût supplémentaire.
+          Vous payez uniquement les minutes utilisées.
+        </p>
+
+        <h2 id="comparaison">4. Comparaison : Humain vs Voice AI vs Chatbot</h2>
+
+        <div class="overflow-x-auto my-8">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-600">
+                <th class="text-left py-3 text-slate-400">Critère</th>
+                <th class="text-center py-3 text-slate-400">Agent humain</th>
+                <th class="text-center py-3 text-vocalia-400">Voice AI</th>
+                <th class="text-center py-3 text-slate-400">Chatbot texte</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Coût par interaction</td>
+                <td class="text-center">8-12€</td>
+                <td class="text-center text-emerald-400">0.18-0.36€</td>
+                <td class="text-center">0.05-0.10€</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Disponibilité</td>
+                <td class="text-center">8h-20h (coûteux 24/7)</td>
+                <td class="text-center text-emerald-400">24/7 inclus</td>
+                <td class="text-center">24/7 inclus</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Temps de réponse</td>
+                <td class="text-center">1-5 min attente</td>
+                <td class="text-center text-emerald-400">Immédiat</td>
+                <td class="text-center">Immédiat</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Accessibilité seniors</td>
+                <td class="text-center text-emerald-400">Excellente</td>
+                <td class="text-center text-emerald-400">Excellente</td>
+                <td class="text-center text-rose-400">Faible</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Multi-tâches (conduite)</td>
+                <td class="text-center text-emerald-400">Oui</td>
+                <td class="text-center text-emerald-400">Oui</td>
+                <td class="text-center text-rose-400">Non</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Empathie perçue</td>
+                <td class="text-center text-emerald-400">Élevée</td>
+                <td class="text-center">Bonne</td>
+                <td class="text-center text-rose-400">Faible</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Montée en charge</td>
+                <td class="text-center text-rose-400">Semaines</td>
+                <td class="text-center text-emerald-400">Immédiate</td>
+                <td class="text-center text-emerald-400">Immédiate</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Langues</td>
+                <td class="text-center">1-2 (recrutement)</td>
+                <td class="text-center text-emerald-400">5+ natives</td>
+                <td class="text-center">5+ natives</td>
+              </tr>
+              <tr>
+                <td class="py-3">Darija marocaine</td>
+                <td class="text-center">Rare</td>
+                <td class="text-center text-emerald-400">Natif</td>
+                <td class="text-center text-rose-400">Limité</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="calcul-roi">5. Calcul du ROI avec exemples concrets</h2>
+
+        <h3>Exemple 1 : PME avec 10 000 appels/mois</h3>
+
+        <div class="glass rounded-xl p-6 my-8">
+          <h4 class="text-lg font-semibold mb-4">Situation actuelle</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Volume mensuel</span>
+              <span class="text-white font-semibold">10 000 appels</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Coût moyen par appel (8€)</span>
+              <span class="text-rose-400 font-semibold">80 000€/mois</span>
+            </div>
+          </div>
+
+          <h4 class="text-lg font-semibold mt-6 mb-4">Avec VocalIA (60% automatisé)</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">6 000 appels IA (3min × 0.06€)</span>
               <span class="text-emerald-400 font-semibold">1 080€/mois</span>
             </div>
             <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Agents humains (40% restants)</span>
+              <span class="text-slate-400">4 000 appels humains (8€)</span>
               <span class="text-white font-semibold">32 000€/mois</span>
             </div>
-            <div class="flex justify-between pt-2">
-              <span class="text-white font-bold">Économie totale</span>
-              <span class="text-emerald-400 font-bold text-xl">46 920€/mois (59%)</span>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Abonnement VocalIA Pro</span>
+              <span class="text-white font-semibold">1 199 DH/mois (~110€)</span>
+            </div>
+            <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
+              <span class="text-white font-bold">ÉCONOMIE MENSUELLE</span>
+              <span class="text-emerald-400 font-bold text-xl">46 810€ (58.5%)</span>
             </div>
           </div>
         </div>
 
-        <h2>Mise en place en 3 étapes</h2>
+        <h3>Exemple 2 : E-commerce avec pics saisonniers</h3>
 
-        <ol class="list-decimal pl-6 space-y-4">
-          <li>
-            <strong>Audit des interactions</strong> — Identifiez les 20% de requêtes qui représentent 80% du volume.
-          </li>
-          <li>
-            <strong>Configuration du persona</strong> — Choisissez parmi les 40 personas VocalIA ou créez le vôtre.
-          </li>
-          <li>
-            <strong>Intégration progressive</strong> — Commencez par les FAQ, puis étendez aux transactions.
-          </li>
-        </ol>
+        <div class="glass rounded-xl p-6 my-8">
+          <h4 class="text-lg font-semibold mb-4">Profil</h4>
+          <ul class="text-slate-300 mb-4">
+            <li>• Volume normal : 5 000 appels/mois</li>
+            <li>• Pic (Black Friday, Noël) : 25 000 appels/mois</li>
+            <li>• 70% des appels = statut commande, retours, FAQ</li>
+          </ul>
 
-        <h2>Résultats clients VocalIA</h2>
+          <h4 class="text-lg font-semibold mt-6 mb-4">ROI pendant les pics</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Coût intérimaires (20 agents × 2 mois)</span>
+              <span class="text-rose-400 font-semibold">70 000€</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Coût VocalIA (50 000 appels × 3min × 0.06€)</span>
+              <span class="text-emerald-400 font-semibold">9 000€</span>
+            </div>
+            <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
+              <span class="text-white font-bold">ÉCONOMIE PÉRIODE PICS</span>
+              <span class="text-emerald-400 font-bold text-xl">61 000€ (87%)</span>
+            </div>
+          </div>
+        </div>
 
-        <ul>
-          <li><strong>Clinique Amal (Casablanca)</strong> — -60% de no-shows avec rappels vocaux automatiques</li>
-          <li><strong>Agence Immo Plus (Rabat)</strong> — +45% de conversion leads avec qualification 24/7</li>
-          <li><strong>E-commerce Mode (Marrakech)</strong> — -70% de temps de réponse sur les commandes</li>
-        </ul>
+        <h3>Exemple 3 : Clinique médicale</h3>
 
+        <div class="glass rounded-xl p-6 my-8">
+          <h4 class="text-lg font-semibold mb-4">Problématique</h4>
+          <ul class="text-slate-300 mb-4">
+            <li>• 3 000 appels/mois (80% prises de RDV)</li>
+            <li>• 2 secrétaires médicales (60 000€/an total)</li>
+            <li>• 25% d'appels perdus aux heures de pointe</li>
+            <li>• 15% de no-shows (coût estimé : 200€/no-show)</li>
+          </ul>
+
+          <h4 class="text-lg font-semibold mt-6 mb-4">Résultats avec VocalIA</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Économie personnel (1 secrétaire)</span>
+              <span class="text-emerald-400 font-semibold">30 000€/an</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Récupération appels perdus (750/mois × 50€)</span>
+              <span class="text-emerald-400 font-semibold">37 500€/an</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Réduction no-shows (-60% × 200€ × 450)</span>
+              <span class="text-emerald-400 font-semibold">54 000€/an</span>
+            </div>
+            <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
+              <span class="text-white font-bold">ROI ANNUEL TOTAL</span>
+              <span class="text-emerald-400 font-bold text-xl">121 500€</span>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="par-industrie">6. Économies par industrie</h2>
+
+        <div class="overflow-x-auto my-8">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-600">
+                <th class="text-left py-3 text-slate-400">Industrie</th>
+                <th class="text-center py-3 text-slate-400">Taux automatisation</th>
+                <th class="text-center py-3 text-slate-400">Économie moyenne</th>
+                <th class="text-center py-3 text-slate-400">ROI moyen</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">E-commerce</td>
+                <td class="text-center">70-80%</td>
+                <td class="text-center text-emerald-400">65-75%</td>
+                <td class="text-center">3-6 mois</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Santé / Cliniques</td>
+                <td class="text-center">75-85%</td>
+                <td class="text-center text-emerald-400">60-70%</td>
+                <td class="text-center">2-4 mois</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Immobilier</td>
+                <td class="text-center">60-70%</td>
+                <td class="text-center text-emerald-400">50-60%</td>
+                <td class="text-center">4-6 mois</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Hôtellerie</td>
+                <td class="text-center">65-75%</td>
+                <td class="text-center text-emerald-400">55-65%</td>
+                <td class="text-center">3-5 mois</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-3">Services financiers</td>
+                <td class="text-center">50-60%</td>
+                <td class="text-center text-emerald-400">45-55%</td>
+                <td class="text-center">6-9 mois</td>
+              </tr>
+              <tr>
+                <td class="py-3">Restauration</td>
+                <td class="text-center">80-90%</td>
+                <td class="text-center text-emerald-400">70-80%</td>
+                <td class="text-center">1-3 mois</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="implementation">7. Mise en place en 5 étapes</h2>
+
+        <div class="space-y-6 my-8">
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-vocalia-500 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold">1</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Audit des interactions (1 semaine)</h3>
+                <p class="text-slate-300">
+                  Analysez 2 semaines d'appels pour identifier les 20% de requêtes qui représentent 80% du volume.
+                  Classez-les par type : FAQ, transactions, réclamations, RDV.
+                </p>
+                <div class="mt-3 text-sm text-slate-400">
+                  <strong>Livrable :</strong> Matrice de priorisation avec volume et complexité par type de requête.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-vocalia-500 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold">2</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Configuration du persona (2-3 jours)</h3>
+                <p class="text-slate-300">
+                  Choisissez parmi les 40 personas VocalIA pré-configurés ou créez le vôtre.
+                  Définissez le ton, le vocabulaire métier, et les scripts de réponse.
+                </p>
+                <div class="mt-3 text-sm text-slate-400">
+                  <strong>Livrable :</strong> Persona configuré avec base de connaissances métier.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-vocalia-500 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold">3</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Intégrations CRM/ERP (1 semaine)</h3>
+                <p class="text-slate-300">
+                  Connectez VocalIA à vos systèmes existants : CRM, e-commerce, agenda, ERP.
+                  28 intégrations natives disponibles (Shopify, HubSpot, Calendly, etc.).
+                </p>
+                <div class="mt-3 text-sm text-slate-400">
+                  <strong>Livrable :</strong> Flux de données bidirectionnels fonctionnels.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-vocalia-500 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold">4</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Pilote contrôlé (2 semaines)</h3>
+                <p class="text-slate-300">
+                  Déployez sur 20% du trafic. Surveillez le taux de résolution, la satisfaction,
+                  et les transferts vers humains. Ajustez les scripts.
+                </p>
+                <div class="mt-3 text-sm text-slate-400">
+                  <strong>Livrable :</strong> Rapport de performance avec métriques clés.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold">5</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Déploiement progressif (1 mois)</h3>
+                <p class="text-slate-300">
+                  Étendez à 50%, puis 80%, puis 100% du trafic automatisable.
+                  Formez l'équipe humaine à traiter uniquement les cas complexes.
+                </p>
+                <div class="mt-3 text-sm text-slate-400">
+                  <strong>Livrable :</strong> Documentation opérationnelle et playbook de transfert.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="resultats">8. Résultats clients VocalIA</h2>
+
+        <div class="grid md:grid-cols-2 gap-6 my-8">
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center">
+                <i data-lucide="heart-pulse" class="w-6 h-6 text-rose-400"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold">Clinique Amal</h4>
+                <span class="text-sm text-slate-400">Casablanca, Santé</span>
+              </div>
+            </div>
+            <ul class="text-slate-300 space-y-2">
+              <li class="flex justify-between">
+                <span>Réduction no-shows</span>
+                <span class="text-emerald-400 font-semibold">-60%</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Appels automatisés</span>
+                <span class="text-emerald-400 font-semibold">85%</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Économie annuelle</span>
+                <span class="text-emerald-400 font-semibold">180 000 DH</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full bg-sky-500/20 flex items-center justify-center">
+                <i data-lucide="building" class="w-6 h-6 text-sky-400"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold">Agence Immo Plus</h4>
+                <span class="text-sm text-slate-400">Rabat, Immobilier</span>
+              </div>
+            </div>
+            <ul class="text-slate-300 space-y-2">
+              <li class="flex justify-between">
+                <span>Conversion leads</span>
+                <span class="text-emerald-400 font-semibold">+45%</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Qualification 24/7</span>
+                <span class="text-emerald-400 font-semibold">100%</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Leads qualifiés/mois</span>
+                <span class="text-emerald-400 font-semibold">+120</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+                <i data-lucide="shopping-bag" class="w-6 h-6 text-amber-400"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold">E-commerce Mode</h4>
+                <span class="text-sm text-slate-400">Marrakech, Retail</span>
+              </div>
+            </div>
+            <ul class="text-slate-300 space-y-2">
+              <li class="flex justify-between">
+                <span>Temps de réponse</span>
+                <span class="text-emerald-400 font-semibold">-70%</span>
+              </li>
+              <li class="flex justify-between">
+                <span>CSAT</span>
+                <span class="text-emerald-400 font-semibold">4.7/5</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Économie mensuelle</span>
+                <span class="text-emerald-400 font-semibold">45 000 DH</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="glass rounded-xl p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+                <i data-lucide="hotel" class="w-6 h-6 text-purple-400"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold">Riad Luxe</h4>
+                <span class="text-sm text-slate-400">Fès, Hôtellerie</span>
+              </div>
+            </div>
+            <ul class="text-slate-300 space-y-2">
+              <li class="flex justify-between">
+                <span>Réservations directes</span>
+                <span class="text-emerald-400 font-semibold">+35%</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Langues supportées</span>
+                <span class="text-emerald-400 font-semibold">5</span>
+              </li>
+              <li class="flex justify-between">
+                <span>Upsell automatique</span>
+                <span class="text-emerald-400 font-semibold">+22%</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 id="erreurs">9. Les 7 erreurs à éviter</h2>
+
+        <div class="space-y-4 my-8">
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">1. Vouloir tout automatiser d'un coup</h4>
+            <p class="text-slate-300 text-sm">Commencez par les FAQ simples (20% des requêtes). Étendez progressivement.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">2. Ignorer le transfert vers l'humain</h4>
+            <p class="text-slate-300 text-sm">Prévoyez toujours une option "parler à un conseiller". L'IA détecte quand escalader.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">3. Sous-estimer la base de connaissances</h4>
+            <p class="text-slate-300 text-sm">80% de la qualité vient de la KB. Investissez dans la documentation métier.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">4. Ne pas mesurer avant/après</h4>
+            <p class="text-slate-300 text-sm">Établissez des métriques baseline (coût/appel, CSAT, temps résolution) avant déploiement.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">5. Oublier la formation équipe</h4>
+            <p class="text-slate-300 text-sm">Vos agents doivent comprendre l'IA, superviser les cas complexes, et améliorer les scripts.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">6. Choisir un ton inadapté</h4>
+            <p class="text-slate-300 text-sm">Le persona doit correspondre à votre marque. Trop formel ou trop casual nuit à l'expérience.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">7. Ignorer le multilingue</h4>
+            <p class="text-slate-300 text-sm">Au Maroc, 40% des clients préfèrent le Darija. Ne les excluez pas.</p>
+          </div>
+        </div>
+
+        <h2 id="faq">10. FAQ</h2>
+
+        <div class="space-y-4 my-8">
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              L'IA vocale remplace-t-elle les agents humains ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              Non, elle les libère des tâches répétitives. Les agents se concentrent sur les cas complexes,
+              la vente conseil, et les situations émotionnelles. La plupart de nos clients réaffectent
+              leurs agents plutôt que de les licencier.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Combien de temps pour voir des résultats ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              Les premières économies sont visibles dès le premier mois. Le ROI complet se mesure
+              généralement à 3 mois, une fois le déploiement terminé et les scripts optimisés.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Et si les clients n'aiment pas parler à une IA ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              Nos études montrent que 73% des clients préfèrent une résolution immédiate par IA
+              à 5 minutes d'attente pour un humain. L'option de transfert reste toujours disponible
+              pour les 27% qui le préfèrent.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Les données clients sont-elles sécurisées ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              VocalIA est 100% conforme RGPD avec chiffrement AES-256, hébergement européen,
+              et certifications SOC2 en cours. Aucune donnée n'est utilisée pour entraîner
+              d'autres modèles.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Quel est le coût réel par minute ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              0.06€/minute avec VocalIA, contre 0.15-0.25€ chez les concurrents.
+              Ce tarif inclut la reconnaissance vocale, le traitement IA, et la synthèse vocale.
+              Pas de frais cachés.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Peut-on intégrer à notre téléphonie existante ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              Oui, VocalIA s'intègre via SIP trunk à tout PBX (Asterisk, 3CX, FreePBX, etc.)
+              ou via transfert d'appel simple. Installation en moins de 2 heures.
+            </div>
+          </details>
+        </div>
+
+        <!-- CTA Final -->
         <div class="glass rounded-xl p-8 my-12 text-center">
-          <h3 class="text-2xl font-bold mb-4">Prêt à réduire vos coûts ?</h3>
-          <p class="text-slate-400 mb-6">Obtenez une estimation personnalisée pour votre entreprise.</p>
-          <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
-            Demander une démo gratuite
-          </a>
+          <h3 class="text-2xl font-bold mb-4">Prêt à réduire vos coûts support ?</h3>
+          <p class="text-slate-400 mb-6 max-w-lg mx-auto">
+            Obtenez une estimation ROI personnalisée pour votre entreprise.
+            Notre équipe analyse gratuitement vos flux d'appels.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
+              Demander une démo gratuite
+            </a>
+            <a href="/pricing" class="inline-block px-8 py-3 border border-slate-600 hover:border-vocalia-400 rounded-xl font-semibold transition">
+              Voir les tarifs
+            </a>
+          </div>
+        </div>
+
+        <!-- Related Articles -->
+        <div class="border-t border-slate-700 pt-8 mt-12">
+          <h3 class="text-lg font-semibold mb-6">Articles connexes</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <a href="/blog/articles/clinique-amal-rappels-vocaux" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
+              <span class="text-xs text-rose-400 mb-1 block">Étude de cas</span>
+              <h4 class="font-medium">Clinique Amal : -60% de no-shows avec les rappels vocaux</h4>
+            </a>
+            <a href="/blog/articles/voice-ai-vs-chatbot-comparatif" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
+              <span class="text-xs text-vocalia-400 mb-1 block">Comparatif</span>
+              <h4 class="font-medium">Voice AI vs Chatbot : le guide complet 2026</h4>
+            </a>
+          </div>
         </div>
       </div>
     </article>

@@ -1,0 +1,30 @@
+{
+  "name": "vocalia-remotion",
+  "version": "1.0.0",
+  "description": "Programmatic video generation for VocalIA marketing",
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion render src/index.ts VocaliaDemo out/demo.mp4",
+    "build:all": "npm run build:demo && npm run build:features && npm run build:testimonial",
+    "build:demo": "remotion render src/index.ts VocaliaDemo out/demo.mp4",
+    "build:features": "remotion render src/index.ts FeatureShowcase out/features.mp4",
+    "build:testimonial": "remotion render src/index.ts Testimonial out/testimonial.mp4",
+    "build:still": "remotion still src/index.ts VocaliaDemo out/thumbnail.png",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.414",
+    "@remotion/player": "^4.0.414",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.414"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "^5.6.3"
+  },
+  "remotion": {
+    "type": "studio"
+  }
+}

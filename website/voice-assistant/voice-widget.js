@@ -24,6 +24,7 @@
     // Security: API Config
     BOOKING_API: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking',
     VOICE_API: window.VOCALIA_VOICE_API || 'https://api.vocalia.ma/v1/voice',
+    A2UI_API: window.VOCALIA_A2UI_API || 'https://api.vocalia.ma/v1/a2ui',
 
     // Branding
     primaryColor: '#4FBAF1',
@@ -583,7 +584,7 @@
           to { opacity: 0; transform: translateX(${isRTL ? '-' : ''}20px) scale(0.9); }
         }
         
-        /* A2UI Overlay */
+        /* A2UI Overlay (status bar) */
         .va-a2ui-overlay {
           position: absolute; top: 72px; left: 0; right: 0;
           padding: 6px 12px;
@@ -596,6 +597,54 @@
         }
         .va-a2ui-overlay.visible { transform: translateY(0); }
         .va-a2ui-overlay.corrected { background: rgba(245, 158, 11, 0.95); } /* Amber */
+
+        /* A2UI Container (dynamic components) - Session 250.39 */
+        .va-a2ui-container {
+          padding: 12px; margin: 8px 0;
+          animation: a2uiSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes a2uiSlideIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        /* A2UI Booking Component */
+        .va-a2ui-booking { padding: 12px; background: rgba(30,41,59,0.95); border-radius: 12px; }
+        .va-a2ui-title { font-size: 14px; font-weight: 600; margin-bottom: 12px; color: #fff; }
+        .va-a2ui-date-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .va-a2ui-slot { padding: 8px; background: rgba(94,106,210,0.2); border: 1px solid rgba(94,106,210,0.3); border-radius: 8px; color: #a5b4fc; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+        .va-a2ui-slot:hover { background: rgba(94,106,210,0.4); transform: translateY(-1px); }
+        .va-a2ui-slot.selected { background: #5e6ad2; color: #fff; border-color: #5e6ad2; }
+        .va-a2ui-confirm { width: 100%; padding: 10px; background: #10b981; border: none; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .va-a2ui-confirm:disabled { background: #374151; color: #6b7280; cursor: not-allowed; }
+        .va-a2ui-confirm:not(:disabled):hover { background: #059669; }
+        /* A2UI Lead Form Component */
+        .va-a2ui-lead-form { padding: 12px; background: rgba(30,41,59,0.95); border-radius: 12px; }
+        .va-a2ui-form { display: flex; flex-direction: column; gap: 10px; }
+        .va-a2ui-field label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+        .va-a2ui-field input { width: 100%; padding: 8px 10px; background: rgba(15,23,42,0.8); border: 1px solid rgba(148,163,184,0.2); border-radius: 6px; color: #fff; font-size: 13px; box-sizing: border-box; }
+        .va-a2ui-field input:focus { outline: none; border-color: #5e6ad2; }
+        .va-a2ui-submit { padding: 10px; background: #5e6ad2; border: none; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; }
+        .va-a2ui-submit:hover { background: #4f5bc7; }
+        /* A2UI Cart Component */
+        .va-a2ui-cart { padding: 12px; background: rgba(30,41,59,0.95); border-radius: 12px; }
+        .va-a2ui-items { margin: 10px 0; }
+        .va-a2ui-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(148,163,184,0.1); font-size: 12px; }
+        .va-a2ui-item-name { color: #fff; flex: 1; }
+        .va-a2ui-item-qty { color: #94a3b8; margin: 0 8px; }
+        .va-a2ui-item-price { color: #10b981; font-weight: 600; }
+        .va-a2ui-total { display: flex; justify-content: space-between; padding: 10px 0; font-weight: 600; }
+        .va-a2ui-total-value { color: #10b981; font-size: 16px; }
+        .va-a2ui-checkout { width: 100%; padding: 10px; background: #10b981; border: none; border-radius: 8px; color: #fff; font-weight: 600; cursor: pointer; }
+        .va-a2ui-checkout:hover { background: #059669; }
+        /* A2UI Confirmation Component */
+        .va-a2ui-confirmation { padding: 16px; background: rgba(30,41,59,0.95); border-radius: 12px; text-align: center; }
+        .va-a2ui-icon { font-size: 32px; margin-bottom: 8px; }
+        .va-a2ui-message { font-size: 13px; color: #94a3b8; margin: 8px 0; }
+        .va-a2ui-details { background: rgba(15,23,42,0.5); border-radius: 8px; padding: 10px; margin: 12px 0; text-align: left; }
+        .va-a2ui-detail-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; }
+        .va-a2ui-detail-row span:first-child { color: #94a3b8; }
+        .va-a2ui-detail-row span:last-child { color: #fff; font-weight: 500; }
+        .va-a2ui-close { margin-top: 12px; padding: 8px 24px; background: #5e6ad2; border: none; border-radius: 8px; color: #fff; cursor: pointer; }
         
         @media (max-width: 480px) { .va-panel { width: calc(100vw - 40px); ${position}: -10px; } }
       </style>
@@ -1276,8 +1325,20 @@
   }
 
   // ============================================================
-  // A2UI RENDERER (Agentic UI)
+  // A2UI RENDERER (Agentic UI) - Session 250.39: Full Pipeline
+  // Pipeline: Agent Context → API → Widget DOM → User → AG-UI Events
   // ============================================================
+
+  // A2UI State
+  const a2uiState = {
+    currentComponent: null,
+    selectedSlot: null,
+    formData: {}
+  };
+
+  /**
+   * Update A2UI status overlay (verification badge)
+   */
   function updateA2UI(metadata) {
       if (!metadata) return;
       const overlay = document.getElementById('va-a2ui-overlay');
@@ -1286,37 +1347,237 @@
       // Reset classes
       overlay.className = 'va-a2ui-overlay';
 
-      // Content Logic
-      let content = '';
-      let isVisible = false;
+      // Handle status metadata (verification overlay)
+      if (metadata.verification) {
+        let content = '';
+        let isVisible = false;
 
-      if (metadata.verification === 'corrected') {
-        content = `
-        <span style="font-size: 14px;">⚡</span> 
-        <span>Auto-Corrected (${metadata.latency}ms)</span>
-      `;
-        overlay.classList.add('corrected');
-        isVisible = true;
-      } else if (metadata.verification === 'approved') {
-        content = `
-        <span style="font-size: 14px;">🛡️</span> 
-        <span>Verified (${metadata.latency}ms)</span>
-      `;
-        isVisible = true;
+        if (metadata.verification === 'corrected') {
+          content = `<span style="font-size: 14px;">⚡</span> <span>Auto-Corrected (${metadata.latency}ms)</span>`;
+          overlay.classList.add('corrected');
+          isVisible = true;
+        } else if (metadata.verification === 'approved') {
+          content = `<span style="font-size: 14px;">🛡️</span> <span>Verified (${metadata.latency}ms)</span>`;
+          isVisible = true;
+        }
+
+        if (isVisible) {
+          overlay.innerHTML = content;
+          void overlay.offsetWidth;
+          overlay.classList.add('visible');
+          setTimeout(() => overlay.classList.remove('visible'), 4000);
+        }
+        return;
       }
 
-      if (isVisible) {
-        overlay.innerHTML = content;
-        // Trigger reflow
-        void overlay.offsetWidth;
-        overlay.classList.add('visible');
-
-        // Auto-hide
-        setTimeout(() => {
-          overlay.classList.remove('visible');
-        }, 4000);
+      // Handle full A2UI component injection
+      if (metadata.ui) {
+        injectA2UIComponent(metadata.ui);
       }
     }
+
+  /**
+   * Request A2UI component from API
+   * @param {string} type - Component type: booking, lead_form, cart, confirmation
+   * @param {Object} context - Context data for generation
+   */
+  async function requestA2UI(type, context = {}) {
+    try {
+      AGUI.custom('a2ui_request', { type, context });
+
+      const response = await fetch(`${CONFIG.A2UI_API}/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type,
+          context,
+          language: state.locale || 'fr',
+          useStitch: false // Use templates for speed
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`A2UI API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data.success && data.ui) {
+        injectA2UIComponent(data.ui);
+        AGUI.custom('a2ui_generated', { type, source: data.meta?.source, latency: data.meta?.latency });
+      }
+
+      return data;
+    } catch (error) {
+      console.error('[A2UI] Request failed:', error);
+      AGUI.custom('a2ui_error', { type, error: error.message });
+      return null;
+    }
+  }
+
+  /**
+   * Inject A2UI component into messages area
+   * @param {Object} ui - UI object with html, css, type, actions
+   */
+  function injectA2UIComponent(ui) {
+    if (!ui || !ui.html) return;
+
+    const messagesEl = document.getElementById('va-messages');
+    if (!messagesEl) return;
+
+    // Remove existing A2UI container
+    const existingContainer = messagesEl.querySelector('.va-a2ui-container');
+    if (existingContainer) {
+      existingContainer.remove();
+    }
+
+    // Sanitize HTML (basic XSS prevention)
+    const sanitizedHTML = sanitizeA2UIHTML(ui.html);
+
+    // Create container
+    const container = document.createElement('div');
+    container.className = 'va-a2ui-container';
+    container.setAttribute('data-a2ui-type', ui.type);
+    container.innerHTML = sanitizedHTML;
+
+    // Inject CSS if provided
+    if (ui.css) {
+      const styleId = 'va-a2ui-dynamic-css';
+      let styleEl = document.getElementById(styleId);
+      if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = styleId;
+        document.head.appendChild(styleEl);
+      }
+      styleEl.textContent = ui.css;
+    }
+
+    // Append to messages
+    messagesEl.appendChild(container);
+
+    // Scroll to show component
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+
+    // Bind event listeners
+    bindA2UIEvents(container, ui.type, ui.actions || []);
+
+    // Update state
+    a2uiState.currentComponent = ui.type;
+
+    // AG-UI event
+    AGUI.custom('a2ui_injected', { type: ui.type });
+
+    console.log(`[A2UI] Injected ${ui.type} component`);
+  }
+
+  /**
+   * Sanitize A2UI HTML to prevent XSS
+   */
+  function sanitizeA2UIHTML(html) {
+    // Remove script tags
+    let clean = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '');
+    // Remove event handlers
+    clean = clean.replace(/\son\w+="[^"]*"/gi, '');
+    clean = clean.replace(/\son\w+='[^']*'/gi, '');
+    // Remove javascript: URLs
+    clean = clean.replace(/javascript:/gi, '');
+    return clean;
+  }
+
+  /**
+   * Bind AG-UI events to A2UI component
+   */
+  function bindA2UIEvents(container, type, actions) {
+    // Booking: slot selection + confirm
+    if (type === 'booking') {
+      const slots = container.querySelectorAll('[data-a2ui-action="select_slot"]');
+      const confirmBtn = container.querySelector('[data-a2ui-action="confirm_booking"]');
+
+      slots.forEach(slot => {
+        slot.addEventListener('click', () => {
+          // Deselect all
+          slots.forEach(s => s.classList.remove('selected'));
+          // Select this one
+          slot.classList.add('selected');
+          a2uiState.selectedSlot = slot.dataset.slot;
+          // Enable confirm
+          if (confirmBtn) confirmBtn.disabled = false;
+          // AG-UI event
+          AGUI.custom('a2ui_slot_selected', { slot: a2uiState.selectedSlot });
+          trackEvent('a2ui_slot_selected');
+        });
+      });
+
+      if (confirmBtn) {
+        confirmBtn.addEventListener('click', () => {
+          if (a2uiState.selectedSlot) {
+            AGUI.custom('a2ui_booking_confirmed', { slot: a2uiState.selectedSlot });
+            trackEvent('a2ui_booking_confirmed');
+            // Show confirmation
+            requestA2UI('confirmation', {
+              icon: '✅',
+              title: state.langData?.ui?.bookingConfirmed || 'Rendez-vous confirmé !',
+              message: `Créneau: ${a2uiState.selectedSlot}`
+            });
+          }
+        });
+      }
+    }
+
+    // Lead Form: submission
+    if (type === 'lead_form') {
+      const form = container.querySelector('[data-a2ui-action="submit_lead"]');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+          a2uiState.formData = data;
+          AGUI.custom('a2ui_lead_submitted', { data });
+          trackEvent('a2ui_lead_submitted');
+          // Remove form, show confirmation
+          requestA2UI('confirmation', {
+            icon: '📧',
+            title: state.langData?.ui?.leadSubmitted || 'Merci !',
+            message: 'Nous vous contacterons bientôt.'
+          });
+        });
+      }
+    }
+
+    // Cart: checkout
+    if (type === 'cart') {
+      const checkoutBtn = container.querySelector('[data-a2ui-action="checkout"]');
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+          AGUI.custom('a2ui_checkout_clicked', {});
+          trackEvent('a2ui_checkout_clicked');
+          // This would typically redirect to payment
+          addMessage(state.langData?.ui?.checkoutRedirect || 'Redirection vers le paiement...', 'assistant');
+        });
+      }
+    }
+
+    // Confirmation: close
+    if (type === 'confirmation') {
+      const closeBtn = container.querySelector('[data-a2ui-action="close"]');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          container.remove();
+          a2uiState.currentComponent = null;
+          AGUI.custom('a2ui_closed', { type });
+        });
+      }
+    }
+  }
+
+  /**
+   * Expose A2UI API to window for external use
+   */
+  window.VocaliaA2UI = {
+    request: requestA2UI,
+    inject: injectA2UIComponent,
+    getState: () => ({ ...a2uiState })
+  };
 
     // ============================================================
     // PANEL CONTROL

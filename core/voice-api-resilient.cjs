@@ -55,6 +55,8 @@ try {
   console.warn('[VoiceAPI] Translation Supervisor not loaded:', e.message);
 }
 const eventBus = require('./AgencyEventBus.cjs');
+// Session 250.39: A2UI Service for dynamic UI generation
+const A2UIService = require('./a2ui-service.cjs');
 
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1600,6 +1602,89 @@ function startServer(port = 3004) {
           createdAt: session.createdAt
         }
       }));
+      return;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Session 250.39: A2UI Endpoint - Dynamic UI Generation
+    // Pipeline: Agent Context → Stitch/Templates → Widget DOM → AG-UI Events
+    // ─────────────────────────────────────────────────────────────────────────
+    if (req.url === '/a2ui/generate' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          return;
+        }
+        body += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const bodyParsed = safeJsonParse(body, '/a2ui/generate request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
+          }
+
+          const { type, context = {}, language = 'fr', useStitch = false } = bodyParsed.data;
+
+          if (!type) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'type is required (booking, lead_form, cart, confirmation)' }));
+            return;
+          }
+
+          // Initialize A2UI service if needed
+          await A2UIService.initialize();
+
+          // Generate UI component
+          const uiResult = await A2UIService.generateUI({ type, context, language, useStitch });
+
+          // Emit AG-UI event
+          eventBus.emit('a2ui_generated', {
+            type,
+            source: uiResult.source,
+            latency: uiResult.latency,
+            actions: uiResult.actions
+          });
+
+          console.log(`[A2UI] Generated ${type} (${uiResult.source}) in ${uiResult.latency}ms`);
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            ui: {
+              html: uiResult.html,
+              css: uiResult.css,
+              type: uiResult.type,
+              actions: uiResult.actions
+            },
+            meta: {
+              source: uiResult.source,
+              latency: uiResult.latency,
+              cached: uiResult.cached
+            }
+          }));
+        } catch (err) {
+          console.error('[A2UI] Error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
+    }
+
+    // A2UI Health endpoint
+    if (req.url === '/a2ui/health' && req.method === 'GET') {
+      await A2UIService.initialize();
+      const health = await A2UIService.health();
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(health, null, 2));
       return;
     }
 

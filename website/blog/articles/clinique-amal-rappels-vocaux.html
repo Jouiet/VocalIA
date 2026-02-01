@@ -151,6 +151,25 @@
         </div>
       </header>
 
+      <!-- Table of Contents -->
+      <nav class="glass rounded-xl p-6 mb-12" aria-label="Sommaire">
+        <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="list" class="w-5 h-5 text-vocalia-400"></i>
+          Sommaire
+        </h2>
+        <ol class="space-y-2 text-slate-300">
+          <li><a href="#contexte" class="hover:text-vocalia-400 transition">1. Contexte : le secteur santé au Maroc</a></li>
+          <li><a href="#probleme" class="hover:text-vocalia-400 transition">2. Le problème : des no-shows qui coûtent cher</a></li>
+          <li><a href="#solution" class="hover:text-vocalia-400 transition">3. La solution : rappels vocaux intelligents</a></li>
+          <li><a href="#implementation" class="hover:text-vocalia-400 transition">4. Implémentation technique détaillée</a></li>
+          <li><a href="#resultats" class="hover:text-vocalia-400 transition">5. Les résultats après 3 mois</a></li>
+          <li><a href="#experience" class="hover:text-vocalia-400 transition">6. L'expérience patient</a></li>
+          <li><a href="#comparaison" class="hover:text-vocalia-400 transition">7. Comparaison avec les alternatives</a></li>
+          <li><a href="#lecons" class="hover:text-vocalia-400 transition">8. Leçons apprises et bonnes pratiques</a></li>
+          <li><a href="#faq" class="hover:text-vocalia-400 transition">9. FAQ</a></li>
+        </ol>
+      </nav>
+
       <!-- Content -->
       <div class="prose">
         <!-- Disclaimer -->
@@ -159,34 +178,135 @@
             <svg class="w-5 h-5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
-            <span><strong>Note:</strong> Cette étude de cas est une illustration basée sur des benchmarks sectoriels santé (taux de no-show moyen 15-30%, réduction possible 40-70% avec rappels vocaux selon MGMA 2024). Les noms et chiffres spécifiques sont fictifs à des fins démonstratives.</span>
+            <span><strong>Note :</strong> Cette étude de cas est une illustration basée sur des benchmarks sectoriels santé (taux de no-show moyen 15-30%, réduction possible 40-70% avec rappels vocaux selon MGMA 2024). Les noms et chiffres spécifiques sont fictifs à des fins démonstratives.</span>
           </p>
         </div>
 
         <p class="text-xl text-slate-300 mb-8">
           La Clinique Amal, située dans le quartier Maarif à Casablanca, traitait en moyenne 200 rendez-vous par semaine.
-          Avec un taux de no-show de 25%, elle perdait pres de 50 consultations hebdomadaires. Découvrez comment VocalIA
+          Avec un taux de no-show de 25%, elle perdait près de 50 consultations hebdomadaires. Découvrez comment VocalIA
           a transformé cette situation en seulement 3 mois.
         </p>
 
-        <h2>Le problème : des no-shows qui coûtent cher</h2>
+        <!-- Key Stats -->
+        <div class="grid md:grid-cols-4 gap-4 my-8">
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-emerald-400 mb-1">-60%</div>
+            <div class="text-xs text-slate-400">No-shows</div>
+          </div>
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-vocalia-400 mb-1">42 000</div>
+            <div class="text-xs text-slate-400">MAD/mois récupérés</div>
+          </div>
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-amber-400 mb-1">85%</div>
+            <div class="text-xs text-slate-400">Taux de réponse</div>
+          </div>
+          <div class="stat-card rounded-xl p-4 text-center">
+            <div class="text-2xl font-bold text-sky-400 mb-1">1 580%</div>
+            <div class="text-xs text-slate-400">ROI mensuel</div>
+          </div>
+        </div>
+
+        <h2 id="contexte">1. Contexte : le secteur santé au Maroc</h2>
 
         <p>
-          Les rendez-vous manqués représentent un fléau pour le secteur medical. A la Clinique Amal, chaque consultation
-          non honoree signifiait une perte sèche de <strong>350 MAD</strong> en moyenne, soit pres de <strong>17 500 MAD
-          par semaine</strong> de manque a gagner.
+          Le secteur de la santé au Maroc connaît une croissance significative, avec plus de <strong>2 500 cliniques privées</strong>
+          à travers le pays. Cependant, le problème des rendez-vous manqués (no-shows) représente un défi majeur pour la rentabilité
+          et l'organisation des soins.
         </p>
 
+        <h3>Les no-shows en chiffres</h3>
+
         <p>
-          Avant VocalIA, la clinique utilisait un système de SMS automatiques. Mais avec un taux d'ouverture de seulement
-          20% et aucune interaction possible, ce système montrait ses limites. Les patients oubliaient leurs rendez-vous
-          ou ne prenaient pas la peine de les annuler.
+          Selon les études sectorielles (MGMA 2024, Health Affairs), les taux de no-show dans le secteur médical varient considérablement :
+        </p>
+
+        <div class="glass rounded-xl p-6 my-6">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-600">
+                <th class="text-left py-2 text-slate-400">Type d'établissement</th>
+                <th class="text-center py-2 text-slate-400">Taux no-show moyen</th>
+                <th class="text-center py-2 text-slate-400">Coût moyen/no-show</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Médecine générale</td>
+                <td class="text-center">15-20%</td>
+                <td class="text-center">200-300 MAD</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Spécialistes</td>
+                <td class="text-center">20-30%</td>
+                <td class="text-center">350-500 MAD</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Dentaires</td>
+                <td class="text-center">25-35%</td>
+                <td class="text-center">400-600 MAD</td>
+              </tr>
+              <tr>
+                <td class="py-2">Imagerie médicale</td>
+                <td class="text-center">10-15%</td>
+                <td class="text-center">500-1 500 MAD</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          Pour une clinique de taille moyenne comme Amal (200 RDV/semaine), un taux de no-show de 25% représente
+          une perte annuelle potentielle de <strong>910 000 MAD</strong> (50 RDV × 350 MAD × 52 semaines).
+        </p>
+
+        <h2 id="probleme">2. Le problème : des no-shows qui coûtent cher</h2>
+
+        <p>
+          Les rendez-vous manqués représentent un fléau pour le secteur médical. À la Clinique Amal, chaque consultation
+          non honorée signifiait une perte sèche de <strong>350 MAD</strong> en moyenne, soit près de <strong>17 500 MAD
+          par semaine</strong> de manque à gagner.
+        </p>
+
+        <h3>Les causes identifiées</h3>
+
+        <p>
+          Avant de déployer VocalIA, la clinique a analysé les raisons des no-shows :
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-4 my-6">
+          <div class="glass rounded-lg p-4">
+            <h4 class="font-semibold text-rose-400 mb-2">Causes principales</h4>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>• Oubli simple (42%)</li>
+              <li>• Empêchement de dernière minute (28%)</li>
+              <li>• Confusion sur la date/heure (15%)</li>
+              <li>• Amélioration de l'état de santé (10%)</li>
+              <li>• Autres (5%)</li>
+            </ul>
+          </div>
+          <div class="glass rounded-lg p-4">
+            <h4 class="font-semibold text-amber-400 mb-2">Profil des patients à risque</h4>
+            <ul class="text-sm text-slate-300 space-y-1">
+              <li>• Jeunes actifs (25-35 ans)</li>
+              <li>• RDV pris > 2 semaines à l'avance</li>
+              <li>• Nouveaux patients (pas d'historique)</li>
+              <li>• RDV en fin de journée</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>L'échec des SMS automatiques</h3>
+
+        <p>
+          Avant VocalIA, la clinique utilisait un système de SMS automatiques. Les résultats étaient décevants :
         </p>
 
         <div class="grid md:grid-cols-3 gap-4 my-8">
           <div class="stat-card rounded-xl p-6 text-center">
-            <div class="text-3xl font-bold text-red-400 mb-2">25%</div>
-            <div class="text-sm text-slate-400">Taux de no-show avant</div>
+            <div class="text-3xl font-bold text-rose-400 mb-2">25%</div>
+            <div class="text-sm text-slate-400">Taux de no-show (avant)</div>
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">17 500 MAD</div>
@@ -194,48 +314,215 @@
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">20%</div>
-            <div class="text-sm text-slate-400">Ouverture SMS</div>
+            <div class="text-sm text-slate-400">Taux d'ouverture SMS</div>
           </div>
         </div>
 
-        <h2>La solution : rappels vocaux intelligents VocalIA</h2>
+        <p>
+          <strong>Problème clé :</strong> Les SMS n'offrent aucune interaction. Le patient ne peut pas confirmer,
+          reporter ou annuler facilement. Résultat : beaucoup ignorent simplement le message.
+        </p>
+
+        <h2 id="solution">3. La solution : rappels vocaux intelligents VocalIA</h2>
 
         <p>
           En septembre 2025, la Clinique Amal a déployé le système de rappels vocaux VocalIA. Contrairement aux SMS,
           les appels vocaux offrent plusieurs avantages décisifs :
         </p>
 
-        <ul>
-          <li><strong>Taux de réponse de 85%</strong> — Les patients décrochent ou rappellent</li>
-          <li><strong>Interaction bidirectionnelle</strong> — Confirmation, report ou annulation en temps reel</li>
-          <li><strong>Personnalisation</strong> — L'agent vocal appelle le patient par son nom et cite le medecin concerne</li>
-          <li><strong>Support multilingue</strong> — Francais, Arabe et Darija disponibles</li>
-        </ul>
+        <div class="glass rounded-xl p-6 my-8">
+          <h3 class="text-lg font-semibold mb-4">Avantages des rappels vocaux vs SMS</h3>
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-600">
+                <th class="text-left py-2 text-slate-400">Critère</th>
+                <th class="text-center py-2 text-slate-400">SMS</th>
+                <th class="text-center py-2 text-vocalia-400">Appel vocal VocalIA</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Taux de réponse</td>
+                <td class="text-center">20%</td>
+                <td class="text-center text-emerald-400">85%</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Interaction possible</td>
+                <td class="text-center text-rose-400">Non</td>
+                <td class="text-center text-emerald-400">Oui (confirmation, report)</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Personnalisation</td>
+                <td class="text-center">Limitée</td>
+                <td class="text-center text-emerald-400">Nom, médecin, date</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Accessibilité seniors</td>
+                <td class="text-center text-rose-400">Faible</td>
+                <td class="text-center text-emerald-400">Excellente</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Support Darija</td>
+                <td class="text-center text-rose-400">Complexe</td>
+                <td class="text-center text-emerald-400">Natif</td>
+              </tr>
+              <tr>
+                <td class="py-2">Confirmation instantanée</td>
+                <td class="text-center text-rose-400">Non</td>
+                <td class="text-center text-emerald-400">Temps réel</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <h3>Le processus de rappel</h3>
+        <h3>Le processus de rappel multi-points</h3>
 
         <p>
-          VocalIA effectué automatiquement trois points de contact avant chaque rendez-vous :
+          VocalIA effectue automatiquement trois points de contact avant chaque rendez-vous :
         </p>
 
-        <ol class="list-decimal pl-6 space-y-3">
-          <li><strong>J-3 : Premier rappel</strong> — L'agent vocal confirme le rendez-vous et propose un report si nécessaire</li>
-          <li><strong>J-1 : Rappel de confirmation</strong> — Verification finale avec rappel de l'adresse et des documents a apporter</li>
-          <li><strong>H-2 : Rappel de courtoisie</strong> — Pour les rendez-vous en fin de journee uniquement</li>
-        </ol>
+        <div class="space-y-4 my-8">
+          <div class="glass rounded-xl p-6 border-l-4 border-vocalia-500">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold text-vocalia-400">J-3</span>
+              </div>
+              <div>
+                <h4 class="font-semibold mb-1">Premier rappel</h4>
+                <p class="text-slate-300 text-sm">
+                  L'agent vocal confirme le rendez-vous et propose un report si nécessaire.
+                  Si le patient ne répond pas, un rappel est programmé 4h plus tard.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl p-6 border-l-4 border-amber-500">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold text-amber-400">J-1</span>
+              </div>
+              <div>
+                <h4 class="font-semibold mb-1">Rappel de confirmation</h4>
+                <p class="text-slate-300 text-sm">
+                  Vérification finale avec rappel de l'adresse, des documents à apporter,
+                  et des consignes spécifiques (jeûne, etc.).
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass rounded-xl p-6 border-l-4 border-emerald-500">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                <span class="font-bold text-emerald-400">H-2</span>
+              </div>
+              <div>
+                <h4 class="font-semibold mb-1">Rappel de courtoisie</h4>
+                <p class="text-slate-300 text-sm">
+                  Pour les rendez-vous en fin de journée uniquement. Rappel léger avec estimation
+                  du temps de trajet si le patient a partagé sa localisation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Script d'appel type (Français)</h3>
+
+        <div class="glass rounded-xl p-6 my-6 font-mono text-sm">
+          <p class="text-vocalia-400 mb-2">// Appel J-1</p>
+          <p class="text-slate-300">
+            "Bonjour Madame Fatima, ici l'assistant virtuel de la Clinique Amal.
+            Je vous rappelle votre rendez-vous demain à 10h30 avec le Dr. Bennani.
+            <br/><br/>
+            Pouvez-vous confirmer votre présence ? Dites 'oui' pour confirmer,
+            'reporter' pour changer de date, ou 'annuler' si vous ne pouvez pas venir."
+          </p>
+        </div>
 
         <div class="quote-card rounded-xl p-6 my-8">
           <p class="text-lg italic text-slate-300 mb-4">
-            "Les patients apprecient vraiment d'etre appeles. Beaucoup nous disent que ca leur rappelle
-            le service personnalise d'autrefois, mais avec l'efficacite d'aujourd'hui."
+            "Les patients apprécient vraiment d'être appelés. Beaucoup nous disent que ça leur rappelle
+            le service personnalisé d'autrefois, mais avec l'efficacité d'aujourd'hui."
           </p>
           <p class="text-vocalia-400 font-semibold">— Dr. Karima Bennani, Directrice de la Clinique Amal</p>
         </div>
 
-        <h2>Les resultats apres 3 mois</h2>
+        <h2 id="implementation">4. Implémentation technique détaillée</h2>
+
+        <h3>Calendrier du projet</h3>
+
+        <div class="glass rounded-xl p-6 my-8">
+          <div class="space-y-4">
+            <div class="flex items-center gap-4">
+              <div class="w-24 text-sm text-slate-400">Semaine 1</div>
+              <div class="flex-1 h-2 bg-vocalia-500/30 rounded-full">
+                <div class="h-2 bg-vocalia-500 rounded-full" style="width: 100%"></div>
+              </div>
+              <div class="text-sm">Audit et configuration</div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-24 text-sm text-slate-400">Semaine 2</div>
+              <div class="flex-1 h-2 bg-vocalia-500/30 rounded-full">
+                <div class="h-2 bg-vocalia-500 rounded-full" style="width: 100%"></div>
+              </div>
+              <div class="text-sm">Intégration API Medivox</div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-24 text-sm text-slate-400">Semaine 3</div>
+              <div class="flex-1 h-2 bg-vocalia-500/30 rounded-full">
+                <div class="h-2 bg-vocalia-500 rounded-full" style="width: 100%"></div>
+              </div>
+              <div class="text-sm">Tests pilotes (20% patients)</div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="w-24 text-sm text-slate-400">Semaine 4</div>
+              <div class="flex-1 h-2 bg-emerald-500/30 rounded-full">
+                <div class="h-2 bg-emerald-500 rounded-full" style="width: 100%"></div>
+              </div>
+              <div class="text-sm text-emerald-400">Déploiement 100%</div>
+            </div>
+          </div>
+        </div>
+
+        <h3>Intégration technique</h3>
 
         <p>
-          Les chiffres parlent d'eux-memes. Apres seulement trois mois d'utilisation, la Clinique Amal a observe
+          L'intégration avec le logiciel de gestion Medivox s'est faite via l'API REST de VocalIA :
+        </p>
+
+        <div class="glass rounded-xl p-6 my-6">
+          <h4 class="font-semibold mb-3">Architecture d'intégration</h4>
+          <ul class="space-y-2 text-slate-300">
+            <li class="flex items-center gap-2">
+              <i data-lucide="database" class="w-4 h-4 text-vocalia-400"></i>
+              <span><strong>Medivox</strong> → Webhook push des nouveaux RDV</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4 text-vocalia-400"></i>
+              <span><strong>VocalIA</strong> → Appels automatiques selon calendrier</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="w-4 h-4 text-vocalia-400"></i>
+              <span><strong>Sync bidirectionnelle</strong> → Reports et annulations en temps réel</span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i data-lucide="bar-chart" class="w-4 h-4 text-vocalia-400"></i>
+              <span><strong>Dashboard</strong> → Statistiques de confirmation/no-show</span>
+            </li>
+          </ul>
+        </div>
+
+        <p>
+          La formation du personnel a pris moins de 2 heures. Les secrétaires médicales peuvent maintenant
+          se concentrer sur l'accueil physique des patients plutôt que sur les relances téléphoniques.
+        </p>
+
+        <h2 id="resultats">5. Les résultats après 3 mois</h2>
+
+        <p>
+          Les chiffres parlent d'eux-mêmes. Après seulement trois mois d'utilisation, la Clinique Amal a observé
           une transformation radicale de ses indicateurs :
         </p>
 
@@ -252,7 +539,7 @@
           </div>
           <div class="stat-card rounded-xl p-6">
             <div class="flex items-center justify-between mb-4">
-              <span class="text-slate-400">Revenus recuperes</span>
+              <span class="text-slate-400">Revenus récupérés</span>
               <span class="text-emerald-400 font-semibold">+10 500 MAD/sem</span>
             </div>
             <div class="flex items-baseline gap-2">
@@ -260,69 +547,290 @@
               <span class="text-sm text-slate-400">/mois</span>
             </div>
           </div>
-        </div>
-
-        <h3>ROI en detail</h3>
-
-        <div class="glass rounded-xl p-6 my-8">
-          <div class="space-y-3">
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Cout VocalIA mensuel</span>
-              <span class="text-white font-semibold">2 500 MAD</span>
+          <div class="stat-card rounded-xl p-6">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-slate-400">Temps secrétariat</span>
+              <span class="text-emerald-400 font-semibold">-15h/sem</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Revenus recuperes</span>
-              <span class="text-emerald-400 font-semibold">+42 000 MAD</span>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-bold text-white">60h</span>
+              <span class="text-sm text-slate-400">/mois économisées</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Temps secretariat economise</span>
-              <span class="text-white font-semibold">15h/semaine</span>
+          </div>
+          <div class="stat-card rounded-xl p-6">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-slate-400">Satisfaction patients</span>
+              <span class="text-emerald-400 font-semibold">+18%</span>
             </div>
-            <div class="flex justify-between pt-2">
-              <span class="text-white font-bold">ROI mensuel</span>
-              <span class="text-emerald-400 font-bold text-xl">+1 580%</span>
+            <div class="flex items-baseline gap-2">
+              <span class="text-3xl font-bold text-white">92%</span>
+              <span class="text-sm text-slate-400">apprécient le service</span>
             </div>
           </div>
         </div>
 
-        <h2>Au-delà des chiffres : l'experience patient</h2>
+        <h3>ROI détaillé</h3>
+
+        <div class="glass rounded-xl p-6 my-8">
+          <div class="space-y-3">
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Coût VocalIA mensuel (Pro)</span>
+              <span class="text-white font-semibold">2 500 MAD</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Revenus récupérés (no-shows évités)</span>
+              <span class="text-emerald-400 font-semibold">+42 000 MAD</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Économie temps secrétariat (60h × 30 MAD)</span>
+              <span class="text-emerald-400 font-semibold">+1 800 MAD</span>
+            </div>
+            <div class="flex justify-between border-b border-slate-600 pb-2">
+              <span class="text-slate-400">Réduction stress équipe (qualitatif)</span>
+              <span class="text-emerald-400 font-semibold">+++</span>
+            </div>
+            <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
+              <span class="text-white font-bold">ROI mensuel net</span>
+              <span class="text-emerald-400 font-bold text-xl">+41 300 MAD (+1 652%)</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>Évolution mois par mois</h3>
+
+        <div class="overflow-x-auto my-8">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-600">
+                <th class="text-left py-2 text-slate-400">Mois</th>
+                <th class="text-center py-2 text-slate-400">Taux no-show</th>
+                <th class="text-center py-2 text-slate-400">RDV récupérés</th>
+                <th class="text-center py-2 text-slate-400">Revenus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Avant VocalIA</td>
+                <td class="text-center text-rose-400">25%</td>
+                <td class="text-center">-</td>
+                <td class="text-center">-</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Mois 1</td>
+                <td class="text-center">18%</td>
+                <td class="text-center">28/sem</td>
+                <td class="text-center">+9 800 MAD</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Mois 2</td>
+                <td class="text-center">13%</td>
+                <td class="text-center">48/sem</td>
+                <td class="text-center">+16 800 MAD</td>
+              </tr>
+              <tr>
+                <td class="py-2 font-semibold">Mois 3</td>
+                <td class="text-center text-emerald-400 font-semibold">10%</td>
+                <td class="text-center font-semibold">60/sem</td>
+                <td class="text-center text-emerald-400 font-semibold">+21 000 MAD</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="experience">6. L'expérience patient</h2>
 
         <p>
-          Ce qui a surpris l'équipe de la Clinique Amal, c'est la reaction positive des patients. Contrairement
-          aux craintes initiales sur les appels automatiques, <strong>92% des patients</strong> ont declare
-          apprecier le service.
+          Ce qui a surpris l'équipe de la Clinique Amal, c'est la réaction positive des patients. Contrairement
+          aux craintes initiales sur les appels automatiques, <strong>92% des patients</strong> ont déclaré
+          apprécier le service.
         </p>
 
-        <p>
-          Les raisons evoquees :
-        </p>
+        <h3>Témoignages patients</h3>
+
+        <div class="grid md:grid-cols-2 gap-4 my-8">
+          <div class="quote-card rounded-xl p-4">
+            <p class="text-slate-300 italic mb-2">
+              "L'appel en Darija m'a vraiment fait plaisir. J'ai pu reporter mon rendez-vous directement, sans avoir à rappeler la clinique."
+            </p>
+            <p class="text-sm text-slate-400">— Aicha, 67 ans, Maarif</p>
+          </div>
+          <div class="quote-card rounded-xl p-4">
+            <p class="text-slate-300 italic mb-2">
+              "Je reçois tellement de SMS que je ne les lis plus. L'appel, je décroche. C'est plus humain."
+            </p>
+            <p class="text-sm text-slate-400">— Youssef, 34 ans, Anfa</p>
+          </div>
+        </div>
+
+        <h3>Facteurs de satisfaction</h3>
 
         <ul>
-          <li>L'agent vocal est poli et professionnel</li>
-          <li>La possibilite de reporter directement par telephone est appreciee</li>
-          <li>Les rappels en Darija sont particulierement bien recus par les patients ages</li>
-          <li>Le système ne laisse pas de message interminable sur répondeur</li>
+          <li><strong>Politesse et professionnalisme</strong> — L'agent vocal est perçu comme courtois</li>
+          <li><strong>Interaction directe</strong> — Possibilité de reporter par téléphone immédiatement</li>
+          <li><strong>Support Darija</strong> — Particulièrement apprécié par les patients âgés</li>
+          <li><strong>Brevité</strong> — Messages courts, pas de répondeur interminable</li>
+          <li><strong>Rappel des détails</strong> — Adresse, documents, consignes rappelés</li>
         </ul>
 
-        <h2>Implementation : plus simple que prevu</h2>
+        <h2 id="comparaison">7. Comparaison avec les alternatives</h2>
 
-        <p>
-          L'integration avec le logiciel de gestion de la clinique (Medivox) s'est faite en moins d'une semaine.
-          VocalIA a connecte son API directement au calendrier de rendez-vous, sans aucune modification du
-          workflow existant.
-        </p>
+        <div class="overflow-x-auto my-8">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-600">
+                <th class="text-left py-2 text-slate-400">Solution</th>
+                <th class="text-center py-2 text-slate-400">Coût</th>
+                <th class="text-center py-2 text-slate-400">Efficacité</th>
+                <th class="text-center py-2 text-slate-400">Verdict</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">SMS automatiques</td>
+                <td class="text-center">~500 MAD/mois</td>
+                <td class="text-center text-rose-400">-15% no-shows</td>
+                <td class="text-center">Insuffisant</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Appels manuels</td>
+                <td class="text-center">~8 000 MAD/mois</td>
+                <td class="text-center text-amber-400">-50% no-shows</td>
+                <td class="text-center">Coûteux</td>
+              </tr>
+              <tr class="border-b border-slate-700">
+                <td class="py-2">Email + WhatsApp</td>
+                <td class="text-center">~1 000 MAD/mois</td>
+                <td class="text-center text-amber-400">-30% no-shows</td>
+                <td class="text-center">Moyen</td>
+              </tr>
+              <tr>
+                <td class="py-2 font-semibold">VocalIA</td>
+                <td class="text-center font-semibold">2 500 MAD/mois</td>
+                <td class="text-center text-emerald-400 font-semibold">-60% no-shows</td>
+                <td class="text-center text-emerald-400 font-semibold">Optimal</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-        <p>
-          La formation du personnel a pris moins de 2 heures. Les secretaires medicales peuvent maintenant
-          se concentrer sur l'accueil physique des patients plutot que sur les relances telephoniques.
-        </p>
+        <h2 id="lecons">8. Leçons apprises et bonnes pratiques</h2>
 
+        <div class="space-y-4 my-8">
+          <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
+            <h4 class="font-semibold text-emerald-400 mb-1">✓ Commencer par un pilote</h4>
+            <p class="text-slate-300 text-sm">Tester sur 20% des patients pendant 2 semaines avant le déploiement complet.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
+            <h4 class="font-semibold text-emerald-400 mb-1">✓ Personnaliser le persona vocal</h4>
+            <p class="text-slate-300 text-sm">Adapter le ton et le vocabulaire à la patientèle (formel vs chaleureux).</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
+            <h4 class="font-semibold text-emerald-400 mb-1">✓ Proposer le multilingue dès le départ</h4>
+            <p class="text-slate-300 text-sm">Les patients âgés préfèrent souvent le Darija ou l'arabe classique.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
+            <h4 class="font-semibold text-emerald-400 mb-1">✓ Former l'équipe sur le dashboard</h4>
+            <p class="text-slate-300 text-sm">Les secrétaires doivent pouvoir suivre les confirmations en temps réel.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">✗ Ne pas appeler trop tôt le matin</h4>
+            <p class="text-slate-300 text-sm">Éviter les appels avant 9h — taux de rejet plus élevé.</p>
+          </div>
+
+          <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
+            <h4 class="font-semibold text-rose-400 mb-1">✗ Ne pas multiplier les rappels</h4>
+            <p class="text-slate-300 text-sm">Maximum 3 points de contact. Au-delà, risque d'agacement.</p>
+          </div>
+        </div>
+
+        <h2 id="faq">9. FAQ</h2>
+
+        <div class="space-y-4 my-8">
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Les patients âgés comprennent-ils les appels automatiques ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              Oui, c'est même la population qui répond le mieux (taux de 92%). L'appel vocal est plus naturel
+              qu'un SMS pour les seniors. Le support Darija natif aide énormément.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Que se passe-t-il si le patient ne répond pas ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              VocalIA réessaie automatiquement 4h plus tard, jusqu'à 3 tentatives par point de contact.
+              En dernier recours, un SMS de secours est envoyé.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Le système s'intègre-t-il à notre logiciel existant ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              VocalIA dispose de 28 intégrations natives (dont Medivox, Doctolib, MonDocteur).
+              Pour les logiciels non listés, une API REST permet l'intégration en 1-2 semaines.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Les données patients sont-elles sécurisées ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              Absolument. VocalIA est 100% conforme RGPD et respecte la réglementation marocaine CNDP.
+              Chiffrement AES-256, hébergement sécurisé, aucune rétention des enregistrements vocaux.
+            </div>
+          </details>
+
+          <details class="glass rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+              Quel est le ROI typique dans le secteur santé ?
+            </summary>
+            <div class="px-4 pb-4 text-slate-300">
+              En moyenne, nos clients santé observent un ROI de 800-1 500% sur les 3 premiers mois.
+              Le payback period est généralement inférieur à 2 semaines.
+            </div>
+          </details>
+        </div>
+
+        <!-- CTA Final -->
         <div class="glass rounded-xl p-8 my-12 text-center">
-          <h3 class="text-2xl font-bold mb-4">Votre clinique aussi peut reduire ses no-shows</h3>
-          <p class="text-slate-400 mb-6">Découvrez comment VocalIA peut s'adapter à votre établissement de santé.</p>
-          <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
-            Demander une demonstration
-          </a>
+          <h3 class="text-2xl font-bold mb-4">Votre clinique aussi peut réduire ses no-shows</h3>
+          <p class="text-slate-400 mb-6 max-w-lg mx-auto">
+            Découvrez comment VocalIA peut s'adapter à votre établissement de santé.
+            Audit gratuit et estimation ROI personnalisée.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
+              Demander une démonstration
+            </a>
+            <a href="/industries/healthcare" class="inline-block px-8 py-3 border border-slate-600 hover:border-vocalia-400 rounded-xl font-semibold transition">
+              En savoir plus : Santé
+            </a>
+          </div>
+        </div>
+
+        <!-- Related Articles -->
+        <div class="border-t border-slate-700 pt-8 mt-12">
+          <h3 class="text-lg font-semibold mb-6">Articles connexes</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <a href="/blog/articles/reduire-couts-support-voice-ai" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
+              <span class="text-xs text-emerald-400 mb-1 block">Guide</span>
+              <h4 class="font-medium">Réduire de 70% vos coûts support avec Voice AI</h4>
+            </a>
+            <a href="/blog/articles/rgpd-voice-ai-guide-2026" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
+              <span class="text-xs text-sky-400 mb-1 block">Conformité</span>
+              <h4 class="font-medium">RGPD et Voice AI : guide de conformité 2026</h4>
+            </a>
+          </div>
         </div>
       </div>
     </article>

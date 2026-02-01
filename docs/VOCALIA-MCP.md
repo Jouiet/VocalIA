@@ -1114,7 +1114,7 @@ VocalIA possède **MCP**, **A2A**, **AG-UI**, et **A2UI** pour l'Agentic Commerc
 | **MCP** | Model Context Protocol | ✅ 181 tools | AI Agent → Tools (équiper l'agent) |
 | **A2A** | Agent-to-Agent | ✅ Session 250.28 | Agent → Agent (Agent Card + Task Lifecycle) |
 | **AG-UI** | Agent-User Interaction | ✅ Session 250.29 | Agent → Frontend (17 events, SSE) |
-| **A2UI** | Agent-to-UI | ✅ 75% | Agent → Interface dynamique (génération UI) |
+| **A2UI** | Agent-to-UI | ✅ 100% | Agent → Interface dynamique (génération UI) |
 | **AP2** | Agent Payments | ❌ | Agent → Paiement (transactions vocales) |
 
 ### Complémentarité des Protocoles
@@ -1201,7 +1201,7 @@ window.addEventListener('vocalia:agui', (e) => {
 |:---------|:--------:|:------:|:------:|
 | **A2A** | P1 | 40h | ✅ DONE (Session 250.28) |
 | **AG-UI** | P1 | 8h | ✅ DONE (Session 250.29) |
-| **A2UI** | P1 | 24h | ⚠️ 75% (overlay only) |
+| **A2UI** | P1 | 24h | ✅ 100% DONE (Session 250.39) |
 | **AP2** | P2 | 80h | ❌ Pending PSP support |
 
 ---
@@ -1235,7 +1235,7 @@ window.addEventListener('vocalia:agui', (e) => {
 
 *Documentation créée: 29/01/2026 - Session 227*
 *Mise à jour: 30/01/2026 - Session 249.6 (ALL PHASES COMPLETE - 114 tools)*
-*SOTA: MCP 100% | A2A 100% | AG-UI 100% (Session 250.29) | A2UI 75% | AP2 0%*
+*SOTA: MCP 100% | A2A 100% | AG-UI 100% | A2UI 100% (Session 250.39) | AP2 0%*
 *Integrations: 19/20 (95%) | All Phases: 100% | Blocked: 4 (Salesforce, Teams, WhatsApp, Outlook)*
 *Export: CSV, XLSX, PDF | Email: SMTP templates*
 
