@@ -16,9 +16,10 @@
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Security Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.vocalia.ma http://localhost:3004 https://plausible.io https://ipapi.co; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <!-- Inter Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -33,8 +34,13 @@
 </head>
 
 <body class="bg-slate-800 text-white min-h-screen">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
+    Aller au contenu principal
+  </a>
+
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40">
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation" aria-label="Navigation principale">
     <div class="p-6 border-b border-slate-600">
       <a href="/" class="flex items-center space-x-2">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
@@ -45,25 +51,25 @@
     </div>
 
     <nav class="p-4 space-y-1">
-      <a href="/dashboard/client" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-        <span>Vue d'ensemble</span>
+        <span data-i18n="dashboard.sidebar.overview">Vue d'ensemble</span>
       </a>
       <span class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-vocalia-500/20 text-white cursor-default">
         <i data-lucide="message-square" class="w-5 h-5"></i>
-        <span>Widget Analytics</span>
+        <span data-i18n="widget_analytics.nav.widget_analytics">Widget Analytics</span>
       </span>
-      <a href="/dashboard/client#calls" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client#calls" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="phone" class="w-5 h-5"></i>
-        <span>Appels</span>
+        <span data-i18n="dashboard.sidebar.calls">Appels</span>
       </a>
-      <a href="/dashboard/client#agents" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client#agents" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="bot" class="w-5 h-5"></i>
-        <span>Agents IA</span>
+        <span data-i18n="dashboard.sidebar.agents">Agents IA</span>
       </a>
-      <a href="/dashboard/client#billing" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-zinc-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client#billing" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="credit-card" class="w-5 h-5"></i>
-        <span>Facturation</span>
+        <span data-i18n="dashboard.sidebar.billing">Facturation</span>
       </a>
     </nav>
 
@@ -72,7 +78,7 @@
         <div class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">JD</div>
         <div class="flex-1 min-w-0">
           <p class="text-sm font-medium truncate">Jean Dupont</p>
-          <p class="text-xs text-zinc-400 truncate">Pro Plan</p>
+          <p class="text-xs text-vocalia-400 truncate">Pro Plan</p>
         </div>
       </div>
     </div>
@@ -84,21 +90,21 @@
     <header class="sticky top-0 z-30 bg-slate-800/80 backdrop-blur-xl border-b border-slate-600">
       <div class="flex items-center justify-between px-8 py-4">
         <div>
-          <h1 class="text-2xl font-bold">Voice Widget Analytics</h1>
-          <p class="text-zinc-400 text-sm">Analysez les performances de votre widget vocal</p>
+          <h1 class="text-2xl font-bold" data-i18n="widget_analytics.title">Voice Widget Analytics</h1>
+          <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.subtitle">Analysez les performances de votre widget vocal</p>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Date Range Selector -->
-          <select id="dateRange" class="px-4 py-2 rounded-xl bg-slate-700/50 border border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500 focus:border-vocalia-500">
-            <option value="7d">7 derniers jours</option>
-            <option value="30d" selected>30 derniers jours</option>
-            <option value="90d">90 derniers jours</option>
-            <option value="1y">Cette année</option>
+          <select id="dateRange" aria-label="Sélectionner la période" class="px-4 py-2 rounded-xl bg-slate-700/50 border border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500 focus:border-vocalia-500">
+            <option value="7d" data-i18n="widget_analytics.date_range.7d">7 derniers jours</option>
+            <option value="30d" selected data-i18n="widget_analytics.date_range.30d">30 derniers jours</option>
+            <option value="90d" data-i18n="widget_analytics.date_range.90d">90 derniers jours</option>
+            <option value="1y" data-i18n="widget_analytics.date_range.1y">Cette année</option>
           </select>
           <!-- Export Button -->
-          <button type="button" class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white text-sm font-medium transition flex items-center gap-2">
-            <i data-lucide="download" class="w-4 h-4"></i>
-            Exporter CSV
+          <button type="button" onclick="exportWidgetAnalytics()" aria-label="Exporter les données en CSV" class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white text-sm font-medium transition flex items-center gap-2">
+            <i data-lucide="download" class="w-4 h-4" aria-hidden="true"></i>
+            <span data-i18n="widget_analytics.export_csv">Exporter CSV</span>
           </button>
         </div>
       </div>
@@ -121,7 +127,7 @@
               </span>
             </div>
             <h3 class="text-3xl font-bold mb-1" id="totalSessions">3,847</h3>
-            <p class="text-zinc-400 text-sm">Sessions Widget</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.sessions">Sessions Widget</p>
           </div>
 
           <!-- Avg Session Duration -->
@@ -136,7 +142,7 @@
               </span>
             </div>
             <h3 class="text-3xl font-bold mb-1" id="avgDuration">2:34</h3>
-            <p class="text-zinc-400 text-sm">Durée moyenne</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.avg_duration">Durée moyenne</p>
           </div>
 
           <!-- Completion Rate -->
@@ -151,7 +157,7 @@
               </span>
             </div>
             <h3 class="text-3xl font-bold mb-1" id="completionRate">87%</h3>
-            <p class="text-zinc-400 text-sm">Taux de complétion</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.completion_rate">Taux de complétion</p>
           </div>
 
           <!-- Leads Generated -->
@@ -166,7 +172,7 @@
               </span>
             </div>
             <h3 class="text-3xl font-bold mb-1" id="leadsGenerated">142</h3>
-            <p class="text-zinc-400 text-sm">Leads qualifiés</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.leads">Leads qualifiés</p>
           </div>
         </div>
       </section>
@@ -176,22 +182,22 @@
         <!-- Sessions Over Time -->
         <div class="stat-card p-6">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold">Sessions par jour</h3>
+            <h3 class="text-lg font-semibold" data-i18n="widget_analytics.charts.sessions_per_day">Sessions par jour</h3>
             <div class="flex items-center gap-4 text-sm">
               <span class="flex items-center gap-2">
                 <span class="w-3 h-3 rounded-full bg-vocalia-500"></span>
-                Sessions
+                <span data-i18n="widget_analytics.charts.legend_sessions">Sessions</span>
               </span>
               <span class="flex items-center gap-2">
                 <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                Conversions
+                <span data-i18n="widget_analytics.charts.legend_conversions">Conversions</span>
               </span>
             </div>
           </div>
           <div class="chart-container flex items-end justify-between px-4 pt-4" id="sessionsChart">
             <!-- Chart bars rendered by JS -->
           </div>
-          <div class="flex justify-between text-xs text-zinc-400 mt-2 px-4">
+          <div class="flex justify-between text-xs text-vocalia-400 mt-2 px-4">
             <span>1 Jan</span>
             <span>8 Jan</span>
             <span>15 Jan</span>
@@ -202,7 +208,7 @@
 
         <!-- Language Distribution -->
         <div class="stat-card p-6">
-          <h3 class="text-lg font-semibold mb-6">Distribution par langue</h3>
+          <h3 class="text-lg font-semibold mb-6" data-i18n="widget_analytics.charts.language_distribution">Distribution par langue</h3>
           <div class="space-y-4">
             <div class="flex items-center gap-4">
               <span class="w-8 text-sm font-medium">FR</span>
@@ -247,15 +253,16 @@
       <section class="grid lg:grid-cols-2 gap-6 mb-8">
         <!-- Top Personas -->
         <div class="stat-card p-6">
-          <h3 class="text-lg font-semibold mb-6">Performance par Persona</h3>
+          <h3 class="text-lg font-semibold mb-6" data-i18n="widget_analytics.tables.persona_performance">Performance par Persona</h3>
           <div class="overflow-x-auto">
-            <table class="w-full text-sm">
+            <table class="w-full text-sm" role="table">
+              <caption class="sr-only">Performance par Persona</caption>
               <thead>
-                <tr class="text-left text-zinc-400 border-b border-slate-700">
-                  <th class="pb-3">Persona</th>
-                  <th class="pb-3 text-right">Sessions</th>
-                  <th class="pb-3 text-right">Conversion</th>
-                  <th class="pb-3 text-right">Durée moy.</th>
+                <tr class="text-left text-vocalia-400 border-b border-slate-700">
+                  <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.persona">Persona</th>
+                  <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.sessions">Sessions</th>
+                  <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.conversion">Conversion</th>
+                  <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.avg_duration">Durée moy.</th>
                 </tr>
               </thead>
               <tbody>
@@ -331,30 +338,30 @@
 
         <!-- Device & Browser Stats -->
         <div class="stat-card p-6">
-          <h3 class="text-lg font-semibold mb-6">Appareils & Navigateurs</h3>
+          <h3 class="text-lg font-semibold mb-6" data-i18n="widget_analytics.devices.title">Appareils & Navigateurs</h3>
           <div class="grid grid-cols-2 gap-6">
             <!-- Devices -->
             <div>
-              <h4 class="text-sm text-zinc-400 mb-4">Appareils</h4>
+              <h4 class="text-sm text-vocalia-400 mb-4" data-i18n="widget_analytics.devices.devices">Appareils</h4>
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <i data-lucide="monitor" class="w-4 h-4 text-zinc-400"></i>
-                    <span class="text-sm">Desktop</span>
+                    <i data-lucide="monitor" class="w-4 h-4 text-vocalia-400"></i>
+                    <span class="text-sm" data-i18n="widget_analytics.devices.desktop">Desktop</span>
                   </div>
                   <span class="text-sm font-medium">58%</span>
                 </div>
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <i data-lucide="smartphone" class="w-4 h-4 text-zinc-400"></i>
-                    <span class="text-sm">Mobile</span>
+                    <i data-lucide="smartphone" class="w-4 h-4 text-vocalia-400"></i>
+                    <span class="text-sm" data-i18n="widget_analytics.devices.mobile">Mobile</span>
                   </div>
                   <span class="text-sm font-medium">36%</span>
                 </div>
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <i data-lucide="tablet" class="w-4 h-4 text-zinc-400"></i>
-                    <span class="text-sm">Tablet</span>
+                    <i data-lucide="tablet" class="w-4 h-4 text-vocalia-400"></i>
+                    <span class="text-sm" data-i18n="widget_analytics.devices.tablet">Tablet</span>
                   </div>
                   <span class="text-sm font-medium">6%</span>
                 </div>
@@ -362,7 +369,7 @@
             </div>
             <!-- Browsers -->
             <div>
-              <h4 class="text-sm text-zinc-400 mb-4">Navigateurs</h4>
+              <h4 class="text-sm text-vocalia-400 mb-4" data-i18n="widget_analytics.devices.browsers">Navigateurs</h4>
               <div class="space-y-3">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
@@ -388,7 +395,7 @@
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <div class="w-4 h-4 rounded-full bg-zinc-500"></div>
-                    <span class="text-sm">Autre</span>
+                    <span class="text-sm" data-i18n="widget_analytics.devices.other">Autre</span>
                   </div>
                   <span class="text-sm font-medium">5%</span>
                 </div>
@@ -397,14 +404,14 @@
           </div>
           <!-- Speech API Support -->
           <div class="mt-6 pt-6 border-t border-slate-700">
-            <h4 class="text-sm text-zinc-400 mb-3">Support Web Speech API</h4>
+            <h4 class="text-sm text-vocalia-400 mb-3" data-i18n="widget_analytics.devices.speech_api_support">Support Web Speech API</h4>
             <div class="flex items-center gap-4">
               <div class="flex-1 h-4 bg-slate-700/50 rounded-full overflow-hidden">
                 <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style="width: 94%"></div>
               </div>
               <span class="text-sm font-medium text-emerald-400">94%</span>
             </div>
-            <p class="text-xs text-zinc-400 mt-2">6% des visiteurs utilisent un navigateur non compatible</p>
+            <p class="text-xs text-vocalia-400 mt-2" data-i18n="widget_analytics.devices.incompatible_browsers">6% des visiteurs utilisent un navigateur non compatible</p>
           </div>
         </div>
       </section>
@@ -412,20 +419,21 @@
       <!-- Recent Sessions Table -->
       <section class="stat-card p-6">
         <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-semibold">Sessions récentes</h3>
-          <button type="button" class="text-sm text-vocalia-400 hover:text-vocalia-300 transition">Voir tout</button>
+          <h3 class="text-lg font-semibold" data-i18n="widget_analytics.tables.recent_sessions">Sessions récentes</h3>
+          <button type="button" onclick="viewAllSessions()" aria-label="Voir toutes les sessions" class="text-sm text-vocalia-400 hover:text-vocalia-300 transition" data-i18n="widget_analytics.tables.view_all">Voir tout</button>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-sm">
+          <table class="w-full text-sm" role="table">
+            <caption class="sr-only">Sessions récentes du widget</caption>
             <thead>
-              <tr class="text-left text-zinc-400 border-b border-slate-700">
-                <th class="pb-3">Session ID</th>
-                <th class="pb-3">Persona</th>
-                <th class="pb-3">Langue</th>
-                <th class="pb-3">Durée</th>
-                <th class="pb-3">Messages</th>
-                <th class="pb-3">Status</th>
-                <th class="pb-3">Date</th>
+              <tr class="text-left text-vocalia-400 border-b border-slate-700">
+                <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.session_id">Session ID</th>
+                <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.persona">Persona</th>
+                <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.language">Langue</th>
+                <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.duration">Durée</th>
+                <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.messages">Messages</th>
+                <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.status">Status</th>
+                <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.date">Date</th>
               </tr>
             </thead>
             <tbody>
@@ -436,7 +444,7 @@
                 <td class="py-3">3:45</td>
                 <td class="py-3">12</td>
                 <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
-                <td class="py-3 text-zinc-400">Il y a 5 min</td>
+                <td class="py-3 text-vocalia-400">Il y a 5 min</td>
               </tr>
               <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
                 <td class="py-3 font-mono text-xs">sess_def456</td>
@@ -445,7 +453,7 @@
                 <td class="py-3">2:12</td>
                 <td class="py-3">8</td>
                 <td class="py-3"><span class="px-2 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs">Completed</span></td>
-                <td class="py-3 text-zinc-400">Il y a 12 min</td>
+                <td class="py-3 text-vocalia-400">Il y a 12 min</td>
               </tr>
               <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
                 <td class="py-3 font-mono text-xs">sess_ghi789</td>
@@ -454,7 +462,7 @@
                 <td class="py-3">5:34</td>
                 <td class="py-3">18</td>
                 <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
-                <td class="py-3 text-zinc-400">Il y a 23 min</td>
+                <td class="py-3 text-vocalia-400">Il y a 23 min</td>
               </tr>
               <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
                 <td class="py-3 font-mono text-xs">sess_jkl012</td>
@@ -463,7 +471,7 @@
                 <td class="py-3">1:08</td>
                 <td class="py-3">4</td>
                 <td class="py-3"><span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs">Abandoned</span></td>
-                <td class="py-3 text-zinc-400">Il y a 31 min</td>
+                <td class="py-3 text-vocalia-400">Il y a 31 min</td>
               </tr>
               <tr class="hover:bg-slate-700/30 transition">
                 <td class="py-3 font-mono text-xs">sess_mno345</td>
@@ -472,7 +480,7 @@
                 <td class="py-3">6:22</td>
                 <td class="py-3">24</td>
                 <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
-                <td class="py-3 text-zinc-400">Il y a 45 min</td>
+                <td class="py-3 text-vocalia-400">Il y a 45 min</td>
               </tr>
             </tbody>
           </table>
@@ -481,11 +489,85 @@
     </div>
   </main>
 
+  <!-- Widget Analytics Functions -->
+  <script>
+    // Export widget analytics data to CSV - extracts REAL data from the table
+    function exportWidgetAnalytics() {
+      const dateRange = document.getElementById('dateRange').value;
+
+      // Extract data from the actual table in the DOM
+      const table = document.querySelector('table[role="table"]');
+      if (!table) {
+        alert('Aucune donnée à exporter');
+        return;
+      }
+
+      const rows = [];
+      // Get headers
+      const headers = [];
+      table.querySelectorAll('thead th').forEach(th => {
+        headers.push(th.textContent.trim());
+      });
+      rows.push(headers.join(','));
+
+      // Get data rows
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        const rowData = [];
+        tr.querySelectorAll('td').forEach(td => {
+          // Clean the text and escape commas/quotes for CSV
+          let text = td.textContent.trim().replace(/[\n\r]+/g, ' ');
+          if (text.includes(',') || text.includes('"')) {
+            text = '"' + text.replace(/"/g, '""') + '"';
+          }
+          rowData.push(text);
+        });
+        rows.push(rowData.join(','));
+      });
+
+      const csvContent = rows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `widget-analytics-${dateRange}-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    // View all sessions (navigate or expand)
+    function viewAllSessions() {
+      const sessionsSection = document.querySelector('section:last-of-type');
+      if (sessionsSection) {
+        sessionsSection.scrollIntoView({ behavior: 'smooth' });
+        sessionsSection.classList.add('ring-2', 'ring-vocalia-500');
+        setTimeout(() => sessionsSection.classList.remove('ring-2', 'ring-vocalia-500'), 2000);
+      }
+    }
+  </script>
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+
+  <!-- i18n System -->
+  <script src="/src/lib/geo-detect.js?v=250"></script>
+  <script src="/src/lib/i18n.js?v=250"></script>
+
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize Lucide icons
       if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Initialize i18n
+      if (typeof VocaliaGeo !== 'undefined' && typeof VocaliaI18n !== 'undefined') {
+        const geo = await VocaliaGeo.getGeo();
+        await VocaliaI18n.initI18n(geo.lang);
+        VocaliaI18n.translatePage();
+
+        // Listen for locale changes
+        window.addEventListener('localeChanged', () => {
+          VocaliaI18n.translatePage();
+        });
+      }
 
       // Render simple bar chart
       const chartContainer = document.getElementById('sessionsChart');
@@ -505,9 +587,5 @@
       }
     });
   </script>
-
-  <!-- i18n System -->
-  <script src="/src/lib/geo-detect.js?v=250"></script>
-  <script src="/src/lib/i18n.js?v=250"></script>
 </body>
 </html>

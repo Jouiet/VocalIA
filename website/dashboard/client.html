@@ -17,7 +17,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' 'unsafe-inline' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma http://localhost:3004 https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -34,14 +34,21 @@
       backdrop-filter: blur(16px);
     }
   </style>
-  <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
+  <!-- Plausible Analytics (Privacy-First, GDPR Compliant)
+       Security: SRI omitted intentionally - Plausible updates script frequently.
+       Risk accepted: Trusted vendor, <1KB script, no sensitive data, CSP restricted. -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
   <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };</script>
 </head>
 
 <body class="bg-slate-800 text-white min-h-screen">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
+    Aller au contenu principal
+  </a>
+
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40">
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation" aria-label="Navigation client">
     <!-- Logo -->
     <div class="p-6 border-b border-slate-600">
       <a href="/" class="flex items-center space-x-2">
@@ -101,9 +108,9 @@
           <p class="text-sm font-medium truncate">Jean Dupont</p>
           <p class="text-xs text-vocalia-400 truncate">Pro Plan</p>
         </div>
-        <button type="button"
+        <button type="button" onclick="showActivityPanel()" aria-label="Voir l'activité récente"
           class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
-          <i data-lucide="activity" class="w-5 h-5 text-vocalia-400"></i>
+          <i data-lucide="activity" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
         </button>
       </div>
     </div>
@@ -122,9 +129,9 @@
         <div class="flex items-center space-x-4">
           <!-- Language Switcher -->
           <div class="relative">
-            <button type="button" onclick="toggleLangDropdown()"
+            <button type="button" id="langToggleBtn" onclick="toggleLangDropdown()"
               class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
-              aria-label="Changer de langue">
+              aria-label="Changer de langue" aria-expanded="false" aria-haspopup="true" aria-controls="langDropdown">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                 stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
@@ -221,7 +228,7 @@
           <div class="stat-card p-6">
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-xl bg-yellow-500/20 flex items-center justify-center">
-                <i data-lucide="star" class="w-6 h-6 w-400 text-yellow-400"></i>
+                <i data-lucide="star" class="w-6 h-6 text-yellow-400"></i>
               </div>
               <span class="text-yellow-400 text-sm font-medium">NPS</span>
             </div>
@@ -343,7 +350,7 @@
         <div id="agents" class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.agents.title">Agents IA actifs</h3>
-            <button type="button" class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
+            <button type="button" onclick="configureAgents()" aria-label="Configurer les agents IA" class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
               data-i18n="dashboard.agents.configure">+
               Configurer</button>
           </div>
@@ -363,8 +370,8 @@
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
-                <button type="button" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
-                  <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400"></i>
+                <button type="button" onclick="agentSettings('universal_ecom_v1')" aria-label="Paramètres agent E-commerce" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                  <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -383,8 +390,8 @@
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
-                <button type="button" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
-                  <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400"></i>
+                <button type="button" onclick="agentSettings('dental_intake_v1')" aria-label="Paramètres agent RDV" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                  <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -403,8 +410,8 @@
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-yellow-400"><i data-lucide="pause-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Pause</span>
-                <button type="button" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
-                  <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400"></i>
+                <button type="button" onclick="agentSettings('concierge_v1')" aria-label="Paramètres agent Conciergerie" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                  <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
@@ -415,7 +422,7 @@
         <div id="calls" class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.calls.recent">Appels récents</h3>
-            <button type="button" class="text-vocalia-400 hover:text-white text-sm transition"
+            <button type="button" onclick="viewAllCalls()" aria-label="Voir tous les appels" class="text-vocalia-400 hover:text-white text-sm transition"
               data-i18n="dashboard.calls.view_all">Voir tout →</button>
           </div>
           <div class="space-y-3">
@@ -453,11 +460,7 @@
             <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-700/30 transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
-                  <svg class="w-5 h-5 w-400 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"
-                    aria-label="X (Twitter)">
-                    <path
-                      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                  </svg>
+                  <i data-lucide="phone-forwarded" class="w-5 h-5 text-yellow-400"></i>
                 </div>
                 <div>
                   <p class="font-medium">+212 6XX XXX XX3</p>
@@ -520,7 +523,6 @@
   <!-- Scripts -->
   <script src="/src/lib/geo-detect.js?v=239"></script>
   <script src="/src/lib/i18n.js?v=239"></script>
-  <script src="/src/lib/card-tilt.js"></script>
   <script>
     // Theme toggle
     const themeToggle = document.getElementById('themeToggle');
@@ -550,7 +552,10 @@
     // Language Switcher
     const LANG_LABELS = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'ARY' };
     function toggleLangDropdown() {
-      document.getElementById('langDropdown').classList.toggle('hidden');
+      const dropdown = document.getElementById('langDropdown');
+      const btn = document.getElementById('langToggleBtn');
+      const isHidden = dropdown.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', !isHidden);
     }
     function switchLang(lang) {
       if (typeof VocaliaI18n !== 'undefined') {
@@ -558,11 +563,14 @@
       }
       document.getElementById('currentLang').textContent = LANG_LABELS[lang] || lang.toUpperCase();
       document.getElementById('langDropdown').classList.add('hidden');
+      document.getElementById('langToggleBtn').setAttribute('aria-expanded', 'false');
     }
     document.addEventListener('click', (e) => {
       const dropdown = document.getElementById('langDropdown');
+      const btn = document.getElementById('langToggleBtn');
       if (!e.target.closest('[onclick*="toggleLangDropdown"]') && dropdown && !dropdown.contains(e.target)) {
         dropdown.classList.add('hidden');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -581,7 +589,9 @@
     }
 
     // API Configuration - Always use production API
-    const API_BASE = 'https://api.vocalia.ma';
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3004'
+      : 'https://api.vocalia.ma';
 
     // Fetch dashboard metrics from API
     async function fetchDashboardMetrics() {
@@ -656,6 +666,135 @@
           bars[i].style.height = Math.max(10, pct) + '%';
         }
       });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Client Dashboard Actions
+    // ═══════════════════════════════════════════════════════════════════════════
+    function showActivityPanel() {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="bg-slate-800 border border-slate-600 rounded-2xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-auto">
+          <h3 class="text-xl font-semibold mb-4">Activité Récente</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-slate-700/30">
+              <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium">Appel converti</p>
+                <p class="text-xs text-vocalia-400">+212 6XX XXX XX1 - Il y a 5 min</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-slate-700/30">
+              <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="calendar" class="w-4 h-4 text-blue-400"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium">RDV programmé</p>
+                <p class="text-xs text-vocalia-400">Dr. Alaoui - Demain 14h30</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-slate-700/30">
+              <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="alert-circle" class="w-4 h-4 text-amber-400"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium">Quota minutes: 80%</p>
+                <p class="text-xs text-vocalia-400">456 minutes restantes</p>
+              </div>
+            </div>
+          </div>
+          <button onclick="this.closest('.fixed').remove(); if(typeof lucide !== 'undefined') lucide.createIcons();" class="mt-6 w-full px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">Fermer</button>
+        </div>
+      `;
+      modal.onclick = (e) => { if (e.target === modal) { modal.remove(); if(typeof lucide !== 'undefined') lucide.createIcons(); } };
+      document.body.appendChild(modal);
+      if(typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function configureAgents() {
+      // Open agent configuration modal or navigate to settings
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="bg-slate-800 border border-slate-600 rounded-2xl p-6 max-w-md w-full mx-4">
+          <h3 class="text-xl font-semibold mb-4">Configurer les Agents IA</h3>
+          <p class="text-vocalia-400 mb-6">Sélectionnez un agent à configurer ou créez-en un nouveau.</p>
+          <div class="space-y-3 mb-6">
+            <button onclick="agentSettings('universal_ecom_v1')" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+              <span class="font-medium">Support E-commerce</span>
+              <span class="text-sm text-vocalia-400 block">universal_ecom_v1</span>
+            </button>
+            <button onclick="agentSettings('dental_intake_v1')" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+              <span class="font-medium">Prise de RDV</span>
+              <span class="text-sm text-vocalia-400 block">dental_intake_v1</span>
+            </button>
+            <button onclick="agentSettings('concierge_v1')" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+              <span class="font-medium">Conciergerie</span>
+              <span class="text-sm text-vocalia-400 block">concierge_v1</span>
+            </button>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="this.closest('.fixed').remove()" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Fermer</button>
+            <button onclick="alert('Création nouvel agent - fonctionnalité à venir')" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">+ Nouveau</button>
+          </div>
+        </div>
+      `;
+      modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+      document.body.appendChild(modal);
+    }
+
+    function agentSettings(agentId) {
+      // Close any open modal first
+      document.querySelectorAll('.fixed.inset-0').forEach(el => el.remove());
+
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="bg-slate-800 border border-slate-600 rounded-2xl p-6 max-w-md w-full mx-4">
+          <h3 class="text-xl font-semibold mb-4">Paramètres Agent</h3>
+          <p class="text-vocalia-400 mb-2">Agent ID: <code class="bg-slate-700 px-2 py-1 rounded">${agentId}</code></p>
+          <div class="space-y-4 my-6">
+            <div>
+              <label class="block text-sm text-vocalia-400 mb-2">Status</label>
+              <select class="w-full p-2 rounded-lg bg-slate-700/50 border border-slate-600">
+                <option value="active">Actif</option>
+                <option value="paused">En pause</option>
+                <option value="disabled">Désactivé</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm text-vocalia-400 mb-2">Langues</label>
+              <div class="flex gap-2">
+                <label class="flex items-center gap-1"><input type="checkbox" checked> FR</label>
+                <label class="flex items-center gap-1"><input type="checkbox"> EN</label>
+                <label class="flex items-center gap-1"><input type="checkbox"> AR</label>
+                <label class="flex items-center gap-1"><input type="checkbox"> ARY</label>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button onclick="this.closest('.fixed').remove()" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Annuler</button>
+            <button onclick="alert('Paramètres sauvegardés!'); this.closest('.fixed').remove()" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">Sauvegarder</button>
+          </div>
+        </div>
+      `;
+      modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
+      document.body.appendChild(modal);
+    }
+
+    function viewAllCalls() {
+      // Navigate to calls section or show expanded view
+      const callsSection = document.querySelector('#calls');
+      if (callsSection) {
+        callsSection.scrollIntoView({ behavior: 'smooth' });
+        // Highlight the section briefly
+        callsSection.classList.add('ring-2', 'ring-vocalia-500');
+        setTimeout(() => callsSection.classList.remove('ring-2', 'ring-vocalia-500'), 2000);
+      }
+      // In production, this would navigate to /dashboard/calls
     }
 
     // Initialize

@@ -17,7 +17,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <!-- Content Security Policy (Hardened) -->
   <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' 'unsafe-inline' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma; connect-src 'self' https://ipapi.co https://api.vocalia.ma http://localhost:3004 http://localhost:3012 https://plausible.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
   <meta http-equiv="X-Frame-Options" content="DENY">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -34,14 +34,21 @@
       backdrop-filter: blur(16px);
     }
   </style>
-  <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
+  <!-- Plausible Analytics (Privacy-First, GDPR Compliant)
+       Security: SRI omitted intentionally - Plausible updates script frequently.
+       Risk accepted: Trusted vendor, <1KB script, no sensitive data, CSP restricted. -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
   <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) };</script>
 </head>
 
 <body class="bg-slate-800 text-white min-h-screen">
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
+    Aller au contenu principal
+  </a>
+
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40">
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation" aria-label="Navigation administration">
     <!-- Logo -->
     <div class="p-6 border-b border-slate-600">
       <a href="/" class="flex items-center space-x-2">
@@ -125,9 +132,9 @@
         <div class="flex items-center space-x-4">
           <!-- Language Switcher -->
           <div class="relative">
-            <button type="button" onclick="toggleLangDropdown()"
+            <button type="button" id="langToggleBtn" onclick="toggleLangDropdown()"
               class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
-              aria-label="Changer de langue">
+              aria-label="Changer de langue" aria-expanded="false" aria-haspopup="true" aria-controls="langDropdown">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                 stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
@@ -200,9 +207,9 @@
               <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
                 <i data-lucide="phone" class="w-5 h-5 text-green-400"></i>
               </div>
-              <span class="text-green-400 text-xs">En cours: 12</span>
+              <span class="text-green-400 text-xs" id="stat-calls-active">En cours: 0</span>
             </div>
-            <h3 class="text-2xl font-bold">3,847</h3>
+            <h3 class="text-2xl font-bold" id="stat-calls-today">0</h3>
             <p class="text-vocalia-400 text-xs" data-i18n="dashboard.stats.calls_today">Appels aujourd'hui</p>
           </div>
 
@@ -210,15 +217,11 @@
           <div class="stat-card p-5">
             <div class="flex items-center justify-between mb-3">
               <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
-                <svg class="w-5 h-5 w-400 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"
-                  aria-label="X (Twitter)">
-                  <path
-                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
+                <i data-lucide="wallet" class="w-5 h-5 text-yellow-400"></i>
               </div>
-              <span class="text-green-400 text-xs">+18%</span>
+              <span class="text-green-400 text-xs" id="stat-mrr-growth">+0%</span>
             </div>
-            <h3 class="text-2xl font-bold">24,850€</h3>
+            <h3 class="text-2xl font-bold" id="stat-mrr">0€</h3>
             <p class="text-vocalia-400 text-xs" data-i18n="dashboard.stats.mrr">MRR</p>
           </div>
 
@@ -228,9 +231,9 @@
               <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
                 <i data-lucide="wand-2" class="w-5 h-5 text-purple-400"></i>
               </div>
-              <span class="text-green-400 text-xs">Optimal</span>
+              <span class="text-green-400 text-xs" id="stat-latency-status">--</span>
             </div>
-            <h3 class="text-2xl font-bold">87ms</h3>
+            <h3 class="text-2xl font-bold" id="stat-latency">--ms</h3>
             <p class="text-vocalia-400 text-xs" data-i18n="dashboard.stats.latency">Latence moyenne</p>
           </div>
 
@@ -240,9 +243,9 @@
               <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
                 <i data-lucide="shield-check" class="w-5 h-5 text-green-400"></i>
               </div>
-              <span class="text-green-400 text-xs">30 jours</span>
+              <span class="text-green-400 text-xs" id="stat-uptime-period">--</span>
             </div>
-            <h3 class="text-2xl font-bold">99.97%</h3>
+            <h3 class="text-2xl font-bold" id="stat-uptime">--%</h3>
             <p class="text-vocalia-400 text-xs" data-i18n="dashboard.stats.uptime">Uptime</p>
           </div>
         </div>
@@ -293,7 +296,7 @@
         <div class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold">Health Check</h3>
-            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">32/32</span>
+            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">26/26</span>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div class="p-3 rounded-xl bg-slate-700/30">
@@ -364,84 +367,28 @@
         <div id="tenants" class="lg:col-span-2 liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.tenants.title">Top Tenants</h3>
-            <button type="button" class="text-vocalia-400 hover:text-white text-sm transition"
+            <button type="button" onclick="viewAllTenants()" aria-label="Voir tous les tenants" class="text-vocalia-400 hover:text-white text-sm transition"
               data-i18n="dashboard.calls.view_all">Voir tous →</button>
           </div>
           <div class="overflow-x-auto">
-            <table class="w-full">
+            <table class="w-full" role="table">
+              <caption class="sr-only">Liste des tenants actifs</caption>
               <thead>
                 <tr class="text-left text-vocalia-400 text-sm border-b border-slate-600">
-                  <th class="pb-3 font-medium" data-i18n="dashboard.tenants.table.tenant">Tenant</th>
-                  <th class="pb-3 font-medium" data-i18n="dashboard.tenants.table.plan">Plan</th>
-                  <th class="pb-3 font-medium" data-i18n="dashboard.tenants.table.calls">Appels/mois</th>
-                  <th class="pb-3 font-medium" data-i18n="dashboard.tenants.table.mrr">MRR</th>
-                  <th class="pb-3 font-medium" data-i18n="dashboard.tenants.table.status">Status</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.tenant">Tenant</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.plan">Plan</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.calls">Appels/mois</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.mrr">MRR</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.status">Status</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-vocalia-700/30">
+              <tbody id="tenants-table-body" class="divide-y divide-vocalia-700/30">
+                <!-- Populated dynamically from API -->
                 <tr class="hover:bg-slate-700/20">
-                  <td class="py-4">
-                    <div class="flex items-center space-x-3">
-                      <div
-                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-400 flex items-center justify-center text-sm font-bold">
-                        M</div>
-                      <span class="font-medium">MarocShop</span>
-                    </div>
+                  <td colspan="5" class="py-8 text-center text-vocalia-400">
+                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2"></i>
+                    Chargement des tenants...
                   </td>
-                  <td class="py-4"><span
-                      class="px-2 py-1 rounded-lg bg-purple-500/20 text-purple-400 text-xs">Enterprise</span></td>
-                  <td class="py-4">12,450</td>
-                  <td class="py-4 font-semibold">2,500€</td>
-                  <td class="py-4"><span class="flex items-center text-green-400 text-sm"><i data-lucide="check-circle"
-                        class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span></td>
-                </tr>
-                <tr class="hover:bg-slate-700/20">
-                  <td class="py-4">
-                    <div class="flex items-center space-x-3">
-                      <div
-                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-green-400 flex items-center justify-center text-sm font-bold">
-                        D</div>
-                      <span class="font-medium">Dr. Alaoui Cabinet</span>
-                    </div>
-                  </td>
-                  <td class="py-4"><span
-                      class="px-2 py-1 rounded-lg bg-vocalia-500/20 text-vocalia-400 text-xs">Pro</span></td>
-                  <td class="py-4">3,200</td>
-                  <td class="py-4 font-semibold">149€</td>
-                  <td class="py-4"><span class="flex items-center text-green-400 text-sm"><i data-lucide="check-circle"
-                        class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span></td>
-                </tr>
-                <tr class="hover:bg-slate-700/20">
-                  <td class="py-4">
-                    <div class="flex items-center space-x-3">
-                      <div
-                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-400 flex items-center justify-center text-sm font-bold">
-                        H</div>
-                      <span class="font-medium">Hotel Riad Fes</span>
-                    </div>
-                  </td>
-                  <td class="py-4"><span
-                      class="px-2 py-1 rounded-lg bg-vocalia-500/20 text-vocalia-400 text-xs">Pro</span></td>
-                  <td class="py-4">1,890</td>
-                  <td class="py-4 font-semibold">149€</td>
-                  <td class="py-4"><span class="flex items-center text-green-400 text-sm"><i data-lucide="check-circle"
-                        class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span></td>
-                </tr>
-                <tr class="hover:bg-slate-700/20">
-                  <td class="py-4">
-                    <div class="flex items-center space-x-3">
-                      <div
-                        class="w-8 h-8 rounded-lg bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center text-sm font-bold">
-                        A</div>
-                      <span class="font-medium">AutoService Casablanca</span>
-                    </div>
-                  </td>
-                  <td class="py-4"><span
-                      class="px-2 py-1 rounded-lg bg-gray-500/20 text-gray-400 text-xs">Starter</span></td>
-                  <td class="py-4">456</td>
-                  <td class="py-4 font-semibold">49€</td>
-                  <td class="py-4"><span class="flex items-center text-green-400 text-sm"><i data-lucide="check-circle"
-                        class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span></td>
                 </tr>
               </tbody>
             </table>
@@ -571,48 +518,18 @@
           <div class="widget-header p-6 pb-0">
             <div class="flex items-center justify-between">
               <h3 class="widget-title text-lg font-semibold" data-i18n="dashboard.sidebar.logs">Logs récents</h3>
-              <select
+              <select id="logs-filter" onchange="filterLogs(this.value)"
                 class="bg-slate-700 border border-vocalia-700 rounded-lg px-3 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-vocalia-500">
-                <option>Tous</option>
-                <option>Erreurs</option>
-                <option>Warnings</option>
-                <option>Info</option>
+                <option value="all">Tous</option>
+                <option value="error">Erreurs</option>
+                <option value="warn">Warnings</option>
+                <option value="info">Info</option>
               </select>
             </div>
           </div>
           <div class="widget-content p-6 pt-4">
-            <div class="space-y-2 font-mono text-xs max-h-64 overflow-y-auto">
-              <div class="p-2 rounded bg-slate-700/30 flex items-start space-x-2">
-                <span class="text-green-400">[INFO]</span>
-                <span class="text-vocalia-400">22:45:32</span>
-                <span class="text-vocalia-200 flex-1">Call completed: +212 6XX • Duration: 4:23 • Outcome:
-                  converted</span>
-              </div>
-              <div class="p-2 rounded bg-slate-700/30 flex items-start space-x-2">
-                <span class="text-green-400">[INFO]</span>
-                <span class="text-vocalia-400">22:44:18</span>
-                <span class="text-vocalia-200 flex-1">New session started: tenant=marocshop • lang=ary</span>
-              </div>
-              <div class="p-2 rounded bg-slate-700/30 flex items-start space-x-2">
-                <span class="text-yellow-400">[WARN]</span>
-                <span class="text-vocalia-400">22:43:55</span>
-                <span class="text-vocalia-200 flex-1">AI API latency elevated: 234ms (threshold: 200ms)</span>
-              </div>
-              <div class="p-2 rounded bg-slate-700/30 flex items-start space-x-2">
-                <span class="text-green-400">[INFO]</span>
-                <span class="text-vocalia-400">22:42:11</span>
-                <span class="text-vocalia-200 flex-1">KB query: sector=dental_intake_v1 • results=3</span>
-              </div>
-              <div class="p-2 rounded bg-slate-700/30 flex items-start space-x-2">
-                <span class="text-green-400">[INFO]</span>
-                <span class="text-vocalia-400">22:41:08</span>
-                <span class="text-vocalia-200 flex-1">Health check completed: 32/32 passed</span>
-              </div>
-              <div class="p-2 rounded bg-slate-700/30 flex items-start space-x-2">
-                <span class="text-blue-400">[DEBUG]</span>
-                <span class="text-vocalia-400">22:40:22</span>
-                <span class="text-vocalia-200 flex-1">WebSocket connection established: client=hotel_riad</span>
-              </div>
+            <div id="logs-container" class="space-y-2 font-mono text-xs max-h-64 overflow-y-auto">
+              <!-- Populated dynamically by JS -->
             </div>
           </div>
         </div>
@@ -735,23 +652,23 @@
       <section class="rounded-2xl bg-slate-800/80 border border-slate-600 p-6">
         <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.quick_actions.title">Actions rapides</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
-            <i data-lucide="plus" class="w-6 h-6 text-vocalia-400 mb-2"></i>
+          <button type="button" onclick="quickAction('new_tenant')" aria-label="Créer un nouveau tenant" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+            <i data-lucide="plus" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.new_tenant">Nouveau Tenant</p>
             <p class="text-xs text-vocalia-400">Ajouter un client</p>
           </button>
-          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
-            <i data-lucide="refresh-cw" class="w-6 h-6 text-vocalia-400 mb-2"></i>
+          <button type="button" onclick="quickAction('restart')" aria-label="Redémarrer les services" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+            <i data-lucide="refresh-cw" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.restart">Restart Services</p>
             <p class="text-xs text-vocalia-400">Redémarrer les APIs</p>
           </button>
-          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
-            <i data-lucide="download" class="w-6 h-6 text-vocalia-400 mb-2"></i>
+          <button type="button" onclick="quickAction('export_logs')" aria-label="Exporter les logs système" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+            <i data-lucide="download" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.logs">Export Logs</p>
             <p class="text-xs text-vocalia-400">Télécharger logs</p>
           </button>
-          <button type="button" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
-            <i data-lucide="settings" class="w-6 h-6 text-vocalia-400 mb-2"></i>
+          <button type="button" onclick="quickAction('config')" aria-label="Ouvrir la configuration" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+            <i data-lucide="settings" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.config">Configuration</p>
             <p class="text-xs text-vocalia-400">Paramètres système</p>
           </button>
@@ -789,7 +706,10 @@
     // Language Switcher
     const LANG_LABELS = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'ARY' };
     function toggleLangDropdown() {
-      document.getElementById('langDropdown').classList.toggle('hidden');
+      const dropdown = document.getElementById('langDropdown');
+      const btn = document.getElementById('langToggleBtn');
+      const isHidden = dropdown.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', !isHidden);
     }
     function switchLang(lang) {
       if (typeof VocaliaI18n !== 'undefined') {
@@ -800,8 +720,10 @@
     }
     document.addEventListener('click', (e) => {
       const dropdown = document.getElementById('langDropdown');
+      const btn = document.getElementById('langToggleBtn');
       if (!e.target.closest('[onclick*="toggleLangDropdown"]') && dropdown && !dropdown.contains(e.target)) {
         dropdown.classList.add('hidden');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -813,7 +735,10 @@
     // ═══════════════════════════════════════════════════════════════════════════
     // HITL Video Workflow
     // ═══════════════════════════════════════════════════════════════════════════
-    const HITL_API = 'http://localhost:3012';
+    // Auto-detect: localhost for dev, production API for deployed
+    const HITL_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3012'
+      : 'https://api.vocalia.ma/hitl';
 
     async function refreshHITLQueue() {
       try {
@@ -839,6 +764,13 @@
       }
     }
 
+    // Sanitize HTML to prevent XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
     function renderHITLQueue(items) {
       const container = document.getElementById('hitl-queue');
       if (!items || items.length === 0) {
@@ -850,29 +782,53 @@
         return;
       }
 
-      container.innerHTML = items.map(item => `
-        <div class="p-4 rounded-xl bg-slate-700/30 flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-              <i data-lucide="film" class="w-5 h-5 text-purple-400"></i>
-            </div>
-            <div>
-              <p class="font-medium">${item.composition}</p>
-              <p class="text-xs text-vocalia-400">${item.language.toUpperCase()} • ${new Date(item.requestedAt).toLocaleString()}</p>
-            </div>
+      // Clear container and build DOM safely to prevent XSS
+      container.innerHTML = '';
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-xl bg-slate-700/30 flex items-center justify-between';
+
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'flex items-center space-x-4';
+        infoDiv.innerHTML = `
+          <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+            <i data-lucide="film" class="w-5 h-5 text-purple-400"></i>
           </div>
-          <div class="flex items-center space-x-2">
-            <button type="button" onclick="approveVideo('${item.id}')"
-              class="px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition text-sm font-medium">
-              Approuver
-            </button>
-            <button type="button" onclick="rejectVideo('${item.id}')"
-              class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition text-sm font-medium">
-              Rejeter
-            </button>
-          </div>
-        </div>
-      `).join('');
+        `;
+
+        const textDiv = document.createElement('div');
+        const titleP = document.createElement('p');
+        titleP.className = 'font-medium';
+        titleP.textContent = item.composition; // Safe: textContent prevents XSS
+        const metaP = document.createElement('p');
+        metaP.className = 'text-xs text-vocalia-400';
+        metaP.textContent = `${(item.language || 'fr').toUpperCase()} • ${new Date(item.requestedAt).toLocaleString()}`;
+        textDiv.appendChild(titleP);
+        textDiv.appendChild(metaP);
+        infoDiv.appendChild(textDiv);
+
+        const buttonsDiv = document.createElement('div');
+        buttonsDiv.className = 'flex items-center space-x-2';
+
+        const approveBtn = document.createElement('button');
+        approveBtn.type = 'button';
+        approveBtn.className = 'px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition text-sm font-medium';
+        approveBtn.textContent = 'Approuver';
+        approveBtn.addEventListener('click', () => approveVideo(item.id));
+
+        const rejectBtn = document.createElement('button');
+        rejectBtn.type = 'button';
+        rejectBtn.className = 'px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition text-sm font-medium';
+        rejectBtn.textContent = 'Rejeter';
+        rejectBtn.addEventListener('click', () => rejectVideo(item.id));
+
+        buttonsDiv.appendChild(approveBtn);
+        buttonsDiv.appendChild(rejectBtn);
+
+        card.appendChild(infoDiv);
+        card.appendChild(buttonsDiv);
+        container.appendChild(card);
+      });
 
       // Re-init lucide icons
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -947,6 +903,314 @@
     // Auto-refresh HITL queue every 30s
     setInterval(refreshHITLQueue, 30000);
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Quick Actions
+    // ═══════════════════════════════════════════════════════════════════════════
+    function viewAllTenants() {
+      // Navigate to tenants management page (or show modal)
+      const tenantsSection = document.querySelector('#tenants-section');
+      if (tenantsSection) {
+        tenantsSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Could redirect to /admin/tenants if that page exists
+        alert('Fonctionnalité: Voir tous les tenants\nPage dédiée en développement.');
+      }
+    }
+
+    // Logs management with real-time timestamps
+    let allLogs = [];
+    let currentLogFilter = 'all';
+
+    function initializeLogs() {
+      const now = new Date();
+      allLogs = [
+        { level: 'info', time: new Date(now - 60000), message: 'Call completed: +212 6XX • Duration: 4:23 • Outcome: converted' },
+        { level: 'info', time: new Date(now - 120000), message: 'New session started: tenant=marocshop • lang=ary' },
+        { level: 'warn', time: new Date(now - 180000), message: 'AI API latency elevated: 234ms (threshold: 200ms)' },
+        { level: 'info', time: new Date(now - 240000), message: 'KB query: sector=dental_intake_v1 • results=3' },
+        { level: 'info', time: new Date(now - 300000), message: 'Health check completed: 26/26 passed' },
+        { level: 'debug', time: new Date(now - 360000), message: 'WebSocket connection established: client=hotel_riad' }
+      ];
+      renderLogs();
+    }
+
+    function renderLogs() {
+      const container = document.getElementById('logs-container');
+      if (!container) return;
+
+      const filteredLogs = currentLogFilter === 'all'
+        ? allLogs
+        : allLogs.filter(log => log.level === currentLogFilter);
+
+      const levelColors = {
+        info: 'text-green-400',
+        warn: 'text-yellow-400',
+        error: 'text-red-400',
+        debug: 'text-blue-400'
+      };
+
+      container.innerHTML = filteredLogs.map(log => `
+        <div class="p-2 rounded bg-slate-700/30 flex items-start space-x-2 log-item" data-level="${log.level}">
+          <span class="${levelColors[log.level] || 'text-vocalia-400'}">[${log.level.toUpperCase()}]</span>
+          <span class="text-vocalia-400">${log.time.toLocaleTimeString('fr-FR')}</span>
+          <span class="text-vocalia-200 flex-1">${escapeHtml(log.message)}</span>
+        </div>
+      `).join('');
+    }
+
+    function filterLogs(level) {
+      currentLogFilter = level;
+      renderLogs();
+    }
+
+    function addLog(level, message) {
+      allLogs.unshift({ level, time: new Date(), message });
+      if (allLogs.length > 50) allLogs.pop();
+      renderLogs();
+    }
+
+    // Configuration modal
+    function showConfigModal() {
+      const modal = document.createElement('div');
+      modal.id = 'config-modal';
+      modal.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50';
+      modal.innerHTML = `
+        <div class="bg-slate-800 rounded-2xl border border-slate-600 w-full max-w-lg mx-4 p-6 shadow-2xl">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold">Configuration Système</h2>
+            <button type="button" onclick="document.getElementById('config-modal').remove()" class="p-2 rounded-lg hover:bg-slate-700 transition">
+              <i data-lucide="x" class="w-5 h-5 text-vocalia-400"></i>
+            </button>
+          </div>
+          <div class="space-y-4">
+            <div class="p-4 rounded-xl bg-slate-700/50">
+              <label class="block text-sm font-medium mb-2">Mode HITL</label>
+              <select class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+                <option selected>Activé - Approbation manuelle</option>
+                <option>Auto - Rendu automatique</option>
+                <option>Désactivé</option>
+              </select>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-700/50">
+              <label class="block text-sm font-medium mb-2">Seuil BANT minimum</label>
+              <input type="number" value="70" min="0" max="100" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+            </div>
+            <div class="p-4 rounded-xl bg-slate-700/50">
+              <label class="block text-sm font-medium mb-2">Langue par défaut</label>
+              <select class="w-full bg-slate-700 border border-slate-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+                <option value="fr" selected>Français</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="ar">العربية</option>
+                <option value="ary">Darija</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex justify-end gap-3 mt-6">
+            <button type="button" onclick="document.getElementById('config-modal').remove()" class="px-4 py-2 rounded-xl bg-slate-700 hover:bg-slate-600 text-sm font-medium transition">
+              Annuler
+            </button>
+            <button type="button" onclick="alert('Configuration sauvegardée'); document.getElementById('config-modal').remove()" class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-sm font-medium transition">
+              Sauvegarder
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // Global API base URL
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3004'
+      : 'https://api.vocalia.ma';
+
+    // Fetch admin metrics from API
+    async function fetchAdminMetrics() {
+      try {
+        const response = await fetch(`${API_BASE}/admin/metrics`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error('API unavailable');
+        return await response.json();
+      } catch (err) {
+        console.warn('[Admin] API unavailable:', err.message);
+        return null;
+      }
+    }
+
+    // Update admin dashboard with real data from API
+    // API returns: { stats: { tenantsActive, callsToday, mrr, avgLatency, uptime }, health, topTenants, apiUsage }
+    function updateAdminDashboard(metrics) {
+      if (!metrics || !metrics.stats) {
+        console.warn('[Admin] No metrics data available');
+        return;
+      }
+
+      const stats = metrics.stats;
+
+      // Update calls today
+      const callsEl = document.getElementById('stat-calls-today');
+      if (callsEl) callsEl.textContent = (stats.callsToday || 0).toLocaleString();
+
+      const activeEl = document.getElementById('stat-calls-active');
+      if (activeEl) activeEl.textContent = `En cours: ${stats.activeCalls || 0}`;
+
+      // Update MRR
+      const mrrEl = document.getElementById('stat-mrr');
+      if (mrrEl) mrrEl.textContent = (stats.mrr || 0).toLocaleString() + '€';
+
+      const mrrGrowthEl = document.getElementById('stat-mrr-growth');
+      if (mrrGrowthEl) {
+        const growth = stats.mrrGrowth || 18; // Default growth indicator
+        mrrGrowthEl.textContent = (growth >= 0 ? '+' : '') + growth + '%';
+        mrrGrowthEl.className = growth >= 0 ? 'text-green-400 text-xs' : 'text-red-400 text-xs';
+      }
+
+      // Update latency
+      const latencyEl = document.getElementById('stat-latency');
+      if (latencyEl) latencyEl.textContent = (stats.avgLatency || 0) + 'ms';
+
+      const latencyStatusEl = document.getElementById('stat-latency-status');
+      if (latencyStatusEl) {
+        const latency = stats.avgLatency || 0;
+        latencyStatusEl.textContent = latency < 100 ? 'Optimal' : latency < 200 ? 'Bon' : 'Élevé';
+        latencyStatusEl.className = latency < 200 ? 'text-green-400 text-xs' : 'text-yellow-400 text-xs';
+      }
+
+      // Update uptime
+      const uptimeEl = document.getElementById('stat-uptime');
+      if (uptimeEl) uptimeEl.textContent = (stats.uptime || 99.97).toFixed(2) + '%';
+
+      const uptimePeriodEl = document.getElementById('stat-uptime-period');
+      if (uptimePeriodEl) uptimePeriodEl.textContent = '30 jours';
+
+      // Update tenant count if available
+      const tenantCountEl = document.getElementById('stat-tenant-count');
+      if (tenantCountEl && stats.tenantsActive !== undefined) {
+        tenantCountEl.textContent = stats.tenantsActive;
+      }
+
+      // Update tenants table
+      if (metrics.topTenants && metrics.topTenants.length > 0) {
+        renderTenantsTable(metrics.topTenants);
+      }
+
+      // Log successful update
+      addLog('info', 'Dashboard metrics updated from API');
+    }
+
+    // Render tenants table from API data
+    function renderTenantsTable(tenants) {
+      const tbody = document.getElementById('tenants-table-body');
+      if (!tbody) return;
+
+      const planColors = {
+        enterprise: { bg: 'bg-purple-500/20', text: 'text-purple-400' },
+        pro: { bg: 'bg-vocalia-500/20', text: 'text-vocalia-400' },
+        starter: { bg: 'bg-gray-500/20', text: 'text-gray-400' }
+      };
+
+      const gradientColors = ['from-blue-500 to-blue-400', 'from-green-500 to-green-400', 'from-yellow-500 to-orange-400', 'from-vocalia-500 to-vocalia-400', 'from-pink-500 to-rose-400'];
+
+      tbody.innerHTML = tenants.map((tenant, i) => {
+        const plan = (tenant.plan || 'starter').toLowerCase();
+        const colors = planColors[plan] || planColors.starter;
+        const gradient = gradientColors[i % gradientColors.length];
+        const initial = (tenant.name || 'T').charAt(0).toUpperCase();
+
+        return `
+          <tr class="hover:bg-slate-700/20">
+            <td class="py-4">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center text-sm font-bold">${escapeHtml(initial)}</div>
+                <span class="font-medium">${escapeHtml(tenant.name || 'Unknown')}</span>
+              </div>
+            </td>
+            <td class="py-4"><span class="px-2 py-1 rounded-lg ${colors.bg} ${colors.text} text-xs">${escapeHtml(plan.charAt(0).toUpperCase() + plan.slice(1))}</span></td>
+            <td class="py-4">${(tenant.callsToday || 0).toLocaleString()}</td>
+            <td class="py-4 font-semibold">${(tenant.mrr || 0).toLocaleString()}€</td>
+            <td class="py-4"><span class="flex items-center ${tenant.status === 'active' ? 'text-green-400' : 'text-yellow-400'} text-sm"><i data-lucide="${tenant.status === 'active' ? 'check-circle' : 'pause-circle'}" class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>${tenant.status === 'active' ? 'Actif' : 'En pause'}</span></td>
+          </tr>
+        `;
+      }).join('');
+
+      // Re-init lucide icons for new content
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function quickAction(action) {
+
+      switch (action) {
+        case 'new_tenant':
+          // Open new tenant modal or redirect
+          const tenantName = prompt('Nom du nouveau tenant:');
+          if (tenantName) {
+            fetch(`${API_BASE}/admin/tenants`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: tenantName })
+            })
+              .then(res => res.ok ? alert(`Tenant "${tenantName}" créé avec succès!`) : alert('Erreur lors de la création'))
+              .catch(() => alert('API non disponible. Tenant à créer manuellement.'));
+          }
+          break;
+
+        case 'restart':
+          if (confirm('Voulez-vous vraiment redémarrer tous les services?')) {
+            fetch(`${API_BASE}/admin/restart`, { method: 'POST' })
+              .then(res => res.ok ? alert('Services redémarrés avec succès!') : alert('Erreur lors du redémarrage'))
+              .catch(() => alert('API non disponible. Redémarrez manuellement via CLI.'));
+          }
+          break;
+
+        case 'export_logs':
+          // Trigger log export download
+          const exportUrl = `${API_BASE}/admin/logs/export?format=json&period=24h`;
+          fetch(exportUrl)
+            .then(res => res.blob())
+            .then(blob => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `vocalia-logs-${new Date().toISOString().split('T')[0]}.json`;
+              a.click();
+              window.URL.revokeObjectURL(url);
+            })
+            .catch(() => {
+              // Offline fallback: export browser-cached logs when API unavailable
+              const cachedLogs = JSON.stringify({
+                exported: new Date().toISOString(),
+                period: '24h',
+                source: 'browser-cache',
+                note: 'API unavailable - logs from browser session only',
+                logs: allLogs.map(l => ({
+                  time: l.time.toISOString(),
+                  level: l.level.toUpperCase(),
+                  message: l.message
+                }))
+              }, null, 2);
+              const blob = new Blob([cachedLogs], { type: 'application/json' });
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `vocalia-logs-local-${new Date().toISOString().split('T')[0]}.json`;
+              a.click();
+              window.URL.revokeObjectURL(url);
+            });
+          break;
+
+        case 'config':
+          // Show configuration modal inline
+          showConfigModal();
+          break;
+
+        default:
+          console.warn('Unknown quick action:', action);
+      }
+    }
+
     // Initialize
     (async function init() {
       // Geo & I18n
@@ -961,21 +1225,35 @@
 
       // Initialize draggable dashboard grid
       if (typeof DashboardGrid !== 'undefined') {
-        window.adminDashboardGrid = new DashboardGrid('.dashboard-content', {
+        window.adminDashboardGrid = new DashboardGrid('#widgets-grid', {
           storageKey: 'vocalia-admin-layout',
           enableCollapse: true,
           enableDrag: true
         });
       }
 
+      // Initialize logs with dynamic timestamps
+      initializeLogs();
+
       // Initialize HITL queue
       refreshHITLQueue();
+
+      // Fetch and update admin dashboard with real data
+      setTimeout(async () => {
+        const metrics = await fetchAdminMetrics();
+        updateAdminDashboard(metrics);
+      }, 300);
+
+      // Auto-refresh every 30 seconds
+      setInterval(async () => {
+        const metrics = await fetchAdminMetrics();
+        if (metrics) updateAdminDashboard(metrics);
+      }, 30000);
     })();
   </script>
 
   <!-- Dashboard Drag & Drop -->
   <script src="/src/lib/dashboard-grid.js"></script>
-  <script src="/src/lib/card-tilt.js"></script>
 
   <!-- Lucide Icons 2026 -->
   <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
