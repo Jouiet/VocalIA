@@ -139,10 +139,12 @@ async function initGeoDetection() {
     ...config
   }));
 
-  // Force strict language setting if different
-  // Note: i18n.js usually handles setting the language, 
-  // but we should update localStorage for i18n to pick up
-  localStorage.setItem('vocalia_lang', config.lang);
+  // ONLY set geo language if user hasn't manually chosen a language
+  // This preserves user's manual language choice across page navigation
+  const userChosenLang = localStorage.getItem('vocalia_lang');
+  if (!userChosenLang) {
+    localStorage.setItem('vocalia_lang', config.lang);
+  }
 
   return { country: countryCode, ...config, pricing };
 }
