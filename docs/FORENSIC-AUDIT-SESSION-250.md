@@ -1043,14 +1043,14 @@ cat website/public/site.webmanifest
 
 ```markdown
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 37 pages | **1530 keys** | RTL ✅ | **100% COMPLETE**
-> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 31 Personas | 4 Frameworks | 12 Func. Tools | 23 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 3 Agents | 31 Personas | 4 Frameworks | 12 Func. Tools | 23 Core Modules**
 ```
 
 ### Après
 
 ```markdown
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | 37 pages | **1546 keys** | RTL ✅ | **Structure 100% | Traductions ~78%**
-> **Platform: 178 MCP Tools | 4 Sensors | 3 Agents | 39 Personas SOTA | 5 Frameworks | 12 Func. Tools | 28 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 3 Agents | 39 Personas SOTA | 5 Frameworks | 12 Func. Tools | 28 Core Modules**
 ```
 
 ### Architecture Section

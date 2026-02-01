@@ -1,7 +1,7 @@
 # VocalIA - Matrice Intégrations × Use Cases
 
 > **Version**: 2.1.0 | **Date**: 31/01/2026 | **Session**: 249.22
-> **28 Intégrations natives + 3 iPaaS = 178 MCP Tools**
+> **28 Intégrations natives + 3 iPaaS = 182 MCP Tools**
 > **VÉRIFIÉ**: Audit codebase 31/01/2026
 > **Session 249.21**: +Stripe (19 tools) - Cycle transactionnel COMPLET
 

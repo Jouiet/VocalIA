@@ -81,7 +81,7 @@ VocalIA/
 ├── website/        # 36 pages HTML
 │   └── src/locales/  # 5 langues (fr,en,es,ar,ary)
 ├── sdks/           # Python + Node.js
-├── mcp-server/     # MCP Server (178 tools / 25 categories)
+├── mcp-server/     # MCP Server (182 tools / 25 categories)
 ├── scripts/        # 30 utility scripts
 └── docs/           # Documentation
 ```
@@ -180,7 +180,7 @@ open http://localhost:8080?lang=ar
 |:---------|:------------|
 | `docs/SESSION-HISTORY.md` | Historique complet sessions |
 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | Reference technique |
-| `docs/VOCALIA-MCP.md` | MCP Server (178 tools) |
+| `docs/VOCALIA-MCP.md` | MCP Server (182 tools) |
 | `docs/INTEGRATIONS-ROADMAP.md` | Phase 0 ✅ + Phase 1 ✅ COMPLETE |
 | `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant architecture |
 | `docs/I18N-AUDIT-ACTIONPLAN.md` | Plan i18n (100% COMPLETE) |
@@ -435,7 +435,7 @@ grep -c '<url>' website/sitemap.xml  # 35
 | **Stripe** | 19 | ✅ Payment Links, Checkout, Invoices, PaymentIntents, Refunds |
 | **Shopify** | 8 | ✅ FULL CRUD (cancel, refund, fulfill, update) |
 | **E-commerce total** | 76 | ✅ 7 platforms |
-| **Total MCP Server** | 178 | ✅ Build OK |
+| **Total MCP Server** | 182 | ✅ Build OK |
 
 **Scripts créés**:
 - `scripts/propagate-footer.py` - Synchronise footer depuis components/
@@ -443,7 +443,7 @@ grep -c '<url>' website/sitemap.xml  # 35
 
 **Vérification empirique**:
 ```bash
-grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
+grep -c "server.tool(" mcp-server/src/index.ts  # 182 ✅
 grep -rl 'href="/careers"' --include='*.html' | wc -l  # 0 ✅
 grep -rl 'href="/status"' --include='*.html' | wc -l  # 0 ✅
 grep -rl 'Powered by' --include='*.html' | wc -l  # 0 ✅
@@ -533,7 +533,7 @@ cd mcp-server && npm run build  # ✅ Build OK
 
 *Voir `docs/SESSION-HISTORY.md` pour l'historique complet*
 *Voir `docs/USE-CASES-STRATEGIC-ANALYSIS.md` pour SWOT et stratégie*
-*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (178 tools)*
+*Voir `docs/VOCALIA-MCP.md` pour documentation MCP (182 tools)*
 *Voir `docs/AUDIT-FORENSIQUE-PERSONAS-KB-SESSION-250.md` pour audit personas + KB*
 *Voir `docs/SOC2-PREPARATION.md` pour préparation SOC2 Type II*
 *Voir `docs/GDPR-COMPLIANCE.md` pour conformité RGPD*
