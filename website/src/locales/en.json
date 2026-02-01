@@ -1885,5 +1885,9 @@
   "cookie_policy_page": {
     "title": "Cookie Policy",
     "description": "How we use cookies"
+  },
+  "products": {
+    "voice_widget": "Voice Widget",
+    "voice_telephony": "Voice Telephony"
   }
 }

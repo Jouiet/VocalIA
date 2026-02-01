@@ -1885,5 +1885,9 @@
   "cookie_policy_page": {
     "title": "سياسة ملفات تعريف الارتباط",
     "description": "كيف نستخدم ملفات تعريف الارتباط"
+  },
+  "products": {
+    "voice_widget": "أداة الصوت",
+    "voice_telephony": "الهاتف الصوتي"
   }
 }

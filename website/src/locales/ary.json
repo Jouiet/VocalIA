@@ -1885,5 +1885,9 @@
   "cookie_policy_page": {
     "title": "سياسة الكوكيز",
     "description": "كيفاش كنستعملو الكوكيز"
+  },
+  "products": {
+    "voice_widget": "ويدجيت الصوت",
+    "voice_telephony": "التيليفون الصوتي"
   }
 }
