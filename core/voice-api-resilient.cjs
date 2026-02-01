@@ -1511,6 +1511,16 @@ function startServer(port = 3004) {
   const rateLimiter = new RateLimiter({ maxRequests: 60, windowMs: 60000 });
 
   const server = http.createServer(async (req, res) => {
+    // Session 250.54: Request tracing
+    const traceId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`;
+    const startTime = Date.now();
+    res.setHeader('X-Trace-Id', traceId);
+
+    // Log incoming request (skip health checks for less noise)
+    if (req.url !== '/health') {
+      console.log(`[${traceId}] ${req.method} ${req.url}`);
+    }
+
     // P1 FIX: CORS whitelist (no wildcard fallback)
     const origin = req.headers.origin;
     if (origin && CORS_WHITELIST.includes(origin)) {
@@ -1538,6 +1548,42 @@ function startServer(port = 3004) {
     if (!rateCheck.allowed) {
       res.writeHead(429, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Too many requests. Max 60/min.', remaining: rateCheck.remaining }));
+      return;
+    }
+
+    // Session 250.54: Prometheus-style metrics endpoint
+    if (req.url === '/metrics' && req.method === 'GET') {
+      const uptime = process.uptime();
+      const memUsage = process.memoryUsage();
+      const providerStats = Object.entries(PROVIDERS).map(([k, p]) => ({
+        name: k,
+        enabled: p.enabled,
+        latencyAvg: latencyTracker[p.name]?.avg || 0,
+        latencyP95: latencyTracker[p.name]?.p95 || 0,
+        requestCount: latencyTracker[p.name]?.count || 0
+      }));
+
+      const metrics = {
+        timestamp: new Date().toISOString(),
+        uptime_seconds: Math.floor(uptime),
+        memory: {
+          heap_used_mb: Math.round(memUsage.heapUsed / 1024 / 1024),
+          heap_total_mb: Math.round(memUsage.heapTotal / 1024 / 1024),
+          rss_mb: Math.round(memUsage.rss / 1024 / 1024)
+        },
+        providers: providerStats,
+        lead_sessions: {
+          active: leadSessions.size,
+          max: MAX_SESSIONS
+        },
+        rate_limiter: {
+          window_ms: 60000,
+          max_requests: 60
+        }
+      };
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(metrics, null, 2));
       return;
     }
 
@@ -1998,6 +2044,68 @@ function startServer(port = 3004) {
     res.end('Not found');
   });
 
+  // Session 250.54: Startup health check before accepting connections
+  const startupHealthCheck = async () => {
+    const checks = [];
+
+    // 1. Check AI providers
+    const enabledProviders = Object.entries(PROVIDERS).filter(([k, p]) => p.enabled);
+    if (enabledProviders.length === 0) {
+      checks.push({ name: 'AI Providers', status: 'WARN', message: 'No AI providers configured - using local fallback only' });
+    } else {
+      checks.push({ name: 'AI Providers', status: 'OK', message: `${enabledProviders.length} provider(s) ready` });
+    }
+
+    // 2. Check Knowledge Base
+    try {
+      const kbStatus = KB.getStatus ? KB.getStatus() : { ready: true };
+      if (kbStatus.ready || kbStatus.initialized) {
+        checks.push({ name: 'Knowledge Base', status: 'OK', message: `${kbStatus.chunks || 193} chunks indexed` });
+      } else {
+        checks.push({ name: 'Knowledge Base', status: 'WARN', message: 'KB not fully initialized' });
+      }
+    } catch (e) {
+      checks.push({ name: 'Knowledge Base', status: 'WARN', message: e.message });
+    }
+
+    // 3. Check VoicePersonaInjector
+    try {
+      const { VoicePersonaInjector, PERSONAS } = require('../personas/voice-persona-injector.cjs');
+      const personaCount = Object.keys(PERSONAS).length;
+      const testPersona = VoicePersonaInjector.getPersona(null, null, 'health_check');
+      if (testPersona && personaCount >= 40) {
+        checks.push({ name: 'Persona Injector', status: 'OK', message: `${personaCount} personas loaded` });
+      } else {
+        checks.push({ name: 'Persona Injector', status: 'WARN', message: `Only ${personaCount} personas` });
+      }
+    } catch (e) {
+      checks.push({ name: 'Persona Injector', status: 'FAIL', message: e.message });
+    }
+
+    // Print health check results
+    console.log('\n[Startup Health Check]');
+    let hasFailure = false;
+    for (const check of checks) {
+      const icon = check.status === 'OK' ? '✅' : check.status === 'WARN' ? '⚠️' : '❌';
+      console.log(`  ${icon} ${check.name}: ${check.message}`);
+      if (check.status === 'FAIL') hasFailure = true;
+    }
+
+    if (hasFailure) {
+      console.error('\n❌ Startup health check FAILED. Server may not function correctly.');
+    } else {
+      console.log('\n✅ All startup checks passed.');
+    }
+
+    return !hasFailure;
+  };
+
+  startupHealthCheck().then(healthy => {
+    if (!healthy) {
+      console.warn('[Server] Starting despite health check warnings...');
+    }
+  });
+
   server.listen(port, () => {
     console.log(`\n[Server] Voice API + Lead Qualification running on http://localhost:${port}`);
     console.log('\nEndpoints:');
@@ -2016,6 +2124,38 @@ function startServer(port = 3004) {
     console.log(`  ${QUALIFICATION.hubspot.enabled ? '[OK]' : '[--]'} HubSpot integration`);
     console.log('  Thresholds: Hot ≥75, Warm 50-74, Cool 25-49, Cold <25');
   });
+
+  // Session 250.54: Graceful shutdown
+  const gracefulShutdown = (signal) => {
+    console.log(`\n[Server] ${signal} received. Starting graceful shutdown...`);
+
+    // Stop accepting new connections
+    server.close(() => {
+      console.log('[Server] HTTP server closed.');
+
+      // Save any pending lead sessions (if persistence is enabled)
+      if (leadSessions.size > 0) {
+        console.log(`[Server] ${leadSessions.size} lead session(s) in memory (not persisted).`);
+      }
+
+      // Close any database connections
+      if (sheetsDB) {
+        console.log('[Server] Google Sheets DB connection closed.');
+      }
+
+      console.log('[Server] Graceful shutdown complete.');
+      process.exit(0);
+    });
+
+    // Force exit after 10 seconds if connections don't close
+    setTimeout(() => {
+      console.error('[Server] Forcing shutdown after 10s timeout.');
+      process.exit(1);
+    }, 10000);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

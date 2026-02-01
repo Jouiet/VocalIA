@@ -429,31 +429,45 @@ graphSearch(query, {tenantId}) [knowledge-base-services.cjs]
 
 ## 12. PLAN D'ACTION
 
-### Phase 1: Fixes Critiques (P0)
+### Phase 1: Fixes Critiques (P0) - ✅ COMPLETE
 
-| # | Fix | Fichier | Effort |
+| # | Fix | Fichier | Status |
 |:-:|:----|:--------|:------:|
-| 1 | Use session.metadata.systemPrompt in getResilisentResponse() | `voice-api-resilient.cjs` | 30min |
-| 2 | Change db-api port to 3013 | `core/db-api.cjs` | 5min |
-| 3 | Add localhost:8080 to CORS whitelist | `voice-api-resilient.cjs` | 5min |
+| 1 | Use session.metadata.systemPrompt in getResilisentResponse() | `voice-api-resilient.cjs` | ✅ DONE |
+| 2 | Change db-api port to 3013 | `core/db-api.cjs` | ✅ DONE |
+| 3 | Add localhost:8080 to CORS whitelist | `voice-api-resilient.cjs` | ✅ DONE |
 
-### Phase 2: Fixes Majeurs (P1)
+### Phase 2: Fixes Majeurs (P1) - ✅ COMPLETE
 
-| # | Fix | Fichier | Effort |
+| # | Fix | Fichier | Status |
 |:-:|:----|:--------|:------:|
-| 4 | Add dev/prod config for VOICE_API_URL | `voice-widget-core.js` | 15min |
-| 5 | Add startup health check | `voice-api-resilient.cjs` | 20min |
-| 6 | Verify persona injection end-to-end | Integration test | 1h |
+| 4 | Add dev/prod config for VOICE_API_URL | `voice-widget-core.js` | ✅ DONE |
+| 5 | Add startup health check | `voice-api-resilient.cjs` | ✅ DONE |
+| 6 | Verify persona injection end-to-end | `test/persona-e2e.test.cjs` | ✅ 8/8 tests pass |
 
-### Phase 3: Optimisations
+### Phase 3: Optimisations - ✅ COMPLETE
 
-| # | Optimization | Impact |
-|:-:|:-------------|:-------|
-| 7 | Add request tracing/logging | Debugging |
-| 8 | Add metrics endpoint | Monitoring |
-| 9 | Add graceful shutdown | Reliability |
+| # | Optimization | Fichier | Status |
+|:-:|:-------------|:--------|:------:|
+| 7 | Add request tracing/logging | `voice-api-resilient.cjs` | ✅ X-Trace-Id header |
+| 8 | Add metrics endpoint | `voice-api-resilient.cjs` | ✅ GET /metrics |
+| 9 | Add graceful shutdown | `voice-api-resilient.cjs` | ✅ SIGTERM/SIGINT |
+
+---
+
+## 13. CHANGELOG SESSION 250.54
+
+| Change | Impact |
+|:-------|:-------|
+| archetypeKey propagation fix | 5 langues fonctionnent |
+| Startup health check | 3 checks automatiques |
+| Request tracing | X-Trace-Id pour debugging |
+| /metrics endpoint | Monitoring production |
+| Graceful shutdown | Reliability accrue |
+| E2E test suite | 8 tests automatisés |
 
 ---
 
 *Document généré: 01/02/2026 - Session 250.54*
+*Màj: 01/02/2026 - Session 250.54 - PLAN 100% COMPLETE*
 *Méthode: Analyse forensique bottom-up factuelle*
