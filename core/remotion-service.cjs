@@ -26,6 +26,25 @@ const fs = require('fs');
 const REMOTION_DIR = path.join(__dirname, '../remotion');
 const OUTPUT_DIR = path.join(REMOTION_DIR, 'out');
 
+// HITL Configuration
+const HITL_ENABLED = process.env.REMOTION_HITL_ENABLED !== 'false'; // Enabled by default
+let hitlService = null;
+
+/**
+ * Get HITL service (lazy load)
+ */
+function getHITL() {
+  if (!hitlService) {
+    try {
+      hitlService = require('./remotion-hitl.cjs');
+    } catch (error) {
+      console.warn('[Remotion] HITL service not available:', error.message);
+      return null;
+    }
+  }
+  return hitlService;
+}
+
 // Supported languages
 const LANGUAGES = ['fr', 'en', 'es', 'ar', 'ary'];
 
@@ -168,9 +187,90 @@ function getCompositionId(baseId, language) {
 }
 
 /**
- * Render a single composition
+ * Queue video for HITL approval
+ */
+async function queueForApproval(compositionKey, options = {}) {
+  const { language = 'fr', props = {}, requestedBy = 'admin' } = options;
+  const composition = COMPOSITIONS[compositionKey];
+
+  if (!composition) {
+    throw new Error(`Unknown composition: ${compositionKey}. Available: ${Object.keys(COMPOSITIONS).join(', ')}`);
+  }
+
+  const hitl = getHITL();
+  if (!hitl) {
+    throw new Error('HITL service not available');
+  }
+
+  const item = hitl.queueVideo({
+    composition: compositionKey,
+    language,
+    props,
+    requestedBy
+  });
+
+  console.log(`[Remotion] Video queued for approval: ${item.id}`);
+  return item;
+}
+
+/**
+ * Process approved video (render after HITL approval)
+ */
+async function processApproved(videoId) {
+  const hitl = getHITL();
+  if (!hitl) {
+    throw new Error('HITL service not available');
+  }
+
+  const video = hitl.getVideo(videoId);
+  if (!video) {
+    throw new Error(`Video not found: ${videoId}`);
+  }
+
+  if (video.state !== hitl.STATES.APPROVED) {
+    throw new Error(`Video not approved: ${video.state}`);
+  }
+
+  // Mark as rendering
+  hitl.markRendering(videoId);
+
+  try {
+    // Render the video (bypass HITL check)
+    const result = await renderCompositionDirect(video.composition, {
+      language: video.language,
+      props: video.props
+    });
+
+    // Mark as completed
+    hitl.markCompleted(videoId, result.output);
+    return result;
+
+  } catch (error) {
+    hitl.markFailed(videoId, error);
+    throw error;
+  }
+}
+
+/**
+ * Render a single composition (with HITL check)
  */
 async function renderComposition(compositionKey, options = {}) {
+  const { language = 'fr', props = {}, skipHITL = false, requestedBy = 'admin' } = options;
+
+  // Check if HITL is enabled and should be used
+  if (HITL_ENABLED && !skipHITL) {
+    console.log('[Remotion] HITL enabled - queueing for approval');
+    return queueForApproval(compositionKey, { language, props, requestedBy });
+  }
+
+  // Direct render (HITL disabled or skipped)
+  return renderCompositionDirect(compositionKey, options);
+}
+
+/**
+ * Render a single composition directly (no HITL)
+ */
+async function renderCompositionDirect(compositionKey, options = {}) {
   const { language = 'fr', props = {} } = options;
   const composition = COMPOSITIONS[compositionKey];
 
@@ -484,11 +584,85 @@ async function main() {
     return;
   }
 
+  // HITL: List pending
+  if (args.includes('--pending')) {
+    const hitl = getHITL();
+    if (!hitl) {
+      console.error('HITL service not available');
+      process.exit(1);
+    }
+    const pending = hitl.getPending();
+    console.log('\n=== Pending Video Approvals ===\n');
+    if (pending.length === 0) {
+      console.log('No pending videos.');
+    } else {
+      for (const item of pending) {
+        console.log(`  ${item.id}`);
+        console.log(`    Composition: ${item.composition}`);
+        console.log(`    Language: ${item.language}`);
+        console.log(`    Requested: ${item.requestedAt}`);
+        console.log('');
+      }
+    }
+    console.log(`Total: ${pending.length}`);
+    return;
+  }
+
+  // HITL: Approve
+  const approveIndex = args.indexOf('--approve');
+  if (approveIndex !== -1) {
+    const videoId = args[approveIndex + 1];
+    if (!videoId) {
+      console.error('Usage: --approve <video-id>');
+      process.exit(1);
+    }
+    try {
+      const hitl = getHITL();
+      if (!hitl) throw new Error('HITL service not available');
+
+      // Approve the video
+      hitl.approveVideo(videoId, 'cli-admin', 'Approved via CLI');
+      console.log(`[HITL] Video approved: ${videoId}`);
+
+      // Process (render) the approved video
+      console.log('[Remotion] Rendering approved video...');
+      const result = await processApproved(videoId);
+      console.log('\n=== Render Complete ===');
+      console.log(JSON.stringify(result, null, 2));
+    } catch (error) {
+      console.error('Error:', error.message);
+      process.exit(1);
+    }
+    return;
+  }
+
+  // HITL: Reject
+  const rejectIndex = args.indexOf('--reject');
+  if (rejectIndex !== -1) {
+    const videoId = args[rejectIndex + 1];
+    const reason = args[rejectIndex + 2] || 'Rejected via CLI';
+    if (!videoId) {
+      console.error('Usage: --reject <video-id> [reason]');
+      process.exit(1);
+    }
+    try {
+      const hitl = getHITL();
+      if (!hitl) throw new Error('HITL service not available');
+
+      hitl.rejectVideo(videoId, 'cli-admin', reason);
+      console.log(`[HITL] Video rejected: ${videoId}`);
+    } catch (error) {
+      console.error('Error:', error.message);
+      process.exit(1);
+    }
+    return;
+  }
+
   const renderIndex = args.indexOf('--render');
   if (renderIndex !== -1) {
     const compositionKey = args[renderIndex + 1];
     if (!compositionKey) {
-      console.error('Usage: node remotion-service.cjs --render <demo|features|testimonial|thumbnail> [--lang <fr|en|es|ar|ary>]');
+      console.error('Usage: node remotion-service.cjs --render <demo|features|testimonial|thumbnail> [--lang <fr|en|es|ar|ary>] [--skip-hitl]');
       process.exit(1);
     }
 
@@ -496,13 +670,16 @@ async function main() {
     const langIndex = args.indexOf('--lang');
     const language = langIndex !== -1 ? args[langIndex + 1] : 'fr';
 
+    // Check for skip-hitl flag
+    const skipHITL = args.includes('--skip-hitl');
+
     if (!LANGUAGES.includes(language)) {
       console.error(`Invalid language: ${language}. Available: ${LANGUAGES.join(', ')}`);
       process.exit(1);
     }
 
     try {
-      const result = await renderComposition(compositionKey, { language });
+      const result = await renderComposition(compositionKey, { language, skipHITL });
       console.log('\n=== Render Result ===');
       console.log(JSON.stringify(result, null, 2));
     } catch (error) {
@@ -522,12 +699,19 @@ Commands:
   --install             Install Remotion dependencies
   --list                List available compositions
   --studio              Start Remotion Studio (preview)
-  --render <type>       Render a video
+  --render <type>       Render a video (queues for HITL approval)
+  --render-direct <type> Render immediately (skip HITL)
   --render-all          Render all compositions (default language)
   --render-all-langs    Render all compositions in all languages
 
+HITL Workflow:
+  --pending             List videos pending approval
+  --approve <id>        Approve and render video
+  --reject <id>         Reject video
+
 Options:
   --lang <code>         Language: fr, en, es, ar, ary (default: fr)
+  --skip-hitl           Skip HITL approval (direct render)
 
 Video Types:
   demo                  Main product demo (30s)
@@ -546,6 +730,8 @@ Video Types:
 
 Languages: ${LANGUAGES.join(', ')}
 
+HITL: ${HITL_ENABLED ? 'ENABLED (set REMOTION_HITL_ENABLED=false to disable)' : 'DISABLED'}
+
 Metrics (${VOCALIA_METRICS.mcpTools} MCP Tools verified):
   - ${VOCALIA_METRICS.personas} Personas
   - ${VOCALIA_METRICS.languages} Languages
@@ -554,9 +740,10 @@ Metrics (${VOCALIA_METRICS.mcpTools} MCP Tools verified):
 
 Examples:
   node remotion-service.cjs --install
-  node remotion-service.cjs --render demo
-  node remotion-service.cjs --render features --lang en
-  node remotion-service.cjs --render testimonial --lang ar
+  node remotion-service.cjs --render demo           # Queues for HITL
+  node remotion-service.cjs --render demo --skip-hitl  # Direct render
+  node remotion-service.cjs --pending               # View pending
+  node remotion-service.cjs --approve vid_12345_abc # Approve & render
   node remotion-service.cjs --studio
   `);
 }
@@ -568,6 +755,9 @@ if (require.main === module) {
 
 module.exports = {
   renderComposition,
+  renderCompositionDirect,
+  queueForApproval,
+  processApproved,
   renderAll,
   renderAllLanguages,
   generateVideo,
@@ -575,6 +765,8 @@ module.exports = {
   installDependencies,
   startStudio,
   listCompositions,
+  getHITL,
+  HITL_ENABLED,
   COMPOSITIONS,
   LANGUAGES,
   VOCALIA_METRICS

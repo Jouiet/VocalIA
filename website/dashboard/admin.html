@@ -91,6 +91,11 @@
         <i data-lucide="users" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.users">Utilisateurs</span>
       </a>
+      <a href="#videos"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        <i data-lucide="video" class="w-5 h-5"></i>
+        <span>Vidéos (HITL)</span>
+      </a>
     </nav>
 
     <!-- Admin info -->
@@ -613,6 +618,119 @@
         </div>
       </section>
 
+      <!-- Video Generation (Remotion + HITL) -->
+      <section id="videos" class="mb-8">
+        <div class="liquid-glass p-6">
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                <i data-lucide="video" class="w-5 h-5 text-purple-400"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold">Génération Vidéo</h3>
+                <p class="text-xs text-vocalia-400">Remotion + HITL Workflow</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium" id="hitl-status">HITL Activé</span>
+              <button type="button" onclick="refreshHITLQueue()" class="p-2 rounded-lg hover:bg-slate-700/50 transition">
+                <i data-lucide="refresh-cw" class="w-4 h-4 text-vocalia-400"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- HITL Pending Queue -->
+          <div class="mb-6">
+            <h4 class="text-sm font-medium text-vocalia-300 mb-3">En attente d'approbation</h4>
+            <div id="hitl-queue" class="space-y-3">
+              <!-- Populated by JS -->
+              <div class="p-4 rounded-xl bg-slate-700/30 text-center text-vocalia-400 text-sm">
+                Aucune vidéo en attente
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Generate -->
+          <div class="border-t border-slate-600 pt-6">
+            <h4 class="text-sm font-medium text-vocalia-300 mb-4">Générer une nouvelle vidéo</h4>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <button type="button" onclick="queueVideo('demo')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="play-circle" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">Demo</p>
+                <p class="text-xs text-vocalia-400">30s • Produit</p>
+              </button>
+              <button type="button" onclick="queueVideo('onboarding')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="user-plus" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">Onboarding</p>
+                <p class="text-xs text-vocalia-400">60s • Client</p>
+              </button>
+              <button type="button" onclick="queueVideo('datareport')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="bar-chart-3" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">Rapport</p>
+                <p class="text-xs text-vocalia-400">45s • Analytics</p>
+              </button>
+              <button type="button" onclick="queueVideo('pricing')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="credit-card" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">Pricing</p>
+                <p class="text-xs text-vocalia-400">30s • Tarifs</p>
+              </button>
+              <button type="button" onclick="queueVideo('socialclip')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="share-2" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">Social Clip</p>
+                <p class="text-xs text-vocalia-400">15s • Réseaux</p>
+              </button>
+              <button type="button" onclick="queueVideo('integration-hubspot')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="plug" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">HubSpot</p>
+                <p class="text-xs text-vocalia-400">40s • Guide</p>
+              </button>
+              <button type="button" onclick="queueVideo('integration-shopify')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="shopping-cart" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">Shopify</p>
+                <p class="text-xs text-vocalia-400">40s • Guide</p>
+              </button>
+              <button type="button" onclick="queueVideo('integration-stripe')" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+                <i data-lucide="wallet" class="w-5 h-5 text-vocalia-400 mb-2"></i>
+                <p class="font-medium text-sm">Stripe</p>
+                <p class="text-xs text-vocalia-400">40s • Guide</p>
+              </button>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="mt-4 flex items-center space-x-4">
+              <label class="text-sm text-vocalia-400">Langue:</label>
+              <select id="video-language" class="bg-slate-700 border border-vocalia-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="ar">العربية</option>
+                <option value="ary">الدارجة</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="mt-6 grid grid-cols-4 gap-4 p-4 rounded-xl bg-slate-700/20">
+            <div class="text-center">
+              <p class="text-2xl font-bold text-vocalia-300" id="stat-pending">0</p>
+              <p class="text-xs text-vocalia-400">En attente</p>
+            </div>
+            <div class="text-center">
+              <p class="text-2xl font-bold text-green-400" id="stat-approved">0</p>
+              <p class="text-xs text-vocalia-400">Approuvées</p>
+            </div>
+            <div class="text-center">
+              <p class="text-2xl font-bold text-blue-400" id="stat-completed">0</p>
+              <p class="text-xs text-vocalia-400">Terminées</p>
+            </div>
+            <div class="text-center">
+              <p class="text-2xl font-bold text-red-400" id="stat-rejected">0</p>
+              <p class="text-xs text-vocalia-400">Rejetées</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Quick Actions -->
       <section class="rounded-2xl bg-slate-800/80 border border-slate-600 p-6">
         <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.quick_actions.title">Actions rapides</h3>
@@ -692,6 +810,143 @@
       // Refresh check runs silently
     }, 60000);
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // HITL Video Workflow
+    // ═══════════════════════════════════════════════════════════════════════════
+    const HITL_API = 'http://localhost:3012';
+
+    async function refreshHITLQueue() {
+      try {
+        const [pendingRes, statsRes] = await Promise.all([
+          fetch(`${HITL_API}/pending`).catch(() => null),
+          fetch(`${HITL_API}/stats`).catch(() => null)
+        ]);
+
+        if (pendingRes && pendingRes.ok) {
+          const { items } = await pendingRes.json();
+          renderHITLQueue(items);
+        }
+
+        if (statsRes && statsRes.ok) {
+          const stats = await statsRes.json();
+          updateHITLStats(stats);
+        }
+      } catch (error) {
+        console.warn('[HITL] Service not available:', error.message);
+        document.getElementById('hitl-status').textContent = 'HITL Offline';
+        document.getElementById('hitl-status').classList.remove('bg-green-500/20', 'text-green-400');
+        document.getElementById('hitl-status').classList.add('bg-yellow-500/20', 'text-yellow-400');
+      }
+    }
+
+    function renderHITLQueue(items) {
+      const container = document.getElementById('hitl-queue');
+      if (!items || items.length === 0) {
+        container.innerHTML = `
+          <div class="p-4 rounded-xl bg-slate-700/30 text-center text-vocalia-400 text-sm">
+            Aucune vidéo en attente
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = items.map(item => `
+        <div class="p-4 rounded-xl bg-slate-700/30 flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+              <i data-lucide="film" class="w-5 h-5 text-purple-400"></i>
+            </div>
+            <div>
+              <p class="font-medium">${item.composition}</p>
+              <p class="text-xs text-vocalia-400">${item.language.toUpperCase()} • ${new Date(item.requestedAt).toLocaleString()}</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button type="button" onclick="approveVideo('${item.id}')"
+              class="px-3 py-1.5 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 transition text-sm font-medium">
+              Approuver
+            </button>
+            <button type="button" onclick="rejectVideo('${item.id}')"
+              class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition text-sm font-medium">
+              Rejeter
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // Re-init lucide icons
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function updateHITLStats(stats) {
+      document.getElementById('stat-pending').textContent = stats.pending || 0;
+      document.getElementById('stat-approved').textContent = stats.approved || 0;
+      document.getElementById('stat-completed').textContent = stats.completed || 0;
+      document.getElementById('stat-rejected').textContent = stats.rejected || 0;
+    }
+
+    async function queueVideo(composition) {
+      const language = document.getElementById('video-language').value;
+
+      try {
+        const res = await fetch(`${HITL_API}/queue`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ composition, language, requestedBy: 'admin-dashboard' })
+        });
+
+        if (res.ok) {
+          const item = await res.json();
+          alert(`Vidéo ajoutée à la queue: ${item.id}`);
+          refreshHITLQueue();
+        } else {
+          throw new Error('Failed to queue video');
+        }
+      } catch (error) {
+        alert('Erreur: Service HITL non disponible. Démarrez avec: node core/remotion-hitl.cjs --server');
+      }
+    }
+
+    async function approveVideo(id) {
+      try {
+        const res = await fetch(`${HITL_API}/video/${id}/approve`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reviewer: 'admin-dashboard', notes: 'Approved via dashboard' })
+        });
+
+        if (res.ok) {
+          alert(`Vidéo approuvée: ${id}\nRendu en cours...`);
+          refreshHITLQueue();
+        }
+      } catch (error) {
+        alert('Erreur lors de l\'approbation');
+      }
+    }
+
+    async function rejectVideo(id) {
+      const reason = prompt('Raison du rejet:');
+      if (!reason) return;
+
+      try {
+        const res = await fetch(`${HITL_API}/video/${id}/reject`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reviewer: 'admin-dashboard', reason })
+        });
+
+        if (res.ok) {
+          alert(`Vidéo rejetée: ${id}`);
+          refreshHITLQueue();
+        }
+      } catch (error) {
+        alert('Erreur lors du rejet');
+      }
+    }
+
+    // Auto-refresh HITL queue every 30s
+    setInterval(refreshHITLQueue, 30000);
+
     // Initialize
     (async function init() {
       // Geo & I18n
@@ -712,6 +967,9 @@
           enableDrag: true
         });
       }
+
+      // Initialize HITL queue
+      refreshHITLQueue();
     })();
   </script>
 
