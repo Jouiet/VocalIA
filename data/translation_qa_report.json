@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-02-01T22:18:51",
+  "metrics": {
+    "checked": 16584,
+    "issues": 1,
+    "whitelisted": 11,
+    "skipped_short": 2796
+  },
+  "thresholds": {
+    "en": 0.35,
+    "es": 0.4,
+    "ar": 0.25,
+    "ary": 0.25
+  },
+  "issues_count": 1,
+  "issues_summary": [
+    {
+      "locale": "en",
+      "key": "features_page.title",
+      "ratio": 0.3
+    }
+  ]
+}
