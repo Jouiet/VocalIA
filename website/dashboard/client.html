@@ -604,17 +604,29 @@
         const tenantsData = tenantRes?.ok ? await tenantRes.json() : { data: [] };
         const sessionsData = sessionsRes?.ok ? await sessionsRes.json() : { data: [] };
 
-        // Find current tenant
-        const tenant = tenantsData.data?.find(t => t.id === TENANT_ID || t.name?.toLowerCase().includes('demo'))
-          || tenantsData.data?.[0];
+        // Session 250.52: Find current tenant with proper priority
+        // 1. Exact ID match (real tenant IDs like '0fc3eb92')
+        // 2. If 'demo' mode, find tenant named 'Startup Demo' or similar
+        // 3. NO silent fallback to first tenant (that would show wrong data)
+        let tenant = tenantsData.data?.find(t => t.id === TENANT_ID);
+
+        if (!tenant && TENANT_ID === 'demo') {
+          // Demo mode: find the demo tenant specifically
+          tenant = tenantsData.data?.find(t =>
+            t.name?.toLowerCase() === 'startup demo' ||
+            t.email?.includes('demo') ||
+            t.plan === 'free'
+          );
+        }
 
         if (!tenant) {
-          console.warn('[Dashboard] No tenant found for:', TENANT_ID);
+          console.error('[Dashboard] No tenant found for ID:', TENANT_ID);
+          console.log('[Dashboard] Available tenants:', tenantsData.data?.map(t => ({ id: t.id, name: t.name })));
           return null;
         }
 
-        // Filter sessions for this tenant (or all if demo)
-        const tenantSessions = TENANT_ID === 'demo'
+        // Filter sessions for this specific tenant only
+        const tenantSessions = (sessionsData.data || []).filter(s => s.tenant_id === tenant.id);
           ? sessionsData.data || []
           : (sessionsData.data || []).filter(s => s.tenant_id === tenant.id);
 
@@ -650,8 +662,11 @@
           dailyCalls.push({ date: dateStr, calls: dayCalls });
         }
 
-        // Conversion rate (estimate from qualified leads)
-        const conversionRate = totalCalls > 10 ? Math.round((totalCalls * 0.15) * 10) / 10 : 0;
+        // Session 250.52: REAL metrics from tenant record (NO FAKE DATA)
+        // conversion_rate and nps_score are stored in tenant, not estimated
+        const conversionRate = parseFloat(tenant.conversion_rate) || 0;
+        const npsScore = parseInt(tenant.nps_score) || 0;
+        const qualifiedLeads = parseInt(tenant.qualified_leads) || 0;
 
         return {
           tenant: {
@@ -659,13 +674,14 @@
             name: tenant.name,
             plan: tenant.plan || 'free',
             mrr: parseFloat(tenant.mrr) || 0,
-            status: tenant.status || 'active'
+            status: tenant.status || 'active',
+            qualifiedLeads
           },
           stats: {
             totalCalls,
             minutesUsed: totalMinutes,
             conversionRate,
-            nps: totalCalls > 5 ? Math.round(60 + Math.random() * 20) : 0,
+            nps: npsScore,
             planMinutes: { free: 100, starter: 500, pro: 2000, enterprise: 10000 }[tenant.plan?.toLowerCase()] || 100
           },
           charts: {

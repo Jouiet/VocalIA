@@ -1,0 +1,658 @@
+'use strict';
+
+/**
+ * GoogleSheetsDB - Google Sheets as Database for VocalIA
+ *
+ * Features:
+ * - CRUD operations (create, read, update, delete)
+ * - Query/filter capabilities
+ * - In-memory caching with TTL
+ * - Auto-retry on rate limits
+ * - Batch operations for performance
+ * - Schema validation
+ *
+ * @version 1.0.0
+ * @author VocalIA
+ */
+
+const { google } = require('googleapis');
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+
+// Configuration paths
+const CONFIG_PATH = path.join(__dirname, '../data/google-sheets-config.json');
+const TOKENS_PATH = path.join(__dirname, '../data/google-oauth-tokens.json');
+
+// Schema definitions
+const SCHEMAS = {
+  tenants: {
+    columns: ['id', 'name', 'plan', 'mrr', 'status', 'email', 'phone', 'nps_score', 'conversion_rate', 'qualified_leads', 'created_at', 'updated_at'],
+    required: ['name', 'email'],
+    defaults: { plan: 'free', mrr: 0, status: 'active', nps_score: 0, conversion_rate: 0, qualified_leads: 0 }
+  },
+  sessions: {
+    columns: ['id', 'tenant_id', 'calls', 'duration_sec', 'cost_usd', 'persona', 'lang', 'timestamp'],
+    required: ['tenant_id'],
+    defaults: { calls: 1, duration_sec: 0, cost_usd: 0, lang: 'fr' }
+  },
+  logs: {
+    columns: ['timestamp', 'level', 'service', 'message', 'details'],
+    required: ['level', 'message'],
+    defaults: { service: 'vocalia' }
+  },
+  users: {
+    columns: ['id', 'email', 'password_hash', 'role', 'tenant_id', 'created_at', 'last_login'],
+    required: ['email', 'password_hash'],
+    defaults: { role: 'user' }
+  }
+};
+
+class GoogleSheetsDB {
+  constructor(options = {}) {
+    this.config = null;
+    this.auth = null;
+    this.sheets = null;
+    this.cache = new Map();
+    this.cacheTTL = options.cacheTTL || 60000; // 1 minute default
+    this.maxRetries = options.maxRetries || 3;
+    this.initialized = false;
+  }
+
+  /**
+   * Initialize the database connection
+   */
+  async init() {
+    if (this.initialized) return this;
+
+    try {
+      // Load config
+      if (!fs.existsSync(CONFIG_PATH)) {
+        throw new Error('Config not found: ' + CONFIG_PATH);
+      }
+      if (!fs.existsSync(TOKENS_PATH)) {
+        throw new Error('Tokens not found: ' + TOKENS_PATH);
+      }
+
+      this.config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+      const tokens = JSON.parse(fs.readFileSync(TOKENS_PATH, 'utf8'));
+
+      // Setup OAuth
+      this.auth = new google.auth.OAuth2(tokens.client_id, tokens.client_secret);
+      this.auth.setCredentials({ refresh_token: tokens.refresh_token });
+
+      // Initialize Sheets API
+      this.sheets = google.sheets({ version: 'v4', auth: this.auth });
+
+      this.initialized = true;
+      console.log('✅ [GoogleSheetsDB] Initialized');
+      return this;
+
+    } catch (error) {
+      console.error('❌ [GoogleSheetsDB] Init failed:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Generate unique ID
+   */
+  generateId() {
+    return crypto.randomUUID().split('-')[0];
+  }
+
+  /**
+   * Get current timestamp
+   */
+  timestamp() {
+    return new Date().toISOString();
+  }
+
+  /**
+   * Cache key generator
+   */
+  cacheKey(sheet, query = null) {
+    return `${sheet}:${query ? JSON.stringify(query) : 'all'}`;
+  }
+
+  /**
+   * Get from cache if valid
+   */
+  getCache(key) {
+    const cached = this.cache.get(key);
+    if (cached && Date.now() - cached.time < this.cacheTTL) {
+      return cached.data;
+    }
+    this.cache.delete(key);
+    return null;
+  }
+
+  /**
+   * Set cache
+   */
+  setCache(key, data) {
+    this.cache.set(key, { data, time: Date.now() });
+  }
+
+  /**
+   * Invalidate cache for sheet
+   */
+  invalidateCache(sheet) {
+    for (const key of this.cache.keys()) {
+      if (key.startsWith(sheet + ':')) {
+        this.cache.delete(key);
+      }
+    }
+  }
+
+  /**
+   * Execute with retry on rate limit
+   */
+  async withRetry(operation) {
+    for (let i = 0; i < this.maxRetries; i++) {
+      try {
+        return await operation();
+      } catch (error) {
+        if (error.code === 429 && i < this.maxRetries - 1) {
+          const delay = Math.pow(2, i) * 1000;
+          console.log(`⚠️ [GoogleSheetsDB] Rate limited, retrying in ${delay}ms...`);
+          await new Promise(r => setTimeout(r, delay));
+        } else {
+          throw error;
+        }
+      }
+    }
+  }
+
+  /**
+   * Validate data against schema
+   */
+  validate(sheet, data) {
+    const schema = SCHEMAS[sheet];
+    if (!schema) {
+      throw new Error(`Unknown sheet: ${sheet}`);
+    }
+
+    // Check required fields
+    for (const field of schema.required) {
+      if (data[field] === undefined || data[field] === null || data[field] === '') {
+        throw new Error(`Missing required field: ${field}`);
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Apply defaults to data
+   */
+  applyDefaults(sheet, data) {
+    const schema = SCHEMAS[sheet];
+    const result = { ...schema.defaults, ...data };
+
+    // Auto-generate ID if not provided
+    if (!result.id) {
+      result.id = this.generateId();
+    }
+
+    // Auto-set timestamps
+    const now = this.timestamp();
+    if (schema.columns.includes('created_at') && !result.created_at) {
+      result.created_at = now;
+    }
+    if (schema.columns.includes('updated_at')) {
+      result.updated_at = now;
+    }
+    if (schema.columns.includes('timestamp') && !result.timestamp) {
+      result.timestamp = now;
+    }
+
+    return result;
+  }
+
+  /**
+   * Convert row array to object
+   */
+  rowToObject(sheet, row) {
+    const schema = SCHEMAS[sheet];
+    const obj = {};
+    schema.columns.forEach((col, i) => {
+      obj[col] = row[i] || null;
+    });
+    return obj;
+  }
+
+  /**
+   * Convert object to row array
+   */
+  objectToRow(sheet, obj) {
+    const schema = SCHEMAS[sheet];
+    return schema.columns.map(col => obj[col] ?? '');
+  }
+
+  // ==================== CRUD OPERATIONS ====================
+
+  /**
+   * CREATE - Insert new record
+   */
+  async create(sheet, data) {
+    await this.init();
+
+    // Validate and apply defaults
+    const record = this.applyDefaults(sheet, data);
+    this.validate(sheet, record);
+
+    const row = this.objectToRow(sheet, record);
+
+    await this.withRetry(async () => {
+      await this.sheets.spreadsheets.values.append({
+        spreadsheetId: this.config.spreadsheetId,
+        range: `${sheet}!A:Z`,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: [row] }
+      });
+    });
+
+    this.invalidateCache(sheet);
+    console.log(`✅ [GoogleSheetsDB] Created ${sheet}:${record.id}`);
+    return record;
+  }
+
+  /**
+   * READ ALL - Get all records from sheet
+   */
+  async findAll(sheet, options = {}) {
+    await this.init();
+
+    const cacheKey = this.cacheKey(sheet);
+    const cached = this.getCache(cacheKey);
+    if (cached && !options.noCache) {
+      return cached;
+    }
+
+    const response = await this.withRetry(async () => {
+      return await this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.config.spreadsheetId,
+        range: `${sheet}!A:Z`
+      });
+    });
+
+    const rows = response.data.values || [];
+    if (rows.length <= 1) {
+      return []; // Only headers or empty
+    }
+
+    const records = rows.slice(1).map(row => this.rowToObject(sheet, row));
+    this.setCache(cacheKey, records);
+    return records;
+  }
+
+  /**
+   * READ ONE - Find by ID
+   */
+  async findById(sheet, id) {
+    const records = await this.findAll(sheet);
+    return records.find(r => r.id === id) || null;
+  }
+
+  /**
+   * FIND - Query with filters
+   */
+  async find(sheet, query = {}) {
+    const records = await this.findAll(sheet);
+
+    return records.filter(record => {
+      for (const [key, value] of Object.entries(query)) {
+        if (record[key] !== value) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
+
+  /**
+   * FIND ONE - Query single record
+   */
+  async findOne(sheet, query = {}) {
+    const records = await this.find(sheet, query);
+    return records[0] || null;
+  }
+
+  /**
+   * UPDATE - Update record by ID
+   */
+  async update(sheet, id, data) {
+    await this.init();
+
+    // Find row index
+    const response = await this.withRetry(async () => {
+      return await this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.config.spreadsheetId,
+        range: `${sheet}!A:A`
+      });
+    });
+
+    const ids = response.data.values || [];
+    const rowIndex = ids.findIndex(row => row[0] === id);
+
+    if (rowIndex === -1) {
+      throw new Error(`Record not found: ${sheet}:${id}`);
+    }
+
+    // Get current record and merge
+    const current = await this.findById(sheet, id);
+    const updated = {
+      ...current,
+      ...data,
+      id, // Preserve ID
+      updated_at: this.timestamp()
+    };
+
+    const row = this.objectToRow(sheet, updated);
+    const range = `${sheet}!A${rowIndex + 1}:${String.fromCharCode(64 + row.length)}${rowIndex + 1}`;
+
+    await this.withRetry(async () => {
+      await this.sheets.spreadsheets.values.update({
+        spreadsheetId: this.config.spreadsheetId,
+        range,
+        valueInputOption: 'RAW',
+        requestBody: { values: [row] }
+      });
+    });
+
+    this.invalidateCache(sheet);
+    console.log(`✅ [GoogleSheetsDB] Updated ${sheet}:${id}`);
+    return updated;
+  }
+
+  /**
+   * DELETE - Remove record by ID
+   */
+  async delete(sheet, id) {
+    await this.init();
+
+    // Find row index
+    const response = await this.withRetry(async () => {
+      return await this.sheets.spreadsheets.values.get({
+        spreadsheetId: this.config.spreadsheetId,
+        range: `${sheet}!A:A`
+      });
+    });
+
+    const ids = response.data.values || [];
+    const rowIndex = ids.findIndex(row => row[0] === id);
+
+    if (rowIndex === -1) {
+      throw new Error(`Record not found: ${sheet}:${id}`);
+    }
+
+    // Get sheet ID for delete request
+    const metadata = await this.sheets.spreadsheets.get({
+      spreadsheetId: this.config.spreadsheetId
+    });
+
+    const sheetMeta = metadata.data.sheets.find(s => s.properties.title === sheet);
+    if (!sheetMeta) {
+      throw new Error(`Sheet not found: ${sheet}`);
+    }
+
+    await this.withRetry(async () => {
+      await this.sheets.spreadsheets.batchUpdate({
+        spreadsheetId: this.config.spreadsheetId,
+        requestBody: {
+          requests: [{
+            deleteDimension: {
+              range: {
+                sheetId: sheetMeta.properties.sheetId,
+                dimension: 'ROWS',
+                startIndex: rowIndex,
+                endIndex: rowIndex + 1
+              }
+            }
+          }]
+        }
+      });
+    });
+
+    this.invalidateCache(sheet);
+    console.log(`✅ [GoogleSheetsDB] Deleted ${sheet}:${id}`);
+    return true;
+  }
+
+  // ==================== BATCH OPERATIONS ====================
+
+  /**
+   * BATCH CREATE - Insert multiple records
+   */
+  async createMany(sheet, dataArray) {
+    await this.init();
+
+    const records = dataArray.map(data => {
+      const record = this.applyDefaults(sheet, data);
+      this.validate(sheet, record);
+      return record;
+    });
+
+    const rows = records.map(r => this.objectToRow(sheet, r));
+
+    await this.withRetry(async () => {
+      await this.sheets.spreadsheets.values.append({
+        spreadsheetId: this.config.spreadsheetId,
+        range: `${sheet}!A:Z`,
+        valueInputOption: 'RAW',
+        insertDataOption: 'INSERT_ROWS',
+        requestBody: { values: rows }
+      });
+    });
+
+    this.invalidateCache(sheet);
+    console.log(`✅ [GoogleSheetsDB] Created ${records.length} records in ${sheet}`);
+    return records;
+  }
+
+  // ==================== SPECIALIZED METHODS ====================
+
+  /**
+   * Count records
+   */
+  async count(sheet, query = {}) {
+    const records = await this.find(sheet, query);
+    return records.length;
+  }
+
+  /**
+   * Check if record exists
+   */
+  async exists(sheet, query) {
+    const record = await this.findOne(sheet, query);
+    return record !== null;
+  }
+
+  /**
+   * Aggregate - sum a numeric field
+   */
+  async sum(sheet, field, query = {}) {
+    const records = await this.find(sheet, query);
+    return records.reduce((sum, r) => sum + (parseFloat(r[field]) || 0), 0);
+  }
+
+  /**
+   * Log helper - quick log entry
+   */
+  async log(level, message, details = null, service = 'vocalia') {
+    return await this.create('logs', {
+      level,
+      message,
+      details: details ? JSON.stringify(details) : '',
+      service
+    });
+  }
+
+  // ==================== TENANT METHODS ====================
+
+  /**
+   * Get tenant by email
+   */
+  async getTenantByEmail(email) {
+    return await this.findOne('tenants', { email });
+  }
+
+  /**
+   * Create new tenant
+   */
+  async createTenant(data) {
+    return await this.create('tenants', data);
+  }
+
+  /**
+   * Get tenant stats
+   */
+  async getTenantStats(tenantId) {
+    const sessions = await this.find('sessions', { tenant_id: tenantId });
+    return {
+      totalCalls: sessions.reduce((sum, s) => sum + (parseInt(s.calls) || 0), 0),
+      totalDuration: sessions.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0),
+      totalCost: sessions.reduce((sum, s) => sum + (parseFloat(s.cost_usd) || 0), 0),
+      sessionCount: sessions.length
+    };
+  }
+
+  // ==================== SESSION METHODS ====================
+
+  /**
+   * Log voice session
+   */
+  async logSession(tenantId, data) {
+    return await this.create('sessions', {
+      tenant_id: tenantId,
+      ...data
+    });
+  }
+
+  // ==================== USER METHODS ====================
+
+  /**
+   * Get user by email
+   */
+  async getUserByEmail(email) {
+    return await this.findOne('users', { email });
+  }
+
+  /**
+   * Update last login
+   */
+  async updateLastLogin(userId) {
+    return await this.update('users', userId, {
+      last_login: this.timestamp()
+    });
+  }
+
+  // ==================== UTILITY ====================
+
+  /**
+   * Health check
+   */
+  async health() {
+    try {
+      await this.init();
+      const response = await this.sheets.spreadsheets.get({
+        spreadsheetId: this.config.spreadsheetId
+      });
+      return {
+        status: 'ok',
+        spreadsheetId: this.config.spreadsheetId,
+        title: response.data.properties.title,
+        sheets: response.data.sheets.map(s => s.properties.title)
+      };
+    } catch (error) {
+      return {
+        status: 'error',
+        error: error.message
+      };
+    }
+  }
+
+  /**
+   * Get spreadsheet URL
+   */
+  getUrl() {
+    return this.config?.url || null;
+  }
+}
+
+// Singleton instance
+let instance = null;
+
+/**
+ * Get database instance (singleton)
+ */
+function getDB() {
+  if (!instance) {
+    instance = new GoogleSheetsDB();
+  }
+  return instance;
+}
+
+// CLI interface
+if (require.main === module) {
+  const args = process.argv.slice(2);
+  const cmd = args[0];
+
+  (async () => {
+    const db = getDB();
+
+    switch (cmd) {
+      case '--health':
+        const health = await db.health();
+        console.log(JSON.stringify(health, null, 2));
+        break;
+
+      case '--test':
+        console.log('Testing CRUD operations...\n');
+
+        // Create
+        const tenant = await db.create('tenants', {
+          name: 'Test Company',
+          email: 'test@example.com',
+          plan: 'pro',
+          mrr: 99
+        });
+        console.log('Created:', tenant);
+
+        // Read
+        const found = await db.findById('tenants', tenant.id);
+        console.log('Found:', found);
+
+        // Update
+        const updated = await db.update('tenants', tenant.id, { mrr: 199 });
+        console.log('Updated:', updated);
+
+        // Delete
+        await db.delete('tenants', tenant.id);
+        console.log('Deleted');
+
+        // Log
+        await db.log('info', 'Test completed', { test: true });
+        console.log('\n✅ All tests passed!');
+        break;
+
+      default:
+        console.log(`
+GoogleSheetsDB - VocalIA Database
+
+Usage:
+  node GoogleSheetsDB.cjs --health    Check connection
+  node GoogleSheetsDB.cjs --test      Run CRUD tests
+
+Programmatic:
+  const { getDB } = require('./GoogleSheetsDB.cjs');
+  const db = getDB();
+  await db.create('tenants', { name: 'Acme', email: 'a@b.com' });
+`);
+    }
+  })().catch(e => console.error('❌', e.message));
+}
+
+module.exports = { GoogleSheetsDB, getDB, SCHEMAS };

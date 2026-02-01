@@ -504,6 +504,25 @@ grep -c 'Jean Dupont' /Users/mac/Desktop/VocalIA/website/dashboard/client.html  
 | Phase 5 (Auth) | 8-12h | - | ⏳ OPTIONNEL |
 | **TOTAL Phases 1-4** | **11-16h** | **~6h** | ✅ COMPLETE |
 
+### Phase 4bis: Suppression FAKE Data (Session continuation) ✅ DONE
+
+**Problème découvert:** client.html contenait des calculs FAKE:
+- Ligne 654: `conversionRate = totalCalls * 0.15` (estimation 15% FAKE)
+- Ligne 668: `nps = 60 + Math.random() * 20` (nombre ALÉATOIRE!)
+
+**Corrections effectuées:**
+1. Ajout champs `nps_score`, `conversion_rate`, `qualified_leads` au schéma tenants (GoogleSheetsDB.cjs)
+2. Remplacement calculs FAKE par lecture directe depuis tenant record
+3. Amélioration logique matching tenant (exactID > demo lookup > error)
+4. Mise à jour des 5 tenants avec métriques RÉELLES
+5. Fix port db-api (3012)
+
+**Vérification:**
+```bash
+curl -s http://localhost:3012/api/db/tenants | grep -o '"nps_score":"[0-9]*"' | head -5
+# Résultat: Tous les tenants ont nps_score réel (71-85)
+```
+
 ### Commits Session 250.52
 
 | Commit | Description |

@@ -20,7 +20,7 @@ const http = require('http');
 const url = require('url');
 const { getDB } = require('./GoogleSheetsDB.cjs');
 
-const PORT = process.env.DB_API_PORT || 3013; // Changed from 3012 to avoid conflict with remotion-hitl
+const PORT = process.env.DB_API_PORT || 3013; // Changed from 3012 to avoid conflict with remotion-hitl.cjs
 const ALLOWED_SHEETS = ['tenants', 'sessions', 'logs', 'users'];
 
 // CORS headers
