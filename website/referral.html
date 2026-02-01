@@ -431,12 +431,19 @@
       });
     }
 
-    // i18n init
+    // i18n init - Priority: localStorage > geo detection
     async function initI18n() {
-      if (typeof VocaliaGeo === 'undefined' || typeof VocaliaI18n === 'undefined') return;
+      if (typeof VocaliaI18n === 'undefined') return;
       try {
-        var geo = await VocaliaGeo.getGeo();
-        await VocaliaI18n.initI18n(geo.lang);
+        var storedLang = localStorage.getItem('vocalia_lang');
+        if (storedLang) {
+          await VocaliaI18n.setLocale(storedLang);
+        } else if (typeof VocaliaGeo !== 'undefined') {
+          var geo = await VocaliaGeo.getGeo();
+          await VocaliaI18n.setLocale(geo.lang);
+        } else {
+          await VocaliaI18n.setLocale('fr');
+        }
         VocaliaI18n.translatePage();
       } catch (e) {}
     }

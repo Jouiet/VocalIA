@@ -163,9 +163,7 @@
             <div class="relative group">
 
               <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-
-                Produits
-
+                <span data-i18n="nav.products">Produits</span>
                 <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
               </button>
@@ -229,9 +227,7 @@
             <div class="relative group">
 
               <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-
-                Solutions
-
+                <span data-i18n="nav.solutions">Solutions</span>
                 <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
               </button>
@@ -377,9 +373,7 @@
             <div class="relative group">
 
               <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-
-                Ressources
-
+                <span data-i18n="nav.resources">Ressources</span>
                 <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
               </button>
@@ -891,7 +885,7 @@
 
         <!-- Entreprise -->
         <div>
-          <h4 class="font-semibold text-white text-base mb-4">Entreprise</h4>
+          <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.company">Entreprise</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
             <li><a href="/about" class="hover:text-white transition">À propos</a></li>
             <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
@@ -973,12 +967,19 @@
       });
     }
 
-    // i18n init
+    // i18n init - Priority: localStorage > geo detection
     async function initI18n() {
-      if (typeof VocaliaGeo === 'undefined' || typeof VocaliaI18n === 'undefined') return;
+      if (typeof VocaliaI18n === 'undefined') return;
       try {
-        var geo = await VocaliaGeo.getGeo();
-        await VocaliaI18n.initI18n(geo.lang);
+        var storedLang = localStorage.getItem('vocalia_lang');
+        if (storedLang) {
+          await VocaliaI18n.setLocale(storedLang);
+        } else if (typeof VocaliaGeo !== 'undefined') {
+          var geo = await VocaliaGeo.getGeo();
+          await VocaliaI18n.setLocale(geo.lang);
+        } else {
+          await VocaliaI18n.setLocale('fr');
+        }
         VocaliaI18n.translatePage();
       } catch (e) {}
     }
