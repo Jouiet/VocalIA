@@ -103,6 +103,58 @@
       "config": "الإعدادات"
     }
   },
+  "widget_analytics": {
+    "title": "تحليلات الويدجت الصوتي",
+    "subtitle": "حلل كيفاش خدام الويدجت ديالك",
+    "export_csv": "صدّر CSV",
+    "date_range": {
+      "7d": "آخر 7 أيام",
+      "30d": "آخر 30 يوم",
+      "90d": "آخر 90 يوم",
+      "1y": "هاد العام"
+    },
+    "nav": {
+      "widget_analytics": "تحليلات الويدجت"
+    },
+    "stats": {
+      "sessions": "سيسيونات الويدجت",
+      "avg_duration": "المدة المتوسطة",
+      "completion_rate": "نسبة الإكمال",
+      "leads": "كليانات مؤهلين"
+    },
+    "charts": {
+      "sessions_per_day": "السيسيونات فالنهار",
+      "legend_sessions": "السيسيونات",
+      "legend_conversions": "التحويلات",
+      "language_distribution": "توزيع اللغات"
+    },
+    "tables": {
+      "persona_performance": "الأداء حسب الشخصية",
+      "persona": "الشخصية",
+      "sessions": "السيسيونات",
+      "conversion": "التحويل",
+      "avg_duration": "المدة",
+      "recent_sessions": "آخر السيسيونات",
+      "view_all": "شوف الكل",
+      "session_id": "رقم السيسيون",
+      "language": "اللغة",
+      "duration": "المدة",
+      "messages": "الرسائل",
+      "status": "الحالة",
+      "date": "التاريخ"
+    },
+    "devices": {
+      "title": "الأجهزة والبراوزرات",
+      "devices": "الأجهزة",
+      "desktop": "الكمبيوتر",
+      "mobile": "التيليفون",
+      "tablet": "التابليت",
+      "browsers": "البراوزرات",
+      "other": "أخرى",
+      "speech_api_support": "دعم Web Speech API",
+      "incompatible_browsers": "6% من الزوار كيستعملو براوزر ماشي متوافق"
+    }
+  },
   "hero": {
     "badge": "Voice AI من الجيل الجديد",
     "title": "الوكيلات الصوتية الذكية ديالك",
@@ -1260,9 +1312,13 @@
     "roi_label_agent_cost": "Coût agent support/mois",
     "roi_label_agents_replaced": "Agents remplacés",
     "roi_label_vocalia_cost": "Coût VocalIA/mois",
-    "roi_label_monthly": "ROI mensuel",
-    "cta_primary": "Demander une démo gratuite",
-    "cta_secondary": "Voir les tarifs"
+    "roi_label_monthly": "العائد الشهري",
+    "cta_primary": "طلب عرض مجاني",
+    "cta_secondary": "شوف الأثمنة",
+    "stats_call_deflection": "تخفيض المكالمات",
+    "stats_customer_satisfaction": "رضا الزبائن",
+    "stats_order_tracking": "تتبع الطلبيات",
+    "stats_return_processing": "تسيير الترجيعات"
   },
   "usecases_support_page": {
     "meta_title": "الذكاء الاصطناعي الصوتي لخدمة الزبائن | VocalIA",
@@ -1335,8 +1391,12 @@
     "workflow_step2_desc": "Choisissez parmi 40 personas métier ou créez le vôtre. Définissez le ton, les règles d'escalade.",
     "workflow_step3_title": "Déployez et optimisez",
     "workflow_step3_desc": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez continuellement.",
-    "cta_primary": "Planifier une démo",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "حجز عرض",
+    "cta_secondary": "شوف الأثمنة",
+    "stats_availability": "التوفر",
+    "stats_resolution_rate": "نسبة الحل",
+    "stats_satisfaction": "الرضا",
+    "stats_wait_time": "وقت الانتظار"
   },
   "usecases_appointments_page": {
     "meta_title": "الذكاء الاصطناعي الصوتي لحجز الموعد | VocalIA",
@@ -1418,8 +1478,12 @@
     "workflow_step3_desc": "Créneau proposé et confirmé en temps réel",
     "workflow_step4_title": "Confirmation",
     "workflow_step4_desc": "SMS + email + rappels automatiques",
-    "cta_primary": "Essayer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "جرب بلاش",
+    "cta_secondary": "شوف الأثمنة",
+    "stats_booking_rate": "نسبة الحجز",
+    "stats_no_show": "تقليل الغياب",
+    "stats_satisfaction": "الرضا",
+    "stats_time_saved": "الوقت اللي توفر"
   },
   "usecases_leads_page": {
     "meta_title": "الذكاء الاصطناعي الصوتي لتأهيل العملاء المحتملين | VocalIA",
@@ -1505,8 +1569,12 @@
     "feature_analytics_desc": "Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre processus de vente.",
     "feature_objections_title": "Gestion objections",
     "feature_objections_desc": "L'IA traite les objections courantes et relance les leads hésitants avec les bons arguments.",
-    "cta_primary": "Commencer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "بدا بلاش",
+    "cta_secondary": "شوف الأثمنة",
+    "stats_conversion": "نسبة التحويل",
+    "stats_cost_per_lead": "التكلفة لكل عميل",
+    "stats_qualification_rate": "نسبة التأهيل",
+    "stats_response_time": "وقت الرد"
   },
   "docs_page": {
     "hero_badge": "الدوكومونتاسيون",

@@ -103,6 +103,58 @@
       "config": "Configuración"
     }
   },
+  "widget_analytics": {
+    "title": "Analíticas del Widget Vocal",
+    "subtitle": "Analice el rendimiento de su widget vocal",
+    "export_csv": "Exportar CSV",
+    "date_range": {
+      "7d": "Últimos 7 días",
+      "30d": "Últimos 30 días",
+      "90d": "Últimos 90 días",
+      "1y": "Este año"
+    },
+    "nav": {
+      "widget_analytics": "Widget Analytics"
+    },
+    "stats": {
+      "sessions": "Sesiones Widget",
+      "avg_duration": "Duración media",
+      "completion_rate": "Tasa de finalización",
+      "leads": "Leads cualificados"
+    },
+    "charts": {
+      "sessions_per_day": "Sesiones por día",
+      "legend_sessions": "Sesiones",
+      "legend_conversions": "Conversiones",
+      "language_distribution": "Distribución por idioma"
+    },
+    "tables": {
+      "persona_performance": "Rendimiento por Persona",
+      "persona": "Persona",
+      "sessions": "Sesiones",
+      "conversion": "Conversión",
+      "avg_duration": "Dur. media",
+      "recent_sessions": "Sesiones recientes",
+      "view_all": "Ver todo",
+      "session_id": "ID Sesión",
+      "language": "Idioma",
+      "duration": "Duración",
+      "messages": "Mensajes",
+      "status": "Estado",
+      "date": "Fecha"
+    },
+    "devices": {
+      "title": "Dispositivos y Navegadores",
+      "devices": "Dispositivos",
+      "desktop": "Escritorio",
+      "mobile": "Móvil",
+      "tablet": "Tableta",
+      "browsers": "Navegadores",
+      "other": "Otro",
+      "speech_api_support": "Soporte Web Speech API",
+      "incompatible_browsers": "6% de visitantes usan un navegador no compatible"
+    }
+  },
   "hero": {
     "badge": "Voice AI de Nueva Generación",
     "title": "Sus Agentes Vocales IA",
@@ -1260,9 +1312,13 @@
     "roi_label_agent_cost": "Coût agent support/mois",
     "roi_label_agents_replaced": "Agents remplacés",
     "roi_label_vocalia_cost": "Coût VocalIA/mois",
-    "roi_label_monthly": "ROI mensuel",
-    "cta_primary": "Demander une démo gratuite",
-    "cta_secondary": "Voir les tarifs"
+    "roi_label_monthly": "ROI mensual",
+    "cta_primary": "Solicitar demo gratis",
+    "cta_secondary": "Ver precios",
+    "stats_call_deflection": "Reducción llamadas",
+    "stats_customer_satisfaction": "Satisfacción cliente",
+    "stats_order_tracking": "Seguimiento pedidos",
+    "stats_return_processing": "Gestión devoluciones"
   },
   "usecases_support_page": {
     "meta_title": "IA de Voz para Servicio al Cliente | VocalIA",
@@ -1335,8 +1391,12 @@
     "workflow_step2_desc": "Choisissez parmi 40 personas métier ou créez le vôtre. Définissez le ton, les règles d'escalade.",
     "workflow_step3_title": "Déployez et optimisez",
     "workflow_step3_desc": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez continuellement.",
-    "cta_primary": "Planifier une démo",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "Programar una demo",
+    "cta_secondary": "Ver precios",
+    "stats_availability": "Disponibilidad",
+    "stats_resolution_rate": "Tasa de resolución",
+    "stats_satisfaction": "Satisfacción",
+    "stats_wait_time": "Tiempo de espera"
   },
   "usecases_appointments_page": {
     "meta_title": "IA de Voz para Reserva de Citas | VocalIA",
@@ -1418,8 +1478,12 @@
     "workflow_step3_desc": "Créneau proposé et confirmé en temps réel",
     "workflow_step4_title": "Confirmation",
     "workflow_step4_desc": "SMS + email + rappels automatiques",
-    "cta_primary": "Essayer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "Probar gratis",
+    "cta_secondary": "Ver precios",
+    "stats_booking_rate": "Tasa de reserva",
+    "stats_no_show": "Reducción no-shows",
+    "stats_satisfaction": "Satisfacción",
+    "stats_time_saved": "Tiempo ahorrado"
   },
   "usecases_leads_page": {
     "meta_title": "IA de Voz para Calificación de Leads | VocalIA",
@@ -1505,8 +1569,12 @@
     "feature_analytics_desc": "Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre processus de vente.",
     "feature_objections_title": "Gestion objections",
     "feature_objections_desc": "L'IA traite les objections courantes et relance les leads hésitants avec les bons arguments.",
-    "cta_primary": "Commencer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "Comenzar gratis",
+    "cta_secondary": "Ver precios",
+    "stats_conversion": "Tasa de conversión",
+    "stats_cost_per_lead": "Coste por lead",
+    "stats_qualification_rate": "Tasa de calificación",
+    "stats_response_time": "Tiempo de respuesta"
   },
   "docs_page": {
     "hero_badge": "Documentación",

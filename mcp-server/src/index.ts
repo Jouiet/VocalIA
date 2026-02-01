@@ -146,7 +146,7 @@ const VOCALIA_API_KEY = process.env.VOCALIA_API_KEY || "";
 // Initialize MCP Server
 const server = new McpServer({
   name: "vocalia",
-  version: "0.3.0",
+  version: "0.8.0",
 });
 
 // =============================================================================
@@ -154,13 +154,21 @@ const server = new McpServer({
 // =============================================================================
 
 const LanguageEnum = z.enum(["fr", "en", "es", "ar", "ary"]);
+// Session 250.43: Synced with 40 personas from voice-persona-injector.cjs
 const PersonaKeyEnum = z.enum([
-  "AGENCY", "DENTAL", "PROPERTY", "HOA", "SCHOOL", "CONTRACTOR", "FUNERAL",
+  // Tier 1 - Core (5)
+  "AGENCY", "DENTAL", "PROPERTY", "CONTRACTOR", "FUNERAL",
+  // Tier 2 - Expansion (19)
   "HEALER", "MECHANIC", "COUNSELOR", "CONCIERGE", "STYLIST", "RECRUITER",
-  "DISPATCHER", "COLLECTOR", "SURVEYOR", "GOVERNOR", "INSURER",
-  "ACCOUNTANT", "ARCHITECT", "PHARMACIST", "RENTER", "LOGISTICIAN",
-  "TRAINER", "PLANNER", "PRODUCER", "CLEANER", "GYM",
-  "UNIVERSAL_ECOMMERCE", "UNIVERSAL_SME"
+  "DISPATCHER", "COLLECTOR", "INSURER", "ACCOUNTANT", "ARCHITECT",
+  "PHARMACIST", "RENTER", "LOGISTICIAN", "TRAINER", "PLANNER",
+  "PRODUCER", "CLEANER", "GYM",
+  // Tier 3 - Universal (2)
+  "UNIVERSAL_ECOMMERCE", "UNIVERSAL_SME",
+  // Tier 4 - PME Economy (14)
+  "RETAILER", "BUILDER", "RESTAURATEUR", "TRAVEL_AGENT", "CONSULTANT",
+  "IT_SERVICES", "MANUFACTURER", "DOCTOR", "NOTARY", "BAKERY",
+  "SPECIALIST", "REAL_ESTATE_AGENT", "HAIRDRESSER", "GROCERY"
 ]);
 
 // =============================================================================
@@ -1459,12 +1467,12 @@ server.tool(stripeTools.get_balance.name, stripeTools.get_balance.parameters, st
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.7.0 running on stdio");
+  console.error("VocalIA MCP Server v0.8.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 162 (11 always available, 151 require external services)");
+  console.error("Tools: 182 (11 always available, 171 require external services)");
   console.error("E-commerce: Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop (~64% market)");
-  console.error("Payments: Stripe (22 tools - Payment Links, Checkout, Invoices, Refunds)");
+  console.error("Payments: Stripe (19 tools - Payment Links, Checkout, Invoices, Refunds)");
   console.error("Integrations: 28 native + iPaaS (Zapier/Make/n8n → +7000 apps)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
 }

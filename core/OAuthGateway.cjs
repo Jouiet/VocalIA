@@ -276,10 +276,14 @@ class OAuthGateway {
       const { code, state, error } = req.query;
 
       if (error) {
+        // Session 250.43: Sanitize error to prevent XSS
+        const safeError = String(error).replace(/[<>&"']/g, c => ({
+          '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'
+        }[c]));
         return res.status(400).send(`
           <html><body>
             <h1>OAuth Error</h1>
-            <p>${error}</p>
+            <p>${safeError}</p>
             <script>window.close();</script>
           </body></html>
         `);

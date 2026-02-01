@@ -103,6 +103,58 @@
       "config": "Configuration"
     }
   },
+  "widget_analytics": {
+    "title": "Voice Widget Analytics",
+    "subtitle": "Analyze your voice widget performance",
+    "export_csv": "Export CSV",
+    "date_range": {
+      "7d": "Last 7 days",
+      "30d": "Last 30 days",
+      "90d": "Last 90 days",
+      "1y": "This year"
+    },
+    "nav": {
+      "widget_analytics": "Widget Analytics"
+    },
+    "stats": {
+      "sessions": "Widget Sessions",
+      "avg_duration": "Average Duration",
+      "completion_rate": "Completion Rate",
+      "leads": "Qualified Leads"
+    },
+    "charts": {
+      "sessions_per_day": "Sessions per Day",
+      "legend_sessions": "Sessions",
+      "legend_conversions": "Conversions",
+      "language_distribution": "Language Distribution"
+    },
+    "tables": {
+      "persona_performance": "Performance by Persona",
+      "persona": "Persona",
+      "sessions": "Sessions",
+      "conversion": "Conversion",
+      "avg_duration": "Avg. Duration",
+      "recent_sessions": "Recent Sessions",
+      "view_all": "View All",
+      "session_id": "Session ID",
+      "language": "Language",
+      "duration": "Duration",
+      "messages": "Messages",
+      "status": "Status",
+      "date": "Date"
+    },
+    "devices": {
+      "title": "Devices & Browsers",
+      "devices": "Devices",
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "browsers": "Browsers",
+      "other": "Other",
+      "speech_api_support": "Web Speech API Support",
+      "incompatible_browsers": "6% of visitors use an incompatible browser"
+    }
+  },
   "hero": {
     "badge": "Next-Gen Voice AI Platform",
     "title": "Your AI Voice Agents",
@@ -1260,9 +1312,13 @@
     "roi_label_agent_cost": "Coût agent support/mois",
     "roi_label_agents_replaced": "Agents remplacés",
     "roi_label_vocalia_cost": "Coût VocalIA/mois",
-    "roi_label_monthly": "ROI mensuel",
-    "cta_primary": "Demander une démo gratuite",
-    "cta_secondary": "Voir les tarifs"
+    "roi_label_monthly": "Monthly ROI",
+    "cta_primary": "Request a free demo",
+    "cta_secondary": "See pricing",
+    "stats_call_deflection": "Call deflection",
+    "stats_customer_satisfaction": "Customer satisfaction",
+    "stats_order_tracking": "Order tracking",
+    "stats_return_processing": "Return processing"
   },
   "usecases_support_page": {
     "meta_title": "24/7 AI Customer Service | VocalIA",
@@ -1335,8 +1391,12 @@
     "workflow_step2_desc": "Choisissez parmi 40 personas métier ou créez le vôtre. Définissez le ton, les règles d'escalade.",
     "workflow_step3_title": "Déployez et optimisez",
     "workflow_step3_desc": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez continuellement.",
-    "cta_primary": "Planifier une démo",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "Schedule a demo",
+    "cta_secondary": "See pricing",
+    "stats_availability": "Availability",
+    "stats_resolution_rate": "Resolution rate",
+    "stats_satisfaction": "Satisfaction",
+    "stats_wait_time": "Wait time"
   },
   "usecases_appointments_page": {
     "meta_title": "Automated Appointment Booking | VocalIA",
@@ -1418,8 +1478,12 @@
     "workflow_step3_desc": "Créneau proposé et confirmé en temps réel",
     "workflow_step4_title": "Confirmation",
     "workflow_step4_desc": "SMS + email + rappels automatiques",
-    "cta_primary": "Essayer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "Try for free",
+    "cta_secondary": "See pricing",
+    "stats_booking_rate": "Booking rate",
+    "stats_no_show": "No-show reduction",
+    "stats_satisfaction": "Satisfaction",
+    "stats_time_saved": "Time saved"
   },
   "usecases_leads_page": {
     "meta_title": "Automated Lead Qualification | VocalIA",
@@ -1505,8 +1569,12 @@
     "feature_analytics_desc": "Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre processus de vente.",
     "feature_objections_title": "Gestion objections",
     "feature_objections_desc": "L'IA traite les objections courantes et relance les leads hésitants avec les bons arguments.",
-    "cta_primary": "Commencer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_primary": "Start for free",
+    "cta_secondary": "See pricing",
+    "stats_conversion": "Conversion rate",
+    "stats_cost_per_lead": "Cost per lead",
+    "stats_qualification_rate": "Qualification rate",
+    "stats_response_time": "Response time"
   },
   "docs_page": {
     "hero_badge": "Documentation",

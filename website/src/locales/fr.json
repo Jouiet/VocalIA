@@ -103,6 +103,58 @@
       "config": "Configuration"
     }
   },
+  "widget_analytics": {
+    "title": "Voice Widget Analytics",
+    "subtitle": "Analysez les performances de votre widget vocal",
+    "export_csv": "Exporter CSV",
+    "date_range": {
+      "7d": "7 derniers jours",
+      "30d": "30 derniers jours",
+      "90d": "90 derniers jours",
+      "1y": "Cette année"
+    },
+    "nav": {
+      "widget_analytics": "Widget Analytics"
+    },
+    "stats": {
+      "sessions": "Sessions Widget",
+      "avg_duration": "Durée moyenne",
+      "completion_rate": "Taux de complétion",
+      "leads": "Leads qualifiés"
+    },
+    "charts": {
+      "sessions_per_day": "Sessions par jour",
+      "legend_sessions": "Sessions",
+      "legend_conversions": "Conversions",
+      "language_distribution": "Distribution par langue"
+    },
+    "tables": {
+      "persona_performance": "Performance par Persona",
+      "persona": "Persona",
+      "sessions": "Sessions",
+      "conversion": "Conversion",
+      "avg_duration": "Durée moy.",
+      "recent_sessions": "Sessions récentes",
+      "view_all": "Voir tout",
+      "session_id": "Session ID",
+      "language": "Langue",
+      "duration": "Durée",
+      "messages": "Messages",
+      "status": "Status",
+      "date": "Date"
+    },
+    "devices": {
+      "title": "Appareils & Navigateurs",
+      "devices": "Appareils",
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "tablet": "Tablette",
+      "browsers": "Navigateurs",
+      "other": "Autre",
+      "speech_api_support": "Support Web Speech API",
+      "incompatible_browsers": "6% des visiteurs utilisent un navigateur non compatible"
+    }
+  },
   "hero": {
     "badge": "Voice AI de Nouvelle Génération",
     "title": "Vos Agents Vocaux IA",
@@ -1262,7 +1314,11 @@
     "roi_label_vocalia_cost": "Coût VocalIA/mois",
     "roi_label_monthly": "ROI mensuel",
     "cta_primary": "Demander une démo gratuite",
-    "cta_secondary": "Voir les tarifs"
+    "cta_secondary": "Voir les tarifs",
+    "stats_call_deflection": "Réduction appels",
+    "stats_customer_satisfaction": "Satisfaction client",
+    "stats_order_tracking": "Suivi commandes",
+    "stats_return_processing": "Traitement retours"
   },
   "usecases_support_page": {
     "meta_title": "Service Client IA 24/7 | VocalIA",
@@ -1336,7 +1392,11 @@
     "workflow_step3_title": "Déployez et optimisez",
     "workflow_step3_desc": "Widget web ou téléphonie. Suivez les performances en temps réel et affinez continuellement.",
     "cta_primary": "Planifier une démo",
-    "cta_secondary": "Voir les tarifs"
+    "cta_secondary": "Voir les tarifs",
+    "stats_availability": "Disponibilité",
+    "stats_resolution_rate": "Taux de résolution",
+    "stats_satisfaction": "Satisfaction",
+    "stats_wait_time": "Temps d'attente"
   },
   "usecases_appointments_page": {
     "meta_title": "Prise de RDV Automatisée | VocalIA",
@@ -1419,7 +1479,11 @@
     "workflow_step4_title": "Confirmation",
     "workflow_step4_desc": "SMS + email + rappels automatiques",
     "cta_primary": "Essayer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_secondary": "Voir les tarifs",
+    "stats_booking_rate": "Taux de réservation",
+    "stats_no_show": "Réduction no-shows",
+    "stats_satisfaction": "Satisfaction",
+    "stats_time_saved": "Temps économisé"
   },
   "usecases_leads_page": {
     "meta_title": "Qualification Leads Automatisée | VocalIA",
@@ -1506,7 +1570,11 @@
     "feature_objections_title": "Gestion objections",
     "feature_objections_desc": "L'IA traite les objections courantes et relance les leads hésitants avec les bons arguments.",
     "cta_primary": "Commencer gratuitement",
-    "cta_secondary": "Voir les tarifs"
+    "cta_secondary": "Voir les tarifs",
+    "stats_conversion": "Taux de conversion",
+    "stats_cost_per_lead": "Coût par lead",
+    "stats_qualification_rate": "Taux qualification",
+    "stats_response_time": "Temps de réponse"
   },
   "docs_page": {
     "hero_badge": "Documentation",

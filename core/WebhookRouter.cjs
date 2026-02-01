@@ -251,7 +251,9 @@ class WebhookRouter {
       const { tenantId } = req.params;
       const { date, limit = 100 } = req.query;
 
-      const targetDate = date || new Date().toISOString().split('T')[0];
+      // Session 250.43: Validate date format to prevent path traversal
+      const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+      const targetDate = (date && datePattern.test(date)) ? date : new Date().toISOString().split('T')[0];
       const logFile = path.join(EVENTS_DIR, `${targetDate}.jsonl`);
 
       if (!fs.existsSync(logFile)) {
