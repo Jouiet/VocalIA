@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Remotion Service - Video Generation Orchestrator
- * VocalIA - Session 250.42
+ * VocalIA - Session 250.43
  *
  * Orchestrates Remotion video rendering from VocalIA.
  * Provides programmatic API for generating marketing videos.
@@ -65,6 +65,61 @@ const COMPOSITIONS = {
     duration: 0,
     description: 'Video thumbnail image',
     isStill: true
+  },
+  // === NEW USE-CASE COMPOSITIONS (Session 250.43) ===
+  onboarding: {
+    id: 'OnboardingVideo',
+    output: 'onboarding.mp4',
+    duration: 60,
+    description: 'New client onboarding video (5 steps)'
+  },
+  datareport: {
+    id: 'DataReport',
+    output: 'datareport.mp4',
+    duration: 45,
+    description: 'Monthly analytics report video'
+  },
+  socialclip: {
+    id: 'SocialClip',
+    output: 'socialclip.mp4',
+    duration: 15,
+    description: 'Short-form social media clip (square)'
+  },
+  'socialclip-vertical': {
+    id: 'SocialClip-Vertical',
+    output: 'socialclip-vertical.mp4',
+    duration: 15,
+    description: 'Vertical social clip (Stories/Reels)'
+  },
+  'socialclip-horizontal': {
+    id: 'SocialClip-Horizontal',
+    output: 'socialclip-horizontal.mp4',
+    duration: 15,
+    description: 'Horizontal social clip (YouTube)'
+  },
+  pricing: {
+    id: 'PricingExplainer',
+    output: 'pricing.mp4',
+    duration: 30,
+    description: 'Pricing plans comparison video'
+  },
+  'integration-hubspot': {
+    id: 'IntegrationGuide-HubSpot',
+    output: 'integration-hubspot.mp4',
+    duration: 40,
+    description: 'HubSpot integration tutorial'
+  },
+  'integration-shopify': {
+    id: 'IntegrationGuide-Shopify',
+    output: 'integration-shopify.mp4',
+    duration: 40,
+    description: 'Shopify integration tutorial'
+  },
+  'integration-stripe': {
+    id: 'IntegrationGuide-Stripe',
+    output: 'integration-stripe.mp4',
+    duration: 40,
+    description: 'Stripe integration tutorial'
   }
 };
 
@@ -479,6 +534,15 @@ Video Types:
   features              Feature showcase (45s)
   testimonial           Customer testimonial (20s)
   thumbnail             Video thumbnail (still image)
+  onboarding            New client onboarding (60s)
+  datareport            Monthly analytics report (45s)
+  socialclip            Social media clip - square (15s)
+  socialclip-vertical   Social clip - vertical/Stories (15s)
+  socialclip-horizontal Social clip - horizontal/YouTube (15s)
+  pricing               Pricing plans explainer (30s)
+  integration-hubspot   HubSpot integration guide (40s)
+  integration-shopify   Shopify integration guide (40s)
+  integration-stripe    Stripe integration guide (40s)
 
 Languages: ${LANGUAGES.join(', ')}
 
