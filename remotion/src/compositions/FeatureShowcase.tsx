@@ -2,6 +2,7 @@
  * VocalIA Feature Showcase Video Composition
  *
  * A 45-second video showcasing individual features with animations.
+ * Session 250.42 - Optimized with multi-language and RTL support.
  */
 import React from 'react';
 import {
@@ -12,6 +13,7 @@ import {
   spring,
   Sequence
 } from 'remotion';
+import { isRTL, type Language } from '../config/i18n';
 
 // Configuration
 export const FEATURE_CONFIG = {
@@ -42,11 +44,18 @@ interface Feature {
 
 interface FeatureShowcaseProps {
   features: Feature[];
+  introTitle?: string;
+  language?: Language;
 }
 
-export const FeatureShowcase: React.FC<FeatureShowcaseProps> = ({ features }) => {
+export const FeatureShowcase: React.FC<FeatureShowcaseProps> = ({
+  features,
+  introTitle = 'Découvrez VocalIA',
+  language = 'fr'
+}) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
+  const rtl = isRTL(language);
 
   // Each feature gets ~10 seconds
   const featureDuration = Math.floor(durationInFrames / (features.length + 1));
@@ -54,7 +63,8 @@ export const FeatureShowcase: React.FC<FeatureShowcaseProps> = ({ features }) =>
   return (
     <AbsoluteFill
       style={{
-        background: `linear-gradient(135deg, ${COLORS.darker} 0%, ${COLORS.dark} 100%)`
+        background: `linear-gradient(135deg, ${COLORS.darker} 0%, ${COLORS.dark} 100%)`,
+        direction: rtl ? 'rtl' : 'ltr'
       }}
     >
       {/* Animated background */}
@@ -62,7 +72,7 @@ export const FeatureShowcase: React.FC<FeatureShowcaseProps> = ({ features }) =>
 
       {/* Intro */}
       <Sequence from={0} durationInFrames={featureDuration}>
-        <IntroSection fps={fps} />
+        <IntroSection fps={fps} title={introTitle} rtl={rtl} />
       </Sequence>
 
       {/* Feature slides */}
@@ -77,6 +87,7 @@ export const FeatureShowcase: React.FC<FeatureShowcaseProps> = ({ features }) =>
             index={index}
             fps={fps}
             color={[COLORS.primary, COLORS.accent, COLORS.orange, COLORS.red][index % 4]}
+            rtl={rtl}
           />
         </Sequence>
       ))}
@@ -135,7 +146,11 @@ const AnimatedBackground: React.FC<{ frame: number }> = ({ frame }) => {
 };
 
 // Intro Section
-const IntroSection: React.FC<{ fps: number }> = ({ fps }) => {
+const IntroSection: React.FC<{ fps: number; title: string; rtl: boolean }> = ({
+  fps,
+  title,
+  rtl
+}) => {
   const frame = useCurrentFrame();
 
   const titleOpacity = interpolate(frame, [0, fps], [0, 1], {
@@ -147,6 +162,11 @@ const IntroSection: React.FC<{ fps: number }> = ({ fps }) => {
     fps,
     config: { damping: 12, stiffness: 100 }
   });
+
+  // Split title for gradient effect
+  const parts = title.split(' ');
+  const firstPart = parts.slice(0, -1).join(' ');
+  const lastPart = parts[parts.length - 1];
 
   return (
     <AbsoluteFill
@@ -167,7 +187,7 @@ const IntroSection: React.FC<{ fps: number }> = ({ fps }) => {
           textAlign: 'center'
         }}
       >
-        Découvrez
+        {firstPart}
         <br />
         <span
           style={{
@@ -176,7 +196,7 @@ const IntroSection: React.FC<{ fps: number }> = ({ fps }) => {
             WebkitTextFillColor: 'transparent'
           }}
         >
-          VocalIA
+          {lastPart}
         </span>
       </h1>
     </AbsoluteFill>
@@ -189,7 +209,8 @@ const FeatureSlide: React.FC<{
   index: number;
   fps: number;
   color: string;
-}> = ({ feature, fps, color }) => {
+  rtl: boolean;
+}> = ({ feature, fps, color, rtl }) => {
   const frame = useCurrentFrame();
 
   // Icon animation
@@ -205,7 +226,7 @@ const FeatureSlide: React.FC<{
     extrapolateRight: 'clamp'
   });
 
-  const titleX = interpolate(frame, [fps * 0.3, fps * 0.8], [-50, 0], {
+  const titleX = interpolate(frame, [fps * 0.3, fps * 0.8], [rtl ? 50 : -50, 0], {
     extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp'
   });
@@ -234,7 +255,8 @@ const FeatureSlide: React.FC<{
           display: 'flex',
           alignItems: 'center',
           gap: 80,
-          maxWidth: 1400
+          maxWidth: 1400,
+          flexDirection: rtl ? 'row-reverse' : 'row'
         }}
       >
         {/* Icon */}

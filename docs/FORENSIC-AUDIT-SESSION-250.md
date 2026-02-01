@@ -134,7 +134,7 @@ VocalIA/                                599 MB total
 ```bash
 # Commande exécutée:
 grep -c "server.tool(" mcp-server/src/index.ts
-# Résultat: 178
+# Résultat: 182
 ```
 
 ### Répartition par Catégorie

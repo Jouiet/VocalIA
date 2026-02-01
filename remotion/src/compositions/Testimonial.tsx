@@ -2,6 +2,7 @@
  * VocalIA Testimonial Video Composition
  *
  * A 20-second testimonial video with quote animation.
+ * Session 250.42 - Optimized with multi-language and RTL support.
  */
 import React from 'react';
 import {
@@ -11,6 +12,7 @@ import {
   interpolate,
   spring
 } from 'remotion';
+import { isRTL, type Language } from '../config/i18n';
 
 // Configuration
 export const TESTIMONIAL_CONFIG = {
@@ -37,6 +39,7 @@ interface TestimonialProps {
   role: string;
   metric: string;
   metricLabel: string;
+  language?: Language;
 }
 
 export const Testimonial: React.FC<TestimonialProps> = ({
@@ -44,10 +47,12 @@ export const Testimonial: React.FC<TestimonialProps> = ({
   author,
   role,
   metric,
-  metricLabel
+  metricLabel,
+  language = 'fr'
 }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
+  const rtl = isRTL(language);
 
   // Metric counter animation
   const metricProgress = interpolate(frame, [fps * 2, fps * 5], [0, 1], {
@@ -95,7 +100,8 @@ export const Testimonial: React.FC<TestimonialProps> = ({
     <AbsoluteFill
       style={{
         background: `linear-gradient(135deg, ${COLORS.darker} 0%, ${COLORS.dark} 100%)`,
-        opacity: outroOpacity
+        opacity: outroOpacity,
+        direction: rtl ? 'rtl' : 'ltr'
       }}
     >
       {/* Background elements */}

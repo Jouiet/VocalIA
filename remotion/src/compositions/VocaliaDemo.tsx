@@ -2,6 +2,7 @@
  * VocalIA Demo Video Composition
  *
  * A 30-second product demo video with animated brand elements.
+ * Session 250.42 - Optimized with multi-language and RTL support.
  */
 import React from 'react';
 import {
@@ -12,6 +13,7 @@ import {
   spring,
   Sequence
 } from 'remotion';
+import { isRTL, type Language } from '../config/i18n';
 
 // Configuration
 export const DEMO_CONFIG = {
@@ -21,11 +23,11 @@ export const DEMO_CONFIG = {
   duration: 30 // seconds
 };
 
-// VocalIA Brand Colors
+// VocalIA Brand Colors (from DESIGN-BRANDING-SYSTEM.md)
 const COLORS = {
-  primary: '#5E6AD2',
+  primary: '#5E6AD2',      // Linear Deep Indigo
   primaryLight: '#818CF8',
-  accent: '#10B981',
+  accent: '#10B981',       // Green
   dark: '#1E293B',
   darker: '#0F172A',
   text: '#FFFFFF',
@@ -36,11 +38,25 @@ interface DemoProps {
   title: string;
   subtitle: string;
   features: string[];
+  cta?: {
+    primary: string;
+    secondary: string;
+  };
+  tagline?: string;
+  language?: Language;
 }
 
-export const VocaliaDemo: React.FC<DemoProps> = ({ title, subtitle, features }) => {
+export const VocaliaDemo: React.FC<DemoProps> = ({
+  title,
+  subtitle,
+  features,
+  cta = { primary: 'Essai Gratuit', secondary: 'Voir la Démo' },
+  tagline = 'Prêt à transformer votre service client ?',
+  language = 'fr'
+}) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
+  const rtl = isRTL(language);
 
   // Animation phases (in frames)
   const INTRO_END = fps * 5;        // 0-5s: Logo intro
@@ -82,7 +98,8 @@ export const VocaliaDemo: React.FC<DemoProps> = ({ title, subtitle, features }) 
     <AbsoluteFill
       style={{
         background: `linear-gradient(135deg, ${COLORS.darker} 0%, ${COLORS.dark} 100%)`,
-        opacity: outroOpacity
+        opacity: outroOpacity,
+        direction: rtl ? 'rtl' : 'ltr'
       }}
     >
       {/* Animated mesh gradient background */}
@@ -149,12 +166,18 @@ export const VocaliaDemo: React.FC<DemoProps> = ({ title, subtitle, features }) 
 
       {/* Features Section */}
       <Sequence from={FEATURES_START} durationInFrames={FEATURES_END - FEATURES_START}>
-        <FeaturesSection features={features} fps={fps} />
+        <FeaturesSection features={features} fps={fps} rtl={rtl} />
       </Sequence>
 
       {/* Call to Action */}
       <Sequence from={OUTRO_START}>
-        <CTASection fps={fps} frame={frame - OUTRO_START} />
+        <CTASection
+          fps={fps}
+          frame={frame - OUTRO_START}
+          cta={cta}
+          tagline={tagline}
+          rtl={rtl}
+        />
       </Sequence>
     </AbsoluteFill>
   );
@@ -195,8 +218,13 @@ const MeshGradient: React.FC<{ frame: number }> = ({ frame }) => {
 };
 
 // Features Section
-const FeaturesSection: React.FC<{ features: string[]; fps: number }> = ({ features, fps }) => {
+const FeaturesSection: React.FC<{ features: string[]; fps: number; rtl: boolean }> = ({
+  features,
+  fps,
+  rtl
+}) => {
   const frame = useCurrentFrame();
+  const sectionTitle = rtl ? 'المميزات الرئيسية' : 'Fonctionnalités Clés';
 
   return (
     <AbsoluteFill
@@ -216,7 +244,7 @@ const FeaturesSection: React.FC<{ features: string[]; fps: number }> = ({ featur
           fontFamily: 'Inter, system-ui, sans-serif'
         }}
       >
-        Fonctionnalités Clés
+        {sectionTitle}
       </h2>
 
       <div
@@ -288,7 +316,13 @@ const FeaturesSection: React.FC<{ features: string[]; fps: number }> = ({ featur
 };
 
 // CTA Section
-const CTASection: React.FC<{ fps: number; frame: number }> = ({ fps, frame }) => {
+const CTASection: React.FC<{
+  fps: number;
+  frame: number;
+  cta: { primary: string; secondary: string };
+  tagline: string;
+  rtl: boolean;
+}> = ({ fps, frame, cta, tagline, rtl }) => {
   const opacity = interpolate(frame, [0, fps], [0, 1], {
     extrapolateRight: 'clamp'
   });
@@ -314,17 +348,19 @@ const CTASection: React.FC<{ fps: number; frame: number }> = ({ fps, frame }) =>
           fontWeight: 800,
           color: COLORS.text,
           marginBottom: 24,
-          fontFamily: 'Inter, system-ui, sans-serif'
+          fontFamily: 'Inter, system-ui, sans-serif',
+          textAlign: 'center'
         }}
       >
-        Prêt à transformer votre service client ?
+        {tagline}
       </h2>
 
       <div
         style={{
           display: 'flex',
           gap: 24,
-          transform: `scale(${scale})`
+          transform: `scale(${scale})`,
+          flexDirection: rtl ? 'row-reverse' : 'row'
         }}
       >
         <div
@@ -339,7 +375,7 @@ const CTASection: React.FC<{ fps: number; frame: number }> = ({ fps, frame }) =>
             fontFamily: 'Inter, system-ui, sans-serif'
           }}
         >
-          Essai Gratuit
+          {cta.primary}
         </div>
 
         <div
@@ -354,7 +390,7 @@ const CTASection: React.FC<{ fps: number; frame: number }> = ({ fps, frame }) =>
             fontFamily: 'Inter, system-ui, sans-serif'
           }}
         >
-          Voir la Démo
+          {cta.secondary}
         </div>
       </div>
 

@@ -1,18 +1,21 @@
 #!/usr/bin/env node
 /**
  * Remotion Service - Video Generation Orchestrator
- * VocalIA - Session 250.39
+ * VocalIA - Session 250.42
  *
  * Orchestrates Remotion video rendering from VocalIA.
  * Provides programmatic API for generating marketing videos.
+ * ADMIN USE ONLY - Not for client-facing applications.
  *
  * Usage:
  *   node remotion-service.cjs --render demo
- *   node remotion-service.cjs --render features
- *   node remotion-service.cjs --render testimonial
+ *   node remotion-service.cjs --render demo --lang en
+ *   node remotion-service.cjs --render features --lang ar
  *   node remotion-service.cjs --render-all
+ *   node remotion-service.cjs --render-all-langs
  *   node remotion-service.cjs --health
  *   node remotion-service.cjs --install
+ *   node remotion-service.cjs --list
  */
 
 const { execSync, spawn } = require('child_process');
@@ -22,6 +25,19 @@ const fs = require('fs');
 // Configuration
 const REMOTION_DIR = path.join(__dirname, '../remotion');
 const OUTPUT_DIR = path.join(REMOTION_DIR, 'out');
+
+// Supported languages
+const LANGUAGES = ['fr', 'en', 'es', 'ar', 'ary'];
+
+// VocalIA Metrics (must match i18n.ts)
+const VOCALIA_METRICS = {
+  personas: 40,
+  languages: 5,
+  mcpTools: 182,
+  integrations: 28,
+  ecommercePlatforms: 7,
+  stripeTools: 19
+};
 
 // Available compositions
 const COMPOSITIONS = {
@@ -87,10 +103,22 @@ function installDependencies() {
 }
 
 /**
+ * Get composition ID with language suffix
+ */
+function getCompositionId(baseId, language) {
+  if (!language || language === 'fr') {
+    return baseId; // French is default
+  }
+  return `${baseId}-${language.toUpperCase()}`;
+}
+
+/**
  * Render a single composition
  */
-async function renderComposition(compositionKey, props = {}) {
+async function renderComposition(compositionKey, options = {}) {
+  const { language = 'fr', props = {} } = options;
   const composition = COMPOSITIONS[compositionKey];
+
   if (!composition) {
     throw new Error(`Unknown composition: ${compositionKey}. Available: ${Object.keys(COMPOSITIONS).join(', ')}`);
   }
@@ -100,16 +128,22 @@ async function renderComposition(compositionKey, props = {}) {
     return null;
   }
 
-  console.log(`[Remotion] Rendering ${composition.id}...`);
+  const compositionId = getCompositionId(composition.id, language);
+  const outputFilename = language === 'fr'
+    ? composition.output
+    : composition.output.replace(/(\.[^.]+)$/, `-${language}$1`);
+
+  console.log(`[Remotion] Rendering ${compositionId}...`);
+  console.log(`  Language: ${language}`);
   console.log(`  Duration: ${composition.duration}s`);
-  console.log(`  Output: ${composition.output}`);
+  console.log(`  Output: ${outputFilename}`);
 
   // Ensure output directory exists
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
-  const outputPath = path.join(OUTPUT_DIR, composition.output);
+  const outputPath = path.join(OUTPUT_DIR, outputFilename);
   const entryPoint = path.join(REMOTION_DIR, 'src/index.ts');
 
   // Build render command
@@ -117,7 +151,7 @@ async function renderComposition(compositionKey, props = {}) {
   const args = [
     'npx', 'remotion', command,
     entryPoint,
-    composition.id,
+    compositionId,
     outputPath
   ];
 
@@ -161,6 +195,7 @@ async function renderComposition(compositionKey, props = {}) {
         resolve({
           success: true,
           composition: compositionKey,
+          language,
           output: outputPath,
           duration,
           size: fs.existsSync(outputPath) ? fs.statSync(outputPath).size : 0
@@ -180,7 +215,7 @@ async function renderComposition(compositionKey, props = {}) {
 }
 
 /**
- * Render all compositions
+ * Render all compositions (default language)
  */
 async function renderAll() {
   const results = [];
@@ -199,6 +234,54 @@ async function renderAll() {
   }
 
   return results;
+}
+
+/**
+ * Render all compositions in all languages
+ */
+async function renderAllLanguages() {
+  const results = [];
+
+  for (const lang of LANGUAGES) {
+    for (const key of Object.keys(COMPOSITIONS)) {
+      try {
+        const result = await renderComposition(key, { language: lang });
+        results.push(result);
+      } catch (error) {
+        results.push({
+          success: false,
+          composition: key,
+          language: lang,
+          error: error.message
+        });
+      }
+    }
+  }
+
+  return results;
+}
+
+/**
+ * List available compositions
+ */
+function listCompositions() {
+  console.log('\n=== Available Compositions ===\n');
+
+  console.log('Base Compositions:');
+  for (const [key, comp] of Object.entries(COMPOSITIONS)) {
+    console.log(`  ${key.padEnd(15)} ${comp.description} (${comp.duration}s)`);
+  }
+
+  console.log('\nLanguages:');
+  for (const lang of LANGUAGES) {
+    console.log(`  ${lang}`);
+  }
+
+  console.log('\nTotal compositions: ' + (Object.keys(COMPOSITIONS).length * LANGUAGES.length + Object.keys(COMPOSITIONS).length));
+  console.log('\nExamples:');
+  console.log('  node remotion-service.cjs --render demo');
+  console.log('  node remotion-service.cjs --render features --lang ar');
+  console.log('  node remotion-service.cjs --render testimonial --lang en');
 }
 
 /**
@@ -262,6 +345,9 @@ function healthCheck() {
     directory: REMOTION_DIR,
     outputDirectory: OUTPUT_DIR,
     compositions: Object.keys(COMPOSITIONS),
+    languages: LANGUAGES,
+    totalCompositions: Object.keys(COMPOSITIONS).length * LANGUAGES.length + Object.keys(COMPOSITIONS).length,
+    metrics: VOCALIA_METRICS,
     outputs,
     ready: installed && hasPackageJson
   };
@@ -270,23 +356,23 @@ function healthCheck() {
 /**
  * Generate video with custom props
  */
-async function generateVideo(type, customProps = {}) {
+async function generateVideo(type, customProps = {}, language = 'fr') {
   const defaultProps = {
     demo: {
       title: 'VocalIA',
-      subtitle: 'Agents Vocaux IA pour Entreprises',
+      subtitle: language === 'en' ? 'Voice AI Agents for Business' : 'Agents Vocaux IA pour Entreprises',
       features: [
-        '40 Personas SOTA',
-        '5 Langues + Darija',
-        '182 MCP Tools',
-        '28 Intégrations'
+        `${VOCALIA_METRICS.personas} Personas SOTA`,
+        `${VOCALIA_METRICS.languages} Langues + Darija`,
+        `${VOCALIA_METRICS.mcpTools} MCP Tools`,
+        `${VOCALIA_METRICS.integrations} Intégrations`
       ]
     },
     features: {
       features: [
         { title: 'Voice Widget', description: 'Intégration web en 2 lignes de code', icon: '🎙️' },
         { title: 'Voice Telephony', description: 'Bridge PSTN ↔ AI pour appels entrants', icon: '📞' },
-        { title: 'Multi-Persona', description: '40 personas métier pré-configurés', icon: '🎭' },
+        { title: 'Multi-Persona', description: `${VOCALIA_METRICS.personas} personas métier pré-configurés`, icon: '🎭' },
         { title: 'Multilingue', description: 'FR, EN, ES, AR, Darija natif', icon: '🌍' }
       ]
     },
@@ -300,7 +386,7 @@ async function generateVideo(type, customProps = {}) {
   };
 
   const props = { ...defaultProps[type], ...customProps };
-  return renderComposition(type, props);
+  return renderComposition(type, { language, props });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -319,8 +405,20 @@ async function main() {
     return;
   }
 
+  if (args.includes('--list')) {
+    listCompositions();
+    return;
+  }
+
   if (args.includes('--studio') || args.includes('--dev')) {
     startStudio();
+    return;
+  }
+
+  if (args.includes('--render-all-langs')) {
+    const results = await renderAllLanguages();
+    console.log('\n=== Render Results (All Languages) ===');
+    console.log(JSON.stringify(results, null, 2));
     return;
   }
 
@@ -335,12 +433,21 @@ async function main() {
   if (renderIndex !== -1) {
     const compositionKey = args[renderIndex + 1];
     if (!compositionKey) {
-      console.error('Usage: node remotion-service.cjs --render <demo|features|testimonial|thumbnail>');
+      console.error('Usage: node remotion-service.cjs --render <demo|features|testimonial|thumbnail> [--lang <fr|en|es|ar|ary>]');
+      process.exit(1);
+    }
+
+    // Get language
+    const langIndex = args.indexOf('--lang');
+    const language = langIndex !== -1 ? args[langIndex + 1] : 'fr';
+
+    if (!LANGUAGES.includes(language)) {
+      console.error(`Invalid language: ${language}. Available: ${LANGUAGES.join(', ')}`);
       process.exit(1);
     }
 
     try {
-      const result = await renderComposition(compositionKey);
+      const result = await renderComposition(compositionKey, { language });
       console.log('\n=== Render Result ===');
       console.log(JSON.stringify(result, null, 2));
     } catch (error) {
@@ -352,25 +459,40 @@ async function main() {
 
   // Default: show help
   console.log(`
-Remotion Service - VocalIA Video Generation
-============================================
+Remotion Service - VocalIA Video Generation (ADMIN ONLY)
+=========================================================
 
 Commands:
-  --health           Check service status
-  --install          Install Remotion dependencies
-  --studio           Start Remotion Studio (preview)
-  --render <type>    Render a video
-  --render-all       Render all compositions
+  --health              Check service status
+  --install             Install Remotion dependencies
+  --list                List available compositions
+  --studio              Start Remotion Studio (preview)
+  --render <type>       Render a video
+  --render-all          Render all compositions (default language)
+  --render-all-langs    Render all compositions in all languages
+
+Options:
+  --lang <code>         Language: fr, en, es, ar, ary (default: fr)
 
 Video Types:
-  demo               Main product demo (30s)
-  features           Feature showcase (45s)
-  testimonial        Customer testimonial (20s)
-  thumbnail          Video thumbnail (still image)
+  demo                  Main product demo (30s)
+  features              Feature showcase (45s)
+  testimonial           Customer testimonial (20s)
+  thumbnail             Video thumbnail (still image)
+
+Languages: ${LANGUAGES.join(', ')}
+
+Metrics (${VOCALIA_METRICS.mcpTools} MCP Tools verified):
+  - ${VOCALIA_METRICS.personas} Personas
+  - ${VOCALIA_METRICS.languages} Languages
+  - ${VOCALIA_METRICS.integrations} Integrations
+  - ${VOCALIA_METRICS.ecommercePlatforms} E-commerce Platforms
 
 Examples:
   node remotion-service.cjs --install
   node remotion-service.cjs --render demo
+  node remotion-service.cjs --render features --lang en
+  node remotion-service.cjs --render testimonial --lang ar
   node remotion-service.cjs --studio
   `);
 }
@@ -383,9 +505,13 @@ if (require.main === module) {
 module.exports = {
   renderComposition,
   renderAll,
+  renderAllLanguages,
   generateVideo,
   healthCheck,
   installDependencies,
   startStudio,
-  COMPOSITIONS
+  listCompositions,
+  COMPOSITIONS,
+  LANGUAGES,
+  VOCALIA_METRICS
 };

@@ -37,7 +37,7 @@ VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels 
 - Architecture: Multi-AI fallback (Grok > Gemini > Claude > Atlas)
 - Langues: Francais, English, Espanol, Arabic MSA, Darija
 - Personas: 40 personas SOTA (e-commerce, immobilier, sante, services...)
-- MCP Server: 178 tools, 25 categories
+- MCP Server: 182 tools, 25 categories
 - Security: CSP, HTTPS, AES-256-GCM pour credentials
 
 ## Optional
