@@ -504,7 +504,7 @@ TEMPS: <3 minutes | ROI: Pipeline +€5,000
 
 ### 5.3 Valeur Ajoutée Quantifiable
 
-| Métrique | Sans VocalIA | Avec VocalIA (178 tools) | Économie |
+| Métrique | Sans VocalIA | Avec VocalIA (182 tools) | Économie |
 |:---------|:-------------|:-------------------------|:---------|
 | **Temps qualification lead** | 15-30 min | 2-3 min | **-90%** |
 | **Coût par lead qualifié** | €15-30 | €2-5 | **-80%** |

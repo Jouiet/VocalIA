@@ -4669,7 +4669,7 @@ Appel → qualify_lead → shopify_get_product → stripe_create_payment_link
 cd mcp-server && npm run build  # ✅ SUCCESS
 
 # Tool count
-grep -c "server.tool(" src/index.ts  # 178 (includes inline)
+grep -c "server.tool(" src/index.ts  # 182 (includes inline)
 
 # Stripe tools
 grep "stripe_" src/index.ts | wc -l  # 19
@@ -4726,10 +4726,10 @@ grep -rl 'href="/status"' --include='*.html' | wc -l  # 0 ✅
 
 ### 3. MCP Tools Audit
 
-**Valeur corrigée**: 178 tools (was: 162 documenté, 254 dans stats page)
+**Valeur corrigée**: 182 tools (was: 162 documenté, 254 dans stats page)
 
 ```bash
-grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
+grep -c "server.tool(" mcp-server/src/index.ts  # 182 ✅
 ```
 
 | Catégorie | Tools | Status |
@@ -4737,7 +4737,7 @@ grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
 | Stripe | 19 | ✅ Payment Links, Checkout, Invoices, Refunds |
 | Shopify | 8 | ✅ FULL CRUD |
 | E-commerce total | 76 | ✅ 7 platforms |
-| **Total MCP Server** | **178** | ✅ Build OK |
+| **Total MCP Server** | **182** | ✅ Build OK |
 
 ### 4. Problème Identifié: Composants Non-Standardisés
 
@@ -4748,7 +4748,7 @@ grep -c "server.tool(" mcp-server/src/index.ts  # 178 ✅
 2. **Runtime JS**: `fetch()` pour charger nav/footer.html
 3. **SSG**: Migration vers Astro ou 11ty
 
-**Statut final**: Session 250 | **178 tools** | Footer clean | Academie nav fixed ✅
+**Statut final**: Session 250 | **182 tools** | Footer clean | Academie nav fixed ✅
 
 ---
 
@@ -4983,7 +4983,7 @@ Both SDKs already had complete documentation. Updated persona count from 28 to 4
 | Claim | Avant | Après | Vérification |
 |:------|:-----:|:-----:|:-------------|
 | **Personas** | 30/31 (mixed) | **40** | `grep "40 personas" --include="*.html"` |
-| **MCP Tools** | 21/117/254 | **178** | `grep "server.tool(" index.ts \| wc -l` |
+| **MCP Tools** | 21/117/254 | **182** | `grep "server.tool(" index.ts \| wc -l` |
 | **Intégrations** | 24/28 | **28** | CLAUDE.md source of truth |
 
 ### 2. Tiers Personas Renommés (Segmentation Factuelle)
@@ -5017,8 +5017,8 @@ Both SDKs already had complete documentation. Updated persona count from 28 to 4
 grep -r '40 personas' --include='*.html' | wc -l  # 65 ✅
 grep -r '30 personas' --include='*.html' | wc -l  # 0 ✅
 
-# MCP Tools - tous à 178
-grep -r '178' --include='*.html' | grep -i 'tool\|MCP' | wc -l  # 20+ ✅
+# MCP Tools - tous à 182
+grep -r '182' --include='*.html' | grep -i 'tool\|MCP' | wc -l  # 20+ ✅
 ```
 
 **Statut final**: Session 250.21 | Marketing Copy 100% Factuel ✅
@@ -5110,7 +5110,7 @@ interface UCPBehavioralEvent {
 
 | Métrique | Avant | Après | Delta |
 |:---------|:-----:|:-----:|:-----:|
-| MCP Tools | 178 | **181** | +3 |
+| MCP Tools | 182 | **181** | +3 |
 | UCP Tools | 3 | **6** | +3 |
 | A2A Skills | 0 | **3** | +3 |
 

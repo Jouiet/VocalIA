@@ -26,7 +26,7 @@ export const Root: React.FC = () => {
           features: [
             '40 Personas SOTA',
             '5 Langues + Darija',
-            '178 MCP Tools',
+            '182 MCP Tools',
             '28 Intégrations'
           ]
         }}

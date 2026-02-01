@@ -1,7 +1,7 @@
 /**
  * VocalIA MCP Server Tests
  *
- * Tests for the MCP server (178 tools across 25 categories)
+ * Tests for the MCP server (182 tools across 25 categories)
  * Run: node --test test/mcp-server.test.cjs
  */
 
@@ -22,10 +22,10 @@ describe('MCP Server Structure', () => {
     assert.ok(fs.existsSync(MCP_TOOLS_DIR), 'tools directory should exist');
   });
 
-  test('Index has 178 tool registrations', () => {
+  test('Index has 182 tool registrations', () => {
     const content = fs.readFileSync(MCP_INDEX_PATH, 'utf8');
     const toolCount = (content.match(/server\.tool\(/g) || []).length;
-    assert.strictEqual(toolCount, 178, `Should have 178 tools, found ${toolCount}`);
+    assert.strictEqual(toolCount, 182, `Should have 182 tools, found ${toolCount}`);
   });
 
   test('Index is substantial (>70k chars)', () => {

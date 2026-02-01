@@ -666,7 +666,7 @@ Session 246 audit identified 75% false claims. **Sessions 249.x implemented all 
 ### Verification Command
 
 ```bash
-grep -c "server.tool(" mcp-server/src/index.ts  # → 178 tools
+grep -c "server.tool(" mcp-server/src/index.ts  # → 182 tools
 ```
 
 ---
@@ -1740,7 +1740,7 @@ AFTER: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking'
 | **Languages** | 5 (incl. Darija) | EN mainly | VocalIA |
 | **Personas** | 30 pré-configurés | Custom scripts | VocalIA |
 | **API/SDK** | ✅ Python + Node.js | ❌ | VocalIA |
-| **MCP Server** | ✅ 178 tools | ❌ | VocalIA |
+| **MCP Server** | ✅ 182 tools | ❌ | VocalIA |
 | **Self-Service** | ✅ | ❌ White-glove | VocalIA |
 | **Target Market** | B2B Multi-industry | Service business | Tie |
 

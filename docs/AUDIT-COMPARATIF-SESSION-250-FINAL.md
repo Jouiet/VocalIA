@@ -87,7 +87,7 @@ TOTAL: 652 lignes de code PHP fonctionnel
 
 | Métrique | Audit Externe | Contre-Audit | Vérification Finale | Source de Vérité |
 |:---------|:-------------:|:------------:|:-------------------:|:-----------------|
-| **MCP Tools** | 178 | 178 | **178** | `grep -c "server.tool(" mcp-server/src/index.ts` |
+| **MCP Tools** | 182 | 182 | **182** | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | **Pages HTML** | 37 | 37 | **37** | `find website -name "*.html" \| wc -l` |
 | **i18n Keys** | 1546 | 1546 | **1546** | Python count script |
 | **i18n Traduction** | 71-81% | 73-82% | **~78% moyenne** | Analyse par langue |
@@ -560,7 +560,7 @@ User-agent: Google-Extended → Allow: /
 8. ❌ HITL patterns (non analysés)
 
 ### L'audit externe était CORRECT sur:
-1. ✅ MCP Tools count (178)
+1. ✅ MCP Tools count (182)
 2. ✅ Pages HTML count (37)
 3. ✅ i18n keys (1546)
 4. ✅ Personas count (30)

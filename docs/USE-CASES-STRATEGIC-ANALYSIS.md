@@ -1,7 +1,7 @@
 # VocalIA - Analyse Stratégique des Use Cases
 
 > **Version**: 2.2.0 | **Date**: 31/01/2026 | **Session**: 250
-> **MCP Server**: v0.7.0 | **178 Tools** | **28 Intégrations** | **4 Sensors** | **3 Agents** | **31 Personas**
+> **MCP Server**: v0.7.0 | **182 tools** | **28 Intégrations** | **4 Sensors** | **3 Agents** | **31 Personas**
 > **Statut**: VÉRIFIÉ EMPIRIQUEMENT (audit codebase 31/01/2026)
 > **Session 249.21**: Stripe (19 tools) + E-commerce FULL CRUD (7 plateformes)
 
@@ -38,7 +38,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | **Voice Widget** | Web Speech API | $0 | Website visitors, lead capture |
 | **Voice Telephony** | Twilio PSTN + Grok | ~$0.06/min | Inbound/outbound calls |
 
-### 2.2 Intégrations MCP (28 + 3 iPaaS = 178 tools)
+### 2.2 Intégrations MCP (28 + 3 iPaaS = 182 tools)
 
 | Catégorie | Intégrations | Tools | Status |
 |:----------|:-------------|:-----:|:------:|
@@ -52,7 +52,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | **Export** | CSV, XLSX, PDF | 5 | ✅ |
 | **iPaaS** | Zapier, Make, n8n | 13 | ✅ +7000 apps |
 
-**Total vérifié**: 178 tools (server.tool calls dans index.ts) - Session 250
+**Total vérifié**: 182 tools (server.tool calls dans index.ts) - Session 250
 
 ### 2.3 Function Tools Telephony (11 FONCTIONNELS)
 

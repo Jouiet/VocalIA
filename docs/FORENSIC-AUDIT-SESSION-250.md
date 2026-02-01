@@ -16,7 +16,7 @@
 2. [Méthodologie](#2-méthodologie)
 3. [Audit #1: Backend & Infrastructure](#3-audit-1-backend--infrastructure)
    - 3.1 Structure du Projet
-   - 3.2 MCP Server (178 tools)
+   - 3.2 MCP Server (182 tools)
    - 3.3 Core Modules (28 modules)
    - 3.4 Personas (40 - Session 250.6)
    - 3.5 Telephony (12 function tools)
@@ -167,7 +167,7 @@ grep -c "server.tool(" mcp-server/src/index.ts
 | **Export** | 5 | export.ts |
 | **Email** | 3 | email.ts |
 | **Inline (index.ts)** | 23 | index.ts |
-| **TOTAL** | **178** | |
+| **TOTAL** | **182** | |
 
 ### Build Status
 
@@ -181,7 +181,7 @@ cd mcp-server && npm run build
 
 ```
 Ligne 8 index.ts AVANT: "TOOL CATEGORIES (117 tools..."
-Ligne 8 index.ts APRÈS: "TOOL CATEGORIES (178 tools..."
+Ligne 8 index.ts APRÈS: "TOOL CATEGORIES (182 tools..."
 ```
 
 ## 3.3 Core Modules - Inventaire Complet
@@ -1070,7 +1070,7 @@ cat website/public/site.webmanifest
 * TOOL CATEGORIES (117 tools - 11 always available, 106 require services):
 
 // Ligne 8 APRÈS:
-* TOOL CATEGORIES (178 tools - 23 inline, 155 external modules):
+* TOOL CATEGORIES (182 tools - 23 inline, 155 external modules):
 ```
 
 ## 5.3 personas/voice-persona-injector.cjs
@@ -1129,7 +1129,7 @@ TOTAL: 652 lignes - Plugin complet
 | 3 | Security headers | CSP, X-Frame-Options, nosniff sur dashboards |
 | 4 | i18n structure complète | 5 langues, RTL, parité 100% structure |
 | 5 | Code backend propre | 0 TODO/PLACEHOLDER/STUB |
-| 6 | MCP Server robuste | 178 tools, build OK, TypeScript |
+| 6 | MCP Server robuste | 182 tools, build OK, TypeScript |
 | 7 | Multi-tenant architecture | SecretVault, TenantContext, OAuth |
 | 8 | Documentation complète | 38 fichiers .md, 904 KB |
 | 9 | npm audit clean | 0 vulnerabilities |
@@ -1266,7 +1266,7 @@ TOTAL: 652 lignes - Plugin complet
 
 ```bash
 # MCP Tools count
-grep -c "server.tool(" mcp-server/src/index.ts  # → 178
+grep -c "server.tool(" mcp-server/src/index.ts  # → 182
 
 # Core modules count
 ls core/*.cjs | wc -l  # → 23

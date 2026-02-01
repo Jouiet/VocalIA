@@ -278,7 +278,7 @@ MODÈLE FREEMIUM VÉRIFIÉ:
 3. **Privacy-First** - Plausible Analytics (GDPR), localStorage
 4. **Design Moderne** - Glassmorphism, GSAP animations
 5. **i18n Complet** - 5 langues incluant Darija (unique sur marché)
-6. **MCP Riche** - 178 tools, 40 personas
+6. **MCP Riche** - 182 tools, 40 personas
 
 ### WEAKNESSES
 1. **Supply Chain** - CDN @latest sans SRI

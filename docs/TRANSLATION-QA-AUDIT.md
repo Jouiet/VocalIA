@@ -108,7 +108,7 @@
 ❌ Ne vérifie que l'EXISTENCE, pas la QUALITÉ
 ```
 
-### 2.4 MCP Server (178 tools)
+### 2.4 MCP Server (182 tools)
 
 **Localisation:** `mcp-server/src/index.ts`
 
@@ -354,7 +354,7 @@ ARY: "أهلاً! أنا المساعد ديال VocalIA."
 ║    ✅ health-check.cjs             → Existence fichiers                   ║
 ║    ✅ voice-quality-sensor         → Latence API                          ║
 ║    ✅ i18n.js                      → Runtime i18n                         ║
-║    ✅ MCP Server (178 tools)       → Voice AI + E-commerce + CRM          ║
+║    ✅ MCP Server (182 tools)       → Voice AI + E-commerce + CRM          ║
 ║    ✅ translation-quality-check.py → QA traductions (NEW)                 ║
 ║    ✅ darija-validator.py          → Authenticité Darija (NEW)            ║
 ║                                                                           ║

@@ -419,7 +419,7 @@ grep -c 'from-red' website/dashboard/admin.html  # 4 occurrences
 | Claim | Code Source | Before | After | Status |
 |:------|:-----------:|:------:|:-----:|:------:|
 | **Personas count** | voice-persona-injector.cjs | 30/31 (mixed) | **40** | ✅ FIXED |
-| **MCP Tools** | mcp-server/index.ts | 21/117/254 (mixed) | **178** | ✅ FIXED |
+| **MCP Tools** | mcp-server/index.ts | 21/117/254 (mixed) | **182** | ✅ FIXED |
 | **Native integrations** | CLAUDE.md | 24/28 (mixed) | **28** | ✅ FIXED |
 | **Tier breakdown** | voice-persona-injector.cjs | 7+11+12=30 | **5+21+14=40** | ✅ FIXED |
 
@@ -444,8 +444,8 @@ grep -c 'from-red' website/dashboard/admin.html  # 4 occurrences
 grep -r '40 personas' --include='*.html' --include='*.json' | wc -l  # 65 ✅
 grep -r '30 personas' --include='*.html' --include='*.json' | grep -v translation-qa | wc -l  # 0 ✅
 
-# MCP Tools - all claims now 178
-grep -r '178' --include='*.html' --include='*.json' | grep -i 'tool\|outils\|MCP' | wc -l  # 20 ✅
+# MCP Tools - all claims now 182
+grep -r '182' --include='*.html' --include='*.json' | grep -i 'tool\|outils\|MCP' | wc -l  # 20 ✅
 grep -r '117 \|254 \|21 tools' --include='*.html' --include='*.json' | grep -i 'tool' | wc -l  # 0 ✅
 
 # Integrations - all claims now 28
