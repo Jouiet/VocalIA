@@ -861,7 +861,7 @@
     // ═══════════════════════════════════════════════════════════════════════════
     // Auto-detect: localhost for dev, production API for deployed
     const HITL_API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:3012'
+      ? 'http://localhost:3013'
       : 'https://api.vocalia.ma/hitl';
 
     async function refreshHITLQueue() {
@@ -1140,7 +1140,7 @@
 
     // Global API base URL - Session 250.51: Use db-api for real data
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:3012/api/db'
+      ? 'http://localhost:3013/api/db'
       : 'https://api.vocalia.ma/db';
 
     // Voice API for non-DB endpoints (health, restart)

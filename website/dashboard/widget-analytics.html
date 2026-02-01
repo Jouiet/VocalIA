@@ -575,7 +575,7 @@
   <script>
     // API Configuration
     const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:3012/api/db'
+      ? 'http://localhost:3013/api/db'
       : 'https://api.vocalia.ma/db';
     const urlParams = new URLSearchParams(window.location.search);
     const TENANT_ID = urlParams.get('tenant') || localStorage.getItem('vocalia_tenant_id') || 'demo';

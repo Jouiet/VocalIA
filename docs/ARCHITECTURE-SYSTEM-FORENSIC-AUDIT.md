@@ -19,6 +19,9 @@
 | **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ✅ |
 | **DB API** | 3013 | `core/db-api.cjs` | ✅ |
 | **Remotion HITL** | 3012 | `core/remotion-hitl.cjs` | ✅ |
+
+**Note Port Allocation:** DB API utilise 3013 pour éviter conflit avec Remotion HITL (3012).
+Tous les dashboards (admin, client, widget-analytics) sont configurés pour port 3013.
 | **Website** | 8080 | `npx serve website` | ✅ |
 
 ### 1.2 Modules Core (27,238 lignes)

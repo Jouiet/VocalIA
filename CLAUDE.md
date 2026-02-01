@@ -192,34 +192,29 @@ open http://localhost:8080?lang=ar
 
 ---
 
-## MCP Server v0.5.0 (59 Tools)
+## MCP Server v0.8.0 (182 Tools)
 
-**Local Tools (10):**
-- personas_list, personas_get, personas_get_system_prompt
-- qualify_lead, lead_score_explain
-- knowledge_base_status, system_languages, api_status
-- booking_schedule_callback, booking_create
+> Voir `docs/VOCALIA-MCP.md` pour documentation complète
 
-**Google Tools (13) - Multi-Tenant:**
-- Calendar: check_availability, create_event
-- Sheets: read_range, write_range, append_rows, get_info, create
-- Drive: list_files, get_file, create_folder, upload_file, share_file, delete_file
-
-**Scheduling Tools (6) - Multi-Tenant:**
-- Calendly: get_user, list_event_types, get_available_times, list_events, cancel_event, get_busy_times
-
-**Support Tools (6) - Multi-Tenant:**
-- Freshdesk: list_tickets, get_ticket, create_ticket, reply_ticket, update_ticket, search_contacts
-
-**CRM Tools (7) - Multi-Tenant:**
-- Pipedrive: list_deals, create_deal, update_deal, list_persons, create_person, search, list_activities
-
-**External Integrations (9):**
-- HubSpot: crm_get_customer, crm_create_contact
-- Shopify: ecommerce_order_status, ecommerce_product_stock
-- Klaviyo: ecommerce_customer_profile
-- Slack: slack_send_notification
-- UCP: ucp_sync_preference, ucp_get_profile, ucp_list_profiles
+| Catégorie | Tools | Platform |
+|:----------|:-----:|:---------|
+| **Stripe** | 19 | Payments |
+| **Shopify** | 8 | E-commerce |
+| **WooCommerce** | 7 | E-commerce |
+| **Magento** | 10 | E-commerce |
+| **PrestaShop** | 10 | E-commerce |
+| **BigCommerce** | 9 | E-commerce |
+| **Wix** | 6 | E-commerce |
+| **Squarespace** | 7 | E-commerce |
+| **Pipedrive** | 7 | CRM |
+| **Zendesk** | 6 | Support |
+| **Freshdesk** | 6 | Support |
+| **Google (Calendar/Sheets/Drive)** | 17 | Productivity |
+| **UCP/CDP** | 7 | Customer Data |
+| **Local (KB, Personas)** | ~20 | Internal |
+| **iPaaS (Zapier/Make/n8n)** | 9 | Integration |
+| **Export** | 5 | Utility |
+| **TOTAL** | **182** | - |
 
 ---
 
