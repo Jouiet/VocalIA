@@ -24,9 +24,18 @@ services:
       - "traefik.http.routers.vocalia-api.tls=true"
       - "traefik.http.routers.vocalia-api.tls.certresolver=letsencrypt"
       - "traefik.http.services.vocalia-api.loadbalancer.server.port=3004"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:3004/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
+
+networks:
+  traefik:
+    name: root_default
+    external: true
