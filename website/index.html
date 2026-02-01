@@ -1424,7 +1424,7 @@
               AI</span>
           </h3>
           <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
-            Articles, guides et études de cas. Pas de spam.
+            Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
         <form class="flex flex-col sm:flex-row gap-3"
@@ -1665,8 +1665,57 @@
       initI18n();
     }
 
+    // Voice Visualizers initialization
+    function initVisualizers() {
+      if (typeof VoiceVisualizer === 'undefined') {
+        // Retry after 100ms if VoiceVisualizer not loaded yet
+        setTimeout(initVisualizers, 100);
+        return;
+      }
+
+      var configs = [
+        { id: '#visualizer-wave', mode: 'wave' },
+        { id: '#visualizer-bars', mode: 'bars', barCount: 24 },
+        { id: '#visualizer-orb', mode: 'orb' },
+        { id: '#visualizer-pulse', mode: 'pulse' }
+      ];
+
+      var loadedVisualizers = {};
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          var canvas = entry.target;
+          var config = configs.find(function(c) { return document.querySelector(c.id) === canvas; });
+
+          if (entry.isIntersecting && config && !loadedVisualizers[config.id]) {
+            var viz = new VoiceVisualizer(config.id, {
+              mode: config.mode,
+              primaryColor: '#5DADE2',
+              secondaryColor: '#85C1E9',
+              accentColor: '#5DADE2',
+              glowColor: '#5DADE2',
+              barCount: config.barCount || 32,
+              animate: true
+            });
+            loadedVisualizers[config.id] = viz;
+            viz.start();
+          } else if (!entry.isIntersecting && config && loadedVisualizers[config.id]) {
+            loadedVisualizers[config.id].stop();
+          }
+        });
+      }, { threshold: 0.1 });
+
+      configs.forEach(function(config) {
+        var el = document.querySelector(config.id);
+        if (el) observer.observe(el);
+      });
+    }
+
     // Re-init on load
-    window.addEventListener('load', initLucide);
+    window.addEventListener('load', function() {
+      initLucide();
+      initVisualizers();
+    });
   })();
   </script>
 </body>

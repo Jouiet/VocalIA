@@ -643,7 +643,7 @@
     "cta_contact": "Contactar Equipo",
     "newsletter_title": "Mantente informado sobre",
     "newsletter_title_highlight": "Voice AI",
-    "newsletter_desc": "Artículos, guías y casos de estudio. Sin spam.",
+    "newsletter_desc": "Reciba nuestros consejos de Voice AI y actualizaciones.",
     "newsletter_placeholder": "tu@email.com",
     "newsletter_button": "Suscribirse",
     "newsletter_success": "✓ ¡Suscrito!"
@@ -1753,7 +1753,7 @@
   "common": {
     "newsletter_title": "Mantente informado sobre",
     "newsletter_highlight": "Voice AI",
-    "newsletter_subtitle": "Artículos, guías y casos de estudio. Sin spam.",
+    "newsletter_subtitle": "Reciba nuestros consejos de Voice AI y actualizaciones.",
     "newsletter_placeholder": "tu@email.com",
     "newsletter_button": "Suscribirse",
     "newsletter_success": "¡Suscrito!",

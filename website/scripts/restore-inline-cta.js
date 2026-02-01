@@ -19,7 +19,7 @@ const CTA_HTML = `  <!-- Newsletter CTA -->
             Restez informé des actualités <span class="gradient-text">Voice AI</span>
           </h3>
           <p class="text-slate-400 text-sm">
-            Articles, guides et études de cas. Pas de spam.
+            Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
         <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); this.querySelector('button').textContent = '✓ Inscrit!'; this.querySelector('button').disabled = true;">

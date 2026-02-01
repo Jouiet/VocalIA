@@ -643,7 +643,7 @@
     "cta_contact": "تواصل مع الفريق",
     "newsletter_title": "بقا على اطلاع بأخبار",
     "newsletter_title_highlight": "Voice AI",
-    "newsletter_desc": "مقالات ودراسات حالة. بلا spam.",
+    "newsletter_desc": "توصل بنصائح Voice AI والجديد ديال المنتج.",
     "newsletter_placeholder": "الإيميل ديالك",
     "newsletter_button": "اشترك",
     "newsletter_success": "✓ مشترك!"
@@ -1753,7 +1753,7 @@
   "common": {
     "newsletter_title": "بقا على اطلاع بأخبار",
     "newsletter_highlight": "Voice AI",
-    "newsletter_subtitle": "مقالات ودراسات حالة. بلا spam.",
+    "newsletter_subtitle": "توصل بنصائح Voice AI والجديد ديال المنتج.",
     "newsletter_placeholder": "الإيميل ديالك",
     "newsletter_button": "اشترك",
     "newsletter_success": "مشترك!",

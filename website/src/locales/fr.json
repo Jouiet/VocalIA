@@ -643,7 +643,7 @@
     "cta_contact": "Contacter l'Équipe",
     "newsletter_title": "Restez informé des actualités",
     "newsletter_title_highlight": "Voice AI",
-    "newsletter_desc": "Articles, guides et études de cas. Pas de spam.",
+    "newsletter_desc": "Recevez nos conseils Voice AI et mises à jour produit.",
     "newsletter_placeholder": "votre@email.com",
     "newsletter_button": "S'inscrire",
     "newsletter_success": "✓ Inscrit!"
@@ -1753,7 +1753,7 @@
   "common": {
     "newsletter_title": "Restez informé des actualités",
     "newsletter_highlight": "Voice AI",
-    "newsletter_subtitle": "Articles, guides et études de cas. Pas de spam.",
+    "newsletter_subtitle": "Recevez nos conseils Voice AI et mises à jour produit.",
     "newsletter_placeholder": "votre@email.com",
     "newsletter_button": "S'inscrire",
     "newsletter_success": "Inscrit !",
