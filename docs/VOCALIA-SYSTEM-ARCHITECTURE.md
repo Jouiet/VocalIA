@@ -1,6 +1,6 @@
 # VocalIA - Architecture Système Complète
 ## Document Consolidé de Référence
-### Version 1.0.0 | 02/02/2026 | Session 250.52
+### Version 1.1.0 | 02/02/2026 | Session 250.52 (P0+P1+P2 COMPLETE)
 
 > **DOCUMENT UNIQUE DE RÉFÉRENCE** - Remplace tous les documents d'architecture fragmentés
 > Généré par analyse bottom-up factuelle exhaustive du codebase
@@ -133,7 +133,7 @@
 | **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | ~400 | OAuth 2.0 flows |
 | **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ~350 | Inbound webhooks |
 | **Remotion HITL** | 3012 | `core/remotion-hitl.cjs` | ~500 | Video HITL |
-| **DB API** | 3013 | `core/db-api.cjs` | ~600 | REST API + Auth |
+| **DB API** | 3013 | `core/db-api.cjs` | ~800 | REST API + Auth + WebSocket |
 
 ### 2.2 Commandes de Démarrage
 
@@ -681,7 +681,7 @@ sdks/
 |:--------|:---------------|
 | Passwords | bcrypt (12 rounds) |
 | Tokens | JWT HS256 |
-| Rate Limiting | 5 login/15min, 100 API/min |
+| Rate Limiting | 3 register/h, 5 login/15min, 100 API/min |
 | Account Lockout | 5 échecs → 15min blocage |
 | RBAC | admin, user, viewer |
 | Tenant Isolation | tenant_id dans JWT |
@@ -689,6 +689,9 @@ sdks/
 | CSP | Strict Content-Security-Policy |
 | SRI | GSAP + Lucide (39 pages) |
 | CORS | Whitelist strict |
+| API Auth | checkAuth() sur tous /api/db/* |
+| Password Filter | filterUserRecord() sur users |
+| Admin Protection | checkAdmin() sur hitl, logs, users |
 
 ### 9.3 API Endpoints (23)
 
@@ -717,6 +720,29 @@ sdks/
 | `/api/db/:sheet/:id` | PUT | Update record |
 | `/api/db/:sheet/:id` | DELETE | Delete record |
 | `/api/db/:sheet?field=value` | GET | Query records |
+
+### 9.4 WebSocket Real-Time
+
+| Aspect | Détail |
+|:-------|:-------|
+| **Endpoint** | `ws://localhost:3013/ws?token=JWT` |
+| **Auth** | Token JWT dans query string |
+| **Close Codes** | 4001 (no token), 4002 (invalid token) |
+| **Heartbeat** | 30s interval, ping/pong |
+| **Admin Channels** | hitl, users, auth_sessions |
+| **User Channels** | tenants, sessions, logs |
+
+**Messages:**
+```javascript
+// Subscribe
+{ type: 'subscribe', channels: ['hitl', 'logs'] }
+
+// Unsubscribe
+{ type: 'unsubscribe', channel: 'hitl' }
+
+// Broadcast (server → client)
+{ channel: 'hitl', event: 'approved', data: {...}, timestamp: '...' }
+```
 
 ---
 
