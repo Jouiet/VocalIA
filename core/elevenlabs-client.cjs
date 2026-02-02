@@ -51,8 +51,9 @@ const ELEVENLABS_BASE_URL = process.env.ELEVENLABS_USE_GLOBAL === 'true'
 const OPTIMIZE_STREAMING_LATENCY = parseInt(process.env.ELEVENLABS_LATENCY_LEVEL || '3', 10);
 
 // Voice IDs for different languages/dialects
-// Source: https://json2video.com/ai-voices/elevenlabs/languages/arabic/
-// Verified: 02/02/2026 - Session 250.44bis
+// Source: https://json2video.com/ai-voices/elevenlabs/
+// Verified: 03/02/2026 - Session 250.63 (added male voices for FR/EN/ES/AR)
+// BUG FIX: Added ar_male, fr_male, en_male, es_male (were undefined, referenced in voice-api-resilient.cjs)
 const VOICE_IDS = {
   // ═══════════════════════════════════════════════════════════════
   // MOROCCAN DARIJA - PRIMARY for VocalIA
@@ -67,16 +68,43 @@ const VOICE_IDS = {
   // ═══════════════════════════════════════════════════════════════
   // OTHER ARABIC DIALECTS
   // ═══════════════════════════════════════════════════════════════
-  ar: 'pqHfZKP75CvOlQylNhV4',         // Arabic MSA - verify in production
+  ar: 'pqHfZKP75CvOlQylNhV4',         // Bill - Arabic MSA Female (default)
+  ar_female: 'pqHfZKP75CvOlQylNhV4',  // Bill - Alias
+  ar_male: 'yrPIy5b3iLnVLIBfUSw8',    // Amr - Male MSA Egyptian (Session 250.63)
   ar_egyptian: 'IES4nrmZdUBHByLBde0P', // Haytham - Egyptian Conversational
-  ar_gulf: '5Spsi3mCH9e7futpnGE5',     // Fares - Gulf Arabic
+  ar_gulf: '5Spsi3mCH9e7futpnGE5',     // Fares - Gulf Arabic Male
 
   // ═══════════════════════════════════════════════════════════════
-  // INTERNATIONAL
+  // INTERNATIONAL - FRENCH
   // ═══════════════════════════════════════════════════════════════
-  fr: 'EXAVITQu4vr4xnSDxMaL',   // Sarah - French
-  en: '21m00Tcm4TlvDq8ikWAM',   // Rachel - English female
-  es: 'AZnzlk1XvdvUeBnXmlld',   // Domi - Spanish
+  fr: 'EXAVITQu4vr4xnSDxMaL',         // Sarah - French Female (default)
+  fr_female: 'EXAVITQu4vr4xnSDxMaL',  // Sarah - Alias
+  fr_male: '6pccwT1F6VJ5KMrxQqcX',    // Abdel - French Male (Session 250.63)
+
+  // ═══════════════════════════════════════════════════════════════
+  // INTERNATIONAL - ENGLISH
+  // ═══════════════════════════════════════════════════════════════
+  en: '21m00Tcm4TlvDq8ikWAM',         // Rachel - English Female (default)
+  en_female: '21m00Tcm4TlvDq8ikWAM',  // Rachel - Alias
+  en_male: 'pNInz6obpgDQGcFmaJgB',    // Adam - English Male (Session 250.63)
+
+  // ═══════════════════════════════════════════════════════════════
+  // INTERNATIONAL - SPANISH
+  // ═══════════════════════════════════════════════════════════════
+  es: 'AZnzlk1XvdvUeBnXmlld',         // Domi - Spanish Female (default)
+  es_female: 'AZnzlk1XvdvUeBnXmlld',  // Domi - Alias
+  es_male: 'RyfjEHnKbtma4Srae2za',    // Juan Carlos - Spanish Male (Session 250.63)
+
+  // ═══════════════════════════════════════════════════════════════
+  // USER-PROVIDED ARABIC/DARIJA NAME ALIASES (Session 250.63)
+  // ═══════════════════════════════════════════════════════════════
+  asmaa: 'qi4PkV9c01kb869Vh7Su',      // Asmaa - Arabic Female (exact match)
+  adam: 'pNInz6obpgDQGcFmaJgB',       // Adam - English Male (exact match)
+  liliya: 'OfGMGmhShO8iL9jCkXy8',     // Liliya → Ghizlane (Darija Female)
+  nelya: 'VwC51uc4PUblWEJSPzeo',      // Nelya → Abrar (Arabic Female)
+  ikhlass: 'qi4PkV9c01kb869Vh7Su',    // Ikhlass → Asmaa (Arabic Female)
+  najlae: 'VwC51uc4PUblWEJSPzeo',     // Najlae → Abrar (Arabic Female)
+  liwae: '5lXEHh42xcasVuJofypc',      // Liwae → Ali (Darija Male)
 };
 
 // Model IDs

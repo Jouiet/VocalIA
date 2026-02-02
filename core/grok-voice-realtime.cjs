@@ -629,7 +629,9 @@ class GrokRealtimeProxy {
 
   start() {
     // P1 FIX: Periodic cleanup every 5 minutes
-    setInterval(() => this.cleanupSessions(), 5 * 60 * 1000);
+    // unref() allows Node.js to exit even if interval is active (for tests)
+    const cleanupInterval = setInterval(() => this.cleanupSessions(), 5 * 60 * 1000);
+    cleanupInterval.unref();
 
     // Create HTTP server
     this.server = http.createServer((req, res) => {

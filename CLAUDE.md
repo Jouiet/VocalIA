@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.72.0 | 03/02/2026 | Session 250.62 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.73.0 | 03/02/2026 | Session 250.63 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **Dashboards: 10/10 Data-driven ✅** | 0 bugs | 0 missing imports | 0 hardcoded values | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
@@ -41,6 +41,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
+**Session 250.63 UNIT TESTS FIX:** 305/305 tests pass (was hanging) - `unref()` added to 6 modules setInterval (EventBus, telephony, auth-middleware, security-utils, grok-realtime, db-api), telephony bridge `require.main === module` guard, test OpenAI→AtlasChat fix
 **Session 250.62 E2E MULTI-BROWSER:** 375 tests × 5 browsers (Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari) = 373/375 pass (99.5%), RTL AR/ARY fixed (http-server), i18n init 18 webapp pages, flaky test filters added
 **Session 250.61 I18N FIX:** Added missing dashboard.nav.* keys to all 5 locales (fr, en, es, ar, ary) - navigation i18n now 100% functional
 **Session 250.60 BUG FIXES:** hitl.html missing api import fixed, billing.html integrations count from real data (was hardcoded '0'), pushed to GitHub

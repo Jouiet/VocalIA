@@ -54,9 +54,9 @@ describe('Voice API Provider Functions', () => {
     assert.ok(content.includes('async function callGrok'), 'Should have callGrok function');
   });
 
-  test('Has OpenAI call function', () => {
+  test('Has AtlasChat call function (Darija support)', () => {
     const content = fs.readFileSync(VOICE_API_PATH, 'utf8');
-    assert.ok(content.includes('async function callOpenAI'), 'Should have callOpenAI function');
+    assert.ok(content.includes('async function callAtlasChat'), 'Should have callAtlasChat function for Darija');
   });
 
   test('Has Gemini call function', () => {

@@ -534,7 +534,8 @@ function cleanupSession(sessionId) {
 }
 
 // Cleanup zombie sessions every 60 seconds
-setInterval(() => {
+// unref() allows Node.js to exit even if interval is active (for tests)
+const sessionCleanupInterval = setInterval(() => {
   const now = Date.now();
   for (const [sessionId, session] of activeSessions) {
     if (now - session.createdAt > CONFIG.security.sessionTimeout) {
@@ -543,6 +544,7 @@ setInterval(() => {
     }
   }
 }, 60000);
+sessionCleanupInterval.unref();
 
 // ============================================
 // RATE LIMITING
@@ -568,7 +570,8 @@ function checkRateLimit(ip) {
 }
 
 // Cleanup old rate limit entries every 5 minutes (FIX: memory leak)
-setInterval(() => {
+// unref() allows Node.js to exit even if interval is active (for tests)
+const rateLimitCleanupInterval = setInterval(() => {
   const now = Date.now();
   const windowStart = now - CONFIG.rateLimit.windowMs;
 
@@ -581,6 +584,7 @@ setInterval(() => {
     }
   }
 }, 300000);
+rateLimitCleanupInterval.unref();
 
 // ============================================
 // TWILIO SIGNATURE VALIDATION
@@ -3373,7 +3377,10 @@ async function main() {
   process.on('SIGTERM', shutdown);
 }
 
-main().catch(console.error);
+// Only start server when run directly (not when require()'d)
+if (require.main === module) {
+  main().catch(console.error);
+}
 
 // Module Exports for Verification/External Integration
 if (typeof module !== 'undefined') {

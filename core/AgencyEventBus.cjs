@@ -412,6 +412,7 @@ class AgencyEventBus extends EventEmitter {
 
     /**
      * Self-healing health check
+     * Uses unref() so the interval doesn't block process exit (important for tests)
      */
     _startHealthCheck() {
         this._healthInterval = setInterval(async () => {
@@ -432,6 +433,10 @@ class AgencyEventBus extends EventEmitter {
             }, { tenantId: 'system', source: 'EventBus' });
 
         }, this.config.healthCheckIntervalMs);
+
+        // unref() allows Node.js to exit even if this interval is active
+        // Critical for test environments where process should exit after tests complete
+        this._healthInterval.unref();
     }
 
     /**

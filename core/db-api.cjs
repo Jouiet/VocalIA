@@ -1415,6 +1415,7 @@ async function startServer() {
   wss.on('connection', handleWebSocketConnection);
 
   // Heartbeat interval to detect stale connections
+  // unref() allows Node.js to exit even if interval is active (for tests)
   const heartbeatInterval = setInterval(() => {
     wss.clients.forEach(ws => {
       if (ws.isAlive === false) {
@@ -1425,6 +1426,7 @@ async function startServer() {
       ws.ping();
     });
   }, 30000);
+  heartbeatInterval.unref();
 
   wss.on('close', () => clearInterval(heartbeatInterval));
 

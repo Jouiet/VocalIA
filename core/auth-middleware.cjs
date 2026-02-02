@@ -261,7 +261,9 @@ function cleanupRateLimits() {
 }
 
 // Cleanup every 5 minutes
-setInterval(cleanupRateLimits, 5 * 60 * 1000);
+// unref() allows Node.js to exit even if interval is active (for tests)
+const rateLimitCleanup = setInterval(cleanupRateLimits, 5 * 60 * 1000);
+rateLimitCleanup.unref();
 
 /**
  * Send error response

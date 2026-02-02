@@ -1,12 +1,13 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.72.0 | **Updated**: 03/02/2026 | **Session**: 250.62
+> **Version**: 6.73.0 | **Updated**: 03/02/2026 | **Session**: 250.63
 > **Backend Score**: 99/100 | **Frontend Score**: 99/100 | **Health Check**: 100% (39/39)
 > **Security**: 99/100 - SRI ✅, HTTPS ✅, XSS ✅, CSP ✅, JWT Auth ✅
 > **MCP Server**: v0.8.0 | **MCP Tools**: 182 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler
-> **E2E Tests**: 373/375 Playwright (99.5%) ✅ | **Unit Tests**: 305 | **Coverage**: c8
+> **E2E Tests**: 373/375 Playwright (99.5%) ✅ | **Unit Tests**: 305/305 (100%) ✅ | **Coverage**: c8
 > **Browsers**: Chromium + Firefox 146 + WebKit 26 + Mobile Chrome + Mobile Safari
+> **Session 250.63**: Unit tests fix - `unref()` on 6 modules setInterval, telephony `require.main === module` guard, 305/305 pass (was hanging)
 > **Session 250.62**: E2E 5 browsers installed, 373/375 tests (99.5%), RTL AR/ARY fixed, flaky test filters
 > **Session 250.61**: i18n Fix - Added missing dashboard.nav.* keys (8 keys × 5 locales)
 > **Session 250.60**: Bug fixes - hitl.html api import, billing integrations count
@@ -5601,7 +5602,7 @@ ae83ad0 docs: Update CLAUDE.md for Session 250.62
 | # | Tâche | Effort | Raison | Vérification |
 |:-:|:------|:------:|:-------|:-------------|
 | 1 | Twilio credentials | 1h | Telephony non fonctionnel sans | `curl localhost:3009/health` |
-| 2 | Unit tests cleanup | 4h | Tests hang (event loops modules) | `npm test` doit terminer |
+| ~~2~~ | ~~Unit tests cleanup~~ | ~~4h~~ | ~~Tests hang (event loops)~~ | ✅ **DONE** 305/305 pass |
 | 3 | ElevenLabs API key config | 1h | TTS Darija non fonctionnel | Test widget voice |
 
 ### P1 - IMPORTANT (Semaine en cours)
@@ -5624,7 +5625,7 @@ ae83ad0 docs: Update CLAUDE.md for Session 250.62
 
 | Problème | Cause | Impact | Priorité |
 |:---------|:------|:-------|:---------|
-| Unit tests hang | Modules avec event loops (EventBus health checks) | Tests ne terminent pas | P1 |
+| ~~Unit tests hang~~ | ~~EventBus health checks~~ | ✅ **RÉSOLU** - `unref()` ajouté | ~~P1~~ |
 | Twilio credentials | Non configuré | Telephony inopérant | P0 |
 | ~~Firefox/Webkit browsers~~ | ~~Non installés~~ | ✅ **RÉSOLU** | ~~P1~~ |
 | 2 tests flaky | Race condition parallèle (Knowledge Base) | 99.5% pass rate | P2 |
