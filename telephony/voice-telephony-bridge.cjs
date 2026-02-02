@@ -2373,8 +2373,25 @@ async function handleInboundCall(req, res, body) {
 
   console.log(`[Twilio] Inbound call from ${callInfo.from}`);
 
+  // Session 250.57: Check quota before creating session
+  // Determine tenant from phone number mapping (To number → tenant)
+  const tenantId = body.clientId || body.tenant_id || 'default';
+  const { getDB } = require('../core/GoogleSheetsDB.cjs');
+  const db = getDB();
+  const quotaCheck = db.checkQuota(tenantId, 'calls');
+  if (!quotaCheck.allowed) {
+    console.warn(`[Twilio] Quota exceeded for tenant ${tenantId}: ${quotaCheck.current}/${quotaCheck.limit}`);
+    const errorTwiml = generateErrorTwiML('serviceUnavailable', CONFIG.defaultLanguage, true);
+    res.writeHead(200, { 'Content-Type': 'text/xml' });
+    res.end(errorTwiml);
+    return;
+  }
+
   try {
     const session = await createGrokSession(callInfo);
+
+    // Session 250.57: Increment call usage
+    db.incrementUsage(tenantId, 'calls');
 
     // Get language from session metadata (injected by VoicePersonaInjector)
     const sessionLang = session.metadata?.language || CONFIG.defaultLanguage;

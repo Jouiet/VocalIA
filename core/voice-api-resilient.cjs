@@ -1805,6 +1805,20 @@ function startServer(port = 3004) {
 
           console.log(`[Voice API] Processing (${language}): "${message.substring(0, 50)}..."`);
 
+          // Session 250.57: Check quota before processing
+          const tenantId = bodyParsed.data.tenant_id || 'default';
+          const db = getDB();
+          const quotaCheck = db.checkQuota(tenantId, 'sessions');
+          if (!quotaCheck.allowed) {
+            console.warn(`[Voice API] Quota exceeded for tenant ${tenantId}: ${quotaCheck.current}/${quotaCheck.limit}`);
+            res.writeHead(429, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              error: 'Session quota exceeded',
+              quota: { current: quotaCheck.current, limit: quotaCheck.limit }
+            }));
+            return;
+          }
+
           // Lead qualification processing
           const leadSessionId = sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           const session = getOrCreateLeadSession(leadSessionId);
@@ -1856,6 +1870,11 @@ function startServer(port = 3004) {
 
           // Session 250: Update dashboard metrics
           updateDashboardMetrics(language, result.latencyMs || 0, session);
+
+          // Session 250.57: Increment session usage on first message of session
+          if (session.messages.length === 1) {
+            db.incrementUsage(tenantId, 'sessions');
+          }
 
           res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({

@@ -36,6 +36,10 @@ const { getDB } = require('./GoogleSheetsDB.cjs');
 const authService = require('./auth-service.cjs');
 const { requireAuth, requireAdmin, rateLimit, extractToken } = require('./auth-middleware.cjs');
 
+// Session 250.57: Audit trail for compliance
+const { getInstance: getAuditStore, ACTION_CATEGORIES } = require('./audit-store.cjs');
+const auditStore = getAuditStore();
+
 // WebSocket clients store
 const wsClients = new Map(); // Map<WebSocket, { user, channels: Set<string> }>
 
@@ -228,8 +232,31 @@ async function handleAuthRequest(req, res, path, method) {
         return true;
       }
 
-      const result = await authService.login({ email, password, rememberMe: remember_me });
-      sendJson(res, 200, result);
+      try {
+        const result = await authService.login({ email, password, rememberMe: remember_me });
+
+        // Session 250.57: Audit log successful login
+        const tenantId = result.user?.tenant_id || 'default';
+        auditStore.log(tenantId, {
+          action: ACTION_CATEGORIES.AUTH_LOGIN,
+          actor: result.user?.id || email,
+          ip: req.headers['x-forwarded-for'] || req.socket?.remoteAddress,
+          outcome: 'success',
+          details: { email }
+        });
+
+        sendJson(res, 200, result);
+      } catch (err) {
+        // Audit log failed login
+        auditStore.log('default', {
+          action: ACTION_CATEGORIES.AUTH_FAILED,
+          actor: email,
+          ip: req.headers['x-forwarded-for'] || req.socket?.remoteAddress,
+          outcome: 'failure',
+          details: { email, reason: err.message }
+        });
+        throw err;
+      }
       return true;
     }
 
@@ -237,6 +264,18 @@ async function handleAuthRequest(req, res, path, method) {
     if (path === '/api/auth/logout' && method === 'POST') {
       const { refresh_token } = body;
       await authService.logout(refresh_token);
+
+      // Session 250.57: Audit log logout
+      const user = req.user; // May be set by auth middleware
+      if (user) {
+        auditStore.log(user.tenant_id || 'default', {
+          action: ACTION_CATEGORIES.AUTH_LOGOUT,
+          actor: user.id,
+          ip: req.headers['x-forwarded-for'] || req.socket?.remoteAddress,
+          outcome: 'success'
+        });
+      }
+
       sendJson(res, 200, { success: true, message: 'Logged out successfully' });
       return true;
     }
@@ -474,6 +513,15 @@ async function handleHITLRequest(req, res, path, method) {
       // Broadcast HITL approval
       broadcast('hitl', 'approved', { id, admin, item: pending });
 
+      // Session 250.57: Audit trail for HITL approval
+      auditStore.log(pending.tenant_id || 'default', {
+        action: ACTION_CATEGORIES.HITL_APPROVE,
+        actor: admin,
+        actor_type: 'admin',
+        resource: `hitl:${id}`,
+        details: { type: pending.type, data: pending.data }
+      });
+
       sendJson(res, 200, { success: true, decision: 'approved', id });
       return true;
     }
@@ -514,6 +562,15 @@ async function handleHITLRequest(req, res, path, method) {
 
       // Broadcast HITL rejection
       broadcast('hitl', 'rejected', { id, admin, reason, item: pending });
+
+      // Session 250.57: Audit trail for HITL rejection
+      auditStore.log(pending.tenant_id || 'default', {
+        action: ACTION_CATEGORIES.HITL_REJECT,
+        actor: admin,
+        actor_type: 'admin',
+        resource: `hitl:${id}`,
+        details: { type: pending.type, reason }
+      });
 
       sendJson(res, 200, { success: true, decision: 'rejected', id });
       return true;

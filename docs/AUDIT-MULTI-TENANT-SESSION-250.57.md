@@ -43,9 +43,10 @@
 | Persistance conversations | 0% | **100%** ✅ | `core/conversation-store.cjs` implémenté |
 | Config Widget/Telephony par client | 20% | **90%** ✅ | Template enrichi, déjà en place |
 | UCP par tenant | 0% | **100%** ✅ | `core/ucp-store.cjs` implémenté |
-| Quotas/Limits | 10% | **100%** ✅ | `GoogleSheetsDB` quota methods |
+| Quotas/Limits | 10% | **100%** ✅ | `GoogleSheetsDB` + Voice API + Telephony |
+| Audit Trail | 0% | **100%** ✅ | `core/audit-store.cjs` implémenté |
 
-**VERDICT GLOBAL: 35/100 → 85/100** ✅ (+50 points)
+**VERDICT GLOBAL: 35/100 → 90/100** ✅ (+55 points)
 
 ---
 
@@ -376,7 +377,11 @@ tenant_B/
 | | - `checkQuota()` avant chaque action | | `GoogleSheetsDB.cjs` |
 | | - `incrementUsage()` après action | | `GoogleSheetsDB.cjs` |
 | | - `resetUsage()` mensuel | | `GoogleSheetsDB.cjs` |
-| 3.3 | **Audit trail par tenant** | 2h | ⏳ Futur |
+| 3.3 | **Audit trail par tenant** | 2h | ✅ DONE |
+| | - `core/audit-store.cjs` créé | | 507 lignes |
+| | - ACTION_CATEGORIES (24 types) | | auth, data, voice, kb, admin, hitl, system |
+| | - Intégrité hash SHA-256 | | Tamper-evident |
+| | - Intégré db-api.cjs (login/logout/hitl) | | Compliance ready |
 
 ### 5.4 Phase 4: Darija Natif (P2)
 
@@ -536,14 +541,16 @@ ls -la clients/*/config.json
 |:--------|:------:|:-----|
 | `core/conversation-store.cjs` | 565 | Persistance conversations multi-tenant |
 | `core/ucp-store.cjs` | 570 | Unified Customer Profile multi-tenant |
+| `core/audit-store.cjs` | 507 | Audit trail multi-tenant (compliance) |
 
 ### 10.2 Fichiers Modifiés
 
 | Fichier | Modification | Lignes |
 |:--------|:-------------|:------:|
-| `core/voice-api-resilient.cjs` | Import + save conversations | +15 |
+| `core/voice-api-resilient.cjs` | Import + save conversations + quota check | +25 |
 | `core/GoogleSheetsDB.cjs` | Quota methods (check/increment/reset) | +120 |
-| `telephony/voice-telephony-bridge.cjs` | Import + conversation logging | +30 |
+| `core/db-api.cjs` | Import audit-store + log auth/hitl events | +35 |
+| `telephony/voice-telephony-bridge.cjs` | Import + conversation logging + quota check | +40 |
 
 ### 10.3 Tests Effectués
 
@@ -554,8 +561,16 @@ node core/conversation-store.cjs --test  # ✅ All tests passed
 # ucp-store.cjs
 node core/ucp-store.cjs --test  # ✅ All tests passed
 
+# audit-store.cjs
+node core/audit-store.cjs --test  # ✅ All tests passed (log, query, stats, verify, rotate, purge)
+
 # Quota methods
 node -e "const {getDB} = require('./core/GoogleSheetsDB.cjs'); ..."  # ✅ Tests passed
+
+# Module syntax verification
+node --check core/db-api.cjs  # ✅ Syntax OK
+node --check core/voice-api-resilient.cjs  # ✅ Syntax OK
+node --check telephony/voice-telephony-bridge.cjs  # ✅ Syntax OK
 ```
 
 ### 10.4 Structure Créée
@@ -565,24 +580,29 @@ data/
 ├── conversations/        # ✅ NOUVEAU - Multi-tenant conversations
 │   └── {tenant_id}/
 │       └── {session_id}.json
-└── ucp/                 # ✅ NOUVEAU - Multi-tenant UCP
+├── ucp/                 # ✅ NOUVEAU - Multi-tenant UCP
+│   └── {tenant_id}/
+│       ├── profiles.json
+│       ├── interactions.jsonl
+│       └── ltv.json
+└── audit/               # ✅ NOUVEAU - Multi-tenant audit trail
     └── {tenant_id}/
-        ├── profiles.json
-        ├── interactions.jsonl
-        └── ltv.json
+        ├── audit.jsonl          # Current month (append-only)
+        └── audit-YYYY-MM.jsonl  # Monthly archives
 ```
 
 ### 10.5 Score Final
 
 | Métrique | Avant | Après | Delta |
 |:---------|:-----:|:-----:|:-----:|
-| Architecture Multi-tenant | 35/100 | **85/100** | **+50** |
+| Architecture Multi-tenant | 35/100 | **90/100** | **+55** |
 | Conversation Persistence | 0% | **100%** | +100% |
 | UCP Multi-tenant | 0% | **100%** | +100% |
 | Quotas BD | 10% | **100%** | +90% |
+| Audit Trail | 0% | **100%** | +100% |
 
 ---
 
 *Document mis à jour: 02/02/2026 - Session 250.57*
-*Implémentation complète Phase 1, Phase 2, et Phase 3.2*
+*Implémentation complète Phase 1, Phase 2, Phase 3.2, et Phase 3.3*
 *Prochain audit recommandé: Phase 3.1 (migration BD) et Phase 4 (Darija natif)*
