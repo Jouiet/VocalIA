@@ -49,7 +49,7 @@
 | Integrations | 3 | 1,479 |
 | MCP Server (TS) | 25+ | 15,755 |
 | Website Libs (JS) | 21 | 7,326 |
-| Website HTML | 67 | ~25,000 |
+| Website HTML | 70 | ~25,000 |
 | **TOTAL Backend** | **~70** | **~45,000** |
 
 ### 1.3 Diagramme d'Architecture Globale
@@ -258,7 +258,7 @@ PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_SME
 
 ## 4. ARCHITECTURE FRONTEND
 
-### 4.1 Website Statique (67 pages HTML)
+### 4.1 Website Statique (70 pages HTML)
 
 ```
 website/
@@ -332,21 +332,23 @@ website/
 │   ├── newsletter-cta.html
 │   └── analytics.html
 │
-└── app/                          # 17 pages SaaS Webapp
+└── app/                          # 19 pages SaaS Webapp
     ├── auth/                     # 5 pages authentification
     │   ├── login.html
     │   ├── signup.html
     │   ├── forgot-password.html
     │   ├── reset-password.html
     │   └── verify-email.html
-    ├── client/                   # 7 pages portail client
+    ├── client/                   # 9 pages portail client
     │   ├── index.html            # Dashboard
     │   ├── calls.html            # Historique appels
     │   ├── agents.html           # Gestion personas
     │   ├── integrations.html     # Connexions CRM
     │   ├── analytics.html        # Graphiques
     │   ├── billing.html          # Facturation
-    │   └── settings.html         # Paramètres
+    │   ├── settings.html         # Paramètres
+    │   ├── knowledge-base.html   # Gestion KB
+    │   └── onboarding.html       # Wizard configuration
     └── admin/                    # 5 pages console admin
         ├── index.html            # Dashboard admin
         ├── tenants.html          # Gestion tenants
@@ -946,8 +948,8 @@ data/
 | Integrations | 3 | 1,479 |
 | MCP Server (TS) | 25 | 15,755 |
 | Website Libs (JS) | 21 | 7,326 |
-| Website HTML | 67 | ~25,000 |
-| Locales (JSON) | 5 | 22,140 |
+| Website HTML | 70 | ~25,000 |
+| Locales (JSON) | 5 | 23,000 |
 | Scripts | 63 | ~8,000 |
 | **TOTAL** | **~223** | **~107,000** |
 

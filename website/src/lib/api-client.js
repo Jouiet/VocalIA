@@ -259,6 +259,20 @@ class APIClient {
   }
 
   /**
+   * Get tenants resource client
+   * Session 250.63: Direct tenant access for voice preferences
+   */
+  get tenants() {
+    return {
+      list: (params) => this.get('/db/tenants', params),
+      get: (id) => this.get(`/db/tenants/${id}`),
+      create: (data) => this.post('/db/tenants', data),
+      update: (id, data) => this.put(`/db/tenants/${id}`, data),
+      delete: (id) => this.delete(`/db/tenants/${id}`)
+    };
+  }
+
+  /**
    * Get users resource client
    */
   get users() {
@@ -364,7 +378,11 @@ class APIClient {
             ...k,
             key: k.key ? `${k.key.substring(0, 8)}••••••••${k.key.slice(-4)}` : null
           })),
-          notifications: tenant?.notifications || {}
+          notifications: tenant?.notifications || {},
+          // Session 250.63: Voice preferences
+          voice_language: tenant?.voice_language || 'fr',
+          voice_gender: tenant?.voice_gender || 'female',
+          active_persona: tenant?.active_persona || 'agency_v3'
         };
       },
       update: async (tenantId, data) => {

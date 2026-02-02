@@ -393,6 +393,29 @@
       document.getElementById('selected-voice-name').textContent = voiceName;
     }
 
+    // Session 250.63: Load tenant voice preferences from DB
+    async function loadVoicePreferences() {
+      try {
+        const tenantId = auth.getTenantId();
+        if (!tenantId) return;
+
+        const settings = await api.settings.get(tenantId);
+        if (settings.voice_language) {
+          document.getElementById('voice-language').value = settings.voice_language;
+        }
+        if (settings.voice_gender) {
+          document.getElementById('voice-gender').value = settings.voice_gender;
+        }
+        updateVoiceName();
+        console.log(`[Voice] Loaded preferences: lang=${settings.voice_language}, gender=${settings.voice_gender}`);
+      } catch (error) {
+        console.warn('Failed to load voice preferences:', error);
+      }
+    }
+
+    // Load voice preferences on page load
+    loadVoicePreferences();
+
     document.getElementById('voice-language').addEventListener('change', updateVoiceName);
     document.getElementById('voice-gender').addEventListener('change', updateVoiceName);
 

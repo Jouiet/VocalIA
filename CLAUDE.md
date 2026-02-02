@@ -4,7 +4,7 @@
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 10/10 Data-driven ✅** | 0 bugs | 0 missing imports | 0 hardcoded values | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **70 pages** | **21,600+ keys** | RTL ✅ | hreflang ary ✅
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **54 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
@@ -19,8 +19,8 @@
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 10, PrestaShop 10, BigCommerce 9, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | **ElevenLabs Darija TTS ✅** | MCP 4 tools
-> **Website: 70 pages** (50 public + 20 webapp) | Onboarding ✅ | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
-> **Analytics: Plausible (GDPR)** | 69 pages tracked | CTA events ✅ | **A/B Testing ✅**
+> **Website: 70 pages** (51 public + 19 webapp) | Onboarding ✅ | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
+> **Analytics: Plausible (GDPR)** | 70 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305 unit + 375 E2E (99.5%)** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** | **Load Tests: k6 ✅** | **E2E: Playwright 5 browsers ✅** | **Chaos Engineering ✅**
 > **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
 > **✅ LANGUAGE INTEGRATION (Session 250.64):** ElevenLabs **27 voix** (FR, EN, ES, AR, ARY) | Males: Abdel, Adam, Juan Carlos, Amr, Jawad | Females: Sarah, Rachel, Domi, Ghizlane | Widget + Telephony ✅
@@ -105,15 +105,15 @@ VocalIA/                              # ~107,000 lignes total
 ├── personas/       # 40 personas SOTA (5,280 lignes)
 ├── integrations/   # CRM/E-commerce (1,479 lignes)
 ├── widget/         # Browser widget (1,085 lignes)
-├── website/        # 69 pages HTML (~27,000 lignes)
-│   ├── app/           # 18 pages SaaS webapp
+├── website/        # 70 pages HTML (~27,000 lignes)
+│   ├── app/           # 19 pages SaaS webapp
 │   │   ├── auth/      # 5 pages (login, signup, reset...)
 │   │   ├── client/    # 8 pages (dashboard, calls, agents, kb...)
 │   │   └── admin/     # 5 pages (tenants, users, hitl...)
 │   ├── dashboard/     # 3 dashboards legacy
 │   └── src/
 │       ├── lib/       # 21 JS libraries (7,326 lignes)
-│       └── locales/   # 5 langues (~85,000 keys total)
+│       └── locales/   # 5 langues (21,605 keys total)
 ├── mcp-server/     # MCP Server (1,483 lignes TS, 182 tools)
 ├── sdks/           # Python + Node.js
 ├── scripts/        # 65 utility scripts
@@ -220,7 +220,7 @@ open http://localhost:8080?lang=ar
 |:---------|:------------|:------:|
 | **`docs/VOCALIA-SYSTEM-ARCHITECTURE.md`** | **ARCHITECTURE SYSTÈME COMPLÈTE** | 988 |
 
-Ce document consolidé contient: Vue d'ensemble, 7 Services, Backend (32 modules), Frontend (67 pages), Voice AI, Données (7 tables), MCP (182 tools), Intégrations (28), Sécurité, i18n, Flux de données, Métriques (~107k lignes).
+Ce document consolidé contient: Vue d'ensemble, 7 Services, Backend (41 modules), Frontend (70 pages), Voice AI, Données (7 tables), MCP (182 tools), Intégrations (28), Sécurité, i18n, Flux de données, Métriques (~107k lignes).
 
 ### Autres Documents
 
@@ -280,7 +280,7 @@ docs/archive/
 |:-------|:-------|:------:|
 | **VOCALIA-SYSTEM-ARCHITECTURE.md** | Document consolidé (988 lignes) | ✅ NEW |
 | **ARCHITECTURE-SYSTEM-FORENSIC-AUDIT.md** | +522 lignes (1,194 total) | ✅ |
-| **Section 15: Website Architecture** | 67 pages, routes, navigation | ✅ |
+| **Section 15: Website Architecture** | 70 pages, routes, navigation | ✅ |
 | **Section 16: DB-API Flow** | Google Sheets ↔ API ↔ Frontend | ✅ |
 | **Section 17: Auth Sequences** | Register/Login/Refresh/Logout diagrams | ✅ |
 | **DOCS-INDEX.md** | v3.0.0 avec références mises à jour | ✅ |

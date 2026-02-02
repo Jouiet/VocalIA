@@ -18,9 +18,9 @@
 > **Session 250.58**: Client KB Multi-Lang (5 files: fr, en, es, ar, ary), 41 core modules
 > **Session 250.57**: Rigorous Audit - i18n.js 18/18 pages, wsDebug() fix, form validation, conversation-store.cjs
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
-> **Translation QA**: 0 issues | **Schema.org**: 35 Speakable | **i18n**: 1780+ keys × 5 langues
+> **Translation QA**: 0 issues | **Schema.org**: 35 Speakable | **i18n**: 4321 keys × 5 langues = 21,605 total
 > **WebSocket**: Real-time updates ✅ | Channels: hitl, logs, tenants, sessions
-> **Pages**: 69 HTML (50 public + 19 webapp) | **Webapp**: Auth 5 + Client 8 + Admin 5
+> **Pages**: 70 HTML (51 public + 19 webapp) | **Webapp**: Auth 5 + Client 9 + Admin 5
 
 ---
 
@@ -5594,8 +5594,8 @@ ae83ad0 docs: Update CLAUDE.md for Session 250.62
 | Unit Tests | **305/305 (100%)** | `npm test` |
 | E2E Tests | **373/375 (99.5%)** | `npx playwright test` |
 | Browsers | 5 (Chromium, Firefox, WebKit, Mobile×2) | Playwright installed |
-| Webapp Pages | **20** (+1 onboarding) | `find website/app -name "*.html" \| wc -l` |
-| i18n Keys | **17,000+** (+200 onboarding) | 5 locales × 40 onboarding keys |
+| Webapp Pages | **19** (auth 5 + client 9 + admin 5) | `find website/app -name "*.html" \| wc -l` |
+| i18n Keys | **21,605** (4321 × 5 locales) | Verified empirically |
 | k6 Load Tests | 4 (smoke, load, stress, spike) | `ls test/load/*.js` |
 | SDKs | Node 0.1.0 + Python 0.1.0 | Ready to publish |
 | OpenAPI | 520 lines | `docs/openapi.yaml` |
@@ -5715,11 +5715,11 @@ curl -I https://vocalia.ma 2>&1 | grep -E "(HTTP|strict-transport|x-frame|x-cont
 | **Production** | https://vocalia.ma ✅ LIVE |
 | **Health** | 100% (39/39) |
 | **Security** | 100/100 |
-| **Pages HTML** | 70 (50 public + 20 webapp) |
+| **Pages HTML** | 70 (51 public + 19 webapp) |
 | **MCP Tools** | 182 |
 | **Personas** | 40 |
 | **Languages** | 5 (FR, EN, ES, AR, ARY) |
-| **i18n Keys** | 17,000+ |
+| **i18n Keys** | 21,605 (4321 × 5) |
 | **Unit Tests** | 305 (100% pass) |
 | **E2E Tests** | 375 (99.5% pass, 5 browsers) |
 | **ElevenLabs Voices** | 27 |

@@ -22,7 +22,7 @@ Ce document consolidé contient:
 - Architecture MCP Server (182 tools)
 - Architecture intégrations (28 natives)
 - Architecture sécurité (JWT, bcrypt, RBAC, HSTS, CSP)
-- Architecture i18n (5 langues, 17,000+ keys)
+- Architecture i18n (5 langues, 21,605 keys)
 - Flux de données (Auth, HITL, Dashboard)
 - Métriques du codebase (~107,000 lignes)
 
@@ -122,7 +122,7 @@ docs/archive/
 | MCP Server | 15,755 lignes | `wc -l mcp-server/src/**/*.ts` |
 | Website Libs | 7,326 lignes | `wc -l website/src/lib/*.js` |
 | HTML Pages | 70 | `find website -name "*.html" \| wc -l` |
-| Locales | 17,000+ keys | `wc -l website/src/locales/*.json` |
+| Locales | 21,605 keys (4321 × 5) | Verified: `node -e` count |
 | MCP Tools | 182 | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | Personas | 40 | Verified in voice-persona-injector.cjs |
 | Langues | 5 | FR, EN, ES, AR, ARY |

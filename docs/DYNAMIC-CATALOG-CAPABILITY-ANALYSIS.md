@@ -21,6 +21,66 @@
 
 ---
 
+## 0. Analyse d'Alignement avec les 40 Personas VocalIA
+
+### 0.1 Catégorisation des Besoins Catalogue par Persona
+
+| Catégorie | Personas | Besoin Principal | Couverture Doc |
+|:----------|:---------|:-----------------|:--------------:|
+| **CRITIQUE - Catalogue Produits** | 10 | Produits + prix + stock temps réel | ⚠️ PARTIEL |
+| **MOYEN - Catalogue Services** | 10 | Services + tarifs + disponibilité | ❌ MANQUANT |
+| **FAIBLE - Services Personnalisés** | 20 | Pas de catalogue (devis, consultations) | ✅ Non concerné |
+
+### 0.2 Détail - Personas CRITIQUES (Catalogue Produits)
+
+| Persona | ID | Type Catalogue | Données Requises | Status Doc |
+|:--------|:---|:---------------|:-----------------|:----------:|
+| **Restaurant** | restaurateur_v1 | Menu dynamique | Plats, prix, dispo, allergènes | ⚠️ Mentionné |
+| **Boulangerie** | bakery_v1 | Produits | Pains, viennoiseries, commandes | ❌ MANQUANT |
+| **Grocery/Épicerie** | grocery_v1 | Stock temps réel | Produits, prix, promos, dispo | ❌ MANQUANT |
+| **Retail/Détaillant** | retailer_v1 | Inventaire | Stock, prix, tailles | ⚠️ Partiel |
+| **E-commerce** | universal_ecom_v1 | Catalogue full | Tout | ⚠️ Shopify only |
+| **Producteur** | producer_v1 | Produits fermiers | Fruits, légumes, dispo | ❌ MANQUANT |
+| **Pharmacie** | pharmacist_v1 | Médicaments | Stock, alternatives | ❌ MANQUANT |
+| **Location Véhicules** | renter_v1 | Fleet | Véhicules, tarifs, dates dispo | ⚠️ Mentionné |
+| **Agence Voyage** | travel_agent_v1 | Voyages | Destinations, prix, dates | ❌ MANQUANT |
+| **Fabricant** | manufacturer_v1 | Pièces/Produits | Catalogue, délais | ❌ MANQUANT |
+
+### 0.3 Détail - Personas MOYENS (Catalogue Services)
+
+| Persona | ID | Type Catalogue | Données Requises | Status Doc |
+|:--------|:---|:---------------|:-----------------|:----------:|
+| **Garage** | mechanic_v1 | Services auto | Prestations, tarifs, créneaux | ❌ MANQUANT |
+| **Spa/Institut** | stylist_v1 | Soins | Prestations, prix, durée | ❌ MANQUANT |
+| **Salle de sport** | gym_v1 | Abonnements + Cours | Types, horaires, places | ❌ MANQUANT |
+| **Coiffeur** | hairdresser_v1 | Prestations | Services, tarifs | ❌ MANQUANT |
+| **Nettoyage** | cleaner_v1 | Services | Types, tarifs horaires | ❌ MANQUANT |
+| **Formation** | trainer_v1 | Formations | Catalogue, dates, places | ❌ MANQUANT |
+| **Médecin** | healer_v1 | Consultations | Spécialités, créneaux | ❌ MANQUANT |
+| **Dentiste** | dental_intake_v1 | Soins dentaires | Actes, tarifs, forfaits | ❌ MANQUANT |
+| **Hôtel** | concierge_v1 | Services | Room service, activités | ❌ MANQUANT |
+| **Événementiel** | planner_v1 | Prestations | Packages, options | ❌ MANQUANT |
+
+### 0.4 Personas NON Concernés (20 - Services Personnalisés)
+
+Ces personas n'ont PAS besoin de catalogue dynamique (devis sur mesure, consultations personnalisées):
+
+`agency_v3`, `contractor_lead_v1`, `builder_v1`, `architect_v1`, `consultant_v1`, `accountant_v1`, `notary_v1`, `counselor_v1`, `doctor_v1`, `specialist_v1`, `it_services_v1`, `recruiter_v1`, `insurer_v1`, `collector_v1`, `logistician_v1`, `dispatcher_v1`, `funeral_care_v1`, `property_mgr_v1`, `real_estate_agent_v1`, `universal_sme_v1`
+
+### 0.5 GAPS Identifiés dans le Document
+
+| Gap | Description | Impact | Priorité |
+|:----|:------------|:-------|:--------:|
+| **G1** | Pas de connecteur POS restaurant (Square, Lightspeed, etc.) | bakery, restaurateur | P0 |
+| **G2** | Pas de connecteur Pharmacie (systèmes officine) | pharmacist | P2 |
+| **G3** | Pas de gestion des créneaux/slots services | mechanic, stylist, gym, healer, dental | P1 |
+| **G4** | Pas de connecteur Fleet/Location (Rent-a-car systems) | renter | P2 |
+| **G5** | Pas de connecteur GDS/Voyages (Amadeus, Sabre) | travel_agent | P2 |
+| **G6** | grocery_v1 mal couvert (besoin stock temps réel) | grocery | P1 |
+| **G7** | Pas de schéma pour catalogues services (vs produits) | 10 personas | P1 |
+
+---
+
 ## 1. Analyse Forensique du Système Actuel
 
 ### 1.1 Function Tools Existants (Telephony Bridge)
@@ -217,16 +277,45 @@ data/knowledge-base/
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-### 3.2 Nouveaux Function Tools Proposés
+### 3.2 Nouveaux Function Tools Proposés (Alignés 40 Personas)
 
-| Tool | Description | Paramètres | Retour |
-|:-----|:------------|:-----------|:-------|
-| `browse_catalog` | Parcourir le catalogue par catégorie | `category`, `filters`, `limit` | Liste produits avec prix, stock |
-| `get_product_details` | Détails complet d'un produit | `product_id` ou `sku` | Nom, prix, tailles, couleurs, stock, description |
-| `get_menu` | Menu restaurant complet | `category`, `dietary` | Plats avec prix, ingrédients, allergènes |
-| `check_availability` | Disponibilité (produit/véhicule/slot) | `item_type`, `item_id`, `date` | Disponible: oui/non + alternatives |
-| `search_catalog` | Recherche sémantique produits | `query`, `category` | Top 5 résultats pertinents |
-| `get_recommendations` | Recommandations contextuelles | `context`, `limit` | Produits recommandés |
+#### Tier 1: Catalogue Produits (10 personas critiques)
+
+| Tool | Personas | Description | Paramètres |
+|:-----|:---------|:------------|:-----------|
+| `browse_catalog` | retailer, ecom, grocery, producer | Parcourir par catégorie | `category`, `filters`, `limit` |
+| `get_product_details` | retailer, ecom, manufacturer | Détails complet produit | `product_id`, `sku` |
+| `get_menu` | restaurateur, bakery | Menu/Carte complète | `category`, `dietary` |
+| `check_stock` | grocery, pharmacist, retailer | Stock temps réel | `product_id`, `location` |
+| `search_catalog` | ALL | Recherche sémantique | `query`, `filters` |
+
+#### Tier 2: Catalogue Services (10 personas moyens)
+
+| Tool | Personas | Description | Paramètres |
+|:-----|:---------|:------------|:-----------|
+| `get_services` | mechanic, stylist, cleaner, trainer | Liste services + tarifs | `category` |
+| `get_slots` | healer, dental, gym, hairdresser | Créneaux disponibles | `service_id`, `date_range` |
+| `book_slot` | ALL services | Réserver un créneau | `slot_id`, `client_info` |
+| `get_packages` | concierge, planner, gym | Forfaits/Packages | `type` |
+
+#### Tier 3: Catalogue Spécialisés
+
+| Tool | Personas | Description | Paramètres |
+|:-----|:---------|:------------|:-----------|
+| `get_vehicles` | renter | Flotte disponible | `type`, `dates` |
+| `get_trips` | travel_agent | Voyages/Destinations | `destination`, `dates`, `budget` |
+| `check_medication` | pharmacist | Stock médicaments | `name`, `dosage` |
+
+#### Récapitulatif Couverture
+
+| Catégorie | Personas Couverts | Tools Requis |
+|:----------|:-----------------:|:------------:|
+| Produits | 10/10 | 5 tools |
+| Services | 10/10 | 4 tools |
+| Spécialisés | 3/3 | 3 tools |
+| **TOTAL** | **23/40** (58%) | **12 tools** |
+
+*Note: 17 personas (42%) n'ont pas besoin de catalogue dynamique (services personnalisés/sur devis)*
 
 ---
 
@@ -242,27 +331,57 @@ data/knowledge-base/
 | 1.4 Implémenter cache LRU catalogues | core/ | 0.5j | 1.2 |
 | 1.5 Tests unitaires fondation | test/ | 1j | 1.1-1.4 |
 
-### Phase 2: Connecteurs (4-5 jours)
+### Phase 2: Connecteurs Catalogue Produits (5-6 jours)
 
-| Tâche | Fichier | Effort | Dépendance |
-|:------|:--------|:------:|:-----------|
-| 2.1 Connecteur Shopify (bridge MCP) | core/connectors/ | 1j | Phase 1 |
-| 2.2 Connecteur WooCommerce | core/connectors/ | 1j | Phase 1 |
-| 2.3 Connecteur Custom JSON/CSV | core/connectors/ | 0.5j | Phase 1 |
-| 2.4 Connecteur Menu POS (structure) | core/connectors/ | 1j | Phase 1 |
-| 2.5 Sync scheduler (cron-like) | core/ | 0.5j | 2.1-2.4 |
-| 2.6 Tests connecteurs | test/ | 1j | 2.1-2.5 |
+| Tâche | Fichier | Effort | Personas Couverts |
+|:------|:--------|:------:|:------------------|
+| 2.1 Connecteur Shopify (bridge MCP) | core/connectors/shopify.cjs | 1j | universal_ecom, retailer |
+| 2.2 Connecteur WooCommerce | core/connectors/woocommerce.cjs | 1j | universal_ecom |
+| 2.3 Connecteur Custom JSON/CSV | core/connectors/custom.cjs | 0.5j | ALL (fallback) |
+| 2.4 Connecteur Menu POS (Square/Lightspeed) | core/connectors/pos-menu.cjs | 1j | restaurateur, bakery |
+| 2.5 Connecteur Grocery (Instacart API model) | core/connectors/grocery.cjs | 1j | grocery |
+| 2.6 Sync scheduler (cron-like) | core/catalog-sync.cjs | 0.5j | ALL |
+| 2.7 Tests connecteurs | test/catalog-connectors.test.cjs | 1j | - |
 
-### Phase 3: Function Tools Voice (3-4 jours)
+### Phase 3: Connecteurs Services & Créneaux (4-5 jours)
 
-| Tâche | Fichier | Effort | Dépendance |
-|:------|:--------|:------:|:-----------|
-| 3.1 Ajouter `browse_catalog` tool | telephony/ | 0.5j | Phase 2 |
-| 3.2 Ajouter `get_product_details` tool | telephony/ | 0.5j | Phase 2 |
-| 3.3 Ajouter `get_menu` tool | telephony/ | 0.5j | Phase 2 |
-| 3.4 Ajouter `check_availability` tool | telephony/ | 0.5j | Phase 2 |
-| 3.5 Ajouter `search_catalog` tool (RAG) | telephony/ | 1j | Phase 2 |
-| 3.6 Tests E2E Voice + Catalog | test/e2e/ | 1j | 3.1-3.5 |
+| Tâche | Fichier | Effort | Personas Couverts |
+|:------|:--------|:------:|:------------------|
+| 3.1 Connecteur Calendrier (slots) | core/connectors/calendar-slots.cjs | 1j | healer, dental, mechanic, stylist, hairdresser |
+| 3.2 Connecteur Services (generic) | core/connectors/services.cjs | 0.5j | cleaner, trainer, gym |
+| 3.3 Connecteur Fleet/Véhicules | core/connectors/fleet.cjs | 1j | renter |
+| 3.4 Connecteur Packages | core/connectors/packages.cjs | 0.5j | concierge, planner, gym |
+| 3.5 Schéma unifié services.json | docs/schemas/ | 0.5j | ALL services |
+| 3.6 Tests connecteurs services | test/service-connectors.test.cjs | 1j | - |
+
+### Phase 4: Function Tools Voice (4-5 jours)
+
+| Tâche | Fichier | Effort | Tools |
+|:------|:--------|:------:|:------|
+| 4.1 Tools catalogue produits (5) | telephony/ | 1.5j | browse, details, menu, stock, search |
+| 4.2 Tools catalogue services (4) | telephony/ | 1j | services, slots, book, packages |
+| 4.3 Tools spécialisés (3) | telephony/ | 1j | vehicles, trips, medication |
+| 4.4 Integration Grok function calling | telephony/ | 0.5j | - |
+| 4.5 Tests E2E Voice + Catalog | test/e2e/ | 1j | - |
+
+### Phase 5: Dashboard Webapp (3-4 jours)
+
+| Tâche | Fichier | Effort | Description |
+|:------|:--------|:------:|:------------|
+| 5.1 Page `catalog.html` (produits) | website/app/client/ | 1j | Import CSV/JSON, preview, sync |
+| 5.2 Page `services.html` (services) | website/app/client/ | 1j | Services + tarifs + slots |
+| 5.3 API endpoints CRUD catalog | core/db-api.cjs | 0.5j | /api/catalog/* |
+| 5.4 i18n keys (5 langues) | website/src/locales/ | 0.5j | catalog.*, services.* |
+| 5.5 Tests E2E Dashboard | test/e2e/ | 0.5j | - |
+
+### Phase 6: Documentation & Polish (2 jours)
+
+| Tâche | Fichier | Effort | Description |
+|:------|:--------|:------:|:------------|
+| 6.1 Màj CLAUDE.md + SESSION-HISTORY | docs/ | 0.5j | - |
+| 6.2 Doc API catalog endpoints | docs/CATALOG-API.md | 0.5j | OpenAPI spec |
+| 6.3 Guide import catalogue par persona | docs/CATALOG-IMPORT-GUIDE.md | 0.5j | Templates par secteur |
+| 6.4 Audit sécurité + GDPR | - | 0.5j | - |
 
 ### Phase 4: Webapp Dashboard (2-3 jours)
 
@@ -284,16 +403,28 @@ data/knowledge-base/
 
 ---
 
-## 5. Estimation Totale
+## 5. Estimation Totale (Révisée - 40 Personas)
 
-| Phase | Effort | Complexité |
-|:------|:------:|:-----------|
-| Phase 1: Fondation | 3-4j | Moyenne |
-| Phase 2: Connecteurs | 4-5j | Haute |
-| Phase 3: Function Tools | 3-4j | Moyenne |
-| Phase 4: Dashboard | 2-3j | Basse |
-| Phase 5: Doc & Polish | 1-2j | Basse |
-| **TOTAL** | **13-18 jours** | |
+| Phase | Effort | Complexité | Personas Couverts |
+|:------|:------:|:-----------|:-----------------:|
+| Phase 1: Fondation | 3-4j | Moyenne | Infrastructure |
+| Phase 2: Connecteurs Produits | 5-6j | Haute | 10 personas |
+| Phase 3: Connecteurs Services | 4-5j | Haute | 10 personas |
+| Phase 4: Function Tools Voice | 4-5j | Moyenne | 23 personas |
+| Phase 5: Dashboard Webapp | 3-4j | Moyenne | ALL |
+| Phase 6: Doc & Polish | 2j | Basse | - |
+| **TOTAL** | **21-26 jours** | | **23/40 (58%)** |
+
+### Priorisation Recommandée
+
+| Priorité | Phases | Effort | Personas | ROI |
+|:---------|:-------|:------:|:--------:|:---:|
+| **P0** | 1 + 2.1-2.4 + 4.1 | 10-12j | 6 personas (restaurant, bakery, ecom, retail) | Haut |
+| **P1** | 2.5-2.7 + 3.1-3.2 + 4.2 | 6-8j | +8 personas (grocery, services) | Moyen |
+| **P2** | 3.3-3.6 + 4.3 | 4-5j | +3 personas (renter, travel) | Moyen |
+| **P3** | 5 + 6 | 5-6j | Dashboard + Docs | Support |
+
+**Recommandation**: Commencer par P0 pour couvrir les cas d'usage les plus demandés (restaurants, e-commerce).
 
 ---
 

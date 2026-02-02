@@ -518,7 +518,7 @@ website/app/
     └── hitl.html           (418 lines) - Approbations HITL
 ```
 
-**Total:** 17 pages HTML, 5,883 lignes
+**Total:** 19 pages HTML, 6,500+ lignes
 
 ### 14.2 Libraries JavaScript
 
@@ -623,7 +623,7 @@ website/app/
 
 ---
 
-## 15. ARCHITECTURE WEBSITE COMPLÈTE (67 pages)
+## 15. ARCHITECTURE WEBSITE COMPLÈTE (70 pages)
 
 ### 15.1 Structure du Site
 
@@ -700,7 +700,7 @@ website/                                    # ~25,000 lignes HTML
 │   ├── newsletter-cta.html                 # CTA newsletter
 │   └── analytics.html                      # Tracking
 │
-└── app/                                    # 17 pages SaaS Webapp
+└── app/                                    # 19 pages SaaS Webapp
     ├── auth/                               # 5 pages auth
     │   ├── login.html
     │   ├── signup.html

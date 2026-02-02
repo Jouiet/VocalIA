@@ -170,7 +170,7 @@ SHOPIFY_SHOP_NAME=
 
 | Metric | Value |
 |--------|-------|
-| HTML Pages | 70 (50 public + 20 webapp) |
+| HTML Pages | 70 (51 public + 19 webapp) |
 | MCP Tools | 182 |
 | Unit Tests | 305 (100% pass) |
 | E2E Tests | 375 (99.5% pass, 5 browsers) |
