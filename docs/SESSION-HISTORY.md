@@ -1,14 +1,15 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.73.0 | **Updated**: 03/02/2026 | **Session**: 250.63
+> **Version**: 6.74.0 | **Updated**: 03/02/2026 | **Session**: 250.64
 > **Backend Score**: 99/100 | **Frontend Score**: 99/100 | **Health Check**: 100% (39/39)
 > **Security**: 99/100 - SRI ✅, HTTPS ✅, XSS ✅, CSP ✅, JWT Auth ✅
 > **MCP Server**: v0.8.0 | **MCP Tools**: 182 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler
 > **E2E Tests**: 373/375 Playwright (99.5%) ✅ | **Unit Tests**: 305/305 (100%) ✅ | **Coverage**: c8
 > **Browsers**: Chromium + Firefox 146 + WebKit 26 + Mobile Chrome + Mobile Safari
-> **Session 250.63**: Unit tests fix - `unref()` on 6 modules setInterval, telephony `require.main === module` guard, 305/305 pass (was hanging)
-> **Session 250.62**: E2E 5 browsers installed, 373/375 tests (99.5%), RTL AR/ARY fixed, flaky test filters
+> **Session 250.64**: Voice config UI agents.html, ElevenLabs 27 voix (was 10), BUG FIX male voices, i18n 5 locales
+> **Session 250.63**: Unit tests fix - `unref()` on 6 modules setInterval, 305/305 pass (was hanging)
+> **Session 250.62**: E2E 5 browsers installed, 373/375 tests (99.5%), RTL AR/ARY fixed
 > **Session 250.61**: i18n Fix - Added missing dashboard.nav.* keys (8 keys × 5 locales)
 > **Session 250.60**: Bug fixes - hitl.html api import, billing integrations count
 > **Session 250.59**: Dashboards complete - integrations.html, settings.html with real API
@@ -5582,12 +5583,13 @@ ae83ad0 docs: Update CLAUDE.md for Session 250.62
 
 ---
 
-## Plan Actionnable - Session 250.63+
+## Plan Actionnable - Session 250.64+
 
 ### ÉTAT ACTUEL VÉRIFIÉ (03/02/2026)
 
 | Métrique | Valeur | Vérification |
 |:---------|:-------|:-------------|
+| Unit Tests | **305/305 (100%)** | `npm test` |
 | E2E Tests | **373/375 (99.5%)** | `npx playwright test` |
 | Browsers | 5 (Chromium, Firefox, WebKit, Mobile×2) | `ls ~/Library/Caches/ms-playwright/` |
 | Webapp Pages | 18 | `find website/app -name "*.html" \| wc -l` |
@@ -5595,23 +5597,31 @@ ae83ad0 docs: Update CLAUDE.md for Session 250.62
 | i18n Locales | 5 (FR, EN, ES, AR, ARY) | `ls website/src/locales/*.json` |
 | RTL Support | AR + ARY | Tests E2E passent |
 | Health Check | 39/39 (100%) | `node scripts/health-check.cjs` |
-| Git Status | Clean | `git status --short` |
+| Git Commits | a6198d5 | Voice config UI + i18n |
 
-### P0 - CRITIQUE (Bloquants production)
+### ✅ COMPLÉTÉ (Session 250.63-64)
+
+| # | Tâche | Session | Impact |
+|:-:|:------|:-------:|:-------|
+| 2 | Unit tests fix (`unref()`) | 250.63 | 305/305 pass en 1.5s |
+| 4 | E2E Firefox/Webkit | 250.62 | 373/375 (99.5%) |
+| - | Voice config UI agents.html | 250.64 | Language/gender selectors, i18n |
+
+### P0 - CRITIQUE (Bloquants production - USER ACTION)
 
 | # | Tâche | Effort | Raison | Vérification |
 |:-:|:------|:------:|:-------|:-------------|
-| 1 | Twilio credentials | 1h | Telephony non fonctionnel sans | `curl localhost:3009/health` |
-| ~~2~~ | ~~Unit tests cleanup~~ | ~~4h~~ | ~~Tests hang (event loops)~~ | ✅ **DONE** 305/305 pass |
-| 3 | ElevenLabs API key config | 1h | TTS Darija non fonctionnel | Test widget voice |
+| 1 | **Twilio credentials** | 1h | Telephony non fonctionnel | `curl localhost:3009/health` |
+| 3 | **ElevenLabs API key** | 1h | TTS Darija non fonctionnel | Test widget voice |
+| - | **Stripe API key** | 1h | Paiements non fonctionnels | billing.html test |
 
 ### P1 - IMPORTANT (Semaine en cours)
 
 | # | Tâche | Effort | Raison | Vérification |
 |:-:|:------|:------:|:-------|:-------------|
-| ~~4~~ | ~~E2E tests Firefox/Webkit~~ | ~~2h~~ | ~~Multi-browser coverage~~ | ✅ **DONE** 373/375 |
-| 5 | Load test E2E | 4h | Performance baseline | k6 smoke test |
-| 6 | SSL/HTTPS verification prod | 1h | Security compliance | `curl -I https://vocalia.ma` |
+| 5 | Load test k6 | 4h | Performance baseline | `k6 run test/load/smoke.js` |
+| 6 | SSL/HTTPS prod | 1h | Security compliance | `curl -I https://vocalia.ma` |
+| 10 | Deploy to Hostinger/NindoHost | 2h | Production launch | Site live |
 
 ### P2 - STANDARD (Prochaine semaine)
 
@@ -5620,12 +5630,14 @@ ae83ad0 docs: Update CLAUDE.md for Session 250.62
 | 7 | Mobile responsive audit | 4h | UX mobile | E2E mobile viewports |
 | 8 | Client onboarding flow | 8h | Conversion | User testing |
 | 9 | API documentation publique | 8h | Developer adoption | OpenAPI spec |
+| 11 | SDKs publish (npm/pypi) | 2h | Distribution | `npm view vocalia` |
 
-### ⚠️ PROBLÈMES CONNUS NON RÉSOLUS
+### ⚠️ PROBLÈMES CONNUS
 
 | Problème | Cause | Impact | Priorité |
 |:---------|:------|:-------|:---------|
-| ~~Unit tests hang~~ | ~~EventBus health checks~~ | ✅ **RÉSOLU** - `unref()` ajouté | ~~P1~~ |
-| Twilio credentials | Non configuré | Telephony inopérant | P0 |
-| ~~Firefox/Webkit browsers~~ | ~~Non installés~~ | ✅ **RÉSOLU** | ~~P1~~ |
-| 2 tests flaky | Race condition parallèle (Knowledge Base) | 99.5% pass rate | P2 |
+| ~~Unit tests hang~~ | ~~EventBus health checks~~ | ✅ **RÉSOLU** Session 250.63 | ~~P1~~ |
+| ~~Firefox/Webkit browsers~~ | ~~Non installés~~ | ✅ **RÉSOLU** Session 250.62 | ~~P1~~ |
+| Twilio credentials | Non configuré | Telephony inopérant | P0 (USER) |
+| ElevenLabs API key | Non configuré | TTS Darija inopérant | P0 (USER) |
+| 2 tests flaky | Race condition parallèle | 99.5% pass rate | P2 |
