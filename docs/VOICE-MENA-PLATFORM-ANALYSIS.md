@@ -1,6 +1,6 @@
 # Analyse Stratégique: Plateforme Voice AI MENA
 >
-> Version: 5.5.6 | 27/01/2026 | DÉCISION: ✅ **GO** - Multi-Canal + SOTA LATENCY OPTIMIZED (Session 174)
+> Version: 6.0.0 | 02/02/2026 | DÉCISION: ✅ **GO** - Multi-Canal + **5 LANGUES PRODUCTION READY** (Session 250.44quater)
 
 ## Executive Summary
 
@@ -514,7 +514,7 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 | **TTS Darija** | ElevenLabs Ghizlane | Web Speech | MiniMax | Qualité + naturel |
 | **STT Darija** | ElevenLabs Scribe | Whisper | Web Speech | Précision Maghrebi |
 
-> 🔴 **ALERTE INTÉGRATION (Session 250.44ter):** `elevenlabs-client.cjs` existe avec voix configurées mais **N'EST PAS IMPORTÉ** dans `voice-telephony-bridge.cjs` ni `voice-widget-core.js`. Widget utilise Web Speech API, Telephony utilise Twilio TTS (ar-SA pour Darija = accent Saudi INCORRECT). **Action requise:** Intégrer ElevenLabs dans production.
+> ✅ **INTÉGRATION COMPLÈTE (Session 250.44quater):** `elevenlabs-client.cjs` **INTÉGRÉ** dans `voice-telephony-bridge.cjs` ET `voice-api-resilient.cjs`. Widget a fallback ElevenLabs via `/tts` endpoint. Telephony utilise ElevenLabs Ghizlane/Jawad pour Darija. **5 Knowledge Bases créées** (FR 40 personas, EN/ES/AR/ARY 16 personas chacun).
 
 #### Voix Darija ElevenLabs Configurées (elevenlabs-client.cjs)
 

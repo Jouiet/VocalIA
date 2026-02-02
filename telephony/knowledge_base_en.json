@@ -1,0 +1,93 @@
+{
+    "universal_ecom_v1": {
+        "livraison": "Standard delivery takes 3-5 business days (Free from $50). Express delivery takes 1-2 days ($15).",
+        "retours": "We offer a 30-day return policy for unused items in original packaging. Returns are free.",
+        "paiements": "We accept Visa, Mastercard, PayPal and payment on delivery.",
+        "support": "Support email: support@{{client_domain}}",
+        "horaires": "Monday-Friday 9am-5pm"
+    },
+    "universal_sme_v1": {
+        "horaires": "Monday-Friday 8am-6pm, Saturday 9am-1pm.",
+        "services": "We offer consultations, repairs and maintenance services.",
+        "tarifs": "Consultations cost $50 (deducted from final invoice). Hourly rate is $80/hour.",
+        "adresse": "123 Main Street, Business District."
+    },
+    "dental_intake_v1": {
+        "urgence_dentaire": "For severe pain or trauma, we have same-day emergency slots between 11am-12pm and 3pm-4pm.",
+        "assurances": "We accept most insurance plans. We also offer payment plans.",
+        "offre_nouveau_patient": "New Patient Package at $99 includes exam, X-rays and cleaning.",
+        "dentiste": "The doctor specializes in cosmetic dentistry and implants."
+    },
+    "agency_v3": {
+        "produits": "VocalIA offers 2 Voice AI products: Voice Widget (24/7 voice assistant for websites) and Voice Telephony (AI phone line).",
+        "personas": "40 pre-configured industry personas: dentists, real estate, restaurants, e-commerce, SMEs and more.",
+        "langues": "5 languages supported: French, English, Spanish, Arabic and Moroccan Darija.",
+        "contact": "Contact us via vocalia.ma/booking or email contact@vocalia.ma.",
+        "tarifs": "Free (limited Widget), Pro $99/month, Enterprise on request."
+    },
+    "healer_v1": {
+        "specialites": "General Medicine, Pediatrics, Gynecology, Physiotherapy, Cardiology.",
+        "horaires": "Monday-Friday 8am-8pm, Saturday 8am-12pm.",
+        "urgence": "Call 911 for life-threatening emergencies. For clinic emergencies, call at opening time 8am.",
+        "rdv": "Appointments can be made by phone or through our patient portal."
+    },
+    "mechanic_v1": {
+        "services": "Oil change, brakes, tires, battery, electronic diagnostics.",
+        "horaires": "Monday-Friday 8:30am-6pm, Saturday 9am-12pm.",
+        "vehicule_courtoisie": "We provide courtesy vehicles by reservation.",
+        "garantie": "All repairs are guaranteed for 1 year parts and labor."
+    },
+    "counselor_v1": {
+        "domaines": "Labor Law, Family Law, Real Estate Law, Business Law.",
+        "honoraires": "First 30-minute consultation is $80.",
+        "documents": "Please bring any contracts or correspondence related to your case to the first appointment.",
+        "localisation": "Our office is downtown, parking available."
+    },
+    "concierge_v1": {
+        "petit_dejeuner": "Breakfast served from 7am to 10:30am in the restaurant.",
+        "check_in_out": "Check-in from 3pm, Check-out until 11am.",
+        "wifi": "Free high-speed WiFi throughout the property.",
+        "parking": "Private parking available at $20 per night."
+    },
+    "stylist_v1": {
+        "soins": "Hair styling, Massages, Facials, Manicure, Hammam.",
+        "horaires": "Tuesday-Saturday 10am-7pm, Thursday until 9pm.",
+        "produits": "We use exclusively organic and eco-friendly products.",
+        "annulation": "Cancellation must be made 24 hours in advance."
+    },
+    "recruiter_v1": {
+        "postes": "We are currently hiring AI Developers, Sales Managers and Automation Specialists.",
+        "process": "1. Phone screening, 2. Technical test, 3. Interview with management.",
+        "avantages": "Health insurance, remote work, and continuous training."
+    },
+    "dispatcher_v1": {
+        "service": "City delivery in 30 to 60 minutes.",
+        "tarif": "Delivery $3, free from $30.",
+        "suivi": "Track your order with the link we'll send you."
+    },
+    "collector_v1": {
+        "rappel": "This is a reminder call for invoice number {{invoice_number}}.",
+        "options": "You can pay now by card, or we can set up a payment plan.",
+        "contact": "If you have any issues, please contact us."
+    },
+    "insurer_v1": {
+        "sinistre": "To report a claim, you need to send documents: police report, damage photos and invoices.",
+        "delais": "Compensation takes 15 to 30 days after we receive all documents.",
+        "contact": "Customer service: 1-800-100-200."
+    },
+    "property_v1": {
+        "disponibilites": "We have apartments and villas for rent and sale in various neighborhoods.",
+        "visites": "Visits are Monday to Saturday, reservation required.",
+        "documents": "For rental: ID, proof of employment, 3 months of pay slips."
+    },
+    "contractor_v1": {
+        "services": "Construction, renovation, interior and exterior decoration.",
+        "devis": "Free estimate within 48 hours.",
+        "garantie": "All work guaranteed for 5 years."
+    },
+    "funeral_v1": {
+        "services": "We handle all procedures: preparation, transport and burial.",
+        "disponibilite": "Available 24/7 for emergencies.",
+        "support": "Our team is here to help you during this difficult time."
+    }
+}

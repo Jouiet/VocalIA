@@ -1,0 +1,93 @@
+{
+    "universal_ecom_v1": {
+        "livraison": "El envío estándar tarda 3-5 días hábiles (Gratis desde 50€). El envío express tarda 1-2 días (15€).",
+        "retours": "Ofrecemos devolución gratuita durante 30 días para artículos sin usar en su embalaje original.",
+        "paiements": "Aceptamos Visa, Mastercard, PayPal y pago contra reembolso.",
+        "support": "Email de soporte: support@{{client_domain}}",
+        "horaires": "Lunes-Viernes 9h-17h"
+    },
+    "universal_sme_v1": {
+        "horaires": "Lunes-Viernes 8h-18h, Sábado 9h-13h.",
+        "services": "Ofrecemos consultas, reparaciones y servicios de mantenimiento.",
+        "tarifs": "Las consultas cuestan 50€ (descontado de la factura final). Tarifa por hora: 80€.",
+        "adresse": "123 Calle Principal, Distrito de Negocios."
+    },
+    "dental_intake_v1": {
+        "urgence_dentaire": "Para dolor severo o traumatismo, tenemos citas de emergencia el mismo día entre 11h-12h y 15h-16h.",
+        "assurances": "Aceptamos la mayoría de seguros. También ofrecemos planes de pago.",
+        "offre_nouveau_patient": "Paquete Nuevo Paciente a 99€ incluye examen, radiografías y limpieza.",
+        "dentiste": "El doctor está especializado en odontología estética e implantes."
+    },
+    "agency_v3": {
+        "produits": "VocalIA ofrece 2 productos de Voz IA: Voice Widget (asistente vocal 24/7 para sitios web) y Voice Telephony (línea telefónica IA).",
+        "personas": "40 personas sectoriales preconfiguradas: dentistas, inmobiliarias, restaurantes, e-commerce, PYMES y más.",
+        "langues": "5 idiomas soportados: Francés, Inglés, Español, Árabe y Darija Marroquí.",
+        "contact": "Contáctenos vía vocalia.ma/booking o email contact@vocalia.ma.",
+        "tarifs": "Gratis (Widget limitado), Pro 99€/mes, Enterprise a pedido."
+    },
+    "healer_v1": {
+        "specialites": "Medicina General, Pediatría, Ginecología, Fisioterapia, Cardiología.",
+        "horaires": "Lunes-Viernes 8h-20h, Sábado 8h-12h.",
+        "urgence": "Llame al 112 para emergencias graves. Para urgencias de la clínica, llame a las 8h.",
+        "rdv": "Las citas se pueden hacer por teléfono o a través de nuestro portal de pacientes."
+    },
+    "mechanic_v1": {
+        "services": "Cambio de aceite, frenos, neumáticos, batería, diagnóstico electrónico.",
+        "horaires": "Lunes-Viernes 8:30h-18h, Sábado 9h-12h.",
+        "vehicule_courtoisie": "Proporcionamos vehículos de cortesía con reserva previa.",
+        "garantie": "Todas las reparaciones tienen garantía de 1 año en piezas y mano de obra."
+    },
+    "counselor_v1": {
+        "domaines": "Derecho Laboral, Derecho de Familia, Derecho Inmobiliario, Derecho de Negocios.",
+        "honoraires": "Primera consulta de 30 minutos a 80€.",
+        "documents": "Por favor traiga cualquier contrato o correspondencia relacionada con su caso a la primera cita.",
+        "localisation": "Nuestra oficina está en el centro, parking disponible."
+    },
+    "concierge_v1": {
+        "petit_dejeuner": "Desayuno servido de 7h a 10:30h en el restaurante.",
+        "check_in_out": "Check-in desde las 15h, Check-out hasta las 11h.",
+        "wifi": "WiFi gratuito de alta velocidad en todo el establecimiento.",
+        "parking": "Parking privado disponible a 20€ por noche."
+    },
+    "stylist_v1": {
+        "soins": "Peluquería, Masajes, Tratamientos faciales, Manicura, Hammam.",
+        "horaires": "Martes-Sábado 10h-19h, Jueves hasta las 21h.",
+        "produits": "Usamos exclusivamente productos orgánicos y ecológicos.",
+        "annulation": "La cancelación debe hacerse con 24 horas de antelación."
+    },
+    "recruiter_v1": {
+        "postes": "Actualmente contratamos Desarrolladores IA, Gerentes de Ventas y Especialistas en Automatización.",
+        "process": "1. Llamada de filtro, 2. Prueba técnica, 3. Entrevista con dirección.",
+        "avantages": "Seguro médico, trabajo remoto y formación continua."
+    },
+    "dispatcher_v1": {
+        "service": "Entrega en la ciudad en 30 a 60 minutos.",
+        "tarif": "Envío 3€, gratis desde 30€.",
+        "suivi": "Siga su pedido con el enlace que le enviaremos."
+    },
+    "collector_v1": {
+        "rappel": "Esta es una llamada de recordatorio para la factura número {{invoice_number}}.",
+        "options": "Puede pagar ahora con tarjeta, o podemos establecer un plan de pago.",
+        "contact": "Si tiene algún problema, contáctenos."
+    },
+    "insurer_v1": {
+        "sinistre": "Para declarar un siniestro, necesita enviar documentos: informe policial, fotos de daños y facturas.",
+        "delais": "La compensación tarda de 15 a 30 días después de recibir todos los documentos.",
+        "contact": "Atención al cliente: 900 100 200."
+    },
+    "property_v1": {
+        "disponibilites": "Tenemos apartamentos y villas en alquiler y venta en varios barrios.",
+        "visites": "Las visitas son de lunes a sábado, se requiere reserva.",
+        "documents": "Para alquiler: DNI, justificante de empleo, 3 meses de nóminas."
+    },
+    "contractor_v1": {
+        "services": "Construcción, renovación, decoración interior y exterior.",
+        "devis": "Presupuesto gratuito en 48 horas.",
+        "garantie": "Todos los trabajos garantizados por 5 años."
+    },
+    "funeral_v1": {
+        "services": "Nos encargamos de todos los trámites: preparación, transporte y entierro.",
+        "disponibilite": "Disponibles 24/7 para emergencias.",
+        "support": "Nuestro equipo está aquí para ayudarle en este momento difícil."
+    }
+}
