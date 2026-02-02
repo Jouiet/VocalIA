@@ -517,9 +517,9 @@
     "category": "faq",
     "persona_id": "agency_v3",
     "topic": "contact",
-    "answer_fr": "Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma.",
+    "answer_fr": "Contactez-nous via vocalia.ma/contact ou par email contact@vocalia.ma.",
     "tenant_id": "agency_internal",
-    "text": "agency Contact contact Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma."
+    "text": "agency Contact contact Contactez-nous via vocalia.ma/contact ou par email contact@vocalia.ma."
   },
   {
     "id": "faq_healer_v1_specialites",
