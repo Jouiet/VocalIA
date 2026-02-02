@@ -672,19 +672,21 @@
 
     <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
       <div class="text-center">
-        <!-- Hero Mascot Logo -->
-        <div class="mb-8" data-animate="mascot">
-          <img src="/public/images/logo-large.webp" alt="VocalIA Mascot"
-            class="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 mx-auto drop-shadow-2xl animate-float-card"
-            width="200" height="200" loading="eager">
-        </div>
-
-        <!-- Badge with shimmer -->
-        <div class="section-badge mb-8 backdrop-blur-md inline-flex items-center" data-animate="badge">
-          <div class="sound-wave inline-flex mr-2">
-            <span></span><span></span><span></span><span></span><span></span>
+        <!-- Hero Mascot + Badge INLINE -->
+        <div class="flex items-center justify-center gap-4 sm:gap-6 mb-8" data-animate="hero-inline">
+          <!-- Mascot -->
+          <div class="flex-shrink-0" data-animate="mascot">
+            <img src="/public/images/logo-large.webp" alt="VocalIA Mascot"
+              class="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 drop-shadow-2xl animate-float-card"
+              width="200" height="200" loading="eager">
           </div>
-          <span class="value-proposition text-vocalia-200" data-i18n="hero.badge">Voice AI de Nouvelle Génération</span>
+          <!-- Badge with shimmer -->
+          <div class="section-badge backdrop-blur-md inline-flex items-center" data-animate="badge">
+            <div class="sound-wave inline-flex mr-2">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <span class="value-proposition text-vocalia-200" data-i18n="hero.badge">Voice AI de Nouvelle Génération</span>
+          </div>
         </div>
 
         <!-- Title with staggered reveal -->
