@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.74.0 | 03/02/2026 | Session 250.64 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.75.0 | 03/02/2026 | Session 250.65 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **Dashboards: 10/10 Data-driven ✅** | 0 bugs | 0 missing imports | 0 hardcoded values | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
@@ -18,7 +18,7 @@
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 10, PrestaShop 10, BigCommerce 9, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | **ElevenLabs Darija TTS ✅** | MCP 4 tools
-> **Website: 69 pages** (50 public + 19 webapp) | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
+> **Website: 70 pages** (50 public + 20 webapp) | Onboarding ✅ | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 69 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305 unit + 375 E2E (99.5%)** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** | **Load Tests: k6 ✅** | **E2E: Playwright 5 browsers ✅** | **Chaos Engineering ✅**
 > **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
@@ -41,7 +41,8 @@
 | Health | **100%** | 39/39 checks |
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
-**Session 250.64 VOICE AUDIT COMPLETE:** ElevenLabs 27 voix (was 10), BUG FIX ar_male/fr_male/en_male/es_male (were undefined), 7 user aliases (Asmaa, Adam, Liliya, Nelya, Ikhlass, Najlae, Liwae), agents.html voice configuration UI, i18n 5 locales, audit doc `AUDIT-VOICE-CONFIG-SESSION-250.63.md`
+**Session 250.65 P1/P2 COMPLETE:** k6 load tests (smoke, load, stress, spike), onboarding.html wizard (4 steps), i18n onboarding 5 locales (40 keys each), SDKs ready (node v0.1.0, python v0.1.0), OpenAPI 520 lines, Deploy workflow NindoHost
+**Session 250.64 VOICE AUDIT COMPLETE:** ElevenLabs 27 voix (was 10), BUG FIX ar_male/fr_male/en_male/es_male (were undefined), 7 user aliases (Asmaa, Adam, Liliya, Nelya, Ikhlass, Najlae, Liwae), agents.html voice configuration UI, i18n 5 locales
 **Session 250.63 UNIT TESTS FIX:** 305/305 tests pass (was hanging) - `unref()` added to 6 modules setInterval (EventBus, telephony, auth-middleware, security-utils, grok-realtime, db-api), telephony bridge `require.main === module` guard, test OpenAI→AtlasChat fix
 **Session 250.62 E2E MULTI-BROWSER:** 375 tests × 5 browsers (Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari) = 373/375 pass (99.5%), RTL AR/ARY fixed (http-server), i18n init 18 webapp pages, flaky test filters added
 **Session 250.61 I18N FIX:** Added missing dashboard.nav.* keys to all 5 locales (fr, en, es, ar, ary) - navigation i18n now 100% functional
