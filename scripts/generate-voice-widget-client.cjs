@@ -197,7 +197,7 @@ const knowledge = {
     email: config.client?.email || `contact@${client.domain}`,
     website: client.domain,
     pricing: config.knowledge?.pricingUrl || "/pricing.html",
-    booking: config.knowledge?.bookingUrl || "/contact"
+    booking: config.knowledge?.bookingUrl || "/booking"
   }
 };
 
