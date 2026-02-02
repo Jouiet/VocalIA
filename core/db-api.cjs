@@ -1096,7 +1096,7 @@ async function handleRequest(req, res) {
     return;
   }
 
-  // Health check
+  // Health check (basic DB)
   if (path === '/api/db/health' && method === 'GET') {
     try {
       const db = getDB();
@@ -1104,6 +1104,44 @@ async function handleRequest(req, res) {
       sendJson(res, 200, health);
     } catch (e) {
       sendError(res, 500, e.message);
+    }
+    return;
+  }
+
+  // Comprehensive health check (all stores) - Session 250.57bis
+  if (path === '/api/health' && method === 'GET') {
+    try {
+      const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+
+      const health = {
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        version: '6.61.0',
+        stores: {
+          database: await getDB().health(),
+          conversations: conversationStore.health(),
+          audit: auditStore.health(),
+          ucp: getUCPStore().health()
+        },
+        retention_policy: {
+          telephony_days: TELEPHONY_RETENTION_DAYS,
+          purge_schedule: '1st of each month'
+        }
+      };
+
+      // Check overall status
+      const storeStatuses = Object.values(health.stores).map(s => s.status);
+      if (storeStatuses.some(s => s === 'error')) {
+        health.status = 'degraded';
+      }
+
+      sendJson(res, 200, health);
+    } catch (e) {
+      sendJson(res, 500, {
+        status: 'error',
+        timestamp: new Date().toISOString(),
+        error: e.message
+      });
     }
     return;
   }

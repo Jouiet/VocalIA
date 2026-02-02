@@ -365,7 +365,7 @@ tenant_B/
 | | - `conversationLog[]` dans session | | |
 | | - Save on cleanup | | |
 
-### 5.3 Phase 3: Amélioration Isolation (P1) ✅ PARTIAL
+### 5.3 Phase 3: Amélioration Isolation (P1) ✅ 95% COMPLETE
 
 | # | Tâche | Effort | Status |
 |:-:|:------|:------:|:------:|
@@ -623,6 +623,17 @@ data/
 - `website/app/client/calls.html`: Bannière avertissement + boutons export
 - `website/pricing.html`: FAQ #6 sur la politique de rétention
 - i18n: 5 langues (FR, EN, ES, AR, ARY)
+
+**Maintenance Automatisée:**
+- `scripts/monthly-maintenance.cjs`: Script de maintenance mensuelle
+  - Purge telephony >60 jours
+  - Rotation audit logs
+  - Reset quota usage
+  - Cleanup export files >7 jours
+- Cron: `1 0 1 * * node scripts/monthly-maintenance.cjs`
+
+**Health Check Consolidé:**
+- `GET /api/health`: Endpoint complet (database, conversations, audit, ucp)
 
 ---
 
