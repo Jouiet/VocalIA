@@ -1,0 +1,63 @@
+{
+  "__meta": {
+    "tenant_id": "client_demo",
+    "version": "1.0.0",
+    "last_updated": "2026-02-02T00:00:00Z",
+    "default_language": "fr",
+    "persona": "universal_ecom_v1"
+  },
+
+  "business_info": {
+    "name": "Demo E-Commerce Store",
+    "address": "123 Demo Street, Casablanca",
+    "phone": "+212 5 22 00 00 00",
+    "email": "contact@demo-store.ma",
+    "website": "www.demo-store.ma"
+  },
+
+  "horaires": {
+    "response": "Notre boutique est ouverte du lundi au samedi de 9h à 20h.",
+    "details": {
+      "lundi": "09:00-20:00",
+      "mardi": "09:00-20:00",
+      "mercredi": "09:00-20:00",
+      "jeudi": "09:00-20:00",
+      "vendredi": "09:00-20:00",
+      "samedi": "10:00-18:00",
+      "dimanche": "Fermé"
+    }
+  },
+
+  "livraison": {
+    "response": "Livraison gratuite à Casablanca. Livraison nationale sous 24-48h.",
+    "zones": {
+      "casablanca": { "delai": "2-4h", "frais": 0 },
+      "rabat": { "delai": "24h", "frais": 30 },
+      "marrakech": { "delai": "48h", "frais": 50 },
+      "national": { "delai": "48-72h", "frais": 60 }
+    }
+  },
+
+  "retours": {
+    "response": "Retours gratuits sous 14 jours. Échange ou remboursement.",
+    "conditions": "Produit non utilisé, dans son emballage d'origine"
+  },
+
+  "paiements": {
+    "response": "Nous acceptons carte bancaire, virement, et paiement à la livraison.",
+    "methodes": ["CMI", "Visa", "Mastercard", "Virement bancaire", "Cash on Delivery"]
+  },
+
+  "promotions": {
+    "response": "Profitez de -15% sur votre première commande avec le code BIENVENUE15!",
+    "code": "BIENVENUE15",
+    "reduction": "15%",
+    "conditions": "Valable une fois par nouveau client"
+  },
+
+  "faq": {
+    "tracking": "Vous recevrez un SMS avec un lien de suivi dès l'expédition.",
+    "stock": "Vérifiez la disponibilité en temps réel sur notre site.",
+    "contact": "Contactez-nous par WhatsApp au +212 6 XX XX XX XX ou par email."
+  }
+}

@@ -72,7 +72,14 @@ try {
 const KB = new ServiceKnowledgeBase();
 KB.load();
 const ECOM_TOOLS = VoiceEcommerceTools; // Already a singleton instance
-// RAG Knowledge Base - Multilingual support (Session 167, updated 250.44ter)
+
+// Session 250.45: Multi-Tenant KB Loader (replaces static loading)
+const { getInstance: getTenantKBLoader } = require('../core/tenant-kb-loader.cjs');
+const TenantKB = getTenantKBLoader();
+console.log('✅ Multi-tenant KB loader initialized');
+
+// RAG Knowledge Base - Legacy fallback (Universal KBs)
+// NOTE: Now loaded via TenantKBLoader with per-client override support
 const KNOWLEDGE_BASES = {
   fr: require('./knowledge_base.json'),
   en: fs.existsSync(path.join(__dirname, 'knowledge_base_en.json')) ? require('./knowledge_base_en.json') : {},
@@ -1757,10 +1764,11 @@ async function translateQueryToFrench(query, sourceLang) {
 async function handleSearchKnowledgeBase(session, args) {
   const kbId = session.metadata?.knowledge_base_id || session.metadata?.persona_id || 'agency_v3';
   const sessionLang = session.metadata?.language || CONFIG.defaultLanguage;
+  const tenantId = session.metadata?.tenant_id || 'default';  // Session 250.45: Per-tenant KB
   let query = args.query.toLowerCase();
   const originalQuery = query;
 
-  console.log(`[Cognitive-RAG] Semantic search for ${kbId}: "${query}" (lang: ${sessionLang})`);
+  console.log(`[Cognitive-RAG] Semantic search for ${kbId}: "${query}" (lang: ${sessionLang}, tenant: ${tenantId})`);
 
   // SESSION 250.16: Query Translation (tRAG) for cross-lingual retrieval
   // BM25 only matches FR/EN terms - translate AR/ES/ARY queries to French
@@ -1782,8 +1790,42 @@ async function handleSearchKnowledgeBase(session, args) {
     console.error(`[Cognitive-RAG] Semantic search error: ${e.message}`);
   }
 
-  // 2. Keyword Fallback (Legacy Logic)
-  console.log(`[Cognitive-RAG] Falling back to keyword matching...`);
+  // 2. Session 250.45: Per-Tenant KB Search (with merge)
+  console.log(`[Cognitive-RAG] Searching tenant KB: ${tenantId}/${sessionLang}...`);
+  try {
+    const tenantKb = await TenantKB.getKB(tenantId, sessionLang);
+
+    // Search in tenant KB (includes merged client + universal)
+    for (const [key, value] of Object.entries(tenantKb)) {
+      if (key === '__meta') continue;
+
+      // Check if this is the requested persona
+      if (key === kbId && typeof value === 'object') {
+        // Search within persona
+        for (const [subKey, subValue] of Object.entries(value)) {
+          const searchText = typeof subValue === 'string' ? subValue.toLowerCase() : JSON.stringify(subValue).toLowerCase();
+          if (subKey.toLowerCase().includes(query) || searchText.includes(query)) {
+            const result = typeof subValue === 'object' && subValue.response ? subValue.response : subValue;
+            console.log(`[Cognitive-RAG] Tenant KB match: ${tenantId}/${kbId}/${subKey}`);
+            return { found: true, result: typeof result === 'string' ? result : JSON.stringify(result) };
+          }
+        }
+      }
+
+      // Search across all entries (for client-specific keys like business_info, promotions)
+      const searchText = typeof value === 'object' ? JSON.stringify(value).toLowerCase() : String(value).toLowerCase();
+      if (key.toLowerCase().includes(query) || searchText.includes(query)) {
+        const result = typeof value === 'object' && value.response ? value.response : value;
+        console.log(`[Cognitive-RAG] Tenant KB match: ${tenantId}/${key}`);
+        return { found: true, result: typeof result === 'string' ? result : JSON.stringify(result) };
+      }
+    }
+  } catch (e) {
+    console.error(`[Cognitive-RAG] Tenant KB error: ${e.message}`);
+  }
+
+  // 3. Legacy Fallback (static KNOWLEDGE_BASES)
+  console.log(`[Cognitive-RAG] Falling back to legacy KB...`);
   const langKb = KNOWLEDGE_BASES[sessionLang] || KNOWLEDGE_BASES['fr'];
   let kbData = langKb[kbId];
 
@@ -1795,8 +1837,6 @@ async function handleSearchKnowledgeBase(session, args) {
     return { found: false, result: RAG_MESSAGES.noKnowledgeBase[sessionLang] };
   }
 
-  let bestMatch = null;
-  let maxScore = 0;
   for (const [key, value] of Object.entries(kbData)) {
     if (key.toLowerCase().includes(query) || value.toLowerCase().includes(query)) {
       return { found: true, result: value };
