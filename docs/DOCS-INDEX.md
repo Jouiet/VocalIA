@@ -1,153 +1,150 @@
 # VocalIA - Documentation Index
 
-> **Version**: 2.6.0 | **Date**: 29/01/2026 | **Session**: 208
+> **Version**: 3.0.0 | **Date**: 02/02/2026 | **Session**: 250.52
 
 ---
 
-## Document Principal de Suivi
+## Document Principal de Référence
+
+| Document | Description | Lignes | Status |
+|:---------|:------------|:------:|:------:|
+| **📐 VOCALIA-SYSTEM-ARCHITECTURE.md** | **ARCHITECTURE SYSTÈME COMPLÈTE** | 988 | ✅ NEW |
+
+Ce document consolidé contient:
+
+- Vue d'ensemble système
+- Architecture des 7 services (ports 3004-3013)
+- Architecture backend (32 modules core)
+- Architecture frontend (67 pages HTML)
+- Architecture Voice AI (Widget + Telephony)
+- Architecture données (7 tables Google Sheets)
+- Architecture MCP Server (182 tools)
+- Architecture intégrations (28 natives)
+- Architecture sécurité (JWT, bcrypt, RBAC)
+- Architecture i18n (5 langues)
+- Flux de données (Auth, HITL, Dashboard)
+- Métriques du codebase (~107,000 lignes)
+
+---
+
+## Documents par Catégorie
+
+### Architecture & Technique
 
 | Document | Description | Status |
 |:---------|:------------|:------:|
-| **📋 SESSION-HISTORY.md** | **SUIVI D'IMPLÉMENTATION OFFICIEL** | ✅ Current |
+| **VOCALIA-SYSTEM-ARCHITECTURE.md** | Architecture complète consolidée | ✅ |
+| **PLUG-AND-PLAY-STRATEGY.md** | Multi-tenant architecture | ✅ |
+| **VOCALIA-MCP.md** | MCP Server (182 tools) | ✅ |
+| **INTEGRATIONS-ROADMAP.md** | Roadmap intégrations | ✅ |
 
-Ce document contient:
-
-- Engineering Score (99/100)
-- Métriques vérifiées avec commandes
-- Inventaire complet des 58+ modules
-- Session history
-- Gaps status
-- Commandes de vérification
-
----
-
-## Voice Widget (NEW - Session 205)
-
-| Fichier | Description | Status |
-|:--------|:------------|:------:|
-| **website/voice-assistant/voice-widget.js** | Widget VocalIA intégré | ✅ Live |
-| **website/voice-assistant/lang/voice-fr.json** | Langue Française | ✅ |
-| **website/voice-assistant/lang/voice-en.json** | Langue Anglaise | ✅ |
-| **scripts/generate-voice-widget-client.cjs** | Générateur widget clients | ✅ |
-| **templates/voice-widget-client-config.json** | Template config client | ✅ |
-
----
-
-## Audits Factuels (Session 205+)
+### Audits & Forensique
 
 | Document | Description | Status |
 |:---------|:------------|:------:|
-| **SESSION-205-AUDIT.md** | **AUDIT BRUTAL** - RAG, Widget, Transferts | ✅ NEW |
+| **ARCHITECTURE-SYSTEM-FORENSIC-AUDIT.md** | Audit système détaillé | ✅ |
+| **AUDIT-DASHBOARDS-COMPLET-SESSION-250.52.md** | Audit webapp SaaS | ✅ |
+| **FORENSIC-AUDIT-WEBSITE.md** | Audit frontend | ✅ |
+| **AUDIT-FORENSIQUE-PERSONAS-KB-SESSION-250.md** | Audit personas + KB | ✅ |
+
+### Sécurité & Compliance
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **SECURITY.md** | Politiques sécurité | ✅ |
+| **GDPR-COMPLIANCE.md** | Conformité RGPD | ✅ |
+| **SOC2-PREPARATION.md** | Préparation SOC2 | ✅ |
+
+### Design & Branding
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **DESIGN-BRANDING-SYSTEM.md** | Palette, typo, composants | ✅ |
+| **DESIGN-TOOLS-WORKFLOWS.md** | Workflows design | ✅ |
+
+### Stratégie & Analyse
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **VOICE-MENA-PLATFORM-ANALYSIS.md** | Benchmark MENA | ✅ |
+| **USE-CASES-STRATEGIC-ANALYSIS.md** | Analyse use cases | ✅ |
+| **USE-CASES-BUSINESS-VALUE-ANALYSIS.md** | Valeur business | ✅ |
+
+### i18n
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **I18N-AUDIT-ACTIONPLAN.md** | Plan i18n | ✅ |
+| **TRANSLATION-QA-AUDIT.md** | QA traductions | ✅ |
+
+### Historique
+
+| Document | Description | Status |
+|:---------|:------------|:------:|
+| **SESSION-HISTORY.md** | Historique sessions | ✅ |
 
 ---
 
-## Documents Techniques
+## Documents Archivés
 
-| Document | Description | Taille |
-|:---------|:------------|:-------|
-| **PLUG-AND-PLAY-STRATEGY.md** | **STRATÉGIE MULTI-TENANT** - Widget, Telephony, OAuth | ~800 lignes |
-| **VOICE-AI-PLATFORM-REFERENCE.md** | Master reference technique | ~660 lignes |
-| **VOICE-AI-ARCHITECTURE.md** | Architecture et diagrammes | ~242 lignes |
-| **SAVOIR-FAIRE-TRANSMISSIBLE.md** | Transfert 3A → VocalIA | ~215 lignes |
+Les documents suivants ont été archivés (remplacés par VOCALIA-SYSTEM-ARCHITECTURE.md):
 
----
-
-## Design & Branding (NEW - Session 200)
-
-| Document | Description | Taille |
-|:---------|:------------|:-------|
-| **DESIGN-BRANDING-SYSTEM.md** | Palette Deep Teal, typo, composants | ~390 lignes |
-| **DESIGN-TOOLS-WORKFLOWS.md** | **Workflows actionnables**: Stitch, Whisk, Remotion, Gemini, Playwright, DevTools | ~450 lignes |
-
----
-
-## Documents Benchmark & Audit
-
-| Document | Description | Taille |
-|:---------|:------------|:-------|
-| **VOICE-MENA-PLATFORM-ANALYSIS.md** | **BENCHMARK STRATÉGIQUE** - Marchés, concurrence, économie | ~2,187 lignes |
-| **VOICE-MULTILINGUAL-STRATEGY.md** | Stratégie multilingue complète | ~736 lignes |
-| **VOICE-DARIJA-FORENSIC.md** | Audit forensique Darija | ~111 lignes |
-| **VOICE-AUDIT-FINAL.md** | Audit final Voice AI | ~85 lignes |
-| **FORENSIC-AUDIT-WEBSITE.md** | Audit Frontend (Website & Dashboards) | ~315 lignes |
-| **benchmarks-2026.md** | Benchmarks latence | ~12 lignes |
+```
+docs/archive/
+├── VOICE-AI-ARCHITECTURE.md      # Obsolète - 28/01/2026
+└── VOICE-AI-PLATFORM-REFERENCE.md # Obsolète - 28/01/2026
+```
 
 ---
 
 ## Rules (.claude/rules/)
 
-| Rule | Description | Auto-Load |
-|:-----|:------------|:---------:|
-| **core.md** | Standards code, credentials, deploy | ✅ Toujours |
-| **factuality.md** | Vérification empirique | ✅ Toujours |
-| **voice-platform.md** | Spécificités Voice AI | ✅ Toujours |
-| **scripts.md** | Reference scripts et HITL | ✅ Toujours |
-| **token-optimization.md** | Token management | ✅ Toujours |
+| Rule | Description |
+|:-----|:------------|
+| **core.md** | Standards code, credentials |
+| **factuality.md** | Vérification empirique |
+| **voice-platform.md** | Spécificités Voice AI |
+| **scripts.md** | Reference scripts et HITL |
+| **token-optimization.md** | Token management |
+| **personas-architecture.md** | Structure duale personas |
+| **shelf-isolation.md** | Isolation shelf |
 
 ---
 
-## Fichiers Racine
-
-| Fichier | Description | Status |
-|:--------|:------------|:------:|
-| **CLAUDE.md** | Memory système VocalIA v1.3.0 | ✅ Updated |
-| **README.md** | Documentation publique | ✅ |
-| **package.json** | NPM configuration (6 deps) | ✅ |
-| **automations-registry.json** | 12 automations | ✅ NEW |
-| **data/pressure-matrix.json** | GPM data | ✅ NEW |
-| **.mcp.json** | MCP configuration (grok) | ✅ |
-
----
-
-## Métriques Vérifiées (29/01/2026)
+## Métriques Vérifiées (02/02/2026)
 
 | Métrique | Valeur | Vérification |
-|:---------|:-------|:-------------|
-| **Code** | 25,000+ lignes | `find -exec wc -l` |
-| **Fichiers** | 58+ | `find \| wc -l` |
-| **Engineering Score** | 99/100 | CLAUDE.md |
-| **Health Check** | 100% (39/39) | `node scripts/health-check.cjs` |
-| **Voice Widget** | ✅ Intégré | Website live |
-| **Personas** | 30 | Verified unique |
-| **Function Tools** | 11 | telephony bridge |
-| **Langues** | 5 | FR, EN, ES, AR, ARY |
-| **CRM** | 3 | HubSpot, Klaviyo, Shopify |
+|:---------|:------:|:-------------|
+| Core Backend | 16,833 lignes | `wc -l core/*.cjs` |
+| Telephony | 3,194 lignes | `wc -l telephony/*.cjs` |
+| Personas | 5,280 lignes | `wc -l personas/*.cjs` |
+| MCP Server | 15,755 lignes | `wc -l mcp-server/src/**/*.ts` |
+| Website Libs | 7,326 lignes | `wc -l website/src/lib/*.js` |
+| HTML Pages | 67 | `find website -name "*.html" \| wc -l` |
+| Locales | 22,140 lignes | `wc -l website/src/locales/*.json` |
+| MCP Tools | 182 | `grep -c "server.tool(" mcp-server/src/index.ts` |
+| Personas | 40 | Verified in voice-persona-injector.cjs |
+| Langues | 5 | FR, EN, ES, AR, ARY |
+| Services | 7 | Ports 3004, 3007, 3009, 3010, 3011, 3012, 3013 |
 
 ---
 
 ## Services
 
 ```bash
-# Health Check (PRINCIPAL)
-node scripts/health-check.cjs
+# Start tous les services
+node core/voice-api-resilient.cjs --server --port=3004
+node core/grok-voice-realtime.cjs --server --port=3007
+node telephony/voice-telephony-bridge.cjs
+node core/db-api.cjs
+npx serve website -p 8080
 
-# Start services
-node core/voice-api-resilient.cjs      # Port 3004
-node core/grok-voice-realtime.cjs      # Port 3007
-node telephony/voice-telephony-bridge.cjs  # Port 3009
+# Health checks
+curl http://localhost:3004/health
+curl http://localhost:3013/api/db/health
 ```
 
 ---
 
-## Parent Documentation
-
-Hérite de VocalIA:
-
-- `~/Desktop/JO-AAA/docs/ETAGERE-TECHNOLOGIQUE-ECOSYSTEME-3A.md`
-- `~/Desktop/JO-AAA/docs/AI-PROVIDER-STRATEGY.md`
-- `~/.claude/CLAUDE.md` (global memory)
-
----
-
-## VocalIA-Ops Integration
-
-```bash
-# Package installé via yalc
-ls node_modules/@3a/agent-ops/
-# Modules: EventBus, ContextBox, BillingAgent, ErrorScience, RevenueScience
-```
-
----
-
-*Index màj: 29/01/2026 - Session 205*
-*Voice Widget intégré au website + générateur client*
+*Index màj: 02/02/2026 - Session 250.52*
+*Document d'architecture consolidé créé (988 lignes)*

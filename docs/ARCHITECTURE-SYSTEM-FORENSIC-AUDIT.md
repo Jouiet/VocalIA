@@ -623,7 +623,530 @@ website/app/
 
 ---
 
-## 15. CHANGELOG SESSION 250.54 → 250.52
+## 15. ARCHITECTURE WEBSITE COMPLÈTE (67 pages)
+
+### 15.1 Structure du Site
+
+```
+website/                                    # ~25,000 lignes HTML
+│
+├── index.html                              # Homepage
+├── about.html                              # À propos
+├── contact.html                            # Contact
+├── pricing.html                            # Tarification
+├── features.html                           # Fonctionnalités
+├── integrations.html                       # Intégrations
+├── signup.html                             # Inscription
+├── login.html                              # Connexion legacy
+├── investor.html                           # Investisseurs
+├── terms.html                              # CGU
+├── privacy.html                            # Confidentialité
+├── cookie-policy.html                      # Cookies
+├── referral.html                           # Programme parrainage
+├── 404.html                                # Page erreur
+│
+├── products/                               # 2 pages produits
+│   ├── voice-widget.html                   # Widget browser
+│   └── voice-telephony.html                # Telephony PSTN
+│
+├── industries/                             # 5 pages industries
+│   ├── index.html                          # Index industries
+│   ├── retail.html                         # Commerce
+│   ├── finance.html                        # Finance
+│   ├── healthcare.html                     # Santé
+│   └── real-estate.html                    # Immobilier
+│
+├── use-cases/                              # 5 pages use cases
+│   ├── index.html                          # Index use cases
+│   ├── lead-qualification.html             # Qualification leads
+│   ├── customer-support.html               # Support client
+│   ├── e-commerce.html                     # E-commerce
+│   └── appointments.html                   # Prise de RDV
+│
+├── blog/                                   # 13 pages blog
+│   ├── index.html                          # Index blog
+│   └── articles/                           # 12 articles
+│       ├── ai-act-europe-voice-ai.html
+│       ├── vocalia-lance-support-darija.html
+│       ├── voice-ai-vs-chatbot-comparatif.html
+│       ├── integrer-vocalia-shopify.html
+│       ├── guide-qualification-leads-bant.html
+│       ├── clinique-amal-rappels-vocaux.html
+│       ├── tendances-ia-vocale-2026.html
+│       ├── rgpd-voice-ai-guide-2026.html
+│       ├── reduire-couts-support-voice-ai.html
+│       ├── comment-choisir-solution-voice-ai.html
+│       ├── agence-immo-plus-conversion.html
+│       └── automatiser-prise-rdv-telephonique.html
+│
+├── docs/                                   # 2 pages documentation
+│   ├── index.html                          # Index docs
+│   └── api.html                            # API reference
+│
+├── dashboard/                              # 3 dashboards legacy
+│   ├── client.html                         # Dashboard client
+│   ├── admin.html                          # Dashboard admin
+│   └── widget-analytics.html               # Analytics widget
+│
+├── academie-business/                      # 1 page formation
+│   └── index.html                          # Académie business
+│
+├── status/                                 # 1 page status
+│   └── index.html                          # Status système
+│
+├── components/                             # 4 composants partagés
+│   ├── header.html                         # En-tête
+│   ├── footer.html                         # Pied de page
+│   ├── newsletter-cta.html                 # CTA newsletter
+│   └── analytics.html                      # Tracking
+│
+└── app/                                    # 17 pages SaaS Webapp
+    ├── auth/                               # 5 pages auth
+    │   ├── login.html
+    │   ├── signup.html
+    │   ├── forgot-password.html
+    │   ├── reset-password.html
+    │   └── verify-email.html
+    ├── client/                             # 7 pages client
+    │   ├── index.html (Dashboard)
+    │   ├── calls.html
+    │   ├── agents.html
+    │   ├── integrations.html
+    │   ├── analytics.html
+    │   ├── billing.html
+    │   └── settings.html
+    └── admin/                              # 5 pages admin
+        ├── index.html (Dashboard)
+        ├── tenants.html
+        ├── users.html
+        ├── logs.html
+        └── hitl.html
+```
+
+### 15.2 Navigation (Routes)
+
+| Route | Page | Auth Required |
+|:------|:-----|:-------------:|
+| `/` | Homepage | ❌ |
+| `/products/voice-widget` | Produit Widget | ❌ |
+| `/products/voice-telephony` | Produit Telephony | ❌ |
+| `/industries/` | Industries index | ❌ |
+| `/use-cases/` | Use cases index | ❌ |
+| `/blog/` | Blog index | ❌ |
+| `/pricing` | Tarification | ❌ |
+| `/contact` | Contact | ❌ |
+| `/app/auth/login` | Login | ❌ |
+| `/app/auth/signup` | Signup | ❌ |
+| `/app/client/` | Client dashboard | ✅ User |
+| `/app/client/calls` | Historique appels | ✅ User |
+| `/app/admin/` | Admin dashboard | ✅ Admin |
+| `/app/admin/hitl` | HITL approvals | ✅ Admin |
+
+### 15.3 Libraries JavaScript (21 fichiers, 7,326 lignes)
+
+| Library | Lignes | Fonction | Pages |
+|:--------|:------:|:---------|:------|
+| `auth-client.js` | 465 | JWT tokens, session | app/* |
+| `api-client.js` | 429 | Fetch wrapper + auth | app/* |
+| `data-table.js` | 672 | Tri, filtre, pagination | admin/* |
+| `charts.js` | 453 | Chart.js wrapper | analytics |
+| `modal.js` | 481 | Dialogs accessibles | all |
+| `toast.js` | 274 | Notifications | all |
+| `websocket-manager.js` | 465 | Temps réel | admin |
+| `ab-testing.js` | 280 | A/B testing | homepage |
+| `voice-visualizer.js` | 580 | Audio visualizer | widget |
+| `gsap-animations.js` | 680 | Animations GSAP | homepage |
+| `home-page.js` | 275 | Homepage logic | index |
+| `site-init.js` | 150 | Site initialization | all |
+| `geo-detect.js` | 170 | Geo-detection | pricing |
+| `global-localization.js` | 190 | i18n runtime | all |
+| `i18n.js` | 155 | Translation loader | all |
+
+---
+
+## 16. FLUX DB-API COMPLET
+
+### 16.1 Diagramme Google Sheets ↔ API ↔ Frontend
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           FRONTEND (Browser)                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │  website/src/lib/api-client.js                                        │  │
+│  │                                                                        │  │
+│  │  api.tenants.list()     → GET /api/db/tenants                         │  │
+│  │  api.tenants.get(id)    → GET /api/db/tenants/{id}                    │  │
+│  │  api.tenants.create()   → POST /api/db/tenants                        │  │
+│  │  api.tenants.update()   → PUT /api/db/tenants/{id}                    │  │
+│  │  api.tenants.delete()   → DELETE /api/db/tenants/{id}                 │  │
+│  │                                                                        │  │
+│  │  api.sessions.list()    → GET /api/db/sessions                        │  │
+│  │  api.users.list()       → GET /api/db/users                           │  │
+│  │  api.logs.list()        → GET /api/logs                               │  │
+│  │  api.hitl.pending()     → GET /api/hitl/pending                       │  │
+│  │  api.hitl.approve(id)   → POST /api/hitl/approve/{id}                 │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                      │                                       │
+│                                      │ HTTP + JWT                            │
+│                                      ▼                                       │
+└──────────────────────────────────────┼───────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        DB API (Port 3013)                                    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │  core/db-api.cjs                                                      │  │
+│  │                                                                        │  │
+│  │  1. Parse Request                                                     │  │
+│  │     └─ URL, Method, Body, Headers                                     │  │
+│  │                                                                        │  │
+│  │  2. Authentication                                                    │  │
+│  │     └─ extractToken() → JWT verification                              │  │
+│  │     └─ requireAuth() / requireAdmin()                                 │  │
+│  │                                                                        │  │
+│  │  3. Rate Limiting                                                     │  │
+│  │     └─ loginLimiter: 5/15min                                          │  │
+│  │     └─ apiLimiter: 100/min                                            │  │
+│  │                                                                        │  │
+│  │  4. Route to Handler                                                  │  │
+│  │     └─ /api/auth/* → handleAuthRequest()                              │  │
+│  │     └─ /api/hitl/* → handleHitlRequest()                              │  │
+│  │     └─ /api/logs   → handleLogsRequest()                              │  │
+│  │     └─ /api/db/*   → handleDbRequest()                                │  │
+│  │                                                                        │  │
+│  │  5. RLS Filter (Row-Level Security)                                   │  │
+│  │     └─ Extract tenant_id from JWT                                     │  │
+│  │     └─ Filter data by tenant_id                                       │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                      │                                       │
+│                                      ▼                                       │
+└──────────────────────────────────────┼───────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     GoogleSheetsDB (Data Layer)                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │  core/GoogleSheetsDB.cjs                                              │  │
+│  │                                                                        │  │
+│  │  Methods:                                                             │  │
+│  │  ├─ findAll(sheet, filters)     → Read all rows                       │  │
+│  │  ├─ findById(sheet, id)         → Read single row                     │  │
+│  │  ├─ create(sheet, data)         → Append row                          │  │
+│  │  ├─ update(sheet, id, data)     → Update row                          │  │
+│  │  ├─ delete(sheet, id)           → Delete row                          │  │
+│  │  ├─ query(sheet, field, value)  → Filter rows                         │  │
+│  │  ├─ createSheet(name, headers)  → Create new sheet                    │  │
+│  │  └─ ensureSheet(name, headers)  → Create if not exists                │  │
+│  │                                                                        │  │
+│  │  Cache:                                                               │  │
+│  │  └─ TTL: 60 seconds                                                   │  │
+│  │  └─ Invalidate on write                                               │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                      │                                       │
+│                                      │ Google Sheets API v4                  │
+│                                      ▼                                       │
+└──────────────────────────────────────┼───────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        Google Sheets (Database)                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  Spreadsheet: VocalIA-Database                                              │
+│                                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │
+│  │  tenants    │  │  sessions   │  │    logs     │  │    users    │        │
+│  │  (12 cols)  │  │  (8 cols)   │  │  (5 cols)   │  │  (20 cols)  │        │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘        │
+│                                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐                         │
+│  │auth_sessions│  │hitl_pending │  │hitl_history │                         │
+│  │  (7 cols)   │  │  (8 cols)   │  │  (11 cols)  │                         │
+│  └─────────────┘  └─────────────┘  └─────────────┘                         │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 16.2 Schémas des Tables
+
+**tenants (12 colonnes)**
+```
+id | name | plan | mrr | status | email | phone | nps_score |
+conversion_rate | qualified_leads | created_at | updated_at
+```
+
+**sessions (8 colonnes)**
+```
+id | tenant_id | calls | duration_sec | cost_usd | persona | lang | timestamp
+```
+
+**logs (5 colonnes)**
+```
+timestamp | level | service | message | details
+```
+
+**users (20 colonnes)**
+```
+id | email | password_hash | role | tenant_id | name | phone | avatar_url |
+email_verified | email_verify_token | email_verify_expires |
+password_reset_token | password_reset_expires |
+last_login | login_count | failed_login_count | locked_until |
+preferences | created_at | updated_at
+```
+
+**auth_sessions (7 colonnes)**
+```
+id | user_id | refresh_token_hash | device_info | expires_at | created_at | last_used_at
+```
+
+**hitl_pending (8 colonnes)**
+```
+id | type | tenant | caller | score | summary | context | created_at
+```
+
+**hitl_history (11 colonnes)**
+```
+id | type | tenant | caller | score | summary | context |
+decision | decided_by | decided_at | rejection_reason
+```
+
+---
+
+## 17. SÉQUENCE AUTH DÉTAILLÉE
+
+### 17.1 Register Flow
+
+```
+┌──────────┐          ┌──────────┐          ┌──────────┐          ┌──────────┐
+│  Client  │          │  DB API  │          │  Auth    │          │  Sheets  │
+│ (Browser)│          │  :3013   │          │ Service  │          │ (users)  │
+└────┬─────┘          └────┬─────┘          └────┬─────┘          └────┬─────┘
+     │                     │                     │                     │
+     │  POST /api/auth/register                  │                     │
+     │  {email, password, name}                  │                     │
+     │────────────────────>│                     │                     │
+     │                     │                     │                     │
+     │                     │  registerUser()     │                     │
+     │                     │────────────────────>│                     │
+     │                     │                     │                     │
+     │                     │                     │  Check email exists │
+     │                     │                     │────────────────────>│
+     │                     │                     │<────────────────────│
+     │                     │                     │                     │
+     │                     │                     │  bcrypt.hash()      │
+     │                     │                     │  (12 rounds)        │
+     │                     │                     │                     │
+     │                     │                     │  Create user        │
+     │                     │                     │────────────────────>│
+     │                     │                     │<────────────────────│
+     │                     │                     │                     │
+     │                     │  {success, user_id} │                     │
+     │                     │<────────────────────│                     │
+     │                     │                     │                     │
+     │  201 Created        │                     │                     │
+     │  {success: true}    │                     │                     │
+     │<────────────────────│                     │                     │
+     │                     │                     │                     │
+```
+
+### 17.2 Login Flow
+
+```
+┌──────────┐          ┌──────────┐          ┌──────────┐          ┌──────────┐
+│  Client  │          │  DB API  │          │  Auth    │          │  Sheets  │
+│ (Browser)│          │  :3013   │          │ Service  │          │          │
+└────┬─────┘          └────┬─────┘          └────┬─────┘          └────┬─────┘
+     │                     │                     │                     │
+     │  POST /api/auth/login                     │                     │
+     │  {email, password}  │                     │                     │
+     │────────────────────>│                     │                     │
+     │                     │                     │                     │
+     │                     │  Rate limit check   │                     │
+     │                     │  (5/15min)          │                     │
+     │                     │                     │                     │
+     │                     │  loginUser()        │                     │
+     │                     │────────────────────>│                     │
+     │                     │                     │                     │
+     │                     │                     │  Find user by email │
+     │                     │                     │────────────────────>│
+     │                     │                     │<────────────────────│
+     │                     │                     │                     │
+     │                     │                     │  bcrypt.compare()   │
+     │                     │                     │                     │
+     │                     │                     │  Check lockout      │
+     │                     │                     │                     │
+     │                     │                     │  Generate tokens:   │
+     │                     │                     │  - access_token     │
+     │                     │                     │    (JWT, 24h)       │
+     │                     │                     │  - refresh_token    │
+     │                     │                     │    (random, 30d)    │
+     │                     │                     │                     │
+     │                     │                     │  Store refresh hash │
+     │                     │                     │────────────────────>│
+     │                     │                     │  (auth_sessions)    │
+     │                     │                     │                     │
+     │                     │  {access_token,     │                     │
+     │                     │   refresh_token,    │                     │
+     │                     │   user}             │                     │
+     │                     │<────────────────────│                     │
+     │                     │                     │                     │
+     │  200 OK             │                     │                     │
+     │  {access_token,     │                     │                     │
+     │   refresh_token,    │                     │                     │
+     │   user}             │                     │                     │
+     │<────────────────────│                     │                     │
+     │                     │                     │                     │
+     │  Store in           │                     │                     │
+     │  localStorage       │                     │                     │
+     │                     │                     │                     │
+```
+
+### 17.3 Authenticated Request Flow
+
+```
+┌──────────┐          ┌──────────┐          ┌──────────┐          ┌──────────┐
+│  Client  │          │  DB API  │          │   Auth   │          │  Sheets  │
+│ (Browser)│          │  :3013   │          │Middleware│          │          │
+└────┬─────┘          └────┬─────┘          └────┬─────┘          └────┬─────┘
+     │                     │                     │                     │
+     │  GET /api/db/sessions                     │                     │
+     │  Authorization: Bearer {token}            │                     │
+     │────────────────────>│                     │                     │
+     │                     │                     │                     │
+     │                     │  extractToken()     │                     │
+     │                     │────────────────────>│                     │
+     │                     │                     │                     │
+     │                     │                     │  Verify JWT         │
+     │                     │                     │  signature          │
+     │                     │                     │                     │
+     │                     │                     │  Check expiration   │
+     │                     │                     │                     │
+     │                     │  {user, tenant_id}  │                     │
+     │                     │<────────────────────│                     │
+     │                     │                     │                     │
+     │                     │  RLS: Filter by     │                     │
+     │                     │  tenant_id          │                     │
+     │                     │                     │                     │
+     │                     │  findAll('sessions',│                     │
+     │                     │   {tenant_id})      │                     │
+     │                     │─────────────────────────────────────────>│
+     │                     │<─────────────────────────────────────────│
+     │                     │                     │                     │
+     │  200 OK             │                     │                     │
+     │  {data: [...]}      │                     │                     │
+     │<────────────────────│                     │                     │
+     │                     │                     │                     │
+```
+
+### 17.4 Refresh Token Flow
+
+```
+┌──────────┐          ┌──────────┐          ┌──────────┐          ┌──────────┐
+│  Client  │          │  DB API  │          │  Auth    │          │  Sheets  │
+│ (Browser)│          │  :3013   │          │ Service  │          │          │
+└────┬─────┘          └────┬─────┘          └────┬─────┘          └────┬─────┘
+     │                     │                     │                     │
+     │  (access_token expired)                   │                     │
+     │                     │                     │                     │
+     │  POST /api/auth/refresh                   │                     │
+     │  {refresh_token}    │                     │                     │
+     │────────────────────>│                     │                     │
+     │                     │                     │                     │
+     │                     │  refreshTokens()    │                     │
+     │                     │────────────────────>│                     │
+     │                     │                     │                     │
+     │                     │                     │  Hash refresh_token │
+     │                     │                     │                     │
+     │                     │                     │  Find in            │
+     │                     │                     │  auth_sessions      │
+     │                     │                     │────────────────────>│
+     │                     │                     │<────────────────────│
+     │                     │                     │                     │
+     │                     │                     │  Check expiration   │
+     │                     │                     │                     │
+     │                     │                     │  Generate new       │
+     │                     │                     │  access_token       │
+     │                     │                     │                     │
+     │                     │  {access_token}     │                     │
+     │                     │<────────────────────│                     │
+     │                     │                     │                     │
+     │  200 OK             │                     │                     │
+     │  {access_token}     │                     │                     │
+     │<────────────────────│                     │                     │
+     │                     │                     │                     │
+```
+
+### 17.5 Logout Flow
+
+```
+┌──────────┐          ┌──────────┐          ┌──────────┐          ┌──────────┐
+│  Client  │          │  DB API  │          │  Auth    │          │  Sheets  │
+│ (Browser)│          │  :3013   │          │ Service  │          │          │
+└────┬─────┘          └────┬─────┘          └────┬─────┘          └────┬─────┘
+     │                     │                     │                     │
+     │  POST /api/auth/logout                    │                     │
+     │  {refresh_token}    │                     │                     │
+     │────────────────────>│                     │                     │
+     │                     │                     │                     │
+     │                     │  logoutUser()       │                     │
+     │                     │────────────────────>│                     │
+     │                     │                     │                     │
+     │                     │                     │  Delete from        │
+     │                     │                     │  auth_sessions      │
+     │                     │                     │────────────────────>│
+     │                     │                     │<────────────────────│
+     │                     │                     │                     │
+     │                     │  {success: true}    │                     │
+     │                     │<────────────────────│                     │
+     │                     │                     │                     │
+     │  200 OK             │                     │                     │
+     │  {success: true}    │                     │                     │
+     │<────────────────────│                     │                     │
+     │                     │                     │                     │
+     │  Clear localStorage │                     │                     │
+     │  Redirect to /login │                     │                     │
+     │                     │                     │                     │
+```
+
+### 17.6 JWT Token Structure
+
+```javascript
+// Access Token Payload (24h validity)
+{
+  sub: "user_abc123",          // User ID
+  email: "user@example.com",   // Email
+  role: "admin",               // Role: admin|user|viewer
+  tenant_id: "tenant_xyz",     // Tenant isolation
+  permissions: [               // Fine-grained permissions
+    "read:calls",
+    "write:agents",
+    "admin:hitl"
+  ],
+  iat: 1706745600,             // Issued at
+  exp: 1706832000              // Expires at (+24h)
+}
+
+// Refresh Token (stored in auth_sessions)
+{
+  id: "refresh_abc",
+  user_id: "user_abc123",
+  refresh_token_hash: "sha256:...",  // Hashed token
+  device_info: "Chrome/Windows",
+  expires_at: "2026-03-01T00:00:00Z", // +30 days
+  created_at: "2026-02-01T00:00:00Z",
+  last_used_at: "2026-02-01T12:00:00Z"
+}
+```
+
+---
+
+## 18. CHANGELOG SESSION 250.54 → 250.52
 
 ### Session 250.54 (01/02/2026)
 
