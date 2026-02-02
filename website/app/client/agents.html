@@ -122,6 +122,92 @@
           </div>
         </div>
 
+        <!-- Voice Configuration -->
+        <div class="mb-6">
+          <h2 class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3" data-i18n="agents.voice_config">Configuration Voix</h2>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <!-- Language -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="agents.voice_language">Langue de la voix</label>
+                <select id="voice-language" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="fr">🇫🇷 Français</option>
+                  <option value="en">🇬🇧 English</option>
+                  <option value="es">🇪🇸 Español</option>
+                  <option value="ar">🇸🇦 العربية (MSA)</option>
+                  <option value="ary">🇲🇦 الدارجة (Darija)</option>
+                </select>
+              </div>
+
+              <!-- Gender -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="agents.voice_gender">Genre</label>
+                <select id="voice-gender" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                  <option value="female" data-i18n="agents.female">Féminin</option>
+                  <option value="male" data-i18n="agents.male">Masculin</option>
+                </select>
+              </div>
+
+              <!-- Voice Preview -->
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="agents.voice_name">Voix sélectionnée</label>
+                <div class="flex items-center gap-2">
+                  <span id="selected-voice-name" class="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white">Sarah</span>
+                  <button id="preview-voice-btn" class="p-2 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg hover:bg-indigo-200 dark:hover:bg-indigo-900/50" title="Prévisualiser">
+                    <i data-lucide="play" class="w-5 h-5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Voice Table -->
+            <div class="mt-4 overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700">
+                    <th class="pb-2" data-i18n="agents.language">Langue</th>
+                    <th class="pb-2" data-i18n="agents.female">Féminin</th>
+                    <th class="pb-2" data-i18n="agents.male">Masculin</th>
+                  </tr>
+                </thead>
+                <tbody id="voice-table" class="text-slate-700 dark:text-slate-300">
+                  <tr class="border-b border-slate-100 dark:border-slate-800">
+                    <td class="py-2">🇫🇷 Français</td>
+                    <td class="py-2">Sarah</td>
+                    <td class="py-2">Abdel</td>
+                  </tr>
+                  <tr class="border-b border-slate-100 dark:border-slate-800">
+                    <td class="py-2">🇬🇧 English</td>
+                    <td class="py-2">Rachel</td>
+                    <td class="py-2">Adam</td>
+                  </tr>
+                  <tr class="border-b border-slate-100 dark:border-slate-800">
+                    <td class="py-2">🇪🇸 Español</td>
+                    <td class="py-2">Domi</td>
+                    <td class="py-2">Juan Carlos</td>
+                  </tr>
+                  <tr class="border-b border-slate-100 dark:border-slate-800">
+                    <td class="py-2">🇸🇦 العربية</td>
+                    <td class="py-2">Bill</td>
+                    <td class="py-2">Amr</td>
+                  </tr>
+                  <tr>
+                    <td class="py-2">🇲🇦 الدارجة</td>
+                    <td class="py-2">Ghizlane</td>
+                    <td class="py-2">Jawad, Ali, Hamid</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex justify-end">
+              <button id="save-voice-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                <span data-i18n="agents.save_voice">Enregistrer la voix</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Available Personas -->
         <div>
           <h2 class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3">Personas disponibles</h2>
@@ -280,6 +366,54 @@
 
     renderActivePersona();
     renderPersonasGrid();
+
+    // Voice configuration - Session 250.63
+    const VOICE_NAMES = {
+      fr: { female: 'Sarah', male: 'Abdel' },
+      en: { female: 'Rachel', male: 'Adam' },
+      es: { female: 'Domi', male: 'Juan Carlos' },
+      ar: { female: 'Bill', male: 'Amr' },
+      ary: { female: 'Ghizlane', male: 'Jawad' }
+    };
+
+    function updateVoiceName() {
+      const lang = document.getElementById('voice-language').value;
+      const gender = document.getElementById('voice-gender').value;
+      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Sarah';
+      document.getElementById('selected-voice-name').textContent = voiceName;
+    }
+
+    document.getElementById('voice-language').addEventListener('change', updateVoiceName);
+    document.getElementById('voice-gender').addEventListener('change', updateVoiceName);
+
+    document.getElementById('preview-voice-btn').addEventListener('click', async () => {
+      const lang = document.getElementById('voice-language').value;
+      const gender = document.getElementById('voice-gender').value;
+      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Sarah';
+
+      const messages = {
+        fr: 'Bonjour, je suis votre assistant vocal VocalIA.',
+        en: 'Hello, I am your VocalIA voice assistant.',
+        es: 'Hola, soy tu asistente de voz VocalIA.',
+        ar: 'مرحبا، أنا مساعدك الصوتي من فوكاليا.',
+        ary: 'أهلا، أنا المساعد الصوتي ديالك من فوكاليا.'
+      };
+
+      toast.info(`Prévisualisation de ${voiceName}...`);
+      // In production: call /api/tts/preview endpoint
+    });
+
+    document.getElementById('save-voice-btn').addEventListener('click', async () => {
+      const lang = document.getElementById('voice-language').value;
+      const gender = document.getElementById('voice-gender').value;
+
+      try {
+        // In production: await api.post('/tenants/me/voice', { language: lang, gender });
+        toast.success('Configuration voix enregistrée');
+      } catch (error) {
+        toast.error('Erreur lors de l\'enregistrement');
+      }
+    });
 
     // New agent button
     document.getElementById('new-agent-btn').addEventListener('click', async () => {

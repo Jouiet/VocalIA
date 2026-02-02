@@ -62,7 +62,15 @@
       "title": "الوكيلات الذكية النشيطة",
       "configure": "+ إعداد",
       "active": "خدام",
-      "paused": "واقف"
+      "paused": "واقف",
+      "voice_config": "إعدادات الصوت",
+      "voice_language": "لغة الصوت",
+      "voice_gender": "الجنس",
+      "voice_name": "الصوت لي ختاريتي",
+      "female": "مرا",
+      "male": "راجل",
+      "language": "اللغة",
+      "save_voice": "سجل الصوت"
     },
     "calls": {
       "recent": "المكالمات الأخيرة",

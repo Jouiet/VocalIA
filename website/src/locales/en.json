@@ -62,7 +62,15 @@
       "title": "Active AI Agents",
       "configure": "+ Configure",
       "active": "Active",
-      "paused": "Paused"
+      "paused": "Paused",
+      "voice_config": "Voice Configuration",
+      "voice_language": "Voice Language",
+      "voice_gender": "Gender",
+      "voice_name": "Selected Voice",
+      "female": "Female",
+      "male": "Male",
+      "language": "Language",
+      "save_voice": "Save Voice"
     },
     "calls": {
       "recent": "Recent Calls",

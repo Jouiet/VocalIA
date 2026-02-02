@@ -62,7 +62,15 @@
       "title": "Agentes IA activos",
       "configure": "+ Configurar",
       "active": "Activo",
-      "paused": "Pausado"
+      "paused": "Pausado",
+      "voice_config": "Configuración de Voz",
+      "voice_language": "Idioma de la voz",
+      "voice_gender": "Género",
+      "voice_name": "Voz seleccionada",
+      "female": "Femenino",
+      "male": "Masculino",
+      "language": "Idioma",
+      "save_voice": "Guardar voz"
     },
     "calls": {
       "recent": "Llamadas recientes",

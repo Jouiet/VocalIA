@@ -62,7 +62,15 @@
       "title": "وكلاء الذكاء الاصطناعي النشطون",
       "configure": "+ تكوين",
       "active": "نشط",
-      "paused": "متوقف"
+      "paused": "متوقف",
+      "voice_config": "إعدادات الصوت",
+      "voice_language": "لغة الصوت",
+      "voice_gender": "الجنس",
+      "voice_name": "الصوت المختار",
+      "female": "أنثى",
+      "male": "ذكر",
+      "language": "اللغة",
+      "save_voice": "حفظ الصوت"
     },
     "calls": {
       "recent": "المكالمات الأخيرة",
