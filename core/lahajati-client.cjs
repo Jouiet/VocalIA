@@ -146,8 +146,9 @@ class LahajatiClient {
   /**
    * Convert text to speech
    *
-   * NOTE: This is a placeholder implementation.
-   * Actual endpoint and parameters should be verified from Lahajati API docs.
+   * NOTE: API endpoint structure is UNVERIFIED.
+   * Lahajati.ai does not publish public API documentation.
+   * Verify actual endpoint at: https://lahajati.ai/ar/docs (requires account)
    *
    * @param {string} text - Text to convert (Arabic)
    * @param {Object} options - Options
@@ -223,8 +224,9 @@ class LahajatiClient {
   /**
    * Transcribe audio to text
    *
-   * NOTE: This is a placeholder implementation.
-   * Actual endpoint and parameters should be verified from Lahajati API docs.
+   * NOTE: API endpoint structure is UNVERIFIED.
+   * Lahajati.ai does not publish public API documentation.
+   * Verify actual endpoint at: https://lahajati.ai/ar/docs (requires account)
    *
    * @param {Buffer|string} audio - Audio buffer or file path
    * @param {Object} options - Options
@@ -448,8 +450,9 @@ async function main() {
     }
 
     console.log('');
-    console.log('ℹ️  Note: This client uses placeholder endpoints.');
-    console.log('   Verify actual API structure from: https://lahajati.ai/ar/docs');
+    console.log('ℹ️  Note: API endpoint structures are UNVERIFIED.');
+    console.log('   Lahajati.ai requires account login for API documentation.');
+    console.log('   Verify endpoints at: https://lahajati.ai/ar/docs');
 
     return;
   }
