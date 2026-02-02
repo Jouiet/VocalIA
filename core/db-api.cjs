@@ -730,6 +730,151 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // KB Quota Status - GET /api/tenants/:id/kb/quota
+  const kbQuotaMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/quota$/);
+  if (kbQuotaMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbQuotaMatch[1];
+
+    try {
+      const { getInstance } = require('./kb-quotas.cjs');
+      const status = getInstance().getQuotaStatus(tenantId);
+      sendJson(res, 200, status);
+    } catch (e) {
+      sendError(res, 500, `KB quota error: ${e.message}`);
+    }
+    return;
+  }
+
+  // KB Import Bulk - POST /api/tenants/:id/kb/import
+  const kbImportMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/import$/);
+  if (kbImportMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbImportMatch[1];
+
+    try {
+      const body = await parseBody(req);
+      if (!body.data) {
+        sendError(res, 400, 'data field is required (JSON object or array)');
+        return;
+      }
+
+      // Check quota before import
+      const quotaManager = require('./kb-quotas.cjs').getInstance();
+      const entryCount = Array.isArray(body.data) ? body.data.length : Object.keys(body.data).filter(k => k !== '__meta').length;
+      const quotaCheck = quotaManager.checkQuota(tenantId, 'add_entries', { count: entryCount });
+
+      if (!quotaCheck.allowed) {
+        sendError(res, 403, quotaCheck.reason);
+        return;
+      }
+
+      // Check import monthly limit
+      const importCheck = quotaManager.checkQuota(tenantId, 'import');
+      if (!importCheck.allowed) {
+        sendError(res, 403, importCheck.reason);
+        return;
+      }
+
+      const language = body.language || 'fr';
+      const options = {
+        overwrite: body.overwrite !== false
+      };
+
+      const { getInstance } = require('./tenant-kb-loader.cjs');
+      const result = await getInstance().importBulk(tenantId, language, body.data, options);
+
+      // Increment import counter
+      quotaManager.incrementUsage(tenantId, 'import');
+
+      sendJson(res, 200, result);
+    } catch (e) {
+      sendError(res, 500, `KB import error: ${e.message}`);
+    }
+    return;
+  }
+
+  // KB Rebuild Index - POST /api/tenants/:id/kb/rebuild-index
+  const kbRebuildMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/rebuild-index$/);
+  if (kbRebuildMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbRebuildMatch[1];
+
+    try {
+      const body = await parseBody(req);
+      const language = body.language || null; // null = rebuild all languages
+
+      const { getInstance } = require('./tenant-kb-loader.cjs');
+      const result = await getInstance().rebuildIndex(tenantId, language);
+
+      sendJson(res, 200, result);
+    } catch (e) {
+      sendError(res, 500, `KB rebuild index error: ${e.message}`);
+    }
+    return;
+  }
+
+  // KB Crawl Website - POST /api/tenants/:id/kb/crawl
+  const kbCrawlMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/crawl$/);
+  if (kbCrawlMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbCrawlMatch[1];
+
+    try {
+      const body = await parseBody(req);
+      if (!body.url) {
+        sendError(res, 400, 'url field is required');
+        return;
+      }
+
+      // Check crawl quota
+      const quotaManager = require('./kb-quotas.cjs').getInstance();
+      const crawlCheck = quotaManager.checkQuota(tenantId, 'crawl');
+      if (!crawlCheck.allowed) {
+        sendError(res, 403, crawlCheck.reason);
+        return;
+      }
+
+      const { KBCrawler } = require('./kb-crawler.cjs');
+      const crawler = new KBCrawler({
+        maxPages: body.maxPages || 10
+      });
+
+      const language = body.language || 'fr';
+      const kbData = body.singlePage
+        ? await crawler.crawlURL(body.url)
+        : await crawler.crawlSite(body.url);
+
+      // Import crawled data to KB
+      if (kbData && Object.keys(kbData).filter(k => k !== '__meta').length > 0) {
+        const { getInstance } = require('./tenant-kb-loader.cjs');
+        const importResult = await getInstance().importBulk(tenantId, language, kbData, { overwrite: true });
+
+        // Increment crawl counter
+        quotaManager.incrementUsage(tenantId, 'crawl');
+
+        sendJson(res, 200, {
+          success: true,
+          crawled: kbData,
+          imported: importResult
+        });
+      } else {
+        sendJson(res, 200, {
+          success: false,
+          message: 'No KB data extracted from URL',
+          crawled: kbData
+        });
+      }
+    } catch (e) {
+      sendError(res, 500, `KB crawl error: ${e.message}`);
+    }
+    return;
+  }
+
   // ═══════════════════════════════════════════════════════════════
   // END KB ENDPOINTS
   // ═══════════════════════════════════════════════════════════════

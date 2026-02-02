@@ -374,6 +374,240 @@ class TenantKBLoader {
   }
 
   /**
+   * Import bulk KB entries from JSON or CSV data
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} language - Language code
+   * @param {object|Array} data - JSON object or array of entries
+   * @param {object} options - Import options
+   * @returns {object} Import result with counts
+   */
+  async importBulk(tenantId, language, data, options = {}) {
+    const kbDir = path.join(CLIENTS_DIR, tenantId, 'knowledge_base');
+    const kbPath = path.join(kbDir, `kb_${language}.json`);
+
+    // Ensure directory exists
+    if (!fs.existsSync(kbDir)) {
+      fs.mkdirSync(kbDir, { recursive: true });
+    }
+
+    // Load existing KB or create new
+    let existingKB = {};
+    if (fs.existsSync(kbPath)) {
+      try {
+        existingKB = JSON.parse(fs.readFileSync(kbPath, 'utf8'));
+      } catch (e) {
+        console.warn(`[TenantKB] Could not parse existing KB: ${e.message}`);
+      }
+    }
+
+    // Process import data
+    let imported = 0;
+    let updated = 0;
+    let skipped = 0;
+    const errors = [];
+
+    // Handle array format (CSV-like)
+    if (Array.isArray(data)) {
+      for (const entry of data) {
+        try {
+          if (!entry.key) {
+            skipped++;
+            errors.push({ entry, error: 'Missing key field' });
+            continue;
+          }
+
+          const key = entry.key;
+          delete entry.key;
+
+          if (existingKB[key]) {
+            if (options.overwrite !== false) {
+              existingKB[key] = entry;
+              updated++;
+            } else {
+              skipped++;
+            }
+          } else {
+            existingKB[key] = entry;
+            imported++;
+          }
+        } catch (e) {
+          skipped++;
+          errors.push({ entry, error: e.message });
+        }
+      }
+    }
+    // Handle object format (JSON)
+    else if (typeof data === 'object') {
+      for (const [key, value] of Object.entries(data)) {
+        if (key === '__meta') continue;
+
+        try {
+          if (existingKB[key]) {
+            if (options.overwrite !== false) {
+              existingKB[key] = value;
+              updated++;
+            } else {
+              skipped++;
+            }
+          } else {
+            existingKB[key] = value;
+            imported++;
+          }
+        } catch (e) {
+          skipped++;
+          errors.push({ key, error: e.message });
+        }
+      }
+    }
+
+    // Update metadata
+    existingKB.__meta = {
+      ...(existingKB.__meta || {}),
+      tenant_id: tenantId,
+      last_updated: new Date().toISOString(),
+      last_import: {
+        timestamp: new Date().toISOString(),
+        imported,
+        updated,
+        skipped
+      }
+    };
+
+    // Save KB
+    fs.writeFileSync(kbPath, JSON.stringify(existingKB, null, 2));
+
+    // Invalidate cache
+    this.invalidateCache(tenantId);
+
+    console.log(`[TenantKB] Bulk import for ${tenantId}/${language}: +${imported} new, ${updated} updated, ${skipped} skipped`);
+
+    return {
+      success: true,
+      tenant_id: tenantId,
+      language,
+      imported,
+      updated,
+      skipped,
+      total: Object.keys(existingKB).filter(k => k !== '__meta').length,
+      errors: errors.length > 0 ? errors : undefined
+    };
+  }
+
+  /**
+   * Rebuild TF-IDF index for a tenant
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} language - Language code (optional, rebuilds all if not specified)
+   * @returns {object} Rebuild result
+   */
+  async rebuildIndex(tenantId, language = null) {
+    const indexDir = path.join(DATA_DIR, tenantId);
+
+    // Ensure directory exists
+    if (!fs.existsSync(indexDir)) {
+      fs.mkdirSync(indexDir, { recursive: true });
+    }
+
+    const languages = language ? [language] : SUPPORTED_LANGUAGES;
+    const results = {};
+    let totalChunks = 0;
+    let totalVocabulary = 0;
+
+    for (const lang of languages) {
+      try {
+        const kb = await this.getKB(tenantId, lang);
+        const chunks = [];
+        const vocabulary = new Map();
+
+        // Build chunks from KB entries
+        for (const [key, value] of Object.entries(kb)) {
+          if (key === '__meta') continue;
+
+          const text = typeof value === 'object' ? JSON.stringify(value) : String(value);
+          const tokens = this.tokenize(text);
+
+          chunks.push({
+            id: `${tenantId}:${lang}:${key}`,
+            key,
+            language: lang,
+            text,
+            tokens,
+            tokenCount: tokens.length
+          });
+
+          // Build vocabulary
+          for (const token of tokens) {
+            vocabulary.set(token, (vocabulary.get(token) || 0) + 1);
+          }
+        }
+
+        // Calculate TF-IDF scores
+        const docCount = chunks.length;
+        const tfidfIndex = {
+          docCount,
+          vocabulary: Object.fromEntries(vocabulary),
+          idf: {}
+        };
+
+        for (const [term, docFreq] of vocabulary) {
+          tfidfIndex.idf[term] = Math.log((docCount + 1) / (docFreq + 1)) + 1;
+        }
+
+        results[lang] = {
+          chunks: chunks.length,
+          vocabulary: vocabulary.size,
+          success: true
+        };
+
+        totalChunks += chunks.length;
+        totalVocabulary += vocabulary.size;
+
+        // Save index files
+        const langIndexDir = path.join(indexDir, lang);
+        if (!fs.existsSync(langIndexDir)) {
+          fs.mkdirSync(langIndexDir, { recursive: true });
+        }
+
+        fs.writeFileSync(
+          path.join(langIndexDir, 'chunks.json'),
+          JSON.stringify(chunks, null, 2)
+        );
+        fs.writeFileSync(
+          path.join(langIndexDir, 'tfidf_index.json'),
+          JSON.stringify(tfidfIndex, null, 2)
+        );
+
+        console.log(`[TenantKB] Index rebuilt for ${tenantId}/${lang}: ${chunks.length} chunks, ${vocabulary.size} terms`);
+      } catch (e) {
+        results[lang] = {
+          success: false,
+          error: e.message
+        };
+        console.error(`[TenantKB] Index rebuild failed for ${tenantId}/${lang}: ${e.message}`);
+      }
+    }
+
+    return {
+      success: true,
+      tenant_id: tenantId,
+      languages: Object.keys(results),
+      totalChunks,
+      totalVocabulary,
+      results
+    };
+  }
+
+  /**
+   * Tokenize text for TF-IDF
+   */
+  tokenize(text) {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s\u0600-\u06FF]/g, ' ')  // Keep Arabic characters
+      .split(/\s+/)
+      .filter(token => token.length > 2);
+  }
+
+  /**
    * Cleanup resources
    */
   cleanup() {

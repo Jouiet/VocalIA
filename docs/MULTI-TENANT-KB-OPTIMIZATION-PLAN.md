@@ -495,14 +495,29 @@ POST   /api/tenants/{id}/personas/{pid}/test → Test persona with sample query
 | 5 | KB CRUD endpoints | `core/db-api.cjs` | ✅ DONE |
 | 6 | KB search endpoint | `core/db-api.cjs` | ✅ DONE |
 | 7 | KB stats endpoint | `core/db-api.cjs` | ✅ DONE |
+| 7b | KB Import bulk endpoint | `core/db-api.cjs` | ✅ DONE |
+| 7c | KB Rebuild index endpoint | `core/db-api.cjs` | ✅ DONE |
+| 7d | KB Quota endpoint | `core/db-api.cjs` | ✅ DONE |
+| 7e | KB Crawl endpoint | `core/db-api.cjs` | ✅ DONE |
 
 ### Phase 3: Dashboard UI (P1) - 2 jours
 
 | # | Tâche | Fichier | Status |
 |:-:|:------|:--------|:------:|
-| 8 | KB Editor page | `website/app/client/knowledge-base.html` | ⬜ TODO |
-| 9 | Import CSV modal | `website/src/lib/kb-editor.js` | ⬜ TODO |
-| 10 | Preview/Test chatbot | `website/app/client/knowledge-base.html` | ⬜ TODO |
+| 8 | KB Editor page | `website/app/client/knowledge-base.html` | ✅ DONE |
+| 9 | Import modal (JSON/CSV) | `website/app/client/knowledge-base.html` | ✅ DONE |
+| 10 | Preview/Test chatbot | `website/app/client/knowledge-base.html` | ✅ DONE |
+| 10b | Quota display UI | `website/app/client/knowledge-base.html` | ✅ DONE |
+| 10c | Web crawler modal | `website/app/client/knowledge-base.html` | ✅ DONE |
+
+### Phase 5: Advanced Features (NEW)
+
+| # | Tâche | Fichier | Status |
+|:-:|:------|:--------|:------:|
+| 16 | KB Multi-format parser | `core/kb-parser.cjs` | ✅ DONE |
+| 17 | Web crawler KB extractor | `core/kb-crawler.cjs` | ✅ DONE |
+| 18 | Quota management system | `core/kb-quotas.cjs` | ✅ DONE |
+| 19 | Plan-based limits (free/starter/pro/enterprise) | `core/kb-quotas.cjs` | ✅ DONE |
 
 ### Phase 4: Voice Optimizations (P1) - 1 jour
 

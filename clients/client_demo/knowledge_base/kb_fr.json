@@ -2,11 +2,16 @@
   "__meta": {
     "tenant_id": "client_demo",
     "version": "1.0.0",
-    "last_updated": "2026-02-02T00:00:00Z",
+    "last_updated": "2026-02-02T17:33:50.263Z",
     "default_language": "fr",
-    "persona": "universal_ecom_v1"
+    "persona": "universal_ecom_v1",
+    "last_import": {
+      "timestamp": "2026-02-02T17:33:50.264Z",
+      "imported": 2,
+      "updated": 0,
+      "skipped": 0
+    }
   },
-
   "business_info": {
     "name": "Demo E-Commerce Store",
     "address": "123 Demo Street, Casablanca",
@@ -14,7 +19,6 @@
     "email": "contact@demo-store.ma",
     "website": "www.demo-store.ma"
   },
-
   "horaires": {
     "response": "Notre boutique est ouverte du lundi au samedi de 9h à 20h.",
     "details": {
@@ -27,37 +31,59 @@
       "dimanche": "Fermé"
     }
   },
-
   "livraison": {
     "response": "Livraison gratuite à Casablanca. Livraison nationale sous 24-48h.",
     "zones": {
-      "casablanca": { "delai": "2-4h", "frais": 0 },
-      "rabat": { "delai": "24h", "frais": 30 },
-      "marrakech": { "delai": "48h", "frais": 50 },
-      "national": { "delai": "48-72h", "frais": 60 }
+      "casablanca": {
+        "delai": "2-4h",
+        "frais": 0
+      },
+      "rabat": {
+        "delai": "24h",
+        "frais": 30
+      },
+      "marrakech": {
+        "delai": "48h",
+        "frais": 50
+      },
+      "national": {
+        "delai": "48-72h",
+        "frais": 60
+      }
     }
   },
-
   "retours": {
     "response": "Retours gratuits sous 14 jours. Échange ou remboursement.",
     "conditions": "Produit non utilisé, dans son emballage d'origine"
   },
-
   "paiements": {
     "response": "Nous acceptons carte bancaire, virement, et paiement à la livraison.",
-    "methodes": ["CMI", "Visa", "Mastercard", "Virement bancaire", "Cash on Delivery"]
+    "methodes": [
+      "CMI",
+      "Visa",
+      "Mastercard",
+      "Virement bancaire",
+      "Cash on Delivery"
+    ]
   },
-
   "promotions": {
     "response": "Profitez de -15% sur votre première commande avec le code BIENVENUE15!",
     "code": "BIENVENUE15",
     "reduction": "15%",
     "conditions": "Valable une fois par nouveau client"
   },
-
   "faq": {
     "tracking": "Vous recevrez un SMS avec un lien de suivi dès l'expédition.",
     "stock": "Vérifiez la disponibilité en temps réel sur notre site.",
     "contact": "Contactez-nous par WhatsApp au +212 6 XX XX XX XX ou par email."
+  },
+  "test_promo": {
+    "response": "Code TEST20 pour -20%",
+    "code": "TEST20",
+    "reduction": "20%"
+  },
+  "test_faq": {
+    "question": "Test FAQ",
+    "answer": "Réponse test"
   }
 }

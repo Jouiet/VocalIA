@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Base de Connaissances - VocalIA</title>
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/api-client.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <a href="/app/client/" class="flex items-center gap-2">
+          <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
+          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        </a>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.calls">Appels</span>
+        </a>
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bot" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.agents">Agents IA</span>
+        </a>
+        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+          <i data-lucide="book-open" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
+        </a>
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="plug" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.integrations">Intégrations</span>
+        </a>
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.analytics">Analytics</span>
+        </a>
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.billing">Facturation</span>
+        </a>
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.settings">Paramètres</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+            <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+          </div>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="kb.title">Base de Connaissances</h1>
+            <p class="text-slate-600 dark:text-slate-400" data-i18n="kb.subtitle">Personnalisez les réponses de votre agent IA</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <button id="btn-import" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+              <i data-lucide="upload" class="w-4 h-4"></i>
+              <span data-i18n="kb.import">Importer</span>
+            </button>
+            <button id="btn-add-entry" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center gap-2 transition-colors">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span data-i18n="kb.add_entry">Ajouter une entrée</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="px-6 py-6 space-y-6">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+                <i data-lucide="file-text" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.entries">Entrées</p>
+                <p id="stat-entries" class="text-2xl font-bold text-slate-900 dark:text-white">-</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                <i data-lucide="globe" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.languages">Langues</p>
+                <p id="stat-languages" class="text-2xl font-bold text-slate-900 dark:text-white">5</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                <i data-lucide="database" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.index_size">Index TF-IDF</p>
+                <p id="stat-index" class="text-2xl font-bold text-slate-900 dark:text-white">-</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.last_update">Dernière MAJ</p>
+                <p id="stat-updated" class="text-lg font-bold text-slate-900 dark:text-white">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quota Usage -->
+        <div id="quota-section" class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+              <i data-lucide="gauge" class="w-5 h-5 text-slate-500"></i>
+              <h3 class="font-medium text-slate-900 dark:text-white" data-i18n="kb.quota.title">Utilisation du Quota</h3>
+            </div>
+            <span id="quota-plan" class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">-</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Entries Quota -->
+            <div>
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-slate-600 dark:text-slate-400" data-i18n="kb.quota.entries">Entrées</span>
+                <span id="quota-entries-text" class="text-slate-900 dark:text-white">-/-</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                <div id="quota-entries-bar" class="bg-indigo-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+              </div>
+            </div>
+            <!-- Storage Quota -->
+            <div>
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-slate-600 dark:text-slate-400" data-i18n="kb.quota.storage">Stockage</span>
+                <span id="quota-storage-text" class="text-slate-900 dark:text-white">-/-</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                <div id="quota-storage-bar" class="bg-emerald-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+              </div>
+            </div>
+            <!-- Languages Quota -->
+            <div>
+              <div class="flex justify-between text-sm mb-1">
+                <span class="text-slate-600 dark:text-slate-400" data-i18n="kb.quota.languages">Langues</span>
+                <span id="quota-languages-text" class="text-slate-900 dark:text-white">-/-</span>
+              </div>
+              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                <div id="quota-languages-bar" class="bg-amber-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Quota Alerts -->
+          <div id="quota-alerts" class="mt-3 space-y-2 hidden"></div>
+        </div>
+
+        <!-- Filters & Search -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+          <div class="flex flex-wrap items-center gap-4">
+            <div class="flex-1 min-w-[200px]">
+              <div class="relative">
+                <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="search-input" placeholder="Rechercher dans la KB..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+            </div>
+            <select id="filter-language" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="fr">Français (FR)</option>
+              <option value="en">English (EN)</option>
+              <option value="es">Español (ES)</option>
+              <option value="ar">العربية (AR)</option>
+              <option value="ary">الدارجة (ARY)</option>
+            </select>
+            <button id="btn-crawl-url" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+              <i data-lucide="globe" class="w-4 h-4"></i>
+              <span data-i18n="kb.crawl_url">Crawler URL</span>
+            </button>
+            <button id="btn-rebuild-index" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+              <span data-i18n="kb.rebuild_index">Reconstruire Index</span>
+            </button>
+            <button id="btn-test-chatbot" class="px-4 py-2 text-sm bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-2">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span data-i18n="kb.test_chatbot">Tester le Chatbot</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KB Entries Table -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
+                <tr>
+                  <th class="text-left px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.key">Clé</th>
+                  <th class="text-left px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.content">Contenu</th>
+                  <th class="text-left px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.type">Type</th>
+                  <th class="text-right px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.actions">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="kb-entries-body" class="divide-y divide-slate-200 dark:divide-slate-700">
+                <tr>
+                  <td colspan="4" class="px-4 py-8 text-center text-slate-500">
+                    <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2"></i>
+                    <p data-i18n="kb.loading">Chargement...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Entry Modal -->
+  <div id="entry-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/50" id="entry-modal-backdrop"></div>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 id="entry-modal-title" class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="kb.modal.add_title">Ajouter une entrée</h3>
+        <button id="entry-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+        </button>
+      </div>
+      <form id="entry-form" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.key">Clé (identifiant unique)</label>
+          <input type="text" id="entry-key" required pattern="[a-z0-9_]+" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: horaires, livraison, promotions">
+          <p class="text-xs text-slate-500 mt-1" data-i18n="kb.modal.key_hint">Lettres minuscules, chiffres et underscores uniquement</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.response">Réponse (texte affiché à l'utilisateur)</label>
+          <textarea id="entry-response" rows="3" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: Notre boutique est ouverte du lundi au samedi de 9h à 20h."></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.details">Détails (JSON optionnel)</label>
+          <textarea id="entry-details" rows="4" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder='{"lundi": "09:00-20:00", "mardi": "09:00-20:00"}'></textarea>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="kb.modal.details_hint">Format JSON valide pour les données structurées</p>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.language">Langue</label>
+          <select id="entry-language" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="fr">Français (FR)</option>
+            <option value="en">English (EN)</option>
+            <option value="es">Español (ES)</option>
+            <option value="ar">العربية (AR)</option>
+            <option value="ary">الدارجة (ARY)</option>
+          </select>
+        </div>
+      </form>
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+        <button type="button" id="entry-modal-cancel" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <span data-i18n="common.cancel">Annuler</span>
+        </button>
+        <button type="submit" form="entry-form" class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+          <span data-i18n="common.save">Enregistrer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Import Modal -->
+  <div id="import-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/50" id="import-modal-backdrop"></div>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="kb.import_modal.title">Importer des données</h3>
+        <button id="import-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center" id="drop-zone">
+          <i data-lucide="upload-cloud" class="w-12 h-12 text-slate-400 mx-auto mb-4"></i>
+          <p class="text-slate-700 dark:text-slate-300 mb-2" data-i18n="kb.import_modal.drop_text">Glissez un fichier JSON ou CSV ici</p>
+          <p class="text-sm text-slate-500 mb-4" data-i18n="kb.import_modal.or">ou</p>
+          <label class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg cursor-pointer inline-block">
+            <span data-i18n="kb.import_modal.browse">Parcourir</span>
+            <input type="file" id="import-file" accept=".json,.csv" class="hidden">
+          </label>
+        </div>
+        <div id="import-preview" class="hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300" data-i18n="kb.import_modal.preview">Aperçu</span>
+            <span id="import-file-name" class="text-sm text-slate-500"></span>
+          </div>
+          <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 max-h-48 overflow-auto">
+            <pre id="import-data-preview" class="text-xs text-slate-600 dark:text-slate-400 font-mono"></pre>
+          </div>
+        </div>
+        <div>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" id="import-overwrite" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-sm text-slate-700 dark:text-slate-300" data-i18n="kb.import_modal.overwrite">Écraser les entrées existantes</span>
+          </label>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.import_modal.language">Langue cible</label>
+          <select id="import-language" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="fr">Français (FR)</option>
+            <option value="en">English (EN)</option>
+            <option value="es">Español (ES)</option>
+            <option value="ar">العربية (AR)</option>
+            <option value="ary">الدارجة (ARY)</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+        <button type="button" id="import-modal-cancel" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <span data-i18n="common.cancel">Annuler</span>
+        </button>
+        <button type="button" id="import-submit" disabled class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg">
+          <span data-i18n="kb.import_modal.import">Importer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Crawler URL Modal -->
+  <div id="crawl-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/50" id="crawl-modal-backdrop"></div>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="kb.crawl_modal.title">Crawler un site web</h3>
+        <button id="crawl-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.crawl_modal.url">URL du site web</label>
+          <input type="url" id="crawl-url" required placeholder="https://www.example.com" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.crawl_modal.max_pages">Pages max</label>
+            <input type="number" id="crawl-max-pages" value="10" min="1" max="50" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.crawl_modal.language">Langue</label>
+            <select id="crawl-language" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <option value="fr">Français</option>
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="ar">العربية</option>
+              <option value="ary">الدارجة</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" id="crawl-single" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-sm text-slate-700 dark:text-slate-300" data-i18n="kb.crawl_modal.single_page">Page unique seulement</span>
+          </label>
+        </div>
+        <div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-3">
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            <i data-lucide="info" class="w-3 h-3 inline mr-1"></i>
+            <span data-i18n="kb.crawl_modal.info">Le crawler extraira automatiquement les FAQ, horaires, informations de contact et autres données pertinentes du site web.</span>
+          </p>
+        </div>
+        <div id="crawl-progress" class="hidden">
+          <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+            <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
+            <span data-i18n="kb.crawl_modal.crawling">Crawling en cours...</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+        <button type="button" id="crawl-modal-cancel" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <span data-i18n="common.cancel">Annuler</span>
+        </button>
+        <button type="button" id="crawl-submit" class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center gap-2">
+          <i data-lucide="globe" class="w-4 h-4"></i>
+          <span data-i18n="kb.crawl_modal.start">Démarrer le crawl</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Chatbot Modal -->
+  <div id="chatbot-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/50" id="chatbot-modal-backdrop"></div>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+            <i data-lucide="bot" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="kb.chatbot.title">Test du Chatbot</h3>
+            <p class="text-xs text-slate-500" data-i18n="kb.chatbot.subtitle">Testez les réponses de votre KB</p>
+          </div>
+        </div>
+        <button id="chatbot-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+        </button>
+      </div>
+      <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
+            <i data-lucide="bot" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
+          </div>
+          <div class="bg-slate-100 dark:bg-slate-700 rounded-lg px-4 py-2 max-w-[80%]">
+            <p class="text-slate-700 dark:text-slate-200" data-i18n="kb.chatbot.welcome">Bonjour ! Testez votre base de connaissances en posant une question.</p>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-slate-200 dark:border-slate-700 p-4">
+        <form id="chatbot-form" class="flex items-center gap-2">
+          <input type="text" id="chatbot-input" placeholder="Posez une question..." class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <button type="submit" class="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+            <i data-lucide="send" class="w-5 h-5"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
+
+  <script>
+    lucide.createIcons();
+
+    // State
+    let currentTenantId = null;
+    let currentLanguage = 'fr';
+    let kbEntries = {};
+    let editingKey = null;
+    let importData = null;
+
+    // DOM Elements
+    const searchInput = document.getElementById('search-input');
+    const filterLanguage = document.getElementById('filter-language');
+    const entriesBody = document.getElementById('kb-entries-body');
+    const entryModal = document.getElementById('entry-modal');
+    const importModal = document.getElementById('import-modal');
+    const chatbotModal = document.getElementById('chatbot-modal');
+
+    // Initialize
+    async function init() {
+      await loadUser();
+      await loadKBEntries();
+      await loadQuota();
+      setupEventListeners();
+    }
+
+    // Load quota status
+    async function loadQuota() {
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const response = await fetch(`/api/tenants/${currentTenantId}/kb/quota`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) return;
+
+        const quota = await response.json();
+        renderQuota(quota);
+      } catch (e) {
+        console.error('Quota load error:', e);
+      }
+    }
+
+    // Render quota display
+    function renderQuota(quota) {
+      if (!quota || !quota.usage) return;
+
+      // Plan badge
+      document.getElementById('quota-plan').textContent = quota.plan.toUpperCase();
+
+      // Entries
+      document.getElementById('quota-entries-text').textContent = `${quota.usage.entries.used}/${quota.usage.entries.max}`;
+      document.getElementById('quota-entries-bar').style.width = `${Math.min(quota.usage.entries.percent, 100)}%`;
+      if (quota.usage.entries.percent >= 80) {
+        document.getElementById('quota-entries-bar').classList.add('bg-red-500');
+        document.getElementById('quota-entries-bar').classList.remove('bg-indigo-600');
+      }
+
+      // Storage
+      document.getElementById('quota-storage-text').textContent = `${quota.usage.storage.used_formatted}/${quota.usage.storage.max_formatted}`;
+      document.getElementById('quota-storage-bar').style.width = `${Math.min(quota.usage.storage.percent, 100)}%`;
+      if (quota.usage.storage.percent >= 80) {
+        document.getElementById('quota-storage-bar').classList.add('bg-red-500');
+        document.getElementById('quota-storage-bar').classList.remove('bg-emerald-600');
+      }
+
+      // Languages
+      document.getElementById('quota-languages-text').textContent = `${quota.usage.languages.used}/${quota.usage.languages.max}`;
+      const langPercent = (quota.usage.languages.used / quota.usage.languages.max) * 100;
+      document.getElementById('quota-languages-bar').style.width = `${langPercent}%`;
+
+      // Alerts
+      if (quota.alerts && quota.alerts.length > 0) {
+        const alertsDiv = document.getElementById('quota-alerts');
+        alertsDiv.classList.remove('hidden');
+        alertsDiv.innerHTML = quota.alerts.map(alert => `
+          <div class="flex items-center gap-2 px-3 py-2 rounded-lg ${alert.type === 'critical' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'}">
+            <i data-lucide="${alert.type === 'critical' ? 'alert-triangle' : 'alert-circle'}" class="w-4 h-4"></i>
+            <span class="text-sm">${escapeHtml(alert.message)}</span>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      }
+    }
+
+    // Load user and get tenant ID
+    async function loadUser() {
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        if (!token) {
+          window.location.href = '/app/auth/login.html';
+          return;
+        }
+
+        const response = await fetch('/api/auth/me', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) throw new Error('Auth failed');
+
+        const user = await response.json();
+        currentTenantId = user.tenant_id || 'client_demo';
+
+        document.getElementById('user-name').textContent = user.name || user.email;
+        document.getElementById('user-email').textContent = user.email;
+        document.getElementById('user-initials').textContent = getInitials(user.name || user.email);
+      } catch (e) {
+        console.error('Auth error:', e);
+        currentTenantId = 'client_demo'; // Fallback for demo
+      }
+    }
+
+    // Load KB entries
+    async function loadKBEntries() {
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const response = await fetch(`/api/tenants/${currentTenantId}/kb?lang=${currentLanguage}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+          // Fallback: load from local demo data
+          kbEntries = await loadDemoKB();
+        } else {
+          kbEntries = await response.json();
+        }
+
+        renderEntries();
+        updateStats();
+      } catch (e) {
+        console.error('KB load error:', e);
+        kbEntries = await loadDemoKB();
+        renderEntries();
+      }
+    }
+
+    // Load demo KB (fallback)
+    async function loadDemoKB() {
+      try {
+        const response = await fetch(`/clients/client_demo/knowledge_base/kb_${currentLanguage}.json`);
+        if (response.ok) return await response.json();
+      } catch (e) {}
+      return { business_info: { name: 'Demo Store', response: 'Bienvenue!' }};
+    }
+
+    // Render entries table
+    function renderEntries() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const entries = Object.entries(kbEntries).filter(([key]) => key !== '__meta');
+      const filtered = searchTerm
+        ? entries.filter(([key, val]) => key.includes(searchTerm) || JSON.stringify(val).toLowerCase().includes(searchTerm))
+        : entries;
+
+      if (filtered.length === 0) {
+        entriesBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="px-4 py-8 text-center text-slate-500">
+              <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2"></i>
+              <p>Aucune entrée trouvée</p>
+            </td>
+          </tr>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      entriesBody.innerHTML = filtered.map(([key, value]) => {
+        const response = typeof value === 'object' ? (value.response || JSON.stringify(value).slice(0, 100)) : String(value);
+        const type = typeof value === 'object' ? 'Objet' : 'Texte';
+        return `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+            <td class="px-4 py-3">
+              <code class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded text-sm text-slate-700 dark:text-slate-300">${escapeHtml(key)}</code>
+            </td>
+            <td class="px-4 py-3">
+              <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">${escapeHtml(response)}</p>
+            </td>
+            <td class="px-4 py-3">
+              <span class="px-2 py-1 text-xs rounded-full ${type === 'Objet' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'}">${type}</span>
+            </td>
+            <td class="px-4 py-3 text-right">
+              <button onclick="editEntry('${key}')" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-indigo-600">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
+              </button>
+              <button onclick="deleteEntry('${key}')" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-red-600">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    // Update stats
+    function updateStats() {
+      const entries = Object.keys(kbEntries).filter(k => k !== '__meta');
+      document.getElementById('stat-entries').textContent = entries.length;
+
+      if (kbEntries.__meta?.last_updated) {
+        document.getElementById('stat-updated').textContent = new Date(kbEntries.__meta.last_updated).toLocaleDateString();
+      }
+
+      // Fetch index stats
+      fetch('/api/kb/stats').then(r => r.json()).then(stats => {
+        if (stats.cache) {
+          document.getElementById('stat-index').textContent = `${stats.cache.size} cached`;
+        }
+      }).catch(() => {});
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Search
+      searchInput.addEventListener('input', renderEntries);
+
+      // Language filter
+      filterLanguage.addEventListener('change', (e) => {
+        currentLanguage = e.target.value;
+        loadKBEntries();
+      });
+
+      // Add entry button
+      document.getElementById('btn-add-entry').addEventListener('click', () => {
+        editingKey = null;
+        document.getElementById('entry-modal-title').textContent = 'Ajouter une entrée';
+        document.getElementById('entry-key').value = '';
+        document.getElementById('entry-key').disabled = false;
+        document.getElementById('entry-response').value = '';
+        document.getElementById('entry-details').value = '';
+        document.getElementById('entry-language').value = currentLanguage;
+        showModal('entry-modal');
+      });
+
+      // Entry form submit
+      document.getElementById('entry-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await saveEntry();
+      });
+
+      // Modal close buttons
+      ['entry-modal', 'import-modal', 'chatbot-modal'].forEach(modalId => {
+        document.getElementById(`${modalId}-close`).addEventListener('click', () => hideModal(modalId));
+        document.getElementById(`${modalId}-backdrop`).addEventListener('click', () => hideModal(modalId));
+        const cancelBtn = document.getElementById(`${modalId}-cancel`);
+        if (cancelBtn) cancelBtn.addEventListener('click', () => hideModal(modalId));
+      });
+
+      // Import button
+      document.getElementById('btn-import').addEventListener('click', () => {
+        showModal('import-modal');
+      });
+
+      // Import file input
+      document.getElementById('import-file').addEventListener('change', handleImportFile);
+
+      // Import submit
+      document.getElementById('import-submit').addEventListener('click', submitImport);
+
+      // Rebuild index
+      document.getElementById('btn-rebuild-index').addEventListener('click', rebuildIndex);
+
+      // Test chatbot
+      document.getElementById('btn-test-chatbot').addEventListener('click', () => {
+        showModal('chatbot-modal');
+      });
+
+      // Crawler URL
+      document.getElementById('btn-crawl-url').addEventListener('click', () => {
+        showModal('crawl-modal');
+      });
+
+      // Crawler modal events
+      document.getElementById('crawl-modal-close').addEventListener('click', () => hideModal('crawl-modal'));
+      document.getElementById('crawl-modal-backdrop').addEventListener('click', () => hideModal('crawl-modal'));
+      document.getElementById('crawl-modal-cancel').addEventListener('click', () => hideModal('crawl-modal'));
+      document.getElementById('crawl-submit').addEventListener('click', crawlWebsite);
+
+      // Chatbot form
+      document.getElementById('chatbot-form').addEventListener('submit', handleChatbotSubmit);
+
+      // Logout
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        localStorage.removeItem('vocalia_token');
+        window.location.href = '/app/auth/login.html';
+      });
+
+      // Drag and drop
+      const dropZone = document.getElementById('drop-zone');
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+      });
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+      });
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
+        if (e.dataTransfer.files.length) {
+          document.getElementById('import-file').files = e.dataTransfer.files;
+          handleImportFile({ target: { files: e.dataTransfer.files }});
+        }
+      });
+    }
+
+    // Edit entry
+    function editEntry(key) {
+      const value = kbEntries[key];
+      editingKey = key;
+
+      document.getElementById('entry-modal-title').textContent = 'Modifier l\'entrée';
+      document.getElementById('entry-key').value = key;
+      document.getElementById('entry-key').disabled = true;
+      document.getElementById('entry-language').value = currentLanguage;
+
+      if (typeof value === 'object') {
+        document.getElementById('entry-response').value = value.response || '';
+        const details = { ...value };
+        delete details.response;
+        document.getElementById('entry-details').value = Object.keys(details).length ? JSON.stringify(details, null, 2) : '';
+      } else {
+        document.getElementById('entry-response').value = String(value);
+        document.getElementById('entry-details').value = '';
+      }
+
+      showModal('entry-modal');
+    }
+
+    // Save entry
+    async function saveEntry() {
+      const key = document.getElementById('entry-key').value.trim();
+      const response = document.getElementById('entry-response').value.trim();
+      const detailsStr = document.getElementById('entry-details').value.trim();
+      const language = document.getElementById('entry-language').value;
+
+      if (!key || !response) {
+        showToast('Veuillez remplir tous les champs requis', 'error');
+        return;
+      }
+
+      let value = { response };
+      if (detailsStr) {
+        try {
+          const details = JSON.parse(detailsStr);
+          value = { ...details, response };
+        } catch (e) {
+          showToast('Format JSON invalide dans les détails', 'error');
+          return;
+        }
+      }
+
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const res = await fetch(`/api/tenants/${currentTenantId}/kb`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ key, value, language })
+        });
+
+        if (!res.ok) throw new Error('Save failed');
+
+        showToast(editingKey ? 'Entrée mise à jour' : 'Entrée ajoutée', 'success');
+        hideModal('entry-modal');
+        await loadKBEntries();
+      } catch (e) {
+        // Fallback: update local state
+        kbEntries[key] = value;
+        renderEntries();
+        updateStats();
+        showToast(editingKey ? 'Entrée mise à jour (local)' : 'Entrée ajoutée (local)', 'success');
+        hideModal('entry-modal');
+      }
+    }
+
+    // Delete entry
+    async function deleteEntry(key) {
+      if (!confirm(`Supprimer l'entrée "${key}" ?`)) return;
+
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const res = await fetch(`/api/tenants/${currentTenantId}/kb/${key}?lang=${currentLanguage}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!res.ok) throw new Error('Delete failed');
+
+        showToast('Entrée supprimée', 'success');
+        await loadKBEntries();
+      } catch (e) {
+        // Fallback: update local state
+        delete kbEntries[key];
+        renderEntries();
+        updateStats();
+        showToast('Entrée supprimée (local)', 'success');
+      }
+    }
+
+    // Handle import file
+    function handleImportFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          let data;
+          if (file.name.endsWith('.csv')) {
+            data = parseCSV(event.target.result);
+          } else {
+            data = JSON.parse(event.target.result);
+          }
+
+          importData = data;
+          document.getElementById('import-file-name').textContent = file.name;
+          document.getElementById('import-data-preview').textContent = JSON.stringify(data, null, 2).slice(0, 500);
+          document.getElementById('import-preview').classList.remove('hidden');
+          document.getElementById('import-submit').disabled = false;
+        } catch (err) {
+          showToast('Erreur de lecture du fichier: ' + err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Parse CSV
+    function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+      const data = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+        const entry = {};
+        headers.forEach((h, idx) => {
+          entry[h] = values[idx] || '';
+        });
+        data.push(entry);
+      }
+
+      return data;
+    }
+
+    // Submit import
+    async function submitImport() {
+      if (!importData) return;
+
+      const language = document.getElementById('import-language').value;
+      const overwrite = document.getElementById('import-overwrite').checked;
+
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const res = await fetch(`/api/tenants/${currentTenantId}/kb/import`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ data: importData, language, overwrite })
+        });
+
+        const result = await res.json();
+        showToast(`Import terminé: ${result.imported || 0} ajoutées, ${result.updated || 0} mises à jour`, 'success');
+        hideModal('import-modal');
+        await loadKBEntries();
+      } catch (e) {
+        showToast('Erreur d\'import: ' + e.message, 'error');
+      }
+    }
+
+    // Rebuild index
+    async function rebuildIndex() {
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const res = await fetch(`/api/tenants/${currentTenantId}/kb/rebuild-index`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ language: currentLanguage })
+        });
+
+        const result = await res.json();
+        showToast(`Index reconstruit: ${result.totalChunks || 0} chunks, ${result.totalVocabulary || 0} termes`, 'success');
+        updateStats();
+      } catch (e) {
+        showToast('Erreur de reconstruction: ' + e.message, 'error');
+      }
+    }
+
+    // Crawl website
+    async function crawlWebsite() {
+      const url = document.getElementById('crawl-url').value.trim();
+      if (!url) {
+        showToast('Veuillez entrer une URL', 'error');
+        return;
+      }
+
+      const maxPages = parseInt(document.getElementById('crawl-max-pages').value) || 10;
+      const language = document.getElementById('crawl-language').value;
+      const singlePage = document.getElementById('crawl-single').checked;
+
+      // Show progress
+      document.getElementById('crawl-progress').classList.remove('hidden');
+      document.getElementById('crawl-submit').disabled = true;
+
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const res = await fetch(`/api/tenants/${currentTenantId}/kb/crawl`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ url, maxPages, language, singlePage })
+        });
+
+        if (!res.ok) {
+          const error = await res.json();
+          throw new Error(error.error || 'Crawl failed');
+        }
+
+        const result = await res.json();
+
+        if (result.success && result.imported) {
+          showToast(`Crawl terminé: ${result.imported.imported || 0} entrées importées`, 'success');
+          hideModal('crawl-modal');
+          await loadKBEntries();
+          await loadQuota();
+        } else {
+          showToast('Aucune donnée KB extraite de l\'URL', 'info');
+        }
+      } catch (e) {
+        showToast('Erreur de crawl: ' + e.message, 'error');
+      } finally {
+        document.getElementById('crawl-progress').classList.add('hidden');
+        document.getElementById('crawl-submit').disabled = false;
+      }
+    }
+
+    // Chatbot submit
+    async function handleChatbotSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatbot-input');
+      const query = input.value.trim();
+      if (!query) return;
+
+      const messagesDiv = document.getElementById('chatbot-messages');
+
+      // Add user message
+      messagesDiv.innerHTML += `
+        <div class="flex items-start gap-3 justify-end">
+          <div class="bg-indigo-600 text-white rounded-lg px-4 py-2 max-w-[80%]">
+            <p>${escapeHtml(query)}</p>
+          </div>
+        </div>
+      `;
+      input.value = '';
+
+      // Search KB
+      try {
+        const token = localStorage.getItem('vocalia_token');
+        const res = await fetch(`/api/tenants/${currentTenantId}/kb/search?q=${encodeURIComponent(query)}&lang=${currentLanguage}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const results = await res.json();
+        let response = 'Je n\'ai pas trouvé d\'information à ce sujet.';
+
+        if (results.results && results.results.length > 0) {
+          const match = results.results[0];
+          response = typeof match.data === 'object' ? (match.data.response || JSON.stringify(match.data)) : String(match.data);
+        }
+
+        messagesDiv.innerHTML += `
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="bot" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
+            </div>
+            <div class="bg-slate-100 dark:bg-slate-700 rounded-lg px-4 py-2 max-w-[80%]">
+              <p class="text-slate-700 dark:text-slate-200">${escapeHtml(response)}</p>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      } catch (e) {
+        // Fallback: local search
+        const matches = Object.entries(kbEntries).filter(([key, val]) =>
+          key !== '__meta' && (key.includes(query.toLowerCase()) || JSON.stringify(val).toLowerCase().includes(query.toLowerCase()))
+        );
+
+        let response = 'Je n\'ai pas trouvé d\'information à ce sujet.';
+        if (matches.length > 0) {
+          const [key, val] = matches[0];
+          response = typeof val === 'object' ? (val.response || JSON.stringify(val)) : String(val);
+        }
+
+        messagesDiv.innerHTML += `
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="bot" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
+            </div>
+            <div class="bg-slate-100 dark:bg-slate-700 rounded-lg px-4 py-2 max-w-[80%]">
+              <p class="text-slate-700 dark:text-slate-200">${escapeHtml(response)}</p>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // Utilities
+    function showModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function hideModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const colors = {
+        success: 'bg-emerald-500',
+        error: 'bg-red-500',
+        info: 'bg-indigo-500'
+      };
+      const toast = document.createElement('div');
+      toast.className = `${colors[type]} text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-slide-in`;
+      toast.innerHTML = `
+        <i data-lucide="${type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info'}" class="w-4 h-4"></i>
+        <span>${escapeHtml(message)}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    // Start
+    init();
+  </script>
+
+  <style>
+    @keyframes slide-in {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .animate-slide-in { animation: slide-in 0.3s ease-out; }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</body>
+</html>
