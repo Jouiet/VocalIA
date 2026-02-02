@@ -64,6 +64,9 @@
       "recent": "Recent Calls",
       "view_all": "View All →",
       "ago": "{{time}} ago • {{duration}}",
+      "export": "Export",
+      "retention_title": "Retention Policy",
+      "retention_notice": "Telephony call history is automatically deleted after 60 days on the 1st of each month. Download your data if you wish to keep it longer.",
       "status": {
         "converted": "Converted",
         "support": "Support",
@@ -601,6 +604,8 @@
     "faq4_a": "Darija is the Moroccan dialect spoken by 40 million people. VocalIA uses a specialized AI model to provide native quality support.",
     "faq5_q": "How does the self-hosted option work?",
     "faq5_a": "For Enterprise clients, we provide Docker containers and deployment scripts to install VocalIA on your own infrastructure (VPS, private cloud, on-premise). You keep full control of your data.",
+    "faq6_q": "How long is call history retained?",
+    "faq6_a": "Telephony call history is retained for 60 days. An automatic purge is performed on the 1st of each month. You can export your data (CSV, Excel, PDF) anytime from your dashboard to keep it longer.",
     "cta_title": "Ready to Automate Your Calls?",
     "cta_subtitle": "Start free, scale when you're ready.",
     "cta_primary": "Start Free",

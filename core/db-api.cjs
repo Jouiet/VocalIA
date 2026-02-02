@@ -40,6 +40,10 @@ const { requireAuth, requireAdmin, rateLimit, extractToken } = require('./auth-m
 const { getInstance: getAuditStore, ACTION_CATEGORIES } = require('./audit-store.cjs');
 const auditStore = getAuditStore();
 
+// Session 250.57: Conversation store for export/history
+const { getInstance: getConversationStore, TELEPHONY_RETENTION_DAYS } = require('./conversation-store.cjs');
+const conversationStore = getConversationStore();
+
 // WebSocket clients store
 const wsClients = new Map(); // Map<WebSocket, { user, channels: Set<string> }>
 
@@ -934,6 +938,146 @@ async function handleRequest(req, res) {
 
   // ═══════════════════════════════════════════════════════════════
   // END KB ENDPOINTS
+  // ═══════════════════════════════════════════════════════════════
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.57: CONVERSATION HISTORY & EXPORT ENDPOINTS
+  // ⚠️ TELEPHONY RETENTION: 60 days maximum (auto-purge 1st of month)
+  // ═══════════════════════════════════════════════════════════════
+
+  // Conversation List - GET /api/tenants/:id/conversations
+  const convListMatch = path.match(/^\/api\/tenants\/(\w+)\/conversations$/);
+  if (convListMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = convListMatch[1];
+
+    try {
+      const options = {};
+      if (query.source) options.source = query.source;
+      if (query.limit) options.limit = parseInt(query.limit);
+
+      const conversations = conversationStore.listByTenant(tenantId, options);
+      const stats = conversationStore.getStats(tenantId);
+
+      sendJson(res, 200, {
+        tenant_id: tenantId,
+        retention_policy: {
+          telephony_days: TELEPHONY_RETENTION_DAYS,
+          notice: 'Telephony history is automatically purged after 60 days on the 1st of each month'
+        },
+        stats,
+        count: conversations.length,
+        conversations
+      });
+    } catch (e) {
+      sendError(res, 500, `Conversation error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Conversation Detail - GET /api/tenants/:id/conversations/:sessionId
+  const convDetailMatch = path.match(/^\/api\/tenants\/(\w+)\/conversations\/([^/]+)$/);
+  if (convDetailMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const [, tenantId, sessionId] = convDetailMatch;
+
+    try {
+      const conversation = conversationStore.load(tenantId, sessionId);
+      if (!conversation) {
+        sendError(res, 404, 'Conversation not found');
+        return;
+      }
+      sendJson(res, 200, conversation);
+    } catch (e) {
+      sendError(res, 500, `Conversation error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Export Conversations - GET /api/tenants/:id/conversations/export
+  const convExportMatch = path.match(/^\/api\/tenants\/(\w+)\/conversations\/export$/);
+  if (convExportMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = convExportMatch[1];
+
+    try {
+      const format = (query.format || 'csv').toLowerCase();
+      const options = {};
+      if (query.source) options.source = query.source;
+      if (query.limit) options.limit = parseInt(query.limit);
+
+      let result;
+      switch (format) {
+        case 'xlsx':
+          result = await conversationStore.exportToXLSX(tenantId, options);
+          break;
+        case 'pdf':
+          result = await conversationStore.exportToPDF(tenantId, options);
+          break;
+        default:
+          result = conversationStore.exportToCSV(tenantId, options);
+      }
+
+      if (result.error) {
+        sendError(res, 400, result.error);
+        return;
+      }
+
+      // Audit trail
+      auditStore.log(tenantId, {
+        action: ACTION_CATEGORIES.DATA_EXPORT,
+        actor: user.id || user.email,
+        actor_type: 'user',
+        resource: `conversations:${format}`,
+        details: { format, conversations: result.file?.conversations }
+      });
+
+      sendJson(res, 200, result);
+    } catch (e) {
+      sendError(res, 500, `Export error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Download Exported File - GET /api/exports/:filename
+  const exportDownloadMatch = path.match(/^\/api\/exports\/([^/]+\.(csv|xlsx|pdf))$/);
+  if (exportDownloadMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const filename = exportDownloadMatch[1];
+    const filePath = require('path').join(__dirname, '../data/exports', filename);
+
+    try {
+      if (!require('fs').existsSync(filePath)) {
+        sendError(res, 404, 'Export file not found');
+        return;
+      }
+
+      const fileStream = require('fs').createReadStream(filePath);
+      const ext = filename.split('.').pop().toLowerCase();
+      const contentTypes = {
+        csv: 'text/csv',
+        xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        pdf: 'application/pdf'
+      };
+
+      res.writeHead(200, {
+        ...CORS_HEADERS,
+        'Content-Type': contentTypes[ext] || 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${filename}"`
+      });
+      fileStream.pipe(res);
+    } catch (e) {
+      sendError(res, 500, `Download error: ${e.message}`);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // END CONVERSATION ENDPOINTS
   // ═══════════════════════════════════════════════════════════════
 
   // Logs Endpoint (ADMIN ONLY)

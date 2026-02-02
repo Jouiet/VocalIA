@@ -64,6 +64,9 @@
       "recent": "Llamadas recientes",
       "view_all": "Ver todo →",
       "ago": "Hace {{time}} • {{duration}}",
+      "export": "Exportar",
+      "retention_title": "Política de retención",
+      "retention_notice": "El historial de llamadas telefónicas se elimina automáticamente después de 60 días el 1º de cada mes. Descargue sus datos si desea conservarlos más tiempo.",
       "status": {
         "converted": "Convertido",
         "support": "Soporte",
@@ -601,6 +604,8 @@
     "faq4_a": "El Darija es el dialecto marroquí hablado por 40 millones de personas. VocalIA usa un modelo IA especializado, un modelo especializado, para ofrecer soporte nativo.",
     "faq5_q": "¿Cómo funciona la opción self-hosted?",
     "faq5_a": "Para clientes Enterprise, proporcionamos contenedores Docker y scripts de despliegue para instalar VocalIA en tu propia infraestructura (VPS, nube privada, on-premise). Mantienes control total de tus datos.",
+    "faq6_q": "¿Cuánto tiempo se conserva el historial de llamadas?",
+    "faq6_a": "El historial de llamadas telefónicas se conserva durante 60 días. Se realiza una purga automática el 1º de cada mes. Puedes exportar tus datos (CSV, Excel, PDF) en cualquier momento desde tu panel para conservarlos más tiempo.",
     "cta_title": "¿Listo para Automatizar tus Llamadas?",
     "cta_subtitle": "Empieza gratis, escala cuando estés listo.",
     "cta_primary": "Empezar Gratis",

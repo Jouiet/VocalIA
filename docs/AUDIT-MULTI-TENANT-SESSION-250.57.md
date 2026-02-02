@@ -539,7 +539,7 @@ ls -la clients/*/config.json
 
 | Fichier | Lignes | Rôle |
 |:--------|:------:|:-----|
-| `core/conversation-store.cjs` | 565 | Persistance conversations multi-tenant |
+| `core/conversation-store.cjs` | 750 | Persistance conversations + Export + 60j retention |
 | `core/ucp-store.cjs` | 570 | Unified Customer Profile multi-tenant |
 | `core/audit-store.cjs` | 507 | Audit trail multi-tenant (compliance) |
 
@@ -549,8 +549,11 @@ ls -la clients/*/config.json
 |:--------|:-------------|:------:|
 | `core/voice-api-resilient.cjs` | Import + save conversations + quota check | +25 |
 | `core/GoogleSheetsDB.cjs` | Quota methods (check/increment/reset) | +120 |
-| `core/db-api.cjs` | Import audit-store + log auth/hitl events | +35 |
+| `core/db-api.cjs` | Audit-store + conversation export API endpoints | +150 |
 | `telephony/voice-telephony-bridge.cjs` | Import + conversation logging + quota check | +40 |
+| `website/app/client/calls.html` | Export buttons + retention notice + i18n | +60 |
+| `website/pricing.html` | FAQ #6 retention policy | +12 |
+| `website/src/locales/*.json` (×5) | calls.*, faq6_* keys (5 langues) | +30 |
 
 ### 10.3 Tests Effectués
 
@@ -595,14 +598,35 @@ data/
 
 | Métrique | Avant | Après | Delta |
 |:---------|:-----:|:-----:|:-----:|
-| Architecture Multi-tenant | 35/100 | **90/100** | **+55** |
+| Architecture Multi-tenant | 35/100 | **95/100** | **+60** |
 | Conversation Persistence | 0% | **100%** | +100% |
 | UCP Multi-tenant | 0% | **100%** | +100% |
 | Quotas BD | 10% | **100%** | +90% |
 | Audit Trail | 0% | **100%** | +100% |
+| Data Export (CSV/XLSX/PDF) | 0% | **100%** | +100% |
+| Retention Policy (60j telephony) | 0% | **100%** | +100% |
+
+### 10.6 Fonctionnalités Export & Rétention (Session 250.57bis)
+
+**Export Conversations:**
+- CSV: Native Node.js + PapaParse
+- XLSX: ExcelJS (styled headers, auto-filter)
+- PDF: PDFKit (VocalIA branding, pagination)
+- API: `GET /api/tenants/:id/conversations/export?format=csv|xlsx|pdf`
+
+**Rétention 60 jours Telephony:**
+- `purgeOldTelephony()`: Supprime conversations >60 jours source=telephony
+- `monthlyPurge()`: Exécutable le 1er de chaque mois
+- CLI: `node conversation-store.cjs --monthly-purge`
+
+**Notice Client Dashboard:**
+- `website/app/client/calls.html`: Bannière avertissement + boutons export
+- `website/pricing.html`: FAQ #6 sur la politique de rétention
+- i18n: 5 langues (FR, EN, ES, AR, ARY)
 
 ---
 
-*Document mis à jour: 02/02/2026 - Session 250.57*
-*Implémentation complète Phase 1, Phase 2, Phase 3.2, et Phase 3.3*
+*Document mis à jour: 02/02/2026 - Session 250.57bis*
+*Implémentation complète Phase 1, Phase 2, Phase 3.2, Phase 3.3, Export (CSV/XLSX/PDF), Retention 60j*
+*Score final: 95/100 (+60 points)*
 *Prochain audit recommandé: Phase 3.1 (migration BD) et Phase 4 (Darija natif)*

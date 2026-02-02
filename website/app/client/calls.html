@@ -89,6 +89,28 @@
             <p class="text-slate-600 dark:text-slate-400">Consultez et analysez vos appels</p>
           </div>
           <div class="flex items-center gap-3">
+            <!-- Export Dropdown -->
+            <div class="relative">
+              <button id="export-btn" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600">
+                <i data-lucide="download" class="w-4 h-4"></i>
+                <span data-i18n="calls.export">Exporter</span>
+                <i data-lucide="chevron-down" class="w-4 h-4"></i>
+              </button>
+              <div id="export-menu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-20">
+                <button onclick="exportCalls('csv')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                  <i data-lucide="file-text" class="w-4 h-4"></i>
+                  <span>CSV</span>
+                </button>
+                <button onclick="exportCalls('xlsx')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                  <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                  <span>Excel (XLSX)</span>
+                </button>
+                <button onclick="exportCalls('pdf')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                  <i data-lucide="file" class="w-4 h-4"></i>
+                  <span>PDF</span>
+                </button>
+              </div>
+            </div>
             <select id="date-range" class="px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
               <option value="7d">7 derniers jours</option>
               <option value="30d" selected>30 derniers jours</option>
@@ -98,6 +120,17 @@
           </div>
         </div>
       </header>
+
+      <!-- Retention Policy Notice -->
+      <div class="px-6 pt-4">
+        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 flex items-start gap-3">
+          <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5"></i>
+          <div>
+            <p class="text-sm font-medium text-amber-800 dark:text-amber-200" data-i18n="calls.retention_title">Politique de rétention</p>
+            <p class="text-sm text-amber-700 dark:text-amber-300" data-i18n="calls.retention_notice">L'historique des appels téléphoniques est automatiquement supprimé après 60 jours le 1er de chaque mois. Téléchargez vos données si vous souhaitez les conserver plus longtemps.</p>
+          </div>
+        </div>
+      </div>
 
       <!-- Stats -->
       <div class="px-6 py-6">
@@ -359,6 +392,55 @@
 
     window.closeCallDetail = () => {
       document.getElementById('call-detail-modal').classList.add('hidden');
+    };
+
+    // Export dropdown toggle
+    const exportBtn = document.getElementById('export-btn');
+    const exportMenu = document.getElementById('export-menu');
+
+    exportBtn.addEventListener('click', () => {
+      exportMenu.classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!exportBtn.contains(e.target) && !exportMenu.contains(e.target)) {
+        exportMenu.classList.add('hidden');
+      }
+    });
+
+    // Export function
+    window.exportCalls = async (format) => {
+      exportMenu.classList.add('hidden');
+      const tenantId = user?.tenant_id || 'default';
+
+      try {
+        toast.info(`Export ${format.toUpperCase()} en cours...`);
+
+        const response = await api.request(`/tenants/${tenantId}/conversations/export?format=${format}&source=telephony`);
+
+        if (response.error) {
+          throw new Error(response.error);
+        }
+
+        if (response.file?.filename) {
+          // Download the file
+          const downloadUrl = `/api/exports/${response.file.filename}`;
+          const link = document.createElement('a');
+          link.href = downloadUrl;
+          link.download = response.file.filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          toast.success(`Export ${format.toUpperCase()} réussi!`);
+        } else {
+          toast.warning('Aucune donnée à exporter');
+        }
+      } catch (error) {
+        console.error('Export error:', error);
+        toast.error(`Erreur d'export: ${error.message}`);
+      }
     };
 
     // Date range change
