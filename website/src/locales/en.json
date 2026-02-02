@@ -2927,7 +2927,38 @@
     "vidos_hitl_65": "Vidéos (HITL)",
     "admin_66": "Admin",
     "vocalia_67": "VocalIA",
-    "vocalia_admin_dashboard_68": "VoiceIA - Admin Dashboard"
+    "vocalia_admin_dashboard_68": "VoiceIA - Admin Dashboard",
+    "nav": {
+      "dashboard": "Dashboard",
+      "tenants": "Tenants",
+      "users": "Users",
+      "logs": "Logs",
+      "hitl": "HITL",
+      "back_client": "Back to client"
+    },
+    "title": "Admin Console",
+    "subtitle": "Platform overview",
+    "system_ok": "System OK",
+    "stats": {
+      "mrr": "MRR",
+      "vs_last_month": "+12% vs last month",
+      "active_tenants": "Active tenants",
+      "this_month": "+5 this month",
+      "total_calls": "Total calls",
+      "today": "Today",
+      "api_latency": "API Latency",
+      "normal": "Normal"
+    },
+    "charts": {
+      "monthly_revenue": "Monthly revenue",
+      "calls_by_tenant": "Calls by tenant"
+    },
+    "services": {
+      "title": "Services status"
+    },
+    "activity": {
+      "title": "Recent activity"
+    }
   },
   "analytics": {
     "il_y_a_0": "Il y a 45 min",

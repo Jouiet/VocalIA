@@ -13,6 +13,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/src/lib/i18n.js"></script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="flex h-screen overflow-hidden">
@@ -31,30 +32,30 @@
       <nav class="flex-1 p-4 space-y-1">
         <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800 text-white">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-          <span>Dashboard</span>
+          <span data-i18n="admin.nav.dashboard">Dashboard</span>
         </a>
         <a href="tenants.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="building-2" class="w-5 h-5"></i>
-          <span>Tenants</span>
+          <span data-i18n="admin.nav.tenants">Tenants</span>
         </a>
         <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="users" class="w-5 h-5"></i>
-          <span>Utilisateurs</span>
+          <span data-i18n="admin.nav.users">Utilisateurs</span>
         </a>
         <a href="logs.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="scroll-text" class="w-5 h-5"></i>
-          <span>Logs</span>
+          <span data-i18n="admin.nav.logs">Logs</span>
         </a>
         <a href="hitl.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="check-circle" class="w-5 h-5"></i>
-          <span>HITL</span>
+          <span data-i18n="admin.nav.hitl">HITL</span>
           <span id="hitl-badge" class="hidden ml-auto text-xs px-1.5 py-0.5 bg-red-500 text-white rounded-full">0</span>
         </a>
 
         <div class="pt-4 mt-4 border-t border-slate-700">
           <a href="/app/client/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
             <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            <span>Retour client</span>
+            <span data-i18n="admin.nav.back_client">Retour client</span>
           </a>
         </div>
       </nav>
@@ -80,13 +81,13 @@
       <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Console Admin</h1>
-            <p class="text-slate-600 dark:text-slate-400">Vue d'ensemble de la plateforme</p>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="admin.title">Console Admin</h1>
+            <p class="text-slate-600 dark:text-slate-400" data-i18n="admin.subtitle">Vue d'ensemble de la plateforme</p>
           </div>
           <div class="flex items-center gap-3">
             <div id="system-status" class="flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 rounded-full">
               <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span class="text-sm text-green-700 dark:text-green-300">Système OK</span>
+              <span class="text-sm text-green-700 dark:text-green-300" data-i18n="admin.system_ok">Système OK</span>
             </div>
           </div>
         </div>
@@ -97,45 +98,45 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-5 text-white">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-green-100">MRR</span>
+              <span class="text-green-100" data-i18n="admin.stats.mrr">MRR</span>
               <i data-lucide="trending-up" class="w-5 h-5 text-green-100"></i>
             </div>
             <p class="text-3xl font-bold" id="stat-mrr">--</p>
-            <p class="text-sm text-green-100 mt-1">+12% vs mois dernier</p>
+            <p class="text-sm text-green-100 mt-1" data-i18n="admin.stats.vs_last_month">+12% vs mois dernier</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Tenants actifs</span>
+              <span class="text-sm text-slate-500" data-i18n="admin.stats.active_tenants">Tenants actifs</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-tenants">--</p>
-            <p class="text-sm text-green-600 mt-1">+5 ce mois</p>
+            <p class="text-sm text-green-600 mt-1" data-i18n="admin.stats.this_month">+5 ce mois</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Total appels</span>
+              <span class="text-sm text-slate-500" data-i18n="admin.stats.total_calls">Total appels</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-calls">--</p>
-            <p class="text-sm text-slate-500 mt-1">Aujourd'hui</p>
+            <p class="text-sm text-slate-500 mt-1" data-i18n="admin.stats.today">Aujourd'hui</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Latence API</span>
+              <span class="text-sm text-slate-500" data-i18n="admin.stats.api_latency">Latence API</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-latency">--</p>
-            <p class="text-sm text-green-600 mt-1">Normal</p>
+            <p class="text-sm text-green-600 mt-1" data-i18n="admin.stats.normal">Normal</p>
           </div>
         </div>
 
         <!-- Charts Row -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Revenus mensuels</h3>
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.charts.monthly_revenue">Revenus mensuels</h3>
             <div class="h-64">
               <canvas id="revenue-chart"></canvas>
             </div>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Appels par tenant</h3>
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.charts.calls_by_tenant">Appels par tenant</h3>
             <div class="h-64">
               <canvas id="tenant-chart"></canvas>
             </div>
@@ -144,7 +145,7 @@
 
         <!-- Services Status -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">État des services</h3>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.services.title">État des services</h3>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
               <span class="w-3 h-3 bg-green-500 rounded-full"></span>
@@ -179,7 +180,7 @@
 
         <!-- Recent Activity -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Activité récente</h3>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.activity.title">Activité récente</h3>
           <div class="space-y-3" id="recent-activity">
             <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
               <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
@@ -218,6 +219,12 @@
     import auth from '/src/lib/auth-client.js';
     import api from '/src/lib/api-client.js';
     import { createLineChart, createBarChart, COLORS } from '/src/lib/charts.js';
+
+    // Initialize i18n
+    if (window.VocaliaI18n) {
+      await VocaliaI18n.initI18n();
+      VocaliaI18n.translatePage();
+    }
 
     lucide.createIcons();
 

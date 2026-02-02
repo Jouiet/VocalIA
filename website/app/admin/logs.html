@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="/src/lib/i18n.js"></script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="flex h-screen overflow-hidden">
@@ -30,28 +31,28 @@
       <nav class="flex-1 p-4 space-y-1">
         <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-          <span>Dashboard</span>
+          <span data-i18n="admin.nav.dashboard">Dashboard</span>
         </a>
         <a href="tenants.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="building-2" class="w-5 h-5"></i>
-          <span>Tenants</span>
+          <span data-i18n="admin.nav.tenants">Tenants</span>
         </a>
         <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="users" class="w-5 h-5"></i>
-          <span>Utilisateurs</span>
+          <span data-i18n="admin.nav.users">Utilisateurs</span>
         </a>
         <a href="logs.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800 text-white">
           <i data-lucide="scroll-text" class="w-5 h-5"></i>
-          <span>Logs</span>
+          <span data-i18n="admin.nav.logs">Logs</span>
         </a>
         <a href="hitl.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
           <i data-lucide="check-circle" class="w-5 h-5"></i>
-          <span>HITL</span>
+          <span data-i18n="admin.nav.hitl">HITL</span>
         </a>
         <div class="pt-4 mt-4 border-t border-slate-700">
           <a href="/app/client/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
             <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            <span>Retour client</span>
+            <span data-i18n="admin.nav.back_client">Retour client</span>
           </a>
         </div>
       </nav>

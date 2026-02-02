@@ -2927,7 +2927,38 @@
     "vidos_hitl_65": "Vidéos (HITL)",
     "admin_66": "Admin",
     "vocalia_67": "VocalIA",
-    "vocalia_admin_dashboard_68": "صوتيIA - Admin Dashboard"
+    "vocalia_admin_dashboard_68": "صوتيIA - Admin Dashboard",
+    "nav": {
+      "dashboard": "لوحة التحكم",
+      "tenants": "العملاء",
+      "users": "المستخدمون",
+      "logs": "السجلات",
+      "hitl": "HITL",
+      "back_client": "العودة للعميل"
+    },
+    "title": "وحدة الإدارة",
+    "subtitle": "نظرة عامة على المنصة",
+    "system_ok": "النظام يعمل",
+    "stats": {
+      "mrr": "الإيرادات الشهرية",
+      "vs_last_month": "+12% مقارنة بالشهر الماضي",
+      "active_tenants": "العملاء النشطون",
+      "this_month": "+5 هذا الشهر",
+      "total_calls": "إجمالي المكالمات",
+      "today": "اليوم",
+      "api_latency": "تأخر API",
+      "normal": "عادي"
+    },
+    "charts": {
+      "monthly_revenue": "الإيرادات الشهرية",
+      "calls_by_tenant": "المكالمات حسب العميل"
+    },
+    "services": {
+      "title": "حالة الخدمات"
+    },
+    "activity": {
+      "title": "النشاط الأخير"
+    }
   },
   "analytics": {
     "il_y_a_0": "Il y a 45 min",
