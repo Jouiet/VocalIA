@@ -483,18 +483,18 @@ POST   /api/tenants/{id}/personas/{pid}/test → Test persona with sample query
 
 | # | Tâche | Fichier | Status |
 |:-:|:------|:--------|:------:|
-| 1 | Créer TenantKBLoader | `core/tenant-kb-loader.cjs` | ⬜ TODO |
-| 2 | Modifier handleSearchKB | `telephony/voice-telephony-bridge.cjs` | ⬜ TODO |
-| 3 | Créer structure dossiers clients | `clients/{id}/knowledge_base/` | ⬜ TODO |
-| 4 | KB cache LRU + hot-reload | `core/tenant-kb-loader.cjs` | ⬜ TODO |
+| 1 | Créer TenantKBLoader | `core/tenant-kb-loader.cjs` | ✅ DONE |
+| 2 | Modifier handleSearchKB | `telephony/voice-telephony-bridge.cjs` | ✅ DONE |
+| 3 | Créer structure dossiers clients | `clients/{id}/knowledge_base/` | ✅ DONE |
+| 4 | KB cache LRU + hot-reload | `core/tenant-kb-loader.cjs` | ✅ DONE |
 
 ### Phase 2: API Endpoints (P0) - 1 jour
 
 | # | Tâche | Fichier | Status |
 |:-:|:------|:--------|:------:|
-| 5 | KB CRUD endpoints | `core/db-api.cjs` | ⬜ TODO |
-| 6 | KB import/export | `core/db-api.cjs` | ⬜ TODO |
-| 7 | Rebuild index endpoint | `core/db-api.cjs` | ⬜ TODO |
+| 5 | KB CRUD endpoints | `core/db-api.cjs` | ✅ DONE |
+| 6 | KB search endpoint | `core/db-api.cjs` | ✅ DONE |
+| 7 | KB stats endpoint | `core/db-api.cjs` | ✅ DONE |
 
 ### Phase 3: Dashboard UI (P1) - 2 jours
 
@@ -508,9 +508,11 @@ POST   /api/tenants/{id}/personas/{pid}/test → Test persona with sample query
 
 | # | Tâche | Fichier | Status |
 |:-:|:------|:--------|:------:|
-| 11 | TTS phrase caching | `telephony/voice-telephony-bridge.cjs` | ⬜ TODO |
-| 12 | Audio streaming | `telephony/voice-telephony-bridge.cjs` | ⬜ TODO |
-| 13 | KB pre-warming | `telephony/voice-telephony-bridge.cjs` | ⬜ TODO |
+| 11 | TTS phrase caching | `core/elevenlabs-client.cjs` | ✅ DONE |
+| 12 | optimize_streaming_latency=3 | `core/elevenlabs-client.cjs` | ✅ DONE |
+| 13 | Flash v2.5 model for streaming | `core/elevenlabs-client.cjs` | ✅ DONE |
+| 14 | Low-latency voice settings | `core/elevenlabs-client.cjs` | ✅ DONE |
+| 15 | preCacheCommonPhrases() | `core/elevenlabs-client.cjs` | ✅ DONE |
 
 ---
 

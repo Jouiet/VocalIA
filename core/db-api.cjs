@@ -557,6 +557,183 @@ async function handleRequest(req, res) {
     if (handled) return;
   }
 
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.45: KB API ENDPOINTS (Per-Tenant Knowledge Base)
+  // ═══════════════════════════════════════════════════════════════
+
+  // KB List - GET /api/tenants/:id/kb
+  const kbListMatch = path.match(/^\/api\/tenants\/(\w+)\/kb$/);
+  if (kbListMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbListMatch[1];
+
+    try {
+      const { getInstance } = require('./tenant-kb-loader.cjs');
+      const loader = getInstance();
+      const lang = query.lang || 'fr';
+      const kb = await loader.getKB(tenantId, lang);
+
+      // Remove internal metadata for response
+      const entries = Object.entries(kb)
+        .filter(([key]) => key !== '__meta')
+        .map(([key, value]) => ({ key, ...value }));
+
+      sendJson(res, 200, {
+        tenant_id: tenantId,
+        language: lang,
+        count: entries.length,
+        meta: kb.__meta || {},
+        entries: entries.slice(0, parseInt(query.limit) || 100)
+      });
+    } catch (e) {
+      sendError(res, 500, `KB error: ${e.message}`);
+    }
+    return;
+  }
+
+  // KB Create/Update - POST /api/tenants/:id/kb
+  if (kbListMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbListMatch[1];
+
+    try {
+      const body = await parseBody(req);
+      const { key, value, language = 'fr' } = body;
+
+      if (!key || !value) {
+        sendError(res, 400, 'key and value are required');
+        return;
+      }
+
+      // Load current KB, add entry, save
+      const fs = require('fs');
+      const path = require('path');
+      const kbDir = path.join(__dirname, '../clients', tenantId, 'knowledge_base');
+      const kbFile = path.join(kbDir, `kb_${language}.json`);
+
+      // Ensure directory exists
+      if (!fs.existsSync(kbDir)) {
+        fs.mkdirSync(kbDir, { recursive: true });
+      }
+
+      // Load or create KB
+      let kb = {};
+      if (fs.existsSync(kbFile)) {
+        kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+      }
+
+      // Add/update entry
+      kb[key] = typeof value === 'object' ? value : { response: value };
+      kb.__meta = {
+        ...kb.__meta,
+        tenant_id: tenantId,
+        last_updated: new Date().toISOString()
+      };
+
+      // Save
+      fs.writeFileSync(kbFile, JSON.stringify(kb, null, 2));
+
+      // Invalidate cache
+      const { getInstance } = require('./tenant-kb-loader.cjs');
+      getInstance().invalidateCache(tenantId);
+
+      sendJson(res, 201, { success: true, key, language, message: 'KB entry created/updated' });
+    } catch (e) {
+      sendError(res, 500, `KB write error: ${e.message}`);
+    }
+    return;
+  }
+
+  // KB Delete Entry - DELETE /api/tenants/:id/kb/:key
+  const kbDeleteMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/(\w+)$/);
+  if (kbDeleteMatch && method === 'DELETE') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbDeleteMatch[1];
+    const key = kbDeleteMatch[2];
+
+    try {
+      const fs = require('fs');
+      const pathModule = require('path');
+      const language = query.lang || 'fr';
+      const kbFile = pathModule.join(__dirname, '../clients', tenantId, 'knowledge_base', `kb_${language}.json`);
+
+      if (!fs.existsSync(kbFile)) {
+        sendError(res, 404, 'KB file not found');
+        return;
+      }
+
+      const kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+      if (!kb[key]) {
+        sendError(res, 404, 'KB entry not found');
+        return;
+      }
+
+      delete kb[key];
+      kb.__meta = { ...kb.__meta, last_updated: new Date().toISOString() };
+      fs.writeFileSync(kbFile, JSON.stringify(kb, null, 2));
+
+      // Invalidate cache
+      const { getInstance } = require('./tenant-kb-loader.cjs');
+      getInstance().invalidateCache(tenantId);
+
+      sendJson(res, 200, { success: true, key, message: 'KB entry deleted' });
+    } catch (e) {
+      sendError(res, 500, `KB delete error: ${e.message}`);
+    }
+    return;
+  }
+
+  // KB Search - GET /api/tenants/:id/kb/search
+  const kbSearchMatch = path.match(/^\/api\/tenants\/(\w+)\/kb\/search$/);
+  if (kbSearchMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = kbSearchMatch[1];
+
+    try {
+      const q = query.q || query.query;
+      if (!q) {
+        sendError(res, 400, 'query parameter (q) is required');
+        return;
+      }
+
+      const { getInstance } = require('./tenant-kb-loader.cjs');
+      const loader = getInstance();
+      const language = query.lang || 'fr';
+      const results = await loader.searchKB(tenantId, language, q, { maxResults: 10 });
+
+      sendJson(res, 200, {
+        tenant_id: tenantId,
+        query: q,
+        language,
+        count: results.length,
+        results
+      });
+    } catch (e) {
+      sendError(res, 500, `KB search error: ${e.message}`);
+    }
+    return;
+  }
+
+  // KB Stats - GET /api/kb/stats
+  if (path === '/api/kb/stats' && method === 'GET') {
+    try {
+      const { getInstance } = require('./tenant-kb-loader.cjs');
+      const loader = getInstance();
+      sendJson(res, 200, loader.getStats());
+    } catch (e) {
+      sendError(res, 500, `KB stats error: ${e.message}`);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // END KB ENDPOINTS
+  // ═══════════════════════════════════════════════════════════════
+
   // Logs Endpoint (ADMIN ONLY)
   if (path === '/api/logs' && method === 'GET') {
     const admin = await checkAdmin(req, res);

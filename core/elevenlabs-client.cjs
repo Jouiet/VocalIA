@@ -39,7 +39,16 @@ const fs = require('fs');
 // ═══════════════════════════════════════════════════════════════
 
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
-const ELEVENLABS_BASE_URL = 'https://api.elevenlabs.io/v1';
+
+// Session 250.45: Geographic routing for lowest latency
+// Source: https://elevenlabs.io/docs/developers/best-practices/latency-optimization
+const ELEVENLABS_BASE_URL = process.env.ELEVENLABS_USE_GLOBAL === 'true'
+  ? 'https://api-global-preview.elevenlabs.io/v1'  // Geographic routing
+  : 'https://api.elevenlabs.io/v1';
+
+// Session 250.45: Latency optimization levels (0-4)
+// 0 = default, 4 = max speed (may mispronounce numbers/dates)
+const OPTIMIZE_STREAMING_LATENCY = parseInt(process.env.ELEVENLABS_LATENCY_LEVEL || '3', 10);
 
 // Voice IDs for different languages/dialects
 // Source: https://json2video.com/ai-voices/elevenlabs/languages/arabic/
@@ -86,6 +95,19 @@ const DEFAULT_VOICE_SETTINGS = {
   style: 0.5,
   use_speaker_boost: true,
 };
+
+// Session 250.45: Low-latency voice settings (faster but slightly less quality)
+const LOW_LATENCY_VOICE_SETTINGS = {
+  stability: 0.5,
+  similarity_boost: 0.75,
+  style: 0,            // Disable style for speed
+  use_speaker_boost: false,  // Disable for speed
+};
+
+// TTS Phrase Cache for common phrases (reduces latency for repeated phrases)
+const TTS_CACHE = new Map();
+const TTS_CACHE_MAX_SIZE = 100;
+const TTS_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 
 // ═══════════════════════════════════════════════════════════════
 // ELEVENLABS CLIENT CLASS
@@ -134,6 +156,8 @@ class ElevenLabsClient {
    * @param {string} options.model - Model ID (default: eleven_multilingual_v2)
    * @param {string} options.outputFormat - Output format (mp3_44100_128, pcm_16000, etc.)
    * @param {Object} options.voiceSettings - Voice settings override
+   * @param {boolean} options.lowLatency - Use low-latency settings (Session 250.45)
+   * @param {boolean} options.useCache - Use phrase cache (Session 250.45)
    * @returns {Promise<Buffer>} Audio buffer
    */
   async textToSpeech(text, options = {}) {
@@ -143,11 +167,28 @@ class ElevenLabsClient {
 
     const language = options.language || 'fr';
     const voiceId = options.voiceId || this.voiceIds[language] || this.voiceIds.en;
-    const model = options.model || this.defaultModel;
-    const outputFormat = options.outputFormat || 'mp3_44100_128';
-    const voiceSettings = { ...DEFAULT_VOICE_SETTINGS, ...options.voiceSettings };
+    const lowLatency = options.lowLatency || false;
+    const useCache = options.useCache !== false; // Default true
 
-    const url = `${this.baseUrl}/text-to-speech/${voiceId}?output_format=${outputFormat}`;
+    // Session 250.45: Use Flash model for low-latency, multilingual for quality
+    const model = options.model || (lowLatency ? MODELS.flash_v2_5 : this.defaultModel);
+    const outputFormat = options.outputFormat || (lowLatency ? 'pcm_22050' : 'mp3_44100_128');
+    const voiceSettings = lowLatency
+      ? { ...LOW_LATENCY_VOICE_SETTINGS, ...options.voiceSettings }
+      : { ...DEFAULT_VOICE_SETTINGS, ...options.voiceSettings };
+
+    // Session 250.45: Check cache for common phrases
+    if (useCache) {
+      const cacheKey = `${voiceId}:${model}:${text.substring(0, 100)}`;
+      const cached = TTS_CACHE.get(cacheKey);
+      if (cached && Date.now() - cached.timestamp < TTS_CACHE_TTL) {
+        console.log('[ElevenLabs] Cache hit for TTS phrase');
+        return cached.audio;
+      }
+    }
+
+    // Session 250.45: Add optimize_streaming_latency parameter
+    const url = `${this.baseUrl}/text-to-speech/${voiceId}?output_format=${outputFormat}&optimize_streaming_latency=${OPTIMIZE_STREAMING_LATENCY}`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -165,11 +206,25 @@ class ElevenLabsClient {
     }
 
     const arrayBuffer = await response.arrayBuffer();
-    return Buffer.from(arrayBuffer);
+    const audioBuffer = Buffer.from(arrayBuffer);
+
+    // Session 250.45: Cache result
+    if (useCache && text.length < 200) {  // Only cache short phrases
+      const cacheKey = `${voiceId}:${model}:${text.substring(0, 100)}`;
+      if (TTS_CACHE.size >= TTS_CACHE_MAX_SIZE) {
+        // Remove oldest entry
+        const oldestKey = TTS_CACHE.keys().next().value;
+        TTS_CACHE.delete(oldestKey);
+      }
+      TTS_CACHE.set(cacheKey, { audio: audioBuffer, timestamp: Date.now() });
+    }
+
+    return audioBuffer;
   }
 
   /**
    * Stream text to speech (for real-time applications)
+   * Session 250.45: Optimized with Flash v2.5 model + latency params
    *
    * @param {string} text - Text to convert
    * @param {Object} options - Same as textToSpeech
@@ -182,11 +237,13 @@ class ElevenLabsClient {
 
     const language = options.language || 'fr';
     const voiceId = options.voiceId || this.voiceIds[language] || this.voiceIds.en;
-    const model = options.model || MODELS.flash_v2_5; // Use flash for streaming
-    const outputFormat = options.outputFormat || 'mp3_44100_128';
-    const voiceSettings = { ...DEFAULT_VOICE_SETTINGS, ...options.voiceSettings };
+    const model = options.model || MODELS.flash_v2_5; // Flash = 135ms TTFB
+    const outputFormat = options.outputFormat || 'pcm_22050';  // Lower quality = faster
+    // Session 250.45: Use low-latency settings for streaming
+    const voiceSettings = { ...LOW_LATENCY_VOICE_SETTINGS, ...options.voiceSettings };
 
-    const url = `${this.baseUrl}/text-to-speech/${voiceId}/stream?output_format=${outputFormat}`;
+    // Session 250.45: Max latency optimization for streaming (level 4)
+    const url = `${this.baseUrl}/text-to-speech/${voiceId}/stream?output_format=${outputFormat}&optimize_streaming_latency=4`;
 
     const response = await fetch(url, {
       method: 'POST',
@@ -481,6 +538,113 @@ class ElevenLabsClient {
       return result;
     }
   }
+
+  // ─────────────────────────────────────────────────────────────────
+  // SESSION 250.45: PHRASE PRE-CACHING
+  // ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Pre-cache common phrases for faster response
+   * Call this at startup to warm up the cache
+   *
+   * @param {Array<string>} languages - Languages to pre-cache (default: ['fr', 'en', 'ary'])
+   * @returns {Promise<Object>} Cache stats
+   */
+  async preCacheCommonPhrases(languages = ['fr', 'en', 'ary']) {
+    if (!this.isConfigured()) {
+      console.warn('[ElevenLabs] Cannot pre-cache: API key not configured');
+      return { success: false, cached: 0 };
+    }
+
+    const COMMON_PHRASES = {
+      fr: [
+        'Bonjour, comment puis-je vous aider?',
+        'Merci pour votre appel.',
+        'Un instant s\'il vous plaît.',
+        'Je vous transfere vers un conseiller.',
+        'Au revoir et bonne journée!'
+      ],
+      en: [
+        'Hello, how can I help you?',
+        'Thank you for calling.',
+        'One moment please.',
+        'Let me transfer you to an agent.',
+        'Goodbye and have a great day!'
+      ],
+      es: [
+        'Hola, ¿cómo puedo ayudarle?',
+        'Gracias por llamar.',
+        'Un momento por favor.',
+        'Le transfiero con un agente.',
+        '¡Adiós y que tenga un buen día!'
+      ],
+      ar: [
+        'مرحبا، كيف يمكنني مساعدتك؟',
+        'شكرا لاتصالك.',
+        'لحظة من فضلك.',
+        'سأحولك إلى موظف.',
+        'مع السلامة!'
+      ],
+      ary: [
+        'السلام، كيفاش نقدر نعاونك؟',
+        'شكرا على الاتصال ديالك.',
+        'تسنا شوية عافاك.',
+        'غادي نحولك لواحد المستشار.',
+        'بسلامة وتهلا فراسك!'
+      ]
+    };
+
+    let cached = 0;
+    const errors = [];
+
+    console.log(`[ElevenLabs] Pre-caching phrases for: ${languages.join(', ')}`);
+
+    for (const lang of languages) {
+      const phrases = COMMON_PHRASES[lang];
+      if (!phrases) continue;
+
+      for (const phrase of phrases) {
+        try {
+          await this.textToSpeech(phrase, {
+            language: lang,
+            lowLatency: true,
+            useCache: true
+          });
+          cached++;
+        } catch (e) {
+          errors.push({ lang, phrase: phrase.substring(0, 20), error: e.message });
+        }
+      }
+    }
+
+    console.log(`[ElevenLabs] Pre-cached ${cached} phrases (${errors.length} errors)`);
+
+    return {
+      success: errors.length === 0,
+      cached,
+      errors: errors.length > 0 ? errors : undefined
+    };
+  }
+
+  /**
+   * Get cache statistics
+   * @returns {Object} Cache stats
+   */
+  getCacheStats() {
+    return {
+      size: TTS_CACHE.size,
+      maxSize: TTS_CACHE_MAX_SIZE,
+      ttlMs: TTS_CACHE_TTL
+    };
+  }
+
+  /**
+   * Clear TTS cache
+   */
+  clearCache() {
+    TTS_CACHE.clear();
+    console.log('[ElevenLabs] TTS cache cleared');
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -614,5 +778,8 @@ module.exports = {
   VOICE_IDS,
   MODELS,
   DEFAULT_VOICE_SETTINGS,
+  LOW_LATENCY_VOICE_SETTINGS,
   getVoiceIdForLanguage,
+  OPTIMIZE_STREAMING_LATENCY,
+  TTS_CACHE,  // Expose for testing
 };
