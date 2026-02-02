@@ -288,8 +288,9 @@
         document.getElementById('usage-calls').textContent = thisMonth.length.toLocaleString();
         document.getElementById('usage-calls-sub').textContent = plan === 'free' ? `Limité à 100/mois` : 'Illimité sur votre plan';
 
-        // Integrations count (placeholder - would come from API)
-        document.getElementById('usage-integrations').textContent = '0';
+        // Integrations count from tenant config
+        const integrations = tenant?.integrations || [];
+        document.getElementById('usage-integrations').textContent = integrations.length.toString();
 
         // Billing info from tenant
         billingData = tenant?.billing || {};
