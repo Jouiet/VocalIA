@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Agents IA - VocalIA</title>
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <a href="/app/client/" class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+            <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        </a>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+          <span>Appels</span>
+        </a>
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+          <i data-lucide="bot" class="w-5 h-5"></i>
+          <span>Agents IA</span>
+        </a>
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="plug" class="w-5 h-5"></i>
+          <span>Intégrations</span>
+        </a>
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span>Analytics</span>
+        </a>
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+          <span>Facturation</span>
+        </a>
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>Paramètres</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+            <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+          </div>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Agents IA</h1>
+            <p class="text-slate-600 dark:text-slate-400">Gérez vos personas vocaux</p>
+          </div>
+          <button id="new-agent-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+            <i data-lucide="plus" class="w-5 h-5"></i>
+            Nouveau persona
+          </button>
+        </div>
+      </header>
+
+      <div class="px-6 py-6">
+        <!-- Active Persona -->
+        <div class="mb-6">
+          <h2 class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3">Persona actif</h2>
+          <div id="active-persona" class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
+            <div class="flex items-start justify-between">
+              <div>
+                <h3 class="text-xl font-bold" id="active-persona-name">Chargement...</h3>
+                <p class="text-indigo-100 mt-1" id="active-persona-desc">-</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-1 bg-white/20 rounded text-sm">Actif</span>
+              </div>
+            </div>
+            <div class="mt-4 grid grid-cols-3 gap-4">
+              <div>
+                <p class="text-indigo-200 text-sm">Appels traités</p>
+                <p class="text-2xl font-bold" id="active-persona-calls">-</p>
+              </div>
+              <div>
+                <p class="text-indigo-200 text-sm">Score moyen</p>
+                <p class="text-2xl font-bold" id="active-persona-score">-</p>
+              </div>
+              <div>
+                <p class="text-indigo-200 text-sm">Langues</p>
+                <p class="text-2xl font-bold" id="active-persona-langs">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Available Personas -->
+        <div>
+          <h2 class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3">Personas disponibles</h2>
+          <div id="personas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Loading skeleton -->
+            <div class="animate-pulse bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+              <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-3"></div>
+              <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import api from '/src/lib/api-client.js';
+    import toast from '/src/lib/toast.js';
+    import modal from '/src/lib/modal.js';
+
+    lucide.createIcons();
+
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
+    }
+
+    const user = auth.getCurrentUser();
+    if (user) {
+      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-email').textContent = user.email || '';
+      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await auth.logout();
+      window.location.href = '/app/auth/login.html';
+    });
+
+    // Persona definitions (from voice-persona-injector.cjs)
+    const PERSONAS = [
+      { key: 'AGENCY', name: 'VocalIA Consultant', desc: 'Agent commercial B2B', icon: 'briefcase', category: 'Core' },
+      { key: 'DENTAL', name: 'Assistant Dentaire', desc: 'Gestion cabinet dentaire', icon: 'stethoscope', category: 'Santé' },
+      { key: 'PROPERTY', name: 'Agent Immobilier', desc: 'Ventes et locations', icon: 'home', category: 'Immobilier' },
+      { key: 'CONTRACTOR', name: 'Artisan Pro', desc: 'Devis et planification', icon: 'hammer', category: 'Services' },
+      { key: 'FUNERAL', name: 'Conseiller Funéraire', desc: 'Services funéraires', icon: 'heart', category: 'Services' },
+      { key: 'UNIVERSAL_ECOMMERCE', name: 'E-commerce', desc: 'Support client boutique', icon: 'shopping-cart', category: 'E-commerce' },
+      { key: 'UNIVERSAL_SME', name: 'PME Universel', desc: 'Toutes entreprises', icon: 'building-2', category: 'Entreprise' },
+      { key: 'RETAILER', name: 'Commerçant', desc: 'Commerce de détail', icon: 'store', category: 'Commerce' },
+      { key: 'RESTAURATEUR', name: 'Restaurateur', desc: 'Réservations restaurant', icon: 'utensils', category: 'Restauration' },
+      { key: 'DOCTOR', name: 'Médecin', desc: 'Cabinet médical', icon: 'activity', category: 'Santé' },
+      { key: 'NOTARY', name: 'Notaire', desc: 'Services notariaux', icon: 'file-text', category: 'Juridique' },
+      { key: 'CONSULTANT', name: 'Consultant', desc: 'Services de conseil', icon: 'lightbulb', category: 'Conseil' },
+      { key: 'IT_SERVICES', name: 'IT Services', desc: 'Support informatique', icon: 'monitor', category: 'Tech' },
+      { key: 'TRAVEL_AGENT', name: 'Agent de Voyage', desc: 'Réservations voyage', icon: 'plane', category: 'Tourisme' },
+      { key: 'INSURER', name: 'Assureur', desc: 'Services assurance', icon: 'shield', category: 'Finance' },
+      { key: 'RECRUITER', name: 'Recruteur', desc: 'RH et recrutement', icon: 'users', category: 'RH' }
+    ];
+
+    // Active persona - loaded from tenant config or default
+    let activePersona = PERSONAS[0];
+    let personaStats = { calls: 0, successRate: 0, languages: 0 };
+
+    // Load persona stats from sessions
+    async function loadPersonaStats() {
+      try {
+        const result = await api.sessions.list({ limit: 1000 });
+        const sessions = result.data || result || [];
+
+        // Get current tenant's active persona from settings
+        // For now, default to first persona
+        const tenantPersona = sessions[0]?.persona || activePersona.key;
+        activePersona = PERSONAS.find(p => p.key === tenantPersona) || PERSONAS[0];
+
+        // Calculate stats for active persona
+        const personaSessions = sessions.filter(s => s.persona === activePersona.key);
+        const successSessions = personaSessions.filter(s => s.status === 'completed' || s.success);
+        const languages = new Set(personaSessions.map(s => s.language).filter(Boolean));
+
+        personaStats = {
+          calls: personaSessions.length,
+          successRate: personaSessions.length > 0
+            ? Math.round((successSessions.length / personaSessions.length) * 100)
+            : 0,
+          languages: languages.size || 5
+        };
+
+        renderActivePersona();
+      } catch (error) {
+        console.error('Failed to load persona stats:', error);
+        renderActivePersona(); // Render with defaults
+      }
+    }
+
+    function renderActivePersona() {
+      document.getElementById('active-persona-name').textContent = activePersona.name;
+      document.getElementById('active-persona-desc').textContent = activePersona.desc;
+      document.getElementById('active-persona-calls').textContent = personaStats.calls.toLocaleString();
+      document.getElementById('active-persona-score').textContent = `${personaStats.successRate}%`;
+      document.getElementById('active-persona-langs').textContent = personaStats.languages;
+    }
+
+    // Load stats on page load
+    loadPersonaStats();
+
+    function renderPersonasGrid() {
+      const grid = document.getElementById('personas-grid');
+      grid.innerHTML = PERSONAS.map(p => `
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors cursor-pointer group" data-persona="${p.key}">
+          <div class="flex items-start justify-between mb-3">
+            <div class="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+              <i data-lucide="${p.icon}" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+            </div>
+            <span class="text-xs px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded">${p.category}</span>
+          </div>
+          <h3 class="font-semibold text-slate-900 dark:text-white">${p.name}</h3>
+          <p class="text-sm text-slate-500 mt-1">${p.desc}</p>
+          <div class="mt-4 flex items-center justify-between">
+            <div class="flex gap-1">
+              ${['🇫🇷', '🇬🇧', '🇪🇸', '🇸🇦', '🇲🇦'].map(f => `<span class="text-sm">${f}</span>`).join('')}
+            </div>
+            <button class="opacity-0 group-hover:opacity-100 text-sm text-indigo-600 dark:text-indigo-400 font-medium transition-opacity">
+              Activer
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+
+      // Click handlers
+      grid.querySelectorAll('[data-persona]').forEach(card => {
+        card.addEventListener('click', async () => {
+          const key = card.dataset.persona;
+          const persona = PERSONAS.find(p => p.key === key);
+
+          const confirmed = await modal.confirm(
+            `Voulez-vous activer le persona "${persona.name}" ?`,
+            { title: 'Changer de persona', confirmText: 'Activer', danger: false }
+          );
+
+          if (confirmed) {
+            toast.success(`Persona "${persona.name}" activé`);
+            // In production: await api.post('/tenants/me/persona', { persona: key });
+          }
+        });
+      });
+    }
+
+    renderActivePersona();
+    renderPersonasGrid();
+
+    // New agent button
+    document.getElementById('new-agent-btn').addEventListener('click', async () => {
+      const name = await modal.prompt('Nom du nouveau persona', {
+        title: 'Créer un persona',
+        placeholder: 'Ex: Assistant Commercial'
+      });
+
+      if (name) {
+        toast.info('La création de personas personnalisés sera disponible prochainement');
+      }
+    });
+  </script>
+</body>
+</html>

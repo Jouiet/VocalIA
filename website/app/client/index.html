@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Dashboard - VocalIA</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .sidebar { width: 260px; }
+    @media (max-width: 1024px) {
+      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
+      .sidebar.open { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="sidebar fixed top-0 left-0 rtl:left-auto rtl:right-0 h-full bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col transition-transform duration-300">
+    <!-- Logo -->
+    <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-lg gradient-bg flex items-center justify-center">
+          <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+        </div>
+        <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+      </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">
+        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.nav.overview">Vue d'ensemble</span>
+      </a>
+      <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <i data-lucide="phone" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.nav.calls">Appels</span>
+      </a>
+      <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <i data-lucide="bot" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.nav.agents">Agents IA</span>
+      </a>
+      <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <i data-lucide="plug" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.nav.integrations">Intégrations</span>
+      </a>
+      <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.nav.analytics">Analytics</span>
+      </a>
+      <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <i data-lucide="credit-card" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.nav.billing">Facturation</span>
+      </a>
+      <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+        <i data-lucide="settings" class="w-5 h-5"></i>
+        <span data-i18n="dashboard.nav.settings">Paramètres</span>
+      </a>
+    </nav>
+
+    <!-- User -->
+    <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div class="flex items-center gap-3">
+        <div id="user-avatar" class="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-medium">
+          ?
+        </div>
+        <div class="flex-1 min-w-0">
+          <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
+          <p id="user-email" class="text-xs text-slate-500 truncate">...</p>
+        </div>
+        <button id="logout-btn" class="p-2 text-slate-400 hover:text-red-500 transition-colors" title="Déconnexion">
+          <i data-lucide="log-out" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar overlay -->
+  <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+
+  <!-- Main Content -->
+  <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 bg-white/80 dark:bg-slate-800/80 backdrop-blur border-b border-slate-200 dark:border-slate-700">
+      <div class="flex items-center justify-between px-4 py-3">
+        <div class="flex items-center gap-3">
+          <button id="menu-toggle" class="lg:hidden p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <h1 class="text-xl font-semibold text-slate-900 dark:text-white" data-i18n="dashboard.title">Tableau de bord</h1>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+          </button>
+          <button id="theme-toggle" class="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+            <i data-lucide="sun" class="w-5 h-5 dark:hidden"></i>
+            <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <div class="p-4 lg:p-6 space-y-6">
+
+      <!-- Welcome Banner -->
+      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
+        <h2 class="text-2xl font-bold" id="welcome-message">Bienvenue !</h2>
+        <p class="mt-1 opacity-90" data-i18n="dashboard.welcome_subtitle">Voici un aperçu de votre activité Voice AI</p>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Total Calls -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+              <i data-lucide="phone-call" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+            </div>
+            <span class="text-sm text-green-500 font-medium">+12%</span>
+          </div>
+          <p id="stat-calls" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.calls">Appels ce mois</p>
+        </div>
+
+        <!-- Minutes Used -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+              <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+            </div>
+            <span class="text-sm text-green-500 font-medium">+8%</span>
+          </div>
+          <p id="stat-minutes" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.minutes">Minutes utilisées</p>
+        </div>
+
+        <!-- Conversion Rate -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+              <i data-lucide="trending-up" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+            </div>
+            <span class="text-sm text-green-500 font-medium">+3%</span>
+          </div>
+          <p id="stat-conversion" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--%</p>
+          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.conversion">Taux de conversion</p>
+        </div>
+
+        <!-- NPS Score -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
+              <i data-lucide="star" class="w-5 h-5 text-yellow-600 dark:text-yellow-400"></i>
+            </div>
+            <span class="text-sm text-green-500 font-medium">+5</span>
+          </div>
+          <p id="stat-nps" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.nps">Score NPS</p>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Call Volume Chart -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="dashboard.charts.call_volume">Volume d'appels (7 jours)</h3>
+          <div class="h-64">
+            <canvas id="callVolumeChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Language Distribution -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="dashboard.charts.languages">Distribution des langues</h3>
+          <div class="h-64 flex items-center justify-center">
+            <canvas id="languageChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Calls -->
+      <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+        <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+          <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="dashboard.recent_calls">Appels récents</h3>
+          <a href="calls.html" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline" data-i18n="dashboard.view_all">Voir tout</a>
+        </div>
+        <div id="recent-calls" class="divide-y divide-slate-200 dark:divide-slate-700">
+          <div class="p-5 text-center text-slate-500">
+            <i data-lucide="loader-2" class="w-6 h-6 mx-auto animate-spin mb-2"></i>
+            <p data-i18n="dashboard.loading">Chargement...</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
+    import toast from '/src/lib/toast.js';
+
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Check authentication
+    if (!auth.requireAuth()) {
+      // Will redirect to login
+    }
+
+    // DOM elements
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const menuToggle = document.getElementById('menu-toggle');
+    const themeToggle = document.getElementById('theme-toggle');
+    const logoutBtn = document.getElementById('logout-btn');
+    const userAvatar = document.getElementById('user-avatar');
+    const userName = document.getElementById('user-name');
+    const userEmail = document.getElementById('user-email');
+    const welcomeMessage = document.getElementById('welcome-message');
+
+    // Mobile menu toggle
+    menuToggle?.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      sidebarOverlay.classList.toggle('hidden');
+    });
+
+    sidebarOverlay?.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      sidebarOverlay.classList.add('hidden');
+    });
+
+    // Theme toggle
+    themeToggle?.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Initialize theme
+    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+
+    // Logout
+    logoutBtn?.addEventListener('click', async () => {
+      await auth.logout();
+      toast.success('Déconnexion réussie');
+      window.location.href = '/app/auth/login.html';
+    });
+
+    // Load user info
+    const user = auth.getCurrentUser();
+    if (user) {
+      userAvatar.textContent = (user.name || user.email).charAt(0).toUpperCase();
+      userName.textContent = user.name || user.email.split('@')[0];
+      userEmail.textContent = user.email;
+      welcomeMessage.textContent = `Bienvenue, ${user.name || user.email.split('@')[0]} !`;
+    }
+
+    // Load dashboard data
+    async function loadDashboard() {
+      try {
+        // Fetch sessions for stats
+        const tenantId = auth.getTenantId();
+        const sessions = await api.sessions.getByTenant(tenantId);
+
+        // Calculate stats
+        const totalCalls = sessions.data?.length || 0;
+        const totalMinutes = sessions.data?.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60 || 0;
+
+        // Update stats
+        document.getElementById('stat-calls').textContent = totalCalls.toLocaleString();
+        document.getElementById('stat-minutes').textContent = Math.round(totalMinutes).toLocaleString();
+        document.getElementById('stat-conversion').textContent = '24%';
+        document.getElementById('stat-nps').textContent = '72';
+
+        // Render recent calls
+        renderRecentCalls(sessions.data?.slice(-5).reverse() || []);
+
+        // Initialize charts
+        initCharts(sessions.data || []);
+
+      } catch (error) {
+        console.error('Dashboard load error:', error);
+        toast.error('Erreur de chargement des données');
+      }
+    }
+
+    function renderRecentCalls(calls) {
+      const container = document.getElementById('recent-calls');
+
+      if (calls.length === 0) {
+        container.innerHTML = `
+          <div class="p-5 text-center text-slate-500">
+            <i data-lucide="phone-off" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+            <p>Aucun appel récent</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = calls.map(call => `
+        <div class="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
+            <i data-lucide="phone" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-slate-900 dark:text-white truncate">${call.persona || 'Agent IA'}</p>
+            <p class="text-sm text-slate-500">${Math.round((call.duration_sec || 0) / 60)} min • ${call.lang?.toUpperCase() || 'FR'}</p>
+          </div>
+          <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
+            Terminé
+          </span>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function initCharts(sessions) {
+      // Call Volume Chart
+      const callCtx = document.getElementById('callVolumeChart')?.getContext('2d');
+      if (callCtx) {
+        new Chart(callCtx, {
+          type: 'bar',
+          data: {
+            labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            datasets: [{
+              label: 'Appels',
+              data: [12, 19, 15, 25, 22, 8, 5],
+              backgroundColor: 'rgba(99, 102, 241, 0.8)',
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.1)' } },
+              x: { grid: { display: false } }
+            }
+          }
+        });
+      }
+
+      // Language Chart
+      const langCtx = document.getElementById('languageChart')?.getContext('2d');
+      if (langCtx) {
+        new Chart(langCtx, {
+          type: 'doughnut',
+          data: {
+            labels: ['Français', 'English', 'العربية', 'Español', 'Darija'],
+            datasets: [{
+              data: [45, 25, 15, 10, 5],
+              backgroundColor: [
+                'rgba(99, 102, 241, 0.8)',
+                'rgba(168, 85, 247, 0.8)',
+                'rgba(236, 72, 153, 0.8)',
+                'rgba(34, 197, 94, 0.8)',
+                'rgba(251, 146, 60, 0.8)'
+              ]
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'right'
+              }
+            }
+          }
+        });
+      }
+    }
+
+    // Load data
+    loadDashboard();
+  </script>
+</body>
+</html>

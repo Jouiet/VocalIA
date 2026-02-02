@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Analytics - VocalIA</title>
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <a href="/app/client/" class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+            <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        </a>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+          <span>Appels</span>
+        </a>
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bot" class="w-5 h-5"></i>
+          <span>Agents IA</span>
+        </a>
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="plug" class="w-5 h-5"></i>
+          <span>Intégrations</span>
+        </a>
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span>Analytics</span>
+        </a>
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+          <span>Facturation</span>
+        </a>
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>Paramètres</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+            <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+          </div>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Analytics</h1>
+            <p class="text-slate-600 dark:text-slate-400">Analysez vos performances</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <select id="date-range" class="px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <option value="7d">7 derniers jours</option>
+              <option value="30d" selected>30 derniers jours</option>
+              <option value="90d">90 derniers jours</option>
+            </select>
+            <button id="export-btn" class="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+              <i data-lucide="download" class="w-4 h-4"></i>
+              Exporter
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="px-6 py-6 space-y-6">
+        <!-- KPIs -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm text-slate-500">Appels totaux</span>
+              <span class="text-xs text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded">+12%</span>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">2,847</p>
+            <p class="text-sm text-slate-500 mt-1">vs 2,539 mois dernier</p>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm text-slate-500">Taux de conversion</span>
+              <span class="text-xs text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded">+5%</span>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">34.2%</p>
+            <p class="text-sm text-slate-500 mt-1">973 leads qualifiés</p>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm text-slate-500">Durée moyenne</span>
+              <span class="text-xs text-amber-600 bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 rounded">-2%</span>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">3:42</p>
+            <p class="text-sm text-slate-500 mt-1">vs 3:47 mois dernier</p>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm text-slate-500">Score moyen</span>
+              <span class="text-xs text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded">+8%</span>
+            </div>
+            <p class="text-3xl font-bold text-slate-900 dark:text-white">78%</p>
+            <p class="text-sm text-slate-500 mt-1">Qualification BANT</p>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Call Volume Chart -->
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Volume d'appels</h3>
+            <div class="h-64">
+              <canvas id="calls-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- Conversion Chart -->
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Taux de conversion</h3>
+            <div class="h-64">
+              <canvas id="conversion-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Distribution Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- By Language -->
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par langue</h3>
+            <div class="h-48">
+              <canvas id="language-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- By Persona -->
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par persona</h3>
+            <div class="h-48">
+              <canvas id="persona-chart"></canvas>
+            </div>
+          </div>
+
+          <!-- By Hour -->
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par heure</h3>
+            <div class="h-48">
+              <canvas id="hour-chart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Performers -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Top Performances</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700">
+                  <th class="pb-3 font-medium">Persona</th>
+                  <th class="pb-3 font-medium">Appels</th>
+                  <th class="pb-3 font-medium">Conversion</th>
+                  <th class="pb-3 font-medium">Score moyen</th>
+                  <th class="pb-3 font-medium">Tendance</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+                <tr>
+                  <td class="py-3 text-slate-900 dark:text-white font-medium">E-commerce</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">892</td>
+                  <td class="py-3 text-green-600 font-medium">42%</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">84%</td>
+                  <td class="py-3"><span class="text-green-600">↑ 12%</span></td>
+                </tr>
+                <tr>
+                  <td class="py-3 text-slate-900 dark:text-white font-medium">Commercial B2B</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">654</td>
+                  <td class="py-3 text-green-600 font-medium">38%</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">81%</td>
+                  <td class="py-3"><span class="text-green-600">↑ 8%</span></td>
+                </tr>
+                <tr>
+                  <td class="py-3 text-slate-900 dark:text-white font-medium">Support Client</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">534</td>
+                  <td class="py-3 text-amber-600 font-medium">31%</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">76%</td>
+                  <td class="py-3"><span class="text-slate-500">→ 0%</span></td>
+                </tr>
+                <tr>
+                  <td class="py-3 text-slate-900 dark:text-white font-medium">Immobilier</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">423</td>
+                  <td class="py-3 text-green-600 font-medium">35%</td>
+                  <td class="py-3 text-slate-600 dark:text-slate-300">79%</td>
+                  <td class="py-3"><span class="text-green-600">↑ 5%</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import { createLineChart, createBarChart, createDoughnutChart, COLORS } from '/src/lib/charts.js';
+    import toast from '/src/lib/toast.js';
+
+    lucide.createIcons();
+
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
+    }
+
+    const user = auth.getCurrentUser();
+    if (user) {
+      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-email').textContent = user.email || '';
+      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await auth.logout();
+      window.location.href = '/app/auth/login.html';
+    });
+
+    // Load and render analytics from real data
+    async function loadAnalytics() {
+      try {
+        const result = await api.sessions.list({ limit: 1000 });
+        const sessions = result.data || result || [];
+
+        renderCharts(sessions);
+      } catch (error) {
+        console.error('Failed to load analytics:', error);
+        toast.error('Erreur lors du chargement des données');
+        // Render empty charts
+        renderEmptyCharts();
+      }
+    }
+
+    function renderCharts(sessions) {
+      const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+
+      // Group calls by day of week (last 7 days)
+      const callsByDay = Array(7).fill(0);
+      const successByDay = Array(7).fill(0);
+      const now = new Date();
+
+      sessions.forEach(s => {
+        const date = new Date(s.created_at);
+        const daysAgo = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+        if (daysAgo < 7) {
+          const dayIdx = date.getDay();
+          callsByDay[dayIdx]++;
+          if (s.status === 'completed' || s.success) {
+            successByDay[dayIdx]++;
+          }
+        }
+      });
+
+      // Reorder to start from Monday
+      const orderedDays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+      const reorder = (arr) => [arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0]];
+
+      createLineChart('#calls-chart', {
+        labels: orderedDays,
+        datasets: [
+          { label: 'Appels', data: reorder(callsByDay), color: COLORS.primary },
+          { label: 'Réussis', data: reorder(successByDay), color: COLORS.success }
+        ]
+      });
+
+      // Conversion rate by day
+      const conversionByDay = callsByDay.map((calls, i) =>
+        calls > 0 ? Math.round((successByDay[i] / calls) * 100) : 0
+      );
+      createBarChart('#conversion-chart', {
+        labels: orderedDays,
+        datasets: [
+          { label: 'Taux (%)', data: reorder(conversionByDay), color: COLORS.secondary }
+        ]
+      });
+
+      // Language distribution
+      const langMap = { fr: 'Français', en: 'Anglais', ar: 'Arabe', ary: 'Darija', es: 'Espagnol' };
+      const byLanguage = {};
+      sessions.forEach(s => {
+        const lang = langMap[s.language] || s.language || 'Autre';
+        byLanguage[lang] = (byLanguage[lang] || 0) + 1;
+      });
+      const langEntries = Object.entries(byLanguage).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      createDoughnutChart('#language-chart', {
+        labels: langEntries.length > 0 ? langEntries.map(e => e[0]) : ['Aucune donnée'],
+        data: langEntries.length > 0 ? langEntries.map(e => e[1]) : [1],
+        colors: [COLORS.primary, COLORS.secondary, COLORS.success, COLORS.warning, COLORS.danger]
+      });
+
+      // Persona distribution
+      const byPersona = {};
+      sessions.forEach(s => {
+        const persona = s.persona || 'Autre';
+        byPersona[persona] = (byPersona[persona] || 0) + 1;
+      });
+      const personaEntries = Object.entries(byPersona).sort((a, b) => b[1] - a[1]).slice(0, 4);
+
+      createDoughnutChart('#persona-chart', {
+        labels: personaEntries.length > 0 ? personaEntries.map(e => e[0]) : ['Aucun persona'],
+        data: personaEntries.length > 0 ? personaEntries.map(e => e[1]) : [1],
+        colors: [COLORS.primary, COLORS.info, COLORS.success, COLORS.warning]
+      });
+
+      // Hour distribution
+      const byHour = {};
+      sessions.forEach(s => {
+        const hour = new Date(s.created_at).getHours();
+        if (hour >= 9 && hour <= 17) {
+          const label = `${hour}h`;
+          byHour[label] = (byHour[label] || 0) + 1;
+        }
+      });
+      const hours = ['9h', '10h', '11h', '12h', '14h', '15h', '16h', '17h'];
+      const hourData = hours.map(h => byHour[h] || 0);
+
+      createBarChart('#hour-chart', {
+        labels: hours,
+        datasets: [
+          { label: 'Appels', data: hourData, color: COLORS.info }
+        ]
+      });
+    }
+
+    function renderEmptyCharts() {
+      const labels = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+      createLineChart('#calls-chart', { labels, datasets: [{ label: 'Appels', data: Array(7).fill(0), color: COLORS.primary }] });
+      createBarChart('#conversion-chart', { labels, datasets: [{ label: 'Taux (%)', data: Array(7).fill(0), color: COLORS.secondary }] });
+      createDoughnutChart('#language-chart', { labels: ['Aucune donnée'], data: [1], colors: [COLORS.slate] });
+      createDoughnutChart('#persona-chart', { labels: ['Aucun persona'], data: [1], colors: [COLORS.slate] });
+      createBarChart('#hour-chart', { labels: ['9h', '10h', '11h', '12h', '14h', '15h', '16h', '17h'], datasets: [{ label: 'Appels', data: Array(8).fill(0), color: COLORS.info }] });
+    }
+
+    loadAnalytics();
+
+    // Export button - real export
+    document.getElementById('export-btn').addEventListener('click', async () => {
+      try {
+        toast.info('Export en cours de génération...');
+        const result = await api.sessions.list({ limit: 10000 });
+        const sessions = result.data || result || [];
+
+        // Generate CSV
+        const headers = ['Date', 'Langue', 'Persona', 'Status', 'Durée (s)'];
+        const rows = sessions.map(s => [
+          new Date(s.created_at).toLocaleString(),
+          s.language || '',
+          s.persona || '',
+          s.status || '',
+          s.duration || ''
+        ]);
+        const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `vocalia-analytics-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        toast.success('Rapport exporté en CSV');
+      } catch (error) {
+        toast.error('Erreur lors de l\'export');
+      }
+    });
+  </script>
+</body>
+</html>

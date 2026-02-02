@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>HITL Approbations - VocalIA Admin</title>
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col">
+      <div class="p-4 border-b border-slate-700">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+            <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold">VocalIA</span>
+          <span class="text-xs px-1.5 py-0.5 bg-amber-500 text-amber-900 rounded font-medium">Admin</span>
+        </div>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="tenants.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+          <i data-lucide="building-2" class="w-5 h-5"></i>
+          <span>Tenants</span>
+        </a>
+        <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          <span>Utilisateurs</span>
+        </a>
+        <a href="logs.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+          <i data-lucide="scroll-text" class="w-5 h-5"></i>
+          <span>Logs</span>
+        </a>
+        <a href="hitl.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800 text-white">
+          <i data-lucide="check-circle" class="w-5 h-5"></i>
+          <span>HITL</span>
+          <span id="pending-badge" class="ml-auto text-xs px-1.5 py-0.5 bg-red-500 text-white rounded-full">3</span>
+        </a>
+        <div class="pt-4 mt-4 border-t border-slate-700">
+          <a href="/app/client/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <span>Retour client</span>
+          </a>
+        </div>
+      </nav>
+
+      <div class="p-4 border-t border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center">
+            <span id="admin-initials" class="font-medium">--</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p id="admin-name" class="text-sm font-medium truncate">Admin</p>
+            <p id="admin-email" class="text-xs text-slate-400 truncate"></p>
+          </div>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-800">
+            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Human-in-the-Loop</h1>
+            <p class="text-slate-600 dark:text-slate-400">Approbations et décisions manuelles</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <select id="filter-type" class="px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <option value="">Tous les types</option>
+              <option value="booking">Réservations</option>
+              <option value="transfer">Transferts</option>
+              <option value="hot_lead">Leads chauds</option>
+              <option value="payment">Paiements</option>
+            </select>
+          </div>
+        </div>
+      </header>
+
+      <div class="px-6 py-6">
+        <!-- Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-amber-600" id="stat-pending">3</p>
+                <p class="text-sm text-amber-700 dark:text-amber-300">En attente</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-green-600" id="stat-approved">127</p>
+                <p class="text-sm text-slate-500">Approuvées</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                <i data-lucide="x" class="w-5 h-5 text-red-600"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-red-600" id="stat-rejected">12</p>
+                <p class="text-sm text-slate-500">Rejetées</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <i data-lucide="zap" class="w-5 h-5 text-blue-600"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-avg-time">2.3min</p>
+                <p class="text-sm text-slate-500">Temps moyen</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pending Approvals -->
+        <div class="mb-8">
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">En attente d'approbation</h2>
+          <div id="pending-list" class="space-y-4">
+            <!-- Pending items will be rendered here -->
+          </div>
+        </div>
+
+        <!-- Recent Actions -->
+        <div>
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-white mb-4">Actions récentes</h2>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <table class="w-full text-sm">
+              <thead>
+                <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+                  <th class="px-4 py-3 font-medium">Type</th>
+                  <th class="px-4 py-3 font-medium">Détails</th>
+                  <th class="px-4 py-3 font-medium">Score</th>
+                  <th class="px-4 py-3 font-medium">Décision</th>
+                  <th class="px-4 py-3 font-medium">Par</th>
+                  <th class="px-4 py-3 font-medium">Date</th>
+                </tr>
+              </thead>
+              <tbody id="history-list" class="divide-y divide-slate-200 dark:divide-slate-700">
+                <!-- History will be rendered here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import toast from '/src/lib/toast.js';
+    import modal from '/src/lib/modal.js';
+
+    lucide.createIcons();
+
+    if (!auth.requireRole('admin')) {
+      throw new Error('Not authorized');
+    }
+
+    const user = auth.getCurrentUser();
+    if (user) {
+      document.getElementById('admin-name').textContent = user.name || 'Admin';
+      document.getElementById('admin-email').textContent = user.email || '';
+      document.getElementById('admin-initials').textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await auth.logout();
+      window.location.href = '/app/auth/login.html';
+    });
+
+    // State - loaded from API
+    let pendingItems = [];
+    let historyItems = [];
+    let isLoading = false;
+
+    // Load data from API
+    async function loadHITLData() {
+      isLoading = true;
+      try {
+        const [pendingRes, historyRes, statsRes] = await Promise.all([
+          api.hitl.pending(),
+          api.hitl.history(),
+          api.hitl.stats()
+        ]);
+
+        pendingItems = pendingRes.data || [];
+        historyItems = (historyRes.data || []).map(h => ({
+          type: h.type,
+          details: h.summary,
+          score: h.score,
+          decision: h.decision,
+          by: h.decided_by,
+          date: new Date(h.decided_at)
+        }));
+
+        // Update stats
+        document.getElementById('stat-pending').textContent = statsRes.pending_count || 0;
+        document.getElementById('stat-approved').textContent = statsRes.approved_count || 0;
+        document.getElementById('stat-rejected').textContent = statsRes.rejected_count || 0;
+
+        renderPending();
+        renderHistory();
+        updateBadge();
+
+      } catch (error) {
+        console.error('Failed to load HITL data:', error);
+        toast.error('Erreur lors du chargement des données HITL');
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    // Load on page load
+    loadHITLData();
+
+    // Auto-refresh every 30 seconds
+    setInterval(loadHITLData, 30000);
+
+    function getTypeIcon(type) {
+      return {
+        booking: 'calendar',
+        hot_lead: 'flame',
+        transfer: 'phone-forwarded',
+        payment: 'credit-card'
+      }[type] || 'circle';
+    }
+
+    function getTypeColor(type) {
+      return {
+        booking: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+        hot_lead: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
+        transfer: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
+        payment: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+      }[type] || 'bg-slate-100 text-slate-800';
+    }
+
+    function renderPending() {
+      const container = document.getElementById('pending-list');
+
+      if (pendingItems.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-8 text-center">
+            <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+              <i data-lucide="check-circle" class="w-8 h-8 text-green-600"></i>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400">Aucune approbation en attente</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = pendingItems.map(item => `
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-amber-200 dark:border-amber-800 p-5" data-id="${item.id}">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg ${getTypeColor(item.type)} flex items-center justify-center">
+                <i data-lucide="${getTypeIcon(item.type)}" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">${item.tenant}</p>
+                <p class="text-sm text-slate-500">${item.caller}</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <p class="text-2xl font-bold ${item.score >= 70 ? 'text-green-600' : item.score >= 50 ? 'text-amber-600' : 'text-red-600'}">${item.score}%</p>
+              <p class="text-xs text-slate-500">Score BANT</p>
+            </div>
+          </div>
+
+          <p class="text-slate-700 dark:text-slate-300 mb-4">${item.summary}</p>
+
+          ${item.context.bant ? `
+            <div class="grid grid-cols-4 gap-2 mb-4">
+              ${['budget', 'authority', 'need', 'timeline'].map(key => `
+                <div class="text-center p-2 bg-slate-50 dark:bg-slate-900 rounded">
+                  <p class="text-xs text-slate-500 uppercase">${key[0]}</p>
+                  <p class="text-sm font-bold ${item.context.bant[key] >= 70 ? 'text-green-600' : 'text-slate-600'}">${item.context.bant[key]}%</p>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+
+          <div class="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-700">
+            <p class="text-xs text-slate-500">Il y a ${Math.round((Date.now() - item.created_at) / 60000)} min</p>
+            <div class="flex items-center gap-2">
+              <button onclick="rejectItem('${item.id}')" class="px-4 py-2 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                <i data-lucide="x" class="w-4 h-4 inline mr-1"></i>
+                Rejeter
+              </button>
+              <button onclick="approveItem('${item.id}')" class="px-4 py-2 text-sm bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+                <i data-lucide="check" class="w-4 h-4 inline mr-1"></i>
+                Approuver
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('history-list');
+
+      container.innerHTML = historyItems.map(item => `
+        <tr>
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 text-xs rounded ${getTypeColor(item.type)} capitalize">${item.type}</span>
+          </td>
+          <td class="px-4 py-3 text-slate-700 dark:text-slate-300">${item.details}</td>
+          <td class="px-4 py-3">
+            <span class="${item.score >= 70 ? 'text-green-600' : item.score >= 50 ? 'text-amber-600' : 'text-slate-500'} font-medium">${item.score}%</span>
+          </td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 text-xs rounded ${item.decision === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'}">
+              ${item.decision === 'approved' ? 'Approuvé' : 'Rejeté'}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-slate-500">${item.by}</td>
+          <td class="px-4 py-3 text-slate-500">${item.date.toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+
+    window.approveItem = async (id) => {
+      const item = pendingItems.find(i => i.id === id);
+      if (!item) return;
+
+      const confirmed = await modal.confirm(
+        `Approuver cette demande de ${item.type} pour ${item.tenant} ?`,
+        { title: 'Confirmer l\'approbation', confirmText: 'Approuver' }
+      );
+
+      if (confirmed) {
+        try {
+          await api.hitl.approve(id, user?.name || 'Admin');
+          toast.success('Demande approuvée');
+          await loadHITLData();
+        } catch (error) {
+          console.error('Approve failed:', error);
+          toast.error('Erreur lors de l\'approbation');
+        }
+      }
+    };
+
+    window.rejectItem = async (id) => {
+      const reason = await modal.prompt('Raison du rejet (optionnel)', {
+        title: 'Rejeter la demande'
+      });
+
+      try {
+        await api.hitl.reject(id, user?.name || 'Admin', reason || '');
+        toast.success('Demande rejetée');
+        await loadHITLData();
+      } catch (error) {
+        console.error('Reject failed:', error);
+        toast.error('Erreur lors du rejet');
+      }
+    };
+
+    function updateBadge() {
+      const badge = document.getElementById('pending-badge');
+      badge.textContent = pendingItems.length;
+      if (pendingItems.length === 0) {
+        badge.classList.add('hidden');
+      } else {
+        badge.classList.remove('hidden');
+      }
+    }
+
+    // Filter
+    document.getElementById('filter-type').addEventListener('change', (e) => {
+      const type = e.target.value;
+      const container = document.getElementById('pending-list');
+      const items = container.querySelectorAll('[data-id]');
+
+      items.forEach(item => {
+        if (!type || pendingItems.find(p => p.id === item.dataset.id)?.type === type) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

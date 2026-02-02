@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Vérification email - VocalIA</title>
+  <meta name="description" content="Vérifiez votre adresse email VocalIA">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+
+  <div class="w-full max-w-md">
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <a href="/" class="inline-flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
+          <i data-lucide="mic" class="w-6 h-6 text-white"></i>
+        </div>
+        <span class="text-2xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+      </a>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+      <!-- Loading View -->
+      <div id="loading-view">
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.verifying">
+            Vérification en cours...
+          </h2>
+          <p class="text-slate-600 dark:text-slate-400" data-i18n="auth.verifying_message">
+            Veuillez patienter pendant que nous vérifions votre adresse email.
+          </p>
+        </div>
+      </div>
+
+      <!-- Success View -->
+      <div id="success-view" class="hidden">
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="check-circle" class="w-8 h-8 text-green-600 dark:text-green-400"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.email_verified_title">
+            Email vérifié !
+          </h2>
+          <p class="text-slate-600 dark:text-slate-400 mb-6" data-i18n="auth.email_verified_message">
+            Votre adresse email a été vérifiée avec succès. Vous pouvez maintenant accéder à toutes les fonctionnalités.
+          </p>
+          <a
+            href="/app/client/index.html"
+            class="inline-flex items-center gap-2 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
+          >
+            <span data-i18n="auth.go_to_dashboard">Aller au tableau de bord</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Error View -->
+      <div id="error-view" class="hidden">
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="x-circle" class="w-8 h-8 text-red-600 dark:text-red-400"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.verification_failed_title">
+            Vérification échouée
+          </h2>
+          <p id="error-message" class="text-slate-600 dark:text-slate-400 mb-6">
+            Le lien de vérification est invalide ou a expiré.
+          </p>
+          <div class="space-y-3">
+            <button
+              id="resend-btn"
+              class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+            >
+              <i data-lucide="mail" class="w-4 h-4"></i>
+              <span data-i18n="auth.resend_verification">Renvoyer l'email de vérification</span>
+            </button>
+            <a
+              href="login.html"
+              class="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+            >
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+              <span data-i18n="auth.back_to_login">Retour à la connexion</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Already Verified View -->
+      <div id="already-verified-view" class="hidden">
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="info" class="w-8 h-8 text-blue-600 dark:text-blue-400"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.already_verified_title">
+            Déjà vérifié
+          </h2>
+          <p class="text-slate-600 dark:text-slate-400 mb-6" data-i18n="auth.already_verified_message">
+            Votre adresse email a déjà été vérifiée. Vous pouvez vous connecter.
+          </p>
+          <a
+            href="login.html"
+            class="inline-flex items-center gap-2 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors"
+          >
+            <span data-i18n="auth.go_to_login">Se connecter</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Resend Success View -->
+      <div id="resend-success-view" class="hidden">
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="mail-check" class="w-8 h-8 text-green-600 dark:text-green-400"></i>
+          </div>
+          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.resend_success_title">
+            Email envoyé !
+          </h2>
+          <p class="text-slate-600 dark:text-slate-400 mb-6" data-i18n="auth.resend_success_message">
+            Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception.
+          </p>
+          <div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+            <div class="flex items-start gap-2 text-amber-700 dark:text-amber-300">
+              <i data-lucide="info" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+              <p class="text-sm text-left" data-i18n="auth.check_spam">
+                Vérifiez votre dossier spam si vous ne recevez pas l'email dans les prochaines minutes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Language Switcher -->
+    <div class="flex justify-center gap-2 mt-6">
+      <button data-action="switchLang" data-params="fr" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">FR</button>
+      <span class="text-slate-300">|</span>
+      <button data-action="switchLang" data-params="en" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">EN</button>
+      <span class="text-slate-300">|</span>
+      <button data-action="switchLang" data-params="es" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">ES</button>
+      <span class="text-slate-300">|</span>
+      <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">عربي</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import toast from '/src/lib/toast.js';
+
+    lucide.createIcons();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    const loadingView = document.getElementById('loading-view');
+    const successView = document.getElementById('success-view');
+    const errorView = document.getElementById('error-view');
+    const alreadyVerifiedView = document.getElementById('already-verified-view');
+    const resendSuccessView = document.getElementById('resend-success-view');
+    const errorMessage = document.getElementById('error-message');
+    const resendBtn = document.getElementById('resend-btn');
+
+    function showView(viewId) {
+      [loadingView, successView, errorView, alreadyVerifiedView, resendSuccessView].forEach(v => {
+        v.classList.add('hidden');
+      });
+      document.getElementById(viewId).classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    async function verifyEmail() {
+      if (!token) {
+        errorMessage.textContent = 'Lien de vérification invalide. Aucun token fourni.';
+        showView('error-view');
+        return;
+      }
+
+      try {
+        const result = await auth.verifyEmail(token);
+
+        if (result.alreadyVerified) {
+          showView('already-verified-view');
+        } else {
+          showView('success-view');
+        }
+      } catch (error) {
+        console.error('Verification error:', error);
+
+        if (error.code === 'ALREADY_VERIFIED') {
+          showView('already-verified-view');
+        } else if (error.code === 'INVALID_TOKEN' || error.code === 'TOKEN_EXPIRED') {
+          errorMessage.textContent = 'Le lien de vérification est invalide ou a expiré.';
+          showView('error-view');
+        } else {
+          errorMessage.textContent = error.message || 'Une erreur est survenue lors de la vérification.';
+          showView('error-view');
+        }
+      }
+    }
+
+    resendBtn.addEventListener('click', async () => {
+      resendBtn.disabled = true;
+      resendBtn.innerHTML = `
+        <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span>Envoi...</span>
+      `;
+
+      try {
+        // Get email from localStorage if available
+        const email = localStorage.getItem('vocalia_pending_verification_email');
+        if (email) {
+          await auth.resendVerificationEmail(email);
+        }
+        showView('resend-success-view');
+      } catch (error) {
+        console.error('Resend error:', error);
+        toast.error('Impossible de renvoyer l\'email. Veuillez réessayer plus tard.');
+        resendBtn.disabled = false;
+        resendBtn.innerHTML = `
+          <i data-lucide="mail" class="w-4 h-4"></i>
+          <span data-i18n="auth.resend_verification">Renvoyer l'email de vérification</span>
+        `;
+        lucide.createIcons();
+      }
+    });
+
+    // Language switcher
+    document.querySelectorAll('[data-action="switchLang"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.getAttribute('data-params');
+        localStorage.setItem('vocalia_lang', lang);
+        document.documentElement.lang = lang;
+        document.documentElement.dir = ['ar', 'ary'].includes(lang) ? 'rtl' : 'ltr';
+      });
+    });
+
+    // Start verification
+    verifyEmail();
+  </script>
+</body>
+</html>

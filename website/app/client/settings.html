@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Paramètres - VocalIA</title>
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <a href="/app/client/" class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+            <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        </a>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+          <span>Appels</span>
+        </a>
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bot" class="w-5 h-5"></i>
+          <span>Agents IA</span>
+        </a>
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="plug" class="w-5 h-5"></i>
+          <span>Intégrations</span>
+        </a>
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span>Analytics</span>
+        </a>
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+          <span>Facturation</span>
+        </a>
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>Paramètres</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+            <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+          </div>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Paramètres</h1>
+            <p class="text-slate-600 dark:text-slate-400">Gérez votre compte et préférences</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="px-6 py-6 max-w-3xl space-y-6">
+        <!-- Profile -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Profil</h3>
+          <form id="profile-form" class="space-y-4">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                <span class="text-2xl text-indigo-600 dark:text-indigo-400 font-bold" id="profile-initials">--</span>
+              </div>
+              <button type="button" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700">
+                Changer la photo
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nom complet</label>
+                <input type="text" id="profile-name" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
+                <input type="email" id="profile-email" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Téléphone</label>
+                <input type="tel" id="profile-phone" placeholder="+212 6XX XXX XXX" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Poste</label>
+                <input type="text" id="profile-title" placeholder="Ex: Directeur Commercial" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+            </div>
+
+            <div class="pt-4">
+              <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                Enregistrer
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Password -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Mot de passe</h3>
+          <form id="password-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mot de passe actuel</label>
+              <input type="password" id="current-password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nouveau mot de passe</label>
+                <input type="password" id="new-password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Confirmer</label>
+                <input type="password" id="confirm-password" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+            </div>
+            <div class="pt-4">
+              <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                Changer le mot de passe
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Preferences -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Préférences</h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Langue</p>
+                <p class="text-sm text-slate-500">Langue de l'interface</p>
+              </div>
+              <select id="pref-language" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="ar">العربية</option>
+                <option value="ary">الدارجة</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Thème</p>
+                <p class="text-sm text-slate-500">Apparence de l'interface</p>
+              </div>
+              <select id="pref-theme" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+                <option value="light">Clair</option>
+                <option value="dark">Sombre</option>
+                <option value="system">Système</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Fuseau horaire</p>
+                <p class="text-sm text-slate-500">Pour les rapports et statistiques</p>
+              </div>
+              <select id="pref-timezone" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+                <option value="Africa/Casablanca">Casablanca (GMT+1)</option>
+                <option value="Europe/Paris">Paris (GMT+1)</option>
+                <option value="Europe/London">Londres (GMT)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Notifications</h3>
+          <div class="space-y-4">
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Nouveaux appels</p>
+                <p class="text-sm text-slate-500">Notification en temps réel</p>
+              </div>
+              <input type="checkbox" id="notif-calls" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+            </label>
+
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Leads qualifiés</p>
+                <p class="text-sm text-slate-500">Quand un lead atteint 70%+</p>
+              </div>
+              <input type="checkbox" id="notif-leads" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+            </label>
+
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Rapport hebdomadaire</p>
+                <p class="text-sm text-slate-500">Résumé chaque lundi</p>
+              </div>
+              <input type="checkbox" id="notif-weekly" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+            </label>
+
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Alertes système</p>
+                <p class="text-sm text-slate-500">Interruptions et maintenance</p>
+              </div>
+              <input type="checkbox" id="notif-system" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+            </label>
+          </div>
+        </div>
+
+        <!-- API Keys -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-slate-900 dark:text-white">Clés API</h3>
+            <button id="new-key-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+              Nouvelle clé
+            </button>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Production</p>
+                <p class="text-sm text-slate-500 font-mono">voc_live_••••••••••••sk8f</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
+                  <i data-lucide="copy" class="w-4 h-4 text-slate-400"></i>
+                </button>
+                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-red-500">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Test</p>
+                <p class="text-sm text-slate-500 font-mono">voc_test_••••••••••••3m9x</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
+                  <i data-lucide="copy" class="w-4 h-4 text-slate-400"></i>
+                </button>
+                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-red-500">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800 p-6">
+          <h3 class="font-semibold text-red-800 dark:text-red-300 mb-4">Zone dangereuse</h3>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-medium text-red-800 dark:text-red-300">Supprimer le compte</p>
+              <p class="text-sm text-red-600 dark:text-red-400">Action irréversible. Toutes vos données seront supprimées.</p>
+            </div>
+            <button id="delete-account-btn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import toast from '/src/lib/toast.js';
+    import modal from '/src/lib/modal.js';
+
+    lucide.createIcons();
+
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
+    }
+
+    const user = auth.getCurrentUser();
+    if (user) {
+      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-email').textContent = user.email || '';
+      const initials = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+      document.getElementById('user-initials').textContent = initials;
+      document.getElementById('profile-initials').textContent = initials;
+      document.getElementById('profile-name').value = user.name || '';
+      document.getElementById('profile-email').value = user.email || '';
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await auth.logout();
+      window.location.href = '/app/auth/login.html';
+    });
+
+    // Profile form
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const loading = modal.loading('Enregistrement...');
+
+      try {
+        await auth.updateProfile({
+          name: document.getElementById('profile-name').value,
+          phone: document.getElementById('profile-phone').value,
+          title: document.getElementById('profile-title').value
+        });
+        loading.close();
+        toast.success('Profil mis à jour');
+      } catch (error) {
+        loading.close();
+        toast.error('Erreur lors de la mise à jour');
+      }
+    });
+
+    // Password form
+    document.getElementById('password-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const current = document.getElementById('current-password').value;
+      const newPass = document.getElementById('new-password').value;
+      const confirm = document.getElementById('confirm-password').value;
+
+      if (newPass !== confirm) {
+        toast.error('Les mots de passe ne correspondent pas');
+        return;
+      }
+
+      if (newPass.length < 8) {
+        toast.error('Le mot de passe doit contenir au moins 8 caractères');
+        return;
+      }
+
+      const loading = modal.loading('Modification...');
+
+      try {
+        await auth.changePassword(current, newPass);
+        loading.close();
+        toast.success('Mot de passe modifié');
+        document.getElementById('password-form').reset();
+      } catch (error) {
+        loading.close();
+        toast.error(error.message || 'Erreur lors de la modification');
+      }
+    });
+
+    // Preferences
+    document.getElementById('pref-language').addEventListener('change', (e) => {
+      localStorage.setItem('vocalia_lang', e.target.value);
+      toast.success('Langue modifiée');
+    });
+
+    document.getElementById('pref-theme').addEventListener('change', (e) => {
+      const theme = e.target.value;
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('vocalia_theme', theme);
+      toast.success('Thème modifié');
+    });
+
+    // New API key
+    document.getElementById('new-key-btn').addEventListener('click', async () => {
+      const name = await modal.prompt('Nom de la clé', {
+        title: 'Nouvelle clé API',
+        placeholder: 'Ex: Webhook Integration'
+      });
+
+      if (name) {
+        toast.success('Clé API créée');
+      }
+    });
+
+    // Delete account
+    document.getElementById('delete-account-btn').addEventListener('click', async () => {
+      const confirmed = await modal.confirm(
+        'Cette action est irréversible. Toutes vos données, appels, et configurations seront définitivement supprimés.',
+        { title: 'Supprimer le compte', confirmText: 'Supprimer définitivement', danger: true }
+      );
+
+      if (confirmed) {
+        const email = await modal.prompt('Tapez votre email pour confirmer', {
+          title: 'Confirmation requise',
+          placeholder: user?.email
+        });
+
+        if (email === user?.email) {
+          toast.info('Demande de suppression envoyée');
+        } else if (email) {
+          toast.error('Email incorrect');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

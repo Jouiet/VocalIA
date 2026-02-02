@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Historique des appels - VocalIA</title>
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+      <!-- Logo -->
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <a href="/app/client/" class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+            <i data-lucide="mic" class="w-5 h-5 text-white"></i>
+          </div>
+          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        </a>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Tableau de bord</span>
+        </a>
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+          <span>Appels</span>
+        </a>
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bot" class="w-5 h-5"></i>
+          <span>Agents IA</span>
+        </a>
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="plug" class="w-5 h-5"></i>
+          <span>Intégrations</span>
+        </a>
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span>Analytics</span>
+        </a>
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+          <span>Facturation</span>
+        </a>
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>Paramètres</span>
+        </a>
+      </nav>
+
+      <!-- User Menu -->
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+            <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+          </div>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <!-- Header -->
+      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Historique des appels</h1>
+            <p class="text-slate-600 dark:text-slate-400">Consultez et analysez vos appels</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <select id="date-range" class="px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <option value="7d">7 derniers jours</option>
+              <option value="30d" selected>30 derniers jours</option>
+              <option value="90d">90 derniers jours</option>
+              <option value="custom">Personnalisé</option>
+            </select>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats -->
+      <div class="px-6 py-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <i data-lucide="phone-incoming" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-total">--</p>
+                <p class="text-sm text-slate-500">Total appels</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                <i data-lucide="check-circle" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-success">--</p>
+                <p class="text-sm text-slate-500">Appels réussis</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                <i data-lucide="clock" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-duration">--</p>
+                <p class="text-sm text-slate-500">Durée moyenne</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                <i data-lucide="target" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <div>
+                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-conversion">--</p>
+                <p class="text-sm text-slate-500">Taux conversion</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calls Table -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+          <div id="calls-table"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Call Detail Modal -->
+  <div id="call-detail-modal" class="hidden fixed inset-0 z-50">
+    <div class="absolute inset-0 bg-black/50" onclick="closeCallDetail()"></div>
+    <div class="absolute inset-y-0 right-0 w-full max-w-lg bg-white dark:bg-slate-800 shadow-xl overflow-auto">
+      <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Détails de l'appel</h2>
+        <button onclick="closeCallDetail()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+        </button>
+      </div>
+      <div id="call-detail-content" class="p-6">
+        <!-- Content loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import api from '/src/lib/api-client.js';
+    import DataTable from '/src/lib/data-table.js';
+    import toast from '/src/lib/toast.js';
+
+    lucide.createIcons();
+
+    // Check auth
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
+    }
+
+    // Load user info
+    const user = auth.getCurrentUser();
+    if (user) {
+      document.getElementById('user-name').textContent = user.name || 'Utilisateur';
+      document.getElementById('user-email').textContent = user.email || '';
+      document.getElementById('user-initials').textContent = (user.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase();
+    }
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await auth.logout();
+      window.location.href = '/app/auth/login.html';
+    });
+
+    // Initialize calls table
+    const callsTable = new DataTable('#calls-table', {
+      columns: [
+        { key: 'created_at', label: 'Date', type: 'datetime', sortable: true },
+        { key: 'caller_phone', label: 'Numéro', sortable: true },
+        { key: 'persona', label: 'Agent', sortable: true },
+        { key: 'language', label: 'Langue',
+          render: (val) => {
+            const flags = { fr: '🇫🇷', en: '🇬🇧', es: '🇪🇸', ar: '🇸🇦', ary: '🇲🇦' };
+            return flags[val] || val;
+          }
+        },
+        { key: 'duration', label: 'Durée',
+          render: (val) => {
+            if (!val) return '-';
+            const mins = Math.floor(val / 60);
+            const secs = val % 60;
+            return `${mins}:${String(secs).padStart(2, '0')}`;
+          }
+        },
+        { key: 'status', label: 'Statut', type: 'badge',
+          badgeColors: {
+            'completed': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+            'transferred': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+            'missed': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+            'in_progress': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
+          }
+        },
+        { key: 'lead_score', label: 'Score',
+          render: (val) => {
+            if (!val) return '-';
+            const color = val >= 70 ? 'text-green-600' : val >= 40 ? 'text-amber-600' : 'text-slate-400';
+            return `<span class="font-medium ${color}">${val}%</span>`;
+          }
+        },
+        { key: 'actions', label: '',
+          render: (val, row) => `
+            <button onclick="showCallDetail('${row.id}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">
+              <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          `
+        }
+      ],
+      pageSize: 25,
+      searchPlaceholder: 'Rechercher un appel...',
+      emptyMessage: 'Aucun appel trouvé',
+      onRowClick: (row) => showCallDetail(row.id)
+    });
+
+    // Load calls
+    async function loadCalls() {
+      callsTable.setLoading(true);
+      try {
+        const sessions = await api.sessions.list({ limit: 500 });
+        callsTable.setData(sessions.data || sessions || []);
+
+        // Update stats
+        const data = sessions.data || sessions || [];
+        document.getElementById('stat-total').textContent = data.length;
+        document.getElementById('stat-success').textContent = data.filter(c => c.status === 'completed').length;
+
+        const totalDuration = data.reduce((sum, c) => sum + (c.duration || 0), 0);
+        const avgDuration = data.length ? Math.round(totalDuration / data.length) : 0;
+        const mins = Math.floor(avgDuration / 60);
+        const secs = avgDuration % 60;
+        document.getElementById('stat-duration').textContent = `${mins}:${String(secs).padStart(2, '0')}`;
+
+        const converted = data.filter(c => c.lead_score >= 70).length;
+        const rate = data.length ? Math.round((converted / data.length) * 100) : 0;
+        document.getElementById('stat-conversion').textContent = `${rate}%`;
+
+      } catch (error) {
+        console.error('Failed to load calls:', error);
+        toast.error('Erreur lors du chargement des appels');
+      }
+    }
+
+    loadCalls();
+
+    // Show call detail
+    window.showCallDetail = async (id) => {
+      const modal = document.getElementById('call-detail-modal');
+      const content = document.getElementById('call-detail-content');
+
+      modal.classList.remove('hidden');
+
+      try {
+        const call = await api.sessions.get(id);
+
+        content.innerHTML = `
+          <div class="space-y-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm text-slate-500">Numéro</p>
+                <p class="font-medium text-slate-900 dark:text-white">${call.caller_phone || '-'}</p>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500">Date</p>
+                <p class="font-medium text-slate-900 dark:text-white">${new Date(call.created_at).toLocaleString()}</p>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500">Agent</p>
+                <p class="font-medium text-slate-900 dark:text-white">${call.persona || '-'}</p>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500">Durée</p>
+                <p class="font-medium text-slate-900 dark:text-white">${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '-'}</p>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500">Statut</p>
+                <p class="font-medium text-slate-900 dark:text-white">${call.status || '-'}</p>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500">Score lead</p>
+                <p class="font-medium text-slate-900 dark:text-white">${call.lead_score ? call.lead_score + '%' : '-'}</p>
+              </div>
+            </div>
+
+            ${call.transcript ? `
+              <div>
+                <p class="text-sm text-slate-500 mb-2">Transcription</p>
+                <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 max-h-64 overflow-y-auto">
+                  <pre class="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap">${call.transcript}</pre>
+                </div>
+              </div>
+            ` : ''}
+
+            ${call.summary ? `
+              <div>
+                <p class="text-sm text-slate-500 mb-2">Résumé</p>
+                <p class="text-slate-700 dark:text-slate-300">${call.summary}</p>
+              </div>
+            ` : ''}
+
+            ${call.bant_score ? `
+              <div>
+                <p class="text-sm text-slate-500 mb-2">Qualification BANT</p>
+                <div class="grid grid-cols-4 gap-2">
+                  ${['budget', 'authority', 'need', 'timeline'].map(key => `
+                    <div class="text-center p-2 bg-slate-50 dark:bg-slate-900 rounded-lg">
+                      <p class="text-xs text-slate-500 uppercase">${key[0]}</p>
+                      <p class="text-lg font-bold ${call.bant_score[key] >= 70 ? 'text-green-600' : 'text-slate-600'}">${call.bant_score[key] || 0}%</p>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      } catch (error) {
+        content.innerHTML = '<p class="text-red-500">Erreur lors du chargement des détails</p>';
+      }
+
+      lucide.createIcons();
+    };
+
+    window.closeCallDetail = () => {
+      document.getElementById('call-detail-modal').classList.add('hidden');
+    };
+
+    // Date range change
+    document.getElementById('date-range').addEventListener('change', loadCalls);
+  </script>
+</body>
+</html>

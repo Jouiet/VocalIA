@@ -42,9 +42,30 @@ const SCHEMAS = {
     defaults: { service: 'vocalia' }
   },
   users: {
-    columns: ['id', 'email', 'password_hash', 'role', 'tenant_id', 'created_at', 'last_login'],
+    columns: [
+      'id', 'email', 'password_hash', 'role', 'tenant_id', 'name', 'phone', 'avatar_url',
+      'email_verified', 'email_verify_token', 'email_verify_expires',
+      'password_reset_token', 'password_reset_expires',
+      'last_login', 'login_count', 'failed_login_count', 'locked_until',
+      'preferences', 'created_at', 'updated_at'
+    ],
     required: ['email', 'password_hash'],
-    defaults: { role: 'user' }
+    defaults: { role: 'user', email_verified: false, login_count: 0, failed_login_count: 0 }
+  },
+  auth_sessions: {
+    columns: ['id', 'user_id', 'refresh_token_hash', 'device_info', 'expires_at', 'created_at', 'last_used_at'],
+    required: ['user_id', 'refresh_token_hash', 'expires_at'],
+    defaults: {}
+  },
+  hitl_pending: {
+    columns: ['id', 'type', 'tenant', 'caller', 'score', 'summary', 'context', 'created_at'],
+    required: ['type', 'tenant'],
+    defaults: { score: 0 }
+  },
+  hitl_history: {
+    columns: ['id', 'type', 'tenant', 'caller', 'score', 'summary', 'context', 'decision', 'decided_by', 'decided_at', 'rejection_reason'],
+    required: ['type', 'tenant', 'decision', 'decided_by', 'decided_at'],
+    defaults: {}
   }
 };
 
@@ -321,6 +342,13 @@ class GoogleSheetsDB {
   }
 
   /**
+   * QUERY - Alias for find (compatibility)
+   */
+  async query(sheet, filters = {}) {
+    return this.find(sheet, filters);
+  }
+
+  /**
    * UPDATE - Update record by ID
    */
   async update(sheet, id, data) {
@@ -450,6 +478,78 @@ class GoogleSheetsDB {
     this.invalidateCache(sheet);
     console.log(`✅ [GoogleSheetsDB] Created ${records.length} records in ${sheet}`);
     return records;
+  }
+
+  // ==================== SHEET MANAGEMENT ====================
+
+  /**
+   * Create a new sheet (tab) in the spreadsheet
+   */
+  async createSheet(sheetName, headers = null) {
+    await this.init();
+
+    // Check if sheet already exists
+    const metadata = await this.sheets.spreadsheets.get({
+      spreadsheetId: this.config.spreadsheetId
+    });
+
+    const existingSheet = metadata.data.sheets.find(s => s.properties.title === sheetName);
+    if (existingSheet) {
+      console.log(`⚠️ [GoogleSheetsDB] Sheet already exists: ${sheetName}`);
+      return existingSheet.properties.sheetId;
+    }
+
+    // Create the sheet
+    const response = await this.sheets.spreadsheets.batchUpdate({
+      spreadsheetId: this.config.spreadsheetId,
+      requestBody: {
+        requests: [{
+          addSheet: {
+            properties: {
+              title: sheetName
+            }
+          }
+        }]
+      }
+    });
+
+    const newSheetId = response.data.replies[0].addSheet.properties.sheetId;
+    console.log(`✅ [GoogleSheetsDB] Created sheet: ${sheetName} (ID: ${newSheetId})`);
+
+    // Add headers if provided
+    if (headers && headers.length > 0) {
+      await this.sheets.spreadsheets.values.update({
+        spreadsheetId: this.config.spreadsheetId,
+        range: `${sheetName}!A1`,
+        valueInputOption: 'RAW',
+        requestBody: {
+          values: [headers]
+        }
+      });
+      console.log(`✅ [GoogleSheetsDB] Added headers to ${sheetName}`);
+    }
+
+    return newSheetId;
+  }
+
+  /**
+   * Ensure a sheet exists, create if not
+   */
+  async ensureSheet(sheetName, headers = null) {
+    try {
+      const metadata = await this.sheets.spreadsheets.get({
+        spreadsheetId: this.config.spreadsheetId
+      });
+
+      const exists = metadata.data.sheets.some(s => s.properties.title === sheetName);
+      if (!exists) {
+        await this.createSheet(sheetName, headers);
+      }
+      return true;
+    } catch (e) {
+      console.error(`❌ [GoogleSheetsDB] Failed to ensure sheet ${sheetName}:`, e.message);
+      return false;
+    }
   }
 
   // ==================== SPECIALIZED METHODS ====================
