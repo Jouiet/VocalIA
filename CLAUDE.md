@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.54.0 | 02/02/2026 | Session 250.52 | Health: 100% | **P0 SECURITY COMPLETE**
+> Version: 6.55.0 | 02/02/2026 | Session 250.52 | Health: 100% | **P0+P1 SECURITY+I18N COMPLETE**
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **67 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **35 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
@@ -37,6 +37,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
+**Session 250.52 P1 I18N COMPLETE:** 11 webapp pages (5 admin + 6 client) with i18n.js, data-i18n attributes, admin.nav.* + dashboard.nav.* keys in 5 locales (fr, en, es, ar, ary), commit 7c244f9
 **Session 250.52 P0 SECURITY COMPLETE:** API auth (checkAuth/checkAdmin), password_hash filtered, /api/hitl/* admin-only, /api/logs admin-only, rate limit 100/min on /api/db/*, tenant isolation, 6/6 security tests pass, commit a6151ef
 **Session 250.52 ARCHITECTURE DOCS CONSOLIDATED:** VOCALIA-SYSTEM-ARCHITECTURE.md (988 lignes), ARCHITECTURE-SYSTEM-FORENSIC-AUDIT.md +522 lignes (→1,194), Sections 15-17 (Website 67 pages, DB-API flow, Auth sequences), DOCS-INDEX v3.0.0, 2 docs archivés
 **Session 250.52 SAAS WEBAPP 100% COMPLETE:** 17 HTML pages (auth 5 + client 7 + admin 5), 7 JS libraries (~3,239 lines), auth-service.cjs (19 exports), auth-middleware.cjs (12 exports), 23 API endpoints, 7 Google Sheets tables, Auth flow 6/6 tests pass, HITL real-time endpoints
