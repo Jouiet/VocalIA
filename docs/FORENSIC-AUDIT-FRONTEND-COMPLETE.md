@@ -3,6 +3,10 @@
 > **Version**: 1.3.0 | **Date**: 31/01/2026 | **Session**: 250.22
 > **Auditor**: Claude Code Forensic Analysis
 > **Methodology**: Direct tool verification (Grep, Read, Bash) - No agents
+>
+> ⚠️ **NOTE HISTORIQUE**: Ce document reflète l'état du site au 31/01/2026 (43 pages).
+> Depuis Session 250.52 (02/02/2026), le site compte **67 pages** (+17 pages SaaS webapp + 7 pages misc).
+> Voir `docs/VOCALIA-SYSTEM-ARCHITECTURE.md` pour les métriques actuelles.
 
 ---
 

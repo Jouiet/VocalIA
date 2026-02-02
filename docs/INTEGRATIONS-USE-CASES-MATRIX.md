@@ -404,3 +404,6 @@ Coût: $0.0083/SMS US, $0.07/SMS FR
 *Document mis à jour: 31/01/2026 - Session 249.16*
 *21 intégrations natives réelles + 3 iPaaS = 116 MCP tools*
 *Corrections: HubSpot=Full CRUD, Shopify=READ-ONLY, WhatsApp=Implémenté*
+
+> ⚠️ **MÀJ 02/02/2026**: Total MCP tools maintenant **182** (ajout Stripe 19, e-commerce expansion).
+> Voir `docs/VOCALIA-MCP.md` pour le compte actuel.

@@ -1,5 +1,9 @@
 # AUDIT FORENSIQUE - Session 250.52 Continuation
 > Date: 01/02/2026 | Méthode: Bottom-Up Empirique | Confiance Aveugle: ZÉRO
+>
+> ⚠️ **MÀJ 02/02/2026**: Les problèmes P0 (port conflict) ont été corrigés.
+> Les métriques ont évolué: **67 pages** (vs 50), **32 core modules** (vs 30).
+> Référence actuelle: `docs/VOCALIA-SYSTEM-ARCHITECTURE.md`
 
 ---
 

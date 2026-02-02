@@ -4,6 +4,10 @@
 **Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit
 **Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep` / `node -e`
 
+> ⚠️ **NOTE HISTORIQUE**: Document reflétant l'état au 01/02/2026 (45 pages).
+> Depuis Session 250.52 (02/02/2026): **67 pages** (+17 webapp + 5 misc).
+> Référence actuelle: `docs/VOCALIA-SYSTEM-ARCHITECTURE.md`
+
 ---
 
 ## EXECUTIVE SUMMARY
