@@ -327,6 +327,73 @@ class APIClient {
   }
 
   /**
+   * Get integrations resource client (tenant integrations config)
+   */
+  get integrations() {
+    return {
+      list: async (tenantId) => {
+        const tenant = await this.get(`/db/tenants/${tenantId}`);
+        return tenant?.integrations || [];
+      },
+      connect: async (tenantId, integration) => {
+        const tenant = await this.get(`/db/tenants/${tenantId}`);
+        const integrations = tenant?.integrations || [];
+        integrations.push({ ...integration, connected_at: new Date().toISOString() });
+        return this.put(`/db/tenants/${tenantId}`, { integrations });
+      },
+      disconnect: async (tenantId, integrationName) => {
+        const tenant = await this.get(`/db/tenants/${tenantId}`);
+        const integrations = (tenant?.integrations || []).filter(i => i.name !== integrationName);
+        return this.put(`/db/tenants/${tenantId}`, { integrations });
+      }
+    };
+  }
+
+  /**
+   * Get settings resource client (tenant settings & API keys)
+   */
+  get settings() {
+    return {
+      get: async (tenantId) => {
+        const tenant = await this.get(`/db/tenants/${tenantId}`);
+        return {
+          webhook_url: tenant?.webhook_url || '',
+          webhook_secret: tenant?.webhook_secret || '',
+          webhook_events: tenant?.webhook_events || [],
+          api_keys: (tenant?.api_keys || []).map(k => ({
+            ...k,
+            key: k.key ? `${k.key.substring(0, 8)}••••••••${k.key.slice(-4)}` : null
+          })),
+          notifications: tenant?.notifications || {}
+        };
+      },
+      update: async (tenantId, data) => {
+        return this.put(`/db/tenants/${tenantId}`, data);
+      },
+      createApiKey: async (tenantId, name, type = 'production') => {
+        const tenant = await this.get(`/db/tenants/${tenantId}`);
+        const api_keys = tenant?.api_keys || [];
+        const keyPrefix = type === 'production' ? 'voc_live_' : 'voc_test_';
+        const newKey = {
+          id: `key_${Date.now()}`,
+          name,
+          type,
+          key: keyPrefix + crypto.randomUUID().replace(/-/g, '').substring(0, 24),
+          created_at: new Date().toISOString()
+        };
+        api_keys.push(newKey);
+        await this.put(`/db/tenants/${tenantId}`, { api_keys });
+        return newKey; // Return full key only on creation
+      },
+      deleteApiKey: async (tenantId, keyId) => {
+        const tenant = await this.get(`/db/tenants/${tenantId}`);
+        const api_keys = (tenant?.api_keys || []).filter(k => k.id !== keyId);
+        return this.put(`/db/tenants/${tenantId}`, { api_keys });
+      }
+    };
+  }
+
+  /**
    * Helper: Group array by field
    */
   _groupBy(arr, field) {

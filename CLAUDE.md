@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.66.0 | 02/02/2026 | Session 250.58 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
-> **Dashboards: Data-driven ✅** | 0 hardcoded values | API-connected | Real-time trends | Official logo
+> Version: 6.67.0 | 02/02/2026 | Session 250.59 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> **Dashboards: 10/10 Data-driven ✅** | Integrations API | Settings webhook+API keys | 0 hardcoded values
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
@@ -41,6 +41,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
+**Session 250.59 DASHBOARDS COMPLETE:** integrations.html (real API connect/disconnect), settings.html (webhook config + API keys CRUD), api-client.js (+integrations +settings resources), 10/10 data-driven dashboards
 **Session 250.58 DASHBOARDS DATA-DRIVEN:** Client (index, analytics, billing) + Admin dashboards: 0 hardcoded values, API connections, real-time trends, official logo.webp (18 pages), i18n keys (5 locales)
 **Session 250.58 CLIENT KB MULTI-LANG:** client_demo 5 KB files (fr, en, es, ar, ary), complete multi-tenant KB architecture, 41 core modules
 **Session 250.57bis RETENTION & EXPORT:** 60-day telephony retention policy, Export (CSV/XLSX/PDF), audit-store.cjs (507 lines), monthly-maintenance.cjs, /api/health endpoint, calls.html retention notice + export buttons, pricing.html FAQ #6, i18n keys (5 locales), Multi-tenant score: 35→95/100 (+60 points)

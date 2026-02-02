@@ -269,6 +269,7 @@
 
   <script type="module">
     import auth from '/src/lib/auth-client.js';
+    import api from '/src/lib/api-client.js';
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
@@ -290,28 +291,136 @@
       window.location.href = '/app/auth/login.html';
     });
 
-    // Integration click handlers
+    // Integration metadata
+    const INTEGRATIONS_META = {
+      'hubspot': { name: 'HubSpot', icon: '🟠', category: 'CRM' },
+      'pipedrive': { name: 'Pipedrive', icon: '🟢', category: 'CRM' },
+      'zoho': { name: 'Zoho CRM', icon: '🔴', category: 'CRM' },
+      'shopify': { name: 'Shopify', icon: '🛍️', category: 'E-commerce' },
+      'woocommerce': { name: 'WooCommerce', icon: '🛒', category: 'E-commerce' },
+      'prestashop': { name: 'PrestaShop', icon: '🏪', category: 'E-commerce' },
+      'google-calendar': { name: 'Google Calendar', icon: '📅', category: 'Calendrier' },
+      'calendly': { name: 'Calendly', icon: '🗓️', category: 'Calendrier' },
+      'zapier': { name: 'Zapier', icon: '⚡', category: 'Automatisation' },
+      'make': { name: 'Make', icon: '🔮', category: 'Automatisation' },
+      'n8n': { name: 'n8n', icon: '🔧', category: 'Automatisation' }
+    };
+
+    let connectedIntegrations = [];
+
+    // Load connected integrations
+    async function loadIntegrations() {
+      try {
+        const tenantId = auth.getTenantId() || user?.tenant_id;
+        if (!tenantId) {
+          renderConnectedIntegrations([]);
+          return;
+        }
+        connectedIntegrations = await api.integrations.list(tenantId);
+        renderConnectedIntegrations(connectedIntegrations);
+        updateCardStates();
+      } catch (error) {
+        console.error('Failed to load integrations:', error);
+        renderConnectedIntegrations([]);
+      }
+    }
+
+    // Render connected integrations section
+    function renderConnectedIntegrations(integrations) {
+      const container = document.getElementById('connected-integrations');
+      if (!integrations || integrations.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 text-sm">Aucune intégration connectée</p>';
+        return;
+      }
+
+      container.innerHTML = integrations.map(i => {
+        const meta = INTEGRATIONS_META[i.name] || { name: i.name, icon: '🔗', category: 'Autre' };
+        return `
+          <div class="flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl border border-green-200 dark:border-green-800">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl">${meta.icon}</span>
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">${meta.name}</p>
+                <p class="text-sm text-slate-500">Connecté le ${new Date(i.connected_at).toLocaleDateString()}</p>
+              </div>
+            </div>
+            <button onclick="disconnectIntegration('${i.name}')" class="px-3 py-1.5 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
+              Déconnecter
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Update card button states based on connection status
+    function updateCardStates() {
+      document.querySelectorAll('.integration-card').forEach(card => {
+        const integrationName = card.dataset.integration;
+        const btn = card.querySelector('button');
+        const status = card.querySelector('[data-status]');
+        const isConnected = connectedIntegrations.some(i => i.name === integrationName);
+
+        if (isConnected) {
+          btn.textContent = 'Déconnecter';
+          btn.classList.remove('bg-slate-100', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
+          btn.classList.add('bg-red-100', 'dark:bg-red-900/30', 'text-red-700', 'dark:text-red-300');
+          if (status) status.classList.remove('hidden');
+        } else {
+          btn.textContent = 'Connecter';
+          btn.classList.add('bg-slate-100', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
+          btn.classList.remove('bg-red-100', 'dark:bg-red-900/30', 'text-red-700', 'dark:text-red-300');
+          if (status) status.classList.add('hidden');
+        }
+      });
+    }
+
+    // Disconnect integration
+    window.disconnectIntegration = async (name) => {
+      const meta = INTEGRATIONS_META[name] || { name };
+      const confirmed = await modal.confirm(
+        `Voulez-vous déconnecter ${meta.name} ?`,
+        { title: 'Déconnecter', confirmText: 'Déconnecter', danger: true }
+      );
+
+      if (confirmed) {
+        try {
+          const tenantId = auth.getTenantId() || user?.tenant_id;
+          await api.integrations.disconnect(tenantId, name);
+          toast.success(`${meta.name} déconnecté`);
+          await loadIntegrations();
+        } catch (error) {
+          toast.error('Erreur lors de la déconnexion');
+        }
+      }
+    };
+
+    // Load integrations on page load
+    loadIntegrations();
+
+    // Integration card click handlers
     document.querySelectorAll('.integration-card button').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const card = btn.closest('.integration-card');
-        const name = card.querySelector('h3').textContent;
+        const integrationName = card.dataset.integration;
+        const meta = INTEGRATIONS_META[integrationName] || { name: integrationName };
+        const isConnected = connectedIntegrations.some(i => i.name === integrationName);
 
-        const loading = modal.loading(`Connexion à ${name}...`);
-
-        // Simulate OAuth flow
-        setTimeout(() => {
-          loading.close();
-          toast.success(`${name} connecté avec succès`);
-
-          // Update UI
-          btn.textContent = 'Déconnecter';
-          btn.classList.remove('bg-slate-100', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
-          btn.classList.add('bg-red-100', 'dark:bg-red-900/30', 'text-red-700', 'dark:text-red-300');
-
-          const status = card.querySelector('[data-status]');
-          if (status) status.classList.remove('hidden');
-        }, 2000);
+        if (isConnected) {
+          await window.disconnectIntegration(integrationName);
+        } else {
+          const loading = modal.loading(`Connexion à ${meta.name}...`);
+          try {
+            const tenantId = auth.getTenantId() || user?.tenant_id;
+            await api.integrations.connect(tenantId, { name: integrationName, status: 'active' });
+            loading.close();
+            toast.success(`${meta.name} connecté avec succès`);
+            await loadIntegrations();
+          } catch (error) {
+            loading.close();
+            toast.error('Erreur lors de la connexion');
+          }
+        }
       });
     });
   </script>

@@ -236,6 +236,52 @@
           </div>
         </div>
 
+        <!-- Webhooks -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Webhooks</h3>
+          <form id="webhook-form" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">URL du webhook</label>
+              <input type="url" id="webhook-url" placeholder="https://votre-serveur.com/webhook" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Secret (HMAC-SHA256)</label>
+              <div class="flex gap-2">
+                <input type="text" id="webhook-secret" readonly class="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white font-mono text-sm">
+                <button type="button" id="generate-secret-btn" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 text-sm">
+                  Générer
+                </button>
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Événements</label>
+              <div class="grid grid-cols-2 gap-2">
+                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                  <input type="checkbox" name="webhook_events" value="call.started" class="w-4 h-4 text-indigo-600 rounded">
+                  call.started
+                </label>
+                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                  <input type="checkbox" name="webhook_events" value="call.completed" class="w-4 h-4 text-indigo-600 rounded">
+                  call.completed
+                </label>
+                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                  <input type="checkbox" name="webhook_events" value="lead.qualified" class="w-4 h-4 text-indigo-600 rounded">
+                  lead.qualified
+                </label>
+                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                  <input type="checkbox" name="webhook_events" value="booking.created" class="w-4 h-4 text-indigo-600 rounded">
+                  booking.created
+                </label>
+              </div>
+            </div>
+            <div class="pt-4">
+              <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                Enregistrer le webhook
+              </button>
+            </div>
+          </form>
+        </div>
+
         <!-- API Keys -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6">
           <div class="flex items-center justify-between mb-4">
@@ -244,35 +290,8 @@
               Nouvelle clé
             </button>
           </div>
-          <div class="space-y-3">
-            <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <div>
-                <p class="font-medium text-slate-900 dark:text-white">Production</p>
-                <p class="text-sm text-slate-500 font-mono">voc_live_••••••••••••sk8f</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
-                  <i data-lucide="copy" class="w-4 h-4 text-slate-400"></i>
-                </button>
-                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-red-500">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
-            <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <div>
-                <p class="font-medium text-slate-900 dark:text-white">Test</p>
-                <p class="text-sm text-slate-500 font-mono">voc_test_••••••••••••3m9x</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
-                  <i data-lucide="copy" class="w-4 h-4 text-slate-400"></i>
-                </button>
-                <button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-red-500">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </div>
-            </div>
+          <div id="api-keys-list" class="space-y-3">
+            <p class="text-slate-500 text-sm">Chargement...</p>
           </div>
         </div>
 
@@ -295,6 +314,7 @@
 
   <script type="module">
     import auth from '/src/lib/auth-client.js';
+    import api from '/src/lib/api-client.js';
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
@@ -305,6 +325,9 @@
     }
 
     const user = auth.getCurrentUser();
+    const tenantId = auth.getTenantId() || user?.tenant_id;
+    let settings = { api_keys: [], webhook_url: '', webhook_secret: '', webhook_events: [] };
+
     if (user) {
       document.getElementById('user-name').textContent = user.name || 'Utilisateur';
       document.getElementById('user-email').textContent = user.email || '';
@@ -314,6 +337,75 @@
       document.getElementById('profile-name').value = user.name || '';
       document.getElementById('profile-email').value = user.email || '';
     }
+
+    // Load tenant settings
+    async function loadSettings() {
+      if (!tenantId) {
+        renderApiKeys([]);
+        return;
+      }
+      try {
+        settings = await api.settings.get(tenantId);
+        renderApiKeys(settings.api_keys || []);
+
+        // Webhook form
+        document.getElementById('webhook-url').value = settings.webhook_url || '';
+        document.getElementById('webhook-secret').value = settings.webhook_secret || '';
+        const events = settings.webhook_events || [];
+        document.querySelectorAll('[name="webhook_events"]').forEach(cb => {
+          cb.checked = events.includes(cb.value);
+        });
+      } catch (error) {
+        console.error('Failed to load settings:', error);
+        renderApiKeys([]);
+      }
+    }
+
+    // Render API keys list
+    function renderApiKeys(keys) {
+      const container = document.getElementById('api-keys-list');
+      if (!keys || keys.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 text-sm">Aucune clé API. Cliquez sur "Nouvelle clé" pour en créer une.</p>';
+        return;
+      }
+
+      container.innerHTML = keys.map(k => `
+        <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+          <div>
+            <p class="font-medium text-slate-900 dark:text-white">${k.name}</p>
+            <p class="text-sm text-slate-500 font-mono">${k.key || '••••••••••••••••'}</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs px-2 py-1 rounded ${k.type === 'production' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}">${k.type}</span>
+            <button onclick="deleteApiKey('${k.id}')" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-red-500" title="Supprimer">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Delete API key
+    window.deleteApiKey = async (keyId) => {
+      const confirmed = await modal.confirm(
+        'Supprimer cette clé API ? Les intégrations utilisant cette clé cesseront de fonctionner.',
+        { title: 'Supprimer la clé', confirmText: 'Supprimer', danger: true }
+      );
+
+      if (confirmed) {
+        try {
+          await api.settings.deleteApiKey(tenantId, keyId);
+          toast.success('Clé API supprimée');
+          await loadSettings();
+        } catch (error) {
+          toast.error('Erreur lors de la suppression');
+        }
+      }
+    };
+
+    // Load settings on page load
+    loadSettings();
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
       await auth.logout();
@@ -370,6 +462,33 @@
       }
     });
 
+    // Webhook form
+    document.getElementById('webhook-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const loading = modal.loading('Enregistrement...');
+
+      try {
+        const webhook_events = Array.from(document.querySelectorAll('[name="webhook_events"]:checked')).map(cb => cb.value);
+        await api.settings.update(tenantId, {
+          webhook_url: document.getElementById('webhook-url').value,
+          webhook_secret: document.getElementById('webhook-secret').value,
+          webhook_events
+        });
+        loading.close();
+        toast.success('Webhook configuré');
+      } catch (error) {
+        loading.close();
+        toast.error('Erreur lors de la configuration');
+      }
+    });
+
+    // Generate webhook secret
+    document.getElementById('generate-secret-btn').addEventListener('click', () => {
+      const secret = 'whsec_' + crypto.randomUUID().replace(/-/g, '');
+      document.getElementById('webhook-secret').value = secret;
+      toast.info('Secret généré - pensez à enregistrer');
+    });
+
     // Preferences
     document.getElementById('pref-language').addEventListener('change', (e) => {
       localStorage.setItem('vocalia_lang', e.target.value);
@@ -395,7 +514,27 @@
       });
 
       if (name) {
-        toast.success('Clé API créée');
+        const type = await modal.prompt('Type (production ou test)', {
+          title: 'Type de clé',
+          defaultValue: 'production'
+        });
+
+        if (type && ['production', 'test'].includes(type)) {
+          try {
+            const newKey = await api.settings.createApiKey(tenantId, name, type);
+            toast.success('Clé API créée');
+
+            // Show full key once
+            await modal.alert(
+              `Copiez cette clé maintenant, elle ne sera plus affichée:\n\n${newKey.key}`,
+              { title: 'Nouvelle clé créée' }
+            );
+
+            await loadSettings();
+          } catch (error) {
+            toast.error('Erreur lors de la création');
+          }
+        }
       }
     });
 
