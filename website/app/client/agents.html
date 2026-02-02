@@ -357,8 +357,18 @@
           );
 
           if (confirmed) {
-            toast.success(`Persona "${persona.name}" activé`);
-            // In production: await api.post('/tenants/me/persona', { persona: key });
+            try {
+              const tenantId = auth.getTenantId();
+              if (tenantId) {
+                await api.tenants.update(tenantId, { active_persona: key });
+              }
+              activePersona = persona;
+              renderActivePersona();
+              toast.success(`Persona "${persona.name}" activé`);
+            } catch (error) {
+              console.error('Failed to update persona:', error);
+              toast.error('Erreur lors de l\'activation du persona');
+            }
           }
         });
       });
@@ -399,31 +409,87 @@
         ary: 'أهلا، أنا المساعد الصوتي ديالك من فوكاليا.'
       };
 
+      const btn = document.getElementById('preview-voice-btn');
+      btn.disabled = true;
       toast.info(`Prévisualisation de ${voiceName}...`);
-      // In production: call /api/tts/preview endpoint
+
+      try {
+        const voiceApiUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://localhost:3004'
+          : 'https://api.vocalia.ma';
+
+        const response = await fetch(`${voiceApiUrl}/tts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: messages[lang] || messages.fr,
+            language: lang,
+            gender: gender
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('TTS service unavailable');
+        }
+
+        const data = await response.json();
+        if (data.success && data.audio) {
+          const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+          audio.play();
+        } else {
+          throw new Error(data.error || 'No audio returned');
+        }
+      } catch (error) {
+        console.error('TTS preview failed:', error);
+        toast.error('Prévisualisation indisponible - vérifiez que le service Voice API est actif');
+      } finally {
+        btn.disabled = false;
+      }
     });
 
     document.getElementById('save-voice-btn').addEventListener('click', async () => {
       const lang = document.getElementById('voice-language').value;
       const gender = document.getElementById('voice-gender').value;
+      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Sarah';
 
       try {
-        // In production: await api.post('/tenants/me/voice', { language: lang, gender });
-        toast.success('Configuration voix enregistrée');
+        const tenantId = auth.getTenantId();
+        if (!tenantId) {
+          toast.error('Identifiant tenant manquant');
+          return;
+        }
+
+        await api.settings.update(tenantId, {
+          voice_language: lang,
+          voice_gender: gender,
+          voice_name: voiceName
+        });
+
+        toast.success(`Voix ${voiceName} (${lang.toUpperCase()}) enregistrée`);
       } catch (error) {
+        console.error('Failed to save voice config:', error);
         toast.error('Erreur lors de l\'enregistrement');
       }
     });
 
-    // New agent button
+    // New agent button - Request custom persona (Enterprise feature)
     document.getElementById('new-agent-btn').addEventListener('click', async () => {
-      const name = await modal.prompt('Nom du nouveau persona', {
-        title: 'Créer un persona',
-        placeholder: 'Ex: Assistant Commercial'
-      });
+      const confirmed = await modal.confirm(
+        'VocalIA propose 40 personas pré-configurés couvrant la plupart des secteurs.\n\n' +
+        'Pour un persona personnalisé (voix, comportement, base de connaissances spécifique), ' +
+        'contactez notre équipe Enterprise.\n\n' +
+        'Voulez-vous envoyer une demande de persona personnalisé ?',
+        {
+          title: 'Persona Personnalisé',
+          confirmText: 'Contacter Enterprise',
+          cancelText: 'Voir les personas disponibles',
+          danger: false
+        }
+      );
 
-      if (name) {
-        toast.info('La création de personas personnalisés sera disponible prochainement');
+      if (confirmed) {
+        window.open('mailto:enterprise@vocalia.ma?subject=Demande%20Persona%20Personnalisé&body=Bonjour,%0A%0AJe%20souhaite%20un%20persona%20personnalisé%20pour%20mon%20activité.%0A%0ASecteur:%20%0ABesoins%20spécifiques:%20%0A%0AMerci', '_blank');
+        toast.success('Redirection vers le formulaire de contact Enterprise');
       }
     });
   </script>

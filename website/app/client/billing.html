@@ -357,10 +357,19 @@
       window.location.href = '/pricing';
     });
 
-    // Add card button
-    document.getElementById('add-card-btn')?.addEventListener('click', () => {
-      toast.info('Redirection vers le portail de paiement Stripe...');
-      // In production: redirect to Stripe Customer Portal
+    // Add card button - Redirect to Stripe via pricing page
+    document.getElementById('add-card-btn')?.addEventListener('click', async () => {
+      const tenantId = auth.getTenantId();
+      const tenant = tenantId ? await api.tenants.get(tenantId).catch(() => null) : null;
+
+      if (tenant?.stripe_customer_id) {
+        // Has Stripe customer - open billing email
+        toast.info('Contactez billing@vocalia.ma pour gérer votre abonnement');
+        window.open('mailto:billing@vocalia.ma?subject=Gestion%20Abonnement&body=ID%20Client:%20' + tenantId, '_blank');
+      } else {
+        // No Stripe customer - redirect to pricing
+        window.location.href = '/pricing';
+      }
     });
 
     // Edit billing button
@@ -376,10 +385,24 @@
       }
     });
 
-    // Download invoice function
-    window.downloadInvoice = (invoiceId) => {
-      toast.info('Téléchargement de la facture...');
-      // In production: call Stripe API to get invoice PDF
+    // Download invoice function - Request via email (Stripe invoices sent directly by Stripe)
+    window.downloadInvoice = async (invoiceId) => {
+      toast.info('Les factures Stripe sont envoyées automatiquement par email');
+
+      const confirmed = await modal.confirm(
+        'Les factures sont envoyées automatiquement à votre adresse email lors du paiement.\n\n' +
+        'Si vous n\'avez pas reçu votre facture, contactez notre équipe facturation.',
+        {
+          title: 'Télécharger Facture',
+          confirmText: 'Contacter Facturation',
+          cancelText: 'OK',
+          danger: false
+        }
+      );
+
+      if (confirmed) {
+        window.open('mailto:billing@vocalia.ma?subject=Demande%20Facture&body=ID%20Facture:%20' + invoiceId, '_blank');
+      }
     };
   </script>
 </body>

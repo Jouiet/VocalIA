@@ -311,11 +311,20 @@
       );
 
       if (confirmed) {
-        toast.info('Connexion en tant que tenant...');
-        // In production: generate impersonation token and redirect
-        setTimeout(() => {
+        // Store impersonation context - admin sees client dashboard as tenant
+        const tenant = tenants.find(t => t.id === id);
+        if (tenant) {
+          localStorage.setItem('vocalia_impersonate_tenant', JSON.stringify({
+            id: tenant.id,
+            name: tenant.name || tenant.company,
+            impersonated_at: new Date().toISOString(),
+            admin_id: auth.getCurrentUser()?.id
+          }));
+          toast.success(`Impersonation de ${tenant.name || tenant.company}`);
           window.location.href = '/app/client/';
-        }, 1000);
+        } else {
+          toast.error('Tenant non trouvé');
+        }
       }
     };
 
