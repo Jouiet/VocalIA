@@ -777,7 +777,34 @@ Dashboards Data-Driven: 10/10 (100%)
 
 ---
 
-*Document mis à jour: 02/02/2026 - Session 250.59*
+## 14. SESSION 250.60 - BUG FIXES
+
+### 14.1 Corrections
+
+| Fichier | Bug | Fix |
+|:--------|:----|:----|
+| admin/hitl.html | `api.hitl` utilisé sans import | Ajout `import api from '/src/lib/api-client.js'` |
+| client/billing.html | Intégrations count hardcodé '0' | `integrations.length` depuis tenant config |
+
+### 14.2 Vérification API Imports
+
+Tous les 12 fichiers utilisant `api.` ont maintenant l'import correct:
+- admin/: hitl.html, index.html, logs.html, tenants.html, users.html
+- client/: agents.html, analytics.html, billing.html, calls.html, index.html, integrations.html, settings.html
+
+### 14.3 État Final
+
+| Métrique | Score |
+|:---------|:-----:|
+| Bugs API imports | **0** |
+| Hardcoded values | **0** |
+| Dashboards data-driven | **10/10 (100%)** |
+| Webapp Score | **99/100** (Stripe clés manquantes) |
+
+---
+
+*Document mis à jour: 02/02/2026 - Session 250.60*
 *Score multi-tenant: 95/100*
 *Score dashboards data-driven: 10/10 pages complètes (100%)*
-*Prochaine priorité: Stripe integration, Migration BD PostgreSQL*
+*Score bugs: 0 (tous corrigés)*
+*Prochaine priorité: Stripe integration (clés requises), Migration BD PostgreSQL*
