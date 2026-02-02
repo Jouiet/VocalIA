@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.61.0 | 02/02/2026 | Session 250.56 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.62.0 | 02/02/2026 | Session 250.57 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
@@ -40,6 +40,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
+**Session 250.57 RIGOROUS AUDIT:** i18n.js added to 6 missing pages (5 auth + client/index), wsDebug() production fix, form validation settings.html, conversation-store.cjs, 18/18 webapp pages with i18n, commit bd96a05
 **Session 250.52 P1 I18N COMPLETE:** 11 webapp pages (5 admin + 6 client) with i18n.js, data-i18n attributes, admin.nav.* + dashboard.nav.* keys in 5 locales (fr, en, es, ar, ary), commit 7c244f9
 **Session 250.52 P0 SECURITY COMPLETE:** API auth (checkAuth/checkAdmin), password_hash filtered, /api/hitl/* admin-only, /api/logs admin-only, rate limit 100/min on /api/db/*, tenant isolation, 6/6 security tests pass, commit a6151ef
 **Session 250.52 ARCHITECTURE DOCS CONSOLIDATED:** VOCALIA-SYSTEM-ARCHITECTURE.md (988 lignes), ARCHITECTURE-SYSTEM-FORENSIC-AUDIT.md +522 lignes (→1,194), Sections 15-17 (Website 67 pages, DB-API flow, Auth sequences), DOCS-INDEX v3.0.0, 2 docs archivés

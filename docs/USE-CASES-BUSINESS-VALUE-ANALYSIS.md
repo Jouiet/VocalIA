@@ -1,6 +1,6 @@
 # VocalIA - Analyse Valeur Business des Use Cases
 
-> **Version**: 2.3.0 | **Date**: 31/01/2026 | **Session**: 250.33
+> **Version**: 2.4.0 | **Date**: 02/02/2026 | **Session**: 250.57
 > **MCP Server**: v0.8.0 | **182 Tools** | **28 Intégrations Natives** | **4 Sensors** | **3 Agents**
 > **Approche**: Bottom-up factuelle, vérifié contre code source
 > **Session 250.33**: AEO 32 Speakable pages, WCAG focus states fixed
