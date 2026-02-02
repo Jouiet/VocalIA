@@ -4456,5 +4456,79 @@
     "guide_76": "Guide",
     "accueil_77": "Accueil",
     "vocalia_78": "VocalIA"
+  },
+  "kb": {
+    "title": "Base de Connaissances",
+    "subtitle": "Personnalisez les réponses de votre agent IA",
+    "import": "Importer",
+    "add_entry": "Ajouter une entrée",
+    "crawl_url": "Crawler URL",
+    "rebuild_index": "Reconstruire Index",
+    "test_chatbot": "Tester le Chatbot",
+    "loading": "Chargement...",
+    "stats": {
+      "entries": "Entrées",
+      "languages": "Langues",
+      "index_size": "Index TF-IDF",
+      "last_update": "Dernière MAJ"
+    },
+    "quota": {
+      "title": "Utilisation du Quota",
+      "entries": "Entrées",
+      "storage": "Stockage",
+      "languages": "Langues"
+    },
+    "table": {
+      "key": "Clé",
+      "content": "Contenu",
+      "type": "Type",
+      "actions": "Actions"
+    },
+    "modal": {
+      "add_title": "Ajouter une entrée",
+      "edit_title": "Modifier l'entrée",
+      "key": "Clé (identifiant unique)",
+      "key_hint": "Lettres minuscules, chiffres et underscores uniquement",
+      "response": "Réponse (texte affiché à l'utilisateur)",
+      "details": "Détails (JSON optionnel)",
+      "details_hint": "Format JSON valide pour les données structurées",
+      "language": "Langue",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "import_modal": {
+      "title": "Importer des données",
+      "drop_text": "Glissez un fichier JSON ou CSV ici",
+      "or": "ou",
+      "browse": "Parcourir",
+      "preview": "Aperçu",
+      "overwrite": "Écraser les entrées existantes",
+      "language": "Langue cible",
+      "import": "Importer"
+    },
+    "crawl_modal": {
+      "title": "Crawler un site web",
+      "url": "URL du site web",
+      "max_pages": "Pages max",
+      "language": "Langue",
+      "single_page": "Page unique seulement",
+      "info": "Le crawler extraira automatiquement les FAQ, horaires, informations de contact et autres données pertinentes du site web.",
+      "crawling": "Crawling en cours...",
+      "start": "Démarrer le crawl"
+    },
+    "chatbot": {
+      "title": "Test du Chatbot",
+      "subtitle": "Testez les réponses de votre KB",
+      "welcome": "Bonjour ! Testez votre base de connaissances en posant une question.",
+      "placeholder": "Posez une question..."
+    },
+    "toast": {
+      "saved": "Entrée enregistrée avec succès",
+      "deleted": "Entrée supprimée",
+      "imported": "{{count}} entrées importées",
+      "crawled": "{{count}} éléments extraits du site",
+      "index_rebuilt": "Index reconstruit avec succès",
+      "error": "Une erreur est survenue"
+    }
   }
 }

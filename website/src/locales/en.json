@@ -4456,5 +4456,79 @@
     "guide_76": "Guide",
     "accueil_77": "Home",
     "vocalia_78": "VocalIA"
+  },
+  "kb": {
+    "title": "Knowledge Base",
+    "subtitle": "Customize your AI agent's responses",
+    "import": "Import",
+    "add_entry": "Add Entry",
+    "crawl_url": "Crawl URL",
+    "rebuild_index": "Rebuild Index",
+    "test_chatbot": "Test Chatbot",
+    "loading": "Loading...",
+    "stats": {
+      "entries": "Entries",
+      "languages": "Languages",
+      "index_size": "TF-IDF Index",
+      "last_update": "Last Update"
+    },
+    "quota": {
+      "title": "Quota Usage",
+      "entries": "Entries",
+      "storage": "Storage",
+      "languages": "Languages"
+    },
+    "table": {
+      "key": "Key",
+      "content": "Content",
+      "type": "Type",
+      "actions": "Actions"
+    },
+    "modal": {
+      "add_title": "Add Entry",
+      "edit_title": "Edit Entry",
+      "key": "Key (unique identifier)",
+      "key_hint": "Lowercase letters, numbers and underscores only",
+      "response": "Response (text shown to user)",
+      "details": "Details (optional JSON)",
+      "details_hint": "Valid JSON format for structured data",
+      "language": "Language",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "import_modal": {
+      "title": "Import Data",
+      "drop_text": "Drop a JSON or CSV file here",
+      "or": "or",
+      "browse": "Browse",
+      "preview": "Preview",
+      "overwrite": "Overwrite existing entries",
+      "language": "Target language",
+      "import": "Import"
+    },
+    "crawl_modal": {
+      "title": "Crawl Website",
+      "url": "Website URL",
+      "max_pages": "Max pages",
+      "language": "Language",
+      "single_page": "Single page only",
+      "info": "The crawler will automatically extract FAQs, hours, contact information and other relevant data from the website.",
+      "crawling": "Crawling in progress...",
+      "start": "Start Crawl"
+    },
+    "chatbot": {
+      "title": "Chatbot Test",
+      "subtitle": "Test your KB responses",
+      "welcome": "Hello! Test your knowledge base by asking a question.",
+      "placeholder": "Ask a question..."
+    },
+    "toast": {
+      "saved": "Entry saved successfully",
+      "deleted": "Entry deleted",
+      "imported": "{{count}} entries imported",
+      "crawled": "{{count}} items extracted from site",
+      "index_rebuilt": "Index rebuilt successfully",
+      "error": "An error occurred"
+    }
   }
 }

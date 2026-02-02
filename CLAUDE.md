@@ -1,8 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.59.0 | 02/02/2026 | Session 250.44quater | Health: 100% | **✅ 5 LANGUES PRODUCTION READY**
+> Version: 6.60.0 | 02/02/2026 | Session 250.55 | Health: 100% | **✅ 5 LANGUES PRODUCTION READY**
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **67 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **1780+ keys** | RTL ✅ | hreflang ary ✅
+> **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **35 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **A2A Protocol: 4 Agents ✅** | TranslationSupervisor, BillingAgent, TenantOnboardingAgent, VoiceAgentB2B
@@ -16,8 +17,8 @@
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 10, PrestaShop 10, BigCommerce 9, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | **ElevenLabs Darija TTS ✅** | MCP 4 tools
-> **Website: 67 pages** (50 public + 17 webapp) | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
-> **Analytics: Plausible (GDPR)** | 67 pages tracked | CTA events ✅ | **A/B Testing ✅**
+> **Website: 69 pages** (50 public + 19 webapp) | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
+> **Analytics: Plausible (GDPR)** | 69 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** (XSS fixed, CSP hardened) | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
 > **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
 > **✅ LANGUAGE INTEGRATION (Session 250.44quater):** ElevenLabs **INTÉGRÉ** Widget + Telephony | Voix: Ghizlane, Jawad, Ali | supportedLanguages: 5 (FR, EN, ES, AR, ARY)
@@ -47,6 +48,7 @@
 **Session 250.44ter 🔴 CRITICAL FINDING → ✅ FIXED (250.44quater):** ElevenLabs client EXISTS mais **NON IMPORTÉ** dans production! **CORRIGÉ:** Widget+Telephony intégrés, supportedLanguages=['fr','en','es','ar','ary'], KB 5 langues × 40 personas
 **Session 250.44ter VOIX DARIJA:** Ghizlane `OfGMGmhShO8iL9jCkXy8` + Jawad `PmGnwGtnBs40iau7JfoF` + Ali `5lXEHh42xcasVuJofypc` + Hamid `A9ATTqUUQ6GHu0coCz8t` - 4 voix configurées dans elevenlabs-client.cjs
 **Session 250.44bis COGS ANALYSIS:** Stack approuvé: Grok, Gemini, ElevenLabs, Anthropic, Atlas-Chat (❌ OpenAI exclu), 4 pricing packs ($0.08-$0.45/min), COGS vérifiés ($0.029-$0.144/min), marge 60-68%, Lahajati.ai=INTERNE UNIQUEMENT
+**Session 250.55 MULTI-TENANT KB SYSTEM:** kb-parser.cjs (6 formats: JSON/CSV/TSV/XLSX/TXT/MD), kb-crawler.cjs (FAQ/Contact/Hours/JSON-LD extraction), kb-quotas.cjs (Free/Starter/Pro/Enterprise tiers), knowledge-base.html (full CRUD + import + crawl), 4 new API endpoints (/kb/quota, /kb/import, /kb/rebuild-index, /kb/crawl), i18n kb.* keys (5 locales)
 **Session 250.54 ARCHITECTURE AUDIT COMPLETE:** 9/9 tasks done - Widget 5 langues, archetypeKey fix, startup health check, request tracing (X-Trace-Id), /metrics endpoint, graceful shutdown, E2E tests (8/8 pass)
 **Session 250.52-prev DASHBOARDS CONNECTED:** client.html connecté Google Sheets (0 hardcodés), widget-analytics.html connecté, db-admin.html fusionné dans admin.html
 **Session 250.39 MARKETING COPY AUDIT:** 200+ French accent fixes in 7 blog articles, fix-french-accents.py script created

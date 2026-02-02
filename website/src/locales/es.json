@@ -4456,5 +4456,79 @@
     "guide_76": "Guía",
     "accueil_77": "Inicio",
     "vocalia_78": "VocalIA"
+  },
+  "kb": {
+    "title": "Base de Conocimientos",
+    "subtitle": "Personaliza las respuestas de tu agente IA",
+    "import": "Importar",
+    "add_entry": "Añadir entrada",
+    "crawl_url": "Rastrear URL",
+    "rebuild_index": "Reconstruir Índice",
+    "test_chatbot": "Probar Chatbot",
+    "loading": "Cargando...",
+    "stats": {
+      "entries": "Entradas",
+      "languages": "Idiomas",
+      "index_size": "Índice TF-IDF",
+      "last_update": "Última Actualización"
+    },
+    "quota": {
+      "title": "Uso de Cuota",
+      "entries": "Entradas",
+      "storage": "Almacenamiento",
+      "languages": "Idiomas"
+    },
+    "table": {
+      "key": "Clave",
+      "content": "Contenido",
+      "type": "Tipo",
+      "actions": "Acciones"
+    },
+    "modal": {
+      "add_title": "Añadir entrada",
+      "edit_title": "Editar entrada",
+      "key": "Clave (identificador único)",
+      "key_hint": "Solo letras minúsculas, números y guiones bajos",
+      "response": "Respuesta (texto mostrado al usuario)",
+      "details": "Detalles (JSON opcional)",
+      "details_hint": "Formato JSON válido para datos estructurados",
+      "language": "Idioma",
+      "save": "Guardar",
+      "cancel": "Cancelar"
+    },
+    "import_modal": {
+      "title": "Importar datos",
+      "drop_text": "Arrastra un archivo JSON o CSV aquí",
+      "or": "o",
+      "browse": "Explorar",
+      "preview": "Vista previa",
+      "overwrite": "Sobrescribir entradas existentes",
+      "language": "Idioma destino",
+      "import": "Importar"
+    },
+    "crawl_modal": {
+      "title": "Rastrear sitio web",
+      "url": "URL del sitio web",
+      "max_pages": "Páginas máx",
+      "language": "Idioma",
+      "single_page": "Solo página única",
+      "info": "El rastreador extraerá automáticamente FAQs, horarios, información de contacto y otros datos relevantes del sitio web.",
+      "crawling": "Rastreando...",
+      "start": "Iniciar rastreo"
+    },
+    "chatbot": {
+      "title": "Prueba del Chatbot",
+      "subtitle": "Prueba las respuestas de tu KB",
+      "welcome": "¡Hola! Prueba tu base de conocimientos haciendo una pregunta.",
+      "placeholder": "Haz una pregunta..."
+    },
+    "toast": {
+      "saved": "Entrada guardada con éxito",
+      "deleted": "Entrada eliminada",
+      "imported": "{{count}} entradas importadas",
+      "crawled": "{{count}} elementos extraídos del sitio",
+      "index_rebuilt": "Índice reconstruido con éxito",
+      "error": "Ha ocurrido un error"
+    }
   }
 }
