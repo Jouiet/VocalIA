@@ -3,6 +3,8 @@ import { z } from 'zod';
 import * as path from 'path';
 import { createRequire } from 'module';
 
+import * as fs from 'fs';
+
 // Multi-tenant support via SecretVault (Session 249.2)
 const require = createRequire(import.meta.url);
 let SecretVault: any = null;
@@ -10,14 +12,16 @@ try {
     const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
     SecretVault = require(vaultPath);
 } catch (e) {
-    // Fallback to env vars
+    // Fallback to env vars or tokens file
 }
 
 /**
  * Get Google credentials for a tenant
+ * Priority: SecretVault > ENV vars > tokens file
  * @param tenantId - Tenant ID (default: agency_internal)
  */
 async function getGoogleCredentials(tenantId: string = 'agency_internal') {
+    // 1. Try SecretVault (multi-tenant)
     if (SecretVault) {
         const creds = await SecretVault.loadCredentials(tenantId);
         if (creds.GOOGLE_CLIENT_ID && creds.GOOGLE_CLIENT_SECRET && creds.GOOGLE_REFRESH_TOKEN) {
@@ -29,12 +33,41 @@ async function getGoogleCredentials(tenantId: string = 'agency_internal') {
             };
         }
     }
-    // Fallback to environment
+
+    // 2. Try environment variables
+    if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && process.env.GOOGLE_REFRESH_TOKEN) {
+        return {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
+            redirectUri: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth2callback'
+        };
+    }
+
+    // 3. Fallback to tokens file (data/google-oauth-tokens.json)
+    const tokensPath = path.join(process.cwd(), '..', 'data', 'google-oauth-tokens.json');
+    if (fs.existsSync(tokensPath)) {
+        try {
+            const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));
+            if (tokens.client_id && tokens.client_secret && tokens.refresh_token) {
+                return {
+                    clientId: tokens.client_id,
+                    clientSecret: tokens.client_secret,
+                    refreshToken: tokens.refresh_token,
+                    redirectUri: 'http://localhost:3000/oauth2callback'
+                };
+            }
+        } catch (e) {
+            // File read error, continue to throw
+        }
+    }
+
+    // No credentials found
     return {
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-        redirectUri: process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth2callback'
+        clientId: undefined,
+        clientSecret: undefined,
+        refreshToken: undefined,
+        redirectUri: 'http://localhost:3000/oauth2callback'
     };
 }
 

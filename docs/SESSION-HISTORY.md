@@ -1,14 +1,15 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.56.0 | **Updated**: 02/02/2026 | **Session**: 250.52
+> **Version**: 6.60.0 | **Updated**: 02/02/2026 | **Session**: 250.55
 > **Backend Score**: 99/100 | **Frontend Score**: 99/100 | **Health Check**: 100% (39/39)
 > **Security**: 99/100 - SRI ✅, HTTPS ✅, XSS ✅, CSP ✅, JWT Auth ✅
 > **MCP Server**: v0.8.0 | **MCP Tools**: 182 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
-> **KB Score**: 95/100 - 193 chunks, 1444 terms, 165 FAQ merged, 10 policies
-> **Session 250.52**: P0+P1+P2 COMPLETE - Security, i18n, WebSocket, E2E Tests
+> **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler
+> **Session 250.55**: Multi-tenant KB system complete - 4 API endpoints, 6 formats, i18n kb.* keys
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
-> **Translation QA**: 0 issues | **Schema.org**: 35 Speakable | **i18n**: 1700+ keys × 5 langues
+> **Translation QA**: 0 issues | **Schema.org**: 35 Speakable | **i18n**: 1780+ keys × 5 langues
 > **WebSocket**: Real-time updates ✅ | Channels: hitl, logs, tenants, sessions
+> **Pages**: 69 HTML (50 public + 19 webapp) | **Webapp**: Auth 5 + Client 8 + Admin 5
 
 ---
 
@@ -4215,7 +4216,7 @@ grep -c 'data-lucide="mic"' website/use-cases/customer-support.html
 |:-------|:-------------------|
 | **Web Search** | Benchmark Vapi/Retell/Bland, pricing, features |
 | **GitHub** | Pipecat, TEN Framework, LiveKit, Bolna, VibeVoice |
-| **HuggingFace** | Qwen3-TTS, DVoice-Darija, SpeechT5, MMS |
+| **HuggingFace** | Qwen3-TTS, ~~DVoice-Darija~~ ⚠️ INACTIF, SpeechT5, MMS |
 | **Industry Reports** | 45 use cases identifiés (biz4group.com) |
 
 ### 2. Inventaire VocalIA (VÉRIFIÉ)

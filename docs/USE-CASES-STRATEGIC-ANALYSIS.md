@@ -292,7 +292,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | Modèle | Type | Langues | Pertinence VocalIA |
 |:-------|:-----|:--------|:-------------------|
 | [Qwen3-TTS](https://huggingface.co/Qwen/Qwen3-TTS) | TTS | 10 langues | Haute - Voice cloning |
-| [DVoice-Darija](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija) | ASR | Darija | **CRITIQUE** - Amélioration Darija |
+| ~~[DVoice-Darija](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija)~~ | ~~ASR~~ | ~~Darija~~ | ⚠️ **INACTIF** - AIOX Labs Mai 2022 |
 | [SpeechT5](https://huggingface.co/microsoft/speecht5_tts) | TTS/ASR | Multi | Moyenne |
 | [MMS](https://huggingface.co/facebook/mms-1b-all) | ASR | 1000+ | Expansion langues |
 
@@ -301,7 +301,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | Ressource | Type | Source |
 |:----------|:-----|:-------|
 | [MoroccoAI NLP Resources](https://github.com/MoroccoAI/Arabic-Darija-NLP-Resources) | Dataset + Models | GitHub |
-| [DVoice Darija](https://huggingface.co/aioxlabs/dvoice-darija) | ASR Model | HuggingFace |
+| ~~[DVoice Darija](https://huggingface.co/aioxlabs/dvoice-darija)~~ | ~~ASR Model~~ | ⚠️ **AIOX Labs INACTIF depuis Mai 2022** |
 | [DARIJA-C Corpus](https://ieeexplore.ieee.org/document/10085164/) | Speech Corpus | IEEE |
 | [Atlas-Chat](https://huggingface.co/MBZUAI/Atlas-Chat-9B) | LLM | HuggingFace |
 
@@ -385,7 +385,7 @@ Maroc-first                   →      Afrique francophone
 
 ### Technologie
 - [Pipecat Framework](https://github.com/pipecat-ai/pipecat)
-- [DVoice Darija ASR](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija)
+- ~~[DVoice Darija ASR](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija)~~ → ⚠️ **INACTIF** - Utiliser ElevenLabs Scribe ou Whisper
 - [MoroccoAI NLP Resources](https://github.com/MoroccoAI/Arabic-Darija-NLP-Resources)
 
 ### Marché

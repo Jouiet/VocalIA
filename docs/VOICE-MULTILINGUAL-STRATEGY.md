@@ -296,7 +296,7 @@ Documentation officielle vérifiée:
 | Solution | Modèle Base | WER Darija | Effort | Lien |
 |----------|-------------|------------|--------|------|
 | **[Whisper Large v3 Turbo Darija](https://huggingface.co/anaszil/whisper-large-v3-turbo-darija)** | Whisper Large v3 | ~30%* | HIGH | LoRA adapter |
-| [DVoice Darija](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija) | wav2vec2-large-xlsr-53 | ~50% | HIGH | SpeechBrain |
+| ~~[DVoice Darija](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija)~~ | ~~wav2vec2-large-xlsr-53~~ | ~~50%~~ | ⚠️ **INACTIF** | **AIOX Labs inactif depuis Mai 2022** |
 | [Whisper-darija-finetuned](https://huggingface.co/TaloCreations/whisper-darija-finetuned) | Whisper | ~50% | MEDIUM | 10 epochs |
 | [Seamless M4T Darija](https://huggingface.co/AnasAber/seamless-darija-eng) | SeamlessM4T v2 | ⭐⭐⭐ | HIGH | Darija↔EN |
 
@@ -631,7 +631,7 @@ const LANGUAGE_FALLBACKS = {
 
 | Modèle | Type | Lien HuggingFace |
 |--------|------|------------------|
-| DVoice Darija | STT | <https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija> |
+| ~~DVoice Darija~~ | ~~STT~~ | ⚠️ **INACTIF** - AIOX Labs dernière màj Mai 2022 |
 | Whisper Large v3 Turbo Darija | STT | <https://huggingface.co/anaszil/whisper-large-v3-turbo-darija> |
 | Whisper Darija Finetuned | STT | <https://huggingface.co/TaloCreations/whisper-darija-finetuned> |
 | Seamless Darija-English | Translation | <https://huggingface.co/AnasAber/seamless-darija-eng> |
