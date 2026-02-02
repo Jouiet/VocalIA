@@ -1,16 +1,17 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.69.0 | **Updated**: 02/02/2026 | **Session**: 250.61
+> **Version**: 6.71.0 | **Updated**: 02/02/2026 | **Session**: 250.62
 > **Backend Score**: 99/100 | **Frontend Score**: 99/100 | **Health Check**: 100% (39/39)
 > **Security**: 99/100 - SRI ✅, HTTPS ✅, XSS ✅, CSP ✅, JWT Auth ✅
 > **MCP Server**: v0.8.0 | **MCP Tools**: 182 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler
+> **E2E Tests**: 75/75 Playwright ✅ | **Unit Tests**: 305 | **Coverage**: c8
+> **Session 250.62**: E2E Playwright 75 tests ✅, RTL AR/ARY fixed (http-server), i18n init 18 webapp pages
 > **Session 250.61**: i18n Fix - Added missing dashboard.nav.* keys (8 keys × 5 locales)
 > **Session 250.60**: Bug fixes - hitl.html api import, billing integrations count
 > **Session 250.59**: Dashboards complete - integrations.html, settings.html with real API
 > **Session 250.58**: Client KB Multi-Lang (5 files: fr, en, es, ar, ary), 41 core modules
 > **Session 250.57**: Rigorous Audit - i18n.js 18/18 pages, wsDebug() fix, form validation, conversation-store.cjs
-> **Session 250.56**: DOE Audit Complete - ALL PLANNING DOCS 100% VERIFIED
 > **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
 > **Translation QA**: 0 issues | **Schema.org**: 35 Speakable | **i18n**: 1780+ keys × 5 langues
 > **WebSocket**: Real-time updates ✅ | Channels: hitl, logs, tenants, sessions
@@ -5503,3 +5504,110 @@ ls core/*.cjs | wc -l  # 41 ✅
 # Health check
 node scripts/health-check.cjs  # 39/39 (100%) ✅
 ```
+
+---
+
+## Session 250.62 - E2E Tests + RTL Fix (02/02/2026)
+
+### Résumé
+
+Continuation de session pour corriger les tests RTL qui échouaient (AR/ARY).
+
+### Problème Identifié
+
+| Problème | Cause racine | Solution |
+|:---------|:-------------|:---------|
+| RTL tests timeout/fail | `serve` package strips URL query params | Changé vers `http-server` |
+| URL attendue: `/app/auth/login.html?lang=ar` | URL reçue: `/app/auth/login` (sans `.html`, sans `?lang=ar`) | `npx http-server website -p 8080 -c-1` |
+
+### Corrections Appliquées
+
+| Fichier | Modification |
+|:--------|:-------------|
+| `playwright.config.js` | webServer: serve → http-server |
+| 18 webapp pages | Ajout i18n init script (DOMContentLoaded + VocaliaI18n.initI18n) |
+| `test/e2e/auth.spec.js` | Tests RTL pour 5 langues (FR, EN, ES, AR, ARY) |
+
+### Résultats Tests E2E
+
+```
+75 passed (29.6s)
+- auth.spec.js: 31 tests
+- client-dashboard.spec.js: 22 tests
+- public-pages.spec.js: 22 tests
+```
+
+### Vérification Empirique
+
+```bash
+# E2E tests
+npx playwright test --project=chromium  # 75/75 ✅
+
+# Webapp pages avec i18n
+find website/app -name "*.html" | wc -l  # 18 ✅
+
+# JS libraries
+find website/src/lib -name "*.js" | wc -l  # 21 ✅
+wc -l website/src/lib/*.js | tail -1  # 7,404 lignes total
+
+# Git status
+git status --short  # clean ✅
+git log --oneline -1  # 9cbb27d fix(i18n): RTL support
+```
+
+### Commits
+
+```
+9cbb27d fix(i18n): RTL support for AR/ARY languages - Session 250.62
+ae83ad0 docs: Update CLAUDE.md for Session 250.62
+6c11221 test(e2e): Add Playwright E2E test suite - Session 250.62
+906b1d0 fix(gateways): Replace mock payment gateways with real implementations
+```
+
+---
+
+## Plan Actionnable - Session 250.63+
+
+### ÉTAT ACTUEL VÉRIFIÉ (02/02/2026)
+
+| Métrique | Valeur | Vérification |
+|:---------|:-------|:-------------|
+| E2E Tests | 75/75 PASS | `npx playwright test --project=chromium` |
+| Webapp Pages | 18 | `find website/app -name "*.html" \| wc -l` |
+| JS Libraries | 21 (7,404 lignes) | `wc -l website/src/lib/*.js` |
+| i18n Locales | 5 (FR, EN, ES, AR, ARY) | `ls website/src/locales/*.json` |
+| RTL Support | AR + ARY | Tests E2E passent |
+| Health Check | 39/39 (100%) | `node scripts/health-check.cjs` |
+| Git Status | Clean | `git status --short` |
+
+### P0 - CRITIQUE (Bloquants production)
+
+| # | Tâche | Effort | Raison | Vérification |
+|:-:|:------|:------:|:-------|:-------------|
+| 1 | Twilio credentials | 1h | Telephony non fonctionnel sans | `curl localhost:3009/health` |
+| 2 | Unit tests cleanup | 4h | Tests hang (event loops modules) | `npm test` doit terminer |
+| 3 | ElevenLabs API key config | 1h | TTS Darija non fonctionnel | Test widget voice |
+
+### P1 - IMPORTANT (Semaine en cours)
+
+| # | Tâche | Effort | Raison | Vérification |
+|:-:|:------|:------:|:-------|:-------------|
+| 4 | E2E tests Firefox/Webkit | 2h | Multi-browser coverage | `npx playwright test` |
+| 5 | Load test E2E | 4h | Performance baseline | k6 smoke test |
+| 6 | SSL/HTTPS verification prod | 1h | Security compliance | `curl -I https://vocalia.ma` |
+
+### P2 - STANDARD (Prochaine semaine)
+
+| # | Tâche | Effort | Raison | Vérification |
+|:-:|:------|:------:|:-------|:-------------|
+| 7 | Mobile responsive audit | 4h | UX mobile | E2E mobile viewports |
+| 8 | Client onboarding flow | 8h | Conversion | User testing |
+| 9 | API documentation publique | 8h | Developer adoption | OpenAPI spec |
+
+### ⚠️ PROBLÈMES CONNUS NON RÉSOLUS
+
+| Problème | Cause | Impact | Priorité |
+|:---------|:------|:-------|:---------|
+| Unit tests hang | Modules avec event loops (EventBus health checks) | Tests ne terminent pas | P1 |
+| Twilio credentials | Non configuré | Telephony inopérant | P0 |
+| Firefox/Webkit browsers | Non installés | E2E limité à Chromium | P1 |
