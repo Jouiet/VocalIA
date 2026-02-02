@@ -48,7 +48,7 @@ node scripts/health-check.cjs
 |:---------|:-------|:------------------------|
 | **Lignes code** | 22,361 | `find . \( -name "*.cjs" -o -name "*.js" \) ! -path "./node_modules/*" -exec wc -l {} + \| tail -1` |
 | **Fichiers code** | 49 | `find . \( -name "*.cjs" -o -name "*.js" \) ! -path "./node_modules/*" \| wc -l` |
-| **Core modules** | 17 | `ls core/*.cjs \| wc -l` |
+| **Core modules** | 38 | `ls core/*.cjs \| wc -l` |
 | **Integrations** | 3 | `ls integrations/*.cjs \| wc -l` |
 | **Personas** | 2 | `ls personas/*.cjs \| wc -l` |
 | **Sensors** | 4 | `ls sensors/*.cjs \| wc -l` |
@@ -62,9 +62,9 @@ node scripts/health-check.cjs
 
 ---
 
-## Module Inventory (49 fichiers - VÉRIFIÉ)
+## Module Inventory (Session 250.56 - VÉRIFIÉ)
 
-### Core (17 modules)
+### Core (38 modules)
 
 | Module | Lignes | Status | Purpose |
 |:-------|:------:|:------:|:--------|

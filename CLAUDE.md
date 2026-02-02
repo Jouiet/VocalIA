@@ -2,15 +2,15 @@
 
 > Version: 6.61.0 | 02/02/2026 | Session 250.56 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **1780+ keys** | RTL ✅ | hreflang ary ✅
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
-> **AEO: Speakable schema ✅** | **35 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
+> **AEO: Speakable schema ✅** | **54 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **A2A Protocol: 4 Agents ✅** | TranslationSupervisor, BillingAgent, TenantOnboardingAgent, VoiceAgentB2B
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
-> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 13 Func. Tools | 25 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 13 Func. Tools | 38 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
@@ -73,7 +73,7 @@
 
 ```
 VocalIA/                              # ~107,000 lignes total
-├── core/           # 32 modules (16,833 lignes)
+├── core/           # 38 modules (~18,000 lignes)
 │   ├── voice-api-resilient.cjs   # Multi-AI fallback (port 3004)
 │   ├── grok-voice-realtime.cjs   # WebSocket audio (port 3007)
 │   ├── db-api.cjs                # REST API + Auth (port 3013)
@@ -84,24 +84,24 @@ VocalIA/                              # ~107,000 lignes total
 │   ├── OAuthGateway.cjs          # OAuth 2.0 (port 3010)
 │   ├── WebhookRouter.cjs         # Webhooks (port 3011)
 │   ├── remotion-hitl.cjs         # Video HITL (port 3012)
-│   └── [+22 autres modules]
+│   └── [+28 autres modules]
 ├── sensors/        # 4 sensors (822 lignes)
-├── telephony/      # PSTN bridge (3,194 lignes, 11 function tools)
+├── telephony/      # PSTN bridge (3,194 lignes, 13 function tools)
 ├── personas/       # 40 personas SOTA (5,280 lignes)
 ├── integrations/   # CRM/E-commerce (1,479 lignes)
 ├── widget/         # Browser widget (1,085 lignes)
-├── website/        # 67 pages HTML (~25,000 lignes)
-│   ├── app/           # 17 pages SaaS webapp
+├── website/        # 69 pages HTML (~27,000 lignes)
+│   ├── app/           # 18 pages SaaS webapp
 │   │   ├── auth/      # 5 pages (login, signup, reset...)
-│   │   ├── client/    # 7 pages (dashboard, calls, agents...)
+│   │   ├── client/    # 8 pages (dashboard, calls, agents, kb...)
 │   │   └── admin/     # 5 pages (tenants, users, hitl...)
 │   ├── dashboard/     # 3 dashboards legacy
 │   └── src/
 │       ├── lib/       # 21 JS libraries (7,326 lignes)
-│       └── locales/   # 5 langues (22,140 lignes JSON)
-├── mcp-server/     # MCP Server (15,755 lignes TS, 182 tools)
+│       └── locales/   # 5 langues (~85,000 keys total)
+├── mcp-server/     # MCP Server (1,483 lignes TS, 182 tools)
 ├── sdks/           # Python + Node.js
-├── scripts/        # 63 utility scripts
+├── scripts/        # 65 utility scripts
 └── docs/           # Documentation consolidée
 ```
 
