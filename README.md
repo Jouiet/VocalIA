@@ -1,13 +1,15 @@
 # VocalIA - Voice AI Platform
 
-> **Domain:** <www.vocalIA.ma> | **Version:** 1.0.0
+> **Domain:** https://vocalia.ma | **Version:** 6.76.0 | **Session:** 250.66
+> **🌐 PRODUCTION LIVE** | HTTP/2 ✅ | HSTS preload ✅ | Security 100/100 ✅
 
 ## Overview
 
-VocalIA is a comprehensive Voice AI platform combining:
+VocalIA is a comprehensive Voice AI SaaS platform combining:
 
 - **Voice Widget** - Browser-based (Web Speech API, $0 cost)
 - **Voice Telephony AI** - PSTN integration (Twilio + Grok WebSocket)
+- **SaaS Webapp** - Multi-tenant dashboards (Auth, HITL, Analytics)
 
 ## Architecture
 
@@ -29,11 +31,13 @@ VocalIA is a comprehensive Voice AI platform combining:
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │                   SHARED COMPONENTS                      │   │
 │  ├─────────────────────────────────────────────────────────┤   │
-│  │  • 40 Multi-Tenant Personas                             │   │
+│  │  • 40 Multi-Tenant Personas (SOTA)                      │   │
 │  │  • 5 Languages (FR, EN, ES, AR, ARY/Darija)            │   │
+│  │  • 27 ElevenLabs Voices (Males + Females)              │   │
 │  │  • Marketing Science (BANT, PAS, CIALDINI, AIDA)       │   │
-│  │  • CRM Integration (HubSpot + Klaviyo + Shopify)       │   │
+│  │  • 28 Native Integrations (CRM, E-commerce, Calendar)  │   │
 │  │  • Multi-AI Fallback (Grok→Gemini→Claude→Atlas)        │   │
+│  │  • 182 MCP Tools | 305 Unit Tests | 375 E2E Tests     │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -108,11 +112,12 @@ VocalIA/
 - HITL (Human-in-the-Loop) controls
 - WhatsApp confirmation
 
-### Multi-Tenant Personas (30)
+### Multi-Tenant Personas (40)
 
-- Tier 1 (Core): Agency, E-commerce, Dental, Property, HOA, School, Collector
-- Tier 2 (Expansion): 11 additional verticals
-- Tier 3 (Extended): 12 additional verticals
+- Tier 1 (Core): AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL
+- Tier 2 (Expansion): HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER...
+- Tier 3 (Universal): UNIVERSAL_ECOMMERCE, UNIVERSAL_SME
+- Tier 4 (Economy): RETAILER, BUILDER, RESTAURATEUR, CONSULTANT, DOCTOR, NOTARY...
 
 ### Languages
 
@@ -153,11 +158,24 @@ SHOPIFY_SHOP_NAME=
 
 | Feature | Vapi | Retell | VocalIA |
 |---------|------|--------|---------|
-| Pricing | $0.15-0.33/min | $0.13-0.31/min | $0.06/min |
+| Pricing | $0.15-0.33/min | $0.13-0.31/min | **$0.06/min** |
 | Widget + Telephony | ❌ | ❌ | ✅ |
 | Darija Support | ❌ | ❌ | ✅ |
-| Multi-Personas | ❌ | ❌ | ✅ (30) |
+| Multi-Personas | ❌ | ❌ | ✅ (40) |
+| MCP Server | ❌ | ❌ | ✅ (182 tools) |
 | Self-Hosted | ❌ | ❌ | ✅ |
+| E2E Tests | ❌ | ❌ | ✅ (375 tests) |
+
+## Platform Metrics
+
+| Metric | Value |
+|--------|-------|
+| HTML Pages | 70 (50 public + 20 webapp) |
+| MCP Tools | 182 |
+| Unit Tests | 305 (100% pass) |
+| E2E Tests | 375 (99.5% pass, 5 browsers) |
+| i18n Keys | 17,000+ |
+| Security Score | 100/100 |
 
 ## License
 
@@ -165,4 +183,5 @@ Proprietary - VocalIA. All rights reserved.
 
 ---
 
-**Contact:** <contact@www.vocalIA.ma> | **VocalIA - SOTA Voice AI Systems**
+**Website:** https://vocalia.ma | **GitHub:** https://github.com/Jouiet/VoicalAI
+**VocalIA - SOTA Voice AI Systems**

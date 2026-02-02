@@ -27,9 +27,9 @@ const TOKENS_PATH = path.join(__dirname, '../data/google-oauth-tokens.json');
 // Schema definitions
 const SCHEMAS = {
   tenants: {
-    columns: ['id', 'name', 'plan', 'mrr', 'status', 'email', 'phone', 'nps_score', 'conversion_rate', 'qualified_leads', 'created_at', 'updated_at'],
+    columns: ['id', 'name', 'plan', 'mrr', 'status', 'email', 'phone', 'nps_score', 'conversion_rate', 'qualified_leads', 'voice_language', 'voice_gender', 'active_persona', 'created_at', 'updated_at'],
     required: ['name', 'email'],
-    defaults: { plan: 'free', mrr: 0, status: 'active', nps_score: 0, conversion_rate: 0, qualified_leads: 0 }
+    defaults: { plan: 'free', mrr: 0, status: 'active', nps_score: 0, conversion_rate: 0, qualified_leads: 0, voice_language: 'fr', voice_gender: 'female', active_persona: 'agency_v3' }
   },
   sessions: {
     columns: ['id', 'tenant_id', 'calls', 'duration_sec', 'cost_usd', 'persona', 'lang', 'timestamp'],

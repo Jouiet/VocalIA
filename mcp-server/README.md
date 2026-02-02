@@ -1,5 +1,7 @@
 # VocalIA MCP Server
 
+> **Version:** 0.8.0 | **Tools:** 182 | **Session:** 250.66
+
 Model Context Protocol server for the VocalIA Voice AI Platform.
 
 ## Installation
@@ -29,30 +31,51 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 }
 ```
 
-## Available Tools
+## Available Tools (182 total)
 
-### Voice Tools
+### Voice Tools (10)
 | Tool | Description |
 |:-----|:------------|
 | `voice_generate_response` | Generate AI voice response with persona |
 | `voice_synthesize` | Text-to-speech conversion |
 | `voice_transcribe` | Speech-to-text transcription |
+| `personas_list` | List all 40 industry personas |
+| `personas_get` | Get persona details |
+| `qualify_lead` | BANT lead qualification |
 
-### Telephony Tools
+### Telephony Tools (4)
 | Tool | Description |
 |:-----|:------------|
 | `telephony_initiate_call` | Start outbound AI phone call |
 | `telephony_get_call` | Get call status and details |
 | `telephony_get_transcript` | Get conversation transcript |
-| `telephony_transfer_call` | Transfer to human agent |
+| `messaging_send` | Send SMS/WhatsApp message |
 
-### Persona & Knowledge Base
+### Google Tools (13)
 | Tool | Description |
 |:-----|:------------|
-| `personas_list` | List all 28 industry personas |
-| `knowledge_base_search` | RAG search in knowledge base |
-| `qualify_lead` | BANT lead qualification |
-| `schedule_callback` | Schedule follow-up callback |
+| `google_calendar_*` | Calendar operations |
+| `google_sheets_*` | Sheets operations |
+| `google_drive_*` | Drive operations |
+
+### E-commerce Tools (76)
+| Platform | Tools |
+|:---------|:-----:|
+| Shopify | 8 (FULL CRUD) |
+| WooCommerce | 7 |
+| Magento | 10 |
+| PrestaShop | 10 |
+| BigCommerce | 9 |
+| Wix | 6 |
+| Squarespace | 7 |
+
+### Stripe Tools (19)
+Payment Links, Checkout, Invoices, Refunds, PaymentIntents, Subscriptions
+
+### CRM & Support Tools (13)
+HubSpot, Pipedrive, Freshdesk, Zendesk
+
+See `docs/VOCALIA-MCP.md` for complete tool reference.
 
 ## Languages Supported
 

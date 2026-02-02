@@ -84,6 +84,39 @@ const { getInstance: getConversationStore } = require('../core/conversation-stor
 const conversationStore = getConversationStore();
 console.log('✅ Conversation store initialized for telephony');
 
+// Session 250.63: Google Sheets DB for tenant voice preferences
+const { getDB } = require('../core/GoogleSheetsDB.cjs');
+let tenantDB = null;
+
+/**
+ * Session 250.63: Fetch tenant voice preferences from DB
+ * @param {string} tenantId - Tenant identifier
+ * @returns {Promise<{voice_language: string, voice_gender: string}>}
+ */
+async function getTenantVoicePreferences(tenantId) {
+  if (!tenantId || tenantId === 'default') {
+    return { voice_language: 'fr', voice_gender: 'female' };
+  }
+
+  try {
+    if (!tenantDB) {
+      tenantDB = await getDB();
+    }
+    const tenant = await tenantDB.findById('tenants', tenantId);
+    if (tenant) {
+      return {
+        voice_language: tenant.voice_language || 'fr',
+        voice_gender: tenant.voice_gender || 'female'
+      };
+    }
+  } catch (err) {
+    console.warn(`[Voice] Failed to fetch tenant ${tenantId} preferences: ${err.message}`);
+  }
+
+  return { voice_language: 'fr', voice_gender: 'female' };
+}
+console.log('✅ Tenant voice preferences loader ready');
+
 // RAG Knowledge Base - Legacy fallback (Universal KBs)
 // NOTE: Now loaded via TenantKBLoader with per-client override support
 const KNOWLEDGE_BASES = {
@@ -673,7 +706,7 @@ async function createGrokSession(callInfo) {
       reject(new Error('Grok WebSocket connection timeout'));
     }, 10000);
 
-    ws.on('open', () => {
+    ws.on('open', async () => {
       clearTimeout(timeout);
 
       // SALES ASSISTANT CONFIG - Optimized for conversion (v2.0)
@@ -1011,13 +1044,23 @@ async function createGrokSession(callInfo) {
 
       ws.send(JSON.stringify(finalConfig));
 
+      // Session 250.63: Fetch tenant voice preferences from DB
+      const tenantId = callInfo.clientId || 'default';
+      const voicePrefs = await getTenantVoicePreferences(tenantId);
+      console.log(`[Voice] Tenant ${tenantId} preferences: lang=${voicePrefs.voice_language}, gender=${voicePrefs.voice_gender}`);
+
       const session = {
         id: sessionId,
         callSid: callInfo.callSid,
         from: callInfo.from,
         grokWs: ws,
         twilioWs: null,
-        metadata: finalConfig.session_config?.metadata || finalConfig.metadata || {}, // Store injected persona metadata
+        metadata: {
+          ...(finalConfig.session_config?.metadata || finalConfig.metadata || {}),
+          tenant_id: tenantId,
+          voice_language: voicePrefs.voice_language,
+          voice_gender: voicePrefs.voice_gender
+        }, // Store injected persona metadata + voice preferences
         createdAt: Date.now(),
         lastActivityAt: Date.now(),
         // Booking data
@@ -1209,8 +1252,9 @@ function handleGrokMessage(sessionId, message) {
       if (session.metadata?.language === 'ary' && session.pendingText && elevenLabsClient?.isConfigured()) {
         const textToSpeak = session.pendingText;
         session.pendingText = '';
-        // Async TTS generation
-        generateDarijaTTS(textToSpeak, 'female').then(audioBuffer => {
+        // Async TTS generation - Session 250.63: Use tenant voice preferences
+        const voiceGender = session.metadata?.voice_gender || 'female';
+        generateDarijaTTS(textToSpeak, voiceGender).then(audioBuffer => {
           if (audioBuffer) {
             sendElevenLabsAudioToTwilio(session, audioBuffer);
           }
