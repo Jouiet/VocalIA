@@ -51,6 +51,58 @@ const CORS_HEADERS = {
   'Content-Type': 'application/json'
 };
 
+// Rate limiter for DB endpoints
+const dbLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minute
+
+/**
+ * Check authentication (returns user or null)
+ * @returns {Object|null} User object or null if not authenticated
+ */
+async function checkAuth(req, res) {
+  const token = extractToken(req);
+  if (!token) {
+    sendError(res, 401, 'Authorization required');
+    return null;
+  }
+  try {
+    const decoded = authService.verifyToken(token);
+    return decoded;
+  } catch (e) {
+    sendError(res, 401, 'Invalid or expired token');
+    return null;
+  }
+}
+
+/**
+ * Check admin role (returns user or null)
+ * @returns {Object|null} User object or null if not admin
+ */
+async function checkAdmin(req, res) {
+  const user = await checkAuth(req, res);
+  if (!user) return null;
+  if (user.role !== 'admin') {
+    sendError(res, 403, 'Admin access required');
+    return null;
+  }
+  return user;
+}
+
+/**
+ * Filter sensitive fields from user records
+ */
+function filterUserRecord(record) {
+  if (!record) return record;
+  const { password_hash, password_reset_token, password_reset_expires, email_verify_token, email_verify_expires, ...safe } = record;
+  return safe;
+}
+
+/**
+ * Filter sensitive fields from array of user records
+ */
+function filterUserRecords(records) {
+  return records.map(filterUserRecord);
+}
+
 /**
  * Parse JSON body
  */
@@ -438,14 +490,18 @@ async function handleRequest(req, res) {
     if (handled) return;
   }
 
-  // HITL Endpoints
+  // HITL Endpoints (ADMIN ONLY)
   if (path.startsWith('/api/hitl/')) {
+    const admin = await checkAdmin(req, res);
+    if (!admin) return; // Auth error already sent
     const handled = await handleHITLRequest(req, res, path, method);
     if (handled) return;
   }
 
-  // Logs Endpoint with real-time support
+  // Logs Endpoint (ADMIN ONLY)
   if (path === '/api/logs' && method === 'GET') {
+    const admin = await checkAdmin(req, res);
+    if (!admin) return; // Auth error already sent
     try {
       const db = getDB();
       const logs = await db.findAll('logs');
@@ -486,6 +542,24 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // SECURITY: Require authentication for all DB operations (except health)
+  const user = await checkAuth(req, res);
+  if (!user) return; // Auth error already sent
+
+  // Apply rate limiting
+  const rateLimited = await applyRateLimit(req, res, dbLimiter);
+  if (rateLimited) return;
+
+  // SECURITY: Admin-only sheets
+  const adminOnlySheets = ['users', 'auth_sessions', 'hitl_pending', 'hitl_history'];
+  if (adminOnlySheets.includes(sheet) && user.role !== 'admin') {
+    sendError(res, 403, `Admin access required for ${sheet}`);
+    return;
+  }
+
+  // SECURITY: Tenant isolation for non-admin users
+  const tenantId = user.tenant_id;
+
   const db = getDB();
 
   try {
@@ -494,19 +568,44 @@ async function handleRequest(req, res) {
       case 'GET':
         if (id) {
           // GET /api/db/:sheet/:id - Get by ID
-          const record = await db.findById(sheet, id);
+          let record = await db.findById(sheet, id);
           if (!record) {
             sendError(res, 404, 'Record not found');
             return;
           }
+          // Tenant isolation check
+          if (tenantId && record.tenant_id && record.tenant_id !== tenantId && user.role !== 'admin') {
+            sendError(res, 403, 'Access denied');
+            return;
+          }
+          // Filter sensitive fields from users
+          if (sheet === 'users') {
+            record = filterUserRecord(record);
+          }
           sendJson(res, 200, record);
         } else if (Object.keys(query).length > 0) {
           // GET /api/db/:sheet?field=value - Query
-          const records = await db.find(sheet, query);
+          let records = await db.find(sheet, query);
+          // Tenant isolation for non-admin
+          if (tenantId && user.role !== 'admin') {
+            records = records.filter(r => !r.tenant_id || r.tenant_id === tenantId);
+          }
+          // Filter sensitive fields from users
+          if (sheet === 'users') {
+            records = filterUserRecords(records);
+          }
           sendJson(res, 200, { count: records.length, data: records });
         } else {
           // GET /api/db/:sheet - List all
-          const records = await db.findAll(sheet);
+          let records = await db.findAll(sheet);
+          // Tenant isolation for non-admin
+          if (tenantId && user.role !== 'admin') {
+            records = records.filter(r => !r.tenant_id || r.tenant_id === tenantId);
+          }
+          // Filter sensitive fields from users
+          if (sheet === 'users') {
+            records = filterUserRecords(records);
+          }
           sendJson(res, 200, { count: records.length, data: records });
         }
         break;
@@ -514,8 +613,12 @@ async function handleRequest(req, res) {
       // POST /api/db/:sheet - Create
       case 'POST':
         const createData = await parseBody(req);
+        // Auto-set tenant_id for non-admin
+        if (tenantId && user.role !== 'admin' && !createData.tenant_id) {
+          createData.tenant_id = tenantId;
+        }
         const created = await db.create(sheet, createData);
-        sendJson(res, 201, created);
+        sendJson(res, 201, sheet === 'users' ? filterUserRecord(created) : created);
         break;
 
       // PUT /api/db/:sheet/:id - Update
@@ -524,15 +627,27 @@ async function handleRequest(req, res) {
           sendError(res, 400, 'ID required for update');
           return;
         }
+        // Check tenant access before update
+        const existingRecord = await db.findById(sheet, id);
+        if (existingRecord && tenantId && existingRecord.tenant_id !== tenantId && user.role !== 'admin') {
+          sendError(res, 403, 'Access denied');
+          return;
+        }
         const updateData = await parseBody(req);
         const updated = await db.update(sheet, id, updateData);
-        sendJson(res, 200, updated);
+        sendJson(res, 200, sheet === 'users' ? filterUserRecord(updated) : updated);
         break;
 
       // DELETE /api/db/:sheet/:id - Delete
       case 'DELETE':
         if (!id) {
           sendError(res, 400, 'ID required for delete');
+          return;
+        }
+        // Check tenant access before delete
+        const recordToDelete = await db.findById(sheet, id);
+        if (recordToDelete && tenantId && recordToDelete.tenant_id !== tenantId && user.role !== 'admin') {
+          sendError(res, 403, 'Access denied');
           return;
         }
         await db.delete(sheet, id);
