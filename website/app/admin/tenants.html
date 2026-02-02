@@ -163,6 +163,9 @@
       window.location.href = '/app/auth/login.html';
     });
 
+    // Store tenants data for impersonation
+    let tenants = [];
+
     // Initialize table
     const tenantsTable = new DataTable('#tenants-table', {
       columns: [
@@ -217,6 +220,7 @@
         const result = await api.tenants.list();
         const data = result.data || result || [];
 
+        tenants = data; // Store for impersonation
         tenantsTable.setData(data);
 
         // Stats
@@ -248,33 +252,66 @@
       try {
         const tenant = await api.tenants.get(id);
 
+        const voiceNames = {
+          fr: { female: 'Sarah', male: 'Abdel' },
+          en: { female: 'Rachel', male: 'Adam' },
+          es: { female: 'Domi', male: 'Juan Carlos' },
+          ar: { female: 'Bill', male: 'Amr' },
+          ary: { female: 'Ghizlane', male: 'Jawad' }
+        };
+        const voiceLang = tenant.voice_language || 'fr';
+        const voiceGender = tenant.voice_gender || 'female';
+        const voiceName = voiceNames[voiceLang]?.[voiceGender] || 'Sarah';
+
         content.innerHTML = `
           <div class="space-y-6">
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-sm text-slate-500">Nom</p>
-                <p class="font-medium text-slate-900 dark:text-white">${tenant.name}</p>
+                <p class="font-medium text-slate-900 dark:text-white">${tenant.name || '-'}</p>
               </div>
               <div>
                 <p class="text-sm text-slate-500">Email</p>
-                <p class="font-medium text-slate-900 dark:text-white">${tenant.email}</p>
+                <p class="font-medium text-slate-900 dark:text-white">${tenant.email || '-'}</p>
               </div>
               <div>
                 <p class="text-sm text-slate-500">Plan</p>
-                <p class="font-medium text-slate-900 dark:text-white capitalize">${tenant.plan}</p>
+                <p class="font-medium text-slate-900 dark:text-white capitalize">${tenant.plan || 'trial'}</p>
               </div>
               <div>
                 <p class="text-sm text-slate-500">Statut</p>
-                <p class="font-medium text-slate-900 dark:text-white capitalize">${tenant.status}</p>
+                <p class="font-medium text-slate-900 dark:text-white capitalize">${tenant.status || 'active'}</p>
               </div>
               <div>
                 <p class="text-sm text-slate-500">Persona</p>
-                <p class="font-medium text-slate-900 dark:text-white">${tenant.persona || 'AGENCY'}</p>
+                <p class="font-medium text-slate-900 dark:text-white">${tenant.active_persona || tenant.persona || 'AGENCY'}</p>
               </div>
               <div>
                 <p class="text-sm text-slate-500">Créé le</p>
-                <p class="font-medium text-slate-900 dark:text-white">${new Date(tenant.created_at).toLocaleDateString()}</p>
+                <p class="font-medium text-slate-900 dark:text-white">${tenant.created_at ? new Date(tenant.created_at).toLocaleDateString() : '-'}</p>
               </div>
+            </div>
+
+            <!-- Voice Configuration Section -->
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
+              <h4 class="font-medium text-slate-900 dark:text-white mb-3">Configuration Voix</h4>
+              <div class="grid grid-cols-3 gap-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4">
+                <div>
+                  <p class="text-xs text-slate-500 mb-1">Langue</p>
+                  <p class="font-medium text-slate-900 dark:text-white">${voiceLang.toUpperCase()}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500 mb-1">Genre</p>
+                  <p class="font-medium text-slate-900 dark:text-white capitalize">${voiceGender === 'male' ? 'Masculin' : 'Féminin'}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500 mb-1">Voix</p>
+                  <p class="font-medium text-indigo-600 dark:text-indigo-400">${voiceName}</p>
+                </div>
+              </div>
+              <button onclick="changeVoice('${id}')" class="mt-3 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">
+                Modifier la voix →
+              </button>
             </div>
 
             <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
@@ -282,6 +319,9 @@
               <div class="flex flex-wrap gap-2">
                 <button onclick="changePlan('${id}')" class="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700">
                   Changer de plan
+                </button>
+                <button onclick="changePersona('${id}')" class="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700">
+                  Changer persona
                 </button>
                 <button onclick="suspendTenant('${id}')" class="px-3 py-1.5 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
                   Suspendre
@@ -343,6 +383,68 @@
         } catch (error) {
           toast.error('Erreur lors de la mise à jour');
         }
+      }
+    };
+
+    window.changeVoice = async (id) => {
+      const lang = await modal.prompt('Langue (fr, en, es, ar, ary)', {
+        title: 'Modifier la voix',
+        defaultValue: 'fr'
+      });
+
+      if (!lang || !['fr', 'en', 'es', 'ar', 'ary'].includes(lang)) {
+        if (lang) toast.error('Langue invalide');
+        return;
+      }
+
+      const gender = await modal.prompt('Genre (male, female)', {
+        title: 'Modifier la voix',
+        defaultValue: 'female'
+      });
+
+      if (!gender || !['male', 'female'].includes(gender)) {
+        if (gender) toast.error('Genre invalide');
+        return;
+      }
+
+      try {
+        await api.tenants.update(id, { voice_language: lang, voice_gender: gender });
+        toast.success('Configuration voix mise à jour');
+        showTenant(id); // Refresh modal
+        loadTenants();
+      } catch (error) {
+        toast.error('Erreur lors de la mise à jour');
+      }
+    };
+
+    window.changePersona = async (id) => {
+      const personas = [
+        'AGENCY', 'DENTAL', 'PROPERTY', 'CONTRACTOR', 'FUNERAL',
+        'UNIVERSAL_ECOMMERCE', 'UNIVERSAL_SME', 'RETAILER', 'RESTAURATEUR',
+        'DOCTOR', 'NOTARY', 'CONSULTANT', 'IT_SERVICES', 'TRAVEL_AGENT',
+        'INSURER', 'RECRUITER', 'HEALER', 'MECHANIC', 'COUNSELOR'
+      ];
+
+      const persona = await modal.prompt('Persona (ex: AGENCY, DENTAL, DOCTOR...)', {
+        title: 'Changer de persona',
+        defaultValue: 'AGENCY'
+      });
+
+      if (!persona) return;
+
+      const upperPersona = persona.toUpperCase();
+      if (!personas.includes(upperPersona)) {
+        toast.error('Persona non reconnu. Voir liste: AGENCY, DENTAL, PROPERTY...');
+        return;
+      }
+
+      try {
+        await api.tenants.update(id, { active_persona: upperPersona });
+        toast.success(`Persona ${upperPersona} activé`);
+        showTenant(id);
+        loadTenants();
+      } catch (error) {
+        toast.error('Erreur lors de la mise à jour');
       }
     };
 
