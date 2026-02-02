@@ -51,6 +51,11 @@ const CORS_WHITELIST = [
 const { GoogleSheetsDB, getDB } = require('./GoogleSheetsDB.cjs');
 let sheetsDB = null;
 
+// Session 250.57: Conversation Store - Multi-tenant persistence
+// ⛔ RULE: Conversation History = CLIENT CONSULTATION ONLY (never for KB/RAG)
+const { getInstance: getConversationStore } = require('./conversation-store.cjs');
+const conversationStore = getConversationStore();
+
 // Session 245: A2A Translation Supervisor
 // Lazy load to ensure initialization
 let translationSupervisor = null;
@@ -1828,6 +1833,20 @@ function startServer(port = 3004) {
 
           // Add AI response to session
           session.messages.push({ role: 'assistant', content: result.response, timestamp: Date.now() });
+
+          // Session 250.57: Persist conversation (multi-tenant)
+          // ⛔ RULE: This is for CLIENT CONSULTATION ONLY - NEVER for KB/RAG
+          try {
+            const tenantId = bodyParsed.data.tenant_id || 'default';
+            conversationStore.addMessage(tenantId, leadSessionId, 'user', message, {
+              language, source: 'widget', persona: persona?.id
+            });
+            conversationStore.addMessage(tenantId, leadSessionId, 'assistant', result.response, {
+              language, source: 'widget', persona: persona?.id, latency_ms: result.latencyMs
+            });
+          } catch (convErr) {
+            console.warn('[ConversationStore] Save warning:', convErr.message);
+          }
 
           // Sync to HubSpot if lead has email and is qualified
           let hubspotSync = null;

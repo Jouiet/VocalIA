@@ -649,6 +649,170 @@ class GoogleSheetsDB {
     });
   }
 
+  // ==================== QUOTA MANAGEMENT (Session 250.57) ====================
+
+  /**
+   * Get tenant config from file system
+   * @param {string} tenantId - Tenant identifier
+   * @returns {Object|null} Tenant configuration
+   */
+  getTenantConfig(tenantId) {
+    const configPath = path.join(__dirname, '../clients', tenantId, 'config.json');
+    if (!fs.existsSync(configPath)) {
+      console.warn(`[Quotas] Config not found for tenant: ${tenantId}`);
+      return null;
+    }
+    try {
+      return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    } catch (e) {
+      console.error(`[Quotas] Error loading config for ${tenantId}:`, e.message);
+      return null;
+    }
+  }
+
+  /**
+   * Update tenant usage in config file
+   * @param {string} tenantId - Tenant identifier
+   * @param {Object} usage - Usage updates
+   */
+  updateTenantUsage(tenantId, usage) {
+    const configPath = path.join(__dirname, '../clients', tenantId, 'config.json');
+    try {
+      const config = this.getTenantConfig(tenantId);
+      if (!config) return false;
+
+      config.usage = { ...config.usage, ...usage };
+      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+      return true;
+    } catch (e) {
+      console.error(`[Quotas] Error updating usage for ${tenantId}:`, e.message);
+      return false;
+    }
+  }
+
+  /**
+   * Check if tenant is within quota
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} quotaType - 'calls' | 'sessions' | 'kb_entries' | 'users'
+   * @returns {Object} { allowed: boolean, current: number, limit: number, remaining: number }
+   */
+  checkQuota(tenantId, quotaType) {
+    const config = this.getTenantConfig(tenantId);
+    if (!config) {
+      return { allowed: true, current: 0, limit: Infinity, remaining: Infinity, error: 'Config not found' };
+    }
+
+    const quotaMap = {
+      calls: { quota: 'calls_monthly', usage: 'calls_current' },
+      sessions: { quota: 'sessions_monthly', usage: 'sessions_current' },
+      kb_entries: { quota: 'kb_entries', usage: 'kb_entries_current' },
+      users: { quota: 'users_max', usage: null } // Users counted from users table
+    };
+
+    const mapping = quotaMap[quotaType];
+    if (!mapping) {
+      return { allowed: true, current: 0, limit: Infinity, remaining: Infinity, error: 'Invalid quota type' };
+    }
+
+    const limit = config.quotas?.[mapping.quota] || Infinity;
+    const current = config.usage?.[mapping.usage] || 0;
+    const remaining = Math.max(0, limit - current);
+
+    return {
+      allowed: current < limit,
+      current,
+      limit,
+      remaining,
+      quotaType,
+      tenantId
+    };
+  }
+
+  /**
+   * Increment usage counter for a tenant
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} usageType - 'calls' | 'sessions' | 'kb_entries'
+   * @param {number} amount - Amount to increment (default: 1)
+   * @returns {Object} { success: boolean, newValue: number, withinQuota: boolean }
+   */
+  incrementUsage(tenantId, usageType, amount = 1) {
+    const config = this.getTenantConfig(tenantId);
+    if (!config) {
+      return { success: false, error: 'Config not found' };
+    }
+
+    const usageMap = {
+      calls: 'calls_current',
+      sessions: 'sessions_current',
+      kb_entries: 'kb_entries_current'
+    };
+
+    const usageKey = usageMap[usageType];
+    if (!usageKey) {
+      return { success: false, error: 'Invalid usage type' };
+    }
+
+    // Check quota before incrementing
+    const quotaCheck = this.checkQuota(tenantId, usageType);
+    if (!quotaCheck.allowed) {
+      return {
+        success: false,
+        error: 'Quota exceeded',
+        current: quotaCheck.current,
+        limit: quotaCheck.limit
+      };
+    }
+
+    // Increment usage
+    const newValue = (config.usage?.[usageKey] || 0) + amount;
+    const updated = this.updateTenantUsage(tenantId, { [usageKey]: newValue });
+
+    return {
+      success: updated,
+      newValue,
+      withinQuota: newValue <= (config.quotas?.[usageMap[usageType]?.replace('_current', '_monthly')] || Infinity)
+    };
+  }
+
+  /**
+   * Get full quota status for a tenant
+   * @param {string} tenantId - Tenant identifier
+   * @returns {Object} Complete quota status
+   */
+  getQuotaStatus(tenantId) {
+    const config = this.getTenantConfig(tenantId);
+    if (!config) {
+      return { error: 'Config not found', tenantId };
+    }
+
+    return {
+      tenantId,
+      plan: config.plan,
+      quotas: {
+        calls: this.checkQuota(tenantId, 'calls'),
+        sessions: this.checkQuota(tenantId, 'sessions'),
+        kb_entries: this.checkQuota(tenantId, 'kb_entries'),
+        users: this.checkQuota(tenantId, 'users'),
+        conversation_history_days: config.quotas?.conversation_history_days || 30
+      },
+      period_start: config.usage?.period_start,
+      updated_at: config.updated_at
+    };
+  }
+
+  /**
+   * Reset usage counters (called at period start)
+   * @param {string} tenantId - Tenant identifier
+   */
+  resetUsage(tenantId) {
+    const now = new Date().toISOString();
+    return this.updateTenantUsage(tenantId, {
+      calls_current: 0,
+      sessions_current: 0,
+      period_start: now
+    });
+  }
+
   // ==================== UTILITY ====================
 
   /**

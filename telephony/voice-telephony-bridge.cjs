@@ -78,6 +78,12 @@ const { getInstance: getTenantKBLoader } = require('../core/tenant-kb-loader.cjs
 const TenantKB = getTenantKBLoader();
 console.log('✅ Multi-tenant KB loader initialized');
 
+// Session 250.57: Conversation Store - Multi-tenant persistence
+// ⛔ RULE: Conversation History = CLIENT CONSULTATION ONLY (never for KB/RAG)
+const { getInstance: getConversationStore } = require('../core/conversation-store.cjs');
+const conversationStore = getConversationStore();
+console.log('✅ Conversation store initialized for telephony');
+
 // RAG Knowledge Base - Legacy fallback (Universal KBs)
 // NOTE: Now loaded via TenantKBLoader with per-client override support
 const KNOWLEDGE_BASES = {
@@ -491,6 +497,31 @@ function generateSessionId() {
 function cleanupSession(sessionId) {
   const session = activeSessions.get(sessionId);
   if (session) {
+    // Session 250.57: Persist conversation before cleanup
+    // ⛔ RULE: This is for CLIENT CONSULTATION ONLY - NEVER for KB/RAG
+    try {
+      const tenantId = session.metadata?.tenant_id || 'default';
+      const callDuration = Math.floor((Date.now() - session.createdAt) / 1000);
+
+      // Save accumulated conversation transcript
+      if (session.conversationLog && session.conversationLog.length > 0) {
+        const conversationMetadata = {
+          source: 'telephony',
+          language: session.metadata?.language || CONFIG.defaultLanguage,
+          persona: session.metadata?.persona_id,
+          duration_sec: callDuration,
+          lead_score: session.qualificationScore || null,
+          call_sid: session.callSid
+        };
+
+        // Save full conversation
+        conversationStore.save(tenantId, sessionId, session.conversationLog, conversationMetadata);
+        console.log(`[ConversationStore] Saved ${session.conversationLog.length} messages for ${tenantId}/${sessionId}`);
+      }
+    } catch (convErr) {
+      console.warn('[ConversationStore] Save warning:', convErr.message);
+    }
+
     if (session.grokWs && session.grokWs.readyState === WebSocket.OPEN) {
       session.grokWs.close();
     }
@@ -1020,7 +1051,10 @@ async function createGrokSession(callInfo) {
           action: null,
           notes: null
         },
-        audioBuffer: []
+        audioBuffer: [],
+        // Session 250.57: Conversation log for multi-tenant persistence
+        // ⛔ RULE: For CLIENT CONSULTATION ONLY - NEVER for KB/RAG
+        conversationLog: []
       };
 
       activeSessions.set(sessionId, session);
@@ -1158,6 +1192,15 @@ function handleGrokMessage(sessionId, message) {
       if (message.response && message.response.output) {
         extractBookingData(session, message.response.output);
       }
+      // Session 250.57: Log AI response to conversation log
+      // ⛔ RULE: For CLIENT CONSULTATION ONLY - NEVER for KB/RAG
+      if (session.pendingText && session.conversationLog) {
+        session.conversationLog.push({
+          role: 'assistant',
+          content: session.pendingText,
+          timestamp: new Date().toISOString()
+        });
+      }
       // Session 250.44ter: Generate ElevenLabs TTS for Darija
       if (session.metadata?.language === 'ary' && session.pendingText && elevenLabsClient?.isConfigured()) {
         const textToSpeak = session.pendingText;
@@ -1170,6 +1213,8 @@ function handleGrokMessage(sessionId, message) {
         }).catch(err => {
           console.error(`[ElevenLabs] Darija TTS failed: ${err.message}`);
         });
+      } else {
+        session.pendingText = ''; // Clear for non-Darija
       }
       break;
 

@@ -3,14 +3,13 @@
 /**
  * VocalIA - Conversation Store
  *
- * Persistent conversation storage for Voice Widget and Telephony.
- * Stores conversation history per session_id + tenant_id.
- *
- * Features:
- * - File-based storage (fast, no external deps)
- * - LRU cache for hot conversations
- * - Automatic cleanup of old conversations
- * - Export to JSON for analytics
+ * ⛔ RÈGLE ARCHITECTURALE NON-NÉGOCIABLE:
+ *    Conversation History = CONSULTATION CLIENT UNIQUEMENT
+ *    - Affichage historique pour le client (tenant)
+ *    - Support client (voir conversations passées)
+ *    - Analytics (comptage, durée, topics)
+ *    - JAMAIS pour alimenter la KB ou le RAG
+ *    - JAMAIS indexé avec TF-IDF ou vector store
  *
  * Storage Structure:
  *   data/conversations/{tenant_id}/{session_id}.json
@@ -25,19 +24,19 @@ const path = require('path');
 const crypto = require('crypto');
 
 // Paths
-const DATA_DIR = path.join(__dirname, '../data/conversations');
+const CONVERSATIONS_DIR = path.join(__dirname, '../data/conversations');
 const CLIENTS_DIR = path.join(__dirname, '../clients');
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+// Ensure base directory exists
+if (!fs.existsSync(CONVERSATIONS_DIR)) {
+  fs.mkdirSync(CONVERSATIONS_DIR, { recursive: true });
 }
 
 /**
- * LRU Cache for hot conversations
+ * LRU Cache for active conversations
  */
 class ConversationCache {
-  constructor(maxSize = 500, ttlMs = 30 * 60 * 1000) { // 30 min TTL
+  constructor(maxSize = 500, ttlMs = 30 * 60 * 1000) {
     this.cache = new Map();
     this.maxSize = maxSize;
     this.ttlMs = ttlMs;
@@ -46,13 +45,11 @@ class ConversationCache {
   get(key) {
     const entry = this.cache.get(key);
     if (!entry) return null;
-
     if (Date.now() - entry.timestamp > this.ttlMs) {
       this.cache.delete(key);
       return null;
     }
-
-    // Move to end (most recently used)
+    // LRU: move to end
     this.cache.delete(key);
     this.cache.set(key, entry);
     return entry.data;
@@ -75,24 +72,21 @@ class ConversationCache {
   }
 
   stats() {
-    return {
-      size: this.cache.size,
-      maxSize: this.maxSize,
-      ttlMs: this.ttlMs
-    };
+    return { size: this.cache.size, maxSize: this.maxSize, ttlMs: this.ttlMs };
   }
 }
 
 /**
- * ConversationStore - Persistent conversation storage
+ * ConversationStore - File-based conversation storage
+ * SEPARATE from Knowledge Base - for client consultation only
  */
 class ConversationStore {
   constructor(options = {}) {
+    this.baseDir = options.baseDir || CONVERSATIONS_DIR;
     this.cache = new ConversationCache(
       options.maxCacheSize || 500,
       options.cacheTTL || 30 * 60 * 1000
     );
-    this.dataDir = options.dataDir || DATA_DIR;
   }
 
   /**
@@ -103,33 +97,64 @@ class ConversationStore {
   }
 
   /**
-   * Get file path for conversation
+   * Get tenant directory (creates if not exists)
    */
-  getFilePath(tenantId, sessionId) {
-    const tenantDir = path.join(this.dataDir, tenantId);
-    if (!fs.existsSync(tenantDir)) {
-      fs.mkdirSync(tenantDir, { recursive: true });
+  getTenantDir(tenantId) {
+    const dir = path.join(this.baseDir, tenantId);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
     }
-    return path.join(tenantDir, `${sessionId}.json`);
+    return dir;
   }
 
   /**
-   * Create or update a conversation
+   * Get file path for a conversation
    */
-  async save(tenantId, sessionId, messages, metadata = {}) {
+  getFilePath(tenantId, sessionId) {
+    return path.join(this.getTenantDir(tenantId), `${sessionId}.json`);
+  }
+
+  /**
+   * Get retention days from tenant config
+   */
+  getRetentionDays(tenantId) {
+    const configPath = path.join(CLIENTS_DIR, tenantId, 'config.json');
+    if (fs.existsSync(configPath)) {
+      try {
+        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+        return config.quotas?.conversation_history_days || 30;
+      } catch {
+        return 30;
+      }
+    }
+    return 30;
+  }
+
+  // ==================== CRUD ====================
+
+  /**
+   * Save a conversation
+   */
+  save(tenantId, sessionId, messages, metadata = {}) {
     const filePath = this.getFilePath(tenantId, sessionId);
     const cacheKey = this.cacheKey(tenantId, sessionId);
+    const now = new Date().toISOString();
 
     const conversation = {
-      tenant_id: tenantId,
       session_id: sessionId,
+      tenant_id: tenantId,
       messages: messages || [],
+      message_count: (messages || []).length,
+      created_at: metadata.created_at || now,
+      updated_at: now,
       metadata: {
-        ...metadata,
-        updated_at: new Date().toISOString()
-      },
-      created_at: metadata.created_at || new Date().toISOString(),
-      message_count: (messages || []).length
+        source: metadata.source || 'widget',
+        language: metadata.language || 'fr',
+        persona: metadata.persona || null,
+        duration_sec: metadata.duration_sec || null,
+        lead_score: metadata.lead_score || null,
+        ...metadata
+      }
     };
 
     // Save to file
@@ -144,14 +169,12 @@ class ConversationStore {
   /**
    * Load a conversation
    */
-  async load(tenantId, sessionId) {
+  load(tenantId, sessionId) {
     const cacheKey = this.cacheKey(tenantId, sessionId);
 
-    // Check cache first
+    // Check cache
     const cached = this.cache.get(cacheKey);
-    if (cached) {
-      return cached;
-    }
+    if (cached) return cached;
 
     // Load from file
     const filePath = this.getFilePath(tenantId, sessionId);
@@ -170,23 +193,23 @@ class ConversationStore {
   }
 
   /**
-   * Add a message to conversation
+   * Add a message to a conversation
    */
-  async addMessage(tenantId, sessionId, role, content, messageMetadata = {}) {
-    let conversation = await this.load(tenantId, sessionId);
+  addMessage(tenantId, sessionId, role, content, messageMetadata = {}) {
+    let conversation = this.load(tenantId, sessionId);
+    const now = new Date().toISOString();
 
     if (!conversation) {
       conversation = {
-        tenant_id: tenantId,
         session_id: sessionId,
+        tenant_id: tenantId,
         messages: [],
+        created_at: now,
         metadata: {
-          created_at: new Date().toISOString(),
           source: messageMetadata.source || 'widget',
           language: messageMetadata.language || 'fr',
           persona: messageMetadata.persona || null
-        },
-        created_at: new Date().toISOString()
+        }
       };
     }
 
@@ -194,32 +217,30 @@ class ConversationStore {
       id: crypto.randomUUID().split('-')[0],
       role, // 'user' | 'assistant' | 'system'
       content,
-      timestamp: new Date().toISOString(),
+      timestamp: now,
       ...messageMetadata
     };
 
     conversation.messages.push(message);
     conversation.message_count = conversation.messages.length;
-    conversation.metadata.updated_at = new Date().toISOString();
+    conversation.updated_at = now;
 
-    return await this.save(tenantId, sessionId, conversation.messages, conversation.metadata);
+    return this.save(tenantId, sessionId, conversation.messages, conversation.metadata);
   }
 
   /**
-   * Get recent messages (for context)
+   * Get recent messages (for context window)
    */
-  async getRecentMessages(tenantId, sessionId, limit = 10) {
-    const conversation = await this.load(tenantId, sessionId);
-    if (!conversation || !conversation.messages) {
-      return [];
-    }
+  getRecentMessages(tenantId, sessionId, limit = 10) {
+    const conversation = this.load(tenantId, sessionId);
+    if (!conversation?.messages) return [];
     return conversation.messages.slice(-limit);
   }
 
   /**
    * Delete a conversation
    */
-  async delete(tenantId, sessionId) {
+  delete(tenantId, sessionId) {
     const filePath = this.getFilePath(tenantId, sessionId);
     const cacheKey = this.cacheKey(tenantId, sessionId);
 
@@ -232,11 +253,13 @@ class ConversationStore {
     return false;
   }
 
+  // ==================== LISTING ====================
+
   /**
    * List all conversations for a tenant
    */
-  async listByTenant(tenantId, options = {}) {
-    const tenantDir = path.join(this.dataDir, tenantId);
+  listByTenant(tenantId, options = {}) {
+    const tenantDir = path.join(this.baseDir, tenantId);
     if (!fs.existsSync(tenantDir)) {
       return [];
     }
@@ -251,17 +274,25 @@ class ConversationStore {
           session_id: data.session_id,
           message_count: data.message_count || (data.messages || []).length,
           created_at: data.created_at,
-          updated_at: data.metadata?.updated_at,
+          updated_at: data.updated_at,
           source: data.metadata?.source,
-          language: data.metadata?.language
+          language: data.metadata?.language,
+          persona: data.metadata?.persona
         });
-      } catch (e) {
+      } catch {
         // Skip corrupted files
       }
     }
 
     // Sort by updated_at desc
-    conversations.sort((a, b) => new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at));
+    conversations.sort((a, b) =>
+      new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
+    );
+
+    // Apply filters
+    if (options.source) {
+      conversations.filter(c => c.source === options.source);
+    }
 
     // Apply limit
     if (options.limit) {
@@ -272,26 +303,28 @@ class ConversationStore {
   }
 
   /**
-   * Cleanup old conversations
+   * Count conversations for a tenant
    */
-  async cleanup(tenantId, maxAgeDays = 30) {
-    const tenantDir = path.join(this.dataDir, tenantId);
+  countByTenant(tenantId) {
+    const tenantDir = path.join(this.baseDir, tenantId);
+    if (!fs.existsSync(tenantDir)) {
+      return 0;
+    }
+    return fs.readdirSync(tenantDir).filter(f => f.endsWith('.json')).length;
+  }
+
+  // ==================== CLEANUP ====================
+
+  /**
+   * Cleanup old conversations based on retention policy
+   */
+  cleanup(tenantId) {
+    const tenantDir = path.join(this.baseDir, tenantId);
     if (!fs.existsSync(tenantDir)) {
       return { deleted: 0 };
     }
 
-    // Check tenant config for retention policy
-    let retentionDays = maxAgeDays;
-    const configPath = path.join(CLIENTS_DIR, tenantId, 'config.json');
-    if (fs.existsSync(configPath)) {
-      try {
-        const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-        retentionDays = config.quotas?.conversation_history_days || maxAgeDays;
-      } catch (e) {
-        // Use default
-      }
-    }
-
+    const retentionDays = this.getRetentionDays(tenantId);
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - retentionDays);
 
@@ -302,38 +335,38 @@ class ConversationStore {
       const filePath = path.join(tenantDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        const updatedAt = new Date(data.metadata?.updated_at || data.created_at);
+        const updatedAt = new Date(data.updated_at || data.created_at);
 
         if (updatedAt < cutoff) {
           fs.unlinkSync(filePath);
           deleted++;
         }
-      } catch (e) {
+      } catch {
         // Delete corrupted files
         fs.unlinkSync(filePath);
         deleted++;
       }
     }
 
-    console.log(`✅ [ConversationStore] Cleanup ${tenantId}: ${deleted} conversations deleted (retention: ${retentionDays} days)`);
+    console.log(`✅ [ConversationStore] Cleanup ${tenantId}: ${deleted} deleted (retention: ${retentionDays} days)`);
     return { deleted, retentionDays };
   }
 
   /**
    * Cleanup all tenants
    */
-  async cleanupAll() {
-    if (!fs.existsSync(this.dataDir)) {
+  cleanupAll() {
+    if (!fs.existsSync(this.baseDir)) {
       return { tenants: 0, totalDeleted: 0 };
     }
 
-    const tenants = fs.readdirSync(this.dataDir).filter(f =>
-      fs.statSync(path.join(this.dataDir, f)).isDirectory()
+    const tenants = fs.readdirSync(this.baseDir).filter(f =>
+      fs.statSync(path.join(this.baseDir, f)).isDirectory()
     );
 
     let totalDeleted = 0;
     for (const tenantId of tenants) {
-      const result = await this.cleanup(tenantId);
+      const result = this.cleanup(tenantId);
       totalDeleted += result.deleted;
     }
 
@@ -341,76 +374,69 @@ class ConversationStore {
   }
 
   /**
-   * Export conversations for a tenant (for analytics)
+   * Purge all conversations for a tenant (RGPD)
    */
-  async export(tenantId, options = {}) {
-    const conversations = await this.listByTenant(tenantId);
-    const fullData = [];
+  purgeTenant(tenantId) {
+    const tenantDir = path.join(this.baseDir, tenantId);
+    if (fs.existsSync(tenantDir)) {
+      fs.rmSync(tenantDir, { recursive: true, force: true });
+      return true;
+    }
+    return false;
+  }
 
-    for (const conv of conversations) {
-      const full = await this.load(tenantId, conv.session_id);
-      if (full) {
-        fullData.push(full);
-      }
+  // ==================== ANALYTICS ====================
+
+  /**
+   * Get statistics for a tenant
+   */
+  getStats(tenantId) {
+    const conversations = this.listByTenant(tenantId);
+    const totalMessages = conversations.reduce((sum, c) => sum + (c.message_count || 0), 0);
+
+    // Count by source
+    const bySource = { widget: 0, telephony: 0, other: 0 };
+    for (const c of conversations) {
+      const source = c.source || 'other';
+      bySource[source] = (bySource[source] || 0) + 1;
     }
 
-    if (options.format === 'csv') {
-      return this.toCSV(fullData);
+    // Count by language
+    const byLanguage = {};
+    for (const c of conversations) {
+      const lang = c.language || 'unknown';
+      byLanguage[lang] = (byLanguage[lang] || 0) + 1;
     }
 
-    return fullData;
+    return {
+      tenant_id: tenantId,
+      total_conversations: conversations.length,
+      total_messages: totalMessages,
+      by_source: bySource,
+      by_language: byLanguage,
+      cache_stats: this.cache.stats()
+    };
   }
 
   /**
-   * Convert to CSV format
+   * Global statistics
    */
-  toCSV(conversations) {
-    const rows = ['session_id,tenant_id,created_at,message_count,source,language'];
-
-    for (const conv of conversations) {
-      rows.push([
-        conv.session_id,
-        conv.tenant_id,
-        conv.created_at,
-        conv.message_count || 0,
-        conv.metadata?.source || '',
-        conv.metadata?.language || ''
-      ].join(','));
-    }
-
-    return rows.join('\n');
-  }
-
-  /**
-   * Get statistics
-   */
-  async stats(tenantId = null) {
-    if (tenantId) {
-      const conversations = await this.listByTenant(tenantId);
-      return {
-        tenant_id: tenantId,
-        total_conversations: conversations.length,
-        total_messages: conversations.reduce((sum, c) => sum + (c.message_count || 0), 0),
-        cache_stats: this.cache.stats()
-      };
-    }
-
-    // Global stats
-    if (!fs.existsSync(this.dataDir)) {
+  getGlobalStats() {
+    if (!fs.existsSync(this.baseDir)) {
       return { tenants: 0, total_conversations: 0, cache_stats: this.cache.stats() };
     }
 
-    const tenants = fs.readdirSync(this.dataDir).filter(f =>
-      fs.statSync(path.join(this.dataDir, f)).isDirectory()
+    const tenants = fs.readdirSync(this.baseDir).filter(f =>
+      fs.statSync(path.join(this.baseDir, f)).isDirectory()
     );
 
     let totalConversations = 0;
     let totalMessages = 0;
 
     for (const t of tenants) {
-      const conversations = await this.listByTenant(t);
-      totalConversations += conversations.length;
-      totalMessages += conversations.reduce((sum, c) => sum + (c.message_count || 0), 0);
+      const stats = this.getStats(t);
+      totalConversations += stats.total_conversations;
+      totalMessages += stats.total_messages;
     }
 
     return {
@@ -424,12 +450,12 @@ class ConversationStore {
   /**
    * Health check
    */
-  async health() {
+  health() {
     try {
-      const stats = await this.stats();
+      const stats = this.getGlobalStats();
       return {
         status: 'ok',
-        dataDir: this.dataDir,
+        baseDir: this.baseDir,
         ...stats
       };
     } catch (e) {
@@ -441,7 +467,7 @@ class ConversationStore {
   }
 }
 
-// Singleton instance
+// Singleton
 let instance = null;
 
 function getInstance(options = {}) {
@@ -454,74 +480,82 @@ function getInstance(options = {}) {
 // CLI interface
 if (require.main === module) {
   const args = process.argv.slice(2);
+  const store = getInstance();
 
-  (async () => {
-    const store = getInstance();
+  if (args.includes('--health')) {
+    console.log(JSON.stringify(store.health(), null, 2));
+    process.exit(0);
+  }
 
-    if (args.includes('--health')) {
-      const health = await store.health();
-      console.log(JSON.stringify(health, null, 2));
-      return;
+  if (args.includes('--stats')) {
+    const tenantIdx = args.indexOf('--tenant');
+    if (tenantIdx !== -1 && args[tenantIdx + 1]) {
+      console.log(JSON.stringify(store.getStats(args[tenantIdx + 1]), null, 2));
+    } else {
+      console.log(JSON.stringify(store.getGlobalStats(), null, 2));
     }
+    process.exit(0);
+  }
 
-    if (args.includes('--stats')) {
-      const tenantIdx = args.indexOf('--tenant');
-      const tenantId = tenantIdx !== -1 ? args[tenantIdx + 1] : null;
-      const stats = await store.stats(tenantId);
-      console.log(JSON.stringify(stats, null, 2));
-      return;
-    }
+  if (args.includes('--cleanup')) {
+    const result = store.cleanupAll();
+    console.log(`✅ Cleanup: ${result.totalDeleted} deleted across ${result.tenants} tenants`);
+    process.exit(0);
+  }
 
-    if (args.includes('--cleanup')) {
-      const result = await store.cleanupAll();
-      console.log(`✅ Cleanup complete: ${result.totalDeleted} conversations deleted across ${result.tenants} tenants`);
-      return;
-    }
+  if (args.includes('--test')) {
+    console.log('Testing ConversationStore...\n');
 
-    if (args.includes('--test')) {
-      console.log('Testing ConversationStore...\n');
+    const tenantId = 'test_tenant';
+    const sessionId = 'test_session_001';
 
-      // Test save
-      const conv = await store.save('test_tenant', 'test_session_001', [
-        { role: 'user', content: 'Hello' },
-        { role: 'assistant', content: 'Hi! How can I help?' }
-      ], { source: 'widget', language: 'en' });
-      console.log('Saved:', conv.session_id);
+    // Save conversation
+    const conv = store.save(tenantId, sessionId, [
+      { role: 'user', content: 'Hello', timestamp: new Date().toISOString() },
+      { role: 'assistant', content: 'Hi! How can I help?', timestamp: new Date().toISOString() }
+    ], { source: 'widget', language: 'en', persona: 'UNIVERSAL_SME' });
+    console.log('Saved:', conv.session_id, '-', conv.message_count, 'messages');
 
-      // Test load
-      const loaded = await store.load('test_tenant', 'test_session_001');
-      console.log('Loaded:', loaded.message_count, 'messages');
+    // Load
+    const loaded = store.load(tenantId, sessionId);
+    console.log('Loaded:', loaded.message_count, 'messages');
 
-      // Test addMessage
-      await store.addMessage('test_tenant', 'test_session_001', 'user', 'I need help with my order');
-      const updated = await store.load('test_tenant', 'test_session_001');
-      console.log('After add:', updated.message_count, 'messages');
+    // Add message
+    store.addMessage(tenantId, sessionId, 'user', 'I need help with my order');
+    const updated = store.load(tenantId, sessionId);
+    console.log('After add:', updated.message_count, 'messages');
 
-      // Test list
-      const list = await store.listByTenant('test_tenant');
-      console.log('Tenant conversations:', list.length);
+    // Get recent
+    const recent = store.getRecentMessages(tenantId, sessionId, 2);
+    console.log('Recent 2:', recent.map(m => m.role).join(', '));
 
-      // Test stats
-      const stats = await store.stats('test_tenant');
-      console.log('Stats:', stats);
+    // List
+    const list = store.listByTenant(tenantId);
+    console.log('Tenant conversations:', list.length);
 
-      // Cleanup test data
-      await store.delete('test_tenant', 'test_session_001');
-      console.log('\n✅ All tests passed!');
-      return;
-    }
+    // Stats
+    const stats = store.getStats(tenantId);
+    console.log('Stats:', JSON.stringify(stats, null, 2));
 
-    console.log(`
+    // Cleanup test
+    store.purgeTenant(tenantId);
+    console.log('\n✅ All tests passed!');
+    process.exit(0);
+  }
+
+  console.log(`
 VocalIA Conversation Store
 
+⛔ RAPPEL: Conversation History = CONSULTATION CLIENT UNIQUEMENT
+   - JAMAIS pour alimenter la KB ou le RAG
+
 Usage:
-  node conversation-store.cjs --health      Health check
-  node conversation-store.cjs --stats       Global statistics
-  node conversation-store.cjs --stats --tenant <id>   Tenant statistics
-  node conversation-store.cjs --cleanup     Cleanup old conversations
-  node conversation-store.cjs --test        Run tests
+  node conversation-store.cjs --health              Health check
+  node conversation-store.cjs --stats               Global statistics
+  node conversation-store.cjs --stats --tenant <id> Tenant statistics
+  node conversation-store.cjs --cleanup             Cleanup old conversations
+  node conversation-store.cjs --test                Run tests
 `);
-  })().catch(e => console.error('❌', e.message));
 }
 
 module.exports = {
