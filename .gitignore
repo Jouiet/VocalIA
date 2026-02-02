@@ -50,3 +50,8 @@ remotion/node_modules/
 
 # Google Credentials
 data/google-*.json
+
+# Generated data
+data/exports/
+data/events/system/*.jsonl
+data/logs/maintenance-*.json
