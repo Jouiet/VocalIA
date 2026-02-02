@@ -42,9 +42,7 @@
     <!-- Logo -->
     <div class="p-4 border-b border-slate-200 dark:border-slate-700">
       <a href="/" class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-lg gradient-bg flex items-center justify-center">
-          <i data-lucide="mic" class="w-5 h-5 text-white"></i>
-        </div>
+        <img src="/public/images/logo.webp" alt="VocalIA" class="w-9 h-9 rounded-lg object-contain">
         <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
       </a>
     </div>
@@ -140,51 +138,51 @@
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Total Calls -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
           <div class="flex items-center justify-between">
             <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
               <i data-lucide="phone-call" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
             </div>
-            <span class="text-sm text-green-500 font-medium">+12%</span>
+            <span id="trend-calls" class="text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
           </div>
           <p id="stat-calls" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
           <p class="text-sm text-slate-500" data-i18n="dashboard.stats.calls">Appels ce mois</p>
         </div>
 
         <!-- Minutes Used -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
           <div class="flex items-center justify-between">
             <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
               <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
             </div>
-            <span class="text-sm text-green-500 font-medium">+8%</span>
+            <span id="trend-minutes" class="text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
           </div>
           <p id="stat-minutes" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
           <p class="text-sm text-slate-500" data-i18n="dashboard.stats.minutes">Minutes utilisées</p>
         </div>
 
-        <!-- Conversion Rate -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <!-- Avg Duration -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
           <div class="flex items-center justify-between">
             <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
-              <i data-lucide="trending-up" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+              <i data-lucide="timer" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
             </div>
-            <span class="text-sm text-green-500 font-medium">+3%</span>
+            <span id="trend-duration" class="text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
           </div>
-          <p id="stat-conversion" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--%</p>
-          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.conversion">Taux de conversion</p>
+          <p id="stat-duration" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.avg_duration">Durée moyenne</p>
         </div>
 
-        <!-- NPS Score -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <!-- Languages -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
           <div class="flex items-center justify-between">
-            <div class="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-              <i data-lucide="star" class="w-5 h-5 text-yellow-600 dark:text-yellow-400"></i>
+            <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+              <i data-lucide="languages" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
             </div>
-            <span class="text-sm text-green-500 font-medium">+5</span>
+            <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">5 langues</span>
           </div>
-          <p id="stat-nps" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
-          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.nps">Score NPS</p>
+          <p id="stat-languages" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.top_language">Langue principale</p>
         </div>
       </div>
 
@@ -290,29 +288,88 @@
     // Load dashboard data
     async function loadDashboard() {
       try {
-        // Fetch sessions for stats
         const tenantId = auth.getTenantId();
         const sessions = await api.sessions.getByTenant(tenantId);
+        const data = sessions.data || [];
+
+        // Current month data
+        const now = new Date();
+        const thisMonth = data.filter(s => {
+          const d = new Date(s.created_at || s.timestamp);
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        });
+
+        // Previous month data for comparison
+        const lastMonth = data.filter(s => {
+          const d = new Date(s.created_at || s.timestamp);
+          const prevMonth = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
+          const prevYear = now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
+          return d.getMonth() === prevMonth && d.getFullYear() === prevYear;
+        });
 
         // Calculate stats
-        const totalCalls = sessions.data?.length || 0;
-        const totalMinutes = sessions.data?.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60 || 0;
+        const totalCalls = thisMonth.length;
+        const totalMinutes = thisMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60;
+        const avgDuration = totalCalls > 0 ? Math.round(totalMinutes / totalCalls * 60) : 0;
+
+        // Calculate trends (compare to last month)
+        const lastMonthCalls = lastMonth.length;
+        const lastMonthMinutes = lastMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60;
+        const lastMonthAvgDuration = lastMonthCalls > 0 ? Math.round(lastMonthMinutes / lastMonthCalls * 60) : 0;
+
+        // Language distribution
+        const langCounts = {};
+        thisMonth.forEach(s => {
+          const lang = (s.lang || s.language || 'fr').toLowerCase();
+          langCounts[lang] = (langCounts[lang] || 0) + 1;
+        });
+        const topLang = Object.entries(langCounts).sort((a, b) => b[1] - a[1])[0];
 
         // Update stats
         document.getElementById('stat-calls').textContent = totalCalls.toLocaleString();
         document.getElementById('stat-minutes').textContent = Math.round(totalMinutes).toLocaleString();
-        document.getElementById('stat-conversion').textContent = '24%';
-        document.getElementById('stat-nps').textContent = '72';
+        document.getElementById('stat-duration').textContent = avgDuration > 0 ? `${Math.floor(avgDuration / 60)}:${String(avgDuration % 60).padStart(2, '0')}` : '--:--';
+        document.getElementById('stat-languages').textContent = topLang ? topLang[0].toUpperCase() : 'FR';
+
+        // Update trends with real data
+        updateTrend('trend-calls', totalCalls, lastMonthCalls);
+        updateTrend('trend-minutes', totalMinutes, lastMonthMinutes);
+        updateTrend('trend-duration', avgDuration, lastMonthAvgDuration);
 
         // Render recent calls
-        renderRecentCalls(sessions.data?.slice(-5).reverse() || []);
+        renderRecentCalls(data.slice(-5).reverse());
 
-        // Initialize charts
-        initCharts(sessions.data || []);
+        // Initialize charts with real data
+        initCharts(data, langCounts);
 
       } catch (error) {
         console.error('Dashboard load error:', error);
         toast.error('Erreur de chargement des données');
+      }
+    }
+
+    // Calculate and display trend
+    function updateTrend(elementId, current, previous) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+
+      if (previous === 0 && current === 0) {
+        el.textContent = '--';
+        el.className = 'text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500';
+        return;
+      }
+
+      const change = previous > 0 ? Math.round(((current - previous) / previous) * 100) : (current > 0 ? 100 : 0);
+
+      if (change > 0) {
+        el.textContent = `+${change}%`;
+        el.className = 'text-sm font-medium px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400';
+      } else if (change < 0) {
+        el.textContent = `${change}%`;
+        el.className = 'text-sm font-medium px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400';
+      } else {
+        el.textContent = '0%';
+        el.className = 'text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500';
       }
     }
 
@@ -348,17 +405,33 @@
       lucide.createIcons();
     }
 
-    function initCharts(sessions) {
-      // Call Volume Chart
+    function initCharts(sessions, langCounts = {}) {
+      // Call Volume Chart - group by last 7 days
       const callCtx = document.getElementById('callVolumeChart')?.getContext('2d');
       if (callCtx) {
+        const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+        const last7Days = [];
+        const callsByDay = [];
+
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          last7Days.push(days[d.getDay()]);
+
+          const count = sessions.filter(s => {
+            const sd = new Date(s.created_at || s.timestamp);
+            return sd.toDateString() === d.toDateString();
+          }).length;
+          callsByDay.push(count);
+        }
+
         new Chart(callCtx, {
           type: 'bar',
           data: {
-            labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+            labels: last7Days,
             datasets: [{
               label: 'Appels',
-              data: [12, 19, 15, 25, 22, 8, 5],
+              data: callsByDay,
               backgroundColor: 'rgba(99, 102, 241, 0.8)',
               borderRadius: 6
             }]
@@ -375,31 +448,40 @@
         });
       }
 
-      // Language Chart
+      // Language Chart - use real data
       const langCtx = document.getElementById('languageChart')?.getContext('2d');
       if (langCtx) {
+        const langLabels = { fr: 'Français', en: 'English', ar: 'العربية', es: 'Español', ary: 'Darija' };
+        const langColors = {
+          fr: 'rgba(99, 102, 241, 0.8)',
+          en: 'rgba(168, 85, 247, 0.8)',
+          ar: 'rgba(236, 72, 153, 0.8)',
+          es: 'rgba(34, 197, 94, 0.8)',
+          ary: 'rgba(251, 146, 60, 0.8)'
+        };
+
+        const sortedLangs = Object.entries(langCounts).sort((a, b) => b[1] - a[1]);
+        const labels = sortedLangs.length > 0
+          ? sortedLangs.map(([code]) => langLabels[code] || code.toUpperCase())
+          : ['Aucune donnée'];
+        const data = sortedLangs.length > 0
+          ? sortedLangs.map(([, count]) => count)
+          : [1];
+        const colors = sortedLangs.length > 0
+          ? sortedLangs.map(([code]) => langColors[code] || 'rgba(107, 114, 128, 0.8)')
+          : ['rgba(107, 114, 128, 0.3)'];
+
         new Chart(langCtx, {
           type: 'doughnut',
           data: {
-            labels: ['Français', 'English', 'العربية', 'Español', 'Darija'],
-            datasets: [{
-              data: [45, 25, 15, 10, 5],
-              backgroundColor: [
-                'rgba(99, 102, 241, 0.8)',
-                'rgba(168, 85, 247, 0.8)',
-                'rgba(236, 72, 153, 0.8)',
-                'rgba(34, 197, 94, 0.8)',
-                'rgba(251, 146, 60, 0.8)'
-              ]
-            }]
+            labels,
+            datasets: [{ data, backgroundColor: colors }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-              legend: {
-                position: 'right'
-              }
+              legend: { position: 'right' }
             }
           }
         });

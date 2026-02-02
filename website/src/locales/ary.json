@@ -47,7 +47,11 @@
       "mrr": "الداخل الشهري",
       "latency": "متوسط التأخير",
       "uptime": "وقت الخدمة",
-      "in_progress": "فالطريق: {{count}}"
+      "in_progress": "فالطريق: {{count}}",
+      "calls": "المكالمات هاد الشهر",
+      "minutes": "الدقائق المستعملة",
+      "avg_duration": "متوسط المدة",
+      "top_language": "اللغة الأساسية"
     },
     "charts": {
       "call_volume": "عدد المكالمات",

@@ -47,7 +47,11 @@
       "mrr": "MRR",
       "latency": "Avg Latency",
       "uptime": "Uptime",
-      "in_progress": "In progress: {{count}}"
+      "in_progress": "In progress: {{count}}",
+      "calls": "Calls this month",
+      "minutes": "Minutes used",
+      "avg_duration": "Avg duration",
+      "top_language": "Top language"
     },
     "charts": {
       "call_volume": "Call Volume",

@@ -92,22 +92,22 @@
         <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
           <div class="flex items-start justify-between">
             <div>
-              <p class="text-indigo-100 text-sm">Plan actuel</p>
-              <h2 class="text-2xl font-bold mt-1">Business Pro</h2>
-              <p class="text-indigo-100 mt-2">Renouvellement le 15 février 2026</p>
+              <p class="text-indigo-100 text-sm" data-i18n="billing.current_plan">Plan actuel</p>
+              <h2 id="plan-name" class="text-2xl font-bold mt-1">--</h2>
+              <p id="plan-renewal" class="text-indigo-100 mt-2">--</p>
             </div>
             <div class="text-right">
-              <p class="text-3xl font-bold">990 DH</p>
-              <p class="text-indigo-100">/ mois</p>
+              <p id="plan-price" class="text-3xl font-bold">--</p>
+              <p class="text-indigo-100" data-i18n="billing.per_month">/ mois</p>
             </div>
           </div>
           <div class="mt-6 flex gap-3">
-            <button id="upgrade-btn" class="px-4 py-2 bg-white text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors">
+            <button id="upgrade-btn" class="px-4 py-2 bg-white text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors" data-i18n="billing.change_plan">
               Changer de plan
             </button>
-            <button id="cancel-btn" class="px-4 py-2 bg-white/20 text-white font-medium rounded-lg hover:bg-white/30 transition-colors">
-              Annuler
-            </button>
+            <a href="/pricing" class="px-4 py-2 bg-white/20 text-white font-medium rounded-lg hover:bg-white/30 transition-colors" data-i18n="billing.view_plans">
+              Voir les plans
+            </a>
           </div>
         </div>
 
@@ -115,92 +115,67 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Minutes utilisées</span>
-              <span class="text-xs text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded">68%</span>
+              <span class="text-sm text-slate-500" data-i18n="billing.minutes_used">Minutes utilisées</span>
+              <span id="usage-minutes-pct" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--%</span>
             </div>
-            <p class="text-2xl font-bold text-slate-900 dark:text-white">3,420 / 5,000</p>
+            <p id="usage-minutes" class="text-2xl font-bold text-slate-900 dark:text-white">-- / --</p>
             <div class="mt-3 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-              <div class="h-full bg-indigo-500 rounded-full" style="width: 68%"></div>
+              <div id="usage-minutes-bar" class="h-full bg-indigo-500 rounded-full transition-all" style="width: 0%"></div>
             </div>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Appels ce mois</span>
+              <span class="text-sm text-slate-500" data-i18n="billing.calls_month">Appels ce mois</span>
             </div>
-            <p class="text-2xl font-bold text-slate-900 dark:text-white">847</p>
-            <p class="text-sm text-slate-500 mt-1">Illimité sur votre plan</p>
+            <p id="usage-calls" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
+            <p id="usage-calls-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Intégrations</span>
+              <span class="text-sm text-slate-500" data-i18n="billing.integrations">Intégrations</span>
             </div>
-            <p class="text-2xl font-bold text-slate-900 dark:text-white">4 / 10</p>
-            <p class="text-sm text-slate-500 mt-1">Connectées</p>
+            <p id="usage-integrations" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
+            <p class="text-sm text-slate-500 mt-1" data-i18n="billing.connected">Connectées</p>
           </div>
         </div>
 
         <!-- Payment Method -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-slate-900 dark:text-white">Moyen de paiement</h3>
-            <button id="add-card-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="billing.payment_method">Moyen de paiement</h3>
+            <button id="add-card-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline" data-i18n="billing.add_card">
               Ajouter une carte
             </button>
           </div>
-          <div class="flex items-center gap-4 p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-            <div class="w-12 h-8 bg-gradient-to-r from-blue-600 to-blue-800 rounded flex items-center justify-center text-white text-xs font-bold">
-              VISA
+          <div id="payment-method-container">
+            <div class="flex items-center justify-center p-6 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg text-slate-400">
+              <i data-lucide="credit-card" class="w-6 h-6 mr-3 opacity-50"></i>
+              <span data-i18n="billing.no_payment_method">Aucun moyen de paiement configuré</span>
             </div>
-            <div class="flex-1">
-              <p class="font-medium text-slate-900 dark:text-white">•••• •••• •••• 4242</p>
-              <p class="text-sm text-slate-500">Expire 12/27</p>
-            </div>
-            <span class="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 rounded">Par défaut</span>
           </div>
         </div>
 
         <!-- Invoices -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-slate-900 dark:text-white">Historique des factures</h3>
+            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="billing.invoices">Historique des factures</h3>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
                 <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700">
-                  <th class="pb-3 font-medium">Facture</th>
-                  <th class="pb-3 font-medium">Date</th>
-                  <th class="pb-3 font-medium">Montant</th>
-                  <th class="pb-3 font-medium">Statut</th>
+                  <th class="pb-3 font-medium" data-i18n="billing.invoice_id">Facture</th>
+                  <th class="pb-3 font-medium" data-i18n="billing.date">Date</th>
+                  <th class="pb-3 font-medium" data-i18n="billing.amount">Montant</th>
+                  <th class="pb-3 font-medium" data-i18n="billing.status">Statut</th>
                   <th class="pb-3 font-medium"></th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody id="invoices-table" class="divide-y divide-slate-200 dark:divide-slate-700">
                 <tr>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">INV-2026-001</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">15 Jan 2026</td>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">990 DH</td>
-                  <td class="py-3"><span class="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 rounded">Payée</span></td>
-                  <td class="py-3">
-                    <button class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Télécharger</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">INV-2025-012</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">15 Déc 2025</td>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">990 DH</td>
-                  <td class="py-3"><span class="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 rounded">Payée</span></td>
-                  <td class="py-3">
-                    <button class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Télécharger</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">INV-2025-011</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">15 Nov 2025</td>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">990 DH</td>
-                  <td class="py-3"><span class="text-xs px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300 rounded">Payée</span></td>
-                  <td class="py-3">
-                    <button class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Télécharger</button>
+                  <td colspan="5" class="py-6 text-center text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 inline-block animate-spin mr-2"></i>
+                    <span data-i18n="common.loading">Chargement...</span>
                   </td>
                 </tr>
               </tbody>
@@ -211,27 +186,27 @@
         <!-- Billing Info -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-slate-900 dark:text-white">Informations de facturation</h3>
-            <button id="edit-billing-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
+            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="billing.billing_info">Informations de facturation</h3>
+            <button id="edit-billing-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline" data-i18n="billing.edit">
               Modifier
             </button>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <p class="text-sm text-slate-500">Entreprise</p>
-              <p class="font-medium text-slate-900 dark:text-white">Acme Corp SARL</p>
+              <p class="text-sm text-slate-500" data-i18n="billing.company">Entreprise</p>
+              <p id="billing-company" class="font-medium text-slate-900 dark:text-white">--</p>
             </div>
             <div>
-              <p class="text-sm text-slate-500">ICE</p>
-              <p class="font-medium text-slate-900 dark:text-white">001234567890123</p>
+              <p class="text-sm text-slate-500" data-i18n="billing.tax_id">ICE</p>
+              <p id="billing-ice" class="font-medium text-slate-900 dark:text-white">--</p>
             </div>
             <div>
-              <p class="text-sm text-slate-500">Adresse</p>
-              <p class="font-medium text-slate-900 dark:text-white">123 Boulevard Mohammed V, Casablanca</p>
+              <p class="text-sm text-slate-500" data-i18n="billing.address">Adresse</p>
+              <p id="billing-address" class="font-medium text-slate-900 dark:text-white">--</p>
             </div>
             <div>
-              <p class="text-sm text-slate-500">Email de facturation</p>
-              <p class="font-medium text-slate-900 dark:text-white">comptabilite@acme.ma</p>
+              <p class="text-sm text-slate-500" data-i18n="billing.billing_email">Email de facturation</p>
+              <p id="billing-email" class="font-medium text-slate-900 dark:text-white">--</p>
             </div>
           </div>
         </div>
@@ -241,6 +216,7 @@
 
   <script type="module">
     import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
@@ -251,6 +227,9 @@
     }
 
     const user = auth.getCurrentUser();
+    const tenantId = auth.getTenantId();
+    let billingData = null;
+
     if (user) {
       document.getElementById('user-name').textContent = user.name || 'Utilisateur';
       document.getElementById('user-email').textContent = user.email || '';
@@ -262,25 +241,116 @@
       window.location.href = '/app/auth/login.html';
     });
 
+    // Load billing data
+    async function loadBillingData() {
+      try {
+        // Load tenant info
+        const tenant = await api.tenants.get(tenantId).catch(() => null);
+        const sessions = await api.sessions.getByTenant(tenantId).catch(() => ({ data: [] }));
+        const sessionsData = sessions.data || [];
+
+        // Plan info
+        const plan = tenant?.plan || 'starter';
+        const planNames = { free: 'Essai Gratuit', starter: 'Starter', business: 'Business Pro', enterprise: 'Enterprise' };
+        const planPrices = { free: '0 DH', starter: '490 DH', business: '990 DH', enterprise: 'Sur devis' };
+
+        document.getElementById('plan-name').textContent = planNames[plan] || plan;
+        document.getElementById('plan-price').textContent = planPrices[plan] || '--';
+
+        // Calculate renewal date (next month 15th)
+        const now = new Date();
+        const renewalDate = new Date(now.getFullYear(), now.getMonth() + 1, 15);
+        document.getElementById('plan-renewal').textContent = `Renouvellement le ${renewalDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}`;
+
+        // Usage stats from real session data
+        const thisMonth = sessionsData.filter(s => {
+          const d = new Date(s.created_at || s.timestamp);
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        });
+
+        const totalMinutes = Math.round(thisMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0) / 60);
+        const quotaMinutes = tenant?.quotas?.minutes_monthly || 5000;
+        const usagePct = Math.min(Math.round((totalMinutes / quotaMinutes) * 100), 100);
+
+        document.getElementById('usage-minutes').textContent = `${totalMinutes.toLocaleString()} / ${quotaMinutes.toLocaleString()}`;
+        document.getElementById('usage-minutes-bar').style.width = `${usagePct}%`;
+
+        const pctEl = document.getElementById('usage-minutes-pct');
+        pctEl.textContent = `${usagePct}%`;
+        if (usagePct >= 90) {
+          pctEl.className = 'text-xs px-2 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-600';
+        } else if (usagePct >= 70) {
+          pctEl.className = 'text-xs px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900/30 text-amber-600';
+        } else {
+          pctEl.className = 'text-xs px-2 py-0.5 rounded bg-green-100 dark:bg-green-900/30 text-green-600';
+        }
+
+        document.getElementById('usage-calls').textContent = thisMonth.length.toLocaleString();
+        document.getElementById('usage-calls-sub').textContent = plan === 'free' ? `Limité à 100/mois` : 'Illimité sur votre plan';
+
+        // Integrations count (placeholder - would come from API)
+        document.getElementById('usage-integrations').textContent = '0';
+
+        // Billing info from tenant
+        billingData = tenant?.billing || {};
+        document.getElementById('billing-company').textContent = billingData.company || tenant?.name || '--';
+        document.getElementById('billing-ice').textContent = billingData.ice || '--';
+        document.getElementById('billing-address').textContent = billingData.address || '--';
+        document.getElementById('billing-email').textContent = billingData.email || user?.email || '--';
+
+        // Load invoices (placeholder - would come from Stripe)
+        renderInvoices([]);
+
+      } catch (error) {
+        console.error('Failed to load billing data:', error);
+        toast.error('Erreur lors du chargement des données');
+      }
+    }
+
+    function renderInvoices(invoices) {
+      const tbody = document.getElementById('invoices-table');
+      if (!tbody) return;
+
+      if (invoices.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="py-6 text-center text-slate-400">
+              <i data-lucide="receipt" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>
+              <p>Aucune facture pour le moment</p>
+            </td>
+          </tr>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      tbody.innerHTML = invoices.map(inv => `
+        <tr>
+          <td class="py-3 text-slate-900 dark:text-white font-medium">${inv.id}</td>
+          <td class="py-3 text-slate-600 dark:text-slate-300">${new Date(inv.date).toLocaleDateString('fr-FR')}</td>
+          <td class="py-3 text-slate-900 dark:text-white font-medium">${inv.amount} DH</td>
+          <td class="py-3">
+            <span class="text-xs px-2 py-1 ${inv.status === 'paid' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'} rounded">
+              ${inv.status === 'paid' ? 'Payée' : 'En attente'}
+            </span>
+          </td>
+          <td class="py-3">
+            <button onclick="downloadInvoice('${inv.id}')" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Télécharger</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Initialize
+    loadBillingData();
+
     // Upgrade button
     document.getElementById('upgrade-btn').addEventListener('click', () => {
-      window.location.href = '/pricing.html';
-    });
-
-    // Cancel button
-    document.getElementById('cancel-btn').addEventListener('click', async () => {
-      const confirmed = await modal.confirm(
-        'Êtes-vous sûr de vouloir annuler votre abonnement ? Vous perdrez l\'accès à toutes les fonctionnalités à la fin de la période en cours.',
-        { title: 'Annuler l\'abonnement', confirmText: 'Oui, annuler', danger: true }
-      );
-
-      if (confirmed) {
-        toast.success('Demande d\'annulation envoyée');
-      }
+      window.location.href = '/pricing';
     });
 
     // Add card button
-    document.getElementById('add-card-btn').addEventListener('click', () => {
+    document.getElementById('add-card-btn')?.addEventListener('click', () => {
       toast.info('Redirection vers le portail de paiement Stripe...');
       // In production: redirect to Stripe Customer Portal
     });
@@ -289,23 +359,20 @@
     document.getElementById('edit-billing-btn').addEventListener('click', async () => {
       const company = await modal.prompt('Nom de l\'entreprise', {
         title: 'Modifier les informations',
-        defaultValue: 'Acme Corp SARL'
+        defaultValue: billingData?.company || ''
       });
 
       if (company) {
         toast.success('Informations mises à jour');
+        document.getElementById('billing-company').textContent = company;
       }
     });
 
-    // Download invoice buttons
-    document.querySelectorAll('table button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        toast.info('Téléchargement de la facture...');
-        setTimeout(() => {
-          toast.success('Facture téléchargée');
-        }, 1000);
-      });
-    });
+    // Download invoice function
+    window.downloadInvoice = (invoiceId) => {
+      toast.info('Téléchargement de la facture...');
+      // In production: call Stripe API to get invoice PDF
+    };
   </script>
 </body>
 </html>

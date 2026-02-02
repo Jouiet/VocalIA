@@ -100,28 +100,28 @@
               <i data-lucide="trending-up" class="w-5 h-5 text-green-100"></i>
             </div>
             <p class="text-3xl font-bold" id="stat-mrr">--</p>
-            <p class="text-sm text-green-100 mt-1" data-i18n="admin.stats.vs_last_month">+12% vs mois dernier</p>
+            <p class="text-sm text-green-100 mt-1" id="stat-mrr-trend">--</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="admin.stats.active_tenants">Tenants actifs</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-tenants">--</p>
-            <p class="text-sm text-green-600 mt-1" data-i18n="admin.stats.this_month">+5 ce mois</p>
+            <p class="text-sm mt-1" id="stat-tenants-trend">--</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="admin.stats.total_calls">Total appels</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-calls">--</p>
-            <p class="text-sm text-slate-500 mt-1" data-i18n="admin.stats.today">Aujourd'hui</p>
+            <p class="text-sm text-slate-500 mt-1" id="stat-calls-period" data-i18n="admin.stats.this_month">Ce mois</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="admin.stats.api_latency">Latence API</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-latency">--</p>
-            <p class="text-sm text-green-600 mt-1" data-i18n="admin.stats.normal">Normal</p>
+            <p class="text-sm mt-1" id="stat-latency-status">--</p>
           </div>
         </div>
 
@@ -180,32 +180,9 @@
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.activity.title">Activité récente</h3>
           <div class="space-y-3" id="recent-activity">
-            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-              <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                <i data-lucide="user-plus" class="w-4 h-4 text-green-600"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm text-slate-900 dark:text-white">Nouveau tenant <strong>Acme Corp</strong> inscrit</p>
-                <p class="text-xs text-slate-500">Il y a 5 minutes</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-              <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                <i data-lucide="phone" class="w-4 h-4 text-blue-600"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm text-slate-900 dark:text-white">1,234 appels traités aujourd'hui</p>
-                <p class="text-xs text-slate-500">Mise à jour automatique</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-              <div class="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-                <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600"></i>
-              </div>
-              <div class="flex-1">
-                <p class="text-sm text-slate-900 dark:text-white">3 approbations HITL en attente</p>
-                <p class="text-xs text-slate-500"><a href="hitl.html" class="text-indigo-600 hover:underline">Voir les demandes</a></p>
-              </div>
+            <div class="flex items-center justify-center p-6 text-slate-400">
+              <i data-lucide="loader-2" class="w-5 h-5 animate-spin mr-2"></i>
+              <span data-i18n="common.loading">Chargement...</span>
             </div>
           </div>
         </div>
@@ -246,25 +223,66 @@
     // Load stats
     async function loadStats() {
       try {
-        const [tenants, sessions, hitlStats] = await Promise.all([
+        const [tenants, sessions, hitlStats, health] = await Promise.all([
           api.tenants.list(),
           api.sessions.list({ limit: 1000 }),
-          api.hitl.stats().catch(() => ({ pending_count: 0 }))
+          api.hitl.stats().catch(() => ({ pending_count: 0 })),
+          fetch('/api/health').then(r => r.json()).catch(() => null)
         ]);
 
         const tenantsData = tenants.data || tenants || [];
         const sessionsData = sessions.data || sessions || [];
 
-        document.getElementById('stat-tenants').textContent = tenantsData.length;
-        document.getElementById('stat-calls').textContent = sessionsData.length.toLocaleString();
-        document.getElementById('stat-mrr').textContent = (tenantsData.length * 990).toLocaleString() + ' DH';
+        // Filter current month sessions
+        const now = new Date();
+        const thisMonthSessions = sessionsData.filter(s => {
+          const d = new Date(s.created_at || s.timestamp);
+          return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+        });
 
-        // Calculate average latency from sessions
-        const latencies = sessionsData.filter(s => s.latency_ms).map(s => s.latency_ms);
-        const avgLatency = latencies.length > 0
-          ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length)
-          : 0;
+        // Calculate MRR based on tenant pricing (990 DH/tenant default)
+        const mrr = tenantsData.reduce((sum, t) => sum + (t.mrr || 990), 0);
+        document.getElementById('stat-mrr').textContent = mrr.toLocaleString() + ' DH';
+        document.getElementById('stat-mrr-trend').textContent = `${tenantsData.length} tenants actifs`;
+
+        // Tenants stats
+        document.getElementById('stat-tenants').textContent = tenantsData.length;
+        const activeTenants = tenantsData.filter(t => t.status === 'active' || !t.status).length;
+        const trendEl = document.getElementById('stat-tenants-trend');
+        trendEl.textContent = `${activeTenants} actifs`;
+        trendEl.className = 'text-sm mt-1 text-green-600';
+
+        // Calls this month
+        document.getElementById('stat-calls').textContent = thisMonthSessions.length.toLocaleString();
+
+        // Latency from health endpoint or sessions
+        let avgLatency = 0;
+        if (health?.stores?.database?.latency_ms) {
+          avgLatency = health.stores.database.latency_ms;
+        } else {
+          const latencies = sessionsData.filter(s => s.latency_ms).map(s => parseInt(s.latency_ms));
+          avgLatency = latencies.length > 0
+            ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length)
+            : 0;
+        }
         document.getElementById('stat-latency').textContent = avgLatency > 0 ? `${avgLatency}ms` : '--';
+        const latencyStatusEl = document.getElementById('stat-latency-status');
+        if (avgLatency > 0 && avgLatency < 200) {
+          latencyStatusEl.textContent = 'Normal';
+          latencyStatusEl.className = 'text-sm mt-1 text-green-600';
+        } else if (avgLatency >= 200 && avgLatency < 500) {
+          latencyStatusEl.textContent = 'Modéré';
+          latencyStatusEl.className = 'text-sm mt-1 text-amber-600';
+        } else if (avgLatency >= 500) {
+          latencyStatusEl.textContent = 'Élevé';
+          latencyStatusEl.className = 'text-sm mt-1 text-red-600';
+        } else {
+          latencyStatusEl.textContent = '--';
+          latencyStatusEl.className = 'text-sm mt-1 text-slate-500';
+        }
+
+        // Update system status indicator
+        updateSystemStatus(health);
 
         // HITL badge - from real API
         const pending = hitlStats.pending_count || 0;
@@ -279,9 +297,120 @@
         // Build charts from real data
         renderCharts(tenantsData, sessionsData);
 
+        // Update recent activity from real data
+        updateRecentActivity(tenantsData, sessionsData, pending);
+
       } catch (error) {
         console.error('Failed to load stats:', error);
       }
+    }
+
+    // Update system status from health endpoint
+    function updateSystemStatus(health) {
+      const statusEl = document.getElementById('system-status');
+      if (!statusEl || !health) return;
+
+      const status = health.status || 'unknown';
+      if (status === 'ok') {
+        statusEl.innerHTML = \`
+          <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+          <span class="text-sm text-green-700 dark:text-green-300" data-i18n="admin.system_ok">Système OK</span>
+        \`;
+        statusEl.className = 'flex items-center gap-2 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 rounded-full';
+      } else if (status === 'degraded') {
+        statusEl.innerHTML = \`
+          <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+          <span class="text-sm text-amber-700 dark:text-amber-300">Dégradé</span>
+        \`;
+        statusEl.className = 'flex items-center gap-2 px-3 py-1.5 bg-amber-100 dark:bg-amber-900/30 rounded-full';
+      } else {
+        statusEl.innerHTML = \`
+          <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+          <span class="text-sm text-red-700 dark:text-red-300">Erreur</span>
+        \`;
+        statusEl.className = 'flex items-center gap-2 px-3 py-1.5 bg-red-100 dark:bg-red-900/30 rounded-full';
+      }
+    }
+
+    // Update recent activity with real data
+    function updateRecentActivity(tenants, sessions, pendingHitl) {
+      const container = document.getElementById('recent-activity');
+      if (!container) return;
+
+      const activities = [];
+
+      // Latest tenant
+      const latestTenant = tenants.sort((a, b) =>
+        new Date(b.created_at || 0) - new Date(a.created_at || 0)
+      )[0];
+      if (latestTenant) {
+        activities.push({
+          icon: 'user-plus',
+          iconColor: 'green',
+          text: \`Tenant <strong>\${latestTenant.name || latestTenant.id}</strong> inscrit\`,
+          time: formatTimeAgo(latestTenant.created_at)
+        });
+      }
+
+      // Today's calls
+      const today = new Date().toDateString();
+      const todayCalls = sessions.filter(s =>
+        new Date(s.created_at || s.timestamp).toDateString() === today
+      ).length;
+      activities.push({
+        icon: 'phone',
+        iconColor: 'blue',
+        text: \`<strong>\${todayCalls.toLocaleString()}</strong> appels traités aujourd'hui\`,
+        time: 'Mise à jour automatique'
+      });
+
+      // HITL pending
+      if (pendingHitl > 0) {
+        activities.push({
+          icon: 'alert-triangle',
+          iconColor: 'amber',
+          text: \`<strong>\${pendingHitl}</strong> approbations HITL en attente\`,
+          time: '<a href="hitl.html" class="text-indigo-600 hover:underline">Voir les demandes</a>'
+        });
+      }
+
+      // Total sessions
+      activities.push({
+        icon: 'database',
+        iconColor: 'purple',
+        text: \`<strong>\${sessions.length.toLocaleString()}</strong> sessions totales\`,
+        time: 'Base de données'
+      });
+
+      container.innerHTML = activities.map(a => \`
+        <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
+          <div class="w-8 h-8 rounded-full bg-\${a.iconColor}-100 dark:bg-\${a.iconColor}-900/30 flex items-center justify-center">
+            <i data-lucide="\${a.icon}" class="w-4 h-4 text-\${a.iconColor}-600"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-sm text-slate-900 dark:text-white">\${a.text}</p>
+            <p class="text-xs text-slate-500">\${a.time}</p>
+          </div>
+        </div>
+      \`).join('');
+
+      lucide.createIcons();
+    }
+
+    // Format time ago
+    function formatTimeAgo(dateStr) {
+      if (!dateStr) return '--';
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMins / 60);
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffMins < 1) return "À l'instant";
+      if (diffMins < 60) return \`Il y a \${diffMins} min\`;
+      if (diffHours < 24) return \`Il y a \${diffHours}h\`;
+      return \`Il y a \${diffDays}j\`;
     }
 
     function renderCharts(tenants, sessions) {

@@ -104,35 +104,35 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Appels totaux</span>
-              <span class="text-xs text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded">+12%</span>
+              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.total_calls">Appels totaux</span>
+              <span id="kpi-calls-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
             </div>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">2,847</p>
-            <p class="text-sm text-slate-500 mt-1">vs 2,539 mois dernier</p>
+            <p id="kpi-calls" class="text-3xl font-bold text-slate-900 dark:text-white">--</p>
+            <p id="kpi-calls-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Taux de conversion</span>
-              <span class="text-xs text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded">+5%</span>
+              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.conversion">Taux de complétion</span>
+              <span id="kpi-conv-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
             </div>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">34.2%</p>
-            <p class="text-sm text-slate-500 mt-1">973 leads qualifiés</p>
+            <p id="kpi-conversion" class="text-3xl font-bold text-slate-900 dark:text-white">--%</p>
+            <p id="kpi-conv-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Durée moyenne</span>
-              <span class="text-xs text-amber-600 bg-amber-100 dark:bg-amber-900/30 px-2 py-0.5 rounded">-2%</span>
+              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.duration">Durée moyenne</span>
+              <span id="kpi-duration-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
             </div>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">3:42</p>
-            <p class="text-sm text-slate-500 mt-1">vs 3:47 mois dernier</p>
+            <p id="kpi-duration" class="text-3xl font-bold text-slate-900 dark:text-white">--:--</p>
+            <p id="kpi-duration-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
           <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500">Score moyen</span>
-              <span class="text-xs text-green-600 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded">+8%</span>
+              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.languages">Langues actives</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600">5 supportées</span>
             </div>
-            <p class="text-3xl font-bold text-slate-900 dark:text-white">78%</p>
-            <p class="text-sm text-slate-500 mt-1">Qualification BANT</p>
+            <p id="kpi-languages" class="text-3xl font-bold text-slate-900 dark:text-white">--</p>
+            <p id="kpi-languages-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
         </div>
 
@@ -184,46 +184,23 @@
 
         <!-- Top Performers -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Top Performances</h3>
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="analytics.top_performers">Top Personas</h3>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
                 <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700">
-                  <th class="pb-3 font-medium">Persona</th>
-                  <th class="pb-3 font-medium">Appels</th>
-                  <th class="pb-3 font-medium">Conversion</th>
-                  <th class="pb-3 font-medium">Score moyen</th>
-                  <th class="pb-3 font-medium">Tendance</th>
+                  <th class="pb-3 font-medium" data-i18n="analytics.table.persona">Persona</th>
+                  <th class="pb-3 font-medium" data-i18n="analytics.table.calls">Appels</th>
+                  <th class="pb-3 font-medium" data-i18n="analytics.table.completion">Complétion</th>
+                  <th class="pb-3 font-medium" data-i18n="analytics.table.avg_duration">Durée moy.</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody id="top-personas-table" class="divide-y divide-slate-200 dark:divide-slate-700">
                 <tr>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">E-commerce</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">892</td>
-                  <td class="py-3 text-green-600 font-medium">42%</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">84%</td>
-                  <td class="py-3"><span class="text-green-600">↑ 12%</span></td>
-                </tr>
-                <tr>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">Commercial B2B</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">654</td>
-                  <td class="py-3 text-green-600 font-medium">38%</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">81%</td>
-                  <td class="py-3"><span class="text-green-600">↑ 8%</span></td>
-                </tr>
-                <tr>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">Support Client</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">534</td>
-                  <td class="py-3 text-amber-600 font-medium">31%</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">76%</td>
-                  <td class="py-3"><span class="text-slate-500">→ 0%</span></td>
-                </tr>
-                <tr>
-                  <td class="py-3 text-slate-900 dark:text-white font-medium">Immobilier</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">423</td>
-                  <td class="py-3 text-green-600 font-medium">35%</td>
-                  <td class="py-3 text-slate-600 dark:text-slate-300">79%</td>
-                  <td class="py-3"><span class="text-green-600">↑ 5%</span></td>
+                  <td colspan="4" class="py-6 text-center text-slate-400">
+                    <i data-lucide="loader-2" class="w-5 h-5 inline-block animate-spin mr-2"></i>
+                    <span data-i18n="common.loading">Chargement...</span>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -235,6 +212,7 @@
 
   <script type="module">
     import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
     import { createLineChart, createBarChart, createDoughnutChart, COLORS } from '/src/lib/charts.js';
     import toast from '/src/lib/toast.js';
 
@@ -259,16 +237,166 @@
     // Load and render analytics from real data
     async function loadAnalytics() {
       try {
-        const result = await api.sessions.list({ limit: 1000 });
+        const tenantId = auth.getTenantId();
+        const result = await api.sessions.getByTenant(tenantId);
         const sessions = result.data || result || [];
 
+        // Calculate KPIs
+        calculateKPIs(sessions);
+
+        // Render charts
         renderCharts(sessions);
+
+        // Render top performers table
+        renderTopPerformers(sessions);
+
       } catch (error) {
         console.error('Failed to load analytics:', error);
         toast.error('Erreur lors du chargement des données');
-        // Render empty charts
         renderEmptyCharts();
+        renderEmptyKPIs();
       }
+    }
+
+    // Calculate and display KPIs
+    function calculateKPIs(sessions) {
+      const now = new Date();
+
+      // This month's sessions
+      const thisMonth = sessions.filter(s => {
+        const d = new Date(s.created_at || s.timestamp);
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      });
+
+      // Last month's sessions for comparison
+      const lastMonth = sessions.filter(s => {
+        const d = new Date(s.created_at || s.timestamp);
+        const prevMonth = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
+        const prevYear = now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
+        return d.getMonth() === prevMonth && d.getFullYear() === prevYear;
+      });
+
+      // Total calls
+      const totalCalls = thisMonth.length;
+      const lastTotalCalls = lastMonth.length;
+      document.getElementById('kpi-calls').textContent = totalCalls.toLocaleString();
+      document.getElementById('kpi-calls-sub').textContent = lastTotalCalls > 0 ? `vs ${lastTotalCalls.toLocaleString()} mois dernier` : 'Ce mois';
+      updateTrendBadge('kpi-calls-trend', totalCalls, lastTotalCalls);
+
+      // Completion rate (sessions with status completed or duration > 0)
+      const completed = thisMonth.filter(s => s.status === 'completed' || (parseInt(s.duration_sec) || 0) > 30).length;
+      const convRate = totalCalls > 0 ? Math.round((completed / totalCalls) * 100) : 0;
+      const lastCompleted = lastMonth.filter(s => s.status === 'completed' || (parseInt(s.duration_sec) || 0) > 30).length;
+      const lastConvRate = lastTotalCalls > 0 ? Math.round((lastCompleted / lastTotalCalls) * 100) : 0;
+      document.getElementById('kpi-conversion').textContent = `${convRate}%`;
+      document.getElementById('kpi-conv-sub').textContent = `${completed} sessions complètes`;
+      updateTrendBadge('kpi-conv-trend', convRate, lastConvRate);
+
+      // Average duration
+      const totalDuration = thisMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0);
+      const avgDuration = totalCalls > 0 ? Math.round(totalDuration / totalCalls) : 0;
+      const lastTotalDuration = lastMonth.reduce((sum, s) => sum + (parseInt(s.duration_sec) || 0), 0);
+      const lastAvgDuration = lastTotalCalls > 0 ? Math.round(lastTotalDuration / lastTotalCalls) : 0;
+      document.getElementById('kpi-duration').textContent = formatDuration(avgDuration);
+      document.getElementById('kpi-duration-sub').textContent = lastAvgDuration > 0 ? `vs ${formatDuration(lastAvgDuration)} mois dernier` : 'Total: ' + formatDuration(totalDuration);
+      updateTrendBadge('kpi-duration-trend', avgDuration, lastAvgDuration);
+
+      // Active languages
+      const langs = new Set(thisMonth.map(s => (s.lang || s.language || 'fr').toLowerCase()));
+      document.getElementById('kpi-languages').textContent = langs.size || 0;
+      document.getElementById('kpi-languages-sub').textContent = langs.size > 0 ? [...langs].map(l => l.toUpperCase()).join(', ') : 'Aucune donnée';
+    }
+
+    // Update trend badge with color coding
+    function updateTrendBadge(elementId, current, previous) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+
+      if (previous === 0 && current === 0) {
+        el.textContent = '--';
+        el.className = 'text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500';
+        return;
+      }
+
+      const change = previous > 0 ? Math.round(((current - previous) / previous) * 100) : (current > 0 ? 100 : 0);
+
+      if (change > 0) {
+        el.textContent = `+${change}%`;
+        el.className = 'text-xs px-2 py-0.5 rounded bg-green-100 dark:bg-green-900/30 text-green-600';
+      } else if (change < 0) {
+        el.textContent = `${change}%`;
+        el.className = 'text-xs px-2 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-600';
+      } else {
+        el.textContent = '0%';
+        el.className = 'text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500';
+      }
+    }
+
+    // Format duration as MM:SS
+    function formatDuration(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}:${String(secs).padStart(2, '0')}`;
+    }
+
+    // Render top performers table from real data
+    function renderTopPerformers(sessions) {
+      const byPersona = {};
+
+      sessions.forEach(s => {
+        const persona = s.persona || 'Unknown';
+        if (!byPersona[persona]) {
+          byPersona[persona] = { calls: 0, completed: 0, totalDuration: 0 };
+        }
+        byPersona[persona].calls++;
+        if (s.status === 'completed' || (parseInt(s.duration_sec) || 0) > 30) {
+          byPersona[persona].completed++;
+        }
+        byPersona[persona].totalDuration += parseInt(s.duration_sec) || 0;
+      });
+
+      const sorted = Object.entries(byPersona)
+        .map(([name, data]) => ({
+          name,
+          calls: data.calls,
+          completion: data.calls > 0 ? Math.round((data.completed / data.calls) * 100) : 0,
+          avgDuration: data.calls > 0 ? Math.round(data.totalDuration / data.calls) : 0
+        }))
+        .sort((a, b) => b.calls - a.calls)
+        .slice(0, 5);
+
+      const tbody = document.getElementById('top-personas-table');
+      if (!tbody) return;
+
+      if (sorted.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" class="py-6 text-center text-slate-400" data-i18n="analytics.no_data">Aucune donnée disponible</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = sorted.map(p => `
+        <tr>
+          <td class="py-3 text-slate-900 dark:text-white font-medium">${p.name}</td>
+          <td class="py-3 text-slate-600 dark:text-slate-300">${p.calls.toLocaleString()}</td>
+          <td class="py-3 font-medium ${p.completion >= 50 ? 'text-green-600' : p.completion >= 30 ? 'text-amber-600' : 'text-slate-500'}">${p.completion}%</td>
+          <td class="py-3 text-slate-600 dark:text-slate-300">${formatDuration(p.avgDuration)}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Render empty KPIs
+    function renderEmptyKPIs() {
+      document.getElementById('kpi-calls').textContent = '0';
+      document.getElementById('kpi-calls-sub').textContent = 'Aucune donnée';
+      document.getElementById('kpi-conversion').textContent = '--%';
+      document.getElementById('kpi-conv-sub').textContent = '--';
+      document.getElementById('kpi-duration').textContent = '--:--';
+      document.getElementById('kpi-duration-sub').textContent = '--';
+      document.getElementById('kpi-languages').textContent = '0';
+      document.getElementById('kpi-languages-sub').textContent = '--';
     }
 
     function renderCharts(sessions) {
