@@ -1,10 +1,13 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.65.0 | **Updated**: 02/02/2026 | **Session**: 250.58
+> **Version**: 6.69.0 | **Updated**: 02/02/2026 | **Session**: 250.61
 > **Backend Score**: 99/100 | **Frontend Score**: 99/100 | **Health Check**: 100% (39/39)
 > **Security**: 99/100 - SRI ✅, HTTPS ✅, XSS ✅, CSP ✅, JWT Auth ✅
 > **MCP Server**: v0.8.0 | **MCP Tools**: 182 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler
+> **Session 250.61**: i18n Fix - Added missing dashboard.nav.* keys (8 keys × 5 locales)
+> **Session 250.60**: Bug fixes - hitl.html api import, billing integrations count
+> **Session 250.59**: Dashboards complete - integrations.html, settings.html with real API
 > **Session 250.58**: Client KB Multi-Lang (5 files: fr, en, es, ar, ary), 41 core modules
 > **Session 250.57**: Rigorous Audit - i18n.js 18/18 pages, wsDebug() fix, form validation, conversation-store.cjs
 > **Session 250.56**: DOE Audit Complete - ALL PLANNING DOCS 100% VERIFIED
