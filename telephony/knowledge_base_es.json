@@ -2,7 +2,7 @@
     "universal_ecom_v1": {
         "livraison": "El envío estándar tarda 3-5 días hábiles (Gratis desde 50€). El envío express tarda 1-2 días (15€).",
         "retours": "Ofrecemos devolución gratuita durante 30 días para artículos sin usar en su embalaje original.",
-        "paiements": "Aceptamos Visa, Mastercard, PayPal y pago contra reembolso.",
+        "paiements": "Aceptamos Visa, Mastercard, Amex, PayPal y Apple Pay.",
         "support": "Email de soporte: support@{{client_domain}}",
         "horaires": "Lunes-Viernes 9h-17h"
     },
@@ -14,12 +14,12 @@
     },
     "dental_intake_v1": {
         "urgence_dentaire": "Para dolor severo o traumatismo, tenemos citas de emergencia el mismo día entre 11h-12h y 15h-16h.",
-        "assurances": "Aceptamos la mayoría de seguros. También ofrecemos planes de pago.",
+        "assurances": "Aceptamos la mayoría de seguros y ofrecemos planes de pago.",
         "offre_nouveau_patient": "Paquete Nuevo Paciente a 99€ incluye examen, radiografías y limpieza.",
-        "dentiste": "El doctor está especializado en odontología estética e implantes."
+        "dentiste": "Nuestro dentista es especialista en implantes y odontología estética."
     },
     "agency_v3": {
-        "produits": "VocalIA ofrece 2 productos de Voz IA: Voice Widget (asistente vocal 24/7 para sitios web) y Voice Telephony (línea telefónica IA).",
+        "produits": "VocalIA ofrece 2 productos de Voz IA: Voice Widget (asistente vocal 24/7 para sitios web) y Voice Telephony (línea telefónica IA via Twilio).",
         "personas": "40 personas sectoriales preconfiguradas: dentistas, inmobiliarias, restaurantes, e-commerce, PYMES y más.",
         "langues": "5 idiomas soportados: Francés, Inglés, Español, Árabe y Darija Marroquí.",
         "contact": "Contáctenos vía vocalia.ma/booking o email contact@vocalia.ma.",
@@ -32,10 +32,10 @@
         "rdv": "Las citas se pueden hacer por teléfono o a través de nuestro portal de pacientes."
     },
     "mechanic_v1": {
-        "services": "Cambio de aceite, frenos, neumáticos, batería, diagnóstico electrónico.",
+        "services": "Cambio de aceite, frenos, neumáticos, batería, diagnóstico electrónico, ITV.",
         "horaires": "Lunes-Viernes 8:30h-18h, Sábado 9h-12h.",
-        "vehicule_courtoisie": "Proporcionamos vehículos de cortesía con reserva previa.",
-        "garantie": "Todas las reparaciones tienen garantía de 1 año en piezas y mano de obra."
+        "vehicule_courtoisie": "Vehículo de cortesía disponible con reserva previa.",
+        "garantie": "Todas las reparaciones garantizadas 1 año en piezas y mano de obra."
     },
     "counselor_v1": {
         "domaines": "Derecho Laboral, Derecho de Familia, Derecho Inmobiliario, Derecho de Negocios.",
@@ -47,7 +47,7 @@
         "petit_dejeuner": "Desayuno servido de 7h a 10:30h en el restaurante.",
         "check_in_out": "Check-in desde las 15h, Check-out hasta las 11h.",
         "wifi": "WiFi gratuito de alta velocidad en todo el establecimiento.",
-        "parking": "Parking privado disponible a 20€ por noche."
+        "parking": "Parking privado seguro disponible a 20€ por noche."
     },
     "stylist_v1": {
         "soins": "Peluquería, Masajes, Tratamientos faciales, Manicura, Hammam.",
@@ -58,36 +58,191 @@
     "recruiter_v1": {
         "postes": "Actualmente contratamos Desarrolladores IA, Gerentes de Ventas y Especialistas en Automatización.",
         "process": "1. Llamada de filtro, 2. Prueba técnica, 3. Entrevista con dirección.",
-        "avantages": "Seguro médico, trabajo remoto y formación continua."
+        "valeurs": "Innovación, Autonomía, Excelencia técnica.",
+        "candidature": "Envíe su CV a jobs@vocalia.ma."
     },
     "dispatcher_v1": {
-        "service": "Entrega en la ciudad en 30 a 60 minutos.",
-        "tarif": "Envío 3€, gratis desde 30€.",
-        "suivi": "Siga su pedido con el enlace que le enviaremos."
+        "suivi": "Use el enlace recibido por SMS para rastrear su paquete en tiempo real.",
+        "zone_livraison": "Entregamos en todo el país en 24-48 horas.",
+        "problemes": "En caso de ausencia, el paquete se deja en el punto de recogida más cercano.",
+        "tarifs": "Envío estándar desde 5,90€."
     },
     "collector_v1": {
-        "rappel": "Esta es una llamada de recordatorio para la factura número {{invoice_number}}.",
-        "options": "Puede pagar ahora con tarjeta, o podemos establecer un plan de pago.",
-        "contact": "Si tiene algún problema, contáctenos."
+        "paiement_ligne": "Pague sus facturas de forma segura a través del enlace enviado a su portal de cliente.",
+        "echeancier": "Los planes de pago pueden organizarse después de revisar su expediente.",
+        "contact_litiges": "Para cualquier disputa, envíe un email a facturacion@empresa.com.",
+        "horaires": "Servicio disponible de lunes a viernes de 9h a 17h."
     },
     "insurer_v1": {
-        "sinistre": "Para declarar un siniestro, necesita enviar documentos: informe policial, fotos de daños y facturas.",
-        "delais": "La compensación tarda de 15 a 30 días después de recibir todos los documentos.",
-        "contact": "Atención al cliente: 900 100 200."
+        "sinistre": "Declare su siniestro en 5 días hábiles vía app móvil o teléfono.",
+        "devis": "Obtenga un presupuesto gratuito online para su auto o hogar.",
+        "assistance": "Asistencia 24/7 en el número indicado en su tarjeta verde.",
+        "reseau": "Más de 1500 talleres asociados para reparaciones sin adelanto de gastos."
+    },
+    "grocery_v1": {
+        "livraison": "Entrega en 30 minutos a 2 horas según su franja. Entrega express en 15 minutos (+2€).",
+        "suivi": "Siga su pedido en tiempo real vía la app. Notificaciones SMS en cada paso.",
+        "produits_manquants": "Si un producto no está disponible, ofrecemos un equivalente o crédito automático.",
+        "retours": "Reclamación en 24h para productos defectuosos. Reembolso inmediato o crédito.",
+        "creneaux": "Franjas de entrega de 8h a 22h, 7 días a la semana.",
+        "minimum_commande": "Pedido mínimo 20€. Envío gratis desde 50€.",
+        "paiement": "Pago al pedido (Tarjeta, Apple Pay) o a la entrega (efectivo, datáfono).",
+        "reorder": "Encuentre sus pedidos anteriores en 'Mis Favoritos' para repetir con un clic."
     },
     "property_v1": {
-        "disponibilites": "Tenemos apartamentos y villas en alquiler y venta en varios barrios.",
-        "visites": "Las visitas son de lunes a sábado, se requiere reserva.",
-        "documents": "Para alquiler: DNI, justificante de empleo, 3 meses de nóminas."
+        "urgence_maintenance": "Para emergencias (fuga de agua, corte eléctrico), llame al número de emergencias 24/7.",
+        "demande_reparation": "Envíe solicitudes vía portal de inquilinos o teléfono. Respuesta en 24-72h.",
+        "reglement_loyer": "El alquiler se debe el día 1 del mes. Pago por transferencia, domiciliación o tarjeta.",
+        "contact_gestionnaire": "Su gestor está disponible de lunes a viernes de 9h a 18h."
     },
     "contractor_v1": {
-        "services": "Construcción, renovación, decoración interior y exterior.",
-        "devis": "Presupuesto gratuito en 48 horas.",
-        "garantie": "Todos los trabajos garantizados por 5 años."
+        "devis_gratuit": "Ofrecemos presupuestos gratuitos en 48h tras visita técnica.",
+        "garantie_travaux": "Todos nuestros trabajos garantizados 10 años y asegurados.",
+        "delai_intervention": "Intervención en 1-2 semanas según tipo de trabajo.",
+        "financement": "Pago en 3 o 4 plazos sin intereses disponible."
     },
     "funeral_v1": {
-        "services": "Nos encargamos de todos los trámites: preparación, transporte y entierro.",
-        "disponibilite": "Disponibles 24/7 para emergencias.",
-        "support": "Nuestro equipo está aquí para ayudarle en este momento difícil."
+        "premier_contact": "Nuestro equipo está disponible 24/7 para acompañarle en estos momentos difíciles.",
+        "organisation": "Nos encargamos de todos los trámites administrativos y logísticos.",
+        "personnalisation": "Cada ceremonia puede personalizarse según sus deseos y creencias.",
+        "accompagnement": "Un asesor dedicado le acompaña durante todo el proceso."
+    },
+    "accountant_v1": {
+        "services": "Contabilidad general, declaraciones fiscales, nóminas, creación de empresas.",
+        "tarifs": "Paquetes mensuales desde 150€ según tamaño de empresa.",
+        "rdv": "Primera consulta gratuita de 30 minutos para evaluar sus necesidades.",
+        "delai_declarations": "Respetamos todos los plazos legales con recordatorios automáticos."
+    },
+    "architect_v1": {
+        "prestations": "Diseño, permisos de obra, seguimiento de obra, renovación energética.",
+        "honoraires": "Honorarios del 8% al 12% del coste de la obra según el alcance.",
+        "premiere_rencontre": "Primer encuentro gratuito para discutir su proyecto.",
+        "delai_permis": "Tiempo medio para permiso de obra: 2-3 meses."
+    },
+    "pharmacist_v1": {
+        "disponibilite_medicaments": "Verifique disponibilidad por teléfono antes de desplazarse.",
+        "ordonnance": "Aceptamos recetas electrónicas y en papel.",
+        "garde": "Farmacia de guardia disponible domingos y festivos (consulte horario).",
+        "services": "Vacunaciones, toma de tensión, consejo personalizado, fórmulas magistrales."
+    },
+    "renter_v1": {
+        "vehicules": "Utilitarios, berlinas, SUV, furgonetas y minibuses disponibles.",
+        "documents": "Permiso de conducir válido, DNI y tarjeta de crédito requeridos.",
+        "assurance": "Seguro a todo riesgo incluido con franquicia de 800€ (reducible a 15€/día).",
+        "km_inclus": "200 km incluidos por día. Kilómetro adicional: 0,25€."
+    },
+    "logistician_v1": {
+        "suivi_expedition": "Seguimiento en tiempo real disponible vía nuestro portal de clientes.",
+        "zones_livraison": "Cobertura nacional e internacional (Europa, Norte de África).",
+        "delais": "J+1 nacional, 3-5 días Europa, 5-10 días internacional.",
+        "tarifs_volume": "Descuentos progresivos según volumen mensual enviado."
+    },
+    "trainer_v1": {
+        "formations": "Gestión, ofimática, idiomas, desarrollo personal, técnicas profesionales.",
+        "certification": "Todas nuestras formaciones son certificadas.",
+        "modalites": "Presencial, a distancia o mixto según sus preferencias.",
+        "financement": "Financiación posible a través de varios programas."
+    },
+    "planner_v1": {
+        "evenements": "Bodas, cumpleaños, seminarios, conferencias, lanzamientos de productos.",
+        "devis": "Presupuesto personalizado en 48h tras briefing detallado.",
+        "budget": "Adaptamos nuestros servicios a todos los presupuestos.",
+        "prestataires": "Red de proveedores cualificados (caterings, DJs, fotógrafos, decoradores)."
+    },
+    "producer_v1": {
+        "produits": "Frutas y verduras de temporada, huevos de granja, miel, quesos artesanales.",
+        "commande": "Pida online o por teléfono antes del miércoles para entrega el viernes.",
+        "livraison": "Entrega a domicilio o recogida en granja viernes de 16h a 19h.",
+        "labels": "Agricultura ecológica certificada, circuito corto, producción local."
+    },
+    "cleaner_v1": {
+        "services": "Limpieza regular, limpieza profunda, fin de obra, cristales, desinfección.",
+        "tarifs": "Desde 25€/hora todo incluido. Presupuesto gratis.",
+        "frequence": "Intervenciones puntuales o contratos semanales/mensuales.",
+        "produits": "Productos ecológicos bajo demanda sin coste adicional."
+    },
+    "gym_v1": {
+        "abonnements": "Sin compromiso a 39€/mes, 12 meses a 29€/mes, Pase día a 15€.",
+        "horaires": "Abierto 7 días a la semana de 6h a 23h. Acceso 24h para miembros Premium.",
+        "equipements": "Cardio, musculación, área funcional, clases colectivas incluidas.",
+        "essai": "Sesión de prueba gratuita con entrenador para descubrir nuestras instalaciones."
+    },
+    "retailer_v1": {
+        "horaires": "Abierto de lunes a sábado de 9:30h a 19:30h, jueves hasta las 21h.",
+        "stock": "Verifique disponibilidad por teléfono u online antes de desplazarse.",
+        "retours": "Cambio o reembolso en 30 días con ticket de compra.",
+        "fidelite": "Tarjeta fidelidad gratis: 1€ = 1 punto, 100 puntos = 5€ de descuento."
+    },
+    "builder_v1": {
+        "projets": "Construcción nueva, ampliación, renovación completa, elevación.",
+        "garanties": "Garantía decenal, seguro de daños, garantía de terminación.",
+        "etapes": "1. Estudio gratuito, 2. Presupuesto detallado, 3. Contrato, 4. Seguimiento de obra.",
+        "delais": "Plazo medio construcción vivienda individual: 10-14 meses."
+    },
+    "restaurateur_v1": {
+        "reservations": "Reserva recomendada los fines de semana. Mesas disponibles hasta 8 personas.",
+        "menu": "Menú del día a 18€ (entrante-plato o plato-postre), carta completa disponible.",
+        "allergenes": "Todos los platos adaptables para alergias y dietas especiales bajo demanda.",
+        "privatisation": "Reserva privada disponible para eventos hasta 50 personas."
+    },
+    "travel_agent_v1": {
+        "destinations": "Estancias de playa, circuitos culturales, cruceros, viajes a medida.",
+        "paiement": "Anticipo del 30% a la reserva, resto 30 días antes de la salida.",
+        "assurance": "Seguro de cancelación y repatriación recomendado (desde 35€).",
+        "urgence": "Número de emergencias 24h durante su viaje."
+    },
+    "consultant_v1": {
+        "expertise": "Estrategia empresarial, transformación digital, optimización de procesos, gestión.",
+        "methode": "Diagnóstico inicial, plan de acción, acompañamiento sobre el terreno, medición de resultados.",
+        "tarifs": "Facturación por día (800-1500€) o por proyecto.",
+        "references": "Más de 50 proyectos realizados con PYMES y empresas medianas."
+    },
+    "it_services_v1": {
+        "support": "Soporte técnico por teléfono, email o acceso remoto.",
+        "services": "Mantenimiento informático, ciberseguridad, cloud, backup, redes.",
+        "contrats": "Paquetes mensuales desde 99€ o intervención puntual.",
+        "sla": "Tiempo de respuesta garantizado: 4h en horario laboral, 8h fines de semana."
+    },
+    "manufacturer_v1": {
+        "fabrication": "Piezas a medida en metal, madera, plástico según sus planos o especificaciones.",
+        "delais": "Plazo de fabricación: 1-4 semanas según complejidad y cantidad.",
+        "prototypage": "Prototipado rápido disponible para validación antes de producción.",
+        "minimum": "Sin mínimo de pedido para piezas unitarias."
+    },
+    "doctor_v1": {
+        "consultations": "Consulta general con cita previa. Urgencias aceptadas según disponibilidad.",
+        "teleconsultation": "Teleconsulta disponible vía nuestra plataforma segura.",
+        "vaccinations": "Vacunaciones comunes con cita (gripe, COVID, refuerzos).",
+        "documents": "Tarjeta sanitaria y mutua requeridas. Pago directo aceptado."
+    },
+    "notary_v1": {
+        "actes": "Ventas inmobiliarias, donaciones, herencias, contratos matrimoniales, parejas de hecho.",
+        "frais": "Los gastos notariales están regulados e incluyen impuestos y honorarios.",
+        "rdv": "Primera cita informativa gratuita de 30 minutos.",
+        "delais": "Plazo medio para venta inmobiliaria: 2-3 meses."
+    },
+    "bakery_v1": {
+        "produits": "Panes tradicionales, bollería, pastelería casera, productos salados.",
+        "commandes": "Pedidos especiales (tartas, piezas montadas) en 48h.",
+        "horaires": "Abierto todos los días de 6:30h a 19:30h excepto lunes.",
+        "ingredients": "Harinas francesas, mantequilla de calidad, masa madre natural."
+    },
+    "specialist_v1": {
+        "specialite": "Consulta especializada solo con cita previa.",
+        "delai_rdv": "Tiempo medio de espera para primera cita: 2-4 semanas.",
+        "documents": "Traiga su carta de derivación, pruebas recientes e historial médico.",
+        "correspondance": "Informe enviado a su médico de cabecera en 48h."
+    },
+    "real_estate_agent_v1": {
+        "services": "Valoración gratuita, mandato de venta, búsqueda de comprador, acompañamiento completo.",
+        "honoraires": "Comisión del 4-6% según importe de la transacción.",
+        "visites": "Visitas posibles entre semana y sábados con cita.",
+        "estimation": "Valoración de su inmueble en 48h tras visita."
+    },
+    "hairdresser_v1": {
+        "prestations": "Corte, coloración, mechas, alisado, peinado para eventos.",
+        "tarifs": "Corte mujer desde 35€, hombre desde 20€.",
+        "rdv": "Reserva recomendada, sin cita aceptado según disponibilidad.",
+        "produits": "Productos profesionales: L'Oréal, Kérastase, Wella."
     }
 }

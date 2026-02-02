@@ -19,7 +19,7 @@
 | **Widget TTS** | "Support Darija" | ✅ ElevenLabs fallback via /tts endpoint | ✅ DONE |
 | **Telephony TTS** | "5 langues" | ✅ ElevenLabs Ghizlane/Jawad pour Darija | ✅ DONE |
 | **Telephony Config** | "5 langues" | ✅ `supportedLanguages: ['fr', 'en', 'es', 'ar', 'ary']` | ✅ DONE |
-| **Knowledge Base** | "Multilingue" | ✅ FR (40) + EN (16) + ES (16) + AR (16) + ARY (16) = 104 personas | ✅ DONE |
+| **Knowledge Base** | "Multilingue" | ✅ FR (40) + EN (40) + ES (40) + AR (40) + ARY (40) = 200 personas | ✅ DONE |
 | **Firefox Support** | Implicite (Widget) | ⚠️ Text input fallback | 🟡 ACCEPTABLE |
 | **Safari Support** | Implicite (Widget) | ⚠️ Partiel, limitations | 🟡 ACCEPTABLE |
 | **Grok Darija** | PRIMARY LLM | ✅ Génère Darija authentique (texte) | ✅ OK |
@@ -34,7 +34,7 @@
 │  Widget:     speak() → ElevenLabs via /tts endpoint pour Darija            │
 │  Telephony:  generateDarijaTTS() → ElevenLabs Ghizlane/Jawad               │
 │  Voice API:  /tts endpoint ajouté (voice-api-resilient.cjs)                │
-│  KB:         5 fichiers × 5 langues = FR(40) EN(16) ES(16) AR(16) ARY(16)  │
+│  KB:         5 fichiers × 40 personas = FR(40) EN(40) ES(40) AR(40) ARY(40)│
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
