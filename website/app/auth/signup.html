@@ -240,6 +240,12 @@
     import auth from '/src/lib/auth-client.js';
     import toast from '/src/lib/toast.js';
 
+    // Initialize i18n (RTL support for AR/ARY)
+    if (window.VocaliaI18n) {
+      await VocaliaI18n.initI18n();
+      VocaliaI18n.translatePage();
+    }
+
     // Initialize Lucide icons
     lucide.createIcons();
 

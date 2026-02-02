@@ -129,24 +129,25 @@ test.describe('Public Website', () => {
   });
 
   test.describe('i18n', () => {
-    test('should support French', async ({ page }) => {
-      await page.goto('/?lang=fr');
-      await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(300);
+    const languages = ['fr', 'en', 'es', 'ar', 'ary'];
 
-      // Page should have French content or lang attribute
-      const lang = await page.locator('html').getAttribute('lang');
-      expect(['fr', 'fr-FR', 'fr-MA']).toContain(lang);
-    });
+    for (const lang of languages) {
+      test(`should support ${lang}`, async ({ page }) => {
+        await page.goto(`/?lang=${lang}`);
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(500);
 
-    // TODO: Some pages need i18n init from URL
-    test.skip('should support Arabic with RTL', async ({ page }) => {
-      await page.goto('/?lang=ar');
-      await page.waitForLoadState('networkidle');
+        // Page should have correct lang attribute
+        const htmlLang = await page.locator('html').getAttribute('lang');
+        expect(htmlLang).toBe(lang);
 
-      const dir = await page.locator('html').getAttribute('dir');
-      expect(dir).toBe('rtl');
-    });
+        // RTL check for Arabic languages
+        if (lang === 'ar' || lang === 'ary') {
+          const dir = await page.locator('html').getAttribute('dir');
+          expect(dir).toBe('rtl');
+        }
+      });
+    }
   });
 });
 

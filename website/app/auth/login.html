@@ -192,13 +192,26 @@
     </div>
   </div>
 
+  <!-- i18n init (RTL support for AR/ARY) -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      // Initialize i18n from URL params
+      if (window.VocaliaI18n && window.VocaliaI18n.initI18n) {
+        VocaliaI18n.initI18n().then(function() {
+          VocaliaI18n.translatePage();
+        });
+      }
+      // Initialize Lucide icons
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+  </script>
+
   <!-- Scripts -->
   <script type="module">
     import auth from '/src/lib/auth-client.js';
     import toast from '/src/lib/toast.js';
-
-    // Initialize Lucide icons
-    lucide.createIcons();
 
     // DOM elements
     const form = document.getElementById('login-form');

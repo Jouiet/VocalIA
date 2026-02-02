@@ -54,11 +54,20 @@ test.describe('Authentication Pages', () => {
       expect(isValid).toBe(false);
     });
 
-    // TODO: Auth pages need i18n initialization from URL params
-    // Currently auth pages don't call VocaliaI18n.initI18n() on load
-    test.skip('should have RTL support for Arabic', async ({ page }) => {
+    test('should have RTL support for Arabic', async ({ page }) => {
       await page.goto('/app/auth/login.html?lang=ar');
-      await page.waitForTimeout(1000);
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(500);
+
+      const html = page.locator('html');
+      const dir = await html.getAttribute('dir');
+      expect(dir).toBe('rtl');
+    });
+
+    test('should have RTL support for Darija', async ({ page }) => {
+      await page.goto('/app/auth/login.html?lang=ary');
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(500);
 
       const html = page.locator('html');
       const dir = await html.getAttribute('dir');

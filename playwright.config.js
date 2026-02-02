@@ -49,8 +49,9 @@ module.exports = defineConfig({
   ],
 
   // Run local dev server before tests
+  // Using http-server instead of serve to preserve query params and .html extensions
   webServer: {
-    command: 'npx serve website -l 8080 -s',
+    command: 'npx http-server website -p 8080 -c-1',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
     timeout: 30000,
