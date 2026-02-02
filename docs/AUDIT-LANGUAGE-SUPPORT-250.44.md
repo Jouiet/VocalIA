@@ -295,7 +295,7 @@ const KNOWLEDGE_BASES = {
   en: fs.existsSync(...) ? require('./knowledge_base_en.json') : {},
   es: fs.existsSync(...) ? require('./knowledge_base_es.json') : {},
   ar: fs.existsSync(...) ? require('./knowledge_base_ar.json') : {},
-  ary: fs.existsSync(...) ? require('./knowledge_base_ary.json') : {}  // ✅ 16 personas
+  ary: fs.existsSync(...) ? require('./knowledge_base_ary.json') : {}  // ✅ 40 personas
 };
 
 // Lignes 57-68 - ElevenLabs INTÉGRÉ ✅
@@ -333,7 +333,7 @@ let elevenLabsClient = new ElevenLabsClient();
 |:-:|:-------|:--------|:------:|
 | 1 | **Intégrer ElevenLabs TTS Telephony** | `telephony/voice-telephony-bridge.cjs` | ✅ DONE |
 | 2 | **Intégrer ElevenLabs TTS Widget** | `core/voice-api-resilient.cjs` + `widget/voice-widget-core.js` | ✅ DONE |
-| 3 | **Créer KB Darija** | `telephony/knowledge_base_ary.json` (16 personas) | ✅ DONE |
+| 3 | **Créer KB Darija** | `telephony/knowledge_base_ary.json` (40 personas) | ✅ DONE |
 | 4 | **Aligner CONFIG telephony 5 langues** | `telephony/voice-telephony-bridge.cjs:111` | ✅ DONE |
 
 ### Phase 2: IMPORTANT ✅ DONE
@@ -649,4 +649,4 @@ ls telephony/knowledge_base*.json
 
 *Document généré par analyse forensique factuelle*
 *Toutes les sources sont vérifiables via les liens fournis*
-*Màj: 02/02/2026 - Session 250.44ter*
+*Màj: 02/02/2026 - Session 250.44quater - **INTÉGRATION 100% COMPLÈTE***
