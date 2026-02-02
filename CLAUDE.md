@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.68.0 | 02/02/2026 | Session 250.60 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.69.0 | 02/02/2026 | Session 250.61 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **Dashboards: 10/10 Data-driven ✅** | 0 bugs | 0 missing imports | 0 hardcoded values | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
@@ -41,6 +41,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
+**Session 250.61 I18N FIX:** Added missing dashboard.nav.* keys to all 5 locales (fr, en, es, ar, ary) - navigation i18n now 100% functional
 **Session 250.60 BUG FIXES:** hitl.html missing api import fixed, billing.html integrations count from real data (was hardcoded '0'), pushed to GitHub
 **Session 250.59 DASHBOARDS COMPLETE:** integrations.html (real API connect/disconnect), settings.html (webhook config + API keys CRUD), api-client.js (+integrations +settings resources), 10/10 data-driven dashboards
 **Session 250.58 DASHBOARDS DATA-DRIVEN:** Client (index, analytics, billing) + Admin dashboards: 0 hardcoded values, API connections, real-time trends, official logo.webp (18 pages), i18n keys (5 locales)
