@@ -515,12 +515,66 @@
   // ============================================================
 
   function speak(text) {
+    const lang = state.langData?.meta?.code || state.currentLang || 'fr';
+
+    // For Darija (ary), use ElevenLabs TTS via Voice API
+    // Web Speech API doesn't support ar-MA in most browsers
+    if (lang === 'ary') {
+      speakWithElevenLabs(text, lang);
+      return;
+    }
+
+    // For other languages, use native Web Speech API
     if (!hasSpeechSynthesis) return;
     state.synthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = state.langData.meta.speechSynthesis;
-    utterance.rate = state.langData.meta.code === 'ar' ? 0.9 : 1.0;
+    utterance.rate = lang === 'ar' ? 0.9 : 1.0;
+    state.synthesis.speak(utterance);
+  }
+
+  // Session 250.44: ElevenLabs TTS fallback for Darija
+  async function speakWithElevenLabs(text, language) {
+    const ttsUrl = CONFIG.VOICE_API_URL.replace('/respond', '/tts');
+
+    try {
+      const response = await fetch(ttsUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, language })
+      });
+
+      if (!response.ok) {
+        console.warn('[TTS] ElevenLabs request failed, falling back to Web Speech API');
+        fallbackToWebSpeech(text);
+        return;
+      }
+
+      const data = await response.json();
+      if (data.success && data.audio) {
+        // Play base64 audio
+        const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+        audio.play().catch(err => {
+          console.warn('[TTS] Audio playback failed:', err.message);
+          fallbackToWebSpeech(text);
+        });
+      } else {
+        fallbackToWebSpeech(text);
+      }
+    } catch (err) {
+      console.warn('[TTS] ElevenLabs error:', err.message);
+      fallbackToWebSpeech(text);
+    }
+  }
+
+  function fallbackToWebSpeech(text) {
+    if (!hasSpeechSynthesis) return;
+    state.synthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    // Use ar-SA as fallback for Darija (not ideal but better than nothing)
+    utterance.lang = 'ar-SA';
+    utterance.rate = 0.9;
     state.synthesis.speak(utterance);
   }
 

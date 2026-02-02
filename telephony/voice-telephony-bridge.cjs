@@ -54,14 +54,31 @@ const VoiceEcommerceTools = require('../integrations/voice-ecommerce-tools.cjs')
 const ContextBox = require('../core/ContextBox.cjs');
 const BillingAgent = require('../core/BillingAgent.cjs');
 
+// Session 250.44ter: ElevenLabs TTS for Darija (Ghizlane, Jawad, Ali)
+const { ElevenLabsClient, VOICE_IDS } = require('../core/elevenlabs-client.cjs');
+let elevenLabsClient = null;
+try {
+  elevenLabsClient = new ElevenLabsClient();
+  if (elevenLabsClient.isConfigured()) {
+    console.log('✅ ElevenLabs client initialized for Darija TTS');
+  } else {
+    console.warn('⚠️ ELEVENLABS_API_KEY not set - Darija TTS will use Twilio fallback (ar-SA)');
+  }
+} catch (e) {
+  console.warn('⚠️ ElevenLabs client not loaded:', e.message);
+}
+
 // Initialize Cognitive Modules
 const KB = new ServiceKnowledgeBase();
 KB.load();
 const ECOM_TOOLS = VoiceEcommerceTools; // Already a singleton instance
-// RAG Knowledge Base - Multilingual support (Session 167)
+// RAG Knowledge Base - Multilingual support (Session 167, updated 250.44ter)
 const KNOWLEDGE_BASES = {
   fr: require('./knowledge_base.json'),
-  en: fs.existsSync(path.join(__dirname, 'knowledge_base_en.json')) ? require('./knowledge_base_en.json') : {}
+  en: fs.existsSync(path.join(__dirname, 'knowledge_base_en.json')) ? require('./knowledge_base_en.json') : {},
+  es: fs.existsSync(path.join(__dirname, 'knowledge_base_es.json')) ? require('./knowledge_base_es.json') : {},
+  ar: fs.existsSync(path.join(__dirname, 'knowledge_base_ar.json')) ? require('./knowledge_base_ar.json') : {},
+  ary: fs.existsSync(path.join(__dirname, 'knowledge_base_ary.json')) ? require('./knowledge_base_ary.json') : {}
 };
 
 // Dependency check
@@ -90,8 +107,8 @@ try {
 const CONFIG = {
   port: parseInt(process.env.VOICE_TELEPHONY_PORT || '3009'),
 
-  // Supported Languages - FR/EN Focus (Zero Gap)
-  supportedLanguages: ['fr', 'en'],
+  // Supported Languages - ALL 5 LANGUAGES (Session 250.44ter)
+  supportedLanguages: ['fr', 'en', 'es', 'ar', 'ary'],
   defaultLanguage: process.env.VOICE_DEFAULT_LANGUAGE || 'fr',
 
   // Twilio
@@ -1024,6 +1041,63 @@ async function createGrokSession(callInfo) {
   });
 }
 
+/**
+ * Session 250.44ter: Generate Darija TTS using ElevenLabs
+ * Uses Ghizlane (female) or Jawad (male) voices
+ * @param {string} text - Darija text to convert
+ * @param {string} gender - 'female' or 'male' (default: female/Ghizlane)
+ * @returns {Promise<Buffer|null>} Audio buffer or null if not configured
+ */
+async function generateDarijaTTS(text, gender = 'female') {
+  if (!elevenLabsClient || !elevenLabsClient.isConfigured()) {
+    console.warn('[ElevenLabs] Not configured - skipping Darija TTS');
+    return null;
+  }
+
+  try {
+    const voiceId = gender === 'male' ? VOICE_IDS.ary_male_jawad : VOICE_IDS.ary_female;
+    console.log(`[ElevenLabs] Generating Darija TTS with ${gender === 'male' ? 'Jawad' : 'Ghizlane'}`);
+
+    const audioBuffer = await elevenLabsClient.textToSpeech(text, {
+      voiceId: voiceId,
+      modelId: 'eleven_multilingual_v2',
+      outputFormat: 'ulaw_8000' // Twilio-compatible format
+    });
+
+    console.log(`[ElevenLabs] Generated ${audioBuffer.length} bytes of audio`);
+    return audioBuffer;
+  } catch (error) {
+    console.error(`[ElevenLabs] TTS error: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Send ElevenLabs audio to Twilio WebSocket
+ * @param {Object} session - Active session
+ * @param {Buffer} audioBuffer - Audio data
+ */
+function sendElevenLabsAudioToTwilio(session, audioBuffer) {
+  if (!session.twilioWs || session.twilioWs.readyState !== WebSocket.OPEN) {
+    console.warn('[Twilio] WebSocket not ready for audio');
+    return;
+  }
+
+  // Send audio in chunks (Twilio expects base64 encoded mulaw)
+  const chunkSize = 640; // ~40ms at 8kHz
+  for (let i = 0; i < audioBuffer.length; i += chunkSize) {
+    const chunk = audioBuffer.slice(i, Math.min(i + chunkSize, audioBuffer.length));
+    const twilioMessage = {
+      event: 'media',
+      streamSid: session.streamSid,
+      media: {
+        payload: chunk.toString('base64')
+      }
+    };
+    session.twilioWs.send(JSON.stringify(twilioMessage));
+  }
+}
+
 function handleGrokMessage(sessionId, message) {
   const session = activeSessions.get(sessionId);
   if (!session) return;
@@ -1034,7 +1108,13 @@ function handleGrokMessage(sessionId, message) {
       break;
 
     case 'response.audio.delta':
-      // Forward audio to Twilio
+      // Forward audio to Twilio (skip for Darija - use ElevenLabs instead)
+      // Session 250.44ter: For Darija sessions with ElevenLabs configured,
+      // we use ElevenLabs TTS instead of Grok's built-in audio
+      if (session.metadata?.language === 'ary' && elevenLabsClient?.isConfigured()) {
+        // Skip Grok audio for Darija - ElevenLabs will handle TTS
+        break;
+      }
       if (session.twilioWs && session.twilioWs.readyState === WebSocket.OPEN) {
         const twilioMessage = {
           event: 'media',
@@ -1048,20 +1128,41 @@ function handleGrokMessage(sessionId, message) {
       break;
 
     case 'response.text.delta':
-      // Log transcription for debugging
+      // Log transcription and accumulate for Darija TTS
       if (message.delta) {
         console.log(`[Grok] AI: ${message.delta}`);
+        // Accumulate text for Darija sessions (Session 250.44ter)
+        if (session.metadata?.language === 'ary' && elevenLabsClient?.isConfigured()) {
+          session.pendingText = (session.pendingText || '') + message.delta;
+        }
       }
       break;
 
     case 'input_audio_buffer.speech_started':
       console.log(`[Grok] User speaking...`);
+      // Clear pending text when user starts speaking
+      if (session.pendingText) {
+        session.pendingText = '';
+      }
       break;
 
     case 'response.done':
       // Check if booking data was extracted
       if (message.response && message.response.output) {
         extractBookingData(session, message.response.output);
+      }
+      // Session 250.44ter: Generate ElevenLabs TTS for Darija
+      if (session.metadata?.language === 'ary' && session.pendingText && elevenLabsClient?.isConfigured()) {
+        const textToSpeak = session.pendingText;
+        session.pendingText = '';
+        // Async TTS generation
+        generateDarijaTTS(textToSpeak, 'female').then(audioBuffer => {
+          if (audioBuffer) {
+            sendElevenLabsAudioToTwilio(session, audioBuffer);
+          }
+        }).catch(err => {
+          console.error(`[ElevenLabs] Darija TTS failed: ${err.message}`);
+        });
       }
       break;
 

@@ -63,6 +63,24 @@ const eventBus = require('./AgencyEventBus.cjs');
 // Session 250.39: A2UI Service for dynamic UI generation
 const A2UIService = require('./a2ui-service.cjs');
 
+// Session 250.44: ElevenLabs TTS for Darija support
+let ElevenLabsClient = null;
+let VOICE_IDS = null;
+let elevenLabsClient = null;
+try {
+  const elevenLabs = require('./elevenlabs-client.cjs');
+  ElevenLabsClient = elevenLabs.ElevenLabsClient;
+  VOICE_IDS = elevenLabs.VOICE_IDS;
+  elevenLabsClient = new ElevenLabsClient();
+  if (elevenLabsClient.isConfigured()) {
+    console.log('✅ ElevenLabs TTS client initialized for Darija support');
+  } else {
+    console.warn('⚠️ ELEVENLABS_API_KEY not set - Darija TTS will be unavailable');
+    elevenLabsClient = null;
+  }
+} catch (e) {
+  console.warn('⚠️ ElevenLabs client not loaded:', e.message);
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIGURATION
@@ -2037,6 +2055,96 @@ function startServer(port = 3004) {
       const health = await A2UIService.health();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(health, null, 2));
+      return;
+    }
+
+    // Session 250.44: TTS endpoint for Widget Darija support
+    // Provides ElevenLabs TTS for languages not supported by Web Speech API
+    if (req.url === '/tts' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          return;
+        }
+        body += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const bodyParsed = safeJsonParse(body, '/tts request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
+          }
+
+          const { text, language, gender } = bodyParsed.data;
+
+          if (!text) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'text is required' }));
+            return;
+          }
+
+          // Check if ElevenLabs is available
+          if (!elevenLabsClient) {
+            res.writeHead(503, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              error: 'TTS service unavailable',
+              reason: 'ElevenLabs not configured'
+            }));
+            return;
+          }
+
+          // Determine voice ID based on language and gender
+          let voiceId;
+          if (language === 'ary' || language === 'ar-MA') {
+            // Darija - use Moroccan voices
+            voiceId = gender === 'male' ? VOICE_IDS.ary_male : VOICE_IDS.ary;
+          } else if (language === 'ar') {
+            // MSA Arabic
+            voiceId = gender === 'male' ? VOICE_IDS.ar_male : VOICE_IDS.ar;
+          } else if (language === 'fr') {
+            voiceId = gender === 'male' ? VOICE_IDS.fr_male : VOICE_IDS.fr;
+          } else if (language === 'en') {
+            voiceId = gender === 'male' ? VOICE_IDS.en_male : VOICE_IDS.en;
+          } else if (language === 'es') {
+            voiceId = gender === 'male' ? VOICE_IDS.es_male : VOICE_IDS.es;
+          } else {
+            // Default to French
+            voiceId = VOICE_IDS.fr;
+          }
+
+          console.log(`[TTS] Generating audio for ${language} (voice: ${voiceId}): "${text.substring(0, 50)}..."`);
+
+          // Generate audio with ElevenLabs
+          const audioBuffer = await elevenLabsClient.generateSpeech(text, voiceId, {
+            model_id: 'eleven_multilingual_v2',
+            output_format: 'mp3_44100_128'
+          });
+
+          // Return audio as base64 for easy browser consumption
+          const audioBase64 = audioBuffer.toString('base64');
+
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            success: true,
+            audio: audioBase64,
+            format: 'mp3',
+            language,
+            voiceId
+          }));
+
+        } catch (err) {
+          console.error('[TTS] Error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: err.message }));
+        }
+      });
       return;
     }
 

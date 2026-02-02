@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.56.0 | 02/02/2026 | Session 250.52 | Health: 100% | **P0+P1+P2 COMPLETE - PRODUCTION READY**
+> Version: 6.59.0 | 02/02/2026 | Session 250.44quater | Health: 100% | **✅ 5 LANGUES PRODUCTION READY**
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **67 pages** | **1700+ keys** | RTL ✅ | hreflang ary ✅
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
@@ -15,11 +15,12 @@
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
 > E-commerce: 7 platforms **FULL CRUD** (Shopify 8, WooCommerce 7, Magento 10, PrestaShop 10, BigCommerce 9, Wix 6, Squarespace 7)
 > **Payments: Stripe (19 tools)** - Payment Links, Checkout, Invoices, Refunds, PaymentIntents
-> Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | MCP 4 tools
+> Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | **ElevenLabs Darija TTS ✅** | MCP 4 tools
 > **Website: 67 pages** (50 public + 17 webapp) | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 67 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** (XSS fixed, CSP hardened) | **Load Tests: k6 ✅** | **Chaos Engineering ✅**
 > **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
+> **✅ LANGUAGE INTEGRATION (Session 250.44quater):** ElevenLabs **INTÉGRÉ** Widget + Telephony | Voix: Ghizlane, Jawad, Ali | supportedLanguages: 5 (FR, EN, ES, AR, ARY)
 
 ## Identité
 
@@ -42,6 +43,9 @@
 **Session 250.52 P0 SECURITY COMPLETE:** API auth (checkAuth/checkAdmin), password_hash filtered, /api/hitl/* admin-only, /api/logs admin-only, rate limit 100/min on /api/db/*, tenant isolation, 6/6 security tests pass, commit a6151ef
 **Session 250.52 ARCHITECTURE DOCS CONSOLIDATED:** VOCALIA-SYSTEM-ARCHITECTURE.md (988 lignes), ARCHITECTURE-SYSTEM-FORENSIC-AUDIT.md +522 lignes (→1,194), Sections 15-17 (Website 67 pages, DB-API flow, Auth sequences), DOCS-INDEX v3.0.0, 2 docs archivés
 **Session 250.52 SAAS WEBAPP 100% COMPLETE:** 17 HTML pages (auth 5 + client 7 + admin 5), 7 JS libraries (~3,239 lines), auth-service.cjs (19 exports), auth-middleware.cjs (12 exports), 23 API endpoints, 7 Google Sheets tables, Auth flow 6/6 tests pass, HITL real-time endpoints
+**Session 250.44ter 🔴 CRITICAL FINDING:** ElevenLabs client EXISTS mais **NON IMPORTÉ** dans production! Widget=Web Speech API (ar-MA non supporté browsers), Telephony=Twilio TTS (ar-SA=Saudi PAS Darija), supportedLanguages=['fr','en'] seulement, Knowledge Base FR/EN only. **ACTION:** Intégrer ElevenLabs dans widget + telephony.
+**Session 250.44ter VOIX DARIJA:** Ghizlane `OfGMGmhShO8iL9jCkXy8` + Jawad `PmGnwGtnBs40iau7JfoF` + Ali `5lXEHh42xcasVuJofypc` + Hamid `A9ATTqUUQ6GHu0coCz8t` - 4 voix configurées dans elevenlabs-client.cjs
+**Session 250.44bis COGS ANALYSIS:** Stack approuvé: Grok, Gemini, ElevenLabs, Anthropic, Atlas-Chat (❌ OpenAI exclu), 4 pricing packs ($0.08-$0.45/min), COGS vérifiés ($0.029-$0.144/min), marge 60-68%, Lahajati.ai=INTERNE UNIQUEMENT
 **Session 250.54 ARCHITECTURE AUDIT COMPLETE:** 9/9 tasks done - Widget 5 langues, archetypeKey fix, startup health check, request tracing (X-Trace-Id), /metrics endpoint, graceful shutdown, E2E tests (8/8 pass)
 **Session 250.52-prev DASHBOARDS CONNECTED:** client.html connecté Google Sheets (0 hardcodés), widget-analytics.html connecté, db-admin.html fusionné dans admin.html
 **Session 250.39 MARKETING COPY AUDIT:** 200+ French accent fixes in 7 blog articles, fix-french-accents.py script created
@@ -119,8 +123,10 @@ VocalIA/                              # ~107,000 lignes total
 
 | Credential | Service | Status |
 |:-----------|:--------|:------:|
-| XAI_API_KEY | Grok | À vérifier |
+| XAI_API_KEY | Grok (PRIMARY LLM) | À vérifier |
 | GOOGLE_GENERATIVE_AI_API_KEY | Gemini | À vérifier |
+| ELEVENLABS_API_KEY | TTS Ghizlane + STT Scribe | ⚠️ À configurer |
+| LAHAJATI_API_KEY | TTS/STT Alternative (192 dialectes) | ⚠️ Optionnel |
 | TWILIO_* | Telephony | ❌ Manquant |
 
 ---
@@ -208,6 +214,7 @@ Ce document consolidé contient: Vue d'ensemble, 7 Services, Backend (32 modules
 | `docs/INTEGRATIONS-ROADMAP.md` | Phase 0 ✅ + Phase 1 ✅ COMPLETE |
 | `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant architecture |
 | `docs/DOCS-INDEX.md` | Index documentation (v3.0.0) |
+| `docs/AUDIT-LANGUAGE-SUPPORT-250.44.md` | **Audit Darija/Browser/Telephony** |
 
 ### Documents Archivés
 

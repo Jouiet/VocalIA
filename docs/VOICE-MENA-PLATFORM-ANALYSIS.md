@@ -480,7 +480,7 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 | Provider | Modèle | Langues | Latence | WER | Pricing | Status |
 |----------|--------|---------|---------|-----|---------|--------|
 | **ElevenLabs** | Scribe v1 (Maghrebi) | Darija | 707ms | ~12% | ~$0.10/min | ✅ **TESTÉ OK** |
-| **DVoice** | wav2vec2-darija | Darija | ~1.5s | ~15% | Gratuit (OSS) | 🔄 À évaluer |
+| ~~**DVoice**~~ | ~~wav2vec2-darija~~ | ~~Darija~~ | ~~~1.5s~~ | ~~~15%~~ | ~~Gratuit~~ | ⚠️ **INACTIF depuis Mai 2022** |
 | **Google Cloud** | Speech-to-Text | MSA | 500ms | ~8% | ~$0.024/min | 🟡 Pas Darija |
 | **AssemblyAI** | Universal-2 | Arabe | 600ms | ~10% | ~$0.12/min | 🟡 MSA surtout |
 | **OpenAI** | Whisper Large v3 | Arabe | 1.2s | ~10% | ~$0.006/min | 🟡 Darija limité |
@@ -489,7 +489,8 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 **Recommandation STT:**
 
 - Production: **ElevenLabs Scribe** (Maghrebi support, testé OK)
-- Open-source: **DVoice** (SpeechBrain, gratuit)
+- Alternative: **Lahajati.ai** (192+ dialectes arabes, free tier 10K/mois) - https://lahajati.ai/en
+- ~~Open-source: **DVoice** (SpeechBrain)~~ → ⚠️ **AIOX Labs INACTIF depuis Mai 2022** - NON RECOMMANDÉ
 - Fallback: **Whisper** (OpenAI, universel)
 
 #### 3.2.4 Providers Technologiques Arabe (LLM/TTS/STT)
@@ -501,16 +502,28 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 | **Core42** | UAE | Jais LLM arabe (13-30B) | Institutionnel | ✅ Open-source |
 | **ElevenLabs** | USA | TTS/STT multilingue | $180M | ✅ Production |
 | **xAI** | USA | Grok realtime | $6B | ✅ Production |
+| **Lahajati.ai** | MENA | TTS/STT 192+ dialectes arabes | - | ✅ **NOUVEAU** Free tier |
 
 > **Note:** SAWT IA, Kalimna AI et Sawt Saudi sont des **CONCURRENTS** à benchmarker (voir Section 2), pas des fournisseurs technologiques.
 
-### 3.3 Stack Recommandé (Production) - VÉRIFIÉ v5.5.1
+### 3.3 Stack Recommandé (Production) - VÉRIFIÉ v6.0
 
 | Composant | Provider Primaire | Fallback 1 | Fallback 2 | Justification |
 |-----------|-------------------|------------|------------|---------------|
 | **LLM Darija** | Grok-4-1-fast | **Atlas-Chat-9B** (self-hosted) | Claude | Latence + Darija natif |
 | **TTS Darija** | ElevenLabs Ghizlane | Web Speech | MiniMax | Qualité + naturel |
 | **STT Darija** | ElevenLabs Scribe | Whisper | Web Speech | Précision Maghrebi |
+
+> 🔴 **ALERTE INTÉGRATION (Session 250.44ter):** `elevenlabs-client.cjs` existe avec voix configurées mais **N'EST PAS IMPORTÉ** dans `voice-telephony-bridge.cjs` ni `voice-widget-core.js`. Widget utilise Web Speech API, Telephony utilise Twilio TTS (ar-SA pour Darija = accent Saudi INCORRECT). **Action requise:** Intégrer ElevenLabs dans production.
+
+#### Voix Darija ElevenLabs Configurées (elevenlabs-client.cjs)
+
+| Voix | Voice ID | Genre | Status |
+|:-----|:---------|:------|:-------|
+| **Ghizlane** | `OfGMGmhShO8iL9jCkXy8` | Femme | ✅ Dans client |
+| **Jawad** | `PmGnwGtnBs40iau7JfoF` | Homme | ✅ Dans client |
+| **Ali** | `5lXEHh42xcasVuJofypc` | Homme | ✅ Dans client |
+| **Hamid** | `A9ATTqUUQ6GHu0coCz8t` | Homme (backup) | ✅ Dans client |
 
 ### 3.3.B ANALYSE PARTENARIATS LLM DARIJA OPEN-SOURCE (Audit 27/01/2026)
 
@@ -1161,9 +1174,9 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 
 **Hypothèses:** ARPU 499 MAD, Churn 5%/mois, Focus Maroc uniquement Y1
 
-### 6.3 UNIT ECONOMICS EXHAUSTIVE (Audit Forensique v5.0 - 27/01/2026)
+### 6.3 UNIT ECONOMICS EXHAUSTIVE (Audit Forensique v6.0 - 02/02/2026)
 
-> ✅ **ANALYSE COMPLÈTE:** Tous les providers mentionnés ont été vérifiés: Grok, Claude, Mistral, Atlas-Chat, Gemini + ElevenLabs, MiniMax, Polly, Google TTS + Whisper, AssemblyAI, Deepgram, DVoice + Twilio, DIDWW, Telnyx, WebRTC.
+> ✅ **ANALYSE COMPLÈTE:** Tous les providers mentionnés ont été vérifiés: Grok, Claude, Mistral, Atlas-Chat, Gemini + ElevenLabs, MiniMax, Polly, Google TTS + Whisper, AssemblyAI, Deepgram, ~~DVoice~~ (⚠️ INACTIF), **Lahajati.ai (NOUVEAU)** + Twilio, DIDWW, Telnyx, WebRTC.
 
 #### 6.3.1 CATALOGUE COMPLET DES PROVIDERS (VÉRIFIÉ)
 
@@ -1192,21 +1205,22 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 | **fal.ai** | MiniMax HD | $0.10 | **$0.036** | 🟡 Arabe | [fal.ai](https://fal.ai/models/fal-ai/minimax/speech-2.6-hd) |
 | **Amazon** | Polly Zeina | $0.004 | **$0.0014** | 🟡 MSA | [AWS](https://aws.amazon.com/polly/pricing/) |
 | **Google** | Cloud TTS | $0.016 | **$0.006** | 🟡 MSA | [Google](https://cloud.google.com/text-to-speech/pricing) |
+| **Lahajati.ai** | 192 dialectes | Free 10K/mois | **$0.00*** | ✅ Darija | ⚠️ **INTERNE UNIQUEMENT** |
 | **Browser** | Web Speech API | GRATUIT | **$0.00** | ❌ Generic | [MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API) |
+
+*Free tier: 10,000 caractères/mois - ⚠️ **INTERNE UNIQUEMENT** (Lahajati manque crédibilité vs ElevenLabs pour clients).
 
 ##### STT - Speech-to-Text
 
 | Provider | Modèle | Prix/min | Darija | Source |
 |----------|--------|----------|--------|--------|
-| **ElevenLabs** | Scribe | **$0.007** | ✅ Maghrebi | [X.com](https://x.com/elevenlabsio/status/1894821482104266874) |
-| **OpenAI** | Whisper | **$0.006** | 🟡 Arabe | [BrassTranscripts](https://brasstranscripts.com/blog/openai-whisper-api-pricing-2025-self-hosted-vs-managed) |
-| **OpenAI** | GPT-4o Mini | **$0.003** | 🟡 Arabe | [BrassTranscripts](https://brasstranscripts.com/blog/openai-whisper-api-pricing-2025-self-hosted-vs-managed) |
-| **AssemblyAI** | Universal | **$0.0025** | 🟡 Arabe | [AssemblyAI](https://www.assemblyai.com/pricing) |
-| **Deepgram** | Nova-3 | **$0.0065** | 🟡 Arabe | [Deepgram](https://deepgram.com/pricing) |
+| **ElevenLabs** | Scribe | **$0.0067** | ✅ **Maghrebi** | [ElevenLabs](https://elevenlabs.io/pricing/api) |
 | **Google** | Cloud STT | **$0.016** | 🟡 MSA | [Google](https://cloud.google.com/speech-to-text/pricing) |
-| **SpeechBrain** | DVoice | **$0.00*** | ✅ **Darija** | [HuggingFace](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija) |
+| **Google** | Enhanced | **$0.024** | 🟡 MSA | [Google](https://cloud.google.com/speech-to-text/pricing) |
+| **Lahajati.ai** | 192 dialectes | **$0.00*** | ✅ Darija | ⚠️ **INTERNE UNIQUEMENT** |
+| ~~**SpeechBrain**~~ | ~~DVoice~~ | ~~$0.00~~ | ⚠️ **INACTIF** | ⚠️ AIOX Labs inactif depuis Mai 2022 |
 
-*Self-hosted, compute non inclus (~$0.01-0.02/min GPU cloud).
+*Free tier: 10,000 caractères/mois - ⚠️ **INTERNE UNIQUEMENT** (manque crédibilité vs ElevenLabs). **DVoice NON RECOMMANDÉ**.
 
 ##### Telephony
 
@@ -1436,7 +1450,7 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 |-----------|----------|----------|--------|-------|
 | **LLM** | Atlas-Chat 9B (self-host) | **$0.01*** | ✅ Natif | GPU cloud ~$0.01/min |
 | **TTS** | Amazon Polly Zeina | **$0.0014** | 🟡 MSA | Standard voice |
-| **STT** | AssemblyAI | **$0.0025** | 🟡 Arabe | Ou DVoice self-host |
+| **STT** | AssemblyAI | **$0.0025** | 🟡 Arabe | Ou Whisper self-host |
 | **Transport** | WebRTC P2P | **$0.00** | - | Browser-to-browser |
 | **Infra** | Hostinger VPS | **$0.002** | - | Estimé |
 | **TOTAL COGS** | - | **$0.016/min** | ⚠️ | *Qualité Darija limitée |
@@ -1543,7 +1557,7 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 | ~~Twilio Maroc = pas inbound~~ | ~~Pas de PSTN~~ | ✅ **RÉSOLU:** Telnyx $1/mois, Freezvon $90/mois | $0.044/min COGS |
 | ~~DIDWW = pas local Maroc~~ | ~~Intl seulement~~ | ✅ **RÉSOLU:** Alternatives vérifiées | Voir Section 6.3.1.C |
 | VoIP bloqué UAE/KSA/Qatar | Pas de PSTN direct | ✅ **RÉSOLU:** WhatsApp Business Calling API | $0.019/min COGS |
-| DVoice = qualité variable | WER ~15% | AssemblyAI backup | +$0.002/min |
+| ~~DVoice~~ **INACTIF** | AIOX Labs Mai 2022 | ElevenLabs Scribe ou Whisper | Voir audit 250.44 |
 
 #### 6.3.6 LTV/CAC Analysis (CORRIGÉ)
 
@@ -1942,7 +1956,7 @@ Raisons:
 ### Darija Technology
 
 - [IEEE - DARIJA-C Corpus](https://ieeexplore.ieee.org/document/10085164/)
-- [HuggingFace - DVoice Darija ASR](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija)
+- ~~[HuggingFace - DVoice Darija ASR](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija)~~ ⚠️ **INACTIF depuis Mai 2022**
 - [HuggingFace - DarijaTTS](https://huggingface.co/spaces/medmac01/Darija-Arabic-TTS)
 - [Al Akhawayn University - Darija TTS](https://cdn.aui.ma/sse-capstone-repository/pdf/spring-2025/ahmedamarak99863_4312_3933594_Capstone_Final_Report_predefense_SIGNED.pdf)
 
@@ -2053,6 +2067,17 @@ Raisons:
 
 ### Historique des Corrections
 
+#### v6.0 (02/02/2026) - AUDIT INTÉGRATION ELEVENLABS 🔴
+
+| Découverte | Impact | Action |
+|------------|--------|--------|
+| **ElevenLabs NON intégré** | Voix Darija configurées mais inutilisées | Intégrer dans production |
+| **Widget = Web Speech only** | ar-MA non supporté browsers | Ajouter fallback ElevenLabs |
+| **Telephony = Twilio TTS** | Darija = ar-SA (Saudi!) | Remplacer par ElevenLabs |
+| **supportedLanguages = ['fr','en']** | ES/AR/ARY exclus de Telephony | Étendre config |
+| **Knowledge Base = FR/EN only** | Pas de KB pour AR/ARY | Créer knowledge_base_ary.json |
+| **Voix Jawad + Ali ajoutées** | 4 voix Darija disponibles | Prêtes pour intégration |
+
 #### v5.5.2 (27/01/2026) - Analyse LLM Darija Partenariats + Plan d'Action
 
 | Ajout | Détail | Impact |
@@ -2115,7 +2140,7 @@ Raisons:
 |-------|-------------------|--------|
 | **LLM complet** | Grok, Claude, Mistral Saba, Atlas-Chat, Gemini | APIs officielles |
 | **TTS complet** | ElevenLabs, MiniMax/fal.ai, Polly, Google, Web Speech | Pricing pages |
-| **STT complet** | Scribe, Whisper, AssemblyAI, Deepgram, DVoice, Google | Pricing pages |
+| **STT complet** | Scribe, Whisper, AssemblyAI, Deepgram, Google | Pricing pages |
 | **Telephony complet** | Twilio, DIDWW, Telnyx, WebRTC, Daily.co | Pricing pages |
 | **Benchmark** | Retell AI, Vapi, Bland AI | Public pricing |
 
@@ -2142,7 +2167,7 @@ Raisons:
 | Amazon Polly | [aws.amazon.com/polly/pricing](https://aws.amazon.com/polly/pricing/) |
 | AssemblyAI | [assemblyai.com/pricing](https://www.assemblyai.com/pricing) |
 | Deepgram | [deepgram.com/pricing](https://deepgram.com/pricing) |
-| DVoice | [huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija](https://huggingface.co/speechbrain/asr-wav2vec2-dvoice-darija) |
+| ~~DVoice~~ | ⚠️ **INACTIF** - AIOX Labs dernière màj Mai 2022 |
 | Daily.co | [daily.co/pricing](https://www.daily.co/pricing/) |
 
 ### Sources MENA Telephony v5.2 (27/01/2026)
