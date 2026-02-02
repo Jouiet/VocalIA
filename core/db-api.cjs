@@ -31,9 +31,62 @@
 
 const http = require('http');
 const url = require('url');
+const { WebSocketServer } = require('ws');
 const { getDB } = require('./GoogleSheetsDB.cjs');
 const authService = require('./auth-service.cjs');
 const { requireAuth, requireAdmin, rateLimit, extractToken } = require('./auth-middleware.cjs');
+
+// WebSocket clients store
+const wsClients = new Map(); // Map<WebSocket, { user, channels: Set<string> }>
+
+/**
+ * Broadcast message to all clients subscribed to a channel
+ * @param {string} channel - Channel name (hitl, logs, stats, etc.)
+ * @param {string} event - Event type (created, updated, deleted, etc.)
+ * @param {Object} data - Event data
+ */
+function broadcast(channel, event, data) {
+  const message = JSON.stringify({
+    channel,
+    event,
+    data,
+    timestamp: new Date().toISOString()
+  });
+
+  wsClients.forEach((clientData, ws) => {
+    if (ws.readyState === 1 && clientData.channels.has(channel)) {
+      try {
+        ws.send(message);
+      } catch (e) {
+        console.error('❌ [WS] Broadcast error:', e.message);
+      }
+    }
+  });
+}
+
+/**
+ * Broadcast to specific tenant only
+ */
+function broadcastToTenant(tenantId, channel, event, data) {
+  const message = JSON.stringify({
+    channel,
+    event,
+    data,
+    timestamp: new Date().toISOString()
+  });
+
+  wsClients.forEach((clientData, ws) => {
+    if (ws.readyState === 1 &&
+        clientData.channels.has(channel) &&
+        (clientData.user?.role === 'admin' || clientData.user?.tenant_id === tenantId)) {
+      try {
+        ws.send(message);
+      } catch (e) {
+        console.error('❌ [WS] Broadcast error:', e.message);
+      }
+    }
+  });
+}
 
 const PORT = process.env.DB_API_PORT || 3013;
 const ALLOWED_SHEETS = ['tenants', 'sessions', 'logs', 'users', 'auth_sessions', 'hitl_pending', 'hitl_history'];
@@ -418,6 +471,9 @@ async function handleHITLRequest(req, res, path, method) {
       // Remove from pending
       await db.delete('hitl_pending', id);
 
+      // Broadcast HITL approval
+      broadcast('hitl', 'approved', { id, admin, item: pending });
+
       sendJson(res, 200, { success: true, decision: 'approved', id });
       return true;
     }
@@ -455,6 +511,9 @@ async function handleHITLRequest(req, res, path, method) {
 
       // Remove from pending
       await db.delete('hitl_pending', id);
+
+      // Broadcast HITL rejection
+      broadcast('hitl', 'rejected', { id, admin, reason, item: pending });
 
       sendJson(res, 200, { success: true, decision: 'rejected', id });
       return true;
@@ -618,6 +677,12 @@ async function handleRequest(req, res) {
           createData.tenant_id = tenantId;
         }
         const created = await db.create(sheet, createData);
+        // Broadcast creation to appropriate channel
+        if (created.tenant_id) {
+          broadcastToTenant(created.tenant_id, sheet, 'created', sheet === 'users' ? filterUserRecord(created) : created);
+        } else {
+          broadcast(sheet, 'created', sheet === 'users' ? filterUserRecord(created) : created);
+        }
         sendJson(res, 201, sheet === 'users' ? filterUserRecord(created) : created);
         break;
 
@@ -635,6 +700,12 @@ async function handleRequest(req, res) {
         }
         const updateData = await parseBody(req);
         const updated = await db.update(sheet, id, updateData);
+        // Broadcast update to appropriate channel
+        if (updated.tenant_id) {
+          broadcastToTenant(updated.tenant_id, sheet, 'updated', sheet === 'users' ? filterUserRecord(updated) : updated);
+        } else {
+          broadcast(sheet, 'updated', sheet === 'users' ? filterUserRecord(updated) : updated);
+        }
         sendJson(res, 200, sheet === 'users' ? filterUserRecord(updated) : updated);
         break;
 
@@ -651,6 +722,12 @@ async function handleRequest(req, res) {
           return;
         }
         await db.delete(sheet, id);
+        // Broadcast deletion to appropriate channel
+        if (recordToDelete?.tenant_id) {
+          broadcastToTenant(recordToDelete.tenant_id, sheet, 'deleted', { id });
+        } else {
+          broadcast(sheet, 'deleted', { id });
+        }
         sendJson(res, 200, { deleted: true, id });
         break;
 
@@ -664,6 +741,104 @@ async function handleRequest(req, res) {
 }
 
 /**
+ * Handle WebSocket connection
+ */
+function handleWebSocketConnection(ws, req) {
+  // Extract token from query string
+  const parsedUrl = url.parse(req.url, true);
+  const token = parsedUrl.query.token;
+
+  if (!token) {
+    ws.close(4001, 'Authorization required');
+    return;
+  }
+
+  let user;
+  try {
+    user = authService.verifyToken(token);
+  } catch (e) {
+    ws.close(4002, 'Invalid or expired token');
+    return;
+  }
+
+  // Initialize client data
+  ws.isAlive = true;
+  wsClients.set(ws, { user, channels: new Set() });
+  console.log(`✅ [WS] Client connected: ${user.email} (${user.role})`);
+
+  // Handle pong for heartbeat
+  ws.on('pong', () => {
+    ws.isAlive = true;
+  });
+
+  // Send welcome message
+  ws.send(JSON.stringify({
+    type: 'connected',
+    user: { id: user.sub, email: user.email, role: user.role },
+    timestamp: new Date().toISOString()
+  }));
+
+  // Handle incoming messages
+  ws.on('message', (raw) => {
+    try {
+      const msg = JSON.parse(raw.toString());
+      const clientData = wsClients.get(ws);
+
+      switch (msg.type) {
+        case 'subscribe':
+          // Subscribe to channel(s)
+          const channels = Array.isArray(msg.channels) ? msg.channels : [msg.channel];
+          channels.forEach(ch => {
+            // Admin-only channels
+            if (['hitl', 'users', 'auth_sessions'].includes(ch) && user.role !== 'admin') {
+              ws.send(JSON.stringify({ type: 'error', message: `Channel ${ch} requires admin role` }));
+              return;
+            }
+            clientData.channels.add(ch);
+          });
+          ws.send(JSON.stringify({
+            type: 'subscribed',
+            channels: Array.from(clientData.channels)
+          }));
+          break;
+
+        case 'unsubscribe':
+          // Unsubscribe from channel(s)
+          const unsubChannels = Array.isArray(msg.channels) ? msg.channels : [msg.channel];
+          unsubChannels.forEach(ch => clientData.channels.delete(ch));
+          ws.send(JSON.stringify({
+            type: 'unsubscribed',
+            channels: Array.from(clientData.channels)
+          }));
+          break;
+
+        case 'ping':
+          // Heartbeat response
+          ws.send(JSON.stringify({ type: 'pong', timestamp: new Date().toISOString() }));
+          break;
+
+        default:
+          ws.send(JSON.stringify({ type: 'error', message: `Unknown message type: ${msg.type}` }));
+      }
+    } catch (e) {
+      ws.send(JSON.stringify({ type: 'error', message: 'Invalid JSON' }));
+    }
+  });
+
+  // Handle close
+  ws.on('close', () => {
+    console.log(`🔌 [WS] Client disconnected: ${user.email}`);
+    wsClients.delete(ws);
+  });
+
+  // Handle errors
+  ws.on('error', (err) => {
+    console.error(`❌ [WS] Error for ${user.email}:`, err.message);
+    wsClients.delete(ws);
+  });
+}
+
+/**
  * Start server
  */
 async function startServer() {
@@ -673,13 +848,33 @@ async function startServer() {
 
   const server = http.createServer(handleRequest);
 
+  // WebSocket server
+  const wss = new WebSocketServer({ server, path: '/ws' });
+
+  wss.on('connection', handleWebSocketConnection);
+
+  // Heartbeat interval to detect stale connections
+  const heartbeatInterval = setInterval(() => {
+    wss.clients.forEach(ws => {
+      if (ws.isAlive === false) {
+        wsClients.delete(ws);
+        return ws.terminate();
+      }
+      ws.isAlive = false;
+      ws.ping();
+    });
+  }, 30000);
+
+  wss.on('close', () => clearInterval(heartbeatInterval));
+
   server.listen(PORT, () => {
     console.log(`
 ╔═══════════════════════════════════════════════════╗
 ║       VocalIA Database + Auth API                 ║
 ╠═══════════════════════════════════════════════════╣
 ║  Port: ${PORT}                                       ║
-║  URL:  http://localhost:${PORT}                     ║
+║  HTTP: http://localhost:${PORT}                     ║
+║  WS:   ws://localhost:${PORT}/ws                    ║
 ╠═══════════════════════════════════════════════════╣
 ║  Auth Endpoints:                                  ║
 ║  POST   /api/auth/register    - Register          ║
@@ -700,12 +895,15 @@ async function startServer() {
 ║  PUT    /api/db/:sheet/:id    - Update            ║
 ║  DELETE /api/db/:sheet/:id    - Delete            ║
 ╠═══════════════════════════════════════════════════╣
+║  WebSocket Channels:                              ║
+║  hitl, logs, tenants, sessions, stats (admin)     ║
+╠═══════════════════════════════════════════════════╣
 ║  Sheets: tenants, sessions, logs, users           ║
 ╚═══════════════════════════════════════════════════╝
 `);
   });
 
-  return server;
+  return { server, wss };
 }
 
 // CLI
@@ -713,4 +911,4 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { startServer, handleRequest };
+module.exports = { startServer, handleRequest, broadcast, broadcastToTenant, wsClients };

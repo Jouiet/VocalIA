@@ -439,6 +439,9 @@ class WebSocketManager {
 
 /**
  * Create WebSocket manager with default VocalIA URL
+ * @param {string} path - WebSocket path
+ * @param {Object} options - Options
+ * @param {string} options.token - JWT access token for authentication
  */
 function createManager(path = '/ws', options = {}) {
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -446,7 +449,11 @@ function createManager(path = '/ws', options = {}) {
     ? 'localhost:3013'
     : 'api.vocalia.ma';
 
-  const url = `${protocol}//${host}${path}`;
+  // Add token to URL if provided
+  const token = options.token || (typeof window !== 'undefined' && window.VocaliaAuth?.getAccessToken?.());
+  const tokenQuery = token ? `?token=${encodeURIComponent(token)}` : '';
+
+  const url = `${protocol}//${host}${path}${tokenQuery}`;
   return new WebSocketManager(url, options);
 }
 

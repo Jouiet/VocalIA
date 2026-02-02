@@ -183,17 +183,43 @@ core/                        # Backend
 | 1 | i18n admin pages (5) | ✅ | 7c244f9 |
 | 2 | i18n client pages (6) | ✅ | 7c244f9 |
 | 3 | Clés dans 5 locales | ✅ | 7c244f9 |
-| 4 | WebSocket temps réel | ⚠️ Optionnel | - |
+| 4 | WebSocket temps réel | ✅ | - |
 
-#### Tâches P2 Optionnelles
+#### Tâches P2 COMPLETE
 
-| # | Tâche | Effort |
-|:-:|:------|:------:|
-| 1 | WebSocket temps réel | ~2h |
-| 2 | Tests E2E frontend | ~2h |
+| # | Tâche | Status | Détails |
+|:-:|:------|:------:|:--------|
+| 1 | WebSocket temps réel | ✅ | Server + Client + Auth + Channels |
+| 2 | Tests E2E frontend | ✅ | Auth, Security, API, Rate Limiting |
+
+#### WebSocket Implementation
+
+```javascript
+// Server (db-api.cjs)
+- WebSocketServer on /ws path
+- JWT auth via ?token= query param
+- Channels: hitl, logs, tenants, sessions, stats
+- Heartbeat with 30s interval
+- Broadcasts on CRUD operations
+
+// Client (websocket-manager.js)
+- Auto-reconnect with exponential backoff
+- Channel subscriptions
+- Ping/pong heartbeat
+- Message queue during disconnection
+```
+
+#### E2E Test Results
+
+| Test Category | Passed | Notes |
+|:--------------|:------:|:------|
+| Auth Security | 6/6 | 401 without token, 403 non-admin |
+| WebSocket Security | 2/2 | Rejects unauthenticated connections |
+| Rate Limiting | 1/1 | 3/hour register, 100/min API |
+| Health Check | 1/1 | /api/db/health returns ok |
 
 ---
 
 **Vérifié le:** 02/02/2026
 **Session:** 250.52
-**Status:** P0+P1 COMPLETE - PRODUCTION READY
+**Status:** P0+P1+P2 COMPLETE - PRODUCTION READY
