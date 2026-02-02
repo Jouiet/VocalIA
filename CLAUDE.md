@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.60.0 | 02/02/2026 | Session 250.55 | Health: 100% | **✅ 5 LANGUES PRODUCTION READY**
+> Version: 6.61.0 | 02/02/2026 | Session 250.56 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **1780+ keys** | RTL ✅ | hreflang ary ✅
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
