@@ -6,34 +6,235 @@
   "plan": "growth",
   "status": "active",
   "created_at": "2026-01-15T00:00:00Z",
+  "updated_at": "2026-02-02T00:00:00Z",
+
+  "quotas": {
+    "calls_monthly": 2000,
+    "sessions_monthly": 5000,
+    "kb_entries": 500,
+    "conversation_history_days": 90,
+    "users_max": 10
+  },
+
+  "usage": {
+    "calls_current": 0,
+    "sessions_current": 0,
+    "kb_entries_current": 1,
+    "period_start": "2026-02-01T00:00:00Z"
+  },
+
   "features": {
     "voice_widget": true,
     "voice_telephony": false,
     "email_automation": true,
     "sms_automation": false,
+    "whatsapp": false,
     "crm_sync": false,
-    "calendar_sync": false
+    "calendar_sync": false,
+    "hitl_enabled": true,
+    "conversation_persistence": true,
+    "analytics_dashboard": true,
+    "custom_branding": true,
+    "api_access": true,
+    "webhooks": false
   },
+
+  "widget_config": {
+    "enabled": true,
+    "persona": "UNIVERSAL_ECOMMERCE",
+    "default_language": "en",
+    "supported_languages": ["en", "fr", "es"],
+    "position": "bottom-right",
+    "branding": {
+      "primary_color": "#6366F1",
+      "primary_dark": "#4F46E5",
+      "accent_color": "#10B981",
+      "dark_bg": "#1E1B4B",
+      "logo_url": "https://demo-store.myshopify.com/logo.png",
+      "company_name": "Demo Corp"
+    },
+    "greeting": {
+      "fr": "Bonjour ! Bienvenue chez Demo Corp. Comment puis-je vous aider avec votre commande ?",
+      "en": "Hello! Welcome to Demo Corp. How can I help you with your order?",
+      "es": "¡Hola! Bienvenido a Demo Corp. ¿Cómo puedo ayudarte con tu pedido?",
+      "ar": "مرحباً! مرحباً بك في Demo Corp. كيف يمكنني مساعدتك في طلبك؟",
+      "ary": "أهلاً! مرحبا بيك فـ Demo Corp. كيفاش نقدر نعاونك فالكوموند ديالك؟"
+    },
+    "cta": {
+      "enabled": true,
+      "text": {
+        "fr": "Voir nos produits",
+        "en": "Browse products"
+      },
+      "link": "/products"
+    },
+    "notification_bubble": {
+      "enabled": true,
+      "delay_ms": 5000,
+      "text": {
+        "fr": "Besoin d'aide pour votre commande ?",
+        "en": "Need help with your order?"
+      }
+    },
+    "speech": {
+      "auto_speak_responses": true,
+      "voice_input_enabled": true,
+      "tts_provider": "native",
+      "tts_fallback": "elevenlabs"
+    },
+    "behavior": {
+      "auto_open": false,
+      "auto_open_delay_ms": 0,
+      "persist_conversation": true,
+      "max_history_messages": 50,
+      "typing_indicator": true,
+      "show_timestamps": false
+    }
+  },
+
+  "telephony_config": {
+    "enabled": false,
+    "phone_number": null,
+    "persona": "UNIVERSAL_ECOMMERCE",
+    "default_language": "en",
+    "supported_languages": ["en", "fr"],
+    "voice": {
+      "provider": "grok",
+      "voice_id": "Sal",
+      "speed": 1.0,
+      "darija_voice": "Ghizlane"
+    },
+    "greeting": {
+      "fr": "Bonjour, vous êtes bien chez Demo Corp. Comment puis-je vous aider ?",
+      "en": "Hello, you've reached Demo Corp. How can I help you?",
+      "es": "Hola, ha contactado con Demo Corp. ¿En qué puedo ayudarle?",
+      "ar": "مرحباً، أنت على اتصال بـ Demo Corp. كيف يمكنني مساعدتك؟",
+      "ary": "أهلاً، تواصلتي مع Demo Corp. كيفاش نقدر نعاونك؟"
+    },
+    "transfer_rules": {
+      "enabled": true,
+      "trigger_keywords": ["parler à un humain", "speak to human", "agent", "manager"],
+      "destination_number": "+15550000001",
+      "announce_transfer": true,
+      "max_wait_seconds": 30
+    },
+    "business_hours": {
+      "enabled": true,
+      "timezone": "America/New_York",
+      "schedule": {
+        "monday": { "start": "09:00", "end": "18:00" },
+        "tuesday": { "start": "09:00", "end": "18:00" },
+        "wednesday": { "start": "09:00", "end": "18:00" },
+        "thursday": { "start": "09:00", "end": "18:00" },
+        "friday": { "start": "09:00", "end": "17:00" },
+        "saturday": { "start": "10:00", "end": "14:00" },
+        "sunday": null
+      },
+      "after_hours_message": {
+        "fr": "Nos bureaux sont fermés. Veuillez rappeler pendant nos heures d'ouverture.",
+        "en": "Our offices are closed. Please call back during business hours."
+      }
+    },
+    "call_recording": {
+      "enabled": false,
+      "retention_days": 30,
+      "gdpr_announcement": true
+    },
+    "hitl": {
+      "enabled": true,
+      "score_threshold": 75,
+      "approve_hot_bookings": true,
+      "approve_transfers": true,
+      "approve_financial_commitments": true
+    }
+  },
+
   "integrations": {
+    "hubspot": {
+      "enabled": false,
+      "credentials_key": "HUBSPOT_ACCESS_TOKEN",
+      "sync_contacts": true,
+      "sync_deals": false,
+      "create_leads": true
+    },
     "shopify": {
       "enabled": true,
       "shop_domain": "demo-store.myshopify.com",
       "credentials_key": "SHOPIFY_ACCESS_TOKEN",
-      "purpose": "Order status, inventory"
+      "sync_orders": true,
+      "sync_inventory": true
     },
     "klaviyo": {
       "enabled": true,
       "account_id": "DEMO_KLAVIYO_ID",
       "credentials_key": "KLAVIYO_API_KEY",
-      "purpose": "Customer profiles, email automation"
+      "sync_profiles": true,
+      "trigger_flows": true
+    },
+    "google": {
+      "enabled": false,
+      "scopes": ["calendar", "sheets"],
+      "credentials_key": "GOOGLE_REFRESH_TOKEN",
+      "calendar_id": "primary"
+    },
+    "slack": {
+      "enabled": false,
+      "credentials_key": "SLACK_WEBHOOK_URL",
+      "channel": "#demo-notifications",
+      "notify_on": ["hot_lead", "booking", "transfer"]
+    },
+    "webhooks": {
+      "enabled": false,
+      "endpoints": []
     }
   },
+
+  "knowledge_base": {
+    "enabled": true,
+    "languages": ["en", "fr"],
+    "auto_index": true,
+    "search_algorithm": "tfidf",
+    "max_results": 5,
+    "relevance_threshold": 0.3
+  },
+
+  "analytics": {
+    "enabled": true,
+    "track_conversations": true,
+    "track_leads": true,
+    "track_conversions": true,
+    "export_enabled": true
+  },
+
   "market_rules": {
     "strict": false,
-    "default": { "id": "us_main", "lang": "en", "currency": "USD", "symbol": "$", "label": "US Main" }
+    "default": {
+      "id": "us_main",
+      "lang": "en",
+      "currency": "USD",
+      "symbol": "$"
+    },
+    "geo_rules": [
+      {
+        "countries": ["FR", "BE", "CH"],
+        "lang": "fr",
+        "currency": "EUR",
+        "symbol": "€"
+      }
+    ]
   },
+
   "contact": {
     "email": "demo@example.com",
-    "phone": "+1555000000"
+    "phone": "+1555000000",
+    "company_name": "Demo Corp",
+    "address": "123 Demo Street, New York, NY 10001",
+    "website": "https://demo-store.myshopify.com"
+  },
+
+  "metadata": {
+    "onboarding_completed": true,
+    "last_activity": "2026-02-02T00:00:00Z",
+    "notes": "Test client for development"
   }
 }

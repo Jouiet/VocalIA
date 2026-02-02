@@ -17,8 +17,12 @@ const WS_CONFIG = {
   reconnectMaxAttempts: 10,
   heartbeatInterval: 30000,
   heartbeatTimeout: 5000,
-  messageQueueSize: 100
+  messageQueueSize: 100,
+  debug: false // Set to true for debugging
 };
+
+// Debug logger (disabled in production)
+const wsDebug = WS_CONFIG.debug ? (...args) => wsDebug('', ...args) : () => {};
 
 const WS_STATES = {
   CONNECTING: 0,
@@ -90,7 +94,7 @@ class WebSocketManager {
     this.reconnectAttempts = 0;
     this.connectionId = Date.now().toString(36);
 
-    console.log('[WS] Connected');
+    wsDebug(' Connected');
     this._emit('open', event);
 
     // Flush message queue
@@ -117,7 +121,7 @@ class WebSocketManager {
 
     this._stopHeartbeat();
 
-    console.log('[WS] Disconnected:', event.code, event.reason);
+    wsDebug(' Disconnected:', event.code, event.reason);
     this._emit('close', event);
 
     // Reconnect if was connected and auto-reconnect enabled
@@ -167,7 +171,7 @@ class WebSocketManager {
    */
   _scheduleReconnect() {
     if (this.reconnectAttempts >= WS_CONFIG.reconnectMaxAttempts) {
-      console.log('[WS] Max reconnection attempts reached');
+      wsDebug(' Max reconnection attempts reached');
       this._emit('maxReconnect');
       return;
     }
@@ -181,7 +185,7 @@ class WebSocketManager {
 
     this.reconnectAttempts++;
 
-    console.log(`[WS] Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
+    wsDebug(`Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
     this._emit('reconnecting', { attempt: this.reconnectAttempts, delay });
 
     this.reconnectTimer = setTimeout(() => {
@@ -201,7 +205,7 @@ class WebSocketManager {
 
         // Set timeout for pong response
         this.heartbeatTimeoutTimer = setTimeout(() => {
-          console.log('[WS] Heartbeat timeout');
+          wsDebug(' Heartbeat timeout');
           this.socket?.close(4000, 'Heartbeat timeout');
         }, WS_CONFIG.heartbeatTimeout);
       }
