@@ -658,11 +658,10 @@
     <!-- Subtle gradient background - minimal, fast -->
     <div class="absolute inset-0 bg-gradient-to-b from-vocalia-950 via-gray-950 to-gray-900 pointer-events-none"></div>
 
-    <!-- Sound waves background - semantic for Voice AI -->
-    <div class="absolute inset-0 pointer-events-none opacity-30">
-      <img src="/public/images/hero/vocalia-soundwaves.webp" alt=""
-        class="absolute bottom-0 left-0 w-full h-auto object-cover" loading="lazy" aria-hidden="true" width="640"
-        height="359" decoding="async">
+    <!-- Sound waves background - semantic for Voice AI (CSS background for perfect responsive) -->
+    <div class="absolute inset-x-0 bottom-0 h-[60%] sm:h-[70%] lg:h-[80%] pointer-events-none opacity-30"
+      style="background-image: url('/public/images/hero/vocalia-soundwaves.webp'); background-size: cover; background-position: center top; background-repeat: no-repeat;"
+      aria-hidden="true">
     </div>
 
     <!-- Subtle grid pattern (voice AI = precision, structure) -->
