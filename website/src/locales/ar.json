@@ -147,7 +147,17 @@
     "pro_plan_35": "Pro Plan",
     "jean_dupont_36": "Jean Dupont",
     "vocalia_37": "VocalIA",
-    "vocalia_dashboard_client_38": "VocalIA - لوحة تحكم العميل"
+    "vocalia_dashboard_client_38": "VocalIA - لوحة تحكم العميل",
+    "nav": {
+      "overview": "نظرة عامة",
+      "calls": "المكالمات",
+      "agents": "الوكلاء الذكيين",
+      "knowledge_base": "قاعدة المعرفة",
+      "integrations": "التكاملات",
+      "analytics": "التحليلات",
+      "billing": "الفوترة",
+      "settings": "الإعدادات"
+    }
   },
   "widget_analytics": {
     "title": "Voice Widget Analytics",
