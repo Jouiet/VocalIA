@@ -1,0 +1,74 @@
+{
+  "__meta": {
+    "tenant_id": "client_demo",
+    "version": "1.0.0",
+    "last_updated": "2026-02-02T23:00:00.000Z",
+    "default_language": "es",
+    "persona": "universal_ecom_v1"
+  },
+  "business_info": {
+    "name": "Demo E-Commerce Store",
+    "address": "123 Demo Street, Casablanca",
+    "phone": "+212 5 22 00 00 00",
+    "email": "contact@demo-store.ma",
+    "website": "www.demo-store.ma"
+  },
+  "horaires": {
+    "response": "Nuestra tienda abre de lunes a sábado de 9h a 20h.",
+    "details": {
+      "lunes": "09:00-20:00",
+      "martes": "09:00-20:00",
+      "miércoles": "09:00-20:00",
+      "jueves": "09:00-20:00",
+      "viernes": "09:00-20:00",
+      "sábado": "10:00-18:00",
+      "domingo": "Cerrado"
+    }
+  },
+  "livraison": {
+    "response": "Entrega gratuita en Casablanca. Entrega nacional en 24-48h.",
+    "zones": {
+      "casablanca": {
+        "delai": "2-4h",
+        "frais": 0
+      },
+      "rabat": {
+        "delai": "24h",
+        "frais": 30
+      },
+      "marrakech": {
+        "delai": "48h",
+        "frais": 50
+      },
+      "national": {
+        "delai": "48-72h",
+        "frais": 60
+      }
+    }
+  },
+  "retours": {
+    "response": "Devoluciones gratuitas en 14 días. Cambio o reembolso.",
+    "conditions": "Producto sin usar, en su embalaje original"
+  },
+  "paiements": {
+    "response": "Aceptamos tarjeta bancaria, transferencia y pago contra reembolso.",
+    "methodes": [
+      "CMI",
+      "Visa",
+      "Mastercard",
+      "Transferencia bancaria",
+      "Contra reembolso"
+    ]
+  },
+  "promotions": {
+    "response": "¡Obtén un 15% de descuento en tu primer pedido con el código BIENVENIDO15!",
+    "code": "BIENVENIDO15",
+    "reduction": "15%",
+    "conditions": "Válido una vez por nuevo cliente"
+  },
+  "faq": {
+    "tracking": "Recibirás un SMS con el enlace de seguimiento al enviar.",
+    "stock": "Consulta la disponibilidad en tiempo real en nuestra web.",
+    "contact": "Contáctanos por WhatsApp al +212 6 XX XX XX XX o por email."
+  }
+}

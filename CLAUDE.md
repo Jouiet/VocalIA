@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.64.0 | 02/02/2026 | Session 250.57bis | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.65.0 | 02/02/2026 | Session 250.58 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **69 pages** | **17000+ keys** | RTL ✅ | hreflang ary ✅
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
@@ -10,7 +10,7 @@
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
-> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 13 Func. Tools | 38 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 13 Func. Tools | 41 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
@@ -40,6 +40,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **99/100** | SRI ✅ (GSAP+Lucide), CSP ✅, focus:ring ✅ |
 
+**Session 250.58 CLIENT KB MULTI-LANG:** client_demo 5 KB files (fr, en, es, ar, ary), complete multi-tenant KB architecture, 41 core modules
 **Session 250.57bis RETENTION & EXPORT:** 60-day telephony retention policy, Export (CSV/XLSX/PDF), audit-store.cjs (507 lines), monthly-maintenance.cjs, /api/health endpoint, calls.html retention notice + export buttons, pricing.html FAQ #6, i18n keys (5 locales), Multi-tenant score: 35→95/100 (+60 points)
 **Session 250.57 MULTI-TENANT COMPLETE:** conversation-store.cjs (750 lines), ucp-store.cjs (570 lines), GoogleSheetsDB quota methods (checkQuota/incrementUsage/resetUsage), Widget+Telephony conversation persistence, Multi-tenant score: 35→85/100 (+50 points)
 **Session 250.57 RIGOROUS AUDIT:** i18n.js added to 6 missing pages (5 auth + client/index), wsDebug() production fix, form validation settings.html, conversation-store.cjs, 18/18 webapp pages with i18n, commit bd96a05

@@ -1,0 +1,74 @@
+{
+  "__meta": {
+    "tenant_id": "client_demo",
+    "version": "1.0.0",
+    "last_updated": "2026-02-02T23:00:00.000Z",
+    "default_language": "en",
+    "persona": "universal_ecom_v1"
+  },
+  "business_info": {
+    "name": "Demo E-Commerce Store",
+    "address": "123 Demo Street, Casablanca",
+    "phone": "+212 5 22 00 00 00",
+    "email": "contact@demo-store.ma",
+    "website": "www.demo-store.ma"
+  },
+  "horaires": {
+    "response": "Our store is open Monday to Saturday from 9am to 8pm.",
+    "details": {
+      "monday": "09:00-20:00",
+      "tuesday": "09:00-20:00",
+      "wednesday": "09:00-20:00",
+      "thursday": "09:00-20:00",
+      "friday": "09:00-20:00",
+      "saturday": "10:00-18:00",
+      "sunday": "Closed"
+    }
+  },
+  "livraison": {
+    "response": "Free delivery in Casablanca. Nationwide delivery within 24-48h.",
+    "zones": {
+      "casablanca": {
+        "delai": "2-4h",
+        "frais": 0
+      },
+      "rabat": {
+        "delai": "24h",
+        "frais": 30
+      },
+      "marrakech": {
+        "delai": "48h",
+        "frais": 50
+      },
+      "national": {
+        "delai": "48-72h",
+        "frais": 60
+      }
+    }
+  },
+  "retours": {
+    "response": "Free returns within 14 days. Exchange or refund available.",
+    "conditions": "Unused product in original packaging"
+  },
+  "paiements": {
+    "response": "We accept credit cards, bank transfer, and cash on delivery.",
+    "methodes": [
+      "CMI",
+      "Visa",
+      "Mastercard",
+      "Bank Transfer",
+      "Cash on Delivery"
+    ]
+  },
+  "promotions": {
+    "response": "Get 15% off your first order with code WELCOME15!",
+    "code": "WELCOME15",
+    "reduction": "15%",
+    "conditions": "Valid once per new customer"
+  },
+  "faq": {
+    "tracking": "You will receive an SMS with a tracking link once shipped.",
+    "stock": "Check real-time availability on our website.",
+    "contact": "Contact us via WhatsApp at +212 6 XX XX XX XX or by email."
+  }
+}
