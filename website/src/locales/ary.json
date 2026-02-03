@@ -70,7 +70,10 @@
       "female": "مرا",
       "male": "راجل",
       "language": "اللغة",
-      "save_voice": "سجل الصوت"
+      "save_voice": "سجل الصوت",
+      "voice_architecture": "البنية متعددة المزودين",
+      "telephony_voices": "أصوات التيليفون (Grok Voice)",
+      "voice_note": "ملاحظة: الدارجة كتستعمل ElevenLabs TTS للدعم الأصلي."
     },
     "calls": {
       "recent": "المكالمات الأخيرة",

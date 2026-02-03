@@ -70,7 +70,10 @@
       "female": "أنثى",
       "male": "ذكر",
       "language": "اللغة",
-      "save_voice": "حفظ الصوت"
+      "save_voice": "حفظ الصوت",
+      "voice_architecture": "هيكلة متعددة المزودين",
+      "telephony_voices": "أصوات الهاتف (Grok Voice)",
+      "voice_note": "ملاحظة: الدارجة تستخدم ElevenLabs TTS للدعم الأصلي."
     },
     "calls": {
       "recent": "المكالمات الأخيرة",

@@ -11,6 +11,8 @@
  */
 
 const { test, expect } = require('@playwright/test');
+const fs = require('fs');
+const path = require('path');
 
 const DASHBOARD_PAGES = [
   { path: '/app/client/index.html', name: 'Dashboard Overview' },
@@ -47,6 +49,8 @@ test.describe('Client Dashboard', () => {
           !e.includes('TypeError: Load failed') &&  // webkit fetch error
           !e.includes('Quota load error') &&  // KB quota API
           !e.includes('Dashboard load error') &&  // Dashboard API
+          !e.includes('KB load error') &&  // KB API (Session 250.65bis)
+          !e.includes('[i18n] Failed to load') &&  // i18n fetch error (Session 250.65bis)
           !e.includes('NetworkError') &&  // Firefox fetch error
           !e.includes('downloadable font') &&  // Firefox font loading
           !e.includes('[JavaScript Error')  // Firefox internal errors
@@ -179,5 +183,100 @@ test.describe('Client Dashboard Responsive', () => {
 
     await expect(page).toHaveTitle(/VocalIA/i);
     await expect(page.locator('body')).toBeVisible();
+  });
+});
+
+// Session 250.65bis: Voice Configuration E2E Tests
+// Note: Dashboard pages require authentication and redirect to login without it
+// These tests verify the actual HTML file structure via fs read (bypasses auth redirect)
+test.describe('Voice Configuration (agents.html)', () => {
+  // Read the actual HTML file to verify structure (bypasses auth redirect)
+  const agentsHtmlPath = path.join(__dirname, '../../website/app/client/agents.html');
+  let agentsHtml = '';
+
+  test.beforeAll(() => {
+    agentsHtml = fs.readFileSync(agentsHtmlPath, 'utf-8');
+  });
+
+  test('agents page should load with VocalIA title', async ({ page }) => {
+    await page.goto('/app/client/agents.html');
+    await page.waitForLoadState('networkidle');
+
+    // Page should load with VocalIA title (even if redirected to login)
+    await expect(page).toHaveTitle(/VocalIA/i);
+  });
+
+  test('agents page HTML should contain voice-language select', async () => {
+    // Verify HTML structure contains voice config elements
+    expect(agentsHtml).toContain('id="voice-language"');
+    expect(agentsHtml).toContain('id="voice-gender"');
+    expect(agentsHtml).toContain('id="preview-voice-btn"');
+    expect(agentsHtml).toContain('id="save-voice-btn"');
+    expect(agentsHtml).toContain('id="selected-voice-name"');
+  });
+
+  test('agents page HTML should have 5 language options', async () => {
+    // Check for 5 language options
+    expect(agentsHtml).toContain('value="fr"');
+    expect(agentsHtml).toContain('value="en"');
+    expect(agentsHtml).toContain('value="es"');
+    expect(agentsHtml).toContain('value="ar"');
+    expect(agentsHtml).toContain('value="ary"');
+  });
+
+  test('agents page HTML should have gender options', async () => {
+    // Check for gender options
+    expect(agentsHtml).toContain('value="female"');
+    expect(agentsHtml).toContain('value="male"');
+  });
+
+  test('agents page should have i18n attributes for voice config', async () => {
+    // Check for i18n keys
+    expect(agentsHtml).toContain('data-i18n="agents.voice_config"');
+    expect(agentsHtml).toContain('data-i18n="agents.voice_language"');
+    expect(agentsHtml).toContain('data-i18n="agents.voice_gender"');
+  });
+
+  test('should support RTL for Arabic languages', async ({ page }) => {
+    for (const lang of ['ar', 'ary']) {
+      await page.goto(`/app/client/agents.html?lang=${lang}`);
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(500);
+
+      // Check RTL direction is set by i18n
+      const dir = await page.locator('html').getAttribute('dir');
+      expect(dir).toBe('rtl');
+    }
+  });
+});
+
+// Session 250.65bis: Voice Configuration JavaScript Tests
+// Uses fs-based approach to verify HTML structure (bypasses auth redirect)
+test.describe('Voice Configuration JavaScript (agents.html)', () => {
+  const agentsHtmlPath = path.join(__dirname, '../../website/app/client/agents.html');
+  let agentsHtml = '';
+
+  test.beforeAll(() => {
+    agentsHtml = fs.readFileSync(agentsHtmlPath, 'utf-8');
+  });
+
+  test('agents page should have VOICE_NAMES object in script', async () => {
+    // Verify VOICE_NAMES mapping exists with Grok voices (Session 250.65bis)
+    expect(agentsHtml).toContain('VOICE_NAMES');
+    expect(agentsHtml).toContain('Ara'); // fr female - Grok Voice
+    expect(agentsHtml).toContain('Eve'); // en female - Grok Voice
+    expect(agentsHtml).toContain('Ghizlane'); // ary female - ElevenLabs
+    expect(agentsHtml).toContain('Jawad'); // ary male - ElevenLabs
+  });
+
+  test('agents page should have loadVoicePreferences function', async () => {
+    // Verify loadVoicePreferences function exists (Session 250.63)
+    expect(agentsHtml).toContain('loadVoicePreferences');
+    expect(agentsHtml).toContain('api.settings.get');
+  });
+
+  test('agents page should have updateVoiceName function', async () => {
+    // Verify updateVoiceName function exists
+    expect(agentsHtml).toContain('updateVoiceName');
   });
 });

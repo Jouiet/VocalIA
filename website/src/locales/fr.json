@@ -70,7 +70,10 @@
       "female": "Féminin",
       "male": "Masculin",
       "language": "Langue",
-      "save_voice": "Enregistrer la voix"
+      "save_voice": "Enregistrer la voix",
+      "voice_architecture": "Architecture Multi-Provider",
+      "telephony_voices": "Voix Telephony (Grok Voice)",
+      "voice_note": "Note: Darija utilise ElevenLabs TTS (EL) pour un support natif optimal."
     },
     "calls": {
       "recent": "Appels récents",

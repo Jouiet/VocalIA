@@ -164,44 +164,67 @@
               </div>
             </div>
 
-            <!-- Voice Table -->
-            <div class="mt-4 overflow-x-auto">
-              <table class="w-full text-sm">
-                <thead>
-                  <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700">
-                    <th class="pb-2" data-i18n="agents.language">Langue</th>
-                    <th class="pb-2" data-i18n="agents.female">Féminin</th>
-                    <th class="pb-2" data-i18n="agents.male">Masculin</th>
-                  </tr>
-                </thead>
-                <tbody id="voice-table" class="text-slate-700 dark:text-slate-300">
-                  <tr class="border-b border-slate-100 dark:border-slate-800">
-                    <td class="py-2">🇫🇷 Français</td>
-                    <td class="py-2">Sarah</td>
-                    <td class="py-2">Abdel</td>
-                  </tr>
-                  <tr class="border-b border-slate-100 dark:border-slate-800">
-                    <td class="py-2">🇬🇧 English</td>
-                    <td class="py-2">Rachel</td>
-                    <td class="py-2">Adam</td>
-                  </tr>
-                  <tr class="border-b border-slate-100 dark:border-slate-800">
-                    <td class="py-2">🇪🇸 Español</td>
-                    <td class="py-2">Domi</td>
-                    <td class="py-2">Juan Carlos</td>
-                  </tr>
-                  <tr class="border-b border-slate-100 dark:border-slate-800">
-                    <td class="py-2">🇸🇦 العربية</td>
-                    <td class="py-2">Bill</td>
-                    <td class="py-2">Amr</td>
-                  </tr>
-                  <tr>
-                    <td class="py-2">🇲🇦 الدارجة</td>
-                    <td class="py-2">Ghizlane</td>
-                    <td class="py-2">Jawad, Ali, Hamid</td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- Voice Architecture Info (Session 250.65bis) -->
+            <div class="mt-4 p-3 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg border border-indigo-200 dark:border-indigo-800">
+              <h4 class="text-sm font-medium text-indigo-700 dark:text-indigo-300 mb-2" data-i18n="agents.voice_architecture">Architecture Multi-Provider</h4>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                  <span class="text-slate-600 dark:text-slate-400">Telephony: <strong class="text-slate-900 dark:text-white">Grok Voice</strong></span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                  <span class="text-slate-600 dark:text-slate-400">Fallback: <strong class="text-slate-900 dark:text-white">Gemini TTS</strong></span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+                  <span class="text-slate-600 dark:text-slate-400">Darija TTS: <strong class="text-slate-900 dark:text-white">ElevenLabs</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Telephony Voice Table (Grok) -->
+            <div class="mt-4">
+              <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2" data-i18n="agents.telephony_voices">Voix Telephony (Grok Voice)</h4>
+              <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                  <thead>
+                    <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700">
+                      <th class="pb-2" data-i18n="agents.language">Langue</th>
+                      <th class="pb-2" data-i18n="agents.female">Féminin</th>
+                      <th class="pb-2" data-i18n="agents.male">Masculin</th>
+                    </tr>
+                  </thead>
+                  <tbody id="grok-voice-table" class="text-slate-700 dark:text-slate-300">
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                      <td class="py-2">🇫🇷 Français</td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded text-xs">Ara</span></td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded text-xs">Leo</span></td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                      <td class="py-2">🇬🇧 English</td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded text-xs">Eve</span></td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded text-xs">Sal</span></td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                      <td class="py-2">🇪🇸 Español</td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded text-xs">Mika</span></td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded text-xs">Rex</span></td>
+                    </tr>
+                    <tr class="border-b border-slate-100 dark:border-slate-800">
+                      <td class="py-2">🇸🇦 العربية</td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded text-xs">Ara</span></td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 rounded text-xs">Valentin</span></td>
+                    </tr>
+                    <tr>
+                      <td class="py-2">🇲🇦 الدارجة</td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded text-xs">Ghizlane (EL)</span></td>
+                      <td class="py-2"><span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 rounded text-xs">Jawad (EL)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="mt-2 text-xs text-slate-500 dark:text-slate-400" data-i18n="agents.voice_note">Note: Darija utilise ElevenLabs TTS (EL) pour un support natif optimal.</p>
             </div>
 
             <div class="mt-4 flex justify-end">
@@ -381,19 +404,21 @@
     renderActivePersona();
     renderPersonasGrid();
 
-    // Voice configuration - Session 250.63
+    // Voice configuration - Session 250.65bis
+    // Updated to reflect ACTUAL Grok Voice names (not ElevenLabs)
+    // Darija uses ElevenLabs TTS for native support
     const VOICE_NAMES = {
-      fr: { female: 'Sarah', male: 'Abdel' },
-      en: { female: 'Rachel', male: 'Adam' },
-      es: { female: 'Domi', male: 'Juan Carlos' },
-      ar: { female: 'Bill', male: 'Amr' },
-      ary: { female: 'Ghizlane', male: 'Jawad' }
+      fr: { female: 'Ara', male: 'Leo' },        // Grok Voice
+      en: { female: 'Eve', male: 'Sal' },        // Grok Voice
+      es: { female: 'Mika', male: 'Rex' },       // Grok Voice
+      ar: { female: 'Ara', male: 'Valentin' },   // Grok Voice
+      ary: { female: 'Ghizlane', male: 'Jawad' } // ElevenLabs TTS (Darija)
     };
 
     function updateVoiceName() {
       const lang = document.getElementById('voice-language').value;
       const gender = document.getElementById('voice-gender').value;
-      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Sarah';
+      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Ara';
       document.getElementById('selected-voice-name').textContent = voiceName;
     }
 
@@ -426,7 +451,7 @@
     document.getElementById('preview-voice-btn').addEventListener('click', async () => {
       const lang = document.getElementById('voice-language').value;
       const gender = document.getElementById('voice-gender').value;
-      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Sarah';
+      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Ara';
 
       const messages = {
         fr: 'Bonjour, je suis votre assistant vocal VocalIA.',
@@ -477,7 +502,7 @@
     document.getElementById('save-voice-btn').addEventListener('click', async () => {
       const lang = document.getElementById('voice-language').value;
       const gender = document.getElementById('voice-gender').value;
-      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Sarah';
+      const voiceName = VOICE_NAMES[lang]?.[gender] || 'Ara';
 
       try {
         const tenantId = auth.getTenantId();
