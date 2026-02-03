@@ -134,7 +134,7 @@ services:
         git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
-        node core/grok-voice-realtime.cjs
+        node core/grok-voice-realtime.cjs --server --port=3007
       "
     ports:
       - "3007:3007"
