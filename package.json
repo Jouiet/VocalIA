@@ -27,8 +27,8 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@3a/agent-ops": "file:.yalc/@3a/agent-ops",
     "@google/generative-ai": "^0.24.1",
+    "googleapis": "^144.0.0",
     "@hubspot/api-client": "^13.4.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^16.3.1",
