@@ -36,54 +36,175 @@
     "voiceHint": "Support vocal disponible"
   },
   "socialProof": {
-    "times": ["Il y a 2 min", "Il y a 5 min", "Il y a 12 min", "Il y a 23 min", "Il y a 1h"],
+    "times": [
+      "Il y a 2 min",
+      "Il y a 5 min",
+      "Il y a 12 min",
+      "Il y a 23 min",
+      "Il y a 1h"
+    ],
     "messages": [
-      { "text": "Sophie de Paris vient de demander une démo" },
-      { "text": "Une entreprise a automatisé 500 appels ce mois" },
-      { "text": "Nouveau client: Cabinet dentaire à Casablanca" },
-      { "text": "Ahmed a réservé un rendez-vous via l'assistant" },
-      { "text": "12 leads qualifiés générés aujourd'hui" }
+      {
+        "text": "Sophie de Paris vient de demander une démo"
+      },
+      {
+        "text": "Une entreprise a automatisé 500 appels ce mois"
+      },
+      {
+        "text": "Nouveau client: Cabinet dentaire à Casablanca"
+      },
+      {
+        "text": "Ahmed a réservé un rendez-vous via l'assistant"
+      },
+      {
+        "text": "12 leads qualifiés générés aujourd'hui"
+      }
     ]
   },
   "topics": {
+    "products": {
+      "keywords": [
+        "produit",
+        "produits",
+        "vend",
+        "vendez",
+        "katbi3ou",
+        "tbii3",
+        "offre",
+        "offres",
+        "solution",
+        "solutions",
+        "service",
+        "services",
+        "quoi vendez",
+        "what do you sell",
+        "shnou 3andkom"
+      ],
+      "response": "VocalIA propose 2 produits d'IA vocale :\n\n1. **Voice Widget** (99€/mois) - Assistant vocal 24/7 pour votre site web. Support client, ventes, prise de RDV.\n\n2. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA. Appels entrants automatisés, qualification leads, transfert intelligent.\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, intégrations CRM. Quel produit vous intéresse ?"
+    },
     "pricing": {
-      "keywords": ["prix", "coût", "tarif", "combien", "pricing", "budget", "devis"],
+      "keywords": [
+        "prix",
+        "coût",
+        "tarif",
+        "combien",
+        "pricing",
+        "budget",
+        "devis"
+      ],
       "response": "Nos solutions VocalIA démarrent à 99€/mois pour le Voice Widget et 0,06€/minute pour la téléphonie AI. Nous proposons aussi des packages personnalisés selon vos volumes. Voulez-vous un devis adapté à votre usage ?"
     },
     "demo": {
-      "keywords": ["démo", "démonstration", "essayer", "tester", "voir"],
-      "response": "Je serais ravi de vous montrer VocalIA en action ! Vous pouvez réserver une démo de 30 minutes avec notre équipe. On vous montrera le widget en live et la téléphonie AI. Voulez-vous prendre rendez-vous ?"
+      "keywords": [
+        "démo",
+        "démonstration",
+        "essayer",
+        "tester",
+        "montrer en action"
+      ],
+      "response": "Je peux vous montrer VocalIA en action ! Nos 2 produits : Voice Widget (assistant web) et Voice Telephony (ligne IA). Voulez-vous que je vous explique un produit en détail, ou préférez-vous réserver une démo live de 30 minutes ?"
     },
     "widget": {
-      "keywords": ["widget", "site web", "site internet", "intégration web", "chat vocal"],
+      "keywords": [
+        "widget",
+        "site web",
+        "site internet",
+        "intégration web",
+        "chat vocal"
+      ],
       "response": "Le Voice Widget VocalIA s'intègre en une ligne de code sur votre site. Il utilise le Web Speech API du navigateur pour la voix, et des APIs IA pour les réponses intelligentes. Supporte 5 langues. Voulez-vous voir une démo ?"
     },
     "telephony": {
-      "keywords": ["téléphone", "téléphonie", "appel", "appels", "standard", "ivr", "svi"],
+      "keywords": [
+        "téléphone",
+        "téléphonie",
+        "appel",
+        "appels",
+        "standard",
+        "ivr",
+        "svi"
+      ],
       "response": "Notre téléphonie AI VocalIA automatise vos appels entrants 24/7 à seulement 0,06€/minute (60% moins cher que Vapi). Elle qualifie les leads, prend des rendez-vous et transfère les appels urgents. Intéressé par une démo ?"
     },
     "integration": {
-      "keywords": ["intégration", "crm", "hubspot", "shopify", "api", "webhook"],
+      "keywords": [
+        "intégration",
+        "crm",
+        "hubspot",
+        "shopify",
+        "api",
+        "webhook"
+      ],
       "response": "VocalIA s'intègre nativement avec HubSpot, Shopify et Klaviyo. Nous avons aussi une API REST complète et des webhooks pour vos systèmes custom. Quel outil utilisez-vous actuellement ?"
     },
     "languages": {
-      "keywords": ["langue", "langues", "multilingue", "arabe", "darija", "anglais", "espagnol"],
+      "keywords": [
+        "langue",
+        "langues",
+        "multilingue",
+        "arabe",
+        "darija",
+        "anglais",
+        "espagnol"
+      ],
       "response": "VocalIA supporte 5 langues : Français, Anglais, Espagnol, Arabe classique et Darija marocaine. Nous sommes la solution n°1 au Maroc avec un support natif du Darija."
     },
     "competitors": {
-      "keywords": ["vapi", "retell", "bland", "concurrent", "alternative", "comparaison"],
+      "keywords": [
+        "vapi",
+        "retell",
+        "bland",
+        "concurrent",
+        "alternative",
+        "comparaison"
+      ],
       "response": "Par rapport à Vapi (0,15-0,33€/min) ou Retell (0,13-0,31€/min), VocalIA coûte seulement 0,06€/min - soit 60% d'économie. En plus, nous offrons Widget + Téléphonie en une seule plateforme et le support Darija exclusif."
     },
     "leads": {
-      "keywords": ["lead", "leads", "prospect", "qualification", "bant"],
+      "keywords": [
+        "lead",
+        "leads",
+        "prospect",
+        "qualification",
+        "bant"
+      ],
       "response": "Notre système qualifie automatiquement vos leads avec le scoring BANT (Budget, Authority, Need, Timeline). Chaque appel génère une fiche lead enrichie dans votre CRM avec score et recommandation d'action."
     },
     "personas": {
-      "keywords": ["persona", "agent", "personnalité", "voix", "ton"],
+      "keywords": [
+        "persona",
+        "agent",
+        "personnalité",
+        "voix",
+        "ton"
+      ],
       "response": "VocalIA propose 40 personas pré-configurés pour différents secteurs : Immobilier, Dentaire, E-commerce, Hôtellerie... Chaque persona a son ton, vocabulaire et expertise métier. Quel secteur vous intéresse ?"
     },
+    "no": {
+      "keywords": [
+        "non",
+        "no",
+        "pas maintenant",
+        "plus tard",
+        "non merci",
+        "la",
+        "makanch",
+        "machi daba"
+      ],
+      "response": "Pas de souci ! Je reste disponible si vous avez des questions sur nos produits Voice Widget ou Voice Telephony. Que puis-je vous expliquer ?"
+    },
     "yes": {
-      "keywords": ["oui", "ok", "d'accord", "yes", "absolument", "bien sûr", "pourquoi pas"],
+      "keywords": [
+        "oui",
+        "ok",
+        "d'accord",
+        "yes",
+        "absolument",
+        "bien sûr",
+        "pourquoi pas",
+        "iyeh",
+        "wah"
+      ],
       "responses": {
         "demo": "Parfait ! Cliquez sur 'Demander une démo' ci-dessous, ou dites-moi votre email et je vous envoie un lien de réservation.",
         "pricing": "Je vous prépare un devis. Pouvez-vous me donner votre email et le volume d'appels mensuel estimé ?",
@@ -93,13 +214,50 @@
   },
   "booking": {
     "service": "Démo VocalIA",
-    "keywords": ["réserver", "rendez-vous", "rdv", "booking", "planifier", "prendre rdv", "calendrier"],
-    "cancelKeywords": ["annuler", "cancel", "stop", "arrêter", "non merci"],
-    "confirmKeywords": ["confirmer", "confirm", "valider", "c'est bon", "parfait"],
+    "keywords": [
+      "réserver",
+      "rendez-vous",
+      "rdv",
+      "booking",
+      "planifier",
+      "prendre rdv",
+      "calendrier"
+    ],
+    "cancelKeywords": [
+      "annuler",
+      "cancel",
+      "stop",
+      "arrêter",
+      "non merci"
+    ],
+    "confirmKeywords": [
+      "confirmer",
+      "confirm",
+      "valider",
+      "c'est bon",
+      "parfait"
+    ],
     "slotKeywords": {
-      "1": ["premier", "première", "1", "un", "une"],
-      "2": ["deuxième", "second", "2", "deux"],
-      "3": ["troisième", "3", "trois", "dernier", "dernière"]
+      "1": [
+        "premier",
+        "première",
+        "1",
+        "un",
+        "une"
+      ],
+      "2": [
+        "deuxième",
+        "second",
+        "2",
+        "deux"
+      ],
+      "3": [
+        "troisième",
+        "3",
+        "trois",
+        "dernier",
+        "dernière"
+      ]
     },
     "messages": {
       "start": "Je vais vous aider à réserver une démo VocalIA. Quel est votre nom ?",
@@ -124,35 +282,90 @@
   },
   "industries": {
     "ecommerce": {
-      "keywords": ["ecommerce", "e-commerce", "boutique", "shop", "vente en ligne", "magasin"],
+      "keywords": [
+        "ecommerce",
+        "e-commerce",
+        "boutique",
+        "shop",
+        "vente en ligne",
+        "magasin"
+      ],
       "intro": "VocalIA aide les e-commerces à automatiser le support client, le suivi de commande et les ventes par téléphone.",
       "services": "Pour l'e-commerce, nous proposons : suivi de commande vocal, qualification d'acheteurs, relance panier abandonné et support SAV 24/7.",
       "leads": "Pour qualifier vos leads e-commerce, notre AI analyse l'intention d'achat, le budget et l'urgence du besoin."
     },
     "immobilier": {
-      "keywords": ["immobilier", "agence", "appartement", "maison", "bien", "propriété", "location"],
+      "keywords": [
+        "immobilier",
+        "agence",
+        "appartement",
+        "maison",
+        "bien",
+        "propriété",
+        "location"
+      ],
       "intro": "VocalIA qualifie vos prospects immobiliers, planifie les visites et répond aux questions sur vos biens 24/7.",
       "services": "Pour l'immobilier : qualification acquéreur/vendeur, prise de RDV visites, informations sur les biens et suivi dossier.",
       "leads": "Nous qualifions vos leads immobiliers sur le budget, le type de bien recherché et le délai d'achat."
     },
     "medical": {
-      "keywords": ["médical", "médecin", "dentiste", "clinique", "cabinet", "santé", "patient"],
+      "keywords": [
+        "médical",
+        "médecin",
+        "dentiste",
+        "clinique",
+        "cabinet",
+        "santé",
+        "patient"
+      ],
       "intro": "VocalIA gère la prise de rendez-vous et les rappels patients pour les professionnels de santé.",
       "services": "Pour le médical : prise de RDV patients, rappels automatiques, gestion des urgences et informations pratiques.",
       "leads": "Nous trions les appels par urgence et orientons les patients vers le bon praticien."
     },
     "hotel": {
-      "keywords": ["hôtel", "hotel", "réservation", "chambre", "hébergement", "tourisme"],
+      "keywords": [
+        "hôtel",
+        "hotel",
+        "réservation",
+        "chambre",
+        "hébergement",
+        "tourisme"
+      ],
       "intro": "VocalIA automatise les réservations et le service client pour l'hôtellerie.",
       "services": "Pour l'hôtellerie : réservation chambres, informations services, check-in/out et conciergerie 24/7.",
       "leads": "Nous capturons les demandes de réservation avec dates, nombre de personnes et préférences."
     }
   },
   "needs": {
-    "quote": ["devis", "prix", "tarif", "combien", "budget", "coût"],
-    "demo": ["démo", "voir", "tester", "essayer", "montrer"],
-    "info": ["information", "comment", "quoi", "qu'est-ce", "expliquer"],
-    "support": ["aide", "problème", "bug", "erreur", "marche pas"]
+    "quote": [
+      "devis",
+      "prix",
+      "tarif",
+      "combien",
+      "budget",
+      "coût"
+    ],
+    "demo": [
+      "démo",
+      "voir",
+      "tester",
+      "essayer",
+      "montrer"
+    ],
+    "info": [
+      "information",
+      "comment",
+      "quoi",
+      "qu'est-ce",
+      "expliquer"
+    ],
+    "support": [
+      "aide",
+      "problème",
+      "bug",
+      "erreur",
+      "marche pas"
+    ]
   },
   "defaults": {
     "qualificationQuestion": "Quel est votre secteur d'activité ? Nous avons des solutions adaptées pour l'e-commerce, l'immobilier, le médical et bien d'autres.",
@@ -176,13 +389,52 @@
     "lowStock": "Plus que {n} en stock",
     "new": "Nouveau",
     "sale": "Promo",
-    "searchKeywords": ["cherche", "recherche", "trouve", "trouver", "montrer", "voir", "où"],
-    "recommendKeywords": ["recommande", "suggère", "propose", "conseille", "quoi prendre"],
+    "searchKeywords": [
+      "cherche",
+      "recherche",
+      "trouve",
+      "trouver",
+      "montrer",
+      "voir",
+      "où"
+    ],
+    "recommendKeywords": [
+      "recommande",
+      "suggère",
+      "propose",
+      "conseille",
+      "quoi prendre"
+    ],
     "categoryKeywords": {
-      "electronics": ["téléphone", "phone", "laptop", "ordinateur", "tablette", "électronique"],
-      "clothing": ["vêtement", "habits", "robe", "pantalon", "chemise", "mode"],
-      "food": ["nourriture", "manger", "alimentaire", "épicerie"],
-      "beauty": ["beauté", "cosmétique", "maquillage", "soin", "parfum"]
+      "electronics": [
+        "téléphone",
+        "phone",
+        "laptop",
+        "ordinateur",
+        "tablette",
+        "électronique"
+      ],
+      "clothing": [
+        "vêtement",
+        "habits",
+        "robe",
+        "pantalon",
+        "chemise",
+        "mode"
+      ],
+      "food": [
+        "nourriture",
+        "manger",
+        "alimentaire",
+        "épicerie"
+      ],
+      "beauty": [
+        "beauté",
+        "cosmétique",
+        "maquillage",
+        "soin",
+        "parfum"
+      ]
     }
   }
 }

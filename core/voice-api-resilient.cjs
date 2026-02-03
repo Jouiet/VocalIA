@@ -92,7 +92,8 @@ try {
 // ─────────────────────────────────────────────────────────────────────────────
 function loadEnv() {
   try {
-    const envPath = path.join(__dirname, '../../../.env');
+    const envPath = path.join(__dirname, '../.env');
+    console.log(`[Telemetry] Configuration loaded from: ${envPath}`);
     const env = fs.readFileSync(envPath, 'utf8');
     const vars = {};
     env.split('\n').forEach(line => {
@@ -101,6 +102,7 @@ function loadEnv() {
     });
     return vars;
   } catch (e) {
+    console.warn('[Telemetry] Could not load .env, using process.env');
     return process.env;
   }
 }

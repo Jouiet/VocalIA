@@ -1,0 +1,35 @@
+{
+  "session_id": "test456",
+  "tenant_id": "default",
+  "messages": [
+    {
+      "id": "d69bdc57",
+      "role": "user",
+      "content": "quels sont vos produits?",
+      "timestamp": "2026-02-03T16:47:10.849Z",
+      "language": "fr",
+      "source": "widget",
+      "persona": "test456"
+    },
+    {
+      "id": "9f571b6f",
+      "role": "assistant",
+      "content": "VocalIA propose deux produits phares pour booster votre business avec l'IA vocale : 1. Voice Widget : Un assistant vocal 24/7 intégré directement sur votre site web. Idéal pour le support client automatisé et la génération de leads/ventes en temps réel (compatible avec tous les CMS comme WordPress, Shopify, etc.). 2. Voice Telephony : Une ligne téléphonique IA via Twilio. Parfait pour gérer les appels entrants/sortants avec une intelligence conversationnelle, sans intervention humaine constante. Ces outils réduisent les coûts d'exploitation de 70% en moyenne tout en augmentant les conversions. Lequel correspond le mieux à votre activité actuelle ? Et quel est votre principal défi en support ou vente aujourd'hui ?",
+      "timestamp": "2026-02-03T16:47:10.850Z",
+      "language": "fr",
+      "source": "widget",
+      "persona": "test456",
+      "latency_ms": 7037
+    }
+  ],
+  "message_count": 2,
+  "created_at": "2026-02-03T16:47:10.850Z",
+  "updated_at": "2026-02-03T16:47:10.850Z",
+  "metadata": {
+    "source": "widget",
+    "language": "fr",
+    "persona": "test456",
+    "duration_sec": null,
+    "lead_score": null
+  }
+}
