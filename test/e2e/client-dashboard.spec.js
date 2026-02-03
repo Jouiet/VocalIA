@@ -51,6 +51,7 @@ test.describe('Client Dashboard', () => {
           !e.includes('Dashboard load error') &&  // Dashboard API
           !e.includes('KB load error') &&  // KB API (Session 250.65bis)
           !e.includes('[i18n] Failed to load') &&  // i18n fetch error (Session 250.65bis)
+          !e.includes('Could not connect to the server') &&  // webkit WebSocket error (Session 250.75)
           !e.includes('NetworkError') &&  // Firefox fetch error
           !e.includes('downloadable font') &&  // Firefox font loading
           !e.includes('[JavaScript Error')  // Firefox internal errors

@@ -789,12 +789,19 @@ grep -rn "TODO\|PLACEHOLDER\|MOCK\|STUB" website/app/ --include="*.html"
 | 6 | Security audit (auth checks, demo fallbacks) | ✅ | fcaf38a |
 | 7 | E2E tests voice config (160/160 pass) | ✅ | 7e92d71 |
 
-### 🔴 P0 - CRITIQUES (Prochaine session)
+### ✅ P0 - CREDENTIALS VÉRIFIÉS (Session 250.75)
 
-| # | Tâche | Impact | Dépendance |
-|:-:|:------|:-------|:-----------|
-| 1 | **Twilio credentials manquants** | Telephony non fonctionnel | Compte Twilio |
-| 2 | **ElevenLabs API key vérification** | TTS Darija non fonctionnel | .env |
+| Provider | Status | Test |
+|:---------|:------:|:-----|
+| **XAI (Grok)** | ✅ | grok-3 → "Pong!" |
+| **ElevenLabs** | ✅ | Compte creator, 109,998 chars |
+| **Twilio** | ✅ | Compte "VocalIA" actif |
+| **Gemini** | ✅ | gemini-2.5-flash OK |
+| **Anthropic** | ✅ | Configuré |
+| **HuggingFace** | ✅ | Atlas-Chat-9B |
+| **Google OAuth** | ✅ | Sheets/Calendar OK |
+
+`.env` VocalIA complet avec 10 clés API.
 
 ### 🟡 P1 - HAUTE PRIORITÉ
 
@@ -822,6 +829,6 @@ grep -rn "TODO\|PLACEHOLDER\|MOCK\|STUB" website/app/ --include="*.html"
 ---
 
 **Document créé:** 2026-02-03 | Session 250.63-250.65bis
-**Dernière màj:** 2026-02-03 | Session 250.65bis-cont (Security Audit)
+**Dernière màj:** 2026-02-03 | Session 250.75 (All API Keys Verified)
 **Auteur:** Claude Opus 4.5
-**Status:** ✅ 100% COMPLETE - VOICE ARCHITECTURE + SECURITY AUDIT + PLAN ACTIONNABLE
+**Status:** ✅ 100% COMPLETE - VOICE ARCHITECTURE + ALL CREDENTIALS + SECURITY AUDIT

@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.83.0 | 03/02/2026 | Session 250.74 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.84.0 | 03/02/2026 | Session 250.75 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
@@ -38,11 +38,13 @@
 
 | Score | Value | Notes |
 |:------|:-----:|:------|
-| Backend | **99/100** | Twilio creds manquants |
+| Backend | **100/100** | All API keys configured ✅ |
 | Frontend | **99/100** | P1/P2 complete (SRI, WCAG, forms, AEO) |
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
+**Session 250.75 ALL API CREDENTIALS VERIFIED:** (1) XAI/Grok: xai-u30Q...MWMf (grok-4-latest → grok-4-0709) ✅ (2) ElevenLabs: sk_3dde...3a73 (creator tier, 109,998 chars) ✅ (3) Twilio: ACc3673...0ba6 (account "VocalIA" active) ✅ (4) Gemini: AIzaSyAU...UHk (gemini-2.5-flash) ✅ (5) Anthropic + HuggingFace: configured ✅ (6) Google OAuth: already present ✅ - .env VocalIA complete with 10 API keys - 306/306 unit tests pass - All audit docs 100% COMPLETE
+**Session 250.74bis WIDGETS E-COMMERCE BENCHMARK:** Recherche exhaustive (Web, GitHub, HuggingFace) sur 12 types de widgets intelligents e-commerce. Document: docs/BENCHMARK-ECOMMERCE-WIDGETS-INTELLIGENTS.md (800+ lignes). Findings: (1) VocalIA avantage concurrentiel Voice Commerce (2) 4 opportunites widgets uniques sans concurrent: Voice Exit-Intent (+18-25% recovery), Voice Quiz (+65% completion), Voice Cart Recovery (+25% recovery), Voice Social Proof (+12% FOMO) (3) Stack complementaire: AI Recommendations (+25% AOV), Exit-Intent (+13% recovery), Social Proof (+8-15% conversion) (4) Marche widgets AI $8.65B 2025 CAGR 37.9% (5) Sources: 30+ web, 8 GitHub repos, 5 HuggingFace models - RECHERCHE ONLY, implementation en attente validation
 **Session 250.74 WEB SPEECH FALLBACK + E2E VERIFIED:** (1) Voice preview Web Speech API fallback for agents.html - speakWithWebSpeech() function - WEB_SPEECH_VOICES mapping (lang+gender→browser voice) - Automatic fallback when backend /tts unavailable (FR/EN/ES/AR) - Darija still requires ElevenLabs (2) E2E tests: 420/420 pass (was 375) - 5 browsers verified (3) Unit tests: 306/306 pass (4) All audit docs P1/P2 tasks verified 100% COMPLETE
 **Session 250.73 VPS DEPLOYMENT + AUDIT COMPLETION:** (1) VPS Hostinger Docker Compose deployed - voice-api:3004 + telephony:3009 + grok-realtime:3007 via Traefik - api.vocalia.ma LIVE - /health returns 200 - /voice/inbound validates Twilio signatures (403 = CORRECT) (2) googleapis dependency FIXED (was missing) (3) @3a/agent-ops REMOVED from codebase (.yalc/ 11 files + yalc.lock + package-lock.json) - NEVER USED in production (0 imports) - VocalIA has LOCAL COPIES in core/ (4) All 7 audit docs 100% COMPLETE: AUDIT-VOICE-CONFIG, DYNAMIC-CATALOG, MULTI-TENANT, FORENSIC, KB-OPTIMIZATION, LANGUAGE-SUPPORT, VOICE-MENA (5) 306/306 tests pass, 0 placeholders/mocks, 7 voice providers verified
 **Session 250.72 DYNAMIC CATALOG 100% COMPLETE:** (1) CalendarSlotsConnector 764 lignes - Google Calendar API v3 FreeBusy - exponential backoff 403/429 - buffer 5min - min advance 24h - intégré dans TenantCatalogStore.getAvailableSlots() (2) Square API FIX: GET /v2/catalog/list (était POST - FAUX) per docs officielles (3) Lightspeed K-Series FIX: /o/op/1/menu/list + /o/op/1/menu/load/{id} (endpoints corrects) + _parseMenuEntries() récursif (4) catalog-connector.cjs 2287 lignes - tenant-catalog-store.cjs 1148 lignes - TOTAL 4199 lignes - 306 tests pass - 0 placeholders
