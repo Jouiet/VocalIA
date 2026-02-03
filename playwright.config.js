@@ -1,25 +1,33 @@
 /**
  * Playwright E2E Test Configuration
- * VocalIA - Session 250.62
+ * VocalIA - Session 250.75
+ *
+ * REAL PRODUCTION TESTING against https://vocalia.ma
+ * No mocks, no stubs, no localhost - REAL PRODUCTION
  *
  * Run tests: npx playwright test
  * Run with UI: npx playwright test --ui
  * Run specific file: npx playwright test test/e2e/auth.spec.js
+ *
+ * Override base URL: BASE_URL=http://localhost:8080 npx playwright test
  */
 
 const { defineConfig, devices } = require('@playwright/test');
+
+// Production by default, localhost for local development
+const BASE_URL = process.env.BASE_URL || 'https://vocalia.ma';
 
 module.exports = defineConfig({
   testDir: './test/e2e',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 2 : 1,
   workers: process.env.CI ? 1 : undefined,
   reporter: process.env.CI ? 'github' : 'html',
   timeout: 30000,
 
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:8080',
+    baseURL: BASE_URL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -48,12 +56,6 @@ module.exports = defineConfig({
     },
   ],
 
-  // Run local dev server before tests
-  // Using http-server instead of serve to preserve query params and .html extensions
-  webServer: {
-    command: 'npx http-server website -p 8080 -c-1',
-    url: 'http://localhost:8080',
-    reuseExistingServer: !process.env.CI,
-    timeout: 30000,
-  },
+  // No webServer needed - testing against LIVE production
+  // For local testing: BASE_URL=http://localhost:8080 npx playwright test
 });

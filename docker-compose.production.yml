@@ -1,4 +1,75 @@
+# VocalIA Production Deployment - ALL SERVICES
+# Session 250.75 - Full Production Stack
+#
+# Services:
+# - db-api (3013): Database API, Auth, Tenants, HITL
+# - voice-api (3004): Voice AI Response Generation
+# - grok-realtime (3007): WebSocket Voice Streaming
+# - telephony (3009): Twilio PSTN Bridge
+#
+# Routes:
+# - api.vocalia.ma/api/auth/* → db-api
+# - api.vocalia.ma/api/hitl/* → db-api
+# - api.vocalia.ma/api/kb/* → db-api
+# - api.vocalia.ma/api/tenants/* → db-api
+# - api.vocalia.ma/api/logs → db-api
+# - api.vocalia.ma/api/catalog/* → db-api
+# - api.vocalia.ma/* → voice-api
+# - ws.vocalia.ma → grok-realtime
+# - tel.vocalia.ma → telephony
+#
+# Deploy: docker-compose -f docker-compose.production.yml up -d
+
 services:
+  # ═══════════════════════════════════════════════════════════════
+  # DB API - Authentication, Tenants, HITL (CRITICAL)
+  # Routes: /api/auth/*, /api/hitl/*, /api/kb/*, /api/tenants/*, /api/logs, /api/catalog/*
+  # ═══════════════════════════════════════════════════════════════
+  vocalia-db-api:
+    image: node:20-alpine
+    container_name: vocalia-db-api
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - NODE_ENV=production
+      - PORT=3013
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}
+    command: >
+      sh -c "
+        apk add --no-cache git curl &&
+        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        cd /app &&
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node core/db-api.cjs
+      "
+    ports:
+      - "3013:3013"
+    labels:
+      - "traefik.enable=true"
+      # Route all DB API paths to this service
+      - "traefik.http.routers.vocalia-db.rule=Host(`api.vocalia.ma`) && (PathPrefix(`/api/auth`) || PathPrefix(`/api/hitl`) || PathPrefix(`/api/kb`) || PathPrefix(`/api/tenants`) || PathPrefix(`/api/logs`) || PathPrefix(`/api/catalog`) || PathPrefix(`/api/db`))"
+      - "traefik.http.routers.vocalia-db.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-db.tls=true"
+      - "traefik.http.routers.vocalia-db.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-db.priority=100"
+      - "traefik.http.services.vocalia-db.loadbalancer.server.port=3013"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3013/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ═══════════════════════════════════════════════════════════════
+  # VOICE API - AI Response Generation (Grok, Gemini, ElevenLabs)
+  # Routes: api.vocalia.ma/* (default, lower priority)
+  # ═══════════════════════════════════════════════════════════════
   vocalia-api:
     image: node:20-alpine
     container_name: vocalia-api
@@ -7,10 +78,15 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3004
+      - XAI_API_KEY=${XAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
     command: >
       sh -c "
         apk add --no-cache git curl &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || cd /app &&
+        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/voice-api-resilient.cjs --server --port=3004
@@ -23,6 +99,7 @@ services:
       - "traefik.http.routers.vocalia-api.entrypoints=websecure"
       - "traefik.http.routers.vocalia-api.tls=true"
       - "traefik.http.routers.vocalia-api.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-api.priority=50"
       - "traefik.http.services.vocalia-api.loadbalancer.server.port=3004"
       - "traefik.docker.network=root_default"
     networks:
@@ -30,6 +107,90 @@ services:
       - traefik
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ═══════════════════════════════════════════════════════════════
+  # GROK REALTIME - WebSocket Voice Streaming
+  # Routes: ws.vocalia.ma
+  # ═══════════════════════════════════════════════════════════════
+  vocalia-realtime:
+    image: node:20-alpine
+    container_name: vocalia-realtime
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - NODE_ENV=production
+      - PORT=3007
+      - XAI_API_KEY=${XAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    command: >
+      sh -c "
+        apk add --no-cache git curl &&
+        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        cd /app &&
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node core/grok-voice-realtime.cjs
+      "
+    ports:
+      - "3007:3007"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vocalia-ws.rule=Host(`ws.vocalia.ma`)"
+      - "traefik.http.routers.vocalia-ws.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-ws.tls=true"
+      - "traefik.http.routers.vocalia-ws.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.vocalia-ws.loadbalancer.server.port=3007"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
+
+  # ═══════════════════════════════════════════════════════════════
+  # TELEPHONY - Twilio PSTN Bridge
+  # Routes: tel.vocalia.ma
+  # ═══════════════════════════════════════════════════════════════
+  vocalia-telephony:
+    image: node:20-alpine
+    container_name: vocalia-telephony
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - NODE_ENV=production
+      - PORT=3009
+      - XAI_API_KEY=${XAI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}
+    command: >
+      sh -c "
+        apk add --no-cache git curl &&
+        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        cd /app &&
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node telephony/voice-telephony-bridge.cjs
+      "
+    ports:
+      - "3009:3009"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vocalia-tel.rule=Host(`tel.vocalia.ma`)"
+      - "traefik.http.routers.vocalia-tel.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-tel.tls=true"
+      - "traefik.http.routers.vocalia-tel.tls.certresolver=mytlschallenge"
+      - "traefik.http.services.vocalia-tel.loadbalancer.server.port=3009"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3009/health"]
       interval: 30s
       timeout: 10s
       retries: 3
