@@ -283,5 +283,29 @@
     "industryFollowup": "بغيتي تشوف كيفاش VocalIA يقدر يأتمت المكالمات ديالك؟",
     "servicesFollowup": "بغيتي ديمو مخصص؟",
     "leadsFollowup": "بغيتي تشوف التأهيل BANT ديالنا فالعمل؟"
+  },
+  "ecommerce": {
+    "recommendedForYou": "موصى بيه ليك",
+    "searchResults": "نتائج البحث",
+    "fromCategory": "من هاد الفئة",
+    "popular": "الأكثر شعبية",
+    "relatedProducts": "منتجات قريبة",
+    "resultsFor": "نتائج ديال",
+    "viewDetails": "شوف التفاصيل",
+    "buyNow": "شري دابا",
+    "addToCart": "زيد للپانيي",
+    "notifyMe": "خبرني",
+    "outOfStock": "سالي",
+    "lowStock": "غير {n} باقي",
+    "new": "جديد",
+    "sale": "سولد",
+    "searchKeywords": ["نبغي", "باغي", "قلب", "ورني", "فين", "بغيت", "شوف لي"],
+    "recommendKeywords": ["نصحني", "قترح", "شنو مزيان", "أفضل", "أحسن"],
+    "categoryKeywords": {
+      "electronics": ["تيليفون", "بيسي", "كمبيوتر", "تابليت", "إلكترونيات"],
+      "clothing": ["حوايج", "روبا", "سروال", "تريكو", "لبسة"],
+      "food": ["ماكلة", "أكل", "لبقالة", "سناك"],
+      "beauty": ["زينة", "الجمال", "ماكياج", "كريم", "عطر"]
+    }
   }
 }

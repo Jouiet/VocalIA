@@ -139,5 +139,29 @@
     "industryFollowup": " Te gustaria ver como VocalIA puede automatizar tus llamadas?",
     "servicesFollowup": " Te gustaria una demostracion personalizada?",
     "leadsFollowup": " Te gustaria ver nuestra calificacion BANT en accion?"
+  },
+  "ecommerce": {
+    "recommendedForYou": "Recomendado para ti",
+    "searchResults": "Resultados de busqueda",
+    "fromCategory": "De esta categoria",
+    "popular": "Mas populares",
+    "relatedProducts": "Productos similares",
+    "resultsFor": "Resultados para",
+    "viewDetails": "Ver detalles",
+    "buyNow": "Comprar",
+    "addToCart": "Agregar al carrito",
+    "notifyMe": "Notificarme",
+    "outOfStock": "Agotado",
+    "lowStock": "Solo quedan {n}",
+    "new": "Nuevo",
+    "sale": "Oferta",
+    "searchKeywords": ["busco", "buscar", "encuentra", "muestra", "donde", "necesito", "quiero"],
+    "recommendKeywords": ["recomienda", "sugiere", "que me aconsejas", "mejor", "top"],
+    "categoryKeywords": {
+      "electronics": ["telefono", "portatil", "ordenador", "tablet", "electronica"],
+      "clothing": ["ropa", "vestido", "pantalon", "camisa", "moda"],
+      "food": ["comida", "comer", "alimento", "snack"],
+      "beauty": ["belleza", "cosmetico", "maquillaje", "cuidado", "perfume"]
+    }
   }
 }

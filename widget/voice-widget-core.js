@@ -1,10 +1,17 @@
 /**
  * VocalIA - Voice Assistant Widget Core
- * Version: 2.0.0
+ * Version: 3.0.0
  *
  * Unified widget that loads language-specific translations
  * Supports: FR, EN, ES, AR, Darija (ary)
- * Features: Auto-detection of speaker language (limited to 5 supported languages)
+ * Features:
+ * - Auto-detection of speaker language (5 supported languages)
+ * - Hybrid text+voice input (text default, voice opt-in)
+ * - E-commerce product display (Phase 1 - Session 250.74)
+ *   - Product cards with image, price, stock status
+ *   - Product carousel for recommendations/search results
+ *   - Voice vs text input tracking for A/B testing
+ *   - Catalog API integration with tenant isolation
  */
 
 (function () {
@@ -31,6 +38,13 @@
     AI_MODE: true, // true = use Voice API with personas, false = pattern matching fallback
     API_TIMEOUT: 10000, // 10 seconds
 
+    // Catalog API (E-commerce Mode)
+    CATALOG_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3013/api/tenants'  // Dev: local DB API
+      : 'https://api.vocalia.ma/api/tenants', // Prod: deployed API
+    ECOMMERCE_MODE: true, // Enable product display in widget
+    MAX_CAROUSEL_ITEMS: 5, // Maximum products in carousel
+
     // Branding
     primaryColor: '#4FBAF1',
     primaryDark: '#2B6685',
@@ -39,6 +53,7 @@
 
     // Cache
     SLOT_CACHE_TTL: 5 * 60 * 1000, // 5 minutes
+    CATALOG_CACHE_TTL: 5 * 60 * 1000, // 5 minutes
 
     // Auto-detection
     AUTO_DETECT_ENABLED: true,
@@ -64,7 +79,9 @@
     currentLang: null,
     langData: null,
     sessionId: `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    tenantId: null, // Set via data attribute or URL
     availableSlotsCache: { slots: [], timestamp: 0 },
+    catalogCache: { products: [], timestamp: 0 },
     conversationContext: {
       industry: null,
       need: null,
@@ -83,6 +100,14 @@
         step: null,
         data: { name: null, email: null, datetime: null, service: null }
       }
+    },
+    // E-commerce tracking (Phase 1)
+    ecommerce: {
+      inputMethodStats: { voice: 0, text: 0 },
+      productsViewed: [],
+      carouselsDisplayed: 0,
+      productClicks: 0,
+      lastInputMethod: null
     }
   };
 
@@ -372,6 +397,130 @@
           to { opacity: 0; transform: translateX(${isRTL ? '-' : ''}20px) scale(0.9); }
         }
         @media (max-width: 480px) { .va-panel { width: calc(100vw - 40px); ${position}: -10px; } }
+
+        /* E-commerce Product Cards & Carousel (Phase 1) */
+        .va-product-carousel {
+          display: flex; gap: 12px; overflow-x: auto; padding: 8px 0 12px;
+          scrollbar-width: thin; scrollbar-color: var(--va-primary) transparent;
+          scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+        }
+        .va-product-carousel::-webkit-scrollbar { height: 4px; }
+        .va-product-carousel::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 4px; }
+        .va-product-carousel::-webkit-scrollbar-thumb { background: var(--va-primary); border-radius: 4px; }
+        .va-product-card {
+          flex: 0 0 auto; width: 140px; background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+          overflow: hidden; cursor: pointer; transition: all 0.2s ease;
+          scroll-snap-align: start;
+        }
+        .va-product-card:hover {
+          border-color: var(--va-primary); transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(79, 186, 241, 0.2);
+        }
+        .va-product-card.featured {
+          border-color: var(--va-accent);
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(255,255,255,0.05) 100%);
+        }
+        .va-product-img {
+          width: 100%; height: 100px; object-fit: cover;
+          background: rgba(255,255,255,0.1);
+        }
+        .va-product-img-placeholder {
+          width: 100%; height: 100px; display: flex; align-items: center; justify-content: center;
+          background: linear-gradient(135deg, rgba(79,186,241,0.1) 0%, rgba(16,185,129,0.1) 100%);
+          color: rgba(255,255,255,0.3); font-size: 32px;
+        }
+        .va-product-info { padding: 10px; }
+        .va-product-name {
+          font-size: 12px; font-weight: 600; color: #e5e5e5;
+          margin: 0 0 4px; line-height: 1.3;
+          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .va-product-price {
+          font-size: 14px; font-weight: 700; color: var(--va-primary);
+          display: flex; align-items: baseline; gap: 4px;
+        }
+        .va-product-price-old {
+          font-size: 10px; color: rgba(255,255,255,0.4);
+          text-decoration: line-through; font-weight: 400;
+        }
+        .va-product-badge {
+          position: absolute; top: 8px; ${position}: 8px;
+          background: var(--va-accent); color: white; font-size: 9px;
+          padding: 2px 6px; border-radius: 4px; font-weight: 600; text-transform: uppercase;
+        }
+        .va-product-badge.sale { background: #ef4444; }
+        .va-product-badge.new { background: var(--va-primary); }
+        .va-product-stock {
+          font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 4px;
+        }
+        .va-product-stock.low { color: #f59e0b; }
+        .va-product-stock.out { color: #ef4444; }
+        .va-carousel-header {
+          display: flex; justify-content: space-between; align-items: center;
+          padding: 8px 0; margin-bottom: 4px;
+        }
+        .va-carousel-title {
+          font-size: 13px; font-weight: 600; color: #e5e5e5;
+          display: flex; align-items: center; gap: 6px;
+        }
+        .va-carousel-title svg { width: 16px; height: 16px; fill: var(--va-primary); }
+        .va-carousel-nav {
+          display: flex; gap: 4px;
+        }
+        .va-carousel-nav button {
+          width: 24px; height: 24px; border-radius: 50%; border: none;
+          background: rgba(255,255,255,0.1); color: white; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: all 0.2s;
+        }
+        .va-carousel-nav button:hover { background: var(--va-primary); }
+        .va-carousel-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .va-carousel-nav button svg { width: 14px; height: 14px; fill: currentColor; }
+        .va-product-actions {
+          display: flex; gap: 4px; margin-top: 8px;
+        }
+        .va-product-btn {
+          flex: 1; padding: 6px 8px; border-radius: 6px; border: none;
+          font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .va-product-btn.primary {
+          background: var(--va-primary); color: white;
+        }
+        .va-product-btn.primary:hover { background: var(--va-primary-dark); }
+        .va-product-btn.secondary {
+          background: rgba(255,255,255,0.1); color: #e5e5e5;
+        }
+        .va-product-btn.secondary:hover { background: rgba(255,255,255,0.2); }
+        .va-single-product {
+          background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 12px; padding: 12px; margin: 8px 0;
+        }
+        .va-single-product-row { display: flex; gap: 12px; }
+        .va-single-product-img {
+          width: 80px; height: 80px; border-radius: 8px; object-fit: cover;
+          background: rgba(255,255,255,0.1); flex-shrink: 0;
+        }
+        .va-single-product-details { flex: 1; min-width: 0; }
+        .va-single-product-name {
+          font-size: 14px; font-weight: 600; color: #e5e5e5; margin: 0 0 4px;
+        }
+        .va-single-product-desc {
+          font-size: 11px; color: rgba(255,255,255,0.6); margin: 0 0 8px;
+          display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .va-single-product-price {
+          font-size: 16px; font-weight: 700; color: var(--va-primary);
+        }
+        .va-input-method-indicator {
+          position: absolute; top: 12px; ${isRTL ? 'left' : 'right'}: 50px;
+          font-size: 10px; color: rgba(255,255,255,0.4); display: flex; gap: 8px;
+        }
+        .va-input-method-indicator span {
+          display: flex; align-items: center; gap: 3px;
+        }
+        .va-input-method-indicator svg { width: 12px; height: 12px; fill: currentColor; }
+        .va-input-method-indicator .active { color: var(--va-primary); }
       </style>
 
       <button class="va-trigger" id="va-trigger" aria-label="${L.ui.ariaOpenAssistant}">
@@ -511,6 +660,678 @@
   }
 
   // ============================================================
+  // E-COMMERCE PRODUCT DISPLAY (Phase 1)
+  // ============================================================
+
+  /**
+   * Track input method (voice vs text)
+   * @param {string} method - 'voice' or 'text'
+   */
+  function trackInputMethod(method) {
+    if (method !== 'voice' && method !== 'text') return;
+
+    state.ecommerce.inputMethodStats[method]++;
+    state.ecommerce.lastInputMethod = method;
+
+    trackEvent('input_method_used', {
+      method,
+      total_voice: state.ecommerce.inputMethodStats.voice,
+      total_text: state.ecommerce.inputMethodStats.text,
+      voice_ratio: state.ecommerce.inputMethodStats.voice /
+        (state.ecommerce.inputMethodStats.voice + state.ecommerce.inputMethodStats.text)
+    });
+  }
+
+  /**
+   * Format price with currency
+   * @param {number} price - Price value
+   * @param {string} currency - Currency code (default: MAD)
+   * @returns {string} Formatted price
+   */
+  function formatPrice(price, currency = 'MAD') {
+    const currencySymbols = {
+      'MAD': 'DH',
+      'EUR': '€',
+      'USD': '$',
+      'GBP': '£'
+    };
+
+    const symbol = currencySymbols[currency] || currency;
+    const formatted = price.toLocaleString(state.currentLang || 'fr', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    });
+
+    // Position based on currency
+    if (currency === 'EUR' || currency === 'USD' || currency === 'GBP') {
+      return `${symbol}${formatted}`;
+    }
+    return `${formatted} ${symbol}`;
+  }
+
+  /**
+   * Generate product card HTML
+   * @param {object} product - Product data
+   * @param {boolean} featured - Is featured product
+   * @returns {string} HTML string
+   */
+  function generateProductCardHTML(product, featured = false) {
+    const hasImage = product.image || product.images?.[0];
+    const inStock = product.available !== false && product.in_stock !== false;
+    const stockLevel = product.stock;
+    const isOnSale = product.compare_at_price && product.compare_at_price > product.price;
+    const isNew = product.created_at &&
+      (Date.now() - new Date(product.created_at).getTime()) < 7 * 24 * 60 * 60 * 1000;
+
+    let stockClass = '';
+    let stockText = '';
+    if (!inStock) {
+      stockClass = 'out';
+      stockText = state.langData?.ecommerce?.outOfStock || 'Rupture';
+    } else if (stockLevel !== undefined && stockLevel < 5) {
+      stockClass = 'low';
+      stockText = state.langData?.ecommerce?.lowStock?.replace('{n}', stockLevel) || `Plus que ${stockLevel}`;
+    }
+
+    let badgeHTML = '';
+    if (isOnSale) {
+      const discount = Math.round((1 - product.price / product.compare_at_price) * 100);
+      badgeHTML = `<span class="va-product-badge sale">-${discount}%</span>`;
+    } else if (isNew) {
+      badgeHTML = `<span class="va-product-badge new">${state.langData?.ecommerce?.new || 'Nouveau'}</span>`;
+    }
+
+    return `
+      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${product.id}" style="position: relative;">
+        ${badgeHTML}
+        ${hasImage
+          ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
+          : `<div class="va-product-img-placeholder">📦</div>`
+        }
+        <div class="va-product-info">
+          <p class="va-product-name">${product.name}</p>
+          <div class="va-product-price">
+            ${formatPrice(product.price, product.currency)}
+            ${isOnSale ? `<span class="va-product-price-old">${formatPrice(product.compare_at_price, product.currency)}</span>` : ''}
+          </div>
+          ${stockText ? `<p class="va-product-stock ${stockClass}">${stockText}</p>` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  /**
+   * Add a single product card to messages
+   * @param {object} product - Product data
+   * @param {string} context - Display context ('recommendation', 'search', 'detail')
+   */
+  function addProductCard(product, context = 'detail') {
+    if (!product) return;
+
+    const messagesContainer = document.getElementById('va-messages');
+    const productDiv = document.createElement('div');
+    productDiv.className = 'va-message assistant';
+
+    const hasImage = product.image || product.images?.[0];
+    const inStock = product.available !== false && product.in_stock !== false;
+
+    productDiv.innerHTML = `
+      <div class="va-message-content">
+        <div class="va-single-product" data-product-id="${product.id}">
+          <div class="va-single-product-row">
+            ${hasImage
+              ? `<img class="va-single-product-img" src="${product.image || product.images[0]}" alt="${product.name}" />`
+              : `<div class="va-single-product-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>`
+            }
+            <div class="va-single-product-details">
+              <h4 class="va-single-product-name">${product.name}</h4>
+              ${product.description ? `<p class="va-single-product-desc">${product.description}</p>` : ''}
+              <div class="va-single-product-price">${formatPrice(product.price, product.currency)}</div>
+            </div>
+          </div>
+          <div class="va-product-actions">
+            <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${product.id}')" ${!inStock ? 'disabled' : ''}>
+              ${inStock
+                ? (state.langData?.ecommerce?.viewDetails || 'Voir détails')
+                : (state.langData?.ecommerce?.notifyMe || 'Me notifier')
+              }
+            </button>
+            ${product.url ? `<button class="va-product-btn secondary" onclick="window.open('${product.url}', '_blank')">
+              ${state.langData?.ecommerce?.buyNow || 'Acheter'}
+            </button>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+
+    messagesContainer.appendChild(productDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Track product view
+    state.ecommerce.productsViewed.push(product.id);
+    trackEvent('product_viewed', {
+      product_id: product.id,
+      product_name: product.name,
+      price: product.price,
+      context,
+      input_method: state.ecommerce.lastInputMethod
+    });
+  }
+
+  /**
+   * Add a product carousel to messages
+   * @param {array} products - Array of products
+   * @param {string} title - Carousel title
+   * @param {string} context - Display context ('recommendations', 'search_results', 'category')
+   */
+  function addProductCarousel(products, title = null, context = 'recommendations') {
+    if (!products || products.length === 0) return;
+
+    const L = state.langData;
+    const isRTL = L?.meta?.rtl;
+    const messagesContainer = document.getElementById('va-messages');
+    const carouselDiv = document.createElement('div');
+    carouselDiv.className = 'va-message assistant';
+
+    const carouselId = `carousel-${Date.now()}`;
+    const displayProducts = products.slice(0, CONFIG.MAX_CAROUSEL_ITEMS);
+
+    const defaultTitles = {
+      recommendations: L?.ecommerce?.recommendedForYou || 'Recommandé pour vous',
+      search_results: L?.ecommerce?.searchResults || 'Résultats',
+      category: L?.ecommerce?.fromCategory || 'De cette catégorie',
+      popular: L?.ecommerce?.popular || 'Populaires',
+      related: L?.ecommerce?.relatedProducts || 'Produits similaires'
+    };
+
+    const displayTitle = title || defaultTitles[context] || defaultTitles.recommendations;
+
+    carouselDiv.innerHTML = `
+      <div class="va-message-content" style="padding: 8px 10px;">
+        <div class="va-carousel-header">
+          <span class="va-carousel-title">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            ${displayTitle}
+          </span>
+          <div class="va-carousel-nav">
+            <button onclick="document.getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">
+              <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button onclick="document.getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="Next">
+              <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="va-product-carousel" id="${carouselId}">
+          ${displayProducts.map((product, index) =>
+            generateProductCardHTML(product, index === 0)
+          ).join('')}
+        </div>
+      </div>
+    `;
+
+    messagesContainer.appendChild(carouselDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Add click handlers to product cards
+    carouselDiv.querySelectorAll('.va-product-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const productId = card.dataset.productId;
+        const product = displayProducts.find(p => p.id === productId);
+        if (product) {
+          state.ecommerce.productClicks++;
+          trackEvent('product_card_clicked', {
+            product_id: productId,
+            product_name: product.name,
+            price: product.price,
+            position: displayProducts.indexOf(product),
+            carousel_context: context,
+            input_method: state.ecommerce.lastInputMethod
+          });
+
+          // Show product details
+          addProductCard(product, 'carousel_click');
+        }
+      });
+    });
+
+    // Track carousel display
+    state.ecommerce.carouselsDisplayed++;
+    trackEvent('product_carousel_displayed', {
+      products_count: displayProducts.length,
+      context,
+      product_ids: displayProducts.map(p => p.id),
+      input_method: state.ecommerce.lastInputMethod
+    });
+  }
+
+  /**
+   * Fetch products from catalog API
+   * @param {object} options - Fetch options
+   * @returns {Promise<array>} Products array
+   */
+  async function fetchCatalogProducts(options = {}) {
+    if (!CONFIG.ECOMMERCE_MODE || !state.tenantId) {
+      return [];
+    }
+
+    // Check cache
+    const cacheKey = JSON.stringify({ tenantId: state.tenantId, ...options });
+    const now = Date.now();
+    if (state.catalogCache.key === cacheKey &&
+        (now - state.catalogCache.timestamp) < CONFIG.CATALOG_CACHE_TTL) {
+      return state.catalogCache.products;
+    }
+
+    try {
+      const endpoint = options.search
+        ? `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/search`
+        : `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items`;
+
+      const params = new URLSearchParams();
+      if (options.category) params.append('category', options.category);
+      if (options.search) params.append('q', options.search);
+      if (options.limit) params.append('limit', options.limit);
+
+      const url = params.toString() ? `${endpoint}?${params}` : endpoint;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(CONFIG.API_TIMEOUT)
+      });
+
+      if (!response.ok) {
+        console.warn('[VocalIA] Catalog API error:', response.status);
+        return [];
+      }
+
+      const data = await response.json();
+      const products = data.items || data.results || data.products || [];
+
+      // Update cache
+      state.catalogCache = {
+        key: cacheKey,
+        products,
+        timestamp: now
+      };
+
+      return products;
+    } catch (error) {
+      console.warn('[VocalIA] Catalog fetch error:', error.message);
+      return [];
+    }
+  }
+
+  /**
+   * Detect product intent in user message
+   * @param {string} text - User message
+   * @returns {object|null} Product intent data
+   */
+  function detectProductIntent(text) {
+    const lower = text.toLowerCase();
+    const L = state.langData;
+
+    // Product search keywords
+    const searchKeywords = L?.ecommerce?.searchKeywords || [
+      'cherche', 'recherche', 'trouve', 'looking for', 'search', 'find',
+      'busco', 'necesito', 'quiero', 'بحث', 'نبغي', 'باغي'
+    ];
+
+    // Category keywords
+    const categoryKeywords = L?.ecommerce?.categoryKeywords || {
+      'electronics': ['téléphone', 'phone', 'laptop', 'ordinateur', 'إلكترونيات'],
+      'clothing': ['vêtement', 'clothes', 'robe', 'pantalon', 'ملابس', 'حوايج'],
+      'food': ['nourriture', 'food', 'manger', 'أكل', 'ماكلة'],
+      'beauty': ['beauté', 'cosmétique', 'beauty', 'makeup', 'زينة', 'جمال']
+    };
+
+    // Recommendation keywords
+    const recommendKeywords = L?.ecommerce?.recommendKeywords || [
+      'recommande', 'suggère', 'propose', 'recommend', 'suggest',
+      'recomienda', 'sugiere', 'نصحني', 'شوف لي', 'قترح'
+    ];
+
+    // Check for search intent
+    const isSearch = searchKeywords.some(kw => lower.includes(kw));
+
+    // Check for recommendation intent
+    const isRecommend = recommendKeywords.some(kw => lower.includes(kw));
+
+    // Detect category
+    let category = null;
+    for (const [cat, keywords] of Object.entries(categoryKeywords)) {
+      if (keywords.some(kw => lower.includes(kw))) {
+        category = cat;
+        break;
+      }
+    }
+
+    // Extract search query (simple extraction)
+    let searchQuery = null;
+    if (isSearch) {
+      // Remove common words and extract potential product name
+      const words = text.split(/\s+/).filter(w =>
+        w.length > 2 && !searchKeywords.includes(w.toLowerCase())
+      );
+      if (words.length > 0) {
+        searchQuery = words.slice(-3).join(' '); // Last 3 words as query
+      }
+    }
+
+    if (isSearch || isRecommend || category) {
+      return {
+        type: isSearch ? 'search' : (isRecommend ? 'recommend' : 'category'),
+        category,
+        query: searchQuery
+      };
+    }
+
+    return null;
+  }
+
+  // Expose functions for external access
+  window.VocalIA = window.VocalIA || {};
+  window.VocalIA.viewProduct = async function(productId) {
+    if (!state.tenantId) return;
+
+    try {
+      const response = await fetch(
+        `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items/${productId}`,
+        { signal: AbortSignal.timeout(CONFIG.API_TIMEOUT) }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.item) {
+          addProductCard(data.item, 'detail_view');
+        }
+      }
+    } catch (error) {
+      console.warn('[VocalIA] Product detail error:', error.message);
+    }
+  };
+
+  window.VocalIA.displayProducts = function(products, title, context) {
+    addProductCarousel(products, title, context);
+  };
+
+  window.VocalIA.getEcommerceStats = function() {
+    return {
+      ...state.ecommerce,
+      voiceRatio: state.ecommerce.inputMethodStats.voice /
+        Math.max(1, state.ecommerce.inputMethodStats.voice + state.ecommerce.inputMethodStats.text)
+    };
+  };
+
+  // ============================================================
+  // UCP & MCP INTEGRATION (Phase 1 - Session 250.74)
+  // ============================================================
+
+  /**
+   * UCP (Unified Customer Profile) Integration
+   * Leverages existing VocalIA UCP for personalized recommendations
+   */
+  const UCP = {
+    profile: null,
+    ltvTier: 'bronze',
+
+    /**
+     * Sync user preferences with UCP
+     * @param {string} countryCode - ISO country code
+     * @returns {Promise<object>} User profile
+     */
+    async syncPreference(countryCode = null) {
+      if (!state.tenantId) return null;
+
+      try {
+        const detected = countryCode || detectCountryCode();
+        const endpoint = CONFIG.CATALOG_API_URL.replace('/api/tenants', '/api/ucp/sync');
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tenantId: state.tenantId,
+            userId: state.sessionId,
+            countryCode: detected
+          }),
+          signal: AbortSignal.timeout(CONFIG.API_TIMEOUT)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          UCP.profile = data.profile;
+          UCP.ltvTier = data.ltvTier || 'bronze';
+
+          trackEvent('ucp_synced', {
+            country: detected,
+            ltv_tier: UCP.ltvTier,
+            locale: UCP.profile?.locale
+          });
+
+          return data;
+        }
+      } catch (error) {
+        console.warn('[VocalIA] UCP sync error:', error.message);
+      }
+      return null;
+    },
+
+    /**
+     * Record interaction in UCP
+     * @param {string} type - Interaction type
+     * @param {object} metadata - Additional data
+     */
+    async recordInteraction(type, metadata = {}) {
+      if (!state.tenantId || !UCP.profile) return;
+
+      try {
+        const endpoint = CONFIG.CATALOG_API_URL.replace('/api/tenants', '/api/ucp/interaction');
+
+        await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tenantId: state.tenantId,
+            userId: state.sessionId,
+            type: 'widget_chat',
+            channel: 'web_widget',
+            metadata: {
+              ...metadata,
+              input_method: state.ecommerce.lastInputMethod,
+              interaction_type: type
+            }
+          }),
+          signal: AbortSignal.timeout(5000)
+        });
+      } catch (error) {
+        // Silent fail for interaction tracking
+      }
+    },
+
+    /**
+     * Track behavioral event
+     * @param {string} event - Event name
+     * @param {any} value - Event value
+     */
+    async trackEvent(event, value = null) {
+      if (!state.tenantId) return;
+
+      try {
+        const endpoint = CONFIG.CATALOG_API_URL.replace('/api/tenants', '/api/ucp/event');
+
+        await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            tenantId: state.tenantId,
+            userId: state.sessionId,
+            event,
+            value,
+            source: state.ecommerce.lastInputMethod === 'voice' ? 'voice' : 'widget'
+          }),
+          signal: AbortSignal.timeout(5000)
+        });
+      } catch (error) {
+        // Silent fail
+      }
+    },
+
+    /**
+     * Get personalized recommendations based on LTV tier
+     * @returns {object} Recommendation strategy
+     */
+    getRecommendationStrategy() {
+      const strategies = {
+        bronze: { limit: 3, showPrices: true, upsell: false },
+        silver: { limit: 4, showPrices: true, upsell: true },
+        gold: { limit: 5, showPrices: true, upsell: true, prioritySupport: true },
+        platinum: { limit: 6, showPrices: true, upsell: true, prioritySupport: true, exclusiveOffers: true },
+        diamond: { limit: 8, showPrices: true, upsell: true, prioritySupport: true, exclusiveOffers: true, personalAssistant: true }
+      };
+      return strategies[UCP.ltvTier] || strategies.bronze;
+    }
+  };
+
+  /**
+   * MCP Tools Integration
+   * Connect to VocalIA MCP Server for e-commerce operations
+   */
+  const MCP = {
+    /**
+     * Fetch products via MCP (Shopify, WooCommerce, etc.)
+     * @param {object} options - Fetch options
+     * @returns {Promise<array>} Products
+     */
+    async fetchProducts(options = {}) {
+      if (!state.tenantId) return [];
+
+      try {
+        // Use tenant-specific catalog endpoint which routes to appropriate connector
+        const endpoint = `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/browse`;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            category: options.category,
+            query: options.search,
+            limit: options.limit || UCP.getRecommendationStrategy().limit,
+            inStock: options.inStock !== false,
+            ltvTier: UCP.ltvTier // Pass LTV for prioritization
+          }),
+          signal: AbortSignal.timeout(CONFIG.API_TIMEOUT)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          return data.items || [];
+        }
+      } catch (error) {
+        console.warn('[VocalIA] MCP fetch error:', error.message);
+      }
+      return [];
+    },
+
+    /**
+     * Search products across all connected platforms
+     * @param {string} query - Search query
+     * @returns {Promise<array>} Search results
+     */
+    async searchProducts(query) {
+      if (!state.tenantId || !query) return [];
+
+      try {
+        const endpoint = `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/search`;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            q: query,
+            limit: UCP.getRecommendationStrategy().limit
+          }),
+          signal: AbortSignal.timeout(CONFIG.API_TIMEOUT)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          return data.results || [];
+        }
+      } catch (error) {
+        console.warn('[VocalIA] MCP search error:', error.message);
+      }
+      return [];
+    },
+
+    /**
+     * Get personalized recommendations
+     * Uses UCP profile + LTV tier for smart recommendations
+     * @returns {Promise<array>} Recommended products
+     */
+    async getRecommendations() {
+      if (!state.tenantId) return [];
+
+      try {
+        const endpoint = `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/recommendations`;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: state.sessionId,
+            ltvTier: UCP.ltvTier,
+            productsViewed: state.ecommerce.productsViewed.slice(-10),
+            locale: UCP.profile?.locale || state.currentLang,
+            limit: UCP.getRecommendationStrategy().limit
+          }),
+          signal: AbortSignal.timeout(CONFIG.API_TIMEOUT)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          return data.recommendations || [];
+        }
+      } catch (error) {
+        console.warn('[VocalIA] MCP recommendations error:', error.message);
+      }
+      return [];
+    }
+  };
+
+  /**
+   * Detect country code from various sources
+   */
+  function detectCountryCode() {
+    // 1. Navigator language (rough estimate)
+    const lang = navigator.language || navigator.userLanguage || '';
+    const langMap = {
+      'fr-FR': 'FR', 'fr-MA': 'MA', 'fr-BE': 'BE', 'fr-CA': 'CA',
+      'en-US': 'US', 'en-GB': 'GB', 'en-CA': 'CA',
+      'es-ES': 'ES', 'es-MX': 'MX',
+      'ar-MA': 'MA', 'ar-SA': 'SA', 'ar-AE': 'AE'
+    };
+
+    if (langMap[lang]) return langMap[lang];
+
+    // 2. Timezone heuristic
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if (tz.includes('Casablanca')) return 'MA';
+    if (tz.includes('Paris')) return 'FR';
+    if (tz.includes('London')) return 'GB';
+    if (tz.includes('New_York') || tz.includes('Los_Angeles')) return 'US';
+
+    // 3. Default based on widget language
+    const langDefaults = { fr: 'FR', en: 'US', es: 'ES', ar: 'MA', ary: 'MA' };
+    return langDefaults[state.currentLang] || 'FR';
+  }
+
+  // Expose UCP and MCP for external access
+  window.VocalIA.UCP = UCP;
+  window.VocalIA.MCP = MCP;
+
+  // ============================================================
   // SPEECH SYNTHESIS & RECOGNITION
   // ============================================================
 
@@ -592,7 +1413,7 @@
     state.recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       document.getElementById('va-input').value = transcript;
-      sendMessage(transcript);
+      sendMessage(transcript, 'voice'); // Track as voice input
 
       // Log detected language for analytics
       if (event.results[0][0].confidence) {
@@ -1040,14 +1861,79 @@
   // MESSAGE HANDLING
   // ============================================================
 
-  async function sendMessage(text) {
+  async function sendMessage(text, inputMethod = 'text') {
     if (!text.trim()) return;
+
+    // Track input method (voice vs text)
+    trackInputMethod(inputMethod);
 
     addMessage(text, 'user');
     document.getElementById('va-input').value = '';
     showTyping();
 
     try {
+      // Check for product intent (E-commerce Phase 1)
+      if (CONFIG.ECOMMERCE_MODE && state.tenantId) {
+        const productIntent = detectProductIntent(text);
+        if (productIntent) {
+          trackEvent('product_intent_detected', {
+            intent_type: productIntent.type,
+            category: productIntent.category,
+            query: productIntent.query,
+            input_method: inputMethod
+          });
+
+          // Use MCP for product fetching (integrates with Shopify, WooCommerce, etc.)
+          let products = [];
+
+          if (productIntent.type === 'search' && productIntent.query) {
+            // Search via MCP
+            products = await MCP.searchProducts(productIntent.query);
+          } else if (productIntent.type === 'recommend') {
+            // Get personalized recommendations via MCP
+            products = await MCP.getRecommendations();
+          } else {
+            // Browse by category via MCP
+            products = await MCP.fetchProducts({
+              category: productIntent.category,
+              limit: CONFIG.MAX_CAROUSEL_ITEMS
+            });
+          }
+
+          // Fallback to direct catalog fetch if MCP returns empty
+          if (products.length === 0) {
+            products = await fetchCatalogProducts({
+              category: productIntent.category,
+              search: productIntent.query,
+              limit: CONFIG.MAX_CAROUSEL_ITEMS
+            });
+          }
+
+          if (products.length > 0) {
+            hideTyping();
+
+            // Record UCP interaction
+            UCP.recordInteraction('product_search', {
+              intent: productIntent.type,
+              category: productIntent.category,
+              query: productIntent.query,
+              results_count: products.length
+            });
+
+            // Show products in carousel
+            const title = productIntent.query
+              ? `${state.langData?.ecommerce?.resultsFor || 'Résultats pour'} "${productIntent.query}"`
+              : null;
+            addProductCarousel(products, title, productIntent.type);
+
+            // Also get AI response for context
+            const response = await getAIResponse(text);
+            addMessage(response, 'assistant');
+            return;
+          }
+        }
+      }
+
       const response = await getAIResponse(text);
       hideTyping();
       addMessage(response, 'assistant');
@@ -1092,11 +1978,11 @@
     document.getElementById('va-close').addEventListener('click', togglePanel);
 
     document.getElementById('va-send').addEventListener('click', () => {
-      sendMessage(document.getElementById('va-input').value);
+      sendMessage(document.getElementById('va-input').value, 'text');
     });
 
     document.getElementById('va-input').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') sendMessage(e.target.value);
+      if (e.key === 'Enter') sendMessage(e.target.value, 'text');
     });
 
     if (hasSpeechRecognition) {
@@ -1120,12 +2006,72 @@
       await loadLanguage(lang);
       console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
 
+      // Detect tenant ID for e-commerce features
+      detectTenantId();
+      if (state.tenantId) {
+        console.log(`[VocalIA] E-commerce mode: tenant ${state.tenantId}`);
+
+        // Initialize UCP for personalized experience
+        if (CONFIG.ECOMMERCE_MODE) {
+          UCP.syncPreference().then(data => {
+            if (data) {
+              console.log(`[VocalIA] UCP synced: ${data.ltvTier} tier, ${data.profile?.locale}`);
+            }
+          }).catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
+        }
+      }
+
       captureAttribution(); // Session 177: MarEng Injector
       createWidget();
-      trackEvent('voice_widget_loaded', { language: state.currentLang });
+      trackEvent('voice_widget_loaded', {
+        language: state.currentLang,
+        ecommerce_mode: CONFIG.ECOMMERCE_MODE && !!state.tenantId,
+        tenant_id: state.tenantId
+      });
 
     } catch (error) {
       console.error('[VocalIA] Init error:', error);
+    }
+  }
+
+  /**
+   * Detect tenant ID from various sources
+   * Priority: 1. Script data attribute 2. URL param 3. Meta tag 4. Global variable
+   */
+  function detectTenantId() {
+    // 1. Script data attribute
+    const scriptTag = document.querySelector('script[data-vocalia-tenant]');
+    if (scriptTag) {
+      state.tenantId = scriptTag.dataset.vocaliaTenant;
+      return;
+    }
+
+    // 2. URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlTenant = urlParams.get('tenant_id') || urlParams.get('tenantId');
+    if (urlTenant) {
+      state.tenantId = urlTenant;
+      return;
+    }
+
+    // 3. Meta tag
+    const metaTag = document.querySelector('meta[name="vocalia-tenant"]');
+    if (metaTag) {
+      state.tenantId = metaTag.content;
+      return;
+    }
+
+    // 4. Global variable
+    if (window.VOCALIA_TENANT_ID) {
+      state.tenantId = window.VOCALIA_TENANT_ID;
+      return;
+    }
+
+    // 5. Widget element data attribute
+    const widgetElement = document.getElementById('vocalia-widget');
+    if (widgetElement?.dataset.tenantId) {
+      state.tenantId = widgetElement.dataset.tenantId;
+      return;
     }
   }
 

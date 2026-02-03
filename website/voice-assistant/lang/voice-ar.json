@@ -139,5 +139,29 @@
     "industryFollowup": " هل تريد أن ترى كيف يمكن لـ VocalIA أتمتة مكالماتك؟",
     "servicesFollowup": " هل تريد عرضاً توضيحياً مخصصاً؟",
     "leadsFollowup": " هل تريد رؤية تأهيل BANT الخاص بنا قيد التشغيل؟"
+  },
+  "ecommerce": {
+    "recommendedForYou": "موصى به لك",
+    "searchResults": "نتائج البحث",
+    "fromCategory": "من هذه الفئة",
+    "popular": "الأكثر شعبية",
+    "relatedProducts": "منتجات مشابهة",
+    "resultsFor": "نتائج لـ",
+    "viewDetails": "عرض التفاصيل",
+    "buyNow": "اشتري الآن",
+    "addToCart": "أضف للسلة",
+    "notifyMe": "أعلمني",
+    "outOfStock": "نفذت الكمية",
+    "lowStock": "متبقي {n} فقط",
+    "new": "جديد",
+    "sale": "تخفيض",
+    "searchKeywords": ["أبحث", "بحث", "جد", "أرني", "أين", "أحتاج", "أريد"],
+    "recommendKeywords": ["أنصح", "اقترح", "ماذا تنصح", "أفضل", "توب"],
+    "categoryKeywords": {
+      "electronics": ["هاتف", "لابتوب", "كمبيوتر", "تابلت", "إلكترونيات"],
+      "clothing": ["ملابس", "فستان", "بنطلون", "قميص", "موضة"],
+      "food": ["طعام", "أكل", "بقالة", "وجبة"],
+      "beauty": ["جمال", "مستحضرات", "مكياج", "عناية", "عطر"]
+    }
   }
 }

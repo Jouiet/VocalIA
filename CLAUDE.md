@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.84.0 | 03/02/2026 | Session 250.75 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.85.0 | 03/02/2026 | Session 250.76 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
@@ -10,7 +10,7 @@
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **54 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
 > **A2A Protocol: 4 Agents ✅** | TranslationSupervisor, BillingAgent, TenantOnboardingAgent, VoiceAgentB2B
-> **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
+> **AG-UI Protocol: Voice Widget v3.0 ✅** | 17 event types | SSE-compatible | CopilotKit compliant | **E-commerce Phase 1: Product Cards + Carousel + Voice/Text Tracking + UCP/MCP Integration**
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
 > **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 23 Func. Tools | 44 Core Modules**
@@ -43,6 +43,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
+**Session 250.76 E-COMMERCE WIDGET PHASE 1 COMPLETE:** voice-widget-core.js v3.0.0 - (1) Product Cards UI: CSS 150+ lines, generateProductCardHTML(), addProductCard(), addProductCarousel() with featured/sale badges, stock indicators, LRU carousel - (2) Voice vs Text Tracking: trackInputMethod(), inputMethodStats{voice, text}, voiceRatio calculation, GA4 events (input_method_used, product_intent_detected, product_viewed, product_card_clicked, product_carousel_displayed) - (3) UCP Integration: UCP.syncPreference(), UCP.recordInteraction(), UCP.trackEvent(), LTV-based recommendation limits (bronze→diamond: 3→8 products) - (4) MCP Integration: MCP.fetchProducts(), MCP.searchProducts(), MCP.getRecommendations() routing to Shopify/WooCommerce/Magento connectors - (5) API Endpoints: db-api.cjs +120 lines - POST /api/tenants/:id/catalog/browse, /search, /recommendations + POST /api/ucp/sync, /interaction, /event - (6) i18n: ecommerce.* section (25 keys) × 5 locales (FR, EN, ES, AR, ARY) - (7) Hybrid Input: Text default (100%), voice opt-in (~60% browser support) - detectProductIntent() multilingual keywords - 306/306 tests pass
 **Session 250.75 ALL API CREDENTIALS VERIFIED:** (1) XAI/Grok: xai-u30Q...MWMf (grok-4-latest → grok-4-0709) ✅ (2) ElevenLabs: sk_3dde...3a73 (creator tier, 109,998 chars) ✅ (3) Twilio: ACc3673...0ba6 (account "VocalIA" active) ✅ (4) Gemini: AIzaSyAU...UHk (gemini-2.5-flash) ✅ (5) Anthropic + HuggingFace: configured ✅ (6) Google OAuth: already present ✅ - .env VocalIA complete with 10 API keys - 306/306 unit tests pass - All audit docs 100% COMPLETE
 **Session 250.74bis WIDGETS E-COMMERCE BENCHMARK:** Recherche exhaustive (Web, GitHub, HuggingFace) sur 12 types de widgets intelligents e-commerce. Document: docs/BENCHMARK-ECOMMERCE-WIDGETS-INTELLIGENTS.md (800+ lignes). Findings: (1) VocalIA avantage concurrentiel Voice Commerce (2) 4 opportunites widgets uniques sans concurrent: Voice Exit-Intent (+18-25% recovery), Voice Quiz (+65% completion), Voice Cart Recovery (+25% recovery), Voice Social Proof (+12% FOMO) (3) Stack complementaire: AI Recommendations (+25% AOV), Exit-Intent (+13% recovery), Social Proof (+8-15% conversion) (4) Marche widgets AI $8.65B 2025 CAGR 37.9% (5) Sources: 30+ web, 8 GitHub repos, 5 HuggingFace models - RECHERCHE ONLY, implementation en attente validation
 **Session 250.74 WEB SPEECH FALLBACK + E2E VERIFIED:** (1) Voice preview Web Speech API fallback for agents.html - speakWithWebSpeech() function - WEB_SPEECH_VOICES mapping (lang+gender→browser voice) - Automatic fallback when backend /tts unavailable (FR/EN/ES/AR) - Darija still requires ElevenLabs (2) E2E tests: 420/420 pass (was 375) - 5 browsers verified (3) Unit tests: 306/306 pass (4) All audit docs P1/P2 tasks verified 100% COMPLETE

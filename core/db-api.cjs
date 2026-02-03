@@ -1370,6 +1370,191 @@ async function handleRequest(req, res) {
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // Session 250.74: CATALOG BROWSE/SEARCH/RECOMMENDATIONS (Widget Integration)
+  // ═══════════════════════════════════════════════════════════════
+
+  // Catalog Browse - POST /api/tenants/:id/catalog/browse
+  const catalogBrowseMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/browse$/);
+  if (catalogBrowseMatch && method === 'POST') {
+    const tenantId = catalogBrowseMatch[1];
+    // No auth required for public widget access
+
+    try {
+      const body = await readBody(req);
+      const catalogStore = getCatalogStore();
+      const catalogType = body.catalog_type || 'PRODUCTS';
+
+      let items = catalogStore.getItems(tenantId, catalogType) || [];
+
+      // Filter by category
+      if (body.category) {
+        const cat = body.category.toLowerCase();
+        items = items.filter(i => i.category?.toLowerCase().includes(cat));
+      }
+
+      // Filter in stock only
+      if (body.inStock !== false) {
+        items = items.filter(i => i.in_stock !== false && i.available !== false);
+      }
+
+      // Sort by relevance (featured first, then by created date)
+      items.sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+      });
+
+      // Apply limit
+      const limit = Math.min(body.limit || 5, 20);
+      items = items.slice(0, limit);
+
+      sendJson(res, 200, {
+        success: true,
+        count: items.length,
+        items,
+        voiceSummary: items.length > 0
+          ? `J'ai trouvé ${items.length} produits${body.category ? ` dans ${body.category}` : ''}.`
+          : 'Aucun produit trouvé.'
+      });
+    } catch (e) {
+      sendError(res, 500, `Catalog browse error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Search - POST /api/tenants/:id/catalog/search
+  const catalogSearchMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/search$/);
+  if (catalogSearchMatch && method === 'POST') {
+    const tenantId = catalogSearchMatch[1];
+    // No auth required for public widget access
+
+    try {
+      const body = await readBody(req);
+      const query = (body.q || body.query || '').toLowerCase().trim();
+
+      if (!query) {
+        sendJson(res, 200, { success: true, results: [], count: 0 });
+        return;
+      }
+
+      const catalogStore = getCatalogStore();
+      const catalogType = body.catalog_type || 'PRODUCTS';
+      let items = catalogStore.getItems(tenantId, catalogType) || [];
+
+      // Simple text search across name, description, category
+      const queryTerms = query.split(/\s+/);
+      items = items.filter(item => {
+        const searchText = [
+          item.name || '',
+          item.description || '',
+          item.category || '',
+          item.tags?.join(' ') || ''
+        ].join(' ').toLowerCase();
+
+        return queryTerms.every(term => searchText.includes(term));
+      });
+
+      // Score and sort by relevance
+      items = items.map(item => {
+        let score = 0;
+        const name = (item.name || '').toLowerCase();
+        queryTerms.forEach(term => {
+          if (name.includes(term)) score += 10;
+          if (name.startsWith(term)) score += 5;
+        });
+        return { ...item, _score: score };
+      }).sort((a, b) => b._score - a._score);
+
+      // Remove score and limit results
+      const limit = Math.min(body.limit || 5, 20);
+      const results = items.slice(0, limit).map(({ _score, ...item }) => item);
+
+      sendJson(res, 200, {
+        success: true,
+        query,
+        count: results.length,
+        results,
+        voiceSummary: results.length > 0
+          ? `J'ai trouvé ${results.length} résultat${results.length > 1 ? 's' : ''} pour "${query}".`
+          : `Aucun résultat pour "${query}".`
+      });
+    } catch (e) {
+      sendError(res, 500, `Catalog search error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Recommendations - POST /api/tenants/:id/catalog/recommendations
+  const catalogRecoMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/recommendations$/);
+  if (catalogRecoMatch && method === 'POST') {
+    const tenantId = catalogRecoMatch[1];
+    // No auth required for public widget access
+
+    try {
+      const body = await readBody(req);
+      const catalogStore = getCatalogStore();
+      const catalogType = body.catalog_type || 'PRODUCTS';
+      let items = catalogStore.getItems(tenantId, catalogType) || [];
+
+      // Filter in stock
+      items = items.filter(i => i.in_stock !== false && i.available !== false);
+
+      // Exclude already viewed products
+      const viewed = body.productsViewed || [];
+      if (viewed.length > 0) {
+        items = items.filter(i => !viewed.includes(i.id));
+      }
+
+      // Score items for recommendations
+      items = items.map(item => {
+        let score = 0;
+
+        // Boost featured items
+        if (item.featured) score += 20;
+
+        // Boost items on sale
+        if (item.compare_at_price && item.compare_at_price > item.price) score += 15;
+
+        // Boost new items (last 7 days)
+        const createdAt = new Date(item.createdAt || 0);
+        const ageMs = Date.now() - createdAt.getTime();
+        if (ageMs < 7 * 24 * 60 * 60 * 1000) score += 10;
+
+        // Boost highly rated items
+        if (item.rating >= 4.5) score += 10;
+        else if (item.rating >= 4.0) score += 5;
+
+        // Add some randomness for variety
+        score += Math.random() * 5;
+
+        return { ...item, _score: score };
+      });
+
+      // Sort by score
+      items.sort((a, b) => b._score - a._score);
+
+      // Apply LTV-based limit
+      const ltvLimits = { bronze: 3, silver: 4, gold: 5, platinum: 6, diamond: 8 };
+      const limit = ltvLimits[body.ltvTier] || body.limit || 5;
+
+      const recommendations = items.slice(0, limit).map(({ _score, ...item }) => item);
+
+      sendJson(res, 200, {
+        success: true,
+        count: recommendations.length,
+        recommendations,
+        ltvTier: body.ltvTier || 'bronze',
+        voiceSummary: recommendations.length > 0
+          ? `Voici ${recommendations.length} produits recommandés pour vous.`
+          : 'Je n\'ai pas de recommandations pour le moment.'
+      });
+    } catch (e) {
+      sendError(res, 500, `Recommendations error: ${e.message}`);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // END CATALOG ENDPOINTS
   // ═══════════════════════════════════════════════════════════════
 
@@ -1540,6 +1725,133 @@ async function handleRequest(req, res) {
     }
     return;
   }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.74: UCP ENDPOINTS FOR WIDGET INTEGRATION
+  // ═══════════════════════════════════════════════════════════════
+
+  // UCP Sync - POST /api/ucp/sync
+  if (path === '/api/ucp/sync' && method === 'POST') {
+    // No auth required for widget access
+    try {
+      const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+      const body = await readBody(req);
+
+      if (!body.tenantId) {
+        sendError(res, 400, 'tenantId required');
+        return;
+      }
+
+      const ucpStore = getUCPStore();
+      const userId = body.userId || `anon_${Date.now()}`;
+      const countryCode = body.countryCode || 'MA';
+
+      // Market rules based on country
+      const marketRules = {
+        MA: { locale: 'fr-MA', currency: 'MAD', market: 'morocco' },
+        FR: { locale: 'fr-FR', currency: 'EUR', market: 'europe' },
+        BE: { locale: 'fr-BE', currency: 'EUR', market: 'europe' },
+        ES: { locale: 'es-ES', currency: 'EUR', market: 'europe' },
+        US: { locale: 'en-US', currency: 'USD', market: 'international' },
+        GB: { locale: 'en-GB', currency: 'GBP', market: 'international' },
+        SA: { locale: 'ar-SA', currency: 'SAR', market: 'mena' },
+        AE: { locale: 'ar-AE', currency: 'AED', market: 'mena' }
+      };
+
+      const rules = marketRules[countryCode] || marketRules.MA;
+
+      // Get or create profile
+      let profile = ucpStore.getProfile(body.tenantId, userId);
+
+      if (!profile) {
+        profile = ucpStore.upsertProfile(body.tenantId, userId, {
+          country: countryCode,
+          ...rules,
+          totalInteractions: 0,
+          lifetimeValue: 0
+        });
+      }
+
+      // Get LTV tier
+      const ltvData = ucpStore.getLTV(body.tenantId, userId);
+      const ltvTier = ltvData?.tier || 'bronze';
+
+      sendJson(res, 200, {
+        success: true,
+        profile,
+        ltvTier,
+        rules
+      });
+    } catch (e) {
+      sendError(res, 500, `UCP sync error: ${e.message}`);
+    }
+    return;
+  }
+
+  // UCP Record Interaction - POST /api/ucp/interaction
+  if (path === '/api/ucp/interaction' && method === 'POST') {
+    try {
+      const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+      const body = await readBody(req);
+
+      if (!body.tenantId || !body.userId) {
+        sendError(res, 400, 'tenantId and userId required');
+        return;
+      }
+
+      const ucpStore = getUCPStore();
+
+      const interaction = {
+        type: body.type || 'widget_chat',
+        timestamp: new Date().toISOString(),
+        channel: body.channel || 'web_widget',
+        metadata: body.metadata || {}
+      };
+
+      ucpStore.recordInteraction(body.tenantId, body.userId, interaction);
+
+      sendJson(res, 200, { success: true, interaction });
+    } catch (e) {
+      sendError(res, 500, `UCP interaction error: ${e.message}`);
+    }
+    return;
+  }
+
+  // UCP Track Event - POST /api/ucp/event
+  // Uses recordInteraction with type='behavioral_event'
+  if (path === '/api/ucp/event' && method === 'POST') {
+    try {
+      const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+      const body = await readBody(req);
+
+      if (!body.tenantId || !body.userId || !body.event) {
+        sendError(res, 400, 'tenantId, userId, and event required');
+        return;
+      }
+
+      const ucpStore = getUCPStore();
+
+      // Use recordInteraction with event metadata
+      const interaction = {
+        type: 'behavioral_event',
+        channel: body.source || 'widget',
+        event_name: body.event,
+        event_value: body.value,
+        timestamp: new Date().toISOString()
+      };
+
+      ucpStore.recordInteraction(body.tenantId, body.userId, interaction);
+
+      sendJson(res, 200, { success: true, event: interaction });
+    } catch (e) {
+      sendError(res, 500, `UCP event error: ${e.message}`);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // END UCP ENDPOINTS
+  // ═══════════════════════════════════════════════════════════════
 
   // Comprehensive health check (all stores) - Session 250.57bis
   if (path === '/api/health' && method === 'GET') {
