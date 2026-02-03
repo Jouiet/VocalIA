@@ -7,13 +7,28 @@
  * - Automatic sync scheduling
  * - Voice-optimized responses
  * - Per-tenant isolation
+ * - Google Calendar integration for dynamic slots (Session 250.72)
  *
- * Version: 1.0.0 | Session 250.63 | 03/02/2026
+ * Version: 1.1.0 | Session 250.72 | 03/02/2026
  */
 
 const fs = require('fs');
 const path = require('path');
 const { CatalogConnectorFactory, CATALOG_TYPES, CONNECTOR_STATUS } = require('./catalog-connector.cjs');
+
+// Lazy-load CalendarSlotsConnector to avoid circular dependencies
+let CalendarSlotsStore = null;
+function getCalendarSlotsStore() {
+  if (!CalendarSlotsStore) {
+    try {
+      const module = require('./calendar-slots-connector.cjs');
+      CalendarSlotsStore = module.getCalendarSlotsStore();
+    } catch (e) {
+      console.warn('[TenantCatalogStore] CalendarSlotsConnector not available:', e.message);
+    }
+  }
+  return CalendarSlotsStore;
+}
 
 // Store configuration
 const CONFIG = {
@@ -512,9 +527,128 @@ class TenantCatalogStore {
     }
   }
 
+  /**
+   * Get available appointment slots for a service
+   * Uses CalendarSlotsConnector for real-time Google Calendar availability,
+   * or falls back to static slots from catalog JSON
+   *
+   * @param {string} tenantId - Tenant identifier
+   * @param {object} options - Options
+   * @param {string} options.date - Date in YYYY-MM-DD format
+   * @param {string} options.serviceId - Optional service ID filter
+   * @param {object} options.calendarConfig - Calendar configuration (for dynamic slots)
+   * @returns {object} Voice-formatted slots response
+   */
+  async getAvailableSlots(tenantId, options = {}) {
+    const date = options.date || new Date().toISOString().split('T')[0];
+
+    // Try CalendarSlotsConnector first for real-time availability
+    const calendarStore = getCalendarSlotsStore();
+    if (calendarStore) {
+      try {
+        // Check if tenant has calendar config
+        const connector = calendarStore.getConnector(tenantId);
+        if (connector || options.calendarConfig) {
+          // Register tenant with calendar config if not already registered
+          if (!connector && options.calendarConfig) {
+            await calendarStore.registerTenant(tenantId, options.calendarConfig);
+          }
+
+          const slotsSummary = await calendarStore.getSlots(tenantId, date, options.calendarConfig);
+
+          if (slotsSummary && slotsSummary.availableCount !== undefined) {
+            return {
+              success: true,
+              date,
+              slots: slotsSummary.slots || [],
+              count: slotsSummary.availableCount,
+              source: slotsSummary.source || 'google_calendar',
+              nextAvailable: slotsSummary.nextAvailable,
+              voiceSummary: slotsSummary.voiceSummary
+            };
+          }
+        }
+      } catch (error) {
+        console.warn(`[TenantCatalogStore] Calendar slots error for ${tenantId}: ${error.message}`);
+        // Fall through to static slots
+      }
+    }
+
+    // Fallback: Static slots from catalog JSON
+    const connector = this.connectors.get(tenantId);
+    if (!connector) {
+      return { success: false, error: 'tenant_not_registered' };
+    }
+
+    try {
+      if (!connector.catalog) {
+        await connector.sync();
+      }
+
+      const catalog = connector.catalog;
+      let slots = catalog?.slots?.slots_by_date?.[date] || [];
+
+      // Filter by service if provided
+      if (options.serviceId && slots.length > 0) {
+        slots = slots.filter(slot =>
+          slot.available && (!slot.service_ids || slot.service_ids.includes(options.serviceId))
+        );
+      } else {
+        slots = slots.filter(slot => slot.available);
+      }
+
+      const voiceSummary = this._generateSlotsSummary(date, slots);
+
+      return {
+        success: true,
+        date,
+        slots,
+        count: slots.length,
+        source: 'static_catalog',
+        voiceSummary
+      };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  /**
+   * Book a slot using CalendarSlotsConnector
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} date - Date in YYYY-MM-DD format
+   * @param {string} time - Time in HH:MM format
+   * @param {object} booking - Booking details
+   */
+  async bookSlot(tenantId, date, time, booking) {
+    const calendarStore = getCalendarSlotsStore();
+    if (!calendarStore) {
+      return { success: false, error: 'calendar_not_available', voiceResponse: 'Le système de réservation n\'est pas disponible.' };
+    }
+
+    return await calendarStore.bookSlot(tenantId, date, time, booking);
+  }
+
   // ============================================
   // VOICE RESPONSE GENERATORS
   // ============================================
+
+  _generateSlotsSummary(date, slots) {
+    if (!slots || slots.length === 0) {
+      return `Aucun créneau disponible pour le ${this._formatDateVoice(date)}.`;
+    }
+
+    const times = slots.slice(0, 5).map(s => s.time).join(', ');
+    const more = slots.length > 5 ? ` et ${slots.length - 5} autres créneaux` : '';
+
+    return `Pour le ${this._formatDateVoice(date)}, nous avons des créneaux à ${times}${more}. Quel horaire vous conviendrait?`;
+  }
+
+  _formatDateVoice(dateStr) {
+    const date = new Date(dateStr);
+    const days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    return `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]}`;
+  }
 
   _generateBrowseSummary(items, category) {
     if (items.length === 0) {

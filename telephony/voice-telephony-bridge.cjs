@@ -117,6 +117,44 @@ async function getTenantVoicePreferences(tenantId) {
 }
 console.log('✅ Tenant voice preferences loader ready');
 
+/**
+ * Session 250.65: Grok Voice Mapping - Map language + gender to Grok voices
+ * Enables tenant voice configuration to affect PRIMARY voice system (not just ElevenLabs Darija)
+ *
+ * Available Grok voices: ara, eve, leo, sal, rex, mika, valentin
+ * - Female: ara (default), eve, mika
+ * - Male: leo, sal, rex, valentin
+ */
+const GROK_VOICE_MAP = {
+  // Default/French
+  fr_female: 'ara',      // Ara - warm, professional female
+  fr_male: 'leo',        // Leo - confident male
+  // English
+  en_female: 'eve',      // Eve - clear female
+  en_male: 'sal',        // Sal - articulate male
+  // Spanish
+  es_female: 'mika',     // Mika - expressive female
+  es_male: 'rex',        // Rex - authoritative male
+  // Arabic
+  ar_female: 'ara',      // Ara - warm female (works well for Arabic)
+  ar_male: 'valentin',   // Valentin - deep male
+  // Darija (Moroccan)
+  ary_female: 'ara',     // Ara - ElevenLabs Ghizlane will override for actual TTS
+  ary_male: 'leo',       // Leo - ElevenLabs Jawad will override for actual TTS
+};
+
+/**
+ * Session 250.65: Get Grok voice from tenant preferences
+ * @param {string} language - Voice language (fr, en, es, ar, ary)
+ * @param {string} gender - Voice gender (male, female)
+ * @returns {string} Grok voice name
+ */
+function getGrokVoiceFromPreferences(language = 'fr', gender = 'female') {
+  const key = `${language}_${gender}`;
+  return GROK_VOICE_MAP[key] || GROK_VOICE_MAP.fr_female;
+}
+console.log('✅ Grok voice mapping ready (Session 250.65)');
+
 // RAG Knowledge Base - Legacy fallback (Universal KBs)
 // NOTE: Now loaded via TenantKBLoader with per-client override support
 const KNOWLEDGE_BASES = {
@@ -1272,6 +1310,13 @@ async function createGrokSession(callInfo) {
         }
       };
 
+      // Session 250.65: Fetch tenant voice preferences BEFORE injection
+      // This allows tenant preferences to override persona default voice
+      const tenantId = callInfo.clientId || 'default';
+      const voicePrefs = await getTenantVoicePreferences(tenantId);
+      const tenantGrokVoice = getGrokVoiceFromPreferences(voicePrefs.voice_language, voicePrefs.voice_gender);
+      console.log(`[Voice] Tenant ${tenantId} preferences: lang=${voicePrefs.voice_language}, gender=${voicePrefs.voice_gender} → Grok voice: ${tenantGrokVoice}`);
+
       // Determine Persona based on Call Context
       const persona = VoicePersonaInjector.getPersona(
         callInfo.from,    // Caller ID
@@ -1285,12 +1330,15 @@ async function createGrokSession(callInfo) {
       // This overwrites the default 'voice' and 'instructions' in sessionConfig
       const finalConfig = VoicePersonaInjector.inject(sessionConfig, persona);
 
-      ws.send(JSON.stringify(finalConfig));
+      // Session 250.65: Override voice with tenant preference if tenant has configured one
+      // This makes tenant voice configuration affect the PRIMARY Grok voice system
+      if (tenantId !== 'default' && finalConfig.session) {
+        const originalVoice = finalConfig.session.voice;
+        finalConfig.session.voice = tenantGrokVoice;
+        console.log(`[Voice] Tenant override: ${originalVoice} → ${tenantGrokVoice} (Session 250.65)`);
+      }
 
-      // Session 250.63: Fetch tenant voice preferences from DB
-      const tenantId = callInfo.clientId || 'default';
-      const voicePrefs = await getTenantVoicePreferences(tenantId);
-      console.log(`[Voice] Tenant ${tenantId} preferences: lang=${voicePrefs.voice_language}, gender=${voicePrefs.voice_gender}`);
+      ws.send(JSON.stringify(finalConfig));
 
       const session = {
         id: sessionId,
@@ -1302,7 +1350,8 @@ async function createGrokSession(callInfo) {
           ...(finalConfig.session_config?.metadata || finalConfig.metadata || {}),
           tenant_id: tenantId,
           voice_language: voicePrefs.voice_language,
-          voice_gender: voicePrefs.voice_gender
+          voice_gender: voicePrefs.voice_gender,
+          grok_voice: tenantGrokVoice // Session 250.65: Track actual Grok voice used
         }, // Store injected persona metadata + voice preferences
         createdAt: Date.now(),
         lastActivityAt: Date.now(),
@@ -1962,6 +2011,11 @@ async function handleGetServices(session, args) {
 
 /**
  * Get available appointment slots for a service
+ * Uses CalendarSlotsConnector for real-time Google Calendar availability,
+ * or falls back to static slots from catalog
+ *
+ * @see core/calendar-slots-connector.cjs
+ * @see core/tenant-catalog-store.cjs:getAvailableSlots()
  */
 async function handleGetAvailableSlots(session, args) {
   const tenantId = session.metadata?.tenant_id || 'default';
@@ -1981,36 +2035,32 @@ async function handleGetAvailableSlots(session, args) {
       }
     }
 
-    const result = await store.getServices(tenantId, {
-      date: date
+    // Use the new getAvailableSlots method which integrates CalendarSlotsConnector
+    const result = await store.getAvailableSlots(tenantId, {
+      date: date,
+      serviceId: serviceId,
+      calendarConfig: session.metadata?.calendar_config // Optional tenant calendar config
     });
 
     if (!result.success) {
       return { success: false, error: result.error, voiceResponse: "Je ne peux pas consulter les créneaux disponibles." };
     }
 
-    // Filter slots for the specific service if provided
-    let availableSlots = result.slots || [];
-    if (serviceId && Array.isArray(availableSlots)) {
-      availableSlots = availableSlots.filter(slot =>
-        slot.available && (!slot.service_ids || slot.service_ids.includes(serviceId))
-      );
-    }
+    const availableSlots = result.slots || [];
 
-    // Generate voice response
-    let voiceResponse;
-    if (availableSlots.length === 0) {
-      voiceResponse = `Aucun créneau disponible pour le ${date}. Voulez-vous essayer une autre date?`;
-    } else {
-      const slotTimes = availableSlots.slice(0, 3).map(s => s.time).join(', ');
-      voiceResponse = `Créneaux disponibles le ${date}: ${slotTimes}. Quel horaire vous convient?`;
-    }
+    // Use voice summary from store (includes Calendar or static source)
+    const voiceResponse = result.voiceSummary || (availableSlots.length === 0
+      ? `Aucun créneau disponible pour le ${date}. Voulez-vous essayer une autre date?`
+      : `Créneaux disponibles le ${date}: ${availableSlots.slice(0, 3).map(s => s.time).join(', ')}. Quel horaire vous convient?`
+    );
 
     return {
       success: true,
       date: date,
       slots: availableSlots,
-      count: availableSlots.length,
+      count: result.count || availableSlots.length,
+      source: result.source || 'unknown',
+      nextAvailable: result.nextAvailable,
       voiceResponse: voiceResponse
     };
   } catch (error) {

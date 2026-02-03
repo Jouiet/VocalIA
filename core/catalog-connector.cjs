@@ -1051,19 +1051,29 @@ class WooCommerceCatalogConnector extends CatalogConnector {
 /**
  * Square Catalog Connector
  * Production connector using Square Catalog API
- * Reference: https://developer.squareup.com/reference/square/catalog-api
- * Auth: OAuth 2.0 with ITEMS_READ/ITEMS_WRITE scopes
+ *
+ * Official Documentation:
+ * - Catalog API: https://developer.squareup.com/reference/square/catalog-api
+ * - List Catalog: GET /v2/catalog/list (NOT POST!)
+ * - Search Catalog: POST /v2/catalog/search
+ * - Inventory API: https://developer.squareup.com/reference/square/inventory-api
+ *
+ * Authentication: OAuth 2.0 Bearer token
+ * Required scopes: ITEMS_READ, INVENTORY_READ (for stock)
+ *
+ * API Version: 2026-01-22 (per official docs)
  */
 class SquareCatalogConnector extends CatalogConnector {
   constructor(tenantId, config = {}) {
     super(tenantId, config);
     this.catalogType = config.catalogType || CATALOG_TYPES.PRODUCTS;
     this.accessToken = config.accessToken;
-    this.locationId = config.locationId; // Optional, for inventory
+    this.locationId = config.locationId; // Required for inventory counts
     this.environment = config.environment || 'production'; // 'sandbox' or 'production'
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
     this.currency = config.currency || 'MAD';
+    this.apiVersion = '2026-01-22'; // Per official Square docs
   }
 
   get _baseUrl() {
@@ -1097,23 +1107,49 @@ class SquareCatalogConnector extends CatalogConnector {
     }
   }
 
+  /**
+   * Make Square API request
+   * @param {string} endpoint - API endpoint path
+   * @param {object} options - Request options
+   * @param {string} options.method - HTTP method (default: GET)
+   * @param {object} options.body - Request body for POST/PUT
+   * @param {object} options.query - Query parameters for GET
+   */
   async _apiRequest(endpoint, options = {}) {
-    const url = `${this._baseUrl}${endpoint}`;
+    let url = `${this._baseUrl}${endpoint}`;
 
-    const response = await fetch(url, {
+    // Add query parameters for GET requests
+    if (options.query && Object.keys(options.query).length > 0) {
+      const params = new URLSearchParams();
+      for (const [key, value] of Object.entries(options.query)) {
+        if (value !== undefined && value !== null) {
+          params.append(key, value);
+        }
+      }
+      url += `?${params.toString()}`;
+    }
+
+    const fetchOptions = {
       method: options.method || 'GET',
       headers: {
         'Authorization': `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json',
-        'Square-Version': '2025-01-23',
+        'Square-Version': this.apiVersion,
         'User-Agent': 'VocalIA-CatalogConnector/1.0'
-      },
-      body: options.body ? JSON.stringify(options.body) : undefined
-    });
+      }
+    };
+
+    // Only add body for POST/PUT/PATCH
+    if (options.body && ['POST', 'PUT', 'PATCH'].includes(fetchOptions.method)) {
+      fetchOptions.body = JSON.stringify(options.body);
+    }
+
+    const response = await fetch(url, fetchOptions);
 
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
-      throw new Error(`Square API error ${response.status}: ${error.errors?.[0]?.detail || 'Unknown error'}`);
+      const errorMsg = error.errors?.[0]?.detail || error.message || 'Unknown error';
+      throw new Error(`Square API error ${response.status}: ${errorMsg}`);
     }
 
     return response.json();
@@ -1167,21 +1203,26 @@ class SquareCatalogConnector extends CatalogConnector {
     }
   }
 
+  /**
+   * Fetch all catalog items using GET /v2/catalog/list
+   * Per official docs: https://developer.squareup.com/reference/square/catalog-api/list-catalog
+   *
+   * @returns {Array} All catalog objects
+   */
   async _fetchAllItems() {
     const items = [];
     let cursor = null;
 
     do {
-      const body = {
-        types: ['ITEM', 'CATEGORY', 'MODIFIER_LIST', 'MODIFIER'],
-        include_deleted_objects: false,
-        include_related_objects: true
+      // GET /v2/catalog/list with query parameters (NOT POST!)
+      const query = {
+        types: 'ITEM,CATEGORY,MODIFIER_LIST,MODIFIER'
       };
-      if (cursor) body.cursor = cursor;
+      if (cursor) query.cursor = cursor;
 
       const response = await this._apiRequest('/catalog/list', {
-        method: 'POST',
-        body
+        method: 'GET',
+        query
       });
 
       items.push(...(response.objects || []));
@@ -1403,8 +1444,19 @@ class SquareCatalogConnector extends CatalogConnector {
 /**
  * Lightspeed Catalog Connector
  * Production connector for Lightspeed Restaurant (K-Series) and Retail (X-Series)
- * Reference: https://api-docs.lsk.lightspeed.app/ (K-Series)
- * Reference: https://x-series-api.lightspeedhq.com/ (X-Series)
+ *
+ * Official Documentation:
+ * - K-Series (Restaurant): https://api-docs.lsk.lightspeed.app/
+ *   - GET /o/op/1/menu/list?businessLocationId={id} - List all menus
+ *   - GET /o/op/1/menu/load/{menuId}?businessLocationId={id} - Get single menu
+ *   - GET /o/op/1/menu/modifiers?businessLocationId={id} - Get modifiers
+ *
+ * - X-Series (Retail): https://x-series-api.lightspeedhq.com/
+ *   - GET /API/V3/Account/{accountId}/Item.json - List products
+ *
+ * Authentication: OAuth 2.0 Bearer token
+ *
+ * Updated: Session 250.72 with correct K-Series endpoints per official docs
  */
 class LightspeedCatalogConnector extends CatalogConnector {
   constructor(tenantId, config = {}) {
@@ -1413,7 +1465,8 @@ class LightspeedCatalogConnector extends CatalogConnector {
     this.accessToken = config.accessToken;
     this.accountId = config.accountId;
     this.series = config.series || 'K'; // 'K' = Restaurant, 'X' = Retail
-    this.businessId = config.businessId; // Required for K-Series
+    this.businessLocationId = config.businessLocationId; // Required for K-Series (not businessId!)
+    this.environment = config.environment || 'production'; // 'trial' or 'production'
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
     this.currency = config.currency || 'MAD';
@@ -1421,8 +1474,12 @@ class LightspeedCatalogConnector extends CatalogConnector {
 
   get _baseUrl() {
     if (this.series === 'K') {
-      return 'https://api.lsk.lightspeed.app/api/v1';
+      // K-Series uses different base URL format per official docs
+      return this.environment === 'trial'
+        ? 'https://api.trial.lsk.lightspeed.app'
+        : 'https://api.lsk.lightspeed.app';
     }
+    // X-Series retail
     return 'https://api.lightspeedapp.com/API/V3/Account';
   }
 
@@ -1435,12 +1492,22 @@ class LightspeedCatalogConnector extends CatalogConnector {
 
     try {
       if (this.series === 'K') {
-        // K-Series restaurant
-        const response = await this._apiRequest('/businesses');
-        if (response.data?.length > 0) {
-          this.businessId = this.businessId || response.data[0].id;
+        // K-Series restaurant - Test by listing menus
+        // Requires businessLocationId per official docs
+        if (!this.businessLocationId) {
+          throw new Error('K-Series requires businessLocationId configuration');
+        }
+
+        // GET /o/op/1/menu/list?businessLocationId={id}
+        const response = await this._apiRequest('/o/op/1/menu/list', {
+          query: { businessLocationId: this.businessLocationId }
+        });
+
+        // Response is array of menus [{menuName, ikentooMenuId}, ...]
+        if (Array.isArray(response)) {
           this.status = CONNECTOR_STATUS.CONNECTED;
-          console.log(`[LightspeedConnector] Connected K-Series: ${this.tenantId}`);
+          this._menuIds = response.map(m => m.ikentooMenuId);
+          console.log(`[LightspeedConnector] Connected K-Series: ${this.tenantId}, ${response.length} menus`);
           return true;
         }
       } else {
@@ -1452,7 +1519,7 @@ class LightspeedCatalogConnector extends CatalogConnector {
           return true;
         }
       }
-      throw new Error('Invalid account response');
+      throw new Error('Invalid response from Lightspeed API');
     } catch (error) {
       this.status = CONNECTOR_STATUS.ERROR;
       this.lastError = error.message;
@@ -1461,12 +1528,24 @@ class LightspeedCatalogConnector extends CatalogConnector {
     }
   }
 
+  /**
+   * Make Lightspeed API request
+   * @param {string} endpoint - API endpoint path
+   * @param {object} options - Request options
+   * @param {object} options.query - Query parameters (for K-Series businessLocationId, etc.)
+   */
   async _apiRequest(endpoint, options = {}) {
-    let url;
-    if (this.series === 'K') {
-      url = `${this._baseUrl}${endpoint}`;
-    } else {
-      url = `${this._baseUrl}${endpoint}`;
+    let url = `${this._baseUrl}${endpoint}`;
+
+    // Add query parameters
+    if (options.query && Object.keys(options.query).length > 0) {
+      const params = new URLSearchParams();
+      for (const [key, value] of Object.entries(options.query)) {
+        if (value !== undefined && value !== null) {
+          params.append(key, value);
+        }
+      }
+      url += `?${params.toString()}`;
     }
 
     const response = await fetch(url, {
@@ -1527,43 +1606,100 @@ class LightspeedCatalogConnector extends CatalogConnector {
     }
   }
 
+  /**
+   * Sync K-Series Restaurant Menu
+   * Uses official K-Series API endpoints:
+   * - GET /o/op/1/menu/list?businessLocationId={id} - List all menus
+   * - GET /o/op/1/menu/load/{menuId}?businessLocationId={id} - Get menu details
+   *
+   * Response structure per official docs:
+   * - menuName, menuEntryGroups[] with menuEntry[] containing menuItemEntry/menuGroupEntry
+   * - Each item has: productName, productPrice, sku, color, richData, allergenCodes
+   */
   async _syncKSeriesMenu() {
-    const response = await this._apiRequest(`/businesses/${this.businessId}/menu`);
-    const menu = response.data || {};
+    // First, get list of menus
+    const menuList = await this._apiRequest('/o/op/1/menu/list', {
+      query: { businessLocationId: this.businessLocationId }
+    });
 
-    const categories = (menu.categories || []).map(cat => ({
-      id: cat.id,
-      name: cat.name,
-      items: (cat.items || []).map(item => ({
-        id: item.id,
-        name: item.name,
-        description: item.description || '',
-        price: item.price || 0,
-        currency: this.currency,
-        available: item.available !== false,
-        preparation_time: item.prep_time,
-        modifiers: (item.modifier_groups || []).flatMap(g =>
-          (g.modifiers || []).map(m => ({
-            id: m.id,
-            name: m.name,
-            price: m.price || 0
-          }))
-        ),
-        dietary_info: item.dietary_labels || [],
-        images: item.image_url ? [item.image_url] : [],
-        voice_description: `${item.name}, ${item.price} ${this.currency}`,
-        voice_summary: `${item.name} à ${item.price} ${this.currency}`
-      }))
-    }));
+    if (!Array.isArray(menuList) || menuList.length === 0) {
+      throw new Error('No menus found for this business location');
+    }
+
+    // Fetch each menu's details
+    const categories = [];
+
+    for (const menuInfo of menuList) {
+      const menuId = menuInfo.ikentooMenuId;
+      const menuName = menuInfo.menuName;
+
+      // GET /o/op/1/menu/load/{menuId}?businessLocationId={id}
+      const menuData = await this._apiRequest(`/o/op/1/menu/load/${menuId}`, {
+        query: {
+          businessLocationId: this.businessLocationId,
+          includeRichContent: 'true'
+        }
+      });
+
+      // Parse menuEntryGroups (categories/screens)
+      const groups = menuData.menuEntryGroups || [];
+      for (const group of groups) {
+        const items = this._parseMenuEntries(group.menuEntry || []);
+
+        if (items.length > 0) {
+          categories.push({
+            id: group.ikentooModifierId || `cat-${categories.length}`,
+            name: group.name || menuName,
+            items
+          });
+        }
+      }
+    }
 
     this.catalog = {
       $schema: 'vocalia-catalog-menu-v1',
       tenant_id: this.tenantId,
       last_sync: new Date().toISOString(),
       source: 'lightspeed-k',
+      businessLocationId: this.businessLocationId,
       currency: this.currency,
       menu: { categories }
     };
+  }
+
+  /**
+   * Parse menu entries recursively (handles nested groups)
+   */
+  _parseMenuEntries(entries) {
+    const items = [];
+
+    for (const entry of entries) {
+      if (entry.menuItemEntry) {
+        // Individual item per K-Series API schema
+        const item = entry.menuItemEntry;
+        items.push({
+          id: item.sku || `item-${items.length}`,
+          name: item.productName,
+          description: item.richData?.description || '',
+          price: item.productPrice || 0,
+          currency: this.currency,
+          available: true,
+          allergens: item.allergenCodes || [],
+          color: item.color,
+          alcoholContent: item.containsAlcohol ? item.alcoholPercentage : null,
+          images: item.richData?.imageDownloadLink ? [item.richData.imageDownloadLink] : [],
+          voice_description: `${item.productName}, ${item.productPrice} ${this.currency}`,
+          voice_summary: `${item.productName} à ${item.productPrice} ${this.currency}`
+        });
+      } else if (entry.menuGroupEntry) {
+        // Nested group - recurse
+        const subEntries = entry.menuGroupEntry.menuEntry || [];
+        items.push(...this._parseMenuEntries(subEntries));
+      }
+      // menuDealEntry (combos) could be added here if needed
+    }
+
+    return items;
   }
 
   async _syncXSeriesProducts() {
