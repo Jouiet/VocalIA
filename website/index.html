@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><span data-i18n="home.vocalia_agents_vocaux_32">VocalIA - Agents Vocaux IA pour Entreprises</span></title>
+  <title data-i18n-title="home.vocalia_agents_vocaux_32">VocalIA - Agents Vocaux IA pour Entreprises</title>
   <meta name="description"
     content="Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées.">
   <link rel="canonical" href="https://vocalia.ma/" />
@@ -119,12 +119,17 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
   <!-- Content Security Policy (Hardened) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
 
   <!-- GSAP Animation Library - Loaded async for performance -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" defer></script>
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+    integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+    crossorigin="anonymous" defer></script>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <!-- Inter Font - Non-blocking load -->
@@ -301,7 +306,7 @@
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  
+
 </head>
 
 <body class="bg-slate-800 text-white antialiased">
@@ -317,7 +322,8 @@
         <!-- Logo -->
         <a href="/" class="flex items-center space-x-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-          <span class="text-xl font-bold gradient-text"><span data-i18n="home.vocalia_3"><span data-i18n="home.vocalia_31">VocalIA</span></span></span>
+          <span class="text-xl font-bold gradient-text"><span data-i18n="home.vocalia_3"><span
+                data-i18n="home.vocalia_31">VocalIA</span></span></span>
         </a>
 
         <!-- Desktop Nav with Mega Menu -->
@@ -327,7 +333,8 @@
             <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1"
               data-i18n="nav.products">
               Produits
-              <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
             <div
               class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
@@ -338,8 +345,10 @@
                     <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
                   </div>
                   <div>
-                    <div class="font-semibold text-white"><span data-i18n="home.voice_widget_23"><span data-i18n="home.voice_widget_30">Voice Widget</span></span></div>
-                    <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web intelligent</div>
+                    <div class="font-semibold text-white"><span data-i18n="home.voice_widget_23"><span
+                          data-i18n="home.voice_widget_30">Voice Widget</span></span></div>
+                    <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web
+                      intelligent</div>
                   </div>
                 </a>
                 <a href="/products/voice-telephony"
@@ -348,7 +357,8 @@
                     <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
                   </div>
                   <div>
-                    <div class="font-semibold text-white"><span data-i18n="home.voice_telephony_ai_22"><span data-i18n="home.voice_telephony_ai_29">Voice Telephony AI</span></span></div>
+                    <div class="font-semibold text-white"><span data-i18n="home.voice_telephony_ai_22"><span
+                          data-i18n="home.voice_telephony_ai_29">Voice Telephony AI</span></span></div>
                     <div class="text-sm text-zinc-400" data-i18n="products_menu.telephony_subtitle">Téléphonie IA B2B
                     </div>
                   </div>
@@ -368,7 +378,8 @@
             <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1"
               data-i18n="nav.solutions">
               Solutions
-              <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
             <div
               class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[780px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
@@ -449,7 +460,8 @@
                           <span class="text-white font-medium text-sm"
                             data-i18n="solutions_menu.multilanguage">Multi-Langue (5 langues)</span>
                         </div>
-                        <p class="text-zinc-400 text-xs"><span data-i18n="home.fr_en_es_27"><span data-i18n="home.fr_en_es_28">FR, EN, ES, AR, Darija</span></span></p>
+                        <p class="text-zinc-400 text-xs"><span data-i18n="home.fr_en_es_27"><span
+                              data-i18n="home.fr_en_es_28">FR, EN, ES, AR, Darija</span></span></p>
                       </a>
                       <a href="/blog/articles/vocalia-lance-support-darija"
                         class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
@@ -475,7 +487,8 @@
             <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1"
               data-i18n="nav.resources">
               Ressources
-              <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
             <div
               class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
@@ -485,7 +498,8 @@
                   data-i18n="resources_menu.docs"><span data-i18n="footer.links.docs">Documentation</span></a>
                 <a href="/integrations"
                   class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"
-                  data-i18n="resources_menu.integrations"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+                  data-i18n="resources_menu.integrations"><span
+                    data-i18n="footer.links.integrations">Intégrations</span></a>
                 <a href="/blog"
                   class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"
                   data-i18n="resources_menu.blog"><span data-i18n="footer.links.blog">Blog</span></a>
@@ -566,7 +580,8 @@
             </div>
             <div>
               <div class="font-medium text-white">Voice Widget</div>
-              <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web intelligent
+              <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web
+                intelligent
               </div>
             </div>
           </a>
@@ -596,7 +611,8 @@
             <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
               data-i18n="solutions_menu.healthcare">Santé & Médical</a>
             <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
-              data-i18n="solutions_menu.customer_support"><span data-i18n="footer.links.customer_support">Service Client</span></a>
+              data-i18n="solutions_menu.customer_support"><span data-i18n="footer.links.customer_support">Service
+                Client</span></a>
             <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
               data-i18n="solutions_menu.real_estate"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
             <a href="/use-cases/appointments" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
@@ -675,15 +691,16 @@
           <!-- Mascot -->
           <div class="flex-shrink-0" data-animate="mascot">
             <img src="/public/images/logo-large.webp" alt="VocalIA Mascot"
-              class="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 drop-shadow-2xl animate-float-card"
-              width="200" height="200" loading="eager">
+              class="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 drop-shadow-2xl animate-float-card" width="200"
+              height="200" loading="eager">
           </div>
           <!-- Badge with shimmer -->
           <div class="section-badge backdrop-blur-md inline-flex items-center" data-animate="badge">
             <div class="sound-wave inline-flex mr-2">
               <span></span><span></span><span></span><span></span><span></span>
             </div>
-            <span class="value-proposition text-vocalia-200" data-i18n="hero.badge">Voice AI de Nouvelle Génération</span>
+            <span class="value-proposition text-vocalia-200" data-i18n="hero.badge">Voice AI de Nouvelle
+              Génération</span>
           </div>
         </div>
 
@@ -696,8 +713,8 @@
         </h1>
 
         <!-- Subtitle with fade-in - HIGH CONTRAST (Session 221: Centered, no image interference) -->
-        <p class="hero-subtitle text-xl sm:text-2xl text-white/90 max-w-2xl mx-auto mb-10 drop-shadow-lg" data-animate="subtitle"
-          data-i18n="hero.subtitle">
+        <p class="hero-subtitle text-xl sm:text-2xl text-white/90 max-w-2xl mx-auto mb-10 drop-shadow-lg"
+          data-animate="subtitle" data-i18n="hero.subtitle">
           Widget web et téléphonie intelligente pour votre entreprise. Multilingue: FR, EN, AR, ES, Darija.
         </p>
 
@@ -748,8 +765,9 @@
                       class="w-20 h-20 rounded-full bg-vocalia-500/20 flex items-center justify-center backdrop-blur-sm border border-vocalia-400/30 group-hover:scale-110 transition duration-500 cursor-pointer">
                       <i data-lucide="sparkles" class="w-8 h-8 text-vocalia-400 ml-1"></i>
                     </div>
-                    <p class="mt-4 text-vocalia-300 font-mono text-sm tracking-widest uppercase"><span data-i18n="home.cinematic_demo_loading_21">Cinematic Demo
-                      Loading...</span></p>
+                    <p class="mt-4 text-vocalia-300 font-mono text-sm tracking-widest uppercase"><span
+                        data-i18n="home.cinematic_demo_loading_21">Cinematic Demo
+                        Loading...</span></p>
                   </div>
 
                   <!-- Scanning line animation -->
@@ -873,8 +891,7 @@
                 autoplay muted loop playsinline aria-label="Démonstration VocalIA - Cliquez pour activer le son">
               </video>
               <!-- Sound toggle overlay - appears on hover -->
-              <button type="button" id="videoSoundToggle"
-                data-action="toggleVideoMute"
+              <button type="button" id="videoSoundToggle" data-action="toggleVideoMute"
                 class="absolute bottom-3 right-3 w-10 h-10 bg-slate-900/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-slate-700/50 text-white opacity-70 hover:opacity-100 hover:scale-110 transition-all duration-200 group"
                 aria-label="Activer/désactiver le son">
                 <i data-lucide="volume-x"
@@ -946,100 +963,106 @@
           <!-- Set 1: CRM + E-commerce -->
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="HubSpot">
-            <img src="/public/images/logos/hubspot.svg?v=249.12" alt="HubSpot" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/hubspot.svg?v=249.12" alt="HubSpot" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Pipedrive">
-            <img src="/public/images/logos/pipedrive.svg?v=249.12" alt="Pipedrive" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/pipedrive.svg?v=249.12" alt="Pipedrive" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Zoho CRM">
-            <img src="/public/images/logos/zoho.svg?v=249.12" alt="Zoho CRM" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/zoho.svg?v=249.12" alt="Zoho CRM" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Shopify">
-            <img src="/public/images/logos/shopify.svg?v=249.12" alt="Shopify" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/shopify.svg?v=249.12" alt="Shopify" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="WooCommerce">
-            <img src="/public/images/logos/woocommerce.svg?v=249.12" alt="WooCommerce" class="h-16 w-auto" loading="lazy" >
+            <img src="/public/images/logos/woocommerce.svg?v=249.12" alt="WooCommerce" class="h-16 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Magento">
-            <img src="/public/images/logos/magento.svg?v=249.12" alt="Magento" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/magento.svg?v=249.12" alt="Magento" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="BigCommerce">
-            <img src="/public/images/logos/bigcommerce.svg?v=249.12" alt="BigCommerce" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/bigcommerce.svg?v=249.12" alt="BigCommerce" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Wix">
-            <img src="/public/images/logos/wix.svg?v=249.12" alt="Wix" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/wix.svg?v=249.12" alt="Wix" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Squarespace">
-            <img src="/public/images/logos/squarespace.svg?v=249.12" alt="Squarespace" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/squarespace.svg?v=249.12" alt="Squarespace" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="PrestaShop">
-            <img src="/public/images/logos/prestashop.svg?v=249.12" alt="PrestaShop" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/prestashop.svg?v=249.12" alt="PrestaShop" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Klaviyo">
-            <img src="/public/images/logos/klaviyo.svg?v=249.12" alt="Klaviyo" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/klaviyo.svg?v=249.12" alt="Klaviyo" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Stripe">
-            <img src="/public/images/logos/stripe.svg?v=250" alt="Stripe" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/stripe.svg?v=250" alt="Stripe" class="h-12 w-auto" loading="lazy">
           </div>
           <!-- Duplicate Set for seamless loop -->
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="HubSpot">
-            <img src="/public/images/logos/hubspot.svg?v=249.12" alt="HubSpot" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/hubspot.svg?v=249.12" alt="HubSpot" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Pipedrive">
-            <img src="/public/images/logos/pipedrive.svg?v=249.12" alt="Pipedrive" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/pipedrive.svg?v=249.12" alt="Pipedrive" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Zoho CRM">
-            <img src="/public/images/logos/zoho.svg?v=249.12" alt="Zoho CRM" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/zoho.svg?v=249.12" alt="Zoho CRM" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Shopify">
-            <img src="/public/images/logos/shopify.svg?v=249.12" alt="Shopify" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/shopify.svg?v=249.12" alt="Shopify" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="WooCommerce">
-            <img src="/public/images/logos/woocommerce.svg?v=249.12" alt="WooCommerce" class="h-16 w-auto" loading="lazy" >
+            <img src="/public/images/logos/woocommerce.svg?v=249.12" alt="WooCommerce" class="h-16 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Magento">
-            <img src="/public/images/logos/magento.svg?v=249.12" alt="Magento" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/magento.svg?v=249.12" alt="Magento" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="BigCommerce">
-            <img src="/public/images/logos/bigcommerce.svg?v=249.12" alt="BigCommerce" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/bigcommerce.svg?v=249.12" alt="BigCommerce" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Wix">
-            <img src="/public/images/logos/wix.svg?v=249.12" alt="Wix" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/wix.svg?v=249.12" alt="Wix" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Squarespace">
-            <img src="/public/images/logos/squarespace.svg?v=249.12" alt="Squarespace" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/squarespace.svg?v=249.12" alt="Squarespace" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="PrestaShop">
-            <img src="/public/images/logos/prestashop.svg?v=249.12" alt="PrestaShop" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/prestashop.svg?v=249.12" alt="PrestaShop" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Klaviyo">
-            <img src="/public/images/logos/klaviyo.svg?v=249.12" alt="Klaviyo" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/klaviyo.svg?v=249.12" alt="Klaviyo" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Stripe">
-            <img src="/public/images/logos/stripe.svg?v=250" alt="Stripe" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/stripe.svg?v=250" alt="Stripe" class="h-12 w-auto" loading="lazy">
           </div>
         </div>
       </div>
@@ -1050,100 +1073,108 @@
           <!-- Set 1: Google Workspace + Scheduling + iPaaS + Support -->
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Sheets">
-            <img src="/public/images/logos/googlesheets.svg?v=249.12" alt="Google Sheets" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googlesheets.svg?v=249.12" alt="Google Sheets" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Drive">
-            <img src="/public/images/logos/googledrive.svg?v=249.12" alt="Google Drive" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googledrive.svg?v=249.12" alt="Google Drive" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Docs">
-            <img src="/public/images/logos/googledocs.svg?v=249.12" alt="Google Docs" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googledocs.svg?v=249.12" alt="Google Docs" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Gmail">
-            <img src="/public/images/logos/gmail.svg?v=249.12" alt="Gmail" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/gmail.svg?v=249.12" alt="Gmail" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Calendar">
-            <img src="/public/images/logos/googlecalendar.svg?v=249.12" alt="Google Calendar" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googlecalendar.svg?v=249.12" alt="Google Calendar" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Calendly">
-            <img src="/public/images/logos/calendly.svg?v=249.12" alt="Calendly" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/calendly.svg?v=249.12" alt="Calendly" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Zapier">
-            <img src="/public/images/logos/zapier.svg?v=249.12" alt="Zapier" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/zapier.svg?v=249.12" alt="Zapier" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Make">
-            <img src="/public/images/logos/make.svg?v=249.12" alt="Make" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/make.svg?v=249.12" alt="Make" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="n8n">
-            <img src="/public/images/logos/n8n.svg?v=249.12" alt="n8n" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/n8n.svg?v=249.12" alt="n8n" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Zendesk">
-            <img src="/public/images/logos/zendesk.svg?v=249.12" alt="Zendesk" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/zendesk.svg?v=249.12" alt="Zendesk" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Freshdesk">
-            <img src="/public/images/logos/freshdesk.svg?v=249.12" alt="Freshdesk" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/freshdesk.svg?v=249.12" alt="Freshdesk" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Slack">
-            <img src="/public/images/logos/slack.svg?v=249.12" alt="Slack" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/slack.svg?v=249.12" alt="Slack" class="h-12 w-auto" loading="lazy">
           </div>
           <!-- Duplicate Set for seamless loop -->
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Sheets">
-            <img src="/public/images/logos/googlesheets.svg?v=249.12" alt="Google Sheets" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googlesheets.svg?v=249.12" alt="Google Sheets" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Drive">
-            <img src="/public/images/logos/googledrive.svg?v=249.12" alt="Google Drive" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googledrive.svg?v=249.12" alt="Google Drive" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Docs">
-            <img src="/public/images/logos/googledocs.svg?v=249.12" alt="Google Docs" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googledocs.svg?v=249.12" alt="Google Docs" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Gmail">
-            <img src="/public/images/logos/gmail.svg?v=249.12" alt="Gmail" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/gmail.svg?v=249.12" alt="Gmail" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Google Calendar">
-            <img src="/public/images/logos/googlecalendar.svg?v=249.12" alt="Google Calendar" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/googlecalendar.svg?v=249.12" alt="Google Calendar" class="h-12 w-auto"
+              loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Calendly">
-            <img src="/public/images/logos/calendly.svg?v=249.12" alt="Calendly" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/calendly.svg?v=249.12" alt="Calendly" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Zapier">
-            <img src="/public/images/logos/zapier.svg?v=249.12" alt="Zapier" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/zapier.svg?v=249.12" alt="Zapier" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Make">
-            <img src="/public/images/logos/make.svg?v=249.12" alt="Make" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/make.svg?v=249.12" alt="Make" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="n8n">
-            <img src="/public/images/logos/n8n.svg?v=249.12" alt="n8n" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/n8n.svg?v=249.12" alt="n8n" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Zendesk">
-            <img src="/public/images/logos/zendesk.svg?v=249.12" alt="Zendesk" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/zendesk.svg?v=249.12" alt="Zendesk" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Freshdesk">
-            <img src="/public/images/logos/freshdesk.svg?v=249.12" alt="Freshdesk" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/freshdesk.svg?v=249.12" alt="Freshdesk" class="h-12 w-auto" loading="lazy">
           </div>
           <div class="flex-shrink-0 h-14 flex items-center justify-center hover:scale-110 transition-all duration-300"
             title="Slack">
-            <img src="/public/images/logos/slack.svg?v=249.12" alt="Slack" class="h-12 w-auto" loading="lazy" >
+            <img src="/public/images/logos/slack.svg?v=249.12" alt="Slack" class="h-12 w-auto" loading="lazy">
           </div>
         </div>
       </div>
@@ -1270,20 +1301,24 @@
 
   <!-- Social Proof - Testimonials Section -->
   <section class="py-20 bg-gradient-to-b from-slate-900 to-slate-800 relative overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,_rgba(94,106,210,0.08),transparent)]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,_rgba(94,106,210,0.08),transparent)]">
+    </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
       <div class="text-center mb-16">
-        <span class="inline-flex items-center px-3 py-1 rounded-full bg-vocalia-500/10 border border-vocalia-500/20 text-vocalia-300 text-sm mb-4">
+        <span
+          class="inline-flex items-center px-3 py-1 rounded-full bg-vocalia-500/10 border border-vocalia-500/20 text-vocalia-300 text-sm mb-4">
           <i data-lucide="users" class="w-4 h-4 mr-2"></i>
           <span data-i18n="testimonials.badge">Témoignages Clients</span>
         </span>
         <h2 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="testimonials.title">Ce Que Nos Clients Disent</h2>
-        <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="testimonials.subtitle">Des entreprises comme la vôtre transforment leur service client avec VocalIA</p>
+        <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="testimonials.subtitle">Des entreprises comme la vôtre
+          transforment leur service client avec VocalIA</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-8">
         <!-- Testimonial 1 - E-commerce -->
-        <div class="glass rounded-2xl p-6 border border-slate-700/50 hover:border-vocalia-500/30 transition-all duration-300">
+        <div
+          class="glass rounded-2xl p-6 border border-slate-700/50 hover:border-vocalia-500/30 transition-all duration-300">
           <div class="flex items-center gap-1 mb-4">
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
@@ -1292,21 +1327,25 @@
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
           </div>
           <blockquote class="text-zinc-300 mb-6 leading-relaxed" data-i18n="testimonials.quote1">
-            "VocalIA a réduit notre temps de réponse de 3 heures à 30 secondes. Le support Darija a fait la différence pour nos clients marocains."
+            "VocalIA a réduit notre temps de réponse de 3 heures à 30 secondes. Le support Darija a fait la différence
+            pour nos clients marocains."
           </blockquote>
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-vocalia-500 to-violet-500 flex items-center justify-center">
+            <div
+              class="w-12 h-12 rounded-full bg-gradient-to-br from-vocalia-500 to-violet-500 flex items-center justify-center">
               <span class="text-white font-semibold">KM</span>
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name1">Karim M.</div>
-              <div class="text-sm text-zinc-400" data-i18n="testimonials.role1">CEO, Boutique E-commerce • Casablanca</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role1">CEO, Boutique E-commerce • Casablanca
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Testimonial 2 - Dental -->
-        <div class="glass rounded-2xl p-6 border border-slate-700/50 hover:border-vocalia-500/30 transition-all duration-300">
+        <div
+          class="glass rounded-2xl p-6 border border-slate-700/50 hover:border-vocalia-500/30 transition-all duration-300">
           <div class="flex items-center gap-1 mb-4">
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
@@ -1315,21 +1354,25 @@
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
           </div>
           <blockquote class="text-zinc-300 mb-6 leading-relaxed" data-i18n="testimonials.quote2">
-            "Nos patients peuvent maintenant prendre rendez-vous 24/7. Le taux de no-show a baissé de 40% grâce aux rappels automatiques."
+            "Nos patients peuvent maintenant prendre rendez-vous 24/7. Le taux de no-show a baissé de 40% grâce aux
+            rappels automatiques."
           </blockquote>
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+            <div
+              class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
               <span class="text-white font-semibold">SB</span>
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name2">Dr. Sara B.</div>
-              <div class="text-sm text-zinc-400" data-i18n="testimonials.role2">Directrice, Clinique Dentaire Amal • Rabat</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role2">Directrice, Clinique Dentaire Amal •
+                Rabat</div>
             </div>
           </div>
         </div>
 
         <!-- Testimonial 3 - Real Estate -->
-        <div class="glass rounded-2xl p-6 border border-slate-700/50 hover:border-vocalia-500/30 transition-all duration-300">
+        <div
+          class="glass rounded-2xl p-6 border border-slate-700/50 hover:border-vocalia-500/30 transition-all duration-300">
           <div class="flex items-center gap-1 mb-4">
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
@@ -1338,15 +1381,18 @@
             <i data-lucide="star" class="w-5 h-5 text-amber-400 fill-amber-400"></i>
           </div>
           <blockquote class="text-zinc-300 mb-6 leading-relaxed" data-i18n="testimonials.quote3">
-            "L'agent vocal qualifie les prospects pendant que nous visitons. Notre taux de conversion a augmenté de 35% en 3 mois."
+            "L'agent vocal qualifie les prospects pendant que nous visitons. Notre taux de conversion a augmenté de 35%
+            en 3 mois."
           </blockquote>
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
+            <div
+              class="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center">
               <span class="text-white font-semibold">YE</span>
             </div>
             <div>
               <div class="font-semibold text-white" data-i18n="testimonials.name3">Youssef E.</div>
-              <div class="text-sm text-zinc-400" data-i18n="testimonials.role3">Directeur Commercial, Agence Immo • Marrakech</div>
+              <div class="text-sm text-zinc-400" data-i18n="testimonials.role3">Directeur Commercial, Agence Immo •
+                Marrakech</div>
             </div>
           </div>
         </div>
@@ -1431,8 +1477,7 @@
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
-        <form class="flex flex-col sm:flex-row gap-3"
-          data-form-action="submitNewsletter">
+        <form class="flex flex-col sm:flex-row gap-3" data-form-action="submitNewsletter">
           <input type="email" placeholder="votre@email.com" data-i18n-placeholder="newsletter.placeholder"
             class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required aria-label="Adresse email">
@@ -1456,7 +1501,8 @@
           <span
             class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
         </a>
-        <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="home.agents_vocaux_ia_2">Agents Vocaux IA pour Entreprises</span></p>
+        <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="home.agents_vocaux_ia_2">Agents Vocaux IA pour
+            Entreprises</span></p>
         <!-- Contact Info -->
         <div class="space-y-2 text-sm text-zinc-400 mb-4">
           <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
@@ -1473,7 +1519,8 @@
           <a href="https://x.com/vocalia_ma"
             class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
             aria-label="X">
-            <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
+            <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70"
+              loading="lazy">
           </a>
           <a href="https://linkedin.com/company/vocalia"
             class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
@@ -1499,11 +1546,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.product">Produit</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/features" class="hover:text-white transition"><span data-i18n="nav.features">Fonctionnalités</span></a></li>
-            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a></li>
-            <li><a href="/products/voice-widget" class="hover:text-white transition"><span data-i18n="products.voice_widget">Voice Widget</span></a></li>
-            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
-            <li><a href="/integrations" class="hover:text-white transition"><span data-i18n="footer.links.integrations">Intégrations</span></a></li>
+            <li><a href="/features" class="hover:text-white transition"><span
+                  data-i18n="nav.features">Fonctionnalités</span></a></li>
+            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a>
+            </li>
+            <li><a href="/products/voice-widget" class="hover:text-white transition"><span
+                  data-i18n="products.voice_widget">Voice Widget</span></a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span
+                  data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
+            <li><a href="/integrations" class="hover:text-white transition"><span
+                  data-i18n="footer.links.integrations">Intégrations</span></a></li>
           </ul>
         </div>
 
@@ -1511,11 +1563,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.solutions">Solutions</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas d\'Usage</span></a></li>
-            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par Industrie</span></a></li>
-            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
-            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span data-i18n="footer.links.customer_support">Service Client</span></a></li>
-            <li><a href="/industries/healthcare" class="hover:text-white transition"><span data-i18n="footer.links.healthcare">Santé</span></a></li>
+            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas
+                  d\'Usage</span></a></li>
+            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par
+                  Industrie</span></a></li>
+            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span
+                  data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
+            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span
+                  data-i18n="footer.links.customer_support">Service Client</span></a></li>
+            <li><a href="/industries/healthcare" class="hover:text-white transition"><span
+                  data-i18n="footer.links.healthcare">Santé</span></a></li>
           </ul>
         </div>
 
@@ -1523,10 +1580,14 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.resources">Ressources</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/docs" class="hover:text-white transition"><span data-i18n="footer.links.docs">Documentation</span></a></li>
-            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API Reference</span></a></li>
-            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
-            <li><a href="/academie-business" class="hover:text-white transition"><span data-i18n="footer.links.academy">Académie Business</span></a></li>
+            <li><a href="/docs" class="hover:text-white transition"><span
+                  data-i18n="footer.links.docs">Documentation</span></a></li>
+            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API
+                  Reference</span></a></li>
+            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a>
+            </li>
+            <li><a href="/academie-business" class="hover:text-white transition"><span
+                  data-i18n="footer.links.academy">Académie Business</span></a></li>
           </ul>
         </div>
 
@@ -1534,11 +1595,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.company">Entreprise</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À propos</span></a></li>
-            <li><a href="/contact" class="hover:text-white transition"><span data-i18n="footer.links.contact">Contact</span></a></li>
-            <li><a href="/privacy" class="hover:text-white transition"><span data-i18n="footer.links.privacy">Confidentialité</span></a></li>
-            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a></li>
-            <li><a href="/investor" class="hover:text-white transition"><span data-i18n="footer.links.investors">Investisseurs</span></a></li>
+            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À
+                  propos</span></a></li>
+            <li><a href="/contact" class="hover:text-white transition"><span
+                  data-i18n="footer.links.contact">Contact</span></a></li>
+            <li><a href="/privacy" class="hover:text-white transition"><span
+                  data-i18n="footer.links.privacy">Confidentialité</span></a></li>
+            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a>
+            </li>
+            <li><a href="/investor" class="hover:text-white transition"><span
+                  data-i18n="footer.links.investors">Investisseurs</span></a></li>
           </ul>
         </div>
       </div>
@@ -1591,10 +1657,12 @@
   <script src="/voice-assistant/voice-widget.js" defer></script>
 
   <!-- Lucide Icons 2026 -->
-  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
 
   <!-- Homepage specific scripts (CSP compliant - all inline code externalized) -->
-  
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
   (function() {

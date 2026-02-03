@@ -187,7 +187,12 @@ function translatePage() {
     }
     const translated = t(key, params);
     if (translated !== key) {
-      el.title = translated;
+      // For <title> element, set document.title; for others set title attribute
+      if (el.tagName === 'TITLE') {
+        document.title = translated;
+      } else {
+        el.title = translated;
+      }
     }
   });
 }
