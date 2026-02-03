@@ -226,6 +226,25 @@
       "play": "Reproducir",
       "stop": "Parar"
     },
+    "connector": {
+      "title": "Conectar una plataforma e-commerce",
+      "description": "Conecta tu tienda para sincronizar automáticamente tus productos.",
+      "connect": "Conectar y sincronizar",
+      "disconnect": "Desconectar",
+      "secure": "Conexión segura. Tus credenciales están cifradas.",
+      "connected": "Conectado",
+      "not_configured": "No configurado",
+      "last_sync": "Última sincronización",
+      "sync_now": "Sincronizar ahora",
+      "platforms": {
+        "shopify": "Shopify",
+        "woocommerce": "WooCommerce",
+        "square": "Square POS",
+        "lightspeed": "Lightspeed",
+        "magento": "Magento/Adobe Commerce",
+        "custom": "Importación manual (JSON/CSV)"
+      }
+    },
     "search_placeholder": "Buscar un artículo...",
     "filter_category": "Filtrar por categoría",
     "filter_status": "Filtrar por estado"

@@ -418,7 +418,9 @@ class CustomCatalogConnector extends CatalogConnector {
 
 /**
  * Shopify Catalog Connector
- * Connects to Shopify Admin API for e-commerce catalogs
+ * Production connector using Shopify GraphQL Admin API (recommended since Oct 2024)
+ * Reference: https://shopify.dev/docs/api/admin-graphql
+ * API Version: 2026-01
  */
 class ShopifyCatalogConnector extends CatalogConnector {
   constructor(tenantId, config = {}) {
@@ -429,6 +431,7 @@ class ShopifyCatalogConnector extends CatalogConnector {
     this.apiVersion = config.apiVersion || '2026-01';
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.currency = config.currency || 'MAD';
   }
 
   async connect() {
@@ -439,30 +442,54 @@ class ShopifyCatalogConnector extends CatalogConnector {
     }
 
     try {
-      // Test connection with a simple API call
-      const response = await fetch(
-        `https://${this.shop}.myshopify.com/admin/api/${this.apiVersion}/shop.json`,
-        {
-          headers: {
-            'X-Shopify-Access-Token': this.accessToken,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      // Test connection with GraphQL shop query (recommended over REST)
+      const response = await this._graphqlRequest(`
+        query { shop { name currencyCode } }
+      `);
 
-      if (!response.ok) {
-        throw new Error(`Shopify API error: ${response.status}`);
+      if (response.shop) {
+        this.currency = response.shop.currencyCode || this.currency;
+        this.status = CONNECTOR_STATUS.CONNECTED;
+        console.log(`[ShopifyConnector] Connected: ${this.tenantId} (${this.shop}) - Currency: ${this.currency}`);
+        return true;
       }
-
-      this.status = CONNECTOR_STATUS.CONNECTED;
-      console.log(`[ShopifyConnector] Connected: ${this.tenantId} (${this.shop})`);
-      return true;
+      throw new Error('Invalid shop response');
     } catch (error) {
       this.status = CONNECTOR_STATUS.ERROR;
       this.lastError = error.message;
       console.error(`[ShopifyConnector] Connection error: ${error.message}`);
       return false;
     }
+  }
+
+  async _graphqlRequest(query, variables = {}) {
+    const url = `https://${this.shop}.myshopify.com/admin/api/${this.apiVersion}/graphql.json`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': this.accessToken,
+        'User-Agent': 'VocalIA-CatalogConnector/1.0'
+      },
+      body: JSON.stringify({ query, variables })
+    });
+
+    if (response.status === 429) {
+      const retryAfter = response.headers.get('Retry-After') || '2';
+      throw new Error(`Rate limit exceeded. Retry after ${retryAfter}s`);
+    }
+
+    if (!response.ok) {
+      throw new Error(`Shopify API error: ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (result.errors?.length > 0) {
+      throw new Error(`GraphQL errors: ${result.errors.map(e => e.message).join(', ')}`);
+    }
+
+    return result.data;
   }
 
   async sync() {
@@ -476,20 +503,18 @@ class ShopifyCatalogConnector extends CatalogConnector {
     this.status = CONNECTOR_STATUS.SYNCING;
 
     try {
-      // Fetch products from Shopify
       const products = await this._fetchAllProducts();
 
-      // Transform to VocalIA catalog format
       this.catalog = {
         $schema: 'vocalia-catalog-products-v1',
         tenant_id: this.tenantId,
         last_sync: new Date().toISOString(),
         source: 'shopify',
         shop: this.shop,
+        currency: this.currency,
         products: products.map(p => this._transformProduct(p))
       };
 
-      // Cache locally
       if (!fs.existsSync(this.dataPath)) {
         fs.mkdirSync(this.dataPath, { recursive: true });
       }
@@ -512,91 +537,382 @@ class ShopifyCatalogConnector extends CatalogConnector {
 
   async _fetchAllProducts() {
     const products = [];
-    let pageInfo = null;
-    const limit = 250;
+    let cursor = null;
+    const limit = 50; // Optimal for GraphQL cost
 
     do {
-      let url = `https://${this.shop}.myshopify.com/admin/api/${this.apiVersion}/products.json?limit=${limit}`;
-      if (pageInfo) {
-        url += `&page_info=${pageInfo}`;
-      }
-
-      const response = await fetch(url, {
-        headers: {
-          'X-Shopify-Access-Token': this.accessToken,
-          'Content-Type': 'application/json'
+      const query = `
+        query listProducts($first: Int!, $after: String) {
+          products(first: $first, after: $after, sortKey: TITLE) {
+            pageInfo { hasNextPage endCursor }
+            edges {
+              node {
+                id
+                title
+                handle
+                description
+                status
+                productType
+                tags
+                totalInventory
+                priceRangeV2 {
+                  minVariantPrice { amount currencyCode }
+                  maxVariantPrice { amount currencyCode }
+                }
+                variants(first: 100) {
+                  edges {
+                    node {
+                      id
+                      title
+                      sku
+                      price
+                      inventoryQuantity
+                      availableForSale
+                      selectedOptions { name value }
+                    }
+                  }
+                }
+                images(first: 5) {
+                  edges { node { url altText } }
+                }
+              }
+            }
+          }
         }
-      });
+      `;
 
-      if (!response.ok) {
-        throw new Error(`Shopify API error: ${response.status}`);
+      const data = await this._graphqlRequest(query, { first: limit, after: cursor });
+      const edges = data.products?.edges || [];
+
+      for (const edge of edges) {
+        products.push(edge.node);
       }
 
-      const data = await response.json();
-      products.push(...(data.products || []));
-
-      // Check for pagination
-      const linkHeader = response.headers.get('Link');
-      pageInfo = this._extractPageInfo(linkHeader);
-
-    } while (pageInfo);
+      cursor = data.products?.pageInfo?.hasNextPage ? data.products.pageInfo.endCursor : null;
+    } while (cursor);
 
     return products;
   }
 
-  _extractPageInfo(linkHeader) {
-    if (!linkHeader) return null;
-
-    const match = linkHeader.match(/page_info=([^&>]+).*rel="next"/);
-    return match ? match[1] : null;
-  }
-
   _transformProduct(shopifyProduct) {
-    const variant = shopifyProduct.variants?.[0] || {};
+    const variants = shopifyProduct.variants?.edges?.map(e => e.node) || [];
+    const firstVariant = variants[0] || {};
+    const price = parseFloat(firstVariant.price) || 0;
+    const totalStock = variants.reduce((sum, v) => sum + (v.inventoryQuantity || 0), 0);
 
     return {
-      id: shopifyProduct.id.toString(),
-      sku: variant.sku || '',
+      id: shopifyProduct.id.replace('gid://shopify/Product/', ''),
+      gid: shopifyProduct.id,
+      sku: firstVariant.sku || '',
       name: shopifyProduct.title,
-      category: shopifyProduct.product_type || '',
-      price: parseFloat(variant.price) || 0,
-      currency: 'MAD', // Default, should come from shop settings
-      stock: variant.inventory_quantity || 0,
-      in_stock: variant.inventory_quantity > 0 || variant.inventory_policy === 'continue',
-      variants: shopifyProduct.variants?.map(v => ({
-        id: v.id.toString(),
+      handle: shopifyProduct.handle,
+      category: shopifyProduct.productType || '',
+      price,
+      currency: this.currency,
+      stock: totalStock,
+      in_stock: totalStock > 0 || variants.some(v => v.availableForSale),
+      status: shopifyProduct.status,
+      variants: variants.map(v => ({
+        id: v.id.replace('gid://shopify/ProductVariant/', ''),
+        gid: v.id,
         title: v.title,
         price: parseFloat(v.price),
         sku: v.sku,
-        stock: v.inventory_quantity,
-        options: {
-          option1: v.option1,
-          option2: v.option2,
-          option3: v.option3
+        stock: v.inventoryQuantity,
+        available: v.availableForSale,
+        options: v.selectedOptions
+      })),
+      description: shopifyProduct.description || '',
+      tags: shopifyProduct.tags || [],
+      images: shopifyProduct.images?.edges?.map(e => e.node.url) || [],
+      voice_description: this._generateVoiceDescription(shopifyProduct, price, totalStock),
+      voice_summary: this._generateVoiceSummary(shopifyProduct, price)
+    };
+  }
+
+  _generateVoiceDescription(product, price, stock) {
+    let desc = product.title;
+    if (price > 0) {
+      desc += `, ${price} ${this.currency}`;
+    }
+    if (stock <= 0) {
+      desc += ', rupture de stock';
+    } else if (stock <= 5) {
+      desc += `, plus que ${stock} en stock`;
+    }
+    return desc;
+  }
+
+  _generateVoiceSummary(product, price) {
+    return `${product.title} à ${price} ${this.currency}`;
+  }
+
+  async getItem(itemId) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+    return this.catalog.products.find(p => p.id === itemId || p.gid === itemId) || null;
+  }
+
+  async search(query, filters = {}) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+
+    const queryLower = query.toLowerCase();
+    const limit = filters.limit || 10;
+
+    let results = this.catalog.products.filter(p => {
+      const nameMatch = p.name?.toLowerCase().includes(queryLower);
+      const descMatch = p.description?.toLowerCase().includes(queryLower);
+      const tagMatch = p.tags?.some(t => t.toLowerCase().includes(queryLower));
+      const skuMatch = p.sku?.toLowerCase().includes(queryLower);
+      return nameMatch || descMatch || tagMatch || skuMatch;
+    });
+
+    if (filters.inStock === true) {
+      results = results.filter(p => p.in_stock);
+    }
+
+    if (filters.category) {
+      results = results.filter(p =>
+        p.category?.toLowerCase().includes(filters.category.toLowerCase())
+      );
+    }
+
+    if (filters.minPrice !== undefined) {
+      results = results.filter(p => p.price >= filters.minPrice);
+    }
+
+    if (filters.maxPrice !== undefined) {
+      results = results.filter(p => p.price <= filters.maxPrice);
+    }
+
+    return results.slice(0, limit);
+  }
+
+  async checkAvailability(itemId, params = {}) {
+    const item = await this.getItem(itemId);
+
+    if (!item) {
+      return { available: false, reason: 'product_not_found' };
+    }
+
+    // Check specific variant if requested
+    if (params.variantId) {
+      const variant = item.variants?.find(v => v.id === params.variantId || v.gid === params.variantId);
+      if (variant) {
+        return {
+          available: variant.available,
+          stock: variant.stock,
+          itemId,
+          variantId: params.variantId,
+          itemName: `${item.name} - ${variant.title}`,
+          price: variant.price
+        };
+      }
+    }
+
+    return {
+      available: item.in_stock,
+      stock: item.stock,
+      itemId,
+      itemName: item.name,
+      price: item.price,
+      currency: item.currency
+    };
+  }
+}
+
+/**
+ * WooCommerce Catalog Connector
+ * Production connector using WooCommerce REST API v3
+ * Reference: https://woocommerce.github.io/woocommerce-rest-api-docs/
+ * Requires: WordPress 6.7+, WooCommerce 9.0+, HTTPS
+ */
+class WooCommerceCatalogConnector extends CatalogConnector {
+  constructor(tenantId, config = {}) {
+    super(tenantId, config);
+    this.catalogType = CATALOG_TYPES.PRODUCTS;
+    this.storeUrl = config.storeUrl || config.url;
+    this.consumerKey = config.consumerKey;
+    this.consumerSecret = config.consumerSecret;
+    this.catalog = null;
+    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.currency = config.currency || 'MAD';
+  }
+
+  async connect() {
+    if (!this.storeUrl || !this.consumerKey || !this.consumerSecret) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = 'Missing WooCommerce credentials (storeUrl, consumerKey, consumerSecret)';
+      return false;
+    }
+
+    try {
+      // Test connection with system status endpoint
+      const response = await this._apiRequest('/system_status');
+      if (response.environment) {
+        this.currency = response.settings?.currency || this.currency;
+        this.status = CONNECTOR_STATUS.CONNECTED;
+        console.log(`[WooCommerceConnector] Connected: ${this.tenantId} (${this.storeUrl})`);
+        return true;
+      }
+      throw new Error('Invalid store response');
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      console.error(`[WooCommerceConnector] Connection error: ${error.message}`);
+      return false;
+    }
+  }
+
+  async _apiRequest(endpoint, options = {}) {
+    const baseUrl = this.storeUrl.replace(/\/$/, '');
+    const url = new URL(`${baseUrl}/wp-json/wc/v3${endpoint}`);
+
+    // OAuth 1.0a query string authentication (for HTTPS)
+    url.searchParams.set('consumer_key', this.consumerKey);
+    url.searchParams.set('consumer_secret', this.consumerSecret);
+
+    if (options.params) {
+      for (const [key, value] of Object.entries(options.params)) {
+        url.searchParams.set(key, value);
+      }
+    }
+
+    const response = await fetch(url.toString(), {
+      method: options.method || 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'VocalIA-CatalogConnector/1.0'
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`WooCommerce API error ${response.status}: ${errorText}`);
+    }
+
+    return response.json();
+  }
+
+  async sync() {
+    if (this.status !== CONNECTOR_STATUS.CONNECTED) {
+      const connected = await this.connect();
+      if (!connected) {
+        throw new Error('Failed to connect to WooCommerce');
+      }
+    }
+
+    this.status = CONNECTOR_STATUS.SYNCING;
+
+    try {
+      const products = await this._fetchAllProducts();
+
+      this.catalog = {
+        $schema: 'vocalia-catalog-products-v1',
+        tenant_id: this.tenantId,
+        last_sync: new Date().toISOString(),
+        source: 'woocommerce',
+        store_url: this.storeUrl,
+        currency: this.currency,
+        products: products.map(p => this._transformProduct(p))
+      };
+
+      if (!fs.existsSync(this.dataPath)) {
+        fs.mkdirSync(this.dataPath, { recursive: true });
+      }
+      fs.writeFileSync(
+        path.join(this.dataPath, 'products.json'),
+        JSON.stringify(this.catalog, null, 2)
+      );
+
+      this.lastSync = this.catalog.last_sync;
+      this.status = CONNECTOR_STATUS.CONNECTED;
+
+      console.log(`[WooCommerceConnector] Synced ${this.tenantId}: ${products.length} products`);
+      return this.catalog;
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      throw error;
+    }
+  }
+
+  async _fetchAllProducts() {
+    const products = [];
+    let page = 1;
+    const perPage = 100;
+
+    do {
+      const batch = await this._apiRequest('/products', {
+        params: {
+          per_page: perPage.toString(),
+          page: page.toString(),
+          status: 'publish'
         }
+      });
+
+      if (!batch || batch.length === 0) break;
+      products.push(...batch);
+      page++;
+    } while (true);
+
+    return products;
+  }
+
+  _transformProduct(wooProduct) {
+    const price = parseFloat(wooProduct.price) || 0;
+    const regularPrice = parseFloat(wooProduct.regular_price) || price;
+    const salePrice = wooProduct.sale_price ? parseFloat(wooProduct.sale_price) : null;
+    const stock = wooProduct.stock_quantity || 0;
+    const inStock = wooProduct.stock_status === 'instock';
+
+    return {
+      id: wooProduct.id.toString(),
+      sku: wooProduct.sku || '',
+      name: wooProduct.name,
+      slug: wooProduct.slug,
+      category: wooProduct.categories?.map(c => c.name).join(', ') || '',
+      price,
+      regular_price: regularPrice,
+      sale_price: salePrice,
+      on_sale: wooProduct.on_sale || false,
+      currency: this.currency,
+      stock,
+      in_stock: inStock,
+      stock_status: wooProduct.stock_status,
+      manage_stock: wooProduct.manage_stock,
+      type: wooProduct.type,
+      variants: wooProduct.variations?.map(v => ({ id: v.toString() })) || [],
+      description: this._stripHtml(wooProduct.description || ''),
+      short_description: this._stripHtml(wooProduct.short_description || ''),
+      tags: wooProduct.tags?.map(t => t.name) || [],
+      images: wooProduct.images?.map(img => img.src) || [],
+      attributes: wooProduct.attributes?.map(a => ({
+        name: a.name,
+        options: a.options
       })) || [],
-      description: this._stripHtml(shopifyProduct.body_html || ''),
-      tags: shopifyProduct.tags?.split(',').map(t => t.trim()) || [],
-      images: shopifyProduct.images?.map(img => img.src) || [],
-      voice_description: this._generateVoiceDescription(shopifyProduct)
+      voice_description: this._generateVoiceDescription(wooProduct, price, inStock, salePrice),
+      voice_summary: `${wooProduct.name} à ${price} ${this.currency}`
     };
   }
 
   _stripHtml(html) {
-    return html.replace(/<[^>]*>/g, '').trim();
+    return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
   }
 
-  _generateVoiceDescription(product) {
-    const variant = product.variants?.[0] || {};
-    const price = parseFloat(variant.price) || 0;
-    const inStock = variant.inventory_quantity > 0;
-
-    let desc = product.title;
-    if (price > 0) {
-      desc += ` à ${price} dirhams`;
+  _generateVoiceDescription(product, price, inStock, salePrice) {
+    let desc = product.name;
+    if (salePrice) {
+      desc += `, en promotion à ${salePrice} ${this.currency} au lieu de ${price}`;
+    } else if (price > 0) {
+      desc += `, ${price} ${this.currency}`;
     }
     if (!inStock) {
-      desc += ', actuellement en rupture de stock';
+      desc += ', rupture de stock';
     }
     return desc;
   }
@@ -620,7 +936,857 @@ class ShopifyCatalogConnector extends CatalogConnector {
       const nameMatch = p.name?.toLowerCase().includes(queryLower);
       const descMatch = p.description?.toLowerCase().includes(queryLower);
       const tagMatch = p.tags?.some(t => t.toLowerCase().includes(queryLower));
-      return nameMatch || descMatch || tagMatch;
+      const skuMatch = p.sku?.toLowerCase().includes(queryLower);
+      const catMatch = p.category?.toLowerCase().includes(queryLower);
+      return nameMatch || descMatch || tagMatch || skuMatch || catMatch;
+    });
+
+    if (filters.inStock === true) {
+      results = results.filter(p => p.in_stock);
+    }
+
+    if (filters.onSale === true) {
+      results = results.filter(p => p.on_sale);
+    }
+
+    if (filters.category) {
+      results = results.filter(p =>
+        p.category?.toLowerCase().includes(filters.category.toLowerCase())
+      );
+    }
+
+    if (filters.minPrice !== undefined) {
+      results = results.filter(p => p.price >= filters.minPrice);
+    }
+
+    if (filters.maxPrice !== undefined) {
+      results = results.filter(p => p.price <= filters.maxPrice);
+    }
+
+    return results.slice(0, limit);
+  }
+
+  async checkAvailability(itemId, params = {}) {
+    const item = await this.getItem(itemId);
+
+    if (!item) {
+      return { available: false, reason: 'product_not_found' };
+    }
+
+    return {
+      available: item.in_stock,
+      stock: item.manage_stock ? item.stock : null,
+      stockStatus: item.stock_status,
+      itemId,
+      itemName: item.name,
+      price: item.price,
+      salePrice: item.sale_price,
+      currency: item.currency
+    };
+  }
+}
+
+/**
+ * Square Catalog Connector
+ * Production connector using Square Catalog API
+ * Reference: https://developer.squareup.com/reference/square/catalog-api
+ * Auth: OAuth 2.0 with ITEMS_READ/ITEMS_WRITE scopes
+ */
+class SquareCatalogConnector extends CatalogConnector {
+  constructor(tenantId, config = {}) {
+    super(tenantId, config);
+    this.catalogType = config.catalogType || CATALOG_TYPES.PRODUCTS;
+    this.accessToken = config.accessToken;
+    this.locationId = config.locationId; // Optional, for inventory
+    this.environment = config.environment || 'production'; // 'sandbox' or 'production'
+    this.catalog = null;
+    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.currency = config.currency || 'MAD';
+  }
+
+  get _baseUrl() {
+    return this.environment === 'sandbox'
+      ? 'https://connect.squareupsandbox.com/v2'
+      : 'https://connect.squareup.com/v2';
+  }
+
+  async connect() {
+    if (!this.accessToken) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = 'Missing Square access token';
+      return false;
+    }
+
+    try {
+      // Test connection with merchant info
+      const response = await this._apiRequest('/merchants/me');
+      if (response.merchant) {
+        this.currency = response.merchant.currency || this.currency;
+        this.status = CONNECTOR_STATUS.CONNECTED;
+        console.log(`[SquareConnector] Connected: ${this.tenantId} (${response.merchant.business_name})`);
+        return true;
+      }
+      throw new Error('Invalid merchant response');
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      console.error(`[SquareConnector] Connection error: ${error.message}`);
+      return false;
+    }
+  }
+
+  async _apiRequest(endpoint, options = {}) {
+    const url = `${this._baseUrl}${endpoint}`;
+
+    const response = await fetch(url, {
+      method: options.method || 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+        'Square-Version': '2025-01-23',
+        'User-Agent': 'VocalIA-CatalogConnector/1.0'
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(`Square API error ${response.status}: ${error.errors?.[0]?.detail || 'Unknown error'}`);
+    }
+
+    return response.json();
+  }
+
+  async sync() {
+    if (this.status !== CONNECTOR_STATUS.CONNECTED) {
+      const connected = await this.connect();
+      if (!connected) {
+        throw new Error('Failed to connect to Square');
+      }
+    }
+
+    this.status = CONNECTOR_STATUS.SYNCING;
+
+    try {
+      const items = await this._fetchAllItems();
+      const inventory = this.locationId ? await this._fetchInventory() : {};
+
+      // Determine catalog structure based on item types
+      const isMenu = items.some(i => i.type === 'ITEM' && i.item_data?.product_type === 'FOOD_AND_BEVERAGE');
+
+      if (isMenu) {
+        this.catalog = this._buildMenuCatalog(items, inventory);
+      } else {
+        this.catalog = this._buildProductCatalog(items, inventory);
+      }
+
+      this.catalog.$schema = `vocalia-catalog-${this.catalogType}-v1`;
+      this.catalog.tenant_id = this.tenantId;
+      this.catalog.last_sync = new Date().toISOString();
+      this.catalog.source = 'square';
+
+      if (!fs.existsSync(this.dataPath)) {
+        fs.mkdirSync(this.dataPath, { recursive: true });
+      }
+      fs.writeFileSync(
+        path.join(this.dataPath, `${this.catalogType}.json`),
+        JSON.stringify(this.catalog, null, 2)
+      );
+
+      this.lastSync = this.catalog.last_sync;
+      this.status = CONNECTOR_STATUS.CONNECTED;
+
+      console.log(`[SquareConnector] Synced ${this.tenantId}: ${items.length} items`);
+      return this.catalog;
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      throw error;
+    }
+  }
+
+  async _fetchAllItems() {
+    const items = [];
+    let cursor = null;
+
+    do {
+      const body = {
+        types: ['ITEM', 'CATEGORY', 'MODIFIER_LIST', 'MODIFIER'],
+        include_deleted_objects: false,
+        include_related_objects: true
+      };
+      if (cursor) body.cursor = cursor;
+
+      const response = await this._apiRequest('/catalog/list', {
+        method: 'POST',
+        body
+      });
+
+      items.push(...(response.objects || []));
+      cursor = response.cursor;
+    } while (cursor);
+
+    return items;
+  }
+
+  async _fetchInventory() {
+    if (!this.locationId) return {};
+
+    const inventory = {};
+    let cursor = null;
+
+    do {
+      const body = { location_ids: [this.locationId] };
+      if (cursor) body.cursor = cursor;
+
+      const response = await this._apiRequest('/inventory/counts/batch-retrieve', {
+        method: 'POST',
+        body
+      });
+
+      for (const count of response.counts || []) {
+        inventory[count.catalog_object_id] = parseInt(count.quantity, 10) || 0;
+      }
+      cursor = response.cursor;
+    } while (cursor);
+
+    return inventory;
+  }
+
+  _buildProductCatalog(items, inventory) {
+    const categories = items.filter(i => i.type === 'CATEGORY');
+    const products = items.filter(i => i.type === 'ITEM');
+    const categoryMap = {};
+    for (const cat of categories) {
+      categoryMap[cat.id] = cat.category_data?.name || '';
+    }
+
+    return {
+      currency: this.currency,
+      products: products.map(item => {
+        const data = item.item_data || {};
+        const variations = data.variations || [];
+        const firstVar = variations[0]?.item_variation_data || {};
+        const price = firstVar.price_money ? firstVar.price_money.amount / 100 : 0;
+        const stock = variations.reduce((sum, v) => sum + (inventory[v.id] || 0), 0);
+
+        return {
+          id: item.id,
+          name: data.name,
+          category: categoryMap[data.category_id] || '',
+          description: data.description || '',
+          price,
+          currency: this.currency,
+          stock,
+          in_stock: stock > 0 || !data.is_taxable, // Non-taxable items often don't track inventory
+          variants: variations.map(v => ({
+            id: v.id,
+            name: v.item_variation_data?.name,
+            sku: v.item_variation_data?.sku,
+            price: v.item_variation_data?.price_money ? v.item_variation_data.price_money.amount / 100 : 0,
+            stock: inventory[v.id] || 0
+          })),
+          images: data.image_ids || [],
+          voice_description: `${data.name}, ${price} ${this.currency}${stock <= 0 ? ', rupture de stock' : ''}`,
+          voice_summary: `${data.name} à ${price} ${this.currency}`
+        };
+      })
+    };
+  }
+
+  _buildMenuCatalog(items, inventory) {
+    const categories = items.filter(i => i.type === 'CATEGORY');
+    const menuItems = items.filter(i => i.type === 'ITEM');
+    const modifierLists = items.filter(i => i.type === 'MODIFIER_LIST');
+    const modifiers = items.filter(i => i.type === 'MODIFIER');
+
+    const modifierMap = {};
+    for (const mod of modifiers) {
+      const listId = mod.modifier_data?.modifier_list_id;
+      if (listId) {
+        if (!modifierMap[listId]) modifierMap[listId] = [];
+        modifierMap[listId].push({
+          id: mod.id,
+          name: mod.modifier_data?.name,
+          price: mod.modifier_data?.price_money ? mod.modifier_data.price_money.amount / 100 : 0
+        });
+      }
+    }
+
+    const categoryMap = {};
+    for (const cat of categories) {
+      categoryMap[cat.id] = {
+        id: cat.id,
+        name: cat.category_data?.name || '',
+        items: []
+      };
+    }
+
+    for (const item of menuItems) {
+      const data = item.item_data || {};
+      const catId = data.category_id;
+      const variations = data.variations || [];
+      const firstVar = variations[0]?.item_variation_data || {};
+      const price = firstVar.price_money ? firstVar.price_money.amount / 100 : 0;
+
+      const menuItem = {
+        id: item.id,
+        name: data.name,
+        description: data.description || '',
+        price,
+        currency: this.currency,
+        available: !data.is_deleted,
+        preparation_time: data.prep_time_duration ? parseInt(data.prep_time_duration.replace(/[^\d]/g, ''), 10) : null,
+        modifiers: (data.modifier_list_info || []).flatMap(m =>
+          modifierMap[m.modifier_list_id] || []
+        ),
+        dietary_info: data.dietary_preferences || [],
+        voice_description: `${data.name}, ${price} ${this.currency}`,
+        voice_summary: `${data.name} à ${price} ${this.currency}`
+      };
+
+      if (catId && categoryMap[catId]) {
+        categoryMap[catId].items.push(menuItem);
+      }
+    }
+
+    return {
+      currency: this.currency,
+      menu: {
+        categories: Object.values(categoryMap).filter(c => c.items.length > 0)
+      }
+    };
+  }
+
+  async getItem(itemId) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+
+    if (this.catalogType === CATALOG_TYPES.MENU) {
+      for (const cat of this.catalog.menu?.categories || []) {
+        const item = cat.items?.find(i => i.id === itemId);
+        if (item) return item;
+      }
+    } else {
+      return this.catalog.products?.find(p => p.id === itemId) || null;
+    }
+    return null;
+  }
+
+  async search(query, filters = {}) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+
+    const queryLower = query.toLowerCase();
+    const limit = filters.limit || 10;
+    let items = [];
+
+    if (this.catalogType === CATALOG_TYPES.MENU) {
+      for (const cat of this.catalog.menu?.categories || []) {
+        items.push(...(cat.items || []));
+      }
+    } else {
+      items = this.catalog.products || [];
+    }
+
+    let results = items.filter(item => {
+      const nameMatch = item.name?.toLowerCase().includes(queryLower);
+      const descMatch = item.description?.toLowerCase().includes(queryLower);
+      return nameMatch || descMatch;
+    });
+
+    if (filters.inStock === true) {
+      results = results.filter(p => p.in_stock !== false && p.available !== false);
+    }
+
+    if (filters.category) {
+      results = results.filter(p =>
+        p.category?.toLowerCase().includes(filters.category.toLowerCase())
+      );
+    }
+
+    return results.slice(0, limit);
+  }
+
+  async checkAvailability(itemId, params = {}) {
+    const item = await this.getItem(itemId);
+
+    if (!item) {
+      return { available: false, reason: 'item_not_found' };
+    }
+
+    if (this.catalogType === CATALOG_TYPES.MENU) {
+      return {
+        available: item.available !== false,
+        itemId,
+        itemName: item.name,
+        preparationTime: item.preparation_time,
+        price: item.price
+      };
+    }
+
+    return {
+      available: item.in_stock,
+      stock: item.stock,
+      itemId,
+      itemName: item.name,
+      price: item.price,
+      currency: item.currency
+    };
+  }
+}
+
+/**
+ * Lightspeed Catalog Connector
+ * Production connector for Lightspeed Restaurant (K-Series) and Retail (X-Series)
+ * Reference: https://api-docs.lsk.lightspeed.app/ (K-Series)
+ * Reference: https://x-series-api.lightspeedhq.com/ (X-Series)
+ */
+class LightspeedCatalogConnector extends CatalogConnector {
+  constructor(tenantId, config = {}) {
+    super(tenantId, config);
+    this.catalogType = config.catalogType || CATALOG_TYPES.MENU; // Restaurant default
+    this.accessToken = config.accessToken;
+    this.accountId = config.accountId;
+    this.series = config.series || 'K'; // 'K' = Restaurant, 'X' = Retail
+    this.businessId = config.businessId; // Required for K-Series
+    this.catalog = null;
+    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.currency = config.currency || 'MAD';
+  }
+
+  get _baseUrl() {
+    if (this.series === 'K') {
+      return 'https://api.lsk.lightspeed.app/api/v1';
+    }
+    return 'https://api.lightspeedapp.com/API/V3/Account';
+  }
+
+  async connect() {
+    if (!this.accessToken) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = 'Missing Lightspeed access token';
+      return false;
+    }
+
+    try {
+      if (this.series === 'K') {
+        // K-Series restaurant
+        const response = await this._apiRequest('/businesses');
+        if (response.data?.length > 0) {
+          this.businessId = this.businessId || response.data[0].id;
+          this.status = CONNECTOR_STATUS.CONNECTED;
+          console.log(`[LightspeedConnector] Connected K-Series: ${this.tenantId}`);
+          return true;
+        }
+      } else {
+        // X-Series retail
+        const response = await this._apiRequest(`/${this.accountId}`);
+        if (response.Account) {
+          this.status = CONNECTOR_STATUS.CONNECTED;
+          console.log(`[LightspeedConnector] Connected X-Series: ${this.tenantId}`);
+          return true;
+        }
+      }
+      throw new Error('Invalid account response');
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      console.error(`[LightspeedConnector] Connection error: ${error.message}`);
+      return false;
+    }
+  }
+
+  async _apiRequest(endpoint, options = {}) {
+    let url;
+    if (this.series === 'K') {
+      url = `${this._baseUrl}${endpoint}`;
+    } else {
+      url = `${this._baseUrl}${endpoint}`;
+    }
+
+    const response = await fetch(url, {
+      method: options.method || 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'User-Agent': 'VocalIA-CatalogConnector/1.0'
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(`Lightspeed API error ${response.status}: ${error.message || 'Unknown error'}`);
+    }
+
+    return response.json();
+  }
+
+  async sync() {
+    if (this.status !== CONNECTOR_STATUS.CONNECTED) {
+      const connected = await this.connect();
+      if (!connected) {
+        throw new Error('Failed to connect to Lightspeed');
+      }
+    }
+
+    this.status = CONNECTOR_STATUS.SYNCING;
+
+    try {
+      if (this.series === 'K') {
+        // K-Series Restaurant Menu
+        await this._syncKSeriesMenu();
+      } else {
+        // X-Series Retail Products
+        await this._syncXSeriesProducts();
+      }
+
+      if (!fs.existsSync(this.dataPath)) {
+        fs.mkdirSync(this.dataPath, { recursive: true });
+      }
+      fs.writeFileSync(
+        path.join(this.dataPath, `${this.catalogType}.json`),
+        JSON.stringify(this.catalog, null, 2)
+      );
+
+      this.lastSync = this.catalog.last_sync;
+      this.status = CONNECTOR_STATUS.CONNECTED;
+
+      console.log(`[LightspeedConnector] Synced ${this.tenantId}`);
+      return this.catalog;
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      throw error;
+    }
+  }
+
+  async _syncKSeriesMenu() {
+    const response = await this._apiRequest(`/businesses/${this.businessId}/menu`);
+    const menu = response.data || {};
+
+    const categories = (menu.categories || []).map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      items: (cat.items || []).map(item => ({
+        id: item.id,
+        name: item.name,
+        description: item.description || '',
+        price: item.price || 0,
+        currency: this.currency,
+        available: item.available !== false,
+        preparation_time: item.prep_time,
+        modifiers: (item.modifier_groups || []).flatMap(g =>
+          (g.modifiers || []).map(m => ({
+            id: m.id,
+            name: m.name,
+            price: m.price || 0
+          }))
+        ),
+        dietary_info: item.dietary_labels || [],
+        images: item.image_url ? [item.image_url] : [],
+        voice_description: `${item.name}, ${item.price} ${this.currency}`,
+        voice_summary: `${item.name} à ${item.price} ${this.currency}`
+      }))
+    }));
+
+    this.catalog = {
+      $schema: 'vocalia-catalog-menu-v1',
+      tenant_id: this.tenantId,
+      last_sync: new Date().toISOString(),
+      source: 'lightspeed-k',
+      currency: this.currency,
+      menu: { categories }
+    };
+  }
+
+  async _syncXSeriesProducts() {
+    const response = await this._apiRequest(`/${this.accountId}/Item.json`);
+    const items = response.Item || [];
+
+    const products = items.map(item => ({
+      id: item.itemID,
+      sku: item.customSku || item.upc || '',
+      name: item.description,
+      category: item.Category?.name || '',
+      price: parseFloat(item.Prices?.ItemPrice?.[0]?.amount) || 0,
+      currency: this.currency,
+      stock: parseInt(item.ItemShops?.ItemShop?.[0]?.qoh, 10) || 0,
+      in_stock: (parseInt(item.ItemShops?.ItemShop?.[0]?.qoh, 10) || 0) > 0,
+      description: item.Note?.note || '',
+      images: item.Images?.Image?.map(i => i.baseImageURL) || [],
+      voice_description: `${item.description}, ${item.Prices?.ItemPrice?.[0]?.amount || 0} ${this.currency}`,
+      voice_summary: `${item.description}`
+    }));
+
+    this.catalog = {
+      $schema: 'vocalia-catalog-products-v1',
+      tenant_id: this.tenantId,
+      last_sync: new Date().toISOString(),
+      source: 'lightspeed-x',
+      currency: this.currency,
+      products
+    };
+  }
+
+  async getItem(itemId) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+
+    if (this.catalogType === CATALOG_TYPES.MENU) {
+      for (const cat of this.catalog.menu?.categories || []) {
+        const item = cat.items?.find(i => i.id === itemId);
+        if (item) return item;
+      }
+    } else {
+      return this.catalog.products?.find(p => p.id === itemId) || null;
+    }
+    return null;
+  }
+
+  async search(query, filters = {}) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+
+    const queryLower = query.toLowerCase();
+    const limit = filters.limit || 10;
+    let items = [];
+
+    if (this.catalogType === CATALOG_TYPES.MENU) {
+      for (const cat of this.catalog.menu?.categories || []) {
+        items.push(...(cat.items || []).map(i => ({ ...i, category: cat.name })));
+      }
+    } else {
+      items = this.catalog.products || [];
+    }
+
+    let results = items.filter(item => {
+      const nameMatch = item.name?.toLowerCase().includes(queryLower);
+      const descMatch = item.description?.toLowerCase().includes(queryLower);
+      return nameMatch || descMatch;
+    });
+
+    if (filters.inStock === true) {
+      results = results.filter(p => p.in_stock !== false && p.available !== false);
+    }
+
+    if (filters.category) {
+      results = results.filter(p =>
+        p.category?.toLowerCase().includes(filters.category.toLowerCase())
+      );
+    }
+
+    return results.slice(0, limit);
+  }
+
+  async checkAvailability(itemId, params = {}) {
+    const item = await this.getItem(itemId);
+
+    if (!item) {
+      return { available: false, reason: 'item_not_found' };
+    }
+
+    if (this.catalogType === CATALOG_TYPES.MENU) {
+      return {
+        available: item.available !== false,
+        itemId,
+        itemName: item.name,
+        preparationTime: item.preparation_time,
+        price: item.price
+      };
+    }
+
+    return {
+      available: item.in_stock,
+      stock: item.stock,
+      itemId,
+      itemName: item.name,
+      price: item.price,
+      currency: item.currency
+    };
+  }
+}
+
+/**
+ * Magento Catalog Connector
+ * Production connector using Magento REST API
+ * Reference: https://developer.adobe.com/commerce/webapi/rest/
+ */
+class MagentoCatalogConnector extends CatalogConnector {
+  constructor(tenantId, config = {}) {
+    super(tenantId, config);
+    this.catalogType = CATALOG_TYPES.PRODUCTS;
+    this.baseUrl = config.baseUrl || config.url;
+    this.accessToken = config.accessToken;
+    this.catalog = null;
+    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.currency = config.currency || 'MAD';
+  }
+
+  async connect() {
+    if (!this.baseUrl || !this.accessToken) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = 'Missing Magento baseUrl or accessToken';
+      return false;
+    }
+
+    try {
+      const response = await this._apiRequest('/store/storeConfigs');
+      if (Array.isArray(response) && response.length > 0) {
+        this.currency = response[0].base_currency_code || this.currency;
+        this.status = CONNECTOR_STATUS.CONNECTED;
+        console.log(`[MagentoConnector] Connected: ${this.tenantId}`);
+        return true;
+      }
+      throw new Error('Invalid store response');
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      console.error(`[MagentoConnector] Connection error: ${error.message}`);
+      return false;
+    }
+  }
+
+  async _apiRequest(endpoint, options = {}) {
+    const url = `${this.baseUrl.replace(/\/$/, '')}/rest/V1${endpoint}`;
+
+    const response = await fetch(url, {
+      method: options.method || 'GET',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'VocalIA-CatalogConnector/1.0'
+      },
+      body: options.body ? JSON.stringify(options.body) : undefined
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(`Magento API error ${response.status}: ${error.message || 'Unknown error'}`);
+    }
+
+    return response.json();
+  }
+
+  async sync() {
+    if (this.status !== CONNECTOR_STATUS.CONNECTED) {
+      const connected = await this.connect();
+      if (!connected) {
+        throw new Error('Failed to connect to Magento');
+      }
+    }
+
+    this.status = CONNECTOR_STATUS.SYNCING;
+
+    try {
+      const products = await this._fetchAllProducts();
+
+      this.catalog = {
+        $schema: 'vocalia-catalog-products-v1',
+        tenant_id: this.tenantId,
+        last_sync: new Date().toISOString(),
+        source: 'magento',
+        currency: this.currency,
+        products: products.map(p => this._transformProduct(p))
+      };
+
+      if (!fs.existsSync(this.dataPath)) {
+        fs.mkdirSync(this.dataPath, { recursive: true });
+      }
+      fs.writeFileSync(
+        path.join(this.dataPath, 'products.json'),
+        JSON.stringify(this.catalog, null, 2)
+      );
+
+      this.lastSync = this.catalog.last_sync;
+      this.status = CONNECTOR_STATUS.CONNECTED;
+
+      console.log(`[MagentoConnector] Synced ${this.tenantId}: ${products.length} products`);
+      return this.catalog;
+    } catch (error) {
+      this.status = CONNECTOR_STATUS.ERROR;
+      this.lastError = error.message;
+      throw error;
+    }
+  }
+
+  async _fetchAllProducts() {
+    const products = [];
+    let page = 1;
+    const pageSize = 100;
+
+    do {
+      const searchCriteria = `searchCriteria[pageSize]=${pageSize}&searchCriteria[currentPage]=${page}`;
+      const response = await this._apiRequest(`/products?${searchCriteria}`);
+
+      if (!response.items || response.items.length === 0) break;
+      products.push(...response.items);
+      page++;
+
+      if (products.length >= response.total_count) break;
+    } while (true);
+
+    return products;
+  }
+
+  _transformProduct(magentoProduct) {
+    const price = magentoProduct.price || 0;
+    const customAttrs = {};
+    for (const attr of magentoProduct.custom_attributes || []) {
+      customAttrs[attr.attribute_code] = attr.value;
+    }
+
+    const stock = magentoProduct.extension_attributes?.stock_item;
+    const inStock = stock?.is_in_stock === true;
+    const qty = stock?.qty || 0;
+
+    return {
+      id: magentoProduct.id.toString(),
+      sku: magentoProduct.sku,
+      name: magentoProduct.name,
+      category: customAttrs.category_ids || '',
+      price,
+      currency: this.currency,
+      stock: qty,
+      in_stock: inStock,
+      type: magentoProduct.type_id,
+      status: magentoProduct.status,
+      visibility: magentoProduct.visibility,
+      description: customAttrs.description || '',
+      short_description: customAttrs.short_description || '',
+      images: (magentoProduct.media_gallery_entries || []).map(m => m.file),
+      attributes: customAttrs,
+      voice_description: `${magentoProduct.name}, ${price} ${this.currency}${!inStock ? ', rupture de stock' : ''}`,
+      voice_summary: `${magentoProduct.name} à ${price} ${this.currency}`
+    };
+  }
+
+  async getItem(itemId) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+    return this.catalog.products.find(p => p.id === itemId || p.sku === itemId) || null;
+  }
+
+  async search(query, filters = {}) {
+    if (!this.catalog) {
+      await this.sync();
+    }
+
+    const queryLower = query.toLowerCase();
+    const limit = filters.limit || 10;
+
+    let results = this.catalog.products.filter(p => {
+      const nameMatch = p.name?.toLowerCase().includes(queryLower);
+      const descMatch = p.description?.toLowerCase().includes(queryLower);
+      const skuMatch = p.sku?.toLowerCase().includes(queryLower);
+      return nameMatch || descMatch || skuMatch;
     });
 
     if (filters.inStock === true) {
@@ -648,7 +1814,8 @@ class ShopifyCatalogConnector extends CatalogConnector {
       stock: item.stock,
       itemId,
       itemName: item.name,
-      price: item.price
+      price: item.price,
+      currency: item.currency
     };
   }
 }
@@ -656,37 +1823,181 @@ class ShopifyCatalogConnector extends CatalogConnector {
 /**
  * Connector Factory
  * Creates appropriate connector based on configuration
+ *
+ * Supported e-commerce platforms:
+ * - Shopify: GraphQL Admin API (2026-01)
+ * - WooCommerce: REST API v3
+ * - Square: Catalog API (POS integration)
+ * - Lightspeed: K-Series (Restaurant) & X-Series (Retail)
+ * - Magento: REST API
+ * - Custom: JSON/CSV file imports
  */
 class CatalogConnectorFactory {
-  static create(tenantId, config = {}) {
-    const connectorType = config.source || config.type || 'custom';
-
-    switch (connectorType.toLowerCase()) {
-      case 'shopify':
-        return new ShopifyCatalogConnector(tenantId, config);
-
-      case 'woocommerce':
-        // WooCommerce connector (to be implemented)
-        console.warn('[ConnectorFactory] WooCommerce connector not yet implemented, using custom');
-        return new CustomCatalogConnector(tenantId, { ...config, catalogType: CATALOG_TYPES.PRODUCTS });
-
-      case 'custom':
-      default:
-        return new CustomCatalogConnector(tenantId, config);
+  static CONNECTORS = {
+    shopify: {
+      name: 'Shopify',
+      class: ShopifyCatalogConnector,
+      catalogType: CATALOG_TYPES.PRODUCTS,
+      requiredConfig: ['shop', 'accessToken'],
+      marketShare: '10.32%',
+      description: 'GraphQL Admin API with rate limit awareness'
+    },
+    woocommerce: {
+      name: 'WooCommerce',
+      class: WooCommerceCatalogConnector,
+      catalogType: CATALOG_TYPES.PRODUCTS,
+      requiredConfig: ['storeUrl', 'consumerKey', 'consumerSecret'],
+      marketShare: '33-39%',
+      description: 'REST API v3 (requires WordPress 6.7+, WooCommerce 9.0+)'
+    },
+    square: {
+      name: 'Square',
+      class: SquareCatalogConnector,
+      catalogType: CATALOG_TYPES.PRODUCTS,
+      requiredConfig: ['accessToken'],
+      optionalConfig: ['locationId', 'environment'],
+      marketShare: '~3%',
+      description: 'Catalog API for POS and e-commerce'
+    },
+    lightspeed: {
+      name: 'Lightspeed',
+      class: LightspeedCatalogConnector,
+      catalogType: CATALOG_TYPES.MENU,
+      requiredConfig: ['accessToken'],
+      optionalConfig: ['series', 'businessId', 'accountId'],
+      marketShare: '~2%',
+      description: 'K-Series (Restaurant) and X-Series (Retail) APIs'
+    },
+    magento: {
+      name: 'Magento/Adobe Commerce',
+      class: MagentoCatalogConnector,
+      catalogType: CATALOG_TYPES.PRODUCTS,
+      requiredConfig: ['baseUrl', 'accessToken'],
+      marketShare: '8%',
+      description: 'REST API for enterprise e-commerce'
+    },
+    custom: {
+      name: 'Custom (JSON/CSV)',
+      class: CustomCatalogConnector,
+      catalogType: CATALOG_TYPES.PRODUCTS,
+      requiredConfig: [],
+      optionalConfig: ['dataPath', 'catalogType'],
+      marketShare: 'N/A',
+      description: 'Local file-based catalog (JSON/CSV import)'
     }
+  };
+
+  /**
+   * Create connector instance
+   * @param {string} tenantId - Tenant identifier
+   * @param {object} config - Connector configuration
+   * @param {string} config.source - Connector type (shopify, woocommerce, square, lightspeed, magento, custom)
+   * @returns {CatalogConnector} Connector instance
+   */
+  static create(tenantId, config = {}) {
+    const connectorType = (config.source || config.type || 'custom').toLowerCase();
+    const connectorDef = this.CONNECTORS[connectorType];
+
+    if (!connectorDef) {
+      console.warn(`[ConnectorFactory] Unknown connector type: ${connectorType}, using custom`);
+      return new CustomCatalogConnector(tenantId, config);
+    }
+
+    // Validate required config
+    const missing = (connectorDef.requiredConfig || []).filter(key =>
+      !config[key] && !config[key.replace(/([A-Z])/g, '_$1').toLowerCase()] // Check camelCase and snake_case
+    );
+
+    if (missing.length > 0) {
+      console.warn(`[ConnectorFactory] Missing config for ${connectorType}: ${missing.join(', ')}`);
+    }
+
+    return new connectorDef.class(tenantId, {
+      ...config,
+      catalogType: config.catalogType || connectorDef.catalogType
+    });
   }
 
+  /**
+   * Get list of available connector types
+   * @returns {string[]} Connector type identifiers
+   */
   static getAvailableConnectors() {
-    return ['shopify', 'custom'];
+    return Object.keys(this.CONNECTORS);
+  }
+
+  /**
+   * Get connector metadata
+   * @param {string} connectorType - Connector type
+   * @returns {object|null} Connector metadata
+   */
+  static getConnectorInfo(connectorType) {
+    return this.CONNECTORS[connectorType?.toLowerCase()] || null;
+  }
+
+  /**
+   * Get all connectors with metadata
+   * @returns {object} All connector definitions
+   */
+  static getAllConnectorsInfo() {
+    return Object.entries(this.CONNECTORS).map(([type, info]) => ({
+      type,
+      name: info.name,
+      catalogType: info.catalogType,
+      requiredConfig: info.requiredConfig,
+      optionalConfig: info.optionalConfig || [],
+      marketShare: info.marketShare,
+      description: info.description
+    }));
+  }
+
+  /**
+   * Validate connector configuration
+   * @param {string} connectorType - Connector type
+   * @param {object} config - Configuration to validate
+   * @returns {object} Validation result { valid: boolean, missing: string[], warnings: string[] }
+   */
+  static validateConfig(connectorType, config = {}) {
+    const connectorDef = this.CONNECTORS[connectorType?.toLowerCase()];
+
+    if (!connectorDef) {
+      return { valid: false, missing: [], warnings: [`Unknown connector type: ${connectorType}`] };
+    }
+
+    const missing = (connectorDef.requiredConfig || []).filter(key => !config[key]);
+    const warnings = [];
+
+    // Check optional config hints
+    if (connectorType === 'square' && !config.locationId) {
+      warnings.push('locationId recommended for inventory tracking');
+    }
+
+    if (connectorType === 'lightspeed' && !config.series) {
+      warnings.push('series defaults to "K" (Restaurant). Set to "X" for Retail.');
+    }
+
+    return {
+      valid: missing.length === 0,
+      missing,
+      warnings
+    };
   }
 }
 
 // Export
 module.exports = {
+  // Base classes
   CatalogConnector,
   CustomCatalogConnector,
+  // E-commerce connectors (primordial sector)
   ShopifyCatalogConnector,
+  WooCommerceCatalogConnector,
+  SquareCatalogConnector,
+  LightspeedCatalogConnector,
+  MagentoCatalogConnector,
+  // Factory
   CatalogConnectorFactory,
+  // Constants
   CATALOG_TYPES,
   CONNECTOR_STATUS
 };
@@ -695,14 +2006,26 @@ module.exports = {
 if (require.main === module) {
   (async () => {
     console.log('=== VocalIA Catalog Connector Test ===\n');
+    console.log('Version: 2.0.0 | Session 250.71 | E-commerce Connectors Production-Ready\n');
+
+    // Display available connectors
+    console.log('📦 Available E-commerce Connectors:');
+    console.log('─'.repeat(60));
+    for (const info of CatalogConnectorFactory.getAllConnectorsInfo()) {
+      console.log(`  ${info.name.padEnd(25)} | ${info.marketShare.padEnd(10)} | ${info.catalogType}`);
+    }
+    console.log('─'.repeat(60));
+    console.log(`Total Market Coverage: ~64%+ (WooCommerce+Shopify+Magento+Square+Lightspeed)\n`);
 
     // Test Custom Connector
-    const connector = new CustomCatalogConnector('test_tenant', {
+    console.log('🧪 Testing Custom Connector...');
+    const connector = CatalogConnectorFactory.create('test_tenant', {
+      source: 'custom',
       catalogType: CATALOG_TYPES.PRODUCTS
     });
 
     await connector.connect();
-    console.log('Status:', connector.getStatus());
+    console.log('   Status:', connector.getStatus().status);
 
     // Create sample catalog
     const sampleCatalog = {
@@ -716,7 +2039,8 @@ if (require.main === module) {
           stock: 50,
           in_stock: true,
           description: 'T-shirt 100% coton',
-          voice_description: 'T-shirt classic en coton à 199 dirhams'
+          voice_description: 'T-shirt classic en coton à 199 dirhams',
+          voice_summary: 'T-shirt à 199 MAD'
         },
         {
           id: 'PROD-002',
@@ -727,7 +2051,8 @@ if (require.main === module) {
           stock: 0,
           in_stock: false,
           description: 'Jean slim stretch',
-          voice_description: 'Jean slim à 399 dirhams, en rupture de stock'
+          voice_description: 'Jean slim à 399 dirhams, rupture de stock',
+          voice_summary: 'Jean à 399 MAD'
         }
       ]
     };
@@ -736,12 +2061,29 @@ if (require.main === module) {
 
     // Test search
     const results = await connector.search('shirt');
-    console.log('\nSearch "shirt":', results.length, 'results');
+    console.log('   Search "shirt":', results.length, 'results');
 
     // Test availability
     const avail = await connector.checkAvailability('PROD-001');
-    console.log('Availability PROD-001:', avail);
+    console.log('   Availability PROD-001:', avail.available ? '✅ In Stock' : '❌ Out of Stock');
+
+    // Validate Shopify config (example)
+    console.log('\n🔍 Config Validation Examples:');
+    const shopifyValidation = CatalogConnectorFactory.validateConfig('shopify', {});
+    console.log('   Shopify (empty config):', shopifyValidation.valid ? '✅' : `❌ Missing: ${shopifyValidation.missing.join(', ')}`);
+
+    const wooValidation = CatalogConnectorFactory.validateConfig('woocommerce', {
+      storeUrl: 'https://store.example.com',
+      consumerKey: 'ck_xxx',
+      consumerSecret: 'cs_xxx'
+    });
+    console.log('   WooCommerce (full config):', wooValidation.valid ? '✅ Valid' : '❌ Invalid');
+
+    const squareValidation = CatalogConnectorFactory.validateConfig('square', { accessToken: 'xxx' });
+    console.log('   Square (partial config):', squareValidation.valid ? '✅' : '❌', squareValidation.warnings[0] || '');
 
     console.log('\n✅ Catalog Connector Test Complete');
+    console.log('   6 E-commerce platforms supported (Shopify, WooCommerce, Square, Lightspeed, Magento, Custom)');
+    console.log('   Voice-optimized responses with voice_description and voice_summary fields');
   })();
 }

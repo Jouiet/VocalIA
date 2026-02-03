@@ -226,6 +226,25 @@
       "play": "شغّل",
       "stop": "وقّف"
     },
+    "connector": {
+      "title": "ربط پلاطفورم التجارة الإلكترونية",
+      "description": "ربط الحانوت ديالك باش تسنكروني المنتوجات ديالك أوتوماتيك.",
+      "connect": "ربط و سنكرونيزي",
+      "disconnect": "قطع الربط",
+      "secure": "ربط آمن. المعلومات ديالك محمية.",
+      "connected": "مربوط",
+      "not_configured": "ما مضبوطش",
+      "last_sync": "آخر سنكرونيزاسيون",
+      "sync_now": "سنكروني دابا",
+      "platforms": {
+        "shopify": "Shopify",
+        "woocommerce": "WooCommerce",
+        "square": "Square POS",
+        "lightspeed": "Lightspeed",
+        "magento": "Magento/Adobe Commerce",
+        "custom": "استيراد بيدك (JSON/CSV)"
+      }
+    },
     "search_placeholder": "قلّب على منتوج...",
     "filter_category": "صفّي حسب الفئة",
     "filter_status": "صفّي حسب الحالة"

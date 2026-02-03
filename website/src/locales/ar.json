@@ -226,6 +226,25 @@
       "play": "تشغيل",
       "stop": "إيقاف"
     },
+    "connector": {
+      "title": "ربط منصة التجارة الإلكترونية",
+      "description": "اربط متجرك لمزامنة منتجاتك تلقائياً.",
+      "connect": "ربط ومزامنة",
+      "disconnect": "قطع الاتصال",
+      "secure": "اتصال آمن. بيانات الاعتماد مشفرة.",
+      "connected": "متصل",
+      "not_configured": "غير مُعدّ",
+      "last_sync": "آخر مزامنة",
+      "sync_now": "مزامنة الآن",
+      "platforms": {
+        "shopify": "Shopify",
+        "woocommerce": "WooCommerce",
+        "square": "Square POS",
+        "lightspeed": "Lightspeed",
+        "magento": "Magento/Adobe Commerce",
+        "custom": "استيراد يدوي (JSON/CSV)"
+      }
+    },
     "search_placeholder": "البحث عن منتج...",
     "filter_category": "تصفية حسب الفئة",
     "filter_status": "تصفية حسب الحالة"

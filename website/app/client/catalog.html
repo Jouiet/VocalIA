@@ -396,6 +396,101 @@
     </div>
   </div>
 
+  <!-- Connector Configuration Modal -->
+  <div id="connector-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="fixed inset-0 bg-black/50" id="connector-modal-backdrop"></div>
+      <div class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.connector.title">Connecter une plateforme e-commerce</h3>
+          <button id="close-connector-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+
+        <!-- Platform Selection -->
+        <div id="connector-platforms" class="space-y-4">
+          <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.connector.description">Connectez votre boutique pour synchroniser automatiquement vos produits.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="shopify">
+              <img src="/public/images/integrations/shopify.svg" alt="Shopify" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+              <div class="text-left">
+                <span class="font-semibold text-slate-900 dark:text-white">Shopify</span>
+                <p class="text-xs text-slate-500">10.32% part de marché</p>
+              </div>
+            </button>
+            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="woocommerce">
+              <img src="/public/images/integrations/woocommerce.svg" alt="WooCommerce" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+              <div class="text-left">
+                <span class="font-semibold text-slate-900 dark:text-white">WooCommerce</span>
+                <p class="text-xs text-slate-500">33-39% part de marché</p>
+              </div>
+            </button>
+            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="square">
+              <img src="/public/images/integrations/square.svg" alt="Square" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+              <div class="text-left">
+                <span class="font-semibold text-slate-900 dark:text-white">Square POS</span>
+                <p class="text-xs text-slate-500">Restaurant & Retail</p>
+              </div>
+            </button>
+            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="lightspeed">
+              <img src="/public/images/integrations/lightspeed.svg" alt="Lightspeed" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+              <div class="text-left">
+                <span class="font-semibold text-slate-900 dark:text-white">Lightspeed</span>
+                <p class="text-xs text-slate-500">Restaurant K-Series / Retail</p>
+              </div>
+            </button>
+            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="magento">
+              <img src="/public/images/integrations/magento.svg" alt="Magento" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+              <div class="text-left">
+                <span class="font-semibold text-slate-900 dark:text-white">Magento/Adobe</span>
+                <p class="text-xs text-slate-500">8% part de marché</p>
+              </div>
+            </button>
+            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="custom">
+              <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+                <i data-lucide="file-json" class="w-6 h-6 text-slate-500"></i>
+              </div>
+              <div class="text-left">
+                <span class="font-semibold text-slate-900 dark:text-white">JSON/CSV</span>
+                <p class="text-xs text-slate-500">Import manuel</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Configuration Form (hidden by default) -->
+        <div id="connector-config" class="hidden space-y-4">
+          <div class="flex items-center gap-3 mb-4">
+            <button id="back-to-platforms" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+              <i data-lucide="arrow-left" class="w-5 h-5 text-slate-400"></i>
+            </button>
+            <img id="selected-platform-icon" src="" alt="" class="w-10 h-10">
+            <span id="selected-platform-name" class="font-semibold text-slate-900 dark:text-white"></span>
+          </div>
+
+          <form id="connector-form" class="space-y-4">
+            <!-- Dynamic fields based on platform -->
+            <div id="config-fields"></div>
+
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
+              <button type="submit" id="connect-btn" class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center justify-center gap-2">
+                <i data-lucide="plug" class="w-5 h-5"></i>
+                <span data-i18n="catalog.connector.connect">Connecter et synchroniser</span>
+              </button>
+            </div>
+          </form>
+
+          <p class="text-xs text-slate-500 text-center">
+            <i data-lucide="lock" class="w-3 h-3 inline"></i>
+            <span data-i18n="catalog.connector.secure">Connexion sécurisée. Vos identifiants sont chiffrés.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="/src/lib/api-client.js"></script>
   <script>
     // Initialize Lucide icons
@@ -951,6 +1046,230 @@
         renderItems();
       }
     });
+
+    // =========================================================================
+    // CONNECTOR CONFIGURATION (Session 250.71)
+    // E-commerce platform integration: Shopify, WooCommerce, Square, Lightspeed, Magento
+    // =========================================================================
+
+    const connectorModal = document.getElementById('connector-modal');
+    const connectorPlatforms = document.getElementById('connector-platforms');
+    const connectorConfig = document.getElementById('connector-config');
+    let selectedPlatform = null;
+
+    // Platform configuration templates
+    const platformConfigs = {
+      shopify: {
+        name: 'Shopify',
+        icon: '/public/images/integrations/shopify.svg',
+        fields: [
+          { name: 'shop', label: 'Nom de boutique', placeholder: 'ma-boutique (sans .myshopify.com)', required: true },
+          { name: 'accessToken', label: 'Access Token', placeholder: 'shpat_xxxxxxxxxxxx', required: true, type: 'password' }
+        ],
+        help: 'Shopify Admin → Settings → Apps → Develop apps → Create app'
+      },
+      woocommerce: {
+        name: 'WooCommerce',
+        icon: '/public/images/integrations/woocommerce.svg',
+        fields: [
+          { name: 'storeUrl', label: 'URL de la boutique', placeholder: 'https://monsite.com', required: true },
+          { name: 'consumerKey', label: 'Consumer Key', placeholder: 'ck_xxxxxxxxxxxx', required: true },
+          { name: 'consumerSecret', label: 'Consumer Secret', placeholder: 'cs_xxxxxxxxxxxx', required: true, type: 'password' }
+        ],
+        help: 'WooCommerce → Settings → Advanced → REST API → Add key'
+      },
+      square: {
+        name: 'Square POS',
+        icon: '/public/images/integrations/square.svg',
+        fields: [
+          { name: 'accessToken', label: 'Access Token', placeholder: 'sq0atp-xxxxxxxxxxxx', required: true, type: 'password' },
+          { name: 'locationId', label: 'Location ID (optionnel)', placeholder: 'LXXXXXXXXXXXXXXX', required: false }
+        ],
+        help: 'Square Developer Dashboard → Applications → Credentials'
+      },
+      lightspeed: {
+        name: 'Lightspeed',
+        icon: '/public/images/integrations/lightspeed.svg',
+        fields: [
+          { name: 'accessToken', label: 'Access Token', placeholder: 'Bearer token', required: true, type: 'password' },
+          { name: 'series', label: 'Type', placeholder: 'K (Restaurant) ou X (Retail)', required: false, defaultValue: 'K' },
+          { name: 'businessId', label: 'Business ID', placeholder: 'ID de votre établissement', required: false }
+        ],
+        help: 'Lightspeed Developer Portal → API Credentials'
+      },
+      magento: {
+        name: 'Magento/Adobe Commerce',
+        icon: '/public/images/integrations/magento.svg',
+        fields: [
+          { name: 'baseUrl', label: 'URL du site', placeholder: 'https://magento.example.com', required: true },
+          { name: 'accessToken', label: 'Access Token', placeholder: 'Bearer token', required: true, type: 'password' }
+        ],
+        help: 'Admin → System → Integrations → Add New Integration'
+      },
+      custom: {
+        name: 'JSON/CSV',
+        icon: null,
+        fields: [],
+        help: 'Importez vos produits via fichier JSON ou CSV'
+      }
+    };
+
+    // Open connector modal from import modal platform buttons
+    document.querySelectorAll('.connect-platform').forEach(btn => {
+      btn.addEventListener('click', () => {
+        importModal.classList.add('hidden');
+        selectedPlatform = btn.dataset.platform;
+        showConnectorConfig(selectedPlatform);
+        connectorModal.classList.remove('hidden');
+      });
+    });
+
+    // Platform selection in connector modal
+    document.querySelectorAll('.platform-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedPlatform = btn.dataset.platform;
+        if (selectedPlatform === 'custom') {
+          connectorModal.classList.add('hidden');
+          importModal.classList.remove('hidden');
+        } else {
+          showConnectorConfig(selectedPlatform);
+        }
+      });
+    });
+
+    function showConnectorConfig(platform) {
+      const config = platformConfigs[platform];
+      if (!config) return;
+
+      // Update header
+      document.getElementById('selected-platform-name').textContent = config.name;
+      const iconEl = document.getElementById('selected-platform-icon');
+      if (config.icon) {
+        iconEl.src = config.icon;
+        iconEl.classList.remove('hidden');
+      } else {
+        iconEl.classList.add('hidden');
+      }
+
+      // Build form fields
+      const fieldsHtml = config.fields.map(field => `
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">${field.label}${field.required ? ' *' : ''}</label>
+          <input type="${field.type || 'text'}" name="${field.name}" ${field.required ? 'required' : ''}
+            value="${field.defaultValue || ''}"
+            placeholder="${field.placeholder}"
+            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+        </div>
+      `).join('');
+
+      const helpHtml = config.help ? `
+        <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            <i data-lucide="info" class="w-3 h-3 inline mr-1"></i>
+            <strong>Où trouver les identifiants:</strong> ${config.help}
+          </p>
+        </div>
+      ` : '';
+
+      document.getElementById('config-fields').innerHTML = fieldsHtml + helpHtml;
+
+      // Show config, hide platforms
+      connectorPlatforms.classList.add('hidden');
+      connectorConfig.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    // Back to platforms
+    document.getElementById('back-to-platforms').addEventListener('click', () => {
+      connectorConfig.classList.add('hidden');
+      connectorPlatforms.classList.remove('hidden');
+      selectedPlatform = null;
+    });
+
+    // Close connector modal
+    document.getElementById('close-connector-modal').addEventListener('click', () => {
+      connectorModal.classList.add('hidden');
+      connectorConfig.classList.add('hidden');
+      connectorPlatforms.classList.remove('hidden');
+    });
+    document.getElementById('connector-modal-backdrop').addEventListener('click', () => {
+      connectorModal.classList.add('hidden');
+      connectorConfig.classList.add('hidden');
+      connectorPlatforms.classList.remove('hidden');
+    });
+
+    // Submit connector form
+    document.getElementById('connector-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const tenantId = auth.user?.tenant_id || 'client_demo';
+
+      const formData = new FormData(form);
+      const config = { source: selectedPlatform };
+      for (const [key, value] of formData.entries()) {
+        if (value) config[key] = value;
+      }
+
+      try {
+        document.getElementById('connect-btn').disabled = true;
+        document.getElementById('connect-btn').innerHTML = '<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> Connexion...';
+        lucide.createIcons();
+
+        const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/connector`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${auth.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(config)
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.connected) {
+          showToast(`Connecté à ${platformConfigs[selectedPlatform].name}! Synchronisation en cours...`, 'success');
+          connectorModal.classList.add('hidden');
+          connectorConfig.classList.add('hidden');
+          connectorPlatforms.classList.remove('hidden');
+
+          // Trigger sync
+          await syncCatalog();
+          await loadCatalog();
+        } else if (response.ok && !result.connected) {
+          showToast(`Configuration sauvegardée mais connexion échouée. Vérifiez vos identifiants.`, 'error');
+        } else {
+          showToast(result.error || 'Erreur de connexion', 'error');
+        }
+      } catch (error) {
+        console.error('Connector error:', error);
+        showToast('Erreur de connexion', 'error');
+      } finally {
+        document.getElementById('connect-btn').disabled = false;
+        document.getElementById('connect-btn').innerHTML = '<i data-lucide="plug" class="w-5 h-5"></i> Connecter et synchroniser';
+        lucide.createIcons();
+      }
+    });
+
+    // Sync catalog
+    async function syncCatalog() {
+      const tenantId = auth.user?.tenant_id || 'client_demo';
+      try {
+        const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/sync`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${auth.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ type: currentType.toUpperCase(), force: true })
+        });
+
+        if (response.ok) {
+          showToast('Catalogue synchronisé', 'success');
+        }
+      } catch (error) {
+        console.error('Sync error:', error);
+      }
+    }
 
     // Initialize
     loadCatalog();

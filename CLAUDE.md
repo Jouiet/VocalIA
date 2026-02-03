@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.79.0 | 03/02/2026 | Session 250.70 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.80.0 | 03/02/2026 | Session 250.71 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **70 pages** | **21,925+ keys** | RTL ✅ | hreflang ary ✅
-> **Dynamic Catalog: 10 function tools + 7 API endpoints ✅** | browse_catalog, get_menu, get_services, get_vehicles, get_trips, search_catalog | Voice-optimized | LRU cache | CRUD Dashboard
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **70 pages** | **22,000+ keys** | RTL ✅ | hreflang ary ✅
+> **Dynamic Catalog: 10 function tools + 9 API endpoints ✅** | 6 E-commerce connectors (Shopify, WooCommerce, Square, Lightspeed, Magento, Custom) | ~64% market coverage | Voice-optimized | LRU cache | CRUD Dashboard
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **54 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
@@ -24,7 +24,7 @@
 > **Analytics: Plausible (GDPR)** | 70 pages tracked | CTA events ✅ | **A/B Testing ✅**
 > **Tests: 305 unit + 375 E2E (99.5%)** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** | **Load Tests: k6 ✅** | **E2E: Playwright 5 browsers ✅** | **Chaos Engineering ✅**
 > **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
-> **✅ LANGUAGE INTEGRATION (Session 250.64):** ElevenLabs **27 voix** (FR, EN, ES, AR, ARY) | Males: Abdel, Adam, Juan Carlos, Amr, Jawad | Females: Sarah, Rachel, Domi, Ghizlane | Widget + Telephony ✅
+> **✅ VOICE MULTI-PROVIDER (Session 250.65):** Grok Voice + Gemini TTS + ElevenLabs Darija - Tenant voice override ✅ | GROK_VOICE_MAP (5 langues × 2 genres → 7 voix) | ElevenLabs 27 voix | Widget + Telephony ✅
 
 ## Identité
 
@@ -43,10 +43,12 @@
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
+**Session 250.71 E-COMMERCE CONNECTORS COMPLETE:** 6 production-ready catalog connectors in core/catalog-connector.cjs (1500+ lines) - ShopifyCatalogConnector (GraphQL Admin API 2026-01), WooCommerceCatalogConnector (REST v3), SquareCatalogConnector (Catalog API, POS), LightspeedCatalogConnector (K-Series restaurant, X-Series retail), MagentoCatalogConnector (REST API), CustomCatalogConnector (JSON/CSV) - CatalogConnectorFactory with config validation - 2 new API endpoints (GET/PUT /api/tenants/:id/catalog/connector) - Connector config modal in catalog.html (6 platforms) - i18n catalog.connector.* keys (5 locales) - Market coverage ~64%
 **Session 250.70 CATALOG API CONNECTED:** catalog.html API-connected CRUD (POST/PUT/DELETE), file import handler (JSON/CSV), edit mode with PUT, toast notifications, sample data fallback for demo mode
 **Session 250.69 CATALOG DASHBOARD COMPLETE:** catalog.html (600+ lines), 9 pages updated with catalog nav link, 7 CRUD API endpoints (/api/tenants/:id/catalog/*), CRUD methods TenantCatalogStore (getItems, getItem, addItem, updateItem, removeItem, syncCatalog), i18n catalog.* 65+ keys × 5 locales (fr, en, es, ar, ary), WebSocket broadcast catalog events
 **Session 250.67-68 DYNAMIC CATALOG:** catalog-connector.cjs (718 lines), tenant-catalog-store.cjs (1000+ lines), 5 JSON schemas, 5 sample catalogs, 10 function tools (browse, menu, services, vehicles, trips, packages, slots, etc.), LRU cache, voice-optimized responses, 10/10 unit tests pass
 **Session 250.66 SSL/HTTPS VERIFIED:** Production https://vocalia.ma live with HTTP/2, HSTS (max-age=31536000; includeSubDomains; preload), CSP, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, X-XSS-Protection, Referrer-Policy, LiteSpeed server
+**Session 250.65bis MULTI-PROVIDER VOICE AUDIT:** COMPLET - 7 providers audités (Grok/Gemini/ElevenLabs/Twilio/WebSpeech), GROK_VOICE_MAP (10 mappings: 5 langues × 2 genres), voice override AVANT ws.send(), Telephony=✅ configurable, Widget=INDIRECT (design OK), TwiML=alice fixe (API limit), AUDIT-VOICE-CONFIG-SESSION-250.63.md +Section 11 (cartographie exhaustive) (Grok + Gemini + ElevenLabs)
 **Session 250.65 P1/P2 COMPLETE:** k6 load tests (smoke, load, stress, spike), onboarding.html wizard (4 steps), i18n onboarding 5 locales (40 keys each), SDKs ready (node v0.1.0, python v0.1.0), OpenAPI 520 lines, Deploy workflow NindoHost
 **Session 250.64 VOICE E2E COMPLETE:** ElevenLabs 27 voix, END-TO-END voice config fix (DB→Telephony): getTenantVoicePreferences(), session.metadata.voice_gender, loadVoicePreferences(), GoogleSheetsDB schema +voice_language/voice_gender/active_persona, api-client tenants resource, BUG FIX male voices (ar/fr/en/es_male), agents.html voice UI
 **Session 250.63 UNIT TESTS FIX:** 305/305 tests pass (was hanging) - `unref()` added to 6 modules setInterval (EventBus, telephony, auth-middleware, security-utils, grok-realtime, db-api), telephony bridge `require.main === module` guard, test OpenAI→AtlasChat fix

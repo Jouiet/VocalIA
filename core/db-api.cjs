@@ -1094,6 +1094,128 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.71: CATALOG CONNECTOR ENDPOINTS (E-commerce Integration)
+  // Endpoints:
+  // - GET  /api/catalog/connectors               - List available connector types
+  // - GET  /api/tenants/:id/catalog/connector    - Get tenant's connector config
+  // - PUT  /api/tenants/:id/catalog/connector    - Configure tenant's connector
+  // ═══════════════════════════════════════════════════════════════
+
+  // List Available Connectors - GET /api/catalog/connectors
+  if (path === '/api/catalog/connectors' && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+
+    try {
+      const { CatalogConnectorFactory } = require('./catalog-connector.cjs');
+      const connectors = CatalogConnectorFactory.getAllConnectorsInfo();
+
+      sendJson(res, 200, {
+        success: true,
+        connectors,
+        total: connectors.length,
+        market_coverage: '~64%+ (WooCommerce+Shopify+Magento+Square+Lightspeed)'
+      });
+    } catch (e) {
+      sendError(res, 500, `Error loading connectors: ${e.message}`);
+    }
+    return;
+  }
+
+  // Get Tenant Connector Config - GET /api/tenants/:id/catalog/connector
+  const connectorGetMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/connector$/);
+  if (connectorGetMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = connectorGetMatch[1];
+
+    try {
+      const catalogStore = getCatalogStore();
+      const connector = catalogStore.getConnector(tenantId);
+
+      if (!connector) {
+        sendJson(res, 200, {
+          success: true,
+          configured: false,
+          connector: null,
+          message: 'No connector configured for this tenant'
+        });
+        return;
+      }
+
+      sendJson(res, 200, {
+        success: true,
+        configured: true,
+        connector: {
+          type: connector.config?.source || 'custom',
+          catalogType: connector.catalogType,
+          status: connector.status,
+          lastSync: connector.lastSync,
+          lastError: connector.lastError
+        }
+      });
+    } catch (e) {
+      sendError(res, 500, `Error getting connector: ${e.message}`);
+    }
+    return;
+  }
+
+  // Configure Tenant Connector - PUT /api/tenants/:id/catalog/connector
+  if (connectorGetMatch && method === 'PUT') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = connectorGetMatch[1];
+
+    try {
+      const body = await readBody(req);
+      const { CatalogConnectorFactory } = require('./catalog-connector.cjs');
+
+      // Validate connector type
+      if (!body.source) {
+        sendError(res, 400, 'source required (shopify, woocommerce, square, lightspeed, magento, custom)');
+        return;
+      }
+
+      // Validate config
+      const validation = CatalogConnectorFactory.validateConfig(body.source, body);
+      if (!validation.valid) {
+        sendError(res, 400, `Invalid config: missing ${validation.missing.join(', ')}`);
+        return;
+      }
+
+      // Register connector
+      const catalogStore = getCatalogStore();
+      await catalogStore.registerTenant(tenantId, {
+        type: body.source,
+        catalogType: body.catalogType || 'PRODUCTS',
+        ...body
+      });
+
+      // Test connection
+      const connector = catalogStore.getConnector(tenantId);
+      const connected = await connector.connect();
+
+      sendJson(res, 200, {
+        success: true,
+        configured: true,
+        connected,
+        connector: {
+          type: body.source,
+          catalogType: body.catalogType || 'PRODUCTS',
+          status: connector.status
+        },
+        warnings: validation.warnings
+      });
+
+      // Broadcast update
+      broadcastToTenant(tenantId, 'catalog', 'connector_configured', { type: body.source });
+    } catch (e) {
+      sendError(res, 500, `Error configuring connector: ${e.message}`);
+    }
+    return;
+  }
+
   // Catalog Item Detail - GET /api/tenants/:id/catalog/:itemId
   const catalogItemMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/([^/]+)$/);
   if (catalogItemMatch && method === 'GET' && !path.includes('/import') && !path.includes('/sync')) {
