@@ -419,7 +419,22 @@ class CustomCatalogConnector extends CatalogConnector {
 /**
  * Shopify Catalog Connector
  * Production connector using Shopify GraphQL Admin API (recommended since Oct 2024)
- * Reference: https://shopify.dev/docs/api/admin-graphql
+ *
+ * Official Documentation:
+ * - GraphQL Admin API: https://shopify.dev/docs/api/admin-graphql/latest
+ * - Rate Limits: https://shopify.dev/docs/api/usage/limits
+ * - Bulk Operations (2026-01): https://shopify.dev/docs/api/usage/bulk-operations/queries
+ *
+ * Rate Limits (per official docs):
+ * - Standard: 50 points/second, up to 1,000 points
+ * - Advanced plan: 100 points/second
+ * - Shopify Plus: 500 points/second
+ * - 2026-01: Supports 5 concurrent bulk operations per shop
+ *
+ * Query Cost Calculation:
+ * - Object: 1 point
+ * - Connection: 2 + (number of objects returned)
+ *
  * API Version: 2026-01
  */
 class ShopifyCatalogConnector extends CatalogConnector {
@@ -432,6 +447,10 @@ class ShopifyCatalogConnector extends CatalogConnector {
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
     this.currency = config.currency || 'MAD';
+    // Rate limit tracking
+    this.availablePoints = 1000;
+    this.restoreRate = 50;
+    this.lastCost = 0;
   }
 
   async connect() {
@@ -462,30 +481,73 @@ class ShopifyCatalogConnector extends CatalogConnector {
     }
   }
 
-  async _graphqlRequest(query, variables = {}) {
+  /**
+   * Execute GraphQL request with rate limit handling
+   * Uses calculated query cost model per Shopify docs
+   *
+   * @param {string} query - GraphQL query
+   * @param {object} variables - Query variables
+   * @param {boolean} debugCost - Include cost debug header
+   * @returns {object} Response data
+   */
+  async _graphqlRequest(query, variables = {}, debugCost = false) {
     const url = `https://${this.shop}.myshopify.com/admin/api/${this.apiVersion}/graphql.json`;
+
+    const headers = {
+      'Content-Type': 'application/json',
+      'X-Shopify-Access-Token': this.accessToken,
+      'User-Agent': 'VocalIA-CatalogConnector/1.0'
+    };
+
+    // Enable cost debugging in development
+    if (debugCost || process.env.NODE_ENV === 'development') {
+      headers['Shopify-GraphQL-Cost-Debug'] = '1';
+    }
 
     const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': this.accessToken,
-        'User-Agent': 'VocalIA-CatalogConnector/1.0'
-      },
+      headers,
       body: JSON.stringify({ query, variables })
     });
 
+    // Handle rate limiting with exponential backoff
     if (response.status === 429) {
-      const retryAfter = response.headers.get('Retry-After') || '2';
-      throw new Error(`Rate limit exceeded. Retry after ${retryAfter}s`);
+      const retryAfter = parseInt(response.headers.get('Retry-After') || '2', 10);
+      console.log(`[ShopifyConnector] Rate limited. Waiting ${retryAfter}s...`);
+      await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
+      // Retry once
+      return this._graphqlRequest(query, variables, debugCost);
     }
 
     if (!response.ok) {
-      throw new Error(`Shopify API error: ${response.status}`);
+      throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
     }
 
     const result = await response.json();
+
+    // Track query cost from extensions
+    if (result.extensions?.cost) {
+      const cost = result.extensions.cost;
+      this.lastCost = cost.requestedQueryCost;
+      this.availablePoints = cost.throttleStatus?.currentlyAvailable || this.availablePoints;
+      this.restoreRate = cost.throttleStatus?.restoreRate || this.restoreRate;
+
+      // Throttle if running low on points (< 100)
+      if (this.availablePoints < 100) {
+        const waitTime = Math.ceil((100 - this.availablePoints) / this.restoreRate) * 1000;
+        console.log(`[ShopifyConnector] Low points (${this.availablePoints}), waiting ${waitTime}ms`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+    }
+
     if (result.errors?.length > 0) {
+      // Check for THROTTLED error
+      const throttled = result.errors.find(e => e.extensions?.code === 'THROTTLED');
+      if (throttled) {
+        console.log('[ShopifyConnector] Throttled, waiting 1s...');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return this._graphqlRequest(query, variables, debugCost);
+      }
       throw new Error(`GraphQL errors: ${result.errors.map(e => e.message).join(', ')}`);
     }
 

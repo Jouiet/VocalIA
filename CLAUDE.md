@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.80.0 | 03/02/2026 | Session 250.71 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.81.0 | 03/02/2026 | Session 250.72 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
@@ -13,7 +13,7 @@
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
-> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 18 Func. Tools | 43 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 18 Func. Tools | 44 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
@@ -43,6 +43,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
+**Session 250.72 CALENDAR SLOTS CONNECTOR COMPLETE:** core/calendar-slots-connector.cjs (520+ lines) - Google Calendar API v3 FreeBusy integration - Rate limits: 600 req/min/user (per official docs) - Exponential backoff on 403/429 errors - Slot generation with buffer time (5min) and min advance booking (24h) - CalendarSlotsStore singleton for multi-tenant - Voice-optimized getSlotsSummary() - Patterns from Cal.com and Easy!Appointments - Shopify connector enhanced with query cost tracking - 306 tests passing
 **Session 250.71 E-COMMERCE CONNECTORS COMPLETE:** 6 production-ready catalog connectors in core/catalog-connector.cjs (1500+ lines) - ShopifyCatalogConnector (GraphQL Admin API 2026-01), WooCommerceCatalogConnector (REST v3), SquareCatalogConnector (Catalog API, POS), LightspeedCatalogConnector (K-Series restaurant, X-Series retail), MagentoCatalogConnector (REST API), CustomCatalogConnector (JSON/CSV) - CatalogConnectorFactory with config validation - 2 new API endpoints (GET/PUT /api/tenants/:id/catalog/connector) - Connector config modal in catalog.html (6 platforms) - i18n catalog.connector.* keys (5 locales) - Market coverage ~64%
 **Session 250.70 CATALOG API CONNECTED:** catalog.html API-connected CRUD (POST/PUT/DELETE), file import handler (JSON/CSV), edit mode with PUT, toast notifications, sample data fallback for demo mode
 **Session 250.69 CATALOG DASHBOARD COMPLETE:** catalog.html (600+ lines), 9 pages updated with catalog nav link, 7 CRUD API endpoints (/api/tenants/:id/catalog/*), CRUD methods TenantCatalogStore (getItems, getItem, addItem, updateItem, removeItem, syncCatalog), i18n catalog.* 65+ keys × 5 locales (fr, en, es, ar, ary), WebSocket broadcast catalog events

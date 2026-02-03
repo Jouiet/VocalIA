@@ -1,6 +1,6 @@
 # VocalIA - Analyse Forensique: Capacité Catalogue Produits Dynamique
 
-> **Date**: 03/02/2026 | **Session**: 250.71 | **Auteur**: Claude Opus 4.5
+> **Date**: 03/02/2026 | **Session**: 250.72 | **Auteur**: Claude Opus 4.5
 > **Objectif**: Permettre aux Voice AI (Widget + Telephony) de présenter les produits/menu/inventaire des clients
 
 ---
@@ -367,16 +367,28 @@ data/knowledge-base/
 - Dashboard UI: catalog.html avec modal configuration plateforme
 - i18n: catalog.connector.* keys (5 locales)
 
-### Phase 3: Connecteurs Services & Créneaux (4-5 jours) ⚠️ PARTIEL
+### Phase 3: Connecteurs Services & Créneaux (4-5 jours) ✅ COMPLETE (Session 250.72)
 
-| Tâche | Fichier | Effort | Personas Couverts |
-|:------|:--------|:------:|:------------------|
-| 3.1 Connecteur Calendrier (slots) | core/connectors/calendar-slots.cjs | 1j | healer, dental, mechanic, stylist, hairdresser |
-| 3.2 Connecteur Services (generic) | core/connectors/services.cjs | 0.5j | cleaner, trainer, gym |
-| 3.3 Connecteur Fleet/Véhicules | core/connectors/fleet.cjs | 1j | renter |
-| 3.4 Connecteur Packages | core/connectors/packages.cjs | 0.5j | concierge, planner, gym |
-| 3.5 Schéma unifié services.json | docs/schemas/ | 0.5j | ALL services |
-| 3.6 Tests connecteurs services | test/service-connectors.test.cjs | 1j | - |
+| Tâche | Fichier | Effort | Status |
+|:------|:--------|:------:|:------:|
+| 3.1 Connecteur Calendrier (slots) | core/calendar-slots-connector.cjs | 1j | ✅ DONE |
+| 3.2 Connecteur Services (generic) | core/tenant-catalog-store.cjs | 0.5j | ✅ EXISTS |
+| 3.3 Connecteur Fleet/Véhicules | core/catalog-connector.cjs | 1j | ✅ EXISTS |
+| 3.4 Connecteur Packages | core/catalog-connector.cjs | 0.5j | ✅ EXISTS |
+| 3.5 Schéma unifié services.json | docs/schemas/ | 0.5j | ✅ DONE |
+| 3.6 Tests connecteurs services | test/unit/catalog-system.test.cjs | 1j | ✅ DONE |
+
+**Livrables Phase 3 (Session 250.72):**
+- `core/calendar-slots-connector.cjs` - 520+ lignes, Google Calendar API v3 integration
+  - FreeBusy API pour disponibilité temps réel
+  - Exponential backoff sur rate limits (403/429)
+  - Slot generation avec buffer time et min advance booking
+  - Voice-optimized responses
+  - Multi-tenant CalendarSlotsStore singleton
+- Documentation officielle intégrée:
+  - Google Calendar API: https://developers.google.com/workspace/calendar/api/v3/reference/freebusy/query
+  - Rate Limits: 600 req/min/user, 10,000/min/app
+  - Patterns Cal.com et Easy!Appointments
 
 ### Phase 4: Function Tools Voice (4-5 jours) ✅ COMPLETE
 
@@ -449,7 +461,7 @@ data/knowledge-base/
 
 | Connector | Status | Notes |
 |:----------|:------:|:------|
-| Calendar Slots | ⏳ | Phase 3.1 - Integrate with Google Calendar |
+| Calendar Slots | ✅ DONE | Google Calendar API v3, FreeBusy, exponential backoff |
 | Services Generic | ✅ EXISTS | Works with SERVICES catalog type |
 | Fleet/Vehicles | ✅ EXISTS | Works with FLEET catalog type |
 | Packages | ✅ EXISTS | Works with PACKAGES catalog type |
