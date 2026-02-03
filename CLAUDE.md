@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.78.0 | 03/02/2026 | Session 250.69 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.79.0 | 03/02/2026 | Session 250.70 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
@@ -43,7 +43,8 @@
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
-**Session 250.69 CATALOG DASHBOARD COMPLETE:** catalog.html (500+ lines), 9 pages updated with catalog nav link, 7 CRUD API endpoints (/api/tenants/:id/catalog/*), CRUD methods TenantCatalogStore (getItems, getItem, addItem, updateItem, removeItem, syncCatalog), i18n catalog.* 65+ keys × 5 locales (fr, en, es, ar, ary), WebSocket broadcast catalog events
+**Session 250.70 CATALOG API CONNECTED:** catalog.html API-connected CRUD (POST/PUT/DELETE), file import handler (JSON/CSV), edit mode with PUT, toast notifications, sample data fallback for demo mode
+**Session 250.69 CATALOG DASHBOARD COMPLETE:** catalog.html (600+ lines), 9 pages updated with catalog nav link, 7 CRUD API endpoints (/api/tenants/:id/catalog/*), CRUD methods TenantCatalogStore (getItems, getItem, addItem, updateItem, removeItem, syncCatalog), i18n catalog.* 65+ keys × 5 locales (fr, en, es, ar, ary), WebSocket broadcast catalog events
 **Session 250.67-68 DYNAMIC CATALOG:** catalog-connector.cjs (718 lines), tenant-catalog-store.cjs (1000+ lines), 5 JSON schemas, 5 sample catalogs, 10 function tools (browse, menu, services, vehicles, trips, packages, slots, etc.), LRU cache, voice-optimized responses, 10/10 unit tests pass
 **Session 250.66 SSL/HTTPS VERIFIED:** Production https://vocalia.ma live with HTTP/2, HSTS (max-age=31536000; includeSubDomains; preload), CSP, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, X-XSS-Protection, Referrer-Policy, LiteSpeed server
 **Session 250.65 P1/P2 COMPLETE:** k6 load tests (smoke, load, stress, spike), onboarding.html wizard (4 steps), i18n onboarding 5 locales (40 keys each), SDKs ready (node v0.1.0, python v0.1.0), OpenAPI 520 lines, Deploy workflow NindoHost

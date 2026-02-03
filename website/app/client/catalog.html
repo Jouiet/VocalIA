@@ -469,74 +469,221 @@
     document.getElementById('import-modal-backdrop').addEventListener('click', () => importModal.classList.add('hidden'));
     document.getElementById('cancel-import').addEventListener('click', () => importModal.classList.add('hidden'));
 
-    document.getElementById('add-item-btn').addEventListener('click', () => addModal.classList.remove('hidden'));
-    document.getElementById('close-add-modal').addEventListener('click', () => addModal.classList.add('hidden'));
-    document.getElementById('add-modal-backdrop').addEventListener('click', () => addModal.classList.add('hidden'));
-    document.getElementById('cancel-add').addEventListener('click', () => addModal.classList.add('hidden'));
+    document.getElementById('add-item-btn').addEventListener('click', () => {
+      resetAddModal();
+      addModal.classList.remove('hidden');
+    });
+    document.getElementById('close-add-modal').addEventListener('click', () => {
+      addModal.classList.add('hidden');
+      resetAddModal();
+    });
+    document.getElementById('add-modal-backdrop').addEventListener('click', () => {
+      addModal.classList.add('hidden');
+      resetAddModal();
+    });
+    document.getElementById('cancel-add').addEventListener('click', () => {
+      addModal.classList.add('hidden');
+      resetAddModal();
+    });
 
     // File upload
     document.getElementById('browse-files').addEventListener('click', () => {
       document.getElementById('file-input').click();
     });
 
+    let importFile = null;
     document.getElementById('file-input').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
+      importFile = e.target.files[0];
+      if (importFile) {
         document.getElementById('confirm-import').disabled = false;
-        // Show file name
+        // Show file name in UI
+        const dropZone = document.querySelector('.file-drop-zone p');
+        if (dropZone) dropZone.textContent = importFile.name;
       }
     });
 
-    // Save item
+    // Import catalog file
+    document.getElementById('confirm-import').addEventListener('click', async () => {
+      if (!importFile) return;
+
+      const tenantId = auth.user?.tenant_id || 'client_demo';
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        try {
+          let importData = [];
+          const content = e.target.result;
+
+          // Parse based on file type
+          if (importFile.name.endsWith('.json')) {
+            const parsed = JSON.parse(content);
+            importData = Array.isArray(parsed) ? parsed : (parsed.products || parsed.items || parsed.menu?.items || []);
+          } else if (importFile.name.endsWith('.csv')) {
+            // Simple CSV parser
+            const lines = content.split('\\n').filter(l => l.trim());
+            if (lines.length > 1) {
+              const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+              for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',');
+                const item = {};
+                headers.forEach((h, idx) => {
+                  item[h] = values[idx]?.trim() || '';
+                });
+                if (item.name || item.title) {
+                  importData.push({
+                    id: item.id || item.sku || `import-${Date.now()}-${i}`,
+                    name: item.name || item.title,
+                    price: parseFloat(item.price) || 0,
+                    category: item.category || '',
+                    stock: parseInt(item.stock) || 0,
+                    description: item.description || '',
+                    voiceDescription: item.voice_description || item.voicedescription || '',
+                    available: item.available !== 'false',
+                    currency: item.currency || 'MAD'
+                  });
+                }
+              }
+            }
+          }
+
+          if (importData.length > 0) {
+            // Send to API
+            const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/import`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${auth.token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                type: currentType.toUpperCase(),
+                data: importData
+              })
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              showToast(`${result.imported || importData.length} articles importés`, 'success');
+            } else {
+              // Fallback to local
+              catalogItems = [...catalogItems, ...importData];
+              showToast(`${importData.length} articles importés (local)`, 'success');
+            }
+
+            // Reload catalog
+            await loadCatalog();
+          } else {
+            showToast('Aucun article trouvé dans le fichier', 'error');
+          }
+        } catch (error) {
+          console.error('Import error:', error);
+          showToast("Erreur lors de l'import", 'error');
+        }
+
+        importModal.classList.add('hidden');
+        importFile = null;
+        document.getElementById('file-input').value = '';
+        document.getElementById('confirm-import').disabled = true;
+      };
+
+      reader.readAsText(importFile);
+    });
+
+    // Save item via API (POST for new, PUT for edit)
     document.getElementById('save-item').addEventListener('click', async () => {
       const form = document.getElementById('add-item-form');
       const formData = new FormData(form);
+      const tenantId = auth.user?.tenant_id || 'client_demo';
+      const isEditing = !!editingItemId;
 
       const item = {
-        id: formData.get('sku') || `item-${Date.now()}`,
+        id: isEditing ? editingItemId : (formData.get('sku') || `item-${Date.now()}`),
         name: formData.get('name'),
         price: parseFloat(formData.get('price')),
         stock: parseInt(formData.get('stock')) || 0,
         category: formData.get('category'),
         description: formData.get('description'),
-        voice_description: formData.get('voice_description'),
-        in_stock: formData.get('available') === 'on',
-        currency: 'MAD'
+        voiceDescription: formData.get('voice_description'),
+        available: formData.get('available') === 'on',
+        currency: 'MAD',
+        catalog_type: currentType.toUpperCase()
       };
 
       try {
-        // In production, save via API
-        catalogItems.push(item);
-        addModal.classList.add('hidden');
-        form.reset();
-        renderItems();
-        updateStats();
+        const url = isEditing
+          ? `${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/${editingItemId}`
+          : `${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog`;
+
+        const response = await fetch(url, {
+          method: isEditing ? 'PUT' : 'POST',
+          headers: {
+            'Authorization': `Bearer ${auth.token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(item)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (isEditing) {
+            const idx = catalogItems.findIndex(i => i.id === editingItemId);
+            if (idx !== -1) catalogItems[idx] = data.item || item;
+            showToast('Article modifié', 'success');
+          } else {
+            catalogItems.push(data.item || item);
+            showToast('Article ajouté', 'success');
+          }
+        } else {
+          // Fallback to local
+          if (isEditing) {
+            const idx = catalogItems.findIndex(i => i.id === editingItemId);
+            if (idx !== -1) catalogItems[idx] = item;
+          } else {
+            catalogItems.push(item);
+          }
+        }
       } catch (error) {
         console.error('Error saving item:', error);
+        // Fallback to local
+        if (isEditing) {
+          const idx = catalogItems.findIndex(i => i.id === editingItemId);
+          if (idx !== -1) catalogItems[idx] = item;
+        } else {
+          catalogItems.push(item);
+        }
       }
+
+      addModal.classList.add('hidden');
+      resetAddModal();
+      filteredItems = [...catalogItems];
+      renderItems();
+      updateStats();
+      updateVoicePreview();
     });
 
-    // Load catalog data
+    // Load catalog data from API
     async function loadCatalog() {
       try {
-        // Load from sample data or API
         const tenantId = auth.user?.tenant_id || 'client_demo';
 
         // Fetch catalog from API
-        const response = await fetch(`/api/catalog/${tenantId}?type=${currentType}`, {
+        const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog?type=${currentType.toUpperCase()}`, {
           headers: { 'Authorization': `Bearer ${auth.token}` }
         }).catch(() => null);
 
         if (response?.ok) {
           const data = await response.json();
           catalogItems = data.items || [];
+          // Update categories from API
+          if (data.categories && data.categories.length > 0) {
+            updateCategoriesFromData(data.categories);
+          }
         } else {
           // Use sample data for demo
           catalogItems = getSampleData(currentType);
         }
 
         filteredItems = [...catalogItems];
-        updateCategories();
+        if (!response?.ok) updateCategories();
         renderItems();
         updateStats();
         updateVoicePreview();
@@ -544,9 +691,17 @@
         console.error('Error loading catalog:', error);
         catalogItems = getSampleData(currentType);
         filteredItems = [...catalogItems];
+        updateCategories();
         renderItems();
         updateStats();
       }
+    }
+
+    function updateCategoriesFromData(categories) {
+      categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
+      categories.forEach(cat => {
+        categoryFilter.innerHTML += `<option value="${cat}">${cat}</option>`;
+      });
     }
 
     function getSampleData(type) {
@@ -714,9 +869,12 @@
       voicePreview.innerHTML = `<p class="text-sm italic">${preview}</p>`;
     }
 
+    let editingItemId = null;
+
     function editItem(id) {
       const item = catalogItems.find(i => i.id === id);
       if (item) {
+        editingItemId = id;
         // Populate form and show modal
         const form = document.getElementById('add-item-form');
         form.elements.name.value = item.name;
@@ -725,20 +883,57 @@
         form.elements.stock.value = item.stock || '';
         form.elements.category.value = item.category || '';
         form.elements.description.value = item.description || '';
-        form.elements.voice_description.value = item.voice_description || '';
-        form.elements.available.checked = item.in_stock !== false;
+        form.elements.voice_description.value = item.voice_description || item.voiceDescription || '';
+        form.elements.available.checked = item.in_stock !== false && item.available !== false;
+        document.querySelector('#add-modal h3').textContent = 'Modifier l\'article';
         addModal.classList.remove('hidden');
       }
     }
 
-    function deleteItem(id) {
-      if (confirm('Supprimer cet article?')) {
-        catalogItems = catalogItems.filter(i => i.id !== id);
-        filteredItems = filteredItems.filter(i => i.id !== id);
-        renderItems();
-        updateStats();
-        updateVoicePreview();
+    function resetAddModal() {
+      editingItemId = null;
+      document.getElementById('add-item-form').reset();
+      document.querySelector('#add-modal h3').textContent = 'Ajouter un article';
+    }
+
+    async function deleteItem(id) {
+      if (!confirm('Supprimer cet article?')) return;
+
+      const tenantId = auth.user?.tenant_id || 'client_demo';
+
+      try {
+        const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/${id}?type=${currentType.toUpperCase()}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${auth.token}` }
+        });
+
+        if (response.ok) {
+          showToast('Article supprimé', 'success');
+        }
+      } catch (error) {
+        console.error('Error deleting item:', error);
       }
+
+      // Update local state
+      catalogItems = catalogItems.filter(i => i.id !== id);
+      filteredItems = filteredItems.filter(i => i.id !== id);
+      renderItems();
+      updateStats();
+      updateVoicePreview();
+    }
+
+    // Toast notification
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      const colors = {
+        success: 'bg-green-500',
+        error: 'bg-red-500',
+        info: 'bg-indigo-500'
+      };
+      toast.className = `fixed bottom-4 right-4 ${colors[type]} text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
     }
 
     // Pagination

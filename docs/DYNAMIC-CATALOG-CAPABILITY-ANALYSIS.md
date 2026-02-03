@@ -389,12 +389,18 @@ data/knowledge-base/
 | 5.4 i18n keys (5 langues) | website/src/locales/ | 0.5j | ✅ DONE |
 | 5.5 CRUD methods TenantCatalogStore | core/tenant-catalog-store.cjs | 0.5j | ✅ DONE |
 
-**Livrables Phase 5 (Session 250.68-69):**
-- `website/app/client/catalog.html` - Full dashboard (500+ lines, stats, filters, CRUD, modals)
+**Livrables Phase 5 (Session 250.68-70):**
+- `website/app/client/catalog.html` - Full dashboard (600+ lines, stats, filters, CRUD, modals)
 - Navigation catalog link added to: index, calls, agents, knowledge-base, integrations, analytics, billing, settings
 - 7 API endpoints: GET list, GET item, POST create, PUT update, DELETE, POST import, POST sync
 - CRUD methods: getItems, getItem, addItem, updateItem, removeItem, syncCatalog, invalidateCache
 - i18n: 65+ keys × 5 locales (fr, en, es, ar, ary) = 325 translations
+- **Session 250.70 Improvements:**
+  - API-connected CRUD operations (POST/PUT/DELETE)
+  - File import handler (JSON/CSV parsing)
+  - Edit mode with PUT request
+  - Toast notifications
+  - Sample data fallback for demo mode
 
 ### Phase 6: Documentation & Polish (2 jours)
 
