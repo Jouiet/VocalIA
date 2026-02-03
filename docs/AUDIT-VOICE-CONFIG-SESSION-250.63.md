@@ -710,6 +710,108 @@ npx playwright test test/e2e/client-dashboard.spec.js --reporter=line | tail -1
 
 ---
 
+## 15. Security Audit - Auth & Demo Fallbacks (Session 250.65bis-cont)
+
+### 15.1 Problèmes Identifiés
+
+| Page | Problème | Risque |
+|:-----|:---------|:-------|
+| `knowledge-base.html` | Fallback `'client_demo'` si auth fail | Fuite données demo |
+| `knowledge-base.html` | `loadDemoKB()` charge données demo | Confusion utilisateur |
+| `catalog.html` | 6× fallback `'client_demo'` | Accès non autorisé |
+| `onboarding.html` | Pas de vérification token | Page accessible sans auth |
+| `agents.html` | `console.log` debug en production | Information disclosure |
+| `site-init.js` | Commentaire "STUB" (faux positif) | Confusion audit |
+
+### 15.2 Corrections Appliquées
+
+| Fichier | Correction |
+|:--------|:-----------|
+| `knowledge-base.html:582` | `currentTenantId = 'client_demo'` → `redirect login` |
+| `knowledge-base.html:575` | Vérifie `tenant_id`, sinon redirect onboarding |
+| `knowledge-base.html:616` | `loadDemoKB()` retourne `{}` (vide) |
+| `catalog.html:527` | Ajout vérification `tenant_id` + redirect onboarding |
+| `catalog.html:604,690,761,997,1205,1255` | `'client_demo'` → variable `tenantId` vérifiée |
+| `onboarding.html:249` | Ajout vérification token + redirect login |
+| `agents.html:439` | Supprimé `console.log` debug |
+| `site-init.js:15` | "STUB" → "QUEUE" (clarification) |
+
+### 15.3 Vérification Empirique
+
+```bash
+# Aucun 'client_demo' dans webapp
+grep -rn "client_demo" website/app/ --include="*.html"
+# (aucun résultat)
+
+# Auth check sur toutes les pages client
+for f in website/app/client/*.html; do
+  grep -q "requireAuth\|!auth.token\|vocalia_token" "$f" && echo "✅ $(basename $f)"
+done
+# ✅ agents.html
+# ✅ analytics.html
+# ✅ billing.html
+# ✅ calls.html
+# ✅ catalog.html
+# ✅ index.html
+# ✅ integrations.html
+# ✅ knowledge-base.html
+# ✅ onboarding.html
+# ✅ settings.html
+
+# Aucun placeholder/mock
+grep -rn "TODO\|PLACEHOLDER\|MOCK\|STUB" website/app/ --include="*.html"
+# (aucun résultat)
+```
+
+---
+
+## 16. PLAN ACTIONNABLE - Post Session 250.65bis
+
+### ✅ COMPLÉTÉ (Session 250.63-250.65bis)
+
+| # | Tâche | Status | Commit |
+|:-:|:------|:------:|:-------|
+| 1 | Male voice IDs ElevenLabs (ar/fr/en/es_male) | ✅ | Session 250.63 |
+| 2 | Voice config UI agents.html | ✅ | Session 250.63 |
+| 3 | E2E voice DB→Telephony (getTenantVoicePreferences) | ✅ | Session 250.64 |
+| 4 | Grok Voice tenant override (GROK_VOICE_MAP) | ✅ | Session 250.65 |
+| 5 | Dashboard factuality (Grok voices, architecture section) | ✅ | 7e92d71 |
+| 6 | Security audit (auth checks, demo fallbacks) | ✅ | fcaf38a |
+| 7 | E2E tests voice config (160/160 pass) | ✅ | 7e92d71 |
+
+### 🔴 P0 - CRITIQUES (Prochaine session)
+
+| # | Tâche | Impact | Dépendance |
+|:-:|:------|:-------|:-----------|
+| 1 | **Twilio credentials manquants** | Telephony non fonctionnel | Compte Twilio |
+| 2 | **ElevenLabs API key vérification** | TTS Darija non fonctionnel | .env |
+
+### 🟡 P1 - HAUTE PRIORITÉ
+
+| # | Tâche | Impact | Effort |
+|:-:|:------|:-------|:-------|
+| 1 | Voice preview Web Audio (bypass backend) | UX dashboard | 2h |
+| 2 | ElevenLabs WebSocket streaming | Latence Darija TTS | 4h |
+| 3 | Tests unitaires voice-telephony-bridge | Couverture | 3h |
+
+### 🟢 P2 - AMÉLIORATIONS
+
+| # | Tâche | Impact |
+|:-:|:------|:-------|
+| 1 | Voice A/B testing (male vs female conversion) | Analytics |
+| 2 | Custom voice cloning per tenant | Enterprise |
+| 3 | Multi-voice personas (voix différente par persona) | Personnalisation |
+
+### ⚠️ LIMITATIONS CONNUES (Non corrigeables)
+
+| Provider | Limitation | Raison |
+|:---------|:-----------|:-------|
+| Twilio TwiML | `voice="alice"` fixe | API TwiML ne supporte pas voix dynamique |
+| Web Speech API | Voix navigateur système | Pas contrôlable côté serveur |
+
+---
+
 **Document créé:** 2026-02-03 | Session 250.63-250.65bis
+**Dernière màj:** 2026-02-03 | Session 250.65bis-cont (Security Audit)
 **Auteur:** Claude Opus 4.5
-**Status:** ✅ 100% COMPLETE - MULTI-PROVIDER VOICE ARCHITECTURE DOCUMENTED + DASHBOARD FACTUALITY VERIFIED
+**Status:** ✅ 100% COMPLETE - VOICE ARCHITECTURE + SECURITY AUDIT + PLAN ACTIONNABLE
