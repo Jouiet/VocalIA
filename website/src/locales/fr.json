@@ -705,8 +705,8 @@
     "faq1_a": "Chaque plan inclut un certain nombre de minutes téléphonie. Au-delà, les minutes supplémentaires sont facturées à 0.06€/min. Ce tarif inclut l'infrastructure télécom et le traitement IA.",
     "faq2_q": "Puis-je changer de plan à tout moment?",
     "faq2_a": "Oui, vous pouvez upgrader ou downgrader à tout moment. L'upgrade est immédiat, le downgrade prend effet au prochain cycle de facturation.",
-    "faq3_q": "Le Voice Widget est-il vraiment gratuit?",
-    "faq3_a": "Oui. Le Widget utilise la Web Speech API native du navigateur, qui est gratuite. VocalIA n'a aucun coût d'API à vous répercuter. Seul le branding VocalIA est affiché sur le plan gratuit.",
+    "faq3_q": "Comment fonctionne le pricing du Voice Widget?",
+    "faq3_a": "Le Widget utilise la Web Speech API gratuite du navigateur pour la voix. Cependant, les réponses IA utilisent des APIs payantes (Grok, Gemini). Le plan Starter inclut un quota mensuel. Le Darija utilise ElevenLabs premium.",
     "faq4_q": "Qu'est-ce que le support Darija?",
     "faq4_a": "Le Darija est le dialecte marocain parlé par 40 millions de locuteurs. VocalIA utilise un modèle IA spécialisé, un modèle spécialisé, pour offrir un support natif de qualité.",
     "faq5_q": "Comment fonctionne l'option self-hosted?",
@@ -942,10 +942,10 @@
   },
   "voice_widget_page": {
     "meta_title": "Voice Widget - VocalIA | Assistant Vocal Gratuit",
-    "badge": "100% Gratuit",
+    "badge": "Installation 2 min",
     "title": "Voice Widget",
     "subtitle": "Intégrez un assistant vocal IA intelligent sur votre site web en 2 minutes. Utilise la Web Speech API native du navigateur:",
-    "subtitle_highlight": "0€ de coût API",
+    "subtitle_highlight": "Réponses IA multi-provider",
     "cta_start": "Démarrer Gratuitement",
     "cta_docs": "Documentation",
     "stat_personas": "Personas",
@@ -971,7 +971,7 @@
     "code_label": "Installation",
     "code_copy": "Copier",
     "features_title": "Fonctionnalités Incluses",
-    "features_subtitle": "Tout ce dont vous avez besoin, gratuitement",
+    "features_subtitle": "Tout ce dont vous avez besoin pour l'IA vocale",
     "feature1_title": "Web Speech API",
     "feature1_desc": "Reconnaissance et synthèse vocale natives du navigateur. Aucune API externe, 0€ de coût.",
     "feature2_title": "40 Personas Métier",
@@ -1005,8 +1005,8 @@
     "specs_security_gdpr": "Conforme RGPD",
     "specs_api_title": "API JavaScript",
     "cta_title": "Prêt à Ajouter un Assistant Vocal?",
-    "cta_subtitle": "Gratuit, sans carte bancaire, déployé en 2 minutes.",
-    "cta_button": "Créer Mon Widget Gratuit"
+    "cta_subtitle": "Essai inclus, déployé en 2 minutes.",
+    "cta_button": "Créer Mon Widget"
   },
   "voice_telephony_page": {
     "meta_title": "Voice Telephony AI - VocalIA | Téléphonie IA Enterprise",

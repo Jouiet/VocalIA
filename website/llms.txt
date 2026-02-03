@@ -1,19 +1,19 @@
 # VocalIA - Voice AI Platform
 
-> VocalIA est une plateforme Voice AI B2B pour entreprises. Deux produits: Voice Widget (browser, gratuit) et Voice Telephony (PSTN, payant). 40 personas IA, 5 langues (FR, EN, ES, AR, Darija), 28 integrations natives. Marche cible: PME Maroc, Europe, International.
+> VocalIA est une plateforme Voice AI B2B pour entreprises. Deux produits: Voice Widget (browser, STT/TTS gratuit, IA payant) et Voice Telephony (PSTN, payant). 40 personas IA, 5 langues (FR, EN, ES, AR, Darija), 28 integrations natives. Marche cible: PME Maroc, Europe, International.
 
 VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels entrants et sortants. La plateforme se distingue par son support natif du Darija (dialecte marocain), son pricing 60% moins cher que les alternatives, et son architecture multi-tenant plug-and-play.
 
 ## Produits
 
-- [Voice Widget](https://vocalia.ma/products/voice-widget): Widget vocal browser-based gratuit. Web Speech API, zero cout infra.
+- [Voice Widget](https://vocalia.ma/products/voice-widget): Widget vocal browser-based. STT/TTS via Web Speech API (gratuit), reponses IA via Grok/Gemini (payant selon usage).
 - [Voice Telephony](https://vocalia.ma/products/voice-telephony): Bridge PSTN-AI pour telephonie professionnelle. Twilio, TwiML, SMS fallback.
 
 ## Fonctionnalites
 
 - [Features](https://vocalia.ma/features): Liste complete des fonctionnalites - qualification BANT, RAG, multi-AI fallback, HITL.
 - [Integrations](https://vocalia.ma/integrations): 28 integrations natives - CRM (HubSpot, Pipedrive, Zoho), E-commerce (Shopify, WooCommerce, Magento), Support (Zendesk, Freshdesk).
-- [Pricing](https://vocalia.ma/pricing): Modele freemium. Widget gratuit. Telephonie competitive par minute.
+- [Pricing](https://vocalia.ma/pricing): Modele par paliers. Widget Starter avec quota IA inclus. Telephonie competitive par minute.
 
 ## Industries
 
