@@ -1224,7 +1224,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 ### Prochaines Etapes (En attente validation)
 
 1. [ ] Validation plan d'implementation par Product Owner
-2. [ ] Sprint 1: Voice Exit-Intent Popup (P1)
+2. [x] Sprint 1: Voice Exit-Intent Popup (P1) ✅ Session 250.78
 3. [ ] Sprint 2: AI Recommendations Widget (P1) - **PRIORITE SELON RECHERCHE SOTA**
    - Phase 1: Product Embedding Service (Marqo)
    - Phase 2: Frequently Bought Together + Similar Products
@@ -1539,11 +1539,12 @@ trackEvent('conversion', { method, value, product_count });
 
 ---
 
-*Document genere: 03/02/2026 | Sessions 250.74-250.77*
+*Document genere: 03/02/2026 | Sessions 250.74-250.78*
 *Update: 03/02/2026 - Section 3 SOTA AI Recommendations (650+ lignes)*
 *Update: 03/02/2026 - Section 17 SWOT Rigoureuse (230+ lignes)*
 *Update: 03/02/2026 - Section 18 Plan Actionnable Post-Phase 1 (80+ lignes)*
 *Update: 03/02/2026 - Session 250.77: Dashboard metriques ✅ (analytics.html)*
-*Status: PHASE 1 IMPLEMENTEE ✅ | DASHBOARD ✅ | PHASE 2 EN ATTENTE DATA*
+*Update: 03/02/2026 - Session 250.78: Voice Exit-Intent Popup ✅ + Waveform Visualizer ✅*
+*Status: PHASE 1 ✅ | DASHBOARD ✅ | EXIT-INTENT ✅ | PHASE 2 EN ATTENTE DATA*
 *Methodologie: Bottom-up factuelle, zero wishful thinking*
 *Total: ~1650 lignes*

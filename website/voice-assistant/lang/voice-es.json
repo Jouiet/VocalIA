@@ -22,7 +22,18 @@
     "notifTitle": "Necesitas ayuda?",
     "notifSub": "Hablemos de tu proyecto de IA de voz",
     "ctaButton": "Solicitar una demo",
-    "ctaLink": "/booking"
+    "ctaLink": "/booking",
+    "voiceReady": "Voz lista",
+    "voiceListening": "Escuchando...",
+    "voiceSpeaking": "Hablando...",
+    "voiceProcessing": "Procesando..."
+  },
+  "exitIntent": {
+    "title": "¡Espera!",
+    "subtitle": "¿Tienes alguna pregunta? Nuestro asistente IA puede ayudarte al instante.",
+    "ctaChat": "💬 Chatear ahora",
+    "ctaDemo": "📅 Reservar una demo",
+    "voiceHint": "Soporte por voz disponible"
   },
   "topics": {
     "pricing": {
@@ -35,7 +46,7 @@
     },
     "widget": {
       "keywords": ["widget", "sitio web", "integracion web", "chat de voz", "insertar"],
-      "response": "El Voice Widget de VocalIA se integra con solo una linea de codigo en tu sitio. Usa la Web Speech API del navegador (gratis!), soporta frances, ingles y espanol, y ofrece reconocimiento de voz nativo. Quieres ver una demo?"
+      "response": "El Voice Widget de VocalIA se integra con solo una linea de codigo en tu sitio. Usa la Web Speech API del navegador para voz, y APIs de IA para respuestas inteligentes. Soporta 5 idiomas. Quieres ver una demo?"
     },
     "telephony": {
       "keywords": ["telefono", "telefonia", "llamada", "llamadas", "pbx", "ivr", "centralita"],

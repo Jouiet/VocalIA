@@ -22,7 +22,18 @@
     "notifTitle": "Need help?",
     "notifSub": "Let's discuss your voice AI project",
     "ctaButton": "Request a demo",
-    "ctaLink": "/booking"
+    "ctaLink": "/booking",
+    "voiceReady": "Voice Ready",
+    "voiceListening": "Listening...",
+    "voiceSpeaking": "Speaking...",
+    "voiceProcessing": "Processing..."
+  },
+  "exitIntent": {
+    "title": "Wait!",
+    "subtitle": "Do you have any questions? Our AI assistant can help you instantly.",
+    "ctaChat": "💬 Chat now",
+    "ctaDemo": "📅 Book a demo",
+    "voiceHint": "Voice support available"
   },
   "topics": {
     "pricing": {
@@ -35,7 +46,7 @@
     },
     "widget": {
       "keywords": ["widget", "website", "web integration", "voice chat", "embed"],
-      "response": "The VocalIA Voice Widget integrates with just one line of code on your site. It uses the browser's Web Speech API (free!), supports French and English, and offers native voice recognition. Want to see a demo?"
+      "response": "The VocalIA Voice Widget integrates with just one line of code on your site. It uses the browser's Web Speech API for voice, and AI APIs for intelligent responses. Supports 5 languages. Want to see a demo?"
     },
     "telephony": {
       "keywords": ["phone", "telephony", "call", "calls", "pbx", "ivr", "hotline"],

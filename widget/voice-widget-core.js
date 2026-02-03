@@ -45,6 +45,14 @@
     ECOMMERCE_MODE: true, // Enable product display in widget
     MAX_CAROUSEL_ITEMS: 5, // Maximum products in carousel
 
+    // Exit-Intent Voice Popup (UNIQUE COMPETITIVE ADVANTAGE - Session 250.78)
+    EXIT_INTENT_ENABLED: true,
+    EXIT_INTENT_DELAY: 3000, // Min time on page before showing (ms)
+    EXIT_INTENT_SENSITIVITY: 20, // Mouse exit threshold (px from top)
+    EXIT_INTENT_COOLDOWN: 86400000, // Once per 24h per user
+    EXIT_INTENT_MOBILE_SCROLL_RATIO: 0.3, // Show on 30% scroll up
+    EXIT_INTENT_PAGES: null, // null = all pages, array = specific paths
+
     // Branding
     primaryColor: '#4FBAF1',
     primaryDark: '#2B6685',
@@ -108,6 +116,14 @@
       carouselsDisplayed: 0,
       productClicks: 0,
       lastInputMethod: null
+    },
+    // Exit-Intent Voice Popup (Session 250.78)
+    exitIntent: {
+      shown: false,
+      dismissed: false,
+      pageLoadTime: Date.now(),
+      lastScrollY: 0,
+      triggered: false
     }
   };
 
@@ -360,6 +376,49 @@
         }
         .va-mic-btn.listening { background: #ef4444; animation: pulse 1s infinite; }
         .va-mic-btn svg { width: 20px; height: 20px; fill: white; }
+
+        /* Voice Waveform Visualizer (SOTA 2026) */
+        .va-visualizer {
+          height: 48px; padding: 8px 16px; display: none;
+          background: linear-gradient(180deg, rgba(79,186,241,0.1) 0%, transparent 100%);
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .va-visualizer.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .va-visualizer-canvas {
+          width: 100%; height: 100%; display: block;
+        }
+        .va-visualizer-bars {
+          display: flex; align-items: center; justify-content: center;
+          gap: 3px; height: 100%;
+        }
+        .va-visualizer-bar {
+          width: 3px; border-radius: 2px; background: var(--va-primary);
+          transition: height 0.1s ease;
+        }
+        .va-visualizer-bars.speaking .va-visualizer-bar {
+          animation: soundBar 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes soundBar {
+          0% { height: 4px; opacity: 0.5; }
+          100% { height: var(--bar-height, 24px); opacity: 1; }
+        }
+        .va-visualizer-bar:nth-child(1) { animation-delay: 0.0s; --bar-height: 20px; }
+        .va-visualizer-bar:nth-child(2) { animation-delay: 0.1s; --bar-height: 32px; }
+        .va-visualizer-bar:nth-child(3) { animation-delay: 0.2s; --bar-height: 24px; }
+        .va-visualizer-bar:nth-child(4) { animation-delay: 0.1s; --bar-height: 28px; }
+        .va-visualizer-bar:nth-child(5) { animation-delay: 0.15s; --bar-height: 36px; }
+        .va-visualizer-bar:nth-child(6) { animation-delay: 0.2s; --bar-height: 32px; }
+        .va-visualizer-bar:nth-child(7) { animation-delay: 0.25s; --bar-height: 20px; }
+        .va-visualizer-bar:nth-child(8) { animation-delay: 0.15s; --bar-height: 28px; }
+        .va-visualizer-bar:nth-child(9) { animation-delay: 0.1s; --bar-height: 24px; }
+        .va-visualizer-bar:nth-child(10) { animation-delay: 0.05s; --bar-height: 16px; }
+        .va-visualizer-label {
+          font-size: 10px; color: rgba(255,255,255,0.5); text-align: center;
+          margin-top: 4px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .va-visualizer-label.listening { color: #ef4444; }
+        .va-visualizer-label.speaking { color: var(--va-primary); }
         .va-send-btn {
           width: 40px; height: 40px; border-radius: 50%; background: var(--va-primary);
           border: none; cursor: pointer; display: flex; align-items: center;
@@ -539,6 +598,14 @@
           <button class="va-close" id="va-close" aria-label="${L.ui.ariaClose}">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
+        </div>
+
+        <!-- Voice Waveform Visualizer (SOTA 2026) -->
+        <div class="va-visualizer" id="va-visualizer">
+          <div class="va-visualizer-bars" id="va-visualizer-bars">
+            ${Array.from({length: 10}, () => '<div class="va-visualizer-bar"></div>').join('')}
+          </div>
+          <div class="va-visualizer-label" id="va-visualizer-label">${L.ui.voiceReady || 'Voice Ready'}</div>
         </div>
 
         <div class="va-messages" id="va-messages"></div>
@@ -1352,6 +1419,12 @@
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = state.langData.meta.speechSynthesis;
     utterance.rate = lang === 'ar' ? 0.9 : 1.0;
+
+    // Visualizer hooks
+    utterance.onstart = () => showVisualizer('speaking');
+    utterance.onend = () => hideVisualizer();
+    utterance.onerror = () => hideVisualizer();
+
     state.synthesis.speak(utterance);
   }
 
@@ -1374,10 +1447,18 @@
 
       const data = await response.json();
       if (data.success && data.audio) {
-        // Play base64 audio
+        // Play base64 audio with visualizer
         const audio = new Audio(`data:audio/mp3;base64,${data.audio}`);
+
+        // Visualizer hooks for ElevenLabs audio
+        audio.onplay = () => showVisualizer('speaking');
+        audio.onended = () => hideVisualizer();
+        audio.onerror = () => hideVisualizer();
+        audio.onpause = () => hideVisualizer();
+
         audio.play().catch(err => {
           console.warn('[TTS] Audio playback failed:', err.message);
+          hideVisualizer();
           fallbackToWebSpeech(text);
         });
       } else {
@@ -1428,11 +1509,13 @@
       state.isListening = false;
       document.getElementById('va-mic')?.classList.remove('listening');
       document.getElementById('va-trigger').classList.remove('listening');
+      hideVisualizer();
     };
 
     state.recognition.onerror = (event) => {
       state.isListening = false;
       document.getElementById('va-mic')?.classList.remove('listening');
+      hideVisualizer();
       trackEvent('voice_recognition_error', { error: event.error });
     };
   }
@@ -1442,12 +1525,342 @@
 
     if (state.isListening) {
       state.recognition.stop();
+      hideVisualizer();
     } else {
       state.recognition.start();
       state.isListening = true;
       document.getElementById('va-mic').classList.add('listening');
       document.getElementById('va-trigger').classList.add('listening');
+      showVisualizer('listening');
       trackEvent('voice_mic_activated');
+    }
+  }
+
+  // ============================================================
+  // VOICE WAVEFORM VISUALIZER (SOTA 2026)
+  // ============================================================
+
+  /**
+   * Show the voice visualizer with specified mode
+   * @param {string} mode - 'listening' | 'speaking' | 'processing'
+   */
+  function showVisualizer(mode = 'listening') {
+    const visualizer = document.getElementById('va-visualizer');
+    const bars = document.getElementById('va-visualizer-bars');
+    const label = document.getElementById('va-visualizer-label');
+    const L = state.langData;
+
+    if (!visualizer) return;
+
+    visualizer.classList.add('active');
+    bars.classList.remove('speaking', 'listening', 'processing');
+    bars.classList.add(mode);
+    label.classList.remove('speaking', 'listening', 'processing');
+    label.classList.add(mode);
+
+    const labels = {
+      listening: L?.ui?.voiceListening || 'Listening...',
+      speaking: L?.ui?.voiceSpeaking || 'Speaking...',
+      processing: L?.ui?.voiceProcessing || 'Processing...'
+    };
+    label.textContent = labels[mode] || mode;
+
+    // Animate bars with random heights for realistic effect
+    if (mode === 'speaking') {
+      startBarAnimation();
+    }
+  }
+
+  /**
+   * Hide the voice visualizer
+   */
+  function hideVisualizer() {
+    const visualizer = document.getElementById('va-visualizer');
+    const bars = document.getElementById('va-visualizer-bars');
+
+    if (visualizer) {
+      visualizer.classList.remove('active');
+      bars.classList.remove('speaking', 'listening', 'processing');
+      stopBarAnimation();
+    }
+  }
+
+  // Animation frame for bars
+  let barAnimationId = null;
+
+  function startBarAnimation() {
+    const bars = document.querySelectorAll('.va-visualizer-bar');
+    if (!bars.length) return;
+
+    function animateBars() {
+      bars.forEach(bar => {
+        const height = 8 + Math.random() * 28;
+        bar.style.height = `${height}px`;
+        bar.style.opacity = 0.6 + Math.random() * 0.4;
+      });
+      barAnimationId = requestAnimationFrame(() => {
+        setTimeout(animateBars, 100);
+      });
+    }
+    animateBars();
+  }
+
+  function stopBarAnimation() {
+    if (barAnimationId) {
+      cancelAnimationFrame(barAnimationId);
+      barAnimationId = null;
+    }
+    const bars = document.querySelectorAll('.va-visualizer-bar');
+    bars.forEach(bar => {
+      bar.style.height = '4px';
+      bar.style.opacity = '0.5';
+    });
+  }
+
+  // ============================================================
+  // EXIT-INTENT VOICE POPUP (UNIQUE COMPETITIVE ADVANTAGE - Session 250.78)
+  // ============================================================
+
+  /**
+   * Initialize exit-intent detection
+   * - Desktop: Mouse leaving viewport
+   * - Mobile: Rapid scroll up (returning to top)
+   */
+  function initExitIntent() {
+    if (!CONFIG.EXIT_INTENT_ENABLED) return;
+
+    // Check cooldown (once per 24h per user)
+    const lastShown = localStorage.getItem('vocalia_exit_intent_shown');
+    if (lastShown && Date.now() - parseInt(lastShown) < CONFIG.EXIT_INTENT_COOLDOWN) {
+      return;
+    }
+
+    // Check page restrictions
+    if (CONFIG.EXIT_INTENT_PAGES && !CONFIG.EXIT_INTENT_PAGES.includes(window.location.pathname)) {
+      return;
+    }
+
+    // Desktop: Mouse leave detection
+    if (!isMobileDevice()) {
+      document.addEventListener('mouseleave', handleDesktopExitIntent);
+      document.addEventListener('mouseout', handleMouseOut);
+    } else {
+      // Mobile: Scroll up detection
+      window.addEventListener('scroll', handleMobileExitIntent, { passive: true });
+    }
+
+    console.log('[VocalIA] Exit-intent detection initialized');
+  }
+
+  function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+
+  function handleDesktopExitIntent(e) {
+    if (shouldTriggerExitIntent(e)) {
+      triggerExitIntentPopup('desktop_mouseleave');
+    }
+  }
+
+  function handleMouseOut(e) {
+    if (!e.relatedTarget && e.clientY < CONFIG.EXIT_INTENT_SENSITIVITY) {
+      if (shouldTriggerExitIntent(e)) {
+        triggerExitIntentPopup('desktop_mouseout');
+      }
+    }
+  }
+
+  function handleMobileExitIntent() {
+    const currentScrollY = window.scrollY;
+    const scrollDelta = state.exitIntent.lastScrollY - currentScrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollRatio = scrollDelta / maxScroll;
+
+    // Detect rapid scroll up
+    if (scrollRatio > CONFIG.EXIT_INTENT_MOBILE_SCROLL_RATIO && currentScrollY < maxScroll * 0.3) {
+      if (shouldTriggerExitIntent()) {
+        triggerExitIntentPopup('mobile_scroll');
+      }
+    }
+
+    state.exitIntent.lastScrollY = currentScrollY;
+  }
+
+  function shouldTriggerExitIntent(e = null) {
+    // Already shown or dismissed
+    if (state.exitIntent.shown || state.exitIntent.dismissed) return false;
+
+    // Widget already open
+    if (state.isOpen) return false;
+
+    // Not enough time on page
+    if (Date.now() - state.exitIntent.pageLoadTime < CONFIG.EXIT_INTENT_DELAY) return false;
+
+    // Don't trigger if user is engaged (recent conversation)
+    if (state.conversationHistory.length > 2) return false;
+
+    return true;
+  }
+
+  function triggerExitIntentPopup(trigger = 'unknown') {
+    if (state.exitIntent.triggered) return;
+    state.exitIntent.triggered = true;
+    state.exitIntent.shown = true;
+
+    // Save to localStorage for cooldown
+    localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString());
+
+    // Track event
+    trackEvent('exit_intent_triggered', { trigger, page: window.location.pathname });
+
+    // Show exit-intent overlay
+    showExitIntentOverlay();
+  }
+
+  function showExitIntentOverlay() {
+    const L = state.langData || {};
+    const isRTL = L?.meta?.rtl || false;
+
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'va-exit-overlay';
+    overlay.innerHTML = `
+      <style>
+        #va-exit-overlay {
+          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+          background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+          z-index: 999998; display: flex; align-items: center; justify-content: center;
+          animation: fadeIn 0.3s ease;
+        }
+        .va-exit-popup {
+          background: linear-gradient(145deg, #1e2642 0%, #191e35 100%);
+          border-radius: 24px; padding: 32px; max-width: 420px; width: 90%;
+          box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(79,186,241,0.15);
+          position: relative; text-align: center;
+          border: 1px solid rgba(79,186,241,0.2);
+          ${isRTL ? 'direction: rtl;' : ''}
+        }
+        .va-exit-close {
+          position: absolute; top: 12px; ${isRTL ? 'left' : 'right'}: 12px;
+          background: rgba(255,255,255,0.1); border: none; border-radius: 50%;
+          width: 32px; height: 32px; cursor: pointer; display: flex;
+          align-items: center; justify-content: center; transition: all 0.2s;
+        }
+        .va-exit-close:hover { background: rgba(255,255,255,0.2); }
+        .va-exit-close svg { width: 16px; height: 16px; fill: white; }
+        .va-exit-icon {
+          width: 80px; height: 80px; border-radius: 50%;
+          background: linear-gradient(135deg, var(--va-primary, #4FBAF1) 0%, #10B981 100%);
+          margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
+          box-shadow: 0 8px 32px rgba(79,186,241,0.4);
+          animation: pulse-glow 2s ease-in-out infinite;
+        }
+        .va-exit-icon svg { width: 40px; height: 40px; fill: white; }
+        .va-exit-title {
+          font-size: 24px; font-weight: 700; color: white; margin: 0 0 8px;
+          font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .va-exit-subtitle {
+          font-size: 15px; color: rgba(255,255,255,0.7); margin: 0 0 24px;
+          line-height: 1.5;
+        }
+        .va-exit-cta {
+          display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+        }
+        .va-exit-btn {
+          padding: 14px 28px; border-radius: 12px; font-size: 15px;
+          font-weight: 600; cursor: pointer; transition: all 0.2s;
+          font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+          border: none;
+        }
+        .va-exit-btn-primary {
+          background: linear-gradient(135deg, #4FBAF1 0%, #10B981 100%);
+          color: white; box-shadow: 0 4px 20px rgba(79,186,241,0.4);
+        }
+        .va-exit-btn-primary:hover {
+          transform: translateY(-2px); box-shadow: 0 6px 30px rgba(79,186,241,0.6);
+        }
+        .va-exit-btn-secondary {
+          background: rgba(255,255,255,0.1); color: white;
+        }
+        .va-exit-btn-secondary:hover { background: rgba(255,255,255,0.15); }
+        .va-exit-voice-hint {
+          font-size: 12px; color: rgba(79,186,241,0.8); margin-top: 16px;
+          display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .va-exit-voice-hint svg { width: 14px; height: 14px; fill: currentColor; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      </style>
+
+      <div class="va-exit-popup">
+        <button class="va-exit-close" id="va-exit-close" aria-label="Fermer">
+          <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+
+        <div class="va-exit-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+
+        <h3 class="va-exit-title">${L?.exitIntent?.title || 'Attendez !'}</h3>
+        <p class="va-exit-subtitle">${L?.exitIntent?.subtitle || 'Avez-vous des questions ? Notre assistant IA peut vous aider instantanément.'}</p>
+
+        <div class="va-exit-cta">
+          <button class="va-exit-btn va-exit-btn-primary" id="va-exit-chat">
+            ${L?.exitIntent?.ctaChat || '💬 Discuter maintenant'}
+          </button>
+          <button class="va-exit-btn va-exit-btn-secondary" id="va-exit-demo">
+            ${L?.exitIntent?.ctaDemo || '📅 Réserver une démo'}
+          </button>
+        </div>
+
+        <p class="va-exit-voice-hint">
+          <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+          ${L?.exitIntent?.voiceHint || 'Support vocal disponible'}
+        </p>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Event listeners
+    document.getElementById('va-exit-close').addEventListener('click', dismissExitIntent);
+    document.getElementById('va-exit-chat').addEventListener('click', () => {
+      dismissExitIntent();
+      openWidget();
+      trackEvent('exit_intent_chat_clicked');
+    });
+    document.getElementById('va-exit-demo').addEventListener('click', () => {
+      dismissExitIntent();
+      window.location.href = '/booking';
+      trackEvent('exit_intent_demo_clicked');
+    });
+
+    // Click outside to dismiss
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) dismissExitIntent();
+    });
+
+    // Track view
+    trackEvent('exit_intent_viewed');
+  }
+
+  function dismissExitIntent() {
+    state.exitIntent.dismissed = true;
+    const overlay = document.getElementById('va-exit-overlay');
+    if (overlay) {
+      overlay.style.animation = 'fadeOut 0.2s ease';
+      setTimeout(() => overlay.remove(), 200);
+    }
+    trackEvent('exit_intent_dismissed');
+  }
+
+  function openWidget() {
+    const panel = document.getElementById('va-panel');
+    if (panel) {
+      panel.classList.add('open');
+      state.isOpen = true;
+      const input = document.getElementById('va-input');
+      if (input) input.focus();
     }
   }
 
@@ -2023,10 +2436,12 @@
 
       captureAttribution(); // Session 177: MarEng Injector
       createWidget();
+      initExitIntent(); // Session 250.78: Voice Exit-Intent Popup
       trackEvent('voice_widget_loaded', {
         language: state.currentLang,
         ecommerce_mode: CONFIG.ECOMMERCE_MODE && !!state.tenantId,
-        tenant_id: state.tenantId
+        tenant_id: state.tenantId,
+        exit_intent_enabled: CONFIG.EXIT_INTENT_ENABLED
       });
 
     } catch (error) {
