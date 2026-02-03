@@ -1305,6 +1305,38 @@ async function createGrokSession(callInfo) {
                 },
                 required: []
               }
+            },
+            // ============================================
+            // AI RECOMMENDATIONS (Session 250.79)
+            // ============================================
+            {
+              type: 'function',
+              name: 'get_recommendations',
+              description: 'Obtenir des recommandations de produits personnalisées basées sur le contexte de la conversation. Utilisé pour: produits similaires, souvent achetés ensemble, ou recommandations personnalisées UCP.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  product_id: {
+                    type: 'string',
+                    description: 'ID du produit pour recommandations similaires ou "fréquemment achetés ensemble"'
+                  },
+                  product_ids: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Liste d\'IDs produits (pour recommandations de panier)'
+                  },
+                  recommendation_type: {
+                    type: 'string',
+                    enum: ['similar', 'bought_together', 'personalized'],
+                    description: 'Type de recommandation: similar=produits similaires, bought_together=souvent achetés ensemble, personalized=basé sur le profil client'
+                  },
+                  limit: {
+                    type: 'number',
+                    description: 'Nombre de recommandations (défaut: 3)'
+                  }
+                },
+                required: ['recommendation_type']
+              }
             }
           ]
         }
@@ -1728,6 +1760,10 @@ async function handleFunctionCall(session, item) {
 
       case 'get_trips':
         result = await handleGetTrips(session, args);
+        break;
+
+      case 'get_recommendations':
+        result = await handleGetRecommendations(session, args);
         break;
 
       default:
@@ -2238,6 +2274,84 @@ async function handleGetTrips(session, args) {
   } catch (error) {
     console.error(`[Catalog] Trips error:`, error);
     return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+  }
+}
+
+/**
+ * AI Recommendations Handler (Session 250.79)
+ * Returns personalized product recommendations via voice
+ */
+async function handleGetRecommendations(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  const lang = session.metadata?.voice_language || 'fr';
+  console.log(`[Recommendations] Getting ${args.recommendation_type} recommendations for tenant: ${tenantId}`);
+
+  try {
+    const recommendationService = require('../core/recommendation-service.cjs');
+
+    const context = {
+      productId: args.product_id,
+      productIds: args.product_ids,
+      userId: session.metadata?.user_id,
+      ucpProfile: session.metadata?.ucp_profile,
+      type: args.recommendation_type || 'similar'
+    };
+
+    const result = await recommendationService.getVoiceRecommendations(tenantId, context, lang);
+
+    // Format for voice output
+    let voiceResponse = result.text;
+
+    // Enrich with product details if we have a catalog store
+    if (result.recommendations.length > 0) {
+      try {
+        const store = getCatalogStore();
+        const productNames = [];
+
+        for (const rec of result.recommendations.slice(0, 3)) {
+          const itemResult = await store.getItem(tenantId, rec.productId);
+          if (itemResult.success && itemResult.item) {
+            const item = itemResult.item;
+            const name = item.title || item.name;
+            const price = item.price;
+            productNames.push(price ? `${name} à ${price} dirhams` : name);
+          } else {
+            productNames.push(`Produit ${rec.productId}`);
+          }
+        }
+
+        if (productNames.length > 0) {
+          voiceResponse = `${result.text} ${productNames.join(', ')}. Lequel vous intéresse?`;
+        }
+      } catch (e) {
+        console.warn('[Recommendations] Could not enrich with catalog:', e.message);
+      }
+    }
+
+    return {
+      success: true,
+      recommendations: result.recommendations,
+      count: result.recommendations.length,
+      voiceResponse: voiceResponse,
+      widgetAction: result.voiceWidget
+    };
+  } catch (error) {
+    console.error(`[Recommendations] Error:`, error);
+
+    // Graceful fallback responses by language
+    const fallbacks = {
+      fr: "Je n'ai pas de recommandations spécifiques pour le moment. Puis-je vous aider autrement?",
+      en: "I don't have specific recommendations right now. Can I help you with something else?",
+      es: "No tengo recomendaciones específicas ahora. ¿Puedo ayudarte con algo más?",
+      ar: "ليس لدي توصيات محددة حاليًا. هل يمكنني مساعدتك في شيء آخر؟",
+      ary: "ما عنديش توصيات دابا. واش نقدر نعاونك فشي حاجة خرا?"
+    };
+
+    return {
+      success: false,
+      error: error.message,
+      voiceResponse: fallbacks[lang] || fallbacks.fr
+    };
   }
 }
 

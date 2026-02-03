@@ -1225,10 +1225,21 @@ Sweet spot: 20-30% au-dessus de l'AOV
 
 1. [ ] Validation plan d'implementation par Product Owner
 2. [x] Sprint 1: Voice Exit-Intent Popup (P1) ✅ Session 250.78
-3. [ ] Sprint 2: AI Recommendations Widget (P1) - **PRIORITE SELON RECHERCHE SOTA**
-   - Phase 1: Product Embedding Service (Marqo)
-   - Phase 2: Frequently Bought Together + Similar Products
-   - Phase 3: Voice Recommendations + Visual Carousel
+3. [x] Sprint 2: AI Recommendations Widget (P1) - ✅ Session 250.79
+   - [x] Phase 1: Product Embedding Service (Gemini text-embedding-004)
+   - [x] Phase 2: Frequently Bought Together + Similar Products (Association Rules + Vector Search)
+   - [x] Phase 3: Voice Recommendations + Visual Carousel
+   - **Files Created:**
+     - `core/product-embedding-service.cjs` (280 lines) - E-commerce optimized embeddings
+     - `core/vector-store.cjs` (320 lines) - In-memory HNSW-like vector index
+     - `core/recommendation-service.cjs` (450 lines) - Full recommendation engine
+     - `widget/recommendation-carousel.js` (550 lines) - Visual carousel component
+   - **APIs Added:**
+     - `POST /api/recommendations` - AI-powered recommendations (similar, bought_together, personalized)
+     - `get_recommendations` function tool in telephony bridge
+   - **Widget Integration:**
+     - `window.VocalIA.showRecommendations(products, type, title)`
+     - `window.VocalIA.getAIRecommendations(productId, productIds, type)`
 4. [ ] Sprint 3: Voice-Guided Product Quiz (P2)
 5. [ ] Sprint 4: Widget Orchestrator + Analytics
 

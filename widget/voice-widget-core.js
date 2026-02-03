@@ -1145,6 +1145,110 @@
   };
 
   // ============================================================
+  // AI RECOMMENDATIONS INTEGRATION (Session 250.79)
+  // ============================================================
+
+  /**
+   * Show AI-powered product recommendations
+   * @param {Array} products - Array of product objects
+   * @param {string} type - Type: 'similar', 'bought_together', 'personalized'
+   * @param {string} title - Optional custom title
+   */
+  window.VocalIA.showRecommendations = function(products, type = 'similar', title = null) {
+    if (!products || products.length === 0) return;
+
+    const contextMap = {
+      similar: 'related',
+      bought_together: 'recommendations',
+      personalized: 'recommendations'
+    };
+
+    // Track recommendation display
+    if (typeof gtag === 'function') {
+      gtag('event', 'ai_recommendations_shown', {
+        event_category: 'recommendations',
+        recommendation_type: type,
+        items_count: products.length
+      });
+    }
+
+    addProductCarousel(products, title, contextMap[type] || 'recommendations');
+  };
+
+  /**
+   * Fetch and display AI recommendations from backend
+   * @param {string} productId - Current product ID for similar/bought_together
+   * @param {Array} productIds - Array of product IDs for cart-based recommendations
+   * @param {string} type - Recommendation type
+   */
+  window.VocalIA.getAIRecommendations = async function(productId, productIds = [], type = 'similar') {
+    if (!state.tenantId) return null;
+
+    try {
+      const body = {
+        tenant_id: state.tenantId,
+        recommendation_type: type
+      };
+
+      if (productId) body.product_id = productId;
+      if (productIds.length > 0) body.product_ids = productIds;
+
+      const response = await fetch(`${CONFIG.API_BASE_URL}/api/recommendations`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${CONFIG.API_KEY || ''}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!response.ok) return null;
+
+      const data = await response.json();
+
+      if (data.success && data.recommendations?.length > 0) {
+        // Enrich recommendations with full product data if available
+        const enrichedProducts = await Promise.all(
+          data.recommendations.map(async (rec) => {
+            if (rec.productId && !rec.title) {
+              // Fetch full product data
+              const productData = await fetchProductDetails(rec.productId);
+              return { ...rec, ...productData };
+            }
+            return rec;
+          })
+        );
+
+        window.VocalIA.showRecommendations(enrichedProducts, type);
+        return enrichedProducts;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('[VocalIA] Recommendations error:', error);
+      return null;
+    }
+  };
+
+  // Helper to fetch product details
+  async function fetchProductDetails(productId) {
+    if (!state.tenantId) return {};
+
+    try {
+      const response = await fetch(
+        `${CONFIG.API_BASE_URL}/api/tenants/${state.tenantId}/catalog/items/${productId}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        return data.item || {};
+      }
+    } catch (e) {
+      // Silently fail - product will show with limited info
+    }
+    return {};
+  }
+
+  // ============================================================
   // UCP & MCP INTEGRATION (Phase 1 - Session 250.74)
   // ============================================================
 

@@ -1484,7 +1484,96 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // AI Recommendations - POST /api/recommendations (Session 250.79)
+  // Uses AI-powered recommendation service: similar, bought_together, personalized
+  if (path === '/api/recommendations' && method === 'POST') {
+    try {
+      const body = await readBody(req);
+      const tenantId = body.tenant_id;
+      const type = body.recommendation_type || 'similar';
+
+      if (!tenantId) {
+        return sendError(res, 400, 'tenant_id is required');
+      }
+
+      const recommendationService = require('./recommendation-service.cjs');
+      let result;
+
+      switch (type) {
+        case 'similar':
+          if (!body.product_id) {
+            return sendError(res, 400, 'product_id is required for similar recommendations');
+          }
+          result = await recommendationService.getSimilarProducts(
+            tenantId,
+            body.product_id,
+            { topK: body.limit || 6 }
+          );
+          break;
+
+        case 'bought_together':
+          if (body.product_ids?.length > 0) {
+            result = recommendationService.associationEngine.getCartRecommendations(
+              tenantId,
+              body.product_ids,
+              body.limit || 5
+            );
+          } else if (body.product_id) {
+            result = await recommendationService.getFrequentlyBoughtTogether(
+              tenantId,
+              body.product_id,
+              body.limit || 4
+            );
+          } else {
+            return sendError(res, 400, 'product_id or product_ids required for bought_together');
+          }
+          break;
+
+        case 'personalized':
+          result = await recommendationService.getPersonalizedRecommendations(
+            tenantId,
+            body.user_id || 'anonymous',
+            body.ucp_profile || {},
+            {
+              topK: body.limit || 10,
+              recentlyViewed: body.recently_viewed || [],
+              recentlyPurchased: body.recently_purchased || []
+            }
+          );
+          break;
+
+        default:
+          return sendError(res, 400, `Unknown recommendation_type: ${type}`);
+      }
+
+      // Enrich with product details from catalog
+      const catalogStore = getCatalogStore();
+      const enrichedResults = await Promise.all(
+        (result || []).map(async (rec) => {
+          const productId = rec.productId || rec.id;
+          const item = catalogStore.getItem(tenantId, 'PRODUCTS', productId);
+          if (item) {
+            return { ...rec, ...item };
+          }
+          return rec;
+        })
+      );
+
+      sendJson(res, 200, {
+        success: true,
+        recommendation_type: type,
+        count: enrichedResults.length,
+        recommendations: enrichedResults
+      });
+    } catch (e) {
+      console.error('[AI Recommendations] Error:', e.message);
+      sendError(res, 500, `Recommendations error: ${e.message}`);
+    }
+    return;
+  }
+
   // Catalog Recommendations - POST /api/tenants/:id/catalog/recommendations
+  // (Simple rule-based fallback for basic recommendations)
   const catalogRecoMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/recommendations$/);
   if (catalogRecoMatch && method === 'POST') {
     const tenantId = catalogRecoMatch[1];
