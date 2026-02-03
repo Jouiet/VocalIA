@@ -35,6 +35,16 @@
     "ctaDemo": "📅 Réserver une démo",
     "voiceHint": "Support vocal disponible"
   },
+  "socialProof": {
+    "times": ["Il y a 2 min", "Il y a 5 min", "Il y a 12 min", "Il y a 23 min", "Il y a 1h"],
+    "messages": [
+      { "text": "Sophie de Paris vient de demander une démo" },
+      { "text": "Une entreprise a automatisé 500 appels ce mois" },
+      { "text": "Nouveau client: Cabinet dentaire à Casablanca" },
+      { "text": "Ahmed a réservé un rendez-vous via l'assistant" },
+      { "text": "12 leads qualifiés générés aujourd'hui" }
+    ]
+  },
   "topics": {
     "pricing": {
       "keywords": ["prix", "coût", "tarif", "combien", "pricing", "budget", "devis"],

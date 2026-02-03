@@ -35,6 +35,16 @@
     "ctaDemo": "📅 Book a demo",
     "voiceHint": "Voice support available"
   },
+  "socialProof": {
+    "times": ["2 min ago", "5 min ago", "12 min ago", "23 min ago", "1h ago"],
+    "messages": [
+      { "text": "Sophie from Paris just requested a demo" },
+      { "text": "A company automated 500 calls this month" },
+      { "text": "New client: Dental clinic in Casablanca" },
+      { "text": "Ahmed booked an appointment via the assistant" },
+      { "text": "12 qualified leads generated today" }
+    ]
+  },
   "topics": {
     "pricing": {
       "keywords": ["price", "cost", "pricing", "how much", "budget", "quote", "fee"],

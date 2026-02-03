@@ -35,6 +35,16 @@
     "ctaDemo": "📅 Reservar una demo",
     "voiceHint": "Soporte por voz disponible"
   },
+  "socialProof": {
+    "times": ["Hace 2 min", "Hace 5 min", "Hace 12 min", "Hace 23 min", "Hace 1h"],
+    "messages": [
+      { "text": "Sophie de París acaba de solicitar una demo" },
+      { "text": "Una empresa automatizó 500 llamadas este mes" },
+      { "text": "Nuevo cliente: Clínica dental en Casablanca" },
+      { "text": "Ahmed reservó una cita a través del asistente" },
+      { "text": "12 leads calificados generados hoy" }
+    ]
+  },
   "topics": {
     "pricing": {
       "keywords": ["precio", "coste", "cuanto", "presupuesto", "tarifa", "cotizacion"],
