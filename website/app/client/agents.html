@@ -436,7 +436,7 @@
           document.getElementById('voice-gender').value = settings.voice_gender;
         }
         updateVoiceName();
-        console.log(`[Voice] Loaded preferences: lang=${settings.voice_language}, gender=${settings.voice_gender}`);
+        // Voice preferences loaded from DB
       } catch (error) {
         console.warn('Failed to load voice preferences:', error);
       }

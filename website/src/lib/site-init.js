@@ -12,7 +12,7 @@
   'use strict';
 
   // ============================================
-  // 1. PLAUSIBLE ANALYTICS STUB
+  // 1. PLAUSIBLE ANALYTICS QUEUE (before script loads)
   // ============================================
   window.plausible = window.plausible || function() {
     (window.plausible.q = window.plausible.q || []).push(arguments);

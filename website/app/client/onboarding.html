@@ -247,6 +247,12 @@
 
   <script src="/src/lib/i18n.js"></script>
   <script>
+    // Auth check - Session 250.65bis
+    const token = localStorage.getItem('vocalia_token');
+    if (!token) {
+      window.location.href = '/app/auth/login.html';
+    }
+
     let currentStep = 1;
     const totalSteps = 4;
 

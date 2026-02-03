@@ -572,14 +572,19 @@
         if (!response.ok) throw new Error('Auth failed');
 
         const user = await response.json();
-        currentTenantId = user.tenant_id || 'client_demo';
+        if (!user.tenant_id) {
+          window.location.href = '/app/client/onboarding.html';
+          return;
+        }
+        currentTenantId = user.tenant_id;
 
         document.getElementById('user-name').textContent = user.name || user.email;
         document.getElementById('user-email').textContent = user.email;
         document.getElementById('user-initials').textContent = getInitials(user.name || user.email);
       } catch (e) {
         console.error('Auth error:', e);
-        currentTenantId = 'client_demo'; // Fallback for demo
+        window.location.href = '/app/auth/login.html';
+        return;
       }
     }
 
@@ -607,13 +612,10 @@
       }
     }
 
-    // Load demo KB (fallback)
+    // Empty KB fallback - Session 250.65bis
     async function loadDemoKB() {
-      try {
-        const response = await fetch(`/clients/client_demo/knowledge_base/kb_${currentLanguage}.json`);
-        if (response.ok) return await response.json();
-      } catch (e) {}
-      return { business_info: { name: 'Demo Store', response: 'Bienvenue!' }};
+      // Return empty KB structure when API unavailable
+      return {};
     }
 
     // Render entries table

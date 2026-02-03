@@ -519,11 +519,15 @@
     const addModal = document.getElementById('add-modal');
     const voicePreview = document.getElementById('voice-preview');
 
-    // Auth check
+    // Auth check - Session 250.65bis
     const auth = JSON.parse(localStorage.getItem('vocalia_auth') || '{}');
     if (!auth.token) {
       window.location.href = '/app/auth/login.html';
     }
+    if (!auth.user?.tenant_id) {
+      window.location.href = '/app/client/onboarding.html';
+    }
+    const tenantId = auth.user.tenant_id;
 
     // User info
     if (auth.user) {
@@ -601,7 +605,7 @@
     document.getElementById('confirm-import').addEventListener('click', async () => {
       if (!importFile) return;
 
-      const tenantId = auth.user?.tenant_id || 'client_demo';
+      const tenantId = tenantId;
       const reader = new FileReader();
 
       reader.onload = async (e) => {
@@ -687,7 +691,7 @@
     document.getElementById('save-item').addEventListener('click', async () => {
       const form = document.getElementById('add-item-form');
       const formData = new FormData(form);
-      const tenantId = auth.user?.tenant_id || 'client_demo';
+      const tenantId = tenantId;
       const isEditing = !!editingItemId;
 
       const item = {
@@ -758,7 +762,7 @@
     // Load catalog data from API
     async function loadCatalog() {
       try {
-        const tenantId = auth.user?.tenant_id || 'client_demo';
+        const tenantId = tenantId;
 
         // Fetch catalog from API
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog?type=${currentType.toUpperCase()}`, {
@@ -994,7 +998,7 @@
     async function deleteItem(id) {
       if (!confirm('Supprimer cet article?')) return;
 
-      const tenantId = auth.user?.tenant_id || 'client_demo';
+      const tenantId = tenantId;
 
       try {
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/${id}?type=${currentType.toUpperCase()}`, {
@@ -1202,7 +1206,7 @@
     document.getElementById('connector-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const form = e.target;
-      const tenantId = auth.user?.tenant_id || 'client_demo';
+      const tenantId = tenantId;
 
       const formData = new FormData(form);
       const config = { source: selectedPlatform };
@@ -1252,7 +1256,7 @@
 
     // Sync catalog
     async function syncCatalog() {
-      const tenantId = auth.user?.tenant_id || 'client_demo';
+      const tenantId = tenantId;
       try {
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/sync`, {
           method: 'POST',
