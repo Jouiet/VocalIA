@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.81.0 | 03/02/2026 | Session 250.72 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.82.0 | 03/02/2026 | Session 250.73 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
@@ -13,7 +13,7 @@
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
-> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 18 Func. Tools | 44 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 23 Func. Tools | 44 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
@@ -22,7 +22,7 @@
 > Telephony: TwiML Voice ✅ | Twilio SDK ✅ | **SMS Fallback ✅** | **ElevenLabs Darija TTS ✅** | MCP 4 tools
 > **Website: 70 pages** (51 public + 19 webapp) | Onboarding ✅ | Referral ✅ | Widget Analytics ✅ | PWA ✅ | /industries/ ✅ | /use-cases/ ✅
 > **Analytics: Plausible (GDPR)** | 70 pages tracked | CTA events ✅ | **A/B Testing ✅**
-> **Tests: 305 unit + 375 E2E (99.5%)** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** | **Load Tests: k6 ✅** | **E2E: Playwright 5 browsers ✅** | **Chaos Engineering ✅**
+> **Tests: 306 unit + 375 E2E (99.5%)** | Coverage: c8 | OpenAPI: ✅ | Security: **96/100** | **Load Tests: k6 ✅** | **E2E: Playwright 5 browsers ✅** | **Chaos Engineering ✅**
 > **IDENTITY ALIGNMENT:** 100% (Session 250.33) - All "agency" confusion fixed, 40 personas aligned, agency_v3 deployed
 > **✅ VOICE MULTI-PROVIDER (Session 250.65):** Grok Voice + Gemini TTS + ElevenLabs Darija - Tenant voice override ✅ | GROK_VOICE_MAP (5 langues × 2 genres → 7 voix) | ElevenLabs 27 voix | Widget + Telephony ✅
 
@@ -43,6 +43,7 @@
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
+**Session 250.73 VOICE CARTOGRAPHY AUDIT 100% COMPLETE:** Multi-provider audit verified - 7 providers (Grok/Gemini/ElevenLabs/Twilio/WebSpeech/AtlasChat/Lahajati), 306/306 tests pass, 0 placeholders/mocks, 0 client_demo fallbacks, GROK_VOICE_MAP (10 mappings), getTenantVoicePreferences() E2E, 27 ElevenLabs voices, 44 core modules, 4199 lines catalog system, All audit docs 100% COMPLETE (AUDIT-VOICE-CONFIG, DYNAMIC-CATALOG, MULTI-TENANT, FORENSIC, KB-OPTIMIZATION, LANGUAGE-SUPPORT, VOICE-MENA)
 **Session 250.72 DYNAMIC CATALOG 100% COMPLETE:** (1) CalendarSlotsConnector 764 lignes - Google Calendar API v3 FreeBusy - exponential backoff 403/429 - buffer 5min - min advance 24h - intégré dans TenantCatalogStore.getAvailableSlots() (2) Square API FIX: GET /v2/catalog/list (était POST - FAUX) per docs officielles (3) Lightspeed K-Series FIX: /o/op/1/menu/list + /o/op/1/menu/load/{id} (endpoints corrects) + _parseMenuEntries() récursif (4) catalog-connector.cjs 2287 lignes - tenant-catalog-store.cjs 1148 lignes - TOTAL 4199 lignes - 306 tests pass - 0 placeholders
 **Session 250.71 E-COMMERCE CONNECTORS COMPLETE:** 6 production-ready catalog connectors in core/catalog-connector.cjs (1500+ lines) - ShopifyCatalogConnector (GraphQL Admin API 2026-01), WooCommerceCatalogConnector (REST v3), SquareCatalogConnector (Catalog API, POS), LightspeedCatalogConnector (K-Series restaurant, X-Series retail), MagentoCatalogConnector (REST API), CustomCatalogConnector (JSON/CSV) - CatalogConnectorFactory with config validation - 2 new API endpoints (GET/PUT /api/tenants/:id/catalog/connector) - Connector config modal in catalog.html (6 platforms) - i18n catalog.connector.* keys (5 locales) - Market coverage ~64%
 **Session 250.70 CATALOG API CONNECTED:** catalog.html API-connected CRUD (POST/PUT/DELETE), file import handler (JSON/CSV), edit mode with PUT, toast notifications, sample data fallback for demo mode

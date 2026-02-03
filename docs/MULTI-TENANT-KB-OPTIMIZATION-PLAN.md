@@ -745,6 +745,57 @@ class HybridRAG {
 
 ---
 
-*Document: Session 250.45 | 02/02/2026*
-*Exigence: Multi-Tenant KB - Chaque client = KB unique*
+## 15. Session 250.64 - Tenant Voice Preferences
+
+### 15.1 Schéma Tenant Enrichi
+
+```javascript
+// core/GoogleSheetsDB.cjs - Schéma tenants
+tenants: {
+  columns: [..., 'voice_language', 'voice_gender', 'active_persona', ...],
+  defaults: { voice_language: 'fr', voice_gender: 'female', active_persona: 'agency_v3' }
+}
+```
+
+### 15.2 Intégration Telephony
+
+```javascript
+// telephony/voice-telephony-bridge.cjs
+async function getTenantVoicePreferences(tenantId) {
+  const tenant = await tenantDB.findById('tenants', tenantId);
+  return {
+    voice_language: tenant?.voice_language || 'fr',
+    voice_gender: tenant?.voice_gender || 'female'
+  };
+}
+```
+
+### 15.3 Session Metadata
+
+```javascript
+// Session creation enrichie
+session.metadata = {
+  ...(finalConfig.metadata || {}),
+  tenant_id: tenantId,
+  voice_language: voicePrefs.voice_language,
+  voice_gender: voicePrefs.voice_gender
+};
+```
+
+---
+
+## Plan Actionnable - Post Session 250.64
+
+| # | Tâche | Priorité | Status |
+|:-:|:------|:--------:|:------:|
+| 1 | Stripe integration billing.html | P1 | ⏳ Clés requises |
+| 2 | Migration BD PostgreSQL | P3 | ⏳ Décision stratégique |
+| 3 | Hybrid RAG (BM25 + Embeddings) | P2 | 🆕 Section 13 documentée |
+| 4 | ElevenLabs WebSocket streaming | P2 | 🆕 Section 12 documentée |
+| 5 | Voice A/B testing | P3 | ⏳ Après Stripe |
+
+---
+
+*Document: Session 250.64 | 03/02/2026*
+*Exigence: Multi-Tenant KB + Voice Preferences - Chaque client = KB + voix unique*
 *Sources: ElevenLabs, Microsoft Azure, GitHub, HuggingFace, Industry Blogs*

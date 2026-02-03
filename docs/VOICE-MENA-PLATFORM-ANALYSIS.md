@@ -1,6 +1,7 @@
 # Analyse Stratégique: Plateforme Voice AI MENA
 >
-> Version: 6.1.0 | 02/02/2026 | DÉCISION: ✅ **GO** - Multi-Canal + **5 LANGUES PRODUCTION READY** (Session 250.57)
+> Version: 6.2.0 | 03/02/2026 | DÉCISION: ✅ **GO** - Multi-Canal + **5 LANGUES PRODUCTION READY** (Session 250.64)
+> **Session 250.64**: Voice config E2E - tenant voice preferences (voice_language, voice_gender) DB→Telephony, 27 voix ElevenLabs
 
 ## Executive Summary
 

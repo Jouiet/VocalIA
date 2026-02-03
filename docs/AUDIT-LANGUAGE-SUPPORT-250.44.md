@@ -647,6 +647,46 @@ ls telephony/knowledge_base*.json
 
 ---
 
+## 12. Session 250.64 - Voice Config End-to-End Fix ✅
+
+### Problème Critique Corrigé
+
+La configuration voix du dashboard client était **cosmétique** - les préférences `voice_language` et `voice_gender` étaient sauvegardées mais **jamais lues** par le backend telephony.
+
+```javascript
+// AVANT - voice-telephony-bridge.cjs:1213
+generateDarijaTTS(textToSpeak, 'female')  // ❌ HARDCODED!
+
+// APRÈS - Session 250.64
+const voiceGender = session.metadata?.voice_gender || 'female';
+generateDarijaTTS(textToSpeak, voiceGender)  // ✅ Uses tenant preferences
+```
+
+### Corrections Appliquées
+
+| Fichier | Correction |
+|:--------|:-----------|
+| `core/GoogleSheetsDB.cjs` | Schéma tenants: +`voice_language`, +`voice_gender`, +`active_persona` |
+| `telephony/voice-telephony-bridge.cjs` | `getTenantVoicePreferences()` - charge depuis DB |
+| `telephony/voice-telephony-bridge.cjs` | Session metadata inclut voice prefs |
+| `website/src/lib/api-client.js` | `settings.get()` retourne voice_language, voice_gender |
+| `website/app/client/agents.html` | `loadVoicePreferences()` - pré-remplit les selects |
+| `core/elevenlabs-client.cjs` | 27 voix (was 10) - ar_male, fr_male, en_male, es_male ajoutés |
+
+### Vérification
+
+```bash
+# Male voices now available
+node -e "const {VOICE_IDS}=require('./core/elevenlabs-client.cjs'); console.log('Total:', Object.keys(VOICE_IDS).length)"
+# Total: 27 ✅
+
+# Tenant voice preferences loader
+node -e "require('./telephony/voice-telephony-bridge.cjs')" 2>&1 | grep "Tenant voice"
+# ✅ Tenant voice preferences loader ready
+```
+
+---
+
 *Document généré par analyse forensique factuelle*
 *Toutes les sources sont vérifiables via les liens fournis*
-*Màj: 02/02/2026 - Session 250.44quater - **INTÉGRATION 100% COMPLÈTE***
+*Màj: 03/02/2026 - Session 250.64 - **END-TO-END VOICE CONFIG COMPLETE***

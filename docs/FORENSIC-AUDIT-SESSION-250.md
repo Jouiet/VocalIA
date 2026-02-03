@@ -1439,8 +1439,42 @@ git status --short
 
 ---
 
+## Session 250.64 - Voice Config End-to-End Fix
+
+### Problème Critique
+
+Configuration voix dashboard **cosmétique** - préférences sauvegardées mais jamais utilisées par backend.
+
+```javascript
+// AVANT - voice-telephony-bridge.cjs:1213
+generateDarijaTTS(textToSpeak, 'female')  // ❌ HARDCODED
+
+// APRÈS
+const voiceGender = session.metadata?.voice_gender || 'female';
+generateDarijaTTS(textToSpeak, voiceGender)  // ✅ Tenant preferences
+```
+
+### Corrections
+
+| Fichier | Ajout |
+|:--------|:------|
+| `core/GoogleSheetsDB.cjs` | voice_language, voice_gender, active_persona au schéma |
+| `telephony/voice-telephony-bridge.cjs` | getTenantVoicePreferences() + session.metadata enrichie |
+| `website/src/lib/api-client.js` | tenants resource + settings.get() voice prefs |
+| `website/app/client/agents.html` | loadVoicePreferences() |
+| `core/elevenlabs-client.cjs` | 27 voix (was 10) |
+
+### Vérification
+
+```bash
+node -e "const {VOICE_IDS}=require('./core/elevenlabs-client.cjs'); console.log('Total:', Object.keys(VOICE_IDS).length)"
+# Total: 27 ✅
+```
+
+---
+
 **Fin du rapport d'audit forensique - Session 250**
 
-*Document généré le 31/01/2026*
+*Document généré le 31/01/2026 | Màj: 03/02/2026 (Session 250.64)*
 *Vérifiable par les commandes ci-dessus*
-*Status: **100% COMPLETE** - P0 ✅ P1 ✅ P2 ✅ P3 ✅*
+*Status: **100% COMPLETE** - P0 ✅ P1 ✅ P2 ✅ P3 ✅ Voice E2E ✅*
