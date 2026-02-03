@@ -1387,22 +1387,104 @@
   };
 
   // ============================================================
+  // FREE SHIPPING BAR INTEGRATION (P3 - Session 250.83)
+  // Benchmark Impact: +15-20% AOV, -10-18% cart abandonment
+  // ============================================================
+
+  /**
+   * Initialize free shipping progress bar
+   * @param {Object} options - Configuration options
+   */
+  window.VocalIA.initShippingBar = function(options = {}) {
+    if (window.VocaliaShippingBar) {
+      return window.VocaliaShippingBar.init({
+        tenantId: state.tenantId || options.tenantId,
+        lang: state.currentLang || options.lang,
+        ...options
+      });
+    }
+    console.warn('[VocalIA] Shipping bar widget not loaded. Include free-shipping-bar.js');
+    return null;
+  };
+
+  /**
+   * Update shipping bar progress
+   * @param {number} cartValue - Current cart value
+   */
+  window.VocalIA.updateShippingProgress = function(cartValue) {
+    if (window.VocaliaShippingBar?.getInstance()) {
+      window.VocaliaShippingBar.getInstance().updateCartValue(cartValue);
+    } else if (window.VocaliaShippingBar) {
+      const instance = window.VocalIA.initShippingBar();
+      if (instance) instance.updateCartValue(cartValue);
+    }
+  };
+
+  /**
+   * Check if shipping bar is supported
+   */
+  window.VocalIA.isShippingBarSupported = function() {
+    return !!window.VocaliaShippingBar;
+  };
+
+  // ============================================================
+  // SPIN WHEEL GAMIFICATION INTEGRATION (P3 - Session 250.83)
+  // Benchmark Impact: +10-15% conversion, +45% email list growth
+  // ============================================================
+
+  /**
+   * Show spin wheel gamification popup
+   * @param {Object} options - Configuration options
+   */
+  window.VocalIA.showSpinWheel = function(options = {}) {
+    if (window.VocaliaSpinWheel) {
+      return window.VocaliaSpinWheel.show({
+        tenantId: state.tenantId || options.tenantId,
+        lang: state.currentLang || options.lang,
+        ...options
+      });
+    }
+    console.warn('[VocalIA] Spin wheel widget not loaded. Include spin-wheel.js');
+    return null;
+  };
+
+  /**
+   * Check if spin wheel is available (cooldown check)
+   */
+  window.VocalIA.isSpinWheelAvailable = function() {
+    const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+    if (!lastPlayed) return true;
+    const elapsed = Date.now() - parseInt(lastPlayed, 10);
+    return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+  };
+
+  /**
+   * Check if spin wheel is supported
+   */
+  window.VocalIA.isSpinWheelSupported = function() {
+    return !!window.VocaliaSpinWheel;
+  };
+
+  // ============================================================
   // WIDGET ORCHESTRATOR (Sprint 4 - Session 250.79)
   // ============================================================
 
   /**
    * Widget Orchestrator - Centralized control for all VocalIA widgets
-   * Manages: Voice Widget, Recommendations, Quiz, Exit-Intent, Social Proof, Abandoned Cart
+   * Manages: Voice Widget, Recommendations, Quiz, Exit-Intent, Social Proof, Abandoned Cart, Shipping Bar, Spin Wheel
+   * E-commerce Widget Suite: Sprint 1-5 + P3 Widgets Complete (Session 250.83)
    */
   const WidgetOrchestrator = {
-    // Widget states
+    // Widget states (priority: lower = higher priority)
     widgets: {
       voiceChat: { active: false, priority: 1 },
       recommendations: { active: false, priority: 2 },
       quiz: { active: false, priority: 3 },
       exitIntent: { active: false, priority: 4 },
       socialProof: { active: true, priority: 5 },
-      abandonedCart: { active: false, priority: 6 }
+      abandonedCart: { active: false, priority: 6 },
+      spinWheel: { active: false, priority: 7 },
+      shippingBar: { active: true, priority: 8 } // Always visible when cart has items
     },
 
     // Event bus for inter-widget communication
