@@ -616,7 +616,7 @@
         <!-- Voice Waveform Visualizer (SOTA 2026) -->
         <div class="va-visualizer" id="va-visualizer">
           <div class="va-visualizer-bars" id="va-visualizer-bars">
-            ${Array.from({length: 10}, () => '<div class="va-visualizer-bar"></div>').join('')}
+            ${Array.from({ length: 10 }, () => '<div class="va-visualizer-bar"></div>').join('')}
           </div>
           <div class="va-visualizer-label" id="va-visualizer-label">${L.ui.voiceReady || 'Voice Ready'}</div>
         </div>
@@ -825,9 +825,9 @@
       <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${product.id}" style="position: relative;">
         ${badgeHTML}
         ${hasImage
-          ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
-          : `<div class="va-product-img-placeholder">📦</div>`
-        }
+        ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
+        : `<div class="va-product-img-placeholder">📦</div>`
+      }
         <div class="va-product-info">
           <p class="va-product-name">${product.name}</p>
           <div class="va-product-price">
@@ -860,9 +860,9 @@
         <div class="va-single-product" data-product-id="${product.id}">
           <div class="va-single-product-row">
             ${hasImage
-              ? `<img class="va-single-product-img" src="${product.image || product.images[0]}" alt="${product.name}" />`
-              : `<div class="va-single-product-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>`
-            }
+        ? `<img class="va-single-product-img" src="${product.image || product.images[0]}" alt="${product.name}" />`
+        : `<div class="va-single-product-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>`
+      }
             <div class="va-single-product-details">
               <h4 class="va-single-product-name">${product.name}</h4>
               ${product.description ? `<p class="va-single-product-desc">${product.description}</p>` : ''}
@@ -872,9 +872,9 @@
           <div class="va-product-actions">
             <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${product.id}')" ${!inStock ? 'disabled' : ''}>
               ${inStock
-                ? (state.langData?.ecommerce?.viewDetails || 'Voir détails')
-                : (state.langData?.ecommerce?.notifyMe || 'Me notifier')
-              }
+        ? (state.langData?.ecommerce?.viewDetails || 'Voir détails')
+        : (state.langData?.ecommerce?.notifyMe || 'Me notifier')
+      }
             </button>
             ${product.url ? `<button class="va-product-btn secondary" onclick="window.open('${product.url}', '_blank')">
               ${state.langData?.ecommerce?.buyNow || 'Acheter'}
@@ -944,8 +944,8 @@
         </div>
         <div class="va-product-carousel" id="${carouselId}">
           ${displayProducts.map((product, index) =>
-            generateProductCardHTML(product, index === 0)
-          ).join('')}
+      generateProductCardHTML(product, index === 0)
+    ).join('')}
         </div>
       </div>
     `;
@@ -999,7 +999,7 @@
     const cacheKey = JSON.stringify({ tenantId: state.tenantId, ...options });
     const now = Date.now();
     if (state.catalogCache.key === cacheKey &&
-        (now - state.catalogCache.timestamp) < CONFIG.CATALOG_CACHE_TTL) {
+      (now - state.catalogCache.timestamp) < CONFIG.CATALOG_CACHE_TTL) {
       return state.catalogCache.products;
     }
 
@@ -1112,7 +1112,7 @@
 
   // Expose functions for external access
   window.VocalIA = window.VocalIA || {};
-  window.VocalIA.viewProduct = async function(productId) {
+  window.VocalIA.viewProduct = async function (productId) {
     if (!state.tenantId) return;
 
     try {
@@ -1132,11 +1132,11 @@
     }
   };
 
-  window.VocalIA.displayProducts = function(products, title, context) {
+  window.VocalIA.displayProducts = function (products, title, context) {
     addProductCarousel(products, title, context);
   };
 
-  window.VocalIA.getEcommerceStats = function() {
+  window.VocalIA.getEcommerceStats = function () {
     return {
       ...state.ecommerce,
       voiceRatio: state.ecommerce.inputMethodStats.voice /
@@ -1154,7 +1154,7 @@
    * @param {string} type - Type: 'similar', 'bought_together', 'personalized'
    * @param {string} title - Optional custom title
    */
-  window.VocalIA.showRecommendations = function(products, type = 'similar', title = null) {
+  window.VocalIA.showRecommendations = function (products, type = 'similar', title = null) {
     if (!products || products.length === 0) return;
 
     const contextMap = {
@@ -1181,7 +1181,7 @@
    * @param {Array} productIds - Array of product IDs for cart-based recommendations
    * @param {string} type - Recommendation type
    */
-  window.VocalIA.getAIRecommendations = async function(productId, productIds = [], type = 'similar') {
+  window.VocalIA.getAIRecommendations = async function (productId, productIds = [], type = 'similar') {
     if (!state.tenantId) return null;
 
     try {
@@ -1257,7 +1257,7 @@
    * @param {string} template - Quiz template ('skincare', 'electronics', 'generic')
    * @param {object} options - Custom options
    */
-  window.VocalIA.startQuiz = function(template = 'generic', options = {}) {
+  window.VocalIA.startQuiz = function (template = 'generic', options = {}) {
     // Lazy load quiz if not already loaded
     if (!window.VocalIAQuiz) {
       console.warn('[VocalIA] Voice Quiz not loaded. Include voice-quiz.js');
@@ -1314,7 +1314,7 @@
   /**
    * Check if quiz is supported
    */
-  window.VocalIA.isQuizSupported = function() {
+  window.VocalIA.isQuizSupported = function () {
     return !!window.VocalIAQuiz;
   };
 
@@ -1327,7 +1327,7 @@
    * Initialize abandoned cart recovery widget
    * @param {Object} options - Configuration options
    */
-  window.VocalIA.initCartRecovery = function(options = {}) {
+  window.VocalIA.initCartRecovery = function (options = {}) {
     if (window.VocaliaAbandonedCart) {
       return window.VocaliaAbandonedCart.init({
         tenantId: state.tenantId || options.tenantId,
@@ -1343,7 +1343,7 @@
    * Trigger cart recovery popup manually
    * @param {string} reason - Reason for triggering (manual, exit, inactivity)
    */
-  window.VocalIA.triggerCartRecovery = function(reason = 'manual') {
+  window.VocalIA.triggerCartRecovery = function (reason = 'manual') {
     if (window.VocaliaAbandonedCart?.getInstance()) {
       window.VocaliaAbandonedCart.getInstance().trigger(reason);
     } else {
@@ -1359,7 +1359,7 @@
    * Set cart data for recovery tracking
    * @param {Object} cartData - Cart data { items: [], total: number, currency: string }
    */
-  window.VocalIA.setCartData = function(cartData) {
+  window.VocalIA.setCartData = function (cartData) {
     // Store locally for widget access
     window.VocalIA.cart = cartData;
 
@@ -1382,7 +1382,7 @@
   /**
    * Check if cart recovery is supported
    */
-  window.VocalIA.isCartRecoverySupported = function() {
+  window.VocalIA.isCartRecoverySupported = function () {
     return !!window.VocaliaAbandonedCart;
   };
 
@@ -1395,7 +1395,7 @@
    * Initialize free shipping progress bar
    * @param {Object} options - Configuration options
    */
-  window.VocalIA.initShippingBar = function(options = {}) {
+  window.VocalIA.initShippingBar = function (options = {}) {
     if (window.VocaliaShippingBar) {
       return window.VocaliaShippingBar.init({
         tenantId: state.tenantId || options.tenantId,
@@ -1411,7 +1411,7 @@
    * Update shipping bar progress
    * @param {number} cartValue - Current cart value
    */
-  window.VocalIA.updateShippingProgress = function(cartValue) {
+  window.VocalIA.updateShippingProgress = function (cartValue) {
     if (window.VocaliaShippingBar?.getInstance()) {
       window.VocaliaShippingBar.getInstance().updateCartValue(cartValue);
     } else if (window.VocaliaShippingBar) {
@@ -1423,7 +1423,7 @@
   /**
    * Check if shipping bar is supported
    */
-  window.VocalIA.isShippingBarSupported = function() {
+  window.VocalIA.isShippingBarSupported = function () {
     return !!window.VocaliaShippingBar;
   };
 
@@ -1436,7 +1436,7 @@
    * Show spin wheel gamification popup
    * @param {Object} options - Configuration options
    */
-  window.VocalIA.showSpinWheel = function(options = {}) {
+  window.VocalIA.showSpinWheel = function (options = {}) {
     if (window.VocaliaSpinWheel) {
       return window.VocaliaSpinWheel.show({
         tenantId: state.tenantId || options.tenantId,
@@ -1451,7 +1451,7 @@
   /**
    * Check if spin wheel is available (cooldown check)
    */
-  window.VocalIA.isSpinWheelAvailable = function() {
+  window.VocalIA.isSpinWheelAvailable = function () {
     const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
     if (!lastPlayed) return true;
     const elapsed = Date.now() - parseInt(lastPlayed, 10);
@@ -1461,7 +1461,7 @@
   /**
    * Check if spin wheel is supported
    */
-  window.VocalIA.isSpinWheelSupported = function() {
+  window.VocalIA.isSpinWheelSupported = function () {
     return !!window.VocaliaSpinWheel;
   };
 
@@ -2744,11 +2744,13 @@
       return null;
     } catch (err) {
       if (err.name === 'AbortError') {
-        console.warn('[VocalIA] API timeout');
+        console.error('[VocalIA] API timeout - returning error message');
       } else {
-        console.warn('[VocalIA] API error:', err.message);
+        console.error('[VocalIA] API error:', err.message);
       }
-      return null;
+      // Return error message instead of falling back to stupid patterns
+      const L = state.langData;
+      return L?.ui?.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.";
     }
   }
 

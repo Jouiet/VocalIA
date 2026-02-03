@@ -23,7 +23,11 @@
     LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
     // Security: API Config
     BOOKING_API: window.VOCALIA_BOOKING_API || 'https://api.vocalia.ma/v1/booking',
-    VOICE_API: window.VOCALIA_VOICE_API || 'https://api.vocalia.ma/v1/voice',
+    VOICE_API: window.VOCALIA_VOICE_API || (
+      ['localhost', '127.0.0.1'].includes(window.location.hostname)
+        ? 'http://localhost:3004/respond'
+        : 'https://api.vocalia.ma/v1/voice'
+    ),
     A2UI_API: window.VOCALIA_A2UI_API || 'https://api.vocalia.ma/v1/a2ui',
 
     // Branding
@@ -1185,7 +1189,12 @@
         }
       }
     } catch (e) {
-      console.warn("[VocalIA] Voice API failed, falling back to local rules", e);
+      console.error("[VocalIA] Voice API failed:", e.message);
+      // Option C: Return honest error instead of stupid fallback
+      return {
+        text: L.ui.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.",
+        error: true
+      };
     }
 
     // --- FALLBACK (Rule-Based) ---
@@ -1340,41 +1349,41 @@
    * Update A2UI status overlay (verification badge)
    */
   function updateA2UI(metadata) {
-      if (!metadata) return;
-      const overlay = document.getElementById('va-a2ui-overlay');
-      if (!overlay) return;
+    if (!metadata) return;
+    const overlay = document.getElementById('va-a2ui-overlay');
+    if (!overlay) return;
 
-      // Reset classes
-      overlay.className = 'va-a2ui-overlay';
+    // Reset classes
+    overlay.className = 'va-a2ui-overlay';
 
-      // Handle status metadata (verification overlay)
-      if (metadata.verification) {
-        let content = '';
-        let isVisible = false;
+    // Handle status metadata (verification overlay)
+    if (metadata.verification) {
+      let content = '';
+      let isVisible = false;
 
-        if (metadata.verification === 'corrected') {
-          content = `<span style="font-size: 14px;">⚡</span> <span>Auto-Corrected (${metadata.latency}ms)</span>`;
-          overlay.classList.add('corrected');
-          isVisible = true;
-        } else if (metadata.verification === 'approved') {
-          content = `<span style="font-size: 14px;">🛡️</span> <span>Verified (${metadata.latency}ms)</span>`;
-          isVisible = true;
-        }
-
-        if (isVisible) {
-          overlay.innerHTML = content;
-          void overlay.offsetWidth;
-          overlay.classList.add('visible');
-          setTimeout(() => overlay.classList.remove('visible'), 4000);
-        }
-        return;
+      if (metadata.verification === 'corrected') {
+        content = `<span style="font-size: 14px;">⚡</span> <span>Auto-Corrected (${metadata.latency}ms)</span>`;
+        overlay.classList.add('corrected');
+        isVisible = true;
+      } else if (metadata.verification === 'approved') {
+        content = `<span style="font-size: 14px;">🛡️</span> <span>Verified (${metadata.latency}ms)</span>`;
+        isVisible = true;
       }
 
-      // Handle full A2UI component injection
-      if (metadata.ui) {
-        injectA2UIComponent(metadata.ui);
+      if (isVisible) {
+        overlay.innerHTML = content;
+        void overlay.offsetWidth;
+        overlay.classList.add('visible');
+        setTimeout(() => overlay.classList.remove('visible'), 4000);
       }
+      return;
     }
+
+    // Handle full A2UI component injection
+    if (metadata.ui) {
+      injectA2UIComponent(metadata.ui);
+    }
+  }
 
   /**
    * Request A2UI component from API
@@ -1579,95 +1588,95 @@
     getState: () => ({ ...a2uiState })
   };
 
-    // ============================================================
-    // PANEL CONTROL
-    // ============================================================
+  // ============================================================
+  // PANEL CONTROL
+  // ============================================================
 
-    function togglePanel() {
-      state.isOpen = !state.isOpen;
-      const panel = document.getElementById('va-panel');
+  function togglePanel() {
+    state.isOpen = !state.isOpen;
+    const panel = document.getElementById('va-panel');
 
-      if (state.isOpen) {
-        panel.classList.add('open');
-        trackEvent('voice_panel_opened');
+    if (state.isOpen) {
+      panel.classList.add('open');
+      trackEvent('voice_panel_opened');
 
-        if (state.conversationHistory.length === 0) {
-          const L = state.langData;
-          const welcomeMsg = needsTextFallback ? L.ui.welcomeMessageTextOnly : L.ui.welcomeMessage;
-          addMessage(welcomeMsg, 'assistant');
-        }
-        document.getElementById('va-input').focus();
-      } else {
-        panel.classList.remove('open');
-        if (state.synthesis) state.synthesis.cancel();
-        trackEvent('voice_panel_closed');
+      if (state.conversationHistory.length === 0) {
+        const L = state.langData;
+        const welcomeMsg = needsTextFallback ? L.ui.welcomeMessageTextOnly : L.ui.welcomeMessage;
+        addMessage(welcomeMsg, 'assistant');
       }
-    }
-
-    // ============================================================
-    // EVENT LISTENERS
-    // ============================================================
-
-    function initEventListeners() {
-      document.getElementById('va-trigger').addEventListener('click', togglePanel);
-      document.getElementById('va-close').addEventListener('click', togglePanel);
-
-      document.getElementById('va-send').addEventListener('click', () => {
-        sendMessage(document.getElementById('va-input').value);
-      });
-
-      document.getElementById('va-input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage(e.target.value);
-      });
-
-      if (hasSpeechRecognition) {
-        initSpeechRecognition();
-        const micBtn = document.getElementById('va-mic');
-        if (micBtn) {
-          micBtn.addEventListener('click', toggleListening);
-        }
-      }
-    }
-
-    // ============================================================
-    // INITIALIZATION
-    // ============================================================
-
-    async function init() {
-      try {
-        const lang = detectLanguage();
-        await loadLanguage(lang);
-        // Generate session ID for AG-UI threading
-        state.conversationContext.sessionId = AGUI.generateId('session');
-
-        captureAttribution(); // Session 177: MarEng Injector
-        createWidget();
-        trackEvent('voice_widget_loaded', { language: state.currentLang });
-
-        // AG-UI: Initial state snapshot
-        AGUI.stateSnapshot({
-          version: '2.1.0',
-          language: state.currentLang,
-          capabilities: {
-            speechRecognition: hasSpeechRecognition,
-            speechSynthesis: hasSpeechSynthesis,
-            textFallback: needsTextFallback
-          },
-          sessionId: state.conversationContext.sessionId
-        });
-      } catch (error) {
-        console.error('[VocalIA] Init error:', error);
-      }
-    }
-
-    // Expose AG-UI module for external integrations
-    window.VocaliaAGUI = AGUI;
-
-    // Start
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
+      document.getElementById('va-input').focus();
     } else {
-      init();
+      panel.classList.remove('open');
+      if (state.synthesis) state.synthesis.cancel();
+      trackEvent('voice_panel_closed');
     }
+  }
 
-  })();
+  // ============================================================
+  // EVENT LISTENERS
+  // ============================================================
+
+  function initEventListeners() {
+    document.getElementById('va-trigger').addEventListener('click', togglePanel);
+    document.getElementById('va-close').addEventListener('click', togglePanel);
+
+    document.getElementById('va-send').addEventListener('click', () => {
+      sendMessage(document.getElementById('va-input').value);
+    });
+
+    document.getElementById('va-input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendMessage(e.target.value);
+    });
+
+    if (hasSpeechRecognition) {
+      initSpeechRecognition();
+      const micBtn = document.getElementById('va-mic');
+      if (micBtn) {
+        micBtn.addEventListener('click', toggleListening);
+      }
+    }
+  }
+
+  // ============================================================
+  // INITIALIZATION
+  // ============================================================
+
+  async function init() {
+    try {
+      const lang = detectLanguage();
+      await loadLanguage(lang);
+      // Generate session ID for AG-UI threading
+      state.conversationContext.sessionId = AGUI.generateId('session');
+
+      captureAttribution(); // Session 177: MarEng Injector
+      createWidget();
+      trackEvent('voice_widget_loaded', { language: state.currentLang });
+
+      // AG-UI: Initial state snapshot
+      AGUI.stateSnapshot({
+        version: '2.1.0',
+        language: state.currentLang,
+        capabilities: {
+          speechRecognition: hasSpeechRecognition,
+          speechSynthesis: hasSpeechSynthesis,
+          textFallback: needsTextFallback
+        },
+        sessionId: state.conversationContext.sessionId
+      });
+    } catch (error) {
+      console.error('[VocalIA] Init error:', error);
+    }
+  }
+
+  // Expose AG-UI module for external integrations
+  window.VocaliaAGUI = AGUI;
+
+  // Start
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
