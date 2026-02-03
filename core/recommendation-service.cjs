@@ -22,6 +22,61 @@ const vectorStore = require('./vector-store.cjs');
 const RULES_DIR = path.join(__dirname, '../data/recommendations');
 
 /**
+ * Persona-specific terminology for voice responses
+ * Maps 40 personas to their specific domain terms
+ */
+const PERSONA_CONFIG = {
+  // PRODUCTS
+  RETAILER: { term_fr: 'produits', term_en: 'products', term_es: 'productos', term_ar: 'منتجات', term_ary: 'منتوجات' },
+  UNIVERSAL_ECOMMERCE: { term_fr: 'produits', term_en: 'products', term_es: 'productos', term_ar: 'منتجات', term_ary: 'منتوجات' },
+  GROCERY: { term_fr: 'articles', term_en: 'items', term_es: 'artículos', term_ar: 'سلع', term_ary: 'تقضية' },
+  PHARMACIST: { term_fr: 'produits', term_en: 'products', term_es: 'productos', term_ar: 'منتجات', term_ary: 'دوايات/منتوجات' },
+  PRODUCER: { term_fr: 'produits bio', term_en: 'organic products', term_es: 'productos bio', term_ar: 'منتجات عضوية', term_ary: 'منتوجات بيو' },
+  BAKERY: { term_fr: 'gourmandises', term_en: 'treats', term_es: 'delicias', term_ar: 'مخبوزات', term_ary: 'شهيوات' },
+  MANUFACTURER: { term_fr: 'articles', term_en: 'items', term_es: 'artículos', term_ar: 'عناصر', term_ary: 'سلعة' },
+
+  // SERVICES
+  AGENCY: { term_fr: 'solutions', term_en: 'solutions', term_es: 'soluciones', term_ar: 'حلول', term_ary: 'حلول' },
+  UNIVERSAL_SME: { term_fr: 'services', term_en: 'services', term_es: 'servicios', term_ar: 'خدمات', term_ary: 'خدمات' },
+  IT_SERVICES: { term_fr: 'solutions IT', term_en: 'IT solutions', term_es: 'soluciones TI', term_ar: 'حلول تقنية', term_ary: 'حلول تقنية' },
+  CLEANER: { term_fr: 'formules', term_en: 'packages', term_es: 'paquetes', term_ar: 'باقات', term_ary: 'باك' },
+  RECRUITER: { term_fr: 'offres', term_en: 'offers', term_es: 'ofertas', term_ar: 'عروض', term_ary: 'عروض' },
+  DISPATCHER: { term_fr: 'options', term_en: 'options', term_es: 'opciones', term_ar: 'خيارات', term_ary: 'خيارات' },
+  INSURER: { term_fr: 'contrats', term_en: 'policies', term_es: 'pólizas', term_ar: 'عقود', term_ary: 'عقود' },
+  ACCOUNTANT: { term_fr: 'services', term_en: 'services', term_es: 'servicios', term_ar: 'خدمات', term_ary: 'خدمات' },
+  NOTARY: { term_fr: 'services', term_en: 'services', term_es: 'servicios', term_ar: 'خدمات', term_ary: 'خدمات' },
+  LOGISTICIAN: { term_fr: 'options', term_en: 'options', term_es: 'opciones', term_ar: 'خيارات', term_ary: 'خيارات' },
+  CONSULTANT: { term_fr: 'services', term_en: 'services', term_es: 'servicios', term_ar: 'خدمات', term_ary: 'خدمات' },
+
+  // CARE / HEALTH
+  DENTAL: { term_fr: 'soins', term_en: 'treatments', term_es: 'tratamientos', term_ar: 'علاجات', term_ary: 'علاجات' },
+  HEALER: { term_fr: 'soins', term_en: 'treatments', term_es: 'tratamientos', term_ar: 'علاجات', term_ary: 'علاجات' },
+  DOCTOR: { term_fr: 'consultations', term_en: 'consultations', term_es: 'consultas', term_ar: 'استشارات', term_ary: 'استشارات' },
+  SPECIALIST: { term_fr: 'soins', term_en: 'treatments', term_es: 'tratamientos', term_ar: 'علاجات', term_ary: 'علاجات' },
+  STYLIST: { term_fr: 'soins', term_en: 'treatments', term_es: 'tratamientos', term_ar: 'علاجات', term_ary: 'علاجات' },
+  GYM: { term_fr: 'abonnements', term_en: 'memberships', term_es: 'membresías', term_ar: 'اشتراكات', term_ary: 'اشتراكات' },
+
+  // MENU
+  RESTAURATEUR: { term_fr: 'plats', term_en: 'dishes', term_es: 'platos', term_ar: 'أطباق', term_ary: 'أطباق/شهيوات' },
+
+  // TRIPS
+  TRAVEL_AGENT: { term_fr: 'voyages', term_en: 'trips', term_es: 'viajes', term_ar: 'رحلات', term_ary: 'سفرات' },
+
+  // VEHICLES / PROPERTY
+  RENTER: { term_fr: 'véhicules', term_en: 'vehicles', term_es: 'vehículos', term_ar: 'مركبات', term_ary: 'طوموبيلات' },
+  REAL_ESTATE_AGENT: { term_fr: 'biens', term_en: 'properties', term_es: 'propiedades', term_ar: 'عقارات', term_ary: 'عقارات' },
+  PROPERTY: { term_fr: 'services', term_en: 'services', term_es: 'servicios', term_ar: 'خدمات', term_ary: 'خدمات' },
+
+  // PROJECTS
+  ARCHITECT: { term_fr: 'projets', term_en: 'projects', term_es: 'proyectos', term_ar: 'مشاريع', term_ary: 'مشاريع' },
+  BUILDER: { term_fr: 'projets', term_en: 'projects', term_es: 'proyectos', term_ar: 'مشاريع', term_ary: 'مشاريع' },
+  CONTRACTOR: { term_fr: 'solutions', term_en: 'solutions', term_es: 'soluciones', term_ar: 'حلول', term_ary: 'حلول' },
+  FUNERAL: { term_fr: 'services', term_en: 'services', term_es: 'servicios', term_ar: 'خدمات', term_ary: 'خدمات' },
+  PLANNER: { term_fr: 'concepts', term_en: 'concepts', term_es: 'conceptos', term_ar: 'مفاهيم', term_ary: 'أفكار' },
+  CONCIERGE: { term_fr: 'activités', term_en: 'activities', term_es: 'actividades', term_ar: 'أنشطة', term_ary: 'أنشطة' }
+};
+
+/**
  * Association Rules Engine
  * Implements simplified Apriori for "Frequently Bought Together"
  */
@@ -215,7 +270,6 @@ class AssociationRulesEngine {
 class RecommendationService {
   constructor() {
     this.associationEngine = new AssociationRulesEngine();
-    this.userPreferences = {}; // In-memory user preference cache
   }
 
   /**
@@ -346,13 +400,19 @@ class RecommendationService {
     // 3. Category affinity (from UCP)
     if (ucpProfile.preferences?.categories?.length > 0) {
       const topCategory = ucpProfile.preferences.categories[0];
-      const categoryResults = vectorStore.search(
+      const categoryResults = vectorStore.queryByFilter(
         tenantId,
-        null, // No query vector, just filter
         3,
         { category: topCategory }
       );
-      // Note: This would need a category-based fallback since we can't search without vector
+
+      recommendations.push(...categoryResults.map(r => ({
+        productId: r.id,
+        score: r.score * 0.5, // Lower weight for category match
+        similarity: 50,
+        metadata: r.metadata,
+        reason: 'category_affinity'
+      })));
     }
 
     // Remove duplicates
@@ -438,7 +498,8 @@ class RecommendationService {
       productIds,
       userId,
       ucpProfile,
-      type = 'similar' // 'similar', 'bought_together', 'personalized'
+      type = 'similar', // 'similar', 'bought_together', 'personalized'
+      persona = 'UNIVERSAL_ECOMMERCE' // Default to ecommerce if not specified
     } = context;
 
     let recommendations;
@@ -474,38 +535,42 @@ class RecommendationService {
       return this._getNoRecommendationsResponse(lang);
     }
 
-    return this._formatVoiceResponse(recommendations, type, lang);
+    // Determine terminology based on persona
+    const terminology = PERSONA_CONFIG[persona] || PERSONA_CONFIG.UNIVERSAL_ECOMMERCE;
+    const term = terminology[`term_${lang}`] || terminology.term_fr;
+
+    return this._formatVoiceResponse(recommendations, type, lang, term);
   }
 
   /**
    * Format recommendations for voice output
    */
-  _formatVoiceResponse(recommendations, type, lang) {
+  _formatVoiceResponse(recommendations, type, lang, term = 'items') {
     const intros = {
       fr: {
-        similar: "Voici des produits similaires que vous pourriez aimer :",
-        bought_together: "Les clients achètent souvent aussi :",
-        personalized: "Basé sur vos préférences, je vous recommande :"
+        similar: `Voici des ${term} similaires qui pourraient vous intéresser :`,
+        bought_together: `Souvent choisis ensemble :`,
+        personalized: `Selon vos préférences, je vous suggère ces ${term} :`
       },
       en: {
-        similar: "Here are similar products you might like:",
-        bought_together: "Customers often also buy:",
-        personalized: "Based on your preferences, I recommend:"
+        similar: `Here are similar ${term} you might like:`,
+        bought_together: `Often selected together:`,
+        personalized: `Based on your preferences, I suggest these ${term}:`
       },
       es: {
-        similar: "Aquí hay productos similares que podrían gustarte:",
-        bought_together: "Los clientes también suelen comprar:",
-        personalized: "Según tus preferencias, te recomiendo:"
+        similar: `Aquí hay ${term} similares que podrían interesarte:`,
+        bought_together: `A menudo seleccionados juntos:`,
+        personalized: `Según tus preferencias, sugiero estos ${term}:`
       },
       ar: {
-        similar: "إليك منتجات مشابهة قد تعجبك:",
-        bought_together: "غالبًا ما يشتري العملاء أيضًا:",
-        personalized: "بناءً على تفضيلاتك، أوصي بـ:"
+        similar: `إليك ${term} مماثلة قد تهمك:`,
+        bought_together: `غالبًا ما يتم اختيارها معًا:`,
+        personalized: `بناءً على تفضيلاتك، أقترح هذه ال${term}:`
       },
       ary: {
-        similar: "ها شي منتوجات شابهين لي يمكن يعجبوك:",
-        bought_together: "الزبناء كيشريو غالبا حتا:",
-        personalized: "على حساب شنو كيعجبك، كنقترح عليك:"
+        similar: `ها شي ${term} فحال هادشي لي يقدر يعجبك:`,
+        bought_together: `غالبا كيختارو هادشي مجموع:`,
+        personalized: `على حساب شنو كيعجبك، كنقترح عليك هاد ال${term}:`
       }
     };
 

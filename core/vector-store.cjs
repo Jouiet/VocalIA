@@ -110,6 +110,24 @@ class VectorIndex {
   }
 
   /**
+   * Query items by metadata filter (no vector needed)
+   */
+  queryByFilter(topK = 10, filter = {}) {
+    const results = [];
+    for (const [id, data] of this.vectors) {
+      if (this._matchesFilter(data.metadata, filter)) {
+        results.push({
+          id,
+          score: 1.0, // Base score for filter match
+          metadata: data.metadata
+        });
+      }
+      if (results.length >= topK * 2) break; // Optimization: stop after collecting enough candidates
+    }
+    return results.slice(0, topK);
+  }
+
+  /**
    * Check if metadata matches filter criteria
    */
   _matchesFilter(metadata, filter) {
@@ -297,6 +315,14 @@ class VectorStore {
   search(tenantId, queryVector, topK = 10, filter = {}) {
     const index = this._getIndex(tenantId);
     return index.search(queryVector, topK, filter);
+  }
+
+  /**
+   * Query by filter only
+   */
+  queryByFilter(tenantId, topK = 10, filter = {}) {
+    const index = this._getIndex(tenantId);
+    return index.queryByFilter(topK, filter);
   }
 
   /**

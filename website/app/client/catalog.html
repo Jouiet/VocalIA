@@ -777,8 +777,8 @@
             updateCategoriesFromData(data.categories);
           }
         } else {
-          // Use sample data for demo
-          catalogItems = getSampleData(currentType);
+          // Empty catalog - no mock data
+          catalogItems = [];
         }
 
         filteredItems = [...catalogItems];
@@ -788,8 +788,9 @@
         updateVoicePreview();
       } catch (error) {
         console.error('Error loading catalog:', error);
-        catalogItems = getSampleData(currentType);
-        filteredItems = [...catalogItems];
+        toast.error('Erreur de chargement du catalogue');
+        catalogItems = [];
+        filteredItems = [];
         updateCategories();
         renderItems();
         updateStats();
@@ -803,38 +804,7 @@
       });
     }
 
-    function getSampleData(type) {
-      const samples = {
-        products: [
-          { id: 'SKU-001', name: 'T-Shirt Classic Bio', category: 'Vêtements', price: 149, currency: 'MAD', stock: 45, in_stock: true, voice_description: 'T-shirt classic en coton bio à 149 dirhams' },
-          { id: 'SKU-002', name: 'Jean Slim Femme', category: 'Vêtements', price: 299, currency: 'MAD', stock: 28, in_stock: true, voice_description: 'Jean slim femme taille haute à 299 dirhams' },
-          { id: 'SKU-003', name: 'Robe Caftan Moderne', category: 'Traditionnel', price: 850, currency: 'MAD', stock: 5, in_stock: true, voice_description: 'Caftan moderne brodé main à 850 dirhams' },
-          { id: 'SKU-004', name: 'Babouches Cuir Homme', category: 'Chaussures', price: 220, currency: 'MAD', stock: 0, in_stock: false, voice_description: 'Babouches cuir homme à 220 dirhams, actuellement en rupture' },
-        ],
-        menu: [
-          { id: 'E01', name: 'Salade Marocaine', category: 'Entrées', price: 35, currency: 'MAD', available: true, voice_description: 'Salade marocaine fraîche à 35 dirhams, végane et sans gluten' },
-          { id: 'P01', name: 'Couscous Royal', category: 'Plats', price: 120, currency: 'MAD', available: true, voice_description: 'Couscous royal avec agneau, poulet et merguez à 120 dirhams' },
-          { id: 'P02', name: 'Tajine Agneau aux Pruneaux', category: 'Plats', price: 95, currency: 'MAD', available: true, voice_description: 'Tajine d\'agneau aux pruneaux à 95 dirhams' },
-          { id: 'D01', name: 'Cornes de Gazelle', category: 'Desserts', price: 40, currency: 'MAD', available: true, voice_description: 'Cornes de gazelle à 40 dirhams' },
-        ],
-        services: [
-          { id: 'SRV-001', name: 'Révision Complète', category: 'Maintenance', price: 450, currency: 'MAD', duration: 120, voice_description: 'Révision complète à 450 dirhams, durée 2 heures' },
-          { id: 'SRV-002', name: 'Vidange Huile', category: 'Maintenance', price: 200, currency: 'MAD', duration: 45, voice_description: 'Vidange huile moteur à 200 dirhams, durée 45 minutes' },
-          { id: 'SRV-003', name: 'Diagnostic Électronique', category: 'Diagnostic', price: 150, currency: 'MAD', duration: 30, voice_description: 'Diagnostic électronique à 150 dirhams' },
-        ],
-        fleet: [
-          { id: 'VEH-001', name: 'Renault Megane 2024', category: 'Berline', price: 350, currency: 'MAD', available: true, voice_description: 'Renault Megane automatique à 350 dirhams par jour' },
-          { id: 'VEH-002', name: 'Dacia Sandero 2023', category: 'Citadine', price: 200, currency: 'MAD', available: true, voice_description: 'Dacia Sandero à 200 dirhams par jour' },
-          { id: 'VEH-003', name: 'Peugeot 3008 SUV', category: 'SUV', price: 550, currency: 'MAD', available: true, voice_description: 'Peugeot 3008 SUV à 550 dirhams par jour' },
-        ],
-        trips: [
-          { id: 'TRIP-001', name: 'Istanbul 7 jours', category: 'Circuit', price: 8500, currency: 'MAD', available: true, voice_description: 'Circuit Istanbul 7 jours à partir de 8500 dirhams' },
-          { id: 'TRIP-002', name: 'Dubaï 5 jours', category: 'Séjour', price: 7900, currency: 'MAD', available: true, voice_description: 'Séjour Dubaï 5 jours hôtel 5 étoiles à 7900 dirhams' },
-          { id: 'TRIP-003', name: 'Weekend Marrakech', category: 'Weekend', price: 1500, currency: 'MAD', available: true, voice_description: 'Weekend Marrakech 3 jours à 1500 dirhams' },
-        ]
-      };
-      return samples[type] || [];
-    }
+    // No mock data - catalog must be populated via API or import
 
     function filterItems() {
       const search = searchInput.value.toLowerCase();

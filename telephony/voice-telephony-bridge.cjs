@@ -1312,13 +1312,13 @@ async function createGrokSession(callInfo) {
             {
               type: 'function',
               name: 'get_recommendations',
-              description: 'Obtenir des recommandations de produits personnalisées basées sur le contexte de la conversation. Utilisé pour: produits similaires, souvent achetés ensemble, ou recommandations personnalisées UCP.',
+              description: 'Obtenir des recommandations personnalisées (produits, services, contenus) basées sur le contexte. Utilisé pour: items similaires, souvent choisis ensemble, ou recommandations personnalisées UCP.',
               parameters: {
                 type: 'object',
                 properties: {
                   product_id: {
                     type: 'string',
-                    description: 'ID du produit pour recommandations similaires ou "fréquemment achetés ensemble"'
+                    description: 'ID de l\'item (produit/service) pour recommandations similaires'
                   },
                   product_ids: {
                     type: 'array',
@@ -2318,7 +2318,8 @@ async function handleGetRecommendations(session, args) {
       productIds: args.product_ids,
       userId: session.metadata?.user_id,
       ucpProfile: session.metadata?.ucp_profile,
-      type: args.recommendation_type || 'similar'
+      type: args.recommendation_type || 'similar',
+      persona: session.metadata?.persona || 'UNIVERSAL_ECOMMERCE'
     };
 
     const result = await recommendationService.getVoiceRecommendations(tenantId, context, lang);
@@ -3063,8 +3064,8 @@ async function handleComplaint(session, args) {
 
   // HITL Check: Financial commitments require approval
   const requiresHitl = HITL_CONFIG.enabled &&
-                       HITL_CONFIG.approveFinancialComplaints &&
-                       (args.financial_commitment || hasFinancialKeywords);
+    HITL_CONFIG.approveFinancialComplaints &&
+    (args.financial_commitment || hasFinancialKeywords);
 
   if (requiresHitl) {
     console.log(`[Complaint-HITL] Financial commitment detected. Keywords: ${matchedKeywords.join(', ')}`);

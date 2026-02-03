@@ -82,6 +82,7 @@ import { bigcommerceTools } from "./tools/bigcommerce.js";
 import { prestashopTools } from "./tools/prestashop.js";
 import { shopifyTools } from "./tools/shopify.js";
 import { stripeTools } from "./tools/stripe.js";
+import { recommendationTools } from "./tools/recommendations.js";
 
 const execAsync = promisify(exec);
 
@@ -1459,6 +1460,15 @@ server.tool(stripeTools.create_payment_intent.name, stripeTools.create_payment_i
 server.tool(stripeTools.get_payment_intent.name, stripeTools.get_payment_intent.parameters, stripeTools.get_payment_intent.handler);
 server.tool(stripeTools.create_refund.name, stripeTools.create_refund.parameters, stripeTools.create_refund.handler);
 server.tool(stripeTools.get_balance.name, stripeTools.get_balance.parameters, stripeTools.get_balance.handler);
+
+// =============================================================================
+// RECOMMENDATION TOOLS (4) - AI Product Recommendations
+// =============================================================================
+
+server.tool(recommendationTools.get_similar_products.name, recommendationTools.get_similar_products.parameters, recommendationTools.get_similar_products.handler);
+server.tool(recommendationTools.get_frequently_bought_together.name, recommendationTools.get_frequently_bought_together.parameters, recommendationTools.get_frequently_bought_together.handler);
+server.tool(recommendationTools.get_personalized.name, recommendationTools.get_personalized.parameters, recommendationTools.get_personalized.handler);
+server.tool(recommendationTools.learn_from_orders.name, recommendationTools.learn_from_orders.parameters, recommendationTools.learn_from_orders.handler);
 
 // =============================================================================
 // SERVER STARTUP

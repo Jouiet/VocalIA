@@ -3,8 +3,8 @@
  * VocalIA - Product Embedding Service
  *
  * SOTA e-commerce embeddings for product recommendations:
- * - Marqo E-commerce Embeddings (primary) - when available
- * - Gemini text-embedding-004 (fallback) - always available
+ * - Gemini text-embedding-004 (primary) - efficient and high-quality
+ * - Scalable to Marqo E-commerce Embeddings in future iterations
  *
  * Features:
  * - E-commerce optimized text generation

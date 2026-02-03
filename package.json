@@ -6,10 +6,11 @@
   "license": "PROPRIETARY",
   "main": "core/index.js",
   "scripts": {
-    "start:api": "node core/voice-api-resilient.cjs",
+    "start:api": "node core/voice-api-resilient.cjs --server",
+    "start:db": "node core/db-api.cjs",
     "start:realtime": "node core/grok-voice-realtime.cjs",
     "start:telephony": "node telephony/voice-telephony-bridge.cjs",
-    "start:all": "npm run build:css && (npm run start:api & npm run start:realtime & npm run start:telephony)",
+    "start:all": "npm run build:css && (npm run start:api & npm run start:db & npm run start:realtime & npm run start:telephony)",
     "build:css": "npx @tailwindcss/cli -i ./website/src/input.css -o ./website/public/css/style.css --minify",
     "watch:css": "npx @tailwindcss/cli -i ./website/src/input.css -o ./website/public/css/style.css --watch",
     "health": "node scripts/health-check.cjs",
