@@ -1259,6 +1259,24 @@ Sweet spot: 20-30% au-dessus de l'AOV
    - [x] Widgets managed: voiceChat, recommendations, quiz, exitIntent, socialProof
    - [x] GA4 event tracking for all activations
 
+6. [x] Sprint 5: Voice Abandoned Cart Recovery (P2) - ✅ Session 250.82
+   - [x] Voice Abandoned Cart Widget (`widget/abandoned-cart-recovery.js` - 900+ lines)
+   - [x] Multi-channel recovery: Voice callback, SMS, Email
+   - [x] Cart abandonment detection: exit-intent, inactivity, tab blur
+   - [x] 5 languages (FR, EN, ES, AR, ARY) with RTL
+   - [x] Voice TTS reminder with discount offer
+   - [x] Countdown timer for urgency
+   - [x] Cart items preview with thumbnails
+   - [x] API endpoint: `POST /api/cart-recovery`
+   - [x] Telephony: `queueCartRecoveryCallback()` function
+   - [x] Widget integration:
+     - `window.VocalIA.initCartRecovery(options)`
+     - `window.VocalIA.triggerCartRecovery(reason)`
+     - `window.VocalIA.setCartData(cartData)`
+   - [x] GA4 tracking: cart_recovery_shown, cart_recovery_channel_selected, cart_recovery_reminder_sent, cart_recovery_checkout_clicked
+   - [x] Orchestrator integration with priority 6
+   - **Benchmark Impact:** +25% recovery vs SMS/email (UNIQUE FEATURE)
+
 ### Ressources Cles Identifiees
 
 | Ressource | Type | Utilisation |

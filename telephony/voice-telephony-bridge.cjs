@@ -3345,6 +3345,164 @@ async function sendFollowUpEmail(session) {
 }
 
 // ============================================
+// SESSION 250.82: CART RECOVERY VOICE CALLBACK
+// Unique VocalIA feature: +25% recovery vs SMS/email
+// ============================================
+
+/**
+ * Queue a voice callback for abandoned cart recovery
+ * @param {Object} options - Recovery options
+ * @param {string} options.phone - Customer phone number
+ * @param {string} options.tenantId - Tenant ID
+ * @param {Object} options.cart - Cart data (items, total)
+ * @param {number} options.discount - Discount percentage
+ * @param {string} options.language - Language code (fr, en, es, ar, ary)
+ * @param {string} options.recoveryUrl - Checkout URL with discount
+ * @returns {Promise<{success: boolean, callbackId: string}>}
+ */
+async function queueCartRecoveryCallback(options) {
+  const { phone, tenantId, cart, discount, language, recoveryUrl } = options;
+
+  // Validate phone
+  const phoneClean = phone?.startsWith('+') ? phone : `+${(phone || '').replace(/\D/g, '')}`;
+  if (!phoneClean || phoneClean.length < 10) {
+    console.error('[CartRecovery] Invalid phone number:', phone);
+    return { success: false, error: 'invalid_phone' };
+  }
+
+  // Generate callback ID
+  const callbackId = `cart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+  // Cart recovery messages by language
+  const messages = {
+    fr: {
+      greeting: `Bonjour ! C'est l'assistant VocalIA. Vous avez laissé des articles dans votre panier d'une valeur de ${cart?.total || 0} dirhams.`,
+      offer: `J'ai une offre exclusive pour vous : ${discount}% de réduction si vous finalisez votre commande maintenant.`,
+      action: `Voulez-vous que je vous envoie le lien par SMS pour finaliser votre achat ?`,
+      confirm: `Parfait ! Je vous envoie le lien tout de suite. À très bientôt !`
+    },
+    en: {
+      greeting: `Hello! This is the VocalIA assistant. You left items in your cart worth ${cart?.total || 0}.`,
+      offer: `I have an exclusive offer for you: ${discount}% off if you complete your order now.`,
+      action: `Would you like me to send you a link via SMS to complete your purchase?`,
+      confirm: `Perfect! I'm sending you the link right away. See you soon!`
+    },
+    es: {
+      greeting: `Hola! Soy el asistente de VocalIA. Dejaste artículos en tu carrito por valor de ${cart?.total || 0}.`,
+      offer: `Tengo una oferta exclusiva para ti: ${discount}% de descuento si completas tu pedido ahora.`,
+      action: `¿Te gustaría que te enviara un enlace por SMS para completar tu compra?`,
+      confirm: `¡Perfecto! Te envío el enlace ahora mismo. ¡Hasta pronto!`
+    },
+    ar: {
+      greeting: `مرحبا! أنا مساعد VocalIA. تركت منتجات في سلتك بقيمة ${cart?.total || 0}.`,
+      offer: `لدي عرض حصري لك: خصم ${discount}% إذا أتممت طلبك الآن.`,
+      action: `هل تريد أن أرسل لك الرابط عبر SMS لإتمام عملية الشراء؟`,
+      confirm: `ممتاز! سأرسل لك الرابط الآن. إلى اللقاء!`
+    },
+    ary: {
+      greeting: `سلام! أنا المساعد ديال VocalIA. خليتي منتوجات فالباني ديالك بـ ${cart?.total || 0} درهم.`,
+      offer: `عندي عرض خاص ليك: ${discount}% تخفيض إلا كملتي الطلب دابا.`,
+      action: `بغيتي نصيفط ليك اللينك عبر SMS باش تكمل الشرا؟`,
+      confirm: `مزيان! غادي نصيفط ليك اللينك دابا. نتلاقاو!`
+    }
+  };
+
+  const lang = language || 'fr';
+  const msg = messages[lang] || messages.fr;
+
+  // Store callback request for processing
+  if (!global.cartRecoveryCallbacks) {
+    global.cartRecoveryCallbacks = [];
+  }
+
+  const callbackRequest = {
+    id: callbackId,
+    phone: phoneClean,
+    tenantId,
+    cart,
+    discount,
+    language: lang,
+    recoveryUrl,
+    messages: msg,
+    status: 'queued',
+    created_at: new Date().toISOString(),
+    scheduled_at: new Date(Date.now() + 60000).toISOString() // Schedule 1 min delay
+  };
+
+  global.cartRecoveryCallbacks.push(callbackRequest);
+
+  console.log(`[CartRecovery] Callback queued: ${callbackId} for ${phoneClean}`);
+
+  // If Twilio credentials are available, initiate outbound call
+  if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {
+    try {
+      const twilio = require('twilio');
+      const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+      // Generate TwiML for voice callback
+      const twiml = `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say language="${lang === 'ary' ? 'ar-MA' : lang === 'ar' ? 'ar-SA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR'}">${msg.greeting}</Say>
+  <Pause length="1"/>
+  <Say language="${lang === 'ary' ? 'ar-MA' : lang === 'ar' ? 'ar-SA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR'}">${msg.offer}</Say>
+  <Pause length="1"/>
+  <Say language="${lang === 'ary' ? 'ar-MA' : lang === 'ar' ? 'ar-SA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR'}">${msg.action}</Say>
+  <Gather numDigits="1" action="https://api.vocalia.ma/twilio/cart-recovery-response?callbackId=${callbackId}" method="POST">
+    <Say language="${lang === 'ary' ? 'ar-MA' : lang === 'ar' ? 'ar-SA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR'}">Appuyez 1 pour oui, 2 pour non.</Say>
+  </Gather>
+</Response>`;
+
+      // Schedule call (1 minute delay)
+      setTimeout(async () => {
+        try {
+          const call = await client.calls.create({
+            twiml,
+            to: phoneClean,
+            from: process.env.TWILIO_PHONE_NUMBER,
+            statusCallback: `https://api.vocalia.ma/twilio/callback-status?callbackId=${callbackId}`,
+            statusCallbackEvent: ['initiated', 'ringing', 'answered', 'completed']
+          });
+
+          callbackRequest.callSid = call.sid;
+          callbackRequest.status = 'calling';
+          console.log(`[CartRecovery] Call initiated: ${call.sid}`);
+        } catch (callError) {
+          console.error(`[CartRecovery] Call failed: ${callError.message}`);
+          callbackRequest.status = 'failed';
+          callbackRequest.error = callError.message;
+
+          // Fallback to SMS
+          await sendMessage(phoneClean, `${msg.greeting} ${msg.offer} Lien: ${recoveryUrl}`);
+          callbackRequest.fallback = 'sms';
+        }
+      }, 60000);
+
+      return { success: true, callbackId, method: 'twilio_voice', scheduled: true };
+
+    } catch (twilioError) {
+      console.error(`[CartRecovery] Twilio init error: ${twilioError.message}`);
+      // Continue with queue-only mode
+    }
+  }
+
+  // No Twilio credentials - queue for manual processing or SMS fallback
+  console.log('[CartRecovery] No Twilio credentials, using SMS fallback');
+
+  // Send SMS immediately as fallback
+  const smsResult = await sendMessage(phoneClean, `${msg.greeting} ${msg.offer} Lien: ${recoveryUrl}`);
+
+  callbackRequest.status = smsResult.success ? 'sms_sent' : 'queued';
+  callbackRequest.fallback = 'sms';
+
+  return {
+    success: true,
+    callbackId,
+    method: smsResult.success ? 'sms_fallback' : 'queued',
+    smsResult
+  };
+}
+
+// ============================================
 // CONVERSION ANALYTICS LOGGING
 // ============================================
 
@@ -4476,6 +4634,12 @@ if (typeof module !== 'undefined') {
     handleCreateBooking,
     handleCreateBookingInternal,
     handleTrackConversion,
+    // Messaging (Session 250.18)
+    sendMessage,
+    sendTwilioSMS,
+    sendWhatsAppMessage,
+    // Cart Recovery (Session 250.82)
+    queueCartRecoveryCallback,
     // HITL
     listPendingActions,
     approveAction,

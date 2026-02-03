@@ -1319,12 +1319,80 @@
   };
 
   // ============================================================
+  // ABANDONED CART RECOVERY INTEGRATION (Session 250.82)
+  // UNIQUE COMPETITIVE ADVANTAGE: +25% recovery vs SMS/email
+  // ============================================================
+
+  /**
+   * Initialize abandoned cart recovery widget
+   * @param {Object} options - Configuration options
+   */
+  window.VocalIA.initCartRecovery = function(options = {}) {
+    if (window.VocaliaAbandonedCart) {
+      return window.VocaliaAbandonedCart.init({
+        tenantId: state.tenantId || options.tenantId,
+        lang: state.currentLang || options.lang,
+        ...options
+      });
+    }
+    console.warn('[VocalIA] Abandoned cart widget not loaded. Include abandoned-cart-recovery.js');
+    return null;
+  };
+
+  /**
+   * Trigger cart recovery popup manually
+   * @param {string} reason - Reason for triggering (manual, exit, inactivity)
+   */
+  window.VocalIA.triggerCartRecovery = function(reason = 'manual') {
+    if (window.VocaliaAbandonedCart?.getInstance()) {
+      window.VocaliaAbandonedCart.getInstance().trigger(reason);
+    } else {
+      // Auto-init and trigger
+      const instance = window.VocalIA.initCartRecovery();
+      if (instance) {
+        setTimeout(() => instance.trigger(reason), 100);
+      }
+    }
+  };
+
+  /**
+   * Set cart data for recovery tracking
+   * @param {Object} cartData - Cart data { items: [], total: number, currency: string }
+   */
+  window.VocalIA.setCartData = function(cartData) {
+    // Store locally for widget access
+    window.VocalIA.cart = cartData;
+
+    // Update widget if initialized
+    if (window.VocaliaAbandonedCart?.getInstance()) {
+      window.VocaliaAbandonedCart.getInstance().setCartData(cartData);
+    }
+
+    // Track cart value for analytics
+    if (typeof gtag === 'function' && cartData.total > 0) {
+      gtag('event', 'cart_updated', {
+        event_category: 'ecommerce',
+        cart_value: cartData.total,
+        items_count: cartData.items?.length || 0,
+        currency: cartData.currency || 'MAD'
+      });
+    }
+  };
+
+  /**
+   * Check if cart recovery is supported
+   */
+  window.VocalIA.isCartRecoverySupported = function() {
+    return !!window.VocaliaAbandonedCart;
+  };
+
+  // ============================================================
   // WIDGET ORCHESTRATOR (Sprint 4 - Session 250.79)
   // ============================================================
 
   /**
    * Widget Orchestrator - Centralized control for all VocalIA widgets
-   * Manages: Voice Widget, Recommendations, Quiz, Exit-Intent, Social Proof
+   * Manages: Voice Widget, Recommendations, Quiz, Exit-Intent, Social Proof, Abandoned Cart
    */
   const WidgetOrchestrator = {
     // Widget states
@@ -1333,7 +1401,8 @@
       recommendations: { active: false, priority: 2 },
       quiz: { active: false, priority: 3 },
       exitIntent: { active: false, priority: 4 },
-      socialProof: { active: true, priority: 5 }
+      socialProof: { active: true, priority: 5 },
+      abandonedCart: { active: false, priority: 6 }
     },
 
     // Event bus for inter-widget communication

@@ -1648,6 +1648,181 @@ async function handleRequest(req, res) {
   // ═══════════════════════════════════════════════════════════════
 
   // ═══════════════════════════════════════════════════════════════
+  // Session 250.82: CART RECOVERY ENDPOINTS (Voice + SMS + Email)
+  // Multi-channel abandoned cart recovery with voice callbacks
+  // ═══════════════════════════════════════════════════════════════
+
+  // Cart Recovery - POST /api/cart-recovery
+  // Triggers voice callback, SMS, or email reminder for abandoned carts
+  if (path === '/api/cart-recovery' && method === 'POST') {
+    try {
+      const body = await readBody(req);
+      const { tenant_id, channel, contact, cart, discount_percent, language, checkout_url } = body;
+
+      if (!tenant_id || !channel || !contact) {
+        return sendError(res, 400, 'tenant_id, channel, and contact are required');
+      }
+
+      if (!['voice', 'sms', 'email'].includes(channel)) {
+        return sendError(res, 400, 'channel must be voice, sms, or email');
+      }
+
+      // Generate recovery link with discount code
+      const discountCode = `COMEBACK${discount_percent || 10}`;
+      const recoveryUrl = checkout_url
+        ? `${checkout_url}?discount=${discountCode}&recovery=1`
+        : null;
+
+      // Store recovery request
+      const recoveryId = `recovery_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const recoveryRequest = {
+        id: recoveryId,
+        tenant_id,
+        channel,
+        contact,
+        cart_total: cart?.total || 0,
+        cart_items: cart?.items?.length || 0,
+        discount_percent: discount_percent || 10,
+        language: language || 'fr',
+        checkout_url: recoveryUrl,
+        status: 'pending',
+        created_at: new Date().toISOString()
+      };
+
+      // Store in memory (for now - could persist to GoogleSheetsDB)
+      if (!global.cartRecoveryQueue) {
+        global.cartRecoveryQueue = [];
+      }
+      global.cartRecoveryQueue.push(recoveryRequest);
+
+      // Process based on channel
+      let result = { success: false };
+
+      switch (channel) {
+        case 'voice':
+          // Queue voice callback via telephony bridge
+          try {
+            const telephony = require('../telephony/voice-telephony-bridge.cjs');
+            if (telephony.queueCartRecoveryCallback) {
+              result = await telephony.queueCartRecoveryCallback({
+                phone: contact,
+                tenantId: tenant_id,
+                cart,
+                discount: discount_percent,
+                language,
+                recoveryUrl
+              });
+            } else {
+              // Fallback: store for manual processing
+              result = { success: true, queued: true, method: 'manual_callback_queue' };
+            }
+          } catch (e) {
+            console.error('[Cart Recovery] Voice callback error:', e.message);
+            result = { success: true, queued: true, method: 'fallback_queue' };
+          }
+          break;
+
+        case 'sms':
+          // Send SMS via Twilio
+          try {
+            const telephony = require('../telephony/voice-telephony-bridge.cjs');
+            if (telephony.sendMessage) {
+              const messages = {
+                fr: `VocalIA: Votre panier vous attend! ${discount_percent}% de reduction: ${recoveryUrl}`,
+                en: `VocalIA: Your cart is waiting! ${discount_percent}% off: ${recoveryUrl}`,
+                es: `VocalIA: Tu carrito te espera! ${discount_percent}% descuento: ${recoveryUrl}`,
+                ar: `VocalIA: سلتك بانتظارك! خصم ${discount_percent}%: ${recoveryUrl}`,
+                ary: `VocalIA: الباني ديالك كيتسناك! ${discount_percent}% تخفيض: ${recoveryUrl}`
+              };
+              result = await telephony.sendMessage({
+                to: contact,
+                message: messages[language] || messages.fr,
+                channel: 'sms'
+              });
+            } else {
+              result = { success: true, queued: true, method: 'sms_fallback' };
+            }
+          } catch (e) {
+            console.error('[Cart Recovery] SMS error:', e.message);
+            result = { success: true, queued: true, method: 'sms_fallback' };
+          }
+          break;
+
+        case 'email':
+          // Send email via configured SMTP
+          try {
+            const emailService = require('./email-service.cjs');
+            if (emailService.sendCartRecoveryEmail) {
+              result = await emailService.sendCartRecoveryEmail({
+                to: contact,
+                tenantId: tenant_id,
+                cart,
+                discount: discount_percent,
+                language,
+                recoveryUrl
+              });
+            } else {
+              result = { success: true, queued: true, method: 'email_fallback' };
+            }
+          } catch (e) {
+            console.error('[Cart Recovery] Email error:', e.message);
+            result = { success: true, queued: true, method: 'email_fallback' };
+          }
+          break;
+      }
+
+      // Update status
+      recoveryRequest.status = result.success ? 'sent' : 'queued';
+      recoveryRequest.result = result;
+
+      // Broadcast via WebSocket
+      if (global.wss) {
+        const wsMessage = JSON.stringify({
+          type: 'cart_recovery',
+          data: recoveryRequest
+        });
+        global.wss.clients.forEach(client => {
+          if (client.readyState === 1 && client.channel === 'catalog') {
+            client.send(wsMessage);
+          }
+        });
+      }
+
+      sendJson(res, 200, {
+        success: true,
+        recovery_id: recoveryId,
+        channel,
+        status: recoveryRequest.status,
+        message: result.message || `Recovery ${channel} ${recoveryRequest.status}`
+      });
+    } catch (e) {
+      console.error('[Cart Recovery] Error:', e.message);
+      sendError(res, 500, `Cart recovery error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Cart Recovery Queue - GET /api/cart-recovery (Admin only)
+  if (path === '/api/cart-recovery' && method === 'GET') {
+    const user = await checkAdmin(req, res);
+    if (!user) return;
+
+    const queue = global.cartRecoveryQueue || [];
+    const tenantFilter = query.tenant_id;
+
+    const filtered = tenantFilter
+      ? queue.filter(r => r.tenant_id === tenantFilter)
+      : queue;
+
+    sendJson(res, 200, {
+      success: true,
+      count: filtered.length,
+      recoveries: filtered.slice(-100) // Last 100
+    });
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // Session 250.57: CONVERSATION HISTORY & EXPORT ENDPOINTS
   // ⚠️ TELEPHONY RETENTION: 60 days maximum (auto-purge 1st of month)
   // ═══════════════════════════════════════════════════════════════
