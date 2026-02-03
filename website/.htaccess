@@ -44,8 +44,8 @@ RewriteRule ^dashboard/?$ /dashboard/client.html [L]
     # HSTS - Force HTTPS for 1 year, include subdomains, preload
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
-    # CSP (Content Security Policy)
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma https://*.vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'"
+    # CSP (Content Security Policy) - Session 250.75: Added cdn.jsdelivr.net for Chart.js
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://plausible.io https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma https://*.vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'"
 </IfModule>
 
 # Caching - Static Assets
@@ -91,7 +91,8 @@ ErrorDocument 500 /404.html
 </FilesMatch>
 
 # Allow specific JS files in /src/lib/
-<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization)\.js$">
+# Session 250.75: Added api-client, auth-client, charts, data-table, modal, toast
+<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization|api-client|auth-client|charts|data-table|modal|toast)\.js$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>
