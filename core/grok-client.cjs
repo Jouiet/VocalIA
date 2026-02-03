@@ -118,7 +118,7 @@ const BASE_SYSTEM_PROMPT = `Tu es l'assistant IA de VocalIA, une plateforme Voic
    - Widget JavaScript à intégrer sur n'importe quel site
    - Basé sur Web Speech API (gratuit pour les utilisateurs)
    - Support client 24/7, FAQ, prise de RDV
-   - Tier gratuit disponible
+   - Plan Starter disponible
 
 2. VOICE TELEPHONY (PSTN)
    - Ligne téléphonique avec IA répondant aux appels

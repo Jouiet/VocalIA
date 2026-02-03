@@ -123,12 +123,12 @@ const CONVERSATION_LOG_DIR = path.join(BASE_DIR, 'logs/voice_conversations');
 
 // VocalIA Pricing Plans (Voice AI Platform)
 const SERVICE_PACKS = {
-  free: {
-    name: 'Free',
-    name_fr: 'Gratuit',
-    price: '0 DH/mois',
-    description: 'Voice Widget with limited interactions',
-    description_fr: 'Widget Voice avec interactions limitées',
+  starter: {
+    name: 'Starter',
+    name_fr: 'Starter',
+    price: '99 DH/mois',
+    description: 'Voice Widget with included quota',
+    description_fr: 'Widget Voice avec quota inclus',
     includes: ['Voice Widget', '1000 interactions/mois', '3 personas']
   },
   pro: {

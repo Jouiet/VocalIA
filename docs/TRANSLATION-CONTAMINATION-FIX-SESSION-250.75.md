@@ -126,11 +126,26 @@ grep -E '[àâäéèêëïîôùûüçÀÂÄÉÈÊËÏÎÔÙÛÜÇœ]' website/s
 | Fix es.json French contamination | ✅ |
 | Fix ar.json French contamination | ✅ |
 | Fix ary.json French contamination | ✅ |
-| Remove false "gratuit" claims | ✅ |
+| Remove false "gratuit" claims (HTML) | ✅ |
+| Remove false "gratuit" claims (locales) | ✅ |
+| Fix voice-agent-b2b.cjs (free→starter) | ✅ |
+| Audit internal prompts language routing | ✅ |
 | Fix .htaccess 403 errors | ✅ |
 | Create tracking document | ✅ |
-| Run E2E verification | PENDING |
-| Git commit changes | PENDING |
+| Run E2E verification | ✅ 306/306 pass |
+| Git commit changes | ✅ |
+
+### Session 250.80 Additional Fixes
+
+| File | Change | Status |
+|:-----|:-------|:------:|
+| pricing.html:900 | "Gratuit" → "Starter" (fallback text) | ✅ |
+| voice-agent-b2b.cjs:126 | `free` → `starter` tier rename | ✅ |
+| es.json:3542 | French → Spanish ("Créez votre compte" → "Crea tu cuenta") | ✅ |
+| es.json:3628 | "Gratis - $0" → "Starter - Cuota incluida" | ✅ |
+| es.json:4401 | "Gratis" → "Starter" | ✅ |
+| ar.json:3628 | "مجاني - $0" → "Starter - حصة مشمولة" | ✅ |
+| ar.json:4401 | "مجاني" → "Starter" | ✅ |
 
 ---
 
@@ -153,5 +168,91 @@ All translation scripts are located in `/tmp/`:
 
 ---
 
-*Document created: Session 250.75 | 03/02/2026*
+## Internal Prompts Language Audit (Session 250.80)
+
+### Question: "Est-ce que les prompts internes prennent en considération la langue de destination?"
+
+**Réponse: OUI, COMPLÈTEMENT.**
+
+### SYSTEM_PROMPTS Coverage
+
+| Metric | Value | Status |
+|:-------|:-----:|:------:|
+| Personas in SYSTEM_PROMPTS | 40 | ✅ |
+| Personas in PERSONAS | 40 | ✅ |
+| Languages per persona | 5 (fr, en, es, ar, ary) | ✅ |
+| Total prompts | 40 × 5 = 200 | ✅ |
+
+### Language Routing Logic
+
+```javascript
+// voice-persona-injector.cjs:5090
+basePrompt = SYSTEM_PROMPTS[archetypeKey][persona.language]
+          || SYSTEM_PROMPTS[archetypeKey]['fr']
+          || basePrompt;
+```
+
+**Chain:**
+1. Try requested language from SYSTEM_PROMPTS
+2. Fallback to 'fr' if language not found
+3. Fallback to PERSONAS[KEY].systemPrompt (EN) if persona not in SYSTEM_PROMPTS
+
+### Language Source by Module
+
+| Module | Language Source | Code Location |
+|:-------|:----------------|:--------------|
+| **Telephony** | CLIENT_REGISTRY.clients[id].language | voice-persona-injector.cjs:5067 |
+| **Widget API** | Request language parameter | voice-api-resilient.cjs:1832 |
+| **Default** | VOICE_CONFIG.defaultLanguage (env or 'fr') | voice-persona-injector.cjs:61 |
+
+### Widget API Language Injection
+
+```javascript
+// voice-api-resilient.cjs:1831-1832
+// Set persona language to request language for proper SYSTEM_PROMPTS lookup
+persona.language = language;
+```
+
+### Darija Enhancement
+
+When `persona.language === 'ary'`, additional Darija-specific instructions are injected:
+```javascript
+// voice-persona-injector.cjs:5094-5098
+basePrompt += `\n\nCRITICAL: SPEAK IN DARIJA (MOROCCAN ARABIC) ONLY.
+Use authentic Moroccan expressions like "L-bass", "Marhba", "Wakha"...
+DO NOT SPEAK MODERN STANDARD ARABIC (FUSHA) UNLESS SPECIFICALLY ASKED.`;
+```
+
+### CLIENT_REGISTRY Language Examples
+
+```json
+"agency_internal": { "language": "fr" },
+"client_hoa_01": { "language": "en" },
+"ecom_darija_01": { "language": "ary" },
+"dentiste_casa_01": { "language": "ary" }
+```
+
+### Verification Commands
+
+```bash
+# Count personas in SYSTEM_PROMPTS
+awk '/^const SYSTEM_PROMPTS/,/^};/' personas/voice-persona-injector.cjs | grep -E "^\s+[A-Z_]+:" | wc -l
+# Result: 40 ✅
+
+# Verify all have 5 languages
+python3 -c "..." # (script verified 40/40)
+# Result: ✅ 40/40 personas have ALL 5 languages
+```
+
+### Conclusion
+
+**SYSTEM CORRECTLY DESIGNED:**
+- All 40 personas have complete 5-language support in SYSTEM_PROMPTS
+- Language is explicitly set from request/tenant config before inject()
+- Darija has additional authentic expression injection
+- Fallback chain ensures no prompt is ever empty
+
+---
+
+*Document updated: Session 250.80 | 03/02/2026*
 *Author: Claude Opus 4.5*

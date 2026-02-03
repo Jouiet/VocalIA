@@ -319,7 +319,7 @@
     "widget": {
       "title": "Voice Widget",
       "description": "Intégrez un assistant vocal intelligent sur votre site web. Aucune installation requise.",
-      "price": "Gratuit",
+      "price": "Starter",
       "features": [
         "Web Speech API native",
         "40 personas métier",
@@ -885,7 +885,7 @@
     "breadcrumb_features": "Fonctionnalités",
     "products_title": "Deux Produits Complémentaires",
     "products_subtitle": "Couvrez 100% de vos canaux de communication vocale",
-    "widget_free": "Gratuit",
+    "widget_free": "Starter",
     "widget_title": "Voice Widget",
     "widget_desc": "Intégrez un assistant vocal intelligent directement sur votre site web. Installation en 2 minutes, aucun coût.",
     "widget_f1": "Web Speech API native (0$ d'API)",
@@ -924,7 +924,7 @@
     "comparison_subtitle": "Comparé aux alternatives du marché",
     "table_feature": "Fonctionnalité",
     "table_price": "Prix par minute",
-    "table_widget": "Widget Web Gratuit",
+    "table_widget": "Voice Widget",
     "table_darija": "Support Darija",
     "table_personas": "Personas Pré-configurés",
     "table_selfhost": "Self-Hosted Option",
@@ -941,7 +941,7 @@
     "newsletter_success": "✓ Inscrit!"
   },
   "voice_widget_page": {
-    "meta_title": "Voice Widget - VocalIA | Assistant Vocal Gratuit",
+    "meta_title": "Voice Widget - VocalIA | Assistant Vocal Intelligent",
     "badge": "Installation 2 min",
     "title": "Voice Widget",
     "subtitle": "Intégrez un assistant vocal IA intelligent sur votre site web en 2 minutes. Utilise la Web Speech API native du navigateur:",
