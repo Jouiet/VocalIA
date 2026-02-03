@@ -1,12 +1,13 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.0 | 03/02/2026 | Session 250.64 | BM25 RAG SOTA | **182 tools** | **28 integrations**
+> Version: 0.8.0 | 03/02/2026 | Session 250.76 | BM25 RAG SOTA | **182 tools** | **28 integrations**
+> **Session 250.76**: E-commerce Widget Phase 1 - Product Cards + Voice/Text Tracking + UCP/MCP Integration
 > **Session 250.64**: Voice config E2E fix - tenant voice preferences DB→Telephony, 27 voix ElevenLabs
-> **Session 250.38**: ALL ISSUES FIXED - i18n, WCAG, security 99/100
-> **Protocol Gap:** A2A ✅ (4 agents) | AG-UI ✅ (17 events) | UCP ✅ (7 tools) | MCP ✅ (182 tools)
+> **Protocol Gap:** A2A ✅ (4 agents) | AG-UI v3.0 ✅ (17 events + e-commerce) | UCP ✅ (7 tools) | MCP ✅ (182 tools)
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds (19 tools)
+> **Widget E-commerce:** Product UI ✅ | Carousel ✅ | Voice/Text A/B ✅ | UCP LTV ✅
 
 ## Qu'est-ce que MCP?
 

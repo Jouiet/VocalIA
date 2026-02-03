@@ -1,25 +1,24 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.76.0 | **Updated**: 03/02/2026 | **Session**: 250.66
-> **Backend Score**: 99/100 | **Frontend Score**: 99/100 | **Health Check**: 100% (39/39)
+> **Version**: 6.85.0 | **Updated**: 03/02/2026 | **Session**: 250.76
+> **Backend Score**: 100/100 | **Frontend Score**: 99/100 | **Health Check**: 100% (39/39)
 > **Security**: 100/100 - HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅, JWT Auth ✅
 > **MCP Server**: v0.8.0 | **MCP Tools**: 182 | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler
-> **E2E Tests**: 373/375 Playwright (99.5%) ✅ | **Unit Tests**: 305/305 (100%) ✅ | **Coverage**: c8
+> **E2E Tests**: 420/420 Playwright (100%) ✅ | **Unit Tests**: 306/306 (100%) ✅ | **Coverage**: c8
 > **Browsers**: Chromium + Firefox 146 + WebKit 26 + Mobile Chrome + Mobile Safari
+> **Widget**: v3.0.0 E-commerce Phase 1 ✅ | Product Cards + Carousel + Voice/Text Tracking + UCP/MCP
+> **Session 250.76**: E-commerce Widget Phase 1 COMPLETE - Product UI, Voice/Text tracking, UCP/MCP integration, +960 lines
+> **Session 250.75**: All API credentials verified (XAI, ElevenLabs, Twilio, Gemini, Anthropic, HuggingFace)
+> **Session 250.74**: Web Speech fallback for agents.html, 420/420 E2E tests
+> **Session 250.73**: VPS Docker Compose deployed, googleapis fix, @3a/agent-ops removed
+> **Session 250.72**: Dynamic Catalog complete - CalendarSlotsConnector, Square/Lightspeed fixes
 > **Session 250.66**: SSL/HTTPS verified - HTTP/2 + HSTS preload + CSP + full security headers on vocalia.ma
 > **Session 250.65**: k6 load tests (4), onboarding.html wizard, i18n +200 keys, SDKs ready, OpenAPI 520 lines
-> **Session 250.64**: Voice config END-TO-END fix, tenant voice preferences DB→Telephony, 27 voix ElevenLabs, loadVoicePreferences()
-> **Session 250.63**: Unit tests fix - `unref()` on 6 modules setInterval, 305/305 pass (was hanging)
-> **Session 250.62**: E2E 5 browsers installed, 373/375 tests (99.5%), RTL AR/ARY fixed
-> **Session 250.61**: i18n Fix - Added missing dashboard.nav.* keys (8 keys × 5 locales)
-> **Session 250.60**: Bug fixes - hitl.html api import, billing integrations count
-> **Session 250.59**: Dashboards complete - integrations.html, settings.html with real API
-> **Session 250.58**: Client KB Multi-Lang (5 files: fr, en, es, ar, ary), 41 core modules
-> **Session 250.57**: Rigorous Audit - i18n.js 18/18 pages, wsDebug() fix, form validation, conversation-store.cjs
-> **E-commerce**: 7 platforms ALL FULL CRUD (~64% market)
-> **Translation QA**: 0 issues | **Schema.org**: 35 Speakable | **i18n**: 4321 keys × 5 langues = 21,605 total
-> **WebSocket**: Real-time updates ✅ | Channels: hitl, logs, tenants, sessions
+> **Session 250.64**: Voice config END-TO-END fix, tenant voice preferences DB→Telephony, 27 voix ElevenLabs
+> **E-commerce**: 7 platforms ALL FULL CRUD (~64% market) + Widget E-commerce Phase 1
+> **Translation QA**: 0 issues | **Schema.org**: 35 Speakable | **i18n**: 4446 keys × 5 langues = 22,230 total
+> **WebSocket**: Real-time updates ✅ | Channels: hitl, logs, tenants, sessions, catalog
 > **Pages**: 70 HTML (51 public + 19 webapp) | **Webapp**: Auth 5 + Client 9 + Admin 5
 
 ---

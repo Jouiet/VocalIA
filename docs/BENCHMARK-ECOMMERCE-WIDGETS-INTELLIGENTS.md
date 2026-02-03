@@ -1450,9 +1450,99 @@ trackEvent('conversion', { method, value, product_count });
 
 ---
 
+## 18. PLAN ACTIONNABLE - POST-IMPLEMENTATION
+
+### 18.1 Phase 1 Status: ✅ COMPLETE (Session 250.76)
+
+| Composant | Fichier | Lignes | Status |
+|:----------|:--------|:------:|:------:|
+| Product Cards UI | voice-widget-core.js | +150 CSS | ✅ |
+| Product Carousel | voice-widget-core.js | +120 JS | ✅ |
+| Voice/Text Tracking | voice-widget-core.js | +80 JS | ✅ |
+| UCP Integration | voice-widget-core.js | +150 JS | ✅ |
+| MCP Integration | voice-widget-core.js | +100 JS | ✅ |
+| API Browse/Search | db-api.cjs | +120 | ✅ |
+| API Recommendations | db-api.cjs | +80 | ✅ |
+| API UCP Endpoints | db-api.cjs | +110 | ✅ |
+| i18n (5 locales) | voice-*.json | +125 keys | ✅ |
+| **TOTAL** | | **+960 lignes** | ✅ |
+
+**Commit:** `8b9ea83` - Pousse GitHub 03/02/2026
+
+### 18.2 Phase 2: Criteres Go/No-Go (EN ATTENTE DATA)
+
+| Metrique | Seuil Go | Source Mesure |
+|:---------|:---------|:--------------|
+| Voice Usage Rate | >15% | `trackEvent('input_method_used')` |
+| Voice Conversion Delta | >+5% vs text | GA4 conversion par methode |
+| Session Duration Voice | >+20% vs text | GA4 session_duration |
+| Carousel CTR | >8% | `trackEvent('product_card_clicked')` |
+
+**Timeline:** 30 jours data collection → Decision Go/No-Go Phase 2
+
+### 18.3 Phase 2 Scope (SI GO)
+
+| Tache | Effort | Prerequis |
+|:------|:------:|:----------|
+| Voice Recommendations vocales | 3j | Voice Usage >15% |
+| Two-Tower Model integration | 5j | Product data sufficient |
+| Marqo Embeddings | 2j | >1000 produits tenant |
+| Voice Search NLU | 4j | Search usage patterns |
+
+### 18.4 Phase 3 Scope (SI Phase 2 POSITIVE)
+
+| Tache | Effort | Prerequis |
+|:------|:------:|:----------|
+| Voice Cart Integration | 3j | Phase 2 metrics positives |
+| Voice Checkout Flow | 5j | Cart integration stable |
+| Payment Voice Confirmation | 2j | Stripe integration |
+
+### 18.5 Metriques a Monitorer (Dashboard Requis)
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ E-COMMERCE WIDGET ANALYTICS (A implementer)             │
+├─────────────────────────────────────────────────────────┤
+│ Input Method Distribution                               │
+│   Text: ████████████████████ 85%                        │
+│   Voice: ████ 15%                                       │
+├─────────────────────────────────────────────────────────┤
+│ Conversion by Method                                    │
+│   Text: 2.8%  │  Voice: ???% (need data)               │
+├─────────────────────────────────────────────────────────┤
+│ Carousel Performance                                    │
+│   Displayed: 1,234  │  Clicked: 98 (7.9%)              │
+├─────────────────────────────────────────────────────────┤
+│ Product Intent Detection                                │
+│   Search: 45%  │  Recommend: 30%  │  Category: 25%     │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 18.6 Risques Identifies et Mitigations
+
+| Risque | Probabilite | Impact | Mitigation |
+|:-------|:-----------:|:------:|:-----------|
+| Voice usage <5% | Moyenne | Moyen | Text-first design deja en place |
+| API latency >2s | Faible | Haut | LRU cache + fallback local |
+| MCP connector failure | Faible | Moyen | Fallback direct catalog fetch |
+| UCP sync errors | Faible | Faible | Silent fail, continue sans UCP |
+
+### 18.7 Prochaines Actions Immediates
+
+| # | Action | Responsable | Deadline |
+|:-:|:-------|:------------|:---------|
+| 1 | Deployer widget v3.0 sur tenant test | DevOps | J+1 |
+| 2 | Configurer GA4 custom dimensions | Analytics | J+2 |
+| 3 | Creer dashboard metriques | Frontend | J+5 |
+| 4 | Review 30 jours data | Product | J+30 |
+| 5 | Decision Go/No-Go Phase 2 | Product | J+35 |
+
+---
+
 *Document genere: 03/02/2026 | Sessions 250.74-250.76*
 *Update: 03/02/2026 - Section 3 SOTA AI Recommendations (650+ lignes)*
 *Update: 03/02/2026 - Section 17 SWOT Rigoureuse (230+ lignes)*
-*Status: RECHERCHE COMPLETE + SWOT FACTUELLE*
+*Update: 03/02/2026 - Section 18 Plan Actionnable Post-Phase 1 (80+ lignes)*
+*Status: PHASE 1 IMPLEMENTEE ✅ | PHASE 2 EN ATTENTE DATA*
 *Methodologie: Bottom-up factuelle, zero wishful thinking*
-*Total: ~1550 lignes*
+*Total: ~1650 lignes*
