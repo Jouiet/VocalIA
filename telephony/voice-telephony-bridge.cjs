@@ -1337,6 +1337,26 @@ async function createGrokSession(callInfo) {
                 },
                 required: ['recommendation_type']
               }
+            },
+            {
+              type: 'function',
+              name: 'start_product_quiz',
+              description: 'Démarrer un quiz vocal pour aider le client à trouver le produit idéal. Utilisé quand le client ne sait pas quoi choisir ou veut des conseils personnalisés.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  quiz_type: {
+                    type: 'string',
+                    enum: ['skincare', 'electronics', 'generic'],
+                    description: 'Type de quiz: skincare=soins peau, electronics=appareils, generic=universel'
+                  },
+                  first_question: {
+                    type: 'string',
+                    description: 'Première question personnalisée à poser (optionnel)'
+                  }
+                },
+                required: []
+              }
             }
           ]
         }
@@ -1764,6 +1784,10 @@ async function handleFunctionCall(session, item) {
 
       case 'get_recommendations':
         result = await handleGetRecommendations(session, args);
+        break;
+
+      case 'start_product_quiz':
+        result = await handleStartProductQuiz(session, args);
         break;
 
       default:
@@ -2353,6 +2377,109 @@ async function handleGetRecommendations(session, args) {
       voiceResponse: fallbacks[lang] || fallbacks.fr
     };
   }
+}
+
+/**
+ * Voice Product Quiz Handler (Session 250.79)
+ * Starts a guided quiz flow to help customer find ideal products
+ */
+async function handleStartProductQuiz(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  const lang = session.metadata?.voice_language || 'fr';
+  const quizType = args.quiz_type || 'generic';
+
+  console.log(`[ProductQuiz] Starting ${quizType} quiz for tenant: ${tenantId}`);
+
+  // Quiz templates with voice-optimized questions
+  const quizTemplates = {
+    skincare: {
+      fr: {
+        intro: "Je vais vous aider à trouver votre routine parfaite. Première question: quel est votre type de peau? Sèche, grasse, mixte ou sensible?",
+        questions: [
+          { id: 'skin_type', text: "Quel est votre type de peau?", options: ['sèche', 'grasse', 'mixte', 'sensible'] },
+          { id: 'concern', text: "Quelle est votre préoccupation principale?", options: ['acné', 'anti-âge', 'hydratation', 'éclat'] },
+          { id: 'budget', text: "Quel est votre budget?", options: ['moins de 50 euros', 'entre 50 et 100 euros', 'plus de 100 euros'] }
+        ]
+      },
+      en: {
+        intro: "I'll help you find your perfect routine. First question: what is your skin type? Dry, oily, combination, or sensitive?",
+        questions: [
+          { id: 'skin_type', text: "What is your skin type?", options: ['dry', 'oily', 'combination', 'sensitive'] },
+          { id: 'concern', text: "What is your main concern?", options: ['acne', 'anti-aging', 'hydration', 'brightening'] },
+          { id: 'budget', text: "What is your budget?", options: ['under $50', '$50-100', 'over $100'] }
+        ]
+      },
+      ar: {
+        intro: "سأساعدك في العثور على روتينك المثالي. السؤال الأول: ما هو نوع بشرتك؟ جافة، دهنية، مختلطة، أو حساسة؟",
+        questions: []
+      },
+      ary: {
+        intro: "غادي نعاونك تلقى الروتين لي يناسبك. سؤال لول: شنو نوع جلدك؟ ناشف، دهني، مخلوط، ولا حساس?",
+        questions: []
+      }
+    },
+    electronics: {
+      fr: {
+        intro: "Je vais vous aider à trouver l'appareil idéal. Pour commencer: quelle sera l'utilisation principale? Travail, gaming, usage quotidien ou création?",
+        questions: [
+          { id: 'usage', text: "Quelle sera l'utilisation principale?", options: ['travail', 'gaming', 'quotidien', 'création'] },
+          { id: 'priority', text: "Quelle est votre priorité?", options: ['performance', 'autonomie', 'portabilité', 'prix'] }
+        ]
+      },
+      en: {
+        intro: "I'll help you find the ideal device. To start: what will be the main use? Work, gaming, daily use, or creative work?",
+        questions: []
+      },
+      ar: { intro: "سأساعدك في العثور على الجهاز المثالي. للبدء: ما هو الاستخدام الرئيسي؟", questions: [] },
+      ary: { intro: "غادي نعاونك تلقى الجهاز لي يناسبك. باش غادي تخدم بيه بزاف?", questions: [] }
+    },
+    generic: {
+      fr: {
+        intro: "Je vais vous poser quelques questions pour trouver le produit idéal. Qu'est-ce que vous recherchez exactement?",
+        questions: [
+          { id: 'need', text: "Qu'est-ce que vous recherchez?", options: [] },
+          { id: 'budget', text: "Quel est votre budget?", options: ['moins de 50 euros', '50 à 150 euros', 'plus de 150 euros'] }
+        ]
+      },
+      en: {
+        intro: "I'll ask you a few questions to find the ideal product. What exactly are you looking for?",
+        questions: []
+      },
+      es: {
+        intro: "Te haré algunas preguntas para encontrar el producto ideal. ¿Qué estás buscando exactamente?",
+        questions: []
+      },
+      ar: { intro: "سأطرح عليك بعض الأسئلة للعثور على المنتج المثالي. ما الذي تبحث عنه بالضبط؟", questions: [] },
+      ary: { intro: "غادي نسولك شي أسئلة باش نلقاو المنتوج لي يناسبك. شنو كتقلب عليه بالضبط?", questions: [] }
+    }
+  };
+
+  // Get quiz for language (fallback to fr)
+  const template = quizTemplates[quizType] || quizTemplates.generic;
+  const quiz = template[lang] || template.fr || template.en;
+
+  // Store quiz state in session
+  session.quizState = {
+    type: quizType,
+    currentQuestion: 0,
+    answers: {},
+    startedAt: Date.now()
+  };
+
+  // Return intro and first question
+  const voiceResponse = args.first_question || quiz.intro;
+
+  return {
+    success: true,
+    quiz_type: quizType,
+    quiz_state: 'started',
+    current_question: quiz.questions?.[0] || null,
+    voiceResponse: voiceResponse,
+    widgetAction: {
+      action: 'show_quiz',
+      type: quizType
+    }
+  };
 }
 
 async function handleGetCustomerTags(session, args) {

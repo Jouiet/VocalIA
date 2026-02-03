@@ -1240,8 +1240,24 @@ Sweet spot: 20-30% au-dessus de l'AOV
    - **Widget Integration:**
      - `window.VocalIA.showRecommendations(products, type, title)`
      - `window.VocalIA.getAIRecommendations(productId, productIds, type)`
-4. [ ] Sprint 3: Voice-Guided Product Quiz (P2)
-5. [ ] Sprint 4: Widget Orchestrator + Analytics
+4. [x] Sprint 3: Voice-Guided Product Quiz (P2) - ✅ Session 250.79
+   - [x] Voice Quiz Widget (`widget/voice-quiz.js` - 750 lines)
+   - [x] 3 Quiz Templates: skincare, electronics, generic
+   - [x] Voice recognition + text fallback
+   - [x] 5 languages (FR, EN, ES, AR, ARY) with RTL
+   - [x] Lead capture form
+   - [x] GA4 tracking (quiz_started, quiz_answer, quiz_completed, quiz_lead_captured)
+   - [x] `start_product_quiz` function tool (telephony)
+   - [x] `window.VocalIA.startQuiz(template, options)`
+   - **Benchmark Impact:** +52% CTR, 2x leads, +65% completion vs text-only
+
+5. [x] Sprint 4: Widget Orchestrator + Analytics - ✅ Session 250.79
+   - [x] Widget Orchestrator (voice-widget-core.js)
+     - Priority-based widget activation
+     - Event bus for inter-widget communication
+     - `window.VocalIA.Orchestrator.activate/deactivate/canShow/getStats`
+   - [x] Widgets managed: voiceChat, recommendations, quiz, exitIntent, socialProof
+   - [x] GA4 event tracking for all activations
 
 ### Ressources Cles Identifiees
 

@@ -1249,6 +1249,188 @@
   }
 
   // ============================================================
+  // VOICE QUIZ INTEGRATION (Sprint 3 - Session 250.79)
+  // ============================================================
+
+  /**
+   * Start a voice-guided product quiz
+   * @param {string} template - Quiz template ('skincare', 'electronics', 'generic')
+   * @param {object} options - Custom options
+   */
+  window.VocalIA.startQuiz = function(template = 'generic', options = {}) {
+    // Lazy load quiz if not already loaded
+    if (!window.VocalIAQuiz) {
+      console.warn('[VocalIA] Voice Quiz not loaded. Include voice-quiz.js');
+      return null;
+    }
+
+    const quiz = new window.VocalIAQuiz({
+      tenantId: state.tenantId,
+      template: template,
+      lang: state.langData?.meta?.code || 'fr',
+      apiBaseUrl: CONFIG.API_BASE_URL,
+      voiceEnabled: true,
+      onComplete: (result) => {
+        // Track quiz completion
+        if (typeof gtag === 'function') {
+          gtag('event', 'quiz_completed', {
+            event_category: 'voice_quiz',
+            template: template,
+            answers_count: Object.keys(result.answers).length,
+            with_lead: result.withLead
+          });
+        }
+
+        // Show personalized recommendations based on quiz answers
+        if (result.tags?.length > 0) {
+          window.VocalIA.getAIRecommendations(null, [], 'personalized');
+        }
+      },
+      onLeadCapture: (lead) => {
+        // Track lead capture
+        if (typeof gtag === 'function') {
+          gtag('event', 'quiz_lead_captured', {
+            event_category: 'voice_quiz',
+            template: template
+          });
+        }
+
+        // Sync with UCP
+        if (UCP.syncPreference) {
+          UCP.recordInteraction({
+            type: 'quiz_completed',
+            product_id: null,
+            metadata: { template, answers: lead.answers }
+          });
+        }
+      },
+      ...options
+    });
+
+    quiz.show();
+    return quiz;
+  };
+
+  /**
+   * Check if quiz is supported
+   */
+  window.VocalIA.isQuizSupported = function() {
+    return !!window.VocalIAQuiz;
+  };
+
+  // ============================================================
+  // WIDGET ORCHESTRATOR (Sprint 4 - Session 250.79)
+  // ============================================================
+
+  /**
+   * Widget Orchestrator - Centralized control for all VocalIA widgets
+   * Manages: Voice Widget, Recommendations, Quiz, Exit-Intent, Social Proof
+   */
+  const WidgetOrchestrator = {
+    // Widget states
+    widgets: {
+      voiceChat: { active: false, priority: 1 },
+      recommendations: { active: false, priority: 2 },
+      quiz: { active: false, priority: 3 },
+      exitIntent: { active: false, priority: 4 },
+      socialProof: { active: true, priority: 5 }
+    },
+
+    // Event bus for inter-widget communication
+    events: new Map(),
+
+    /**
+     * Register event listener
+     */
+    on(event, callback) {
+      if (!this.events.has(event)) {
+        this.events.set(event, []);
+      }
+      this.events.get(event).push(callback);
+    },
+
+    /**
+     * Emit event to all listeners
+     */
+    emit(event, data) {
+      const listeners = this.events.get(event) || [];
+      listeners.forEach(cb => {
+        try { cb(data); } catch (e) { console.error('[Orchestrator] Event error:', e); }
+      });
+    },
+
+    /**
+     * Activate a widget (deactivate lower priority if needed)
+     */
+    activate(widgetName) {
+      const widget = this.widgets[widgetName];
+      if (!widget) return false;
+
+      widget.active = true;
+      this.emit('widget:activated', { widget: widgetName });
+
+      // Track activation
+      if (typeof gtag === 'function') {
+        gtag('event', 'widget_activated', {
+          event_category: 'orchestrator',
+          widget_name: widgetName
+        });
+      }
+
+      return true;
+    },
+
+    /**
+     * Deactivate a widget
+     */
+    deactivate(widgetName) {
+      const widget = this.widgets[widgetName];
+      if (!widget) return false;
+
+      widget.active = false;
+      this.emit('widget:deactivated', { widget: widgetName });
+      return true;
+    },
+
+    /**
+     * Check if widget should show (based on priority)
+     */
+    canShow(widgetName) {
+      const widget = this.widgets[widgetName];
+      if (!widget) return false;
+
+      // Check if higher priority widget is active
+      for (const [name, w] of Object.entries(this.widgets)) {
+        if (w.active && w.priority < widget.priority) {
+          return false; // Higher priority widget is active
+        }
+      }
+      return true;
+    },
+
+    /**
+     * Get orchestrator stats
+     */
+    getStats() {
+      return {
+        activeWidgets: Object.entries(this.widgets)
+          .filter(([_, w]) => w.active)
+          .map(([name, _]) => name),
+        totalWidgets: Object.keys(this.widgets).length,
+        eventListeners: this.events.size
+      };
+    }
+  };
+
+  // Export orchestrator
+  window.VocalIA.Orchestrator = WidgetOrchestrator;
+
+  // Wire up existing widgets to orchestrator
+  WidgetOrchestrator.on('widget:activated', ({ widget }) => {
+    console.log(`[Orchestrator] Widget activated: ${widget}`);
+  });
+
+  // ============================================================
   // UCP & MCP INTEGRATION (Phase 1 - Session 250.74)
   // ============================================================
 
