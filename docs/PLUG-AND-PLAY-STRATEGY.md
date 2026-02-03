@@ -2,9 +2,10 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 2.10 | **Date:** 02/02/2026 | **Session:** 250.57
+> **Version:** 2.11 | **Date:** 03/02/2026 | **Session:** 250.64
 > **Approche:** Bottom-Up Factuelle | **Méthodologie:** Recherche Web + Analyse Code Source
 > **Status:** ✅ ALL PHASES COMPLETE | MCP Server v0.8.0 (**182 tools**) | 28 Integrations | Security 99/100
+> **Session 250.64**: Tenant voice preferences (voice_language, voice_gender) → end-to-end telephony integration
 
 ---
 

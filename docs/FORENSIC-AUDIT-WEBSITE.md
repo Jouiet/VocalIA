@@ -1,7 +1,8 @@
 # VocalIA - Forensic Audit Website
 
-> **Version**: 6.76.0 | **Date**: 03/02/2026 | **Session**: 250.66
+> **Version**: 6.77.0 | **Date**: 03/02/2026 | **Session**: 250.64 (Voice E2E)
 > **Status**: WCAG 2.1 AA COMPLIANCE (100%) | **CSS Build**: SOVEREIGN (141KB → 3098 lines)
+> **Session 250.64**: Voice config E2E - tenant preferences DB→Telephony, loadVoicePreferences(), 27 voix ElevenLabs
 > **Palette**: OKLCH P3 Wide-Gamut | **Lighthouse**: 90 | **PWA**: Ready
 > **Security**: ✅ SRI + HTTPS + XSS + CSP + X-Frame-Options on ALL **70 pages**
 > **SEO Score**: 99/100 (A+) - Hreflang 100%, Twitter Cards **37 pages** ✅

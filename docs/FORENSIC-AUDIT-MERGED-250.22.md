@@ -1,11 +1,12 @@
 # FORENSIC AUDIT MERGED - VocalIA Platform
-**Date:** 02 Février 2026 | **Session:** 250.57
+**Date:** 03 Février 2026 | **Session:** 250.64
 **Framework:** DOE (Directive Orchestration Execution)
 **Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit
 **Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep` / `node -e`
 
 > ⚠️ **NOTE HISTORIQUE**: Document reflétant l'état au 01/02/2026 (45 pages).
-> Depuis Session 250.52 (02/02/2026): **67 pages** (+17 webapp + 5 misc).
+> Depuis Session 250.52 (02/02/2026): **70 pages** (+19 webapp + misc).
+> **Session 250.64**: Voice config E2E - tenant preferences (voice_language, voice_gender) DB→Telephony
 > Référence actuelle: `docs/VOCALIA-SYSTEM-ARCHITECTURE.md`
 
 ---
