@@ -1,10 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.76.0 | 03/02/2026 | Session 250.66 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.77.0 | 03/02/2026 | Session 250.67 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 10/10 Data-driven ✅** | 0 bugs | 0 missing imports | 0 hardcoded values | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **70 pages** | **21,600+ keys** | RTL ✅ | hreflang ary ✅
+> **Dynamic Catalog: 5 function tools ✅** | browse_catalog, get_menu, search_catalog, check_availability, get_item_details | Voice-optimized | LRU cache
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **54 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
@@ -12,7 +13,7 @@
 > **AG-UI Protocol: Voice Widget ✅** | 17 event types | SSE-compatible | CopilotKit compliant
 > **UCP/CDP: 7 tools** | LTV tiers (bronze→diamond) | record_interaction | track_event | get_insights | update_ltv
 > **WCAG 2.1 AA: 44px touch targets ✅** | **Brand consistency ✅** | **40 Personas ✅**
-> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 13 Func. Tools | 41 Core Modules**
+> **Platform: 182 MCP Tools | 4 Sensors | 4 Agents (A2A) | 40 Personas | 4 Frameworks | 18 Func. Tools | 43 Core Modules**
 > SDKs: Python | Node.js | MCP Server v0.8.0 | RAG: BM25 SOTA | Multi-Tenant ✅
 > iPaaS: Zapier (+7000 apps) | Make | n8n | Export: CSV, XLSX, PDF | Email: SMTP + Gmail API
 > Integrations: **28 native** | WordPress Plugin ✅ | WhatsApp ✅ | 13 Function Tools ✅
@@ -42,9 +43,10 @@
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
+**Session 250.67 DYNAMIC CATALOG:** catalog-connector.cjs (718 lines), tenant-catalog-store.cjs (800+ lines), 5 JSON schemas (product, menu, services, fleet, trips), 5 sample catalogs, 5 new function tools (browse_catalog, get_item_details, get_menu, check_item_availability, search_catalog), LRU cache, voice-optimized responses, 10/10 unit tests pass
 **Session 250.66 SSL/HTTPS VERIFIED:** Production https://vocalia.ma live with HTTP/2, HSTS (max-age=31536000; includeSubDomains; preload), CSP, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, X-XSS-Protection, Referrer-Policy, LiteSpeed server
 **Session 250.65 P1/P2 COMPLETE:** k6 load tests (smoke, load, stress, spike), onboarding.html wizard (4 steps), i18n onboarding 5 locales (40 keys each), SDKs ready (node v0.1.0, python v0.1.0), OpenAPI 520 lines, Deploy workflow NindoHost
-**Session 250.64 VOICE AUDIT COMPLETE:** ElevenLabs 27 voix (was 10), BUG FIX ar_male/fr_male/en_male/es_male (were undefined), 7 user aliases (Asmaa, Adam, Liliya, Nelya, Ikhlass, Najlae, Liwae), agents.html voice configuration UI, i18n 5 locales
+**Session 250.64 VOICE E2E COMPLETE:** ElevenLabs 27 voix, END-TO-END voice config fix (DB→Telephony): getTenantVoicePreferences(), session.metadata.voice_gender, loadVoicePreferences(), GoogleSheetsDB schema +voice_language/voice_gender/active_persona, api-client tenants resource, BUG FIX male voices (ar/fr/en/es_male), agents.html voice UI
 **Session 250.63 UNIT TESTS FIX:** 305/305 tests pass (was hanging) - `unref()` added to 6 modules setInterval (EventBus, telephony, auth-middleware, security-utils, grok-realtime, db-api), telephony bridge `require.main === module` guard, test OpenAI→AtlasChat fix
 **Session 250.62 E2E MULTI-BROWSER:** 375 tests × 5 browsers (Chromium, Firefox, WebKit, Mobile Chrome, Mobile Safari) = 373/375 pass (99.5%), RTL AR/ARY fixed (http-server), i18n init 18 webapp pages, flaky test filters added
 **Session 250.61 I18N FIX:** Added missing dashboard.nav.* keys to all 5 locales (fr, en, es, ar, ary) - navigation i18n now 100% functional

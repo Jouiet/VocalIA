@@ -1024,6 +1024,121 @@ async function createGrokSession(callInfo) {
                 },
                 required: ['complaint_type', 'proposed_resolution', 'financial_commitment']
               }
+            },
+            // ============================================
+            // CATALOG TOOLS (Session 250.63 - Dynamic Catalog)
+            // ============================================
+            {
+              type: 'function',
+              name: 'browse_catalog',
+              description: 'Parcourir le catalogue de produits/services du client. Utilisé pour montrer ce qui est disponible par catégorie.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  category: {
+                    type: 'string',
+                    description: 'Catégorie à parcourir (ex: "entrées", "plats", "véhicules", "services")'
+                  },
+                  limit: {
+                    type: 'number',
+                    description: 'Nombre maximum d\'articles à retourner (défaut: 5)'
+                  },
+                  in_stock_only: {
+                    type: 'boolean',
+                    description: 'Afficher uniquement les articles disponibles'
+                  }
+                },
+                required: []
+              }
+            },
+            {
+              type: 'function',
+              name: 'get_item_details',
+              description: 'Obtenir les détails complets d\'un article spécifique (produit, plat, service, véhicule).',
+              parameters: {
+                type: 'object',
+                properties: {
+                  item_id: {
+                    type: 'string',
+                    description: 'Identifiant de l\'article (ex: "P01", "SKU-001", "VEH-003")'
+                  },
+                  item_name: {
+                    type: 'string',
+                    description: 'Nom de l\'article si l\'ID n\'est pas connu'
+                  }
+                },
+                required: []
+              }
+            },
+            {
+              type: 'function',
+              name: 'get_menu',
+              description: 'Obtenir le menu complet d\'un restaurant ou boulangerie avec catégories, prix et allergènes.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  category: {
+                    type: 'string',
+                    description: 'Catégorie spécifique (ex: "entrées", "plats", "desserts", "boissons")'
+                  },
+                  dietary: {
+                    type: 'string',
+                    enum: ['vegan', 'vegetarian', 'gluten-free', 'halal'],
+                    description: 'Filtrer par régime alimentaire'
+                  }
+                },
+                required: []
+              }
+            },
+            {
+              type: 'function',
+              name: 'check_item_availability',
+              description: 'Vérifier la disponibilité d\'un article (stock produit, disponibilité plat, créneau service, dates véhicule).',
+              parameters: {
+                type: 'object',
+                properties: {
+                  item_id: {
+                    type: 'string',
+                    description: 'Identifiant de l\'article'
+                  },
+                  item_name: {
+                    type: 'string',
+                    description: 'Nom de l\'article si l\'ID n\'est pas connu'
+                  },
+                  date: {
+                    type: 'string',
+                    description: 'Date souhaitée (format YYYY-MM-DD) pour services/véhicules'
+                  },
+                  quantity: {
+                    type: 'number',
+                    description: 'Quantité souhaitée (pour produits)'
+                  }
+                },
+                required: []
+              }
+            },
+            {
+              type: 'function',
+              name: 'search_catalog',
+              description: 'Rechercher des articles dans le catalogue par mot-clé.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  query: {
+                    type: 'string',
+                    description: 'Terme de recherche (ex: "couscous", "SUV", "révision")'
+                  },
+                  category: {
+                    type: 'string',
+                    description: 'Catégorie pour affiner la recherche'
+                  },
+                  max_price: {
+                    type: 'number',
+                    description: 'Prix maximum'
+                  }
+                },
+                required: ['query']
+              }
             }
           ]
         }
@@ -1393,6 +1508,29 @@ async function handleFunctionCall(session, item) {
         result = await handleSendPaymentDetails(session, args);
         break;
 
+      // ============================================
+      // CATALOG TOOLS (Session 250.63)
+      // ============================================
+      case 'browse_catalog':
+        result = await handleBrowseCatalog(session, args);
+        break;
+
+      case 'get_item_details':
+        result = await handleGetItemDetails(session, args);
+        break;
+
+      case 'get_menu':
+        result = await handleGetMenu(session, args);
+        break;
+
+      case 'check_item_availability':
+        result = await handleCheckItemAvailability(session, args);
+        break;
+
+      case 'search_catalog':
+        result = await handleSearchCatalog(session, args);
+        break;
+
       default:
         console.log(`[Cognitive-Tools] Unknown function: ${item.name}`);
         result = { success: false, error: `Function ${item.name} not implemented` };
@@ -1443,6 +1581,199 @@ async function handleCheckOrderStatus(session, args) {
 
 async function handleCheckProductStock(session, args) {
   return await ECOM_TOOLS.checkProductStock(args.query);
+}
+
+// ============================================
+// CATALOG TOOL HANDLERS (Session 250.63 - Dynamic Catalog)
+// ============================================
+
+// Lazy-load TenantCatalogStore to avoid circular dependency
+let _catalogStore = null;
+function getCatalogStore() {
+  if (!_catalogStore) {
+    const { getInstance } = require('../core/tenant-catalog-store.cjs');
+    _catalogStore = getInstance();
+  }
+  return _catalogStore;
+}
+
+/**
+ * Browse catalog by category
+ */
+async function handleBrowseCatalog(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  console.log(`[Catalog] Browsing catalog for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+    const result = await store.browseCatalog(tenantId, {
+      category: args.category,
+      limit: args.limit || 5,
+      inStock: args.in_stock_only
+    });
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Je n'ai pas accès au catalogue pour le moment." };
+    }
+
+    return {
+      success: true,
+      items: result.items,
+      voiceResponse: result.voiceSummary
+    };
+  } catch (error) {
+    console.error(`[Catalog] Browse error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite en consultant le catalogue." };
+  }
+}
+
+/**
+ * Get detailed info for a specific item
+ */
+async function handleGetItemDetails(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  const itemId = args.item_id;
+  const itemName = args.item_name;
+
+  console.log(`[Catalog] Getting item details: ${itemId || itemName} for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+
+    // If only name provided, search first
+    let actualItemId = itemId;
+    if (!actualItemId && itemName) {
+      const searchResult = await store.searchCatalog(tenantId, itemName, { limit: 1 });
+      if (searchResult.success && searchResult.results.length > 0) {
+        actualItemId = searchResult.results[0].id;
+      }
+    }
+
+    if (!actualItemId) {
+      return { success: false, error: 'item_not_found', voiceResponse: "Je n'ai pas trouvé cet article." };
+    }
+
+    const result = await store.getItemDetails(tenantId, actualItemId);
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Je n'ai pas trouvé cet article dans notre catalogue." };
+    }
+
+    return {
+      success: true,
+      item: result.item,
+      voiceResponse: result.item.voiceDescription
+    };
+  } catch (error) {
+    console.error(`[Catalog] Item details error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+  }
+}
+
+/**
+ * Get restaurant/bakery menu
+ */
+async function handleGetMenu(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  console.log(`[Catalog] Getting menu for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+    const result = await store.getMenu(tenantId, {
+      category: args.category,
+      dietary: args.dietary
+    });
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Le menu n'est pas disponible pour le moment." };
+    }
+
+    return {
+      success: true,
+      menu: result.menu,
+      voiceResponse: result.voiceSummary
+    };
+  } catch (error) {
+    console.error(`[Catalog] Menu error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite en consultant le menu." };
+  }
+}
+
+/**
+ * Check item availability (stock, slots, dates)
+ */
+async function handleCheckItemAvailability(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  const itemId = args.item_id;
+  const itemName = args.item_name;
+
+  console.log(`[Catalog] Checking availability: ${itemId || itemName} for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+
+    // If only name provided, search first
+    let actualItemId = itemId;
+    if (!actualItemId && itemName) {
+      const searchResult = await store.searchCatalog(tenantId, itemName, { limit: 1 });
+      if (searchResult.success && searchResult.results.length > 0) {
+        actualItemId = searchResult.results[0].id;
+      }
+    }
+
+    if (!actualItemId) {
+      return { success: false, error: 'item_not_found', voiceResponse: "Je n'ai pas trouvé cet article." };
+    }
+
+    const result = await store.checkAvailability(tenantId, actualItemId, {
+      date: args.date,
+      quantity: args.quantity
+    });
+
+    return {
+      success: true,
+      available: result.available,
+      stock: result.stock,
+      slots: result.slots,
+      voiceResponse: result.voiceResponse
+    };
+  } catch (error) {
+    console.error(`[Catalog] Availability error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+  }
+}
+
+/**
+ * Search catalog by keyword
+ */
+async function handleSearchCatalog(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  const query = args.query;
+
+  console.log(`[Catalog] Searching "${query}" for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+    const result = await store.searchCatalog(tenantId, query, {
+      category: args.category,
+      maxPrice: args.max_price,
+      limit: 5
+    });
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Je n'ai pas pu effectuer la recherche." };
+    }
+
+    return {
+      success: true,
+      results: result.results,
+      count: result.count,
+      voiceResponse: result.voiceSummary
+    };
+  } catch (error) {
+    console.error(`[Catalog] Search error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite lors de la recherche." };
+  }
 }
 
 async function handleGetCustomerTags(session, args) {

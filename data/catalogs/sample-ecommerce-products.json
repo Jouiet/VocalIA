@@ -1,0 +1,94 @@
+{
+  "$schema": "vocalia-catalog-product-v1",
+  "tenant_id": "boutique_mode_casa",
+  "last_sync": "2026-02-03T10:00:00Z",
+  "source": "custom",
+  "products": [
+    {
+      "id": "SKU-001",
+      "name": "T-Shirt Classic Bio",
+      "category": "vetements/hauts",
+      "price": 149,
+      "currency": "MAD",
+      "stock": 45,
+      "in_stock": true,
+      "variants": [
+        {"size": "S", "color": "bleu", "stock": 10, "sku": "SKU-001-S-BL"},
+        {"size": "M", "color": "bleu", "stock": 15, "sku": "SKU-001-M-BL"},
+        {"size": "L", "color": "bleu", "stock": 10, "sku": "SKU-001-L-BL"},
+        {"size": "M", "color": "noir", "stock": 10, "sku": "SKU-001-M-NR"}
+      ],
+      "description": "T-shirt 100% coton bio, coupe classique",
+      "tags": ["bestseller", "eco", "coton-bio"],
+      "voice_description": "T-shirt classic en coton bio, disponible en S, M et L, coloris bleu et noir, à 149 dirhams"
+    },
+    {
+      "id": "SKU-002",
+      "name": "Jean Slim Femme",
+      "category": "vetements/pantalons",
+      "price": 299,
+      "currency": "MAD",
+      "stock": 28,
+      "in_stock": true,
+      "variants": [
+        {"size": "36", "color": "bleu-fonce", "stock": 8},
+        {"size": "38", "color": "bleu-fonce", "stock": 10},
+        {"size": "40", "color": "bleu-fonce", "stock": 6},
+        {"size": "38", "color": "noir", "stock": 4}
+      ],
+      "description": "Jean slim stretch, taille haute",
+      "tags": ["femme", "stretch"],
+      "voice_description": "Jean slim femme taille haute à 299 dirhams, disponible du 36 au 40"
+    },
+    {
+      "id": "SKU-003",
+      "name": "Robe Caftan Moderne",
+      "category": "vetements/robes",
+      "price": 850,
+      "currency": "MAD",
+      "stock": 5,
+      "in_stock": true,
+      "variants": [
+        {"size": "S", "color": "bordeaux", "stock": 2},
+        {"size": "M", "color": "bordeaux", "stock": 2},
+        {"size": "M", "color": "bleu-roi", "stock": 1}
+      ],
+      "description": "Caftan moderne brodé main, soie et satin",
+      "tags": ["traditionnel", "fete", "mariage"],
+      "voice_description": "Caftan moderne brodé main à 850 dirhams, disponible en bordeaux et bleu roi"
+    },
+    {
+      "id": "SKU-004",
+      "name": "Babouches Cuir Homme",
+      "category": "chaussures/homme",
+      "price": 220,
+      "currency": "MAD",
+      "stock": 0,
+      "in_stock": false,
+      "variants": [
+        {"size": "42", "color": "marron", "stock": 0},
+        {"size": "43", "color": "marron", "stock": 0}
+      ],
+      "description": "Babouches traditionnelles en cuir tanné",
+      "tags": ["traditionnel", "cuir"],
+      "voice_description": "Babouches cuir homme à 220 dirhams, actuellement en rupture de stock"
+    },
+    {
+      "id": "SKU-005",
+      "name": "Sac Besace Cuir",
+      "category": "accessoires/sacs",
+      "price": 450,
+      "currency": "MAD",
+      "stock": 12,
+      "in_stock": true,
+      "variants": [
+        {"color": "camel", "stock": 6},
+        {"color": "noir", "stock": 4},
+        {"color": "cognac", "stock": 2}
+      ],
+      "description": "Sac besace en cuir véritable, bandoulière ajustable",
+      "tags": ["cuir", "unisexe"],
+      "voice_description": "Sac besace en cuir à 450 dirhams, disponible en camel, noir et cognac"
+    }
+  ]
+}

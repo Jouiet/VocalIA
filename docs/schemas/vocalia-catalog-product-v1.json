@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vocalia-catalog-product-v1",
+  "title": "VocalIA Product Catalog Schema",
+  "description": "Schema for e-commerce product catalogs (universal_ecom, retailer, grocery, producer personas)",
+  "type": "object",
+  "required": ["$schema", "tenant_id", "last_sync", "products"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "vocalia-catalog-product-v1"
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique tenant identifier"
+    },
+    "last_sync": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last synchronization"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["custom", "shopify", "woocommerce", "magento", "prestashop", "bigcommerce", "wix", "squarespace"],
+      "description": "Data source platform"
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/product"
+      }
+    }
+  },
+  "$defs": {
+    "product": {
+      "type": "object",
+      "required": ["id", "name", "price", "currency"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Unique product identifier (SKU)"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Product name"
+        },
+        "category": {
+          "type": "string",
+          "description": "Category path (e.g., 'vetements/hauts')"
+        },
+        "price": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Product price"
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["MAD", "EUR", "USD", "GBP"],
+          "description": "Currency code"
+        },
+        "stock": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Available stock quantity"
+        },
+        "in_stock": {
+          "type": "boolean",
+          "description": "Whether product is in stock"
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/variant"
+          },
+          "description": "Product variants (size, color, etc.)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Product description"
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Product tags for filtering"
+        },
+        "voice_description": {
+          "type": "string",
+          "description": "Voice-optimized description for TTS"
+        },
+        "image_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Product image URL"
+        },
+        "weight": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Product weight in grams"
+        },
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "length": { "type": "number" },
+            "width": { "type": "number" },
+            "height": { "type": "number" },
+            "unit": { "type": "string", "enum": ["cm", "in"] }
+          }
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "properties": {
+        "size": { "type": "string" },
+        "color": { "type": "string" },
+        "stock": { "type": "integer", "minimum": 0 },
+        "price_modifier": { "type": "number" },
+        "sku": { "type": "string" }
+      }
+    }
+  }
+}

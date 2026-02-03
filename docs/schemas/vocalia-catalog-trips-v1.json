@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vocalia-catalog-trips-v1",
+  "title": "VocalIA Trips Catalog Schema",
+  "description": "Schema for travel packages and trips (travel_agent, concierge personas)",
+  "type": "object",
+  "required": ["$schema", "tenant_id", "last_sync", "trips"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "vocalia-catalog-trips-v1"
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique tenant identifier"
+    },
+    "last_sync": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last synchronization"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["custom", "gds", "api", "csv"],
+      "description": "Data source"
+    },
+    "trips": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/trip"
+      }
+    },
+    "destinations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/destination"
+      },
+      "description": "Featured destinations"
+    }
+  },
+  "$defs": {
+    "trip": {
+      "type": "object",
+      "required": ["id", "destination", "country", "type", "duration_days", "price_from", "currency"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique trip identifier"
+        },
+        "destination": {
+          "type": "string",
+          "description": "Destination city/region"
+        },
+        "country": {
+          "type": "string",
+          "description": "Destination country"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["circuit", "sejour", "croisiere", "weekend", "combiné", "sur-mesure"],
+          "description": "Trip type"
+        },
+        "duration_days": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Trip duration in days"
+        },
+        "duration_nights": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of nights"
+        },
+        "price_from": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Starting price"
+        },
+        "price_single": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Price for single supplement"
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["MAD", "EUR", "USD", "GBP"]
+        },
+        "includes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["vol", "hotel", "petit-dejeuner", "demi-pension", "pension-complete", "all-inclusive", "transferts", "visites", "guide", "assurance"]
+          },
+          "description": "What's included"
+        },
+        "excludes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "What's not included"
+        },
+        "departures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "date"
+          },
+          "description": "Available departure dates"
+        },
+        "places_remaining": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of places remaining"
+        },
+        "hotel_rating": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "Hotel star rating"
+        },
+        "itinerary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/day"
+          },
+          "description": "Day-by-day itinerary"
+        },
+        "highlights": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Trip highlights"
+        },
+        "departure_city": {
+          "type": "string",
+          "description": "Departure city (e.g., 'Casablanca')"
+        },
+        "min_participants": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Minimum number of participants"
+        },
+        "max_participants": {
+          "type": "integer",
+          "description": "Maximum group size"
+        },
+        "voice_description": {
+          "type": "string",
+          "description": "Voice-optimized description for TTS"
+        },
+        "image_url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "day": {
+      "type": "object",
+      "required": ["day", "title"],
+      "properties": {
+        "day": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "meals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["petit-dejeuner", "dejeuner", "diner"]
+          }
+        },
+        "accommodation": {
+          "type": "string"
+        }
+      }
+    },
+    "destination": {
+      "type": "object",
+      "required": ["id", "name", "country"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "continent": {
+          "type": "string",
+          "enum": ["europe", "afrique", "asie", "amerique", "oceanie", "moyen-orient"]
+        },
+        "description": {
+          "type": "string"
+        },
+        "best_season": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["printemps", "ete", "automne", "hiver"]
+          }
+        },
+        "visa_required": {
+          "type": "boolean",
+          "description": "Whether visa is required for Moroccan passport holders"
+        }
+      }
+    }
+  }
+}

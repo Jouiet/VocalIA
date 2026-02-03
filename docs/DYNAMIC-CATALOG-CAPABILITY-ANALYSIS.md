@@ -321,15 +321,22 @@ data/knowledge-base/
 
 ## 4. Plan d'Implémentation
 
-### Phase 1: Fondation (3-4 jours)
+### Phase 1: Fondation (3-4 jours) ✅ COMPLETE
 
-| Tâche | Fichier | Effort | Dépendance |
-|:------|:--------|:------:|:-----------|
-| 1.1 Créer `catalog-connector.cjs` | core/ | 1j | - |
-| 1.2 Créer `tenant-catalog-store.cjs` | core/ | 1j | - |
-| 1.3 Définir schéma JSON catalogue | docs/ | 0.5j | - |
-| 1.4 Implémenter cache LRU catalogues | core/ | 0.5j | 1.2 |
-| 1.5 Tests unitaires fondation | test/ | 1j | 1.1-1.4 |
+| Tâche | Fichier | Effort | Status |
+|:------|:--------|:------:|:------:|
+| 1.1 Créer `catalog-connector.cjs` | core/ | 1j | ✅ DONE |
+| 1.2 Créer `tenant-catalog-store.cjs` | core/ | 1j | ✅ DONE |
+| 1.3 Définir schéma JSON catalogue | docs/schemas/ (5 schémas) | 0.5j | ✅ DONE |
+| 1.4 Implémenter cache LRU catalogues | core/tenant-catalog-store.cjs | 0.5j | ✅ DONE |
+| 1.5 Tests unitaires fondation | test/unit/catalog-system.test.cjs (10/10 pass) | 1j | ✅ DONE |
+
+**Livrables Phase 1:**
+- `core/catalog-connector.cjs` - 718 lignes, CustomCatalogConnector + ShopifyCatalogConnector + Factory
+- `core/tenant-catalog-store.cjs` - 800+ lignes, LRUCache + Voice-optimized methods
+- `docs/schemas/` - 5 JSON Schemas (product, menu, services, fleet, trips)
+- `data/catalogs/` - 5 sample catalogs (restaurant, ecommerce, garage, rental, travel)
+- `test/unit/catalog-system.test.cjs` - 10 test suites, 100% pass
 
 ### Phase 2: Connecteurs Catalogue Produits (5-6 jours)
 
@@ -354,15 +361,21 @@ data/knowledge-base/
 | 3.5 Schéma unifié services.json | docs/schemas/ | 0.5j | ALL services |
 | 3.6 Tests connecteurs services | test/service-connectors.test.cjs | 1j | - |
 
-### Phase 4: Function Tools Voice (4-5 jours)
+### Phase 4: Function Tools Voice (4-5 jours) ⏳ IN PROGRESS
 
-| Tâche | Fichier | Effort | Tools |
-|:------|:--------|:------:|:------|
-| 4.1 Tools catalogue produits (5) | telephony/ | 1.5j | browse, details, menu, stock, search |
-| 4.2 Tools catalogue services (4) | telephony/ | 1j | services, slots, book, packages |
-| 4.3 Tools spécialisés (3) | telephony/ | 1j | vehicles, trips, medication |
-| 4.4 Integration Grok function calling | telephony/ | 0.5j | - |
-| 4.5 Tests E2E Voice + Catalog | test/e2e/ | 1j | - |
+| Tâche | Fichier | Effort | Status |
+|:------|:--------|:------:|:------:|
+| 4.1 Tools catalogue produits (5) | telephony/voice-telephony-bridge.cjs | 1.5j | ✅ DONE |
+| 4.2 Tools catalogue services (4) | telephony/ | 1j | ⏳ Pending |
+| 4.3 Tools spécialisés (3) | telephony/ | 1j | ⏳ Pending |
+| 4.4 Integration Grok function calling | telephony/voice-telephony-bridge.cjs | 0.5j | ✅ DONE |
+| 4.5 Tests E2E Voice + Catalog | test/e2e/ | 1j | ⏳ Pending |
+
+**Livrables Phase 4.1 (Session 250.63):**
+- 5 nouveaux function tools: `browse_catalog`, `get_item_details`, `get_menu`, `check_item_availability`, `search_catalog`
+- Handlers connectés à TenantCatalogStore
+- Voice responses intégrées (voiceSummary, voiceDescription)
+- Lazy-loading pour éviter les dépendances circulaires
 
 ### Phase 5: Dashboard Webapp (3-4 jours)
 
@@ -425,6 +438,179 @@ data/knowledge-base/
 | **P3** | 5 + 6 | 5-6j | Dashboard + Docs | Support |
 
 **Recommandation**: Commencer par P0 pour couvrir les cas d'usage les plus demandés (restaurants, e-commerce).
+
+---
+
+## 5bis. Schémas JSON Détaillés par Type de Catalogue
+
+### Schema A: Produits E-commerce (universal_ecom, retailer, grocery, producer)
+
+```json
+{
+  "$schema": "vocalia-catalog-product-v1",
+  "tenant_id": "client_xyz",
+  "last_sync": "2026-02-03T10:00:00Z",
+  "products": [
+    {
+      "id": "SKU-001",
+      "name": "T-Shirt Classic",
+      "category": "vetements/hauts",
+      "price": 29.99,
+      "currency": "EUR",
+      "stock": 45,
+      "in_stock": true,
+      "variants": [
+        {"size": "S", "color": "bleu", "stock": 10},
+        {"size": "M", "color": "bleu", "stock": 15},
+        {"size": "L", "color": "noir", "stock": 20}
+      ],
+      "description": "T-shirt 100% coton bio",
+      "tags": ["bestseller", "eco"],
+      "voice_description": "T-shirt classic en coton bio, disponible en S, M et L, coloris bleu et noir, à 29,99 euros"
+    }
+  ]
+}
+```
+
+### Schema B: Menu Restaurant (restaurateur, bakery)
+
+```json
+{
+  "$schema": "vocalia-catalog-menu-v1",
+  "tenant_id": "restaurant_chez_omar",
+  "last_sync": "2026-02-03T10:00:00Z",
+  "menu": {
+    "categories": [
+      {
+        "name": "Entrées",
+        "items": [
+          {
+            "id": "E01",
+            "name": "Salade marocaine",
+            "price": 35,
+            "currency": "MAD",
+            "available": true,
+            "description": "Tomates, concombres, oignons, huile d'olive",
+            "allergens": [],
+            "dietary": ["vegan", "gluten-free"],
+            "voice_description": "Salade marocaine fraîche à 35 dirhams, végane et sans gluten"
+          }
+        ]
+      },
+      {
+        "name": "Plats",
+        "items": [
+          {
+            "id": "P01",
+            "name": "Couscous Royal",
+            "price": 120,
+            "currency": "MAD",
+            "available": true,
+            "description": "Semoule, légumes, agneau, poulet, merguez",
+            "allergens": ["gluten"],
+            "dietary": [],
+            "preparation_time": "25min",
+            "voice_description": "Couscous royal avec agneau, poulet et merguez à 120 dirhams, préparation 25 minutes"
+          }
+        ]
+      }
+    ],
+    "specials": {
+      "menu_du_jour": {
+        "price": 85,
+        "includes": ["entrée", "plat", "dessert"],
+        "voice_description": "Menu du jour à 85 dirhams avec entrée, plat et dessert au choix"
+      }
+    }
+  }
+}
+```
+
+### Schema C: Services + Créneaux (mechanic, stylist, healer, dental, gym)
+
+```json
+{
+  "$schema": "vocalia-catalog-services-v1",
+  "tenant_id": "garage_aziz",
+  "last_sync": "2026-02-03T10:00:00Z",
+  "services": [
+    {
+      "id": "SRV-001",
+      "name": "Révision complète",
+      "category": "maintenance",
+      "price": 250,
+      "currency": "MAD",
+      "duration_minutes": 120,
+      "description": "Vidange, filtres, freins, contrôle 50 points",
+      "requires_appointment": true,
+      "voice_description": "Révision complète à 250 dirhams, durée 2 heures, sur rendez-vous"
+    }
+  ],
+  "slots": {
+    "available_dates": ["2026-02-04", "2026-02-05", "2026-02-06"],
+    "slots_by_date": {
+      "2026-02-04": [
+        {"time": "09:00", "available": true, "service_ids": ["SRV-001"]},
+        {"time": "11:00", "available": false},
+        {"time": "14:00", "available": true, "service_ids": ["SRV-001", "SRV-002"]}
+      ]
+    }
+  }
+}
+```
+
+### Schema D: Véhicules Location (renter)
+
+```json
+{
+  "$schema": "vocalia-catalog-fleet-v1",
+  "tenant_id": "loc_auto_casa",
+  "last_sync": "2026-02-03T10:00:00Z",
+  "vehicles": [
+    {
+      "id": "VEH-001",
+      "type": "berline",
+      "brand": "Renault",
+      "model": "Megane",
+      "year": 2024,
+      "price_per_day": 350,
+      "currency": "MAD",
+      "fuel": "essence",
+      "transmission": "automatique",
+      "seats": 5,
+      "available_from": "2026-02-05",
+      "available_to": "2026-02-28",
+      "pickup_locations": ["Aéroport Casa", "Gare Casa Voyageurs"],
+      "voice_description": "Renault Megane 2024 automatique, 5 places, à 350 dirhams par jour, disponible du 5 au 28 février"
+    }
+  ]
+}
+```
+
+### Schema E: Voyages (travel_agent)
+
+```json
+{
+  "$schema": "vocalia-catalog-trips-v1",
+  "tenant_id": "voyage_plus",
+  "last_sync": "2026-02-03T10:00:00Z",
+  "trips": [
+    {
+      "id": "TRIP-001",
+      "destination": "Istanbul",
+      "country": "Turquie",
+      "type": "circuit",
+      "duration_days": 7,
+      "price_from": 8500,
+      "currency": "MAD",
+      "includes": ["vol", "hotel 4*", "petit-dejeuner", "visites"],
+      "departures": ["2026-03-15", "2026-03-22", "2026-04-05"],
+      "places_remaining": 12,
+      "voice_description": "Circuit Istanbul 7 jours à partir de 8500 dirhams, vol et hôtel 4 étoiles inclus, 12 places disponibles"
+    }
+  ]
+}
+```
 
 ---
 

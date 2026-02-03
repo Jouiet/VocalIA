@@ -1,0 +1,150 @@
+{
+  "$schema": "vocalia-catalog-trips-v1",
+  "tenant_id": "voyage_plus",
+  "last_sync": "2026-02-03T10:00:00Z",
+  "source": "custom",
+  "trips": [
+    {
+      "id": "TRIP-001",
+      "destination": "Istanbul",
+      "country": "Turquie",
+      "type": "circuit",
+      "duration_days": 7,
+      "duration_nights": 6,
+      "price_from": 8500,
+      "price_single": 1500,
+      "currency": "MAD",
+      "includes": ["vol", "hotel", "petit-dejeuner", "transferts", "visites", "guide"],
+      "excludes": ["repas non mentionnés", "dépenses personnelles", "pourboires"],
+      "departures": ["2026-03-15", "2026-03-22", "2026-04-05", "2026-04-19"],
+      "places_remaining": 12,
+      "hotel_rating": 4,
+      "departure_city": "Casablanca",
+      "min_participants": 10,
+      "max_participants": 25,
+      "highlights": [
+        "Mosquée Bleue",
+        "Sainte-Sophie",
+        "Grand Bazar",
+        "Croisière sur le Bosphore",
+        "Palais de Topkapi"
+      ],
+      "itinerary": [
+        {"day": 1, "title": "Casablanca - Istanbul", "description": "Vol et installation hôtel", "meals": [], "accommodation": "Hôtel 4* Sultanahmet"},
+        {"day": 2, "title": "Vieille ville", "description": "Sainte-Sophie, Mosquée Bleue, Hippodrome", "meals": ["petit-dejeuner"], "accommodation": "Hôtel 4* Sultanahmet"},
+        {"day": 3, "title": "Palais et Bazar", "description": "Topkapi, Grand Bazar, Bazar Égyptien", "meals": ["petit-dejeuner"], "accommodation": "Hôtel 4* Sultanahmet"},
+        {"day": 4, "title": "Bosphore", "description": "Croisière, Palais Dolmabahçe", "meals": ["petit-dejeuner", "dejeuner"], "accommodation": "Hôtel 4* Sultanahmet"},
+        {"day": 5, "title": "Quartiers modernes", "description": "Taksim, Istiklal, Tour Galata", "meals": ["petit-dejeuner"], "accommodation": "Hôtel 4* Sultanahmet"},
+        {"day": 6, "title": "Journée libre", "description": "Temps libre pour shopping", "meals": ["petit-dejeuner"], "accommodation": "Hôtel 4* Sultanahmet"},
+        {"day": 7, "title": "Istanbul - Casablanca", "description": "Transfert aéroport, vol retour", "meals": ["petit-dejeuner"], "accommodation": null}
+      ],
+      "voice_description": "Circuit Istanbul 7 jours à partir de 8500 dirhams, vol et hôtel 4 étoiles inclus, 12 places disponibles, prochains départs 15 et 22 mars"
+    },
+    {
+      "id": "TRIP-002",
+      "destination": "Dubaï",
+      "country": "Émirats Arabes Unis",
+      "type": "sejour",
+      "duration_days": 5,
+      "duration_nights": 4,
+      "price_from": 7900,
+      "currency": "MAD",
+      "includes": ["vol", "hotel", "petit-dejeuner", "transferts"],
+      "departures": ["2026-03-01", "2026-03-08", "2026-03-15"],
+      "places_remaining": 8,
+      "hotel_rating": 5,
+      "departure_city": "Casablanca",
+      "highlights": ["Burj Khalifa", "Palm Jumeirah", "Desert Safari", "Dubai Mall"],
+      "voice_description": "Séjour Dubaï 5 jours hôtel 5 étoiles à partir de 7900 dirhams, 8 places disponibles"
+    },
+    {
+      "id": "TRIP-003",
+      "destination": "Marrakech",
+      "country": "Maroc",
+      "type": "weekend",
+      "duration_days": 3,
+      "duration_nights": 2,
+      "price_from": 1500,
+      "currency": "MAD",
+      "includes": ["hotel", "petit-dejeuner", "diner-spectacle"],
+      "departures": ["2026-02-14", "2026-02-21", "2026-02-28"],
+      "places_remaining": 20,
+      "hotel_rating": 4,
+      "departure_city": "Casablanca",
+      "highlights": ["Jemaa el-Fna", "Jardins Majorelle", "Médina", "Dîner-spectacle"],
+      "voice_description": "Weekend Marrakech 3 jours à 1500 dirhams, hôtel 4 étoiles et dîner-spectacle inclus, 20 places disponibles"
+    },
+    {
+      "id": "TRIP-004",
+      "destination": "Paris",
+      "country": "France",
+      "type": "circuit",
+      "duration_days": 6,
+      "duration_nights": 5,
+      "price_from": 12000,
+      "currency": "MAD",
+      "includes": ["vol", "hotel", "petit-dejeuner", "visites", "pass-metro"],
+      "departures": ["2026-04-01", "2026-04-15", "2026-05-01"],
+      "places_remaining": 5,
+      "hotel_rating": 3,
+      "departure_city": "Casablanca",
+      "highlights": ["Tour Eiffel", "Louvre", "Versailles", "Montmartre", "Croisière Seine"],
+      "voice_description": "Circuit Paris 6 jours à partir de 12000 dirhams, visites et pass métro inclus, seulement 5 places restantes"
+    },
+    {
+      "id": "TRIP-005",
+      "destination": "Santorin",
+      "country": "Grèce",
+      "type": "sejour",
+      "duration_days": 8,
+      "duration_nights": 7,
+      "price_from": 15000,
+      "currency": "MAD",
+      "includes": ["vol", "hotel", "demi-pension", "transferts"],
+      "departures": ["2026-06-01", "2026-06-15", "2026-07-01"],
+      "places_remaining": 15,
+      "hotel_rating": 4,
+      "departure_city": "Casablanca",
+      "highlights": ["Oia au coucher du soleil", "Plages volcaniques", "Fira", "Croisière caldera"],
+      "voice_description": "Séjour Santorin 8 jours en demi-pension à partir de 15000 dirhams, hôtel 4 étoiles, 15 places disponibles pour l'été"
+    }
+  ],
+  "destinations": [
+    {
+      "id": "DEST-01",
+      "name": "Istanbul",
+      "country": "Turquie",
+      "continent": "europe",
+      "description": "Carrefour entre Orient et Occident",
+      "best_season": ["printemps", "automne"],
+      "visa_required": false
+    },
+    {
+      "id": "DEST-02",
+      "name": "Dubaï",
+      "country": "Émirats Arabes Unis",
+      "continent": "moyen-orient",
+      "description": "Luxe et modernité au cœur du désert",
+      "best_season": ["automne", "hiver", "printemps"],
+      "visa_required": false
+    },
+    {
+      "id": "DEST-03",
+      "name": "Paris",
+      "country": "France",
+      "continent": "europe",
+      "description": "La ville lumière",
+      "best_season": ["printemps", "ete", "automne"],
+      "visa_required": true
+    },
+    {
+      "id": "DEST-04",
+      "name": "Santorin",
+      "country": "Grèce",
+      "continent": "europe",
+      "description": "Île volcanique aux maisons blanches",
+      "best_season": ["printemps", "ete"],
+      "visa_required": true
+    }
+  ]
+}

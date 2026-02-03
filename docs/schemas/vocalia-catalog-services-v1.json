@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vocalia-catalog-services-v1",
+  "title": "VocalIA Services Catalog Schema",
+  "description": "Schema for service-based businesses with appointment slots (mechanic, stylist, healer, dental, gym, spa, planner, notary, architect personas)",
+  "type": "object",
+  "required": ["$schema", "tenant_id", "last_sync", "services"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "vocalia-catalog-services-v1"
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique tenant identifier"
+    },
+    "last_sync": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last synchronization"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["custom", "calendly", "google_calendar", "acuity", "csv"],
+      "description": "Data source"
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/service"
+      }
+    },
+    "slots": {
+      "$ref": "#/$defs/availability"
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provider"
+      },
+      "description": "Service providers (e.g., stylists, mechanics)"
+    }
+  },
+  "$defs": {
+    "service": {
+      "type": "object",
+      "required": ["id", "name", "price", "currency", "duration_minutes"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique service identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Service name"
+        },
+        "category": {
+          "type": "string",
+          "description": "Service category"
+        },
+        "price": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Service price"
+        },
+        "price_max": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Maximum price (for variable pricing)"
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["MAD", "EUR", "USD", "GBP"]
+        },
+        "duration_minutes": {
+          "type": "integer",
+          "minimum": 5,
+          "description": "Service duration in minutes"
+        },
+        "description": {
+          "type": "string",
+          "description": "Service description"
+        },
+        "requires_appointment": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether appointment is required"
+        },
+        "available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether service is currently offered"
+        },
+        "provider_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of providers who can perform this service"
+        },
+        "voice_description": {
+          "type": "string",
+          "description": "Voice-optimized description for TTS"
+        }
+      }
+    },
+    "availability": {
+      "type": "object",
+      "properties": {
+        "available_dates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "date"
+          },
+          "description": "List of dates with availability"
+        },
+        "slots_by_date": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/slot"
+            }
+          },
+          "description": "Available slots indexed by date"
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "required": ["time", "available"],
+      "properties": {
+        "time": {
+          "type": "string",
+          "pattern": "^[0-2][0-9]:[0-5][0-9]$",
+          "description": "Slot time in HH:MM format"
+        },
+        "available": {
+          "type": "boolean",
+          "description": "Whether slot is available"
+        },
+        "service_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Services available at this slot"
+        },
+        "provider_id": {
+          "type": "string",
+          "description": "Provider available at this slot"
+        }
+      }
+    },
+    "provider": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "specialties": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "available_days": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          }
+        }
+      }
+    }
+  }
+}

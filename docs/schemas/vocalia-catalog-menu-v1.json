@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vocalia-catalog-menu-v1",
+  "title": "VocalIA Menu Catalog Schema",
+  "description": "Schema for restaurant/bakery menus (restaurateur, bakery personas)",
+  "type": "object",
+  "required": ["$schema", "tenant_id", "last_sync", "menu"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "vocalia-catalog-menu-v1"
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique tenant identifier"
+    },
+    "last_sync": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last synchronization"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["custom", "pos_system", "csv", "json"],
+      "description": "Data source"
+    },
+    "menu": {
+      "$ref": "#/$defs/menu"
+    }
+  },
+  "$defs": {
+    "menu": {
+      "type": "object",
+      "required": ["categories"],
+      "properties": {
+        "categories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/category"
+          }
+        },
+        "specials": {
+          "type": "object",
+          "properties": {
+            "menu_du_jour": {
+              "$ref": "#/$defs/special"
+            },
+            "menu_enfant": {
+              "$ref": "#/$defs/special"
+            },
+            "formule_midi": {
+              "$ref": "#/$defs/special"
+            }
+          }
+        },
+        "opening_hours": {
+          "type": "object",
+          "description": "Restaurant opening hours by day"
+        }
+      }
+    },
+    "category": {
+      "type": "object",
+      "required": ["name", "items"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Category name (e.g., Entrées, Plats, Desserts)"
+        },
+        "description": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/menu_item"
+          }
+        }
+      }
+    },
+    "menu_item": {
+      "type": "object",
+      "required": ["id", "name", "price", "currency"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique item identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Dish name"
+        },
+        "price": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Price"
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["MAD", "EUR", "USD", "GBP"]
+        },
+        "available": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether dish is currently available"
+        },
+        "description": {
+          "type": "string",
+          "description": "Dish description and ingredients"
+        },
+        "allergens": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["gluten", "dairy", "nuts", "eggs", "fish", "shellfish", "soy", "sesame", "celery", "mustard", "sulfites"]
+          },
+          "description": "Allergen list"
+        },
+        "dietary": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["vegan", "vegetarian", "gluten-free", "halal", "kosher", "low-carb", "keto"]
+          },
+          "description": "Dietary information"
+        },
+        "preparation_time": {
+          "type": "string",
+          "pattern": "^[0-9]+min$",
+          "description": "Preparation time (e.g., '25min')"
+        },
+        "spiciness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5,
+          "description": "Spiciness level 0-5"
+        },
+        "voice_description": {
+          "type": "string",
+          "description": "Voice-optimized description for TTS"
+        },
+        "image_url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "special": {
+      "type": "object",
+      "properties": {
+        "price": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string" },
+        "includes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "available_days": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+          }
+        },
+        "voice_description": { "type": "string" }
+      }
+    }
+  }
+}
