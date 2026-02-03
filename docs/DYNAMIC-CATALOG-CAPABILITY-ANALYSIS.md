@@ -30,41 +30,41 @@
 
 ### 0.1 Catégorisation des Besoins Catalogue par Persona
 
-| Catégorie | Personas | Besoin Principal | Couverture Doc |
+| Catégorie | Personas | Besoin Principal | Couverture Implementation |
 |:----------|:---------|:-----------------|:--------------:|
-| **CRITIQUE - Catalogue Produits** | 10 | Produits + prix + stock temps réel | ⚠️ PARTIEL |
-| **MOYEN - Catalogue Services** | 10 | Services + tarifs + disponibilité | ❌ MANQUANT |
+| **CRITIQUE - Catalogue Produits** | 10 | Produits + prix + stock temps réel | ✅ 6 connectors (~64% market) |
+| **MOYEN - Catalogue Services** | 10 | Services + tarifs + disponibilité | ✅ Services + Calendar Slots |
 | **FAIBLE - Services Personnalisés** | 20 | Pas de catalogue (devis, consultations) | ✅ Non concerné |
 
 ### 0.2 Détail - Personas CRITIQUES (Catalogue Produits)
 
-| Persona | ID | Type Catalogue | Données Requises | Status Doc |
-|:--------|:---|:---------------|:-----------------|:----------:|
-| **Restaurant** | restaurateur_v1 | Menu dynamique | Plats, prix, dispo, allergènes | ⚠️ Mentionné |
-| **Boulangerie** | bakery_v1 | Produits | Pains, viennoiseries, commandes | ❌ MANQUANT |
-| **Grocery/Épicerie** | grocery_v1 | Stock temps réel | Produits, prix, promos, dispo | ❌ MANQUANT |
-| **Retail/Détaillant** | retailer_v1 | Inventaire | Stock, prix, tailles | ⚠️ Partiel |
-| **E-commerce** | universal_ecom_v1 | Catalogue full | Tout | ⚠️ Shopify only |
-| **Producteur** | producer_v1 | Produits fermiers | Fruits, légumes, dispo | ❌ MANQUANT |
-| **Pharmacie** | pharmacist_v1 | Médicaments | Stock, alternatives | ❌ MANQUANT |
-| **Location Véhicules** | renter_v1 | Fleet | Véhicules, tarifs, dates dispo | ⚠️ Mentionné |
-| **Agence Voyage** | travel_agent_v1 | Voyages | Destinations, prix, dates | ❌ MANQUANT |
-| **Fabricant** | manufacturer_v1 | Pièces/Produits | Catalogue, délais | ❌ MANQUANT |
+| Persona | ID | Type Catalogue | Connector | Status |
+|:--------|:---|:---------------|:----------|:------:|
+| **Restaurant** | restaurateur_v1 | Menu dynamique | Square/Lightspeed K-Series | ✅ |
+| **Boulangerie** | bakery_v1 | Produits | Custom/WooCommerce | ✅ |
+| **Grocery/Épicerie** | grocery_v1 | Stock temps réel | All connectors | ✅ |
+| **Retail/Détaillant** | retailer_v1 | Inventaire | Shopify/WooCommerce/Magento | ✅ |
+| **E-commerce** | universal_ecom_v1 | Catalogue full | 6 connectors (~64%) | ✅ |
+| **Producteur** | producer_v1 | Produits fermiers | Custom JSON/CSV | ✅ |
+| **Pharmacie** | pharmacist_v1 | Médicaments | Custom JSON/CSV | ✅ |
+| **Location Véhicules** | renter_v1 | Fleet | FLEET catalog type | ✅ |
+| **Agence Voyage** | travel_agent_v1 | Voyages | TRIPS catalog type | ✅ |
+| **Fabricant** | manufacturer_v1 | Pièces/Produits | All connectors | ✅ |
 
 ### 0.3 Détail - Personas MOYENS (Catalogue Services)
 
-| Persona | ID | Type Catalogue | Données Requises | Status Doc |
-|:--------|:---|:---------------|:-----------------|:----------:|
-| **Garage** | mechanic_v1 | Services auto | Prestations, tarifs, créneaux | ❌ MANQUANT |
-| **Spa/Institut** | stylist_v1 | Soins | Prestations, prix, durée | ❌ MANQUANT |
-| **Salle de sport** | gym_v1 | Abonnements + Cours | Types, horaires, places | ❌ MANQUANT |
-| **Coiffeur** | hairdresser_v1 | Prestations | Services, tarifs | ❌ MANQUANT |
-| **Nettoyage** | cleaner_v1 | Services | Types, tarifs horaires | ❌ MANQUANT |
-| **Formation** | trainer_v1 | Formations | Catalogue, dates, places | ❌ MANQUANT |
-| **Médecin** | healer_v1 | Consultations | Spécialités, créneaux | ❌ MANQUANT |
-| **Dentiste** | dental_intake_v1 | Soins dentaires | Actes, tarifs, forfaits | ❌ MANQUANT |
-| **Hôtel** | concierge_v1 | Services | Room service, activités | ❌ MANQUANT |
-| **Événementiel** | planner_v1 | Prestations | Packages, options | ❌ MANQUANT |
+| Persona | ID | Type Catalogue | Connector | Status |
+|:--------|:---|:---------------|:----------|:------:|
+| **Garage** | mechanic_v1 | Services auto | SERVICES + CalendarSlots | ✅ |
+| **Spa/Institut** | stylist_v1 | Soins | SERVICES + CalendarSlots | ✅ |
+| **Salle de sport** | gym_v1 | Abonnements + Cours | PACKAGES + CalendarSlots | ✅ |
+| **Coiffeur** | hairdresser_v1 | Prestations | SERVICES + CalendarSlots | ✅ |
+| **Nettoyage** | cleaner_v1 | Services | SERVICES catalog type | ✅ |
+| **Formation** | trainer_v1 | Formations | SERVICES + CalendarSlots | ✅ |
+| **Médecin** | healer_v1 | Consultations | SERVICES + CalendarSlots | ✅ |
+| **Dentiste** | dental_intake_v1 | Soins dentaires | SERVICES + CalendarSlots | ✅ |
+| **Hôtel** | concierge_v1 | Services | PACKAGES catalog type | ✅ |
+| **Événementiel** | planner_v1 | Prestations | PACKAGES catalog type | ✅ |
 
 ### 0.4 Personas NON Concernés (20 - Services Personnalisés)
 
@@ -72,17 +72,17 @@ Ces personas n'ont PAS besoin de catalogue dynamique (devis sur mesure, consulta
 
 `agency_v3`, `contractor_lead_v1`, `builder_v1`, `architect_v1`, `consultant_v1`, `accountant_v1`, `notary_v1`, `counselor_v1`, `doctor_v1`, `specialist_v1`, `it_services_v1`, `recruiter_v1`, `insurer_v1`, `collector_v1`, `logistician_v1`, `dispatcher_v1`, `funeral_care_v1`, `property_mgr_v1`, `real_estate_agent_v1`, `universal_sme_v1`
 
-### 0.5 GAPS Identifiés dans le Document
+### 0.5 GAPS Identifiés → RÉSOLUS (Session 250.71-72)
 
-| Gap | Description | Impact | Priorité |
-|:----|:------------|:-------|:--------:|
-| **G1** | Pas de connecteur POS restaurant (Square, Lightspeed, etc.) | bakery, restaurateur | P0 |
-| **G2** | Pas de connecteur Pharmacie (systèmes officine) | pharmacist | P2 |
-| **G3** | Pas de gestion des créneaux/slots services | mechanic, stylist, gym, healer, dental | P1 |
-| **G4** | Pas de connecteur Fleet/Location (Rent-a-car systems) | renter | P2 |
-| **G5** | Pas de connecteur GDS/Voyages (Amadeus, Sabre) | travel_agent | P2 |
-| **G6** | grocery_v1 mal couvert (besoin stock temps réel) | grocery | P1 |
-| **G7** | Pas de schéma pour catalogues services (vs produits) | 10 personas | P1 |
+| Gap | Description | Solution Implémentée | Status |
+|:----|:------------|:--------------------|:------:|
+| **G1** | Pas de connecteur POS restaurant | SquareCatalogConnector + LightspeedCatalogConnector | ✅ |
+| **G2** | Pas de connecteur Pharmacie | CustomCatalogConnector (JSON/CSV) | ✅ |
+| **G3** | Pas de gestion créneaux/slots | CalendarSlotsConnector (Google Calendar API v3) | ✅ |
+| **G4** | Pas de connecteur Fleet/Location | FLEET catalog type + sample data | ✅ |
+| **G5** | Pas de connecteur GDS/Voyages | TRIPS catalog type + sample data | ✅ |
+| **G6** | grocery_v1 mal couvert | All connectors support inventory | ✅ |
+| **G7** | Pas de schéma services | SERVICES + PACKAGES catalog types | ✅ |
 
 ---
 
