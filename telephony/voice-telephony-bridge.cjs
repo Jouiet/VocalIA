@@ -1139,6 +1139,134 @@ async function createGrokSession(callInfo) {
                 },
                 required: ['query']
               }
+            },
+            // ============================================
+            // SERVICE CATALOG TOOLS (Phase 4.2)
+            // ============================================
+            {
+              type: 'function',
+              name: 'get_services',
+              description: 'Obtenir la liste des services disponibles (garage, coiffeur, spa, médecin, etc.).',
+              parameters: {
+                type: 'object',
+                properties: {
+                  category: {
+                    type: 'string',
+                    description: 'Catégorie de service (ex: "maintenance", "soins", "consultation")'
+                  },
+                  date: {
+                    type: 'string',
+                    description: 'Date pour vérifier disponibilité (format YYYY-MM-DD)'
+                  }
+                },
+                required: []
+              }
+            },
+            {
+              type: 'function',
+              name: 'get_available_slots',
+              description: 'Obtenir les créneaux horaires disponibles pour un service.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  service_id: {
+                    type: 'string',
+                    description: 'Identifiant du service'
+                  },
+                  service_name: {
+                    type: 'string',
+                    description: 'Nom du service si ID inconnu'
+                  },
+                  date: {
+                    type: 'string',
+                    description: 'Date souhaitée (format YYYY-MM-DD)'
+                  },
+                  provider_id: {
+                    type: 'string',
+                    description: 'Identifiant du prestataire spécifique (optionnel)'
+                  }
+                },
+                required: ['date']
+              }
+            },
+            {
+              type: 'function',
+              name: 'get_packages',
+              description: 'Obtenir les forfaits et packages disponibles (hôtel, événements, spa).',
+              parameters: {
+                type: 'object',
+                properties: {
+                  category: {
+                    type: 'string',
+                    description: 'Type de package (ex: "weekend", "mariage", "bien-être")'
+                  },
+                  max_price: {
+                    type: 'number',
+                    description: 'Budget maximum'
+                  }
+                },
+                required: []
+              }
+            },
+            // ============================================
+            // SPECIALIZED CATALOG TOOLS (Phase 4.3)
+            // ============================================
+            {
+              type: 'function',
+              name: 'get_vehicles',
+              description: 'Obtenir les véhicules disponibles à la location.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  vehicle_type: {
+                    type: 'string',
+                    enum: ['citadine', 'berline', 'suv', 'utilitaire', 'luxe'],
+                    description: 'Type de véhicule'
+                  },
+                  start_date: {
+                    type: 'string',
+                    description: 'Date de début de location (format YYYY-MM-DD)'
+                  },
+                  end_date: {
+                    type: 'string',
+                    description: 'Date de fin de location (format YYYY-MM-DD)'
+                  },
+                  transmission: {
+                    type: 'string',
+                    enum: ['manuelle', 'automatique'],
+                    description: 'Type de transmission'
+                  }
+                },
+                required: []
+              }
+            },
+            {
+              type: 'function',
+              name: 'get_trips',
+              description: 'Obtenir les voyages et circuits disponibles.',
+              parameters: {
+                type: 'object',
+                properties: {
+                  destination: {
+                    type: 'string',
+                    description: 'Destination souhaitée (ville ou pays)'
+                  },
+                  trip_type: {
+                    type: 'string',
+                    enum: ['circuit', 'sejour', 'weekend', 'croisiere'],
+                    description: 'Type de voyage'
+                  },
+                  max_budget: {
+                    type: 'number',
+                    description: 'Budget maximum par personne'
+                  },
+                  departure_month: {
+                    type: 'string',
+                    description: 'Mois de départ souhaité (ex: "mars", "avril")'
+                  }
+                },
+                required: []
+              }
             }
           ]
         }
@@ -1531,6 +1659,28 @@ async function handleFunctionCall(session, item) {
         result = await handleSearchCatalog(session, args);
         break;
 
+      // SERVICE CATALOG TOOLS (Phase 4.2)
+      case 'get_services':
+        result = await handleGetServices(session, args);
+        break;
+
+      case 'get_available_slots':
+        result = await handleGetAvailableSlots(session, args);
+        break;
+
+      case 'get_packages':
+        result = await handleGetPackages(session, args);
+        break;
+
+      // SPECIALIZED CATALOG TOOLS (Phase 4.3)
+      case 'get_vehicles':
+        result = await handleGetVehicles(session, args);
+        break;
+
+      case 'get_trips':
+        result = await handleGetTrips(session, args);
+        break;
+
       default:
         console.log(`[Cognitive-Tools] Unknown function: ${item.name}`);
         result = { success: false, error: `Function ${item.name} not implemented` };
@@ -1773,6 +1923,271 @@ async function handleSearchCatalog(session, args) {
   } catch (error) {
     console.error(`[Catalog] Search error:`, error);
     return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite lors de la recherche." };
+  }
+}
+
+// ============================================
+// SERVICE CATALOG HANDLERS (Phase 4.2)
+// ============================================
+
+/**
+ * Get list of services (garage, spa, medical, etc.)
+ */
+async function handleGetServices(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  console.log(`[Catalog] Getting services for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+    const result = await store.getServices(tenantId, {
+      category: args.category,
+      date: args.date
+    });
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Les services ne sont pas disponibles pour le moment." };
+    }
+
+    return {
+      success: true,
+      services: result.services,
+      slots: result.slots,
+      voiceResponse: result.voiceSummary
+    };
+  } catch (error) {
+    console.error(`[Catalog] Services error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+  }
+}
+
+/**
+ * Get available appointment slots for a service
+ */
+async function handleGetAvailableSlots(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  const date = args.date || new Date().toISOString().split('T')[0];
+
+  console.log(`[Catalog] Getting slots for tenant: ${tenantId}, date: ${date}`);
+
+  try {
+    const store = getCatalogStore();
+
+    // If service name provided, search for ID first
+    let serviceId = args.service_id;
+    if (!serviceId && args.service_name) {
+      const searchResult = await store.searchCatalog(tenantId, args.service_name, { limit: 1 });
+      if (searchResult.success && searchResult.results.length > 0) {
+        serviceId = searchResult.results[0].id;
+      }
+    }
+
+    const result = await store.getServices(tenantId, {
+      date: date
+    });
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Je ne peux pas consulter les créneaux disponibles." };
+    }
+
+    // Filter slots for the specific service if provided
+    let availableSlots = result.slots || [];
+    if (serviceId && Array.isArray(availableSlots)) {
+      availableSlots = availableSlots.filter(slot =>
+        slot.available && (!slot.service_ids || slot.service_ids.includes(serviceId))
+      );
+    }
+
+    // Generate voice response
+    let voiceResponse;
+    if (availableSlots.length === 0) {
+      voiceResponse = `Aucun créneau disponible pour le ${date}. Voulez-vous essayer une autre date?`;
+    } else {
+      const slotTimes = availableSlots.slice(0, 3).map(s => s.time).join(', ');
+      voiceResponse = `Créneaux disponibles le ${date}: ${slotTimes}. Quel horaire vous convient?`;
+    }
+
+    return {
+      success: true,
+      date: date,
+      slots: availableSlots,
+      count: availableSlots.length,
+      voiceResponse: voiceResponse
+    };
+  } catch (error) {
+    console.error(`[Catalog] Slots error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+  }
+}
+
+/**
+ * Get packages (hotel, events, spa packages)
+ */
+async function handleGetPackages(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  console.log(`[Catalog] Getting packages for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+    const result = await store.browseCatalog(tenantId, {
+      category: args.category || 'packages',
+      limit: 5
+    });
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Les forfaits ne sont pas disponibles." };
+    }
+
+    // Filter by max price if provided
+    let packages = result.items || [];
+    if (args.max_price) {
+      packages = packages.filter(p => p.price <= args.max_price);
+    }
+
+    // Generate voice response
+    let voiceResponse;
+    if (packages.length === 0) {
+      voiceResponse = args.max_price
+        ? `Aucun forfait disponible dans votre budget de ${args.max_price} dirhams.`
+        : "Aucun forfait disponible actuellement.";
+    } else {
+      const names = packages.slice(0, 3).map(p => p.name).join(', ');
+      voiceResponse = `Nous proposons: ${names}. Lequel vous intéresse?`;
+    }
+
+    return {
+      success: true,
+      packages: packages,
+      count: packages.length,
+      voiceResponse: voiceResponse
+    };
+  } catch (error) {
+    console.error(`[Catalog] Packages error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+  }
+}
+
+// ============================================
+// SPECIALIZED CATALOG HANDLERS (Phase 4.3)
+// ============================================
+
+/**
+ * Get available rental vehicles
+ */
+async function handleGetVehicles(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  console.log(`[Catalog] Getting vehicles for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+    const result = await store.browseCatalog(tenantId, {
+      category: args.vehicle_type,
+      limit: 5
+    });
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Les véhicules ne sont pas disponibles." };
+    }
+
+    let vehicles = result.items || [];
+
+    // Filter by date availability
+    if (args.start_date) {
+      vehicles = vehicles.filter(v => {
+        const availFrom = v.available_from || '1970-01-01';
+        const availTo = v.available_to || '2099-12-31';
+        return args.start_date >= availFrom && args.start_date <= availTo;
+      });
+    }
+
+    // Filter by transmission
+    if (args.transmission) {
+      vehicles = vehicles.filter(v => v.transmission === args.transmission);
+    }
+
+    // Generate voice response
+    let voiceResponse;
+    if (vehicles.length === 0) {
+      voiceResponse = "Aucun véhicule disponible avec ces critères. Voulez-vous élargir votre recherche?";
+    } else {
+      const vehList = vehicles.slice(0, 3).map(v =>
+        `${v.name} à ${v.price || v.price_per_day} dirhams par jour`
+      ).join(', ');
+      voiceResponse = `Véhicules disponibles: ${vehList}. Lequel vous intéresse?`;
+    }
+
+    return {
+      success: true,
+      vehicles: vehicles,
+      count: vehicles.length,
+      voiceResponse: voiceResponse
+    };
+  } catch (error) {
+    console.error(`[Catalog] Vehicles error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
+  }
+}
+
+/**
+ * Get available trips and travel packages
+ */
+async function handleGetTrips(session, args) {
+  const tenantId = session.metadata?.tenant_id || 'default';
+  console.log(`[Catalog] Getting trips for tenant: ${tenantId}`);
+
+  try {
+    const store = getCatalogStore();
+
+    // Search by destination if provided
+    let result;
+    if (args.destination) {
+      result = await store.searchCatalog(tenantId, args.destination, { limit: 5 });
+    } else {
+      result = await store.browseCatalog(tenantId, {
+        category: args.trip_type,
+        limit: 5
+      });
+    }
+
+    if (!result.success) {
+      return { success: false, error: result.error, voiceResponse: "Les voyages ne sont pas disponibles." };
+    }
+
+    let trips = result.items || result.results || [];
+
+    // Filter by type
+    if (args.trip_type) {
+      trips = trips.filter(t => t.type === args.trip_type);
+    }
+
+    // Filter by budget
+    if (args.max_budget) {
+      trips = trips.filter(t => (t.price || t.price_from) <= args.max_budget);
+    }
+
+    // Generate voice response
+    let voiceResponse;
+    if (trips.length === 0) {
+      voiceResponse = args.destination
+        ? `Aucun voyage disponible vers ${args.destination}. Voulez-vous une autre destination?`
+        : "Aucun voyage disponible avec ces critères.";
+    } else {
+      const tripList = trips.slice(0, 3).map(t => {
+        const price = t.price || t.price_from;
+        const dest = t.destination || t.name;
+        return `${dest} à partir de ${price} dirhams`;
+      }).join(', ');
+      voiceResponse = `Voyages disponibles: ${tripList}. Lequel vous intéresse?`;
+    }
+
+    return {
+      success: true,
+      trips: trips,
+      count: trips.length,
+      voiceResponse: voiceResponse
+    };
+  } catch (error) {
+    console.error(`[Catalog] Trips error:`, error);
+    return { success: false, error: error.message, voiceResponse: "Une erreur s'est produite." };
   }
 }
 

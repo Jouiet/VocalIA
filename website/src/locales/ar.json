@@ -160,12 +160,75 @@
       "overview": "نظرة عامة",
       "calls": "المكالمات",
       "agents": "الوكلاء الذكيين",
+      "catalog": "الكتالوج",
       "knowledge_base": "قاعدة المعرفة",
       "integrations": "التكاملات",
       "analytics": "التحليلات",
       "billing": "الفوترة",
       "settings": "الإعدادات"
     }
+  },
+  "catalog": {
+    "title": "كتالوج المنتجات",
+    "subtitle": "إدارة منتجاتك وقوائمك وخدماتك للذكاء الاصطناعي الصوتي",
+    "import": "استيراد",
+    "add_item": "إضافة منتج",
+    "sync": "مزامنة",
+    "last_sync": "آخر مزامنة",
+    "stats": {
+      "total": "إجمالي المنتجات",
+      "available": "المتاحة",
+      "categories": "الفئات",
+      "last_update": "آخر تحديث"
+    },
+    "types": {
+      "all": "الكل",
+      "products": "المنتجات",
+      "menu": "القائمة",
+      "services": "الخدمات",
+      "fleet": "المركبات",
+      "trips": "الرحلات",
+      "packages": "الباقات"
+    },
+    "table": {
+      "name": "الاسم",
+      "category": "الفئة",
+      "price": "السعر",
+      "stock": "المخزون",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "status": {
+      "available": "متاح",
+      "out_of_stock": "نفذ",
+      "limited": "محدود"
+    },
+    "empty": {
+      "title": "لا توجد منتجات",
+      "description": "ابدأ باستيراد أو إضافة منتجات إلى كتالوجك"
+    },
+    "modal": {
+      "import_title": "استيراد الكتالوج",
+      "import_desc": "ارفع ملف JSON أو CSV لاستيراد منتجاتك",
+      "add_title": "إضافة منتج",
+      "add_desc": "إنشاء منتج جديد في كتالوجك",
+      "name": "اسم المنتج",
+      "category": "الفئة",
+      "price": "السعر",
+      "description": "الوصف",
+      "voice_description": "الوصف الصوتي",
+      "voice_hint": "سيتم قراءة هذا الوصف بواسطة الذكاء الاصطناعي الصوتي",
+      "save": "حفظ",
+      "cancel": "إلغاء"
+    },
+    "voice_preview": {
+      "title": "معاينة صوتية",
+      "play": "تشغيل",
+      "stop": "إيقاف"
+    },
+    "search_placeholder": "البحث عن منتج...",
+    "filter_category": "تصفية حسب الفئة",
+    "filter_status": "تصفية حسب الحالة"
   },
   "widget_analytics": {
     "title": "Voice Widget Analytics",

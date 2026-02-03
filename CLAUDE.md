@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.77.0 | 03/02/2026 | Session 250.67 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> Version: 6.78.0 | 03/02/2026 | Session 250.69 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
 > **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
-> **Dashboards: 10/10 Data-driven ✅** | 0 bugs | 0 missing imports | 0 hardcoded values | All API connected
-> **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions | Auth: JWT | Heartbeat ✅
-> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **70 pages** | **21,600+ keys** | RTL ✅ | hreflang ary ✅
-> **Dynamic Catalog: 5 function tools ✅** | browse_catalog, get_menu, search_catalog, check_availability, get_item_details | Voice-optimized | LRU cache
+> **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
+> **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
+> i18n: 5 Languages (FR, EN, ES, AR, ARY) | **70 pages** | **21,925+ keys** | RTL ✅ | hreflang ary ✅
+> **Dynamic Catalog: 10 function tools + 7 API endpoints ✅** | browse_catalog, get_menu, get_services, get_vehicles, get_trips, search_catalog | Voice-optimized | LRU cache | CRUD Dashboard
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
 > **AEO: Speakable schema ✅** | **54 pages** | llms.txt ✅ | GPTBot/ClaudeBot/PerplexityBot in robots.txt
@@ -43,7 +43,8 @@
 | Health | **100%** | 39/39 checks |
 | Security | **100/100** | HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅ |
 
-**Session 250.67 DYNAMIC CATALOG:** catalog-connector.cjs (718 lines), tenant-catalog-store.cjs (800+ lines), 5 JSON schemas (product, menu, services, fleet, trips), 5 sample catalogs, 5 new function tools (browse_catalog, get_item_details, get_menu, check_item_availability, search_catalog), LRU cache, voice-optimized responses, 10/10 unit tests pass
+**Session 250.69 CATALOG DASHBOARD COMPLETE:** catalog.html (500+ lines), 9 pages updated with catalog nav link, 7 CRUD API endpoints (/api/tenants/:id/catalog/*), CRUD methods TenantCatalogStore (getItems, getItem, addItem, updateItem, removeItem, syncCatalog), i18n catalog.* 65+ keys × 5 locales (fr, en, es, ar, ary), WebSocket broadcast catalog events
+**Session 250.67-68 DYNAMIC CATALOG:** catalog-connector.cjs (718 lines), tenant-catalog-store.cjs (1000+ lines), 5 JSON schemas, 5 sample catalogs, 10 function tools (browse, menu, services, vehicles, trips, packages, slots, etc.), LRU cache, voice-optimized responses, 10/10 unit tests pass
 **Session 250.66 SSL/HTTPS VERIFIED:** Production https://vocalia.ma live with HTTP/2, HSTS (max-age=31536000; includeSubDomains; preload), CSP, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, X-XSS-Protection, Referrer-Policy, LiteSpeed server
 **Session 250.65 P1/P2 COMPLETE:** k6 load tests (smoke, load, stress, spike), onboarding.html wizard (4 steps), i18n onboarding 5 locales (40 keys each), SDKs ready (node v0.1.0, python v0.1.0), OpenAPI 520 lines, Deploy workflow NindoHost
 **Session 250.64 VOICE E2E COMPLETE:** ElevenLabs 27 voix, END-TO-END voice config fix (DB→Telephony): getTenantVoicePreferences(), session.metadata.voice_gender, loadVoicePreferences(), GoogleSheetsDB schema +voice_language/voice_gender/active_persona, api-client tenants resource, BUG FIX male voices (ar/fr/en/es_male), agents.html voice UI

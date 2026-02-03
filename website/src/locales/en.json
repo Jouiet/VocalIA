@@ -160,12 +160,75 @@
       "overview": "Overview",
       "calls": "Calls",
       "agents": "AI Agents",
+      "catalog": "Catalog",
       "knowledge_base": "Knowledge Base",
       "integrations": "Integrations",
       "analytics": "Analytics",
       "billing": "Billing",
       "settings": "Settings"
     }
+  },
+  "catalog": {
+    "title": "Product Catalog",
+    "subtitle": "Manage your products, menus and services for Voice AI",
+    "import": "Import",
+    "add_item": "Add Item",
+    "sync": "Sync",
+    "last_sync": "Last sync",
+    "stats": {
+      "total": "Total items",
+      "available": "Available",
+      "categories": "Categories",
+      "last_update": "Last update"
+    },
+    "types": {
+      "all": "All",
+      "products": "Products",
+      "menu": "Menu",
+      "services": "Services",
+      "fleet": "Vehicles",
+      "trips": "Trips",
+      "packages": "Packages"
+    },
+    "table": {
+      "name": "Name",
+      "category": "Category",
+      "price": "Price",
+      "stock": "Stock",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "status": {
+      "available": "Available",
+      "out_of_stock": "Out of Stock",
+      "limited": "Limited"
+    },
+    "empty": {
+      "title": "No items",
+      "description": "Start by importing or adding items to your catalog"
+    },
+    "modal": {
+      "import_title": "Import Catalog",
+      "import_desc": "Upload a JSON or CSV file to import your items",
+      "add_title": "Add Item",
+      "add_desc": "Create a new item in your catalog",
+      "name": "Item name",
+      "category": "Category",
+      "price": "Price",
+      "description": "Description",
+      "voice_description": "Voice description",
+      "voice_hint": "This description will be read by the Voice AI",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "voice_preview": {
+      "title": "Voice Preview",
+      "play": "Play",
+      "stop": "Stop"
+    },
+    "search_placeholder": "Search for an item...",
+    "filter_category": "Filter by category",
+    "filter_status": "Filter by status"
   },
   "widget_analytics": {
     "title": "Voice Widget Analytics",

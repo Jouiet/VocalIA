@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-02-03T00:24:46.217Z",
+  "tenants": {
+    "restaurant_test": {
+      "source": "custom",
+      "catalogType": "menu",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-restaurant-menu.json"
+    },
+    "garage_test": {
+      "source": "custom",
+      "catalogType": "services",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-garage-services.json"
+    },
+    "rental_test": {
+      "source": "custom",
+      "catalogType": "fleet",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-car-rental.json"
+    },
+    "travel_test": {
+      "source": "custom",
+      "catalogType": "trips",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-travel-trips.json"
+    },
+    "tenant1": {
+      "source": "custom",
+      "catalogType": "menu",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-restaurant-menu.json"
+    },
+    "tenant2": {
+      "source": "custom",
+      "catalogType": "products",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-ecommerce-products.json"
+    },
+    "tenant3": {
+      "source": "custom",
+      "catalogType": "services",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-garage-services.json"
+    },
+    "tenant4": {
+      "source": "custom",
+      "catalogType": "fleet",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-car-rental.json"
+    },
+    "voice_test": {
+      "source": "custom",
+      "catalogType": "menu",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-restaurant-menu.json"
+    },
+    "error_test": {
+      "source": "custom",
+      "catalogType": "menu",
+      "dataPath": "/Users/mac/Desktop/VocalIA/data/catalogs/sample-restaurant-menu.json"
+    }
+  }
+}

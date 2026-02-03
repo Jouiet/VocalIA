@@ -620,6 +620,217 @@ class TenantCatalogStore {
     };
   }
 
+  // ============================================
+  // CRUD OPERATIONS FOR DASHBOARD
+  // ============================================
+
+  /**
+   * Get all items from a catalog type
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} catalogType - Type: PRODUCTS, MENU, SERVICES, FLEET, TRIPS, PACKAGES
+   * @returns {Array} Array of items
+   */
+  getItems(tenantId, catalogType = 'PRODUCTS') {
+    const connector = this.connectors.get(tenantId);
+    if (!connector) {
+      return [];
+    }
+
+    try {
+      const items = connector._getItems();
+      return items || [];
+    } catch (error) {
+      console.error(`[TenantCatalogStore] getItems error: ${error.message}`);
+      return [];
+    }
+  }
+
+  /**
+   * Get single item by ID
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} catalogType - Catalog type
+   * @param {string} itemId - Item ID
+   * @returns {object|null} Item or null
+   */
+  getItem(tenantId, catalogType, itemId) {
+    const items = this.getItems(tenantId, catalogType);
+    return items.find(item => item.id === itemId) || null;
+  }
+
+  /**
+   * Add new item to catalog
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} catalogType - Catalog type
+   * @param {object} item - Item to add
+   * @returns {boolean} Success
+   */
+  addItem(tenantId, catalogType, item) {
+    const connector = this.connectors.get(tenantId);
+    if (!connector) {
+      console.error(`[TenantCatalogStore] Tenant not found: ${tenantId}`);
+      return false;
+    }
+
+    try {
+      // Add to connector's internal catalog
+      if (!connector.catalog) {
+        connector.catalog = { products: [], items: [] };
+      }
+
+      // Determine which array to use based on catalog type
+      const arrayKey = catalogType.toLowerCase() === 'menu' ? 'items' :
+                       catalogType.toLowerCase() === 'services' ? 'services' :
+                       catalogType.toLowerCase() === 'fleet' ? 'vehicles' :
+                       catalogType.toLowerCase() === 'trips' ? 'trips' :
+                       'products';
+
+      if (!connector.catalog[arrayKey]) {
+        connector.catalog[arrayKey] = [];
+      }
+
+      connector.catalog[arrayKey].push(item);
+
+      // Invalidate cache for this tenant
+      this.invalidateCache(tenantId);
+
+      // Save to disk if using custom connector
+      if (connector.config?.dataPath) {
+        this._saveTenantCatalog(tenantId, connector.catalog, catalogType);
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`[TenantCatalogStore] addItem error: ${error.message}`);
+      return false;
+    }
+  }
+
+  /**
+   * Update existing item
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} catalogType - Catalog type
+   * @param {string} itemId - Item ID to update
+   * @param {object} updates - Updated item data
+   * @returns {boolean} Success
+   */
+  updateItem(tenantId, catalogType, itemId, updates) {
+    const connector = this.connectors.get(tenantId);
+    if (!connector) return false;
+
+    try {
+      const arrayKey = catalogType.toLowerCase() === 'menu' ? 'items' :
+                       catalogType.toLowerCase() === 'services' ? 'services' :
+                       catalogType.toLowerCase() === 'fleet' ? 'vehicles' :
+                       catalogType.toLowerCase() === 'trips' ? 'trips' :
+                       'products';
+
+      const items = connector.catalog?.[arrayKey];
+      if (!items) return false;
+
+      const index = items.findIndex(item => item.id === itemId);
+      if (index === -1) return false;
+
+      items[index] = { ...items[index], ...updates, id: itemId };
+
+      this.invalidateCache(tenantId);
+
+      if (connector.config?.dataPath) {
+        this._saveTenantCatalog(tenantId, connector.catalog, catalogType);
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`[TenantCatalogStore] updateItem error: ${error.message}`);
+      return false;
+    }
+  }
+
+  /**
+   * Remove item from catalog
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} catalogType - Catalog type
+   * @param {string} itemId - Item ID to remove
+   * @returns {boolean} Success
+   */
+  removeItem(tenantId, catalogType, itemId) {
+    const connector = this.connectors.get(tenantId);
+    if (!connector) return false;
+
+    try {
+      const arrayKey = catalogType.toLowerCase() === 'menu' ? 'items' :
+                       catalogType.toLowerCase() === 'services' ? 'services' :
+                       catalogType.toLowerCase() === 'fleet' ? 'vehicles' :
+                       catalogType.toLowerCase() === 'trips' ? 'trips' :
+                       'products';
+
+      const items = connector.catalog?.[arrayKey];
+      if (!items) return false;
+
+      const index = items.findIndex(item => item.id === itemId);
+      if (index === -1) return false;
+
+      items.splice(index, 1);
+
+      this.invalidateCache(tenantId);
+
+      if (connector.config?.dataPath) {
+        this._saveTenantCatalog(tenantId, connector.catalog, catalogType);
+      }
+
+      return true;
+    } catch (error) {
+      console.error(`[TenantCatalogStore] removeItem error: ${error.message}`);
+      return false;
+    }
+  }
+
+  /**
+   * Sync catalog for tenant
+   * @param {string} tenantId - Tenant identifier
+   * @param {string} catalogType - Catalog type
+   * @param {object} options - Sync options
+   * @returns {object} Sync result
+   */
+  async syncCatalog(tenantId, catalogType, options = {}) {
+    return this.syncTenant(tenantId, options);
+  }
+
+  /**
+   * Invalidate cache for a tenant
+   * @param {string} tenantId - Tenant identifier
+   */
+  invalidateCache(tenantId) {
+    // Clear all cache entries for this tenant
+    for (const key of this.cache.cache.keys()) {
+      if (key.startsWith(`${tenantId}:`)) {
+        this.cache.cache.delete(key);
+      }
+    }
+  }
+
+  /**
+   * Save tenant catalog to disk
+   * @param {string} tenantId - Tenant identifier
+   * @param {object} catalog - Catalog data
+   * @param {string} catalogType - Catalog type
+   */
+  _saveTenantCatalog(tenantId, catalog, catalogType) {
+    const tenantDir = `data/catalogs/tenants/${tenantId}`;
+    if (!fs.existsSync(tenantDir)) {
+      fs.mkdirSync(tenantDir, { recursive: true });
+    }
+
+    const filename = `${catalogType.toLowerCase()}.json`;
+    const filepath = `${tenantDir}/${filename}`;
+
+    fs.writeFileSync(filepath, JSON.stringify({
+      tenant_id: tenantId,
+      catalog_type: catalogType,
+      updated_at: new Date().toISOString(),
+      ...catalog
+    }, null, 2));
+  }
+
   /**
    * Load store configuration from disk
    */

@@ -160,12 +160,75 @@
       "overview": "نظرة عامة",
       "calls": "التيليفونات",
       "agents": "الوكلاء الذكيين",
+      "catalog": "الكطالوگ",
       "knowledge_base": "قاعدة المعلومات",
       "integrations": "الربط",
       "analytics": "التحليلات",
       "billing": "الفاتورة",
       "settings": "الإعدادات"
     }
+  },
+  "catalog": {
+    "title": "كطالوگ المنتوجات",
+    "subtitle": "دير المنتوجات والقوائم والخدمات ديالك للذكاء الصوتي",
+    "import": "استوريد",
+    "add_item": "زيد منتوج",
+    "sync": "سينك",
+    "last_sync": "آخر سينك",
+    "stats": {
+      "total": "المجموع ديال المنتوجات",
+      "available": "اللي كاينين",
+      "categories": "الفئات",
+      "last_update": "آخر تحديث"
+    },
+    "types": {
+      "all": "الكل",
+      "products": "المنتوجات",
+      "menu": "القائمة",
+      "services": "الخدمات",
+      "fleet": "الطوموبيلات",
+      "trips": "السفريات",
+      "packages": "الباكاجات"
+    },
+    "table": {
+      "name": "السمية",
+      "category": "الفئة",
+      "price": "التمن",
+      "stock": "الستوك",
+      "status": "الحالة",
+      "actions": "الأعمال"
+    },
+    "status": {
+      "available": "كاين",
+      "out_of_stock": "سالي",
+      "limited": "محدود"
+    },
+    "empty": {
+      "title": "ما كاين والو",
+      "description": "بدا باستوريد ولا زيادة منتوجات للكطالوگ ديالك"
+    },
+    "modal": {
+      "import_title": "استوريد الكطالوگ",
+      "import_desc": "طلّع ملف JSON ولا CSV باش تستوريد المنتوجات ديالك",
+      "add_title": "زيد منتوج",
+      "add_desc": "خلق منتوج جديد فالكطالوگ ديالك",
+      "name": "سمية المنتوج",
+      "category": "الفئة",
+      "price": "التمن",
+      "description": "الوصف",
+      "voice_description": "الوصف الصوتي",
+      "voice_hint": "هاد الوصف غادي يتقرا من الذكاء الصوتي",
+      "save": "سجّل",
+      "cancel": "إلغا"
+    },
+    "voice_preview": {
+      "title": "سماع قبل",
+      "play": "شغّل",
+      "stop": "وقّف"
+    },
+    "search_placeholder": "قلّب على منتوج...",
+    "filter_category": "صفّي حسب الفئة",
+    "filter_status": "صفّي حسب الحالة"
   },
   "widget_analytics": {
     "title": "Voice Widget Analytics",

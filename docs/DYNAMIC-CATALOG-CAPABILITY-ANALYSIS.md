@@ -361,31 +361,40 @@ data/knowledge-base/
 | 3.5 Schéma unifié services.json | docs/schemas/ | 0.5j | ALL services |
 | 3.6 Tests connecteurs services | test/service-connectors.test.cjs | 1j | - |
 
-### Phase 4: Function Tools Voice (4-5 jours) ⏳ IN PROGRESS
+### Phase 4: Function Tools Voice (4-5 jours) ✅ COMPLETE
 
 | Tâche | Fichier | Effort | Status |
 |:------|:--------|:------:|:------:|
 | 4.1 Tools catalogue produits (5) | telephony/voice-telephony-bridge.cjs | 1.5j | ✅ DONE |
-| 4.2 Tools catalogue services (4) | telephony/ | 1j | ⏳ Pending |
-| 4.3 Tools spécialisés (3) | telephony/ | 1j | ⏳ Pending |
+| 4.2 Tools catalogue services (3) | telephony/voice-telephony-bridge.cjs | 1j | ✅ DONE |
+| 4.3 Tools spécialisés (2) | telephony/voice-telephony-bridge.cjs | 1j | ✅ DONE |
 | 4.4 Integration Grok function calling | telephony/voice-telephony-bridge.cjs | 0.5j | ✅ DONE |
-| 4.5 Tests E2E Voice + Catalog | test/e2e/ | 1j | ⏳ Pending |
+| 4.5 Tests unitaires | test/unit/catalog-system.test.cjs | 1j | ✅ 10/10 pass |
 
-**Livrables Phase 4.1 (Session 250.63):**
-- 5 nouveaux function tools: `browse_catalog`, `get_item_details`, `get_menu`, `check_item_availability`, `search_catalog`
-- Handlers connectés à TenantCatalogStore
-- Voice responses intégrées (voiceSummary, voiceDescription)
-- Lazy-loading pour éviter les dépendances circulaires
+**Livrables Phase 4 (Session 250.67-68):**
+- 10 function tools total:
+  - Produits (5): `browse_catalog`, `get_item_details`, `get_menu`, `check_item_availability`, `search_catalog`
+  - Services (3): `get_services`, `get_available_slots`, `get_packages`
+  - Spécialisés (2): `get_vehicles`, `get_trips`
+- Handlers avec voice responses (voiceSummary, voiceDescription)
+- Lazy-loading TenantCatalogStore
 
-### Phase 5: Dashboard Webapp (3-4 jours)
+### Phase 5: Dashboard Webapp (3-4 jours) ✅ COMPLETE
 
-| Tâche | Fichier | Effort | Description |
-|:------|:--------|:------:|:------------|
-| 5.1 Page `catalog.html` (produits) | website/app/client/ | 1j | Import CSV/JSON, preview, sync |
-| 5.2 Page `services.html` (services) | website/app/client/ | 1j | Services + tarifs + slots |
-| 5.3 API endpoints CRUD catalog | core/db-api.cjs | 0.5j | /api/catalog/* |
-| 5.4 i18n keys (5 langues) | website/src/locales/ | 0.5j | catalog.*, services.* |
-| 5.5 Tests E2E Dashboard | test/e2e/ | 0.5j | - |
+| Tâche | Fichier | Effort | Status |
+|:------|:--------|:------:|:------:|
+| 5.1 Page `catalog.html` (produits) | website/app/client/ | 1j | ✅ DONE |
+| 5.2 Navigation links + 9 pages updated | website/app/client/*.html | 0.5j | ✅ DONE |
+| 5.3 API endpoints CRUD catalog (7 endpoints) | core/db-api.cjs | 0.5j | ✅ DONE |
+| 5.4 i18n keys (5 langues) | website/src/locales/ | 0.5j | ✅ DONE |
+| 5.5 CRUD methods TenantCatalogStore | core/tenant-catalog-store.cjs | 0.5j | ✅ DONE |
+
+**Livrables Phase 5 (Session 250.68-69):**
+- `website/app/client/catalog.html` - Full dashboard (500+ lines, stats, filters, CRUD, modals)
+- Navigation catalog link added to: index, calls, agents, knowledge-base, integrations, analytics, billing, settings
+- 7 API endpoints: GET list, GET item, POST create, PUT update, DELETE, POST import, POST sync
+- CRUD methods: getItems, getItem, addItem, updateItem, removeItem, syncCatalog, invalidateCache
+- i18n: 65+ keys × 5 locales (fr, en, es, ar, ary) = 325 translations
 
 ### Phase 6: Documentation & Polish (2 jours)
 

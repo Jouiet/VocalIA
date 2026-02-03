@@ -160,12 +160,75 @@
       "overview": "Vue d'ensemble",
       "calls": "Appels",
       "agents": "Agents IA",
+      "catalog": "Catalogue",
       "knowledge_base": "Base de Connaissances",
       "integrations": "Intégrations",
       "analytics": "Analytics",
       "billing": "Facturation",
       "settings": "Paramètres"
     }
+  },
+  "catalog": {
+    "title": "Catalogue Produits",
+    "subtitle": "Gérez vos produits, menus et services pour l'IA vocale",
+    "import": "Importer",
+    "add_item": "Ajouter un article",
+    "sync": "Synchroniser",
+    "last_sync": "Dernière sync",
+    "stats": {
+      "total": "Total articles",
+      "available": "Disponibles",
+      "categories": "Catégories",
+      "last_update": "Dernière mise à jour"
+    },
+    "types": {
+      "all": "Tous",
+      "products": "Produits",
+      "menu": "Menu",
+      "services": "Services",
+      "fleet": "Véhicules",
+      "trips": "Voyages",
+      "packages": "Forfaits"
+    },
+    "table": {
+      "name": "Nom",
+      "category": "Catégorie",
+      "price": "Prix",
+      "stock": "Stock",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "status": {
+      "available": "Disponible",
+      "out_of_stock": "Rupture",
+      "limited": "Limité"
+    },
+    "empty": {
+      "title": "Aucun article",
+      "description": "Commencez par importer ou ajouter des articles à votre catalogue"
+    },
+    "modal": {
+      "import_title": "Importer un catalogue",
+      "import_desc": "Téléchargez un fichier JSON ou CSV pour importer vos articles",
+      "add_title": "Ajouter un article",
+      "add_desc": "Créez un nouvel article dans votre catalogue",
+      "name": "Nom de l'article",
+      "category": "Catégorie",
+      "price": "Prix",
+      "description": "Description",
+      "voice_description": "Description vocale",
+      "voice_hint": "Cette description sera lue par l'IA vocale",
+      "save": "Enregistrer",
+      "cancel": "Annuler"
+    },
+    "voice_preview": {
+      "title": "Aperçu vocal",
+      "play": "Écouter",
+      "stop": "Arrêter"
+    },
+    "search_placeholder": "Rechercher un article...",
+    "filter_category": "Filtrer par catégorie",
+    "filter_status": "Filtrer par statut"
   },
   "widget_analytics": {
     "title": "Voice Widget Analytics",

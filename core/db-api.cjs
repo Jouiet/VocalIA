@@ -941,6 +941,317 @@ async function handleRequest(req, res) {
   // ═══════════════════════════════════════════════════════════════
 
   // ═══════════════════════════════════════════════════════════════
+  // Session 250.68: CATALOG ENDPOINTS (Dynamic Product Catalog)
+  // Endpoints:
+  // - GET  /api/tenants/:id/catalog           - List catalog items
+  // - GET  /api/tenants/:id/catalog/:itemId   - Get single item
+  // - POST /api/tenants/:id/catalog           - Create item
+  // - PUT  /api/tenants/:id/catalog/:itemId   - Update item
+  // - DELETE /api/tenants/:id/catalog/:itemId - Delete item
+  // - POST /api/tenants/:id/catalog/import    - Import catalog from file
+  // - POST /api/tenants/:id/catalog/sync      - Sync with external source
+  // ═══════════════════════════════════════════════════════════════
+
+  // Lazy load catalog store to avoid circular dependencies
+  let _catalogStore = null;
+  function getCatalogStore() {
+    if (!_catalogStore) {
+      const { TenantCatalogStore } = require('./tenant-catalog-store.cjs');
+      _catalogStore = new TenantCatalogStore();
+    }
+    return _catalogStore;
+  }
+
+  // Catalog List - GET /api/tenants/:id/catalog
+  const catalogListMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog$/);
+  if (catalogListMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = catalogListMatch[1];
+
+    try {
+      const catalogStore = getCatalogStore();
+      const catalogType = query.type || 'PRODUCTS';
+      const search = query.search || null;
+      const category = query.category || null;
+      const limit = query.limit ? parseInt(query.limit) : 100;
+      const offset = query.offset ? parseInt(query.offset) : 0;
+
+      let items = catalogStore.getItems(tenantId, catalogType);
+
+      // Apply filters
+      if (search) {
+        const searchLower = search.toLowerCase();
+        items = items.filter(item =>
+          (item.name && item.name.toLowerCase().includes(searchLower)) ||
+          (item.description && item.description.toLowerCase().includes(searchLower))
+        );
+      }
+      if (category) {
+        items = items.filter(item => item.category === category);
+      }
+
+      // Get unique categories
+      const allItems = catalogStore.getItems(tenantId, catalogType);
+      const categories = [...new Set(allItems.map(i => i.category).filter(Boolean))];
+
+      // Pagination
+      const total = items.length;
+      items = items.slice(offset, offset + limit);
+
+      sendJson(res, 200, {
+        success: true,
+        tenant_id: tenantId,
+        catalog_type: catalogType,
+        items,
+        total,
+        limit,
+        offset,
+        categories
+      });
+    } catch (e) {
+      sendError(res, 500, `Catalog error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Import - POST /api/tenants/:id/catalog/import
+  const catalogImportMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/import$/);
+  if (catalogImportMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = catalogImportMatch[1];
+
+    try {
+      const body = await readBody(req);
+      if (!body.data || !Array.isArray(body.data)) {
+        sendError(res, 400, 'data array required');
+        return;
+      }
+
+      const catalogStore = getCatalogStore();
+      const catalogType = body.type || 'PRODUCTS';
+
+      // Register tenant if not exists
+      catalogStore.registerTenant(tenantId, {
+        name: tenantId,
+        connector: {
+          type: 'custom',
+          catalogType: catalogType,
+          dataPath: `data/catalogs/tenants/${tenantId}`
+        }
+      });
+
+      // Import items
+      let imported = 0;
+      for (const item of body.data) {
+        if (item.id && item.name) {
+          catalogStore.addItem(tenantId, catalogType, item);
+          imported++;
+        }
+      }
+
+      sendJson(res, 200, {
+        success: true,
+        imported,
+        total: body.data.length,
+        catalog_type: catalogType
+      });
+
+      // Broadcast update
+      broadcastToTenant(tenantId, 'catalog', 'imported', { imported, catalog_type: catalogType });
+    } catch (e) {
+      sendError(res, 500, `Catalog import error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Sync - POST /api/tenants/:id/catalog/sync
+  const catalogSyncMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/sync$/);
+  if (catalogSyncMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = catalogSyncMatch[1];
+
+    try {
+      const body = await readBody(req);
+      const catalogStore = getCatalogStore();
+      const catalogType = body.type || 'PRODUCTS';
+
+      const result = await catalogStore.syncCatalog(tenantId, catalogType, { force: body.force || false });
+
+      sendJson(res, 200, {
+        success: true,
+        synced: result,
+        catalog_type: catalogType
+      });
+
+      // Broadcast update
+      broadcastToTenant(tenantId, 'catalog', 'synced', { catalog_type: catalogType });
+    } catch (e) {
+      sendError(res, 500, `Catalog sync error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Item Detail - GET /api/tenants/:id/catalog/:itemId
+  const catalogItemMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/([^/]+)$/);
+  if (catalogItemMatch && method === 'GET' && !path.includes('/import') && !path.includes('/sync')) {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const [, tenantId, itemId] = catalogItemMatch;
+
+    try {
+      const catalogStore = getCatalogStore();
+      const catalogType = query.type || 'PRODUCTS';
+      const item = catalogStore.getItem(tenantId, catalogType, itemId);
+
+      if (!item) {
+        sendError(res, 404, 'Item not found');
+        return;
+      }
+
+      sendJson(res, 200, {
+        success: true,
+        item
+      });
+    } catch (e) {
+      sendError(res, 500, `Catalog error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Create Item - POST /api/tenants/:id/catalog
+  if (catalogListMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = catalogListMatch[1];
+
+    try {
+      const body = await readBody(req);
+      if (!body.name) {
+        sendError(res, 400, 'name required');
+        return;
+      }
+
+      const catalogStore = getCatalogStore();
+      const catalogType = body.catalog_type || 'PRODUCTS';
+
+      // Register tenant if not exists
+      catalogStore.registerTenant(tenantId, {
+        name: tenantId,
+        connector: {
+          type: 'custom',
+          catalogType: catalogType,
+          dataPath: `data/catalogs/tenants/${tenantId}`
+        }
+      });
+
+      // Generate ID if not provided
+      const item = {
+        id: body.id || `item_${Date.now()}`,
+        name: body.name,
+        category: body.category || 'default',
+        price: body.price || 0,
+        currency: body.currency || 'MAD',
+        stock: body.stock ?? null,
+        available: body.available !== false,
+        description: body.description || '',
+        voiceDescription: body.voiceDescription || body.voice_description || '',
+        createdAt: new Date().toISOString()
+      };
+
+      catalogStore.addItem(tenantId, catalogType, item);
+
+      sendJson(res, 201, {
+        success: true,
+        item
+      });
+
+      // Broadcast update
+      broadcastToTenant(tenantId, 'catalog', 'created', { item, catalog_type: catalogType });
+    } catch (e) {
+      sendError(res, 500, `Catalog create error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Update Item - PUT /api/tenants/:id/catalog/:itemId
+  if (catalogItemMatch && method === 'PUT') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const [, tenantId, itemId] = catalogItemMatch;
+
+    try {
+      const body = await readBody(req);
+      const catalogStore = getCatalogStore();
+      const catalogType = body.catalog_type || query.type || 'PRODUCTS';
+
+      const existing = catalogStore.getItem(tenantId, catalogType, itemId);
+      if (!existing) {
+        sendError(res, 404, 'Item not found');
+        return;
+      }
+
+      // Merge updates
+      const updatedItem = {
+        ...existing,
+        ...body,
+        id: itemId, // Preserve original ID
+        updatedAt: new Date().toISOString()
+      };
+
+      catalogStore.updateItem(tenantId, catalogType, itemId, updatedItem);
+
+      sendJson(res, 200, {
+        success: true,
+        item: updatedItem
+      });
+
+      // Broadcast update
+      broadcastToTenant(tenantId, 'catalog', 'updated', { item: updatedItem, catalog_type: catalogType });
+    } catch (e) {
+      sendError(res, 500, `Catalog update error: ${e.message}`);
+    }
+    return;
+  }
+
+  // Catalog Delete Item - DELETE /api/tenants/:id/catalog/:itemId
+  if (catalogItemMatch && method === 'DELETE') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const [, tenantId, itemId] = catalogItemMatch;
+
+    try {
+      const catalogStore = getCatalogStore();
+      const catalogType = query.type || 'PRODUCTS';
+
+      const existing = catalogStore.getItem(tenantId, catalogType, itemId);
+      if (!existing) {
+        sendError(res, 404, 'Item not found');
+        return;
+      }
+
+      catalogStore.removeItem(tenantId, catalogType, itemId);
+
+      sendJson(res, 200, {
+        success: true,
+        deleted: itemId
+      });
+
+      // Broadcast update
+      broadcastToTenant(tenantId, 'catalog', 'deleted', { itemId, catalog_type: catalogType });
+    } catch (e) {
+      sendError(res, 500, `Catalog delete error: ${e.message}`);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // END CATALOG ENDPOINTS
+  // ═══════════════════════════════════════════════════════════════
+
+  // ═══════════════════════════════════════════════════════════════
   // Session 250.57: CONVERSATION HISTORY & EXPORT ENDPOINTS
   // ⚠️ TELEPHONY RETENTION: 60 days maximum (auto-purge 1st of month)
   // ═══════════════════════════════════════════════════════════════

@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Catalogue - VocalIA</title>
+
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="/src/lib/i18n.js"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+        <a href="/app/client/" class="flex items-center gap-2">
+          <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
+          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        </a>
+      </div>
+
+      <nav class="flex-1 p-4 space-y-1">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.overview">Tableau de bord</span>
+        </a>
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="phone" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.calls">Appels</span>
+        </a>
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bot" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.agents">Agents IA</span>
+        </a>
+        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+          <i data-lucide="package" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.catalog">Catalogue</span>
+        </a>
+        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="book-open" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
+        </a>
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="plug" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.integrations">Intégrations</span>
+        </a>
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.analytics">Analytics</span>
+        </a>
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="credit-card" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.billing">Facturation</span>
+        </a>
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span data-i18n="dashboard.nav.settings">Paramètres</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+            <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+          </div>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-auto">
+      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="catalog.title">Catalogue Produits</h1>
+            <p class="text-slate-600 dark:text-slate-400" data-i18n="catalog.subtitle">Gérez vos produits, menus et services pour l'IA vocale</p>
+          </div>
+          <div class="flex gap-3">
+            <button id="import-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+              <i data-lucide="upload" class="w-5 h-5"></i>
+              <span data-i18n="catalog.import">Importer</span>
+            </button>
+            <button id="add-item-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+              <i data-lucide="plus" class="w-5 h-5"></i>
+              <span data-i18n="catalog.add_item">Ajouter un article</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="px-6 py-6">
+        <!-- Catalog Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
+                <i data-lucide="package" class="w-6 h-6 text-indigo-600 dark:text-indigo-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.total">Total articles</p>
+                <p id="stat-total" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                <i data-lucide="check-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.available">Disponibles</p>
+                <p id="stat-available" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
+                <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.low_stock">Stock faible</p>
+                <p id="stat-low-stock" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center">
+                <i data-lucide="refresh-cw" class="w-6 h-6 text-purple-600 dark:text-purple-400"></i>
+              </div>
+              <div>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.last_sync">Dernière sync</p>
+                <p id="stat-last-sync" class="text-lg font-medium text-slate-900 dark:text-white">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Catalog Type Selector -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 mb-6">
+          <div class="border-b border-slate-200 dark:border-slate-700 px-4">
+            <nav class="flex gap-1 -mb-px">
+              <button class="catalog-tab active px-4 py-3 text-sm font-medium border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400" data-type="products">
+                <i data-lucide="shopping-bag" class="w-4 h-4 inline mr-2"></i>
+                <span data-i18n="catalog.type.products">Produits</span>
+              </button>
+              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="menu">
+                <i data-lucide="utensils" class="w-4 h-4 inline mr-2"></i>
+                <span data-i18n="catalog.type.menu">Menu</span>
+              </button>
+              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="services">
+                <i data-lucide="wrench" class="w-4 h-4 inline mr-2"></i>
+                <span data-i18n="catalog.type.services">Services</span>
+              </button>
+              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="fleet">
+                <i data-lucide="car" class="w-4 h-4 inline mr-2"></i>
+                <span data-i18n="catalog.type.fleet">Véhicules</span>
+              </button>
+              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="trips">
+                <i data-lucide="plane" class="w-4 h-4 inline mr-2"></i>
+                <span data-i18n="catalog.type.trips">Voyages</span>
+              </button>
+            </nav>
+          </div>
+
+          <!-- Search & Filters -->
+          <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+            <div class="flex flex-col md:flex-row gap-4">
+              <div class="flex-1 relative">
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                <input type="text" id="search-input"
+                  class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  placeholder="Rechercher un article..." data-i18n-placeholder="catalog.search_placeholder">
+              </div>
+              <select id="category-filter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                <option value="" data-i18n="catalog.filter.all_categories">Toutes les catégories</option>
+              </select>
+              <select id="status-filter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                <option value="" data-i18n="catalog.filter.all_status">Tous les statuts</option>
+                <option value="available" data-i18n="catalog.filter.available">Disponible</option>
+                <option value="low_stock" data-i18n="catalog.filter.low_stock">Stock faible</option>
+                <option value="out_of_stock" data-i18n="catalog.filter.out_of_stock">Rupture</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Catalog Items Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-slate-50 dark:bg-slate-700/50">
+                <tr>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <span data-i18n="catalog.table.item">Article</span>
+                  </th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <span data-i18n="catalog.table.category">Catégorie</span>
+                  </th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <span data-i18n="catalog.table.price">Prix</span>
+                  </th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <span data-i18n="catalog.table.stock">Stock</span>
+                  </th>
+                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <span data-i18n="catalog.table.status">Statut</span>
+                  </th>
+                  <th class="px-4 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    <span data-i18n="catalog.table.actions">Actions</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="catalog-items" class="divide-y divide-slate-200 dark:divide-slate-700">
+                <!-- Items will be loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div id="empty-state" class="hidden p-12 text-center">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+              <i data-lucide="package-x" class="w-8 h-8 text-slate-400"></i>
+            </div>
+            <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-2" data-i18n="catalog.empty.title">Aucun article</h3>
+            <p class="text-slate-500 dark:text-slate-400 mb-4" data-i18n="catalog.empty.description">Commencez par importer votre catalogue ou ajouter des articles manuellement.</p>
+            <button id="empty-import-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+              <i data-lucide="upload" class="w-5 h-5"></i>
+              <span data-i18n="catalog.import">Importer</span>
+            </button>
+          </div>
+
+          <!-- Pagination -->
+          <div class="px-4 py-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+              <span data-i18n="catalog.showing">Affichage de</span>
+              <span id="page-start">1</span>-<span id="page-end">10</span>
+              <span data-i18n="catalog.of">sur</span>
+              <span id="total-items">0</span>
+              <span data-i18n="catalog.items">articles</span>
+            </p>
+            <div class="flex gap-2">
+              <button id="prev-page" class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50" disabled>
+                <i data-lucide="chevron-left" class="w-4 h-4"></i>
+              </button>
+              <button id="next-page" class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50">
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voice Description Preview -->
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="mic" class="w-6 h-6"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold mb-2" data-i18n="catalog.voice_preview.title">Aperçu vocal</h3>
+              <p class="text-white/80 text-sm mb-4" data-i18n="catalog.voice_preview.description">Voici comment l'IA vocale présentera vos articles aux clients.</p>
+              <div id="voice-preview" class="bg-white/10 rounded-lg p-4">
+                <p class="text-sm italic">"Nous proposons actuellement 0 articles. Que souhaitez-vous consulter?"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Import Modal -->
+  <div id="import-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="fixed inset-0 bg-black/50" id="import-modal-backdrop"></div>
+      <div class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.import_modal.title">Importer le catalogue</h3>
+          <button id="close-import-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center">
+            <input type="file" id="file-input" class="hidden" accept=".json,.csv,.xlsx">
+            <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-slate-400 mb-4"></i>
+            <p class="text-slate-600 dark:text-slate-400 mb-2" data-i18n="catalog.import_modal.drag_drop">Glissez un fichier ici ou</p>
+            <button id="browse-files" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline" data-i18n="catalog.import_modal.browse">parcourir</button>
+            <p class="text-xs text-slate-400 mt-2" data-i18n="catalog.import_modal.formats">Formats: JSON, CSV, XLSX</p>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></div>
+            <span class="text-sm text-slate-500" data-i18n="catalog.import_modal.or">ou</span>
+            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2" data-i18n="catalog.import_modal.connect">Connecter une plateforme</label>
+            <div class="grid grid-cols-2 gap-3">
+              <button class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700" data-platform="shopify">
+                <img src="/public/images/integrations/shopify.svg" alt="Shopify" class="w-8 h-8">
+                <span class="font-medium text-slate-700 dark:text-slate-300">Shopify</span>
+              </button>
+              <button class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700" data-platform="woocommerce">
+                <img src="/public/images/integrations/woocommerce.svg" alt="WooCommerce" class="w-8 h-8">
+                <span class="font-medium text-slate-700 dark:text-slate-300">WooCommerce</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end gap-3">
+          <button id="cancel-import" class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700" data-i18n="common.cancel">Annuler</button>
+          <button id="confirm-import" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg disabled:opacity-50" disabled data-i18n="catalog.import_modal.import">Importer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Item Modal -->
+  <div id="add-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="fixed inset-0 bg-black/50" id="add-modal-backdrop"></div>
+      <div class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.add_modal.title">Ajouter un article</h3>
+          <button id="close-add-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+            <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+          </button>
+        </div>
+
+        <form id="add-item-form" class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.name">Nom *</label>
+              <input type="text" name="name" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.sku">SKU/ID</label>
+              <input type="text" name="sku" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.price">Prix *</label>
+              <input type="number" name="price" step="0.01" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.stock">Stock</label>
+              <input type="number" name="stock" min="0" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.category">Catégorie</label>
+            <input type="text" name="category" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.description">Description</label>
+            <textarea name="description" rows="3" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.voice_description">Description vocale</label>
+            <textarea name="voice_description" rows="2" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white" placeholder="Comment l'IA doit présenter cet article..."></textarea>
+            <p class="text-xs text-slate-500 mt-1" data-i18n="catalog.form.voice_hint">Conseil: Écrivez comme si vous parliez au téléphone.</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <input type="checkbox" name="available" id="item-available" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <label for="item-available" class="text-sm text-slate-700 dark:text-slate-300" data-i18n="catalog.form.available">Disponible à la vente</label>
+          </div>
+        </form>
+
+        <div class="mt-6 flex justify-end gap-3">
+          <button id="cancel-add" class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700" data-i18n="common.cancel">Annuler</button>
+          <button id="save-item" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg" data-i18n="common.save">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/src/lib/api-client.js"></script>
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Initialize i18n
+    if (typeof initI18n === 'function') {
+      initI18n();
+    }
+
+    // State
+    let currentType = 'products';
+    let currentPage = 1;
+    let itemsPerPage = 10;
+    let catalogItems = [];
+    let filteredItems = [];
+
+    // DOM Elements
+    const catalogTabs = document.querySelectorAll('.catalog-tab');
+    const catalogItemsBody = document.getElementById('catalog-items');
+    const emptyState = document.getElementById('empty-state');
+    const searchInput = document.getElementById('search-input');
+    const categoryFilter = document.getElementById('category-filter');
+    const statusFilter = document.getElementById('status-filter');
+    const importModal = document.getElementById('import-modal');
+    const addModal = document.getElementById('add-modal');
+    const voicePreview = document.getElementById('voice-preview');
+
+    // Auth check
+    const auth = JSON.parse(localStorage.getItem('vocalia_auth') || '{}');
+    if (!auth.token) {
+      window.location.href = '/app/auth/login.html';
+    }
+
+    // User info
+    if (auth.user) {
+      document.getElementById('user-name').textContent = auth.user.company_name || auth.user.email;
+      document.getElementById('user-email').textContent = auth.user.email;
+      document.getElementById('user-initials').textContent = (auth.user.company_name || auth.user.email).substring(0, 2).toUpperCase();
+    }
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('vocalia_auth');
+      window.location.href = '/app/auth/login.html';
+    });
+
+    // Tab switching
+    catalogTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        catalogTabs.forEach(t => {
+          t.classList.remove('active', 'border-indigo-600', 'text-indigo-600', 'dark:text-indigo-400');
+          t.classList.add('border-transparent', 'text-slate-500');
+        });
+        tab.classList.add('active', 'border-indigo-600', 'text-indigo-600', 'dark:text-indigo-400');
+        tab.classList.remove('border-transparent', 'text-slate-500');
+        currentType = tab.dataset.type;
+        loadCatalog();
+      });
+    });
+
+    // Search & Filter
+    searchInput.addEventListener('input', filterItems);
+    categoryFilter.addEventListener('change', filterItems);
+    statusFilter.addEventListener('change', filterItems);
+
+    // Modal handlers
+    document.getElementById('import-btn').addEventListener('click', () => importModal.classList.remove('hidden'));
+    document.getElementById('empty-import-btn').addEventListener('click', () => importModal.classList.remove('hidden'));
+    document.getElementById('close-import-modal').addEventListener('click', () => importModal.classList.add('hidden'));
+    document.getElementById('import-modal-backdrop').addEventListener('click', () => importModal.classList.add('hidden'));
+    document.getElementById('cancel-import').addEventListener('click', () => importModal.classList.add('hidden'));
+
+    document.getElementById('add-item-btn').addEventListener('click', () => addModal.classList.remove('hidden'));
+    document.getElementById('close-add-modal').addEventListener('click', () => addModal.classList.add('hidden'));
+    document.getElementById('add-modal-backdrop').addEventListener('click', () => addModal.classList.add('hidden'));
+    document.getElementById('cancel-add').addEventListener('click', () => addModal.classList.add('hidden'));
+
+    // File upload
+    document.getElementById('browse-files').addEventListener('click', () => {
+      document.getElementById('file-input').click();
+    });
+
+    document.getElementById('file-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        document.getElementById('confirm-import').disabled = false;
+        // Show file name
+      }
+    });
+
+    // Save item
+    document.getElementById('save-item').addEventListener('click', async () => {
+      const form = document.getElementById('add-item-form');
+      const formData = new FormData(form);
+
+      const item = {
+        id: formData.get('sku') || `item-${Date.now()}`,
+        name: formData.get('name'),
+        price: parseFloat(formData.get('price')),
+        stock: parseInt(formData.get('stock')) || 0,
+        category: formData.get('category'),
+        description: formData.get('description'),
+        voice_description: formData.get('voice_description'),
+        in_stock: formData.get('available') === 'on',
+        currency: 'MAD'
+      };
+
+      try {
+        // In production, save via API
+        catalogItems.push(item);
+        addModal.classList.add('hidden');
+        form.reset();
+        renderItems();
+        updateStats();
+      } catch (error) {
+        console.error('Error saving item:', error);
+      }
+    });
+
+    // Load catalog data
+    async function loadCatalog() {
+      try {
+        // Load from sample data or API
+        const tenantId = auth.user?.tenant_id || 'client_demo';
+
+        // Fetch catalog from API
+        const response = await fetch(`/api/catalog/${tenantId}?type=${currentType}`, {
+          headers: { 'Authorization': `Bearer ${auth.token}` }
+        }).catch(() => null);
+
+        if (response?.ok) {
+          const data = await response.json();
+          catalogItems = data.items || [];
+        } else {
+          // Use sample data for demo
+          catalogItems = getSampleData(currentType);
+        }
+
+        filteredItems = [...catalogItems];
+        updateCategories();
+        renderItems();
+        updateStats();
+        updateVoicePreview();
+      } catch (error) {
+        console.error('Error loading catalog:', error);
+        catalogItems = getSampleData(currentType);
+        filteredItems = [...catalogItems];
+        renderItems();
+        updateStats();
+      }
+    }
+
+    function getSampleData(type) {
+      const samples = {
+        products: [
+          { id: 'SKU-001', name: 'T-Shirt Classic Bio', category: 'Vêtements', price: 149, currency: 'MAD', stock: 45, in_stock: true, voice_description: 'T-shirt classic en coton bio à 149 dirhams' },
+          { id: 'SKU-002', name: 'Jean Slim Femme', category: 'Vêtements', price: 299, currency: 'MAD', stock: 28, in_stock: true, voice_description: 'Jean slim femme taille haute à 299 dirhams' },
+          { id: 'SKU-003', name: 'Robe Caftan Moderne', category: 'Traditionnel', price: 850, currency: 'MAD', stock: 5, in_stock: true, voice_description: 'Caftan moderne brodé main à 850 dirhams' },
+          { id: 'SKU-004', name: 'Babouches Cuir Homme', category: 'Chaussures', price: 220, currency: 'MAD', stock: 0, in_stock: false, voice_description: 'Babouches cuir homme à 220 dirhams, actuellement en rupture' },
+        ],
+        menu: [
+          { id: 'E01', name: 'Salade Marocaine', category: 'Entrées', price: 35, currency: 'MAD', available: true, voice_description: 'Salade marocaine fraîche à 35 dirhams, végane et sans gluten' },
+          { id: 'P01', name: 'Couscous Royal', category: 'Plats', price: 120, currency: 'MAD', available: true, voice_description: 'Couscous royal avec agneau, poulet et merguez à 120 dirhams' },
+          { id: 'P02', name: 'Tajine Agneau aux Pruneaux', category: 'Plats', price: 95, currency: 'MAD', available: true, voice_description: 'Tajine d\'agneau aux pruneaux à 95 dirhams' },
+          { id: 'D01', name: 'Cornes de Gazelle', category: 'Desserts', price: 40, currency: 'MAD', available: true, voice_description: 'Cornes de gazelle à 40 dirhams' },
+        ],
+        services: [
+          { id: 'SRV-001', name: 'Révision Complète', category: 'Maintenance', price: 450, currency: 'MAD', duration: 120, voice_description: 'Révision complète à 450 dirhams, durée 2 heures' },
+          { id: 'SRV-002', name: 'Vidange Huile', category: 'Maintenance', price: 200, currency: 'MAD', duration: 45, voice_description: 'Vidange huile moteur à 200 dirhams, durée 45 minutes' },
+          { id: 'SRV-003', name: 'Diagnostic Électronique', category: 'Diagnostic', price: 150, currency: 'MAD', duration: 30, voice_description: 'Diagnostic électronique à 150 dirhams' },
+        ],
+        fleet: [
+          { id: 'VEH-001', name: 'Renault Megane 2024', category: 'Berline', price: 350, currency: 'MAD', available: true, voice_description: 'Renault Megane automatique à 350 dirhams par jour' },
+          { id: 'VEH-002', name: 'Dacia Sandero 2023', category: 'Citadine', price: 200, currency: 'MAD', available: true, voice_description: 'Dacia Sandero à 200 dirhams par jour' },
+          { id: 'VEH-003', name: 'Peugeot 3008 SUV', category: 'SUV', price: 550, currency: 'MAD', available: true, voice_description: 'Peugeot 3008 SUV à 550 dirhams par jour' },
+        ],
+        trips: [
+          { id: 'TRIP-001', name: 'Istanbul 7 jours', category: 'Circuit', price: 8500, currency: 'MAD', available: true, voice_description: 'Circuit Istanbul 7 jours à partir de 8500 dirhams' },
+          { id: 'TRIP-002', name: 'Dubaï 5 jours', category: 'Séjour', price: 7900, currency: 'MAD', available: true, voice_description: 'Séjour Dubaï 5 jours hôtel 5 étoiles à 7900 dirhams' },
+          { id: 'TRIP-003', name: 'Weekend Marrakech', category: 'Weekend', price: 1500, currency: 'MAD', available: true, voice_description: 'Weekend Marrakech 3 jours à 1500 dirhams' },
+        ]
+      };
+      return samples[type] || [];
+    }
+
+    function filterItems() {
+      const search = searchInput.value.toLowerCase();
+      const category = categoryFilter.value;
+      const status = statusFilter.value;
+
+      filteredItems = catalogItems.filter(item => {
+        const matchesSearch = !search ||
+          item.name?.toLowerCase().includes(search) ||
+          item.id?.toLowerCase().includes(search);
+
+        const matchesCategory = !category || item.category === category;
+
+        let matchesStatus = true;
+        if (status === 'available') matchesStatus = item.in_stock !== false && item.available !== false;
+        else if (status === 'out_of_stock') matchesStatus = item.in_stock === false || item.available === false;
+        else if (status === 'low_stock') matchesStatus = item.stock > 0 && item.stock <= 5;
+
+        return matchesSearch && matchesCategory && matchesStatus;
+      });
+
+      currentPage = 1;
+      renderItems();
+    }
+
+    function updateCategories() {
+      const categories = [...new Set(catalogItems.map(item => item.category).filter(Boolean))];
+      categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
+      categories.forEach(cat => {
+        categoryFilter.innerHTML += `<option value="${cat}">${cat}</option>`;
+      });
+    }
+
+    function renderItems() {
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageItems = filteredItems.slice(start, end);
+
+      if (pageItems.length === 0) {
+        catalogItemsBody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      catalogItemsBody.innerHTML = pageItems.map(item => {
+        const isAvailable = item.in_stock !== false && item.available !== false;
+        const isLowStock = item.stock !== undefined && item.stock > 0 && item.stock <= 5;
+
+        let statusBadge;
+        if (!isAvailable || item.stock === 0) {
+          statusBadge = '<span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">Rupture</span>';
+        } else if (isLowStock) {
+          statusBadge = '<span class="px-2 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Stock faible</span>';
+        } else {
+          statusBadge = '<span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Disponible</span>';
+        }
+
+        return `
+          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+            <td class="px-4 py-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="package" class="w-5 h-5 text-slate-400"></i>
+                </div>
+                <div>
+                  <p class="font-medium text-slate-900 dark:text-white">${item.name}</p>
+                  <p class="text-xs text-slate-500">${item.id || '-'}</p>
+                </div>
+              </div>
+            </td>
+            <td class="px-4 py-3">
+              <span class="text-sm text-slate-600 dark:text-slate-400">${item.category || '-'}</span>
+            </td>
+            <td class="px-4 py-3">
+              <span class="font-medium text-slate-900 dark:text-white">${item.price} ${item.currency || 'MAD'}</span>
+            </td>
+            <td class="px-4 py-3">
+              <span class="text-sm text-slate-600 dark:text-slate-400">${item.stock !== undefined ? item.stock : '-'}</span>
+            </td>
+            <td class="px-4 py-3">
+              ${statusBadge}
+            </td>
+            <td class="px-4 py-3 text-right">
+              <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600" onclick="editItem('${item.id}')">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
+              </button>
+              <button class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-400 hover:text-red-600" onclick="deleteItem('${item.id}')">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Update pagination
+      document.getElementById('page-start').textContent = start + 1;
+      document.getElementById('page-end').textContent = Math.min(end, filteredItems.length);
+      document.getElementById('total-items').textContent = filteredItems.length;
+      document.getElementById('prev-page').disabled = currentPage === 1;
+      document.getElementById('next-page').disabled = end >= filteredItems.length;
+
+      // Re-init icons
+      lucide.createIcons();
+    }
+
+    function updateStats() {
+      const total = catalogItems.length;
+      const available = catalogItems.filter(i => i.in_stock !== false && i.available !== false).length;
+      const lowStock = catalogItems.filter(i => i.stock !== undefined && i.stock > 0 && i.stock <= 5).length;
+
+      document.getElementById('stat-total').textContent = total;
+      document.getElementById('stat-available').textContent = available;
+      document.getElementById('stat-low-stock').textContent = lowStock;
+      document.getElementById('stat-last-sync').textContent = new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function updateVoicePreview() {
+      const count = catalogItems.length;
+      const available = catalogItems.filter(i => i.in_stock !== false && i.available !== false).length;
+
+      let preview = '';
+      if (count === 0) {
+        preview = '"Le catalogue n\'est pas encore configuré. Souhaitez-vous ajouter des articles?"';
+      } else {
+        const samples = catalogItems.slice(0, 3).map(i => i.name).join(', ');
+        preview = `"Nous proposons ${available} articles disponibles, notamment ${samples}. Que souhaitez-vous consulter?"`;
+      }
+
+      voicePreview.innerHTML = `<p class="text-sm italic">${preview}</p>`;
+    }
+
+    function editItem(id) {
+      const item = catalogItems.find(i => i.id === id);
+      if (item) {
+        // Populate form and show modal
+        const form = document.getElementById('add-item-form');
+        form.elements.name.value = item.name;
+        form.elements.sku.value = item.id;
+        form.elements.price.value = item.price;
+        form.elements.stock.value = item.stock || '';
+        form.elements.category.value = item.category || '';
+        form.elements.description.value = item.description || '';
+        form.elements.voice_description.value = item.voice_description || '';
+        form.elements.available.checked = item.in_stock !== false;
+        addModal.classList.remove('hidden');
+      }
+    }
+
+    function deleteItem(id) {
+      if (confirm('Supprimer cet article?')) {
+        catalogItems = catalogItems.filter(i => i.id !== id);
+        filteredItems = filteredItems.filter(i => i.id !== id);
+        renderItems();
+        updateStats();
+        updateVoicePreview();
+      }
+    }
+
+    // Pagination
+    document.getElementById('prev-page').addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderItems();
+      }
+    });
+
+    document.getElementById('next-page').addEventListener('click', () => {
+      const maxPage = Math.ceil(filteredItems.length / itemsPerPage);
+      if (currentPage < maxPage) {
+        currentPage++;
+        renderItems();
+      }
+    });
+
+    // Initialize
+    loadCatalog();
+  </script>
+</body>
+</html>
