@@ -41,6 +41,8 @@ services:
         apk add --no-cache git curl &&
         git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
+        mkdir -p data &&
+        echo '{\"spreadsheetId\":\"1USAmFgxpXh9yvtAFxvg0_CpmWVop1pOTmxALEE8M4PM\",\"sheets\":{\"tenants\":\"tenants\",\"sessions\":\"sessions\",\"logs\":\"logs\",\"users\":\"users\"}}' > data/google-sheets-config.json &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/db-api.cjs
       "
