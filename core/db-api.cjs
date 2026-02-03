@@ -1849,6 +1849,68 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // Widget Interactions - GET /api/tenants/:id/widget/interactions
+  // Returns all widget interactions for analytics dashboard (Session 250.74)
+  const widgetInteractionsMatch = path.match(/^\/api\/tenants\/([^\/]+)\/widget\/interactions$/);
+  if (widgetInteractionsMatch && method === 'GET') {
+    try {
+      const tenantId = widgetInteractionsMatch[1];
+      const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+      const ucpStore = getUCPStore();
+
+      // Get all interactions from UCP store
+      const interactions = [];
+      const profiles = ucpStore.getAllProfiles(tenantId) || [];
+
+      profiles.forEach(profile => {
+        if (profile.interactions && Array.isArray(profile.interactions)) {
+          profile.interactions.forEach(interaction => {
+            interactions.push({
+              ...interaction,
+              user_id: profile.userId,
+              tenant_id: tenantId
+            });
+          });
+        }
+      });
+
+      // Sort by timestamp descending
+      interactions.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+
+      sendJson(res, 200, { data: interactions, count: interactions.length });
+    } catch (e) {
+      sendError(res, 500, `Widget interactions error: ${e.message}`);
+    }
+    return;
+  }
+
+  // UCP Profiles - GET /api/tenants/:id/ucp/profiles
+  // Returns all UCP profiles for LTV distribution analytics (Session 250.74)
+  const ucpProfilesMatch = path.match(/^\/api\/tenants\/([^\/]+)\/ucp\/profiles$/);
+  if (ucpProfilesMatch && method === 'GET') {
+    try {
+      const tenantId = ucpProfilesMatch[1];
+      const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+      const ucpStore = getUCPStore();
+
+      const profiles = ucpStore.getAllProfiles(tenantId) || [];
+
+      // Map to analytics-friendly format
+      const analyticsProfiles = profiles.map(p => ({
+        user_id: p.userId,
+        ltv_tier: p.ltv?.tier || 'bronze',
+        ltv_value: p.ltv?.value || 0,
+        total_interactions: (p.interactions || []).length,
+        last_active: p.lastUpdated
+      }));
+
+      sendJson(res, 200, { data: analyticsProfiles, count: analyticsProfiles.length });
+    } catch (e) {
+      sendError(res, 500, `UCP profiles error: ${e.message}`);
+    }
+    return;
+  }
+
   // ═══════════════════════════════════════════════════════════════
   // END UCP ENDPOINTS
   // ═══════════════════════════════════════════════════════════════

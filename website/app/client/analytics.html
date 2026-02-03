@@ -186,6 +186,82 @@
           </div>
         </div>
 
+        <!-- Voice vs Text Input Methods (E-commerce Widget Phase 1) -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="analytics.input_methods">Méthodes de saisie</h3>
+            <span class="text-xs px-2 py-1 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600" data-i18n="analytics.widget_v3">Widget v3.0</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div class="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <i data-lucide="keyboard" class="w-5 h-5 text-blue-500"></i>
+                <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.text_input">Texte</span>
+              </div>
+              <p id="kpi-text-count" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
+              <p id="kpi-text-pct" class="text-sm text-slate-500">--%</p>
+            </div>
+            <div class="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+              <div class="flex items-center justify-center gap-2 mb-2">
+                <i data-lucide="mic" class="w-5 h-5 text-green-500"></i>
+                <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.voice_input">Voix</span>
+              </div>
+              <p id="kpi-voice-count" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
+              <p id="kpi-voice-pct" class="text-sm text-slate-500">--%</p>
+            </div>
+          </div>
+          <div class="h-32">
+            <canvas id="input-method-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- E-commerce Widget Metrics -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="analytics.ecommerce_metrics">E-commerce Widget</h3>
+            <span class="text-xs px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600" data-i18n="analytics.phase1">Phase 1</span>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.product_searches">Recherches produits</span>
+              <span id="kpi-product-searches" class="font-medium text-slate-900 dark:text-white">--</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.carousels_shown">Carrousels affichés</span>
+              <span id="kpi-carousels-shown" class="font-medium text-slate-900 dark:text-white">--</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.product_clicks">Clics produits</span>
+              <span id="kpi-product-clicks" class="font-medium text-slate-900 dark:text-white">--</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.carousel_ctr">CTR Carrousel</span>
+              <span id="kpi-carousel-ctr" class="font-medium text-emerald-600">--%</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2" data-i18n="analytics.ltv_distribution">Distribution LTV</h4>
+            <div class="flex gap-2">
+              <div class="flex-1 text-center p-2 bg-amber-100 dark:bg-amber-900/30 rounded">
+                <span class="text-xs text-amber-700 dark:text-amber-400">Bronze</span>
+                <p id="ltv-bronze" class="font-bold text-amber-800 dark:text-amber-300">--</p>
+              </div>
+              <div class="flex-1 text-center p-2 bg-slate-200 dark:bg-slate-600 rounded">
+                <span class="text-xs text-slate-600 dark:text-slate-300">Silver</span>
+                <p id="ltv-silver" class="font-bold text-slate-700 dark:text-slate-200">--</p>
+              </div>
+              <div class="flex-1 text-center p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded">
+                <span class="text-xs text-yellow-700 dark:text-yellow-400">Gold</span>
+                <p id="ltv-gold" class="font-bold text-yellow-800 dark:text-yellow-300">--</p>
+              </div>
+              <div class="flex-1 text-center p-2 bg-cyan-100 dark:bg-cyan-900/30 rounded">
+                <span class="text-xs text-cyan-700 dark:text-cyan-400">Diamond</span>
+                <p id="ltv-diamond" class="font-bold text-cyan-800 dark:text-cyan-300">--</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Top Performers -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="analytics.top_performers">Top Personas</h3>
@@ -512,6 +588,88 @@
     }
 
     loadAnalytics();
+
+    // Load e-commerce widget metrics
+    async function loadEcommerceMetrics() {
+      try {
+        const tenantId = auth.getTenantId();
+
+        // Fetch widget interactions from UCP events
+        const [interactionsRes, ucpRes] = await Promise.all([
+          api.get(`/tenants/${tenantId}/widget/interactions`).catch(() => ({ data: [] })),
+          api.get(`/tenants/${tenantId}/ucp/profiles`).catch(() => ({ data: [] }))
+        ]);
+
+        const interactions = interactionsRes?.data || [];
+        const ucpProfiles = ucpRes?.data || [];
+
+        // Calculate input method stats
+        const textCount = interactions.filter(i => i.input_method === 'text').length;
+        const voiceCount = interactions.filter(i => i.input_method === 'voice').length;
+        const totalInputs = textCount + voiceCount || 1;
+
+        document.getElementById('kpi-text-count').textContent = textCount.toLocaleString();
+        document.getElementById('kpi-voice-count').textContent = voiceCount.toLocaleString();
+        document.getElementById('kpi-text-pct').textContent = `${Math.round((textCount / totalInputs) * 100)}%`;
+        document.getElementById('kpi-voice-pct').textContent = `${Math.round((voiceCount / totalInputs) * 100)}%`;
+
+        // E-commerce metrics
+        const productSearches = interactions.filter(i => i.type === 'product_search').length;
+        const carouselsShown = interactions.filter(i => i.type === 'carousel_displayed').length;
+        const productClicks = interactions.filter(i => i.type === 'product_click').length;
+        const carouselCTR = carouselsShown > 0 ? Math.round((productClicks / carouselsShown) * 100) : 0;
+
+        document.getElementById('kpi-product-searches').textContent = productSearches.toLocaleString();
+        document.getElementById('kpi-carousels-shown').textContent = carouselsShown.toLocaleString();
+        document.getElementById('kpi-product-clicks').textContent = productClicks.toLocaleString();
+        document.getElementById('kpi-carousel-ctr').textContent = `${carouselCTR}%`;
+
+        // LTV distribution
+        const ltvCounts = { bronze: 0, silver: 0, gold: 0, diamond: 0 };
+        ucpProfiles.forEach(p => {
+          const tier = (p.ltv_tier || 'bronze').toLowerCase();
+          if (ltvCounts.hasOwnProperty(tier)) ltvCounts[tier]++;
+        });
+
+        document.getElementById('ltv-bronze').textContent = ltvCounts.bronze;
+        document.getElementById('ltv-silver').textContent = ltvCounts.silver;
+        document.getElementById('ltv-gold').textContent = ltvCounts.gold;
+        document.getElementById('ltv-diamond').textContent = ltvCounts.diamond;
+
+        // Render input method chart
+        renderInputMethodChart(textCount, voiceCount);
+
+      } catch (error) {
+        console.error('Failed to load e-commerce metrics:', error);
+        // Set defaults for empty state
+        ['kpi-text-count', 'kpi-voice-count', 'kpi-product-searches', 'kpi-carousels-shown', 'kpi-product-clicks'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '0';
+        });
+        ['kpi-text-pct', 'kpi-voice-pct', 'kpi-carousel-ctr'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '0%';
+        });
+        ['ltv-bronze', 'ltv-silver', 'ltv-gold', 'ltv-diamond'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = '0';
+        });
+      }
+    }
+
+    // Render input method doughnut chart
+    function renderInputMethodChart(textCount, voiceCount) {
+      const ctx = document.getElementById('input-method-chart');
+      if (!ctx) return;
+
+      createDoughnutChart('#input-method-chart', {
+        labels: ['Texte', 'Voix'],
+        data: [textCount || 0, voiceCount || 0],
+        colors: [COLORS.info, COLORS.success]
+      });
+    }
+
+    loadEcommerceMetrics();
 
     // Export button - real export
     document.getElementById('export-btn').addEventListener('click', async () => {

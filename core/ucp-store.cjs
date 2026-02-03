@@ -127,6 +127,21 @@ class UCPStore {
   }
 
   /**
+   * Get all profiles for a tenant (for analytics dashboard)
+   * Session 250.74 - E-commerce Widget Analytics
+   */
+  getAllProfiles(tenantId) {
+    const profiles = this.loadProfiles(tenantId);
+    return Object.entries(profiles).map(([userId, profile]) => ({
+      userId,
+      ...profile,
+      interactions: this.getInteractions(tenantId, userId, { limit: 100 }),
+      ltv: this.getLTV(tenantId, userId),
+      lastUpdated: profile.updated_at
+    }));
+  }
+
+  /**
    * Create or update a customer profile
    */
   upsertProfile(tenantId, customerId, data) {
