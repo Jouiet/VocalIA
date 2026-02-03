@@ -1,0 +1,23 @@
+{
+  "id": "voice-forensic_test",
+  "created_at": "2026-02-03T16:55:52.332Z",
+  "updated_at": "2026-02-03T16:55:52.332Z",
+  "pillars": {
+    "identity": {},
+    "intent": {},
+    "qualification": {
+      "voiceSession": true,
+      "score": 0,
+      "complete": false
+    },
+    "sentiment": [],
+    "history": [],
+    "keyFacts": [],
+    "summary": null
+  },
+  "status": "active",
+  "metadata": {
+    "tokenEstimate": 38,
+    "lastCompaction": null
+  }
+}

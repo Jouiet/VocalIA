@@ -26,7 +26,7 @@
     VOICE_API: window.VOCALIA_VOICE_API || (
       ['localhost', '127.0.0.1'].includes(window.location.hostname)
         ? 'http://localhost:3004/respond'
-        : 'https://api.vocalia.ma/v1/voice'
+        : 'https://api.vocalia.ma/respond'
     ),
     A2UI_API: window.VOCALIA_A2UI_API || 'https://api.vocalia.ma/v1/a2ui',
 
@@ -1190,7 +1190,13 @@
       }
     } catch (e) {
       console.error("[VocalIA] Voice API failed:", e.message);
-      // Option C: Return honest error instead of stupid fallback
+      // Use INTELLIGENT fallback instead of error message
+      if (window.VocaliaIntelligentFallback) {
+        const intelligentResponse = window.VocaliaIntelligentFallback.getResponse(userMessage, state.currentLang);
+        console.log("[VocalIA] Using intelligent fallback");
+        return { text: intelligentResponse, fallback: 'intelligent' };
+      }
+      // Ultimate fallback if intelligent system not loaded
       return {
         text: L.ui.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.",
         error: true

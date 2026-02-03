@@ -2744,11 +2744,16 @@
       return null;
     } catch (err) {
       if (err.name === 'AbortError') {
-        console.error('[VocalIA] API timeout - returning error message');
+        console.error('[VocalIA] API timeout');
       } else {
         console.error('[VocalIA] API error:', err.message);
       }
-      // Return error message instead of falling back to stupid patterns
+      // Use INTELLIGENT fallback instead of error message
+      if (window.VocaliaIntelligentFallback) {
+        console.log('[VocalIA] Using intelligent fallback');
+        return window.VocaliaIntelligentFallback.getResponse(arguments[0], state.currentLang);
+      }
+      // Ultimate fallback if intelligent system not loaded
       const L = state.langData;
       return L?.ui?.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.";
     }
