@@ -605,11 +605,21 @@ console.log('ar + male →', get('ar', 'male'));
 
 ### P1 - PROCHAINES PRIORITÉS
 
-| # | Tâche | Priorité | Dépendance |
-|:-:|:------|:--------:|:-----------|
-| 1 | **Tests E2E voice config** | P1 | Playwright |
-| 2 | **Voice preview Web Audio** | P2 | Bypass backend pour preview |
-| 3 | **ElevenLabs streaming** | P2 | Réduction latence Darija TTS |
+| # | Tâche | Priorité | Dépendance | Status |
+|:-:|:------|:--------:|:-----------|:------:|
+| 1 | **Tests E2E voice config** | P1 | Playwright | ✅ 420/420 pass |
+| 2 | **Voice preview Web Audio** | P2 | Bypass backend pour preview | ✅ Session 250.74 |
+| 3 | **ElevenLabs streaming** | P2 | Réduction latence Darija TTS | ⏳ Requires API changes |
+
+### Session 250.74 - Web Speech API Fallback
+
+**Fichier modifié:** `website/app/client/agents.html`
+
+**Implémentation:**
+- Fonction `speakWithWebSpeech()` - Web Speech API fallback
+- Mapping `WEB_SPEECH_VOICES` - langue + genre → voix navigateur
+- Fallback automatique si backend /tts indisponible (FR/EN/ES/AR)
+- Darija (ARY) requiert toujours ElevenLabs (pas de support browser)
 
 ### VÉRIFICATION EMPIRIQUE FINALE
 

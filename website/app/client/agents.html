@@ -448,6 +448,47 @@
     document.getElementById('voice-language').addEventListener('change', updateVoiceName);
     document.getElementById('voice-gender').addEventListener('change', updateVoiceName);
 
+    // Web Speech API fallback for voice preview (P2 - Session 250.74)
+    // Maps language + gender to browser voice names
+    const WEB_SPEECH_VOICES = {
+      fr_female: ['Google français', 'Microsoft Julie', 'Amélie'],
+      fr_male: ['Google français', 'Microsoft Paul', 'Thomas'],
+      en_female: ['Google US English', 'Microsoft Zira', 'Samantha'],
+      en_male: ['Google US English', 'Microsoft David', 'Alex'],
+      es_female: ['Google español', 'Microsoft Helena', 'Monica'],
+      es_male: ['Google español', 'Microsoft Pablo', 'Jorge'],
+      ar_female: ['Google العربية', 'Maged'],
+      ar_male: ['Google العربية', 'Maged']
+    };
+
+    function speakWithWebSpeech(text, lang, gender) {
+      return new Promise((resolve, reject) => {
+        if (!window.speechSynthesis) {
+          reject(new Error('Web Speech API not supported'));
+          return;
+        }
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        const langCode = { fr: 'fr-FR', en: 'en-US', es: 'es-ES', ar: 'ar-SA' }[lang] || 'fr-FR';
+        utterance.lang = langCode;
+        utterance.rate = 0.95;
+        utterance.pitch = gender === 'female' ? 1.1 : 0.9;
+
+        // Try to find a matching voice
+        const voices = speechSynthesis.getVoices();
+        const preferredVoices = WEB_SPEECH_VOICES[`${lang}_${gender}`] || [];
+        const matchedVoice = voices.find(v =>
+          preferredVoices.some(pv => v.name.includes(pv)) && v.lang.startsWith(langCode.split('-')[0])
+        ) || voices.find(v => v.lang.startsWith(langCode.split('-')[0]));
+
+        if (matchedVoice) utterance.voice = matchedVoice;
+
+        utterance.onend = () => resolve();
+        utterance.onerror = (e) => reject(e);
+        speechSynthesis.speak(utterance);
+      });
+    }
+
     document.getElementById('preview-voice-btn').addEventListener('click', async () => {
       const lang = document.getElementById('voice-language').value;
       const gender = document.getElementById('voice-gender').value;
@@ -492,8 +533,23 @@
           throw new Error(data.error || 'No audio returned');
         }
       } catch (error) {
-        console.error('TTS preview failed:', error);
-        toast.error('Prévisualisation indisponible - vérifiez que le service Voice API est actif');
+        console.error('TTS backend failed, trying Web Speech API fallback:', error);
+
+        // Web Speech API fallback for non-Darija languages
+        if (lang !== 'ary' && window.speechSynthesis) {
+          try {
+            await speakWithWebSpeech(messages[lang] || messages.fr, lang, gender);
+            toast.info('Prévisualisation via navigateur (service principal indisponible)');
+          } catch (fallbackError) {
+            console.error('Web Speech fallback also failed:', fallbackError);
+            toast.error('Prévisualisation indisponible - vérifiez que le service Voice API est actif');
+          }
+        } else if (lang === 'ary') {
+          // Darija requires ElevenLabs - no browser fallback
+          toast.error('Prévisualisation Darija requiert le service Voice API actif');
+        } else {
+          toast.error('Prévisualisation indisponible - vérifiez que le service Voice API est actif');
+        }
       } finally {
         btn.disabled = false;
       }
