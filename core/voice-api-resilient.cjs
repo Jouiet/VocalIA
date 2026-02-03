@@ -68,6 +68,15 @@ const eventBus = require('./AgencyEventBus.cjs');
 // Session 250.39: A2UI Service for dynamic UI generation
 const A2UIService = require('./a2ui-service.cjs');
 
+// Session 250.xx: Multi-tenant KB for intelligent fallback
+const { getInstance: getTenantKBLoader } = require('./tenant-kb-loader.cjs');
+let tenantKBLoader = null;
+try {
+  tenantKBLoader = getTenantKBLoader();
+} catch (e) {
+  console.warn('[VoiceAPI] TenantKB Loader not initialized:', e.message);
+}
+
 // Session 250.44: ElevenLabs TTS for Darija support
 let ElevenLabsClient = null;
 let VOICE_IDS = null;
@@ -1772,6 +1781,114 @@ function startServer(port = 3004) {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(health, null, 2));
       return;
+    }
+
+    // KB-Powered Fallback Endpoint - Returns tenant-specific Q&A for client-side fallback
+    if (req.url.startsWith('/api/fallback/') && req.method === 'GET') {
+      const urlParts = req.url.split('/');
+      const tenantId = urlParts[3]?.split('?')[0] || 'default';
+      const queryParams = new URL(req.url, `http://${req.headers.host}`).searchParams;
+      const lang = queryParams.get('lang') || 'fr';
+
+      try {
+        if (!tenantKBLoader) {
+          res.writeHead(503, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'KB service unavailable' }));
+          return;
+        }
+
+        // Get KB data for this tenant
+        const kb = await tenantKBLoader.getKB(tenantId, lang);
+
+        // Generate optimized fallback structure for client
+        const fallbackData = {
+          version: '1.0',
+          tenantId,
+          language: lang,
+          generatedAt: new Date().toISOString(),
+          pairs: {}
+        };
+
+        // Extract key FAQ/Q&A pairs from KB
+        if (kb && kb.faqs) {
+          for (const [category, items] of Object.entries(kb.faqs)) {
+            fallbackData.pairs[category] = {
+              triggers: items.keywords || [],
+              response: items.answer || items.response || ''
+            };
+          }
+        }
+
+        // Add default persona responses
+        if (kb && kb.personas) {
+          const defaultPersona = kb.personas.default || kb.personas.agency || {};
+          if (defaultPersona.greeting) {
+            fallbackData.pairs.greeting = {
+              triggers: ['salam', 'salut', 'bonjour', 'hello', 'hi', 'marhba'],
+              response: defaultPersona.greeting
+            };
+          }
+          if (defaultPersona.products) {
+            fallbackData.pairs.products = {
+              triggers: ['produit', 'product', '3andkom', 'vendez', 'offre', 'solution'],
+              response: defaultPersona.products
+            };
+          }
+        }
+
+        // Add VocalIA-specific fallback if no KB data
+        if (Object.keys(fallbackData.pairs).length === 0) {
+          fallbackData.pairs = {
+            greeting: {
+              triggers: ['salam', 'salut', 'bonjour', 'hello', 'hi'],
+              response: lang === 'ary'
+                ? 'السلام عليكم! أنا المساعد ديال VocalIA. كيفاش نقدر نعاونك؟'
+                : 'Bonjour ! Je suis l\'assistant VocalIA. Comment puis-je vous aider ?'
+            },
+            products: {
+              triggers: ['produit', 'product', 'vendez', 'offre', '3andkom'],
+              response: lang === 'ary'
+                ? 'VocalIA 3andha 2 dial produits: Voice Widget (99€/شهر) و Voice Telephony (0.06€/دقيقة)'
+                : 'VocalIA propose 2 produits: Voice Widget (99€/mois) et Voice Telephony (0.06€/min)'
+            },
+            pricing: {
+              triggers: ['prix', 'price', 'tarif', 'combien', 'chhal'],
+              response: lang === 'ary'
+                ? 'Voice Widget: من 99€/شهر. Voice Telephony: 0.06€/دقيقة.'
+                : 'Voice Widget: à partir de 99€/mois. Voice Telephony: 0.06€/min.'
+            }
+          };
+        }
+
+        // Add fallback intelligence methods
+        fallbackData.findResponse = function (userMessage) {
+          const lower = userMessage.toLowerCase();
+          for (const [key, data] of Object.entries(this.pairs)) {
+            if (data.triggers.some(t => lower.includes(t.toLowerCase()))) {
+              return data.response;
+            }
+          }
+          return null;
+        }.toString();
+
+        fallbackData.getResponse = function (userMessage, lang) {
+          const matched = this.findResponse(userMessage);
+          if (matched) return matched;
+          return this.pairs.products?.response || 'Je suis l\'assistant VocalIA.';
+        }.toString();
+
+        res.writeHead(200, {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=300' // Cache 5 minutes
+        });
+        res.end(JSON.stringify(fallbackData));
+        return;
+      } catch (e) {
+        console.error('[VoiceAPI] Fallback generation error:', e.message);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Failed to generate fallback' }));
+        return;
+      }
     }
 
     // Main respond endpoint with lead qualification

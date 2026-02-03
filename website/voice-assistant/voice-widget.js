@@ -1645,6 +1645,61 @@
   }
 
   // ============================================================
+  // KB-POWERED FALLBACK LOADER
+  // ============================================================
+
+  /**
+   * Load tenant-specific KB fallback from server
+   * This enables intelligent responses even when main API fails
+   */
+  async function loadTenantFallback(lang) {
+    const tenantId = window.VOCALIA_TENANT_ID || 'default';
+    const baseUrl = CONFIG.VOICE_API.replace('/respond', '');
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
+
+      const response = await fetch(`${baseUrl}/api/fallback/${tenantId}?lang=${lang}`, {
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const fallbackData = await response.json();
+
+        // Build intelligent fallback object with methods
+        window.VocaliaIntelligentFallback = {
+          version: fallbackData.version,
+          tenantId: fallbackData.tenantId,
+          pairs: fallbackData.pairs,
+
+          findResponse: function (userMessage) {
+            const lower = userMessage.toLowerCase();
+            for (const [key, data] of Object.entries(this.pairs)) {
+              if (data.triggers && data.triggers.some(t => lower.includes(t.toLowerCase()))) {
+                return data.response;
+              }
+            }
+            return null;
+          },
+
+          getResponse: function (userMessage, reqLang) {
+            const matched = this.findResponse(userMessage);
+            if (matched) return matched;
+            return this.pairs.products?.response || 'Je suis l\'assistant VocalIA.';
+          }
+        };
+
+        console.log(`[VocalIA] KB fallback loaded for tenant: ${tenantId}`);
+      }
+    } catch (e) {
+      console.warn('[VocalIA] Could not load KB fallback:', e.message);
+      // Fall back to static intelligent-fallback.js if available
+    }
+  }
+
+  // ============================================================
   // INITIALIZATION
   // ============================================================
 
@@ -1652,6 +1707,10 @@
     try {
       const lang = detectLanguage();
       await loadLanguage(lang);
+
+      // Load KB-powered fallback for this tenant
+      await loadTenantFallback(lang);
+
       // Generate session ID for AG-UI threading
       state.conversationContext.sessionId = AGUI.generateId('session');
 
