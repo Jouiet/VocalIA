@@ -1187,97 +1187,26 @@
             a2ui: data.a2ui || null
           };
         }
+      } else {
+        throw new Error(`API Error: ${responseVal.status}`);
       }
     } catch (e) {
       console.error("[VocalIA] Voice API failed:", e.message);
-      // Use INTELLIGENT fallback instead of error message
-      if (window.VocaliaIntelligentFallback) {
-        const intelligentResponse = window.VocaliaIntelligentFallback.getResponse(userMessage, state.currentLang);
-        console.log("[VocalIA] Using intelligent fallback");
-        return { text: intelligentResponse, fallback: 'intelligent' };
-      }
-      // Ultimate fallback if intelligent system not loaded
+      // STRICTLY RETURN ERROR MESSAGE - NO FALLBACKS
       return {
         text: L.ui.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.",
         error: true
       };
     }
 
-    // --- FALLBACK (Rule-Based) ---
-    // Return objects now instead of strings
-
-    // 3. Check for booking intent
-    if (isBookingIntent(lower)) {
-      ctx.bookingFlow.active = true;
-      ctx.bookingFlow.step = 'name';
-      ctx.bookingFlow.data.service = L.booking.service;
-      trackEvent('voice_booking_started', { step: 'name' });
-      return { text: L.booking.messages.start };
-    }
-
-    // 3. Update context with detected industry/need
-    const detectedIndustry = detectIndustry(userMessage);
-    if (detectedIndustry) ctx.industry = detectedIndustry;
-
-    const detectedNeed = detectNeed(userMessage);
-    if (detectedNeed) ctx.need = detectedNeed;
-
-    // 4. Check for "yes" confirmation based on last topic
-    if (L.topics.yes.keywords.some(kw => lower.includes(kw))) {
-      const yesResponses = L.topics.yes.responses;
-      if (ctx.lastTopic && yesResponses[ctx.lastTopic]) {
-        return yesResponses[ctx.lastTopic];
-      }
-      return yesResponses.default;
-    }
-
-    // 5. Check all topics
-    for (const [topic, data] of Object.entries(L.topics)) {
-      if (topic === 'yes') continue; // Already handled above
-
-      if (data.keywords.some(kw => lower.includes(kw))) {
-        ctx.lastTopic = topic;
-
-        // Special case: leads -> adapt to industry
-        if (topic === 'leads' && ctx.industry && L.industries[ctx.industry]?.leads) {
-          return L.industries[ctx.industry].leads + L.defaults.leadsFollowup;
-        }
-
-        if (data.response) return data.response;
-      }
-    }
-
-    // 6. Industry-specific response
-    if (ctx.industry && L.industries[ctx.industry]) {
-      const industryData = L.industries[ctx.industry];
-
-      // If asking about services
-      if (lower.includes('service') || lower.includes('automation') || lower.includes('أتمتة') || lower.includes('automatisation')) {
-        ctx.lastTopic = 'services';
-        return industryData.services + L.defaults.servicesFollowup;
-      }
-
-      // First time mentioning industry
-      const introStart = industryData.intro.substring(0, 30);
-      if (!state.conversationHistory.some(m => m.content.includes(introStart))) {
-        return industryData.intro + L.defaults.industryFollowup;
-      }
-    }
-
-    // 7. If quote need detected
-    if (ctx.need === 'quote') {
-      ctx.lastTopic = 'pricing';
-      return L.topics.pricing.response;
-    }
-
-    // 8. Industry-based smart default
-    if (ctx.industry) {
-      return L.defaults.industryResponse.replace('{industry}', ctx.industry.toUpperCase());
-    }
-
-    // 9. True default - qualification question
-    return { text: L.defaults.qualificationQuestion };
+    // --- FALLBACK DISABLED ---
+    // Rule-based fallback removed as per strategic directive.
+    return {
+      text: L.ui.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.",
+      error: true
+    };
   }
+
 
   // ============================================================
   // MESSAGE HANDLING
@@ -1652,52 +1581,14 @@
    * Load tenant-specific KB fallback from server
    * This enables intelligent responses even when main API fails
    */
+  /**
+   * Load tenant-specific KB fallback from server
+   * DISABLED - Zero Regex Policy
+   */
   async function loadTenantFallback(lang) {
-    const tenantId = window.VOCALIA_TENANT_ID || 'default';
-    const baseUrl = CONFIG.VOICE_API.replace('/respond', '');
-
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3s timeout
-
-      const response = await fetch(`${baseUrl}/api/fallback/${tenantId}?lang=${lang}`, {
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-
-      if (response.ok) {
-        const fallbackData = await response.json();
-
-        // Build intelligent fallback object with methods
-        window.VocaliaIntelligentFallback = {
-          version: fallbackData.version,
-          tenantId: fallbackData.tenantId,
-          pairs: fallbackData.pairs,
-
-          findResponse: function (userMessage) {
-            const lower = userMessage.toLowerCase();
-            for (const [key, data] of Object.entries(this.pairs)) {
-              if (data.triggers && data.triggers.some(t => lower.includes(t.toLowerCase()))) {
-                return data.response;
-              }
-            }
-            return null;
-          },
-
-          getResponse: function (userMessage, reqLang) {
-            const matched = this.findResponse(userMessage);
-            if (matched) return matched;
-            return this.pairs.products?.response || 'Je suis l\'assistant VocalIA.';
-          }
-        };
-
-        console.log(`[VocalIA] KB fallback loaded for tenant: ${tenantId}`);
-      }
-    } catch (e) {
-      console.warn('[VocalIA] Could not load KB fallback:', e.message);
-      // Fall back to static intelligent-fallback.js if available
-    }
+    // Feature disabled by strict policy
   }
+
 
   // ============================================================
   // INITIALIZATION

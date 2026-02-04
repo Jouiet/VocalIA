@@ -2749,11 +2749,7 @@
         console.error('[VocalIA] API error:', err.message);
       }
       // Use INTELLIGENT fallback instead of error message
-      if (window.VocaliaIntelligentFallback) {
-        console.log('[VocalIA] Using intelligent fallback');
-        return window.VocaliaIntelligentFallback.getResponse(arguments[0], state.currentLang);
-      }
-      // Ultimate fallback if intelligent system not loaded
+      // DIRECT ERROR RETURN - NO LOCAL FALLBACK
       const L = state.langData;
       return L?.ui?.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.";
     }
@@ -2851,14 +2847,16 @@
       return L.booking.messages.start;
     }
 
-    // 3. Try Voice API first (AI Mode with 40 personas)
+    // 3. Try Voice API (AI Mode)
+    // CRITICAL CHANGE: We ONLY use the API. No "stupid" fallback.
     const apiResponse = await callVoiceAPI(userMessage);
     if (apiResponse) {
       return apiResponse;
     }
 
-    // 4. Fallback to pattern matching (offline mode)
-    return getPatternMatchResponse(userMessage);
+    // 4. API Failed - Return error message directly
+    // Do NOT fall back to getPatternMatchResponse(userMessage)
+    return L?.ui?.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.";
   }
 
   // ============================================================

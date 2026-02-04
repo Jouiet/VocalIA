@@ -47,6 +47,10 @@ cp website/src/lib/*.js "$DEPLOY_DIR/src/lib/"
 mkdir -p "$DEPLOY_DIR/src/locales"
 cp website/src/locales/*.json "$DEPLOY_DIR/src/locales/"
 
+echo "   Copying Voice Assistant..."
+mkdir -p "$DEPLOY_DIR/voice-assistant"
+cp -r website/voice-assistant/* "$DEPLOY_DIR/voice-assistant/"
+
 # --- BACKEND (MCP Server + Core) ---
 # NOTE: NindoHost cPanel is shared hosting (Node.js app support varies).
 # Ideally, this should go to a VPS. But we package it for potential Node deployment.
@@ -56,7 +60,18 @@ mkdir -p "$DEPLOY_DIR/server/core"
 mkdir -p "$DEPLOY_DIR/server/mcp-server"
 
 # Core: Registry
-cp core/client-registry.cjs "$DEPLOY_DIR/server/core/"
+# CHANGED: Copying FULL Core for Voice API
+cp -r core/* "$DEPLOY_DIR/server/core/"
+
+# Copying Backend Dependencies
+mkdir -p "$DEPLOY_DIR/server/lib"
+cp -r lib/* "$DEPLOY_DIR/server/lib/" 2>/dev/null || true
+
+mkdir -p "$DEPLOY_DIR/server/integrations"
+cp -r integrations/* "$DEPLOY_DIR/server/integrations/" 2>/dev/null || true
+
+mkdir -p "$DEPLOY_DIR/server/personas"
+cp -r personas/* "$DEPLOY_DIR/server/personas/" 2>/dev/null || true
 
 # MCA Server: Build & Dist
 echo "   Building MCP Server..."

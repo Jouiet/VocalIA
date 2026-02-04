@@ -24,7 +24,7 @@ export const recommendationTools = {
         },
         handler: async ({ productId, limit = 5, _meta }: { productId: string, limit?: number, _meta?: { tenantId?: string, persona?: string } }) => {
             const tenantId = _meta?.tenantId || 'agency_internal';
-            const persona = _meta?.persona || 'UNIVERSAL_ECOMMERCE';
+
             try {
                 if (!RecommendationService) {
                     throw new Error("RecommendationService not loaded");
@@ -67,7 +67,7 @@ export const recommendationTools = {
         },
         handler: async ({ productId, limit = 5, _meta }: { productId: string, limit?: number, _meta?: { tenantId?: string, persona?: string } }) => {
             const tenantId = _meta?.tenantId || 'agency_internal';
-            const persona = _meta?.persona || 'UNIVERSAL_ECOMMERCE';
+
             try {
                 if (!RecommendationService) {
                     throw new Error("RecommendationService not loaded");
@@ -112,7 +112,7 @@ export const recommendationTools = {
         },
         handler: async ({ userId, recentlyViewed, recentlyPurchased, limit = 10, _meta }: { userId: string, recentlyViewed?: string[], recentlyPurchased?: string[], limit?: number, _meta?: { tenantId?: string, persona?: string } }) => {
             const tenantId = _meta?.tenantId || 'agency_internal';
-            const persona = _meta?.persona || 'UNIVERSAL_ECOMMERCE';
+
             try {
                 if (!RecommendationService) {
                     throw new Error("RecommendationService not loaded");

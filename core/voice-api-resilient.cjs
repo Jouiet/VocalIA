@@ -1519,8 +1519,11 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
     }
   }
 
-  // All AI providers failed - use local fallback
-  console.log(`[Voice API] All providers failed, using local fallback (${language})`);
+  // All AI providers failed - ZERO REGEX POLICY
+  console.warn(`[Voice API] All providers failed. Zero Regex Policy active. Returning error.`);
+  throw new Error("Service temporarily unavailable (All AI providers execution failed).");
+
+  /* DEAD CODE - LOCAL FALLBACK DISABLED
   const localResult = getLocalResponse(userMessage, language);
 
   // Session 246: Apply A2UI Supervision even to local fallback for visual consistency
@@ -1535,6 +1538,7 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
     errors,
     localPattern: localResult.pattern,
   };
+  */
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1959,7 +1963,9 @@ function startServer(port = 3004) {
             ...persona,
             systemPrompt: injectedConfig.session?.instructions || injectedConfig.instructions,
             persona_id: persona.id,
-            persona_name: persona.name
+            persona_name: persona.name,
+            // CRITICAL: Map tenant_id to knowledge_base_id for RAG context
+            knowledge_base_id: tenantId === 'default' ? 'agency_internal' : tenantId
           };
 
           const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language);
