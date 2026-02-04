@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Widget Suite - VocalIA | 8 Widgets IA pour Convertir vos Visiteurs</title>
+    <meta name="description"
+        content="Suite complète de 8 widgets IA e-commerce: récupération panier abandonné (+25%), roue de la fortune (+15% conversion), quiz vocal (+65% completion), et plus. ROI prouvé.">
+    <link rel="canonical" href="https://vocalia.ma/products/voice-widget-ecommerce" />
+
+    <!-- Hreflang for i18n SEO (5 languages) -->
+    <link rel="alternate" hreflang="fr" href="https://vocalia.ma/products/voice-widget-ecommerce?lang=fr" />
+    <link rel="alternate" hreflang="en" href="https://vocalia.ma/products/voice-widget-ecommerce?lang=en" />
+    <link rel="alternate" hreflang="es" href="https://vocalia.ma/products/voice-widget-ecommerce?lang=es" />
+    <link rel="alternate" hreflang="ar" href="https://vocalia.ma/products/voice-widget-ecommerce?lang=ar" />
+    <link rel="alternate" hreflang="ary" href="https://vocalia.ma/products/voice-widget-ecommerce?lang=ary" />
+    <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/products/voice-widget-ecommerce" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="product" />
+    <meta property="og:url" content="https://vocalia.ma/products/voice-widget-ecommerce" />
+    <meta property="og:title" content="E-Commerce Widget Suite - 8 Widgets IA pour Convertir" />
+    <meta property="og:description"
+        content="8 widgets IA spécialisés e-commerce. Récupération panier, quiz vocal, recommandations IA. +25% conversion prouvée." />
+    <meta property="og:image" content="https://vocalia.ma/public/images/products/ecommerce-suite-og.webp" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@vocalia_ma">
+    <meta name="twitter:title" content="E-Commerce Widget Suite - VocalIA" />
+    <meta name="twitter:description" content="8 widgets IA pour convertir vos visiteurs en acheteurs." />
+    <meta name="twitter:image" content="https://vocalia.ma/public/images/products/ecommerce-suite-og.webp" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+    <meta name="theme-color" content="#10b981">
+
+    <!-- Schema.org Product -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "VocalIA E-Commerce Widget Suite",
+      "description": "Suite de 8 widgets IA spécialisés pour e-commerce: récupération panier, quiz vocal, recommandations, gamification",
+      "brand": {"@type": "Brand", "name": "VocalIA"},
+      "offers": {
+        "@type": "Offer",
+        "price": "99",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
+      },
+      "category": "E-commerce AI Software",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "47"
+      }
+    }
+  </script>
+
+    <!-- Schema.org WebPage with Speakable (AEO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "E-Commerce Widget Suite - 8 Widgets IA",
+      "url": "https://vocalia.ma/products/voice-widget-ecommerce",
+      "speakable": {
+        "@type": "SpeakableSpecification",
+        "cssSelector": ["h1", ".widget-card-title", ".widget-roi"]
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
+          {"@type": "ListItem", "position": 2, "name": "Produits", "item": "https://vocalia.ma/products"},
+          {"@type": "ListItem", "position": 3, "name": "E-Commerce Suite", "item": "https://vocalia.ma/products/voice-widget-ecommerce"}
+        ]
+      }
+    }
+  </script>
+
+    <!-- Critical CSS -->
+    <style>
+        body {
+            background: #0f172a;
+            color: #fff;
+            font-family: Inter, system-ui, sans-serif;
+            margin: 0
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0)
+        }
+    </style>
+
+    <!-- Tailwind CSS -->
+    <link rel="preload" href="/public/css/style.css" as="style">
+    <link href="/public/css/style.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet" media="print" onload="this.media='all'">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+        integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+        crossorigin="anonymous" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+        integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+        crossorigin="anonymous" defer></script>
+
+    <!-- Security -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+    <style>
+        .gradient-ecommerce {
+            background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass {
+            background: rgba(51, 65, 85, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .widget-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .widget-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+        }
+
+        .roi-badge {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #34d399;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.1));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+    </style>
+
+    <!-- Plausible Analytics -->
+    <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
+</head>
+
+<body class="bg-slate-900 text-white antialiased">
+    <!-- Skip Link -->
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-emerald-500 text-white rounded-lg">
+        <span data-i18n="ecommerce_page.skip_link">Aller au contenu principal</span>
+    </a>
+
+    <!-- Navigation (same as voice-widget.html) -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="flex items-center space-x-2">
+                    <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
+                    <span class="text-xl font-bold gradient-text">VocalIA</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="/products/voice-widget" class="text-zinc-400 hover:text-white transition">Widget B2B</a>
+                    <a href="/products/voice-widget-ecommerce" class="text-emerald-400 font-medium">Widget
+                        E-commerce</a>
+                    <a href="/products/voice-telephony" class="text-zinc-400 hover:text-white transition">Téléphonie
+                        IA</a>
+                    <a href="/pricing" class="text-zinc-400 hover:text-white transition">Tarifs</a>
+                    <a href="/booking"
+                        class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 transition font-medium">Démo</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 overflow-hidden" id="main-content">
+        <div
+            class="absolute inset-0 bg-gradient-to-b from-emerald-950/50 via-slate-900 to-slate-900 pointer-events-none">
+        </div>
+        <div
+            class="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none">
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8" aria-label="Breadcrumb">
+                <ol class="flex items-center space-x-2 text-sm text-zinc-400">
+                    <li><a href="/" class="hover:text-white transition"
+                            data-i18n="ecommerce_page.breadcrumb_home">Accueil</a></li>
+                    <li><span class="mx-2">/</span></li>
+                    <li><a href="/products" class="hover:text-white transition"
+                            data-i18n="ecommerce_page.breadcrumb_products">Produits</a></li>
+                    <li><span class="mx-2">/</span></li>
+                    <li class="text-emerald-400" data-i18n="ecommerce_page.breadcrumb_current">E-Commerce Suite</li>
+                </ol>
+            </nav>
+
+            <div class="text-center max-w-4xl mx-auto">
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm mb-6">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+                    </svg>
+                    <span data-i18n="ecommerce_page.badge">8 Widgets IA • E-commerce Optimisé</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+                    <span data-i18n="ecommerce_page.hero_title_1">Convertissez</span>
+                    <span class="gradient-ecommerce" data-i18n="ecommerce_page.hero_title_2">+25%</span>
+                    <span data-i18n="ecommerce_page.hero_title_3">de visiteurs</span>
+                </h1>
+
+                <p class="text-xl text-zinc-400 mb-8 product-description" data-i18n="ecommerce_page.hero_subtitle">
+                    8 widgets IA spécialisés qui transforment les visiteurs passifs en acheteurs actifs.
+                    Récupération de paniers, gamification, recommandations personnalisées.
+                </p>
+
+                <!-- ROI Stats -->
+                <div class="flex flex-wrap justify-center gap-6 mb-10">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-emerald-400">+25%</div>
+                        <div class="text-sm text-zinc-500" data-i18n="ecommerce_page.stat_cart">Récupération Panier
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-emerald-400">+20%</div>
+                        <div class="text-sm text-zinc-500" data-i18n="ecommerce_page.stat_aov">Panier Moyen</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-emerald-400">+65%</div>
+                        <div class="text-sm text-zinc-500" data-i18n="ecommerce_page.stat_quiz">Complétion Quiz</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-emerald-400">+45%</div>
+                        <div class="text-sm text-zinc-500" data-i18n="ecommerce_page.stat_emails">Capture Emails</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="/booking"
+                        class="px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 transition font-semibold text-lg shadow-lg shadow-emerald-500/25">
+                        <span data-i18n="ecommerce_page.cta_demo">Voir une Démo</span>
+                    </a>
+                    <a href="/pricing"
+                        class="px-8 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 transition font-semibold text-lg">
+                        <span data-i18n="ecommerce_page.cta_pricing">Tarifs E-commerce</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8 Widgets Showcase -->
+    <section class="py-20 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="ecommerce_page.widgets_title">8 Widgets IA
+                    Spécialisés</h2>
+                <p class="text-lg text-zinc-400 max-w-2xl mx-auto" data-i18n="ecommerce_page.widgets_subtitle">
+                    Chaque widget est conçu pour un objectif précis de conversion. Activez uniquement ceux dont vous
+                    avez besoin.
+                </p>
+            </div>
+
+            <!-- Widget Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Widget 1: Abandoned Cart Recovery -->
+                <div class="widget-card p-6 feature-list">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget1_title">
+                        Récupération Panier</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget1_desc">
+                        Rappels vocaux automatiques par téléphone, SMS ou email quand un client abandonne son panier.
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        +25% récupération
+                    </div>
+                </div>
+
+                <!-- Widget 2: Spin Wheel -->
+                <div class="widget-card p-6">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget2_title">Roue
+                        de la Fortune</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget2_desc">
+                        Gamification avec roue animée. Capture emails en échange de réductions (5% à 30%).
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        +45% emails • +15% conv.
+                    </div>
+                </div>
+
+                <!-- Widget 3: Voice Quiz -->
+                <div class="widget-card p-6">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget3_title">Quiz
+                        Vocal Produit</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget3_desc">
+                        Questionnaire interactif vocal pour recommander les bons produits. Templates: skincare,
+                        électronique...
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        +65% complétion
+                    </div>
+                </div>
+
+                <!-- Widget 4: Free Shipping Bar -->
+                <div class="widget-card p-6">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget4_title">Barre
+                        Livraison Gratuite</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget4_desc">
+                        Progression visuelle vers le seuil de livraison gratuite. Annonces vocales à 25%, 50%, 75%,
+                        100%.
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        +15-20% panier moyen
+                    </div>
+                </div>
+
+                <!-- Widget 5: AI Recommendations -->
+                <div class="widget-card p-6">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget5_title">
+                        Recommandations IA</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget5_desc">
+                        Carrousel de produits similaires et "fréquemment achetés ensemble" avec filtrage par LTV client.
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        +25% panier moyen
+                    </div>
+                </div>
+
+                <!-- Widget 6: Exit Intent -->
+                <div class="widget-card p-6">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget6_title">Exit
+                        Intent Vocal</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget6_desc">
+                        Popup vocale quand le visiteur s'apprête à quitter. Unique: aucun concurrent ne fait ça en voix.
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        +18-25% rétention
+                    </div>
+                </div>
+
+                <!-- Widget 7: Social Proof -->
+                <div class="widget-card p-6">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget7_title">Social
+                        Proof / FOMO</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget7_desc">
+                        Notifications d'activité en temps réel: "Marie vient d'acheter...", "12 personnes consultent ce
+                        produit".
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        +8-15% conversion
+                    </div>
+                </div>
+
+                <!-- Widget 8: Voice Chat Core -->
+                <div class="widget-card p-6">
+                    <div class="feature-icon mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 widget-card-title" data-i18n="ecommerce_page.widget8_title">
+                        Assistant Vocal E-com</h3>
+                    <p class="text-zinc-400 text-sm mb-4" data-i18n="ecommerce_page.widget8_desc">
+                        Chat vocal natif avec catalogue produit connecté (Shopify, WooCommerce, Magento...). Recherche
+                        vocale.
+                    </p>
+                    <div class="roi-badge inline-flex px-3 py-1 rounded-full text-sm font-medium widget-roi">
+                        Core platform
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Connectors Section -->
+    <section class="py-20 bg-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="ecommerce_page.connectors_title">Connecté à
+                    Votre Catalogue</h2>
+                <p class="text-lg text-zinc-400 max-w-2xl mx-auto" data-i18n="ecommerce_page.connectors_subtitle">
+                    L'IA lit votre catalogue produit en temps réel. Synchronisation automatique des prix, stocks,
+                    descriptions.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Shopify -->
+                <div class="glass p-6 rounded-xl text-center hover:border-emerald-500/30 transition">
+                    <div class="text-3xl mb-2">🛒</div>
+                    <div class="font-semibold">Shopify</div>
+                    <div class="text-xs text-zinc-500">GraphQL API</div>
+                </div>
+                <!-- WooCommerce -->
+                <div class="glass p-6 rounded-xl text-center hover:border-emerald-500/30 transition">
+                    <div class="text-3xl mb-2">🔌</div>
+                    <div class="font-semibold">WooCommerce</div>
+                    <div class="text-xs text-zinc-500">REST v3</div>
+                </div>
+                <!-- Magento -->
+                <div class="glass p-6 rounded-xl text-center hover:border-emerald-500/30 transition">
+                    <div class="text-3xl mb-2">🧱</div>
+                    <div class="font-semibold">Magento</div>
+                    <div class="text-xs text-zinc-500">REST API</div>
+                </div>
+                <!-- Square -->
+                <div class="glass p-6 rounded-xl text-center hover:border-emerald-500/30 transition">
+                    <div class="text-3xl mb-2">◻️</div>
+                    <div class="font-semibold">Square</div>
+                    <div class="text-xs text-zinc-500">Catalog + POS</div>
+                </div>
+                <!-- Lightspeed -->
+                <div class="glass p-6 rounded-xl text-center hover:border-emerald-500/30 transition">
+                    <div class="text-3xl mb-2">⚡</div>
+                    <div class="font-semibold">Lightspeed</div>
+                    <div class="text-xs text-zinc-500">Retail + Restaurant</div>
+                </div>
+                <!-- Custom -->
+                <div class="glass p-6 rounded-xl text-center hover:border-emerald-500/30 transition">
+                    <div class="text-3xl mb-2">📄</div>
+                    <div class="font-semibold">Custom</div>
+                    <div class="text-xs text-zinc-500">JSON / CSV</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-b from-slate-900 to-emerald-950/30">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6" data-i18n="ecommerce_page.cta_title">Prêt à Convertir Plus
+                de Visiteurs?</h2>
+            <p class="text-lg text-zinc-400 mb-8" data-i18n="ecommerce_page.cta_subtitle">
+                Installez la suite E-commerce en 5 minutes. Voyez les résultats dès la première semaine.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="/booking"
+                    class="px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 transition font-semibold text-lg shadow-lg shadow-emerald-500/25">
+                    <span data-i18n="ecommerce_page.cta_demo_final">Réserver une Démo</span>
+                </a>
+                <a href="/signup"
+                    class="px-8 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition font-semibold text-lg">
+                    <span data-i18n="ecommerce_page.cta_signup">Essai 14 Jours</span>
+                </a>
+            </div>
+            <p class="text-sm text-zinc-500 mt-6" data-i18n="ecommerce_page.cta_note">À partir de 99€/mois • Sans
+                engagement • Support prioritaire</p>
+        </div>
+    </section>
+
+    <!-- Footer (minimal) -->
+    <footer class="py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-2">
+                    <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg">
+                    <span class="font-semibold gradient-text">VocalIA</span>
+                </div>
+                <div class="text-sm text-zinc-500">
+                    © 2026 VocalIA. Tous droits réservés.
+                    <a href="/privacy" class="hover:text-white transition">Confidentialité</a> •
+                    <a href="/terms" class="hover:text-white transition">CGU</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.294.0/dist/umd/lucide.min.js"></script>
+    <script>lucide.createIcons();</script>
+
+    <!-- i18n -->
+    <script src="/src/lib/i18n.js"></script>
+</body>
+
+</html>
