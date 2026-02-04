@@ -114,8 +114,44 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 **Directive Met:** "Stop selling one widget for everyone."
 
 **Implementation Verified:**
-1.  **Ecommerce Kernel:** Confirmed robust, rich features (208KB). Ready for Shopify/WooCom.
-2.  **B2B Kernel:** Confirmed streamlined, lead-gen focused (18KB). Ready for Agencies/SaaS.
-3.  **Agency Implementation:** Confirmed using the **B2B Kernel**. We practice what we preach. No bloat on our own homepage.
+
+1. **Ecommerce Kernel:** Confirmed robust, rich features (208KB). Ready for Shopify/WooCom.
+2. **B2B Kernel:** Confirmed streamlined, lead-gen focused (18KB). Ready for Agencies/SaaS.
+3. **Agency Implementation:** Confirmed using the **B2B Kernel**. We practice what we preach. No bloat on our own homepage.
 
 **Status:** CLOSED. Moved to Commercialization.
+
+---
+
+## 6.2 No Free Tier / No Techno-Babble Directive (2026-02-04)
+
+> [!CAUTION]
+> **MANDATORY POLICY:** All marketing copy, CTAs, Schema.org metadata, and chatbot responses MUST reflect PAID positioning. NO "Gratuit", "Free", "0€" claims anywhere on the public-facing website or in the AI agent responses.
+
+### Rationale
+
+- **Business Positioning:** VocalIA is a premium business solution, not a charity project or an MVP demo.
+* **Target Audience:** CEOs and Marketing Professionals speak "ROI, Revenue, Leads", not "API, JSON, Latency".
+* **Trust:** Claiming "Free" then asking for 49€ destroys credibility. Transparency is conversion.
+
+### Audit Scope (2026-02-04)
+
+| File Type | Files Fixed | Key Changes |
+| :--- | :--- | :--- |
+| **HTML** | `index.html`, `booking.html`, `referral.html`, `signup.html`, `use-cases/index.html`, `voice-widget.html` | Schema.org `price: 0` → `price: 49`. CTA "Essai Gratuit" → "Essai 14 Jours". `0€` → `49€` or `ROI`. |
+| **JSON (i18n)** | `fr.json`, `en.json`, `es.json`, `ar.json`, `ary.json` | `hero.cta_primary` fixed in all 5 languages. "Web Speech API" → "Reconnaissance Vocale Premium". "0€ de coût" → "Infrastructure dédiée". |
+| **Chatbot Brain** | `widget/intelligent-fallback.js` | All price mentions changed from `99€` to `49€`. Removed "Twilio" and "Vapi" brand names. |
+
+### Lexicon Transformation
+
+| Tech Term (Banned) | Business Term (Approved) |
+| :--- | :--- |
+| API | Connectors / Integration |
+| Latency | Responsiveness / Real-Time |
+| JSON | Data |
+| Stack | Engine |
+| Web Speech API | Premium Voice Technology |
+| 0 dependencies | Sovereign Solution |
+| Webhook | Automated Actions |
+
+**Status:** ENFORCED. All pages verified. 4 commits deployed.

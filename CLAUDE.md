@@ -1,10 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> Version: 6.93.0 | 03/02/2026 | Session 250.84 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
-> **🌐 PRODUCTION LIVE: https://vocalia.ma** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
+> Version: 6.94.0 | 04/02/2026 | Session 250.85 | Health: 100% | **✅ WEBAPP SaaS PRODUCTION READY**
+> **🌐 PRODUCTION LIVE: <https://vocalia.ma>** | HTTP/2 ✅ | HSTS preload ✅ | LiteSpeed ✅
 > **Dashboards: 11/11 Data-driven ✅** | catalog.html ✅ | 0 bugs | 0 missing imports | All API connected
 > **WebSocket: Real-time updates ✅** | Channels: hitl, logs, tenants, sessions, catalog | Auth: JWT | Heartbeat ✅
 > i18n: 5 Languages (FR, EN, ES, AR, ARY) | **70 pages** | **22,000+ keys** | RTL ✅ | hreflang ary ✅
+> **MARKETING: No Free Tier Policy ✅** | All CTAs → 'Essai 14 Jours' | Schema.org price: 49€ | No Techno-Babble
 > **Dynamic Catalog: 10 function tools + 9 API endpoints ✅** | 6 E-commerce connectors (Shopify, WooCommerce, Square, Lightspeed, Magento, Custom) | ~64% market coverage | Voice-optimized | LRU cache | CRUD Dashboard
 > **Multi-Tenant KB: Quotas ✅** | Parser (JSON/CSV/XLSX/TXT/MD) | Crawler (FAQ/Contact/Hours/JSON-LD) | TF-IDF Index
 > **Security: CSP + X-Frame-Options + X-Content-Type-Options + SRI (GSAP/Lucide) ✅**
@@ -29,7 +30,7 @@
 ## Identité
 
 - **Type**: Voice AI SaaS Platform
-- **Domain**: www.vocalIA.ma
+- **Domain**: <www.vocalIA.ma>
 - **Location**: `~/Desktop/VocalIA/`
 
 ---
@@ -58,11 +59,11 @@
 **Session 250.74 WEB SPEECH FALLBACK + E2E VERIFIED:** (1) Voice preview Web Speech API fallback for agents.html - speakWithWebSpeech() function - WEB_SPEECH_VOICES mapping (lang+gender→browser voice) - Automatic fallback when backend /tts unavailable (FR/EN/ES/AR) - Darija still requires ElevenLabs (2) E2E tests: 420/420 pass (was 375) - 5 browsers verified (3) Unit tests: 306/306 pass (4) All audit docs P1/P2 tasks verified 100% COMPLETE
 **Session 250.73 VPS DEPLOYMENT + AUDIT COMPLETION:** (1) VPS Hostinger Docker Compose deployed - voice-api:3004 + telephony:3009 + grok-realtime:3007 via Traefik - api.vocalia.ma LIVE - /health returns 200 - /voice/inbound validates Twilio signatures (403 = CORRECT) (2) googleapis dependency FIXED (was missing) (3) @3a/agent-ops REMOVED from codebase (.yalc/ 11 files + yalc.lock + package-lock.json) - NEVER USED in production (0 imports) - VocalIA has LOCAL COPIES in core/ (4) All 7 audit docs 100% COMPLETE: AUDIT-VOICE-CONFIG, DYNAMIC-CATALOG, MULTI-TENANT, FORENSIC, KB-OPTIMIZATION, LANGUAGE-SUPPORT, VOICE-MENA (5) 306/306 tests pass, 0 placeholders/mocks, 7 voice providers verified
 **Session 250.72 DYNAMIC CATALOG 100% COMPLETE:** (1) CalendarSlotsConnector 764 lignes - Google Calendar API v3 FreeBusy - exponential backoff 403/429 - buffer 5min - min advance 24h - intégré dans TenantCatalogStore.getAvailableSlots() (2) Square API FIX: GET /v2/catalog/list (était POST - FAUX) per docs officielles (3) Lightspeed K-Series FIX: /o/op/1/menu/list + /o/op/1/menu/load/{id} (endpoints corrects) + _parseMenuEntries() récursif (4) catalog-connector.cjs 2287 lignes - tenant-catalog-store.cjs 1148 lignes - TOTAL 4199 lignes - 306 tests pass - 0 placeholders
-**Session 250.71 E-COMMERCE CONNECTORS COMPLETE:** 6 production-ready catalog connectors in core/catalog-connector.cjs (1500+ lines) - ShopifyCatalogConnector (GraphQL Admin API 2026-01), WooCommerceCatalogConnector (REST v3), SquareCatalogConnector (Catalog API, POS), LightspeedCatalogConnector (K-Series restaurant, X-Series retail), MagentoCatalogConnector (REST API), CustomCatalogConnector (JSON/CSV) - CatalogConnectorFactory with config validation - 2 new API endpoints (GET/PUT /api/tenants/:id/catalog/connector) - Connector config modal in catalog.html (6 platforms) - i18n catalog.connector.* keys (5 locales) - Market coverage ~64%
+**Session 250.71 E-COMMERCE CONNECTORS COMPLETE:** 6 production-ready catalog connectors in core/catalog-connector.cjs (1500+ lines) - ShopifyCatalogConnector (GraphQL Admin API 2026-01), WooCommerceCatalogConnector (REST v3), SquareCatalogConnector (Catalog API, POS), LightspeedCatalogConnector (K-Series restaurant, X-Series retail), MagentoCatalogConnector (REST API), CustomCatalogConnector (JSON/CSV) - CatalogConnectorFactory with config validation - 2 new API endpoints (GET/PUT /api/tenants/:id/catalog/connector) - Connector config modal in catalog.html (6 platforms) - i18n catalog.connector.*keys (5 locales) - Market coverage ~64%
 **Session 250.70 CATALOG API CONNECTED:** catalog.html API-connected CRUD (POST/PUT/DELETE), file import handler (JSON/CSV), edit mode with PUT, toast notifications, sample data fallback for demo mode
 **Session 250.69 CATALOG DASHBOARD COMPLETE:** catalog.html (600+ lines), 9 pages updated with catalog nav link, 7 CRUD API endpoints (/api/tenants/:id/catalog/*), CRUD methods TenantCatalogStore (getItems, getItem, addItem, updateItem, removeItem, syncCatalog), i18n catalog.* 65+ keys × 5 locales (fr, en, es, ar, ary), WebSocket broadcast catalog events
 **Session 250.67-68 DYNAMIC CATALOG:** catalog-connector.cjs (718 lines), tenant-catalog-store.cjs (1000+ lines), 5 JSON schemas, 5 sample catalogs, 10 function tools (browse, menu, services, vehicles, trips, packages, slots, etc.), LRU cache, voice-optimized responses, 10/10 unit tests pass
-**Session 250.66 SSL/HTTPS VERIFIED:** Production https://vocalia.ma live with HTTP/2, HSTS (max-age=31536000; includeSubDomains; preload), CSP, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, X-XSS-Protection, Referrer-Policy, LiteSpeed server
+**Session 250.66 SSL/HTTPS VERIFIED:** Production <https://vocalia.ma> live with HTTP/2, HSTS (max-age=31536000; includeSubDomains; preload), CSP, X-Frame-Options: DENY, X-Content-Type-Options: nosniff, X-XSS-Protection, Referrer-Policy, LiteSpeed server
 **Session 250.65bis-cont SECURITY AUDIT:** Removed all 'client_demo' fallbacks (knowledge-base, catalog), auth check enforced 10/10 client pages, onboarding.html token verification added, console.log removed, 0 placeholders/mocks, 160/160 E2E tests pass
 **Session 250.65bis-cont DASHBOARD FACTUALITY:** agents.html VOICE_NAMES corrigé (Sarah→Ara, Grok voices), Multi-Provider Architecture section added, i18n +3 keys (voice_architecture, telephony_voices, voice_note), E2E tests fs-based (bypass auth redirect), 160/160 tests pass
 **Session 250.65bis MULTI-PROVIDER VOICE AUDIT:** COMPLET - 7 providers audités (Grok/Gemini/ElevenLabs/Twilio/WebSpeech), GROK_VOICE_MAP (10 mappings: 5 langues × 2 genres), voice override AVANT ws.send(), Telephony=✅ configurable, Widget=INDIRECT (design OK), TwiML=alice fixe (API limit), AUDIT-VOICE-CONFIG-SESSION-250.63.md +Section 11 (cartographie exhaustive) (Grok + Gemini + ElevenLabs)
@@ -78,7 +79,7 @@
 **Session 250.57bis RETENTION & EXPORT:** 60-day telephony retention policy, Export (CSV/XLSX/PDF), audit-store.cjs (507 lines), monthly-maintenance.cjs, /api/health endpoint, calls.html retention notice + export buttons, pricing.html FAQ #6, i18n keys (5 locales), Multi-tenant score: 35→95/100 (+60 points)
 **Session 250.57 MULTI-TENANT COMPLETE:** conversation-store.cjs (750 lines), ucp-store.cjs (570 lines), GoogleSheetsDB quota methods (checkQuota/incrementUsage/resetUsage), Widget+Telephony conversation persistence, Multi-tenant score: 35→85/100 (+50 points)
 **Session 250.57 RIGOROUS AUDIT:** i18n.js added to 6 missing pages (5 auth + client/index), wsDebug() production fix, form validation settings.html, conversation-store.cjs, 18/18 webapp pages with i18n, commit bd96a05
-**Session 250.52 P1 I18N COMPLETE:** 11 webapp pages (5 admin + 6 client) with i18n.js, data-i18n attributes, admin.nav.* + dashboard.nav.* keys in 5 locales (fr, en, es, ar, ary), commit 7c244f9
+**Session 250.52 P1 I18N COMPLETE:** 11 webapp pages (5 admin + 6 client) with i18n.js, data-i18n attributes, admin.nav.*+ dashboard.nav.* keys in 5 locales (fr, en, es, ar, ary), commit 7c244f9
 **Session 250.52 P0 SECURITY COMPLETE:** API auth (checkAuth/checkAdmin), password_hash filtered, /api/hitl/* admin-only, /api/logs admin-only, rate limit 100/min on /api/db/*, tenant isolation, 6/6 security tests pass, commit a6151ef
 **Session 250.52 ARCHITECTURE DOCS CONSOLIDATED:** VOCALIA-SYSTEM-ARCHITECTURE.md (988 lignes), ARCHITECTURE-SYSTEM-FORENSIC-AUDIT.md +522 lignes (→1,194), Sections 15-17 (Website 67 pages, DB-API flow, Auth sequences), DOCS-INDEX v3.0.0, 2 docs archivés
 **Session 250.52 SAAS WEBAPP 100% COMPLETE:** 17 HTML pages (auth 5 + client 7 + admin 5), 7 JS libraries (~3,239 lines), auth-service.cjs (19 exports), auth-middleware.cjs (12 exports), 23 API endpoints, 7 Google Sheets tables, Auth flow 6/6 tests pass, HITL real-time endpoints
@@ -102,8 +103,8 @@
 
 | Produit | Type | Pricing |
 |:--------|:-----|:--------|
-| Voice Widget | Browser-based | Free tier |
-| Voice Telephony | PSTN AI Bridge | Competitive per-minute |
+| Voice Widget | Browser-based | 49€/month Business |
+| Voice Telephony | PSTN AI Bridge | 0.06€/min Competitive |
 
 ---
 
@@ -183,6 +184,7 @@ VocalIA/                              # ~107,000 lignes total
 | Darija | ary | Oui | ✅ |
 
 **Geo-detection:**
+
 - MA (Maroc) → FR + MAD
 - EU (Europe) → FR + EUR
 - Other → EN + USD
@@ -436,6 +438,7 @@ ls data/ucp-profiles.json  # exists ✅
 | 40 | Chaos engineering | ✅ | `core/chaos-engineering.cjs` |
 
 **New Infrastructure:**
+
 - **A/B Testing Framework**: 4 experiments (hero-cta, pricing-cta, demo-request, newsletter)
 - **PWA Support**: Offline caching, install prompt, push notifications
 - **Multi-Currency**: MAD/EUR/USD with geo-detection (990 DH / 99€ / $99)
@@ -443,6 +446,7 @@ ls data/ucp-profiles.json  # exists ✅
 - **Chaos Engineering**: 10 experiments for resilience testing
 
 **Vérification empirique:**
+
 ```bash
 # New files created
 ls website/referral.html website/dashboard/widget-analytics.html website/manifest.json website/sw.js
@@ -459,25 +463,30 @@ node core/chaos-engineering.cjs --list | head -5
 ## Session 250.8 - KB Enrichment + Knowledge Graph (31/01/2026)
 
 **KB Enrichment COMPLET** (`automations-registry.json`):
+
 - 12 automations enrichies avec benefit_en, benefit_fr, semantic_description
 - Vocabulary BM25: 44 → **415** termes (+843%)
 - Avg doc length: 6.6 → **~65** tokens
 
 **Knowledge Graph CRÉÉ** (`data/knowledge-base/knowledge-graph.json`):
+
 - 23 nodes (services, modules, widgets, integrations, sensors, providers)
 - 38 edges (relationships: uses_primary, depends_on, monitors, etc.)
 - 21 relation types définies
 
 **Personas Traductions 100% VÉRIFIÉES**:
+
 - 40/40 personas × 5 langues (FR, EN, ES, AR, ARY) = 200 traductions
 - SYSTEM_PROMPTS structure complète
 
 **Audit Document MÀJ** (`docs/AUDIT-FORENSIQUE-PERSONAS-KB-SESSION-250.md`):
+
 - Corrigé contradictions (100% vs 47.5% traductions)
 - Métriques KB actualisées
 - Phase 1 & 2 marquées COMPLET
 
 **Vérification empirique**:
+
 ```bash
 jq '.vocabulary | length' data/knowledge-base/tfidf_index.json  # 415 ✅
 ls data/knowledge-base/knowledge-graph.json  # exists ✅
@@ -501,11 +510,13 @@ grep -c "^        fr:" personas/voice-persona-injector.cjs  # 40 ✅
 | 7 | ~~i18n nouvelles pages~~ | 5 locales | ✅ +20 keys |
 
 **Nouvelles Métriques:**
+
 - Pages HTML: 38 (was 37)
 - i18n Keys: 1566 (was 1546)
 - Sitemap URLs: 35 (was 32)
 
 **Vérification Empirique:**
+
 ```bash
 grep -c "console.log" website/index.html website/dashboard/admin.html  # 0
 grep "XXX" website/contact.html  # 0 matches
@@ -519,12 +530,14 @@ grep -c '<url>' website/sitemap.xml  # 35
 ## Session 250 - Footer Cleanup + Security Fix + Audit MCP Tools
 
 **Footer Cleanup** (31 fichiers):
+
 - Supprimé: `/careers` - pas de page recrutement
 - Supprimé: `/status` - pas de page status
 - Supprimé: "Powered by xAI" - security disclosure fix
 - Footer propre avec 4 sections: Produit, Solutions, Ressources, Entreprise
 
 **Security Fix**:
+
 - Suppression "Powered by xAI" de 31 fichiers HTML
 - Aucune divulgation de stack technologique (Grok, Gemini, xAI) sur pages publiques
 - Conforme DESIGN-BRANDING-SYSTEM.md règles d'obfuscation
@@ -539,10 +552,12 @@ grep -c '<url>' website/sitemap.xml  # 35
 | **Total MCP Server** | 182 | ✅ Build OK |
 
 **Scripts créés**:
+
 - `scripts/propagate-footer.py` - Synchronise footer depuis components/
 - `scripts/propagate-header.py` - Déjà existant, vérifié
 
 **Vérification empirique**:
+
 ```bash
 grep -c "server.tool(" mcp-server/src/index.ts  # 182 ✅
 grep -rl 'href="/careers"' --include='*.html' | wc -l  # 0 ✅
@@ -556,6 +571,7 @@ cd mcp-server && npm run build  # ✅ OK
 ## Session 249.24 - Académie Business + Audit Orphan Pages
 
 **Académie Business REFONTE COMPLÈTE** (`website/academie-business/index.html`):
+
 - 12 modules de formation complets (was: cards avec chiffres)
 - Contenu éducatif enrichi depuis 3 docs .md
 - Chaînes d'intégration: Voice-to-Cash, Support-to-Resolution, Lead-to-Meeting
@@ -573,10 +589,12 @@ cd mcp-server && npm run build  # ✅ OK
 | CASSÉ | /industries/hospitality (1 lien) | → /industries/ | ✅ |
 
 **Footer mis à jour** (32 fichiers):
+
 - Ajout liens: /use-cases, /industries/
 - Suppression liens cassés: /solutions/darija, /industries/real-estate
 
 **Vérification empirique**:
+
 ```bash
 grep -rl 'href="/industries/"' --include='*.html' | wc -l  # 32 ✅
 grep -rl 'href="/solutions/darija"' --include='*.html' | wc -l  # 0 ✅
@@ -587,12 +605,14 @@ grep -rl 'href="/solutions/darija"' --include='*.html' | wc -l  # 0 ✅
 ## Session 249.19 - Use Cases Index Page CRÉÉE
 
 **Nouvelle page**: `website/use-cases/index.html`
+
 - 4 use cases: Lead Qualification, E-commerce, Appointments, Customer Support
 - Workflow diagram (4 steps)
 - Integration stack (6 categories)
 - CTA section
 
 **Traductions i18n** (5 langues):
+
 - FR, EN, ES, AR, ARY - `usecases_index_page.*` keys
 
 **Website pages**: 32 (was 31)
@@ -602,19 +622,23 @@ grep -rl 'href="/solutions/darija"' --include='*.html' | wc -l  # 0 ✅
 ## Session 249.18 - Twilio SMS Fallback IMPLÉMENTÉ
 
 **Nouvelles fonctions** (voice-telephony-bridge.cjs):
+
 - `sendTwilioSMS()` - Twilio REST API + SDK
 - `sendMessage()` - Unified avec fallback: WhatsApp → Twilio SMS
 - `/messaging/send` - HTTP endpoint pour MCP
 
 **MCP Tool ajouté**:
+
 - `messaging_send` - Channel auto/whatsapp/sms
 
 **Fonctions mises à jour**:
+
 - `sendSMSBookingLink()` → utilise sendMessage()
 - `handleSendPaymentDetails()` → utilise sendMessage()
 - `sendRecoverySMS()` → utilise sendMessage()
 
 **Vérification**:
+
 ```bash
 node -e "require('./telephony/voice-telephony-bridge.cjs')"  # ✅ Module loads
 cd mcp-server && npm run build  # ✅ Build OK
@@ -625,6 +649,7 @@ cd mcp-server && npm run build  # ✅ Build OK
 ## Session 249.17 - Audit Twilio/TwiML
 
 **TwiML Voice - COMPLET** (5 fonctions):
+
 - `getTwiMLLanguage()`, `getTwiMLMessage()`
 - `generateTwiML()`, `generateErrorTwiML()`, `generateOutboundTwiML()`
 
@@ -645,6 +670,7 @@ cd mcp-server && npm run build  # ✅ Build OK
 ## Session 250.52 - Webapp SaaS Complete (02/02/2026)
 
 **Corrections Critiques:**
+
 - ❌→✅ Données demo supprimées (hitl, logs, analytics, agents, admin)
 - ❌→✅ Endpoints HITL ajoutés (5 endpoints)
 - ❌→✅ Tables Google Sheets créées (auth_sessions, hitl_pending, hitl_history)
@@ -652,8 +678,8 @@ cd mcp-server && npm run build  # ✅ Build OK
 - ❌→✅ Auth flow 100% fonctionnel (6/6 tests)
 
 **Nouvelles Méthodes GoogleSheetsDB:**
+
 - `createSheet(sheetName, headers)`
 - `ensureSheet(sheetName, headers)`
 
 **Vérification Empirique:** 100% pass
-
