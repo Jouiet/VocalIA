@@ -13,9 +13,9 @@ const INTELLIGENT_FALLBACK = {
         products: {
             triggers: ['produit', 'products', 'vend', 'vendez', 'katbi3', 'offre', 'solution', 'quoi', 'what sell', '3andkom'],
             response: {
-                fr: "VocalIA propose 2 produits d'IA vocale :\n\n1. **Voice Widget** (99€/mois) - Assistant vocal 24/7 pour votre site web\n2. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA via Twilio\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, intégrations CRM.",
-                en: "VocalIA offers 2 voice AI products:\n\n1. **Voice Widget** (€99/month) - 24/7 voice assistant for your website\n2. **Voice Telephony** (€0.06/min) - AI phone line via Twilio\n\nStrengths: 40 industry personas, 5 languages including Darija, CRM integrations.",
-                ary: "VocalIA 3andha 2 dial produits:\n\n1. **Voice Widget** (99€/chhar) - مساعد صوتي 24/7 للموقع ديالك\n2. **Voice Telephony** (0.06€/دقيقة) - خط تيليفون ذكي\n\nالمزايا: 40 persona، 5 لغات بما فيها الدارجة."
+                fr: "VocalIA propose 2 produits d'IA vocale :\n\n1. **Voice Widget** (49€/mois) - Assistant vocal 24/7 pour votre site web. Support client, ventes, prise de RDV.\n2. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA. Appels entrants automatisés, qualification leads.\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, synchronisation CRM.",
+                en: "VocalIA offers 2 voice AI products:\n\n1. **Voice Widget** (€49/month) - 24/7 voice assistant for your website. Customer support, sales, booking.\n2. **Voice Telephony** (€0.06/min) - AI phone line. Automated inbound calls, lead qualification.\n\nStrengths: 40 industry personas, 5 languages including Darija, CRM sync.",
+                ary: "VocalIA 3andha 2 dial produits:\n\n1. **Voice Widget** (49€/chhar) - مساعد صوتي 24/7 للموقع ديالك. سوپور، بيع، حجز.\n2. **Voice Telephony** (0.06€/دقيقة) - خط تيليفون ذكي. تأهيل الليدز.\n\nالمزايا: 40 persona، 5 لغات بما فيها الدارجة، sync CRM."
             }
         },
 
@@ -23,9 +23,9 @@ const INTELLIGENT_FALLBACK = {
         pricing: {
             triggers: ['prix', 'price', 'cost', 'tarif', 'combien', 'how much', 'chhal', 'thaman', 'budget', 'devis'],
             response: {
-                fr: "**Tarification VocalIA:**\n\n• Voice Widget: À partir de 99€/mois (assistant web 24/7)\n• Voice Telephony: 0.06€/minute (60% moins cher que Vapi)\n• Packages sur mesure selon vos volumes\n\nVoulez-vous un devis personnalisé ?",
-                en: "**VocalIA Pricing:**\n\n• Voice Widget: From €99/month (24/7 web assistant)\n• Voice Telephony: €0.06/min (60% cheaper than Vapi)\n• Custom packages based on volume\n\nWould you like a personalized quote?",
-                ary: "**الثمن ديال VocalIA:**\n\n• Voice Widget: من 99€/شهر\n• Voice Telephony: 0.06€/دقيقة (60% أرخص من Vapi)\n\nبغيتي devis?"
+                fr: "**Tarification VocalIA:**\n\n• Voice Widget: À partir de 49€/mois (assistant web 24/7)\n• Voice Telephony: 0.06€/minute (60% moins cher que la concurrence)\n• Packages sur mesure selon vos volumes\n\nVoulez-vous un devis personnalisé ?",
+                en: "**VocalIA Pricing:**\n\n• Voice Widget: From €49/month (24/7 web assistant)\n• Voice Telephony: €0.06/min (60% cheaper than competitors)\n• Custom packages based on volume\n\nWould you like a personalized quote?",
+                ary: "**الثمن ديال VocalIA:**\n\n• Voice Widget: من 49€/شهر\n• Voice Telephony: 0.06€/دقيقة (60% أرخص من المنافسين)\n\nبغيتي devis?"
             }
         },
 
@@ -63,9 +63,9 @@ const INTELLIGENT_FALLBACK = {
         howItWorks: {
             triggers: ['comment ça marche', 'how does it work', 'kifach', 'explain', 'expliquer', 'fonctionnement'],
             response: {
-                fr: "**Comment fonctionne VocalIA:**\n\n1. **Voice Widget:** Une ligne de code sur votre site → Assistant vocal 24/7\n2. **Voice Telephony:** Numéro Twilio → IA répond aux appels\n\nL'IA comprend 5 langues et qualifie vos leads automatiquement (scoring BANT).",
-                en: "**How VocalIA works:**\n\n1. **Voice Widget:** One line of code on your site → 24/7 voice assistant\n2. **Voice Telephony:** Twilio number → AI answers calls\n\nThe AI understands 5 languages and qualifies your leads automatically (BANT scoring).",
-                ary: "**كيفاش VocalIA خدامة:**\n\n1. **Voice Widget:** سطر كود فـ الموقع → مساعد صوتي 24/7\n2. **Voice Telephony:** نمرة Twilio → الـ AI كتجاوب على الكولات"
+                fr: "**Comment fonctionne VocalIA:**\n\n1. **Voice Widget:** Une ligne de code sur votre site → Assistant vocal 24/7\n2. **Voice Telephony:** Numéro dédié → IA répond aux appels\n\nL'IA comprend 5 langues et qualifie vos leads automatiquement (scoring BANT).",
+                en: "**How VocalIA works:**\n\n1. **Voice Widget:** One line of code on your site → 24/7 voice assistant\n2. **Voice Telephony:** Dedicated number → AI answers calls\n\nThe AI understands 5 languages and qualifies your leads automatically (BANT scoring).",
+                ary: "**كيفاش VocalIA خدامة:**\n\n1. **Voice Widget:** سطر كود فـ الموقع → مساعد صوتي 24/7\n2. **Voice Telephony:** نمرة ديديكيي → الـ AI كتجاوب على الكولات"
             }
         },
 
@@ -135,9 +135,9 @@ const INTELLIGENT_FALLBACK = {
 
         // Ultimate fallback - still intelligent, not "Quel est votre secteur?"
         const ultimateFallback = {
-            fr: "Je suis l'assistant VocalIA. Nos produits principaux sont:\n\n• **Voice Widget** - Assistant vocal pour sites web (99€/mois)\n• **Voice Telephony** - Ligne téléphonique IA (0.06€/min)\n\nQue souhaitez-vous savoir ?",
-            en: "I'm the VocalIA assistant. Our main products are:\n\n• **Voice Widget** - Voice assistant for websites (€99/month)\n• **Voice Telephony** - AI phone line (€0.06/min)\n\nWhat would you like to know?",
-            ary: "أنا المساعد ديال VocalIA. المنتجات ديالنا:\n\n• **Voice Widget** - مساعد صوتي للمواقع (99€/شهر)\n• **Voice Telephony** - خط تيليفون ذكي (0.06€/دقيقة)\n\nشنو بغيتي تعرف?"
+            fr: "Je suis l'assistant VocalIA. Nos produits principaux sont:\n\n• **Voice Widget** - Assistant vocal pour sites web (49€/mois)\n• **Voice Telephony** - Ligne téléphonique IA (0.06€/min)\n\nQue souhaitez-vous savoir ?",
+            en: "I'm the VocalIA assistant. Our main products are:\n\n• **Voice Widget** - Voice assistant for websites (€49/month)\n• **Voice Telephony** - AI phone line (€0.06/min)\n\nWhat would you like to know?",
+            ary: "أنا المساعد ديال VocalIA. المنتجات ديالنا:\n\n• **Voice Widget** - مساعد صوتي للمواقع (49€/شهر)\n• **Voice Telephony** - خط تيليفون ذكي (0.06€/دقيقة)\n\nشنو بغيتي تعرف?"
         };
 
         return ultimateFallback[lang] || ultimateFallback.fr;
