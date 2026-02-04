@@ -1,0 +1,35 @@
+{
+  "session_id": "latency_test",
+  "tenant_id": "default",
+  "messages": [
+    {
+      "id": "826e1395",
+      "role": "user",
+      "content": "Hi",
+      "timestamp": "2026-02-04T09:49:42.697Z",
+      "language": "en",
+      "source": "widget",
+      "persona": "latency_test"
+    },
+    {
+      "id": "a05aa399",
+      "role": "assistant",
+      "content": "Hi! I'm here to help with VocalIA—our Voice AI for websites and phone lines. What can I assist you with today?",
+      "timestamp": "2026-02-04T09:49:42.698Z",
+      "language": "en",
+      "source": "widget",
+      "persona": "latency_test",
+      "latency_ms": 4003
+    }
+  ],
+  "message_count": 2,
+  "created_at": "2026-02-04T09:49:42.698Z",
+  "updated_at": "2026-02-04T09:49:42.698Z",
+  "metadata": {
+    "source": "widget",
+    "language": "en",
+    "persona": "latency_test",
+    "duration_sec": null,
+    "lead_score": null
+  }
+}

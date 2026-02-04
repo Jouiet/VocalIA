@@ -1,0 +1,23 @@
+{
+  "id": "voice-streaming_test",
+  "created_at": "2026-02-04T11:39:11.192Z",
+  "updated_at": "2026-02-04T11:39:11.192Z",
+  "pillars": {
+    "identity": {},
+    "intent": {},
+    "qualification": {
+      "voiceSession": true,
+      "score": 0,
+      "complete": false
+    },
+    "sentiment": [],
+    "history": [],
+    "keyFacts": [],
+    "summary": null
+  },
+  "status": "active",
+  "metadata": {
+    "tokenEstimate": 38,
+    "lastCompaction": null
+  }
+}

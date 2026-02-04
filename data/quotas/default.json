@@ -1,0 +1,12 @@
+{
+  "tenantId": "default",
+  "limits": {
+    "requestsPerMinute": 60,
+    "requestsPerDay": 5000,
+    "maxTokensPerRequest": 500
+  },
+  "features": {
+    "streaming": true,
+    "fallbackDebug": true
+  }
+}

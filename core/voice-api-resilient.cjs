@@ -723,6 +723,72 @@ function httpRequest(url, options, body) {
   });
 }
 
+// Session 250.80: Streaming HTTP request for SSE responses (Grok streaming)
+function httpRequestStreaming(url, options, body, onChunk) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const reqOptions = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || 443,
+      path: urlObj.pathname + urlObj.search,
+      method: options.method || 'POST',
+      headers: options.headers || {},
+      timeout: 60000, // 60 seconds for streaming
+    };
+
+    let fullContent = '';
+    let buffer = '';
+
+    const req = https.request(reqOptions, (res) => {
+      if (res.statusCode >= 400) {
+        let errorData = '';
+        res.on('data', chunk => errorData += chunk);
+        res.on('end', () => reject(new Error(`HTTP ${res.statusCode}: ${errorData.substring(0, 200)}`)));
+        return;
+      }
+
+      res.on('data', chunk => {
+        buffer += chunk.toString();
+
+        // Process SSE lines: "data: {json}\n\n"
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const jsonStr = line.slice(6).trim();
+            if (jsonStr === '[DONE]') continue;
+
+            try {
+              const parsed = JSON.parse(jsonStr);
+              const delta = parsed.choices?.[0]?.delta?.content || '';
+              if (delta) {
+                fullContent += delta;
+                if (onChunk) onChunk(delta, fullContent);
+              }
+            } catch (e) {
+              // Skip malformed chunks
+            }
+          }
+        }
+      });
+
+      res.on('end', () => {
+        resolve({ status: res.statusCode, content: fullContent, streaming: true });
+      });
+    });
+
+    req.on('error', reject);
+    req.on('timeout', () => {
+      req.destroy();
+      reject(new Error('Streaming request timeout'));
+    });
+
+    if (body) req.write(body);
+    req.end();
+  });
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // PROVIDER API CALLS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -742,21 +808,25 @@ async function callGrok(userMessage, conversationHistory = [], customSystemPromp
     messages,
     max_tokens: 500,
     temperature: 0.7,
+    stream: true, // Session 250.80: Enable streaming for reduced perceived latency
   });
 
-  const response = await httpRequest(PROVIDERS.grok.url, {
+  // Session 250.80: Use streaming for reduced latency
+  const response = await httpRequestStreaming(PROVIDERS.grok.url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${PROVIDERS.grok.apiKey}`,
     }
-  }, body);
+  }, body, (chunk, full) => {
+    // Optional: Log streaming progress
+    // console.log(`[Grok] Chunk received: ${chunk.length} chars, total: ${full.length}`);
+  });
 
-  const parsed = safeJsonParse(response.data, 'Grok voice response');
-  if (!parsed.success) throw new Error(`Grok JSON parse failed: ${parsed.error}`);
+  if (!response.content) throw new Error('Grok returned empty streaming response');
 
   // A2A Verification (Session 245)
-  return await verifyTranslation(parsed.data.choices[0].message.content, 'fr'); // Grok defaults to context lang, passed generic 'fr' here but should use actual
+  return await verifyTranslation(response.content, 'fr'); // Grok defaults to context lang
 }
 
 // Helper for A2A Verification
@@ -1336,7 +1406,7 @@ async function syncLeadToHubSpot(session) {
 // ─────────────────────────────────────────────────────────────────────────────
 // RESILIENT RESPONSE WITH FALLBACK & COGNITIVE CONTEXT
 // ─────────────────────────────────────────────────────────────────────────────
-async function getResilisentResponse(userMessage, conversationHistory = [], session = null, language = 'fr') {
+async function getResilisentResponse(userMessage, conversationHistory = [], session = null, language = 'fr', options = {}) {
   const errors = [];
 
   // 1. Semantic RAG Context Retrieval (Hybrid Frontier v3.0 | RLS Shielding)
@@ -1411,6 +1481,15 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
 
   for (const providerKey of providerOrder) {
     const provider = PROVIDERS[providerKey];
+
+    // Session 250.81: Debug flag for testing fallback chain
+    const forceFailProviders = options?.forceFailProviders || [];
+    if (forceFailProviders.includes(providerKey)) {
+      errors.push({ provider: providerKey, error: 'Forced failure (debug mode)' });
+      console.log(`[Voice API] Provider ${providerKey} skipped (debug: forceFailProviders)`);
+      continue;
+    }
+
     if (!provider || !provider.enabled) {
       errors.push({ provider: providerKey, error: 'Not configured' });
       continue;
@@ -1902,7 +1981,7 @@ function startServer(port = 3004) {
             knowledge_base_id: tenantId === 'default' ? 'agency_internal' : tenantId
           };
 
-          const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language);
+          const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language, { forceFailProviders: bodyParsed.data.forceFailProviders });
 
           // Add AI response to session
           session.messages.push({ role: 'assistant', content: result.response, timestamp: Date.now() });

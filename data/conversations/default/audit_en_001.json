@@ -1,0 +1,35 @@
+{
+  "session_id": "audit_en_001",
+  "tenant_id": "default",
+  "messages": [
+    {
+      "id": "02d28f2b",
+      "role": "user",
+      "content": "Hello, what is VocalIA?",
+      "timestamp": "2026-02-04T09:40:39.181Z",
+      "language": "en",
+      "source": "widget",
+      "persona": "audit_en_001"
+    },
+    {
+      "id": "024b887a",
+      "role": "assistant",
+      "content": "Hello! VocalIA is a cutting-edge Voice AI platform designed to supercharge customer interactions for businesses. We offer two powerful products: 1. Voice Widget: A 24/7 AI voice assistant that embeds directly into your website, handling visitor queries via voice in real-time—no human agents needed. 2. Voice Telephony: An intelligent AI phone line powered by Twilio, perfect for automating inbound/outbound calls, lead qualification, and support. These tools help businesses like yours boost conversions, reduce costs, and scale conversations effortlessly. To tailor advice to your needs, what's your main business goal or challenge right now? (e.g., increasing website leads, handling more calls?)",
+      "timestamp": "2026-02-04T09:40:39.181Z",
+      "language": "en",
+      "source": "widget",
+      "persona": "audit_en_001",
+      "latency_ms": 6080
+    }
+  ],
+  "message_count": 2,
+  "created_at": "2026-02-04T09:40:39.181Z",
+  "updated_at": "2026-02-04T09:40:39.181Z",
+  "metadata": {
+    "source": "widget",
+    "language": "en",
+    "persona": "audit_en_001",
+    "duration_sec": null,
+    "lead_score": null
+  }
+}

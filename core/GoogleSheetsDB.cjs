@@ -657,13 +657,25 @@ class GoogleSheetsDB {
    * @returns {Object|null} Tenant configuration
    */
   getTenantConfig(tenantId) {
+    // Session 250.82: Check client config first, then fallback to data/quotas
     const configPath = path.join(__dirname, '../clients', tenantId, 'config.json');
-    if (!fs.existsSync(configPath)) {
-      console.warn(`[Quotas] Config not found for tenant: ${tenantId}`);
+    const quotaFallbackPath = path.join(__dirname, '../data/quotas', `${tenantId}.json`);
+
+    let loadPath = null;
+    if (fs.existsSync(configPath)) {
+      loadPath = configPath;
+    } else if (fs.existsSync(quotaFallbackPath)) {
+      loadPath = quotaFallbackPath;
+    } else {
+      // Silent warning only for non-default tenants
+      if (tenantId !== 'default') {
+        console.warn(`[Quotas] Config not found for tenant: ${tenantId}`);
+      }
       return null;
     }
+
     try {
-      return JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      return JSON.parse(fs.readFileSync(loadPath, 'utf8'));
     } catch (e) {
       console.error(`[Quotas] Error loading config for ${tenantId}:`, e.message);
       return null;
