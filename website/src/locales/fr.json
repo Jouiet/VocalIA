@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "VocalIA - Agents Vocaux IA pour Entreprises",
-    "description": "Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. 5 langues supportées."
+    "description": "Transformez vos interactions clients avec des agents vocaux IA intelligents. Widget web et téléphonie PSTN. Solutions professionnelles."
   },
   "nav": {
     "products": "Produits",
@@ -490,7 +490,7 @@
     "subtitle": "Pas de frais cachés, pas d'engagement",
     "widget": {
       "name": "Widget",
-      "price": "0",
+      "price": "49",
       "period": "/mois",
       "features": [
         "Assistant vocal web",
@@ -498,7 +498,7 @@
         "5 langues",
         "Support email"
       ],
-      "cta": "Commencer Gratuitement"
+      "cta": "Essai 14 jours"
     },
     "starter": {
       "name": "Starter",
@@ -539,7 +539,7 @@
       "cta": "Nous Contacter"
     },
     "overage": "Min. supplémentaire",
-    "starting_from": "À partir de 0 {{currency}}/mois",
+    "starting_from": "À partir de 49 {{currency}}/mois",
     "aes256_0": "HTTPS/TLS",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Agents Vocaux IA pour Entreprises",
@@ -636,14 +636,14 @@
     "toggle_annual": "Annuel",
     "toggle_discount": "-20%",
     "free_name": "Widget Starter",
-    "free_price": "0",
+    "free_price": "49",
     "free_period": "pour toujours",
     "free_desc": "Idéal pour tester VocalIA sur votre site web sans engagement.",
     "free_f1": "Voice Widget illimité",
     "free_f2": "5 personas métier",
     "free_f3": "2 langues (FR, EN)",
     "free_f4": "Branding VocalIA",
-    "free_cta": "Commencer Gratuitement",
+    "free_cta": "Démarrer l'essai",
     "starter_name": "Starter",
     "starter_price": "99",
     "starter_period": "€/mois",
@@ -715,7 +715,7 @@
     "faq6_a": "L'historique des appels téléphoniques est conservé pendant 60 jours. Une purge automatique est effectuée le 1er de chaque mois. Vous pouvez exporter vos données (CSV, Excel, PDF) à tout moment depuis votre tableau de bord pour les conserver plus longtemps.",
     "cta_title": "Prêt à Automatiser Vos Appels?",
     "cta_subtitle": "Commencez avec Starter, évoluez quand vous êtes prêt.",
-    "cta_primary": "Commencer Gratuitement",
+    "cta_primary": "Démarrer l'essai",
     "cta_secondary": "Parler à un Expert",
     "table_free": "Starter",
     "table_starter": "Starter",
@@ -872,7 +872,7 @@
     "tech4_desc": "Encryption de bout en bout",
     "cta_title": "Prêt à Révolutionner Votre Service Client?",
     "cta_subtitle": "Rejoignez les entreprises qui font confiance à VocalIA pour leurs agents vocaux IA.",
-    "cta_primary": "Commencer Gratuitement",
+    "cta_primary": "Démarrer l'essai",
     "cta_secondary": "Demander une Démo"
   },
   "features_page": {
@@ -947,7 +947,7 @@
     "title": "Voice Widget",
     "subtitle": "Intégrez un assistant vocal IA intelligent sur votre site web en 2 minutes. Utilise la Web Speech API native du navigateur:",
     "subtitle_highlight": "Réponses IA multi-provider",
-    "cta_start": "Démarrer Gratuitement",
+    "cta_start": "Démarrer",
     "cta_docs": "Documentation",
     "stat_personas": "Personas",
     "stat_languages": "Langues",
@@ -974,7 +974,7 @@
     "features_title": "Fonctionnalités Incluses",
     "features_subtitle": "Tout ce dont vous avez besoin pour l'IA vocale",
     "feature1_title": "Web Speech API",
-    "feature1_desc": "Reconnaissance et synthèse vocale natives du navigateur. Aucune API externe, 0€ de coût.",
+    "feature1_desc": "Reconnaissance et synthèse vocale haute fidélité. Infrastructure dédiée.",
     "feature2_title": "40 Personas Métier",
     "feature2_desc": "Agents pré-configurés: dentiste, immobilier, e-commerce, support, RH, et plus.",
     "feature3_title": "5 Langues",
@@ -1233,7 +1233,7 @@
     "stack_productivity": "Productivity",
     "cta_title": "Prêt à Automatiser?",
     "cta_subtitle": "Démarrez avec le plan Starter. Passez au PSTN quand vous êtes prêt.",
-    "cta_primary": "Essayer Gratuitement",
+    "cta_primary": "Voir les Offres",
     "cta_secondary": "Voir la Documentation"
   },
   "industries_healthcare_page": {
