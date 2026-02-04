@@ -492,33 +492,7 @@ function getOrCreateLeadSession(sessionId) {
   return session;
 }
 
-/**
- * Session 178: SOTA - Persist lead session to ContextBox
- * Called after significant updates (message received, score changed)
- */
-function persistLeadSession(sessionId, session) {
-  const contextId = `voice-${sessionId}`;
-
-  ContextBox.set(contextId, {
-    pillars: {
-      qualification: {
-        voiceSession: true,
-        score: session.score,
-        complete: session.qualificationComplete,
-        ...session.extractedData
-      }
-    }
-  });
-
-  // Log voice message to history
-  if (session.messages.length > 0) {
-    const lastMsg = session.messages[session.messages.length - 1];
-    ContextBox.logEvent(contextId, 'VoiceAI', 'MESSAGE', {
-      role: lastMsg.role,
-      content: lastMsg.content?.substring(0, 200) // Truncate for storage
-    });
-  }
-}
+// [REMOVED] persistLeadSession - Dead code (zero calls)
 
 /**
  * Session 178: SOTA - Record latency metrics
@@ -1027,42 +1001,7 @@ VocalIA هي منصة Voice AI. عندنا 2 منتوجات:
 4. وجه نحو vocalia.ma/booking للديمو`;
 }
 
-function getLocalResponse(userMessage, language = 'fr') {
-  const lower = userMessage.toLowerCase();
-  const lang = LANG_DATA[language] || LANG_DATA['fr'] || { topics: {}, defaults: {} };
-
-  // 1. Try Topic Match
-  if (lang.topics) {
-    for (const [topicKey, topicData] of Object.entries(lang.topics)) {
-      if (topicData.keywords && topicData.keywords.some(kw => lower.includes(kw.toLowerCase()))) {
-        return {
-          response: topicData.response || topicData.responses?.default || "",
-          source: 'local_json',
-          pattern: topicKey
-        };
-      }
-    }
-  }
-
-  // 2. Try Industry Match
-  if (lang.industries) {
-    for (const [indKey, indData] of Object.entries(lang.industries)) {
-      if (indData.keywords && indData.keywords.some(kw => lower.includes(kw.toLowerCase()))) {
-        return {
-          response: indData.intro,
-          source: 'local_json',
-          pattern: `industry_${indKey}`
-        };
-      }
-    }
-  }
-
-  // 3. Fallback from defaults
-  const fallbackResponse = lang.defaults?.qualificationQuestion ||
-    (language === 'fr' ? "Je comprends. Pouvez-vous préciser votre demande ?" : "I understand. Can you specify your request?");
-
-  return { response: fallbackResponse, source: 'local_json', pattern: 'fallback' };
-}
+// [REMOVED] getLocalResponse - Dead code (Zero Regex Policy)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LEAD QUALIFICATION & SCORING (Session 127bis Phase 2)
@@ -1482,11 +1421,6 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
       // Session 178: SOTA - Latency tracking
       const startTime = Date.now();
 
-      // We pass the fullSystemPrompt instead of the static one
-      const historyWithSystem = [
-        { role: 'system', content: fullSystemPrompt },
-        ...conversationHistory
-      ];
 
       switch (providerKey) {
         case 'grok': response = await callGrok(userMessage, conversationHistory, fullSystemPrompt); break;
