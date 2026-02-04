@@ -16,8 +16,9 @@
   <!-- Tailwind CSS (Sovereign) -->
   <link href="/public/css/style.css" rel="stylesheet">
   <!-- Content Security Policy (Hardened) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <!-- Inter Font -->
@@ -35,26 +36,30 @@
        Security: SRI omitted intentionally - Plausible updates script frequently.
        Risk accepted: Trusted vendor, <1KB script, no sensitive data, CSP restricted. -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  
+
 </head>
 
 <body class="bg-slate-800 text-white min-h-screen">
   <!-- Skip Link for Accessibility -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
     Aller au contenu principal
   </a>
 
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation" aria-label="Navigation administration">
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation"
+    aria-label="Navigation administration">
     <!-- Logo -->
     <div class="p-6 border-b border-slate-600">
       <a href="/" class="flex items-center space-x-2">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
+        <div
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-vocalia-500 to-vocalia-400 flex items-center justify-center">
           <i data-lucide="settings" class="w-6 h-6 text-slate-400"></i>
         </div>
         <div>
           <span class="text-xl font-bold gradient-text"><span data-i18n="admin.vocalia_67">VocalIA</span></span>
-          <span class="block text-xs text-vocalia-400"><span data-i18n="admin.admin_64"><span data-i18n="admin.admin_66">Admin</span></span></span>
+          <span class="block text-xs text-vocalia-400"><span data-i18n="admin.admin_64"><span
+                data-i18n="admin.admin_66">Admin</span></span></span>
         </div>
       </a>
     </div>
@@ -148,14 +153,17 @@
             <div id="langDropdown"
               class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-slate-700/95 backdrop-blur-xl border border-slate-600/50 shadow-xl z-50 overflow-hidden">
               <button type="button" data-action="switchLang" data-params="fr"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span data-i18n="admin.fr_franais_62">FR
-                - Français</span></button>
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                  data-i18n="admin.fr_franais_62">FR
+                  - Français</span></button>
               <button type="button" data-action="switchLang" data-params="en"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span data-i18n="admin.en_english_61">EN
-                - English</span></button>
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                  data-i18n="admin.en_english_61">EN
+                  - English</span></button>
               <button type="button" data-action="switchLang" data-params="es"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span data-i18n="admin.es_espaol_60">ES
-                - Español</span></button>
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                  data-i18n="admin.es_espaol_60">ES
+                  - Español</span></button>
               <button type="button" data-action="switchLang" data-params="ar" dir="rtl"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">العربية
                 - AR</button>
@@ -265,7 +273,9 @@
                 <span class="font-medium"><span data-i18n="admin.voice_api_59">Voice API</span></span>
                 <span class="text-xs text-vocalia-400 font-mono">:3004</span>
               </div>
-              <span class="text-sm text-green-400" data-i18n="dashboard.health.operational"><span data-i18n="admin.oprationnel_53"><span data-i18n="admin.oprationnel_55"><span data-i18n="admin.oprationnel_57">Opérationnel</span></span></span></span>
+              <span class="text-sm text-green-400" data-i18n="dashboard.health.operational"><span
+                  data-i18n="admin.oprationnel_53"><span data-i18n="admin.oprationnel_55"><span
+                      data-i18n="admin.oprationnel_57">Opérationnel</span></span></span></span>
             </div>
             <div class="flex items-center justify-between p-3 rounded-xl bg-slate-700/30">
               <div class="flex items-center space-x-3">
@@ -286,7 +296,8 @@
             <div class="flex items-center justify-between p-3 rounded-xl bg-slate-700/30">
               <div class="flex items-center space-x-3">
                 <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
-                <span class="font-medium"><span data-i18n="admin.website_47"><span data-i18n="admin.website_54">Website</span></span></span>
+                <span class="font-medium"><span data-i18n="admin.website_47"><span
+                      data-i18n="admin.website_54">Website</span></span></span>
                 <span class="text-xs text-vocalia-400 font-mono">:8080</span>
               </div>
               <span class="text-sm text-green-400">Opérationnel</span>
@@ -298,7 +309,8 @@
         <div class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold"><span data-i18n="admin.health_check_52">Health Check</span></h3>
-            <span id="health-total" class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">-/-</span>
+            <span id="health-total"
+              class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">-/-</span>
           </div>
           <div id="health-categories" class="grid grid-cols-2 gap-4">
             <!-- Populated dynamically by JS -->
@@ -324,12 +336,14 @@
         <div id="tenants" class="lg:col-span-2 liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.tenants.title">Top Tenants</h3>
-            <button type="button" data-action="viewAllTenants" aria-label="Voir tous les tenants" class="text-vocalia-400 hover:text-white text-sm transition"
-              data-i18n="dashboard.calls.view_all">Voir tous →</button>
+            <button type="button" data-action="viewAllTenants" aria-label="Voir tous les tenants"
+              class="text-vocalia-400 hover:text-white text-sm transition" data-i18n="dashboard.calls.view_all">Voir
+              tous →</button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full" role="table">
-              <caption class="sr-only"><span data-i18n="admin.liste_des_tenants_46">Liste des tenants actifs</span></caption>
+              <caption class="sr-only"><span data-i18n="admin.liste_des_tenants_46">Liste des tenants actifs</span>
+              </caption>
               <thead>
                 <tr class="text-left text-vocalia-400 text-sm border-b border-slate-600">
                   <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.tenant">Tenant</th>
@@ -393,7 +407,8 @@
                 </div>
                 <div class="text-right">
                   <p id="api-usage-primary" class="font-semibold">-</p>
-                  <p class="text-xs text-vocalia-400"><span data-i18n="admin.requtes_39"><span data-i18n="admin.requtes_42">requêtes</span></span></p>
+                  <p class="text-xs text-vocalia-400"><span data-i18n="admin.requtes_39"><span
+                        data-i18n="admin.requtes_42">requêtes</span></span></p>
                 </div>
               </div>
               <div class="flex items-center justify-between p-3 rounded-xl bg-slate-700/30">
@@ -481,12 +496,16 @@
               </div>
             </div>
             <div class="flex items-center space-x-2">
-              <span id="db-health-status" class="px-3 py-1 rounded-full bg-slate-600 text-slate-300 text-sm font-medium">Checking...</span>
-              <a href="https://docs.google.com/spreadsheets/d/1USAmFgxpXh9yvtAFxvg0_CpmWVop1pOTmxALEE8M4PM/edit" target="_blank"
-                 class="p-2 rounded-lg hover:bg-slate-700/50 transition text-vocalia-400 hover:text-emerald-400" title="Ouvrir Google Sheets">
+              <span id="db-health-status"
+                class="px-3 py-1 rounded-full bg-slate-600 text-slate-300 text-sm font-medium">Checking...</span>
+              <a href="https://docs.google.com/spreadsheets/d/1USAmFgxpXh9yvtAFxvg0_CpmWVop1pOTmxALEE8M4PM/edit"
+                target="_blank"
+                class="p-2 rounded-lg hover:bg-slate-700/50 transition text-vocalia-400 hover:text-emerald-400"
+                title="Ouvrir Google Sheets">
                 <i data-lucide="external-link" class="w-4 h-4"></i>
               </a>
-              <button type="button" data-action="refreshDBData" class="p-2 rounded-lg hover:bg-slate-700/50 transition" title="Actualiser">
+              <button type="button" data-action="refreshDBData" class="p-2 rounded-lg hover:bg-slate-700/50 transition"
+                title="Actualiser">
                 <i data-lucide="refresh-cw" class="w-4 h-4 text-vocalia-400"></i>
               </button>
             </div>
@@ -515,16 +534,20 @@
           <!-- DB Tabs -->
           <div class="border-b border-slate-600 mb-4">
             <nav class="flex space-x-1">
-              <button type="button" data-action="switchDBTab" data-params="db-tenants" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-emerald-500 text-emerald-400">
+              <button type="button" data-action="switchDBTab" data-params="db-tenants"
+                class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-emerald-500 text-emerald-400">
                 Tenants
               </button>
-              <button type="button" data-action="switchDBTab" data-params="db-sessions" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
+              <button type="button" data-action="switchDBTab" data-params="db-sessions"
+                class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
                 Sessions
               </button>
-              <button type="button" data-action="switchDBTab" data-params="db-users" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
+              <button type="button" data-action="switchDBTab" data-params="db-users"
+                class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
                 Users
               </button>
-              <button type="button" data-action="switchDBTab" data-params="db-logs" class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
+              <button type="button" data-action="switchDBTab" data-params="db-logs"
+                class="db-tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-vocalia-400 hover:text-white">
                 Logs
               </button>
             </nav>
@@ -534,7 +557,8 @@
           <div id="db-tenants" class="db-tab-content">
             <div class="flex justify-between items-center mb-4">
               <h4 class="text-sm font-medium text-vocalia-300">Gestion des Tenants</h4>
-              <button type="button" data-action="showDBModal" data-params="tenant-create" class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded text-sm">
+              <button type="button" data-action="showDBModal" data-params="tenant-create"
+                class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded text-sm">
                 + Ajouter Tenant
               </button>
             </div>
@@ -552,7 +576,9 @@
                   </tr>
                 </thead>
                 <tbody id="db-tenants-table" class="divide-y divide-slate-700">
-                  <tr><td colspan="7" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                  <tr>
+                    <td colspan="7" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -575,7 +601,9 @@
                   </tr>
                 </thead>
                 <tbody id="db-sessions-table" class="divide-y divide-slate-700">
-                  <tr><td colspan="7" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                  <tr>
+                    <td colspan="7" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -585,7 +613,8 @@
           <div id="db-users" class="db-tab-content hidden">
             <div class="flex justify-between items-center mb-4">
               <h4 class="text-sm font-medium text-vocalia-300">Gestion des Utilisateurs</h4>
-              <button type="button" data-action="showDBModal" data-params="user-create" class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded text-sm">
+              <button type="button" data-action="showDBModal" data-params="user-create"
+                class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded text-sm">
                 + Ajouter User
               </button>
             </div>
@@ -602,7 +631,9 @@
                   </tr>
                 </thead>
                 <tbody id="db-users-table" class="divide-y divide-slate-700">
-                  <tr><td colspan="6" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                  <tr>
+                    <td colspan="6" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -630,7 +661,9 @@
                   </tr>
                 </thead>
                 <tbody id="db-logs-table" class="divide-y divide-slate-700">
-                  <tr><td colspan="4" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td></tr>
+                  <tr>
+                    <td colspan="4" class="px-3 py-4 text-center text-vocalia-400">Chargement...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -647,7 +680,8 @@
               <!-- Dynamic fields -->
             </div>
             <div class="flex justify-end gap-3 mt-6">
-              <button type="button" data-action="closeDBModal" class="px-4 py-2 bg-slate-600 hover:bg-slate-700 rounded">
+              <button type="button" data-action="closeDBModal"
+                class="px-4 py-2 bg-slate-600 hover:bg-slate-700 rounded">
                 Annuler
               </button>
               <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded">
@@ -672,8 +706,10 @@
               </div>
             </div>
             <div class="flex items-center space-x-2">
-              <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium" id="hitl-status"><span data-i18n="admin.hitl_activ_31">HITL Activé</span></span>
-              <button type="button" data-action="refreshHITLQueue" class="p-2 rounded-lg hover:bg-slate-700/50 transition">
+              <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium"
+                id="hitl-status"><span data-i18n="admin.hitl_activ_31">HITL Activé</span></span>
+              <button type="button" data-action="refreshHITLQueue"
+                class="p-2 rounded-lg hover:bg-slate-700/50 transition">
                 <i data-lucide="refresh-cw" class="w-4 h-4 text-vocalia-400"></i>
               </button>
             </div>
@@ -681,7 +717,8 @@
 
           <!-- HITL Pending Queue -->
           <div class="mb-6">
-            <h4 class="text-sm font-medium text-vocalia-300 mb-3"><span data-i18n="admin.en_attente_dapprobation_30">En attente d'approbation</span></h4>
+            <h4 class="text-sm font-medium text-vocalia-300 mb-3"><span data-i18n="admin.en_attente_dapprobation_30">En
+                attente d'approbation</span></h4>
             <div id="hitl-queue" class="space-y-3">
               <!-- Populated by JS -->
               <div class="p-4 rounded-xl bg-slate-700/30 text-center text-vocalia-400 text-sm">
@@ -692,44 +729,53 @@
 
           <!-- Quick Generate -->
           <div class="border-t border-slate-600 pt-6">
-            <h4 class="text-sm font-medium text-vocalia-300 mb-4"><span data-i18n="admin.gnrer_une_nouvelle_29">Générer une nouvelle vidéo</span></h4>
+            <h4 class="text-sm font-medium text-vocalia-300 mb-4"><span data-i18n="admin.gnrer_une_nouvelle_29">Générer
+                une nouvelle vidéo</span></h4>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button type="button" data-action="queueVideo" data-params="demo" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="demo"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="play-circle" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm">Demo</p>
                 <p class="text-xs text-vocalia-400">30s • Produit</p>
               </button>
-              <button type="button" data-action="queueVideo" data-params="onboarding" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="onboarding"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="user-plus" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm"><span data-i18n="admin.onboarding_28">Onboarding</span></p>
                 <p class="text-xs text-vocalia-400">60s • Client</p>
               </button>
-              <button type="button" data-action="queueVideo" data-params="datareport" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="datareport"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="bar-chart-3" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm"><span data-i18n="admin.rapport_27">Rapport</span></p>
                 <p class="text-xs text-vocalia-400">45s • Analytics</p>
               </button>
-              <button type="button" data-action="queueVideo" data-params="pricing" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="pricing"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="credit-card" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm"><span data-i18n="admin.pricing_26">Pricing</span></p>
                 <p class="text-xs text-vocalia-400">30s • Tarifs</p>
               </button>
-              <button type="button" data-action="queueVideo" data-params="socialclip" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="socialclip"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="share-2" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm"><span data-i18n="admin.social_clip_25">Social Clip</span></p>
                 <p class="text-xs text-vocalia-400">15s • Réseaux</p>
               </button>
-              <button type="button" data-action="queueVideo" data-params="integration-hubspot" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="integration-hubspot"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="plug" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm"><span data-i18n="admin.hubspot_24">HubSpot</span></p>
                 <p class="text-xs text-vocalia-400">40s • Guide</p>
               </button>
-              <button type="button" data-action="queueVideo" data-params="integration-shopify" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="integration-shopify"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="shopping-cart" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm"><span data-i18n="admin.shopify_23">Shopify</span></p>
                 <p class="text-xs text-vocalia-400">40s • Guide</p>
               </button>
-              <button type="button" data-action="queueVideo" data-params="integration-stripe" class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+              <button type="button" data-action="queueVideo" data-params="integration-stripe"
+                class="p-3 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
                 <i data-lucide="wallet" class="w-5 h-5 text-vocalia-400 mb-2"></i>
                 <p class="font-medium text-sm"><span data-i18n="admin.stripe_22">Stripe</span></p>
                 <p class="text-xs text-vocalia-400">40s • Guide</p>
@@ -739,10 +785,14 @@
             <!-- Language Selector -->
             <div class="mt-4 flex items-center space-x-4">
               <label class="text-sm text-vocalia-400">Langue:</label>
-              <select id="video-language" class="bg-slate-700 border border-vocalia-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
-                <option value="fr"><span data-i18n="admin.franais_3"><span data-i18n="admin.franais_21">Français</span></span></option>
-                <option value="en"><span data-i18n="admin.english_2"><span data-i18n="admin.english_20">English</span></span></option>
-                <option value="es"><span data-i18n="admin.espaol_1"><span data-i18n="admin.espaol_19">Español</span></span></option>
+              <select id="video-language"
+                class="bg-slate-700 border border-vocalia-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+                <option value="fr"><span data-i18n="admin.franais_3"><span
+                      data-i18n="admin.franais_21">Français</span></span></option>
+                <option value="en"><span data-i18n="admin.english_2"><span
+                      data-i18n="admin.english_20">English</span></span></option>
+                <option value="es"><span data-i18n="admin.espaol_1"><span
+                      data-i18n="admin.espaol_19">Español</span></span></option>
                 <option value="ar">العربية</option>
                 <option value="ary">الدارجة</option>
               </select>
@@ -775,25 +825,33 @@
       <section class="rounded-2xl bg-slate-800/80 border border-slate-600 p-6">
         <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.quick_actions.title">Actions rapides</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button type="button" data-action="quickAction" data-params="new_tenant" aria-label="Créer un nouveau tenant" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" data-action="quickAction" data-params="new_tenant" aria-label="Créer un nouveau tenant"
+            class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="plus" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.new_tenant">Nouveau Tenant</p>
-            <p class="text-xs text-vocalia-400"><span data-i18n="admin.ajouter_un_client_14">Ajouter un client</span></p>
+            <p class="text-xs text-vocalia-400"><span data-i18n="admin.ajouter_un_client_14">Ajouter un client</span>
+            </p>
           </button>
-          <button type="button" data-action="quickAction" data-params="restart" aria-label="Redémarrer les services" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" data-action="quickAction" data-params="restart" aria-label="Redémarrer les services"
+            class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="refresh-cw" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.restart">Restart Services</p>
-            <p class="text-xs text-vocalia-400"><span data-i18n="admin.redmarrer_les_apis_13">Redémarrer les APIs</span></p>
+            <p class="text-xs text-vocalia-400"><span data-i18n="admin.redmarrer_les_apis_13">Redémarrer les APIs</span>
+            </p>
           </button>
-          <button type="button" data-action="quickAction" data-params="export_logs" aria-label="Exporter les logs système" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" data-action="quickAction" data-params="export_logs"
+            aria-label="Exporter les logs système"
+            class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="download" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.logs">Export Logs</p>
             <p class="text-xs text-vocalia-400"><span data-i18n="admin.tlcharger_logs_12">Télécharger logs</span></p>
           </button>
-          <button type="button" data-action="quickAction" data-params="config" aria-label="Ouvrir la configuration" class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
+          <button type="button" data-action="quickAction" data-params="config" aria-label="Ouvrir la configuration"
+            class="p-4 rounded-xl bg-slate-700/30 hover:bg-slate-600/50 transition text-left">
             <i data-lucide="settings" class="w-6 h-6 text-vocalia-400 mb-2" aria-hidden="true"></i>
             <p class="font-medium" data-i18n="dashboard.quick_actions.config">Configuration</p>
-            <p class="text-xs text-vocalia-400"><span data-i18n="admin.paramtres_systme_11">Paramètres système</span></p>
+            <p class="text-xs text-vocalia-400"><span data-i18n="admin.paramtres_systme_11">Paramètres système</span>
+            </p>
           </button>
         </div>
       </section>
@@ -1148,6 +1206,15 @@
       ? 'http://localhost:3004'
       : 'https://api.vocalia.ma';
 
+    // Internal services health check paths
+    const GROK_HEALTH = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3007/health'
+      : '/api/health/grok'; // Proxied by voice-api-resilient
+
+    const TEL_HEALTH = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3009/health'
+      : '/api/health/telephony'; // Proxied by voice-api-resilient
+
     // Session 250.51: Fetch real data from Google Sheets via db-api
     async function fetchAdminMetrics() {
       try {
@@ -1471,9 +1538,9 @@
         totalChecks++;
       }
 
-      // Check Grok Realtime (port 3007)
+      // Check Grok Realtime
       try {
-        const grokRes = await fetch('http://localhost:3007/health', { signal: AbortSignal.timeout(3000) });
+        const grokRes = await fetch(GROK_HEALTH, { signal: AbortSignal.timeout(3000) });
         results.push({ name: 'Grok Realtime', passed: grokRes.ok ? 1 : 0, total: 1 });
         if (grokRes.ok) totalPassed++;
         totalChecks++;
@@ -1482,9 +1549,9 @@
         totalChecks++;
       }
 
-      // Check Telephony (port 3009)
+      // Check Telephony
       try {
-        const telRes = await fetch('http://localhost:3009/health', { signal: AbortSignal.timeout(3000) });
+        const telRes = await fetch(TEL_HEALTH, { signal: AbortSignal.timeout(3000) });
         results.push({ name: 'Telephony', passed: telRes.ok ? 1 : 0, total: 1 });
         if (telRes.ok) totalPassed++;
         totalChecks++;
@@ -1817,7 +1884,7 @@
     }
 
     // Submit DB Form
-    document.getElementById('db-modal-form')?.addEventListener('submit', async function(e) {
+    document.getElementById('db-modal-form')?.addEventListener('submit', async function (e) {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData.entries());
@@ -1854,7 +1921,7 @@
     });
 
     // Filter DB logs
-    document.getElementById('db-log-filter')?.addEventListener('change', function() {
+    document.getElementById('db-log-filter')?.addEventListener('change', function () {
       renderDBTable('logs');
     });
 
@@ -2029,140 +2096,142 @@
   <script src="/src/lib/dashboard-grid.js"></script>
 
   <!-- Lucide Icons 2026 -->
-  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
-  
-  
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
+
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          } else {
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
 
-    // i18n init - Priority: localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        var storedLang = localStorage.getItem('vocalia_lang');
-        if (storedLang) {
-          await VocaliaI18n.setLocale(storedLang);
-        } else if (typeof VocaliaGeo !== 'undefined') {
-          var geo = await VocaliaGeo.getGeo();
-          await VocaliaI18n.setLocale(geo.lang);
-        } else {
-          await VocaliaI18n.setLocale('fr');
-        }
+      // i18n init - Priority: localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          var storedLang = localStorage.getItem('vocalia_lang');
+          if (storedLang) {
+            await VocaliaI18n.setLocale(storedLang);
+          } else if (typeof VocaliaGeo !== 'undefined') {
+            var geo = await VocaliaGeo.getGeo();
+            await VocaliaI18n.setLocale(geo.lang);
+          } else {
+            await VocaliaI18n.setLocale('fr');
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
+      // Global click handler for data-action buttons
+      function initActionHandler() {
+        document.addEventListener('click', function (e) {
+          var btn = e.target.closest('[data-action]');
+          if (!btn) return;
 
-    // Global click handler for data-action buttons
-    function initActionHandler() {
-      document.addEventListener('click', function(e) {
-        var btn = e.target.closest('[data-action]');
-        if (!btn) return;
+          var action = btn.getAttribute('data-action');
+          var params = btn.getAttribute('data-params');
 
-        var action = btn.getAttribute('data-action');
-        var params = btn.getAttribute('data-params');
+          switch (action) {
+            case 'toggleLangDropdown':
+              if (typeof toggleLangDropdown === 'function') toggleLangDropdown();
+              break;
+            case 'switchLang':
+              if (typeof switchLang === 'function') switchLang(params);
+              break;
+            case 'queueVideo':
+              if (typeof queueVideo === 'function') queueVideo(params);
+              break;
+            case 'quickAction':
+              if (typeof quickAction === 'function') quickAction(params);
+              break;
+            case 'viewAllTenants':
+              if (typeof viewAllTenants === 'function') viewAllTenants();
+              break;
+            case 'refreshHITLQueue':
+              if (typeof refreshHITLQueue === 'function') refreshHITLQueue();
+              break;
+            // DB Actions (merged from db-admin.html)
+            case 'switchDBTab':
+              if (typeof switchDBTab === 'function') switchDBTab(params);
+              break;
+            case 'showDBModal':
+              if (typeof showDBModal === 'function') showDBModal(params);
+              break;
+            case 'closeDBModal':
+              if (typeof closeDBModal === 'function') closeDBModal();
+              break;
+            case 'refreshDBData':
+              if (typeof refreshDBData === 'function') refreshDBData();
+              if (typeof checkDBHealth === 'function') checkDBHealth();
+              break;
+          }
+        });
+      }
 
-        switch (action) {
-          case 'toggleLangDropdown':
-            if (typeof toggleLangDropdown === 'function') toggleLangDropdown();
-            break;
-          case 'switchLang':
-            if (typeof switchLang === 'function') switchLang(params);
-            break;
-          case 'queueVideo':
-            if (typeof queueVideo === 'function') queueVideo(params);
-            break;
-          case 'quickAction':
-            if (typeof quickAction === 'function') quickAction(params);
-            break;
-          case 'viewAllTenants':
-            if (typeof viewAllTenants === 'function') viewAllTenants();
-            break;
-          case 'refreshHITLQueue':
-            if (typeof refreshHITLQueue === 'function') refreshHITLQueue();
-            break;
-          // DB Actions (merged from db-admin.html)
-          case 'switchDBTab':
-            if (typeof switchDBTab === 'function') switchDBTab(params);
-            break;
-          case 'showDBModal':
-            if (typeof showDBModal === 'function') showDBModal(params);
-            break;
-          case 'closeDBModal':
-            if (typeof closeDBModal === 'function') closeDBModal();
-            break;
-          case 'refreshDBData':
-            if (typeof refreshDBData === 'function') refreshDBData();
-            if (typeof checkDBHealth === 'function') checkDBHealth();
-            break;
-        }
-      });
-    }
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+          initActionHandler();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
         initActionHandler();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-      initActionHandler();
-    }
+      }
 
-    // Re-init on load
-    window.addEventListener('load', initLucide);
-    window.addEventListener('load', initI18n);
-  })();
+      // Re-init on load
+      window.addEventListener('load', initLucide);
+      window.addEventListener('load', initI18n);
+    })();
   </script>
 </body>
 

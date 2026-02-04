@@ -1,0 +1,24 @@
+{
+    "meta": {
+        "title": "VocalIA - وكيل ذكي",
+        "speechSynthesis": "ar-XA",
+        "speechRecognition": "ar-MA",
+        "rtl": true
+    },
+    "ui": {
+        "headerTitle": "مساعد VocalIA",
+        "headerSubtitleVoice": "الوكيل الصوتي خدّام",
+        "headerSubtitleText": "سولني على أي حاجة",
+        "placeholder": "كتب ولاّ دوِي...",
+        "ariaOpenAssistant": "حل مساعد VocalIA",
+        "ariaClose": "سد",
+        "ariaMic": "ميكروفون",
+        "ariaSend": "صيفط",
+        "notifTitle": "محتاج مساعدة؟",
+        "notifSub": "أنا هنا باش نجاوبك!",
+        "errorMessage": "سمح ليا، وقع مشكل.",
+        "ctaLink": "/demo",
+        "ctaButton": "جرب الديمو",
+        "voiceReady": "الصوت واجد"
+    }
+}

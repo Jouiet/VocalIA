@@ -203,6 +203,7 @@ Output JSON: { "score": <0-10>, "feedback": "concise critique", "issues": ["list
             timestamp: new Date().toISOString(),
             event: event,
             sector: sector,
+            language: data.language || 'fr', // SOTA: Language-aware telemetry
             ...data
         };
 

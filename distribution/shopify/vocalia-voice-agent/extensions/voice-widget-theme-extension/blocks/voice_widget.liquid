@@ -1,0 +1,69 @@
+{% comment %}
+  VocalIA Voice Agent - Theme App Extension
+  Injected via Shopify Theme Editor
+{% endcomment %}
+
+<script>
+  window.VOCALIA_CONFIG = window.VOCALIA_CONFIG || {};
+  
+  // Inject Shopify-Specific Configuration
+  window.VOCALIA_CONFIG.tenantId = "{{ block.settings.tenant_id }}";
+  window.VOCALIA_CONFIG.position = "{{ block.settings.position }}";
+  window.VOCALIA_CONFIG.primaryColor = "{{ block.settings.primary_color }}";
+  window.VOCALIA_CONFIG.ecommerceMode = true;
+  
+  // Auto-detect Context
+  window.VOCALIA_CONFIG.context = {
+    template: "{{ template.name }}",
+    {% if customer %}
+    customer: {
+      id: "{{ customer.id }}",
+      name: "{{ customer.name }}",
+      email: "{{ customer.email }}" // Only populated if customer is logged in
+    },
+    {% endif %}
+    {% if product %}
+    product: {
+      id: "{{ product.id }}",
+      title: "{{ product.title }}",
+      price: {{ product.price | divided_by: 100.00 }}
+    }
+    {% endif %}
+  };
+</script>
+
+{% comment %} Load the Widget Script (Async) {% endcomment %}
+  <script src="https://api.vocalia.ma/voice-assistant/voice-widget-ecommerce.js" defer></script>
+
+{% schema %}
+{
+  "name": "VocalIA Voice Agent",
+  "target": "body",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tenant_id",
+      "label": "Tenant ID",
+      "info": "Your unique API Tenant ID from VocalIA Dashboard."
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Widget Position",
+      "options": [
+        { "value": "bottom-right", "label": "Bottom Right" },
+        { "value": "bottom-left", "label": "Bottom Left" },
+        { "value": "top-right", "label": "Top Right" },
+        { "value": "top-left", "label": "Top Left" }
+      ],
+      "default": "bottom-right"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#5E6AD2"
+    }
+  ]
+}
+{% endschema %}

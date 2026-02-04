@@ -1,0 +1,24 @@
+{
+    "meta": {
+        "title": "VocalIA - AI Assistant",
+        "speechSynthesis": "en-US",
+        "speechRecognition": "en-US",
+        "rtl": false
+    },
+    "ui": {
+        "headerTitle": "VocalIA Assistant",
+        "headerSubtitleVoice": "Voice Assistant Ready",
+        "headerSubtitleText": "Ask your questions",
+        "placeholder": "Type or speak...",
+        "ariaOpenAssistant": "Open VocalIA Assistant",
+        "ariaClose": "Close",
+        "ariaMic": "Microphone",
+        "ariaSend": "Send",
+        "notifTitle": "Need help?",
+        "notifSub": "I'm here to answer your questions!",
+        "errorMessage": "Sorry, an error occurred.",
+        "ctaLink": "/demo",
+        "ctaButton": "Book a Demo",
+        "voiceReady": "Voice ready"
+    }
+}

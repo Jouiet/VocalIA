@@ -1,0 +1,24 @@
+{
+    "meta": {
+        "title": "VocalIA - مساعد ذكي",
+        "speechSynthesis": "ar-XA",
+        "speechRecognition": "ar-SA",
+        "rtl": true
+    },
+    "ui": {
+        "headerTitle": "مساعد VocalIA",
+        "headerSubtitleVoice": "المساعد الصوتي جاهز",
+        "headerSubtitleText": "اسأل ما تشاء",
+        "placeholder": "اكتب أو تحدث...",
+        "ariaOpenAssistant": "فتح مساعد VocalIA",
+        "ariaClose": "إغلاق",
+        "ariaMic": "ميكروفون",
+        "ariaSend": "إرسال",
+        "notifTitle": "هل تحتاج مساعدة؟",
+        "notifSub": "أنا هنا للإجابة على استفساراتكم!",
+        "errorMessage": "عذراً، حدث خطأ ما.",
+        "ctaLink": "/demo",
+        "ctaButton": "احجز ديمو",
+        "voiceReady": "الصوت جاهز"
+    }
+}

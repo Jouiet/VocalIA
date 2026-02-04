@@ -70,9 +70,12 @@ const A2UIService = require('./a2ui-service.cjs');
 
 // Session 250.xx: Multi-tenant KB for intelligent fallback
 const { getInstance: getTenantKBLoader } = require('./tenant-kb-loader.cjs');
+const { getInstance: getHybridRAG } = require('./hybrid-rag.cjs');
 let tenantKBLoader = null;
+let hybridRAG = null;
 try {
   tenantKBLoader = getTenantKBLoader();
+  hybridRAG = getHybridRAG();
 } catch (e) {
   console.warn('[VoiceAPI] TenantKB Loader not initialized:', e.message);
 }
@@ -1410,9 +1413,18 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
   const errors = [];
 
   // 1. Semantic RAG Context Retrieval (Hybrid Frontier v3.0 | RLS Shielding)
+  // Logic: Combined BM25 + Embeddings (Gemini) for high-precision retrieval
   const tenantId = session?.metadata?.knowledge_base_id || 'agency_internal';
-  const ragresults = await KB.searchHybrid(userMessage, 3, { tenantId });
-  let ragContext = KB.formatForVoice(ragresults, language);
+  const ragresults = hybridRAG
+    ? await hybridRAG.search(tenantId, language, userMessage, { limit: 3 })
+    : await KB.searchHybrid(userMessage, 3, { tenantId });
+
+  let ragContext = "";
+  if (hybridRAG && ragresults.length > 0) {
+    ragContext = ragresults.map(r => `[ID: ${r.id}] ${r.text}`).join('\n');
+  } else {
+    ragContext = KB.formatForVoice(ragresults, language);
+  }
 
   // 1.1 Relational Graph Context (GraphRAG)
   const graphResults = KB.graphSearch(userMessage, { tenantId });
@@ -1600,6 +1612,111 @@ function startServer(port = 3004) {
       res.writeHead(429, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Too many requests. Max 60/min.', remaining: rateCheck.remaining }));
       return;
+    }
+
+    // ============================================================
+    // STATIC ASSETS SERVING (Sovereign Infrastructure)
+    // ============================================================
+
+    // 1. Widget Scripts (Split Kernels)
+    if (req.url.startsWith('/voice-assistant/') && req.method === 'GET') {
+      const fileName = req.url.split('/').pop();
+      const validScripts = ['voice-widget-ecommerce.js', 'voice-widget-b2b.js', 'voice-widget.js'];
+
+      if (validScripts.includes(fileName)) {
+        const filePath = path.join(__dirname, '../widget', fileName);
+        if (fs.existsSync(filePath)) {
+          res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+          fs.createReadStream(filePath).pipe(res);
+          return;
+        }
+      }
+      // Fallback for Wix/Legacy paths
+      if (req.url.includes('voice-widget.js')) {
+        const filePath = path.join(__dirname, '../widget/voice-widget-ecommerce.js'); // Default to full version
+        res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
+        fs.createReadStream(filePath).pipe(res);
+        return;
+      }
+    }
+
+    // 2. Widget Language Files
+    if (req.url.startsWith('/lang/widget-') && req.url.endsWith('.json') && req.method === 'GET') {
+      const langCode = req.url.match(/widget-(\w+)\.json/)?.[1];
+      if (langCode) {
+        // Check if we have a specialized widget lang file, otherwise fallback to a stripped version of the main lang file
+        const widgetLangPath = path.join(__dirname, '../lang', `widget-${langCode}.json`);
+        if (fs.existsSync(widgetLangPath)) {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          fs.createReadStream(widgetLangPath).pipe(res);
+          return;
+        } else {
+          // SOTA Fallback: Extract UI/Meta from website locales (if exist)
+          const mainLangPath = path.join(__dirname, '../website/src/locales', `${langCode}.json`);
+          if (fs.existsSync(mainLangPath)) {
+            try {
+              const mainLang = JSON.parse(fs.readFileSync(mainLangPath, 'utf8'));
+              const widgetLang = {
+                meta: {
+                  title: mainLang.meta?.title,
+                  speechSynthesis: langCode,
+                  speechRecognition: langCode === 'ary' ? 'ar-MA' : langCode,
+                  rtl: ['ar', 'ary'].includes(langCode)
+                },
+                ui: {
+                  headerTitle: "VocalIA",
+                  headerSubtitleVoice: "Voice Agent Active",
+                  headerSubtitleText: "Chat Agent Active",
+                  placeholder: "Type or speak...",
+                  ariaOpenAssistant: "Open VocalIA Assistant",
+                  ariaClose: "Close",
+                  ariaMic: "Mic",
+                  ariaSend: "Send",
+                  notifTitle: "Hello!",
+                  notifSub: "How can I help you?",
+                  errorMessage: "Désolé, une erreur est survenue.",
+                  ctaLink: "/pricing",
+                  ctaButton: "Try Pro"
+                }
+              };
+              res.writeHead(200, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify(widgetLang));
+              return;
+            } catch (e) {
+              console.error('[VoiceAPI] Lang extraction error:', e.message);
+            }
+          }
+        }
+      }
+    }
+
+    // 3. Branding Assets & Favicons
+    if ((req.url === '/logo.png' || req.url === '/logo.webp') && req.method === 'GET') {
+      const logoPaths = [
+        path.join(__dirname, '../website/public/logo.png'),
+        path.join(__dirname, '../website/public/images/logo.webp'),
+        path.join(__dirname, '../website/public/images/logo.png'),
+        path.join(__dirname, '../Logo/LOGO VocalIA.jpg')
+      ];
+
+      for (const logoPath of logoPaths) {
+        if (fs.existsSync(logoPath)) {
+          const ext = path.extname(logoPath).toLowerCase();
+          const contentType = ext === '.webp' ? 'image/webp' : (ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : 'image/png');
+          res.writeHead(200, { 'Content-Type': contentType, 'Cache-Control': 'public, max-age=86400' });
+          fs.createReadStream(logoPath).pipe(res);
+          return;
+        }
+      }
+    }
+
+    if (req.url === '/favicon.ico' && req.method === 'GET') {
+      const faviconPath = path.join(__dirname, '../website/public/images/favicon/favicon.ico');
+      if (fs.existsSync(faviconPath)) {
+        res.writeHead(200, { 'Content-Type': 'image/x-icon' });
+        fs.createReadStream(faviconPath).pipe(res);
+        return;
+      }
     }
 
     // Session 250.54: Prometheus-style metrics endpoint
@@ -1800,7 +1917,119 @@ function startServer(port = 3004) {
       return;
     }
 
+    // Session 250.85: Internal Service Health Proxy (for Admin Dashboard)
+    if (req.url === '/api/health/grok' && req.method === 'GET') {
+      try {
+        const grokHealthUrl = `http://localhost:3007/health`;
+        const responseData = await new Promise((resolve, reject) => {
+          const http = require('http');
+          const timeout = setTimeout(() => reject(new Error('Timeout')), 2000);
+          http.get(grokHealthUrl, (serviceRes) => {
+            clearTimeout(timeout);
+            let data = '';
+            serviceRes.on('data', (chunk) => data += chunk);
+            serviceRes.on('end', () => resolve({ status: serviceRes.statusCode, data }));
+          }).on('error', (err) => {
+            clearTimeout(timeout);
+            reject(err);
+          });
+        });
+        res.writeHead(responseData.status, { 'Content-Type': 'application/json' });
+        res.end(responseData.data);
+      } catch (e) {
+        res.writeHead(503, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'offline', error: e.message }));
+      }
+      return;
+    }
+
+    if (req.url === '/api/health/telephony' && req.method === 'GET') {
+      try {
+        const telHealthUrl = `http://localhost:3009/health`;
+        const responseData = await new Promise((resolve, reject) => {
+          const http = require('http');
+          const timeout = setTimeout(() => reject(new Error('Timeout')), 2000);
+          http.get(telHealthUrl, (serviceRes) => {
+            clearTimeout(timeout);
+            let data = '';
+            serviceRes.on('data', (chunk) => data += chunk);
+            serviceRes.on('end', () => resolve({ status: serviceRes.statusCode, data }));
+          }).on('error', (err) => {
+            clearTimeout(timeout);
+            reject(err);
+          });
+        });
+        res.writeHead(responseData.status, { 'Content-Type': 'application/json' });
+        res.end(responseData.data);
+      } catch (e) {
+        res.writeHead(503, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'offline', error: e.message }));
+      }
+      return;
+    }
+
     // KB-Powered Fallback Endpoint - Returns tenant-specific Q&A for client-side fallback
+    // TROJAN HORSE: Zapier "Call Lead" Trigger Endpoint (Session 250.75)
+    // This allows external CRMs (HubSpot, Salesforce via Zapier) to trigger an immediate outbound call
+    if (req.url === '/api/trigger-call' && req.method === 'POST') {
+      // Session 250.85: Security Enforcement
+      const apiKey = req.headers['x-api-key'] || req.headers['authorization']?.split(' ')[1];
+      if (!apiKey || apiKey !== process.env.VOICE_API_KEY) {
+        res.writeHead(401, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Unauthorized: Invalid API Key' }));
+        return;
+      }
+
+      let body = '';
+      req.on('data', chunk => { body += chunk.toString(); });
+      req.on('end', async () => {
+        try {
+          const data = JSON.parse(body);
+          const { phone, name, tenantId, context } = data;
+
+          if (!phone || !tenantId) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Missing phone or tenantId' }));
+            return;
+          }
+
+          // SOTA: Call the real Telephony Bridge
+          const telephonyPort = process.env.VOICE_TELEPHONY_PORT || '3009';
+          const telephonyUrl = `http://localhost:${telephonyPort}/voice/outbound`;
+
+          try {
+            const telephonyResponse = await fetch(telephonyUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                phone,
+                name,
+                tenantId,
+                context: {
+                  ...context,
+                  source: 'Zapier_CRM'
+                }
+              })
+            });
+
+            const result = await telephonyResponse.json();
+
+            res.writeHead(telephonyResponse.status, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(result));
+          } catch (telephonyErr) {
+            console.error('[VocalIA] Telephony Bridge unreachable:', telephonyErr.message);
+            res.writeHead(502, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Telephony Bridge unavailable' }));
+          }
+        } catch (err) {
+          console.error('[VocalIA] Trigger Error:', err);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Internal Server Error' }));
+        }
+      });
+      return;
+    }
+
     if (req.url.startsWith('/api/fallback/') && req.method === 'GET') {
       const urlParts = req.url.split('/');
       const tenantId = urlParts[3]?.split('?')[0] || 'default';

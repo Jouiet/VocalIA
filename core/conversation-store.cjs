@@ -325,7 +325,10 @@ class ConversationStore {
           updated_at: data.updated_at,
           source: data.metadata?.source,
           language: data.metadata?.language,
-          persona: data.metadata?.persona
+          persona: data.metadata?.persona,
+          duration_sec: data.metadata?.duration_sec || 0,
+          status: data.metadata?.status || 'Completed',
+          call_sid: data.metadata?.call_sid
         });
       } catch {
         // Skip corrupted files
@@ -338,43 +341,122 @@ class ConversationStore {
     );
 
     // Apply filters
-    if (options.source) {
-      conversations.filter(c => c.source === options.source);
-    }
+    conversations = conversations.filter(c => c.source === options.source);
+  }
 
-    // Apply limit
-    if (options.limit) {
-      return conversations.slice(0, options.limit);
-    }
+  // Apply limit
+  if(options.limit) {
+    return conversations.slice(0, options.limit);
+  }
 
     return conversations;
   }
 
-  /**
-   * Count conversations for a tenant
-   */
-  countByTenant(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
-    if (!fs.existsSync(tenantDir)) {
-      return 0;
-    }
-    return fs.readdirSync(tenantDir).filter(f => f.endsWith('.json')).length;
+/**
+ * Count conversations for a tenant
+ */
+countByTenant(tenantId) {
+  const tenantDir = path.join(this.baseDir, tenantId);
+  if (!fs.existsSync(tenantDir)) {
+    return 0;
+  }
+  return fs.readdirSync(tenantDir).filter(f => f.endsWith('.json')).length;
+}
+
+// ==================== CLEANUP ====================
+
+/**
+ * Cleanup old conversations based on retention policy
+ */
+cleanup(tenantId) {
+  const tenantDir = path.join(this.baseDir, tenantId);
+  if (!fs.existsSync(tenantDir)) {
+    return { deleted: 0 };
   }
 
-  // ==================== CLEANUP ====================
+  const retentionDays = this.getRetentionDays(tenantId);
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - retentionDays);
 
-  /**
-   * Cleanup old conversations based on retention policy
-   */
-  cleanup(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
-    if (!fs.existsSync(tenantDir)) {
-      return { deleted: 0 };
+  const files = fs.readdirSync(tenantDir).filter(f => f.endsWith('.json'));
+  let deleted = 0;
+
+  for (const file of files) {
+    const filePath = path.join(tenantDir, file);
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const updatedAt = new Date(data.updated_at || data.created_at);
+
+      if (updatedAt < cutoff) {
+        fs.unlinkSync(filePath);
+        deleted++;
+      }
+    } catch {
+      // Delete corrupted files
+      fs.unlinkSync(filePath);
+      deleted++;
     }
+  }
 
-    const retentionDays = this.getRetentionDays(tenantId);
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - retentionDays);
+  console.log(`✅ [ConversationStore] Cleanup ${tenantId}: ${deleted} deleted (retention: ${retentionDays} days)`);
+  return { deleted, retentionDays };
+}
+
+/**
+ * Cleanup all tenants
+ */
+cleanupAll() {
+  if (!fs.existsSync(this.baseDir)) {
+    return { tenants: 0, totalDeleted: 0 };
+  }
+
+  const tenants = fs.readdirSync(this.baseDir).filter(f =>
+    fs.statSync(path.join(this.baseDir, f)).isDirectory()
+  );
+
+  let totalDeleted = 0;
+  for (const tenantId of tenants) {
+    const result = this.cleanup(tenantId);
+    totalDeleted += result.deleted;
+  }
+
+  return { tenants: tenants.length, totalDeleted };
+}
+
+/**
+ * Purge all conversations for a tenant (RGPD)
+ */
+purgeTenant(tenantId) {
+  const tenantDir = path.join(this.baseDir, tenantId);
+  if (fs.existsSync(tenantDir)) {
+    fs.rmSync(tenantDir, { recursive: true, force: true });
+    return true;
+  }
+  return false;
+}
+
+/**
+ * ⚠️ TELEPHONY-SPECIFIC: 60-day hard limit purge
+ * Called automatically on 1st of month
+ */
+purgeOldTelephony(tenantId = null) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - TELEPHONY_RETENTION_DAYS);
+
+  let totalDeleted = 0;
+  let tenantsProcessed = 0;
+
+  const tenants = tenantId
+    ? [tenantId]
+    : fs.existsSync(this.baseDir)
+      ? fs.readdirSync(this.baseDir).filter(f =>
+        fs.statSync(path.join(this.baseDir, f)).isDirectory()
+      )
+      : [];
+
+  for (const tid of tenants) {
+    const tenantDir = path.join(this.baseDir, tid);
+    if (!fs.existsSync(tenantDir)) continue;
 
     const files = fs.readdirSync(tenantDir).filter(f => f.endsWith('.json'));
     let deleted = 0;
@@ -383,495 +465,415 @@ class ConversationStore {
       const filePath = path.join(tenantDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        const updatedAt = new Date(data.updated_at || data.created_at);
 
-        if (updatedAt < cutoff) {
-          fs.unlinkSync(filePath);
-          deleted++;
+        // Only purge TELEPHONY conversations older than 60 days
+        if (data.metadata?.source === 'telephony') {
+          const createdAt = new Date(data.created_at);
+          if (createdAt < cutoff) {
+            fs.unlinkSync(filePath);
+            deleted++;
+          }
         }
       } catch {
-        // Delete corrupted files
-        fs.unlinkSync(filePath);
-        deleted++;
+        // Skip corrupted files
       }
     }
 
-    console.log(`✅ [ConversationStore] Cleanup ${tenantId}: ${deleted} deleted (retention: ${retentionDays} days)`);
-    return { deleted, retentionDays };
+    if (deleted > 0) {
+      console.log(`✅ [ConversationStore] Purged ${deleted} telephony conversations for ${tid} (>60 days)`);
+    }
+    totalDeleted += deleted;
+    tenantsProcessed++;
   }
 
-  /**
-   * Cleanup all tenants
-   */
-  cleanupAll() {
-    if (!fs.existsSync(this.baseDir)) {
-      return { tenants: 0, totalDeleted: 0 };
-    }
+  return {
+    tenantsProcessed,
+    totalDeleted,
+    retentionDays: TELEPHONY_RETENTION_DAYS,
+    cutoffDate: cutoff.toISOString()
+  };
+}
 
-    const tenants = fs.readdirSync(this.baseDir).filter(f =>
-      fs.statSync(path.join(this.baseDir, f)).isDirectory()
-    );
+/**
+ * Monthly purge (run on 1st of each month)
+ * Purges telephony >60 days, widget based on tenant config
+ */
+monthlyPurge() {
+  console.log(`📅 [ConversationStore] Monthly purge started: ${new Date().toISOString()}`);
 
-    let totalDeleted = 0;
-    for (const tenantId of tenants) {
-      const result = this.cleanup(tenantId);
-      totalDeleted += result.deleted;
-    }
+  // 1. Purge old telephony (60 days hard limit)
+  const telephonyResult = this.purgeOldTelephony();
 
-    return { tenants: tenants.length, totalDeleted };
+  // 2. Cleanup all tenants based on their retention policy (widget)
+  const widgetResult = this.cleanupAll();
+
+  return {
+    telephony: telephonyResult,
+    widget: widgetResult,
+    executedAt: new Date().toISOString()
+  };
+}
+
+// ==================== EXPORT ====================
+
+/**
+ * Export conversations to CSV
+ */
+exportToCSV(tenantId, options = {}) {
+  loadExportDeps();
+
+  const conversations = this.listByTenant(tenantId, { source: options.source });
+  if (conversations.length === 0) {
+    return { error: 'No conversations to export' };
   }
 
-  /**
-   * Purge all conversations for a tenant (RGPD)
-   */
-  purgeTenant(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
-    if (fs.existsSync(tenantDir)) {
-      fs.rmSync(tenantDir, { recursive: true, force: true });
-      return true;
+  // Prepare data for CSV
+  const data = [];
+  for (const conv of conversations) {
+    const fullConv = this.load(tenantId, conv.session_id);
+    if (!fullConv) continue;
+
+    for (const msg of fullConv.messages || []) {
+      data.push({
+        session_id: conv.session_id,
+        created_at: conv.created_at,
+        source: conv.source || 'unknown',
+        language: conv.language || 'unknown',
+        persona: conv.persona || '',
+        message_role: msg.role,
+        message_content: (msg.content || '').replace(/[\n\r]/g, ' ').substring(0, 500),
+        message_timestamp: msg.timestamp
+      });
     }
-    return false;
   }
 
-  /**
-   * ⚠️ TELEPHONY-SPECIFIC: 60-day hard limit purge
-   * Called automatically on 1st of month
-   */
-  purgeOldTelephony(tenantId = null) {
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - TELEPHONY_RETENTION_DAYS);
-
-    let totalDeleted = 0;
-    let tenantsProcessed = 0;
-
-    const tenants = tenantId
-      ? [tenantId]
-      : fs.existsSync(this.baseDir)
-        ? fs.readdirSync(this.baseDir).filter(f =>
-            fs.statSync(path.join(this.baseDir, f)).isDirectory()
-          )
-        : [];
-
-    for (const tid of tenants) {
-      const tenantDir = path.join(this.baseDir, tid);
-      if (!fs.existsSync(tenantDir)) continue;
-
-      const files = fs.readdirSync(tenantDir).filter(f => f.endsWith('.json'));
-      let deleted = 0;
-
-      for (const file of files) {
-        const filePath = path.join(tenantDir, file);
-        try {
-          const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
-          // Only purge TELEPHONY conversations older than 60 days
-          if (data.metadata?.source === 'telephony') {
-            const createdAt = new Date(data.created_at);
-            if (createdAt < cutoff) {
-              fs.unlinkSync(filePath);
-              deleted++;
-            }
-          }
-        } catch {
-          // Skip corrupted files
-        }
-      }
-
-      if (deleted > 0) {
-        console.log(`✅ [ConversationStore] Purged ${deleted} telephony conversations for ${tid} (>60 days)`);
-      }
-      totalDeleted += deleted;
-      tenantsProcessed++;
+  // Generate CSV
+  let csv;
+  if (Papa) {
+    csv = Papa.unparse(data);
+  } else {
+    // Native CSV generation
+    const headers = Object.keys(data[0] || {});
+    const lines = [headers.join(',')];
+    for (const row of data) {
+      const values = headers.map(h => {
+        const val = String(row[h] || '');
+        return val.includes(',') || val.includes('"') ? `"${val.replace(/"/g, '""')}"` : val;
+      });
+      lines.push(values.join(','));
     }
-
-    return {
-      tenantsProcessed,
-      totalDeleted,
-      retentionDays: TELEPHONY_RETENTION_DAYS,
-      cutoffDate: cutoff.toISOString()
-    };
+    csv = lines.join('\n');
   }
 
-  /**
-   * Monthly purge (run on 1st of each month)
-   * Purges telephony >60 days, widget based on tenant config
-   */
-  monthlyPurge() {
-    console.log(`📅 [ConversationStore] Monthly purge started: ${new Date().toISOString()}`);
+  const filename = `conversations_${tenantId}_${Date.now()}.csv`;
+  const outputPath = path.join(EXPORTS_DIR, filename);
+  fs.writeFileSync(outputPath, csv, 'utf-8');
 
-    // 1. Purge old telephony (60 days hard limit)
-    const telephonyResult = this.purgeOldTelephony();
-
-    // 2. Cleanup all tenants based on their retention policy (widget)
-    const widgetResult = this.cleanupAll();
-
-    return {
-      telephony: telephonyResult,
-      widget: widgetResult,
-      executedAt: new Date().toISOString()
-    };
-  }
-
-  // ==================== EXPORT ====================
-
-  /**
-   * Export conversations to CSV
-   */
-  exportToCSV(tenantId, options = {}) {
-    loadExportDeps();
-
-    const conversations = this.listByTenant(tenantId, { source: options.source });
-    if (conversations.length === 0) {
-      return { error: 'No conversations to export' };
+  return {
+    status: 'success',
+    file: {
+      path: outputPath,
+      filename,
+      rows: data.length,
+      conversations: conversations.length,
+      size_bytes: fs.statSync(outputPath).size
     }
-
-    // Prepare data for CSV
-    const data = [];
-    for (const conv of conversations) {
-      const fullConv = this.load(tenantId, conv.session_id);
-      if (!fullConv) continue;
-
-      for (const msg of fullConv.messages || []) {
-        data.push({
-          session_id: conv.session_id,
-          created_at: conv.created_at,
-          source: conv.source || 'unknown',
-          language: conv.language || 'unknown',
-          persona: conv.persona || '',
-          message_role: msg.role,
-          message_content: (msg.content || '').replace(/[\n\r]/g, ' ').substring(0, 500),
-          message_timestamp: msg.timestamp
-        });
-      }
-    }
-
-    // Generate CSV
-    let csv;
-    if (Papa) {
-      csv = Papa.unparse(data);
-    } else {
-      // Native CSV generation
-      const headers = Object.keys(data[0] || {});
-      const lines = [headers.join(',')];
-      for (const row of data) {
-        const values = headers.map(h => {
-          const val = String(row[h] || '');
-          return val.includes(',') || val.includes('"') ? `"${val.replace(/"/g, '""')}"` : val;
-        });
-        lines.push(values.join(','));
-      }
-      csv = lines.join('\n');
-    }
-
-    const filename = `conversations_${tenantId}_${Date.now()}.csv`;
-    const outputPath = path.join(EXPORTS_DIR, filename);
-    fs.writeFileSync(outputPath, csv, 'utf-8');
-
-    return {
-      status: 'success',
-      file: {
-        path: outputPath,
-        filename,
-        rows: data.length,
-        conversations: conversations.length,
-        size_bytes: fs.statSync(outputPath).size
-      }
-    };
-  }
+  };
+}
 
   /**
    * Export conversations to XLSX
    */
   async exportToXLSX(tenantId, options = {}) {
-    loadExportDeps();
+  loadExportDeps();
 
-    if (!ExcelJS) {
-      return { error: 'ExcelJS not installed. Run: npm install exceljs' };
-    }
+  if (!ExcelJS) {
+    return { error: 'ExcelJS not installed. Run: npm install exceljs' };
+  }
 
-    const conversations = this.listByTenant(tenantId, { source: options.source });
-    if (conversations.length === 0) {
-      return { error: 'No conversations to export' };
-    }
+  const conversations = this.listByTenant(tenantId, { source: options.source });
+  if (conversations.length === 0) {
+    return { error: 'No conversations to export' };
+  }
 
-    const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'VocalIA';
-    workbook.created = new Date();
+  const workbook = new ExcelJS.Workbook();
+  workbook.creator = 'VocalIA';
+  workbook.created = new Date();
 
-    // Summary sheet
-    const summarySheet = workbook.addWorksheet('Summary');
-    summarySheet.columns = [
-      { header: 'Session ID', key: 'session_id', width: 25 },
-      { header: 'Date', key: 'created_at', width: 20 },
-      { header: 'Source', key: 'source', width: 12 },
-      { header: 'Language', key: 'language', width: 10 },
-      { header: 'Persona', key: 'persona', width: 20 },
-      { header: 'Messages', key: 'message_count', width: 10 }
-    ];
+  // Summary sheet
+  const summarySheet = workbook.addWorksheet('Summary');
+  summarySheet.columns = [
+    { header: 'Session ID', key: 'session_id', width: 25 },
+    { header: 'Date', key: 'created_at', width: 20 },
+    { header: 'Source', key: 'source', width: 12 },
+    { header: 'Language', key: 'language', width: 10 },
+    { header: 'Persona', key: 'persona', width: 20 },
+    { header: 'Messages', key: 'message_count', width: 10 }
+  ];
 
-    // Style header
-    summarySheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-    summarySheet.getRow(1).fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FF5E6AD2' }
-    };
+  // Style header
+  summarySheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+  summarySheet.getRow(1).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF5E6AD2' }
+  };
 
-    for (const conv of conversations) {
-      summarySheet.addRow({
+  for (const conv of conversations) {
+    summarySheet.addRow({
+      session_id: conv.session_id,
+      created_at: conv.created_at,
+      source: conv.source,
+      language: conv.language,
+      persona: conv.persona,
+      message_count: conv.message_count
+    });
+  }
+
+  // Messages sheet
+  const messagesSheet = workbook.addWorksheet('Messages');
+  messagesSheet.columns = [
+    { header: 'Session ID', key: 'session_id', width: 25 },
+    { header: 'Role', key: 'role', width: 12 },
+    { header: 'Content', key: 'content', width: 80 },
+    { header: 'Timestamp', key: 'timestamp', width: 22 }
+  ];
+
+  messagesSheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+  messagesSheet.getRow(1).fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF5E6AD2' }
+  };
+
+  for (const conv of conversations) {
+    const fullConv = this.load(tenantId, conv.session_id);
+    if (!fullConv?.messages) continue;
+
+    for (const msg of fullConv.messages) {
+      messagesSheet.addRow({
         session_id: conv.session_id,
-        created_at: conv.created_at,
-        source: conv.source,
-        language: conv.language,
-        persona: conv.persona,
-        message_count: conv.message_count
+        role: msg.role,
+        content: (msg.content || '').substring(0, 1000),
+        timestamp: msg.timestamp
       });
     }
+  }
 
-    // Messages sheet
-    const messagesSheet = workbook.addWorksheet('Messages');
-    messagesSheet.columns = [
-      { header: 'Session ID', key: 'session_id', width: 25 },
-      { header: 'Role', key: 'role', width: 12 },
-      { header: 'Content', key: 'content', width: 80 },
-      { header: 'Timestamp', key: 'timestamp', width: 22 }
-    ];
+  const filename = `conversations_${tenantId}_${Date.now()}.xlsx`;
+  const outputPath = path.join(EXPORTS_DIR, filename);
+  await workbook.xlsx.writeFile(outputPath);
 
-    messagesSheet.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
-    messagesSheet.getRow(1).fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FF5E6AD2' }
-    };
+  return {
+    status: 'success',
+    file: {
+      path: outputPath,
+      filename,
+      sheets: ['Summary', 'Messages'],
+      conversations: conversations.length,
+      size_bytes: fs.statSync(outputPath).size
+    }
+  };
+}
 
+/**
+ * Export conversations to PDF
+ */
+exportToPDF(tenantId, options = {}) {
+  loadExportDeps();
+
+  if (!PDFDocument) {
+    return { error: 'PDFKit not installed. Run: npm install pdfkit' };
+  }
+
+  const conversations = this.listByTenant(tenantId, { source: options.source, limit: options.limit || 50 });
+  if (conversations.length === 0) {
+    return { error: 'No conversations to export' };
+  }
+
+  return new Promise((resolve) => {
+    const filename = `conversations_${tenantId}_${Date.now()}.pdf`;
+    const outputPath = path.join(EXPORTS_DIR, filename);
+
+    const doc = new PDFDocument({
+      size: 'A4',
+      margins: { top: 50, bottom: 50, left: 50, right: 50 }
+    });
+
+    const writeStream = fs.createWriteStream(outputPath);
+    doc.pipe(writeStream);
+
+    // Header
+    doc.fontSize(10)
+      .fillColor('#5E6AD2')
+      .text('VocalIA - Voice AI Platform', 50, 30, { align: 'right' });
+
+    doc.fontSize(24)
+      .fillColor('#1e1b4b')
+      .text('Conversation History', 50, 60);
+
+    doc.fontSize(12)
+      .fillColor('#64748b')
+      .text(`Tenant: ${tenantId}`, 50, 95);
+
+    doc.fontSize(10)
+      .text(`Generated: ${new Date().toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })}`, 50, 110);
+
+    doc.fontSize(10)
+      .fillColor('#ef4444')
+      .text(`⚠️ Retention: Telephony history is automatically purged after ${TELEPHONY_RETENTION_DAYS} days`, 50, 125);
+
+    doc.moveDown(2);
+
+    // Conversations
     for (const conv of conversations) {
       const fullConv = this.load(tenantId, conv.session_id);
       if (!fullConv?.messages) continue;
 
-      for (const msg of fullConv.messages) {
-        messagesSheet.addRow({
-          session_id: conv.session_id,
-          role: msg.role,
-          content: (msg.content || '').substring(0, 1000),
-          timestamp: msg.timestamp
-        });
+      // Check for page break
+      if (doc.y > 700) {
+        doc.addPage();
       }
-    }
 
-    const filename = `conversations_${tenantId}_${Date.now()}.xlsx`;
-    const outputPath = path.join(EXPORTS_DIR, filename);
-    await workbook.xlsx.writeFile(outputPath);
-
-    return {
-      status: 'success',
-      file: {
-        path: outputPath,
-        filename,
-        sheets: ['Summary', 'Messages'],
-        conversations: conversations.length,
-        size_bytes: fs.statSync(outputPath).size
-      }
-    };
-  }
-
-  /**
-   * Export conversations to PDF
-   */
-  exportToPDF(tenantId, options = {}) {
-    loadExportDeps();
-
-    if (!PDFDocument) {
-      return { error: 'PDFKit not installed. Run: npm install pdfkit' };
-    }
-
-    const conversations = this.listByTenant(tenantId, { source: options.source, limit: options.limit || 50 });
-    if (conversations.length === 0) {
-      return { error: 'No conversations to export' };
-    }
-
-    return new Promise((resolve) => {
-      const filename = `conversations_${tenantId}_${Date.now()}.pdf`;
-      const outputPath = path.join(EXPORTS_DIR, filename);
-
-      const doc = new PDFDocument({
-        size: 'A4',
-        margins: { top: 50, bottom: 50, left: 50, right: 50 }
-      });
-
-      const writeStream = fs.createWriteStream(outputPath);
-      doc.pipe(writeStream);
-
-      // Header
-      doc.fontSize(10)
+      // Session header
+      doc.fontSize(11)
         .fillColor('#5E6AD2')
-        .text('VocalIA - Voice AI Platform', 50, 30, { align: 'right' });
+        .text(`━━━ ${conv.session_id} ━━━`, { underline: false });
 
-      doc.fontSize(24)
-        .fillColor('#1e1b4b')
-        .text('Conversation History', 50, 60);
-
-      doc.fontSize(12)
+      doc.fontSize(9)
         .fillColor('#64748b')
-        .text(`Tenant: ${tenantId}`, 50, 95);
+        .text(`${conv.created_at} | ${conv.source} | ${conv.language}`);
 
-      doc.fontSize(10)
-        .text(`Generated: ${new Date().toLocaleDateString('fr-FR', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        })}`, 50, 110);
+      doc.moveDown(0.5);
 
-      doc.fontSize(10)
-        .fillColor('#ef4444')
-        .text(`⚠️ Retention: Telephony history is automatically purged after ${TELEPHONY_RETENTION_DAYS} days`, 50, 125);
-
-      doc.moveDown(2);
-
-      // Conversations
-      for (const conv of conversations) {
-        const fullConv = this.load(tenantId, conv.session_id);
-        if (!fullConv?.messages) continue;
-
-        // Check for page break
-        if (doc.y > 700) {
-          doc.addPage();
-        }
-
-        // Session header
-        doc.fontSize(11)
-          .fillColor('#5E6AD2')
-          .text(`━━━ ${conv.session_id} ━━━`, { underline: false });
+      // Messages
+      for (const msg of fullConv.messages.slice(0, 10)) { // Limit messages per conv
+        const roleColor = msg.role === 'user' ? '#059669' : '#5E6AD2';
+        const roleLabel = msg.role === 'user' ? '👤 User' : '🤖 Assistant';
 
         doc.fontSize(9)
-          .fillColor('#64748b')
-          .text(`${conv.created_at} | ${conv.source} | ${conv.language}`);
+          .fillColor(roleColor)
+          .text(roleLabel, { continued: true });
 
-        doc.moveDown(0.5);
-
-        // Messages
-        for (const msg of fullConv.messages.slice(0, 10)) { // Limit messages per conv
-          const roleColor = msg.role === 'user' ? '#059669' : '#5E6AD2';
-          const roleLabel = msg.role === 'user' ? '👤 User' : '🤖 Assistant';
-
-          doc.fontSize(9)
-            .fillColor(roleColor)
-            .text(roleLabel, { continued: true });
-
-          doc.fillColor('#1e293b')
-            .text(`: ${(msg.content || '').substring(0, 200)}${(msg.content || '').length > 200 ? '...' : ''}`);
-        }
-
-        if (fullConv.messages.length > 10) {
-          doc.fontSize(8)
-            .fillColor('#94a3b8')
-            .text(`... +${fullConv.messages.length - 10} more messages`);
-        }
-
-        doc.moveDown();
+        doc.fillColor('#1e293b')
+          .text(`: ${(msg.content || '').substring(0, 200)}${(msg.content || '').length > 200 ? '...' : ''}`);
       }
 
-      doc.end();
+      if (fullConv.messages.length > 10) {
+        doc.fontSize(8)
+          .fillColor('#94a3b8')
+          .text(`... +${fullConv.messages.length - 10} more messages`);
+      }
 
-      writeStream.on('finish', () => {
-        resolve({
-          status: 'success',
-          file: {
-            path: outputPath,
-            filename,
-            conversations: conversations.length,
-            size_bytes: fs.statSync(outputPath).size
-          }
-        });
-      });
+      doc.moveDown();
+    }
 
-      writeStream.on('error', (err) => {
-        resolve({ error: err.message });
+    doc.end();
+
+    writeStream.on('finish', () => {
+      resolve({
+        status: 'success',
+        file: {
+          path: outputPath,
+          filename,
+          conversations: conversations.length,
+          size_bytes: fs.statSync(outputPath).size
+        }
       });
     });
+
+    writeStream.on('error', (err) => {
+      resolve({ error: err.message });
+    });
+  });
+}
+
+// ==================== ANALYTICS ====================
+
+/**
+ * Get statistics for a tenant
+ */
+getStats(tenantId) {
+  const conversations = this.listByTenant(tenantId);
+  const totalMessages = conversations.reduce((sum, c) => sum + (c.message_count || 0), 0);
+
+  // Count by source
+  const bySource = { widget: 0, telephony: 0, other: 0 };
+  for (const c of conversations) {
+    const source = c.source || 'other';
+    bySource[source] = (bySource[source] || 0) + 1;
   }
 
-  // ==================== ANALYTICS ====================
+  // Count by language
+  const byLanguage = {};
+  for (const c of conversations) {
+    const lang = c.language || 'unknown';
+    byLanguage[lang] = (byLanguage[lang] || 0) + 1;
+  }
 
-  /**
-   * Get statistics for a tenant
-   */
-  getStats(tenantId) {
-    const conversations = this.listByTenant(tenantId);
-    const totalMessages = conversations.reduce((sum, c) => sum + (c.message_count || 0), 0);
+  return {
+    tenant_id: tenantId,
+    total_conversations: conversations.length,
+    total_messages: totalMessages,
+    by_source: bySource,
+    by_language: byLanguage,
+    cache_stats: this.cache.stats()
+  };
+}
 
-    // Count by source
-    const bySource = { widget: 0, telephony: 0, other: 0 };
-    for (const c of conversations) {
-      const source = c.source || 'other';
-      bySource[source] = (bySource[source] || 0) + 1;
-    }
+/**
+ * Global statistics
+ */
+getGlobalStats() {
+  if (!fs.existsSync(this.baseDir)) {
+    return { tenants: 0, total_conversations: 0, cache_stats: this.cache.stats() };
+  }
 
-    // Count by language
-    const byLanguage = {};
-    for (const c of conversations) {
-      const lang = c.language || 'unknown';
-      byLanguage[lang] = (byLanguage[lang] || 0) + 1;
-    }
+  const tenants = fs.readdirSync(this.baseDir).filter(f =>
+    fs.statSync(path.join(this.baseDir, f)).isDirectory()
+  );
 
+  let totalConversations = 0;
+  let totalMessages = 0;
+
+  for (const t of tenants) {
+    const stats = this.getStats(t);
+    totalConversations += stats.total_conversations;
+    totalMessages += stats.total_messages;
+  }
+
+  return {
+    tenants: tenants.length,
+    total_conversations: totalConversations,
+    total_messages: totalMessages,
+    cache_stats: this.cache.stats()
+  };
+}
+
+/**
+ * Health check
+ */
+health() {
+  try {
+    const stats = this.getGlobalStats();
     return {
-      tenant_id: tenantId,
-      total_conversations: conversations.length,
-      total_messages: totalMessages,
-      by_source: bySource,
-      by_language: byLanguage,
-      cache_stats: this.cache.stats()
+      status: 'ok',
+      baseDir: this.baseDir,
+      ...stats
+    };
+  } catch (e) {
+    return {
+      status: 'error',
+      error: e.message
     };
   }
-
-  /**
-   * Global statistics
-   */
-  getGlobalStats() {
-    if (!fs.existsSync(this.baseDir)) {
-      return { tenants: 0, total_conversations: 0, cache_stats: this.cache.stats() };
-    }
-
-    const tenants = fs.readdirSync(this.baseDir).filter(f =>
-      fs.statSync(path.join(this.baseDir, f)).isDirectory()
-    );
-
-    let totalConversations = 0;
-    let totalMessages = 0;
-
-    for (const t of tenants) {
-      const stats = this.getStats(t);
-      totalConversations += stats.total_conversations;
-      totalMessages += stats.total_messages;
-    }
-
-    return {
-      tenants: tenants.length,
-      total_conversations: totalConversations,
-      total_messages: totalMessages,
-      cache_stats: this.cache.stats()
-    };
-  }
-
-  /**
-   * Health check
-   */
-  health() {
-    try {
-      const stats = this.getGlobalStats();
-      return {
-        status: 'ok',
-        baseDir: this.baseDir,
-        ...stats
-      };
-    } catch (e) {
-      return {
-        status: 'error',
-        error: e.message
-      };
-    }
-  }
+}
 }
 
 // Singleton

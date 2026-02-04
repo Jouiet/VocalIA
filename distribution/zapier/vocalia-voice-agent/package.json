@@ -1,0 +1,15 @@
+{
+    "name": "vocalia-voice-agent",
+    "version": "1.0.0",
+    "description": "VocalIA Voice Agent - Zapier Integration",
+    "main": "index.js",
+    "scripts": {
+        "test": "zapier test"
+    },
+    "dependencies": {
+        "zapier-platform-core": "^15.0.0"
+    },
+    "zapier": {
+        "convertedBy": "zapier-platform-cli"
+    }
+}

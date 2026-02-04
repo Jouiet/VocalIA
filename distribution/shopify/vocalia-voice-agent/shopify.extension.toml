@@ -1,0 +1,9 @@
+name = "VocalIA Voice Agent"
+type = "theme"
+
+[app]
+  title = "VocalIA Voice Agent & Telephony"
+  
+[extensions.theme]
+  name = "Voice Widget"
+  target = "body"

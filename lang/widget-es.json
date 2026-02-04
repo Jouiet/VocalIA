@@ -1,0 +1,24 @@
+{
+    "meta": {
+        "title": "VocalIA - Asistente IA",
+        "speechSynthesis": "es-ES",
+        "speechRecognition": "es-ES",
+        "rtl": false
+    },
+    "ui": {
+        "headerTitle": "Asistente VocalIA",
+        "headerSubtitleVoice": "Asistente de Voz Listo",
+        "headerSubtitleText": "Haz tus preguntas",
+        "placeholder": "Escribe o habla...",
+        "ariaOpenAssistant": "Abrir asistente VocalIA",
+        "ariaClose": "Cerrar",
+        "ariaMic": "Micrófono",
+        "ariaSend": "Enviar",
+        "notifTitle": "¿Necesitas ayuda?",
+        "notifSub": "¡Estoy aquí para responderte!",
+        "errorMessage": "Lo sentimos, ha ocurrido un error.",
+        "ctaLink": "/demo",
+        "ctaButton": "Reservar Demo",
+        "voiceReady": "Voz lista"
+    }
+}

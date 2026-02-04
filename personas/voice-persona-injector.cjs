@@ -58,7 +58,15 @@ const MarketingScience = require('../core/marketing-science-core.cjs');
 // Session 178: Restored full 5-language support per Ultrathink audit
 const VOICE_CONFIG = {
     supportedLanguages: ['fr', 'en', 'es', 'ar', 'ary'], // FR, EN, ES, AR, Darija
-    defaultLanguage: process.env.VOICE_DEFAULT_LANGUAGE || 'fr'
+    defaultLanguage: process.env.VOICE_DEFAULT_LANGUAGE || 'fr',
+    // Session 250.80: Behavioral Mirroring (Moroccan Code-Switching)
+    mirroringRules: {
+        ary: `💡 BEHAVIORAL MIRRORING (MOROCCO): 
+        - Mix Darija with French business terms (e.g., 'Facture', 'Rendez-vous', 'Dossier', 'Client').
+        - This is natural in Moroccan business contexts.
+        - If the user uses more French, increase French ratio.
+        - If the user uses pure Darija, stick to pure Darija with minor professional loans.`
+    }
 };
 
 /**
@@ -5719,11 +5727,12 @@ class VoicePersonaInjector {
             basePrompt = SYSTEM_PROMPTS[archetypeKey][persona.language] || SYSTEM_PROMPTS[archetypeKey]['fr'] || basePrompt;
         }
 
-        // 2. Dynamic Style Injection for Darija (WOW Factor)
+        // 2. Dynamic Style Injection for Darija (SOTA Mirroring - Session 250.80)
         if (persona.language === 'ary') {
-            basePrompt += `\n\nCRITICAL: SPEAK IN DARIJA (MOROCCAN ARABIC) ONLY.
+            const mirroring = VOICE_CONFIG.mirroringRules?.ary || "";
+            basePrompt += `\n\nCRITICAL: SPEAK IN DARIJA (MOROCCAN ARABIC).
+            ${mirroring}
             Use authentic Moroccan expressions like "L-bass", "Marhba", "Wakha", "Fin a khay", "Hania".
-            Maintain a professional yet helpful tone tailored for a Moroccan audience.
             DO NOT SPEAK MODERN STANDARD ARABIC (FUSHA) UNLESS SPECIFICALLY ASKED.`;
         }
 

@@ -10,9 +10,11 @@
 ## Brand Identity
 
 ### Vision
+
 **"Futuriste, Sobre, Puissant"** - Une identité qui inspire confiance aux entreprises tout en projetant l'innovation technologique.
 
 ### Cible
+
 - Chefs d'entreprises (Maroc, Europe, International)
 - Indépendants et PME
 - Décideurs techniques (CTO, VP Engineering)
@@ -149,11 +151,13 @@ grep -riE "Grok|Gemini|Twilio|xAI|Anthropic" website/ --include="*.html" --inclu
 **Purpose**: UI generation via Google's Stitch API (MCP Protocol)
 
 **Capabilities**:
+
 - Project creation/management
 - UI component generation
 - CSS extraction
 
 **Usage**:
+
 ```bash
 node core/stitch-api.cjs list        # List projects
 node core/stitch-api.cjs create "VocalIA Dashboard"
@@ -171,11 +175,13 @@ node core/stitch-api.cjs generate <projectId> "Modern pricing table"
 **Purpose**: Image-based AI design (no text prompts needed)
 
 **How It Works**:
+
 1. Upload images for: **Subject** + **Scene** + **Style**
 2. Whisk uses Gemini to caption → Imagen 3 generates
 3. Refine via chat-like interface
 
 **Use Cases for VocalIA**:
+
 - Hero section illustrations
 - Marketing visuals
 - Social media assets
@@ -191,22 +197,26 @@ node core/stitch-api.cjs generate <projectId> "Modern pricing table"
 **Purpose**: Programmatic video creation with React
 
 **Capabilities**:
+
 - React components as video frames
 - MP4, WebM, GIF export
 - Cloud rendering (Lambda)
 
 **Use Cases for VocalIA**:
+
 - Product demo videos
 - Onboarding animations
 - Social media content
 
 **Installation**:
+
 ```bash
 npm init video
 npm run start  # Runs on localhost:3000
 ```
 
 **Key Hooks**:
+
 - `useVideoConfig()` - Video properties
 - `useCurrentFrame()` - Current frame number
 - `spring()` - Natural motion
@@ -229,10 +239,12 @@ npm run start  # Runs on localhost:3000
 | `gemini_deep_research` | Multi-step design research |
 
 **Models Available**:
+
 - Gemini 2.5 Flash
 - Gemini Pro (for complex tasks)
 
 **Design Prompting**:
+
 ```
 "Design a color palette for enterprise Voice AI SaaS.
 Requirements: WCAG 2.1 compliant, works in dark mode,
@@ -246,11 +258,13 @@ inspired by Stripe/Linear aesthetics."
 **Purpose**: Automated visual verification of designs
 
 **Capabilities**:
+
 - Navigate to pages
 - Take screenshots
 - DOM snapshot for accessibility audit
 
 **Usage for Design**:
+
 ```javascript
 // Navigate and capture
 mcp__playwright__browser_navigate({ url: "http://localhost:8080/" })
@@ -264,6 +278,7 @@ mcp__playwright__browser_take_screenshot({ filename: "homepage.png", fullPage: t
 **Purpose**: Real-time design debugging
 
 **Capabilities**:
+
 - Live CSS inspection
 - Performance analysis
 - Console monitoring
@@ -385,6 +400,7 @@ transition: all 0.3s ease;
 | Close buttons | `w-10 h-10` → `w-12 h-12` | 44×44px |
 
 **Implementation Pattern:**
+
 ```html
 <button class="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center">
   <i data-lucide="menu" class="w-6 h-6"></i>
@@ -422,22 +438,27 @@ website/
 ## Design Workflow
 
 ### 1. Ideation
+
 - Use **Google Whisk** for visual concepts
 - Use **Gemini** for color palette research
 
 ### 2. Prototyping
+
 - Use **Google Stitch** for rapid UI generation
 - Extract CSS with `stitch-to-3a-css.cjs`
 
 ### 3. Implementation
+
 - Edit `input.css` with Tailwind v4 tokens
 - Run `npm run build:css`
 
 ### 4. Verification
+
 - Use **Playwright MCP** for screenshots
 - Use **Chrome DevTools MCP** for debugging
 
 ### 5. Video/Animation
+
 - Use **Remotion** for demo videos
 - Export MP4/WebM for marketing
 
@@ -446,6 +467,7 @@ website/
 ## Quick Reference
 
 ### Build CSS
+
 ```bash
 npm run build:css
 # Output: website/public/css/style.css
@@ -456,6 +478,7 @@ npm run build:css
 **Problem (Session 228.2):** Tailwind CSS is pre-compiled. New utility classes didn't exist unless in source files during build.
 
 **Solution Applied (Session 229):** Added 40+ safelist utilities to `src/input.css`:
+
 ```css
 @layer utilities {
   .bg-white\/15 { background-color: rgb(255 255 255 / 0.15); }
@@ -474,11 +497,13 @@ npm run build:css
 **All inline style workarounds removed** - proper Tailwind classes now work.
 
 ### Start Local Server
+
 ```bash
 npx serve website -l 8080
 ```
 
 ### Verify Colors
+
 ```bash
 grep -o 'bg-vocalia-[0-9]*' website/public/css/style.css | sort -u
 ```
@@ -533,6 +558,7 @@ grep -o 'bg-vocalia-[0-9]*' website/public/css/style.css | sort -u
 ```
 
 Classes disponibles:
+
 - `.status-indicator-online` (green + checkmark)
 - `.status-indicator-warning` (amber + exclamation)
 - `.status-indicator-error` (red + X)
@@ -562,10 +588,36 @@ new DashboardGrid('.dashboard-content', {
 ```
 
 Features:
+
 - Vanilla JS (no dependencies)
 - Layout persistence (localStorage)
 - Keyboard accessible
 - Collapse/expand widgets
+
+### Telephony SOTA Dashboard (Session 250.85)
+
+New standard for high-density data dashboards (Telephony, Analytics):
+
+**Status Indicators Pattern:**
+MUST use **Icon + Color + Text**. Never use text alone for critical states.
+
+| State | Icon (Lucide) | Color (Tailwind) | Glow Container |
+|:------|:--------------|:-----------------|:---------------|
+| **Completed** | `check-circle-2` | `text-emerald-400` | `bg-emerald-500/20` |
+| **Occupé** | `phone-missed` | `text-amber-400` | `bg-amber-500/20` |
+| **Failed** | `x-circle` | `text-rose-400` | `bg-rose-500/20` |
+
+**Sample HTML Structure:**
+
+```html
+<div class="flex flex-col items-center gap-2">
+  <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+    <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+  </div>
+  <div class="text-2xl font-bold text-emerald-400">98%</div>
+  <div class="text-xs text-vocalia-400 uppercase font-medium">Répondus</div>
+</div>
+```
 
 ### AI Insights Card
 
@@ -627,6 +679,7 @@ Apple 2026-inspired three-layer system:
 ```
 
 **Sources:**
+
 - [Apple Liquid Glass](https://developer.apple.com/documentation/TechnologyOverviews/liquid-glass)
 - [DEV.to Pure CSS Implementation](https://dev.to/kevinbism/recreating-apples-liquid-glass-effect-with-pure-css-3gpl)
 
@@ -641,6 +694,7 @@ Apple 2026-inspired three-layer system:
 ```
 
 **Sources:**
+
 - [GitHub alexanderuk82/3d-card](https://github.com/alexanderuk82/3d-card)
 - [CodePen Glassmorphism 3D Tilt](https://codepen.io/Ahmod-Musa/pen/Qwjjezj)
 

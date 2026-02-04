@@ -206,6 +206,24 @@ class ErrorScience {
                 created_at: now.toISOString(),
                 expires_at: new Date(now.getTime() + CONFIDENCE_CONFIG.ruleTTLDays * 24 * 60 * 60 * 1000).toISOString()
             });
+
+            // SOTA: Darija Dropout Detection (Session 250.80)
+            const darijaFailures = failures.voice.filter(ev => (ev.language || '').toLowerCase() === 'ary');
+            const frenchFailures = failures.voice.filter(ev => (ev.language || '').toLowerCase() === 'fr');
+
+            if (darijaFailures.length > 3 && (darijaFailures.length > frenchFailures.length * 1.5)) {
+                newRules.push({
+                    id: 'rule_darija_dropout',
+                    instruction: `L-SOTA: "Darija Dropout" detected. Abandonment in Darija is significantly higher than French. Optimize ASR/VAD for Moroccan accents and increase code-switching ratio.`,
+                    weight: 0.8,
+                    confidence: 0.8,
+                    trend: 'EMERGING',
+                    sector: 'voice',
+                    sample_size: darijaFailures.length,
+                    created_at: now.toISOString(),
+                    expires_at: new Date(now.getTime() + CONFIDENCE_CONFIG.ruleTTLDays * 24 * 60 * 60 * 1000).toISOString()
+                });
+            }
         }
 
         // 2. SEO Healing

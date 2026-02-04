@@ -1612,7 +1612,7 @@
       <!-- Bottom Bar -->
       <div class="border-t border-slate-800 mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
+          <p class="text-zinc-400 text-sm" data-i18n="footer.copyright">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
@@ -1630,11 +1630,11 @@
             </div>
             <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
-              <span>5 Langues</span>
+              <span data-i18n="pricing_page.table_languages">5 Langues</span>
             </div>
             <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
-              <span>99.9% Uptime</span>
+              <span data-i18n="pricing.stats.uptime">99.9% Uptime</span>
             </div>
           </div>
         </div>
@@ -1654,7 +1654,7 @@
   <script src="/src/lib/card-tilt.js" defer></script>
 
   <!-- VocalIA Voice Widget - Try our product! -->
-  <script src="/voice-assistant/voice-widget.js" defer></script>
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 
   <!-- Lucide Icons 2026 -->
   <script src="https://unpkg.com/lucide@0.469.0"
@@ -1665,144 +1665,144 @@
 
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
-
-    // i18n init - Priority: URL param > localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        // Check URL param first
-        var urlParams = new URLSearchParams(window.location.search);
-        var urlLang = urlParams.get('lang');
-
-        if (urlLang) {
-          await VocaliaI18n.setLocale(urlLang);
-        } else {
-          var storedLang = localStorage.getItem('vocalia_lang');
-          if (storedLang) {
-            await VocaliaI18n.setLocale(storedLang);
-          } else if (typeof VocaliaGeo !== 'undefined') {
-            var geo = await VocaliaGeo.getGeo();
-            await VocaliaI18n.setLocale(geo.lang);
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
           } else {
-            await VocaliaI18n.setLocale('fr');
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
           }
-        }
+        });
+      }
+
+      // i18n init - Priority: URL param > localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          // Check URL param first
+          var urlParams = new URLSearchParams(window.location.search);
+          var urlLang = urlParams.get('lang');
+
+          if (urlLang) {
+            await VocaliaI18n.setLocale(urlLang);
+          } else {
+            var storedLang = localStorage.getItem('vocalia_lang');
+            if (storedLang) {
+              await VocaliaI18n.setLocale(storedLang);
+            } else if (typeof VocaliaGeo !== 'undefined') {
+              var geo = await VocaliaGeo.getGeo();
+              await VocaliaI18n.setLocale(geo.lang);
+            } else {
+              await VocaliaI18n.setLocale('fr');
+            }
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-    }
-
-    // Voice Visualizers initialization
-    function initVisualizers() {
-      if (typeof VoiceVisualizer === 'undefined') {
-        // Retry after 100ms if VoiceVisualizer not loaded yet
-        setTimeout(initVisualizers, 100);
-        return;
       }
 
-      var configs = [
-        { id: '#visualizer-wave', mode: 'wave' },
-        { id: '#visualizer-bars', mode: 'bars', barCount: 24 },
-        { id: '#visualizer-orb', mode: 'orb' },
-        { id: '#visualizer-pulse', mode: 'pulse' }
-      ];
+      // Voice Visualizers initialization
+      function initVisualizers() {
+        if (typeof VoiceVisualizer === 'undefined') {
+          // Retry after 100ms if VoiceVisualizer not loaded yet
+          setTimeout(initVisualizers, 100);
+          return;
+        }
 
-      var loadedVisualizers = {};
+        var configs = [
+          { id: '#visualizer-wave', mode: 'wave' },
+          { id: '#visualizer-bars', mode: 'bars', barCount: 24 },
+          { id: '#visualizer-orb', mode: 'orb' },
+          { id: '#visualizer-pulse', mode: 'pulse' }
+        ];
 
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          var canvas = entry.target;
-          var config = configs.find(function(c) { return document.querySelector(c.id) === canvas; });
+        var loadedVisualizers = {};
 
-          if (entry.isIntersecting && config && !loadedVisualizers[config.id]) {
-            var viz = new VoiceVisualizer(config.id, {
-              mode: config.mode,
-              primaryColor: '#5DADE2',
-              secondaryColor: '#85C1E9',
-              accentColor: '#5DADE2',
-              glowColor: '#5DADE2',
-              barCount: config.barCount || 32,
-              animate: true
-            });
-            loadedVisualizers[config.id] = viz;
-            viz.start();
-          } else if (!entry.isIntersecting && config && loadedVisualizers[config.id]) {
-            loadedVisualizers[config.id].stop();
-          }
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var canvas = entry.target;
+            var config = configs.find(function (c) { return document.querySelector(c.id) === canvas; });
+
+            if (entry.isIntersecting && config && !loadedVisualizers[config.id]) {
+              var viz = new VoiceVisualizer(config.id, {
+                mode: config.mode,
+                primaryColor: '#5DADE2',
+                secondaryColor: '#85C1E9',
+                accentColor: '#5DADE2',
+                glowColor: '#5DADE2',
+                barCount: config.barCount || 32,
+                animate: true
+              });
+              loadedVisualizers[config.id] = viz;
+              viz.start();
+            } else if (!entry.isIntersecting && config && loadedVisualizers[config.id]) {
+              loadedVisualizers[config.id].stop();
+            }
+          });
+        }, { threshold: 0.1 });
+
+        configs.forEach(function (config) {
+          var el = document.querySelector(config.id);
+          if (el) observer.observe(el);
         });
-      }, { threshold: 0.1 });
+      }
 
-      configs.forEach(function(config) {
-        var el = document.querySelector(config.id);
-        if (el) observer.observe(el);
+      // Re-init on load
+      window.addEventListener('load', function () {
+        initLucide();
+        initVisualizers();
+        initI18n();
       });
-    }
-
-    // Re-init on load
-    window.addEventListener('load', function() {
-      initLucide();
-      initVisualizers();
-      initI18n();
-    });
-  })();
+    })();
   </script>
 </body>
 

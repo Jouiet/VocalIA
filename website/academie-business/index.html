@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Académie Business VocalIA | Apprenez à Automatiser vos Conversations</title>
-  <meta name="description" content="Formation complète pour exploiter VocalIA: use cases détaillés par secteur, guides d'intégration, workflows métier et ROI mesurable. Pour décideurs et managers.">
+  <meta name="description"
+    content="Formation complète pour exploiter VocalIA: use cases détaillés par secteur, guides d'intégration, workflows métier et ROI mesurable. Pour décideurs et managers.">
   <link rel="canonical" href="https://vocalia.ma/academie-business" />
 
   <!-- Hreflang -->
@@ -20,7 +21,8 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://vocalia.ma/academie-business" />
   <meta property="og:title" content="Académie Business VocalIA - Formation Voice AI pour Décideurs" />
-  <meta property="og:description" content="Apprenez à transformer vos conversations en résultats business. Use cases par secteur, intégrations, ROI." />
+  <meta property="og:description"
+    content="Apprenez à transformer vos conversations en résultats business. Use cases par secteur, intégrations, ROI." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -56,12 +58,20 @@
   </script>
 
   <!-- Security Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <!-- CSS -->
-  <style>body{background:#0f172a;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
+  <style>
+    body {
+      background: #0f172a;
+      color: #fff;
+      font-family: Inter, system-ui, sans-serif;
+      margin: 0
+    }
+  </style>
   <link rel="preload" href="/public/css/style.css" as="style">
   <link href="/public/css/style.css" rel="stylesheet">
 
@@ -77,21 +87,25 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+
     .glass {
       background: rgba(30, 41, 59, 0.8);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(148, 163, 184, 0.15);
     }
+
     .lesson-card {
       background: rgba(30, 41, 59, 0.6);
       border: 1px solid rgba(148, 163, 184, 0.1);
       transition: all 0.3s ease;
     }
+
     .lesson-card:hover {
       background: rgba(30, 41, 59, 0.8);
       border-color: rgba(99, 102, 241, 0.3);
       transform: translateY(-2px);
     }
+
     .step-number {
       width: 40px;
       height: 40px;
@@ -104,37 +118,46 @@
       font-size: 16px;
       flex-shrink: 0;
     }
+
     .workflow-arrow {
       color: #6366f1;
       font-size: 20px;
     }
+
     .roi-highlight {
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
+
     .warning-box {
       background: rgba(245, 158, 11, 0.1);
       border: 1px solid rgba(245, 158, 11, 0.3);
     }
+
     .limitation-box {
       background: rgba(239, 68, 68, 0.1);
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
+
     .toc-link {
       transition: all 0.2s;
     }
+
     .toc-link:hover {
       color: white;
       padding-left: 8px;
     }
+
     .section-anchor {
       scroll-margin-top: 100px;
     }
+
     .workflow-step {
       position: relative;
       padding-left: 24px;
       border-left: 2px solid rgba(99, 102, 241, 0.3);
     }
+
     .workflow-step::before {
       content: '';
       position: absolute;
@@ -145,11 +168,13 @@
       border-radius: 50%;
       background: #6366f1;
     }
+
     .sector-card {
       background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(30, 41, 59, 0.4));
       border: 1px solid rgba(148, 163, 184, 0.1);
       transition: all 0.3s ease;
     }
+
     .sector-card:hover {
       border-color: rgba(99, 102, 241, 0.4);
       transform: translateY(-4px);
@@ -157,12 +182,14 @@
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  
+
 </head>
 
 <body class="bg-slate-900 text-white antialiased">
   <!-- Skip Link -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg" data-i18n="a11y.skip_to_content">Aller au contenu principal</a>
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg"
+    data-i18n="a11y.skip_to_content">Aller au contenu principal</a>
 
   <!-- Navigation -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass">
@@ -171,39 +198,51 @@
         <!-- Logo -->
         <a href="/" class="flex items-center space-x-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-          <span class="text-xl font-bold gradient-text"><span data-i18n="academy.vocalia_3"><span data-i18n="academy.vocalia_119">VocalIA</span></span></span>
+          <span class="text-xl font-bold gradient-text"><span data-i18n="academy.vocalia_3"><span
+                data-i18n="academy.vocalia_119">VocalIA</span></span></span>
         </a>
 
         <!-- Desktop Nav with Mega Menu -->
         <div class="hidden md:flex items-center space-x-1">
           <!-- Products Dropdown -->
           <div class="relative group">
-            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.products">
+            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1"
+              data-i18n="nav.products">
               Produits
-              <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
-            <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            <div
+              class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
               <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
-                <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+                <a href="/products/voice-widget"
+                  class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
                   <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center shrink-0">
                     <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
                   </div>
                   <div>
-                    <div class="font-semibold text-white"><span data-i18n="academy.voice_widget_96"><span data-i18n="academy.voice_widget_111"><span data-i18n="academy.voice_widget_118">Voice Widget</span></span></span></div>
-                    <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web intelligent</div>
+                    <div class="font-semibold text-white"><span data-i18n="academy.voice_widget_96"><span
+                          data-i18n="academy.voice_widget_111"><span data-i18n="academy.voice_widget_118">Voice
+                            Widget</span></span></span></div>
+                    <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web
+                      intelligent</div>
                   </div>
                 </a>
-                <a href="/products/voice-telephony" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+                <a href="/products/voice-telephony"
+                  class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
                   <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
                     <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
                   </div>
                   <div>
-                    <div class="font-semibold text-white"><span data-i18n="academy.voice_telephony_ai_110"><span data-i18n="academy.voice_telephony_ai_117">Voice Telephony AI</span></span></div>
-                    <div class="text-sm text-zinc-400" data-i18n="products_menu.telephony_subtitle">Téléphonie IA B2B</div>
+                    <div class="font-semibold text-white"><span data-i18n="academy.voice_telephony_ai_110"><span
+                          data-i18n="academy.voice_telephony_ai_117">Voice Telephony AI</span></span></div>
+                    <div class="text-sm text-zinc-400" data-i18n="products_menu.telephony_subtitle">Téléphonie IA B2B
+                    </div>
                   </div>
                 </a>
                 <hr class="border-slate-600/50 my-2">
-                <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
+                <a href="/features"
+                  class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
                   <i data-lucide="lightbulb" class="w-5 h-5"></i>
                   <span data-i18n="nav.features">Toutes les fonctionnalités</span>
                 </a>
@@ -213,70 +252,91 @@
 
           <!-- Solutions Dropdown -->
           <div class="relative group">
-            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.solutions">
+            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1"
+              data-i18n="nav.solutions">
               Solutions
-              <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
-            <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[780px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            <div
+              class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[780px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
               <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
                 <div class="grid grid-cols-3 gap-6">
                   <!-- Column 1: Use Cases -->
                   <div>
-                    <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="solutions_menu.by_use_case">Par Cas d'Usage</div>
-                    <a href="/use-cases/e-commerce" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"
+                      data-i18n="solutions_menu.by_use_case">Par Cas d'Usage</div>
+                    <a href="/use-cases/e-commerce"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-400"></i>
-                      <span data-i18n="solutions_menu.ecommerce"><span data-i18n="academy.ecommerce_22"><span data-i18n="academy.ecommerce_90">E-commerce</span></span></span>
+                      <span data-i18n="solutions_menu.ecommerce"><span data-i18n="academy.ecommerce_22"><span
+                            data-i18n="academy.ecommerce_90">E-commerce</span></span></span>
                     </a>
-                    <a href="/use-cases/customer-support" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <a href="/use-cases/customer-support"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
                       <span data-i18n="solutions_menu.customer_support">Service Client</span>
                     </a>
-                    <a href="/use-cases/appointments" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <a href="/use-cases/appointments"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i>
                       <span data-i18n="solutions_menu.appointments">Prise de RDV</span>
                     </a>
-                    <a href="/use-cases/lead-qualification" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <a href="/use-cases/lead-qualification"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
                       <span data-i18n="solutions_menu.lead_qualification">Qualification Leads</span>
                     </a>
                   </div>
                   <!-- Column 2: Industries -->
                   <div>
-                    <a href="/industries/" class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3 hover:text-indigo-400 transition flex items-center gap-1" data-i18n="solutions_menu.by_industry">
+                    <a href="/industries/"
+                      class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3 hover:text-indigo-400 transition flex items-center gap-1"
+                      data-i18n="solutions_menu.by_industry">
                       Par Industrie
                     </a>
-                    <a href="/industries/healthcare" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <a href="/industries/healthcare"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400"></i>
                       <span data-i18n="solutions_menu.healthcare">Santé & Médical</span>
                     </a>
-                    <a href="/industries/real-estate" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <a href="/industries/real-estate"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="home" class="w-4 h-4 text-emerald-400"></i>
-                      <span data-i18n="solutions_menu.real_estate"><span data-i18n="academy.immobilier_81">Immobilier</span></span>
+                      <span data-i18n="solutions_menu.real_estate"><span
+                          data-i18n="academy.immobilier_81">Immobilier</span></span>
                     </a>
-                    <a href="/industries/finance" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <a href="/industries/finance"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="landmark" class="w-4 h-4 text-emerald-400"></i>
                       <span data-i18n="solutions_menu.finance">Services Financiers</span>
                     </a>
-                    <a href="/industries/retail" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <a href="/industries/retail"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
                       <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-400"></i>
                       <span data-i18n="solutions_menu.retail">Retail & Commerce</span>
                     </a>
                   </div>
                   <!-- Column 3: Featured -->
                   <div class="bg-slate-700/30 rounded-lg p-4">
-                    <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3" data-i18n="solutions_menu.popular">Populaire</div>
+                    <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"
+                      data-i18n="solutions_menu.popular">Populaire</div>
                     <div class="space-y-3">
                       <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
                         <div class="flex items-center gap-2 mb-1">
                           <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
-                          <span class="text-white font-medium text-sm" data-i18n="solutions_menu.multilanguage">Multi-Langue (5 langues)</span>
+                          <span class="text-white font-medium text-sm"
+                            data-i18n="solutions_menu.multilanguage">Multi-Langue (5 langues)</span>
                         </div>
-                        <p class="text-zinc-400 text-xs"><span data-i18n="academy.fr_en_es_115"><span data-i18n="academy.fr_en_es_116">FR, EN, ES, AR, Darija</span></span></p>
+                        <p class="text-zinc-400 text-xs"><span data-i18n="academy.fr_en_es_115"><span
+                              data-i18n="academy.fr_en_es_116">FR, EN, ES, AR, Darija</span></span></p>
                       </a>
-                      <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                      <a href="/blog/articles/vocalia-lance-support-darija"
+                        class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
                         <div class="flex items-center gap-2 mb-1">
                           <span class="text-lg">🇲🇦</span>
-                          <span class="text-white font-medium text-sm" data-i18n="solutions_menu.darija_ai">Darija AI</span>
+                          <span class="text-white font-medium text-sm" data-i18n="solutions_menu.darija_ai">Darija
+                            AI</span>
                         </div>
                         <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija</p>
                       </a>
@@ -287,20 +347,33 @@
             </div>
           </div>
 
-          <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition" data-i18n="nav.pricing"><span data-i18n="nav.pricing">Tarifs</span></a>
+          <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition"
+            data-i18n="nav.pricing"><span data-i18n="nav.pricing">Tarifs</span></a>
 
           <!-- Resources Dropdown -->
           <div class="relative group">
-            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1" data-i18n="nav.resources">
+            <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1"
+              data-i18n="nav.resources">
               Ressources
-              <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
             </button>
-            <div class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            <div
+              class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
               <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
-                <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white" data-i18n="resources_menu.docs"><span data-i18n="footer.links.docs">Documentation</span></a>
-                <a href="/integrations" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white" data-i18n="resources_menu.integrations"><span data-i18n="footer.links.integrations">Intégrations</span></a>
-                <a href="/blog" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white" data-i18n="resources_menu.blog"><span data-i18n="footer.links.blog">Blog</span></a>
-                <a href="/academie-business" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-indigo-400 font-medium"><span data-i18n="footer.links.academy">Académie Business</span></a>
+                <a href="/docs"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"
+                  data-i18n="resources_menu.docs"><span data-i18n="footer.links.docs">Documentation</span></a>
+                <a href="/integrations"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"
+                  data-i18n="resources_menu.integrations"><span
+                    data-i18n="footer.links.integrations">Intégrations</span></a>
+                <a href="/blog"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"
+                  data-i18n="resources_menu.blog"><span data-i18n="footer.links.blog">Blog</span></a>
+                <a href="/academie-business"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-indigo-400 font-medium"><span
+                    data-i18n="footer.links.academy">Académie Business</span></a>
               </div>
             </div>
           </div>
@@ -334,12 +407,14 @@
                 <span><span data-i18n="academy.espaol_112">Español</span></span>
               </button>
               <button type="button" data-action="switchLang" data-params="ar"
-                class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition" dir="rtl">
+                class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition"
+                dir="rtl">
                 <span class="text-base">🇸🇦</span>
                 <span>العربية</span>
               </button>
               <button type="button" data-action="switchLang" data-params="ary"
-                class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition" dir="rtl">
+                class="w-full px-4 py-2.5 text-left hover:bg-vocalia-500/20 flex items-center gap-3 transition"
+                dir="rtl">
                 <span class="text-base">🇲🇦</span>
                 <span>الدارجة</span>
               </button>
@@ -351,7 +426,9 @@
             data-i18n="nav.login"><span data-i18n="nav.login">Connexion</span></a>
 
           <!-- Mobile Hamburger Button -->
-          <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile" aria-expanded="false" aria-controls="mobileMenu">
+          <button type="button" id="mobileMenuBtn"
+            class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition"
+            aria-label="Menu mobile" aria-expanded="false" aria-controls="mobileMenu">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
           </button>
@@ -360,21 +437,26 @@
     </div>
 
     <!-- Mobile Menu Drawer -->
-    <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none" aria-hidden="true">
+    <div id="mobileMenu"
+      class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none"
+      aria-hidden="true">
       <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
         <!-- Products Section -->
         <div class="mb-6">
-          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.products">Produits</h3>
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.products">
+            Produits</h3>
           <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
             <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
               <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
             </div>
             <div>
               <div class="font-medium text-white">Voice Widget</div>
-              <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web intelligent</div>
+              <div class="text-sm text-zinc-400" data-i18n="products_menu.widget_subtitle">Assistant vocal web
+                intelligent</div>
             </div>
           </a>
-          <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+          <a href="/products/voice-telephony"
+            class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
             <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
               <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
             </div>
@@ -383,47 +465,69 @@
               <div class="text-sm text-zinc-400" data-i18n="products_menu.telephony_subtitle">Téléphonie IA B2B</div>
             </div>
           </a>
-          <a href="/features" class="block p-3 rounded-lg hover:bg-slate-800 transition text-vocalia-400" data-i18n="nav.features">
+          <a href="/features" class="block p-3 rounded-lg hover:bg-slate-800 transition text-vocalia-400"
+            data-i18n="nav.features">
             Toutes les fonctionnalités →
           </a>
         </div>
 
         <!-- Solutions Section -->
         <div class="mb-6">
-          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.solutions">Solutions</h3>
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.solutions">
+            Solutions</h3>
           <div class="grid grid-cols-2 gap-2">
-            <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.ecommerce"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
-            <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.healthcare">Santé & Médical</a>
-            <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.customer_support"><span data-i18n="footer.links.customer_support">Service Client</span></a>
-            <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.real_estate"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
-            <a href="/use-cases/appointments" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.appointments">Prise de RDV</a>
-            <a href="/industries/finance" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.finance">Services Financiers</a>
-            <a href="/use-cases/lead-qualification" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.lead_qualification">Qualification Leads</a>
-            <a href="/industries/retail" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="solutions_menu.retail">Retail & Commerce</a>
+            <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.ecommerce"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
+            <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.healthcare">Santé & Médical</a>
+            <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.customer_support"><span data-i18n="footer.links.customer_support">Service
+                Client</span></a>
+            <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.real_estate"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
+            <a href="/use-cases/appointments" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.appointments">Prise de RDV</a>
+            <a href="/industries/finance" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.finance">Services Financiers</a>
+            <a href="/use-cases/lead-qualification" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.lead_qualification">Qualification Leads</a>
+            <a href="/industries/retail" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+              data-i18n="solutions_menu.retail">Retail & Commerce</a>
           </div>
         </div>
 
         <!-- Resources Section -->
         <div class="mb-6">
-          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.resources">Ressources</h3>
-          <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="resources_menu.docs"><span data-i18n="footer.links.docs">Documentation</span></a>
-          <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="resources_menu.integrations"><span data-i18n="footer.links.integrations">Intégrations</span></a>
-          <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300" data-i18n="resources_menu.blog"><span data-i18n="footer.links.blog">Blog</span></a>
-          <a href="/academie-business" class="block p-3 rounded-lg hover:bg-slate-800 transition text-indigo-400 font-medium"><span data-i18n="footer.links.academy">Académie Business</span></a>
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3" data-i18n="nav.resources">
+            Ressources</h3>
+          <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+            data-i18n="resources_menu.docs"><span data-i18n="footer.links.docs">Documentation</span></a>
+          <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+            data-i18n="resources_menu.integrations"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+          <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"
+            data-i18n="resources_menu.blog"><span data-i18n="footer.links.blog">Blog</span></a>
+          <a href="/academie-business"
+            class="block p-3 rounded-lg hover:bg-slate-800 transition text-indigo-400 font-medium"><span
+              data-i18n="footer.links.academy">Académie Business</span></a>
         </div>
 
         <!-- Pricing Link -->
-        <a href="/pricing" class="block p-4 mb-6 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-vocalia-500 transition text-center">
+        <a href="/pricing"
+          class="block p-4 mb-6 rounded-xl bg-slate-800/50 border border-slate-700 hover:border-vocalia-500 transition text-center">
           <span class="text-lg font-semibold text-white" data-i18n="nav.pricing">Tarifs</span>
           <span class="block text-sm text-vocalia-400 mt-1">À partir de 0 DH/mois</span>
         </a>
 
         <!-- Mobile CTA -->
         <div class="space-y-3">
-          <a href="/login" class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white" data-i18n="nav.login">
+          <a href="/login"
+            class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white"
+            data-i18n="nav.login">
             Connexion
           </a>
-          <a href="/contact" class="block w-full py-3 px-4 rounded-xl border border-slate-600 hover:border-vocalia-500 transition text-center font-medium text-vocalia-200" data-i18n="actions.request_demo">
+          <a href="/contact"
+            class="block w-full py-3 px-4 rounded-xl border border-slate-600 hover:border-vocalia-500 transition text-center font-medium text-vocalia-200"
+            data-i18n="actions.request_demo">
             Demander une démo
           </a>
         </div>
@@ -439,7 +543,8 @@
       <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-slate-900 to-purple-900/20"></div>
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="text-center mb-12">
-          <span class="inline-flex items-center px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-6">
+          <span
+            class="inline-flex items-center px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-6">
             <i data-lucide="graduation-cap" class="w-4 h-4 mr-2"></i>
             Formation Business Complète
           </span>
@@ -447,7 +552,8 @@
             Académie <span class="gradient-text"><span data-i18n="academy.business_109">Business</span></span>
           </h1>
           <p class="text-xl text-slate-300 max-w-3xl mx-auto">
-            Cette académie vous apprend <strong><span data-i18n="academy.exactement_108">exactement</span></strong> comment utiliser VocalIA pour votre secteur d'activité.
+            Cette académie vous apprend <strong><span data-i18n="academy.exactement_108">exactement</span></strong>
+            comment utiliser VocalIA pour votre secteur d'activité.
             Workflows concrets, intégrations expliquées, ROI mesurable. Pas de théorie - que du pratique.
           </p>
         </div>
@@ -456,19 +562,23 @@
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-4xl mx-auto">
           <div class="text-center p-4 rounded-xl bg-slate-800/50">
             <div class="text-2xl font-bold text-indigo-400">8</div>
-            <div class="text-xs text-slate-400"><span data-i18n="academy.secteurs_couverts_107">Secteurs couverts</span></div>
+            <div class="text-xs text-slate-400"><span data-i18n="academy.secteurs_couverts_107">Secteurs couverts</span>
+            </div>
           </div>
           <div class="text-center p-4 rounded-xl bg-slate-800/50">
             <div class="text-2xl font-bold text-emerald-400">33</div>
-            <div class="text-xs text-slate-400"><span data-i18n="academy.use_cases_dtaills_106">Use cases détaillés</span></div>
+            <div class="text-xs text-slate-400"><span data-i18n="academy.use_cases_dtaills_106">Use cases
+                détaillés</span></div>
           </div>
           <div class="text-center p-4 rounded-xl bg-slate-800/50">
-            <div class="text-2xl font-bold text-amber-400">31</div>
-            <div class="text-xs text-slate-400"><span data-i18n="academy.personas_mtier_105">Personas métier</span></div>
+            <div class="text-2xl font-bold text-amber-400">40</div>
+            <div class="text-xs text-slate-400"><span data-i18n="academy.personas_mtier_105">Personas métier</span>
+            </div>
           </div>
           <div class="text-center p-4 rounded-xl bg-slate-800/50">
             <div class="text-2xl font-bold text-purple-400">28</div>
-            <div class="text-xs text-slate-400"><span data-i18n="academy.intgrations_natives_104">Intégrations natives</span></div>
+            <div class="text-xs text-slate-400"><span data-i18n="academy.intgrations_natives_104">Intégrations
+                natives</span></div>
           </div>
           <div class="text-center p-4 rounded-xl bg-slate-800/50">
             <div class="text-2xl font-bold text-rose-400">182</div>
@@ -486,7 +596,8 @@
           <!-- Table of Contents (Sidebar) -->
           <aside class="lg:col-span-1">
             <div class="glass rounded-xl p-6 sticky top-24">
-              <h3 class="font-bold text-sm uppercase text-indigo-400 mb-4"><span data-i18n="academy.sommaire_102">Sommaire</span></h3>
+              <h3 class="font-bold text-sm uppercase text-indigo-400 mb-4"><span
+                  data-i18n="academy.sommaire_102">Sommaire</span></h3>
               <nav class="space-y-2 text-sm">
                 <a href="#comprendre" class="toc-link block text-slate-400 hover:text-white">1. Comprendre VocalIA</a>
                 <a href="#ecommerce" class="toc-link block text-slate-400 hover:text-white">2. E-commerce</a>
@@ -503,8 +614,10 @@
               </nav>
 
               <div class="mt-8 pt-6 border-t border-slate-700">
-                <p class="text-xs text-slate-500 mb-3"><span data-i18n="academy.besoin_daide_personnalise_101">Besoin d'aide personnalisée?</span></p>
-                <a href="/contact" class="block w-full py-2 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-center text-sm font-medium transition">
+                <p class="text-xs text-slate-500 mb-3"><span data-i18n="academy.besoin_daide_personnalise_101">Besoin
+                    d'aide personnalisée?</span></p>
+                <a href="/contact"
+                  class="block w-full py-2 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-center text-sm font-medium transition">
                   Parler à un expert
                 </a>
               </div>
@@ -520,18 +633,22 @@
             <section id="comprendre" class="section-anchor">
               <div class="flex items-center gap-3 mb-6">
                 <div class="step-number">1</div>
-                <h2 class="text-2xl font-bold"><span data-i18n="academy.comprendre_vocalia_100">Comprendre VocalIA</span></h2>
+                <h2 class="text-2xl font-bold"><span data-i18n="academy.comprendre_vocalia_100">Comprendre
+                    VocalIA</span></h2>
               </div>
 
               <div class="prose prose-invert max-w-none">
                 <p class="text-lg text-slate-300 mb-6">
-                  VocalIA n'est pas un simple chatbot vocal. C'est une plateforme qui permet à vos clients de <strong><span data-i18n="academy.parler_99">parler</span></strong>
-                  à votre entreprise, et à votre entreprise d'<strong><span data-i18n="academy.agir_automatiquement_98">agir automatiquement</span></strong> en réponse.
+                  VocalIA n'est pas un simple chatbot vocal. C'est une plateforme qui permet à vos clients de
+                  <strong><span data-i18n="academy.parler_99">parler</span></strong>
+                  à votre entreprise, et à votre entreprise d'<strong><span
+                      data-i18n="academy.agir_automatiquement_98">agir automatiquement</span></strong> en réponse.
                   La différence? VocalIA ne fait pas que répondre - il exécute des actions dans vos outils métier.
                 </p>
 
                 <!-- Les 2 Produits -->
-                <h3 class="text-xl font-semibold mb-4 text-white"><span data-i18n="academy.les_2_produits_97">Les 2 produits VocalIA</span></h3>
+                <h3 class="text-xl font-semibold mb-4 text-white"><span data-i18n="academy.les_2_produits_97">Les 2
+                    produits VocalIA</span></h3>
 
                 <div class="grid md:grid-cols-2 gap-6 mb-8">
                   <div class="lesson-card rounded-xl p-6">
@@ -541,7 +658,8 @@
                       </div>
                       <div>
                         <h4 class="font-bold">Voice Widget</h4>
-                        <span class="text-vocalia-400 text-sm font-medium"><span data-i18n="academy.gratuit_0_95">Starter - Quota inclus</span></span>
+                        <span class="text-vocalia-400 text-sm font-medium"><span
+                            data-i18n="academy.gratuit_0_95">Starter - Quota inclus</span></span>
                       </div>
                     </div>
                     <p class="text-slate-400 text-sm mb-4">
@@ -578,7 +696,8 @@
                 </div>
 
                 <!-- Ce qui rend VocalIA différent -->
-                <h3 class="text-xl font-semibold mb-4 text-white"><span data-i18n="academy.ce_qui_rend_93">Ce qui rend VocalIA différent</span></h3>
+                <h3 class="text-xl font-semibold mb-4 text-white"><span data-i18n="academy.ce_qui_rend_93">Ce qui rend
+                    VocalIA différent</span></h3>
 
                 <div class="space-y-4 mb-8">
                   <div class="flex items-start gap-4 p-4 rounded-lg bg-slate-800/50">
@@ -635,12 +754,14 @@
                   <div class="flex items-start gap-3">
                     <i data-lucide="lightbulb" class="w-6 h-6 text-amber-400 mt-1"></i>
                     <div>
-                      <h4 class="font-semibold text-amber-400 mb-2"><span data-i18n="academy.point_cl_retenir_92">Point clé à retenir</span></h4>
+                      <h4 class="font-semibold text-amber-400 mb-2"><span data-i18n="academy.point_cl_retenir_92">Point
+                          clé à retenir</span></h4>
                       <p class="text-slate-300 text-sm">
                         VocalIA ne fait pas que répondre aux questions. Il <strong>agit</strong>:
                         il crée des contacts dans votre CRM, prend des RDV dans votre calendrier,
                         envoie des SMS de confirmation, génère des liens de paiement, annule des commandes,
-                        crée des tickets support. C'est cette capacité d'<strong><span data-i18n="academy.action_91">action</span></strong> qui génère le ROI.
+                        crée des tickets support. C'est cette capacité d'<strong><span
+                            data-i18n="academy.action_91">action</span></strong> qui génère le ROI.
                       </p>
                     </div>
                   </div>
@@ -658,19 +779,28 @@
               </div>
 
               <p class="text-slate-300 mb-6">
-                <strong>Couverture marché: ~64%</strong> (WooCommerce 33-39%, Shopify 10%, Magento 8%, Wix 7%, Squarespace 3%, PrestaShop 2%, BigCommerce 1%)
+                <strong>Couverture marché: ~64%</strong> (WooCommerce 33-39%, Shopify 10%, Magento 8%, Wix 7%,
+                Squarespace 3%, PrestaShop 2%, BigCommerce 1%)
               </p>
 
               <div class="glass rounded-xl p-4 mb-8">
                 <div class="flex flex-wrap gap-3">
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span data-i18n="academy.shopify_8_outils_89">Shopify (8 outils)</span></span>
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span data-i18n="academy.woocommerce_7_outils_88">WooCommerce (7 outils)</span></span>
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span data-i18n="academy.magento_6_outils_87">Magento (6 outils)</span></span>
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span data-i18n="academy.prestashop_7_outils_86">PrestaShop (7 outils)</span></span>
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span data-i18n="academy.bigcommerce_7_outils_85">BigCommerce (7 outils)</span></span>
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span data-i18n="academy.wix_6_outils_84">Wix (6 outils)</span></span>
-                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span data-i18n="academy.squarespace_7_outils_83">Squarespace (7 outils)</span></span>
-                  <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm"><span data-i18n="academy.stripe_19_outils_82">Stripe (19 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span
+                      data-i18n="academy.shopify_8_outils_89">Shopify (8 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span
+                      data-i18n="academy.woocommerce_7_outils_88">WooCommerce (7 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span
+                      data-i18n="academy.magento_6_outils_87">Magento (6 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span
+                      data-i18n="academy.prestashop_7_outils_86">PrestaShop (7 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span
+                      data-i18n="academy.bigcommerce_7_outils_85">BigCommerce (7 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span
+                      data-i18n="academy.wix_6_outils_84">Wix (6 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm"><span
+                      data-i18n="academy.squarespace_7_outils_83">Squarespace (7 outils)</span></span>
+                  <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm"><span
+                      data-i18n="academy.stripe_19_outils_82">Stripe (19 outils)</span></span>
                 </div>
               </div>
 
@@ -688,9 +818,12 @@
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
                     <p><strong class="text-slate-300">Client:</strong> "Bonjour, où en est ma commande?"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Bien sûr, quel est votre numéro de commande ou l'email utilisé?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bien sûr, quel est votre numéro de commande ou
+                      l'email utilisé?"</p>
                     <p><strong class="text-slate-300">Client:</strong> "C'est jean@email.com"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "J'ai trouvé votre commande #12345. Elle a été expédiée hier avec Chronopost et devrait arriver demain avant 18h. Je vous envoie le lien de suivi par SMS."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "J'ai trouvé votre commande #12345. Elle a été
+                      expédiée hier avec Chronopost et devrait arriver demain avant 18h. Je vous envoie le lien de suivi
+                      par SMS."</p>
                   </div>
                 </div>
 
@@ -705,7 +838,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">-70% de tickets "où est ma commande" | Réponse instantanée 24/7 | 0€ de coût humain</p>
+                  <p class="text-sm text-slate-300">-70% de tickets "où est ma commande" | Réponse instantanée 24/7 | 0€
+                    de coût humain</p>
                 </div>
               </div>
 
@@ -723,11 +857,15 @@
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
                     <p><strong class="text-slate-300">Client:</strong> "Je veux annuler ma commande"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. Puis-je avoir votre numéro de commande?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. Puis-je avoir votre numéro de
+                      commande?"</p>
                     <p><strong class="text-slate-300">Client:</strong> "#12345"</p>
-                    <p class="text-slate-300"><strong>VocalIA:</strong> "Commande #12345, 89€, passée hier. Elle n'est pas encore expédiée. Confirmez-vous l'annulation?"</p>
+                    <p class="text-slate-300"><strong>VocalIA:</strong> "Commande #12345, 89€, passée hier. Elle n'est
+                      pas encore expédiée. Confirmez-vous l'annulation?"</p>
                     <p><strong class="text-slate-300">Client:</strong> "Oui"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est fait. Votre commande est annulée et le remboursement de 89€ sera sur votre compte sous 3-5 jours ouvrés. Vous recevez une confirmation par email."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est fait. Votre commande est annulée et le
+                      remboursement de 89€ sera sur votre compte sous 3-5 jours ouvrés. Vous recevez une confirmation
+                      par email."</p>
                   </div>
                 </div>
 
@@ -743,7 +881,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">Annulation + remboursement en 2 minutes vs 24-48h | Satisfaction client +35%</p>
+                  <p class="text-sm text-slate-300">Annulation + remboursement en 2 minutes vs 24-48h | Satisfaction
+                    client +35%</p>
                 </div>
               </div>
 
@@ -754,24 +893,29 @@
                 </h3>
 
                 <p class="text-slate-400 mb-4">
-                  <strong class="text-white">Le problème:</strong> Un client appelle pour payer une facture ou finaliser une commande.
+                  <strong class="text-white">Le problème:</strong> Un client appelle pour payer une facture ou finaliser
+                  une commande.
                   Impossible de prendre le paiement pendant l'appel - il faut envoyer un email, attendre, relancer...
                 </p>
 
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
                     <p><strong class="text-slate-300">Client:</strong> "Je veux payer ma facture de 250€"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Parfait. Je vous envoie un lien de paiement sécurisé par SMS. Vous n'avez qu'à cliquer et payer avec votre carte."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Parfait. Je vous envoie un lien de paiement
+                      sécurisé par SMS. Vous n'avez qu'à cliquer et payer avec votre carte."</p>
                     <p class="text-slate-500">[VocalIA génère le lien Stripe et l'envoie par SMS en 2 secondes]</p>
                     <p class="text-slate-500">[Le client reçoit le SMS, clique, paie sur son téléphone]</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Paiement reçu, merci! Votre facture est soldée et vous recevez le reçu par email."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Paiement reçu, merci! Votre facture est
+                      soldée et vous recevez le reçu par email."</p>
                   </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_create_payment_link</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_create_payment_link</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_get_checkout_session</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_get_checkout_session</span>
                 </div>
 
                 <div class="roi-highlight rounded-lg p-4">
@@ -779,7 +923,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">-70% d'abandon de paiement | Conversion instantanée vs 24-48h | 135+ devises supportées</p>
+                  <p class="text-sm text-slate-300">-70% d'abandon de paiement | Conversion instantanée vs 24-48h | 135+
+                    devises supportées</p>
                 </div>
               </div>
 
@@ -790,14 +935,16 @@
                 </h3>
 
                 <p class="text-slate-400 mb-4">
-                  <strong class="text-white">Le problème:</strong> Un client appelle pour savoir si un produit est disponible.
+                  <strong class="text-white">Le problème:</strong> Un client appelle pour savoir si un produit est
+                  disponible.
                   Votre équipe doit aller vérifier manuellement dans le back-office.
                 </p>
 
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
                     <p><strong class="text-slate-300">Client:</strong> "Vous avez encore le modèle X en stock?"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Oui, le modèle X est en stock. Il nous reste 12 unités au prix de 149€. Souhaitez-vous que je vous envoie un lien pour commander?"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Oui, le modèle X est en stock. Il nous reste
+                      12 unités au prix de 149€. Souhaitez-vous que je vous envoie un lien pour commander?"</p>
                   </div>
                 </div>
 
@@ -811,7 +958,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">+20% conversion sur clients high-intent | Réponse instantanée vs "je vérifie et je vous rappelle"</p>
+                  <p class="text-sm text-slate-300">+20% conversion sur clients high-intent | Réponse instantanée vs "je
+                    vérifie et je vous rappelle"</p>
                 </div>
               </div>
             </section>
@@ -831,11 +979,18 @@
 
               <div class="glass rounded-xl p-4 mb-8">
                 <div class="flex flex-wrap gap-3">
-                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span data-i18n="academy.pipedrive_crm_80">Pipedrive CRM</span></span>
-                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span data-i18n="academy.calendly_74"><span data-i18n="academy.calendly_79">Calendly</span></span></span>
-                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span data-i18n="academy.google_calendar_73"><span data-i18n="academy.google_calendar_78">Google Calendar</span></span></span>
-                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span data-i18n="academy.gmail_72"><span data-i18n="academy.gmail_77">Gmail</span></span></span>
-                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span data-i18n="academy.slack_76">Slack</span></span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span
+                      data-i18n="academy.pipedrive_crm_80">Pipedrive CRM</span></span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span
+                      data-i18n="academy.calendly_74"><span
+                        data-i18n="academy.calendly_79">Calendly</span></span></span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span
+                      data-i18n="academy.google_calendar_73"><span data-i18n="academy.google_calendar_78">Google
+                        Calendar</span></span></span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span
+                      data-i18n="academy.gmail_72"><span data-i18n="academy.gmail_77">Gmail</span></span></span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm"><span
+                      data-i18n="academy.slack_76">Slack</span></span>
                 </div>
               </div>
 
@@ -852,20 +1007,25 @@
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
                     <p><strong class="text-slate-300">Prospect:</strong> "Je cherche un appartement T3 à Casablanca"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Très bien. Quel est votre budget approximatif?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Très bien. Quel est votre budget approximatif?"
+                    </p>
                     <p><strong class="text-slate-300">Prospect:</strong> "Entre 1.5 et 2 millions de dirhams"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Et vous êtes le décisionnaire pour cet achat?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Et vous êtes le décisionnaire pour cet achat?"
+                    </p>
                     <p><strong class="text-slate-300">Prospect:</strong> "Oui, c'est pour moi"</p>
                     <p><strong class="text-slate-300">VocalIA:</strong> "Dans quel délai souhaitez-vous emménager?"</p>
                     <p><strong class="text-slate-300">Prospect:</strong> "D'ici 3 mois"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Parfait. J'ai un T3 de 95m² à Maarif qui correspond exactement à vos critères, à 1.8M DH. Je peux vous proposer une visite demain à 14h ou après-demain à 10h. Quelle heure vous convient?"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Parfait. J'ai un T3 de 95m² à Maarif qui
+                      correspond exactement à vos critères, à 1.8M DH. Je peux vous proposer une visite demain à 14h ou
+                      après-demain à 10h. Quelle heure vous convient?"</p>
                   </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mb-4">
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">qualify_lead (BANT)</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">search_knowledge_base</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_get_available_times</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_get_available_times</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">create_booking</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_create_deal</span>
                 </div>
@@ -875,7 +1035,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">+50% visites qualifiées | -70% temps agents sur appels | +35% taux de closing</p>
+                  <p class="text-sm text-slate-300">+50% visites qualifiées | -70% temps agents sur appels | +35% taux
+                    de closing</p>
                 </div>
               </div>
 
@@ -892,15 +1053,20 @@
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
                     <p><strong class="text-slate-300">Locataire:</strong> "Il y a une fuite dans la salle de bain"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. C'est une fuite importante ou un goutte-à-goutte?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. C'est une fuite importante ou un
+                      goutte-à-goutte?"</p>
                     <p><strong class="text-slate-300">Locataire:</strong> "Un goutte-à-goutte au niveau du robinet"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Je crée un ticket maintenance. Un plombier vous contactera dans les 24h. Vous recevez un SMS avec le numéro du ticket pour suivre l'avancement."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Je crée un ticket maintenance. Un plombier
+                      vous contactera dans les 24h. Vous recevez un SMS avec le numéro du ticket pour suivre
+                      l'avancement."</p>
                   </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">freshdesk_create_ticket</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">freshdesk_create_ticket</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send</span>
                 </div>
 
@@ -909,7 +1075,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">Traitement 24/7 | Historique complet | Satisfaction locataire +40%</p>
+                  <p class="text-sm text-slate-300">Traitement 24/7 | Historique complet | Satisfaction locataire +40%
+                  </p>
                 </div>
               </div>
             </section>
@@ -924,7 +1091,8 @@
               </div>
 
               <p class="text-slate-300 mb-6">
-                <strong>Personas disponibles:</strong> DENTAL (cabinet dentaire), HEALER (praticien), PHARMACIST (pharmacie)
+                <strong>Personas disponibles:</strong> DENTAL (cabinet dentaire), HEALER (praticien), PHARMACIST
+                (pharmacie)
               </p>
 
               <div class="glass rounded-xl p-4 mb-8">
@@ -932,8 +1100,10 @@
                   <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Calendly</span>
                   <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Google Calendar</span>
                   <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm">Gmail</span>
-                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm"><span data-i18n="academy.twilio_sms_71">Twilio SMS</span></span>
-                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm"><span data-i18n="academy.google_sheets_70">Google Sheets</span></span>
+                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm"><span
+                      data-i18n="academy.twilio_sms_71">Twilio SMS</span></span>
+                  <span class="px-3 py-1 rounded-full bg-rose-500/20 text-rose-400 text-sm"><span
+                      data-i18n="academy.google_sheets_70">Google Sheets</span></span>
                 </div>
               </div>
 
@@ -951,21 +1121,29 @@
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
                     <p class="text-slate-500">[22h30 - Cabinet fermé]</p>
-                    <p><strong class="text-slate-300">Patient:</strong> "Je voudrais prendre rendez-vous avec le Dr Martin"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Bien sûr. Est-ce pour une consultation de routine ou un problème urgent?"</p>
+                    <p><strong class="text-slate-300">Patient:</strong> "Je voudrais prendre rendez-vous avec le Dr
+                      Martin"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bien sûr. Est-ce pour une consultation de
+                      routine ou un problème urgent?"</p>
                     <p><strong class="text-slate-300">Patient:</strong> "Une douleur dentaire depuis 2 jours"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. J'ai un créneau urgent demain à 9h ou à 11h30. Quelle heure préférez-vous?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Je comprends. J'ai un créneau urgent demain à
+                      9h ou à 11h30. Quelle heure préférez-vous?"</p>
                     <p><strong class="text-slate-300">Patient:</strong> "9h"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est réservé. Dr Martin, demain 9h. Vous recevez une confirmation par SMS avec l'adresse. Et vous recevrez un rappel demain matin à 7h."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est réservé. Dr Martin, demain 9h. Vous
+                      recevez une confirmation par SMS avec l'adresse. Et vous recevrez un rappel demain matin à 7h."
+                    </p>
                   </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_get_available_times</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_get_available_times</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">create_booking</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendar_create_event</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send (confirmation)</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">schedule_callback (rappel J-1)</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send
+                    (confirmation)</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">schedule_callback (rappel
+                    J-1)</span>
                 </div>
 
                 <div class="roi-highlight rounded-lg p-4">
@@ -973,7 +1151,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">+40% RDV pris hors heures | -65% no-shows grâce aux rappels SMS | Secrétariat déchargé</p>
+                  <p class="text-sm text-slate-300">+40% RDV pris hors heures | -65% no-shows grâce aux rappels SMS |
+                    Secrétariat déchargé</p>
                 </div>
               </div>
 
@@ -984,20 +1163,25 @@
                 </h3>
 
                 <p class="text-slate-400 mb-4">
-                  <strong class="text-white">Le workflow:</strong> L'IA détecte les urgences et les escalade immédiatement.
+                  <strong class="text-white">Le workflow:</strong> L'IA détecte les urgences et les escalade
+                  immédiatement.
                 </p>
 
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
-                    <p><strong class="text-slate-300">Patient:</strong> "J'ai très mal et ma joue est gonflée depuis hier"</p>
-                    <p class="text-amber-400"><strong>VocalIA:</strong> "Je comprends que c'est douloureux. Un gonflement avec douleur nécessite une consultation rapide. Je transfère votre appel au Dr Martin directement."</p>
+                    <p><strong class="text-slate-300">Patient:</strong> "J'ai très mal et ma joue est gonflée depuis
+                      hier"</p>
+                    <p class="text-amber-400"><strong>VocalIA:</strong> "Je comprends que c'est douloureux. Un
+                      gonflement avec douleur nécessite une consultation rapide. Je transfère votre appel au Dr Martin
+                      directement."</p>
                     <p class="text-slate-500">[Transfert immédiat + notification Slack à l'équipe]</p>
                   </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mb-4">
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">transfer_call</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification</span>
                 </div>
 
                 <div class="roi-highlight rounded-lg p-4">
@@ -1020,7 +1204,8 @@
               </div>
 
               <p class="text-slate-300 mb-6">
-                <strong>Personas disponibles:</strong> AGENCY (agence marketing), UNIVERSAL_SME (PME généraliste), CONCIERGE (conciergerie)
+                <strong>Personas disponibles:</strong> AGENCY (agence marketing), UNIVERSAL_SME (PME généraliste),
+                CONCIERGE (conciergerie)
               </p>
 
               <!-- Use Case 5.1 -->
@@ -1035,9 +1220,11 @@
                 </p>
 
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
-                  <p class="text-sm text-slate-400 mb-3">VocalIA pose les questions BANT (Budget, Authority, Need, Timeline) et calcule un score de 0 à 100:</p>
+                  <p class="text-sm text-slate-400 mb-3">VocalIA pose les questions BANT (Budget, Authority, Need,
+                    Timeline) et calcule un score de 0 à 100:</p>
                   <div class="space-y-2 text-sm">
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Quel budget avez-vous prévu pour ce projet?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Quel budget avez-vous prévu pour ce projet?"
+                    </p>
                     <p><strong class="text-slate-300">Lead:</strong> "Environ 15 000€"</p>
                     <p><strong class="text-slate-300">VocalIA:</strong> "Et vous êtes le décisionnaire final?"</p>
                     <p><strong class="text-slate-300">Lead:</strong> "Oui, c'est moi qui signe"</p>
@@ -1050,7 +1237,8 @@
                 <div class="flex flex-wrap gap-2 mb-4">
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">qualify_lead</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_create_deal</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification (#hot-leads)</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">slack_send_notification
+                    (#hot-leads)</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_book_meeting</span>
                 </div>
 
@@ -1059,7 +1247,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">+40% de conversion | -60% temps de qualification | Commerciaux focalisés sur les hot leads uniquement</p>
+                  <p class="text-sm text-slate-300">+40% de conversion | -60% temps de qualification | Commerciaux
+                    focalisés sur les hot leads uniquement</p>
                 </div>
               </div>
 
@@ -1077,11 +1266,16 @@
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4 text-sm">
                   <p class="text-slate-400 mb-2">Après l'appel, VocalIA a automatiquement:</p>
                   <ul class="space-y-1 text-slate-300">
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Créé le contact "Jean Dupont" dans Pipedrive avec email et téléphone</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Créé le deal "Projet refonte site - 15 000€" avec étape "Qualifié"</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Ajouté la note de conversation avec le transcript et le score BANT</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Logué dans Google Sheets pour le reporting</li>
-                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Envoyé une alerte Slack à l'équipe commerciale</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                      Créé le contact "Jean Dupont" dans Pipedrive avec email et téléphone</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                      Créé le deal "Projet refonte site - 15 000€" avec étape "Qualifié"</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                      Ajouté la note de conversation avec le transcript et le score BANT</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                      Logué dans Google Sheets pour le reporting</li>
+                    <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                      Envoyé une alerte Slack à l'équipe commerciale</li>
                   </ul>
                 </div>
 
@@ -1090,7 +1284,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">0 saisie manuelle | CRM toujours à jour | Historique complet des conversations</p>
+                  <p class="text-sm text-slate-300">0 saisie manuelle | CRM toujours à jour | Historique complet des
+                    conversations</p>
                 </div>
               </div>
             </section>
@@ -1116,17 +1311,24 @@
 
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Bonjour, je suis l'assistant recrutement de [Entreprise]. Je vais vous poser quelques questions sur votre parcours. Quel est votre niveau d'expérience sur le poste de développeur Python?"</p>
-                    <p><strong class="text-slate-300">Candidat:</strong> "J'ai 4 ans d'expérience, principalement sur Django et FastAPI"</p>
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Avez-vous travaillé avec des bases de données NoSQL comme MongoDB?"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bonjour, je suis l'assistant recrutement de
+                      [Entreprise]. Je vais vous poser quelques questions sur votre parcours. Quel est votre niveau
+                      d'expérience sur le poste de développeur Python?"</p>
+                    <p><strong class="text-slate-300">Candidat:</strong> "J'ai 4 ans d'expérience, principalement sur
+                      Django et FastAPI"</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Avez-vous travaillé avec des bases de données
+                      NoSQL comme MongoDB?"</p>
                     <p><strong class="text-slate-300">Candidat:</strong> "Oui, sur mon dernier projet"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Excellent. Votre profil correspond bien au poste. Je vous propose un entretien avec notre CTO. Êtes-vous disponible mardi à 15h?"</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Excellent. Votre profil correspond bien au
+                      poste. Je vous propose un entretien avec notre CTO. Êtes-vous disponible mardi à 15h?"</p>
                   </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">qualify_lead (adapté candidat)</span>
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_create_person</span>
+                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">qualify_lead (adapté
+                    candidat)</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_create_person</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">calendly_book_meeting</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">sheets_append_rows</span>
                 </div>
@@ -1136,7 +1338,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">+200% volume d'entretiens | RH focalisés sur candidats pré-qualifiés | Processus 24/7</p>
+                  <p class="text-sm text-slate-300">+200% volume d'entretiens | RH focalisés sur candidats pré-qualifiés
+                    | Processus 24/7</p>
                 </div>
               </div>
             </section>
@@ -1151,7 +1354,8 @@
               </div>
 
               <p class="text-slate-300 mb-6">
-                <strong>Personas disponibles:</strong> ACCOUNTANT (comptable), INSURER (assureur), COLLECTOR (recouvrement)
+                <strong>Personas disponibles:</strong> ACCOUNTANT (comptable), INSURER (assureur), COLLECTOR
+                (recouvrement)
               </p>
 
               <!-- Use Case 7.1 -->
@@ -1162,17 +1366,21 @@
 
                 <div class="bg-slate-800/50 rounded-lg p-4 mb-4">
                   <div class="space-y-3 text-sm">
-                    <p><strong class="text-slate-300">VocalIA:</strong> "Bonjour M. Dupont. Je vous appelle concernant la facture #4521 de 890€ échue depuis 15 jours."</p>
+                    <p><strong class="text-slate-300">VocalIA:</strong> "Bonjour M. Dupont. Je vous appelle concernant
+                      la facture #4521 de 890€ échue depuis 15 jours."</p>
                     <p><strong class="text-slate-300">Client:</strong> "Ah oui, j'ai oublié de la régler"</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Pas de souci. Je peux vous envoyer un lien de paiement par SMS pour régler immédiatement. Vous avez juste à cliquer."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "Pas de souci. Je peux vous envoyer un lien de
+                      paiement par SMS pour régler immédiatement. Vous avez juste à cliquer."</p>
                     <p><strong class="text-slate-300">Client:</strong> "D'accord, envoyez-moi le lien"</p>
                     <p class="text-slate-500">[VocalIA génère le lien Stripe et l'envoie par SMS]</p>
-                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est envoyé. Dès réception du paiement, vous recevrez un reçu par email."</p>
+                    <p class="text-emerald-400"><strong>VocalIA:</strong> "C'est envoyé. Dès réception du paiement, vous
+                      recevrez un reçu par email."</p>
                   </div>
                 </div>
 
                 <div class="flex flex-wrap gap-2 mb-4">
-                  <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_create_payment_link</span>
+                  <span
+                    class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">stripe_create_payment_link</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">messaging_send</span>
                   <span class="px-3 py-1 rounded-full bg-slate-700 text-xs text-slate-300">pipedrive_update_deal</span>
                 </div>
@@ -1182,7 +1390,8 @@
                     <i data-lucide="trending-up" class="w-4 h-4"></i>
                     Résultat mesuré
                   </div>
-                  <p class="text-sm text-slate-300">+35% taux de recouvrement | Paiement instantané pendant l'appel | 0 friction</p>
+                  <p class="text-sm text-slate-300">+35% taux de recouvrement | Paiement instantané pendant l'appel | 0
+                    friction</p>
                 </div>
               </div>
             </section>
@@ -1193,7 +1402,8 @@
             <section id="chaines" class="section-anchor">
               <div class="flex items-center gap-3 mb-6">
                 <div class="step-number">8</div>
-                <h2 class="text-2xl font-bold"><span data-i18n="academy.chanes_dintgration_compltes_69">Chaînes d'Intégration Complètes</span></h2>
+                <h2 class="text-2xl font-bold"><span data-i18n="academy.chanes_dintgration_compltes_69">Chaînes
+                    d'Intégration Complètes</span></h2>
               </div>
 
               <p class="text-slate-300 mb-8">
@@ -1211,30 +1421,38 @@
                   <span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold">ROI ∞</span>
                 </div>
 
-                <p class="text-slate-400 mb-4"><span data-i18n="academy.du_premier_appel_68">Du premier appel à l'encaissement, entièrement automatisé.</span></p>
+                <p class="text-slate-400 mb-4"><span data-i18n="academy.du_premier_appel_68">Du premier appel à
+                    l'encaissement, entièrement automatisé.</span></p>
 
                 <div class="space-y-4 mb-4">
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">1. Qualification</div>
-                    <p class="text-sm text-slate-400">Client appelle → <code class="text-indigo-400">qualify_lead</code> calcule score BANT → Score 86/100 = HOT LEAD</p>
+                    <p class="text-sm text-slate-400">Client appelle → <code class="text-indigo-400">qualify_lead</code>
+                      calcule score BANT → Score 86/100 = HOT LEAD</p>
                   </div>
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">2. Produit</div>
-                    <p class="text-sm text-slate-400">"Je cherche le produit X" → <code class="text-indigo-400">shopify_get_product</code> → "Disponible, 99€, 42 en stock"</p>
+                    <p class="text-sm text-slate-400">"Je cherche le produit X" → <code
+                        class="text-indigo-400">shopify_get_product</code> → "Disponible, 99€, 42 en stock"</p>
                   </div>
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">3. Paiement</div>
-                    <p class="text-sm text-slate-400">"Je veux l'acheter" → <code class="text-indigo-400">stripe_create_payment_link</code> → <code class="text-indigo-400">messaging_send</code> (SMS) → Client paie sur mobile</p>
+                    <p class="text-sm text-slate-400">"Je veux l'acheter" → <code
+                        class="text-indigo-400">stripe_create_payment_link</code> → <code
+                        class="text-indigo-400">messaging_send</code> (SMS) → Client paie sur mobile</p>
                   </div>
                   <div class="workflow-step pl-6 pb-0">
                     <div class="font-semibold text-white mb-1">4. Confirmation</div>
-                    <p class="text-sm text-slate-400"><code class="text-indigo-400">shopify_create_fulfillment</code> → <code class="text-indigo-400">gmail_send</code> → Commande expédiée + email confirmation</p>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">shopify_create_fulfillment</code> →
+                      <code class="text-indigo-400">gmail_send</code> → Commande expédiée + email confirmation</p>
                   </div>
                 </div>
 
                 <div class="bg-slate-800/50 rounded-lg p-4 text-sm">
-                  <strong class="text-emerald-400">Résultat:</strong> Lead → Vente → Livraison en 1 appel de 5 minutes<br>
-                  <strong class="text-slate-400">Tools utilisés:</strong> 8 | <strong class="text-slate-400">Intégrations:</strong> Shopify + Stripe + Gmail + Twilio
+                  <strong class="text-emerald-400">Résultat:</strong> Lead → Vente → Livraison en 1 appel de 5
+                  minutes<br>
+                  <strong class="text-slate-400">Tools utilisés:</strong> 8 | <strong
+                    class="text-slate-400">Intégrations:</strong> Shopify + Stripe + Gmail + Twilio
                 </div>
               </div>
 
@@ -1245,34 +1463,44 @@
                     <i data-lucide="headphones" class="w-5 h-5 text-blue-400"></i>
                     Chaîne "Support-to-Resolution"
                   </h3>
-                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold">ROI potentiel 250%*</span>
+                  <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold">ROI potentiel
+                    250%*</span>
                 </div>
 
-                <p class="text-slate-400 mb-4"><span data-i18n="academy.du_problme_client_67">Du problème client à la résolution complète avec remboursement si nécessaire.</span></p>
+                <p class="text-slate-400 mb-4"><span data-i18n="academy.du_problme_client_67">Du problème client à la
+                    résolution complète avec remboursement si nécessaire.</span></p>
 
                 <div class="space-y-4 mb-4">
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">1. Identification</div>
-                    <p class="text-sm text-slate-400">Client appelle → <code class="text-indigo-400">stripe_get_customer</code> → Client VIP identifié (€2,340 LTV)</p>
+                    <p class="text-sm text-slate-400">Client appelle → <code
+                        class="text-indigo-400">stripe_get_customer</code> → Client VIP identifié (€2,340 LTV)</p>
                   </div>
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">2. Diagnostic</div>
-                    <p class="text-sm text-slate-400">"Ma commande n'est pas arrivée" → <code class="text-indigo-400">shopify_get_order</code> → Statut: En transit depuis 7 jours</p>
+                    <p class="text-sm text-slate-400">"Ma commande n'est pas arrivée" → <code
+                        class="text-indigo-400">shopify_get_order</code> → Statut: En transit depuis 7 jours</p>
                   </div>
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">3. Résolution</div>
-                    <p class="text-sm text-slate-400">Option A: Attendre → <code class="text-indigo-400">schedule_callback</code> dans 48h<br>
-                    Option B: Remboursement → <code class="text-indigo-400">shopify_cancel_order</code> + <code class="text-indigo-400">stripe_create_refund</code></p>
+                    <p class="text-sm text-slate-400">Option A: Attendre → <code
+                        class="text-indigo-400">schedule_callback</code> dans 48h<br>
+                      Option B: Remboursement → <code class="text-indigo-400">shopify_cancel_order</code> + <code
+                        class="text-indigo-400">stripe_create_refund</code></p>
                   </div>
                   <div class="workflow-step pl-6 pb-0">
                     <div class="font-semibold text-white mb-1">4. Suivi</div>
-                    <p class="text-sm text-slate-400"><code class="text-indigo-400">zendesk_create_ticket</code> → <code class="text-indigo-400">gmail_send</code> → <code class="text-indigo-400">sheets_append_rows</code></p>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">zendesk_create_ticket</code> → <code
+                        class="text-indigo-400">gmail_send</code> → <code
+                        class="text-indigo-400">sheets_append_rows</code></p>
                   </div>
                 </div>
 
                 <div class="bg-slate-800/50 rounded-lg p-4 text-sm">
-                  <strong class="text-blue-400">Résultat:</strong> Problème → Résolution → Client retenu (€2,340 LTV sauvé)<br>
-                  <strong class="text-slate-400">Tools utilisés:</strong> 12 | <strong class="text-slate-400">Temps:</strong> &lt;10 minutes
+                  <strong class="text-blue-400">Résultat:</strong> Problème → Résolution → Client retenu (€2,340 LTV
+                  sauvé)<br>
+                  <strong class="text-slate-400">Tools utilisés:</strong> 12 | <strong
+                    class="text-slate-400">Temps:</strong> &lt;10 minutes
                 </div>
               </div>
 
@@ -1283,33 +1511,43 @@
                     <i data-lucide="calendar" class="w-5 h-5 text-purple-400"></i>
                     Chaîne "Lead-to-Meeting"
                   </h3>
-                  <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold">ROI potentiel 300%*</span>
+                  <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold">ROI potentiel
+                    300%*</span>
                 </div>
 
-                <p class="text-slate-400 mb-4"><span data-i18n="academy.du_visiteur_anonyme_66">Du visiteur anonyme au RDV qualifié dans le CRM.</span></p>
+                <p class="text-slate-400 mb-4"><span data-i18n="academy.du_visiteur_anonyme_66">Du visiteur anonyme au
+                    RDV qualifié dans le CRM.</span></p>
 
                 <div class="space-y-4 mb-4">
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">1. Capture</div>
-                    <p class="text-sm text-slate-400">Visiteur sur Widget → "Je veux en savoir plus" → <code class="text-indigo-400">qualify_lead</code> → Score 66/100 = WARM</p>
+                    <p class="text-sm text-slate-400">Visiteur sur Widget → "Je veux en savoir plus" → <code
+                        class="text-indigo-400">qualify_lead</code> → Score 66/100 = WARM</p>
                   </div>
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">2. Enrichissement</div>
-                    <p class="text-sm text-slate-400"><code class="text-indigo-400">pipedrive_create_person</code> + <code class="text-indigo-400">pipedrive_create_deal</code> (€5,000)</p>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">pipedrive_create_person</code> +
+                      <code class="text-indigo-400">pipedrive_create_deal</code> (€5,000)</p>
                   </div>
                   <div class="workflow-step pl-6 pb-4">
                     <div class="font-semibold text-white mb-1">3. Booking</div>
-                    <p class="text-sm text-slate-400"><code class="text-indigo-400">calendly_get_available_times</code> → <code class="text-indigo-400">create_booking</code> → <code class="text-indigo-400">calendar_create_event</code></p>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">calendly_get_available_times</code>
+                      → <code class="text-indigo-400">create_booking</code> → <code
+                        class="text-indigo-400">calendar_create_event</code></p>
                   </div>
                   <div class="workflow-step pl-6 pb-0">
                     <div class="font-semibold text-white mb-1">4. Confirmation multi-canal</div>
-                    <p class="text-sm text-slate-400"><code class="text-indigo-400">gmail_send</code> + <code class="text-indigo-400">messaging_send</code> (SMS) + <code class="text-indigo-400">slack_send_notification</code></p>
+                    <p class="text-sm text-slate-400"><code class="text-indigo-400">gmail_send</code> + <code
+                        class="text-indigo-400">messaging_send</code> (SMS) + <code
+                        class="text-indigo-400">slack_send_notification</code></p>
                   </div>
                 </div>
 
                 <div class="bg-slate-800/50 rounded-lg p-4 text-sm">
-                  <strong class="text-purple-400">Résultat:</strong> Visiteur anonyme → RDV qualifié en CRM en &lt;3 minutes<br>
-                  <strong class="text-slate-400">Tools utilisés:</strong> 10 | <strong class="text-slate-400">Pipeline:</strong> +€5,000
+                  <strong class="text-purple-400">Résultat:</strong> Visiteur anonyme → RDV qualifié en CRM en &lt;3
+                  minutes<br>
+                  <strong class="text-slate-400">Tools utilisés:</strong> 10 | <strong
+                    class="text-slate-400">Pipeline:</strong> +€5,000
                 </div>
               </div>
             </section>
@@ -1320,7 +1558,8 @@
             <section id="personas" class="section-anchor">
               <div class="flex items-center gap-3 mb-6">
                 <div class="step-number">9</div>
-                <h2 class="text-2xl font-bold"><span data-i18n="academy.les_40_personas_65">Les 40 Personas Métier</span></h2>
+                <h2 class="text-2xl font-bold"><span data-i18n="academy.les_40_personas_65">Les 40 Personas
+                    Métier</span></h2>
               </div>
 
               <p class="text-slate-300 mb-8">
@@ -1331,52 +1570,81 @@
               <div class="grid md:grid-cols-3 gap-4 mb-8">
                 <!-- Tier 1 -->
                 <div class="lesson-card rounded-xl p-4">
-                  <h4 class="font-bold text-indigo-400 mb-3 text-sm uppercase"><span data-i18n="academy.tier_1_core_64">Tier 1 - Core (7)</span></h4>
+                  <h4 class="font-bold text-indigo-400 mb-3 text-sm uppercase"><span
+                      data-i18n="academy.tier_1_core_64">Tier 1 - Core (7)</span></h4>
                   <ul class="space-y-2 text-sm text-slate-400">
-                    <li><strong class="text-white"><span data-i18n="academy.agency_32"><span data-i18n="academy.agency_63">AGENCY</span></span></strong> - Agence marketing</li>
-                    <li><strong class="text-white"><span data-i18n="academy.dental_62">DENTAL</span></strong> - Cabinet dentaire</li>
-                    <li><strong class="text-white"><span data-i18n="academy.property_31"><span data-i18n="academy.property_61">PROPERTY</span></span></strong> - Agent immobilier</li>
+                    <li><strong class="text-white"><span data-i18n="academy.agency_32"><span
+                            data-i18n="academy.agency_63">AGENCY</span></span></strong> - Agence marketing</li>
+                    <li><strong class="text-white"><span data-i18n="academy.dental_62">DENTAL</span></strong> - Cabinet
+                      dentaire</li>
+                    <li><strong class="text-white"><span data-i18n="academy.property_31"><span
+                            data-i18n="academy.property_61">PROPERTY</span></span></strong> - Agent immobilier</li>
                     <li><strong class="text-white">HOA</strong> - Syndic copropriété</li>
-                    <li><strong class="text-white"><span data-i18n="academy.school_60">SCHOOL</span></strong> - Établissement scolaire</li>
-                    <li><strong class="text-white"><span data-i18n="academy.contractor_59">CONTRACTOR</span></strong> - Entrepreneur BTP</li>
-                    <li><strong class="text-white"><span data-i18n="academy.funeral_58">FUNERAL</span></strong> - Pompes funèbres</li>
+                    <li><strong class="text-white"><span data-i18n="academy.school_60">SCHOOL</span></strong> -
+                      Établissement scolaire</li>
+                    <li><strong class="text-white"><span data-i18n="academy.contractor_59">CONTRACTOR</span></strong> -
+                      Entrepreneur BTP</li>
+                    <li><strong class="text-white"><span data-i18n="academy.funeral_58">FUNERAL</span></strong> - Pompes
+                      funèbres</li>
                   </ul>
                 </div>
 
                 <!-- Tier 2 -->
                 <div class="lesson-card rounded-xl p-4">
-                  <h4 class="font-bold text-amber-400 mb-3 text-sm uppercase"><span data-i18n="academy.tier_2_expansion_57">Tier 2 - Expansion (11)</span></h4>
+                  <h4 class="font-bold text-amber-400 mb-3 text-sm uppercase"><span
+                      data-i18n="academy.tier_2_expansion_57">Tier 2 - Expansion (11)</span></h4>
                   <ul class="space-y-2 text-sm text-slate-400">
                     <li><strong class="text-white">UNIVERSAL_ECOMMERCE</strong></li>
                     <li><strong class="text-white">UNIVERSAL_SME</strong></li>
-                    <li><strong class="text-white"><span data-i18n="academy.healer_33"><span data-i18n="academy.healer_56">HEALER</span></span></strong> - Praticien santé</li>
-                    <li><strong class="text-white"><span data-i18n="academy.mechanic_55">MECHANIC</span></strong> - Garage auto</li>
-                    <li><strong class="text-white"><span data-i18n="academy.counselor_54">COUNSELOR</span></strong> - Conseiller</li>
-                    <li><strong class="text-white"><span data-i18n="academy.concierge_53">CONCIERGE</span></strong> - Conciergerie</li>
-                    <li><strong class="text-white"><span data-i18n="academy.stylist_52">STYLIST</span></strong> - Salon coiffure</li>
-                    <li><strong class="text-white"><span data-i18n="academy.dispatcher_51">DISPATCHER</span></strong> - Logistique</li>
-                    <li><strong class="text-white"><span data-i18n="academy.recruiter_50">RECRUITER</span></strong> - Recrutement</li>
-                    <li><strong class="text-white"><span data-i18n="academy.trainer_49">TRAINER</span></strong> - Formation</li>
+                    <li><strong class="text-white"><span data-i18n="academy.healer_33"><span
+                            data-i18n="academy.healer_56">HEALER</span></span></strong> - Praticien santé</li>
+                    <li><strong class="text-white"><span data-i18n="academy.mechanic_55">MECHANIC</span></strong> -
+                      Garage auto</li>
+                    <li><strong class="text-white"><span data-i18n="academy.counselor_54">COUNSELOR</span></strong> -
+                      Conseiller</li>
+                    <li><strong class="text-white"><span data-i18n="academy.concierge_53">CONCIERGE</span></strong> -
+                      Conciergerie</li>
+                    <li><strong class="text-white"><span data-i18n="academy.stylist_52">STYLIST</span></strong> - Salon
+                      coiffure</li>
+                    <li><strong class="text-white"><span data-i18n="academy.dispatcher_51">DISPATCHER</span></strong> -
+                      Logistique</li>
+                    <li><strong class="text-white"><span data-i18n="academy.recruiter_50">RECRUITER</span></strong> -
+                      Recrutement</li>
+                    <li><strong class="text-white"><span data-i18n="academy.trainer_49">TRAINER</span></strong> -
+                      Formation</li>
                     <li><strong class="text-white">GYM</strong> - Salle de sport</li>
                   </ul>
                 </div>
 
                 <!-- Tier 3 -->
                 <div class="lesson-card rounded-xl p-4">
-                  <h4 class="font-bold text-emerald-400 mb-3 text-sm uppercase"><span data-i18n="academy.tier_3_extended_48">Tier 3 - Extended (13)</span></h4>
+                  <h4 class="font-bold text-emerald-400 mb-3 text-sm uppercase"><span
+                      data-i18n="academy.tier_3_extended_48">Tier 3 - Extended (13)</span></h4>
                   <ul class="space-y-2 text-sm text-slate-400">
-                    <li><strong class="text-white"><span data-i18n="academy.accountant_47">ACCOUNTANT</span></strong> - Comptable</li>
-                    <li><strong class="text-white"><span data-i18n="academy.architect_46">ARCHITECT</span></strong> - Architecte</li>
-                    <li><strong class="text-white"><span data-i18n="academy.pharmacist_45">PHARMACIST</span></strong> - Pharmacien</li>
-                    <li><strong class="text-white"><span data-i18n="academy.renter_44">RENTER</span></strong> - Gestion locative</li>
-                    <li><strong class="text-white"><span data-i18n="academy.insurer_43">INSURER</span></strong> - Assureur</li>
-                    <li><strong class="text-white"><span data-i18n="academy.producer_42">PRODUCER</span></strong> - Production</li>
-                    <li><strong class="text-white"><span data-i18n="academy.logistician_41">LOGISTICIAN</span></strong> - Logistique</li>
-                    <li><strong class="text-white"><span data-i18n="academy.collector_40">COLLECTOR</span></strong> - Recouvrement</li>
-                    <li><strong class="text-white"><span data-i18n="academy.planner_39">PLANNER</span></strong> - Événementiel</li>
-                    <li><strong class="text-white"><span data-i18n="academy.surveyor_38">SURVEYOR</span></strong> - Expert</li>
-                    <li><strong class="text-white"><span data-i18n="academy.governor_37">GOVERNOR</span></strong> - Secteur public</li>
-                    <li><strong class="text-white"><span data-i18n="academy.restaurateur_36">RESTAURATEUR</span></strong></li>
+                    <li><strong class="text-white"><span data-i18n="academy.accountant_47">ACCOUNTANT</span></strong> -
+                      Comptable</li>
+                    <li><strong class="text-white"><span data-i18n="academy.architect_46">ARCHITECT</span></strong> -
+                      Architecte</li>
+                    <li><strong class="text-white"><span data-i18n="academy.pharmacist_45">PHARMACIST</span></strong> -
+                      Pharmacien</li>
+                    <li><strong class="text-white"><span data-i18n="academy.renter_44">RENTER</span></strong> - Gestion
+                      locative</li>
+                    <li><strong class="text-white"><span data-i18n="academy.insurer_43">INSURER</span></strong> -
+                      Assureur</li>
+                    <li><strong class="text-white"><span data-i18n="academy.producer_42">PRODUCER</span></strong> -
+                      Production</li>
+                    <li><strong class="text-white"><span data-i18n="academy.logistician_41">LOGISTICIAN</span></strong>
+                      - Logistique</li>
+                    <li><strong class="text-white"><span data-i18n="academy.collector_40">COLLECTOR</span></strong> -
+                      Recouvrement</li>
+                    <li><strong class="text-white"><span data-i18n="academy.planner_39">PLANNER</span></strong> -
+                      Événementiel</li>
+                    <li><strong class="text-white"><span data-i18n="academy.surveyor_38">SURVEYOR</span></strong> -
+                      Expert</li>
+                    <li><strong class="text-white"><span data-i18n="academy.governor_37">GOVERNOR</span></strong> -
+                      Secteur public</li>
+                    <li><strong class="text-white"><span
+                          data-i18n="academy.restaurateur_36">RESTAURATEUR</span></strong></li>
                     <li><strong class="text-white"><span data-i18n="academy.hotelier_35">HOTELIER</span></strong></li>
                   </ul>
                 </div>
@@ -1386,11 +1654,14 @@
                 <div class="flex items-start gap-3">
                   <i data-lucide="info" class="w-6 h-6 text-amber-400 mt-1"></i>
                   <div>
-                    <h4 class="font-semibold text-amber-400 mb-2"><span data-i18n="academy.comment_choisir_son_34">Comment choisir son persona</span></h4>
+                    <h4 class="font-semibold text-amber-400 mb-2"><span
+                        data-i18n="academy.comment_choisir_son_34">Comment choisir son persona</span></h4>
                     <p class="text-slate-300 text-sm">
                       Choisissez le persona le plus proche de votre activité. Par exemple, un cabinet de kinésithérapie
-                      utilisera <strong>HEALER</strong>, une agence web utilisera <strong>AGENCY</strong>, un courtier immobilier
-                      utilisera <strong>PROPERTY</strong>. Les personas <strong>UNIVERSAL_SME</strong> et <strong>UNIVERSAL_ECOMMERCE</strong>
+                      utilisera <strong>HEALER</strong>, une agence web utilisera <strong>AGENCY</strong>, un courtier
+                      immobilier
+                      utilisera <strong>PROPERTY</strong>. Les personas <strong>UNIVERSAL_SME</strong> et
+                      <strong>UNIVERSAL_ECOMMERCE</strong>
                       sont des options génériques si aucun autre ne correspond.
                     </p>
                   </div>
@@ -1419,16 +1690,26 @@
                     Ce que VocalIA PEUT faire
                   </h3>
                   <ul class="space-y-2 text-sm text-slate-300">
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Qualification leads BANT automatique</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Prise de RDV 24/7 avec rappels</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Suivi commandes e-commerce (7 plateformes)</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Annulation + remboursement automatique</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Paiement vocal via Stripe (135+ devises)</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Support client niveau 1 (FAQ, KB)</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> CRM sync bidirectionnelle temps réel</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> 5 langues dont Darija marocain</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> Fallback multi-AI (5 niveaux de redondance)</li>
-                    <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400 mt-0.5"></i> iPaaS vers +7000 apps</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> Qualification leads BANT automatique</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> Prise de RDV 24/7 avec rappels</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> Suivi commandes e-commerce (7 plateformes)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> Annulation + remboursement automatique</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> Paiement vocal via Stripe (135+ devises)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> Support client niveau 1 (FAQ, KB)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> CRM sync bidirectionnelle temps réel</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> 5 langues dont Darija marocain</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> Fallback multi-AI (5 niveaux de redondance)</li>
+                    <li class="flex items-start gap-2"><i data-lucide="check"
+                        class="w-4 h-4 text-emerald-400 mt-0.5"></i> iPaaS vers +7000 apps</li>
                   </ul>
                 </div>
 
@@ -1439,16 +1720,34 @@
                     Ce que VocalIA NE PEUT PAS faire
                   </h3>
                   <ul class="space-y-2 text-sm text-slate-300">
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Compliance HIPAA/SOC2</strong> - Pas certifié</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.transactions_bancaires_30">Transactions bancaires</span></strong> - Pas d'intégration bancaire directe</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.urgences_mdicales_29">Urgences médicales</span></strong> - Non certifié urgence</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.services_gouvernementaux_28">Services gouvernementaux</span></strong> - Pas d'API publiques</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong>Scale 1M+ appels</strong> - Non testé à cette échelle</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.voice_cloning_27">Voice cloning</span></strong> - Non implémenté</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.sentiment_analysis_ml_26">Sentiment analysis ML</span></strong> - Non implémenté</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.video_calls_25">Video calls</span></strong> - Voix uniquement</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.scoring_financier_24">Scoring financier</span></strong> - Pas d'éligibilité prêt</li>
-                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i> <strong><span data-i18n="academy.authentification_biomtrique_23">Authentification biométrique</span></strong> - Non implémenté</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong>Compliance HIPAA/SOC2</strong> - Pas certifié</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.transactions_bancaires_30">Transactions bancaires</span></strong>
+                      - Pas d'intégration bancaire directe</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.urgences_mdicales_29">Urgences médicales</span></strong> - Non
+                      certifié urgence</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.services_gouvernementaux_28">Services
+                          gouvernementaux</span></strong> - Pas d'API publiques</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong>Scale 1M+ appels</strong> - Non testé à cette échelle</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.voice_cloning_27">Voice cloning</span></strong> - Non implémenté
+                    </li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.sentiment_analysis_ml_26">Sentiment analysis ML</span></strong> -
+                      Non implémenté</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.video_calls_25">Video calls</span></strong> - Voix uniquement
+                    </li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.scoring_financier_24">Scoring financier</span></strong> - Pas
+                      d'éligibilité prêt</li>
+                    <li class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-rose-400 mt-0.5"></i>
+                      <strong><span data-i18n="academy.authentification_biomtrique_23">Authentification
+                          biométrique</span></strong> - Non implémenté</li>
                   </ul>
                 </div>
               </div>
@@ -1465,11 +1764,13 @@
                     <div class="text-slate-400">5/5 = 100%</div>
                   </div>
                   <div>
-                    <div class="text-emerald-400 font-semibold"><span data-i18n="academy.real_estate_20">Real Estate</span></div>
+                    <div class="text-emerald-400 font-semibold"><span data-i18n="academy.real_estate_20">Real
+                        Estate</span></div>
                     <div class="text-slate-400">5/5 = 100%</div>
                   </div>
                   <div>
-                    <div class="text-amber-400 font-semibold"><span data-i18n="academy.healthcare_19">Healthcare</span></div>
+                    <div class="text-amber-400 font-semibold"><span data-i18n="academy.healthcare_19">Healthcare</span>
+                    </div>
                     <div class="text-slate-400">3/5 = 60%</div>
                   </div>
                   <div>
@@ -1477,7 +1778,8 @@
                     <div class="text-slate-400">3/5 = 60%</div>
                   </div>
                   <div>
-                    <div class="text-emerald-400 font-semibold"><span data-i18n="academy.restaurants_17">Restaurants</span></div>
+                    <div class="text-emerald-400 font-semibold"><span
+                        data-i18n="academy.restaurants_17">Restaurants</span></div>
                     <div class="text-slate-400">4/5 = 80%</div>
                   </div>
                   <div>
@@ -1485,7 +1787,8 @@
                     <div class="text-slate-400">4/5 = 80%</div>
                   </div>
                   <div>
-                    <div class="text-emerald-400 font-semibold"><span data-i18n="academy.logistics_16">Logistics</span></div>
+                    <div class="text-emerald-400 font-semibold"><span data-i18n="academy.logistics_16">Logistics</span>
+                    </div>
                     <div class="text-slate-400">4/5 = 80%</div>
                   </div>
                 </div>
@@ -1498,7 +1801,8 @@
             <section id="roi" class="section-anchor">
               <div class="flex items-center gap-3 mb-6">
                 <div class="step-number">11</div>
-                <h2 class="text-2xl font-bold"><span data-i18n="academy.calculer_votre_roi_15">Calculer votre ROI</span></h2>
+                <h2 class="text-2xl font-bold"><span data-i18n="academy.calculer_votre_roi_15">Calculer votre ROI</span>
+                </h2>
               </div>
 
               <div class="glass rounded-xl p-6 mb-8">
@@ -1585,7 +1889,8 @@
                       <span class="font-bold text-indigo-400">1</span>
                     </div>
                     <div>
-                      <h4 class="font-bold mb-2"><span data-i18n="academy.crez_votre_compte_9">Créez votre compte</span></h4>
+                      <h4 class="font-bold mb-2"><span data-i18n="academy.crez_votre_compte_9">Créez votre compte</span>
+                      </h4>
                       <p class="text-slate-400 text-sm">
                         Inscrivez-vous sur le dashboard. Pas de carte bancaire requise pour le Voice Widget.
                       </p>
@@ -1599,7 +1904,8 @@
                       <span class="font-bold text-indigo-400">2</span>
                     </div>
                     <div>
-                      <h4 class="font-bold mb-2"><span data-i18n="academy.choisissez_votre_persona_8">Choisissez votre persona</span></h4>
+                      <h4 class="font-bold mb-2"><span data-i18n="academy.choisissez_votre_persona_8">Choisissez votre
+                          persona</span></h4>
                       <p class="text-slate-400 text-sm">
                         Sélectionnez le persona le plus proche de votre activité parmi les 31 disponibles.
                         Personnalisez si nécessaire (nom, ton, instructions spécifiques).
@@ -1614,7 +1920,8 @@
                       <span class="font-bold text-indigo-400">3</span>
                     </div>
                     <div>
-                      <h4 class="font-bold mb-2"><span data-i18n="academy.connectez_vos_intgrations_7">Connectez vos intégrations</span></h4>
+                      <h4 class="font-bold mb-2"><span data-i18n="academy.connectez_vos_intgrations_7">Connectez vos
+                          intégrations</span></h4>
                       <p class="text-slate-400 text-sm">
                         Connectez votre CRM, calendrier, e-commerce, etc. via OAuth ou clés API.
                         Configuration guidée, pas besoin de développeur.
@@ -1629,7 +1936,8 @@
                       <span class="font-bold text-indigo-400">4</span>
                     </div>
                     <div>
-                      <h4 class="font-bold mb-2"><span data-i18n="academy.dployez_le_widget_6">Déployez le Widget ou Telephony</span></h4>
+                      <h4 class="font-bold mb-2"><span data-i18n="academy.dployez_le_widget_6">Déployez le Widget ou
+                          Telephony</span></h4>
                       <p class="text-slate-400 text-sm">
                         <strong>Widget:</strong> Copiez 1 ligne de code sur votre site.<br>
                         <strong>Telephony:</strong> Obtenez un numéro de téléphone dédié.
@@ -1640,11 +1948,13 @@
 
                 <div class="lesson-card rounded-xl p-6">
                   <div class="flex items-start gap-4">
-                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                    <div
+                      class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
                       <span class="font-bold text-emerald-400">5</span>
                     </div>
                     <div>
-                      <h4 class="font-bold mb-2"><span data-i18n="academy.testez_et_itrez_5">Testez et itérez</span></h4>
+                      <h4 class="font-bold mb-2"><span data-i18n="academy.testez_et_itrez_5">Testez et itérez</span>
+                      </h4>
                       <p class="text-slate-400 text-sm">
                         Faites quelques appels tests. Ajustez le persona si nécessaire.
                         Consultez les analytics pour mesurer les résultats.
@@ -1656,15 +1966,18 @@
 
               <!-- CTA Final -->
               <div class="glass rounded-xl p-8 text-center">
-                <h2 class="text-2xl font-bold mb-4"><span data-i18n="academy.prt_commencer_4">Prêt à commencer?</span></h2>
+                <h2 class="text-2xl font-bold mb-4"><span data-i18n="academy.prt_commencer_4">Prêt à commencer?</span>
+                </h2>
                 <p class="text-slate-300 mb-6 max-w-xl mx-auto">
                   Déployez votre premier agent vocal en 5 minutes. Le plan Starter inclut un quota mensuel.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
-                  <a href="/contact" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold">
+                  <a href="/contact"
+                    class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 transition font-semibold">
                     Commencer maintenant
                   </a>
-                  <a href="/contact" class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition font-semibold">
+                  <a href="/contact"
+                    class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition font-semibold">
                     Parler à un expert
                   </a>
                 </div>
@@ -1680,7 +1993,10 @@
     <section class="py-8 px-4">
       <div class="max-w-4xl mx-auto">
         <p class="text-xs text-slate-500 border-t border-slate-800 pt-4">
-          <strong>*Disclaimer:</strong> Les ROI et statistiques présentés sont des estimations basées sur des benchmarks sectoriels et des projections théoriques. Les résultats réels varient selon l'implémentation, le secteur d'activité, et le volume d'utilisation. Ces chiffres ne constituent pas une garantie de performance. Sources: MGMA Healthcare Benchmarks 2024, NAR Real Estate Technology Survey 2024, Gartner Customer Service Report 2025.
+          <strong>*Disclaimer:</strong> Les ROI et statistiques présentés sont des estimations basées sur des benchmarks
+          sectoriels et des projections théoriques. Les résultats réels varient selon l'implémentation, le secteur
+          d'activité, et le volume d'utilisation. Ces chiffres ne constituent pas une garantie de performance. Sources:
+          MGMA Healthcare Benchmarks 2024, NAR Real Estate Technology Survey 2024, Gartner Customer Service Report 2025.
         </p>
       </div>
     </section>
@@ -1693,38 +2009,49 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
       <div class="mb-10">
-          <a href="/" class="flex items-center space-x-2 mb-4">
-            <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-            <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        <a href="/" class="flex items-center space-x-2 mb-4">
+          <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
+          <span
+            class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        </a>
+        <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="academy.agents_vocaux_ia_2">Agents Vocaux IA pour
+            Entreprises</span></p>
+        <!-- Contact Info -->
+        <div class="space-y-2 text-sm text-zinc-400 mb-4">
+          <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            contact@vocalia.ma
           </a>
-          <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="academy.agents_vocaux_ia_2">Agents Vocaux IA pour Entreprises</span></p>
-          <!-- Contact Info -->
-          <div class="space-y-2 text-sm text-zinc-400 mb-4">
-            <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="mail" class="w-4 h-4"></i>
-              contact@vocalia.ma
-            </a>
-            <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="phone" class="w-4 h-4"></i>
-              +1 762 422 4223
-            </a>
-          </div>
-          <!-- Social Links -->
-          <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
-              <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
-            </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
-              <i data-lucide="linkedin" class="w-4 h-4"></i>
-            </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
-              <i data-lucide="github" class="w-4 h-4"></i>
-            </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
-              <i data-lucide="youtube" class="w-4 h-4"></i>
-            </a>
-          </div>
+          <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
+            <i data-lucide="phone" class="w-4 h-4"></i>
+            +1 762 422 4223
+          </a>
         </div>
+        <!-- Social Links -->
+        <div class="flex space-x-3">
+          <a href="https://x.com/vocalia_ma"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="X">
+            <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70"
+              loading="lazy">
+          </a>
+          <a href="https://linkedin.com/company/vocalia"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="LinkedIn">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+          </a>
+          <a href="https://github.com/Jouiet/VoicalAI"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="GitHub">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
+          <a href="https://youtube.com/@vocalia"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="YouTube">
+            <i data-lucide="youtube" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
 
       <!-- Categories Row - Inline with proper spacing -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
@@ -1732,11 +2059,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.product">Produit</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/features" class="hover:text-white transition"><span data-i18n="nav.features">Fonctionnalités</span></a></li>
-            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a></li>
-            <li><a href="/products/voice-widget" class="hover:text-white transition"><span data-i18n="products.voice_widget">Voice Widget</span></a></li>
-            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
-            <li><a href="/integrations" class="hover:text-white transition"><span data-i18n="footer.links.integrations">Intégrations</span></a></li>
+            <li><a href="/features" class="hover:text-white transition"><span
+                  data-i18n="nav.features">Fonctionnalités</span></a></li>
+            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a>
+            </li>
+            <li><a href="/products/voice-widget" class="hover:text-white transition"><span
+                  data-i18n="products.voice_widget">Voice Widget</span></a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span
+                  data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
+            <li><a href="/integrations" class="hover:text-white transition"><span
+                  data-i18n="footer.links.integrations">Intégrations</span></a></li>
           </ul>
         </div>
 
@@ -1744,11 +2076,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.solutions">Solutions</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas d\'Usage</span></a></li>
-            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par Industrie</span></a></li>
-            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
-            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span data-i18n="footer.links.customer_support">Service Client</span></a></li>
-            <li><a href="/industries/healthcare" class="hover:text-white transition"><span data-i18n="footer.links.healthcare">Santé</span></a></li>
+            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas
+                  d\'Usage</span></a></li>
+            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par
+                  Industrie</span></a></li>
+            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span
+                  data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
+            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span
+                  data-i18n="footer.links.customer_support">Service Client</span></a></li>
+            <li><a href="/industries/healthcare" class="hover:text-white transition"><span
+                  data-i18n="footer.links.healthcare">Santé</span></a></li>
           </ul>
         </div>
 
@@ -1756,10 +2093,14 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.resources">Ressources</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/docs" class="hover:text-white transition"><span data-i18n="footer.links.docs">Documentation</span></a></li>
-            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API Reference</span></a></li>
-            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
-            <li><a href="/academie-business" class="hover:text-white transition"><span data-i18n="footer.links.academy">Académie Business</span></a></li>
+            <li><a href="/docs" class="hover:text-white transition"><span
+                  data-i18n="footer.links.docs">Documentation</span></a></li>
+            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API
+                  Reference</span></a></li>
+            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a>
+            </li>
+            <li><a href="/academie-business" class="hover:text-white transition"><span
+                  data-i18n="footer.links.academy">Académie Business</span></a></li>
           </ul>
         </div>
 
@@ -1767,11 +2108,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.company">Entreprise</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À propos</span></a></li>
-            <li><a href="/contact" class="hover:text-white transition"><span data-i18n="footer.links.contact">Contact</span></a></li>
-            <li><a href="/privacy" class="hover:text-white transition"><span data-i18n="footer.links.privacy">Confidentialité</span></a></li>
-            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a></li>
-            <li><a href="/investor" class="hover:text-white transition"><span data-i18n="footer.links.investors">Investisseurs</span></a></li>
+            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À
+                  propos</span></a></li>
+            <li><a href="/contact" class="hover:text-white transition"><span
+                  data-i18n="footer.links.contact">Contact</span></a></li>
+            <li><a href="/privacy" class="hover:text-white transition"><span
+                  data-i18n="footer.links.privacy">Confidentialité</span></a></li>
+            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a>
+            </li>
+            <li><a href="/investor" class="hover:text-white transition"><span
+                  data-i18n="footer.links.investors">Investisseurs</span></a></li>
           </ul>
         </div>
       </div>
@@ -1810,7 +2156,9 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
   <script src="/src/lib/geo-detect.js?v=250"></script>
   <script src="/src/lib/i18n.js?v=250"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
@@ -1888,92 +2236,93 @@
       localStorage.setItem('vocalia_lang', lang);
     }
   </script>
-  
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          } else {
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
 
-    // i18n init - Priority: localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        var storedLang = localStorage.getItem('vocalia_lang');
-        if (storedLang) {
-          await VocaliaI18n.setLocale(storedLang);
-        } else if (typeof VocaliaGeo !== 'undefined') {
-          var geo = await VocaliaGeo.getGeo();
-          await VocaliaI18n.setLocale(geo.lang);
-        } else {
-          await VocaliaI18n.setLocale('fr');
-        }
+      // i18n init - Priority: localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          var storedLang = localStorage.getItem('vocalia_lang');
+          if (storedLang) {
+            await VocaliaI18n.setLocale(storedLang);
+          } else if (typeof VocaliaGeo !== 'undefined') {
+            var geo = await VocaliaGeo.getGeo();
+            await VocaliaI18n.setLocale(geo.lang);
+          } else {
+            await VocaliaI18n.setLocale('fr');
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-    }
+      }
 
-    // Re-init on load
-    window.addEventListener('load', initLucide);
-    window.addEventListener('load', initI18n);
-  })();
+      // Re-init on load
+      window.addEventListener('load', initLucide);
+      window.addEventListener('load', initI18n);
+    })();
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
 </body>
+
 </html>
