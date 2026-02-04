@@ -6,7 +6,7 @@
  * Example: <button data-action="switchLang" data-params="fr">FR</button>
  */
 
-(function() {
+(function () {
   'use strict';
 
   // Initialize Lucide icons on DOM ready
@@ -19,7 +19,7 @@
   // Action registry
   const actions = {
     // Language switching - Uses VocaliaI18n if available
-    switchLang: async function(lang) {
+    switchLang: async function (lang) {
       if (!lang) return;
 
       // Use VocaliaI18n if available (primary method)
@@ -47,7 +47,7 @@
       if (dropdown) dropdown.classList.add('hidden');
     },
 
-    toggleLangDropdown: function() {
+    toggleLangDropdown: function () {
       const dropdown = document.getElementById('langDropdown');
       if (dropdown) {
         dropdown.classList.toggle('hidden');
@@ -62,33 +62,33 @@
     },
 
     // Demo modal
-    openDemoModal: function() {
+    openDemoModal: function () {
       if (typeof window.openDemoModal === 'function') {
         window.openDemoModal();
       }
     },
 
-    closeDemoModal: function() {
+    closeDemoModal: function () {
       if (typeof window.closeDemoModal === 'function') {
         window.closeDemoModal();
       }
     },
 
     // Pricing plans
-    selectPlan: function(plan) {
+    selectPlan: function (plan) {
       if (typeof window.selectPlan === 'function') {
         window.selectPlan(plan);
       }
     },
 
     // Auth
-    signInWithGoogle: function() {
+    signInWithGoogle: function () {
       if (typeof window.signInWithGoogle === 'function') {
         window.signInWithGoogle();
       }
     },
 
-    togglePassword: function() {
+    togglePassword: function () {
       const input = document.getElementById('password');
       const icon = document.querySelector('[data-action="togglePassword"] i');
       if (input) {
@@ -102,7 +102,7 @@
     },
 
     // Video controls
-    toggleVideoMute: function(buttonEl) {
+    toggleVideoMute: function (buttonEl) {
       const video = document.getElementById('heroVideo');
       if (video) {
         video.muted = !video.muted;
@@ -114,7 +114,7 @@
     },
 
     // Newsletter form
-    submitNewsletter: function(formEl) {
+    submitNewsletter: function (formEl) {
       const btn = formEl.querySelector('button');
       if (btn) {
         btn.textContent = '✓ Inscrit!';
@@ -122,93 +122,138 @@
       }
     },
 
-    // Contact form
-    submitContactForm: function(formEl) {
+    // Contact form - Real implementation
+    submitContactForm: async function (formEl) {
       if (formEl.checkValidity()) {
         const btn = formEl.querySelector('button[type=submit]');
+        const originalText = btn ? btn.innerHTML : 'Envoyer';
+
         if (btn) {
-          btn.innerHTML = '<i data-lucide="check" class="w-5 h-5 mr-2"></i> Message Envoyé!';
           btn.disabled = true;
-          btn.classList.add('opacity-75');
+          btn.innerHTML = '<i data-lucide="loader" class="w-5 h-5 mr-2 animate-spin"></i> Envoi...';
           initLucide();
         }
+
+        try {
+          // Extract form data
+          const formData = new FormData(formEl);
+          const data = Object.fromEntries(formData.entries());
+
+          // Send to real API
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            if (btn) {
+              btn.innerHTML = '<i data-lucide="check" class="w-5 h-5 mr-2"></i> Message Envoyé!';
+              btn.classList.add('bg-emerald-600', 'border-emerald-600');
+              initLucide();
+            }
+            formEl.reset();
+          } else {
+            throw new Error(result.error || 'Erreur lors de l\'envoi');
+          }
+        } catch (error) {
+          console.error('Contact error:', error);
+          if (btn) {
+            // Reset state after error
+            btn.innerHTML = `<i data-lucide="alert-circle" class="w-5 h-5 mr-2"></i> Erreur`;
+            btn.classList.add('bg-red-600', 'border-red-600');
+            setTimeout(() => {
+              btn.innerHTML = originalText;
+              btn.disabled = false;
+              btn.classList.remove('bg-red-600', 'border-red-600');
+              initLucide();
+            }, 3000);
+          }
+          alert('Une erreur est survenue. Veuillez réessayer plus tard.');
+        }
+      } else {
+        formEl.reportValidity();
       }
     },
 
     // Dashboard actions
-    closeModal: function(el) {
+    closeModal: function (el) {
       const modal = el.closest('.fixed');
       if (modal) modal.remove();
       initLucide();
     },
 
-    closeConfigModal: function() {
+    closeConfigModal: function () {
       const modal = document.getElementById('config-modal');
       if (modal) modal.remove();
     },
 
-    reload: function() {
+    reload: function () {
       location.reload();
     },
 
-    queueVideo: function(type) {
+    queueVideo: function (type) {
       if (typeof window.queueVideo === 'function') window.queueVideo(type);
     },
 
-    quickAction: function(action) {
+    quickAction: function (action) {
       if (typeof window.quickAction === 'function') window.quickAction(action);
     },
 
-    viewAllTenants: function() {
+    viewAllTenants: function () {
       if (typeof window.viewAllTenants === 'function') window.viewAllTenants();
     },
 
-    viewAllCalls: function() {
+    viewAllCalls: function () {
       if (typeof window.viewAllCalls === 'function') window.viewAllCalls();
     },
 
-    viewAllSessions: function() {
+    viewAllSessions: function () {
       if (typeof window.viewAllSessions === 'function') window.viewAllSessions();
     },
 
-    refreshHITLQueue: function() {
+    refreshHITLQueue: function () {
       if (typeof window.refreshHITLQueue === 'function') window.refreshHITLQueue();
     },
 
-    showActivityPanel: function() {
+    showActivityPanel: function () {
       if (typeof window.showActivityPanel === 'function') window.showActivityPanel();
     },
 
-    configureAgents: function() {
+    configureAgents: function () {
       if (typeof window.configureAgents === 'function') window.configureAgents();
     },
 
-    agentSettings: function(agentId) {
+    agentSettings: function (agentId) {
       if (typeof window.agentSettings === 'function') window.agentSettings(agentId);
     },
 
-    exportWidgetAnalytics: function() {
+    exportWidgetAnalytics: function () {
       if (typeof window.exportWidgetAnalytics === 'function') window.exportWidgetAnalytics();
     },
 
-    saveConfig: function() {
+    saveConfig: function () {
       alert('Configuration sauvegardée');
       const modal = document.getElementById('config-modal');
       if (modal) modal.remove();
     },
 
-    saveSettings: function(el) {
+    saveSettings: function (el) {
       alert('Paramètres sauvegardés!');
       const modal = el.closest('.fixed');
       if (modal) modal.remove();
     },
 
-    newAgentPlaceholder: function() {
+    newAgentPlaceholder: function () {
       alert('Création nouvel agent - fonctionnalité à venir');
     },
 
     // Dashboard logs filter
-    filterLogs: function(selectEl) {
+    filterLogs: function (selectEl) {
       const value = selectEl.value;
       if (typeof window.filterLogs === 'function') {
         window.filterLogs(value);
@@ -216,7 +261,7 @@
     },
 
     // Code copy
-    copyCode: function(el) {
+    copyCode: function (el) {
       if (typeof window.copyCode === 'function') {
         window.copyCode(el);
       } else {
@@ -233,7 +278,7 @@
   };
 
   // Global click delegation
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', function (e) {
     const target = e.target.closest('[data-action]');
     if (!target) return;
 
@@ -247,7 +292,7 @@
   });
 
   // Form submit delegation
-  document.addEventListener('submit', function(e) {
+  document.addEventListener('submit', function (e) {
     const form = e.target;
     const action = form.dataset.formAction;
 
@@ -258,7 +303,7 @@
   });
 
   // Select change delegation
-  document.addEventListener('change', function(e) {
+  document.addEventListener('change', function (e) {
     const target = e.target.closest('select[data-action]');
     if (!target) return;
 
@@ -269,9 +314,9 @@
   });
 
   // Close dropdown when clicking outside
-  document.addEventListener('click', function(e) {
+  document.addEventListener('click', function (e) {
     if (!e.target.closest('[data-action="toggleLangDropdown"]') &&
-        !e.target.closest('#langDropdown')) {
+      !e.target.closest('#langDropdown')) {
       const dropdown = document.getElementById('langDropdown');
       if (dropdown && !dropdown.classList.contains('hidden')) {
         dropdown.classList.add('hidden');

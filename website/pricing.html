@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarifs - VocalIA | Agents Vocaux IA</title>
-  <meta name="description"
-    content="Plans tarifaires VocalIA: Widget Starter à 99€/mois, Pro à 299€/mois, Enterprise sur mesure. Téléphonie à ~0.06€/min.">
+  content="Plans tarifaires VocalIA: Découverte (Gratuit), Starter à 99€/mois, Pro à 299€/mois, Enterprise sur mesure.
+  Téléphonie à 0.06€/min.">
   <link rel="canonical" href="https://vocalia.ma/pricing" />
 
   <!-- Hreflang for i18n SEO (5 languages) -->
@@ -768,7 +768,7 @@
         <!-- Free Plan -->
         <div class="pricing-card p-6 relative">
           <div class="mb-6">
-            <h3 class="text-lg font-semibold text-zinc-300 mb-2" data-i18n="pricing_page.free_name">Widget Starter</h3>
+            <h3 class="text-lg font-semibold text-zinc-300 mb-2" data-i18n="pricing_page.free_name">Découverte</h3>
             <div class="flex items-baseline gap-1">
               <span class="text-4xl font-bold" data-i18n="pricing_page.free_price">0</span>
               <span class="text-zinc-400">€</span>
@@ -1157,7 +1157,7 @@
           </summary>
           <div class="px-6 pb-6 text-zinc-400" data-i18n="pricing_page.faq4_a">
             Le Darija est le dialecte marocain parlé par 40 millions de locuteurs. VocalIA utilise un modèle IA
-            spécialisé, un modèle spécialisé développé pour l'arabe marocain, offrant un support natif de qualité.
+            spécialisé développé pour l'arabe marocain, offrant un support natif de qualité.
           </div>
         </details>
 
@@ -1423,7 +1423,8 @@
     (function () {
       let currentCurrency = 'EUR';
       let currentSymbol = '€';
-      let currentPricing = { starter: 49, pro: 149, overage: 0.06 };
+      // Fixed: Synchronized with HTML pricing (Session 250.86)
+      let currentPricing = { starter: 99, pro: 299, overage: 0.06 };
       let isAnnual = false;
 
       // Annual discount: 20%

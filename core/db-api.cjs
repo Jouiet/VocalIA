@@ -115,6 +115,8 @@ const CORS_HEADERS = {
 // Rate limiter for DB endpoints
 const dbLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minute
 
+const stripeService = require('./StripeService.cjs');
+
 /**
  * Check authentication (returns user or null)
  * @returns {Object|null} User object or null if not authenticated
@@ -646,7 +648,7 @@ async function handleTelephonyRequest(req, res, path, method, query) {
           languages: langs,
           statusBreakdown,
           savings,
-          uptime: 99.9
+          uptime: Math.floor(process.uptime())
         }
       });
       return true;
@@ -721,6 +723,72 @@ async function handleRequest(req, res) {
   if (path.startsWith('/api/telephony/')) {
     const handled = await handleTelephonyRequest(req, res, path, method, query);
     if (handled) return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.78: BILLING API ENDPOINTS (Real Stripe Integration)
+  // ═══════════════════════════════════════════════════════════════
+
+  // GET /api/tenants/:id/billing - Get invoices & status
+  const billingMatch = path.match(/^\/api\/tenants\/(\w+)\/billing$/);
+  if (billingMatch && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = billingMatch[1];
+
+    // Security check: User must belong to tenant or be admin
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const invoices = await stripeService.listInvoices(tenantId);
+      // Transform for frontend
+      const invoicesMapped = invoices.map(inv => ({
+        id: inv.id,
+        date: new Date(inv.created * 1000).toISOString(),
+        amount: (inv.total / 100).toFixed(2),
+        currency: inv.currency.toUpperCase(),
+        status: inv.status,
+        pdf_url: inv.invoice_pdf,
+        hosted_url: inv.hosted_invoice_url
+      }));
+
+      sendJson(res, 200, {
+        success: true,
+        invoices: invoicesMapped
+      });
+    } catch (e) {
+      console.error('[Billing API] Error:', e);
+      sendError(res, 500, 'Billing service unavailable');
+    }
+    return;
+  }
+
+  // POST /api/tenants/:id/billing/portal - Get Stripe Portal Link
+  const portalMatch = path.match(/^\/api\/tenants\/(\w+)\/billing\/portal$/);
+  if (portalMatch && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    const tenantId = portalMatch[1];
+
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
+    try {
+      const body = await parseBody(req);
+      const returnUrl = body.returnUrl || req.headers.referer || 'https://vocalia.ma/app/client/billing.html';
+      const url = await stripeService.getPortalLink(tenantId, returnUrl);
+
+      sendJson(res, 200, { success: true, url });
+    } catch (e) {
+      console.error('[Billing API] Portal Error:', e);
+      sendError(res, 500, 'Could not create portal session');
+    }
+    return;
   }
 
   // ═══════════════════════════════════════════════════════════════

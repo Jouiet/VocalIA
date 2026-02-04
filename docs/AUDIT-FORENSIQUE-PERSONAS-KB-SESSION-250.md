@@ -19,6 +19,7 @@
 | **SWOT mis à jour** | Supprimé mentions ColBERT, ajouté enrichissement chunks | ✅ |
 
 **Justification suppression ColBERT:**
+
 - Corpus 193 chunks vs 10K+ minimum recommandé SOTA
 - Latence GPU 50-100ms incompatible avec voice real-time (<100ms budget)
 - BM25 baseline 62% recall suffisant pour corpus de cette taille
@@ -35,6 +36,7 @@
 | **Module validation** | `node -e` load test successful | ✅ |
 
 **Métriques finales i18n:**
+
 - **40 personas** avec behavioral context traduit
 - **~175 complaint_scenarios** traduits × 5 langues = **~875 traductions**
 - **~120 escalation_triggers** traduits × 5 langues = **~600 traductions**
@@ -42,6 +44,7 @@
 - **Total: ~1,975 traductions** de behavioral context
 
 **Tiers traduits:**
+
 | Tier | Personas | Status |
 |:-----|:--------:|:------:|
 | Tier 1 (Core) | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL | ✅ |
@@ -60,6 +63,7 @@
 | **Vérification exhaustive** | 40/40 personas auditées, 175 scénarios vérifiés | ✅ |
 
 **Métriques finales:**
+
 - 27 scénarios avec pattern HITL "Je transmets"
 - 175 scénarios total (pas tous financiers)
 - **0 promesses directes sans HITL**
@@ -67,6 +71,7 @@
 **Corrections appliquées (23 total):**
 
 *Session 250.12 (14 scénarios):*
+
 - DISPATCHER: package_damaged
 - UNIVERSAL_ECOMMERCE: late_delivery, damaged_product
 - CONCIERGE: noisy_room, amenities_missing
@@ -79,6 +84,7 @@
 - RENTER: wrong_category
 
 *Session 250.13 (9 scénarios additionnels):*
+
 - STYLIST: wait_time
 - RENTER: dirty_vehicle
 - BAKERY: stale_product, order_not_ready
@@ -155,11 +161,13 @@
 | "sans frais" | 5 | 🟠 ÉLEVÉ |
 
 **HITL Existant VocalIA** (couvert):
+
 - ✅ Bookings (BANT >= 70) → `queueActionForApproval('booking')`
 - ✅ Transfers → `queueActionForApproval('transfer')`
 - ❌ **Financial complaints → AUCUN HITL**
 
 **Solution Recommandée** (Option B+C Hybride):
+
 ```javascript
 // .env
 HITL_APPROVE_FINANCIAL_COMPLAINTS=true
@@ -178,6 +186,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 ```
 
 **Sources Best Practices**:
+
 - [Parseur HITL Guide 2026](https://parseur.com/blog/human-in-the-loop-ai): "Supervisor reviews, approves for refunds/policy exceptions"
 - [Phantasm GitHub](https://github.com/phantasmlabs/phantasm): "Delay critical actions until human approves"
 - [IBM HITL](https://www.ibm.com/think/topics/human-in-the-loop): "HITL for big repercussions—financial or reputational"
@@ -345,6 +354,7 @@ node script.cjs --status
 | **TOTAL** | **40** | |
 
 **Personas supprimées (5)** - hors scope B2B:
+
 - GOVERNOR (admin publique - pas PME)
 - SCHOOL (établissements scolaires - pas B2B)
 - HOA (syndic copropriété - niche trop spécifique)
@@ -352,11 +362,13 @@ node script.cjs --status
 - DRIVER (VTC individuel - couvert par DISPATCHER/RENTER)
 
 **GROCERY réinstauré** - marché B2B validé:
+
 - Maroc: $128M (Marjane, Carrefour Market, Glovo)
 - Europe: $59B (Flink, REWE, Amazon Fresh)
 - Use case: commandes, tracking, réclamations, reorder
 
 **Vérification empirique**:
+
 ```bash
 grep -E "^\s+id: '" personas/voice-persona-injector.cjs | wc -l
 # Résultat: 40
@@ -381,6 +393,7 @@ grep -E "^\s+id: '" personas/voice-persona-injector.cjs | wc -l
 | ES | 40/40 | 100% | 🟢 COMPLET |
 
 **Vérification empirique Session 250.7**:
+
 ```bash
 grep -c "^        fr:" personas/voice-persona-injector.cjs   # 40 ✅
 grep -c "^        en:" personas/voice-persona-injector.cjs   # 40 ✅
@@ -568,6 +581,7 @@ grep -c "^        ary:" personas/voice-persona-injector.cjs  # 40 ✅
 | b parameter | 0.75 | 0.75 | 0.75 | 🟢 OK |
 
 **Vocabulaire complet** (44 termes):
+
 ```
 voice, api, resilient, architectural, priority, structural, foundation,
 grok, realtime, telephony, bridge, persona, injector, personas, widget,
@@ -629,6 +643,7 @@ cost-tracking-sensor, lead-velocity-sensor, retention-sensor
 #### 4.5.1 Comparaison Contenu
 
 **Legacy KB** (`telephony/knowledge_base.json`) - **40 personas** (MÀJ Session 250.7):
+
 ```json
 {
   "dental_intake_v1": {
@@ -641,6 +656,7 @@ cost-tracking-sensor, lead-velocity-sensor, retention-sensor
 ```
 
 **RAG KB** (`data/knowledge-base/chunks.json`) - **18 chunks**:
+
 ```json
 {
   "id": "voice-api-resilient",
@@ -765,6 +781,7 @@ const score = 1 / (i + 60);
 ```
 
 **Personas supprimées (5) - hors scope B2B:**
+
 - GOVERNOR (admin publique)
 - SCHOOL (établissements scolaires)
 - HOA (syndic copropriété)
@@ -972,6 +989,7 @@ const score = 1 / (i + 60);
 | 0.2 | Créer répertoire si absent | 1 min | `mkdir -p data/knowledge-base` | `ls -la data/knowledge-base/` |
 
 **Code fix 0.1**:
+
 ```javascript
 // AVANT (ligne 8)
 const CACHE_FILE = path.join(__dirname, '../../../knowledge_base/embeddings_cache.json');
@@ -989,6 +1007,7 @@ const CACHE_FILE = path.join(__dirname, '../data/knowledge-base/embeddings_cache
 | 1.3 | Vérifier chunks enrichis | 5 min | CLI | 12/12 chunks avec benefit_en | ✅ DONE |
 
 **Template enrichissement automations-registry.json**:
+
 ```json
 {
   "id": "voice-api-resilient",
@@ -1016,6 +1035,7 @@ const CACHE_FILE = path.join(__dirname, '../data/knowledge-base/embeddings_cache
 | 2.3 | Documenter forbidden behaviors | 4h | `voice-persona-injector.cjs` | forbidden_behaviors tous personas | ✅ DONE |
 
 **Template structure persona enrichie**:
+
 ```javascript
 DENTAL: {
     id: 'dental_intake_v1',
@@ -1067,6 +1087,7 @@ DENTAL: {
 | 3.4 | ~~Implémenter ColBERT reranker~~ | ~~3j~~ | - | **SUPPRIMÉ** - ROI insuffisant (193 chunks, latence GPU, complexité) | ❌ REJETÉ |
 
 **Template knowledge-graph.json**:
+
 ```json
 {
   "nodes": [
@@ -1147,6 +1168,7 @@ DENTAL: {
 | **TOTAL ENRICHISSEMENT** | **36/36** | **100%** | ✅ |
 
 **Corrections appliquées:**
+
 1. Fix `knowledge-base-services.cjs` ligne 403: Priorité aux valeurs registry sur STRATEGIC_META
 2. Ajout `marketing_science` aux 12 automations dans `automations-registry.json`
 3. Rebuild KB: 183 chunks, 1355 termes
@@ -1156,7 +1178,7 @@ DENTAL: {
 | Critère | Valeur VocalIA | Seuil Minimum SOTA | Verdict |
 |:--------|:--------------:|:------------------:|:-------:|
 | Corpus size | **193 chunks** | 10,000+ chunks | ❌ 51x trop petit |
-| Latency budget | <100ms (voice) | 50-100ms ColBERT | ❌ Latence critique |
+| Latency budget | <500ms (voice) | 50-100ms ColBERT | ❌ Latence critique |
 | GPU requirement | Aucun | GPU obligatoire | ❌ Infrastructure |
 | Maintenance | Minimal | Fine-tuning requis | ❌ Complexité |
 | BM25 baseline | 62% recall | - | ✅ Suffisant |
@@ -1178,6 +1200,7 @@ DENTAL: {
 #### 7.7.4 Templates d'Enrichissement par Catégorie
 
 **Voice Core (4 scripts):**
+
 ```json
 {
   "strategic_intent": "Enable real-time voice AI interactions with sub-100ms latency and 99.9% uptime",
@@ -1187,6 +1210,7 @@ DENTAL: {
 ```
 
 **Integrations (2 scripts):**
+
 ```json
 {
   "strategic_intent": "Seamless data flow between voice AI and business systems",
@@ -1196,6 +1220,7 @@ DENTAL: {
 ```
 
 **Sensors (4 scripts):**
+
 ```json
 {
   "strategic_intent": "Real-time monitoring and optimization of voice AI performance",
@@ -1205,6 +1230,7 @@ DENTAL: {
 ```
 
 **Widget (2 scripts):**
+
 ```json
 {
   "strategic_intent": "Zero-friction voice AI deployment on any website",
@@ -1239,6 +1265,7 @@ jq '[.[] | select(.type == "automation") | {id, strategic: (.strategic_intent !=
 | Total chunks | 183 | **193** | 180+ | ✅ |
 
 **Enrichissement vocabulaire contextuel (+177 termes):**
+
 - Termes géographiques: maroc, morocco, mena, casablanca, rabat, maghrebi
 - Termes linguistiques: darija, dialecte-marocain, arabic, multilingual, rtl
 - Industries cibles: dental, dentiste, immobilier, restaurant, ecommerce, hotel
@@ -1248,6 +1275,7 @@ jq '[.[] | select(.type == "automation") | {id, strategic: (.strategic_intent !=
 #### 7.7.7 Query Translation (tRAG) - Cross-Lingual RAG
 
 **Problème identifié (test empirique):**
+
 | Langue | Query | Résultats BM25 |
 |:-------|:------|:--------------:|
 | FR | "commande livraison" | 5 ✅ |
@@ -1257,12 +1285,14 @@ jq '[.[] | select(.type == "automation") | {id, strategic: (.strategic_intent !=
 | ARY | "بغيت نعرف فين وصلات الكوموند" | **0** ❌ |
 
 **Solution implémentée:** Query Translation (tRAG)
+
 - Fichier: `telephony/voice-telephony-bridge.cjs:1576-1666`
 - Fonction: `detectQueryLanguage()` - Détecte AR/ES via patterns Unicode
 - Fonction: `translateQueryToFrench()` - Traduit via Grok API (grok-3-mini)
 - Intégration: `handleSearchKnowledgeBase()` - Traduction automatique avant BM25
 
 **Test de détection (10/10):**
+
 ```
 ✅ "commande livraison" → fr
 ✅ "order delivery" → fr
@@ -1325,6 +1355,7 @@ jq '[.[] | select(.strategic_intent != "")] | length' data/knowledge-base/chunks
 ### 8.2 Scripts de Fix
 
 **fix-embedding-path.sh**:
+
 ```bash
 #!/bin/bash
 # Fix embedding cache path
@@ -1340,6 +1371,7 @@ grep "CACHE_FILE" "$FILE"
 ```
 
 **rebuild-kb.sh**:
+
 ```bash
 #!/bin/bash
 # Rebuild Knowledge Base after enrichment
@@ -1363,13 +1395,13 @@ node core/knowledge-base-services.cjs --search "voice assistant"
 
 | Ressource | URL | Usage |
 |:----------|:----|:------|
-| Anthropic Claude Persona Docs | https://docs.anthropic.com/en/docs/keep-claude-in-character | Best practices personas |
-| OpenAI Prompt Engineering | https://platform.openai.com/docs/guides/prompt-engineering | Structure prompts |
-| MTEB Leaderboard | https://huggingface.co/spaces/mteb/leaderboard | Benchmarks embeddings |
-| Hybrid RAG Guide | https://superlinked.com/vectorhub/articles/optimizing-rag-with-hybrid-search-reranking | Architecture RAG |
-| langgptai/awesome-voice-prompts | https://github.com/langgptai/awesome-voice-prompts | Voice prompt library |
-| NVIDIA PersonaPlex | https://github.com/NVIDIA/personaplex | Reference architecture |
-| ColBERT/SPLADE Production | https://machine-mind-ml.medium.com/production-rag-that-works | Reranking SOTA |
+| Anthropic Claude Persona Docs | <https://docs.anthropic.com/en/docs/keep-claude-in-character> | Best practices personas |
+| OpenAI Prompt Engineering | <https://platform.openai.com/docs/guides/prompt-engineering> | Structure prompts |
+| MTEB Leaderboard | <https://huggingface.co/spaces/mteb/leaderboard> | Benchmarks embeddings |
+| Hybrid RAG Guide | <https://superlinked.com/vectorhub/articles/optimizing-rag-with-hybrid-search-reranking> | Architecture RAG |
+| langgptai/awesome-voice-prompts | <https://github.com/langgptai/awesome-voice-prompts> | Voice prompt library |
+| NVIDIA PersonaPlex | <https://github.com/NVIDIA/personaplex> | Reference architecture |
+| ColBERT/SPLADE Production | <https://machine-mind-ml.medium.com/production-rag-that-works> | Reranking SOTA |
 
 ### 8.4 Fichiers Clés
 

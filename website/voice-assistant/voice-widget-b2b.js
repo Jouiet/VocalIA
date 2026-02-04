@@ -11,9 +11,16 @@
     'use strict';
 
     const CONFIG = {
+        // Supported languages - All 5 languages
+        SUPPORTED_LANGS: ['fr', 'en', 'es', 'ar', 'ary'],
+        DEFAULT_LANG: 'fr',
+
         // API Endpoints
-        VOICE_API_URL: 'https://api.vocalia.ma/voice/respond',
-        BOOKING_API: 'https://api.vocalia.ma/booking', // Simplified booking endpoint
+        VOICE_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3004/respond'
+            : 'https://api.vocalia.ma/respond',
+
+        BOOKING_API: 'https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFKZXGFUTS9c3SKrmRZdJEg0tcWnvA-P2Jl/exec',
 
         // Feature Flags - B2B Preset
         ECOMMERCE_MODE: false, // HARDCODED FALSE
@@ -33,16 +40,15 @@
         EXIT_INTENT_COOLDOWN: 24 * 60 * 60 * 1000,
 
         // Paths
-        LANG_PATH: 'https://cdn.vocalia.ma/lang/{lang}.json',
+        LANG_PATH: '/lang/widget-{lang}.json', // Served by VocalIA API
 
-        // Defaults
-        DEFAULT_LANG: 'fr',
-        SUPPORTED_LANGS: ['fr', 'en', 'es', 'ar', 'ary'],
+        // Auto-detection
         AUTO_DETECT_LANGUAGES: {
             'fr': 'fr', 'fr-FR': 'fr', 'fr-CA': 'fr', 'fr-BE': 'fr',
             'en': 'en', 'en-US': 'en', 'en-GB': 'en',
             'es': 'es', 'es-ES': 'es',
-            'ar': 'ar', 'ar-MA': 'ary', 'ar-SA': 'ar'
+            'ar': 'ar', 'ar-MA': 'ary', 'ar-SA': 'ar',
+            'ary': 'ary'
         }
     };
 
@@ -375,12 +381,21 @@
     // ============================================================
 
     async function init() {
+        // Priority 1: Pick up injected config from distributions (WordPress/Shopify/Wix)
+        if (window.VOCALIA_CONFIG_INJECTED) {
+            Object.assign(CONFIG, window.VOCALIA_CONFIG_INJECTED);
+        }
+        if (window.VOCALIA_CONFIG) {
+            Object.assign(CONFIG, window.VOCALIA_CONFIG);
+        }
+
         const lang = detectLanguage();
         await loadLanguage(lang);
 
         // B2B: Tenant ID mainly for analytics, not catalog
         const scriptTag = document.querySelector('script[data-vocalia-tenant]');
         if (scriptTag) state.tenantId = scriptTag.dataset.vocaliaTenant;
+        else if (CONFIG.tenantId) state.tenantId = CONFIG.tenantId;
 
         createWidget();
 

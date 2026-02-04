@@ -338,7 +338,7 @@
         "HITL configurable"
       ]
     },
-    "aes256_0": "AES-256",
+    "aes256_0": "HTTPS/TLS",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Agents Vocaux IA pour Entreprises",
     "vocalia_3": "VocalIA",
@@ -383,7 +383,7 @@
   "integrations": {
     "title": "Intégrations Natives",
     "subtitle": "28 intégrations natives",
-    "aes256_0": "AES-256",
+    "aes256_0": "HTTPS/TLS",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Agents Vocaux IA pour Entreprises",
     "vocalia_3": "VocalIA",
@@ -540,7 +540,7 @@
     },
     "overage": "Min. supplémentaire",
     "starting_from": "À partir de 0 {{currency}}/mois",
-    "aes256_0": "AES-256",
+    "aes256_0": "HTTPS/TLS",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Agents Vocaux IA pour Entreprises",
     "vocalia_3": "VocalIA",
@@ -708,7 +708,7 @@
     "faq3_q": "Comment fonctionne le pricing du Voice Widget?",
     "faq3_a": "Le Widget utilise la Web Speech API gratuite du navigateur pour la voix. Cependant, les réponses IA utilisent des APIs payantes (Grok, Gemini). Le plan Starter inclut un quota mensuel. Le Darija utilise ElevenLabs premium.",
     "faq4_q": "Qu'est-ce que le support Darija?",
-    "faq4_a": "Le Darija est le dialecte marocain parlé par 40 millions de locuteurs. VocalIA utilise un modèle IA spécialisé, un modèle spécialisé, pour offrir un support natif de qualité.",
+    "faq4_a": "Le Darija est le dialecte marocain parlé par 40 millions de locuteurs. VocalIA utilise un modèle IA spécialisé pour offrir un support natif de qualité.",
     "faq5_q": "Comment fonctionne l'option self-hosted?",
     "faq5_a": "Pour les clients Enterprise, nous fournissons les containers Docker et scripts de déploiement pour installer VocalIA sur votre propre infrastructure (VPS, cloud privé, on-premise). Vous gardez le contrôle total de vos données.",
     "faq6_q": "Combien de temps l'historique des appels est-il conservé?",

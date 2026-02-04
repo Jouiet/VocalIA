@@ -1,7 +1,7 @@
 # VocalIA - GDPR Compliance Documentation
 
 > **Version**: 1.0.0 | **Date**: 31/01/2026 | **Session**: 250.12
-> **Status**: COMPLIANT | **DPO**: dpo@vocalia.ma
+> **Status**: COMPLIANT | **DPO**: <dpo@vocalia.ma>
 > **Legal Basis**: RGPD (EU), Loi 09-08 (Maroc), AI Act (EU)
 
 ---
@@ -9,6 +9,7 @@
 ## 1. Executive Summary
 
 VocalIA implements comprehensive data protection measures in compliance with:
+
 - **GDPR** (General Data Protection Regulation - EU)
 - **Loi 09-08** (Morocco Data Protection Law)
 - **AI Act** (EU Artificial Intelligence Act)
@@ -110,6 +111,7 @@ CNDP Registration: [Pending]
 ### 4.1 Parties
 
 This Data Processing Agreement ("DPA") is entered into between:
+
 - **Data Controller**: [Client Company Name] ("Controller")
 - **Data Processor**: VocalIA SARL ("Processor")
 
@@ -196,9 +198,9 @@ This DPA terminates automatically upon termination of the Service Agreement. Pro
 
 | Layer | Technology | Implementation |
 |:------|:-----------|:---------------|
-| Data at rest | AES-256-GCM | SecretVault.cjs |
+| Data at rest | Managed (Google Cloud) | Leads/Docs stored in Google Sheets/Drive |
 | Data in transit | TLS 1.3 | All API endpoints |
-| Secrets | AES-256-GCM | Per-tenant encryption |
+| Secrets | AES-256-GCM | Per-tenant keys (SecretVault.cjs) |
 
 ### 5.2 Access Control
 
@@ -227,12 +229,12 @@ Voice data is processed in real-time and not stored. Call metadata uses session 
 
 | Right | Implementation | Contact |
 |:------|:---------------|:--------|
-| Access (Art. 15) | Export via dashboard or email request | privacy@vocalia.ma |
-| Rectification (Art. 16) | Dashboard edit or email request | privacy@vocalia.ma |
-| Erasure (Art. 17) | Deletion within 72 hours | privacy@vocalia.ma |
-| Portability (Art. 20) | JSON/CSV export | privacy@vocalia.ma |
-| Objection (Art. 21) | Opt-out mechanism | privacy@vocalia.ma |
-| Restrict (Art. 18) | Processing pause | privacy@vocalia.ma |
+| Access (Art. 15) | Export via dashboard or email request | <privacy@vocalia.ma> |
+| Rectification (Art. 16) | Dashboard edit or email request | <privacy@vocalia.ma> |
+| Erasure (Art. 17) | Deletion within 72 hours | <privacy@vocalia.ma> |
+| Portability (Art. 20) | JSON/CSV export | <privacy@vocalia.ma> |
+| Objection (Art. 21) | Opt-out mechanism | <privacy@vocalia.ma> |
+| Restrict (Art. 18) | Processing pause | <privacy@vocalia.ma> |
 
 ---
 
@@ -241,6 +243,7 @@ Voice data is processed in real-time and not stored. Call metadata uses session 
 ### 7.1 Risk Classification
 
 VocalIA Voice AI is classified as **Limited Risk** under the EU AI Act:
+
 - Not a prohibited AI use
 - Not high-risk (no critical infrastructure, employment, credit)
 - Transparency obligations apply
@@ -316,10 +319,10 @@ ls website/privacy.html && echo "✅ Privacy page exists"
 
 | Role | Email | Purpose |
 |:-----|:------|:--------|
-| Data Protection Officer | dpo@vocalia.ma | GDPR queries, breach reports |
-| Privacy Team | privacy@vocalia.ma | Data subject requests |
-| Security Team | security@vocalia.ma | Security incidents |
-| Legal | legal@vocalia.ma | Contract/DPA queries |
+| Data Protection Officer | <dpo@vocalia.ma> | GDPR queries, breach reports |
+| Privacy Team | <privacy@vocalia.ma> | Data subject requests |
+| Security Team | <security@vocalia.ma> | Security incidents |
+| Legal | <legal@vocalia.ma> | Contract/DPA queries |
 
 ---
 

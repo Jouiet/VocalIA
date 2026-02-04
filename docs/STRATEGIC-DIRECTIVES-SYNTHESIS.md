@@ -81,3 +81,41 @@ To win in the 2026 AI marketplace, our distribution strategy leverages three "Un
 
 **Factual State: 100% PRODUCTION READY.**
 **Debt Level: ZERO.**
+
+---
+
+## 6. Truth in Marketing (Forensic Rectification) 🔍
+
+As part of the "Ultrathink" initiative, we have enforced a policy of **Radical Candor** and **Technical Accuracy** in all public-facing assets.
+
+### 6.1 Audit Findings & Rectifications
+
+1. **Encryption Claims:**
+    * **Previous Claim:** "AES-256 Encryption" (implied database-level encryption).
+    * **Verified Reality:** Standard HTTPS/TLS transport security.
+    * **Directive:** Replaced "AES-256" with **"HTTPS/TLS"** across Footer and About page. We do not claim features we have not rigorously verified in the codebase.
+
+2. **Uptime Claims:**
+    * **Previous Claim:** "99.9% Uptime Garanti" (historical data missing).
+    * **Verified Reality:** Infrastructure is monitored via `process.uptime()`, but historical 99.9% is unproven.
+    * **Directive:** Replaced with **"Monitored"** or **"Infrastructure Redondante"**. We promise what we can prove.
+
+3. **Latency Claims:**
+    * **Previous Claim:** "< 100ms Latency" (physically impossible with current ASR+LLM+TTS chain).
+    * **Verified Reality:** ~200-500ms optimized roundtrip.
+    * **Directive:** Replaced with **"Temps Réel"** or **"Architecture Optimisée"**.
+
+4. **Feature Reality:**
+    * **Contact Form:** Upgraded from a mock visual state to a **fully functional `/api/contact` endpoint**.
+    * **Directive:** All interactive UI elements MUST be backed by working code (Zero Debt).
+
+## 2026-02-04: Widget Strategy Validation (Phase 12b)
+
+**Directive Met:** "Stop selling one widget for everyone."
+
+**Implementation Verified:**
+1.  **Ecommerce Kernel:** Confirmed robust, rich features (208KB). Ready for Shopify/WooCom.
+2.  **B2B Kernel:** Confirmed streamlined, lead-gen focused (18KB). Ready for Agencies/SaaS.
+3.  **Agency Implementation:** Confirmed using the **B2B Kernel**. We practice what we preach. No bloat on our own homepage.
+
+**Status:** CLOSED. Moved to Commercialization.
