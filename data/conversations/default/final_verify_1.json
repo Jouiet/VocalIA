@@ -1,0 +1,35 @@
+{
+  "session_id": "final_verify_1",
+  "tenant_id": "default",
+  "messages": [
+    {
+      "id": "1c0bf575",
+      "role": "user",
+      "content": "Test rapide",
+      "timestamp": "2026-02-04T11:48:41.063Z",
+      "language": "fr",
+      "source": "widget",
+      "persona": "final_verify_1"
+    },
+    {
+      "id": "cb90c2ee",
+      "role": "assistant",
+      "content": "Bonjour ! Test rapide réussi à 100% 🚀. Que voulez-vous tester ou savoir sur VocalIA ? Voice Widget pour booster vos ventes 24/7 sur site web, ou Voice Telephony pour une ligne IA via Twilio ? Dites-moi tout !",
+      "timestamp": "2026-02-04T11:48:41.064Z",
+      "language": "fr",
+      "source": "widget",
+      "persona": "final_verify_1",
+      "latency_ms": 6933
+    }
+  ],
+  "message_count": 2,
+  "created_at": "2026-02-04T11:48:41.064Z",
+  "updated_at": "2026-02-04T11:48:41.064Z",
+  "metadata": {
+    "source": "widget",
+    "language": "fr",
+    "persona": "final_verify_1",
+    "duration_sec": null,
+    "lead_score": null
+  }
+}
