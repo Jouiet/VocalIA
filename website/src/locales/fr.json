@@ -319,10 +319,10 @@
     "widget": {
       "title": "Voice Widget",
       "description": "Intégrez un assistant vocal intelligent sur votre site web. Aucune installation requise.",
-      "price": "Starter",
+      "price": "Business",
       "features": [
-        "Web Speech API native",
-        "40 personas métier",
+        "Qualification Leads (BANT)",
+        "Synchronisation CRM",
         "5 langues supportées",
         "Intégration en 2 minutes"
       ]
