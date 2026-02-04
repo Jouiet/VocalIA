@@ -1596,9 +1596,9 @@ function startServer(port = 3004) {
       const providerStats = Object.entries(PROVIDERS).map(([k, p]) => ({
         name: k,
         enabled: p.enabled,
-        latencyAvg: latencyTracker[p.name]?.avg || 0,
-        latencyP95: latencyTracker[p.name]?.p95 || 0,
-        requestCount: latencyTracker[p.name]?.count || 0
+        latencyAvg: p.name === latencyMetrics.lastProvider ? latencyMetrics.avgLatencyMs : 0,
+        latencyP95: 0, // Not tracked per-provider yet
+        requestCount: p.name === latencyMetrics.lastProvider ? latencyMetrics.callCount : 0
       }));
 
       const metrics = {
