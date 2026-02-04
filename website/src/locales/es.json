@@ -490,7 +490,7 @@
     "subtitle": "Sin costes ocultos, sin compromiso",
     "widget": {
       "name": "Widget",
-      "price": "0",
+      "price": "49",
       "period": "/mes",
       "features": [
         "Asistente vocal web",
@@ -498,7 +498,7 @@
         "5 idiomas",
         "Soporte por email"
       ],
-      "cta": "Comenzar Gratis"
+      "cta": "Prueba 14 Días"
     },
     "starter": {
       "name": "Starter",
@@ -539,7 +539,7 @@
       "cta": "Contáctenos"
     },
     "overage": "Minutos extra",
-    "starting_from": "Desde 0 {{currency}}/mes",
+    "starting_from": "Desde 49 {{currency}}/mes",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Agentes Vocales IA para Empresas",
@@ -636,7 +636,7 @@
     "toggle_annual": "Anual",
     "toggle_discount": "-20%",
     "free_name": "Widget Starter",
-    "free_price": "0",
+    "free_price": "49",
     "free_period": "para siempre",
     "free_desc": "Ideal para probar VocalIA en su sitio web sin compromiso.",
     "free_f1": "Voice Widget ilimitado",
@@ -715,7 +715,7 @@
     "faq6_a": "El historial de llamadas telefónicas se conserva durante 60 días. Se realiza una purga automática el 1º de cada mes. Puedes exportar tus datos (CSV, Excel, PDF) en cualquier momento desde tu panel para conservarlos más tiempo.",
     "cta_title": "¿Listo para Automatizar tus Llamadas?",
     "cta_subtitle": "Empieza con el plan Starter, escala cuando estés listo.",
-    "cta_primary": "Empezar Gratis",
+    "cta_primary": "Empezar Prueba",
     "cta_secondary": "Hablar con un Experto",
     "table_free": "Starter",
     "table_starter": "Starter",

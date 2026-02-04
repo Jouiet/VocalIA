@@ -490,7 +490,7 @@
     "subtitle": "لا رسوم خفية، لا التزام",
     "widget": {
       "name": "Widget",
-      "price": "0",
+      "price": "49",
       "period": "/شهر",
       "features": [
         "مساعد صوتي ويب",
@@ -636,7 +636,7 @@
     "toggle_annual": "سنوي",
     "toggle_discount": "-20%",
     "free_name": "Widget Starter",
-    "free_price": "0",
+    "free_price": "49",
     "free_period": "للأبد",
     "free_desc": "مثالي لتجربة VocalIA على موقعك بدون التزام.",
     "free_f1": "Voice Widget غير محدود",
@@ -1862,7 +1862,7 @@
     "feature_analytics_desc": "تصور قمعك، حدد نقاط الاختناق، حسّن عملية مبيعاتك.",
     "feature_objections_title": "Gestion objections",
     "feature_objections_desc": "الذكاء الاصطناعي يعالج الاعتراضات الشائعة ويعيد إشراك العملاء المترددين بالحجج الصحيحة.",
-    "cta_primary": "ابدأ مجانا",
+    "cta_primary": "بدء التجربة",
     "cta_secondary": "عرض الأسعار",
     "stats_conversion": "معدل التحويل",
     "stats_cost_per_lead": "التكلفة لكل عميل",

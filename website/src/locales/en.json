@@ -490,7 +490,7 @@
     "subtitle": "No hidden fees, no commitment",
     "widget": {
       "name": "Widget",
-      "price": "0",
+      "price": "49",
       "period": "/month",
       "features": [
         "Web voice assistant",
@@ -636,7 +636,7 @@
     "toggle_annual": "Annual",
     "toggle_discount": "-20%",
     "free_name": "Starter Widget",
-    "free_price": "0",
+    "free_price": "49",
     "free_period": "forever",
     "free_desc": "Ideal for testing VocalIA on your website with no commitment.",
     "free_f1": "Unlimited Voice Widget",
