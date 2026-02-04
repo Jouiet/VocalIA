@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voice Widget - VocalIA | Assistant Vocal IA pour Sites Web</title>
   <meta name="description"
-    content="Intégrez un assistant vocal IA sur votre site web. STT/TTS natif, réponses IA multi-provider, 40 personas, 5 langues. Installation en 2 minutes.">
+    content="Assistant vocal IA professionnel pour sites web. 40 personas métier, 5 langues dont Darija. Synchronisation CRM, génération de leads 24/7. À partir de 49€/mois.">
   <link rel="canonical" href="https://vocalia.ma/products/voice-widget" />
 
   <!-- Hreflang for i18n SEO (5 languages) -->
@@ -21,17 +21,19 @@
   <meta property="og:type" content="product" />
   <meta property="og:url" content="https://vocalia.ma/products/voice-widget" />
   <meta property="og:title" content="Voice Widget - VocalIA | Assistant Vocal IA" />
-  <meta property="og:description" content="Assistant vocal IA pour votre site web. STT/TTS natif, réponses IA multi-provider. Installation en 2 minutes." />
+  <meta property="og:description"
+    content="Assistant vocal IA pour votre site web. STT/TTS natif, réponses IA multi-provider. Installation en 2 minutes." />
   <meta property="og:image" content="https://vocalia.ma/public/images/products/voice-widget-og.webp" />
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@vocalia_ma">
 
-  
+
   <!-- Twitter Card -->
   <meta name="twitter:url" content="https://vocalia.ma/products/voice-widget" />
   <meta name="twitter:title" content="Voice Widget - VocalIA | Assistant Vocal IA" />
-  <meta name="twitter:description" content="Assistant vocal IA pour votre site web. STT/TTS natif, réponses IA multi-provider." />
+  <meta name="twitter:description"
+    content="Assistant vocal IA pour votre site web. STT/TTS natif, réponses IA multi-provider." />
   <meta name="twitter:image" content="https://vocalia.ma/public/images/products/voice-widget-og.webp" />
 
   <!-- Favicon -->
@@ -49,7 +51,7 @@
       "brand": {"@type": "Brand", "name": "VocalIA"},
       "offers": {
         "@type": "Offer",
-        "price": "0",
+        "price": "49",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock"
       },
@@ -80,7 +82,22 @@
   </script>
 
   <!-- Critical CSS -->
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+  <style>
+    body {
+      background: #1e293b;
+      color: #fff;
+      font-family: Inter, system-ui, sans-serif;
+      margin: 0
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0)
+    }
+  </style>
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -89,11 +106,14 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'">
 
   <!-- Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
   <style>
     .gradient-text {
@@ -102,11 +122,13 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+
     .glass {
       background: rgba(51, 65, 85, 0.85);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(148, 163, 184, 0.25);
     }
+
     .code-block {
       background: #0f172a;
       border: 1px solid rgba(148, 163, 184, 0.15);
@@ -115,6 +137,7 @@
       font-size: 14px;
       overflow-x: auto;
     }
+
     .code-block .line-number {
       color: #64748b;
       user-select: none;
@@ -122,10 +145,23 @@
       text-align: right;
       min-width: 40px;
     }
-    .code-block .keyword { color: #c792ea; }
-    .code-block .string { color: #c3e88d; }
-    .code-block .comment { color: #546e7a; }
-    .code-block .attr { color: #82aaff; }
+
+    .code-block .keyword {
+      color: #c792ea;
+    }
+
+    .code-block .string {
+      color: #c3e88d;
+    }
+
+    .code-block .comment {
+      color: #546e7a;
+    }
+
+    .code-block .attr {
+      color: #82aaff;
+    }
+
     .feature-card {
       background: rgba(51, 65, 85, 0.5);
       backdrop-filter: blur(12px);
@@ -134,6 +170,7 @@
       padding: 24px;
       transition: all 0.3s ease;
     }
+
     .feature-card:hover {
       border-color: rgba(94, 106, 210, 0.4);
       transform: translateY(-2px);
@@ -141,237 +178,264 @@
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  
+
 </head>
 
 <body class="bg-slate-800 text-white antialiased">
   <!-- Skip Link -->
 
-    <a href="#main-content"
-
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg"><span data-i18n="widget.aller_au_contenu_29">Aller
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg"><span
+      data-i18n="widget.aller_au_contenu_29">Aller
 
       au contenu principal</span></a>
 
-    <!-- Navigation -->
+  <!-- Navigation -->
 
-    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="flex items-center justify-between h-16">
+      <div class="flex items-center justify-between h-16">
 
-          <!-- Logo -->
+        <!-- Logo -->
 
-          <a href="/" class="flex items-center space-x-2">
+        <a href="/" class="flex items-center space-x-2">
 
-            <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
+          <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
 
-            <span class="text-xl font-bold gradient-text"><span data-i18n="widget.vocalia_3"><span data-i18n="widget.vocalia_28">VocalIA</span></span></span>
+          <span class="text-xl font-bold gradient-text"><span data-i18n="widget.vocalia_3"><span
+                data-i18n="widget.vocalia_28">VocalIA</span></span></span>
 
-          </a>
+        </a>
 
-          <!-- Desktop Nav with Mega Menu -->
+        <!-- Desktop Nav with Mega Menu -->
 
-          <div class="hidden md:flex items-center space-x-1">
+        <div class="hidden md:flex items-center space-x-1">
 
-            <!-- Products Dropdown -->
+          <!-- Products Dropdown -->
 
-            <div class="relative group">
+          <div class="relative group">
 
-              <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-                <span data-i18n="nav.products"><span data-i18n="widget.produits_14">Produits</span></span>
-                <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+            <button type="button"
+              class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+              <span data-i18n="nav.products"><span data-i18n="widget.produits_14">Produits</span></span>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
-              </button>
+            </button>
 
-              <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            <div
+              class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
 
-                  <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+                <a href="/products/voice-widget"
+                  class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
-                    <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center shrink-0">
+                  <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center shrink-0">
                     <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
 
-                    </div>
+                  </div>
 
-                    <div>
+                  <div>
 
-                      <div class="font-semibold text-white"><span data-i18n="widget.voice_widget_13"><span data-i18n="widget.voice_widget_27">Voice Widget</span></span></div>
+                    <div class="font-semibold text-white"><span data-i18n="widget.voice_widget_13"><span
+                          data-i18n="widget.voice_widget_27">Voice Widget</span></span></div>
 
-                      <div class="text-sm text-zinc-400"><span data-i18n="widget.assistant_vocal_web_12"><span data-i18n="widget.assistant_vocal_web_26">Assistant vocal web intelligent</span></span></div>
+                    <div class="text-sm text-zinc-400"><span data-i18n="widget.assistant_vocal_web_12"><span
+                          data-i18n="widget.assistant_vocal_web_26">Assistant vocal web intelligent</span></span></div>
 
-                    </div>
+                  </div>
 
-                  </a>
+                </a>
 
-                  <a href="/products/voice-telephony" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+                <a href="/products/voice-telephony"
+                  class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
-                    <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
+                  <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
 
-                      <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
+                    <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
 
-                    </div>
+                  </div>
 
-                    <div>
+                  <div>
 
-                      <div class="font-semibold text-white"><span data-i18n="widget.voice_telephony_ai_11"><span data-i18n="widget.voice_telephony_ai_25">Voice Telephony AI</span></span></div>
+                    <div class="font-semibold text-white"><span data-i18n="widget.voice_telephony_ai_11"><span
+                          data-i18n="widget.voice_telephony_ai_25">Voice Telephony AI</span></span></div>
 
-                      <div class="text-sm text-zinc-400"><span data-i18n="widget.agents_tlphoniques_pstn_10"><span data-i18n="widget.agents_tlphoniques_pstn_24">Agents téléphoniques PSTN</span></span></div>
+                    <div class="text-sm text-zinc-400"><span data-i18n="widget.agents_tlphoniques_pstn_10"><span
+                          data-i18n="widget.agents_tlphoniques_pstn_24">Agents téléphoniques PSTN</span></span></div>
 
-                    </div>
+                  </div>
 
-                  </a>
+                </a>
 
-                  <hr class="border-slate-600/50 my-2">
+                <hr class="border-slate-600/50 my-2">
 
-                  <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
+                <a href="/features"
+                  class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
 
-                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                  <i data-lucide="sparkles" class="w-5 h-5"></i>
                   Toutes les fonctionnalités
 
-                  </a>
-
-                </div>
+                </a>
 
               </div>
 
             </div>
 
-            <!-- Solutions Dropdown -->
+          </div>
 
-            <div class="relative group">
+          <!-- Solutions Dropdown -->
 
-              <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-                <span data-i18n="nav.solutions"><span data-i18n="widget.solutions_9">Solutions</span></span>
-                <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+          <div class="relative group">
 
-              </button>
+            <button type="button"
+              class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+              <span data-i18n="nav.solutions"><span data-i18n="widget.solutions_9">Solutions</span></span>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
-              <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            </button>
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+            <div
+              class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                  <div class="grid grid-cols-3 gap-6">
+              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
 
-                    <!-- Column 1: Use Cases -->
+                <div class="grid grid-cols-3 gap-6">
 
-                    <div>
+                  <!-- Column 1: Use Cases -->
 
-                      <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span data-i18n="widget.par_cas_dusage_23">Par Cas d'Usage</span></div>
+                  <div>
 
-                      <a href="/use-cases/e-commerce" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span
+                        data-i18n="widget.par_cas_dusage_23">Par Cas d'Usage</span></div>
 
-                        <i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-400"></i>
+                    <a href="/use-cases/e-commerce"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
 
-                        E-commerce
+                      <i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-400"></i>
+
+                      E-commerce
+
+                    </a>
+
+                    <a href="/use-cases/customer-support"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+
+                      Service Client
+
+                    </a>
+
+                    <a href="/use-cases/appointments"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i>
+
+                      Prise de RDV
+
+                    </a>
+
+                    <a href="/use-cases/lead-qualification"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
+
+                      Qualification Leads
+
+                    </a>
+
+                  </div>
+
+                  <!-- Column 2: Industries -->
+
+                  <div>
+
+                    <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span
+                        data-i18n="widget.par_industrie_22">Par Industrie</span></div>
+
+                    <a href="/industries/healthcare"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400"></i>
+
+                      Santé & Médical
+
+                    </a>
+
+                    <a href="/industries/real-estate"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="building-2" class="w-4 h-4 text-emerald-400"></i>
+
+                      Immobilier
+
+                    </a>
+
+                    <a href="/industries/finance"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="landmark" class="w-4 h-4 text-emerald-400"></i>
+
+                      Services Financiers
+
+                    </a>
+
+                    <a href="/industries/retail"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-400"></i>
+
+                      Retail & Commerce
+
+                    </a>
+
+                  </div>
+
+                  <!-- Column 3: Featured -->
+
+                  <div class="bg-slate-700/30 rounded-lg p-4">
+
+                    <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span
+                        data-i18n="widget.populaire_21">Populaire</span></div>
+
+                    <div class="space-y-3">
+
+                      <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+
+                        <div class="flex items-center gap-2 mb-1">
+
+                          <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
+
+                          <span class="text-white font-medium text-sm"><span
+                              data-i18n="widget.multilangue_20">Multi-Langue</span></span>
+
+                        </div>
+
+                        <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija — 5 langues natives</p>
 
                       </a>
 
-                      <a href="/use-cases/customer-support" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                      <a href="/blog/articles/vocalia-lance-support-darija"
+                        class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
 
-                        <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+                        <div class="flex items-center gap-2 mb-1">
 
-                        Service Client
+                          <span class="text-lg">🇲🇦</span>
 
-                      </a>
+                          <span class="text-white font-medium text-sm"><span data-i18n="widget.darija_ai_19">Darija
+                              AI</span></span>
 
-                      <a href="/use-cases/appointments" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                        </div>
 
-                        <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i>
-
-                        Prise de RDV
-
-                      </a>
-
-                      <a href="/use-cases/lead-qualification" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
-
-                        Qualification Leads
+                        <p class="text-zinc-400 text-xs"><span data-i18n="widget.premier_assistant_vocal_18">Premier
+                            assistant vocal en dialecte marocain</span></p>
 
                       </a>
-
-                    </div>
-
-                    <!-- Column 2: Industries -->
-
-                    <div>
-
-                      <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span data-i18n="widget.par_industrie_22">Par Industrie</span></div>
-
-                      <a href="/industries/healthcare" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400"></i>
-
-                        Santé & Médical
-
-                      </a>
-
-                      <a href="/industries/real-estate" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="building-2" class="w-4 h-4 text-emerald-400"></i>
-
-                        Immobilier
-
-                      </a>
-
-                      <a href="/industries/finance" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="landmark" class="w-4 h-4 text-emerald-400"></i>
-
-                        Services Financiers
-
-                      </a>
-
-                      <a href="/industries/retail" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-400"></i>
-
-                        Retail & Commerce
-
-                      </a>
-
-                    </div>
-
-                    <!-- Column 3: Featured -->
-
-                    <div class="bg-slate-700/30 rounded-lg p-4">
-
-                      <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span data-i18n="widget.populaire_21">Populaire</span></div>
-
-                      <div class="space-y-3">
-
-                        <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
-
-                          <div class="flex items-center gap-2 mb-1">
-
-                            <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
-
-                            <span class="text-white font-medium text-sm"><span data-i18n="widget.multilangue_20">Multi-Langue</span></span>
-
-                          </div>
-
-                          <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija — 5 langues natives</p>
-
-                        </a>
-
-                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
-
-                          <div class="flex items-center gap-2 mb-1">
-
-                            <span class="text-lg">🇲🇦</span>
-
-                            <span class="text-white font-medium text-sm"><span data-i18n="widget.darija_ai_19">Darija AI</span></span>
-
-                          </div>
-
-                          <p class="text-zinc-400 text-xs"><span data-i18n="widget.premier_assistant_vocal_18">Premier assistant vocal en dialecte marocain</span></p>
-
-                        </a>
-
-                      </div>
 
                     </div>
 
@@ -383,205 +447,252 @@
 
             </div>
 
-            <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a>
+          </div>
 
-            <!-- Resources Dropdown -->
+          <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition"><span
+              data-i18n="nav.pricing">Tarifs</span></a>
 
-            <div class="relative group">
+          <!-- Resources Dropdown -->
 
-              <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-                <span data-i18n="nav.resources"><span data-i18n="widget.ressources_8">Ressources</span></span>
-                <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+          <div class="relative group">
 
-              </button>
+            <button type="button"
+              class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+              <span data-i18n="nav.resources"><span data-i18n="widget.ressources_8">Ressources</span></span>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
-              <div class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            </button>
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+            <div
+              class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                  <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.docs">Documentation</span></a>
+              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
 
-                  <a href="/integrations" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+                <a href="/docs"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span
+                    data-i18n="footer.links.docs">Documentation</span></a>
 
-                  <a href="/blog" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.blog">Blog</span></a></div>
+                <a href="/integrations"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span
+                    data-i18n="footer.links.integrations">Intégrations</span></a>
 
+                <a href="/blog"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span
+                    data-i18n="footer.links.blog">Blog</span></a>
               </div>
 
             </div>
 
           </div>
 
-          <!-- CTA + Mobile -->
+        </div>
 
-          <div class="flex items-center space-x-3">
+        <!-- CTA + Mobile -->
 
-            <a href="/login"
+        <div class="flex items-center space-x-3">
 
-              class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition font-medium"><span data-i18n="nav.login">Connexion</span></a>
+          <a href="/login"
+            class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition font-medium"><span
+              data-i18n="nav.login">Connexion</span></a>
 
-            <!-- Mobile Hamburger Button -->
+          <!-- Mobile Hamburger Button -->
 
-            <!-- Language Switcher -->
-            <div class="relative">
-              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                <span id="currentLang" class="text-sm font-medium">FR</span>
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
+          <!-- Language Switcher -->
+          <div class="relative">
+            <button type="button" data-action="toggleLangDropdown"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
+              aria-label="Changer de langue">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+              <span id="currentLang" class="text-sm font-medium">FR</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <div id="langDropdown"
+              class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
+              <button type="button" data-action="switchLang" data-params="fr"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <span class="text-lg">&#127467;&#127479;</span>
+                <span class="text-sm"><span data-i18n="widget.francais_17">Francais</span></span>
               </button>
-              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
-                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
-                  <span class="text-lg">&#127467;&#127479;</span>
-                  <span class="text-sm"><span data-i18n="widget.francais_17">Francais</span></span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
-                  <span class="text-lg">&#127468;&#127463;</span>
-                  <span class="text-sm"><span data-i18n="widget.english_16">English</span></span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
-                  <span class="text-lg">&#127466;&#127480;</span>
-                  <span class="text-sm"><span data-i18n="widget.espanol_15">Espanol</span></span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
-                  <span class="text-lg">&#127480;&#127462;</span>
-                  <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
-                  <span class="text-lg">&#127474;&#127462;</span>
-                  <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
-                </button>
-              </div>
+              <button type="button" data-action="switchLang" data-params="en"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <span class="text-lg">&#127468;&#127463;</span>
+                <span class="text-sm"><span data-i18n="widget.english_16">English</span></span>
+              </button>
+              <button type="button" data-action="switchLang" data-params="es"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <span class="text-lg">&#127466;&#127480;</span>
+                <span class="text-sm"><span data-i18n="widget.espanol_15">Espanol</span></span>
+              </button>
+              <button type="button" data-action="switchLang" data-params="ar" dir="rtl"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <span class="text-lg">&#127480;&#127462;</span>
+                <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
+              </button>
+              <button type="button" data-action="switchLang" data-params="ary" dir="rtl"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <span class="text-lg">&#127474;&#127462;</span>
+                <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
+              </button>
             </div>
+          </div>
 
-            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
+          <button type="button" id="mobileMenuBtn"
+            class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition"
+            aria-label="Menu mobile">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
           </button>
 
-          </div>
-
         </div>
 
       </div>
 
-      <!-- Mobile Menu Drawer -->
+    </div>
 
-      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+    <!-- Mobile Menu Drawer -->
 
-        <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
+    <div id="mobileMenu"
+      class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
 
-          <!-- Products Section -->
+      <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
 
-          <div class="mb-6">
+        <!-- Products Section -->
 
-            <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
+        <div class="mb-6">
 
-            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
 
-              <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
+          <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
 
-                <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
+            <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
 
-              </div>
-
-              <div>
-
-                <div class="font-medium text-white">Voice Widget</div>
-
-                <div class="text-sm text-zinc-400">Assistant vocal web intelligent</div>
-
-              </div>
-
-            </a>
-
-            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
-
-              <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
-
-                <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
-
-              </div>
-
-              <div>
-
-                <div class="font-medium text-white">Voice Telephony AI</div>
-
-                <div class="text-sm text-zinc-400">Agents téléphoniques PSTN</div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-          <!-- Solutions Section -->
-
-          <div class="mb-6">
-
-            <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Solutions</h3>
-
-            <div class="grid grid-cols-2 gap-2">
-
-              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
-
-              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
-
-              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
-
-              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
+              <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
 
             </div>
 
-          </div>
+            <div>
 
-          <!-- Resources Section -->
+              <div class="font-medium text-white">Voice Widget</div>
 
-          <div class="mb-6">
+              <div class="text-sm text-zinc-400">Assistant vocal web intelligent</div>
 
-            <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
+            </div>
 
-            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
+          </a>
 
-            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+          <a href="/products/voice-telephony"
+            class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
 
-            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
+            <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
 
-          <!-- Mobile CTA -->
+              <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
 
-          <div class="space-y-3">
+            </div>
 
-            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+            <div>
 
-              Tarifs
+              <div class="font-medium text-white">Voice Telephony AI</div>
 
-            </a>
+              <div class="text-sm text-zinc-400">Agents téléphoniques PSTN</div>
 
-            <a href="/login" class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white">
+            </div>
 
-              Connexion
+          </a>
 
-            </a>
+        </div>
+
+        <!-- Solutions Section -->
+
+        <div class="mb-6">
+
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Solutions</h3>
+
+          <div class="grid grid-cols-2 gap-2">
+
+            <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.ecommerce">E-commerce</span></a>
+
+            <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.healthcare">Santé</span></a>
+
+            <a href="/use-cases/customer-support"
+              class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.customer_support">Service Client</span></a>
+
+            <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.real_estate">Immobilier</span></a>
 
           </div>
 
         </div>
 
+        <!-- Resources Section -->
+
+        <div class="mb-6">
+
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
+
+          <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+              data-i18n="footer.links.docs">Documentation</span></a>
+
+          <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+              data-i18n="footer.links.integrations">Intégrations</span></a>
+
+          <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+              data-i18n="footer.links.blog">Blog</span></a>
+        </div>
+
+        <!-- Mobile CTA -->
+
+        <div class="space-y-3">
+
+          <a href="/pricing"
+            class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+
+            Tarifs
+
+          </a>
+
+          <a href="/login"
+            class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white">
+
+            Connexion
+
+          </a>
+
+        </div>
+
       </div>
 
-    </nav>
+    </div>
 
-    
+  </nav>
+
+
   <!-- Hero -->
   <section class="relative pt-32 pb-20 overflow-hidden" id="main-content">
     <div class="absolute inset-0 bg-gradient-to-b from-vocalia-950 via-gray-950 to-slate-800 pointer-events-none"></div>
-    <div class="absolute inset-0 bg-[linear-gradient(rgba(94,106,210,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(94,106,210,0.02)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none"></div>
+    <div
+      class="absolute inset-0 bg-[linear-gradient(rgba(94,106,210,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(94,106,210,0.02)_1px,transparent_1px)] bg-[size:60px_60px] pointer-events-none">
+    </div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb -->
       <nav class="mb-8" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-2 text-sm text-zinc-400">
-          <li><a href="/" class="hover:text-white transition" data-i18n="voice_widget_page.breadcrumb_home">Accueil</a></li>
+          <li><a href="/" class="hover:text-white transition" data-i18n="voice_widget_page.breadcrumb_home">Accueil</a>
+          </li>
           <li><span class="mx-2">/</span></li>
-          <li><a href="/features" class="hover:text-white transition" data-i18n="voice_widget_page.breadcrumb_products">Produits</a></li>
+          <li><a href="/features" class="hover:text-white transition"
+              data-i18n="voice_widget_page.breadcrumb_products">Produits</a></li>
           <li><span class="mx-2">/</span></li>
           <li class="text-white" data-i18n="voice_widget_page.breadcrumb_current">Voice Widget</li>
         </ol>
@@ -590,7 +701,8 @@
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <!-- Left: Content -->
         <div>
-          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-vocalia-500/10 border border-vocalia-500/30 text-vocalia-400 text-sm mb-6">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-vocalia-500/10 border border-vocalia-500/30 text-vocalia-400 text-sm mb-6">
             <i data-lucide="zap" class="w-4 h-4"></i>
             <span data-i18n="voice_widget_page.badge">Installation 2 min</span>
           </div>
@@ -600,16 +712,22 @@
           </h1>
 
           <p class="text-xl text-zinc-400 mb-8">
-            <span data-i18n="voice_widget_page.subtitle">Intégrez un assistant vocal IA intelligent sur votre site web en 2 minutes.
-            STT/TTS via Web Speech API navigateur.</span> <strong class="text-white" data-i18n="voice_widget_page.subtitle_highlight">Réponses IA multi-provider</strong>.
+            <span data-i18n="voice_widget_page.subtitle">Intégrez un assistant vocal IA intelligent sur votre site web
+              en 2 minutes.
+              STT/TTS via Web Speech API navigateur.</span> <strong class="text-white"
+              data-i18n="voice_widget_page.subtitle_highlight">Réponses IA multi-provider</strong>.
           </p>
 
           <div class="flex flex-wrap gap-4 mb-10">
-            <a href="/signup?product=widget" class="inline-flex items-center px-6 py-3 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition font-semibold" data-i18n="voice_widget_page.cta_start">
-              Démarrer Gratuitement
+            <a href="/signup?product=widget"
+              class="inline-flex items-center px-6 py-3 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition font-semibold"
+              data-i18n="voice_widget_page.cta_start">
+              Essai 14 Jours
               <i data-lucide="file-text" class="w-5 h-5 ml-2"></i>
             </a>
-            <a href="/docs" class="inline-flex items-center px-6 py-3 rounded-xl border border-slate-600 hover:border-slate-500 hover:bg-slate-700/50 transition font-semibold" data-i18n="voice_widget_page.cta_docs">
+            <a href="/docs"
+              class="inline-flex items-center px-6 py-3 rounded-xl border border-slate-600 hover:border-slate-500 hover:bg-slate-700/50 transition font-semibold"
+              data-i18n="voice_widget_page.cta_docs">
               Documentation
             </a>
           </div>
@@ -625,15 +743,16 @@
               <div class="text-sm text-zinc-400" data-i18n="voice_widget_page.stat_languages">Langues</div>
             </div>
             <div class="text-center p-4 rounded-xl bg-slate-700/30">
-              <div class="text-2xl font-bold text-emerald-400">0€</div>
-              <div class="text-sm text-zinc-400" data-i18n="voice_widget_page.stat_api_cost">Coût API</div>
+              <div class="text-2xl font-bold text-emerald-400">ROI</div>
+              <div class="text-sm text-zinc-400" data-i18n="voice_widget_page.stat_api_cost">Maximisé</div>
             </div>
           </div>
         </div>
 
         <!-- Right: Widget Preview -->
         <div class="relative">
-          <div class="absolute -inset-4 bg-gradient-to-r from-vocalia-500/20 to-vocalia-400/10 rounded-3xl blur-2xl"></div>
+          <div class="absolute -inset-4 bg-gradient-to-r from-vocalia-500/20 to-vocalia-400/10 rounded-3xl blur-2xl">
+          </div>
           <div class="relative glass rounded-2xl p-8">
             <div class="bg-slate-900 rounded-xl p-6 border border-slate-700">
               <!-- Mock Widget UI -->
@@ -643,7 +762,8 @@
                     <i data-lucide="play" class="w-5 h-5 text-white"></i>
                   </div>
                   <div>
-                    <div class="font-semibold text-white" data-i18n="voice_widget_page.widget_assistant">Assistant VocalIA</div>
+                    <div class="font-semibold text-white" data-i18n="voice_widget_page.widget_assistant">Assistant
+                      VocalIA</div>
                     <div class="text-xs text-emerald-400 flex items-center gap-1">
                       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                       <span data-i18n="voice_widget_page.widget_online">En ligne</span>
@@ -662,12 +782,14 @@
                     <i data-lucide="bot" class="w-4 h-4 text-blue-400"></i>
                   </div>
                   <div class="bg-slate-800 rounded-xl rounded-tl-none p-3 max-w-[80%]">
-                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_greeting">Bonjour! Je suis votre assistant vocal. Comment puis-je vous aider?</p>
+                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_greeting">Bonjour! Je suis
+                      votre assistant vocal. Comment puis-je vous aider?</p>
                   </div>
                 </div>
                 <div class="flex gap-3 justify-end">
                   <div class="bg-vocalia-500/20 rounded-xl rounded-tr-none p-3 max-w-[80%]">
-                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_user_q">Quels sont vos horaires d'ouverture?</p>
+                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_user_q">Quels sont vos horaires
+                      d'ouverture?</p>
                   </div>
                 </div>
                 <div class="flex gap-3">
@@ -675,17 +797,21 @@
                     <i data-lucide="bot" class="w-4 h-4 text-blue-400"></i>
                   </div>
                   <div class="bg-slate-800 rounded-xl rounded-tl-none p-3 max-w-[80%]">
-                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_response">Nous sommes ouverts du lundi au vendredi, de 9h à 18h. Souhaitez-vous prendre rendez-vous?</p>
+                    <p class="text-sm text-zinc-300" data-i18n="voice_widget_page.widget_response">Nous sommes ouverts
+                      du lundi au vendredi, de 9h à 18h. Souhaitez-vous prendre rendez-vous?</p>
                   </div>
                 </div>
               </div>
 
               <!-- Voice Button -->
               <div class="flex items-center gap-3">
-                <button type="button" class="flex-1 py-3 px-4 rounded-xl bg-slate-800 border border-slate-700 text-zinc-400 text-left text-sm" data-i18n="voice_widget_page.widget_placeholder">
+                <button type="button"
+                  class="flex-1 py-3 px-4 rounded-xl bg-slate-800 border border-slate-700 text-zinc-400 text-left text-sm"
+                  data-i18n="voice_widget_page.widget_placeholder">
                   Tapez ou parlez...
                 </button>
-                <button type="button" class="w-12 h-12 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition flex items-center justify-center">
+                <button type="button"
+                  class="w-12 h-12 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition flex items-center justify-center">
                   <i data-lucide="play" class="w-5 h-5 text-white"></i>
                 </button>
               </div>
@@ -700,36 +826,44 @@
   <section class="py-20 bg-slate-900/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.steps_title">Installation en 3 Étapes</h2>
-        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.steps_subtitle">Déployez votre assistant vocal en moins de 2 minutes</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.steps_title">Installation en 3
+          Étapes</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.steps_subtitle">Déployez votre assistant vocal en
+          moins de 2 minutes</p>
       </div>
 
       <div class="grid md:grid-cols-3 gap-8 mb-16">
         <!-- Step 1 -->
         <div class="text-center">
-          <div class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
+          <div
+            class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
             <span class="text-2xl font-bold text-vocalia-400">1</span>
           </div>
           <h3 class="text-xl font-semibold mb-3" data-i18n="voice_widget_page.step1_title">Configurez</h3>
-          <p class="text-zinc-400" data-i18n="voice_widget_page.step1_desc">Choisissez votre persona, langue et personnalisez le design dans le dashboard.</p>
+          <p class="text-zinc-400" data-i18n="voice_widget_page.step1_desc">Choisissez votre persona, langue et
+            personnalisez le design dans le dashboard.</p>
         </div>
 
         <!-- Step 2 -->
         <div class="text-center">
-          <div class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
+          <div
+            class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
             <span class="text-2xl font-bold text-vocalia-400">2</span>
           </div>
           <h3 class="text-xl font-semibold mb-3" data-i18n="voice_widget_page.step2_title">Copiez le Code</h3>
-          <p class="text-zinc-400" data-i18n="voice_widget_page.step2_desc">Récupérez le snippet JavaScript généré automatiquement.</p>
+          <p class="text-zinc-400" data-i18n="voice_widget_page.step2_desc">Récupérez le snippet JavaScript généré
+            automatiquement.</p>
         </div>
 
         <!-- Step 3 -->
         <div class="text-center">
-          <div class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
+          <div
+            class="w-16 h-16 rounded-2xl bg-vocalia-500/20 border border-vocalia-500/30 flex items-center justify-center mx-auto mb-6">
             <span class="text-2xl font-bold text-vocalia-400">3</span>
           </div>
           <h3 class="text-xl font-semibold mb-3" data-i18n="voice_widget_page.step3_title">Collez et Déployez</h3>
-          <p class="text-zinc-400" data-i18n="voice_widget_page.step3_desc">Ajoutez le script avant la balise &lt;/body&gt; de votre site.</p>
+          <p class="text-zinc-400" data-i18n="voice_widget_page.step3_desc">Ajoutez le script avant la balise
+            &lt;/body&gt; de votre site.</p>
         </div>
       </div>
 
@@ -737,7 +871,8 @@
       <div class="max-w-3xl mx-auto">
         <div class="flex items-center justify-between mb-4">
           <span class="text-sm text-zinc-400" data-i18n="voice_widget_page.code_label">Installation</span>
-          <button type="button" class="text-sm text-vocalia-400 hover:text-vocalia-300 flex items-center gap-1" data-action="copyCode">
+          <button type="button" class="text-sm text-vocalia-400 hover:text-vocalia-300 flex items-center gap-1"
+            data-action="copyCode">
             <i data-lucide="sparkles" class="w-4 h-4"></i>
             <span data-i18n="voice_widget_page.code_copy">Copier</span>
           </button>
@@ -762,8 +897,10 @@
   <section class="py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.features_title">Fonctionnalités Incluses</h2>
-        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.features_subtitle">Tout ce dont vous avez besoin pour l'IA vocale</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.features_title">Fonctionnalités
+          Incluses</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.features_subtitle">Tout ce dont vous avez besoin
+          pour l'IA vocale</p>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -772,8 +909,10 @@
           <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mb-4">
             <i data-lucide="code" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature1_title">Web Speech API</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature1_desc">Reconnaissance et synthèse vocale natives du navigateur. Aucune API externe, 0€ de coût.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature1_title">Reconnaissance Vocale
+            Premium</h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature1_desc">Technologie de reconnaissance et
+            synthèse vocale de dernière génération. Infrastructure dédiée.</p>
         </div>
 
         <!-- Feature 2 -->
@@ -782,7 +921,8 @@
             <i data-lucide="users" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature2_title">40 Personas Métier</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature2_desc">Agents pré-configurés: dentiste, immobilier, e-commerce, support, RH, et plus.</p>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature2_desc">Agents pré-configurés: dentiste,
+            immobilier, e-commerce, support, RH, et plus.</p>
         </div>
 
         <!-- Feature 3 -->
@@ -791,7 +931,8 @@
             <i data-lucide="globe" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature3_title">5 Langues</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature3_desc">Français, Anglais, Espagnol, Arabe MSA et Darija marocain avec détection automatique.</p>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature3_desc">Français, Anglais, Espagnol,
+            Arabe MSA et Darija marocain avec détection automatique.</p>
         </div>
 
         <!-- Feature 4 -->
@@ -799,8 +940,10 @@
           <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mb-4">
             <i data-lucide="palette" class="w-6 h-6 text-vocalia-400"></i>
           </div>
-          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature4_title">Design Personnalisable</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature4_desc">Couleurs, position, avatar et style adaptés à votre charte graphique.</p>
+          <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature4_title">Design Personnalisable
+          </h3>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature4_desc">Couleurs, position, avatar et
+            style adaptés à votre charte graphique.</p>
         </div>
 
         <!-- Feature 5 -->
@@ -809,7 +952,8 @@
             <i data-lucide="bar-chart-2" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature5_title">Analytics</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature5_desc">Tableau de bord avec sessions, durées, questions fréquentes et taux de résolution.</p>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature5_desc">Tableau de bord avec sessions,
+            durées, questions fréquentes et taux de résolution.</p>
         </div>
 
         <!-- Feature 6 -->
@@ -818,7 +962,8 @@
             <i data-lucide="smartphone" class="w-6 h-6 text-vocalia-400"></i>
           </div>
           <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature6_title">Mobile Responsive</h3>
-          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature6_desc">Interface adaptée automatiquement aux smartphones et tablettes.</p>
+          <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature6_desc">Interface adaptée automatiquement
+            aux smartphones et tablettes.</p>
         </div>
       </div>
     </div>
@@ -828,8 +973,10 @@
   <section class="py-20 bg-slate-900/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.specs_title">Spécifications Techniques</h2>
-        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.specs_subtitle">Pour les développeurs qui veulent tout savoir</p>
+        <h2 class="text-3xl sm:text-4xl font-bold mb-4" data-i18n="voice_widget_page.specs_title">Spécifications
+          Techniques</h2>
+        <p class="text-lg text-zinc-400" data-i18n="voice_widget_page.specs_subtitle">Pour les développeurs qui veulent
+          tout savoir</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-8">
@@ -948,9 +1095,13 @@
   <section class="py-24 relative overflow-hidden">
     <div class="absolute inset-0 bg-gradient-to-r from-vocalia-600 to-vocalia-500"></div>
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 class="text-3xl sm:text-4xl font-bold mb-6" data-i18n="voice_widget_page.cta_title">Prêt à Ajouter un Assistant Vocal?</h2>
-      <p class="text-xl text-white/80 mb-8" data-i18n="voice_widget_page.cta_subtitle">Essai inclus, déployé en 2 minutes.</p>
-      <a href="/signup?product=widget" class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg" data-i18n="voice_widget_page.cta_button">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6" data-i18n="voice_widget_page.cta_title">Prêt à Ajouter un
+        Assistant Vocal?</h2>
+      <p class="text-xl text-white/80 mb-8" data-i18n="voice_widget_page.cta_subtitle">Essai inclus, déployé en 2
+        minutes.</p>
+      <a href="/signup?product=widget"
+        class="inline-flex items-center px-8 py-4 rounded-xl bg-white text-vocalia-600 hover:bg-vocalia-100 transition font-semibold text-lg"
+        data-i18n="voice_widget_page.cta_button">
         Créer Mon Widget
         <i data-lucide="layout" class="w-5 h-5 ml-2"></i>
       </a>
@@ -963,65 +1114,74 @@
       <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
-            <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
+            <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice
+              AI</span>
           </h3>
           <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
         <form class="flex flex-col sm:flex-row gap-3" data-form-action="submitNewsletter">
-          <input
-            type="email"
-            placeholder="votre@email.com"
-            data-i18n-placeholder="newsletter.placeholder"
+          <input type="email" placeholder="votre@email.com" data-i18n-placeholder="newsletter.placeholder"
             class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
-            required
-            aria-label="Adresse email"
-          >
-          <button type="submit" class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap" data-i18n="newsletter.button">
+            required aria-label="Adresse email">
+          <button type="submit"
+            class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap"
+            data-i18n="newsletter.button">
             S'inscrire
           </button>
         </form>
       </div>
     </div>
   </section>
-<footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-slate-900 border-t border-slate-800">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
       <div class="mb-10">
-          <a href="/" class="flex items-center space-x-2 mb-4">
-            <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-            <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        <a href="/" class="flex items-center space-x-2 mb-4">
+          <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
+          <span
+            class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        </a>
+        <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="widget.agents_vocaux_ia_2">Agents Vocaux IA pour
+            Entreprises</span></p>
+        <!-- Contact Info -->
+        <div class="space-y-2 text-sm text-zinc-400 mb-4">
+          <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            contact@vocalia.ma
           </a>
-          <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="widget.agents_vocaux_ia_2">Agents Vocaux IA pour Entreprises</span></p>
-          <!-- Contact Info -->
-          <div class="space-y-2 text-sm text-zinc-400 mb-4">
-            <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="mail" class="w-4 h-4"></i>
-              contact@vocalia.ma
-            </a>
-            <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="phone" class="w-4 h-4"></i>
-              +1 762 422 4223
-            </a>
-          </div>
-          <!-- Social Links -->
-          <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
-              <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
-            </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
-              <i data-lucide="linkedin" class="w-4 h-4"></i>
-            </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
-              <i data-lucide="github" class="w-4 h-4"></i>
-            </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
-              <i data-lucide="youtube" class="w-4 h-4"></i>
-            </a>
-          </div>
+          <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
+            <i data-lucide="phone" class="w-4 h-4"></i>
+            +1 762 422 4223
+          </a>
         </div>
+        <!-- Social Links -->
+        <div class="flex space-x-3">
+          <a href="https://x.com/vocalia_ma"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="X">
+            <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70"
+              loading="lazy">
+          </a>
+          <a href="https://linkedin.com/company/vocalia"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="LinkedIn">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+          </a>
+          <a href="https://github.com/Jouiet/VoicalAI"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="GitHub">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
+          <a href="https://youtube.com/@vocalia"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="YouTube">
+            <i data-lucide="youtube" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
 
       <!-- Categories Row - Inline with proper spacing -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
@@ -1029,11 +1189,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.product">Produit</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/features" class="hover:text-white transition"><span data-i18n="nav.features">Fonctionnalités</span></a></li>
-            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a></li>
-            <li><a href="/products/voice-widget" class="hover:text-white transition"><span data-i18n="products.voice_widget">Voice Widget</span></a></li>
-            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
-            <li><a href="/integrations" class="hover:text-white transition"><span data-i18n="footer.links.integrations">Intégrations</span></a></li>
+            <li><a href="/features" class="hover:text-white transition"><span
+                  data-i18n="nav.features">Fonctionnalités</span></a></li>
+            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a>
+            </li>
+            <li><a href="/products/voice-widget" class="hover:text-white transition"><span
+                  data-i18n="products.voice_widget">Voice Widget</span></a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span
+                  data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
+            <li><a href="/integrations" class="hover:text-white transition"><span
+                  data-i18n="footer.links.integrations">Intégrations</span></a></li>
           </ul>
         </div>
 
@@ -1041,11 +1206,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.solutions">Solutions</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas d\'Usage</span></a></li>
-            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par Industrie</span></a></li>
-            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
-            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span data-i18n="footer.links.customer_support">Service Client</span></a></li>
-            <li><a href="/industries/healthcare" class="hover:text-white transition"><span data-i18n="footer.links.healthcare">Santé</span></a></li>
+            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas
+                  d\'Usage</span></a></li>
+            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par
+                  Industrie</span></a></li>
+            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span
+                  data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
+            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span
+                  data-i18n="footer.links.customer_support">Service Client</span></a></li>
+            <li><a href="/industries/healthcare" class="hover:text-white transition"><span
+                  data-i18n="footer.links.healthcare">Santé</span></a></li>
           </ul>
         </div>
 
@@ -1053,10 +1223,14 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.resources">Ressources</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/docs" class="hover:text-white transition"><span data-i18n="footer.links.docs">Documentation</span></a></li>
-            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API Reference</span></a></li>
-            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
-            <li><a href="/academie-business" class="hover:text-white transition"><span data-i18n="footer.links.academy">Académie Business</span></a></li>
+            <li><a href="/docs" class="hover:text-white transition"><span
+                  data-i18n="footer.links.docs">Documentation</span></a></li>
+            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API
+                  Reference</span></a></li>
+            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a>
+            </li>
+            <li><a href="/academie-business" class="hover:text-white transition"><span
+                  data-i18n="footer.links.academy">Académie Business</span></a></li>
           </ul>
         </div>
 
@@ -1064,11 +1238,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.company">Entreprise</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À propos</span></a></li>
-            <li><a href="/contact" class="hover:text-white transition"><span data-i18n="footer.links.contact">Contact</span></a></li>
-            <li><a href="/privacy" class="hover:text-white transition"><span data-i18n="footer.links.privacy">Confidentialité</span></a></li>
-            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a></li>
-            <li><a href="/investor" class="hover:text-white transition"><span data-i18n="footer.links.investors">Investisseurs</span></a></li>
+            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À
+                  propos</span></a></li>
+            <li><a href="/contact" class="hover:text-white transition"><span
+                  data-i18n="footer.links.contact">Contact</span></a></li>
+            <li><a href="/privacy" class="hover:text-white transition"><span
+                  data-i18n="footer.links.privacy">Confidentialité</span></a></li>
+            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a>
+            </li>
+            <li><a href="/investor" class="hover:text-white transition"><span
+                  data-i18n="footer.links.investors">Investisseurs</span></a></li>
           </ul>
         </div>
       </div>
@@ -1121,98 +1300,101 @@
       alert('Code copié!');
     }
   </script>
-<!-- Lucide Icons 2026 -->
-    <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
-    
+  <!-- Lucide Icons 2026 -->
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          } else {
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
 
-    // i18n init - Priority: localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        var storedLang = localStorage.getItem('vocalia_lang');
-        if (storedLang) {
-          await VocaliaI18n.setLocale(storedLang);
-        } else if (typeof VocaliaGeo !== 'undefined') {
-          var geo = await VocaliaGeo.getGeo();
-          await VocaliaI18n.setLocale(geo.lang);
-        } else {
-          await VocaliaI18n.setLocale('fr');
-        }
+      // i18n init - Priority: localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          var storedLang = localStorage.getItem('vocalia_lang');
+          if (storedLang) {
+            await VocaliaI18n.setLocale(storedLang);
+          } else if (typeof VocaliaGeo !== 'undefined') {
+            var geo = await VocaliaGeo.getGeo();
+            await VocaliaI18n.setLocale(geo.lang);
+          } else {
+            await VocaliaI18n.setLocale('fr');
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-    }
+      }
 
-    // Re-init on load
-    window.addEventListener('load', initLucide);
-    window.addEventListener('load', initI18n);
-  })();
+      // Re-init on load
+      window.addEventListener('load', initLucide);
+      window.addEventListener('load', initI18n);
+    })();
   </script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=240"></script>
   <script src="/src/lib/i18n.js?v=240"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
-    <!-- Voice Widget -->
+  <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
 </body>
+
 </html>
