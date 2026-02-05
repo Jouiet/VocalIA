@@ -3099,7 +3099,7 @@
       "this_month": "+5 este mes",
       "total_calls": "Total llamadas",
       "today": "Hoy",
-      "api_latency": "Latencia API",
+      "api_latency": "Rendimiento del Sistema",
       "normal": "Normal"
     },
     "charts": {
@@ -3107,10 +3107,20 @@
       "calls_by_tenant": "Llamadas por cliente"
     },
     "services": {
-      "title": "Estado de servicios"
+      "title": "Estado de servicios",
+      "voice": "Asistente de Voz",
+      "realtime": "Comunicación en Tiempo Real",
+      "telephony": "Telefonía",
+      "database": "Base de Datos",
+      "status_ok": "Operativo",
+      "status_degraded": "Degradado",
+      "status_offline": "Sin conexión"
     },
     "activity": {
       "title": "Actividad reciente"
+    },
+    "logs": {
+      "auth": "Autenticación"
     }
   },
   "analytics": {
@@ -3216,12 +3226,12 @@
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Agentes Vocaux IA pour Empresas",
     "vocalia_3": "VocalIA",
-    "via_zapier_make_4": "Via Zapier, Make, n8n",
+    "via_zapier_make_4": "Vía Zapier, Make, n8n",
     "authentification_5": "Autenticación",
     "hubspot_zoho_crm_6": "HubSpot, Zoho CRM, Pipedrive",
     "crm_finance_7": "CRM Finanzas",
     "paiements_8": "Pagos",
-    "via_zapier_make_9": "Via Zapier, Make, n8n",
+    "via_zapier_make_9": "Vía Zapier, Make, n8n",
     "tout_core_banking_10": "Todo Core Banking",
     "dtection_fraude_ia_11": "Detección fraude IA",
     "audit_logs_complets_12": "Registros de auditoría completos",
@@ -3263,9 +3273,9 @@
     "sip_pbx_pstn_4": "SIP, PBX, PSTN",
     "tlphonie_5": "Telefonía",
     "confirmations_multicanal_6": "Confirmaciones multicanal",
-    "via_zapier_make_7": "Via Zapier, Make, n8n",
+    "via_zapier_make_7": "Vía Zapier, Make, n8n",
     "logiciels_mdicaux_8": "Logiciels Médicos",
-    "via_zapier_make_9": "Via Zapier, Make, n8n",
+    "via_zapier_make_9": "Vía Zapier, Make, n8n",
     "agendas_mdicaux_10": "Agendas Médicos",
     "pas_de_stockage_11": "Sin almacenamiento de audio",
     "audit_trails_12": "Registros de auditoría",
@@ -3309,7 +3319,7 @@
     "agendas_7": "Agendas",
     "sync_leads_automatique_8": "Sincronización de leads automática",
     "google_sheets_9": "Google Sheets",
-    "via_zapier_make_10": "Via Zapier, Make, n8n",
+    "via_zapier_make_10": "Vía Zapier, Make, n8n",
     "tout_crm_immobilier_11": "Todo CRM Inmobiliaria",
     "programmes_neufs_lots_12": "Programas nuevos, lotes, inversores. Gestión de comercialización.",
     "villas_penthouses_proprits_13": "Villas, penthouses, propiedades excepcionales. Servicio VIP y discreción.",
@@ -3351,9 +3361,9 @@
     "agents_vocaux_ia_2": "Agentes Vocaux IA pour Empresas",
     "vocalia_3": "VocalIA",
     "klaviyo_hubspot_pipedrive_4": "Klaviyo, HubSpot, Pipedrive",
-    "via_zapier_make_5": "Via Zapier, Make, n8n",
+    "via_zapier_make_5": "Vía Zapier, Make, n8n",
     "logistique_6": "Logística",
-    "via_zapier_make_7": "Via Zapier, Make, n8n",
+    "via_zapier_make_7": "Vía Zapier, Make, n8n",
     "tout_pos_8": "Todo POS",
     "shopify_magento_prestashop_9": "Shopify, Magento, PrestaShop, WooCommerce",
     "ecommerce_10": "E-commerce",
@@ -3392,7 +3402,7 @@
   },
   "uc_index": {
     "aes256_0": "AES-256",
-    "ai_act_ready_1": "AI Act Ready",
+    "ai_act_ready_1": "Preparado para AI Act",
     "agents_vocaux_ia_2": "Agentes Vocaux IA pour Empresas",
     "vocalia_3": "VocalIA",
     "sheets_drive_docs_4": "Sheets, Drive, Docs",
@@ -3404,7 +3414,7 @@
   },
   "uc_appt": {
     "aes256_0": "AES-256",
-    "ai_act_ready_1": "AI Act Ready",
+    "ai_act_ready_1": "Preparado para AI Act",
     "agents_vocaux_ia_2": "Agentes Vocaux IA pour Empresas",
     "vocalia_3": "VocalIA",
     "ressources_4": "Recursos",
@@ -3432,7 +3442,7 @@
   },
   "uc_support": {
     "aes256_0": "AES-256",
-    "ai_act_ready_1": "AI Act Ready",
+    "ai_act_ready_1": "Preparado para AI Act",
     "agents_vocaux_ia_2": "Agentes Vocaux IA pour Empresas",
     "vocalia_3": "VocalIA",
     "cas_dusage_4": "Caso de uso",
@@ -3461,7 +3471,7 @@
   },
   "uc_ecom": {
     "aes256_0": "AES-256",
-    "ai_act_ready_1": "AI Act Ready",
+    "ai_act_ready_1": "Preparado para AI Act",
     "agents_vocaux_ia_2": "Agentes Vocaux IA pour Empresas",
     "vocalia_3": "VocalIA",
     "roi_mensuel_4": "ROI mensual",
@@ -3482,7 +3492,7 @@
     "voice_widget_19": "Voice Widget",
     "produits_20": "Productos",
     "espanol_21": "Español",
-    "english_22": "English",
+    "english_22": "Inglés",
     "francais_23": "Francés",
     "premier_assistant_vocal_24": "Primer asistente vocal en dialecto marroquí",
     "darija_ai_25": "Darija AI",

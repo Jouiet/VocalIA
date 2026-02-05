@@ -2054,7 +2054,8 @@
     "newsletter_placeholder": "الإيميل ديالك",
     "newsletter_button": "اشترك",
     "newsletter_success": "مشترك!",
-    "newsletter_error": "وقع شي خطأ. عاود حاول."
+    "newsletter_error": "وقع شي خطأ. عاود حاول.",
+    "all": "كلشي"
   },
   "investor": {
     "back_to_site": "رجوع للموقع",
@@ -3099,7 +3100,7 @@
       "this_month": "+5 هاد الشهر",
       "total_calls": "مجموع المكالمات",
       "today": "اليوم",
-      "api_latency": "تأخر API",
+      "api_latency": "أداء السيستم",
       "normal": "عادي"
     },
     "charts": {
@@ -3107,10 +3108,20 @@
       "calls_by_tenant": "المكالمات حسب الكليان"
     },
     "services": {
-      "title": "حالة الخدمات"
+      "title": "حالة الخدمات",
+      "voice": "المساعد الصوتي",
+      "realtime": "التواصل اللحظي",
+      "telephony": "التيليفون",
+      "database": "قاعدة البيانات",
+      "status_ok": "خدام",
+      "status_degraded": "ضعيف",
+      "status_offline": "مقطوع"
     },
     "activity": {
       "title": "النشاط الأخير"
+    },
+    "logs": {
+      "auth": "التوثيق"
     }
   },
   "analytics": {
@@ -3457,7 +3468,7 @@
     "assistant_vocal_web_23": "مساعد صوتي ذكي للويب",
     "voice_widget_24": "Voice Widget",
     "vocalia_25": "VocalIA",
-    "aller_au_contenu_26": "Aller\n\n      au contenu principal"
+    "aller_au_contenu_26": "سير للمحتوى الرئيسي"
   },
   "uc_ecom": {
     "aes256_0": "AES-256",
@@ -3486,7 +3497,7 @@
     "francais_23": "Francais",
     "premier_assistant_vocal_24": "أول مساعد صوتي بالدارجة المغربية",
     "darija_ai_25": "Darija AI",
-    "multilangue_26": "Multi-Langue",
+    "multilangue_26": "متعدد اللغات",
     "populaire_27": "شعبي",
     "par_industrie_28": "حسب الصناعة",
     "par_cas_dusage_29": "حسب حالة الاستخدام",
@@ -3613,14 +3624,14 @@
     "calendly_79": "Calendly",
     "pipedrive_crm_80": "Pipedrive CRM",
     "immobilier_81": "العقار",
-    "stripe_19_outils_82": "Stripe (19 outils)",
-    "squarespace_7_outils_83": "Squarespace (7 outils)",
-    "wix_6_outils_84": "Wix (6 outils)",
-    "bigcommerce_7_outils_85": "BigCommerce (7 outils)",
-    "prestashop_7_outils_86": "PrestaShop (7 outils)",
-    "magento_6_outils_87": "Magento (6 outils)",
-    "woocommerce_7_outils_88": "WooCommerce (7 outils)",
-    "shopify_8_outils_89": "Shopify (8 outils)",
+    "stripe_19_outils_82": "Stripe (19 ديال الأدوات)",
+    "squarespace_7_outils_83": "Squarespace (7 ديال الأدوات)",
+    "wix_6_outils_84": "Wix (6 ديال الأدوات)",
+    "bigcommerce_7_outils_85": "BigCommerce (7 ديال الأدوات)",
+    "prestashop_7_outils_86": "PrestaShop (7 ديال الأدوات)",
+    "magento_6_outils_87": "Magento (6 ديال الأدوات)",
+    "woocommerce_7_outils_88": "WooCommerce (7 ديال الأدوات)",
+    "shopify_8_outils_89": "Shopify (8 ديال الأدوات)",
     "ecommerce_90": "E-commerce",
     "action_91": "أكسيون",
     "point_cl_retenir_92": "Point مفتاح ل retenir",
@@ -4209,15 +4220,15 @@
     "pilote_contrl_2_28": "بايلوت متحكم (أسبوعين)",
     "configuration_du_persona_29": "Configuration du persona (2-3 يامات)",
     "audit_des_interactions_30": "Audit ديال التفاعلات (سيمانة)",
-    "restauration_31": "Restauration",
-    "services_financiers_32": "Services financiers",
+    "restauration_31": "ريسطوراسيون",
+    "services_financiers_32": "خدمات مالية",
     "htellerie_33": "الضيافة",
     "immobilier_34": "العقار",
-    "ecommerce_35": "E-commerce",
+    "ecommerce_35": "إي-كوميرس",
     "roi_moyen_36": "ROI متوسط",
     "conomie_moyenne_37": "الاقتصاد moyenne",
     "taux_automatisation_38": "معدل الأتمتة",
-    "industrie_39": "Industrie",
+    "industrie_39": "صناعة",
     "roi_annuel_total_40": "ROI السنوي الإجمالي",
     "rduction_noshows_60_41": "تخفيض no-shows (-60% × 200€ × 450)",
     "conomie_personnel_1_42": "الاقتصاد perكيرنl (1 سكرتير)",
@@ -4290,7 +4301,7 @@
     "guide_109": "الدليل",
     "guide_110": "الدليل",
     "accueil_111": "الصفحة الرئيسية",
-    "espanol_112": "Espanol",
+    "espanol_112": "Español",
     "english_113": "English",
     "francais_114": "فرانساوية",
     "vocalia_115": "VocalIA",
@@ -4452,7 +4463,7 @@
     "secteur_94": "قطاع",
     "cas_dusage_multimodaux_95": "Cas d'usage multimodaux",
     "entreprises_quipes_96": "الشركةs مجهزة",
-    "croissance_yoy_97": "Croissance YoY",
+    "croissance_yoy_97": "النمو السنوي (YoY)",
     "march_2026_98": "سوق 2026",
     "sommaire_99": "ملخص",
     "quipe_vocalia_100": "الفريق صوتيIA",

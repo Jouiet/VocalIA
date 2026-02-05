@@ -361,8 +361,8 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 ### Phase 1: Verification Master (Immediate)
 
 * [ ] **1.1 VPN Simulation:** Verify "Smart Routing" behavior when accessing from Paris (EUR), Casablanca (MAD), and New York (USD).
-* [ ] **1.2 Dashboard Audit:** Confirm ZERO technical terms remain in visible UI elements (Tooltips included).
-* [ ] **1.3 Currency Consistency:** Ensure Pricing Page (`pricing.html`) respects the `localStorage` currency set by `geo-detect.js`.
+* [x] **1.2 Dashboard Audit:** ✅ **Session 250.89** - Technical terms removed from admin dashboard. "Voice API" → "Assistant Vocal", "Grok Realtime" → "Communication Temps Réel", "DB API" → "Base de Données". Port numbers removed. i18n keys added for 5 locales.
+* [x] **1.3 Currency Consistency:** ✅ **Session 250.89** - Verified. `geo-detect.js` uses localStorage cache (`vocalia_geo_cache_v2`) with 1h TTL. `pricing.html` calls `VocaliaGeo.getGeo()` which respects cached currency.
 
 ### Phase 2: Production Deployment (J+1)
 

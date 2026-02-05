@@ -2054,7 +2054,8 @@
     "newsletter_placeholder": "بريدك@الإلكتروني.com",
     "newsletter_button": "اشترك",
     "newsletter_success": "تم الاشتراك!",
-    "newsletter_error": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    "newsletter_error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "all": "الكل"
   },
   "investor": {
     "back_to_site": "العودة للموقع",
@@ -2876,9 +2877,9 @@
     "fin_de_la_58": "Fin de la conversation avec ملخص et metadata.",
     "lagent_veut_excuter_59": "L'agent veut تنفيذ une fonction (transfer, booking, etc.).",
     "transcription_en_temps_60": "Transcription en temps حقيقي (partielle et finale).",
-    "transcript_61": "transcript",
+    "transcript_61": "نص",
     "audio_pcm_16bit_62": "Audio PCM 16-bit mono مشفر en base64 إلى jouer.",
-    "audio_63": "audio",
+    "audio_63": "صوت",
     "websocket_vnements_64": "WebSocket - أحداث",
     "const_65": "const",
     "samplerate_66": "sampleRate",
@@ -3099,7 +3100,7 @@
       "this_month": "+5 هذا الشهر",
       "total_calls": "إجمالي المكالمات",
       "today": "اليوم",
-      "api_latency": "تأخر API",
+      "api_latency": "أداء النظام",
       "normal": "عادي"
     },
     "charts": {
@@ -3107,10 +3108,20 @@
       "calls_by_tenant": "المكالمات حسب العميل"
     },
     "services": {
-      "title": "حالة الخدمات"
+      "title": "حالة الخدمات",
+      "voice": "المساعد الصوتي",
+      "realtime": "الاتصال الفوري",
+      "telephony": "الهاتف",
+      "database": "قاعدة البيانات",
+      "status_ok": "يعمل",
+      "status_degraded": "متدهور",
+      "status_offline": "غير متصل"
     },
     "activity": {
       "title": "النشاط الأخير"
+    },
+    "logs": {
+      "auth": "المصادقة"
     }
   },
   "analytics": {
@@ -3643,8 +3654,8 @@
     "business_109": "الأعمال",
     "voice_telephony_ai_110": "هاتف صوتي بالذكاء الاصطناعي Voice Telephony AI",
     "voice_widget_111": "أداة صوتية Voice Widget",
-    "espaol_112": "Español",
-    "english_113": "English",
+    "espaol_112": "الإسبانية",
+    "english_113": "الإنجليزية",
     "franais_114": "الفرنسية",
     "fr_en_es_115": "الفرنسية، الإنجليزية، الإسبانية، العربية، الدارجة FR, EN, ES, AR, Darija",
     "fr_en_es_116": "الفرنسية، الإنجليزية، الإسبانية، العربية، الدارجة FR, EN, ES, AR, Darija",

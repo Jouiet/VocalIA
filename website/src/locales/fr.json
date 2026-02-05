@@ -2061,7 +2061,8 @@
     "newsletter_placeholder": "votre@email.com",
     "newsletter_button": "S'inscrire",
     "newsletter_success": "Inscrit !",
-    "newsletter_error": "Une erreur est survenue. Réessayez."
+    "newsletter_error": "Une erreur est survenue. Réessayez.",
+    "all": "Tous"
   },
   "investor": {
     "back_to_site": "Retour au site",
@@ -3106,7 +3107,7 @@
       "this_month": "+5 ce mois",
       "total_calls": "Total appels",
       "today": "Aujourd'hui",
-      "api_latency": "Latence API",
+      "api_latency": "Performance Système",
       "normal": "Normal"
     },
     "charts": {
@@ -3114,10 +3115,20 @@
       "calls_by_tenant": "Appels par tenant"
     },
     "services": {
-      "title": "État des services"
+      "title": "État des services",
+      "voice": "Assistant Vocal",
+      "realtime": "Communication Temps Réel",
+      "telephony": "Téléphonie",
+      "database": "Base de Données",
+      "status_ok": "Opérationnel",
+      "status_degraded": "Dégradé",
+      "status_offline": "Hors ligne"
     },
     "activity": {
       "title": "Activité récente"
+    },
+    "logs": {
+      "auth": "Authentification"
     }
   },
   "analytics": {

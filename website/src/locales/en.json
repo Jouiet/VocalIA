@@ -2054,7 +2054,8 @@
     "newsletter_placeholder": "your@email.com",
     "newsletter_button": "Subscribe",
     "newsletter_success": "Subscribed!",
-    "newsletter_error": "An error occurred. Please try again."
+    "newsletter_error": "An error occurred. Please try again.",
+    "all": "All"
   },
   "investor": {
     "back_to_site": "Back to site",
@@ -3099,7 +3100,7 @@
       "this_month": "+5 this month",
       "total_calls": "Total calls",
       "today": "Today",
-      "api_latency": "API Latency",
+      "api_latency": "System Performance",
       "normal": "Normal"
     },
     "charts": {
@@ -3107,10 +3108,20 @@
       "calls_by_tenant": "Calls by tenant"
     },
     "services": {
-      "title": "Services status"
+      "title": "Services status",
+      "voice": "Voice Assistant",
+      "realtime": "Real-Time Communication",
+      "telephony": "Telephony",
+      "database": "Database",
+      "status_ok": "Operational",
+      "status_degraded": "Degraded",
+      "status_offline": "Offline"
     },
     "activity": {
       "title": "Recent activity"
+    },
+    "logs": {
+      "auth": "Authentication"
     }
   },
   "analytics": {
