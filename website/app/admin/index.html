@@ -76,7 +76,7 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="admin.title">Console Admin</h1>
@@ -102,21 +102,21 @@
             <p class="text-3xl font-bold" id="stat-mrr">--</p>
             <p class="text-sm text-green-100 mt-1" id="stat-mrr-trend">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="admin.stats.active_tenants">Tenants actifs</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-tenants">--</p>
             <p class="text-sm mt-1" id="stat-tenants-trend">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="admin.stats.total_calls">Total appels</span>
             </div>
             <p class="text-3xl font-bold text-slate-900 dark:text-white" id="stat-calls">--</p>
             <p class="text-sm text-slate-500 mt-1" id="stat-calls-period" data-i18n="admin.stats.this_month">Ce mois</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="admin.stats.api_latency">Latence API</span>
             </div>
@@ -127,13 +127,13 @@
 
         <!-- Charts Row -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.charts.monthly_revenue">Revenus mensuels</h3>
             <div class="h-64">
               <canvas id="revenue-chart"></canvas>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.charts.calls_by_tenant">Appels par tenant</h3>
             <div class="h-64">
               <canvas id="tenant-chart"></canvas>
@@ -142,7 +142,7 @@
         </div>
 
         <!-- Services Status -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.services.title">État des services</h3>
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg" id="service-voice">
@@ -177,7 +177,7 @@
         </div>
 
         <!-- Recent Activity -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.activity.title">Activité récente</h3>
           <div class="space-y-3" id="recent-activity">
             <div class="flex items-center justify-center p-6 text-slate-400">

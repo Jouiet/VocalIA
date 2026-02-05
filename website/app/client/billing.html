@@ -95,7 +95,7 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
       <header
-        class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Facturation</h1>
@@ -134,7 +134,7 @@
 
         <!-- Usage -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="billing.minutes_used">Minutes utilisées</span>
               <span id="usage-minutes-pct"
@@ -146,14 +146,14 @@
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="billing.calls_month">Appels ce mois</span>
             </div>
             <p id="usage-calls" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
             <p id="usage-calls-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="billing.integrations">Intégrations</span>
             </div>
@@ -163,7 +163,7 @@
         </div>
 
         <!-- Payment Method -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
             <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="billing.payment_method">Moyen de
               paiement</h3>
@@ -182,7 +182,7 @@
         </div>
 
         <!-- Invoices -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
             <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="billing.invoices">Historique des
               factures</h3>
@@ -211,7 +211,7 @@
         </div>
 
         <!-- Billing Info -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
             <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="billing.billing_info">Informations de
               facturation</h3>

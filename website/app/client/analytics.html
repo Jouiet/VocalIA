@@ -83,7 +83,7 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Analytics</h1>
@@ -106,7 +106,7 @@
       <div class="px-6 py-6 space-y-6">
         <!-- KPIs -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="analytics.kpi.total_calls">Appels totaux</span>
               <span id="kpi-calls-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
@@ -114,7 +114,7 @@
             <p id="kpi-calls" class="text-3xl font-bold text-slate-900 dark:text-white">--</p>
             <p id="kpi-calls-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="analytics.kpi.conversion">Taux de complétion</span>
               <span id="kpi-conv-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
@@ -122,7 +122,7 @@
             <p id="kpi-conversion" class="text-3xl font-bold text-slate-900 dark:text-white">--%</p>
             <p id="kpi-conv-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="analytics.kpi.duration">Durée moyenne</span>
               <span id="kpi-duration-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
@@ -130,7 +130,7 @@
             <p id="kpi-duration" class="text-3xl font-bold text-slate-900 dark:text-white">--:--</p>
             <p id="kpi-duration-sub" class="text-sm text-slate-500 mt-1">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm text-slate-500" data-i18n="analytics.kpi.languages">Langues actives</span>
               <span class="text-xs px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600">5 supportées</span>
@@ -143,7 +143,7 @@
         <!-- Charts Row -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Call Volume Chart -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Volume d'appels</h3>
             <div class="h-64">
               <canvas id="calls-chart"></canvas>
@@ -151,7 +151,7 @@
           </div>
 
           <!-- Conversion Chart -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Taux de conversion</h3>
             <div class="h-64">
               <canvas id="conversion-chart"></canvas>
@@ -162,7 +162,7 @@
         <!-- Distribution Charts -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- By Language -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par langue</h3>
             <div class="h-48">
               <canvas id="language-chart"></canvas>
@@ -170,7 +170,7 @@
           </div>
 
           <!-- By Persona -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par persona</h3>
             <div class="h-48">
               <canvas id="persona-chart"></canvas>
@@ -178,7 +178,7 @@
           </div>
 
           <!-- By Hour -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
             <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par heure</h3>
             <div class="h-48">
               <canvas id="hour-chart"></canvas>
@@ -187,7 +187,7 @@
         </div>
 
         <!-- Voice vs Text Input Methods (E-commerce Widget Phase 1) -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
             <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="analytics.input_methods">Méthodes de saisie</h3>
             <span class="text-xs px-2 py-1 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600" data-i18n="analytics.widget_v3">Widget v3.0</span>
@@ -216,7 +216,7 @@
         </div>
 
         <!-- E-commerce Widget Metrics -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
             <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="analytics.ecommerce_metrics">E-commerce Widget</h3>
             <span class="text-xs px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600" data-i18n="analytics.phase1">Phase 1</span>
@@ -263,7 +263,7 @@
         </div>
 
         <!-- Top Performers -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5">
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="analytics.top_performers">Top Personas</h3>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">

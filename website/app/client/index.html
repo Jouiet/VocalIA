@@ -142,7 +142,7 @@
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Total Calls -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between">
             <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
               <i data-lucide="phone-call" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
@@ -154,7 +154,7 @@
         </div>
 
         <!-- Minutes Used -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between">
             <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
               <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
@@ -166,7 +166,7 @@
         </div>
 
         <!-- Avg Duration -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between">
             <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
               <i data-lucide="timer" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
@@ -178,7 +178,7 @@
         </div>
 
         <!-- Languages -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between">
             <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
               <i data-lucide="languages" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
@@ -193,7 +193,7 @@
       <!-- Charts Row -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Call Volume Chart -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="dashboard.charts.call_volume">Volume d'appels (7 jours)</h3>
           <div class="h-64">
             <canvas id="callVolumeChart"></canvas>
@@ -201,7 +201,7 @@
         </div>
 
         <!-- Language Distribution -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="dashboard.charts.languages">Distribution des langues</h3>
           <div class="h-64 flex items-center justify-center">
             <canvas id="languageChart"></canvas>
@@ -210,7 +210,7 @@
       </div>
 
       <!-- Recent Calls -->
-      <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700">
+      <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
         <div class="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
           <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="dashboard.recent_calls">Appels récents</h3>
           <a href="calls.html" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline" data-i18n="dashboard.view_all">Voir tout</a>
