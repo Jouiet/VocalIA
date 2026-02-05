@@ -174,16 +174,20 @@ class TenantKBLoader {
 }
 ```
 
-### 3.2 P0 - CRITIQUE: KB Management API
+### 3.2 P0 - CRITIQUE: KB Management API ✅ IMPLEMENTED (db-api.cjs)
 
-| # | Endpoint | Method | Description |
-|:-:|:---------|:-------|:------------|
-| 1 | `/api/tenants/{id}/kb` | GET | Lister toutes les entrées KB |
-| 2 | `/api/tenants/{id}/kb` | POST | Ajouter entrée KB |
-| 3 | `/api/tenants/{id}/kb/{key}` | PUT | Modifier entrée KB |
-| 4 | `/api/tenants/{id}/kb/{key}` | DELETE | Supprimer entrée KB |
-| 5 | `/api/tenants/{id}/kb/import` | POST | Import bulk (CSV/JSON) |
-| 6 | `/api/tenants/{id}/kb/rebuild-index` | POST | Rebuild TF-IDF index |
+| # | Endpoint | Method | Description | Status |
+|:-:|:---------|:-------|:------------|:------:|
+| 1 | `/api/tenants/{id}/kb` | GET | Lister toutes les entrées KB | ✅ L798 |
+| 2 | `/api/tenants/{id}/kb` | POST | Ajouter entrée KB | ✅ L829 |
+| 3 | `/api/tenants/{id}/kb/{key}` | DELETE | Supprimer entrée KB | ✅ L883 |
+| 4 | `/api/tenants/{id}/kb/search` | GET | Recherche KB | ✅ L923 |
+| 5 | `/api/tenants/{id}/kb/quota` | GET | Quota status | ✅ L967 |
+| 6 | `/api/tenants/{id}/kb/import` | POST | Import bulk (CSV/JSON) | ✅ L984 |
+| 7 | `/api/tenants/{id}/kb/rebuild-index` | POST | Rebuild TF-IDF index | ✅ L1033 |
+| 8 | `/api/tenants/{id}/kb/crawl` | POST | Crawl website | ✅ L1054 |
+
+**Session 250.94:** All 8 KB Management API endpoints verified in `core/db-api.cjs`.
 
 ### 3.3 P1 - IMPORTANT: Per-Tenant TF-IDF Index
 

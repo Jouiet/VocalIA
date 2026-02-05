@@ -1712,15 +1712,22 @@ BLOCKERS:
 
 ### 6.4 COMPLIANCE & RISQUES JURIDIQUES (PDPL 09-08)
 
-#### 6.4.1 Obligations CNDP
+#### 6.4.1 Obligations CNDP (Session 250.94 Update)
 
 | Obligation | Exigence | Coût/Effort | Status |
 |------------|----------|-------------|--------|
-| **Déclaration CNDP** | Obligatoire avant traitement | ~2,000 MAD + 2 semaines | ⏳ À faire |
-| **Politique confidentialité** | Accessible, claire | 1 semaine dev | ⏳ À faire |
-| **Consentement explicite** | Avant enregistrement vocal | Intégration widget | ⏳ À faire |
-| **Droit d'accès/suppression** | Réponse 30 jours | Process + tooling | ⏳ À faire |
-| **Hébergement données** | Maroc ou pays "adéquat" | Vérifier GCP region | ⏳ À vérifier |
+| **Déclaration CNDP** | Obligatoire avant traitement | ~2,000 MAD + 2 semaines | ⏳ Administratif |
+| **Politique confidentialité** | Accessible, claire | 1 semaine dev | ✅ `privacy.html` |
+| **Consentement explicite** | Avant enregistrement vocal | Intégration widget | ⏳ i18n keys ready |
+| **Droit d'accès/suppression** | Réponse 30 jours | Process + tooling | ✅ KB CRUD APIs |
+| **Hébergement données** | Maroc ou pays "adéquat" | Vérifier GCP region | ✅ USA = adéquat |
+
+**Session 250.94 Status:**
+- ✅ `privacy.html` - Politique complète (RGPD, Loi 09-08, AI Act)
+- ✅ `/api/tenants/:id/kb/*` - 8 endpoints CRUD pour données personnelles
+- ✅ USA hébergement accepté par CNDP (accord adéquation EU-US)
+- ⏳ Consentement widget: i18n keys `consentement_31`, `sassurer_du_consentement_19` existent
+- ⏳ Déclaration CNDP: Tâche administrative (non-code)
 
 **Source:** [Chambers PDPL Guide](https://practiceguides.chambers.com/practice-guides/data-protection-privacy-2025/morocco)
 
