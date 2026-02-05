@@ -258,20 +258,20 @@ RÈGLE: Pas de font-black (900), pas de text-xs pour contenu important
 - [x] 1.3 Shadow hover effect (14 fichiers) ✅ `hover:shadow-lg transition-all duration-200`
 - [x] 1.4 Banner gradient cohérent ✅ (indigo-purple: banners, emerald: success)
 
-### Phase 2 Checklist
+### Phase 2 Checklist ✅ PARTIAL (Session 250.95 cont.)
 
 - [ ] 2.1 GSAP counters importé et configuré
 - [ ] 2.2 Progress bars animées
-- [ ] 2.3 Personas count visible
-- [ ] 2.4 MCP Tools count visible
-- [ ] 2.5 Admin health dashboard enrichi
+- [x] 2.3 Personas count visible ✅ Banner "40 Personas SOTA" + 5 langues + 24/7 (agents.html)
+- [x] 2.4 MCP Tools count visible ✅ Banner "182 MCP Tools" + 28 intégrations + 7000+ Zapier (integrations.html)
+- [x] 2.5 Admin health dashboard enrichi ✅ AI Provider status (4 cards obfusqués) + Platform Metrics (3 cards)
 
-### Phase 3 Checklist
+### Phase 3 Checklist ✅ PARTIAL (Session 250.95 cont.)
 
 - [ ] 3.1 Voice visualizer mini (agents.html)
 - [ ] 3.2 Waveform preview (calls.html)
 - [ ] 3.3 Latency indicator live
-- [ ] 3.4 AI Provider status cards
+- [x] 3.4 AI Provider status cards ✅ 4 providers (Voice-X, Gen-AI, Voice-Labs, PSTN-Bridge) avec indicateurs latence
 
 ### Phase 4 Checklist
 
@@ -322,8 +322,8 @@ RÈGLE: Pas de font-black (900), pas de text-xs pour contenu important
 |:-----|:------|:------:|:------|
 | 05/02/2026 | Audit | ✅ | Document créé |
 | 05/02/2026 | Phase 1 | ✅ | 14/14 dashboards - backdrop-blur + hover effects (88 cards) |
-| - | Phase 2 | ⏳ | - |
-| - | Phase 3 | ⏳ | - |
+| 05/02/2026 | Phase 2 | 🔄 3/5 | 2.3 Personas ✅, 2.4 MCP Tools ✅, 2.5 Admin enrichi ✅ |
+| 05/02/2026 | Phase 3 | 🔄 1/4 | 3.4 AI Provider status ✅ |
 | - | Phase 4 | ⏳ | - |
 
 ---

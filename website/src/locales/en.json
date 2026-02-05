@@ -73,7 +73,12 @@
       "save_voice": "Save Voice",
       "voice_architecture": "Multi-Provider Architecture",
       "telephony_voices": "Telephony Voices (Grok Voice)",
-      "voice_note": "Note: Darija uses ElevenLabs TTS for native support."
+      "voice_note": "Note: Darija uses ElevenLabs TTS for native support.",
+      "platform_power": "Platform Power",
+      "platform_desc": "Pre-trained AI personas for all industries",
+      "personas_label": "SOTA Personas",
+      "languages_label": "Languages",
+      "availability_label": "Availability"
     },
     "calls": {
       "recent": "Recent Calls",
@@ -384,6 +389,11 @@
   "integrations": {
     "title": "Native Integrations",
     "subtitle": "28 native integrations",
+    "platform_power": "Integration Ecosystem",
+    "platform_desc": "Connect your voice assistant to your business tools",
+    "mcp_tools_label": "MCP Tools",
+    "native_label": "Integrations",
+    "zapier_label": "Apps via Zapier",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Voice AI Agents for Businesses",
@@ -895,8 +905,8 @@
     "subtitle": "A complete suite of tools to create, deploy and manage your voice AI agents. From Starter web widget to Enterprise telephony.",
     "breadcrumb_home": "Home",
     "breadcrumb_features": "Features",
-    "products_title": "Two Complementary Products",
-    "products_subtitle": "Cover 100% of your voice communication channels",
+    "products_title": "Four Voice AI Products",
+    "products_subtitle": "The most complete suite on the market — from web widget to PSTN telephony",
     "widget_free": "Starter",
     "widget_title": "Voice Widget",
     "widget_desc": "Integrate a smart voice assistant directly on your website. 2-minute installation.",
@@ -924,14 +934,14 @@
     "feat_fallback_desc": "5 levels of AI redundancy. 99.9% uptime guaranteed with automatic fallback.",
     "feat_analytics_title": "Real-Time Analytics",
     "feat_analytics_desc": "Dashboard with metrics: call duration, sentiment, conversion rate, costs.",
-    "feat_tools_title": "Automated Actions",
-    "feat_tools_desc": "Booking, CRM Sync, Lead Qualification, Payments, and more.",
+    "feat_tools_title": "203 MCP Tools",
+    "feat_tools_desc": "Stripe (19), Shopify (8), HubSpot (7), Pipedrive (7), Zendesk (12), Google Suite (17), and many more.",
     "feat_rag_title": "Knowledge Base RAG",
     "feat_rag_desc": "Vector knowledge base by industry. Precise contextual responses.",
     "feat_hitl_title": "HITL Controls",
     "feat_hitl_desc": "Human-in-the-loop for critical decisions: bookings, transfers, escalations.",
-    "feat_crm_title": "CRM Synchronization",
-    "feat_crm_desc": "Connect your existing tools (HubSpot, Salesforce) to centralize data.",
+    "feat_crm_title": "31+ Integrations",
+    "feat_crm_desc": "HubSpot, Klaviyo, Shopify, Stripe, WooCommerce, Magento, Calendly, Zapier, Make, n8n. Bidirectional sync.",
     "comparison_title": "Why VocalIA?",
     "comparison_subtitle": "Compared to market alternatives",
     "table_feature": "Feature",
@@ -3130,6 +3140,17 @@
     },
     "activity": {
       "title": "Recent activity"
+    },
+    "providers": {
+      "title": "AI Providers",
+      "obfuscated": "Names obfuscated"
+    },
+    "platform": {
+      "personas": "AI Personas",
+      "personas_desc": "SOTA multi-industry",
+      "mcp_tools": "MCP Tools",
+      "mcp_desc": "28 native integrations",
+      "languages": "Languages"
     },
     "logs": {
       "auth": "Authentication"

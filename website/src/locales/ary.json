@@ -73,7 +73,12 @@
       "save_voice": "سجل الصوت",
       "voice_architecture": "البنية متعددة المزودين",
       "telephony_voices": "أصوات التيليفون (Grok Voice)",
-      "voice_note": "ملاحظة: الدارجة كتستعمل ElevenLabs TTS للدعم الأصلي."
+      "voice_note": "ملاحظة: الدارجة كتستعمل ElevenLabs TTS للدعم الأصلي.",
+      "platform_power": "قوة المنصة",
+      "platform_desc": "شخصيات ذكية مدربين مسبقًا لكل القطاعات",
+      "personas_label": "شخصيات SOTA",
+      "languages_label": "اللغات",
+      "availability_label": "التوفر"
     },
     "calls": {
       "recent": "المكالمات الأخيرة",
@@ -384,6 +389,11 @@
   "integrations": {
     "title": "تكاملات أصلية",
     "subtitle": "28 تكامل أصلي",
+    "platform_power": "نظام التكاملات",
+    "platform_desc": "ربط المساعد الصوتي ديالك بالأدوات ديال الخدمة",
+    "mcp_tools_label": "أدوات MCP",
+    "native_label": "تكاملات",
+    "zapier_label": "تطبيقات عبر Zapier",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "وكلاء صوتيين بـ AI للشركات",
@@ -3130,6 +3140,17 @@
     },
     "activity": {
       "title": "النشاط الأخير"
+    },
+    "providers": {
+      "title": "مزودي الذكاء الاصطناعي",
+      "obfuscated": "الأسماء مشفرة"
+    },
+    "platform": {
+      "personas": "شخصيات IA",
+      "personas_desc": "SOTA متعدد القطاعات",
+      "mcp_tools": "أدوات MCP",
+      "mcp_desc": "28 تكامل أصلي",
+      "languages": "اللغات"
     },
     "logs": {
       "auth": "التوثيق"

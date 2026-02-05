@@ -73,7 +73,12 @@
       "save_voice": "Guardar voz",
       "voice_architecture": "Arquitectura Multi-Proveedor",
       "telephony_voices": "Voces de Telefonía (Grok Voice)",
-      "voice_note": "Nota: Darija utiliza ElevenLabs TTS para soporte nativo."
+      "voice_note": "Nota: Darija utiliza ElevenLabs TTS para soporte nativo.",
+      "platform_power": "Potencia de la Plataforma",
+      "platform_desc": "Personas IA pre-entrenados para todos los sectores",
+      "personas_label": "Personas SOTA",
+      "languages_label": "Idiomas",
+      "availability_label": "Disponibilidad"
     },
     "calls": {
       "recent": "Llamadas recientes",
@@ -384,6 +389,11 @@
   "integrations": {
     "title": "Integraciones Nativas",
     "subtitle": "28 integraciones nativas",
+    "platform_power": "Ecosistema de Integraciones",
+    "platform_desc": "Conecta tu asistente vocal a tus herramientas de negocio",
+    "mcp_tools_label": "MCP Tools",
+    "native_label": "Integraciones",
+    "zapier_label": "Apps via Zapier",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "Preparado para la AI Act",
     "agents_vocaux_ia_2": "Agentes Vocales IA para Empresas",
@@ -3130,6 +3140,17 @@
     },
     "activity": {
       "title": "Actividad reciente"
+    },
+    "providers": {
+      "title": "Proveedores IA",
+      "obfuscated": "Nombres ofuscados"
+    },
+    "platform": {
+      "personas": "Personas IA",
+      "personas_desc": "SOTA multi-sector",
+      "mcp_tools": "MCP Tools",
+      "mcp_desc": "28 integraciones nativas",
+      "languages": "Idiomas"
     },
     "logs": {
       "auth": "Autenticación"

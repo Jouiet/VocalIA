@@ -73,7 +73,12 @@
       "save_voice": "Enregistrer la voix",
       "voice_architecture": "Architecture Multi-Provider",
       "telephony_voices": "Voix Telephony (Grok Voice)",
-      "voice_note": "Note: Darija utilise ElevenLabs TTS (EL) pour un support natif optimal."
+      "voice_note": "Note: Darija utilise ElevenLabs TTS (EL) pour un support natif optimal.",
+      "platform_power": "Puissance de la Plateforme",
+      "platform_desc": "Personas IA pré-entraînés pour tous les secteurs",
+      "personas_label": "Personas SOTA",
+      "languages_label": "Langues",
+      "availability_label": "Disponibilité"
     },
     "calls": {
       "recent": "Appels récents",
@@ -384,6 +389,11 @@
   "integrations": {
     "title": "Intégrations Natives",
     "subtitle": "28 intégrations natives",
+    "platform_power": "Écosystème d'Intégrations",
+    "platform_desc": "Connectez votre assistant vocal à vos outils métier",
+    "mcp_tools_label": "MCP Tools",
+    "native_label": "Intégrations",
+    "zapier_label": "Apps via Zapier",
     "aes256_0": "HTTPS/TLS",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Agents Vocaux IA pour Entreprises",
@@ -895,8 +905,8 @@
     "subtitle": "Une suite complète d'outils pour créer, déployer et gérer vos agents vocaux IA. Du widget web Starter à la téléphonie Enterprise.",
     "breadcrumb_home": "Accueil",
     "breadcrumb_features": "Fonctionnalités",
-    "products_title": "Deux Produits Complémentaires",
-    "products_subtitle": "Couvrez 100% de vos canaux de communication vocale",
+    "products_title": "Quatre Produits Voice AI",
+    "products_subtitle": "La suite la plus complète du marché — du widget web à la téléphonie PSTN",
     "widget_free": "Starter",
     "widget_title": "Voice Widget",
     "widget_desc": "Intégrez un assistant vocal intelligent directement sur votre site web. Installation en 2 minutes, aucun coût.",
@@ -924,14 +934,14 @@
     "feat_fallback_desc": "5 niveaux de redondance IA. 99.9% uptime garanti grâce au fallback automatique.",
     "feat_analytics_title": "Analytics Temps Réel",
     "feat_analytics_desc": "Tableau de bord avec métriques: durée appels, sentiment, taux conversion, coûts.",
-    "feat_tools_title": "Actions Automatisées",
-    "feat_tools_desc": "Prise de RDV, Synchronisation CRM, Qualification de leads, Paiement, et plus.",
+    "feat_tools_title": "203 MCP Tools",
+    "feat_tools_desc": "Stripe (19), Shopify (8), HubSpot (7), Pipedrive (7), Zendesk (12), Google Suite (17), et bien plus.",
     "feat_rag_title": "Knowledge Base RAG",
     "feat_rag_desc": "Base de connaissances vectorielle par secteur. Réponses contextuelles précises.",
     "feat_hitl_title": "HITL Controls",
     "feat_hitl_desc": "Human-in-the-loop pour les décisions critiques: bookings, transfers, escalations.",
-    "feat_crm_title": "Synchronisation CRM",
-    "feat_crm_desc": "Connectez vos outils existants (HubSpot, Salesforce, etc.) pour centraliser vos données.",
+    "feat_crm_title": "31+ Intégrations",
+    "feat_crm_desc": "HubSpot, Klaviyo, Shopify, Stripe, WooCommerce, Magento, Calendly, Zapier, Make, n8n. Sync bidirectionnel.",
     "comparison_title": "Pourquoi VocalIA?",
     "comparison_subtitle": "Comparé aux alternatives du marché",
     "table_feature": "Fonctionnalité",
@@ -3130,6 +3140,17 @@
     },
     "activity": {
       "title": "Activité récente"
+    },
+    "providers": {
+      "title": "Fournisseurs IA",
+      "obfuscated": "Noms obfusqués"
+    },
+    "platform": {
+      "personas": "Personas IA",
+      "personas_desc": "SOTA multi-secteurs",
+      "mcp_tools": "MCP Tools",
+      "mcp_desc": "28 intégrations natives",
+      "languages": "Langues"
     },
     "logs": {
       "auth": "Authentification"

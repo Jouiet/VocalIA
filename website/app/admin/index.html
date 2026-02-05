@@ -176,6 +176,82 @@
           </div>
         </div>
 
+        <!-- AI Provider Status (Session 250.95 - Phase 2.5) -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="admin.providers.title">Fournisseurs IA</h3>
+            <span class="text-xs px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full" data-i18n="admin.providers.obfuscated">Noms obfusqués</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900" id="provider-primary">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Primary LLM</span>
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              </div>
+              <p class="text-lg font-bold text-slate-900 dark:text-white">Voice-X</p>
+              <p class="text-xs text-slate-500 mt-1" id="provider-primary-latency">Latence: --ms</p>
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900" id="provider-fallback">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Fallback LLM</span>
+                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+              </div>
+              <p class="text-lg font-bold text-slate-900 dark:text-white">Gen-AI</p>
+              <p class="text-xs text-slate-500 mt-1" id="provider-fallback-latency">Latence: --ms</p>
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900" id="provider-tts">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">TTS Provider</span>
+                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+              </div>
+              <p class="text-lg font-bold text-slate-900 dark:text-white">Voice-Labs</p>
+              <p class="text-xs text-slate-500 mt-1" id="provider-tts-latency">Latence: --ms</p>
+            </div>
+            <div class="p-4 border border-slate-200 dark:border-slate-700 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900" id="provider-telephony">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Telephony</span>
+                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+              </div>
+              <p class="text-lg font-bold text-slate-900 dark:text-white">PSTN-Bridge</p>
+              <p class="text-xs text-slate-500 mt-1" id="provider-telephony-latency">Latence: --ms</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Metrics (Session 250.95 - Phase 2.5) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-5 text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-indigo-100 text-sm" data-i18n="admin.platform.personas">Personas IA</p>
+                <p class="text-3xl font-bold mt-1">40</p>
+              </div>
+              <i data-lucide="bot" class="w-8 h-8 text-indigo-200"></i>
+            </div>
+            <p class="text-indigo-100 text-xs mt-2" data-i18n="admin.platform.personas_desc">SOTA multi-secteurs</p>
+          </div>
+          <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl p-5 text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-emerald-100 text-sm" data-i18n="admin.platform.mcp_tools">MCP Tools</p>
+                <p class="text-3xl font-bold mt-1">182</p>
+              </div>
+              <i data-lucide="plug" class="w-8 h-8 text-emerald-200"></i>
+            </div>
+            <p class="text-emerald-100 text-xs mt-2" data-i18n="admin.platform.mcp_desc">28 intégrations natives</p>
+          </div>
+          <div class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl p-5 text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-amber-100 text-sm" data-i18n="admin.platform.languages">Langues</p>
+                <p class="text-3xl font-bold mt-1">5</p>
+              </div>
+              <i data-lucide="languages" class="w-8 h-8 text-amber-200"></i>
+            </div>
+            <p class="text-amber-100 text-xs mt-2">FR, EN, ES, AR, Darija</p>
+          </div>
+        </div>
+
         <!-- Recent Activity -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="admin.activity.title">Activité récente</h3>
