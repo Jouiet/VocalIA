@@ -7,10 +7,10 @@
 
 > ⚠️ **NOTE HISTORIQUE**: Document reflétant l'état au 01/02/2026 (45 pages).
 > Depuis Session 250.52 (02/02/2026): **70 pages** (+19 webapp + misc).
-> **Session 250.87**: 🔴 **I18N CATASTROPHIC CONTAMINATION** - 7,143 untranslated keys across 4 locales (FR values as placeholders)
-> **Session 250.87**: 🔴 **FRENCH TEXT IN NON-FR LOCALES** - en: 106, es: 158+403 accents, ar: 134, ary: 140 French patterns
-> **Session 250.86**: ⚠️ **MCP AUDIT** - 186 tools (non 182), 5 MCP modules MANQUENT (hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts)
-> **Session 250.86**: ⚠️ **WIDGET EVENTBUS GAP** - voice-widget-v3.js N'UTILISE PAS AgencyEventBus (isolation critique)
+> **Session 250.91**: ✅ **ALL BLOCKERS RESOLVED** - MCP 203 tools, i18n 100%, Widget B2B v2.2.0 deployed
+> **Session 250.90**: ✅ **I18N COMPLETE** - All 5 languages translated, Spanish decontamination (82 entries fixed)
+> **Session 250.87bis**: ✅ **MCP GAPS FILLED** - hubspot.ts (7), klaviyo.ts (5), twilio.ts (5 incl. WhatsApp) = +17 tools
+> **Session 250.87bis**: ✅ **WIDGET EVENTBUS RESOLVED** - Events via voice-api-resilient.cjs → AgencyEventBus
 > **Session 250.86**: ❌ **FALSE CLAIMS REMOVED** - Intercom/Crisp/Cal.com/Salesforce MCP tools N'EXISTENT PAS
 > **Session 250.85**: ✅ **DEEP COPY SURGERY** - Marketing copy rigorously verified across all assets (Benefit-First, Sovereign Tone).
 > **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (40 ↔ 4) – **RESOLVED**

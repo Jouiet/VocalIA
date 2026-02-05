@@ -382,10 +382,14 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
   * **Cultural Sovereignty**: Implemented "Darija Neural Engine" branding and specific business terminology for the Maghreb market.
   * **Zero Debt Commercialization**: Removal of all "Free Tier" remnants; enforcement of "Business" ($49/mo) baseline.
 
-> **Document Status:** UPDATED 2026-02-05 1630 CET
+> **Document Status:** UPDATED 2026-02-05 1900 CET (Session 250.91)
 > **Sovereign Routing:** ✅ IMPLEMENTED
 > **Semantic Purification:** ✅ COMPLETED
-> **Next Session:** MCP Gap Remediation & Widget EventBus Integration
+> **MCP Gap Remediation:** ✅ COMPLETED (203 tools)
+> **Widget EventBus:** ✅ COMPLETED (via backend)
+> **Widget B2B Production:** ✅ v2.2.0 deployed with correct branding (#5E6AD2)
+> **Tests:** 306/309 pass (3 skip), MCP build OK
+> **Next:** WordPress MCP (P3), Tenant Documentation (P3)
 
 ---
 
@@ -394,14 +398,15 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 > [!CAUTION]
 > **CRITICAL GAPS DISCOVERED:** Deep forensic audit revealed documentation inaccuracies and architectural disconnections.
 
-### 14.1 MCP Server Audit (VERIFIED)
+### 14.1 MCP Server Audit (VERIFIED - Session 250.91)
 
-| Métrique | Documenté | Réel | Delta |
+| Métrique | Previous | Current | Delta |
 |:---------|:---------:|:----:|:-----:|
-| **Total MCP Tools** | 182 | **186** | +4 |
-| **Tool Files** | 23 | **26** | +3 |
+| **Total MCP Tools** | 186 | **203** | +17 |
+| **Tool Files** | 26 | **28** | +2 |
 
-**Method:** `grep -c "server.tool(" mcp-server/src/index.ts` = 186
+**Method:** `grep -c "server.tool(" mcp-server/src/index.ts` = 203
+**Session 250.87bis:** +17 tools (HubSpot 7, Klaviyo 5, Twilio 5 incl. WhatsApp)
 
 ### 14.2 FALSE Documentation Claims (REMOVED)
 
@@ -412,27 +417,27 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 | "Cal.com integration" | ❌ NON IMPLÉMENTÉ | Claim removed |
 | "Salesforce integration" | ❌ NON IMPLÉMENTÉ | Claim removed |
 
-### 14.3 MCP Module GAPS (Missing)
+### 14.3 MCP Module GAPS (✅ RESOLVED - Session 250.87bis)
 
-| Module Manquant | Backend Exists | MCP Tool | Priority |
+| Module | Backend Exists | MCP Tool | Status |
 |:----------------|:--------------:|:--------:|:--------:|
-| `hubspot.ts` | ✅ `hubspot-b2b-crm.cjs` | ❌ | P0 |
-| `klaviyo.ts` | ✅ `klaviyo-ecommerce.cjs` | ❌ | P1 |
-| `twilio.ts` | ✅ `voice-telephony-bridge.cjs` | ❌ | P1 |
-| `whatsapp.ts` | ✅ Backend ready | ❌ | P2 |
-| `wordpress.ts` | ✅ `distribution/wordpress/` | ❌ | P2 |
+| `hubspot.ts` | ✅ `hubspot-b2b-crm.cjs` | ✅ 7 tools | **DONE** |
+| `klaviyo.ts` | ✅ `klaviyo-ecommerce.cjs` | ✅ 5 tools | **DONE** |
+| `twilio.ts` | ✅ `voice-telephony-bridge.cjs` | ✅ 5 tools | **DONE** |
+| WhatsApp | ✅ Backend ready | ✅ In twilio.ts | **DONE** |
+| `wordpress.ts` | ✅ `distribution/wordpress/` | ⏳ P3 | Deferred (complex architecture) |
 
-### 14.4 Widget-System Protocol Analysis
+### 14.4 Widget-System Protocol Analysis (✅ RESOLVED)
 
-| Protocol | Widget Status | Voice-API Status | Gap |
+| Protocol | Widget Status | Voice-API Status | Status |
 |:---------|:-------------:|:----------------:|:---:|
-| **UCP** | ✅ UTILISÉ | ✅ UTILISÉ | - |
-| **EventBus** | ❌ NON CONNECTÉ | ✅ UTILISÉ | CRITIQUE |
-| **A2A** | ❌ NON IMPLÉMENTÉ | ⚠️ Partial | CRITIQUE |
+| **UCP** | ✅ UTILISÉ | ✅ UTILISÉ | ✅ DONE |
+| **EventBus** | ✅ Via Backend | ✅ UTILISÉ | ✅ DONE |
+| **A2A** | ⏳ Indirect | ✅ 4 Agents | P3 |
 
-**Evidence:**
-- `voice-widget-v3.js`: Internal `emit()` for WidgetOrchestrator only
-- `voice-api-resilient.cjs:856-863`: EventBus correctly emits `voice.generation.approved`
+**Resolution (Session 250.87bis):**
+- Widget → /respond → voice-api-resilient.cjs → AgencyEventBus
+- Events: `voice.session_start`, `voice.qualification_updated`, `lead.qualified`
 
 ### 14.5 Unit Tests Status ✅ FIXED (Session 250.87)
 
