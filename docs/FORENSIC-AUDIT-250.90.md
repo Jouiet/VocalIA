@@ -1,19 +1,20 @@
 # AUDIT FORENSIQUE COMPLET - VocalIA v6.98.0
 
 > **Session 250.90** | 05/02/2026 | Audit DIRECT (sans agents) | BOTTOM-UP FACTUEL
+> **Session 250.90bis** | 05/02/2026 | VÉRIFICATION POST-AUDIT - 1 anomalie supplémentaire détectée
 
 ---
 
 ## EXECUTIVE SUMMARY
 
-| Composant | Score | Anomalies Critiques | Status |
-|:----------|:-----:|:-------------------:|:------:|
-| **Backend** | 95/100 | 0 bloquant | ✅ Production-ready |
-| **Frontend** | 72/100 | 3 critiques + 1 UX | 🔴 Corrections requises |
-| **MCP Server** | 70/100 | 1 CRITIQUE (personas) | 🔴 Désynchronisé avec backend |
-| **API Contracts** | 80/100 | 1 BLOCKER (port) | 🔴 Port mismatch |
+| Composant | Score Initial | Score Post-Fix | Anomalies Restantes | Status |
+|:----------|:-------------:|:--------------:|:-------------------:|:------:|
+| **Backend** | 95/100 | 95/100 | 0 bloquant | ✅ Production-ready |
+| **Frontend** | 72/100 | **90/100** | 1 (i18n integrations) | 🟡 1 fix restant |
+| **MCP Server** | 70/100 | 95/100 | 0 | ✅ CORRIGÉ |
+| **API Contracts** | 80/100 | 95/100 | 0 | ✅ CORRIGÉ |
 
-**VERDICT GLOBAL: 95/100** - 5 anomalies CORRIGÉES (Session 250.90)
+**VERDICT GLOBAL: 92/100** - 5 anomalies CORRIGÉES + 1 MANQUÉE (Session 250.90bis)
 
 ---
 
@@ -642,7 +643,7 @@ sed -i '' 's/localhost:3012/localhost:3013/' website/src/lib/db-client.js
 | MCP Personas mismatch | "30 vs 40" | **30 vs 40 + 4 fantômes** | Pire |
 | Bug duplication | Non détecté | **Confirmé L251-273** | Ajouté |
 
-### Risques Production - TOUS CORRIGÉS ✅
+### Risques Production - 5/6 CORRIGÉS
 
 | Risque | Impact | Status |
 |:-------|:-------|:------:|
@@ -651,6 +652,7 @@ sed -i '' 's/localhost:3012/localhost:3013/' website/src/lib/db-client.js
 | MCP personas | Données incorrectes API | ✅ CORRIGÉ (30→40) |
 | Duplication | Confusion code | ✅ CORRIGÉ (supprimé) |
 | Jargon technique | UX dégradée FR/EN/ES | ✅ CORRIGÉ (i18n + marketing labels) |
+| **i18n integrations** | **integrations.html cassé 4 langues** | 🔴 **À CORRIGER** |
 
 ---
 
@@ -691,9 +693,165 @@ sed -i '' 's/localhost:3012/localhost:3013/' website/src/lib/db-client.js
 
 ---
 
+## PARTIE 8: VÉRIFICATION POST-AUDIT (Session 250.90bis)
+
+### 8.1 Méthodologie de Vérification
+
+L'audit initial a été contesté pour manque de rigueur. Une vérification bottom-up a été effectuée:
+
+```bash
+# Vérification Fix 1: Port DB
+grep -n "localhost:301" website/src/lib/db-client.js
+# Résultat: 12:  ? 'http://localhost:3013/api/db'  ✅
+
+# Vérification Fix 2: Duplicate getter
+grep -c "get tenants()" website/src/lib/api-client.js
+# Résultat: 1  ✅
+
+# Vérification Fix 3: ecommerce_page
+grep -c '"ecommerce_page"' website/src/locales/en.json website/src/locales/es.json website/src/locales/ar.json website/src/locales/ary.json
+# Résultat: 1 par fichier (4/4)  ✅
+
+# Vérification Fix 4: MCP personas
+grep -c 'key:' mcp-server/src/index.ts
+# Résultat: 40  ✅
+
+# Vérification Fix 5: Marketing labels
+grep '"tool1_name"' website/src/locales/fr.json website/src/locales/en.json website/src/locales/es.json
+# Résultat: Labels traduits (pas snake_case)  ✅
+```
+
+### 8.2 🔴 ANOMALIE MANQUÉE - i18n integrations.html
+
+**Détection:** Vérification des écarts de lignes entre locales
+
+```bash
+wc -l website/src/locales/*.json
+#    4751 ar.json
+#    4751 ary.json
+#    4751 en.json
+#    4750 es.json
+#    4758 fr.json   ← 7 lignes de plus
+```
+
+**Investigation:**
+```bash
+diff <(jq -r 'paths(scalars) | join(".")' fr.json | sort) \
+     <(jq -r 'paths(scalars) | join(".")' en.json | sort) | grep "^<"
+```
+
+**7 clés présentes en FR mais ABSENTES en EN/ES/AR/ARY:**
+
+| Clé i18n | Utilisée dans | Ligne HTML |
+|:---------|:--------------|:-----------|
+| `integrations.whatsapp_business` | integrations.html | 978 |
+| `integrations.messagerie_whatsapp_business` | integrations.html | 979 |
+| `integrations.twilio_telephony` | integrations.html | 987 |
+| `integrations.telephonie_pstn_mondiale` | integrations.html | 988 |
+| `integrations.smtp_email` | integrations.html | 996 |
+| `integrations.envoi_email_smtp_custom` | integrations.html | 997 |
+| `integrations.finance_payments` | integrations.html | 1008 |
+
+**Impact:** Page `integrations.html` partiellement cassée pour 4 langues (EN/ES/AR/ARY)
+
+**Preuve:**
+```bash
+grep -rn "integrations.whatsapp_business" website/*.html
+# website/integrations.html:978:<span data-i18n="integrations.whatsapp_business">WhatsApp</span>
+```
+
+### 8.3 Fix 6 Requis (P1)
+
+```bash
+# Ajouter ces 7 clés dans en.json, es.json, ar.json, ary.json
+# Traduire depuis fr.json:
+
+# FR (source):
+"whatsapp_business": "WhatsApp",
+"messagerie_whatsapp_business": "Support client et notifications via WhatsApp Business API.",
+"twilio_telephony": "Twilio",
+"telephonie_pstn_mondiale": "Numéros virtuels et appels PSTN dans 100+ pays.",
+"smtp_email": "SMTP Email",
+"envoi_email_smtp_custom": "Envoi d'emails transactionnels via votre propre serveur SMTP.",
+"finance_payments": "Finance & Paiements"
+
+# EN (à ajouter):
+"whatsapp_business": "WhatsApp",
+"messagerie_whatsapp_business": "Customer support and notifications via WhatsApp Business API.",
+"twilio_telephony": "Twilio",
+"telephonie_pstn_mondiale": "Virtual numbers and PSTN calls in 100+ countries.",
+"smtp_email": "SMTP Email",
+"envoi_email_smtp_custom": "Send transactional emails via your own SMTP server.",
+"finance_payments": "Finance & Payments"
+
+# ES (à ajouter):
+"whatsapp_business": "WhatsApp",
+"messagerie_whatsapp_business": "Soporte al cliente y notificaciones vía WhatsApp Business API.",
+"twilio_telephony": "Twilio",
+"telephonie_pstn_mondiale": "Números virtuales y llamadas PSTN en 100+ países.",
+"smtp_email": "SMTP Email",
+"envoi_email_smtp_custom": "Envío de emails transaccionales vía su propio servidor SMTP.",
+"finance_payments": "Finanzas y Pagos"
+
+# AR (à ajouter):
+"whatsapp_business": "واتساب",
+"messagerie_whatsapp_business": "دعم العملاء والإشعارات عبر واتساب للأعمال.",
+"twilio_telephony": "تويليو",
+"telephonie_pstn_mondiale": "أرقام افتراضية ومكالمات PSTN في 100+ دولة.",
+"smtp_email": "بريد SMTP",
+"envoi_email_smtp_custom": "إرسال رسائل البريد الإلكتروني عبر خادم SMTP الخاص بك.",
+"finance_payments": "المالية والمدفوعات"
+
+# ARY (à ajouter):
+"whatsapp_business": "واتساب",
+"messagerie_whatsapp_business": "دعم الزبناء والإشعارات عبر واتساب بزنس.",
+"twilio_telephony": "تويليو",
+"telephonie_pstn_mondiale": "أرقام افتراضية ومكالمات ف 100+ بلد.",
+"smtp_email": "بريد SMTP",
+"envoi_email_smtp_custom": "إرسال إيميلات عبر سيرفر SMTP ديالك.",
+"finance_payments": "الفلوس والدفع"
+```
+
+### 8.4 Autocritique Honnête
+
+| Aspect | Évaluation |
+|:-------|:-----------|
+| Fixes annoncés correctement appliqués | ✅ 5/5 (100%) |
+| Audit exhaustif | 🔴 **NON** - 7 clés i18n manquées |
+| Vérification post-audit | ✅ Détection honnête |
+| Score réel vs annoncé | 92/100 vs 95/100 annoncé |
+
+**L'audit initial Session 250.90 était INCOMPLET.** La vérification line-count des locales n'a pas été effectuée, ce qui aurait révélé l'écart FR vs autres langues.
+
+---
+
+## RÉSUMÉ FINAL
+
+### Corrections Complétées (5/6)
+
+| # | Fix | Status | Vérifié |
+|:-:|:----|:------:|:-------:|
+| 1 | Port DB 3012 → 3013 | ✅ | `grep localhost:3013 db-client.js` |
+| 2 | Duplicate getter supprimé | ✅ | `grep -c "get tenants()" = 1` |
+| 3 | i18n ecommerce_page (4 langues) | ✅ | `grep -c '"ecommerce_page"' = 4/4` |
+| 4 | MCP Personas 30 → 40 | ✅ | `grep -c 'key:' = 40` |
+| 5 | Marketing labels (FR/EN/ES) | ✅ | `grep tool1_name = traduits` |
+| 6 | i18n integrations (7 clés) | 🔴 **MANQUÉ** | À corriger Session 250.91 |
+
+### Score Final Honnête
+
+```
+AVANT AUDIT:     79/100
+APRÈS FIXES 1-5: 92/100  (pas 95 comme annoncé)
+APRÈS FIX 6:     95/100  (à venir)
+```
+
+---
+
 *Audit réalisé: 05/02/2026*
 *Corrections appliquées: 05/02/2026*
-*Mode: DIRECT (lecture code source, grep, find, wc)*
+*Vérification post-audit: 05/02/2026*
+*Mode: DIRECT (lecture code source, grep, find, wc, diff, jq)*
 *Méthode: Bottom-up factuel - aucun agent Claude*
 *Commandes vérifiables reproduites dans ce document*
-*Score final: 95/100 ✅*
+*Score actuel: 92/100 (1 fix restant)*
