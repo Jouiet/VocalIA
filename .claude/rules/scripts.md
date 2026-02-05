@@ -1,54 +1,61 @@
 # VocalIA Scripts Reference
 
-## Status VÉRIFIÉ (28/01/2026 - Session 184bis POST-FIX)
+> **MÀJOUR RIGOUREUSE: 05/02/2026 - Session 250.94**
+> Métriques vérifiées avec `wc -l` et `grep -c`
 
-### Scripts Core VocalIA
+## Status VÉRIFIÉ (05/02/2026)
 
-| Category | Count | Status |
-|----------|-------|--------|
-| **Core Voice** | 14 | Production |
-| **Integrations** | 3 | Production |
-| **Telephony** | 1 | Production |
-| **Widget** | 2 | Production |
-| **Sensors** | 4 | Operational |
-| **Total** | **24** | 100% module load |
+### Fichiers par Dossier (wc -l vérifié)
+
+| Dossier | Fichiers | Lignes |
+|---------|----------|--------|
+| **core/** | 38 | 32,727 |
+| **telephony/** | 1 | 4,709 |
+| **personas/** | 2 | 5,995 |
+| **widget/** | 8 | 9,107 |
+| **sensors/** | 4 | 822 |
+| **integrations/** | 7 | 2,234 |
+| **TOTAL Backend** | **60** | **55,594** |
 
 ---
 
 ## Key Scripts
 
-| Script | Purpose | Port | Location |
-|--------|---------|------|----------|
-| voice-api-resilient.cjs | Multi-AI voice responses | 3004 | core/ |
-| grok-voice-realtime.cjs | WebSocket audio streaming | 3007 | core/ |
-| voice-telephony-bridge.cjs | PSTN ↔ Grok bridge | 3009 | telephony/ |
-| voice-persona-injector.cjs | 40 personas SOTA injection | - | personas/ |
-| voice-quality-sensor.cjs | Health monitoring | - | sensors/ |
-| stitch-api.cjs | UI generation (MCP) | - | core/ |
-| cost-tracking-sensor.cjs | API cost monitoring | - | sensors/ |
+| Script | Lignes | Port | Fonction |
+|--------|--------|------|----------|
+| voice-api-resilient.cjs | 3,018 | 3004 | Multi-AI voice responses |
+| grok-voice-realtime.cjs | 1,109 | 3007 | WebSocket audio streaming |
+| voice-telephony-bridge.cjs | 4,709 | 3009 | PSTN ↔ AI bridge, 25 function tools |
+| db-api.cjs | 2,721 | 3013 | REST API + Auth + WebSocket |
+| voice-persona-injector.cjs | 5,934 | - | 40 personas SOTA injection |
+| voice-quality-sensor.cjs | 282 | - | Health monitoring |
+| catalog-connector.cjs | 2,287 | - | 6 E-commerce connectors |
 
 ---
 
-## Sensors (4 - VocalIA Specific)
+## Sensors (4 fichiers, 822 lignes)
 
-| Sensor | Purpose | Status |
-|--------|---------|--------|
-| voice-quality-sensor.cjs | Voice API latency/health | ✅ OK |
-| cost-tracking-sensor.cjs | API costs burn rate | ✅ OK |
-| lead-velocity-sensor.cjs | Lead qualification rate | ✅ OK |
-| retention-sensor.cjs | Client retention metrics | ⚠️ Needs config |
+| Sensor | Lignes | Purpose | Status |
+|--------|--------|---------|--------|
+| voice-quality-sensor.cjs | 282 | Voice API latency/health | ✅ OK |
+| cost-tracking-sensor.cjs | 285 | API costs burn rate | ✅ OK |
+| lead-velocity-sensor.cjs | 111 | Lead qualification rate | ✅ OK |
+| retention-sensor.cjs | 144 | Client retention metrics | ⚠️ Needs config |
 
 ---
 
-## Health Check Pattern
+## Widget (8 fichiers, 9,107 lignes)
 
-```bash
-# Single script
-node core/voice-api-resilient.cjs --health
-
-# All sensors
-for s in sensors/*.cjs; do echo "=== $s ===" && node "$s" --health 2>&1 | head -5; done
-```
+| Widget | Lignes | Purpose |
+|--------|--------|---------|
+| voice-widget-v3.js | 3,135 | E-commerce Widget Core |
+| abandoned-cart-recovery.js | 1,416 | Cart Recovery (+25% recovery) |
+| spin-wheel.js | 1,176 | Gamification (+15% conversion) |
+| voice-quiz.js | 1,127 | Interactive Quiz (+65% completion) |
+| free-shipping-bar.js | 826 | Shipping Progress (+20% AOV) |
+| voice-widget-b2b.js | 659 | B2B Lead Widget |
+| recommendation-carousel.js | 615 | AI Product Carousel |
+| intelligent-fallback.js | 153 | Graceful Degradation |
 
 ---
 
@@ -68,17 +75,42 @@ providers: [
 
 ---
 
-## HITL (Human In The Loop) - Voice Specific
+## Function Tools (25 - Telephony Bridge) - VÉRIFIÉ grep -c "name: '"
 
-| Script | HITL Type | Default | Options |
-|--------|-----------|---------|---------|
-| voice-telephony-bridge.cjs | BANT score | 70 | 60|70|80|90 |
-| voice-api-resilient.cjs | Hot lead threshold | 75 | 60|70|75|80|90 |
+| Tool | Purpose |
+|------|---------|
+| qualify_lead | BANT scoring |
+| handle_objection | Analytics |
+| check_order_status | Shopify/WooCommerce lookup |
+| check_product_stock | Inventory |
+| get_customer_tags | Klaviyo |
+| schedule_callback | Follow-up |
+| create_booking | Calendar |
+| track_conversion_event | Analytics |
+| search_knowledge_base | RAG |
+| send_payment_details | Payment |
+| transfer_call | Human handoff |
+| start_product_quiz | Voice quiz |
+| lookup_customer | CRM lookup |
+| create_lead | CRM create |
+| update_customer | CRM update |
+| log_call | CRM call log |
+| check_stock | E-commerce stock |
+| recommend_products | AI recommendations |
+| get_order_history | Order history |
+| get_similar_products | Similar products |
+| get_frequently_bought_together | Cross-sell |
+| get_personalized_recommendations | Personalized |
+| queue_cart_recovery_callback | Cart recovery |
+| send_cart_recovery_sms | SMS recovery |
+| browse_catalog | Catalog browsing |
 
-### HITL ENV Variables
+---
+
+## HITL (Human In The Loop)
 
 ```bash
-# Voice HITL
+# ENV Variables
 HITL_VOICE_ENABLED=true
 HITL_APPROVE_HOT_BOOKINGS=true
 HITL_APPROVE_TRANSFERS=true
@@ -87,41 +119,19 @@ HITL_HOT_LEAD_THRESHOLD=75         # 60|70|75|80|90
 HITL_SLACK_WEBHOOK=                # Optional notifications
 ```
 
-### HITL Commands
-
-```bash
-node telephony/voice-telephony-bridge.cjs --list-pending
-node telephony/voice-telephony-bridge.cjs --approve=<id>
-node telephony/voice-telephony-bridge.cjs --reject=<id>
-```
-
 ---
 
-## Function Tools (11 - Telephony Bridge)
-
-| Tool | Line | Purpose |
-|------|------|---------|
-| qualify_lead | 605 | BANT scoring |
-| handle_objection | 645 | Analytics |
-| check_order_status | 665 | Shopify lookup |
-| check_product_stock | 680 | Inventory |
-| get_customer_tags | 695 | Klaviyo |
-| schedule_callback | 710 | Follow-up |
-| create_booking | 734 | Calendar |
-| track_conversion_event | 775 | Analytics |
-| search_knowledge_base | 801 | RAG |
-| send_payment_details | 820 | Payment |
-| transfer_call | 844 | Human handoff |
-
----
-
-## Service Ports
+## Service Ports (7 total)
 
 | Service | Port | Status |
 |---------|------|--------|
 | Voice API | 3004 | Available |
 | Grok Realtime | 3007 | Available |
 | Telephony Bridge | 3009 | Available |
+| OAuth Gateway | 3010 | Available |
+| Webhook Router | 3011 | Available |
+| Remotion HITL | 3012 | Available |
+| DB API | 3013 | Available |
 
 ---
 
@@ -137,5 +147,4 @@ npm run start:all
 
 ---
 
-*Adapté de VocalIA - Session 184bis*
-*VocalIA Voice AI Platform*
+*VocalIA Voice AI Platform - Session 250.94*

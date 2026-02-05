@@ -1,19 +1,32 @@
 # Règles Voice Platform VocalIA
 
+> **MÀJOUR RIGOUREUSE: 05/02/2026 - Session 250.94**
+> Métriques vérifiées avec `wc -l` et `grep -c`
+
 ## Architecture 2 Produits
 
 ### Produit 1: Voice Widget (Browser)
 ```
-Technologie: Web Speech API (gratuit)
-Coût: $0
-Fichiers: widget/voice-widget-core.js, widget/voice-widget-templates.cjs
+Technologie: Web Speech API (gratuit) + AI Backend
+Coût: $0 navigateur, pricing API backend
+Fichiers: widget/ (8 fichiers, 9,107 lignes)
+- voice-widget-v3.js (3,135) - E-commerce Core
+- abandoned-cart-recovery.js (1,416)
+- spin-wheel.js (1,176)
+- voice-quiz.js (1,127)
+- free-shipping-bar.js (826)
+- voice-widget-b2b.js (659)
+- recommendation-carousel.js (615)
+- intelligent-fallback.js (153)
 ```
 
 ### Produit 2: Voice Telephony AI (PSTN)
 ```
 Technologie: PSTN ↔ AI WebSocket Bridge
 Coût: Compétitif (voir pricing commercial)
-Fichiers: telephony/voice-telephony-bridge.cjs, core/grok-voice-realtime.cjs
+Fichiers: telephony/voice-telephony-bridge.cjs (4,709 lignes)
+         core/grok-voice-realtime.cjs (1,109 lignes)
+Function Tools: 25 (VÉRIFIÉ grep -c "name: '")
 ```
 
 ## Multi-AI Fallback Chain
@@ -29,31 +42,44 @@ providers: [
 // Trigger: Latency > 15s OR Status != 200
 ```
 
-## 40 Personas (voice-persona-injector.cjs) - Session 250.6
+## 40 Personas (voice-persona-injector.cjs) - VÉRIFIÉ 05/02/2026
 | Tier | Count | Examples |
 |:-----|:-----:|:---------|
 | Tier 1 (Core) | 5 | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
 | Tier 2 (Expansion) | 19 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER... |
 | Tier 3 (Universal) | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
-| Tier 4 (NEW Economy) | 14 | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, DOCTOR, NOTARY, BAKERY, GROCERY... |
+| Tier 4 (Economy) | 14 | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, DOCTOR, NOTARY, BAKERY, GROCERY... |
 
-**Removed (Session 250.6):** GOVERNOR, SCHOOL, HOA, SURVEYOR (admin), DRIVER (hors scope B2B)
-**GROCERY reinstated:** Marché livraison grocery $128M Maroc + $59B Europe
+**Total: 40 personas** (vérifié: `grep -E "^\s+[A-Z_]+:\s*\{$" | sort -u | wc -l`)
 
-## 11 Function Tools (voice-telephony-bridge.cjs)
-| Tool | Ligne | Purpose |
-|:-----|:------|:--------|
-| qualify_lead | 605 | BANT scoring |
-| handle_objection | 645 | Analytics |
-| check_order_status | 665 | Shopify lookup |
-| check_product_stock | 680 | Inventory |
-| get_customer_tags | 695 | Klaviyo |
-| schedule_callback | 710 | Follow-up |
-| create_booking | 734 | Calendar |
-| track_conversion_event | 775 | Analytics |
-| search_knowledge_base | 801 | RAG |
-| send_payment_details | 820 | Payment |
-| transfer_call | 844 | Human handoff |
+## 25 Function Tools (voice-telephony-bridge.cjs) - VÉRIFIÉ 05/02/2026
+| Tool | Purpose |
+|:-----|:--------|
+| qualify_lead | BANT scoring |
+| handle_objection | Analytics |
+| check_order_status | Shopify/WooCommerce lookup |
+| check_product_stock | Inventory |
+| get_customer_tags | Klaviyo |
+| schedule_callback | Follow-up |
+| create_booking | Calendar |
+| track_conversion_event | Analytics |
+| search_knowledge_base | RAG |
+| send_payment_details | Payment |
+| transfer_call | Human handoff |
+| start_product_quiz | Voice quiz |
+| lookup_customer | HubSpot/Pipedrive lookup (Session 250.94) |
+| create_lead | HubSpot contact creation (Session 250.94) |
+| update_customer | HubSpot PATCH (Session 250.94) |
+| log_call | HubSpot call engagement (Session 250.94) |
+| check_stock | Catalog connector stock |
+| recommend_products | AI recommendations |
+| get_order_history | Shopify order history (Session 250.94) |
+| get_similar_products | Similar products |
+| get_frequently_bought_together | Cross-sell |
+| get_personalized_recommendations | Personalized |
+| queue_cart_recovery_callback | Cart recovery |
+| send_cart_recovery_sms | SMS recovery |
+| browse_catalog | Catalog browsing |
 
 ## HITL Controls
 ```bash
@@ -72,7 +98,7 @@ HITL_SLACK_WEBHOOK=              # Notifications
 | en | English | ✅ Full |
 | es | Español | ✅ Full |
 | ar | Arabic MSA | ✅ Full |
-| ary | Darija (Moroccan) | ✅ Native support |
+| ary | Darija (Moroccan) | ✅ Native support (ElevenLabs) |
 
 ## Avantages Concurrentiels
 | Avantage | Description |
@@ -81,3 +107,5 @@ HITL_SLACK_WEBHOOK=              # Notifications
 | Platform | Widget + Telephony intégré |
 | Personas | 40 personas SOTA |
 | Langues | Seul avec Darija native |
+| MCP Tools | 203 tools (vérifié) |
+| E-commerce | 7 platforms, ~64% market coverage |

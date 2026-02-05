@@ -1,14 +1,21 @@
 # Règles Core VocalIA - Chargées TOUJOURS
 
-## Architecture
+> **MÀJOUR RIGOUREUSE: 05/02/2026 - Session 250.94**
+> Métriques vérifiées avec `wc -l` et `grep -c`
+
+## Architecture (VÉRIFIÉ 05/02/2026)
 ```
-VocalIA/
-├── core/                    # Voice engine (4 fichiers)
-├── widget/                  # Browser widget (2 fichiers)
-├── telephony/               # PSTN bridge (1 fichier)
-├── personas/                # Multi-tenant (1 fichier)
-├── integrations/            # CRM/E-commerce (2 fichiers)
-├── scripts/                 # Utilities (1 fichier)
+VocalIA/                              # ~140,000 lignes total
+├── core/                    # 38 modules (32,727 lignes)
+├── widget/                  # 8 fichiers (9,107 lignes)
+├── telephony/               # 1 fichier (4,709 lignes, 25 function tools)
+├── personas/                # 2 fichiers (5,995 lignes, 40 personas)
+├── integrations/            # 7 fichiers (2,234 lignes)
+├── sensors/                 # 4 fichiers (822 lignes)
+├── mcp-server/              # TypeScript (17,630 lignes, 203 tools)
+├── website/                 # 76 pages HTML
+│   └── src/lib/            # 21 JS libs (7,563 lignes)
+│   └── src/locales/        # 5 langues (23,790 lignes)
 └── docs/                    # Documentation
 ```
 
@@ -34,23 +41,29 @@ for (const key of requiredEnv) {
 | Credential | Service | Requis |
 |:-----------|:--------|:------:|
 | XAI_API_KEY | Grok Voice | ✅ |
-| GOOGLE_GENERATIVE_AI_API_KEY | Gemini Fallback | ⚠️ |
+| GOOGLE_GENERATIVE_AI_API_KEY | Gemini Fallback | ✅ |
+| ELEVENLABS_API_KEY | TTS/STT | ✅ |
 | TWILIO_ACCOUNT_SID | Telephony | Pour PSTN |
 | TWILIO_AUTH_TOKEN | Telephony | Pour PSTN |
 | TWILIO_PHONE_NUMBER | Telephony | Pour PSTN |
+| ANTHROPIC_API_KEY | Claude Fallback | ⚠️ Optional |
 
-## Services (Ports)
+## Services (7 Ports)
 | Service | Port | Commande |
 |:--------|:----:|:---------|
 | Voice API | 3004 | `node core/voice-api-resilient.cjs` |
 | Grok Realtime | 3007 | `node core/grok-voice-realtime.cjs` |
 | Telephony Bridge | 3009 | `node telephony/voice-telephony-bridge.cjs` |
+| OAuth Gateway | 3010 | `node core/OAuthGateway.cjs --start` |
+| Webhook Router | 3011 | `node core/WebhookRouter.cjs --start` |
+| Remotion HITL | 3012 | `node core/remotion-hitl.cjs` |
+| DB API | 3013 | `node core/db-api.cjs` |
 
 ## Health Check
 ```bash
-node scripts/voice-quality-sensor.cjs --health
+node scripts/health-check.cjs
 ```
 
 ## Deploy
-Parent: VocalIA (JO-AAA)
-VPS: Hostinger 1168256 (si déployé en prod)
+Production: https://vocalia.ma
+VPS: Hostinger Docker Compose (api.vocalia.ma)
