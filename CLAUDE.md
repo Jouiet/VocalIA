@@ -1,10 +1,10 @@
 # VocalIA - Voice AI Platform
 
-> **v7.2.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
-> **76 pages** | 23,790 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | 306 unit + 375 E2E tests (99.5%)
+> **v7.3.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
+> **77 pages** | 23,795 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | 306 unit + 375 E2E tests (99.5%)
 > **203 MCP Tools** | 40 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~140k lines total** | Core 32,727 + Telephony 4,709 + Personas 5,995 + Widget 9,107 + MCP 17,630 + Website 31,353
-> ✅ **SESSION 250.94:** Voice Tools Production - CRM (351 lines: HubSpot+Pipedrive) + Ecom (389 lines: Shopify+WooCommerce) → Real APIs. ALL SKELETONS ELIMINATED.
+> ✅ **SESSION 250.96:** Forensic Audit Frontend 100% DONE - 17 console.log removed, signup CTA, mentions-legales.html, Score 95/100
 
 ## Quick Reference
 
