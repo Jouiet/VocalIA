@@ -1,6 +1,13 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 7.0.0 | **Updated**: 05/02/2026 | **Session**: 250.92
+> **Version**: 7.0.1 | **Updated**: 05/02/2026 | **Session**: 250.93
+> **Session 250.93 I18N COMPLETE SURGERY (CONTINUATION):**
+> - ✅ **ar.json**: French contamination eliminated (4→0 patterns)
+> - ✅ **ary.json**: French contamination eliminated (24→0 patterns) - Full Darija translations
+> - ✅ **en.json**: Additional French patterns fixed (2→0)
+> - ✅ **es.json**: Additional French patterns fixed (5 mixed entries corrected)
+> - ✅ **Tests**: 306/309 pass, 3 skip (stable)
+> - ✅ **Total decontaminated**: 35 entries across 4 locale files
 > **Session 250.92 I18N DEEP SURGERY:**
 > - ✅ **en.json**: French contamination eliminated (7→0 patterns)
 > - ✅ **es.json**: French contamination eliminated (34→0 patterns)
