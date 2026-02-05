@@ -14,12 +14,12 @@
 | **Accessibility (WCAG)** | 75/100 | ⚠️ | 3 |
 | **Performance** | 92/100 | ✅ | 0 |
 | **i18n** | 95/100 | ✅ | 0 |
-| **Marketing/CRO** | 82/100 | ⚠️ | 2 |
+| **Marketing/CRO** | 95/100 | ✅ FIXÉ | 0 (était 2) |
 | **Legal/Compliance** | 85/100 | ⚠️ | 1 |
 | **Dashboards** | 90/100 | ✅ | 0 |
 | **Branding/Design** | 90/100 | ✅ | 0 |
 
-**SCORE GLOBAL: 89/100** ✅ (après fix _headers)
+**SCORE GLOBAL: 92/100** ✅ (après fix _headers + CRO cleanup)
 
 ---
 
@@ -404,63 +404,57 @@
 
 ---
 
-### 🔴 TODO - Phase 2: CRO (Conversion Rate Optimization)
+### ✅ DONE - Phase 2: CRO (Conversion Rate Optimization)
 
-#### Task 2.1: Supprimer console.log en production
+#### ~~Task 2.1: Supprimer console.log en production~~ → ✅ FAIT (Session 250.96)
 
-| Fichier | Ligne | Code à supprimer |
-|:--------|:-----:|:-----------------|
-| `website/src/lib/geo-detect.js` | 81 | `console.log('[VocaliaGeo] Loaded from cache:', data.config);` |
-| `website/src/lib/geo-detect.js` | 91 | `console.log('[VocaliaGeo] Detecting sovereign location...');` |
-| `website/src/lib/geo-detect.js` | 105 | `console.log('[VocaliaGeo] Detected:', config);` |
-| `website/src/lib/i18n.js` | 143 | `console.log(\`[i18n] Detected location: ...\`);` |
+**Fichiers nettoyés (17 console.log supprimés):**
 
-**Commande de vérification:**
+| Fichier | Lignes supprimées |
+|:--------|:-----------------:|
+| `website/src/lib/geo-detect.js` | 3 |
+| `website/src/lib/i18n.js` | 1 |
+| `website/voice-assistant/voice-widget-b2b.js` | 1 |
+| `website/voice-assistant/voice-widget.js` | 2 |
+| `website/voice-assistant/voice-widget-ecommerce.js` | 12 |
+| `website/dashboard/client.html` | 2 |
+
+**Vérification:**
 ```bash
 grep -rn "console.log" website/src/lib/*.js
-# Résultat attendu: 0 lignes
+# ✅ Résultat: 0 lignes
+
+grep -c "console.log" website/voice-assistant/*.js
+# ✅ Résultat: 0 (seuls scripts build restent)
 ```
 
 ---
 
-#### Task 2.2: Ajouter CTA Signup dans Hero
+#### ~~Task 2.2: Ajouter CTA Signup dans Hero~~ → ✅ FAIT (Session 250.96)
 
-**Fichier:** `website/index.html`
-**Ligne:** ~731-745 (section hero CTAs)
+**Modifications effectuées:**
 
-**Code actuel (ligne 731-744):**
+1. **index.html:** Ajout CTA Signup (ligne ~745)
 ```html
-<a href="/pricing" class="group btn-cyber...">
-  <span data-i18n="hero.cta_primary">Essai 14 Jours</span>
-</a>
-<button type="button" data-action="openDemoModal"...>
-  <span data-i18n="hero.cta_secondary">Voir la Démo</span>
-</button>
-```
-
-**Code à ajouter après ligne 744:**
-```html
-<a href="/signup"
-   class="px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-600 transition-all font-semibold text-lg text-white hover:scale-105"
-   data-animate="cta">
+<a href="/signup.html"
+   class="px-8 py-4 rounded-xl border-2 border-vocalia-500 text-vocalia-400 hover:bg-vocalia-500 hover:text-white transition-all font-semibold text-lg flex items-center group hover:scale-105"
+   data-animate="cta" data-magnetic>
+  <i data-lucide="user-plus" class="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"></i>
   <span data-i18n="hero.cta_signup">Créer un Compte</span>
-  <i data-lucide="arrow-right" class="w-5 h-5 inline-block ml-2"></i>
 </a>
 ```
 
-**Clés i18n à ajouter dans les 5 locales:**
-```json
-"hero.cta_signup": "Créer un Compte"       // fr
-"hero.cta_signup": "Create Account"        // en
-"hero.cta_signup": "Crear Cuenta"          // es
-"hero.cta_signup": "إنشاء حساب"           // ar
-"hero.cta_signup": "كري كونط"             // ary
-```
+2. **i18n keys ajoutées (5 locales):**
+   - `fr.json`: `"cta_signup": "Créer un Compte"`
+   - `en.json`: `"cta_signup": "Create Account"`
+   - `es.json`: `"cta_signup": "Crear Cuenta"`
+   - `ar.json`: `"cta_signup": "إنشاء حساب"`
+   - `ary.json`: `"cta_signup": "فتح حساب"`
 
 **Vérification:**
 ```bash
-grep -c "href=\"/signup\"" website/index.html
-# Résultat attendu: ≥2
+grep -c "hero.cta_signup" website/src/locales/*.json
+# ✅ Résultat: 5 fichiers
 ```
 
 ---

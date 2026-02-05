@@ -78,7 +78,6 @@ const VocaliaGeo = (function () {
             try {
                 const data = JSON.parse(cached);
                 if (Date.now() - data.timestamp < CONFIG.CACHE_TTL) {
-                    console.log('[VocaliaGeo] Loaded from cache:', data.config);
                     return data.config;
                 }
             } catch (e) {
@@ -88,7 +87,6 @@ const VocaliaGeo = (function () {
 
         // Fetch Fresh
         try {
-            console.log('[VocaliaGeo] Detecting sovereign location...');
             const response = await fetch(CONFIG.API_URL);
             if (!response.ok) throw new Error('Geo API failed');
 
@@ -102,7 +100,6 @@ const VocaliaGeo = (function () {
                 config: config
             }));
 
-            console.log('[VocaliaGeo] Detected:', config);
             return config;
 
         } catch (error) {

@@ -140,7 +140,6 @@ async function detectUserGeo() {
     if (!response.ok) throw new Error('Geo-IP service unavailable');
     const data = await response.json();
     const config = GEO_MAPPING[data.country_code] || DEFAULT_GEO;
-    console.log(`[i18n] Detected location: ${data.country_name} (${data.country_code}). Using: ${config.lang}/${config.currency}`);
     return config;
   } catch (e) {
     console.warn('[i18n] Geo detection failed, using defaults:', e);

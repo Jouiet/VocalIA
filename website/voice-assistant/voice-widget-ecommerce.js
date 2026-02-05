@@ -224,8 +224,6 @@
             dataLayer.push({ event: eventName, ...eventData });
         }
 
-        // SOTA: Signal bridge to backend (Agent Ops Dashboard ingestion)
-        console.log(`[VocalIA] SOTA Signal: ${eventName}`, eventData);
     }
 
     /**
@@ -241,9 +239,6 @@
         attr.gclid = urlParams.get('gclid') || attr.gclid;
         attr.fbclid = urlParams.get('fbclid') || attr.fbclid;
 
-        if (attr.gclid || attr.fbclid) {
-            console.log('[VocalIA] Attribution Captured:', attr);
-        }
     }
 
     // ============================================================
@@ -252,7 +247,6 @@
 
     function createWidget() {
         if (document.getElementById('voice-assistant-widget')) {
-            console.log('[VocalIA] Widget already exists');
             return;
         }
 
@@ -1576,7 +1570,6 @@
 
     // Wire up existing widgets to orchestrator
     WidgetOrchestrator.on('widget:activated', ({ widget }) => {
-        console.log(`[Orchestrator] Widget activated: ${widget}`);
     });
 
     // ============================================================
@@ -2096,8 +2089,6 @@
             // Mobile: Scroll up detection
             window.addEventListener('scroll', handleMobileExitIntent, { passive: true });
         }
-
-        console.log('[VocalIA] Exit-intent detection initialized');
     }
 
     function isMobileDevice() {
@@ -2334,8 +2325,6 @@
                 }
             }, CONFIG.SOCIAL_PROOF_INTERVAL);
         }, CONFIG.SOCIAL_PROOF_DELAY);
-
-        console.log('[VocalIA] Social proof notifications initialized');
     }
 
     /**
@@ -3010,24 +2999,12 @@
             }
 
             const lang = detectLanguage();
-            console.log(`[VocalIA] Detected language: ${lang}`);
-
             await loadLanguage(lang);
-            console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
 
             // Detect tenant ID for e-commerce features
             detectTenantId();
-            if (state.tenantId) {
-                console.log(`[VocalIA] E-commerce mode: tenant ${state.tenantId}`);
-
-                // Initialize UCP for personalized experience
-                if (CONFIG.ECOMMERCE_MODE) {
-                    UCP.syncPreference().then(data => {
-                        if (data) {
-                            console.log(`[VocalIA] UCP synced: ${data.ltvTier} tier, ${data.profile?.locale}`);
-                        }
-                    }).catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
-                }
+            if (state.tenantId && CONFIG.ECOMMERCE_MODE) {
+                UCP.syncPreference().catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
             }
 
             captureAttribution();
@@ -3803,11 +3780,6 @@
 
             // Listen for orchestrator events
             this.setupOrchestratorIntegration();
-
-            console.log('[AbandonedCartRecovery] Initialized', {
-                tenant: this.config.tenantId,
-                lang: this.config.lang
-            });
         }
 
         createModal() {

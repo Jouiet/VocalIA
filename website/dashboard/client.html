@@ -669,7 +669,6 @@
 
         if (!tenant) {
           console.error('[Dashboard] No tenant found for ID:', TENANT_ID);
-          console.log('[Dashboard] Available tenants:', tenantsData.data?.map(t => ({ id: t.id, name: t.name })));
           return null;
         }
 
@@ -779,8 +778,6 @@
 
       // Update billing section
       updateBillingSection(tenant);
-
-      console.log(`[Dashboard] Updated from ${metrics.source}: ${stats.totalCalls} calls, ${stats.minutesUsed} min`);
     }
 
     // Session 250.52: Update tenant info in sidebar and header with IDs

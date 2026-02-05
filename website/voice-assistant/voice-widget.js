@@ -137,7 +137,6 @@
         attr.utm_source = urlParams.get('utm_source') || attr.utm_source;
         attr.utm_medium = urlParams.get('utm_medium') || attr.utm_medium;
         attr.utm_campaign = urlParams.get('utm_campaign') || attr.utm_campaign;
-        if (attr.utm_source) console.log('[VocalIA B2B] Attribution:', attr);
     }
 
     // ============================================================
@@ -148,8 +147,6 @@
         if (typeof gtag === 'function') {
             gtag('event', eventName, { ...params, agent_type: 'b2b_specialized' });
         }
-        // SOTA Signal Bridge
-        console.log(`[VocalIA] Signal: ${eventName}`, params);
     }
 
     // ============================================================

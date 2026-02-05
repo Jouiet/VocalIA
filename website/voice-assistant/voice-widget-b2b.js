@@ -642,8 +642,6 @@
             captureAttribution();
             createWidget();
             initExitIntent();
-
-            console.log(`[VocalIA B2B] Widget v2.1.0 initialized | Lang: ${state.currentLang}`);
         } catch (error) {
             console.error('[VocalIA B2B] Init error:', error);
         }
