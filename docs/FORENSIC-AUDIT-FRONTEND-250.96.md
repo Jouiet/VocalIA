@@ -359,7 +359,7 @@
 
 ---
 
-## PARTIE 12: SWOT ANALYSIS
+## PARTIE 12: SWOT ANALYSIS (MIS À JOUR)
 
 ### Strengths (Forces)
 - ✅ SEO/AEO excellent (Speakable, JSON-LD, hreflang)
@@ -369,12 +369,14 @@
 - ✅ Branding cohérent
 - ✅ Dashboards fonctionnels et complets
 - ✅ AI Act compliance documentée
+- ✅ **Security headers complets** (_headers créé Session 250.96)
+- ✅ **font-display: swap** via Google Fonts URL
 
 ### Weaknesses (Faiblesses)
-- ❌ Security headers incomplets (pas de _headers file)
+- ~~❌ Security headers incomplets~~ → ✅ FIXÉ
 - ❌ Social proof faible (pas de client logos)
-- ❌ CTAs signup insuffisants
-- ❌ font-display: swap manquant
+- ❌ CTAs signup insuffisants (1 seul lien indirect)
+- ~~❌ font-display: swap manquant~~ → ✅ DÉJÀ PRÉSENT
 
 ### Opportunities (Opportunités)
 - 📈 Ajouter section "Trusted By" avec logos clients
@@ -383,38 +385,161 @@
 - 📈 Dark mode pour site public
 
 ### Threats (Menaces)
-- ⚠️ Clickjacking sans X-Frame-Options
+- ~~⚠️ Clickjacking sans X-Frame-Options~~ → ✅ FIXÉ
 - ⚠️ Conversion réduite sans social proof fort
 - ⚠️ Non-conformité potentielle FR sans mentions légales
 
 ---
 
-## PARTIE 13: PLAN D'ACTION
+## PARTIE 13: PLAN D'ACTION FACTUEL ET RIGOUREUX
 
-### Phase 1: Sécurité (IMMÉDIAT)
+### ✅ COMPLÉTÉ - Phase 1: Sécurité
 
+| Tâche | Status | Fichier | Vérification |
+|:------|:------:|:--------|:-------------|
+| Créer _headers | ✅ FAIT | `website/_headers` | `ls -la website/_headers` |
+| X-Frame-Options | ✅ FAIT | `website/_headers:5` | `grep X-Frame website/_headers` |
+| HSTS | ✅ FAIT | `website/_headers:11` | `grep Strict-Transport website/_headers` |
+| CSP | ✅ FAIT | `website/_headers:17` | `grep Content-Security website/_headers` |
+
+---
+
+### 🔴 TODO - Phase 2: CRO (Conversion Rate Optimization)
+
+#### Task 2.1: Supprimer console.log en production
+
+| Fichier | Ligne | Code à supprimer |
+|:--------|:-----:|:-----------------|
+| `website/src/lib/geo-detect.js` | 81 | `console.log('[VocaliaGeo] Loaded from cache:', data.config);` |
+| `website/src/lib/geo-detect.js` | 91 | `console.log('[VocaliaGeo] Detecting sovereign location...');` |
+| `website/src/lib/geo-detect.js` | 105 | `console.log('[VocaliaGeo] Detected:', config);` |
+| `website/src/lib/i18n.js` | 143 | `console.log(\`[i18n] Detected location: ...\`);` |
+
+**Commande de vérification:**
+```bash
+grep -rn "console.log" website/src/lib/*.js
+# Résultat attendu: 0 lignes
 ```
-# Créer website/_headers
-/*
-  X-Frame-Options: SAMEORIGIN
-  X-Content-Type-Options: nosniff
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline';
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(self), camera=()
+
+---
+
+#### Task 2.2: Ajouter CTA Signup dans Hero
+
+**Fichier:** `website/index.html`
+**Ligne:** ~731-745 (section hero CTAs)
+
+**Code actuel (ligne 731-744):**
+```html
+<a href="/pricing" class="group btn-cyber...">
+  <span data-i18n="hero.cta_primary">Essai 14 Jours</span>
+</a>
+<button type="button" data-action="openDemoModal"...>
+  <span data-i18n="hero.cta_secondary">Voir la Démo</span>
+</button>
 ```
 
-### Phase 2: CRO (Cette Session)
+**Code à ajouter après ligne 744:**
+```html
+<a href="/signup"
+   class="px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-600 transition-all font-semibold text-lg text-white hover:scale-105"
+   data-animate="cta">
+  <span data-i18n="hero.cta_signup">Créer un Compte</span>
+  <i data-lucide="arrow-right" class="w-5 h-5 inline-block ml-2"></i>
+</a>
+```
 
-1. **Ajouter client logos section** dans index.html
-2. **Ajouter 2-3 signup CTAs** supplémentaires
-3. **Ajouter font-display: swap** dans CSS
+**Clés i18n à ajouter dans les 5 locales:**
+```json
+"hero.cta_signup": "Créer un Compte"       // fr
+"hero.cta_signup": "Create Account"        // en
+"hero.cta_signup": "Crear Cuenta"          // es
+"hero.cta_signup": "إنشاء حساب"           // ar
+"hero.cta_signup": "كري كونط"             // ary
+```
 
-### Phase 3: Compliance (Backlog)
+**Vérification:**
+```bash
+grep -c "href=\"/signup\"" website/index.html
+# Résultat attendu: ≥2
+```
 
-1. Créer mentions-legales.html ou redirection
-2. Supprimer console.log en production
-3. Évaluer dark mode pour site public
+---
+
+#### Task 2.3: Ajouter Section "Trusted By" (Logos Clients)
+
+**Fichier:** `website/index.html`
+**Position:** Après la section hero (ligne ~800), avant la section features
+
+**Code à insérer:**
+```html
+<!-- Trusted By Section - Session 250.96 -->
+<section class="py-12 border-y border-slate-800/50">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="text-center text-sm text-zinc-500 mb-8" data-i18n="social_proof.trusted_by">
+      Ils nous font confiance
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+      <!-- Placeholder: Replace with real client logos when available -->
+      <div class="h-8 text-zinc-400" data-i18n="social_proof.client_placeholder">
+        [Logos clients à venir]
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+**Clés i18n à ajouter:**
+```json
+"social_proof.trusted_by": "Ils nous font confiance"     // fr
+"social_proof.trusted_by": "Trusted by"                  // en
+"social_proof.trusted_by": "Confían en nosotros"         // es
+"social_proof.trusted_by": "يثقون بنا"                  // ar
+"social_proof.trusted_by": "كيتيقو فينا"               // ary
+```
+
+---
+
+### 🟡 TODO - Phase 3: Compliance (Backlog)
+
+#### Task 3.1: Créer mentions-legales.html
+
+**Option A (Recommandée):** Redirection vers terms.html
+```html
+<!-- website/mentions-legales.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="refresh" content="0; url=/terms">
+  <title>Redirecting...</title>
+</head>
+<body>
+  <a href="/terms">Voir les mentions légales</a>
+</body>
+</html>
+```
+
+**Option B:** Page complète avec contenu légal français
+
+**Vérification:**
+```bash
+ls -la website/mentions-legales.html
+# OU
+curl -s -o /dev/null -w "%{http_code}" https://vocalia.ma/mentions-legales
+# Résultat attendu: 200 ou 301
+```
+
+---
+
+### Checklist de Vérification Finale
+
+| # | Tâche | Commande de vérification | Résultat attendu |
+|:-:|:------|:-------------------------|:-----------------|
+| 1 | _headers existe | `ls website/_headers` | Fichier présent |
+| 2 | console.log supprimés | `grep -c "console.log" website/src/lib/*.js` | 0 |
+| 3 | Signup CTA ajouté | `grep -c 'href="/signup"' website/index.html` | ≥2 |
+| 4 | i18n signup key | `grep -c "cta_signup" website/src/locales/fr.json` | 1 |
+| 5 | Trusted By section | `grep -c "trusted_by" website/index.html` | ≥1 |
+| 6 | mentions-legales | `ls website/mentions-legales.html` | Fichier présent |
 
 ---
 
@@ -433,8 +558,21 @@
 
 ---
 
+## RÉSUMÉ EXÉCUTIF FINAL
+
+| Phase | Tâches | Status |
+|:------|:------:|:------:|
+| Phase 1: Sécurité | 4 | ✅ 100% COMPLÉTÉ |
+| Phase 2: CRO | 3 | 🔴 0% - À FAIRE |
+| Phase 3: Compliance | 1 | 🟡 0% - Backlog |
+
+**Score Actuel: 89/100** (après Phase 1)
+**Score Potentiel: 95/100** (après Phases 2+3)
+
+---
+
 *Audit réalisé: 05/02/2026*
 *Session: 250.96*
 *Méthode: DOE Framework - Vérification empirique directe*
 *Aucun agent Claude utilisé*
-*Score Global: 86/100*
+*Mise à jour: Plan d'action factuel avec fichiers, lignes, code, vérifications*
