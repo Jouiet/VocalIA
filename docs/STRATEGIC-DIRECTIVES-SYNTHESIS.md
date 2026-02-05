@@ -210,15 +210,15 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 
 ### Phase 1: Marketing Differentiation (J+1 à J+3)
 
-* [ ] 1.1 Créer page produit Voice Widget B2C
-* [ ] 1.2 Mettre à jour `pricing.html` avec 3 produits distincts
+* [x] 1.1 Créer page produit Voice Widget B2C ✅ **Session 250.88** (706 lignes, SEO complet)
+* [x] 1.2 Mettre à jour `pricing.html` avec 3 produits distincts ✅ (4 produits dans nav dropdown)
 * [ ] 1.3 Documenter différenciation dans SITEMAP-PLAN.md
 
 ### Phase 2: Visual Display Configuration (J+4 à J+7)
 
-* [ ] 2.1 Documenter schéma JSON pour MENU avec images
-* [ ] 2.2 Documenter schéma JSON pour TRIPS avec images
-* [ ] 2.3 Créer sample catalogs pour demos
+* [x] 2.1 Documenter schéma JSON pour MENU avec images ✅ (sample-restaurant-menu.json)
+* [x] 2.2 Documenter schéma JSON pour TRIPS avec images ✅ (sample-travel-trips.json)
+* [x] 2.3 Créer sample catalogs pour demos ✅ (5 catalogs: menu, services, trips, fleet, products)
 
 ### Phase 3: Tenant Documentation (J+8 à J+10)
 
