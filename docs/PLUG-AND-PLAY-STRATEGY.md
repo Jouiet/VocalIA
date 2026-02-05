@@ -2,14 +2,14 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 2.16 | **Date:** 05/02/2026 | **Session:** 250.86
+> **Version:** 2.17 | **Date:** 05/02/2026 | **Session:** 250.87
 > **Approche:** Bottom-Up Factuelle | **Méthodologie:** Forensic Audit & Code Refactor
-> **Status:** ⚠️ MCP GAPS IDENTIFIED | MCP Server v0.8.3 (**186 tools verified**) | Security 100/100
+> **Status:** 🔴 **PRODUCTION BLOCKED** - i18n catastrophe (7,143 untranslated keys) + 48/306 tests fail
+> **Session 250.87**: 🔴 **I18N CATASTROPHE** - en: 1841, es: 2000, ar: 1658, ary: 1644 untranslated keys
+> **Session 250.87**: 🔴 **Backend Score 84/100** (48 tests fail) - NOT 100/100 as previously claimed
 > **Session 250.86**: MCP modules manquants: hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts
 > **Products:** 4 (B2B Widget, B2C Widget, Ecom Widget, Telephony) | CATALOG_TYPES: 6 | PERSONAS: 40
-> **Session 250.80**: ✅ **SOVEREIGN ROUTING** - Automated Tenant Currency/Language assignment based on Geo (`geo-detect.js`).
-> **Session 250.85**: ✅ **DEEP COPY SURGERY** - All 5 languages upgraded to "Ultrathink" conversion standards.
-> **Session 250.85**: Core API Hardening Complete - CORS dynamic, "Free Tier" purged, per-tenant AI keys enabled.
+> **Session 250.85**: ❌ "DEEP COPY SURGERY" claim **FALSE** - superficial i18n fixes only
 
 ---
 

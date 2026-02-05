@@ -1,23 +1,21 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.95.0 | **Updated**: 05/02/2026 | **Session**: 250.86
-> **Session 250.86 FORENSIC AUDIT COMPLET:**
+> **Version**: 6.95.0 | **Updated**: 05/02/2026 | **Session**: 250.87
+> **Session 250.87 I18N FORENSIC AUDIT - CATASTROPHIC FINDINGS:**
+> - 🔴 **7,143 UNTRANSLATED KEYS** across 4 locales (FR values as placeholders)
+> - en.json: **1,841** untranslated + 106 French patterns
+> - es.json: **2,000** untranslated + 158 French patterns + 403 lines with French accents
+> - ar.json: **1,658** untranslated + 134 French patterns
+> - ary.json: **1,644** untranslated + 140 French patterns
+> - Previous "I18N PURIFICATION COMPLETE" claim: **FALSE** - superficial fixes only
+> **Backend Score**: 🔴 **84/100** (48/306 tests FAIL - widget.test.cjs file rename issue) | **Frontend Score**: 🔴 **40/100** (i18n catastrophe) | **Health Check**: 100% (39/39)
+> **Session 250.86 FORENSIC AUDIT:**
 > - CLAUDE.md optimisé: 45k→4.5k chars (-90%)
 > - MCP tools: **186** (était 182 documenté)
 > - Tests: **258/306 pass** (48 fail - fichier renommé)
 > - Widgets: UCP ✅ utilisé, EventBus ❌ NON connecté, A2A ❌ NON implémenté
 > - MCP GAPS: hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts MANQUENT
 > - Doc FAUSSE corrigée: Intercom/Crisp/Cal.com/Salesforce n'existent PAS
-> - Dépendance inutile: google-spreadsheet (GoogleSheetsDB utilise googleapis)
-> - @hubspot/api-client: UTILISÉ (integrations/hubspot-b2b-crm.cjs:26)
-> **Backend Score**: 100/100 | **Frontend Score**: ⚠️ **85/100** (i18n contamination CORRIGÉE) | **Health Check**: 100% (39/39)
-> **Session 250.86 I18N PURIFICATION COMPLETE:**
-> - fr.json: 11→4 "gratuit" (reste: clés JSON + "Livraison Gratuite" légitime) ✅
-> - en.json: 28→0 "free" claims - French text traduit ✅
-> - es.json: 8→0 "gratis" claims - French text traduit ✅
-> - ar.json: French text→Arabic traduit ✅
-> - ary.json: French text→Darija traduit ✅
-> - "No Free Tier" policy ENFORCED across 5 locales
 > **Security**: 100/100 - HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅, JWT Auth ✅
 > **MCP Server**: v0.8.3 | **MCP Tools**: **186** (vérifié grep) | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler

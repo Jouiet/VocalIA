@@ -1,8 +1,11 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.3 | 05/02/2026 | Session 250.86 | BM25 RAG SOTA | **186 tools** | **26 tool files**
-> **Session 250.86 FORENSIC AUDIT**: MCP tools=186 (vérifié grep), Widgets N'UTILISENT PAS EventBus, HubSpot/Klaviyo MCP modules MANQUENT
+> Version: 0.8.3 | 05/02/2026 | Session 250.87 | BM25 RAG SOTA | **186 tools** | **26 tool files**
+> **Session 250.87 I18N CATASTROPHE**: 7,143 untranslated keys across 4 locales - Frontend Score 40/100
+> **Session 250.87 BACKEND AUDIT**: 48/306 tests FAIL - Backend Score 84/100 (not 100/100)
+> **Session 250.86 FORENSIC AUDIT**: MCP tools=186 (vérifié grep), Widgets N'UTILISENT PAS EventBus
+> **MCP MODULES MISSING**: hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts (backends exist, MCP wrappers don't)
 > **Session 250.81**: 🚨 **CRITICAL REALITY CHECK** - Voice Agents (`voice-api-resilient`, `voice-agent-b2b`) are **DISCONNECTED** from MCP Server. Tools exist but are UNUSED by agents.
 > **Verified Status**: Tools (182) = ✅ Implemented | Agent Connection = ❌ BROKEN/MISSING.
 > **Session 250.80**: ✅ **SEMANTIC PURIFICATION** - MCP Tools renamed/aliased for business users in Dashboard

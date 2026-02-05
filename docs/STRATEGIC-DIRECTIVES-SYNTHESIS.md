@@ -498,3 +498,72 @@ plugins/wordpress/vocalia-voice/
 |:-:|:-----|:------:|:--------:|
 | 8 | Supprimer claims Intercom/Crisp/Cal.com de toute la doc | 1h | P2 |
 | 9 | Mettre à jour `package.json` (remove `google-spreadsheet` if unused) | 15m | P2 |
+
+---
+
+## 16. 🔴 I18N CATASTROPHIC CONTAMINATION (Session 250.87)
+
+> [!CAUTION]
+> **CRITICAL FINDING:** Forensic audit reveals **7,143 untranslated keys** across 4 locales.
+> French values were copied as placeholders but NEVER translated.
+
+### 16.1 Forensic Audit Results
+
+| Locale | Untranslated Keys | French Patterns | French Accents | Severity |
+|:-------|:-----------------:|:---------------:|:--------------:|:--------:|
+| **en.json** | 1,841 | 106 | 0 | 🔴 CRITICAL |
+| **es.json** | 2,000 | 158 | 403 | 🔴 CRITICAL |
+| **ar.json** | 1,658 | 134 | 0 | 🔴 CRITICAL |
+| **ary.json** | 1,644 | 140 | 0 | 🔴 CRITICAL |
+| **TOTAL** | **7,143** | **538** | **403** | 🔴 CATASTROPHIC |
+
+**Method:**
+```bash
+# Untranslated: FR values identical in target locales
+python3 scripts/sync-locales.py --find-untranslated
+
+# French patterns: grep for French sentence starters
+grep -cE '": "(Le |La |Les |Des |Pour |Avec |...)' website/src/locales/*.json
+```
+
+### 16.2 Examples of French Contamination in en.json
+
+| Key | French Value (WRONG) | Expected English |
+|:----|:--------------------|:-----------------|
+| `les_noshows_en_100` | "Les no-shows en chiffres" | "No-shows in numbers" |
+| `charges_sociales_42_99` | "Charges sociales (42%)" | "Social charges (42%)" |
+| `satisfaction_client_csat_49` | "Satisfaction client (CSAT)" | "Customer satisfaction (CSAT)" |
+| `gestion_des_objections_35` | "Gestion des objections" | "Objection handling" |
+| `politique_des_cookies_31` | "Policy des Cookies" | "Cookie Policy" |
+
+### 16.3 Root Cause Analysis
+
+1. **Locale Initialization:** `sync-locales.py` copies FR values as placeholders for missing keys
+2. **Translation Debt:** Translations were NEVER completed after initial sync
+3. **QA Bypass:** `translation-quality-check.py` only checks truncation ratio, NOT language correctness
+
+### 16.4 Impact Assessment
+
+| Impact | Description |
+|:-------|:------------|
+| **User Experience** | Non-French users see French text throughout the UI |
+| **SEO** | hreflang promises EN/ES/AR but delivers FR content |
+| **Brand Trust** | Professional appearance severely degraded |
+| **Market Expansion** | International markets blocked by language barrier |
+
+### 16.5 Remediation Plan
+
+| Phase | Task | Effort | Priority |
+|:-----:|:-----|:------:|:--------:|
+| **1** | Generate translations using AI (Gemini/Claude API) | 4h | P0 |
+| **2** | Manual QA review for cultural accuracy | 8h | P0 |
+| **3** | Update `translation-quality-check.py` to detect language mismatch | 2h | P1 |
+| **4** | Add CI check: reject commits with FR text in non-FR locales | 1h | P1 |
+
+### 16.6 Frontend Score Impact
+
+| Métrique | Previous | Current | Notes |
+|:---------|:--------:|:-------:|:------|
+| Frontend Score | 99/100 | **40/100** | i18n catastrophe invalidates prior assessment |
+| i18n Completeness | "100%" | **35%** | Only 35% actually translated |
+| Production Ready | ✅ | ⚠️ **FR-ONLY** | Other locales broken |
