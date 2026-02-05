@@ -276,16 +276,6 @@
       border-radius: inherit;
       pointer-events: none;
     }
-
-    .btn-cyber {
-      @apply relative px-8 py-4 bg-vocalia-500 rounded-xl overflow-hidden transition-all duration-300;
-      box-shadow: 0 0 20px rgba(94, 106, 210, 0.2);
-    }
-
-    .btn-cyber:hover {
-      @apply bg-vocalia-400 -translate-y-1;
-      box-shadow: 0 0 30px rgba(94, 106, 210, 0.5);
-    }
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
@@ -772,26 +762,10 @@
                   <i data-lucide="sparkles" class="w-6 h-6"></i>
                 </button>
 
-                <!-- Video Container (Placeholder for Cinematic Experience) -->
-                <div
-                  class="aspect-video w-full bg-gradient-to-br from-vocalia-900 to-black flex items-center justify-center relative overflow-hidden group">
-                  <div class="absolute inset-0 bg-[url('/assets/grid.svg')] opacity-20"></div>
-
-                  <!-- Pulsing Play Button -->
-                  <div class="relative z-10 text-center">
-                    <div
-                      class="w-20 h-20 rounded-full bg-vocalia-500/20 flex items-center justify-center backdrop-blur-sm border border-vocalia-400/30 group-hover:scale-110 transition duration-500 cursor-pointer">
-                      <i data-lucide="sparkles" class="w-8 h-8 text-vocalia-400 ml-1"></i>
-                    </div>
-                    <p class="mt-4 text-vocalia-300 font-mono text-sm tracking-widest uppercase"><span
-                        data-i18n="home.cinematic_demo_loading_21">Cinematic Demo
-                        Loading...</span></p>
-                  </div>
-
-                  <!-- Scanning line animation -->
-                  <div
-                    class="absolute top-0 left-0 w-full h-1 bg-vocalia-500/50 shadow-[0_0_15px_rgba(12,142,233,0.5)] animate-[scan_3s_linear_infinite]">
-                  </div>
+                <!-- Video Container -->
+                <div id="demoVideoContainer"
+                  class="aspect-video w-full bg-black flex items-center justify-center relative overflow-hidden">
+                  <!-- Video will be injected here by home-page.js -->
                 </div>
 
                 <div class="p-6 bg-slate-800 border-t border-slate-700">
@@ -875,25 +849,25 @@
             </div>
             <h3
               class="text-xl font-bold mb-2 bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent"
-              data-i18n="features.widget.title">Voice Widget B2B</h3>
-            <p class="text-zinc-400 text-sm mb-4" data-i18n="features.widget.description">Assistant vocal optimisé pour
-              la capture de leads et la prise de rendez-vous.</p>
+              data-i18n="features.widget.title">Voice Widget Universal</h3>
+            <p class="text-zinc-400 text-sm mb-4" data-i18n="features.widget.description">Une seule IA, trois modes de
+              performance : B2B, B2C et E-commerce.</p>
             <ul class="space-y-2 text-sm flex-grow">
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0"></i>
-                <span><span data-i18n="home.web_speech_api_20">Qualification Leads (BANT)</span></span>
+                <span data-i18n="features.widget.b2b"><strong>B2B :</strong> Qualification BANT & CRM</span>
+              </li>
+              <li class="flex items-center text-zinc-300">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400 mr-2 flex-shrink-0"></i>
+                <span data-i18n="features.widget.b2c"><strong>B2C :</strong> Prise de RDV & Support</span>
+              </li>
+              <li class="flex items-center text-zinc-300">
+                <i data-lucide="check" class="w-4 h-4 text-orange-400 mr-2 flex-shrink-0"></i>
+                <span data-i18n="features.widget.ecom"><strong>E-com :</strong> Paniers & Ventes Flash</span>
               </li>
               <li class="flex items-center text-zinc-300">
                 <i data-lucide="check" class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0"></i>
-                <span>Synchronisation CRM</span>
-              </li>
-              <li class="flex items-center text-zinc-300">
-                <i data-lucide="check" class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0"></i>
-                <span>5 langues supportées</span>
-              </li>
-              <li class="flex items-center text-zinc-300">
-                <i data-lucide="check" class="w-4 h-4 text-indigo-400 mr-2 flex-shrink-0"></i>
-                <span><span data-i18n="home.intgration_en_2_19">Intégration en 2 minutes</span></span>
+                <span data-i18n="features.widget.tech">5 Langues • Latence Zéro • 18KB</span>
               </li>
             </ul>
           </div>
@@ -1676,7 +1650,7 @@
   <script src="/src/lib/card-tilt.js" defer></script>
 
   <!-- VocalIA Voice Widget - Try our product! -->
-  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
+  <script src="/voice-assistant/voice-widget-b2b.js?v=2.1.0" defer></script>
 
   <!-- Lucide Icons 2026 -->
   <script src="https://unpkg.com/lucide@0.469.0"
