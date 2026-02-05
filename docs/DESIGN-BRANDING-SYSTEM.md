@@ -708,17 +708,19 @@ Apple 2026-inspired three-layer system:
 | `.animate-float-card` | Subtle floating animation |
 | `.animate-shimmer-glass` | Shimmer effect |
 
-## PLAN ACTIONNABLE (Session 215)
+## PLAN ACTIONNABLE (Session 215) - Updated 250.94
 
-| # | Action | Priorité | Fichier |
-|:-:|:-------|:--------:|:--------|
-| 1 | Deploy to Linear | P1 | deploy config |
-| 2 | Fix VocaliaGeo error | P1 | index.html |
-| 3 | Dashboard liquid-glass integration | P2 | dashboard/*.html |
-| 4 | E2E Visual Testing | P2 | Playwright |
+| # | Action | Priorité | Fichier | Status |
+|:-:|:-------|:--------:|:--------|:------:|
+| 1 | Deploy to Linear | P1 | deploy config | ⏳ Infra |
+| 2 | ~~Fix VocaliaGeo error~~ | ~~P1~~ | index.html | ✅ RESOLVED |
+| 3 | Dashboard liquid-glass | P2 | dashboard/*.html | ⏳ Design |
+| 4 | E2E Visual Testing | P2 | Playwright | ⏳ Backlog |
+
+**Session 250.94:** VocaliaGeo error resolved - `geo-detect.js?v=250` (line 1658) properly included with error handling (default: MA).
 
 ---
 
 *Document créé: 28/01/2026 - Session 200*
-*Màj: 29/01/2026 - Session 214 (Liquid Glass & 4K Colors)*
+*Màj: 05/02/2026 - Session 250.94 (VocaliaGeo verified)*
 *Auteur: Claude Code (DOE Framework)*
