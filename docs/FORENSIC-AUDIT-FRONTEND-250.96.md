@@ -346,7 +346,7 @@
 | # | Issue | Impact | Fix |
 |:-:|:------|:-------|:----|
 | 2 | ~~X-Frame-Options absent~~ | ~~Vulnérabilité clickjacking~~ | ✅ FIXÉ (_headers créé) |
-| 3 | Pas de client logos | Social proof réduit | Créer section logos |
+| 3 | ~~Pas de client logos~~ | ~~Social proof réduit~~ | ✅ FAUX POSITIF (testimonials suffisent) |
 | 4 | 1 signup link seulement | Conversion réduite | Ajouter CTAs |
 
 ### 11.3 Mineures (P2) - Backlog
@@ -374,7 +374,7 @@
 
 ### Weaknesses (Faiblesses)
 - ~~❌ Security headers incomplets~~ → ✅ FIXÉ
-- ❌ Social proof faible (pas de client logos)
+- ~~❌ Social proof faible (pas de client logos)~~ → ✅ FAUX POSITIF (testimonials suffisent, pas de logos disponibles)
 - ❌ CTAs signup insuffisants (1 seul lien indirect)
 - ~~❌ font-display: swap manquant~~ → ✅ DÉJÀ PRÉSENT
 
@@ -465,37 +465,15 @@ grep -c "href=\"/signup\"" website/index.html
 
 ---
 
-#### Task 2.3: Ajouter Section "Trusted By" (Logos Clients)
+#### ~~Task 2.3: Ajouter Section "Trusted By" (Logos Clients)~~ → ANNULÉE
 
-**Fichier:** `website/index.html`
-**Position:** Après la section hero (ligne ~800), avant la section features
+**Raison:** Après vérification factuelle:
+- ❌ Dossier `website/public/images/clients/` n'existe pas
+- ❌ Aucun logo client disponible
+- ✅ Section Testimonials (ligne 1298) fournit déjà le social proof
+- ⚠️ Un placeholder "[Logos à venir]" serait non professionnel
 
-**Code à insérer:**
-```html
-<!-- Trusted By Section - Session 250.96 -->
-<section class="py-12 border-y border-slate-800/50">
-  <div class="max-w-7xl mx-auto px-6">
-    <p class="text-center text-sm text-zinc-500 mb-8" data-i18n="social_proof.trusted_by">
-      Ils nous font confiance
-    </p>
-    <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-      <!-- Placeholder: Replace with real client logos when available -->
-      <div class="h-8 text-zinc-400" data-i18n="social_proof.client_placeholder">
-        [Logos clients à venir]
-      </div>
-    </div>
-  </div>
-</section>
-```
-
-**Clés i18n à ajouter:**
-```json
-"social_proof.trusted_by": "Ils nous font confiance"     // fr
-"social_proof.trusted_by": "Trusted by"                  // en
-"social_proof.trusted_by": "Confían en nosotros"         // es
-"social_proof.trusted_by": "يثقون بنا"                  // ar
-"social_proof.trusted_by": "كيتيقو فينا"               // ary
-```
+**Verdict:** Cette tâche était un **FAUX POSITIF**. Les testimonials textuels sont appropriés pour une startup sans clients majeurs reconnus.
 
 ---
 
@@ -534,11 +512,11 @@ curl -s -o /dev/null -w "%{http_code}" https://vocalia.ma/mentions-legales
 
 | # | Tâche | Commande de vérification | Résultat attendu |
 |:-:|:------|:-------------------------|:-----------------|
-| 1 | _headers existe | `ls website/_headers` | Fichier présent |
+| 1 | _headers existe | `ls website/_headers` | ✅ Fichier présent |
 | 2 | console.log supprimés | `grep -c "console.log" website/src/lib/*.js` | 0 |
 | 3 | Signup CTA ajouté | `grep -c 'href="/signup"' website/index.html` | ≥2 |
 | 4 | i18n signup key | `grep -c "cta_signup" website/src/locales/fr.json` | 1 |
-| 5 | Trusted By section | `grep -c "trusted_by" website/index.html` | ≥1 |
+| 5 | ~~Trusted By section~~ | ~~`grep -c "trusted_by" website/index.html`~~ | ❌ ANNULÉ (faux positif) |
 | 6 | mentions-legales | `ls website/mentions-legales.html` | Fichier présent |
 
 ---
@@ -563,11 +541,15 @@ curl -s -o /dev/null -w "%{http_code}" https://vocalia.ma/mentions-legales
 | Phase | Tâches | Status |
 |:------|:------:|:------:|
 | Phase 1: Sécurité | 4 | ✅ 100% COMPLÉTÉ |
-| Phase 2: CRO | 3 | 🔴 0% - À FAIRE |
+| Phase 2: CRO | 2 | 🔴 0% - À FAIRE (Task 2.3 annulée = faux positif) |
 | Phase 3: Compliance | 1 | 🟡 0% - Backlog |
 
 **Score Actuel: 89/100** (après Phase 1)
-**Score Potentiel: 95/100** (après Phases 2+3)
+**Score Potentiel: 93/100** (après Phases 2+3)
+
+### Corrections d'Audit (Faux Positifs Identifiés)
+- ~~"Client logos manquants"~~ → Testimonials suffisent, pas de logos disponibles
+- ~~"font-display: swap manquant"~~ → Déjà présent via Google Fonts URL
 
 ---
 
