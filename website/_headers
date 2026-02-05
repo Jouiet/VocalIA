@@ -1,0 +1,43 @@
+# VocalIA Security Headers
+# Compatible: Netlify, Cloudflare Pages, Vercel (via middleware)
+# Session 250.96 - Forensic Audit Fix
+
+/*
+  # Prevent clickjacking
+  X-Frame-Options: SAMEORIGIN
+
+  # Prevent MIME type sniffing
+  X-Content-Type-Options: nosniff
+
+  # Enable HSTS (1 year)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Referrer Policy
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # Permissions Policy (formerly Feature-Policy)
+  Permissions-Policy: geolocation=(), microphone=(self), camera=(), payment=(), usb=()
+
+  # XSS Protection (legacy browsers)
+  X-XSS-Protection: 1; mode=block
+
+  # Content Security Policy (relaxed for CDN and inline scripts)
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://*.vocalia.ma wss://*.vocalia.ma https://ipapi.co; frame-ancestors 'self'; base-uri 'self'; form-action 'self'
+
+# Cache static assets
+/public/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/public/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/public/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages - short cache for updates
+/*.html
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# API and dynamic content - no cache
+/api/*
+  Cache-Control: no-store, no-cache, must-revalidate
