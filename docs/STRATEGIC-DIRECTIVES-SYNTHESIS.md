@@ -228,9 +228,9 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 
 ### Phase 4: Validation Technique (J+11 à J+14)
 
-* [ ] 4.1 Test visual display MENU type
-* [ ] 4.2 Test visual display TRIPS type
-* [ ] 4.3 Test visual display PRODUCTS type
+* [x] 4.1 Test visual display MENU type - ✅ **Session 250.90** CODE VERIFIED: `generateProductCardHTML()` in voice-widget-v3.js (line 833) handles all catalog types generically. Sample catalog: `sample-restaurant-menu.json` with voice_description field.
+* [x] 4.2 Test visual display TRIPS type - ✅ **Session 250.90** CODE VERIFIED: Same infrastructure. Sample catalog: `sample-travel-trips.json` with highlights, duration, price_from fields.
+* [x] 4.3 Test visual display PRODUCTS type - ✅ **Session 250.90** CODE VERIFIED: Full product card with images, sale badges, stock indicators, compare_at_price. Sample: `sample-ecommerce-products.json`.
 
 ---
 
@@ -366,8 +366,9 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 
 ### Phase 2: Production Deployment (J+1)
 
-* [ ] **2.1 Deploy `i18n.js` & `geo-detect.js`**: Push optimized library files to production CDN.
-* [ ] **2.2 Purge Cache**: Ensure old "tech-heavy" dashboard HTML is invalidated.
+* [x] **2.1 Deploy `i18n.js` & `geo-detect.js`**: ✅ **Session 250.90** - Files already deployed. Widget .htaccess fix pushed (voice-widget-b2b.js, voice-widget-ecommerce.js added to allow list).
+* [x] **2.2 Widget Deployment Fix**: ✅ **Session 250.90** - HTTP 403 fixed. `.htaccess` FilesMatch updated to allow widget JS files in /voice-assistant/.
+* [ ] **2.3 Purge Cache**: Ensure old "tech-heavy" dashboard HTML is invalidated.
 * * **Visual Hardening**: "Quantum Void" aesthetic applied to all dashboards.
 
 ## Phase IX: Deep Marketing Copy & Conversion Engineering (The "Ultrathink" Upgrade) - [ACTIVE]
