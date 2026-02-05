@@ -13,9 +13,9 @@ const INTELLIGENT_FALLBACK = {
         products: {
             triggers: ['produit', 'products', 'vend', 'vendez', 'katbi3', 'offre', 'solution', 'quoi', 'what sell', '3andkom'],
             response: {
-                fr: "VocalIA propose 2 produits d'IA vocale :\n\n1. **Voice Widget** (99€/mois) - Assistant vocal 24/7 pour votre site web\n2. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA via Twilio\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, intégrations CRM.",
-                en: "VocalIA offers 2 voice AI products:\n\n1. **Voice Widget** (€99/month) - 24/7 voice assistant for your website\n2. **Voice Telephony** (€0.06/min) - AI phone line via Twilio\n\nStrengths: 40 industry personas, 5 languages including Darija, CRM integrations.",
-                ary: "VocalIA 3andha 2 dial produits:\n\n1. **Voice Widget** (99€/chhar) - مساعد صوتي 24/7 للموقع ديالك\n2. **Voice Telephony** (0.06€/دقيقة) - خط تيليفون ذكي\n\nالمزايا: 40 persona، 5 لغات بما فيها الدارجة."
+                fr: "VocalIA propose 4 produits Voice AI :\n\n1. **Voice Widget B2B** - Assistant vocal pour qualification leads\n2. **Voice Widget B2C** - Support client e-commerce\n3. **Widget E-commerce** - 8 intégrations (Shopify, WooCommerce...)\n4. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA\n\nNos atouts : 40 personas, 5 langues dont Darija, 31+ intégrations.",
+                en: "VocalIA offers 4 Voice AI products:\n\n1. **Voice Widget B2B** - Lead qualification assistant\n2. **Voice Widget B2C** - E-commerce customer support\n3. **E-commerce Widget** - 8 integrations (Shopify, WooCommerce...)\n4. **Voice Telephony** (€0.06/min) - AI phone line\n\nStrengths: 40 personas, 5 languages including Darija, 31+ integrations.",
+                ary: "VocalIA 3andha 4 dial produits:\n\n1. **Voice Widget B2B** - مساعد لتأهيل leads\n2. **Voice Widget B2C** - دعم العملاء\n3. **Widget E-commerce** - 8 تكاملات\n4. **Voice Telephony** (0.06€/دقيقة) - خط تيليفون ذكي\n\nالمزايا: 40 persona، 5 لغات بما فيها الدارجة."
             }
         },
 

@@ -80,7 +80,7 @@
         "what do you sell",
         "shnou 3andkom"
       ],
-      "response": "VocalIA propose 2 produits d'IA vocale :\n\n1. **Voice Widget** (99€/mois) - Assistant vocal 24/7 pour votre site web. Support client, ventes, prise de RDV.\n\n2. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA. Appels entrants automatisés, qualification leads, transfert intelligent.\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, intégrations CRM. Quel produit vous intéresse ?"
+      "response": "VocalIA propose 4 produits Voice AI :\n\n1. **Voice Widget B2B** - Qualification leads B2B\n2. **Voice Widget B2C** - Support client e-commerce\n3. **Widget E-commerce** - 8 intégrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quel produit vous intéresse ?"
     },
     "pricing": {
       "keywords": [
@@ -102,7 +102,7 @@
         "tester",
         "montrer en action"
       ],
-      "response": "Je peux vous montrer VocalIA en action ! Nos 2 produits : Voice Widget (assistant web) et Voice Telephony (ligne IA). Voulez-vous que je vous explique un produit en détail, ou préférez-vous réserver une démo live de 30 minutes ?"
+      "response": "Je peux vous montrer VocalIA en action ! Nos 4 produits Voice AI : Widget B2B, Widget B2C, Widget E-commerce et Telephony. Voulez-vous que je vous explique un produit en détail, ou préférez-vous réserver une démo live de 30 minutes ?"
     },
     "widget": {
       "keywords": [

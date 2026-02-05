@@ -1,18 +1,20 @@
 # VocalIA - Voice AI Platform
 
-> VocalIA est une plateforme Voice AI B2B pour entreprises. Deux produits: Voice Widget (browser, STT/TTS gratuit, IA payant) et Voice Telephony (PSTN, payant). 40 personas IA, 5 langues (FR, EN, ES, AR, Darija), 28 integrations natives. Marche cible: PME Maroc, Europe, International.
+> VocalIA est une plateforme Voice AI pour entreprises. Quatre produits: Voice Widget B2B, Voice Widget B2C, Widget E-commerce, Voice Telephony AI. 40 personas IA, 5 langues (FR, EN, ES, AR, Darija), 31+ integrations natives, 203 MCP tools. Marche cible: PME Maroc, Europe, International.
 
 VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels entrants et sortants. La plateforme se distingue par son support natif du Darija (dialecte marocain), son pricing 60% moins cher que les alternatives, et son architecture multi-tenant plug-and-play.
 
 ## Produits
 
-- [Voice Widget](https://vocalia.ma/products/voice-widget): Widget vocal browser-based. STT/TTS via Web Speech API (gratuit), reponses IA via Grok/Gemini (payant selon usage).
-- [Voice Telephony](https://vocalia.ma/products/voice-telephony): Bridge PSTN-AI pour telephonie professionnelle. Twilio, TwiML, SMS fallback.
+- [Voice Widget B2B](https://vocalia.ma/products/voice-widget-b2b): Widget vocal browser-based pour qualification leads B2B.
+- [Voice Widget B2C](https://vocalia.ma/products/voice-widget-ecommerce): Widget vocal e-commerce pour support client B2C.
+- [Widget E-commerce](https://vocalia.ma/products/widget-ecommerce): 8 widgets e-commerce (Shopify, WooCommerce, Magento, PrestaShop, BigCommerce, Wix, Squarespace, custom).
+- [Voice Telephony AI](https://vocalia.ma/products/voice-telephony): Bridge PSTN-AI pour telephonie professionnelle. Twilio, TwiML, SMS fallback.
 
 ## Fonctionnalites
 
 - [Features](https://vocalia.ma/features): Liste complete des fonctionnalites - qualification BANT, RAG, multi-AI fallback, HITL.
-- [Integrations](https://vocalia.ma/integrations): 28 integrations natives - CRM (HubSpot, Pipedrive, Zoho), E-commerce (Shopify, WooCommerce, Magento), Support (Zendesk, Freshdesk).
+- [Integrations](https://vocalia.ma/integrations): 31+ integrations natives - CRM (HubSpot, Pipedrive, Zoho, Klaviyo), E-commerce (Shopify, WooCommerce, Magento, PrestaShop, BigCommerce), Support (Zendesk, Freshdesk), Telephonie (Twilio).
 - [Pricing](https://vocalia.ma/pricing): Modele par paliers. Widget Starter avec quota IA inclus. Telephonie competitive par minute.
 
 ## Industries
@@ -37,7 +39,7 @@ VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels 
 - Architecture: Multi-AI fallback (Grok > Gemini > Claude > Atlas)
 - Langues: Francais, English, Espanol, Arabic MSA, Darija
 - Personas: 40 personas SOTA (e-commerce, immobilier, sante, services...)
-- MCP Server: 182 tools, 25 categories
+- MCP Server: 203 tools, 25 categories
 - Security: CSP, HTTPS, AES-256-GCM pour credentials
 
 ## Optional
