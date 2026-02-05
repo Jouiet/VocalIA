@@ -1,12 +1,21 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.1 | 04/02/2026 | Session 250.78 | BM25 RAG SOTA | **182 tools** | **28 integrations**
+> Version: 0.8.3 | 05/02/2026 | Session 250.86 | BM25 RAG SOTA | **186 tools** | **26 tool files**
+> **Session 250.86 FORENSIC AUDIT**: MCP tools=186 (vérifié grep), Widgets N'UTILISENT PAS EventBus, HubSpot/Klaviyo MCP modules MANQUENT
+> **Session 250.81**: 🚨 **CRITICAL REALITY CHECK** - Voice Agents (`voice-api-resilient`, `voice-agent-b2b`) are **DISCONNECTED** from MCP Server. Tools exist but are UNUSED by agents.
+> **Verified Status**: Tools (182) = ✅ Implemented | Agent Connection = ❌ BROKEN/MISSING.
+> **Session 250.80**: ✅ **SEMANTIC PURIFICATION** - MCP Tools renamed/aliased for business users in Dashboard
 > **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (40 personas ↔ 4 widgets)
 > **Session 250.77**: Product Matrix VALIDATED - 4 products (B2B/B2C/Ecom/Telephony) with visual display config
 > **Session 250.76**: E-commerce Widget Phase 1 - Product Cards + Voice/Text Tracking + UCP/MCP Integration
 > **Session 250.64**: Voice config E2E fix - tenant voice preferences DB→Telephony, 27 voix ElevenLabs
-> **Protocol Gap:** A2A ✅ (4 agents) | AG-UI v3.0 ✅ (17 events + e-commerce) | UCP ✅ (7 tools) | MCP ✅ (182 tools)
+> **Protocol Gap:**
+>
+> - **A2A (Event Bus)**: ❌ DEFINED BUT UNUSED (Not imported in Voice API).
+> - **AG-UI (Dynamic UI)**: ⚠️ PARTIAL (Service exists, but Voice API uses hardcoded fallback).
+> - **UCP (ContextBox)**: ✅ ACTIVE (Imported and used for session state).
+> - **MCP (Tools)**: ❌ DISCONNECTED (Server ready, Agents isolated).
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds (19 tools)
 > **Widget Products:** B2B (413 LOC) | B2C (3,091 LOC) | Ecom (5,650 LOC) | Telephony (168KB)
@@ -60,7 +69,8 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **Make** | **5** | 0 | **5** |
 | **n8n** | **5** | 0 | **5** |
 | **Stripe** | **19** | 0 | **19** |
-| **TOTAL** | **182** | **16** | **166** |
+| **Recommendations** | **3** | 0 | **3** |
+| **TOTAL** | **186** | **16** | **170** |
 
 ### E-commerce Market Coverage (~64%)
 
@@ -122,11 +132,11 @@ Ces tools fonctionnent sans aucun service externe:
 | **Twilio** | ✅ Community | 5 | [github.com/twilio-labs/mcp-twilio](https://github.com/twilio-labs/mcp-twilio) |
 | **Vonage** | ✅ Officiel | 2 | [github.com/Vonage-Community/telephony-mcp-server](https://github.com/Vonage-Community/telephony-mcp-server) |
 | **Retell** | ❌ | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ✅ Officiel | **181** | `mcp-server/` |
+| **VocalIA** | ✅ Officiel | **186** | `mcp-server/` |
 
 **Différenciateurs VocalIA (SOTA):**
 
-- **181 tools** - 22x plus que Vapi (8 tools)
+- **186 tools** - 23x plus que Vapi (8 tools)
 - **iPaaS complet** (Zapier, Make, n8n) → +7000 apps connectables
 - 40 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
@@ -134,10 +144,21 @@ Ces tools fonctionnent sans aucun service externe:
 - 5 langues natives (FR, EN, ES, AR, ARY)
 - 19 intégrations pré-connectées (95%)
 - Google Workspace complet (Calendar, Sheets, Drive, Docs)
-- 4 CRM (HubSpot, Pipedrive, Zoho, Salesforce-blocked)
-- 3 E-commerce (Shopify, WooCommerce, Magento)
-- 4 Support (Freshdesk, Zendesk, Intercom, Crisp)
-- 3 Calendriers (Google, Calendly, Cal.com)
+- 3 CRM inline (HubSpot, Pipedrive, Zoho) - ⚠️ HubSpot/Klaviyo MCP modules MANQUENT
+- 7 E-commerce (Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop)
+- 2 Support (Freshdesk, Zendesk) - ❌ Intercom/Crisp NON IMPLÉMENTÉS
+- 2 Calendriers (Google Calendar, Calendly) - ❌ Cal.com NON IMPLÉMENTÉ
+
+---
+
+## 6. Marketing Science & Conversion Engineering (The "Ultrathink" Upgrade)
+
+- **State**: **SOTA (Actively Optimized)**
+- **Capabilities**:
+  - **Multilingual Copy Engine**: Native support for FR, EN, ES, AR, ARY with "Ultrathink" copy standards.
+  - **Conversion Optimization**: Benefit-first messaging ("Automate 100% of calls" vs "Voice AI").
+  - **Sovereign Positioning**: "First Native Infrastructure" branding enforced globally.
+  - **Zero Debt Commercialization**: Removal of all "Free Tier" remnants; enforcement of "Business" ($49/mo) baseline.
 
 ---
 

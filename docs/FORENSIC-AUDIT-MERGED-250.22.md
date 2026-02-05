@@ -1,13 +1,17 @@
 # FORENSIC AUDIT MERGED - VocalIA Platform
 
-**Date:** 04 Février 2026 | **Session:** 250.78
+**Date:** 05 Février 2026 | **Session:** 250.86
 **Framework:** DOE (Directive Orchestration Execution)
-**Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit
+**Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit + Session 250.86 Forensic
 **Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep` / `node -e`
 
 > ⚠️ **NOTE HISTORIQUE**: Document reflétant l'état au 01/02/2026 (45 pages).
 > Depuis Session 250.52 (02/02/2026): **70 pages** (+19 webapp + misc).
-> **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (40 ↔ 4)
+> **Session 250.86**: ⚠️ **MCP AUDIT** - 186 tools (non 182), 5 MCP modules MANQUENT (hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts)
+> **Session 250.86**: ⚠️ **WIDGET EVENTBUS GAP** - voice-widget-v3.js N'UTILISE PAS AgencyEventBus (isolation critique)
+> **Session 250.86**: ❌ **FALSE CLAIMS REMOVED** - Intercom/Crisp/Cal.com/Salesforce MCP tools N'EXISTENT PAS
+> **Session 250.85**: ✅ **DEEP COPY SURGERY** - Marketing copy rigorously verified across all assets (Benefit-First, Sovereign Tone).
+> **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (40 ↔ 4) – **RESOLVED**
 > **Session 250.77**: Product Matrix VALIDATED - 4 products (B2B/B2C/Ecom/Telephony) avec visual display config
 > **Session 250.64**: Voice config E2E - tenant preferences (voice_language, voice_gender) DB→Telephony
 > Référence actuelle: `docs/VOCALIA-SYSTEM-ARCHITECTURE.md`

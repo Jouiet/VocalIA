@@ -2,10 +2,13 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 2.15 | **Date:** 05/02/2026 | **Session:** 250.85
+> **Version:** 2.16 | **Date:** 05/02/2026 | **Session:** 250.86
 > **Approche:** Bottom-Up Factuelle | **Méthodologie:** Forensic Audit & Code Refactor
-> **Status:** ✅ PERSONA-WIDGET SEGMENTATION VERIFIED | MCP Server v0.8.1 (**182 tools**) | Security 100/100
+> **Status:** ⚠️ MCP GAPS IDENTIFIED | MCP Server v0.8.3 (**186 tools verified**) | Security 100/100
+> **Session 250.86**: MCP modules manquants: hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts
 > **Products:** 4 (B2B Widget, B2C Widget, Ecom Widget, Telephony) | CATALOG_TYPES: 6 | PERSONAS: 40
+> **Session 250.80**: ✅ **SOVEREIGN ROUTING** - Automated Tenant Currency/Language assignment based on Geo (`geo-detect.js`).
+> **Session 250.85**: ✅ **DEEP COPY SURGERY** - All 5 languages upgraded to "Ultrathink" conversion standards.
 > **Session 250.85**: Core API Hardening Complete - CORS dynamic, "Free Tier" purged, per-tenant AI keys enabled.
 
 ---
@@ -73,7 +76,7 @@ Pas de wishful thinking. Pas de claims non vérifiés.
 
 | Composant | Score Actuel | Score Cible | Notes |
 |:----------|:------------:|:-----------:|:------|
-| MCP Server | **95%** | 95% | **182 tools**, multi-tenant ready, ALL PHASES COMPLETE |
+| MCP Server | **90%** | 95% | **186 tools verified**, 5 modules MANQUENT (hubspot, klaviyo, twilio, whatsapp, wordpress) |
 | Voice Widget | **85%** | 90% | Web Speech API + 5 languages |
 | Shopify Integration | **90%** | 90% | ✅ 8 tools FULL CRUD |
 | E-commerce | **90%** | 90% | ✅ 7 platforms (~64% market) |

@@ -1,14 +1,20 @@
 # Audit Approfondi Support Linguistique VocalIA
 
+> **Session 250.86** | 05/02/2026 | ⚠️ **I18N CONTAMINATION CRITIQUE DÉTECTÉE**
 > **Session 250.78** | 04/02/2026 | ⚠️ Persona-Widget Segmentation GAP Identified
 > **Session 250.57** | 02/02/2026 | Audit Forensique Complet
-> **Màj Session 250.44bis** | 02/02/2026 | Corrections DVoice + Grok + Audio LLM
-> **Màj Session 250.44ter** | 02/02/2026 | Audit Intégration: ElevenLabs NON CONNECTÉ
 > **Màj Session 250.44quater** | 02/02/2026 | ✅ **INTÉGRATION COMPLÈTE ElevenLabs**
-> **Statut**: ✅ **5 LANGUES OPÉRATIONNELLES** - FR, EN, ES, AR, ARY (Darija)
+> **Statut**: ⚠️ **5 LANGUES CONTAMINÉES** - Corrections requises
 > **Scope**: Darija, Browser Compatibility, Telephony, Web Speech API, Integration Complete
+> **Session 250.86 CONTAMINATION:**
+> - fr.json: **11** "gratuit" (viole No Free Tier)
+> - en.json: **28** "free" + French text "Paiement mensuel via virement"
+> - es.json: **8** "gratis" + French "15 000€/mois"
+> - ar.json + ary.json: French text non traduit
+> - Key count: fr=4561, others=4513 (-48 keys manquants)
 > **Session 250.80**: ✅ **STRICT GEO-ROUTING IMPLEMENTED** - `geo-detect.js` rewritten (FR/MAD, FR/EUR, EN/USD)
-> **Session 250.78**: ⚠️ Persona-Widget Segmentation GAP Identified
+> **Session 250.80**: ✅ **SEMANTIC PURIFICATION** - No "Chinese to Spaniards" in Dashboard (Tech jargon removed)
+> **Session 250.78**: ⚠️ Persona-Widget Segmentation GAP Identified – **RESOLVED**
 
 ---
 

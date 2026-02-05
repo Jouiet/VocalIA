@@ -1,7 +1,10 @@
 # Plan d'Optimisation Multi-Tenant KB & Voice Telephony
 
+> **Session 250.86** | 05/02/2026 | ⚠️ MCP GAPS: 5 modules manquants (hubspot, klaviyo, twilio, whatsapp, wordpress)
+> **Session 250.85** | 05/02/2026 | ✅ KB CONTENT UPGRADED (Ultrathink Standards)
 > **Session 250.58** | 02/02/2026 | ✅ IMPLEMENTATION COMPLETE
 > **Exigence Clé**: Chaque client = son propre Knowledge Base personnalisé
+> **Session 250.86**: Widget EventBus NON CONNECTÉ - architecture gap critique
 
 ---
 
