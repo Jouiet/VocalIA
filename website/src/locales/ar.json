@@ -45,7 +45,7 @@
       "tenants_active": "المستأجرون النشطون",
       "calls_today": "مكالمات اليوم",
       "mrr": "الإيرادات الشهرية",
-      "latency": "متوسط التأخير",
+      "latency": "سرعة الاستجابة",
       "uptime": "وقت التشغيل",
       "in_progress": "قيد التنفيذ: {{count}}",
       "calls": "المكالمات هذا الشهر",
@@ -309,7 +309,7 @@
     "title": "وكلاؤك الصوتيون بالذكاء الاصطناعي",
     "titleHighlight": "24/7",
     "subtitle": "ويدجت ويب وهاتفية ذكية لشركتك. متعدد اللغات: FR, EN, AR, ES, الدارجة.",
-    "cta_primary": "تجربة مجانية",
+    "cta_primary": "تجربة 14 يوم",
     "cta_secondary": "شاهد العرض",
     "trusted": "يثقون بنا"
   },
@@ -319,9 +319,9 @@
     "widget": {
       "title": "Voice Widget",
       "description": "ادمج مساعداً صوتياً ذكياً في موقعك. لا يحتاج تثبيت.",
-      "price": "مجاني",
+      "price": "49",
       "features": [
-        "واجهة صوت ويب أصلية",
+        "تقنية صوتية متقدمة",
         "30 شخصية مهنية",
         "دعم 5 لغات",
         "تكامل في دقيقتين"
@@ -570,7 +570,7 @@
     "aller_au_contenu_27": "انتقل إلى المحتوى الرئيسي"
   },
   "stats": {
-    "latency": "متوسط التأخير",
+    "latency": "سرعة الاستجابة",
     "languages": "اللغات المدعومة",
     "personas": "شخصيات مهنية",
     "uptime": "وقت التشغيل"
@@ -637,13 +637,13 @@
     "toggle_discount": "-20%",
     "free_name": "Widget Starter",
     "free_price": "49",
-    "free_period": "للأبد",
+    "free_period": "/شهر",
     "free_desc": "مثالي لتجربة VocalIA على موقعك بدون التزام.",
     "free_f1": "Voice Widget غير محدود",
     "free_f2": "5 شخصيات مهنية",
     "free_f3": "لغتان (FR, EN)",
     "free_f4": "علامة VocalIA",
-    "free_cta": "ابدأ مجاناً",
+    "free_cta": "ابدأ التجربة",
     "starter_name": "Starter",
     "starter_price": "99",
     "starter_period": "€/شهر",

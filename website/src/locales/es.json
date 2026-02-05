@@ -45,7 +45,7 @@
       "tenants_active": "Tenants activos",
       "calls_today": "Llamadas hoy",
       "mrr": "MRR",
-      "latency": "Latencia promedio",
+      "latency": "Tiempo de respuesta",
       "uptime": "Disponibilidad",
       "in_progress": "En curso: {{count}}",
       "calls": "Llamadas este mes",
@@ -309,7 +309,7 @@
     "title": "Sus Agentes Vocales IA",
     "titleHighlight": "24/7",
     "subtitle": "Widget web y telefonía inteligente para su empresa. Multilingüe: FR, EN, AR, ES, Darija.",
-    "cta_primary": "Prueba Gratuita",
+    "cta_primary": "Prueba 14 Días",
     "cta_secondary": "Ver Demo",
     "trusted": "Confían en nosotros"
   },
@@ -319,9 +319,9 @@
     "widget": {
       "title": "Voice Widget",
       "description": "Integre un asistente vocal inteligente en su sitio web. Sin instalación.",
-      "price": "Gratis",
+      "price": "Business",
       "features": [
-        "Voz Web Nativa",
+        "Voz Premium",
         "40 personas profesionales",
         "5 idiomas soportados",
         "Integración en 2 minutos"
@@ -570,7 +570,7 @@
     "aller_au_contenu_27": "Ir al contenido principal"
   },
   "stats": {
-    "latency": "Latencia promedio",
+    "latency": "Tiempo de respuesta",
     "languages": "Idiomas soportados",
     "personas": "Personas de negocio",
     "uptime": "Disponibilidad"
@@ -637,13 +637,13 @@
     "toggle_discount": "-20%",
     "free_name": "Widget Starter",
     "free_price": "49",
-    "free_period": "para siempre",
+    "free_period": "/mes",
     "free_desc": "Ideal para probar VocalIA en su sitio web sin compromiso.",
     "free_f1": "Voice Widget ilimitado",
     "free_f2": "5 personas de negocio",
     "free_f3": "2 idiomas (FR, EN)",
     "free_f4": "Branding VocalIA",
-    "free_cta": "Comenzar Gratis",
+    "free_cta": "Comenzar Prueba",
     "starter_name": "Starter",
     "starter_price": "99",
     "starter_period": "€/mes",

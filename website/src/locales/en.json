@@ -45,7 +45,7 @@
       "tenants_active": "Active Tenants",
       "calls_today": "Calls Today",
       "mrr": "MRR",
-      "latency": "Conversation Flow",
+      "latency": "Response Time",
       "uptime": "Uptime",
       "in_progress": "In progress: {{count}}",
       "calls": "Calls this month",
@@ -319,9 +319,9 @@
     "widget": {
       "title": "Voice Widget",
       "description": "Integrate a smart voice assistant on your website. No installation required.",
-      "price": "Free",
+      "price": "Business",
       "features": [
-        "Native Web Speech API",
+        "Premium Voice Recognition",
         "40 industry personas",
         "5 languages supported",
         "2-minute integration"
@@ -498,7 +498,7 @@
         "5 languages",
         "Email support"
       ],
-      "cta": "Start Free"
+      "cta": "Start 14-Day Trial"
     },
     "starter": {
       "name": "Starter",
@@ -570,7 +570,7 @@
     "aller_au_contenu_27": "Skip to main content"
   },
   "stats": {
-    "latency": "Average latency",
+    "latency": "Avg. Response Time",
     "languages": "Supported languages",
     "personas": "Business personas",
     "uptime": "Uptime"
@@ -637,13 +637,13 @@
     "toggle_discount": "-20%",
     "free_name": "Starter Widget",
     "free_price": "49",
-    "free_period": "forever",
+    "free_period": "/month",
     "free_desc": "Ideal for professionalizing your website's reception.",
     "free_f1": "Unlimited Voice Widget",
     "free_f2": "5 business personas",
     "free_f3": "2 languages (FR, EN)",
     "free_f4": "VocalIA branding",
-    "free_cta": "Start Trial",
+    "free_cta": "Start 14-Day Trial",
     "starter_name": "Widget B2C",
     "starter_price": "79",
     "starter_period": "€/month",

@@ -706,7 +706,7 @@
     "faq2_q": "Puis-je changer de plan à tout moment?",
     "faq2_a": "Oui, vous pouvez upgrader ou downgrader à tout moment. L'upgrade est immédiat, le downgrade prend effet au prochain cycle de facturation.",
     "faq3_q": "Comment fonctionne le pricing du Voice Widget?",
-    "faq3_a": "Le Widget utilise la Web Speech API gratuite du navigateur pour la voix. Cependant, les réponses IA utilisent des APIs payantes (Grok, Gemini). Le plan Starter inclut un quota mensuel. Le Darija utilise ElevenLabs premium.",
+    "faq3_a": "Le Widget utilise une technologie vocale premium. Les réponses IA utilisent des APIs payantes (Grok, Gemini). Le plan Starter inclut un quota mensuel. Le Darija utilise ElevenLabs premium.",
     "faq4_q": "Qu'est-ce que le support Darija?",
     "faq4_a": "Le Darija est le dialecte marocain parlé par 40 millions de locuteurs. VocalIA utilise un modèle IA spécialisé pour offrir un support natif de qualité.",
     "faq5_q": "Comment fonctionne l'option self-hosted?",

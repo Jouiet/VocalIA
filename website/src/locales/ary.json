@@ -45,7 +45,7 @@
       "tenants_active": "الكليان النشيطين",
       "calls_today": "مكالمات اليوم",
       "mrr": "الداخل الشهري",
-      "latency": "متوسط التأخير",
+      "latency": "سرعة التجاوب",
       "uptime": "وقت الخدمة",
       "in_progress": "فالطريق: {{count}}",
       "calls": "المكالمات هاد الشهر",
@@ -319,9 +319,9 @@
     "widget": {
       "title": "Voice Widget",
       "description": "دمج مساعد صوتي ذكي فالموقع ديالك. ما كيحتاجش تنصيب.",
-      "price": "Starter",
+      "price": "Business",
       "features": [
-        "واجهة صوت ويب",
+        "تكنولوجيا صوتية متطورة",
         "30 شخصية مهنية",
         "دعم 5 لغات",
         "تكامل في 2 دقائق"
@@ -570,7 +570,7 @@
     "aller_au_contenu_27": "سير للمحتوى الرئيسي"
   },
   "stats": {
-    "latency": "متوسط التأخير",
+    "latency": "سرعة التجاوب",
     "languages": "اللغات المدعومة",
     "personas": "شخصيات مهنية",
     "uptime": "وقت التشغيل"
@@ -637,13 +637,13 @@
     "toggle_discount": "-20%",
     "free_name": "Widget Starter",
     "free_price": "49",
-    "free_period": "للأبد",
+    "free_period": "/شهر",
     "free_desc": "مزيان باش تجرب VocalIA فالموقع ديالك بلا التزام.",
     "free_f1": "Voice Widget بلا حدود",
     "free_f2": "5 شخصيات مهنية",
     "free_f3": "2 لغات (FR, EN)",
     "free_f4": "علامة VocalIA",
-    "free_cta": "بدا بلاش",
+    "free_cta": "بدا التجربة",
     "starter_name": "Starter",
     "starter_price": "99",
     "starter_period": "€/شهر",
