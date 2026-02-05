@@ -306,7 +306,32 @@
     </url>
   <url>
     <loc>https://vocalia.ma/products/voice-widget-ecommerce</loc>
+    <lastmod>2026-02-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+
+  <!-- Voice Widget B2B -->
+  <url>
+    <loc>https://vocalia.ma/products/voice-widget-b2b</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Voice Widget B2C -->
+  <url>
+    <loc>https://vocalia.ma/products/voice-widget-b2c</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Mentions Légales -->
+  <url>
+    <loc>https://vocalia.ma/mentions-legales</loc>
+    <lastmod>2026-02-05</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
   </url>
 </urlset>

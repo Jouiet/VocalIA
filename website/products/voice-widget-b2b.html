@@ -46,8 +46,8 @@
     {
       "@context": "https://schema.org",
       "@type": "Product",
-      "name": "VocalIA Voice Widget",
-      "description": "Assistant vocal IA pour sites web utilisant Web Speech API native et réponses IA multi-provider",
+      "name": "VocalIA Voice Widget B2B",
+      "description": "Assistant vocal IA B2B pour lead qualification, prise de RDV et support client professionnel avec BANT scoring et intégration CRM",
       "brand": {"@type": "Brand", "name": "VocalIA"},
       "offers": {
         "@type": "Offer",
@@ -55,7 +55,11 @@
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock"
       },
-      "category": "Voice AI Software"
+      "category": "Voice AI Software",
+      "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "B2B Professionals"
+      }
     }
   </script>
 
@@ -64,18 +68,18 @@
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "Voice Widget - Assistant Vocal IA Multi-Provider",
-      "url": "https://vocalia.ma/products/voice-widget",
+      "name": "Voice Widget B2B - Assistant Vocal IA pour Lead Qualification",
+      "url": "https://vocalia.ma/products/voice-widget-b2b",
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": ["h1", ".product-description", ".feature-list"]
+        "cssSelector": ["h1", ".product-description", ".feature-list", ".b2b-features"]
       },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
           {"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://vocalia.ma/"},
           {"@type": "ListItem", "position": 2, "name": "Produits", "item": "https://vocalia.ma/products"},
-          {"@type": "ListItem", "position": 3, "name": "Voice Widget", "item": "https://vocalia.ma/products/voice-widget"}
+          {"@type": "ListItem", "position": 3, "name": "Voice Widget B2B", "item": "https://vocalia.ma/products/voice-widget-b2b"}
         ]
       }
     }
