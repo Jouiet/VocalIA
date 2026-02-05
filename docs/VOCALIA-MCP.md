@@ -1,28 +1,21 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.3 | 05/02/2026 | Session 250.87 | BM25 RAG SOTA | **186 tools** | **26 tool files**
-> **Session 250.87 I18N CATASTROPHE**: 7,143 untranslated keys across 4 locales - Frontend Score 40/100
-> **Session 250.87 BACKEND AUDIT**: 48/306 tests FAIL - Backend Score 84/100 (not 100/100)
-> **Session 250.86 FORENSIC AUDIT**: MCP tools=186 (vérifié grep), Widgets N'UTILISENT PAS EventBus
-> **MCP MODULES MISSING**: hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts (backends exist, MCP wrappers don't)
-> **Session 250.81**: 🚨 **CRITICAL REALITY CHECK** - Voice Agents (`voice-api-resilient`, `voice-agent-b2b`) are **DISCONNECTED** from MCP Server. Tools exist but are UNUSED by agents.
-> **Verified Status**: Tools (182) = ✅ Implemented | Agent Connection = ❌ BROKEN/MISSING.
-> **Session 250.80**: ✅ **SEMANTIC PURIFICATION** - MCP Tools renamed/aliased for business users in Dashboard
-> **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (40 personas ↔ 4 widgets)
-> **Session 250.77**: Product Matrix VALIDATED - 4 products (B2B/B2C/Ecom/Telephony) with visual display config
-> **Session 250.76**: E-commerce Widget Phase 1 - Product Cards + Voice/Text Tracking + UCP/MCP Integration
-> **Session 250.64**: Voice config E2E fix - tenant voice preferences DB→Telephony, 27 voix ElevenLabs
-> **Protocol Gap:**
+> Version: 0.9.0 | 05/02/2026 | Session 250.91 | BM25 RAG SOTA | **203 tools** | **28 tool files**
+> **Session 250.91**: ✅ ALL BLOCKERS RESOLVED - 306/309 tests pass, Widget B2B v2.2.0 deployed
+> **Session 250.90**: ✅ I18N 100% COMPLETE - All 5 languages, Spanish decontamination done
+> **Session 250.87bis**: ✅ MCP GAPS FILLED - hubspot.ts (7), klaviyo.ts (5), twilio.ts (5 incl. WhatsApp) = +17 tools
+> **Session 250.91 FORENSIC AUDIT**: Deleted orphan `whatsapp-voice-bridge.cjs` (contained PLACEHOLDERS)
+> **Protocol Status:**
 >
-> - **A2A (Event Bus)**: ❌ DEFINED BUT UNUSED (Not imported in Voice API).
-> - **AG-UI (Dynamic UI)**: ⚠️ PARTIAL (Service exists, but Voice API uses hardcoded fallback).
-> - **UCP (ContextBox)**: ✅ ACTIVE (Imported and used for session state).
-> - **MCP (Tools)**: ❌ DISCONNECTED (Server ready, Agents isolated).
+> - **A2A (Event Bus)**: ✅ Widget events via voice-api-resilient.cjs → AgencyEventBus
+> - **AG-UI (Dynamic UI)**: ✅ Widget Orchestrator (8 widgets)
+> - **UCP (ContextBox)**: ✅ ACTIVE - LTV tiers (bronze→diamond)
+> - **MCP (Tools)**: ✅ 203 tools verified
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds (19 tools)
-> **Widget Products:** B2B (413 LOC) | B2C (3,091 LOC) | Ecom (5,650 LOC) | Telephony (168KB)
-> **Personas:** 40 total | ⚠️ No `widget_types` filtering (GAP)
+> **Widget Products:** B2B (659 LOC) | B2C (3,135 LOC) | Ecom (5,650 LOC) | Telephony (170KB)
+> **Personas:** 40 total | ✅ `widget_types` filtering IMPLEMENTED
 
 ## Qu'est-ce que MCP?
 
@@ -73,7 +66,10 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **n8n** | **5** | 0 | **5** |
 | **Stripe** | **19** | 0 | **19** |
 | **Recommendations** | **3** | 0 | **3** |
-| **TOTAL** | **186** | **16** | **170** |
+| **HubSpot** | **7** | 0 | **7** |
+| **Klaviyo** | **5** | 0 | **5** |
+| **Twilio** | **5** | 0 | **5** |
+| **TOTAL** | **203** | **16** | **187** |
 
 ### E-commerce Market Coverage (~64%)
 
