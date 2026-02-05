@@ -1,6 +1,6 @@
 # VocalIA MCP Server
 
-> **Version:** 0.8.0 | **Tools:** 182 | **Session:** 250.66
+> **Version:** 0.9.0 | **Tools:** 203 | **Session:** 250.90
 
 Model Context Protocol server for the VocalIA Voice AI Platform.
 
@@ -31,7 +31,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 }
 ```
 
-## Available Tools (182 total)
+## Available Tools (203 total)
 
 ### Voice Tools (10)
 | Tool | Description |
