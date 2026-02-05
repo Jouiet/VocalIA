@@ -13,9 +13,9 @@ const INTELLIGENT_FALLBACK = {
         products: {
             triggers: ['produit', 'products', 'vend', 'vendez', 'katbi3', 'offre', 'solution', 'quoi', 'what sell', '3andkom'],
             response: {
-                fr: "VocalIA propose 2 produits d'IA vocale :\n\n1. **Voice Widget** (49€/mois) - Assistant vocal 24/7 pour votre site web. Support client, ventes, prise de RDV.\n2. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA. Appels entrants automatisés, qualification leads.\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, synchronisation CRM.",
-                en: "VocalIA offers 2 voice AI products:\n\n1. **Voice Widget** (€49/month) - 24/7 voice assistant for your website. Customer support, sales, booking.\n2. **Voice Telephony** (€0.06/min) - AI phone line. Automated inbound calls, lead qualification.\n\nStrengths: 40 industry personas, 5 languages including Darija, CRM sync.",
-                ary: "VocalIA 3andha 2 dial produits:\n\n1. **Voice Widget** (49€/chhar) - مساعد صوتي 24/7 للموقع ديالك. سوپور، بيع، حجز.\n2. **Voice Telephony** (0.06€/دقيقة) - خط تيليفون ذكي. تأهيل الليدز.\n\nالمزايا: 40 persona، 5 لغات بما فيها الدارجة، sync CRM."
+                fr: "VocalIA propose 4 produits Voice AI :\n\n1. **Voice Widget B2B** - Qualification leads et support commercial\n2. **Voice Widget B2C** - Support client e-commerce 24/7\n3. **Widget E-commerce** - 8 intégrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony AI** (0.06€/min) - Ligne téléphonique IA PSTN\n\nNos atouts : 40 personas, 5 langues dont Darija, 31+ intégrations, 203 MCP tools.",
+                en: "VocalIA offers 4 Voice AI products:\n\n1. **Voice Widget B2B** - Lead qualification and sales support\n2. **Voice Widget B2C** - 24/7 e-commerce customer support\n3. **E-commerce Widget** - 8 integrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony AI** (€0.06/min) - AI PSTN phone line\n\nStrengths: 40 personas, 5 languages including Darija, 31+ integrations, 203 MCP tools.",
+                ary: "VocalIA 3andha 4 dial produits Voice AI:\n\n1. **Voice Widget B2B** - تأهيل العملاء والدعم التجاري\n2. **Voice Widget B2C** - دعم العملاء للتجارة الإلكترونية 24/7\n3. **Widget E-commerce** - 8 تكاملات (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony AI** (0.06€/دقيقة) - خط تيليفون ذكي PSTN\n\nالمزايا: 40 persona، 5 لغات بما فيها الدارجة، 31+ تكاملات."
             }
         },
 

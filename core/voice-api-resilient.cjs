@@ -2135,8 +2135,8 @@ function startServer(port = 3004) {
             products: {
               triggers: ['produit', 'product', 'vendez', 'offre', '3andkom'],
               response: lang === 'ary'
-                ? 'VocalIA 3andha 2 dial produits: Voice Widget (99€/شهر) و Voice Telephony (0.06€/دقيقة)'
-                : 'VocalIA propose 2 produits: Voice Widget (99€/mois) et Voice Telephony (0.06€/min)'
+                ? 'VocalIA 3andha 4 dial produits: Voice Widget B2B, Voice Widget B2C, Widget E-commerce (8 intégrations), و Voice Telephony AI (0.06€/دقيقة)'
+                : 'VocalIA propose 4 produits: Voice Widget B2B, Voice Widget B2C, Widget E-commerce (8 intégrations) et Voice Telephony AI (0.06€/min)'
             },
             pricing: {
               triggers: ['prix', 'price', 'tarif', 'combien', 'chhal'],
