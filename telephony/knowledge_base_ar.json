@@ -19,11 +19,12 @@
         "dentiste": "طبيبنا متخصص في زراعة الأسنان وطب الأسنان التجميلي."
     },
     "agency_v3": {
-        "produits": "VocalIA تقدم منتجين للذكاء الاصطناعي الصوتي: Voice Widget (مساعد صوتي 24/7 للمواقع) و Voice Telephony (خط هاتف بالذكاء الاصطناعي عبر Twilio).",
+        "produits": "VocalIA تقدم 4 منتجات للذكاء الاصطناعي الصوتي: Voice Widget B2B (تأهيل العملاء المحتملين)، Voice Widget B2C (دعم التجارة الإلكترونية)، Widget E-commerce (8 تكاملات)، و Voice Telephony AI (خط PSTN عبر Twilio).",
         "personas": "40 شخصية مهنية مُعدة مسبقاً: أطباء الأسنان، العقارات، المطاعم، التجارة الإلكترونية، الشركات الصغيرة والمتوسطة والمزيد.",
         "langues": "5 لغات مدعومة: الفرنسية، الإنجليزية، الإسبانية، العربية والدارجة المغربية.",
         "contact": "تواصل معنا عبر vocalia.ma/booking أو البريد contact@vocalia.ma.",
-        "tarifs": "مجاني (Widget محدود)، Pro 990 درهم/شهر، Enterprise حسب الطلب."
+        "tarifs": "تجربة مجانية 14 يوماً، Starter 490 درهم/شهر، Pro 990 درهم/شهر، Enterprise حسب الطلب.",
+        "integrations": "+31 تكامل أصلي (HubSpot، Shopify، Stripe، Calendly...) و 203 أداة MCP."
     },
     "healer_v1": {
         "specialites": "الطب العام، طب الأطفال، طب النساء، العلاج الطبيعي، أمراض القلب.",

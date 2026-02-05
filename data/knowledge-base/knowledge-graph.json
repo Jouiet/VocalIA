@@ -44,7 +44,7 @@
       "type": "widget",
       "category": "widget",
       "tenant_id": "agency_internal",
-      "strategic_intent": "freemium_acquisition"
+      "strategic_intent": "trial_based_acquisition"
     },
     {
       "id": "voice-widget-templates",

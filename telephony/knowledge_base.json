@@ -19,11 +19,12 @@
         "dentiste": "Le Dr. Lumière est notre dentiste principal, spécialiste en implantologie et esthétique dentaire."
     },
     "agency_v3": {
-        "produits": "VocalIA propose 2 produits Voice AI: Voice Widget (assistant vocal 24/7 pour sites web) et Voice Telephony (ligne téléphonique IA via Twilio).",
+        "produits": "VocalIA propose 4 produits Voice AI: Voice Widget B2B (qualification leads), Voice Widget B2C (support e-commerce), Widget E-commerce (8 intégrations) et Voice Telephony AI (ligne PSTN via Twilio).",
         "personas": "40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
         "langues": "5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain).",
         "contact": "Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma.",
-        "tarifs": "Starter (quota inclus), Pro 990 DH/mois, Enterprise sur devis."
+        "tarifs": "Essai 14 jours inclus, Starter 490 DH/mois, Pro 990 DH/mois, Enterprise sur devis.",
+        "integrations": "31+ intégrations natives (HubSpot, Shopify, Stripe, Calendly...) et 203 MCP tools."
     },
     "healer_v1": {
         "specialites": "Généraliste, Pédiatrie, Gynécologie, Kinésithérapie, Cardiologie.",
