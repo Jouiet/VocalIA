@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> **v6.97.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
+> **v6.98.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
 > 70 pages | 22k+ i18n keys | 5 langs (FR/EN/ES/AR/ARY) | RTL | 309 unit + 375 E2E tests (99.5%)
 > **203 MCP Tools** | 40 Personas | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Klaviyo 5 | Twilio 5
-> ✅ **SESSION 250.89:** Dashboard Audit DONE (technical terms removed), i18n services keys × 5 locales, Currency consistency VERIFIED
+> ✅ **SESSION 250.90:** I18N 100% COMPLETE, Spanish decontamination (82 entries fixed), ALL MARKETS READY
 
 ## Quick Reference
 
@@ -12,7 +12,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Backend 100/100** (306/309 pass, 3 skip), **Frontend 85/100** (i18n ~90%), Security 100/100 |
+| Scores | **Backend 100/100** (306/309 pass, 3 skip), **Frontend 100/100** (i18n 100%), Security 100/100 |
 
 ---
 

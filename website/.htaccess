@@ -92,7 +92,8 @@ ErrorDocument 500 /404.html
 
 # Allow specific JS files in /src/lib/
 # Session 250.75: Added api-client, auth-client, charts, data-table, modal, toast
-<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization|api-client|auth-client|charts|data-table|modal|toast)\.js$">
+# Session 250.90: Added voice-widget-b2b, voice-widget-ecommerce, intelligent-fallback
+<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|voice-widget-b2b|voice-widget-ecommerce|intelligent-fallback|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization|api-client|auth-client|charts|data-table|modal|toast)\.js$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>
