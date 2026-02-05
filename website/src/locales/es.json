@@ -404,7 +404,8 @@
     "stripe_18": "Stripe",
     "notifications_en_temps_19": "Notificaciones en tiempo real. Alertas para leads calientes y llamadas perdidas.",
     "slack_20": "Slack",
-    "communication_21": "Comunicación",
+    "communication_21": "Comunicación y Telefonía",
+    "finance_payments": "Finanzas y Pagos",
     "gestion_des_tickets_22": "Gestión de tickets y base de conocimientos. Escalado automático.",
     "zendesk_23": "Zendesk",
     "cration_et_suivi_24": "Creación y seguimiento de tickets. Historial del cliente accesible durante la llamada.",
@@ -415,6 +416,12 @@
     "calendly_29": "Calendly",
     "lecture_et_envoi_30": "Lectura y envío de emails. Búsqueda, etiquetas y borradores vía API Gmail.",
     "gmail_31": "Gmail",
+    "envoi_email_smtp_custom": "Envío de emails transaccionales vía su propio servidor SMTP.",
+    "smtp_email": "SMTP Email",
+    "messagerie_whatsapp_business": "Soporte al cliente y notificaciones vía WhatsApp Business API.",
+    "whatsapp_business": "WhatsApp",
+    "telephonie_pstn_mondiale": "Números locales y llamadas salientes vía Twilio Super Network.",
+    "twilio_telephony": "Twilio",
     "gnration_de_rapports_32": "Generación de informes y transcripciones. Plantillas personalizables.",
     "google_docs_33": "Google Docs",
     "upload_des_enregistrements_34": "Subir grabaciones e informes. Crear carpetas por cliente.",
@@ -2054,7 +2061,8 @@
     "newsletter_placeholder": "tu@email.com",
     "newsletter_button": "Suscribirse",
     "newsletter_success": "¡Suscrito!",
-    "newsletter_error": "Ha ocurrido un error. Inténtalo de nuevo."
+    "newsletter_error": "Ha ocurrido un error. Inténtalo de nuevo.",
+    "all": "Todos"
   },
   "investor": {
     "back_to_site": "Volver al sitio",

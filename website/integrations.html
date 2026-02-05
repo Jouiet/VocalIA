@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Intégrations - VocalIA | CRM, E-commerce, Calendriers</title>
-  <meta name="description" content="Connectez VocalIA à vos outils existants. 20+ intégrations natives: HubSpot, Shopify, Zendesk, Zapier, Make, Google Workspace et plus. API RESTful complète.">
+  <meta name="description"
+    content="Connectez VocalIA à vos outils existants. 20+ intégrations natives: HubSpot, Shopify, Zendesk, Zapier, Make, Google Workspace et plus. API RESTful complète.">
   <link rel="canonical" href="https://vocalia.ma/integrations" />
 
   <!-- Hreflang for i18n SEO (5 languages) -->
@@ -79,7 +80,22 @@
   <meta name="theme-color" content="#5E6AD2">
 
   <!-- Critical CSS -->
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+  <style>
+    body {
+      background: #1e293b;
+      color: #fff;
+      font-family: Inter, system-ui, sans-serif;
+      margin: 0
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0)
+    }
+  </style>
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -88,11 +104,14 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" media="print" onload="this.media='all'">
 
   <!-- Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
   <style>
     .gradient-text {
@@ -101,20 +120,24 @@
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+
     .glass {
       background: rgba(51, 65, 85, 0.85);
       backdrop-filter: blur(20px);
       border: 1px solid rgba(148, 163, 184, 0.25);
     }
+
     .integration-card {
       background: linear-gradient(135deg, rgba(51, 65, 85, 0.7), rgba(30, 41, 59, 0.85));
       border: 1px solid rgba(148, 163, 184, 0.15);
       transition: all 0.3s ease;
     }
+
     .integration-card:hover {
       border-color: rgba(99, 102, 241, 0.4);
       transform: translateY(-4px);
     }
+
     .category-badge {
       font-size: 0.75rem;
       padding: 0.25rem 0.75rem;
@@ -123,237 +146,267 @@
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  
+
 </head>
 
 <body class="bg-slate-800 text-white antialiased">
   <!-- Skip Link -->
 
-    <a href="#main-content"
-
-      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg"><span data-i18n="integrations.aller_au_contenu_82">Aller
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg"><span
+      data-i18n="integrations.aller_au_contenu_82">Aller
 
       au contenu principal</span></a>
 
-    <!-- Navigation -->
+  <!-- Navigation -->
 
-    <nav class="fixed top-0 left-0 right-0 z-50 glass">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass">
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <div class="flex items-center justify-between h-16">
+      <div class="flex items-center justify-between h-16">
 
-          <!-- Logo -->
+        <!-- Logo -->
 
-          <a href="/" class="flex items-center space-x-2">
+        <a href="/" class="flex items-center space-x-2">
 
-            <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
+          <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
 
-            <span class="text-xl font-bold gradient-text"><span data-i18n="integrations.vocalia_3"><span data-i18n="integrations.vocalia_81">VocalIA</span></span></span>
+          <span class="text-xl font-bold gradient-text"><span data-i18n="integrations.vocalia_3"><span
+                data-i18n="integrations.vocalia_81">VocalIA</span></span></span>
 
-          </a>
+        </a>
 
-          <!-- Desktop Nav with Mega Menu -->
+        <!-- Desktop Nav with Mega Menu -->
 
-          <div class="hidden md:flex items-center space-x-1">
+        <div class="hidden md:flex items-center space-x-1">
 
-            <!-- Products Dropdown -->
+          <!-- Products Dropdown -->
 
-            <div class="relative group">
+          <div class="relative group">
 
-              <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-                <span data-i18n="nav.products"><span data-i18n="integrations.produits_67">Produits</span></span>
-                <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+            <button type="button"
+              class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+              <span data-i18n="nav.products"><span data-i18n="integrations.produits_67">Produits</span></span>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
-              </button>
+            </button>
 
-              <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            <div
+              class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
 
-                  <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+                <a href="/products/voice-widget"
+                  class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
-                    <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center shrink-0">
+                  <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center shrink-0">
                     <i data-lucide="mic" class="w-5 h-5 text-vocalia-400"></i>
 
+                  </div>
+
+                  <div>
+
+                    <div class="font-semibold text-white"><span data-i18n="integrations.voice_widget_66"><span
+                          data-i18n="integrations.voice_widget_80">Voice Widget</span></span></div>
+
+                    <div class="text-sm text-zinc-400"><span data-i18n="integrations.assistant_vocal_web_65"><span
+                          data-i18n="integrations.assistant_vocal_web_79">Assistant vocal web intelligent</span></span>
                     </div>
 
-                    <div>
+                  </div>
 
-                      <div class="font-semibold text-white"><span data-i18n="integrations.voice_widget_66"><span data-i18n="integrations.voice_widget_80">Voice Widget</span></span></div>
+                </a>
 
-                      <div class="text-sm text-zinc-400"><span data-i18n="integrations.assistant_vocal_web_65"><span data-i18n="integrations.assistant_vocal_web_79">Assistant vocal web intelligent</span></span></div>
+                <a href="/products/voice-telephony"
+                  class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
+                  <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
+
+                    <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
+
+                  </div>
+
+                  <div>
+
+                    <div class="font-semibold text-white"><span data-i18n="integrations.voice_telephony_ai_64"><span
+                          data-i18n="integrations.voice_telephony_ai_78">Voice Telephony AI</span></span></div>
+
+                    <div class="text-sm text-zinc-400"><span data-i18n="integrations.agents_tlphoniques_pstn_63"><span
+                          data-i18n="integrations.agents_tlphoniques_pstn_77">Agents téléphoniques PSTN</span></span>
                     </div>
 
-                  </a>
+                  </div>
 
-                  <a href="/products/voice-telephony" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
+                </a>
 
-                    <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
+                <hr class="border-slate-600/50 my-2">
 
-                      <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
+                <a href="/features"
+                  class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
 
-                    </div>
-
-                    <div>
-
-                      <div class="font-semibold text-white"><span data-i18n="integrations.voice_telephony_ai_64"><span data-i18n="integrations.voice_telephony_ai_78">Voice Telephony AI</span></span></div>
-
-                      <div class="text-sm text-zinc-400"><span data-i18n="integrations.agents_tlphoniques_pstn_63"><span data-i18n="integrations.agents_tlphoniques_pstn_77">Agents téléphoniques PSTN</span></span></div>
-
-                    </div>
-
-                  </a>
-
-                  <hr class="border-slate-600/50 my-2">
-
-                  <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
-
-                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                  <i data-lucide="sparkles" class="w-5 h-5"></i>
                   Toutes les fonctionnalités
 
-                  </a>
-
-                </div>
+                </a>
 
               </div>
 
             </div>
 
-            <!-- Solutions Dropdown -->
+          </div>
 
-            <div class="relative group">
+          <!-- Solutions Dropdown -->
 
-              <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-                <span data-i18n="nav.solutions"><span data-i18n="integrations.solutions_62">Solutions</span></span>
-                <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+          <div class="relative group">
 
-              </button>
+            <button type="button"
+              class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+              <span data-i18n="nav.solutions"><span data-i18n="integrations.solutions_62">Solutions</span></span>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
-              <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            </button>
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+            <div
+              class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                  <div class="grid grid-cols-3 gap-6">
+              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
 
-                    <!-- Column 1: Use Cases -->
+                <div class="grid grid-cols-3 gap-6">
 
-                    <div>
+                  <!-- Column 1: Use Cases -->
 
-                      <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span data-i18n="integrations.par_cas_dusage_76">Par Cas d'Usage</span></div>
+                  <div>
 
-                      <a href="/use-cases/e-commerce" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                    <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span
+                        data-i18n="integrations.par_cas_dusage_76">Par Cas d'Usage</span></div>
 
-                        <i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-400"></i>
+                    <a href="/use-cases/e-commerce"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
 
-                        E-commerce
+                      <i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-400"></i>
+
+                      E-commerce
+
+                    </a>
+
+                    <a href="/use-cases/customer-support"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+
+                      Service Client
+
+                    </a>
+
+                    <a href="/use-cases/appointments"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i>
+
+                      Prise de RDV
+
+                    </a>
+
+                    <a href="/use-cases/lead-qualification"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
+
+                      Qualification Leads
+
+                    </a>
+
+                  </div>
+
+                  <!-- Column 2: Industries -->
+
+                  <div>
+
+                    <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span
+                        data-i18n="integrations.par_industrie_75">Par Industrie</span></div>
+
+                    <a href="/industries/healthcare"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400"></i>
+
+                      Santé & Médical
+
+                    </a>
+
+                    <a href="/industries/real-estate"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="building-2" class="w-4 h-4 text-emerald-400"></i>
+
+                      Immobilier
+
+                    </a>
+
+                    <a href="/industries/finance"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="landmark" class="w-4 h-4 text-emerald-400"></i>
+
+                      Services Financiers
+
+                    </a>
+
+                    <a href="/industries/retail"
+                      class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+
+                      <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-400"></i>
+
+                      Retail & Commerce
+
+                    </a>
+
+                  </div>
+
+                  <!-- Column 3: Featured -->
+
+                  <div class="bg-slate-700/30 rounded-lg p-4">
+
+                    <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span
+                        data-i18n="integrations.populaire_74">Populaire</span></div>
+
+                    <div class="space-y-3">
+
+                      <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+
+                        <div class="flex items-center gap-2 mb-1">
+
+                          <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
+
+                          <span class="text-white font-medium text-sm"><span
+                              data-i18n="integrations.multilangue_73">Multi-Langue</span></span>
+
+                        </div>
+
+                        <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija — 5 langues natives</p>
 
                       </a>
 
-                      <a href="/use-cases/customer-support" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                      <a href="/blog/articles/vocalia-lance-support-darija"
+                        class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
 
-                        <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+                        <div class="flex items-center gap-2 mb-1">
 
-                        Service Client
+                          <span class="text-lg">🇲🇦</span>
 
-                      </a>
+                          <span class="text-white font-medium text-sm"><span
+                              data-i18n="integrations.darija_ai_72">Darija AI</span></span>
 
-                      <a href="/use-cases/appointments" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
+                        </div>
 
-                        <i data-lucide="calendar" class="w-4 h-4 text-indigo-400"></i>
-
-                        Prise de RDV
-
-                      </a>
-
-                      <a href="/use-cases/lead-qualification" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="shield-check" class="w-4 h-4 text-indigo-400"></i>
-
-                        Qualification Leads
+                        <p class="text-zinc-400 text-xs"><span
+                            data-i18n="integrations.premier_assistant_vocal_71">Premier assistant vocal en dialecte
+                            marocain</span></p>
 
                       </a>
-
-                    </div>
-
-                    <!-- Column 2: Industries -->
-
-                    <div>
-
-                      <div class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3"><span data-i18n="integrations.par_industrie_75">Par Industrie</span></div>
-
-                      <a href="/industries/healthcare" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="heart-pulse" class="w-4 h-4 text-emerald-400"></i>
-
-                        Santé & Médical
-
-                      </a>
-
-                      <a href="/industries/real-estate" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="building-2" class="w-4 h-4 text-emerald-400"></i>
-
-                        Immobilier
-
-                      </a>
-
-                      <a href="/industries/finance" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="landmark" class="w-4 h-4 text-emerald-400"></i>
-
-                        Services Financiers
-
-                      </a>
-
-                      <a href="/industries/retail" class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white">
-
-                        <i data-lucide="shopping-bag" class="w-4 h-4 text-emerald-400"></i>
-
-                        Retail & Commerce
-
-                      </a>
-
-                    </div>
-
-                    <!-- Column 3: Featured -->
-
-                    <div class="bg-slate-700/30 rounded-lg p-4">
-
-                      <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span data-i18n="integrations.populaire_74">Populaire</span></div>
-
-                      <div class="space-y-3">
-
-                        <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
-
-                          <div class="flex items-center gap-2 mb-1">
-
-                            <i data-lucide="globe" class="w-5 h-5 text-blue-400"></i>
-
-                            <span class="text-white font-medium text-sm"><span data-i18n="integrations.multilangue_73">Multi-Langue</span></span>
-
-                          </div>
-
-                          <p class="text-zinc-400 text-xs">FR, EN, ES, AR, Darija — 5 langues natives</p>
-
-                        </a>
-
-                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
-
-                          <div class="flex items-center gap-2 mb-1">
-
-                            <span class="text-lg">🇲🇦</span>
-
-                            <span class="text-white font-medium text-sm"><span data-i18n="integrations.darija_ai_72">Darija AI</span></span>
-
-                          </div>
-
-                          <p class="text-zinc-400 text-xs"><span data-i18n="integrations.premier_assistant_vocal_71">Premier assistant vocal en dialecte marocain</span></p>
-
-                        </a>
-
-                      </div>
 
                     </div>
 
@@ -365,215 +418,267 @@
 
             </div>
 
-            <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a>
+          </div>
 
-            <!-- Resources Dropdown -->
+          <a href="/pricing" class="px-4 py-2 text-vocalia-200 hover:text-white transition"><span
+              data-i18n="nav.pricing">Tarifs</span></a>
 
-            <div class="relative group">
+          <!-- Resources Dropdown -->
 
-              <button type="button" class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
-                <span data-i18n="nav.resources"><span data-i18n="integrations.ressources_61">Ressources</span></span>
-                <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
+          <div class="relative group">
 
-              </button>
+            <button type="button"
+              class="px-4 py-2 text-vocalia-200 hover:text-white transition flex items-center gap-1">
+              <span data-i18n="nav.resources"><span data-i18n="integrations.ressources_61">Ressources</span></span>
+              <i data-lucide="chevron-down"
+                class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
 
-              <div class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
+            </button>
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+            <div
+              class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                  <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.docs">Documentation</span></a>
+              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
 
-                  <a href="/integrations" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+                <a href="/docs"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span
+                    data-i18n="footer.links.docs">Documentation</span></a>
 
-                  <a href="/blog" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.blog">Blog</span></a></div>
+                <a href="/integrations"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span
+                    data-i18n="footer.links.integrations">Intégrations</span></a>
 
+                <a href="/blog"
+                  class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span
+                    data-i18n="footer.links.blog">Blog</span></a>
               </div>
 
             </div>
 
           </div>
 
-          <!-- CTA + Mobile -->
+        </div>
 
-          <div class="flex items-center space-x-3">
+        <!-- CTA + Mobile -->
 
-            <a href="/login"
+        <div class="flex items-center space-x-3">
 
-              class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition font-medium"><span data-i18n="nav.login">Connexion</span></a>
+          <a href="/login"
+            class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition font-medium"><span
+              data-i18n="nav.login">Connexion</span></a>
 
-            <!-- Mobile Hamburger Button -->
+          <!-- Mobile Hamburger Button -->
 
-            <!-- Language Switcher -->
-            <div class="relative">
-              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                <span id="currentLang" class="text-sm font-medium">FR</span>
-                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
+          <!-- Language Switcher -->
+          <div class="relative">
+            <button type="button" data-action="toggleLangDropdown"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
+              aria-label="Changer de langue">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M2 12h20" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+              <span id="currentLang" class="text-sm font-medium">FR</span>
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <div id="langDropdown"
+              class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
+              <button type="button" data-action="switchLang" data-params="fr"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <span class="text-lg">&#127467;&#127479;</span>
+                <span class="text-sm"><span data-i18n="integrations.francais_70">Francais</span></span>
               </button>
-              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
-                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
-                  <span class="text-lg">&#127467;&#127479;</span>
-                  <span class="text-sm"><span data-i18n="integrations.francais_70">Francais</span></span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
-                  <span class="text-lg">&#127468;&#127463;</span>
-                  <span class="text-sm"><span data-i18n="integrations.english_69">English</span></span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
-                  <span class="text-lg">&#127466;&#127480;</span>
-                  <span class="text-sm"><span data-i18n="integrations.espanol_68">Espanol</span></span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
-                  <span class="text-lg">&#127480;&#127462;</span>
-                  <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
-                </button>
-                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
-                  <span class="text-lg">&#127474;&#127462;</span>
-                  <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
-                </button>
-              </div>
+              <button type="button" data-action="switchLang" data-params="en"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <span class="text-lg">&#127468;&#127463;</span>
+                <span class="text-sm"><span data-i18n="integrations.english_69">English</span></span>
+              </button>
+              <button type="button" data-action="switchLang" data-params="es"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <span class="text-lg">&#127466;&#127480;</span>
+                <span class="text-sm"><span data-i18n="integrations.espanol_68">Espanol</span></span>
+              </button>
+              <button type="button" data-action="switchLang" data-params="ar" dir="rtl"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <span class="text-lg">&#127480;&#127462;</span>
+                <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
+              </button>
+              <button type="button" data-action="switchLang" data-params="ary" dir="rtl"
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <span class="text-lg">&#127474;&#127462;</span>
+                <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
+              </button>
             </div>
+          </div>
 
-            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
+          <button type="button" id="mobileMenuBtn"
+            class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition"
+            aria-label="Menu mobile">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
           </button>
 
-          </div>
-
         </div>
 
       </div>
 
-      <!-- Mobile Menu Drawer -->
+    </div>
 
-      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+    <!-- Mobile Menu Drawer -->
 
-        <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
+    <div id="mobileMenu"
+      class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
 
-          <!-- Products Section -->
+      <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
 
-          <div class="mb-6">
+        <!-- Products Section -->
 
-            <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
+        <div class="mb-6">
 
-            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
 
-              <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
+          <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
 
-                <svg class="w-5 h-5 text-vocalia-400" viewBox="0 0 24 24" fill="currentColor" aria-label="X (Twitter)">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
+            <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
 
-              </div>
-
-              <div>
-
-                <div class="font-medium text-white">Voice Widget</div>
-
-                <div class="text-sm text-zinc-400">Assistant vocal web intelligent</div>
-
-              </div>
-
-            </a>
-
-            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
-
-              <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
-
-                <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
-
-              </div>
-
-              <div>
-
-                <div class="font-medium text-white">Voice Telephony AI</div>
-
-                <div class="text-sm text-zinc-400">Agents téléphoniques PSTN</div>
-
-              </div>
-
-            </a>
-
-          </div>
-
-          <!-- Solutions Section -->
-
-          <div class="mb-6">
-
-            <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Solutions</h3>
-
-            <div class="grid grid-cols-2 gap-2">
-
-              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.ecommerce"><span data-i18n="integrations.ecommerce_54">E-commerce</span></span></a>
-
-              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
-
-              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
-
-              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
+              <svg class="w-5 h-5 text-vocalia-400" viewBox="0 0 24 24" fill="currentColor" aria-label="X (Twitter)">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
 
             </div>
 
-          </div>
+            <div>
 
-          <!-- Resources Section -->
+              <div class="font-medium text-white">Voice Widget</div>
 
-          <div class="mb-6">
+              <div class="text-sm text-zinc-400">Assistant vocal web intelligent</div>
 
-            <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
+            </div>
 
-            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
+          </a>
 
-            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+          <a href="/products/voice-telephony"
+            class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
 
-            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
+            <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
 
-          <!-- Mobile CTA -->
+              <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
 
-          <div class="space-y-3">
+            </div>
 
-            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+            <div>
 
-              Tarifs
+              <div class="font-medium text-white">Voice Telephony AI</div>
 
-            </a>
+              <div class="text-sm text-zinc-400">Agents téléphoniques PSTN</div>
 
-            <a href="/login" class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white">
+            </div>
 
-              Connexion
+          </a>
 
-            </a>
+        </div>
+
+        <!-- Solutions Section -->
+
+        <div class="mb-6">
+
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Solutions</h3>
+
+          <div class="grid grid-cols-2 gap-2">
+
+            <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.ecommerce"><span
+                  data-i18n="integrations.ecommerce_54">E-commerce</span></span></a>
+
+            <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.healthcare">Santé</span></a>
+
+            <a href="/use-cases/customer-support"
+              class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.customer_support">Service Client</span></a>
+
+            <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+                data-i18n="footer.links.real_estate">Immobilier</span></a>
 
           </div>
 
         </div>
 
+        <!-- Resources Section -->
+
+        <div class="mb-6">
+
+          <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
+
+          <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+              data-i18n="footer.links.docs">Documentation</span></a>
+
+          <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+              data-i18n="footer.links.integrations">Intégrations</span></a>
+
+          <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+              data-i18n="footer.links.blog">Blog</span></a>
+        </div>
+
+        <!-- Mobile CTA -->
+
+        <div class="space-y-3">
+
+          <a href="/pricing"
+            class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+
+            Tarifs
+
+          </a>
+
+          <a href="/login"
+            class="block w-full py-3 px-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 transition text-center font-semibold text-white">
+
+            Connexion
+
+          </a>
+
+        </div>
+
       </div>
 
-    </nav>
+    </div>
 
-    
+  </nav>
+
+
   <main id="main-content" class="pt-24 pb-16">
     <!-- Hero Section -->
     <section class="py-16 relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-b from-vocalia-900/20 to-transparent"></div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
-        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
+        <span
+          class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
           <i data-lucide="sparkles" class="w-4 h-4 mr-2"></i>
-          <span data-i18n="integrations_page.hero_badge">25+ Intégrations</span>
+          <span data-i18n="integrations_page.hero_badge">28 Intégrations</span>
         </span>
         <h1 class="text-4xl md:text-5xl font-extrabold mb-6">
-          <span data-i18n="integrations_page.hero_title">Connectez VocalIA à</span><br><span class="gradient-text" data-i18n="integrations_page.hero_title_accent">votre stack existant</span>
+          <span data-i18n="integrations_page.hero_title">Connectez VocalIA à</span><br><span class="gradient-text"
+            data-i18n="integrations_page.hero_title_accent">votre stack existant</span>
         </h1>
         <p class="text-xl text-slate-300 max-w-3xl mx-auto mb-8" data-i18n="integrations_page.hero_subtitle">
-          Synchronisez vos données client, automatisez vos workflows et enrichissez vos conversations IA avec nos intégrations natives.
+          Synchronisez vos données client, automatisez vos workflows et enrichissez vos conversations IA avec nos
+          intégrations natives.
         </p>
         <div class="flex flex-wrap justify-center gap-4">
-          <a href="/docs" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105" data-i18n="integrations_page.cta_docs">
+          <a href="/docs"
+            class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105"
+            data-i18n="integrations_page.cta_docs">
             Documentation API
           </a>
-          <a href="/contact" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors" data-i18n="integrations_page.cta_request">
+          <a href="/contact"
+            class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors"
+            data-i18n="integrations_page.cta_request">
             Demander une intégration
           </a>
         </div>
@@ -590,27 +695,33 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/hubspot.svg?v=249.13" alt="HubSpot" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/hubspot.svg?v=249.13" alt="HubSpot" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.hubspot_60">HubSpot</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_deals_59">Sync contacts, deals, et activités. Création automatique de tickets.</span></p>
-            
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_deals_59">Sync contacts,
+                deals, et activités. Création automatique de tickets.</span></p>
+
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/pipedrive.svg?v=249.13" alt="Pipedrive" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/pipedrive.svg?v=249.13" alt="Pipedrive" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.pipedrive_58">Pipedrive</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_deals_57">Gestion des deals et pipeline. Logs d'appels automatiques.</span></p>
-            
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_deals_57">Gestion des deals
+                et pipeline. Logs d'appels automatiques.</span></p>
+
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/zoho.svg?v=249.13" alt="Zoho CRM" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/zoho.svg?v=249.13" alt="Zoho CRM" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.zoho_crm_56">Zoho CRM</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_et_55">Sync contacts et leads. Automatisation des workflows.</span></p>
-            
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_et_55">Sync contacts et
+                leads. Automatisation des workflows.</span></p>
+
           </div>
         </div>
       </div>
@@ -626,45 +737,60 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/shopify.svg?v=249.13" alt="Shopify" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/shopify.svg?v=249.13" alt="Shopify" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.shopify_53">Shopify</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.suivi_commandes_stock_52">Suivi commandes, stock, clients. Lookup par email ou numéro.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.suivi_commandes_stock_52">Suivi
+                commandes, stock, clients. Lookup par email ou numéro.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/woocommerce.svg?v=249.13" alt="WooCommerce" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/woocommerce.svg?v=249.13" alt="WooCommerce" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.woocommerce_51">WooCommerce</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.api_rest_pour_50">API REST pour commandes, produits et clients WordPress.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.api_rest_pour_50">API REST pour
+                commandes, produits et clients WordPress.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/magento.svg?v=249.13" alt="Magento" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/magento.svg?v=249.13" alt="Magento" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.magento_49">Magento</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.intgration_entreprise_pour_48">Intégration entreprise pour catalogues et commandes complexes.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span
+                data-i18n="integrations.intgration_entreprise_pour_48">Intégration entreprise pour catalogues et
+                commandes complexes.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/bigcommerce.svg?v=249.13" alt="BigCommerce" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/bigcommerce.svg?v=249.13" alt="BigCommerce" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.bigcommerce_47">BigCommerce</span></h3>
-            <p class="text-slate-400 text-sm mb-4">Plateforme B2B/B2C. Gestion multi-storefront et inventaire avancé.</p>
+            <p class="text-slate-400 text-sm mb-4">Plateforme B2B/B2C. Gestion multi-storefront et inventaire avancé.
+            </p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/prestashop.svg?v=249.13" alt="PrestaShop" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/prestashop.svg?v=249.13" alt="PrestaShop" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.prestashop_46">PrestaShop</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.solution_ecommerce_opensource_45">Solution e-commerce open-source. API REST pour produits et commandes.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span
+                data-i18n="integrations.solution_ecommerce_opensource_45">Solution e-commerce open-source. API REST pour
+                produits et commandes.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/klaviyo.svg?v=249.13" alt="Klaviyo" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/klaviyo.svg?v=249.13" alt="Klaviyo" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.klaviyo_44">Klaviyo</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.segmentation_client_tags_43">Segmentation client, tags, et historique d'achats pour personnalisation.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span
+                data-i18n="integrations.segmentation_client_tags_43">Segmentation client, tags, et historique d'achats
+                pour personnalisation.</span></p>
           </div>
         </div>
       </div>
@@ -680,24 +806,30 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/zapier.svg?v=249.13" alt="Zapier" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/zapier.svg?v=249.13" alt="Zapier" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.zapier_42">Zapier</span></h3>
             <p class="text-slate-400 text-sm mb-4">Connectez 7000+ apps sans code. Triggers et actions automatiques.</p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/make.svg?v=249.13" alt="Make.com" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/make.svg?v=249.13" alt="Make.com" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.makecom_41">Make.com</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.scnarios_visuels_complexes_40">Scénarios visuels complexes avec branchements conditionnels avancés.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span
+                data-i18n="integrations.scnarios_visuels_complexes_40">Scénarios visuels complexes avec branchements
+                conditionnels avancés.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/n8n.svg?v=249.13" alt="n8n" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/n8n.svg?v=249.13" alt="n8n" class="w-8 h-8 object-contain" loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2">n8n</h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.alternative_opensource_selfhosted_39">Alternative open-source self-hosted. Contrôle total des données client.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span
+                data-i18n="integrations.alternative_opensource_selfhosted_39">Alternative open-source self-hosted.
+                Contrôle total des données client.</span></p>
           </div>
         </div>
       </div>
@@ -713,35 +845,45 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/googlesheets.svg?v=249.13" alt="Google Sheets" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/googlesheets.svg?v=249.13" alt="Google Sheets"
+                class="w-8 h-8 object-contain" loading="lazy">
             </div>
-            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_sheets_37">Google Sheets</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_criture_36">Lecture et écriture de données. Export automatique des leads et appels.</span></p>
-            
+            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_sheets_37">Google Sheets</span>
+            </h3>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_criture_36">Lecture et
+                écriture de données. Export automatique des leads et appels.</span></p>
+
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/googledrive.svg?v=249.13" alt="Google Drive" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/googledrive.svg?v=249.13" alt="Google Drive" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
-            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_drive_35">Google Drive</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.upload_des_enregistrements_34">Upload des enregistrements et rapports. Création de dossiers par client.</span></p>
-            
+            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_drive_35">Google Drive</span>
+            </h3>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.upload_des_enregistrements_34">Upload
+                des enregistrements et rapports. Création de dossiers par client.</span></p>
+
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/googledocs.svg?v=249.13" alt="Google Docs" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/googledocs.svg?v=249.13" alt="Google Docs" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_docs_33">Google Docs</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gnration_de_rapports_32">Génération de rapports et transcriptions. Templates personnalisables.</span></p>
-            
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gnration_de_rapports_32">Génération de
+                rapports et transcriptions. Templates personnalisables.</span></p>
+
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/gmail.svg?v=249.13" alt="Gmail" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/gmail.svg?v=249.13" alt="Gmail" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.gmail_31">Gmail</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_envoi_30">Lecture et envoi d'emails. Recherche, labels, et drafts via API Gmail.</span></p>
-            
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_envoi_30">Lecture et envoi
+                d'emails. Recherche, labels, et drafts via API Gmail.</span></p>
+
           </div>
         </div>
       </div>
@@ -757,17 +899,23 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/calendly.svg?v=249.13" alt="Calendly" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/calendly.svg?v=249.13" alt="Calendly" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.calendly_29">Calendly</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.planification_automatique_de_28">Planification automatique de rendez-vous. Disponibilités en temps réel.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span
+                data-i18n="integrations.planification_automatique_de_28">Planification automatique de rendez-vous.
+                Disponibilités en temps réel.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/googlecalendar.svg?v=249.13" alt="Google Calendar" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/googlecalendar.svg?v=249.13" alt="Google Calendar"
+                class="w-8 h-8 object-contain" loading="lazy">
             </div>
-            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_calendar_27">Google Calendar</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.cration_dvnements_et_26">Création d'événements et vérification de disponibilités automatique.</span></p>
+            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_calendar_27">Google
+                Calendar</span></h3>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.cration_dvnements_et_26">Création
+                d'événements et vérification de disponibilités automatique.</span></p>
           </div>
         </div>
       </div>
@@ -783,17 +931,21 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/freshdesk.svg?v=249.13" alt="Freshdesk" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/freshdesk.svg?v=249.13" alt="Freshdesk" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.freshdesk_25">Freshdesk</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.cration_et_suivi_24">Création et suivi de tickets. Historique client accessible pendant l'appel.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.cration_et_suivi_24">Création et suivi
+                de tickets. Historique client accessible pendant l'appel.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/zendesk.svg?v=249.13" alt="Zendesk" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/zendesk.svg?v=249.13" alt="Zendesk" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.zendesk_23">Zendesk</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_tickets_22">Gestion des tickets et base de connaissances. Escalade automatique.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_tickets_22">Gestion des
+                tickets et base de connaissances. Escalade automatique.</span></p>
           </div>
         </div>
       </div>
@@ -803,23 +955,68 @@
     <section class="py-16 bg-slate-900/50">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-4 mb-8">
-          <h2 class="text-2xl font-bold"><span data-i18n="integrations.communication_21">Communication</span></h2>
-          <span class="category-badge bg-red-500/20 text-red-400">2 intégrations</span>
+          <h2 class="text-2xl font-bold"><span data-i18n="integrations.communication_21">Communication &
+              Téléphonie</span></h2>
+          <span class="category-badge bg-red-500/20 text-red-400">4 intégrations</span>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/slack.svg?v=249.13" alt="Slack" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/slack.svg?v=249.13" alt="Slack" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.slack_20">Slack</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.notifications_en_temps_19">Notifications en temps réel. Alertes pour leads chauds et appels manqués.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span
+                data-i18n="integrations.notifications_en_temps_19">Notifications en temps réel. Alertes pour leads
+                chauds et appels manqués.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/stripe.svg?v=250" alt="Stripe" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/whatsapp.svg?v=249.13" alt="WhatsApp" class="w-8 h-8 object-contain"
+                loading="lazy">
+            </div>
+            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.whatsapp_business">WhatsApp</span></h3>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.messagerie_whatsapp_business">Support
+                client et notifications via WhatsApp Business API.</span></p>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
+              <img src="/public/images/logos/twilio.svg?v=249.13" alt="Twilio" class="w-8 h-8 object-contain"
+                loading="lazy">
+            </div>
+            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.twilio_telephony">Twilio</span></h3>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.telephonie_pstn_mondiale">Numéros
+                locaux et appels sortants via réseau Twilio Super Network.</span></p>
+          </div>
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
+              <img src="/public/images/logos/smtp.svg?v=249.13" alt="SMTP" class="w-8 h-8 object-contain"
+                loading="lazy">
+            </div>
+            <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.smtp_email">SMTP Email</span></h3>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.envoi_email_smtp_custom">Envoi d'emails
+                transactionnels via votre propre serveur SMTP.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Finance -->
+    <section class="py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-4 mb-8">
+          <h2 class="text-2xl font-bold"><span data-i18n="integrations.finance_payments">Finance & Paiements</span></h2>
+          <span class="category-badge bg-emerald-500/20 text-emerald-400">1 intégration</span>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="integration-card rounded-xl p-6">
+            <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
+              <img src="/public/images/logos/stripe.svg?v=250" alt="Stripe" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.stripe_18">Stripe</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.paiements_scuriss_payment_17">Paiements sécurisés. Payment Links, Checkout, Invoices et remboursements.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.paiements_scuriss_payment_17">Paiements
+                sécurisés. Payment Links, Checkout, Invoices et remboursements.</span></p>
           </div>
         </div>
       </div>
@@ -835,24 +1032,29 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/wordpress.svg?v=249.13" alt="WordPress" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/wordpress.svg?v=249.13" alt="WordPress" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.wordpress_16">WordPress</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.plugin_1clic_pour_15">Plugin 1-clic pour ajouter le voice widget. 40 personas, 5 langues.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.plugin_1clic_pour_15">Plugin 1-clic
+                pour ajouter le voice widget. 40 personas, 5 langues.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/wix.svg?v=249.13" alt="Wix" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/wix.svg?v=249.13" alt="Wix" class="w-8 h-8 object-contain" loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2">Wix</h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.intgration_widget_via_14">Intégration widget via embed HTML. Compatible avec tous les templates Wix.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.intgration_widget_via_14">Intégration
+                widget via embed HTML. Compatible avec tous les templates Wix.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
-              <img src="/public/images/logos/squarespace.svg?v=249.13" alt="Squarespace" class="w-8 h-8 object-contain" loading="lazy" >
+              <img src="/public/images/logos/squarespace.svg?v=249.13" alt="Squarespace" class="w-8 h-8 object-contain"
+                loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.squarespace_13">Squarespace</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.code_injection_pour_12">Code injection pour widget voice. Personnalisation couleurs et position.</span></p>
+            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.code_injection_pour_12">Code injection
+                pour widget voice. Personnalisation couleurs et position.</span></p>
           </div>
         </div>
       </div>
@@ -863,21 +1065,26 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-vocalia-500/20 text-vocalia-300 border border-vocalia-500/30 mb-6">
               API RESTful
             </span>
-            <h2 class="text-3xl font-bold mb-6"><span data-i18n="integrations.construisez_vos_propres_11">Construisez vos propres intégrations</span></h2>
+            <h2 class="text-3xl font-bold mb-6"><span data-i18n="integrations.construisez_vos_propres_11">Construisez
+                vos propres intégrations</span></h2>
             <p class="text-slate-300 mb-6">
-              Notre API RESTful complète vous permet de créer des intégrations personnalisées avec n'importe quel système.
+              Notre API RESTful complète vous permet de créer des intégrations personnalisées avec n'importe quel
+              système.
             </p>
             <ul class="space-y-4">
               <li class="flex items-center gap-3">
                 <i data-lucide="check" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
-                <span><span data-i18n="integrations.authentification_oauth2_et_10">Authentification OAuth2 et API Keys</span></span>
+                <span><span data-i18n="integrations.authentification_oauth2_et_10">Authentification OAuth2 et API
+                    Keys</span></span>
               </li>
               <li class="flex items-center gap-3">
                 <i data-lucide="check" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
-                <span><span data-i18n="integrations.webhooks_pour_vnements_9">Webhooks pour événements en temps réel</span></span>
+                <span><span data-i18n="integrations.webhooks_pour_vnements_9">Webhooks pour événements en temps
+                    réel</span></span>
               </li>
               <li class="flex items-center gap-3">
                 <i data-lucide="check" class="w-5 h-5 text-emerald-400 flex-shrink-0"></i>
@@ -889,7 +1096,8 @@
               </li>
             </ul>
             <div class="mt-8">
-              <a href="/docs" class="inline-flex items-center px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-colors">
+              <a href="/docs"
+                class="inline-flex items-center px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-colors">
                 Voir la documentation
                 <i data-lucide="file-text" class="w-4 h-4 ml-2"></i>
               </a>
@@ -901,7 +1109,8 @@
               <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
               <div class="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
-            <pre class="text-slate-300 overflow-x-auto"><code><span class="text-slate-500">// Exemple: Créer un appel sortant</span>
+            <pre
+              class="text-slate-300 overflow-x-auto"><code><span class="text-slate-500">// Exemple: Créer un appel sortant</span>
 <span class="text-purple-400"><span data-i18n="integrations.const_5"><span data-i18n="integrations.const_7">const</span></span></span> response = <span class="text-purple-400"><span data-i18n="integrations.await_4"><span data-i18n="integrations.await_6">await</span></span></span> fetch(
   <span class="text-emerald-400">'https://api.vocalia.ma/v1/calls'</span>,
   {
@@ -929,40 +1138,48 @@
     </section>
 
     <!-- CTA Section - Modern 2026 (Linear/Vercel inspired) -->
-  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900">
-    <!-- Soft radial glow - gradient as lighting -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]"></div>
-    <!-- Top border glow -->
-    <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent"></div>
-    <!-- Bottom border glow -->
-    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-600/30 to-transparent"></div>
-
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <!-- Badge -->
-      <div class="inline-flex items-center px-3 py-1 rounded-full bg-vocalia-500/10 border border-vocalia-500/20 text-vocalia-300 text-sm mb-6">
-        <i data-lucide="zap" class="w-4 h-4 mr-2"></i>
-        <span data-i18n="cta.badge">Déploiement en 5 minutes</span>
+    <section class="py-24 relative overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900">
+      <!-- Soft radial glow - gradient as lighting -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]">
+      </div>
+      <!-- Top border glow -->
+      <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent">
+      </div>
+      <!-- Bottom border glow -->
+      <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-600/30 to-transparent">
       </div>
 
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer Votre Service Client?</h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
+      <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <!-- Badge -->
+        <div
+          class="inline-flex items-center px-3 py-1 rounded-full bg-vocalia-500/10 border border-vocalia-500/20 text-vocalia-300 text-sm mb-6">
+          <i data-lucide="zap" class="w-4 h-4 mr-2"></i>
+          <span data-i18n="cta.badge">Déploiement en 5 minutes</span>
+        </div>
 
-      <!-- CTA Buttons - Linear style -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <!-- Primary CTA -->
-        <a href="/pricing" class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25">
-          <span data-i18n="cta.button">Démarrer Maintenant</span>
-          <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
-        </a>
-        <!-- Secondary CTA -->
-        <a href="/contact" class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 hover:border-white/20 transition-all duration-200">
-          <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
-          <span data-i18n="cta.demo">Demander une Démo</span>
-        </a>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer
+          Votre Service Client?</h2>
+        <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent
+          vocal IA en moins de 5 minutes.</p>
+
+        <!-- CTA Buttons - Linear style -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <!-- Primary CTA -->
+          <a href="/pricing"
+            class="group inline-flex items-center justify-center px-8 py-4 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold text-lg transition-all duration-200 hover:shadow-lg hover:shadow-vocalia-500/25">
+            <span data-i18n="cta.button">Démarrer Maintenant</span>
+            <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+          </a>
+          <!-- Secondary CTA -->
+          <a href="/contact"
+            class="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-lg border border-white/10 hover:border-white/20 transition-all duration-200">
+            <i data-lucide="phone" class="w-5 h-5 mr-2"></i>
+            <span data-i18n="cta.demo">Demander une Démo</span>
+          </a>
+        </div>
       </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
   <!-- Footer -->
   <!-- Newsletter CTA -->
   <section class="py-12 bg-slate-900/50" id="newsletter">
@@ -970,65 +1187,74 @@
       <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
-            <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
+            <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice
+              AI</span>
           </h3>
           <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
         <form class="flex flex-col sm:flex-row gap-3" data-form-action="submitNewsletter">
-          <input
-            type="email"
-            placeholder="votre@email.com"
-            data-i18n-placeholder="newsletter.placeholder"
+          <input type="email" placeholder="votre@email.com" data-i18n-placeholder="newsletter.placeholder"
             class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
-            required
-            aria-label="Adresse email"
-          >
-          <button type="submit" class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap" data-i18n="newsletter.button">
+            required aria-label="Adresse email">
+          <button type="submit"
+            class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap"
+            data-i18n="newsletter.button">
             S'inscrire
           </button>
         </form>
       </div>
     </div>
   </section>
-<footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-slate-900 border-t border-slate-800">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
       <div class="mb-10">
-          <a href="/" class="flex items-center space-x-2 mb-4">
-            <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-            <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        <a href="/" class="flex items-center space-x-2 mb-4">
+          <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
+          <span
+            class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
+        </a>
+        <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="integrations.agents_vocaux_ia_2">Agents Vocaux IA pour
+            Entreprises</span></p>
+        <!-- Contact Info -->
+        <div class="space-y-2 text-sm text-zinc-400 mb-4">
+          <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            contact@vocalia.ma
           </a>
-          <p class="text-zinc-400 mb-4 text-sm"><span data-i18n="integrations.agents_vocaux_ia_2">Agents Vocaux IA pour Entreprises</span></p>
-          <!-- Contact Info -->
-          <div class="space-y-2 text-sm text-zinc-400 mb-4">
-            <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="mail" class="w-4 h-4"></i>
-              contact@vocalia.ma
-            </a>
-            <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="phone" class="w-4 h-4"></i>
-              +1 762 422 4223
-            </a>
-          </div>
-          <!-- Social Links -->
-          <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
-              <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
-            </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
-              <i data-lucide="linkedin" class="w-4 h-4"></i>
-            </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
-              <i data-lucide="github" class="w-4 h-4"></i>
-            </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
-              <i data-lucide="youtube" class="w-4 h-4"></i>
-            </a>
-          </div>
+          <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
+            <i data-lucide="phone" class="w-4 h-4"></i>
+            +1 762 422 4223
+          </a>
         </div>
+        <!-- Social Links -->
+        <div class="flex space-x-3">
+          <a href="https://x.com/vocalia_ma"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="X">
+            <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70"
+              loading="lazy">
+          </a>
+          <a href="https://linkedin.com/company/vocalia"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="LinkedIn">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+          </a>
+          <a href="https://github.com/Jouiet/VoicalAI"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="GitHub">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
+          <a href="https://youtube.com/@vocalia"
+            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            aria-label="YouTube">
+            <i data-lucide="youtube" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
 
       <!-- Categories Row - Inline with proper spacing -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
@@ -1036,11 +1262,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.product">Produit</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/features" class="hover:text-white transition"><span data-i18n="nav.features">Fonctionnalités</span></a></li>
-            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a></li>
-            <li><a href="/products/voice-widget" class="hover:text-white transition"><span data-i18n="products.voice_widget">Voice Widget</span></a></li>
-            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
-            <li><a href="/integrations" class="hover:text-white transition"><span data-i18n="footer.links.integrations">Intégrations</span></a></li>
+            <li><a href="/features" class="hover:text-white transition"><span
+                  data-i18n="nav.features">Fonctionnalités</span></a></li>
+            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a>
+            </li>
+            <li><a href="/products/voice-widget" class="hover:text-white transition"><span
+                  data-i18n="products.voice_widget">Voice Widget</span></a></li>
+            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span
+                  data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
+            <li><a href="/integrations" class="hover:text-white transition"><span
+                  data-i18n="footer.links.integrations">Intégrations</span></a></li>
           </ul>
         </div>
 
@@ -1048,11 +1279,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.solutions">Solutions</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas d\'Usage</span></a></li>
-            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par Industrie</span></a></li>
-            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
-            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span data-i18n="footer.links.customer_support">Service Client</span></a></li>
-            <li><a href="/industries/healthcare" class="hover:text-white transition"><span data-i18n="footer.links.healthcare">Santé</span></a></li>
+            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas
+                  d\'Usage</span></a></li>
+            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par
+                  Industrie</span></a></li>
+            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span
+                  data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
+            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span
+                  data-i18n="footer.links.customer_support">Service Client</span></a></li>
+            <li><a href="/industries/healthcare" class="hover:text-white transition"><span
+                  data-i18n="footer.links.healthcare">Santé</span></a></li>
           </ul>
         </div>
 
@@ -1060,10 +1296,14 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.resources">Ressources</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/docs" class="hover:text-white transition"><span data-i18n="footer.links.docs">Documentation</span></a></li>
-            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API Reference</span></a></li>
-            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
-            <li><a href="/academie-business" class="hover:text-white transition"><span data-i18n="footer.links.academy">Académie Business</span></a></li>
+            <li><a href="/docs" class="hover:text-white transition"><span
+                  data-i18n="footer.links.docs">Documentation</span></a></li>
+            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API
+                  Reference</span></a></li>
+            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a>
+            </li>
+            <li><a href="/academie-business" class="hover:text-white transition"><span
+                  data-i18n="footer.links.academy">Académie Business</span></a></li>
           </ul>
         </div>
 
@@ -1071,11 +1311,16 @@
         <div>
           <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.company">Entreprise</span></h4>
           <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À propos</span></a></li>
-            <li><a href="/contact" class="hover:text-white transition"><span data-i18n="footer.links.contact">Contact</span></a></li>
-            <li><a href="/privacy" class="hover:text-white transition"><span data-i18n="footer.links.privacy">Confidentialité</span></a></li>
-            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a></li>
-            <li><a href="/investor" class="hover:text-white transition"><span data-i18n="footer.links.investors">Investisseurs</span></a></li>
+            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À
+                  propos</span></a></li>
+            <li><a href="/contact" class="hover:text-white transition"><span
+                  data-i18n="footer.links.contact">Contact</span></a></li>
+            <li><a href="/privacy" class="hover:text-white transition"><span
+                  data-i18n="footer.links.privacy">Confidentialité</span></a></li>
+            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a>
+            </li>
+            <li><a href="/investor" class="hover:text-white transition"><span
+                  data-i18n="footer.links.investors">Investisseurs</span></a></li>
           </ul>
         </div>
       </div>
@@ -1117,95 +1362,98 @@
   <script src="/src/lib/geo-detect.js?v=239"></script>
   <script src="/src/lib/i18n.js?v=239"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
-<!-- Lucide Icons 2026 -->
-    <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
-    
-  
+  <!-- Lucide Icons 2026 -->
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
+
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          } else {
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
 
-    // i18n init - Priority: localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        var storedLang = localStorage.getItem('vocalia_lang');
-        if (storedLang) {
-          await VocaliaI18n.setLocale(storedLang);
-        } else if (typeof VocaliaGeo !== 'undefined') {
-          var geo = await VocaliaGeo.getGeo();
-          await VocaliaI18n.setLocale(geo.lang);
-        } else {
-          await VocaliaI18n.setLocale('fr');
-        }
+      // i18n init - Priority: localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          var storedLang = localStorage.getItem('vocalia_lang');
+          if (storedLang) {
+            await VocaliaI18n.setLocale(storedLang);
+          } else if (typeof VocaliaGeo !== 'undefined') {
+            var geo = await VocaliaGeo.getGeo();
+            await VocaliaI18n.setLocale(geo.lang);
+          } else {
+            await VocaliaI18n.setLocale('fr');
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-    }
+      }
 
-    // Re-init on load
-    window.addEventListener('load', initLucide);
-    window.addEventListener('load', initI18n);
-  })();
+      // Re-init on load
+      window.addEventListener('load', initLucide);
+      window.addEventListener('load', initI18n);
+    })();
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
+
 </html>

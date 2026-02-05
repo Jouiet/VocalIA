@@ -3,7 +3,7 @@
 > **v6.98.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
 > 70 pages | 22k+ i18n keys | 5 langs (FR/EN/ES/AR/ARY) | RTL | 309 unit + 375 E2E tests (99.5%)
 > **203 MCP Tools** | 40 Personas | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Klaviyo 5 | Twilio 5
-> ✅ **SESSION 250.90:** I18N 100% COMPLETE, Spanish decontamination (82 entries fixed), ALL MARKETS READY
+> ✅ **SESSION 250.90:** FORENSIC AUDIT COMPLETE + 5 P0/P1 fixes (port 3013, dedup, i18n ecommerce_page, MCP 40 personas, marketing labels)
 
 ## Quick Reference
 

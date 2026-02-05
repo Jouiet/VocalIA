@@ -85,6 +85,9 @@
     signInWithGoogle: function () {
       if (typeof window.signInWithGoogle === 'function') {
         window.signInWithGoogle();
+      } else {
+        // Zero Fake: inform user if function is missing
+        alert('Google Sign-In integration is not configured in this environment.');
       }
     },
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +15,12 @@
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
 </head>
+
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+    <aside id="sidebar"
+      class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
       <div class="p-4 border-b border-slate-200 dark:border-slate-700">
         <a href="/app/client/" class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
@@ -26,39 +29,48 @@
       </div>
 
       <nav class="flex-1 p-4 space-y-1">
-        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="index.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.overview">Tableau de bord</span>
         </a>
-        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="calls.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="phone" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.calls">Appels</span>
         </a>
-        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="agents.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="bot" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.agents">Agents IA</span>
         </a>
-        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+        <a href="catalog.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
           <i data-lucide="package" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.catalog">Catalogue</span>
         </a>
-        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="knowledge-base.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="book-open" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
         </a>
-        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="integrations.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="plug" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.integrations">Intégrations</span>
         </a>
-        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="analytics.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.analytics">Analytics</span>
         </a>
-        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="billing.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="credit-card" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.billing">Facturation</span>
         </a>
-        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="settings.html"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
           <i data-lucide="settings" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.settings">Paramètres</span>
         </a>
@@ -82,18 +94,23 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-      <header class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header
+        class="sticky top-0 z-10 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="catalog.title">Catalogue Produits</h1>
-            <p class="text-slate-600 dark:text-slate-400" data-i18n="catalog.subtitle">Gérez vos produits, menus et services pour l'IA vocale</p>
+            <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="catalog.title">Catalogue Produits
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400" data-i18n="catalog.subtitle">Gérez vos produits, menus et
+              services pour l'IA vocale</p>
           </div>
           <div class="flex gap-3">
-            <button id="import-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+            <button id="import-btn"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
               <i data-lucide="upload" class="w-5 h-5"></i>
               <span data-i18n="catalog.import">Importer</span>
             </button>
-            <button id="add-item-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+            <button id="add-item-btn"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
               <i data-lucide="plus" class="w-5 h-5"></i>
               <span data-i18n="catalog.add_item">Ajouter un article</span>
             </button>
@@ -121,7 +138,8 @@
                 <i data-lucide="check-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.available">Disponibles</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.available">Disponibles
+                </p>
                 <p id="stat-available" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
               </div>
             </div>
@@ -132,7 +150,8 @@
                 <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-600 dark:text-amber-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.low_stock">Stock faible</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.low_stock">Stock faible
+                </p>
                 <p id="stat-low-stock" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
               </div>
             </div>
@@ -143,7 +162,8 @@
                 <i data-lucide="refresh-cw" class="w-6 h-6 text-purple-600 dark:text-purple-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.last_sync">Dernière sync</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.last_sync">Dernière sync
+                </p>
                 <p id="stat-last-sync" class="text-lg font-medium text-slate-900 dark:text-white">-</p>
               </div>
             </div>
@@ -154,23 +174,33 @@
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 mb-6">
           <div class="border-b border-slate-200 dark:border-slate-700 px-4">
             <nav class="flex gap-1 -mb-px">
-              <button class="catalog-tab active px-4 py-3 text-sm font-medium border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400" data-type="products">
+              <button
+                class="catalog-tab active px-4 py-3 text-sm font-medium border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400"
+                data-type="products">
                 <i data-lucide="shopping-bag" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.products">Produits</span>
               </button>
-              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="menu">
+              <button
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                data-type="menu">
                 <i data-lucide="utensils" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.menu">Menu</span>
               </button>
-              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="services">
+              <button
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                data-type="services">
                 <i data-lucide="wrench" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.services">Services</span>
               </button>
-              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="fleet">
+              <button
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                data-type="fleet">
                 <i data-lucide="car" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.fleet">Véhicules</span>
               </button>
-              <button class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300" data-type="trips">
+              <button
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                data-type="trips">
                 <i data-lucide="plane" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.trips">Voyages</span>
               </button>
@@ -186,10 +216,12 @@
                   class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Rechercher un article..." data-i18n-placeholder="catalog.search_placeholder">
               </div>
-              <select id="category-filter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+              <select id="category-filter"
+                class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
                 <option value="" data-i18n="catalog.filter.all_categories">Toutes les catégories</option>
               </select>
-              <select id="status-filter" class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+              <select id="status-filter"
+                class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
                 <option value="" data-i18n="catalog.filter.all_status">Tous les statuts</option>
                 <option value="available" data-i18n="catalog.filter.available">Disponible</option>
                 <option value="low_stock" data-i18n="catalog.filter.low_stock">Stock faible</option>
@@ -203,22 +235,28 @@
             <table class="w-full">
               <thead class="bg-slate-50 dark:bg-slate-700/50">
                 <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th
+                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.item">Article</span>
                   </th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th
+                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.category">Catégorie</span>
                   </th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th
+                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.price">Prix</span>
                   </th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th
+                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.stock">Stock</span>
                   </th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th
+                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.status">Statut</span>
                   </th>
-                  <th class="px-4 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                  <th
+                    class="px-4 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.actions">Actions</span>
                   </th>
                 </tr>
@@ -231,12 +269,16 @@
 
           <!-- Empty State -->
           <div id="empty-state" class="hidden p-12 text-center">
-            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
+            <div
+              class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
               <i data-lucide="package-x" class="w-8 h-8 text-slate-400"></i>
             </div>
-            <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-2" data-i18n="catalog.empty.title">Aucun article</h3>
-            <p class="text-slate-500 dark:text-slate-400 mb-4" data-i18n="catalog.empty.description">Commencez par importer votre catalogue ou ajouter des articles manuellement.</p>
-            <button id="empty-import-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+            <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-2" data-i18n="catalog.empty.title">Aucun
+              article</h3>
+            <p class="text-slate-500 dark:text-slate-400 mb-4" data-i18n="catalog.empty.description">Commencez par
+              importer votre catalogue ou ajouter des articles manuellement.</p>
+            <button id="empty-import-btn"
+              class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
               <i data-lucide="upload" class="w-5 h-5"></i>
               <span data-i18n="catalog.import">Importer</span>
             </button>
@@ -252,10 +294,13 @@
               <span data-i18n="catalog.items">articles</span>
             </p>
             <div class="flex gap-2">
-              <button id="prev-page" class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50" disabled>
+              <button id="prev-page"
+                class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50"
+                disabled>
                 <i data-lucide="chevron-left" class="w-4 h-4"></i>
               </button>
-              <button id="next-page" class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50">
+              <button id="next-page"
+                class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50">
                 <i data-lucide="chevron-right" class="w-4 h-4"></i>
               </button>
             </div>
@@ -270,7 +315,8 @@
             </div>
             <div class="flex-1">
               <h3 class="text-lg font-semibold mb-2" data-i18n="catalog.voice_preview.title">Aperçu vocal</h3>
-              <p class="text-white/80 text-sm mb-4" data-i18n="catalog.voice_preview.description">Voici comment l'IA vocale présentera vos articles aux clients.</p>
+              <p class="text-white/80 text-sm mb-4" data-i18n="catalog.voice_preview.description">Voici comment l'IA
+                vocale présentera vos articles aux clients.</p>
               <div id="voice-preview" class="bg-white/10 rounded-lg p-4">
                 <p class="text-sm italic">"Nous proposons actuellement 0 articles. Que souhaitez-vous consulter?"</p>
               </div>
@@ -287,7 +333,8 @@
       <div class="fixed inset-0 bg-black/50" id="import-modal-backdrop"></div>
       <div class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full p-6">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.import_modal.title">Importer le catalogue</h3>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.import_modal.title">
+            Importer le catalogue</h3>
           <button id="close-import-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
             <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
           </button>
@@ -297,8 +344,10 @@
           <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center">
             <input type="file" id="file-input" class="hidden" accept=".json,.csv,.xlsx">
             <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-slate-400 mb-4"></i>
-            <p class="text-slate-600 dark:text-slate-400 mb-2" data-i18n="catalog.import_modal.drag_drop">Glissez un fichier ici ou</p>
-            <button id="browse-files" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline" data-i18n="catalog.import_modal.browse">parcourir</button>
+            <p class="text-slate-600 dark:text-slate-400 mb-2" data-i18n="catalog.import_modal.drag_drop">Glissez un
+              fichier ici ou</p>
+            <button id="browse-files" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
+              data-i18n="catalog.import_modal.browse">parcourir</button>
             <p class="text-xs text-slate-400 mt-2" data-i18n="catalog.import_modal.formats">Formats: JSON, CSV, XLSX</p>
           </div>
 
@@ -309,13 +358,18 @@
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2" data-i18n="catalog.import_modal.connect">Connecter une plateforme</label>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+              data-i18n="catalog.import_modal.connect">Connecter une plateforme</label>
             <div class="grid grid-cols-2 gap-3">
-              <button class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700" data-platform="shopify">
+              <button
+                class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700"
+                data-platform="shopify">
                 <img src="/public/images/integrations/shopify.svg" alt="Shopify" class="w-8 h-8">
                 <span class="font-medium text-slate-700 dark:text-slate-300">Shopify</span>
               </button>
-              <button class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700" data-platform="woocommerce">
+              <button
+                class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700"
+                data-platform="woocommerce">
                 <img src="/public/images/integrations/woocommerce.svg" alt="WooCommerce" class="w-8 h-8">
                 <span class="font-medium text-slate-700 dark:text-slate-300">WooCommerce</span>
               </button>
@@ -324,8 +378,12 @@
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-          <button id="cancel-import" class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700" data-i18n="common.cancel">Annuler</button>
-          <button id="confirm-import" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg disabled:opacity-50" disabled data-i18n="catalog.import_modal.import">Importer</button>
+          <button id="cancel-import"
+            class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+            data-i18n="common.cancel">Annuler</button>
+          <button id="confirm-import"
+            class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg disabled:opacity-50"
+            disabled data-i18n="catalog.import_modal.import">Importer</button>
         </div>
       </div>
     </div>
@@ -335,9 +393,11 @@
   <div id="add-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen px-4">
       <div class="fixed inset-0 bg-black/50" id="add-modal-backdrop"></div>
-      <div class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+      <div
+        class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.add_modal.title">Ajouter un article</h3>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.add_modal.title">Ajouter
+            un article</h3>
           <button id="close-add-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
             <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
           </button>
@@ -346,51 +406,72 @@
         <form id="add-item-form" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.name">Nom *</label>
-              <input type="text" name="name" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                data-i18n="catalog.form.name">Nom *</label>
+              <input type="text" name="name" required
+                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.sku">SKU/ID</label>
-              <input type="text" name="sku" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                data-i18n="catalog.form.sku">SKU/ID</label>
+              <input type="text" name="sku"
+                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.price">Prix *</label>
-              <input type="number" name="price" step="0.01" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                data-i18n="catalog.form.price">Prix *</label>
+              <input type="number" name="price" step="0.01" required
+                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.stock">Stock</label>
-              <input type="number" name="stock" min="0" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+                data-i18n="catalog.form.stock">Stock</label>
+              <input type="number" name="stock" min="0"
+                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.category">Catégorie</label>
-            <input type="text" name="category" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              data-i18n="catalog.form.category">Catégorie</label>
+            <input type="text" name="category"
+              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.description">Description</label>
-            <textarea name="description" rows="3" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"></textarea>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              data-i18n="catalog.form.description">Description</label>
+            <textarea name="description" rows="3"
+              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"></textarea>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="catalog.form.voice_description">Description vocale</label>
-            <textarea name="voice_description" rows="2" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white" placeholder="Comment l'IA doit présenter cet article..."></textarea>
-            <p class="text-xs text-slate-500 mt-1" data-i18n="catalog.form.voice_hint">Conseil: Écrivez comme si vous parliez au téléphone.</p>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              data-i18n="catalog.form.voice_description">Description vocale</label>
+            <textarea name="voice_description" rows="2"
+              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+              placeholder="Comment l'IA doit présenter cet article..."></textarea>
+            <p class="text-xs text-slate-500 mt-1" data-i18n="catalog.form.voice_hint">Conseil: Écrivez comme si vous
+              parliez au téléphone.</p>
           </div>
 
           <div class="flex items-center gap-2">
-            <input type="checkbox" name="available" id="item-available" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-            <label for="item-available" class="text-sm text-slate-700 dark:text-slate-300" data-i18n="catalog.form.available">Disponible à la vente</label>
+            <input type="checkbox" name="available" id="item-available" checked
+              class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+            <label for="item-available" class="text-sm text-slate-700 dark:text-slate-300"
+              data-i18n="catalog.form.available">Disponible à la vente</label>
           </div>
         </form>
 
         <div class="mt-6 flex justify-end gap-3">
-          <button id="cancel-add" class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700" data-i18n="common.cancel">Annuler</button>
-          <button id="save-item" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg" data-i18n="common.save">Enregistrer</button>
+          <button id="cancel-add"
+            class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+            data-i18n="common.cancel">Annuler</button>
+          <button id="save-item" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg"
+            data-i18n="common.save">Enregistrer</button>
         </div>
       </div>
     </div>
@@ -400,9 +481,11 @@
   <div id="connector-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen px-4">
       <div class="fixed inset-0 bg-black/50" id="connector-modal-backdrop"></div>
-      <div class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+      <div
+        class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.connector.title">Connecter une plateforme e-commerce</h3>
+          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.connector.title">Connecter
+            une plateforme e-commerce</h3>
           <button id="close-connector-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
             <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
           </button>
@@ -410,45 +493,63 @@
 
         <!-- Platform Selection -->
         <div id="connector-platforms" class="space-y-4">
-          <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.connector.description">Connectez votre boutique pour synchroniser automatiquement vos produits.</p>
+          <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.connector.description">Connectez
+            votre boutique pour synchroniser automatiquement vos produits.</p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="shopify">
-              <img src="/public/images/integrations/shopify.svg" alt="Shopify" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+            <button
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              data-platform="shopify">
+              <img src="/public/images/integrations/shopify.svg" alt="Shopify" class="w-12 h-12"
+                onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">Shopify</span>
                 <p class="text-xs text-slate-500">10.32% part de marché</p>
               </div>
             </button>
-            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="woocommerce">
-              <img src="/public/images/integrations/woocommerce.svg" alt="WooCommerce" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+            <button
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              data-platform="woocommerce">
+              <img src="/public/images/integrations/woocommerce.svg" alt="WooCommerce" class="w-12 h-12"
+                onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">WooCommerce</span>
                 <p class="text-xs text-slate-500">33-39% part de marché</p>
               </div>
             </button>
-            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="square">
-              <img src="/public/images/integrations/square.svg" alt="Square" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+            <button
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              data-platform="square">
+              <img src="/public/images/integrations/square.svg" alt="Square" class="w-12 h-12"
+                onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">Square POS</span>
                 <p class="text-xs text-slate-500">Restaurant & Retail</p>
               </div>
             </button>
-            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="lightspeed">
-              <img src="/public/images/integrations/lightspeed.svg" alt="Lightspeed" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+            <button
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              data-platform="lightspeed">
+              <img src="/public/images/integrations/lightspeed.svg" alt="Lightspeed" class="w-12 h-12"
+                onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">Lightspeed</span>
                 <p class="text-xs text-slate-500">Restaurant K-Series / Retail</p>
               </div>
             </button>
-            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="magento">
-              <img src="/public/images/integrations/magento.svg" alt="Magento" class="w-12 h-12" onerror="this.src='/images/placeholder.svg'">
+            <button
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              data-platform="magento">
+              <img src="/public/images/integrations/magento.svg" alt="Magento" class="w-12 h-12"
+                onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">Magento/Adobe</span>
                 <p class="text-xs text-slate-500">8% part de marché</p>
               </div>
             </button>
-            <button class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors" data-platform="custom">
+            <button
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              data-platform="custom">
               <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
                 <i data-lucide="file-json" class="w-6 h-6 text-slate-500"></i>
               </div>
@@ -475,7 +576,8 @@
             <div id="config-fields"></div>
 
             <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
-              <button type="submit" id="connect-btn" class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center justify-center gap-2">
+              <button type="submit" id="connect-btn"
+                class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center justify-center gap-2">
                 <i data-lucide="plug" class="w-5 h-5"></i>
                 <span data-i18n="catalog.connector.connect">Connecter et synchroniser</span>
               </button>
@@ -777,7 +879,7 @@
             updateCategoriesFromData(data.categories);
           }
         } else {
-          // Empty catalog - no mock data
+          // Empty catalog
           catalogItems = [];
         }
 
@@ -1249,4 +1351,5 @@
     loadCatalog();
   </script>
 </body>
+
 </html>

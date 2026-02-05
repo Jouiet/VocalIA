@@ -28,63 +28,63 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 const AGENT_CARD = {
-    name: "VoiceAgentB2B",
-    version: "2.0.0",
-    description: "Voice AI sales and support assistant for VocalIA platform",
-    provider: {
-        organization: "VocalIA",
-        url: "https://vocalia.ma"
+  name: "VoiceAgentB2B",
+  version: "2.0.0",
+  description: "Voice AI sales and support assistant for VocalIA platform",
+  provider: {
+    organization: "VocalIA",
+    url: "https://vocalia.ma"
+  },
+  capabilities: {
+    streaming: true,
+    pushNotifications: false,
+    stateTransitionHistory: true
+  },
+  skills: [
+    {
+      id: "voice_widget_demo",
+      name: "Voice Widget Demo",
+      description: "Demonstrate browser-based Voice Widget features and use cases",
+      inputModes: ["audio", "text"],
+      outputModes: ["audio", "text"]
     },
-    capabilities: {
-        streaming: true,
-        pushNotifications: false,
-        stateTransitionHistory: true
+    {
+      id: "telephony_demo",
+      name: "Telephony Demo",
+      description: "Explain PSTN AI Bridge capabilities and Twilio integration",
+      inputModes: ["audio", "text"],
+      outputModes: ["audio", "text"]
     },
-    skills: [
-        {
-            id: "voice_widget_demo",
-            name: "Voice Widget Demo",
-            description: "Demonstrate browser-based Voice Widget features and use cases",
-            inputModes: ["audio", "text"],
-            outputModes: ["audio", "text"]
-        },
-        {
-            id: "telephony_demo",
-            name: "Telephony Demo",
-            description: "Explain PSTN AI Bridge capabilities and Twilio integration",
-            inputModes: ["audio", "text"],
-            outputModes: ["audio", "text"]
-        },
-        {
-            id: "persona_guidance",
-            name: "Persona Guidance",
-            description: "Help select from 40 industry personas (dental, property, contractor, etc.)",
-            inputModes: ["audio", "text"],
-            outputModes: ["audio", "text"]
-        },
-        {
-            id: "integration_support",
-            name: "Integration Support",
-            description: "Guide MCP Server setup, CRM/e-commerce integrations",
-            inputModes: ["text"],
-            outputModes: ["application/json"]
-        }
-    ],
-    authentication: {
-        schemes: ["bearer"]
+    {
+      id: "persona_guidance",
+      name: "Persona Guidance",
+      description: "Help select from 40 industry personas (dental, property, contractor, etc.)",
+      inputModes: ["audio", "text"],
+      outputModes: ["audio", "text"]
     },
-    defaultInputModes: ["audio", "text"],
-    defaultOutputModes: ["audio", "text"]
+    {
+      id: "integration_support",
+      name: "Integration Support",
+      description: "Guide MCP Server setup, CRM/e-commerce integrations",
+      inputModes: ["text"],
+      outputModes: ["application/json"]
+    }
+  ],
+  authentication: {
+    schemes: ["bearer"]
+  },
+  defaultInputModes: ["audio", "text"],
+  defaultOutputModes: ["audio", "text"]
 };
 
 // A2A Task States
 const TASK_STATES = {
-    SUBMITTED: 'submitted',
-    WORKING: 'working',
-    INPUT_REQUIRED: 'input-required',
-    COMPLETED: 'completed',
-    FAILED: 'failed',
-    CANCELED: 'canceled'
+  SUBMITTED: 'submitted',
+  WORKING: 'working',
+  INPUT_REQUIRED: 'input-required',
+  COMPLETED: 'completed',
+  FAILED: 'failed',
+  CANCELED: 'canceled'
 };
 
 const fs = require('fs');
@@ -97,6 +97,10 @@ const envPaths = [
   path.join(__dirname, '../../../.env.admin'),
   path.join(process.cwd(), '.env')
 ];
+
+// Session 250.81: Protocol Integrity (A2A Event Bus)
+const eventBus = require('./AgencyEventBus.cjs');
+
 
 for (const envPath of envPaths) {
   if (fs.existsSync(envPath)) {
@@ -227,6 +231,12 @@ class VoiceAgentB2B {
     if (!fs.existsSync(CONVERSATION_LOG_DIR)) {
       fs.mkdirSync(CONVERSATION_LOG_DIR, { recursive: true });
     }
+
+    // Announce agent verified presence
+    eventBus.emit('agent.online', {
+      id: AGENT_CARD.provider.organization + '.' + AGENT_CARD.name,
+      capabilities: AGENT_CARD.capabilities
+    });
   }
 
   _buildSystemPrompt() {
@@ -387,6 +397,15 @@ IMPORTANT RULES
       if (!this.currentSession.automations_discussed.includes(item.id)) {
         this.currentSession.automations_discussed.push(item.id);
       }
+    }
+
+    // A2A Event: Lead Interest Detected (Real-time telemetry)
+    if (this.currentSession.automations_discussed.length > 0) {
+      eventBus.emit('lead.interest', {
+        sessionId: this.currentSession.session_id,
+        interests: this.currentSession.automations_discussed,
+        score: this.currentSession.automations_discussed.length * 10 // Basic scoring
+      });
     }
 
     return {
@@ -560,6 +579,15 @@ IMPORTANT RULES
       automations_discussed: this.currentSession.automations_discussed,
       log_file: logFile
     };
+
+    // A2A Event: Session Completed
+    eventBus.emit('voice.session_end', {
+      sessionId: this.currentSession.session_id,
+      duration: (new Date() - new Date(this.currentSession.started_at)) / 1000,
+      messages: this.currentSession.messages.length,
+      outcome: result.automations_discussed.length > 0 ? 'interested' : 'informational',
+      logPath: logFile
+    });
 
     this.currentSession = null;
     return result;

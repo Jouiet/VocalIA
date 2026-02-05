@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-02-03T13:44:26.172Z",
+  "updated": "2026-02-05T13:28:02.911Z",
   "tenants": {
     "restaurant_test": {
       "source": "custom",

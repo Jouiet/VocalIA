@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inscription - Créer un compte | VocalIA</title>
-  <meta name="description" content="Créez votre compte VocalIA Business et déployez des agents vocaux IA professionnels. Plans Starter/Pro/Enterprise, téléphonie à 0.06€/min. ROI mesurable dès le 1er mois.">
+  <meta name="description"
+    content="Créez votre compte VocalIA Business et déployez des agents vocaux IA professionnels. Plans Starter/Pro/Enterprise, téléphonie à 0.06€/min. ROI mesurable dès le 1er mois.">
   <link rel="canonical" href="https://vocalia.ma/signup" />
 
   <!-- Hreflang -->
@@ -20,13 +21,15 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://vocalia.ma/signup" />
   <meta property="og:title" content="Inscription - Créer un compte | VocalIA" />
-  <meta property="og:description" content="Créez votre compte VocalIA Business et déployez des agents vocaux IA professionnels pour automatiser vos appels." />
+  <meta property="og:description"
+    content="Créez votre compte VocalIA Business et déployez des agents vocaux IA professionnels pour automatiser vos appels." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-image.webp" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:title" content="Inscription | VocalIA" />
-  <meta property="twitter:description" content="Créez votre compte VocalIA Business et déployez des agents vocaux IA professionnels pour automatiser vos appels." />
+  <meta property="twitter:description"
+    content="Créez votre compte VocalIA Business et déployez des agents vocaux IA professionnels pour automatiser vos appels." />
   <meta property="twitter:image" content="https://vocalia.ma/public/images/og-image.webp" />
   <meta property="twitter:site" content="@VocalIA_ma" />
 
@@ -73,25 +76,41 @@
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Security -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <style>
-    .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
-    .gradient-text { background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-    .vocalia-gradient { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+    .glass {
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(12px);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .vocalia-gradient {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    }
 
     /* Plan cards */
     .plan-card {
       transition: all 0.3s ease;
       border: 1px solid rgba(99, 102, 241, 0.2);
     }
-    .plan-card:hover, .plan-card.selected {
+
+    .plan-card:hover,
+    .plan-card.selected {
       border-color: rgba(99, 102, 241, 0.6);
       transform: translateY(-2px);
       box-shadow: 0 20px 40px -12px rgba(99, 102, 241, 0.25);
     }
+
     .plan-card.selected {
       background: rgba(99, 102, 241, 0.1);
     }
@@ -102,6 +121,7 @@
       border: 1px solid rgba(71, 85, 105, 0.5);
       transition: all 0.2s ease;
     }
+
     .form-input:focus {
       border-color: #6366f1;
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
@@ -118,12 +138,13 @@
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  
+
 </head>
 
 <body class="bg-slate-900 text-white font-inter min-h-screen">
   <!-- Skip Link -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
     Aller au contenu principal
   </a>
 
@@ -134,14 +155,19 @@
         <a href="/" class="flex items-center space-x-2">
           <div class="w-10 h-10 rounded-xl vocalia-gradient flex items-center justify-center">
             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
+              </path>
             </svg>
           </div>
           <span class="text-xl font-bold gradient-text"><span data-i18n="signup.vocalia_2">VocalIA</span></span>
         </a>
         <div class="flex items-center gap-4">
-          <span class="text-zinc-400 text-sm hidden sm:block" data-i18n="signup_page.already_account">Déjà un compte ?</span>
-          <a href="/contact" class="px-4 py-2 rounded-lg border border-slate-600 hover:border-slate-500 transition font-medium text-sm" data-i18n="signup_page.login">
+          <span class="text-zinc-400 text-sm hidden sm:block" data-i18n="signup_page.already_account">Déjà un compte
+            ?</span>
+          <a href="/contact"
+            class="px-4 py-2 rounded-lg border border-slate-600 hover:border-slate-500 transition font-medium text-sm"
+            data-i18n="signup_page.login">
             Connexion
           </a>
         </div>
@@ -164,95 +190,129 @@
 
       <!-- Plan Selection -->
       <div class="mb-10">
-        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 text-center" data-i18n="signup_page.select_plan">
+        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 text-center"
+          data-i18n="signup_page.select_plan">
           1. Choisissez votre plan
         </h2>
         <div class="grid md:grid-cols-3 gap-4">
           <!-- Business Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="free" data-action="selectPlan" data-params="free">
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="free" data-action="selectPlan"
+            data-params="free">
             <div class="flex justify-between items-start mb-3">
               <div>
                 <h3 class="font-semibold text-white">Free</h3>
-                <p class="text-2xl font-bold text-white"><span data-i18n="signup_page.free_price">0</span><span class="text-sm font-normal text-zinc-400" id="free-currency"><span data-i18n="signup_page.per_month">/mois</span></span></p>
+                <p class="text-2xl font-bold text-white"><span data-i18n="signup_page.free_price">0</span><span
+                    class="text-sm font-normal text-zinc-400" id="free-currency"><span
+                      data-i18n="signup_page.per_month">/mois</span></span></p>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
                 <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
                 </svg>
               </div>
             </div>
             <ul class="text-sm text-zinc-400 space-y-1">
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.free_f1">Voice Widget illimité</span>
               </li>
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.free_f2">5 langues</span>
               </li>
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
                 <span class="text-zinc-400"><span data-i18n="signup_page.free_f3">Pas de téléphonie</span></span>
               </li>
             </ul>
           </div>
 
           <!-- Starter Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="starter" data-action="selectPlan" data-params="starter">
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="starter"
+            data-action="selectPlan" data-params="starter">
             <div class="flex justify-between items-start mb-3">
               <div>
                 <h3 class="font-semibold text-white"><span data-i18n="signup.starter_1">Starter</span></h3>
-                <p class="text-2xl font-bold text-white"><span id="starter-price">99</span><span class="text-sm font-normal text-zinc-400" id="starter-currency">€/mois</span></p>
+                <p class="text-2xl font-bold text-white"><span id="starter-price">99</span><span
+                    class="text-sm font-normal text-zinc-400" id="starter-currency">€/mois</span></p>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
                 <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
                 </svg>
               </div>
             </div>
             <ul class="text-sm text-zinc-400 space-y-1">
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.starter_f1">100 min téléphonie</span>
               </li>
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.starter_f2">15 personas métier</span>
               </li>
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.starter_f3">Email support</span>
               </li>
             </ul>
           </div>
 
           <!-- Pro Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer relative" data-plan="pro" data-action="selectPlan" data-params="pro">
-            <div class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-500 text-white text-xs font-semibold rounded-full" data-i18n="signup_page.popular">
+          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer relative" data-plan="pro"
+            data-action="selectPlan" data-params="pro">
+            <div
+              class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-500 text-white text-xs font-semibold rounded-full"
+              data-i18n="signup_page.popular">
               Populaire
             </div>
             <div class="flex justify-between items-start mb-3">
               <div>
                 <h3 class="font-semibold text-white">Pro</h3>
-                <p class="text-2xl font-bold text-white"><span id="pro-price">299</span><span class="text-sm font-normal text-zinc-400" id="pro-currency">€/mois</span></p>
+                <p class="text-2xl font-bold text-white"><span id="pro-price">299</span><span
+                    class="text-sm font-normal text-zinc-400" id="pro-currency">€/mois</span></p>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
                 <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
                 </svg>
               </div>
             </div>
             <ul class="text-sm text-zinc-400 space-y-1">
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.pro_f1">500 min téléphonie</span>
               </li>
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.pro_f2">40 personas métier</span>
               </li>
               <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
                 <span data-i18n="signup_page.pro_f3">Intégrations CRM</span>
               </li>
             </ul>
@@ -262,7 +322,8 @@
 
       <!-- Signup Form -->
       <div class="max-w-md mx-auto">
-        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 text-center" data-i18n="signup_page.your_info">
+        <h2 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4 text-center"
+          data-i18n="signup_page.your_info">
           2. Vos informations
         </h2>
         <form id="signupForm" class="space-y-4">
@@ -280,12 +341,12 @@
 
           <!-- Full Name -->
           <div>
-            <label for="fullname" class="block text-sm font-medium text-zinc-300 mb-1.5" data-i18n="signup_page.fullname">
+            <label for="fullname" class="block text-sm font-medium text-zinc-300 mb-1.5"
+              data-i18n="signup_page.fullname">
               Nom complet
             </label>
             <input type="text" id="fullname" name="fullname" required
-              class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-zinc-500"
-              placeholder="Jean Dupont">
+              class="form-input w-full px-4 py-3 rounded-xl text-white placeholder-zinc-500" placeholder="Jean Dupont">
           </div>
 
           <!-- Email -->
@@ -300,7 +361,8 @@
 
           <!-- Password -->
           <div>
-            <label for="password" class="block text-sm font-medium text-zinc-300 mb-1.5" data-i18n="signup_page.password">
+            <label for="password" class="block text-sm font-medium text-zinc-300 mb-1.5"
+              data-i18n="signup_page.password">
               Mot de passe
             </label>
             <input type="password" id="password" name="password" required minlength="8"
@@ -314,9 +376,11 @@
               class="mt-1 w-4 h-4 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-slate-900">
             <label for="terms" class="text-sm text-zinc-400">
               <span data-i18n="signup_page.terms_agree">J'accepte les</span>
-              <a href="/terms" class="text-indigo-400 hover:text-indigo-300"><span data-i18n="footer.links.terms">CGU</span></a>
+              <a href="/terms" class="text-indigo-400 hover:text-indigo-300"><span
+                  data-i18n="footer.links.terms">CGU</span></a>
               <span data-i18n="signup_page.terms_and">et la</span>
-              <a href="/privacy" class="text-indigo-400 hover:text-indigo-300"><span data-i18n="signup_page.privacy">politique de confidentialité</span></a>
+              <a href="/privacy" class="text-indigo-400 hover:text-indigo-300"><span
+                  data-i18n="signup_page.privacy">politique de confidentialité</span></a>
             </label>
           </div>
 
@@ -324,7 +388,7 @@
           <button type="submit"
             class="w-full py-3.5 px-6 rounded-xl vocalia-gradient hover:opacity-90 transition font-semibold flex items-center justify-center gap-2">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
             <span data-i18n="signup_page.create_account">Créer mon compte</span>
           </button>
@@ -339,17 +403,6 @@
             </div>
           </div>
 
-          <!-- Google Sign In -->
-          <button type="button" data-action="signInWithGoogle"
-            class="w-full py-3 px-6 rounded-xl bg-white hover:bg-zinc-100 transition font-medium text-slate-900 flex items-center justify-center gap-3">
-            <svg class="w-5 h-5" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-            <span><span data-i18n="signup_page.google_login">Continuer avec Google</span></span>
-          </button>
         </form>
 
         <!-- Trust Badges -->
@@ -357,18 +410,21 @@
           <div class="flex flex-wrap justify-center gap-4 text-xs text-zinc-400">
             <div class="flex items-center gap-1.5">
               <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               <span><span data-i18n="signup_page.gdpr">RGPD Compliant</span></span>
             </div>
             <div class="flex items-center gap-1.5">
               <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
               <span><span data-i18n="signup.aes256_encryption_0">AES-256 Encryption</span></span>
             </div>
             <div class="flex items-center gap-1.5">
-              <img src="/public/images/logos/stripe-badge.svg" alt="Stripe" class="h-5 w-auto" onerror="this.style.display='none'" loading="lazy" >
+              <img src="/public/images/logos/stripe-badge.svg" alt="Stripe" class="h-5 w-auto"
+                onerror="this.style.display='none'" loading="lazy">
               <span><span data-i18n="signup_page.secure_payment">Paiement sécurisé</span></span>
             </div>
           </div>
@@ -413,7 +469,7 @@
     }
 
     // Form submission
-    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+    document.getElementById('signupForm').addEventListener('submit', async function (e) {
       e.preventDefault();
       const formData = new FormData(this);
       const data = Object.fromEntries(formData);
@@ -429,11 +485,7 @@
       }
     });
 
-    // Google Sign In placeholder
-    function signInWithGoogle() {
-      // OAuth flow would go here
-      alert('Google Sign-In sera disponible prochainement');
-    }
+
 
     // Update prices based on geo
     function updatePrices(geo) {
@@ -467,92 +519,93 @@
       }
     })();
   </script>
-  
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          } else {
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
 
-    // i18n init - Priority: localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        var storedLang = localStorage.getItem('vocalia_lang');
-        if (storedLang) {
-          await VocaliaI18n.setLocale(storedLang);
-        } else if (typeof VocaliaGeo !== 'undefined') {
-          var geo = await VocaliaGeo.getGeo();
-          await VocaliaI18n.setLocale(geo.lang);
-        } else {
-          await VocaliaI18n.setLocale('fr');
-        }
+      // i18n init - Priority: localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          var storedLang = localStorage.getItem('vocalia_lang');
+          if (storedLang) {
+            await VocaliaI18n.setLocale(storedLang);
+          } else if (typeof VocaliaGeo !== 'undefined') {
+            var geo = await VocaliaGeo.getGeo();
+            await VocaliaI18n.setLocale(geo.lang);
+          } else {
+            await VocaliaI18n.setLocale('fr');
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-    }
+      }
 
-    // Re-init on load
-    window.addEventListener('load', initLucide);
-    window.addEventListener('load', initI18n);
-  })();
+      // Re-init on load
+      window.addEventListener('load', initLucide);
+      window.addEventListener('load', initI18n);
+    })();
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
 </body>
+
 </html>

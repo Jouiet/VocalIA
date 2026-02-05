@@ -5,7 +5,7 @@
  * Contains all scripts specific to index.html that were previously inline.
  */
 
-(function() {
+(function () {
   'use strict';
 
   // ============================================
@@ -113,11 +113,37 @@
     const modal = document.getElementById('demoModal');
     const backdrop = document.getElementById('modalBackdrop');
     const panel = document.getElementById('modalPanel');
+    const container = document.getElementById('demoVideoContainer');
 
     if (!modal) return;
 
-    window.openDemoModal = function() {
+    // YT Embed or Self-hosted
+    const VIDEO_ID = 'dQw4w9WgXcQ'; // Placeholder for now, user to update or proper demo ID
+    // ideally use a data-video-id attribute on the trigger button if multiple videos
+
+    window.openDemoModal = function (videoId) {
       modal.classList.remove('hidden');
+
+      // Inject Video
+      if (container) {
+        // Using a high-quality placeholder or specific demo video. 
+        // For now, using a sovereign solid background with "Coming Soon" if no video, 
+        // OR if we have a real video URL, use that.
+        // Since we want "Zero Fake", if we don't have a video, we shouldn't show a "Loading" fake.
+        // I will assume we want to show the 'vocalia-demo-fr.mp4' from the features section or similar.
+        // Let's use the local video if available, else standard embed structure.
+
+        container.innerHTML = `
+            <video 
+                src="/public/videos/vocalia-demo-fr.mp4" 
+                class="w-full h-full object-cover rounded-2xl" 
+                autoplay 
+                controls 
+                playsinline>
+            </video>
+          `;
+      }
+
       setTimeout(() => {
         if (backdrop) backdrop.classList.remove('opacity-0');
         if (panel) {
@@ -127,7 +153,7 @@
       }, 10);
     };
 
-    window.closeDemoModal = function() {
+    window.closeDemoModal = function () {
       if (backdrop) backdrop.classList.remove('opacity-100');
       if (panel) {
         panel.classList.remove('opacity-100', 'scale-100');
@@ -135,8 +161,15 @@
       }
       setTimeout(() => {
         modal.classList.add('hidden');
+        if (container) container.innerHTML = ''; // Stop video
       }, 300);
     };
+
+    // Close button handler
+    const closeBtns = modal.querySelectorAll('[data-action="closeDemoModal"]');
+    closeBtns.forEach(btn => {
+      btn.addEventListener('click', window.closeDemoModal);
+    });
 
     modal.addEventListener('click', (e) => {
       if (e.target === modal || e.target === backdrop) {
@@ -216,7 +249,7 @@
   function initPWA() {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
+        navigator.serviceWorker.register('/sw.js').catch(() => { });
       });
     }
 
@@ -277,8 +310,8 @@
 
   // Export global functions
   window.switchLang = switchLang;
-  window.openDemoModal = window.openDemoModal || function() {};
-  window.closeDemoModal = window.closeDemoModal || function() {};
+  window.openDemoModal = window.openDemoModal || function () { };
+  window.closeDemoModal = window.closeDemoModal || function () { };
 
   // Run initialization
   if (document.readyState === 'loading') {

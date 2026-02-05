@@ -1,0 +1,54 @@
+# Commercialization Marketplaces Audit: AI Voice Agents & Bots
+
+**Date:** 2026-02-05
+**Status:** ULTRATHINK PRECISE (Copyverified Session 250.85)
+
+## Executive Summary
+
+This document identifies rigorous, verified marketplaces for the **Commercialization** of the VocalIA product itself (Voice B2B Agent & Ecommerce Bot), distinct from the technical integration widgets.
+**Target Product:** "AI Voice Telephony Agent" (Not just a chat widget).
+**Primary Strategy:** Position as a **CTI (Computer Telephony Integration)** app in B2B ecosystems, and a **Conversion Tool** in E-commerce integration.
+
+---
+
+## 1. Top-Tier Ecosystems (High Value, High Barrier)
+
+### 1.1 HubSpot App Marketplace (Category: Telephony / CTI)
+
+**Role:** The "Gold Standard" for B2B Sales Agents.
+**Commercialization Model:** "HubSpot Certified App"
+**Status:** ✅ **READY FOR SUBMISSION** (Internal MVP Verified)
+
+- **Integration:** [integrations/hubspot-b2b-crm.cjs](file:///Users/mac/Desktop/VocalIA/integrations/hubspot-b2b-crm.cjs) (v1.2.0)
+- **Features Verified:**
+  - ✅ Contact Management (Create/Update/Search)
+  - ✅ Deal Management (Pipeline/Stages)
+  - ✅ **CTI Calling:** [logCall()](file:///Users/mac/Desktop/VocalIA/integrations/hubspot-b2b-crm.cjs#1064-1133) implemented (Assoc to Contact + Deal)
+  - ✅ **CTI Timeline:** [createTimelineEvent()](file:///Users/mac/Desktop/VocalIA/integrations/hubspot-b2b-crm.cjs#1138-1188) implemented (Custom Events)
+  - ✅ Authentication: OAuth 2.0 / API Key with Multi-Tenant Vault using [SecretVault](file:///Users/mac/Desktop/VocalIA/core/SecretVault.cjs#30-288).
+- **Next Step:** Submit for App Partner Program > Application Review.
+
+### 1.2 Zapier Marketplace
+
+**Role:** Universal Connector.
+**Status:** ✅ **READY FOR SUBMISSION**
+
+- **Endpoint:** `/api/trigger-call` (POST)
+- **Security:** `x-api-key` enforced.
+- **Spec:** Added to [docs/openapi.yaml](file:///Users/mac/Desktop/VocalIA/docs/openapi.yaml).
+- **Logic:** Direct bridge to `voice-telephony-bridge` (Outbound).
+
+---
+
+## 5. Strategic Recommendations
+
+| Platform | Role | Priority | Status |
+| :--- | :--- | :--- | :--- |
+| **Zapier** | Utility / Connector | **Immediate** | ✅ **API Ready** |
+| **HubSpot** | Legitimacy / B2B Sales | **Phase 2** | ✅ **Code Ready** |
+
+**Immediate Action:**
+
+1. **Deploy** [voice-api-resilient.cjs](file:///Users/mac/Desktop/VocalIA/core/voice-api-resilient.cjs) and [hubspot-b2b-crm.cjs](file:///Users/mac/Desktop/VocalIA/integrations/hubspot-b2b-crm.cjs) to Production.
+2. **Submit** Zapier Integration (using [openapi.yaml](file:///Users/mac/Desktop/VocalIA/docs/openapi.yaml) import).
+3. **Submit** HubSpot App (Requires developer account).
