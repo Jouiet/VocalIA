@@ -1,0 +1,23 @@
+{
+  "id": "voice-test_1770286743207",
+  "created_at": "2026-02-05T10:19:03.208Z",
+  "updated_at": "2026-02-05T10:19:03.208Z",
+  "pillars": {
+    "identity": {},
+    "intent": {},
+    "qualification": {
+      "voiceSession": true,
+      "score": 0,
+      "complete": false
+    },
+    "sentiment": [],
+    "history": [],
+    "keyFacts": [],
+    "summary": null
+  },
+  "status": "active",
+  "metadata": {
+    "tokenEstimate": 38,
+    "lastCompaction": null
+  }
+}

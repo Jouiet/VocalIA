@@ -364,13 +364,13 @@
               <button
                 class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700"
                 data-platform="shopify">
-                <img src="/public/images/integrations/shopify.svg" alt="Shopify" class="w-8 h-8">
+                <img src="/public/images/logos/shopify.svg" alt="Shopify" class="w-8 h-8">
                 <span class="font-medium text-slate-700 dark:text-slate-300">Shopify</span>
               </button>
               <button
                 class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700"
                 data-platform="woocommerce">
-                <img src="/public/images/integrations/woocommerce.svg" alt="WooCommerce" class="w-8 h-8">
+                <img src="/public/images/logos/woocommerce.svg" alt="WooCommerce" class="w-8 h-8">
                 <span class="font-medium text-slate-700 dark:text-slate-300">WooCommerce</span>
               </button>
             </div>
@@ -500,7 +500,7 @@
             <button
               class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
               data-platform="shopify">
-              <img src="/public/images/integrations/shopify.svg" alt="Shopify" class="w-12 h-12"
+              <img src="/public/images/logos/shopify.svg" alt="Shopify" class="w-12 h-12"
                 onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">Shopify</span>
@@ -510,7 +510,7 @@
             <button
               class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
               data-platform="woocommerce">
-              <img src="/public/images/integrations/woocommerce.svg" alt="WooCommerce" class="w-12 h-12"
+              <img src="/public/images/logos/woocommerce.svg" alt="WooCommerce" class="w-12 h-12"
                 onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">WooCommerce</span>
@@ -519,28 +519,8 @@
             </button>
             <button
               class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
-              data-platform="square">
-              <img src="/public/images/integrations/square.svg" alt="Square" class="w-12 h-12"
-                onerror="this.src='/images/placeholder.svg'">
-              <div class="text-left">
-                <span class="font-semibold text-slate-900 dark:text-white">Square POS</span>
-                <p class="text-xs text-slate-500">Restaurant & Retail</p>
-              </div>
-            </button>
-            <button
-              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
-              data-platform="lightspeed">
-              <img src="/public/images/integrations/lightspeed.svg" alt="Lightspeed" class="w-12 h-12"
-                onerror="this.src='/images/placeholder.svg'">
-              <div class="text-left">
-                <span class="font-semibold text-slate-900 dark:text-white">Lightspeed</span>
-                <p class="text-xs text-slate-500">Restaurant K-Series / Retail</p>
-              </div>
-            </button>
-            <button
-              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
               data-platform="magento">
-              <img src="/public/images/integrations/magento.svg" alt="Magento" class="w-12 h-12"
+              <img src="/public/images/logos/magento.svg" alt="Magento" class="w-12 h-12"
                 onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
                 <span class="font-semibold text-slate-900 dark:text-white">Magento/Adobe</span>
@@ -1137,7 +1117,7 @@
     const platformConfigs = {
       shopify: {
         name: 'Shopify',
-        icon: '/public/images/integrations/shopify.svg',
+        icon: '/public/images/logos/shopify.svg',
         fields: [
           { name: 'shop', label: 'Nom de boutique', placeholder: 'ma-boutique (sans .myshopify.com)', required: true },
           { name: 'accessToken', label: 'Access Token', placeholder: 'shpat_xxxxxxxxxxxx', required: true, type: 'password' }
@@ -1146,7 +1126,7 @@
       },
       woocommerce: {
         name: 'WooCommerce',
-        icon: '/public/images/integrations/woocommerce.svg',
+        icon: '/public/images/logos/woocommerce.svg',
         fields: [
           { name: 'storeUrl', label: 'URL de la boutique', placeholder: 'https://monsite.com', required: true },
           { name: 'consumerKey', label: 'Consumer Key', placeholder: 'ck_xxxxxxxxxxxx', required: true },
@@ -1156,7 +1136,7 @@
       },
       square: {
         name: 'Square POS',
-        icon: '/public/images/integrations/square.svg',
+        icon: '/public/images/logos/square.svg',
         fields: [
           { name: 'accessToken', label: 'Access Token', placeholder: 'sq0atp-xxxxxxxxxxxx', required: true, type: 'password' },
           { name: 'locationId', label: 'Location ID (optionnel)', placeholder: 'LXXXXXXXXXXXXXXX', required: false }
@@ -1165,7 +1145,7 @@
       },
       lightspeed: {
         name: 'Lightspeed',
-        icon: '/public/images/integrations/lightspeed.svg',
+        icon: '/public/images/logos/lightspeed.svg',
         fields: [
           { name: 'accessToken', label: 'Access Token', placeholder: 'Bearer token', required: true, type: 'password' },
           { name: 'series', label: 'Type', placeholder: 'K (Restaurant) ou X (Retail)', required: false, defaultValue: 'K' },
@@ -1175,7 +1155,7 @@
       },
       magento: {
         name: 'Magento/Adobe Commerce',
-        icon: '/public/images/integrations/magento.svg',
+        icon: '/public/images/logos/magento.svg',
         fields: [
           { name: 'baseUrl', label: 'URL du site', placeholder: 'https://magento.example.com', required: true },
           { name: 'accessToken', label: 'Access Token', placeholder: 'Bearer token', required: true, type: 'password' }
