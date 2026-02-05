@@ -99,7 +99,8 @@ describe('Sensor Modules', () => {
 
 describe('Widget Modules', () => {
   test('voice-widget-templates loads', () => {
-    const mod = require('../widget/voice-widget-templates.cjs');
+    // Session 250.87: Template file is in scripts/, not widget/
+    const mod = require('../scripts/voice-widget-templates.cjs');
     assert.ok(mod, 'Module should export something');
   });
 });

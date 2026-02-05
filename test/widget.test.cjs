@@ -15,9 +15,9 @@ const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
 
-// Paths
-const WIDGET_PATH = path.join(__dirname, '../widget/voice-widget-core.js');
-const TEMPLATE_PATH = path.join(__dirname, '../widget/voice-widget-templates.cjs');
+// Paths - Updated Session 250.87
+const WIDGET_PATH = path.join(__dirname, '../widget/voice-widget-v3.js');
+const TEMPLATE_PATH = path.join(__dirname, '../scripts/voice-widget-templates.cjs'); // In scripts/ not widget/
 const LANG_PATH = path.join(__dirname, '../website/voice-assistant/lang');
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -25,15 +25,15 @@ const LANG_PATH = path.join(__dirname, '../website/voice-assistant/lang');
 // ─────────────────────────────────────────────────────────────────────────────
 
 describe('Voice Widget File Structure', () => {
-  it('voice-widget-core.js exists', () => {
-    assert.ok(fs.existsSync(WIDGET_PATH), 'voice-widget-core.js should exist');
+  it('voice-widget-v3.js exists', () => {
+    assert.ok(fs.existsSync(WIDGET_PATH), 'voice-widget-v3.js should exist');
   });
 
   it('voice-widget-templates.cjs exists', () => {
     assert.ok(fs.existsSync(TEMPLATE_PATH), 'voice-widget-templates.cjs should exist');
   });
 
-  it('voice-widget-core.js is substantial (>500 lines)', () => {
+  it('voice-widget-v3.js is substantial (>500 lines)', () => {
     const content = fs.readFileSync(WIDGET_PATH, 'utf8');
     const lines = content.split('\n').length;
     assert.ok(lines > 500, `Widget core should have >500 lines, got ${lines}`);

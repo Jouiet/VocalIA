@@ -40,10 +40,11 @@ describe('ServiceKnowledgeBase Instantiation', () => {
     assert.strictEqual(typeof kb.search, 'function', 'Should have search method');
   });
 
-  test('Instance has searchHybrid method', () => {
+  test('Instance has asyncSearchHybrid method', () => {
+    // Updated Session 250.87: method is asyncSearchHybrid (async)
     const { ServiceKnowledgeBase } = require('../core/knowledge-base-services.cjs');
     const kb = new ServiceKnowledgeBase();
-    assert.strictEqual(typeof kb.searchHybrid, 'function', 'Should have searchHybrid method');
+    assert.strictEqual(typeof kb.asyncSearchHybrid, 'function', 'Should have asyncSearchHybrid method');
   });
 
   test('Instance has build method', () => {
@@ -290,11 +291,12 @@ describe('ServiceKnowledgeBase Search', () => {
     assert.strictEqual(typeof kb.search, 'function', 'search should be a function');
   });
 
-  test('searchHybrid method exists and is function', () => {
+  test('asyncSearchHybrid method exists and is function', () => {
+    // Updated Session 250.87: method is asyncSearchHybrid (async)
     const { ServiceKnowledgeBase } = require('../core/knowledge-base-services.cjs');
     const kb = new ServiceKnowledgeBase();
 
     // Just verify method exists (API calls require credentials)
-    assert.strictEqual(typeof kb.searchHybrid, 'function', 'searchHybrid should be a function');
+    assert.strictEqual(typeof kb.asyncSearchHybrid, 'function', 'asyncSearchHybrid should be a function');
   });
 });

@@ -125,9 +125,10 @@ describe('Voice API Multilingual Support', () => {
     assert.ok(content.includes('function getSystemPromptForLanguage'), 'Should have getSystemPromptForLanguage function');
   });
 
-  test('Has local response function', () => {
+  test('Has resilient response function', () => {
+    // Session 250.87: getLocalResponse removed (Zero Regex Policy), replaced by getResilisentResponse
     const content = fs.readFileSync(VOICE_API_PATH, 'utf8');
-    assert.ok(content.includes('function getLocalResponse'), 'Should have getLocalResponse function');
+    assert.ok(content.includes('async function getResilisentResponse'), 'Should have getResilisentResponse function');
   });
 
   test('Supports 5 languages', () => {
@@ -212,7 +213,8 @@ describe('Voice API Utility Functions', () => {
   });
 
   test('Has environment loader', () => {
+    // Session 250.87: Uses dotenv.config() directly, not a loadEnv function
     const content = fs.readFileSync(VOICE_API_PATH, 'utf8');
-    assert.ok(content.includes('function loadEnv'), 'Should have loadEnv function');
+    assert.ok(content.includes("require('dotenv').config()"), 'Should load dotenv config');
   });
 });
