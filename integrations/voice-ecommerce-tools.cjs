@@ -21,28 +21,25 @@ if (fs.existsSync(envPath)) {
 }
 
 class VoiceEcommerceTools {
-    constructor() {
-        this.shopifyToken = ENV.SHOPIFY_ACCESS_TOKEN;
-        this.shopifyShop = ENV.SHOPIFY_SHOP_NAME; // e.g., 'your-store'
-        this.klaviyoKey = ENV.KLAVIYO_API_KEY;
-    }
-
     /**
      * Get order status for a customer
+     * @param {string} email - Customer email
+     * @param {object} config - Tenant specific config { shopifyToken, shopifyShop }
      */
-    async getOrderStatus(email, orderId = null) {
-        if (!this.shopifyToken || !this.shopifyShop) {
-            return { success: false, error: "Shopify not configured" };
+    async getOrderStatus(email, config = {}) {
+        const token = config.shopifyToken || ENV.SHOPIFY_ACCESS_TOKEN;
+        const shop = config.shopifyShop || ENV.SHOPIFY_SHOP_NAME;
+
+        if (!token || !shop) {
+            return { success: false, error: "Shopify not configured for this tenant" };
         }
 
         try {
-            console.log(`[Voice-Tools] Fetching order status for ${email}`);
-            // Simple fetch to Shopify GraphQL/REST for demonstration
-            // In production, use the shopify-admin MCP or a direct SDK call
-            const url = `https://${this.shopifyShop}.myshopify.com/admin/api/2026-01/orders.json?email=${encodeURIComponent(email)}&limit=1`;
+            console.log(`[Voice-Tools] Fetching order status for ${email} on store ${shop}`);
+            const url = `https://${shop}.myshopify.com/admin/api/2026-01/orders.json?email=${encodeURIComponent(email)}&limit=1`;
             const response = await fetch(url, {
                 headers: {
-                    'X-Shopify-Access-Token': this.shopifyToken,
+                    'X-Shopify-Access-Token': token,
                     'Content-Type': 'application/json'
                 }
             });
@@ -70,18 +67,23 @@ class VoiceEcommerceTools {
 
     /**
      * Check product availability
+     * @param {string} query - Product search query
+     * @param {object} config - Tenant specific config { shopifyToken, shopifyShop }
      */
-    async checkProductStock(query) {
-        if (!this.shopifyToken || !this.shopifyShop) {
-            return { success: false, error: "Shopify not configured" };
+    async checkProductStock(query, config = {}) {
+        const token = config.shopifyToken || ENV.SHOPIFY_ACCESS_TOKEN;
+        const shop = config.shopifyShop || ENV.SHOPIFY_SHOP_NAME;
+
+        if (!token || !shop) {
+            return { success: false, error: "Shopify not configured for this tenant" };
         }
 
         try {
-            console.log(`[Voice-Tools] Checking stock for: ${query}`);
-            const url = `https://${this.shopifyShop}.myshopify.com/admin/api/2026-01/products.json?title=${encodeURIComponent(query)}&limit=3`;
+            console.log(`[Voice-Tools] Checking stock for: ${query} on ${shop}`);
+            const url = `https://${shop}.myshopify.com/admin/api/2026-01/products.json?title=${encodeURIComponent(query)}&limit=3`;
             const response = await fetch(url, {
                 headers: {
-                    'X-Shopify-Access-Token': this.shopifyToken,
+                    'X-Shopify-Access-Token': token,
                     'Content-Type': 'application/json'
                 }
             });
@@ -109,17 +111,21 @@ class VoiceEcommerceTools {
 
     /**
      * Get Klaviyo customer profile (Loyalty/Tiers)
+     * @param {string} email - Customer email
+     * @param {object} config - Tenant specific config { klaviyoKey }
      */
-    async getCustomerProfile(email) {
-        if (!this.klaviyoKey) {
-            return { success: false, error: "Klaviyo not configured" };
+    async getCustomerProfile(email, config = {}) {
+        const key = config.klaviyoKey || ENV.KLAVIYO_API_KEY;
+
+        if (!key) {
+            return { success: false, error: "Klaviyo not configured for this tenant" };
         }
 
         try {
             console.log(`[Voice-Tools] Fetching Klaviyo profile: ${email}`);
             const response = await fetch(`https://a.klaviyo.com/api/profiles/?filter=equals(email,"${encodeURIComponent(email)}")`, {
                 headers: {
-                    'Authorization': `Klaviyo-API-Key ${this.klaviyoKey}`,
+                    'Authorization': `Klaviyo-API-Key ${key}`,
                     'accept': 'application/json',
                     'revision': '2026-01-15'
                 }

@@ -2719,6 +2719,7 @@
                     message: userMessage,
                     language: state.currentLang,
                     sessionId: state.sessionId || `widget_${Date.now()}`,
+                    widget_type: 'ECOM', // Enforce E-commerce Persona
                     history: state.conversationHistory.slice(-10).map(m => ({
                         role: m.role,
                         content: m.content

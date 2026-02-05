@@ -2,11 +2,11 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 2.12 | **Date:** 03/02/2026 | **Session:** 250.76
-> **Approche:** Bottom-Up Factuelle | **Méthodologie:** Recherche Web + Analyse Code Source
-> **Status:** ✅ ALL PHASES COMPLETE | MCP Server v0.8.0 (**182 tools**) | 28 Integrations | Security 100/100
-> **Session 250.76**: E-commerce Widget Phase 1 - Product Cards, Voice/Text tracking, UCP/MCP integration
-> **Session 250.64**: Tenant voice preferences (voice_language, voice_gender) → end-to-end telephony integration
+> **Version:** 2.15 | **Date:** 05/02/2026 | **Session:** 250.85
+> **Approche:** Bottom-Up Factuelle | **Méthodologie:** Forensic Audit & Code Refactor
+> **Status:** ✅ PERSONA-WIDGET SEGMENTATION VERIFIED | MCP Server v0.8.1 (**182 tools**) | Security 100/100
+> **Products:** 4 (B2B Widget, B2C Widget, Ecom Widget, Telephony) | CATALOG_TYPES: 6 | PERSONAS: 40
+> **Session 250.85**: Core API Hardening Complete - CORS dynamic, "Free Tier" purged, per-tenant AI keys enabled.
 
 ---
 
@@ -21,6 +21,7 @@
 | Integrations multi-tenant | ✅ DONE | HubSpot, Calendar, Slack → TenantContext |
 
 **Vérification empirique:**
+
 ```bash
 ls core/SecretVault.cjs core/OAuthGateway.cjs core/WebhookRouter.cjs  # ✅ EXISTS
 ls clients/  # agency_internal, client_demo, _template
@@ -117,7 +118,7 @@ grep -r "tenantId|client_id" automations/ --include="*.cjs"
 |:----|:------------|:-------|
 | Pas de `/clients/` | `.env.example` ligne 10 mentionne mais n'existe pas | Aucune isolation |
 | Credentials en dur | `process.env.SHOPIFY_STORE` = UN seul store | Pas scalable |
-| CORS hardcodé | `voice-widget-core.js:15` → `localhost:3004` | Pas déployable |
+| CORS hardcodé | `voice-widget-v3.js:15` → `localhost:3004` | Pas déployable |
 | OAuth absent | Grep "OAuth" → 0 résultats dans core | Manuel obligatoire |
 
 ### 2.3 Scripts Setup Existants
@@ -151,7 +152,11 @@ grep -r "tenantId|client_id" automations/ --include="*.cjs"
 | Doppler | SaaS | $18/user/mo | ✅ | [Doppler](https://www.doppler.com/) |
 | AWS Secrets Manager | Cloud | $0.40/secret/mo | ✅ | AWS |
 
-**Recommandation VocalIA:** Infisical (MIT License, 50+ intégrations, SOC2/HIPAA compliant)
+**Recommandation VocalIA:** Infisical (MIT License, 50+ intégrations, SOC2/HIPAA compliant).
+**Hybrid Mode:**
+
+- **Managed:** Agency keys (in vault/env) for standard clients.
+- **BYOK:** Tenant keys (in vault/project) for Enterprise clients (Twilio, Slack, etc.).
 
 ### 3.3 Shopify OAuth SOTA (2026)
 
@@ -610,7 +615,7 @@ async function handler(args) {
 | Widget config system | `landing-page-hostinger/voice-assistant/config.js` | 100 |
 | Dynamic CORS | `core/voice-api-resilient.cjs` | 50 |
 | Embed code generator | `dashboard/src/components/voice/EmbedGenerator.tsx` | 150 |
-| Widget customization | `landing-page-hostinger/voice-assistant/voice-widget-core.js` | 100 |
+| Widget customization | `landing-page-hostinger/voice-assistant/voice-widget-v3.js` | 100 |
 
 **Widget Configuration:**
 

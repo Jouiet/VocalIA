@@ -9,7 +9,7 @@ const { VoicePersonaInjector, PERSONAS, VOICE_CONFIG } = require('../personas/vo
 console.log('=== VoicePersonaInjector Test ===\n');
 
 // Test 1: getPersona returns valid persona
-const persona = VoicePersonaInjector.getPersona(null, null, 'test_client');
+const persona = VoicePersonaInjector.getPersona(null, null, 'test_client', 'B2C');
 console.log('1. getPersona():');
 console.log('   - ID:', persona.id);
 console.log('   - Name:', persona.name);

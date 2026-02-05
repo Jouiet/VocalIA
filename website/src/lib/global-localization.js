@@ -51,9 +51,9 @@ const MARKET_RULES = {
 // Pricing strategies (Free Widget, Telephony Pricing)
 // Telephony: Base price for Starter/Pro plans
 const PRICING_TABLE = {
-    MAD: { starter: 499, pro: 1499, overage: 0.60 },
-    EUR: { starter: 49, pro: 149, overage: 0.06 },
-    USD: { starter: 49, pro: 149, overage: 0.06 }
+    MAD: { b2b: 490, b2c: 790, ecom: 1490, telephony: 1990, overage: 0.60 },
+    EUR: { b2b: 49, b2c: 79, ecom: 149, telephony: 199, overage: 0.06 },
+    USD: { b2b: 49, b2c: 79, ecom: 149, telephony: 199, overage: 0.06 }
 };
 
 class GlobalLocalization {

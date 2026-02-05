@@ -358,6 +358,7 @@
                     message: text,
                     language: state.currentLang,
                     sessionId: state.sessionId,
+                    widget_type: 'B2B',
                     history: state.conversationHistory.slice(-6)
                 })
             });

@@ -626,77 +626,98 @@ class ServiceKnowledgeBase {
   /**
    * HYBRID SEARCH Frontier (v3.0)
    * Combines BM25 (Sparse) and Dense Embeddings (Cosine Similarity)
-   * Logic: Reciprocal Rank Fusion (RRF)
+   * Logic: Reciprocal Rank Fusion (RRF) with Strict Tenant Isolation
    */
-  async searchHybrid(query, limit = 5, options = {}) {
+  async asyncSearchHybrid(query, limit = 5, options = {}) {
     if (!this.isLoaded) this.load();
     const tenantId = options.tenantId || 'agency_internal';
+    const language = options.language || 'fr';
 
-    // 1. Sparse Search (BM25)
-    // Filter by tenantId or global
-    const filteredChunks = this.chunks.filter(c => c.tenant_id === tenantId || c.tenant_id === 'agency_internal');
+    console.log(`[RAG] Hybrid search for tenant: ${tenantId}, language: ${language}`);
 
-    // We update the index temporarily for this search or just filter results
-    // For efficiency in this TF-IDF impl, we filter results after search but better to filter before if index was large
-    const sparseResults = this.index.search(query, limit * 3).filter(res =>
-      res.tenant_id === tenantId || res.tenant_id === 'agency_internal'
+    // 1. Strict Tenant Isolation - Filter Chunks BEFORE Search
+    const tenantChunks = this.chunks.filter(c =>
+      c.tenant_id === tenantId ||
+      c.tenant_id === 'agency_internal' ||
+      c.tenant_id === 'universal'
     );
 
-    // 2. Dense Search (Embeddings)
+    // 2. Sparse Search (BM25)
+    // We create a temporary index for the tenant's chunks to ensure absolute isolation and speed
+    const tenantIndex = new BM25Index();
+    tenantIndex.build(tenantChunks);
+    const sparseResults = tenantIndex.search(query, limit * 2);
+
+    // 3. Dense Search (Embeddings)
     const queryVector = await EmbeddingService.getQueryEmbedding(query);
     const denseResults = [];
 
     if (queryVector) {
-      for (const chunk of filteredChunks) {
-        const chunkVector = EmbeddingService.cache[chunk.id];
+      for (const chunk of tenantChunks) {
+        // Retrieve or generate embedding for chunk
+        const chunkVector = await EmbeddingService.getEmbedding(chunk.text);
         if (chunkVector) {
           const similarity = EmbeddingService.cosineSimilarity(queryVector, chunkVector);
-          denseResults.push({ ...chunk, similarity });
+          // Threshold for semantic relevance (Session 250.81)
+          if (similarity > 0.65) {
+            denseResults.push({ ...chunk, similarity });
+          }
         }
       }
     }
     denseResults.sort((a, b) => b.similarity - a.similarity);
-    // 3. Reciprocal Rank Fusion (RRF)
-    const rrfScores = new Map();
-    const K = 60; // Smoothing constant (tuned for 100% precision)
 
-    // 3. Re-rank (RRF or simple boost)
+    // 4. Reciprocal Rank Fusion (RRF)
     const combined = new Map();
+    const K = 60; // Smoothing constant
 
     sparseResults.forEach((res, i) => {
-      const score = 1 / (i + 60);
-      combined.set(res.id, { ...res, score, sparseScore: res.score });
+      const score = 1 / (i + K);
+      combined.set(res.id, {
+        ...res,
+        rrfScore: score,
+        sparseRank: i + 1,
+        sparseScore: res.score
+      });
     });
 
     denseResults.forEach((res, i) => {
-      const score = 1 / (i + 60);
+      const score = 1 / (i + K);
       if (combined.has(res.id)) {
-        combined.get(res.id).score += score;
-        combined.get(res.id).denseScore = res.similarity;
+        const item = combined.get(res.id);
+        item.rrfScore += score;
+        item.denseRank = i + 1;
+        item.denseScore = res.similarity;
       } else {
-        combined.set(res.id, { ...res, score, denseScore: res.similarity });
+        combined.set(res.id, {
+          ...res,
+          rrfScore: score,
+          denseRank: i + 1,
+          denseScore: res.similarity
+        });
       }
     });
 
-    // 4. Policy Boost (Phase 15 Precision)
-    // If a chunk is a policy and matches a keyword exactly or query contains the key, boost significantly
+    // 5. Policy & Authority Boost (Session 250.82)
     const lowerQuery = query.toLowerCase();
     combined.forEach(res => {
+      // Direct Policy Match
       if (res.id.startsWith('policy_')) {
-        // Check if query hits keywords
-        const policyKey = res.id.replace('policy_', '');
-        if (lowerQuery.includes(policyKey.replace(/_/g, ' '))) {
-          res.score += 100; // Nuclear boost
+        const policyKey = res.id.replace('policy_', '').replace(/_/g, ' ');
+        if (lowerQuery.includes(policyKey)) {
+          res.rrfScore += 1.0; // Significant boost for direct policy hits
+          console.log(`[RAG] Policy boost applied: ${policyKey}`);
         }
-        // Check content keywords
-        if (res.text && lowerQuery.split(' ').some(word => res.text.toLowerCase().includes(word))) {
-          res.score += 10; // High precision boost
-        }
+      }
+
+      // Intent Match
+      if (res.strategic_intent && lowerQuery.includes(res.strategic_intent.toLowerCase().substring(0, 10))) {
+        res.rrfScore += 0.1;
       }
     });
 
     return Array.from(combined.values())
-      .sort((a, b) => b.score - a.score)
+      .sort((a, b) => b.rrfScore - a.rrfScore)
       .slice(0, limit);
   }
 

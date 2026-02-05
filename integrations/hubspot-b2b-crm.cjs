@@ -18,8 +18,8 @@
  * NOTE: Workflows API requires Pro tier ($890/mo) - NOT INCLUDED
  * This script uses FREE tier APIs only
  *
- * @version 1.1.0
- * @date 2026-01-02
+ * @version 1.2.0
+ * @date 2026-02-05
  */
 
 require('dotenv').config();
@@ -1058,6 +1058,135 @@ class HubSpotB2BCRM {
   }
 
   // ==========================================================================
+  // CTI TELEPHONY (CALL LOGGING) - Critical for App Marketplace
+  // ==========================================================================
+
+  /**
+   * Log a call to HubSpot (CTI Standard)
+   * @param {Object} callData
+   * @param {string} callData.contactId - Associated Contact ID
+   * @param {string} callData.dealId - Associated Deal ID (optional)
+   * @param {string} callData.status - 'COMPLETED', 'BUSY', 'NO_ANSWER', 'FAILED'
+   * @param {number} callData.duration - Duration in milliseconds
+   * @param {string} callData.recordingUrl - URL to recording (optional)
+   * @param {string} callData.fromNumber - From phone number
+   * @param {string} callData.toNumber - To phone number
+   * @param {string} callData.body - Notes/Transcript summary
+   */
+  async logCall(callData) {
+    if (this.testMode) {
+      console.log('🧪 TEST MODE: Would log call:', callData);
+      return { id: 'test-call-id', properties: callData };
+    }
+
+    await this.rateLimit();
+
+    const properties = {
+      hs_timestamp: new Date().toISOString(),
+      hs_call_title: `Voice AI Call - ${new Date().toLocaleDateString()}`,
+      hs_call_body: callData.body || 'No notes',
+      hs_call_duration: Math.round((callData.duration || 0)).toString(), // milliseconds
+      hs_call_from_number: callData.fromNumber,
+      hs_call_to_number: callData.toNumber,
+      hs_call_recording_url: callData.recordingUrl,
+      hs_call_status: callData.status || 'COMPLETED',
+      hs_call_direction: 'OUTBOUND'
+    };
+
+    try {
+      // 1. Create Call Object
+      const call = await this.client.crm.objects.calls.basicApi.create({
+        properties
+      });
+      console.log(`✅ Logged call (ID: ${call.id})`);
+
+      // 2. Associate with Contact
+      if (callData.contactId) {
+        await this.client.crm.associations.v4.basicApi.create(
+          'calls',
+          call.id,
+          'contacts',
+          callData.contactId,
+          [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 194 }] // 194 = Call to Contact
+        );
+        console.log(`🔗 Associated call ${call.id} to contact ${callData.contactId}`);
+      }
+
+      // 3. Associate with Deal
+      if (callData.dealId) {
+        await this.client.crm.associations.v4.basicApi.create(
+          'calls',
+          call.id,
+          'deals',
+          callData.dealId,
+          [{ associationCategory: 'HUBSPOT_DEFINED', associationTypeId: 206 }] // 206 = Call to Deal
+        );
+        console.log(`🔗 Associated call ${call.id} to deal ${callData.dealId}`);
+      }
+
+      return call;
+    } catch (error) {
+      console.error('❌ Failed to log call:', error.message);
+      throw error;
+    }
+  }
+
+  // ==========================================================================
+  // GEO-SEGMENTATION
+  // ==========================================================================
+
+  /**
+   * Create a Timeline Event (CTI)
+   * @param {Object} eventData
+   * @param {string} eventData.eventTemplateId - The ID of the custom event template
+   * @param {string} eventData.contactId - The contact ID to associate with
+   * @param {Object} eventData.tokens - Key-value pairs for the event tokens
+   * @param {string} eventData.email - Optional email if contactId is not known (will lookup)
+   */
+  async createTimelineEvent(eventData) {
+    if (this.testMode) {
+      console.log('🧪 TEST MODE: Would create timeline event:', eventData);
+      return { id: 'test-event-id', ...eventData };
+    }
+
+    await this.rateLimit();
+
+    try {
+      let objectId = eventData.contactId;
+
+      // If no ID but email, find contact
+      if (!objectId && eventData.email) {
+        const contacts = await this.searchContacts({ email: eventData.email, limit: 1 });
+        if (contacts.length > 0) {
+          objectId = contacts[0].id;
+        } else {
+          throw new Error(`Contact not found for email: ${eventData.email}`);
+        }
+      }
+
+      if (!objectId) {
+        throw new Error('Contact ID or Email is required for Timeline Event');
+      }
+
+      const timelineEvent = {
+        eventTemplateId: eventData.eventTemplateId,
+        objectId: objectId,
+        tokens: eventData.tokens || {},
+        extraData: eventData.extraData || {}
+      };
+
+      const response = await this.client.crm.timeline.eventsApi.create(timelineEvent);
+      console.log(`✅ Created timeline event (ID: ${response.id}) for contact ${objectId}`);
+      return response;
+
+    } catch (error) {
+      console.error('❌ Failed to create timeline event:', error.message);
+      // Don't throw if it's just a timeline event (non-critical)
+      return { error: error.message };
+    }
+  }
+
+  // ==========================================================================
   // GEO-SEGMENTATION
   // ==========================================================================
 
@@ -1099,7 +1228,7 @@ class HubSpotB2BCRM {
    * Test API connectivity
    */
   async healthCheck() {
-    console.log('\n🔍 HubSpot B2B CRM Health Check v1.1.0');
+    console.log('\n🔍 HubSpot B2B CRM Health Check v1.2.0');
     console.log('=======================================');
 
     // Show configuration
@@ -1116,7 +1245,7 @@ class HubSpotB2BCRM {
       console.log('✅ Exponential backoff: Ready');
       console.log('✅ Rate limit monitoring: Ready');
       console.log('ℹ️ Set HUBSPOT_API_KEY or HUBSPOT_ACCESS_TOKEN to test API');
-      return { status: 'test-mode', message: 'No API key configured', version: '1.1.0' };
+      return { status: 'test-mode', message: 'No API key configured', version: '1.2.0' };
     }
 
     try {
@@ -1147,15 +1276,15 @@ class HubSpotB2BCRM {
       console.log('✅ Rate limit monitoring: Active');
       return {
         status: 'healthy',
-        version: '1.1.0',
+        version: '1.2.0',
         contacts: contacts.results?.length || 0,
         companies: companies.results?.length || 0,
         deals: deals.results?.length || 0,
-        features: ['batch', 'backoff', 'rate-limit-monitoring']
+        features: ['batch', 'backoff', 'rate-limit-monitoring', 'timeline-events']
       };
     } catch (error) {
       console.error(`\n❌ Health check failed: ${error.message}`);
-      return { status: 'error', message: error.message, version: '1.1.0' };
+      return { status: 'error', message: error.message, version: '1.2.0' };
     }
   }
 }
@@ -1219,8 +1348,14 @@ if (require.main === module) {
       });
     } else if (args.includes('--list-contacts')) {
       await crm.getAllContacts(10);
+    } else if (args.includes('--test-timeline')) {
+      await crm.createTimelineEvent({
+        email: 'test@example.com',
+        eventTemplateId: '1234567',
+        tokens: { type: 'voice_call', status: 'completed' }
+      });
     } else {
-      console.log('HubSpot B2B CRM Integration v1.1.0\nUsage: node hubspot-b2b-crm.cjs [options]');
+      console.log('HubSpot B2B CRM Integration v1.2.0\nUsage: node hubspot-b2b-crm.cjs [options]');
     }
   })().catch(console.error);
 }

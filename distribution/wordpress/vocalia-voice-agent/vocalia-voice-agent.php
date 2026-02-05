@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants
-define( 'VOCALIA_VERSION', '1.0.0' );
+define( 'VOCALIA_VERSION', '1.1.1' );
 define( 'VOCALIA_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VOCALIA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -29,7 +29,7 @@ function vocalia_register_settings() {
 		'default' => 'bottom-right'
 	]);
     register_setting( 'vocalia_options_group', 'vocalia_mode', [
-        'default' => 'ecommerce' // or 'b2b'
+        'default' => 'b2c' // b2c, b2b, ecommerce, telephony
     ]);
     register_setting( 'vocalia_options_group', 'vocalia_api_url', [
         'default' => 'https://api.vocalia.ma'
@@ -89,8 +89,10 @@ function vocalia_options_page() {
                         <th scope="row">Agent Mode</th>
                         <td>
                             <select name="vocalia_mode">
+                                <option value="b2c" <?php selected( get_option( 'vocalia_mode' ), 'b2c' ); ?>>B2C (Support, FAQ, Personal Assistant)</option>
+                                <option value="b2b" <?php selected( get_option( 'vocalia_mode' ), 'b2b' ); ?>>B2B / Lead Gen (Booking, Forms)</option>
                                 <option value="ecommerce" <?php selected( get_option( 'vocalia_mode' ), 'ecommerce' ); ?>>E-Commerce (Sales, Cart, Catalog)</option>
-                                <option value="b2b" <?php selected( get_option( 'vocalia_mode' ), 'b2b' ); ?>>B2B / Lead Gen (Booking, Support)</option>
+                                <option value="telephony" <?php selected( get_option( 'vocalia_mode' ), 'telephony' ); ?>>Telephony (PSTN, Outbound/Inbound)</option>
                             </select>
                             <p class="description">Select the mode that matches your subscription.</p>
                         </td>
@@ -116,13 +118,13 @@ function vocalia_enqueue_widget() {
 
     // Determine config based on saved settings
     $mode = get_option('vocalia_mode', 'ecommerce');
-    $is_ecommerce = ($mode === 'ecommerce');
-    $script_name = $is_ecommerce ? 'voice-widget-ecommerce.js' : 'voice-widget-b2b.js';
+    // Unified V3 Kernel Handles all modes (B2B, B2C, Ecommerce)
+    $script_name = 'voice-widget-v3.js';
 
     // API Base URL
     $api_base = get_option('vocalia_api_url', 'https://api.vocalia.ma');
 
-	// Enqueue the script from CDN/API if possible, fallback to local
+	// Enqueue the script from CDN/API
     $widget_url = $api_base . '/voice-assistant/' . $script_name;
     
 	wp_enqueue_script( 

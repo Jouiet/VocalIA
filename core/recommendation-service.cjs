@@ -139,22 +139,42 @@ class AssociationRulesEngine {
       return { learned: 0 };
     }
 
-    // Count individual items and pairs
+    // Count individual items and pairs with MENA-specific filtering
     for (const order of orders) {
+      // SOTA: COD Resilience - Filter out cancelled or refunded orders (high in MENA market)
+      const isCancelled = ['cancelled', 'voided', 'refunded', 'returned'].includes(order.status?.toLowerCase() || order.fulfillment_status?.toLowerCase());
+      if (isCancelled) continue;
+
       const items = (order.items || order.line_items || [])
-        .map(i => i.product_id || i.productId || i.sku)
-        .filter(Boolean);
+        .map(i => ({
+          id: i.product_id || i.productId || i.sku,
+          category: i.category || i.type || 'general'
+        }))
+        .filter(i => i.id);
 
       // Count individual items
       for (const item of items) {
-        itemCounts[item] = (itemCounts[item] || 0) + 1;
+        itemCounts[item.id] = (itemCounts[item.id] || 0) + 1;
       }
 
       // Count pairs (combinations of 2)
       for (let i = 0; i < items.length; i++) {
         for (let j = i + 1; j < items.length; j++) {
-          const pair = [items[i], items[j]].sort().join('|');
-          pairCounts[pair] = (pairCounts[pair] || 0) + 1;
+          const itemA = items[i];
+          const itemB = items[j];
+          const pair = [itemA.id, itemB.id].sort().join('|');
+
+          // SOTA: Category-Aware Bundling ("Bakata" logic)
+          // Boost support for complementary categories (e.g. Phone + Protection)
+          let weight = 1;
+          const catA = itemA.category.toLowerCase();
+          const catB = itemB.category.toLowerCase();
+
+          if (this._isComplementary(catA, catB)) {
+            weight = 1.5; // 50% boost for logical bundles
+          }
+
+          pairCounts[pair] = (pairCounts[pair] || 0) + weight;
         }
       }
     }
@@ -181,8 +201,9 @@ class AssociationRulesEngine {
         pairs[itemA].push({
           productId: itemB,
           support,
-          confidence: confidenceAB,
-          coOccurrences: count
+          confidence: Math.min(1.0, confidenceAB),
+          coOccurrences: count,
+          isHighConfidence: confidenceAB > 0.6 // SOTA: Tag "Must-Buy" pairs
         });
         rulesCount++;
       }
@@ -192,8 +213,9 @@ class AssociationRulesEngine {
         pairs[itemB].push({
           productId: itemA,
           support,
-          confidence: confidenceBA,
-          coOccurrences: count
+          confidence: Math.min(1.0, confidenceBA),
+          coOccurrences: count,
+          isHighConfidence: confidenceBA > 0.6
         });
         rulesCount++;
       }
@@ -202,7 +224,12 @@ class AssociationRulesEngine {
     // Sort and limit rules per product
     for (const productId of Object.keys(pairs)) {
       pairs[productId] = pairs[productId]
-        .sort((a, b) => b.confidence - a.confidence)
+        .sort((a, b) => {
+          // Boost high-confidence rules in sorting
+          const scoreA = a.confidence + (a.isHighConfidence ? 0.5 : 0);
+          const scoreB = b.confidence + (b.isHighConfidence ? 0.5 : 0);
+          return scoreB - scoreA;
+        })
         .slice(0, maxRulesPerProduct);
     }
 
@@ -261,6 +288,28 @@ class AssociationRulesEngine {
     return Object.values(candidates)
       .sort((a, b) => b.score - a.score)
       .slice(0, topK);
+  }
+
+  /**
+   * SOTA: Complementary category detection
+   * In the MENA market, bundling (Bakata) is a key conversion driver.
+   */
+  _isComplementary(catA, catB) {
+    const complementary = [
+      ['phone', 'protection'],
+      ['phone', 'accessory'],
+      ['laptop', 'mouse'],
+      ['laptop', 'bag'],
+      ['shoes', 'socks'],
+      ['dress', 'accessory'],
+      ['beauty', 'skincare'],
+      ['gaming', 'controller']
+    ];
+
+    return complementary.some(([c1, c2]) =>
+      (catA.includes(c1) && catB.includes(c2)) ||
+      (catA.includes(c2) && catB.includes(c1))
+    );
   }
 }
 
@@ -373,10 +422,26 @@ class RecommendationService {
 
     const recommendations = [];
 
+    // 0. SOTA: Two-Tower Retrieval
+    // Generate a semantic "User Query" based on profile and history
+    const userQuery = this._generateUserQuery(ucpProfile, recentlyViewed, recentlyPurchased);
+    const userEmbedding = await productEmbeddingService.getQueryEmbedding(userQuery);
+
+    if (userEmbedding) {
+      const vectorRecs = vectorStore.search(tenantId, userEmbedding, 5);
+      recommendations.push(...vectorRecs.map(r => ({
+        productId: r.id,
+        score: r.score * 1.2, // Boosted Two-Tower signal
+        similarity: Math.round(r.score * 100),
+        metadata: r.metadata,
+        reason: 'two_tower_match'
+      })));
+    }
+
     // 1. Content-based from recently viewed
     if (recentlyViewed.length > 0) {
       const lastViewed = recentlyViewed[0];
-      const similar = await this.getSimilarProducts(tenantId, lastViewed, { topK: 5 });
+      const similar = await this.getSimilarProducts(tenantId, lastViewed, { topK: 3 });
       recommendations.push(...similar.map(r => ({
         ...r,
         reason: 'based_on_viewed',
@@ -389,7 +454,7 @@ class RecommendationService {
       const cartRecs = this.associationEngine.getCartRecommendations(
         tenantId,
         recentlyPurchased,
-        5
+        3
       );
       recommendations.push(...cartRecs.map(r => ({
         ...r,
@@ -416,12 +481,16 @@ class RecommendationService {
     }
 
     // Remove duplicates
-    const seen = new Set();
-    const unique = recommendations.filter(r => {
-      if (seen.has(r.productId)) return false;
-      seen.add(r.productId);
-      return true;
-    });
+    const seen = new Map();
+    const unique = [];
+
+    for (const rec of recommendations) {
+      if (!seen.has(rec.productId) || seen.get(rec.productId).score < rec.score) {
+        seen.set(rec.productId, rec);
+      }
+    }
+
+    unique.push(...seen.values());
 
     // Apply LTV-based re-ranking
     const reranked = this._applyLTVReranking(unique, ucpProfile);
@@ -430,6 +499,37 @@ class RecommendationService {
     const diversified = this._applyDiversity(reranked, diversityFactor);
 
     return diversified.slice(0, topK);
+  }
+
+  /**
+   * SOTA: Generate a semantic query representating the user's current interests
+   * This is the "User Tower" in the Two-Tower retrieval logic.
+   */
+  _generateUserQuery(ucpProfile, recentlyViewed, recentlyPurchased) {
+    const parts = [];
+
+    // LTV and Segment
+    if (ucpProfile.ltv_tier) {
+      parts.push(`${ucpProfile.ltv_tier} customer`);
+    }
+
+    // Preferences
+    if (ucpProfile.preferences?.categories?.length) {
+      parts.push(`interested in ${ucpProfile.preferences.categories.slice(0, 3).join(', ')}`);
+    }
+
+    // Market/Language context
+    if (ucpProfile.language) {
+      parts.push(`market: ${ucpProfile.language}`);
+    }
+
+    // Session Context (if we have descriptions of recently viewed, we'd add them here)
+    // For now we use the fact that they viewed/bought recently
+    if (recentlyPurchased.length) {
+      parts.push(`recently bought products like ${recentlyPurchased.slice(0, 2).join(', ')}`);
+    }
+
+    return parts.join('. ');
   }
 
   /**
@@ -608,6 +708,22 @@ class RecommendationService {
       recommendations: [],
       voiceWidget: null
     };
+  }
+
+  /**
+   * Get recommendation action for voice widget (SOTA)
+   * Session 250.82: Standardized action wrapper for multi-channel reuse
+   */
+  async getRecommendationAction(tenantId, personaKey, query, lang = 'fr') {
+    // 1. Get personalized recommendations
+    const recommendations = await this.getPersonalizedRecommendations(tenantId, 'voice_user', { lastQuery: query });
+
+    // 2. Format with persona-specific terminology
+    if (recommendations && recommendations.length > 0) {
+      return this.getVoiceRecommendations(tenantId, personaKey, lang, { recommendations }, 'personalized');
+    }
+
+    return this._getNoRecommendationsResponse(lang);
   }
 
   /**

@@ -150,6 +150,7 @@ class HybridRAG {
      */
     async search(tenantId, lang, query, options = {}) {
         const limit = options.limit || 5;
+        const geminiKey = options.geminiKey; // Session 250.xx: Dynamic key support
         const engine = await this._getEngine(tenantId, lang);
         if (!engine || engine.bm25.documents.length === 0) {
             return [];
@@ -159,14 +160,15 @@ class HybridRAG {
         const sparseResults = engine.bm25.search(query, limit * 2);
 
         // 2. Dense Search (Semantic)
-        const queryVector = await EmbeddingService.getQueryEmbedding(query);
+        // Pass geminiKey to EmbeddingService
+        const queryVector = await EmbeddingService.getQueryEmbedding(query, geminiKey);
         let denseResults = [];
 
         if (queryVector) {
             const chunks = engine.bm25.documents;
             for (const chunk of chunks) {
                 // Use KnowledgeEmbeddingService which has global cache/disk storage
-                const chunkVector = await EmbeddingService.getEmbedding(chunk.id, chunk.text);
+                const chunkVector = await EmbeddingService.getEmbedding(chunk.id, chunk.text, geminiKey);
                 if (chunkVector) {
                     const similarity = EmbeddingService.cosineSimilarity(queryVector, chunkVector);
                     denseResults.push({ ...chunk, denseScore: similarity });

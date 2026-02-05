@@ -75,7 +75,8 @@ function loadConfigFromFile(tenantId) {
             status: config.status,
             features: config.features,
             marketRules: config.market_rules || config.marketRules,
-            integrations: normalizeIntegrations(config.integrations)
+            integrations: normalizeIntegrations(config.integrations),
+            integration_configs: config.integrations || {} // Preservation of raw config (Session 250.80)
         };
     } catch (error) {
         console.error(`[ClientRegistry] Failed to load ${tenantId}: ${error.message}`);
@@ -170,6 +171,30 @@ class ClientRegistry {
         }
 
         return Array.from(tenants);
+    }
+
+    /**
+     * Find Tenant ID by Twilio AccountSid (Reverse Lookup)
+     * Critical for BYOK Webhook Validation
+     * @param {string} accountSid
+     * @returns {string|null} tenantId
+     */
+    static getTenantIdByTwilioSid(accountSid) {
+        if (!accountSid) return null;
+
+        const allClients = this.getAllClients();
+        for (const [tenantId, config] of Object.entries(allClients)) {
+            // Check nested integration config (New Standard)
+            // Uses integration_configs to bypass boolean normalization
+            if (config.integration_configs?.twilio?.account_sid === accountSid) {
+                return tenantId;
+            }
+            // Check potential root level or legacy (Defensive)
+            if (config.twilio_account_sid === accountSid) {
+                return tenantId;
+            }
+        }
+        return null;
     }
 }
 

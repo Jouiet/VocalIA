@@ -61,6 +61,11 @@ try {
   elevenLabsClient = new ElevenLabsClient();
   if (elevenLabsClient.isConfigured()) {
     console.log('✅ ElevenLabs client initialized for Darija TTS');
+    // Session 250.45: Pre-cache common phrases to reduce latency
+    // This warms up the ElevenLabs cache for standard greetings/messages
+    elevenLabsClient.preCacheCommonPhrases(['fr', 'en', 'ary']).catch(e => {
+      console.warn('[Voice] TTS pre-cache warning:', e.message);
+    });
   } else {
     console.warn('⚠️ ELEVENLABS_API_KEY not set - Darija TTS will use Twilio fallback (ar-SA)');
   }
@@ -661,10 +666,17 @@ rateLimitCleanupInterval.unref();
 // TWILIO SIGNATURE VALIDATION
 // ============================================
 
-function validateTwilioSignature(req, body, rawBody) {
-  // Skip validation if twilio SDK not installed or auth token not configured
-  if (!twilio || !CONFIG.twilio.authToken) {
-    console.warn('[Security] Twilio signature validation DISABLED');
+const { SecretVault } = require('../core/SecretVault.cjs'); // Ensure correct import if not already
+const ClientRegistry = require('../core/client-registry.cjs');
+
+/**
+ * Validate Twilio Signature with Hybrid Support (Managed & BYOK)
+ * Session 250.80: Enhanced for Multi-Tenant Credentials
+ */
+async function validateTwilioSignature(req, body, rawBody) {
+  // Skip validation if twilio SDK not installed
+  if (!twilio) {
+    console.warn('[Security] Twilio signature validation DISABLED (SDK missing)');
     return true;
   }
 
@@ -679,23 +691,59 @@ function validateTwilioSignature(req, body, rawBody) {
   const host = req.headers.host;
   const url = `${protocol}://${host}${req.url}`;
 
-  try {
-    const isValid = twilio.validateRequest(
-      CONFIG.twilio.authToken,
-      signature,
-      url,
-      body
-    );
-
-    if (!isValid) {
-      console.error('[Security] Invalid Twilio signature');
+  // Helper to check validity with a specific token
+  const checkValidity = (token, context) => {
+    try {
+      const isValid = twilio.validateRequest(token, signature, url, body);
+      if (isValid) {
+        console.log(`[Security] Twilio signature VALID (${context})`);
+        return true;
+      }
+    } catch (e) {
+      console.warn(`[Security] Validation error (${context}): ${e.message}`);
     }
-
-    return isValid;
-  } catch (error) {
-    console.error(`[Security] Signature validation error: ${error.message}`);
     return false;
+  };
+
+  // 1. Try Agency Token (Managed Mode - Most common)
+  if (CONFIG.twilio.authToken && checkValidity(CONFIG.twilio.authToken, 'Managed/Agency')) {
+    return true;
   }
+
+  // 2. Try BYOK (Client Token)
+  // Extract AccountSid to identify potential tenant
+  const accountSid = body.AccountSid || (typeof body === 'string' ? safeJsonParse(body)?.AccountSid : null);
+
+  if (accountSid && accountSid !== CONFIG.twilio.accountSid) {
+    console.log(`[Security] Unknown AccountSid ${accountSid}, attempting BYOK lookup...`);
+
+    // Enhanced BYOK Lookup (Session 250.80)
+    // Uses Reverse Index from ClientRegistry
+    const tenantId = ClientRegistry.getTenantIdByTwilioSid(accountSid);
+
+    if (tenantId) {
+      try {
+        // Lazy instantiate SecretVault
+        const vault = new SecretVault();
+        const creds = await vault.loadCredentials(tenantId);
+
+        if (creds && creds.TWILIO_AUTH_TOKEN) {
+          if (checkValidity(creds.TWILIO_AUTH_TOKEN, `BYOK/${tenantId}`)) {
+            return true;
+          }
+        } else {
+          console.warn(`[Security] Tenant ${tenantId} found for SID ${accountSid} but no TWILIO_AUTH_TOKEN in vault.`);
+        }
+      } catch (err) {
+        console.error(`[Security] BYOK Credential load failed for ${tenantId}: ${err.message}`);
+      }
+    } else {
+      console.warn(`[Security] No Tenant found for AccountSid ${accountSid}.`);
+    }
+  }
+
+  console.error('[Security] Invalid Twilio signature (Failed Managed & BYOK checks)');
+  return false;
 }
 
 // ============================================
@@ -1373,7 +1421,8 @@ async function createGrokSession(callInfo) {
       const persona = VoicePersonaInjector.getPersona(
         callInfo.from,    // Caller ID
         callInfo.to,      // Called Number (maps to Vertical)
-        callInfo.clientId // Multi-tenancy ID (optional)
+        callInfo.clientId, // Multi-tenancy ID (optional)
+        'TELEPHONY'
       );
 
       console.log(`[The Director] Injecting Persona: ${persona.name} (${persona.id}) for Vertical: ${callInfo.to}`);
@@ -3610,7 +3659,7 @@ function generateErrorTwiML(messageKey, lang = CONFIG.defaultLanguage, hangup = 
 
 async function handleInboundCall(req, res, body) {
   // FIX: Validate Twilio signature
-  if (!validateTwilioSignature(req, body)) {
+  if (!await validateTwilioSignature(req, body)) {
     console.error('[Security] Rejected request with invalid Twilio signature');
     res.writeHead(403, { 'Content-Type': 'text/plain' });
     res.end('Forbidden: Invalid signature');

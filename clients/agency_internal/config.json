@@ -24,7 +24,12 @@
     },
     "google": {
       "enabled": true,
-      "scopes": ["calendar", "sheets", "drive", "gmail"],
+      "scopes": [
+        "calendar",
+        "sheets",
+        "drive",
+        "gmail"
+      ],
       "credentials_key": "GOOGLE_REFRESH_TOKEN",
       "purpose": "Internal analytics, scheduling, notifications"
     },
@@ -36,20 +41,63 @@
     "twilio": {
       "enabled": true,
       "credentials_key": "TWILIO_AUTH_TOKEN",
+      "account_sid": "AC_AGENCY_SID_PLACEHOLDER",
       "purpose": "Voice telephony PSTN"
     }
   },
   "market_rules": {
     "strict": true,
     "markets": {
-      "MA": { "id": "maroc", "lang": "fr", "currency": "MAD", "symbol": "DH", "label": "Maroc" },
-      "DZ": { "id": "maghreb", "lang": "fr", "currency": "EUR", "symbol": "EUR", "label": "Maghreb" },
-      "TN": { "id": "maghreb", "lang": "fr", "currency": "EUR", "symbol": "EUR", "label": "Maghreb" },
-      "FR": { "id": "europe", "lang": "fr", "currency": "EUR", "symbol": "EUR", "label": "Europe" },
-      "AE": { "id": "mena", "lang": "en", "currency": "USD", "symbol": "$", "label": "MENA" },
-      "US": { "id": "intl", "lang": "en", "currency": "USD", "symbol": "$", "label": "International" }
+      "MA": {
+        "id": "maroc",
+        "lang": "fr",
+        "currency": "MAD",
+        "symbol": "DH",
+        "label": "Maroc"
+      },
+      "DZ": {
+        "id": "maghreb",
+        "lang": "fr",
+        "currency": "EUR",
+        "symbol": "EUR",
+        "label": "Maghreb"
+      },
+      "TN": {
+        "id": "maghreb",
+        "lang": "fr",
+        "currency": "EUR",
+        "symbol": "EUR",
+        "label": "Maghreb"
+      },
+      "FR": {
+        "id": "europe",
+        "lang": "fr",
+        "currency": "EUR",
+        "symbol": "EUR",
+        "label": "Europe"
+      },
+      "AE": {
+        "id": "mena",
+        "lang": "en",
+        "currency": "USD",
+        "symbol": "$",
+        "label": "MENA"
+      },
+      "US": {
+        "id": "intl",
+        "lang": "en",
+        "currency": "USD",
+        "symbol": "$",
+        "label": "International"
+      }
     },
-    "default": { "id": "intl", "lang": "en", "currency": "USD", "symbol": "$", "label": "International" }
+    "default": {
+      "id": "intl",
+      "lang": "en",
+      "currency": "USD",
+      "symbol": "$",
+      "label": "International"
+    }
   },
   "contact": {
     "email": "contact@vocalia.ma",

@@ -32,7 +32,7 @@ async function runTests() {
   console.log('Test 1: getPersona() returns archetypeKey');
   try {
     const { VoicePersonaInjector, PERSONAS } = require('../personas/voice-persona-injector.cjs');
-    const persona = VoicePersonaInjector.getPersona(null, null, 'test_client');
+    const persona = VoicePersonaInjector.getPersona(null, null, 'test_client', 'B2B');
 
     assert(persona.archetypeKey, 'archetypeKey should be defined');
     assert(PERSONAS[persona.archetypeKey], 'archetypeKey should match a PERSONA');
@@ -49,7 +49,7 @@ async function runTests() {
     const { VoicePersonaInjector, PERSONAS } = require('../personas/voice-persona-injector.cjs');
 
     for (const lang of LANGUAGES) {
-      const persona = VoicePersonaInjector.getPersona(null, null, 'test_client');
+      const persona = VoicePersonaInjector.getPersona(null, null, 'test_client', 'B2C');
       persona.language = lang;
 
       const baseConfig = { session: { metadata: {} } };
@@ -78,7 +78,7 @@ async function runTests() {
   try {
     // We can't test the full API without network, but we can verify the structure
     const { VoicePersonaInjector } = require('../personas/voice-persona-injector.cjs');
-    const persona = VoicePersonaInjector.getPersona(null, null, 'test_session');
+    const persona = VoicePersonaInjector.getPersona(null, null, 'test_session', 'B2C');
     persona.language = 'ar';
 
     const baseConfig = { session: { metadata: {} } };

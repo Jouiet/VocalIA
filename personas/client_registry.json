@@ -8,7 +8,8 @@
             "knowledge_base_id": "agency_v3",
             "payment_method": "WISE",
             "phone": "+33123456789",
-            "address": "123 Tech Avenue, Paris"
+            "address": "123 Tech Avenue, Paris",
+            "widget_type": "B2B"
         },
         "client_dental_01": {
             "name": "Cabinet Dentaire Lumière",
@@ -19,7 +20,8 @@
             "payment_method": "STRIPE_LINK",
             "payment_details": "https://buy.stripe.com/dental_deposit_99",
             "phone": "+33198765432",
-            "address": "45 Rue de la Santé, Lyon"
+            "address": "45 Rue de la Santé, Lyon",
+            "widget_type": "B2B"
         },
         "client_hoa_01": {
             "name": "Sunnyvale HOA",
@@ -30,7 +32,8 @@
             "payment_method": "BANK_TRANSFER",
             "payment_details": "Account: 123456789 (Chase Bank)",
             "phone": "+15550199",
-            "address": "88 Sunnyvale Dr, CA"
+            "address": "88 Sunnyvale Dr, CA",
+            "widget_type": "B2B"
         },
         "ecom_nike_01": {
             "name": "Nike Reseller Paris",
@@ -41,7 +44,8 @@
             "payment_method": "SHOPIFY_CHECKOUT",
             "payment_details": "https://nike-reseller-paris.com/checkout",
             "phone": "+33700000001",
-            "address": "Champs Elysées, Paris"
+            "address": "Champs Elysées, Paris",
+            "widget_type": "ECOM"
         },
         "sme_baker_02": {
             "name": "Boulangerie Patissier",
@@ -52,7 +56,8 @@
             "payment_method": "CASH_ON_DELIVERY",
             "payment_details": "Paiement à la livraison ou en boutique",
             "phone": "+212600000000",
-            "address": "Quartier Agdal, Rabat"
+            "address": "Quartier Agdal, Rabat",
+            "widget_type": "B2C"
         },
         "ecom_darija_01": {
             "name": "متجر درب غلف",
@@ -63,7 +68,8 @@
             "payment_method": "COD_MOROCCO",
             "payment_details": "الدفع عند التسليم / Cash on Delivery",
             "phone": "+212661234567",
-            "address": "درب غلف، الدار البيضاء"
+            "address": "درب غلف، الدار البيضاء",
+            "widget_type": "ECOM"
         },
         "medecin_general_01": {
             "name": "Cabinet Dr. Bennani",
@@ -75,7 +81,13 @@
             "payment_details": "Paiement sur place - Consultation 200 MAD",
             "phone": "+212522334455",
             "address": "Bd Zerktouni, Casablanca",
-            "services": ["consultation", "certificat_medical", "ordonnance", "suivi_chronique"],
+            "widget_type": "B2C",
+            "services": [
+                "consultation",
+                "certificat_medical",
+                "ordonnance",
+                "suivi_chronique"
+            ],
             "horaires": "Lun-Ven 9h-18h, Sam 9h-13h"
         },
         "medecin_specialiste_01": {
@@ -88,8 +100,14 @@
             "payment_details": "Consultation 500 MAD - ECG 300 MAD",
             "phone": "+212537889900",
             "address": "Clinique Atlas, Rabat",
+            "widget_type": "B2C",
             "specialite": "cardiologie",
-            "services": ["consultation", "ecg", "echo_cardiaque", "holter"],
+            "services": [
+                "consultation",
+                "ecg",
+                "echo_cardiaque",
+                "holter"
+            ],
             "horaires": "Lun-Ven 9h-17h sur RDV"
         },
         "dentiste_casa_01": {
@@ -102,7 +120,14 @@
             "payment_details": "Détartrage 400 MAD - Extraction 500 MAD - Implant sur devis",
             "phone": "+212522667788",
             "address": "Maarif, Casablanca",
-            "services": ["detartrage", "extraction", "implant", "orthodontie", "blanchiment"],
+            "widget_type": "B2C",
+            "services": [
+                "detartrage",
+                "extraction",
+                "implant",
+                "orthodontie",
+                "blanchiment"
+            ],
             "horaires": "Lun-Sam 9h-19h"
         },
         "agence_voyage_01": {
@@ -115,8 +140,21 @@
             "payment_details": "Acompte 30% - Solde 7j avant départ",
             "phone": "+212522112233",
             "address": "Av. Hassan II, Casablanca",
-            "services": ["billets_avion", "hotels", "circuits", "visa", "assurance_voyage"],
-            "destinations": ["europe", "turquie", "egypte", "dubai", "asie"]
+            "widget_type": "B2C",
+            "services": [
+                "billets_avion",
+                "hotels",
+                "circuits",
+                "visa",
+                "assurance_voyage"
+            ],
+            "destinations": [
+                "europe",
+                "turquie",
+                "egypte",
+                "dubai",
+                "asie"
+            ]
         },
         "location_voiture_01": {
             "name": "Maroc Cars Location",
@@ -128,8 +166,20 @@
             "payment_details": "Caution CB obligatoire - Tarifs à partir de 250 MAD/jour",
             "phone": "+212661990088",
             "address": "Aéroport Mohammed V, Casablanca",
-            "services": ["location_courte", "location_longue", "avec_chauffeur", "livraison_hotel"],
-            "vehicules": ["economique", "berline", "suv", "utilitaire", "luxe"]
+            "widget_type": "B2C",
+            "services": [
+                "location_courte",
+                "location_longue",
+                "avec_chauffeur",
+                "livraison_hotel"
+            ],
+            "vehicules": [
+                "economique",
+                "berline",
+                "suv",
+                "utilitaire",
+                "luxe"
+            ]
         },
         "notaire_rabat_01": {
             "name": "Maître Fassi-Fihri",
@@ -141,7 +191,14 @@
             "payment_details": "Honoraires selon barème officiel",
             "phone": "+212537778899",
             "address": "Agdal, Rabat",
-            "services": ["acte_vente", "succession", "donation", "societe", "hypotheque"],
+            "widget_type": "B2B",
+            "services": [
+                "acte_vente",
+                "succession",
+                "donation",
+                "societe",
+                "hypotheque"
+            ],
             "horaires": "Lun-Ven 9h-17h sur RDV"
         },
         "agence_immo_01": {
@@ -154,8 +211,19 @@
             "payment_details": "Commission 2.5% vente - 1 mois location",
             "phone": "+212522445566",
             "address": "Bd Anfa, Casablanca",
-            "services": ["vente", "location", "estimation", "gestion_locative"],
-            "zones": ["casablanca", "mohammedia", "bouskoura", "dar_bouazza"]
+            "widget_type": "B2B",
+            "services": [
+                "vente",
+                "location",
+                "estimation",
+                "gestion_locative"
+            ],
+            "zones": [
+                "casablanca",
+                "mohammedia",
+                "bouskoura",
+                "dar_bouazza"
+            ]
         },
         "agence_event_01": {
             "name": "Marrakech Events",
@@ -167,7 +235,14 @@
             "payment_details": "Acompte 50% - Solde J-7",
             "phone": "+212524889900",
             "address": "Guéliz, Marrakech",
-            "services": ["mariage", "seminaire", "lancement_produit", "gala", "team_building"],
+            "widget_type": "B2B",
+            "services": [
+                "mariage",
+                "seminaire",
+                "lancement_produit",
+                "gala",
+                "team_building"
+            ],
             "capacite": "10 à 2000 personnes"
         },
         "agence_commerciale_01": {
@@ -180,8 +255,19 @@
             "payment_details": "Commission 5-15% selon volume",
             "phone": "+212522334455",
             "address": "Sidi Maarouf, Casablanca",
-            "services": ["prospection", "negociation", "closing", "compte_cle"],
-            "secteurs_cibles": ["agroalimentaire", "cosmetique", "electronique", "b2b"]
+            "widget_type": "B2B",
+            "services": [
+                "prospection",
+                "negociation",
+                "closing",
+                "compte_cle"
+            ],
+            "secteurs_cibles": [
+                "agroalimentaire",
+                "cosmetique",
+                "electronique",
+                "b2b"
+            ]
         },
         "concessionnaire_auto_01": {
             "name": "Auto Galaxy Maroc",
@@ -193,8 +279,21 @@
             "payment_details": "Crédit Wafasalaf disponible - Reprise ancien véhicule",
             "phone": "+212522778899",
             "address": "Route d'El Jadida, Casablanca",
-            "services": ["vente_neuf", "vente_occasion", "reprise", "financement", "apres_vente"],
-            "marques": ["toyota", "hyundai", "dacia", "renault", "peugeot"]
+            "widget_type": "B2C",
+            "services": [
+                "vente_neuf",
+                "vente_occasion",
+                "reprise",
+                "financement",
+                "apres_vente"
+            ],
+            "marques": [
+                "toyota",
+                "hyundai",
+                "dacia",
+                "renault",
+                "peugeot"
+            ]
         },
         "assurance_01": {
             "name": "Assurances Al Amane",
@@ -206,8 +305,21 @@
             "payment_details": "Paiement mensuel/annuel - Attestation immédiate",
             "phone": "+212522556677",
             "address": "Centre Ville, Casablanca",
-            "services": ["auto", "habitation", "sante", "vie", "entreprise", "voyage"],
-            "partenaires": ["wafa_assurance", "axa", "saham", "atlanta"]
+            "widget_type": "B2C",
+            "services": [
+                "auto",
+                "habitation",
+                "sante",
+                "vie",
+                "entreprise",
+                "voyage"
+            ],
+            "partenaires": [
+                "wafa_assurance",
+                "axa",
+                "saham",
+                "atlanta"
+            ]
         },
         "hotel_marrakech_01": {
             "name": "Riad Jardin Secret",
@@ -219,7 +331,14 @@
             "payment_details": "Réservation Booking.com ou direct -10%",
             "phone": "+212524443322",
             "address": "Médina, Marrakech",
-            "services": ["hebergement", "petit_dejeuner", "spa", "excursions", "transfert_aeroport"],
+            "widget_type": "B2C",
+            "services": [
+                "hebergement",
+                "petit_dejeuner",
+                "spa",
+                "excursions",
+                "transfert_aeroport"
+            ],
             "chambres": 12,
             "etoiles": 4
         },
@@ -233,7 +352,14 @@
             "payment_details": "All-inclusive available - Beach front",
             "phone": "+212528776655",
             "address": "Bd 20 Août, Agadir",
-            "services": ["all_inclusive", "spa", "piscine", "restaurant", "animation"],
+            "widget_type": "B2C",
+            "services": [
+                "all_inclusive",
+                "spa",
+                "piscine",
+                "restaurant",
+                "animation"
+            ],
             "chambres": 150,
             "etoiles": 5
         },
@@ -247,7 +373,14 @@
             "payment_details": "Coupe Homme 80 MAD - Femme 150 MAD - Coloration 300 MAD",
             "phone": "+212522334466",
             "address": "Maarif, Casablanca",
-            "services": ["coupe", "coloration", "brushing", "soins_cheveux", "barbe"],
+            "widget_type": "B2C",
+            "services": [
+                "coupe",
+                "coloration",
+                "brushing",
+                "soins_cheveux",
+                "barbe"
+            ],
             "horaires": "Mar-Sam 9h-20h"
         },
         "beauty_salon_rabat_01": {
@@ -260,7 +393,14 @@
             "payment_details": "Soin visage 250 MAD - Épilation 150 MAD - Manucure 100 MAD",
             "phone": "+212537889911",
             "address": "Agdal, Rabat",
-            "services": ["soins_visage", "epilation", "manucure", "pedicure", "maquillage"],
+            "widget_type": "B2C",
+            "services": [
+                "soins_visage",
+                "epilation",
+                "manucure",
+                "pedicure",
+                "maquillage"
+            ],
             "horaires": "Lun-Sam 10h-19h"
         },
         "spa_marrakech_01": {
@@ -273,7 +413,14 @@
             "payment_details": "Hammam 300 MAD - Massage 500 MAD - Package Journée 1200 MAD",
             "phone": "+212524557788",
             "address": "Palmeraie, Marrakech",
-            "services": ["hammam", "massage", "gommage", "soins_corps", "yoga"],
+            "widget_type": "B2C",
+            "services": [
+                "hammam",
+                "massage",
+                "gommage",
+                "soins_corps",
+                "yoga"
+            ],
             "horaires": "Tous les jours 10h-21h"
         },
         "fitness_casa_01": {
@@ -286,7 +433,14 @@
             "payment_details": "Abonnement mensuel 400 MAD - Annuel 3600 MAD - Personal training 300 MAD/h",
             "phone": "+212522998877",
             "address": "Ain Diab, Casablanca",
-            "services": ["musculation", "cardio", "cours_collectifs", "personal_training", "sauna"],
+            "widget_type": "B2C",
+            "services": [
+                "musculation",
+                "cardio",
+                "cours_collectifs",
+                "personal_training",
+                "sauna"
+            ],
             "horaires": "Lun-Sam 6h-23h, Dim 8h-20h"
         }
     },

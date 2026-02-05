@@ -39,16 +39,46 @@
 
 </head>
 
-<body class="bg-slate-800 text-white min-h-screen">
+
+<body class="bg-[#050505] text-white min-h-screen font-sans">
+  <style>
+    :root {
+      --quantum-void: #050505;
+      --glass-bg: rgba(10, 10, 10, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --vocalia-primary: #5E6AD2;
+    }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+    }
+
+    .sidebar-bg {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  </style>
+
   <!-- Skip Link for Accessibility -->
   <a href="#main-content"
     class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
     Aller au contenu principal
   </a>
 
+
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation"
+  <aside class="fixed left-0 top-0 bottom-0 w-64 sidebar-bg border-r border-white/10 z-40" role="navigation"
     aria-label="Navigation administration">
+
     <!-- Logo -->
     <div class="p-6 border-b border-slate-600">
       <a href="/" class="flex items-center space-x-2">
@@ -231,7 +261,7 @@
               </div>
               <span class="text-green-400 text-xs" id="stat-mrr-growth">+0%</span>
             </div>
-            <h3 class="text-2xl font-bold" id="stat-mrr">0€</h3>
+            <h3 class="text-2xl font-bold" id="stat-mrr">-</h3>
             <p class="text-vocalia-400 text-xs" data-i18n="dashboard.stats.mrr">MRR</p>
           </div>
 
@@ -1679,7 +1709,26 @@
 
       if (statMrr) {
         const mrr = dbData.tenants.reduce((sum, t) => sum + (parseFloat(t.mrr) || 0), 0);
-        statMrr.textContent = mrr.toLocaleString('fr-FR') + '€';
+
+        // Session 250.85: SOTA Localization Hardening
+        let symbol = '€';
+        let isRight = true; // Symbol on the right for EUR/DH usually
+
+        if (typeof VocaliaGeo !== 'undefined') {
+          symbol = VocaliaGeo.getCurrencySymbol();
+        } else if (typeof VocaliaI18n !== 'undefined') {
+          const geoInfo = VocaliaI18n.getCurrencyInfo();
+          symbol = geoInfo.symbol === 'MAD' ? 'DH' : geoInfo.symbol;
+        }
+
+        // Format based on currency type
+        if (symbol === 'DH' || symbol === 'MAD') {
+          statMrr.textContent = mrr.toLocaleString('fr-FR') + ' DH';
+        } else if (symbol === '$' || symbol === 'USD') {
+          statMrr.textContent = '$' + mrr.toLocaleString('en-US');
+        } else {
+          statMrr.textContent = mrr.toLocaleString('fr-FR') + '€';
+        }
       }
     }
 
@@ -1727,7 +1776,7 @@
               <td class="px-3 py-2 font-medium">${escapeHtml(r.name || '-')}</td>
               <td class="px-3 py-2 text-vocalia-300">${escapeHtml(r.email || '-')}</td>
               <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs ${r.plan === 'enterprise' ? 'bg-purple-500/20 text-purple-400' : r.plan === 'pro' ? 'bg-blue-500/20 text-blue-400' : 'bg-slate-600 text-slate-300'}">${escapeHtml(r.plan || 'free')}</span></td>
-              <td class="px-3 py-2 text-emerald-400">${parseFloat(r.mrr || 0).toLocaleString('fr-FR')}€</td>
+              <td class="px-3 py-2 text-emerald-400">${parseFloat(r.mrr || 0).toLocaleString('fr-FR')}${r.currency === 'MAD' ? ' DH' : (typeof VocaliaI18n !== 'undefined' ? VocaliaI18n.getCurrencyInfo().symbol : '€')}</td>
               <td class="px-3 py-2"><span class="px-2 py-0.5 rounded text-xs ${r.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">${escapeHtml(r.status || 'active')}</span></td>
               <td class="px-3 py-2">
                 <button type="button" onclick="editDBRecord('tenants', '${escapeHtml(r.id)}')" class="text-blue-400 hover:text-blue-300 text-xs mr-2">Éditer</button>
@@ -1784,7 +1833,7 @@
 
     // DB Modal - Form fields configuration
     const dbFormFields = {
-      tenants: ['name', 'email', 'phone', 'plan', 'mrr', 'status'],
+      tenants: ['name', 'email', 'phone', 'plan', 'mrr', 'status', 'sector', 'widget_type'],
       users: ['email', 'password_hash', 'role', 'tenant_id']
     };
 
@@ -1802,14 +1851,50 @@
 
       const fields = dbFormFields[dbEditingSheet] || [];
       if (fieldsContainer) {
-        fieldsContainer.innerHTML = fields.map(f => `
-          <div>
-            <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
-            <input name="${f}" type="${f.includes('password') ? 'password' : 'text'}"
-                   class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                   ${['name', 'email'].includes(f) ? 'required' : ''}>
-          </div>
-        `).join('');
+        fieldsContainer.innerHTML = fields.map(f => {
+          if (f === 'plan') {
+            return `
+              <div>
+                <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+                <select name="${f}" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="free">Free</option>
+                  <option value="starter">Starter</option>
+                  <option value="pro">Pro</option>
+                  <option value="enterprise">Enterprise</option>
+                </select>
+              </div>`;
+          }
+          if (f === 'status') {
+            return `
+              <div>
+                <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+                <select name="${f}" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="active">Active</option>
+                  <option value="paused">Paused</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+              </div>`;
+          }
+          if (f === 'widget_type') {
+            return `
+              <div>
+                <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+                <select name="${f}" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="B2C">B2C (Core)</option>
+                  <option value="B2B">B2B</option>
+                  <option value="ECOM">E-commerce</option>
+                  <option value="TELEPHONY">Telephony</option>
+                </select>
+              </div>`;
+          }
+          return `
+            <div>
+              <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+              <input name="${f}" type="${f.includes('password') ? 'password' : 'text'}"
+                     class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                     ${['name', 'email'].includes(f) ? 'required' : ''}>
+            </div>`;
+        }).join('');
       }
 
       if (modal) {
@@ -1834,14 +1919,51 @@
 
       const fields = dbFormFields[sheet] || [];
       if (fieldsContainer) {
-        fieldsContainer.innerHTML = fields.map(f => `
-          <div>
-            <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
-            <input name="${f}" type="${f.includes('password') ? 'password' : 'text'}"
-                   class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                   value="${escapeHtml(record[f] || '')}">
-          </div>
-        `).join('');
+        fieldsContainer.innerHTML = fields.map(f => {
+          const val = record[f] || '';
+          if (f === 'plan') {
+            return `
+              <div>
+                <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+                <select name="${f}" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="free" ${val === 'free' ? 'selected' : ''}>Free</option>
+                  <option value="starter" ${val === 'starter' ? 'selected' : ''}>Starter</option>
+                  <option value="pro" ${val === 'pro' ? 'selected' : ''}>Pro</option>
+                  <option value="enterprise" ${val === 'enterprise' ? 'selected' : ''}>Enterprise</option>
+                </select>
+              </div>`;
+          }
+          if (f === 'status') {
+            return `
+              <div>
+                <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+                <select name="${f}" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="active" ${val === 'active' ? 'selected' : ''}>Active</option>
+                  <option value="paused" ${val === 'paused' ? 'selected' : ''}>Paused</option>
+                  <option value="suspended" ${val === 'suspended' ? 'selected' : ''}>Suspended</option>
+                </select>
+              </div>`;
+          }
+          if (f === 'widget_type') {
+            return `
+              <div>
+                <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+                <select name="${f}" class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <option value="B2C" ${val === 'B2C' ? 'selected' : ''}>B2C (Core)</option>
+                  <option value="B2B" ${val === 'B2B' ? 'selected' : ''}>B2B</option>
+                  <option value="ECOM" ${val === 'ECOM' ? 'selected' : ''}>E-commerce</option>
+                  <option value="TELEPHONY" ${val === 'TELEPHONY' ? 'selected' : ''}>Telephony</option>
+                </select>
+              </div>`;
+          }
+          return `
+            <div>
+              <label class="block text-sm text-vocalia-400 mb-1">${f}</label>
+              <input name="${f}" type="${f.includes('password') ? 'password' : 'text'}"
+                     class="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                     value="${escapeHtml(val)}">
+            </div>`;
+        }).join('');
       }
 
       if (modal) {

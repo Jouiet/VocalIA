@@ -78,19 +78,22 @@ const SYSTEM_PROMPTS = {
         fr: `Tu es le conseiller Voice AI de VocalIA. VocalIA est une plateforme Voice AI avec 2 produits:
         1. Voice Widget: Assistant vocal 24/7 pour sites web (Support + Vente)
         2. Voice Telephony: Ligne téléphonique IA (via Twilio)
+        TARIFS: À partir de 49$/mois. Pas d'offre gratuite.
         OBJECTIF PRINCIPAL: Répondre intelligemment aux questions de l'utilisateur sur VocalIA.
         SECOND OBJECTIF: Une fois la valeur comprise, proposer une démo à vocalia.ma/booking.
         RÈGLE D'OR: Ne force JAMAIS le booking si l'utilisateur pose une question. Réponds d'abord.`,
         ary: `نتا هو المستشار ديال Voice AI فـ VocalIA. VocalIA هي منصة Voice AI عندها 2 منتوجات:
         1. Voice Widget: مساعد صوتي 24/7 للمواقع (كيجاوب ويبيع)
         2. Voice Telephony: خط تيليفون ذكي (Twilio)
+        الأثمنة: كتبدا من 49 دولار فـ الشهر. ما كاينش عرض فابور.
         الهدف الأول: جاوب على الأسئلة ديال الكليان وشرح ليه مزيان شنو هي VocalIA.
         الهدف الثاني: ملي يفهم، اقترح عليه ديمو فـ vocalia.ma/booking.
         قاعدة مهمة: ما تفرضش الديمو بزز. جاوب على السؤال هو اللول. كون ذكي ماشي روبو.`,
         en: `You are VocalIA's Voice AI consultant. VocalIA is a Voice AI platform with 2 products:
         1. Voice Widget: 24/7 voice assistant for websites
         2. Voice Telephony: AI phone line (via Twilio)
-        PRIMARY GOAL: Asnwer user questions intelligently about VocalIA.
+        PRICING: Starting at $49/mo. No free tier.
+        PRIMARY GOAL: Answer user questions intelligently about VocalIA.
         SECONDARY GOAL: Once value is understood, offer a demo at vocalia.ma/booking.
         GOLDEN RULE: Never force a booking if the user asks a question. Answer first.`,
         es: `Eres el consultor de Voice AI de VocalIA. VocalIA es una plataforma Voice AI con 2 productos:
@@ -821,6 +824,7 @@ const PERSONAS = {
     // 1. AGENCY (VocalIA Sales) - Fixed Session 250.31
     AGENCY: {
         id: 'agency_v3',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'VocalIA Voice AI Consultant',
         voice: 'ara',
         sensitivity: 'normal',
@@ -927,6 +931,7 @@ const PERSONAS = {
     // 2. DENTAL (Gold Rush #2) - SOTA Enriched Session 250.6
     DENTAL: {
         id: 'dental_intake_v1',
+        widget_types: ['B2B', 'B2C', 'TELEPHONY'],
         name: 'Cabinet Dentaire Lumière',
         voice: 'eve',
         sensitivity: 'high',
@@ -1052,6 +1057,7 @@ const PERSONAS = {
     // 3. PROPERTY (Gold Rush #1) - SOTA Enriched Session 250.6
     PROPERTY: {
         id: 'property_mgr_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Atlas Property Management',
         voice: 'leo',
         sensitivity: 'normal',
@@ -1176,6 +1182,7 @@ const PERSONAS = {
     // 4. CONTRACTOR (Gold Rush #4) - SOTA Enriched Session 250.6
     CONTRACTOR: {
         id: 'contractor_lead_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Apex Roofing & Solar',
         voice: 'rex',
         sensitivity: 'normal',
@@ -1300,6 +1307,7 @@ const PERSONAS = {
     // 5. FUNERAL (Gold Rush #5) - SOTA Enriched Session 250.6
     FUNERAL: {
         id: 'funeral_care_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Willow Creek Funeral Home',
         voice: 'valentin',
         sensitivity: 'obsessive',
@@ -1412,6 +1420,7 @@ const PERSONAS = {
     // 6. THE HEALER (Multi-specialty Clinic) - SOTA Enriched Session 250.6
     HEALER: {
         id: 'healer_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Centre de Santé Intégral',
         voice: 'eve',
         sensitivity: 'high',
@@ -1522,6 +1531,7 @@ const PERSONAS = {
     // 7. THE MECHANIC (Automotive Service) - SOTA Enriched Session 250.6
     MECHANIC: {
         id: 'mechanic_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Auto Expert Service',
         voice: 'leo',
         sensitivity: 'normal',
@@ -1641,6 +1651,7 @@ const PERSONAS = {
     // 8. THE COUNSELOR (Legal / Intake) - SOTA Enriched Session 250.6
     COUNSELOR: {
         id: 'counselor_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Cabinet Juridique Associé',
         voice: 'ara',
         sensitivity: 'high',
@@ -1751,6 +1762,7 @@ const PERSONAS = {
     // 9. THE CONCIERGE (Hotel / Restaurant) - SOTA Enriched Session 250.6
     CONCIERGE: {
         id: 'concierge_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'L\'Hôtel de la Plage',
         voice: 'sal',
         sensitivity: 'normal',
@@ -1869,6 +1881,7 @@ const PERSONAS = {
     // 10. THE STYLIST (Beauty / Wellness) - SOTA Enriched Session 250.6
     STYLIST: {
         id: 'stylist_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Espace Beauté & Spa',
         voice: 'sara',
         sensitivity: 'normal',
@@ -1970,6 +1983,7 @@ const PERSONAS = {
     // 11. THE RECRUITER (HR / Screening) - SOTA Enriched Session 250.6
     RECRUITER: {
         id: 'recruiter_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'VocalIA Talent Acquisition',
         voice: 'tom',
         sensitivity: 'normal',
@@ -2071,6 +2085,7 @@ const PERSONAS = {
     // 12. THE DISPATCHER (Logistics) - SOTA Enriched Session 250.6
     DISPATCHER: {
         id: 'dispatcher_v1',
+        widget_types: ['B2C', 'ECOM', 'TELEPHONY'],
         name: 'Logistique Express',
         voice: 'rex',
         sensitivity: 'normal',
@@ -2190,6 +2205,7 @@ const PERSONAS = {
     // 13. THE COLLECTOR (Debt / Payment Reminders) - SOTA Enriched Session 250.6
     COLLECTOR: {
         id: 'collector_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Service de Recouvrement Éthique',
         voice: 'valentin',
         sensitivity: 'high',
@@ -2300,6 +2316,7 @@ const PERSONAS = {
     // 14. THE INSURER (Claims / Leads) - SOTA Enriched Session 250.6
     INSURER: {
         id: 'insurer_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Assurance Horizon',
         voice: 'rex',
         sensitivity: 'normal',
@@ -2423,6 +2440,7 @@ const PERSONAS = {
     // 15. THE ACCOUNTANT (Accounting & Tax) - SOTA Enriched Session 250.6
     ACCOUNTANT: {
         id: 'accountant_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Cabinet Expertise & Co',
         voice: 'tom',
         sensitivity: 'high',
@@ -2542,6 +2560,7 @@ const PERSONAS = {
     // 16. THE ARCHITECT (Design & Urbanism) - SOTA Enriched Session 250.6
     ARCHITECT: {
         id: 'architect_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Studio Design & Architecture',
         voice: 'eve',
         sensitivity: 'normal',
@@ -2652,6 +2671,7 @@ const PERSONAS = {
     // 17. THE PHARMACIST (Pharmacy & Health) - SOTA Enriched Session 250.6
     PHARMACIST: {
         id: 'pharmacist_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Pharmacie Centrale',
         voice: 'mika',
         sensitivity: 'high',
@@ -2771,6 +2791,7 @@ const PERSONAS = {
     // 18. THE RENTER (Car Rental & Transport) - SOTA Enriched Session 250.6
     RENTER: {
         id: 'renter_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Atlas Car Rental',
         voice: 'leo',
         sensitivity: 'normal',
@@ -2890,6 +2911,7 @@ const PERSONAS = {
     // 19. THE LOGISTICIAN (Last-Mile / Wholesale) - SOTA Enriched Session 250.6
     LOGISTICIAN: {
         id: 'logistician_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Global Supply & Distro',
         voice: 'rex',
         sensitivity: 'normal',
@@ -3009,6 +3031,7 @@ const PERSONAS = {
     // 20. THE TRAINER (Training & Bootcamps) - SOTA Enriched Session 250.6
     TRAINER: {
         id: 'trainer_v1',
+        widget_types: ['B2B', 'B2C', 'TELEPHONY'],
         name: 'Academy Tech & Sales',
         voice: 'ara',
         sensitivity: 'normal',
@@ -3128,6 +3151,7 @@ const PERSONAS = {
     // 21. THE PLANNER (Events & Catering) - SOTA Enriched Session 250.6
     PLANNER: {
         id: 'planner_v1',
+        widget_types: ['B2B', 'B2C', 'TELEPHONY'],
         name: 'Elite Event Planning',
         voice: 'sara',
         sensitivity: 'normal',
@@ -3247,6 +3271,7 @@ const PERSONAS = {
     // 22. THE PRODUCER (Agri-food / Manufacturing) - SOTA Enriched Session 250.6
     PRODUCER: {
         id: 'producer_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Morocco Agri Solutions',
         voice: 'tom',
         sensitivity: 'normal',
@@ -3366,6 +3391,7 @@ const PERSONAS = {
     // 23. THE CLEANER (Industrial Cleaning / Maintenance) - SOTA Enriched Session 250.6
     CLEANER: {
         id: 'cleaner_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Nettoyage Pro & Services',
         voice: 'leo',
         sensitivity: 'normal',
@@ -3484,6 +3510,7 @@ const PERSONAS = {
     // 24. THE GYM (Fitness & Wellness) - SOTA Enriched Session 250.6
     GYM: {
         id: 'gym_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Iron & Soul Fitness',
         voice: 'rex',
         sensitivity: 'normal',
@@ -3625,6 +3652,7 @@ const PERSONAS = {
     // 25. UNIVERSAL E-COMMERCE (Any Online Store) - SOTA Enriched Session 250.6
     UNIVERSAL_ECOMMERCE: {
         id: 'universal_ecom_v1',
+        widget_types: ['ECOM', 'TELEPHONY'],
         name: 'Universal E-commerce Support',
         voice: 'sara',
         sensitivity: 'normal',
@@ -3743,6 +3771,7 @@ const PERSONAS = {
     // 26. UNIVERSAL SME / SERVICE (Any Local Business)
     UNIVERSAL_SME: {
         id: 'universal_sme_v1',
+        widget_types: ['B2B', 'B2C', 'TELEPHONY'],
         name: 'Universal SME Receptionist',
         voice: 'tom',
         sensitivity: 'normal',
@@ -3864,6 +3893,7 @@ const PERSONAS = {
     // 27. RETAILER - Commerce physique (35% Maroc, 17% EU)
     RETAILER: {
         id: 'retailer_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Boutique Pro',
         voice: 'sal',
         sensitivity: 'normal',
@@ -3988,6 +4018,7 @@ const PERSONAS = {
     // 28. BUILDER - BTP/Construction générale (19% Maroc, 12% EU)
     BUILDER: {
         id: 'builder_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Construction Atlas',
         voice: 'rex',
         sensitivity: 'normal',
@@ -4112,6 +4143,7 @@ const PERSONAS = {
     // 29. RESTAURATEUR - Restauration (5.6% Maroc, 69% indépendants FR)
     RESTAURATEUR: {
         id: 'restaurateur_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Restaurant Le Gourmet',
         voice: 'sara',
         sensitivity: 'normal',
@@ -4245,6 +4277,7 @@ const PERSONAS = {
     // 31. TRAVEL_AGENT - Agence de voyage
     TRAVEL_AGENT: {
         id: 'travel_agent_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Atlas Voyages',
         voice: 'eve',
         sensitivity: 'normal',
@@ -4369,6 +4402,7 @@ const PERSONAS = {
     // 32. CONSULTANT - Services professionnels (15.6% EU)
     CONSULTANT: {
         id: 'consultant_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Consulting Pro',
         voice: 'ara',
         sensitivity: 'normal',
@@ -4493,6 +4527,7 @@ const PERSONAS = {
     // 33. IT_SERVICES - MSP/Services informatiques (950K contrats EU)
     IT_SERVICES: {
         id: 'it_services_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'TechSupport MSP',
         voice: 'tom',
         sensitivity: 'normal',
@@ -4617,6 +4652,7 @@ const PERSONAS = {
     // 34. MANUFACTURER - Artisan/Petite industrie (7% EU)
     MANUFACTURER: {
         id: 'manufacturer_v1',
+        widget_types: ['B2B', 'TELEPHONY'],
         name: 'Atelier Artisan',
         voice: 'rex',
         sensitivity: 'normal',
@@ -4741,6 +4777,7 @@ const PERSONAS = {
     // 35. DOCTOR - Médecine générale
     DOCTOR: {
         id: 'doctor_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Cabinet Médical',
         voice: 'eve',
         sensitivity: 'high',
@@ -4865,6 +4902,7 @@ const PERSONAS = {
     // 36. NOTARY - Étude notariale
     NOTARY: {
         id: 'notary_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Étude Notariale',
         voice: 'tom',
         sensitivity: 'high',
@@ -4989,6 +5027,7 @@ const PERSONAS = {
     // 37. BAKERY - Boulangerie/Pâtisserie (Top retail)
     BAKERY: {
         id: 'bakery_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Boulangerie Pâtissier',
         voice: 'sara',
         sensitivity: 'normal',
@@ -5113,6 +5152,7 @@ const PERSONAS = {
     // 38. SPECIALIST - Médecin spécialiste
     SPECIALIST: {
         id: 'specialist_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Spécialiste Santé',
         voice: 'valentin',
         sensitivity: 'obsessive', // Medical sensitivity
@@ -5237,6 +5277,7 @@ const PERSONAS = {
     // 40. REAL_ESTATE_AGENT - Agence immobilière (vente)
     REAL_ESTATE_AGENT: {
         id: 'real_estate_agent_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Agence Immobilière',
         voice: 'leo',
         sensitivity: 'normal',
@@ -5361,6 +5402,7 @@ const PERSONAS = {
     // 41. HAIRDRESSER - Salon de coiffure
     HAIRDRESSER: {
         id: 'hairdresser_v1',
+        widget_types: ['B2C', 'TELEPHONY'],
         name: 'Salon de Coiffure',
         voice: 'mika',
         sensitivity: 'normal',
@@ -5486,6 +5528,7 @@ const PERSONAS = {
     // Market: Morocco $128M (2025), Europe $59B - HIGH VALUE B2B
     GROCERY: {
         id: 'grocery_v1',
+        widget_types: ['B2C', 'ECOM', 'TELEPHONY'],
         name: 'Service Livraison Courses',
         voice: 'sal',
         sensitivity: 'normal',
@@ -5642,9 +5685,10 @@ class VoicePersonaInjector {
      * @param {string} callerId - Phone number of caller
      * @param {string} calledNumber - Phone number called
      * @param {string} clientId - API Client ID (Multi-tenancy)
+     * @param {string} widgetType - Type of widget (B2B, B2C, ECOM, TELEPHONY)
      * @returns {Object} Persona Configuration (Merged Identity + Archetype)
      */
-    static getPersona(callerId, calledNumber, clientId) {
+    static getPersona(callerId, calledNumber, clientId, widgetType = 'B2C') {
         // 0. Situational Awareness Override (GPM Logic)
         let matrix = null;
         try {
@@ -5679,13 +5723,28 @@ class VoicePersonaInjector {
         }
 
         // 2. Retrieve Archetype (The "Soul")
-        const archetype = PERSONAS[archetypeKey] || PERSONAS.AGENCY;
+        let archetype = PERSONAS[archetypeKey] || PERSONAS.AGENCY;
+
+        // 2a. Widget Segmentation Validation (Session 177.5)
+        // If the persona is not compatible with the widget type, fallback to a safe default
+        if (widgetType && archetype.widget_types && !archetype.widget_types.includes(widgetType)) {
+            console.warn(`[Director] ⚠️ Persona segmentation mismatch: ${archetypeKey} is not allowed for ${widgetType}. Applying safety fallback.`);
+
+            // Context-aware fallback
+            if (widgetType === 'ECOM') archetypeKey = 'UNIVERSAL_ECOMMERCE';
+            else if (widgetType === 'TELEPHONY') archetypeKey = 'AGENCY';
+            else if (widgetType === 'B2B') archetypeKey = 'AGENCY';
+            else archetypeKey = 'UNIVERSAL_SME';
+
+            archetype = PERSONAS[archetypeKey] || PERSONAS.AGENCY;
+        }
 
         // 3. Merge Identity (The "Body")
         // If clientConfig exists, override specific details. If not, use Archetype defaults.
         const identity = {
             id: clientId || archetype.id,
             archetypeKey: archetypeKey, // Session 250.54: Store for inject() SYSTEM_PROMPTS lookup
+            widget_types: archetype.widget_types, // Pass through for UI filtering
             name: clientConfig?.name || archetype.name,
             voice: archetype.voice, // Voice is usually tied to Archetype, but could be overridden
             sensitivity: archetype.sensitivity,
@@ -5740,6 +5799,24 @@ class VoicePersonaInjector {
         let finalInstructions = basePrompt;
         if (persona.name) {
             finalInstructions = finalInstructions.replace(/VocalIA Sales|Cabinet Dentaire Lumière|Universal E-commerce Support/g, persona.name);
+        }
+
+        // 3.1 SOTA: Colloquial A2A Post-Filtering (Darija nuances)
+        if (persona.language === 'ary') {
+            const colloquialMappings = [
+                { pattern: /est-ce que/gi, replacement: 'wash' },
+                { pattern: /comment/gi, replacement: 'kifash' },
+                { pattern: /maintenant/gi, replacement: 'daba' },
+                { pattern: /bien sûr/gi, replacement: 'wakha' },
+                { pattern: /merci/gi, replacement: 'chokran' },
+                { pattern: /au revoir/gi, replacement: 'beslama' },
+                { pattern: /peut-être/gi, replacement: 'ymken' },
+                { pattern: /tout de suite/gi, replacement: 'daba nite' }
+            ];
+
+            colloquialMappings.forEach(m => {
+                finalInstructions = finalInstructions.replace(m.pattern, m.replacement);
+            });
         }
 
         // 3a. SOTA BLUEPRINT: Context Injection (Attribution + Session)
@@ -5814,9 +5891,9 @@ class VoicePersonaInjector {
             persona_id: persona.id,
             persona_name: persona.name,
             sensitivity_level: persona.sensitivity,
-            currency: persona.payment_config.currency,
+            currency: persona.payment_config?.currency || 'MAD',
             language: persona.language,
-            payment_config: persona.payment_config,
+            payment_config: persona.payment_config || { currency: 'MAD' },
             knowledge_base_id: persona.knowledge_base_id
         };
 

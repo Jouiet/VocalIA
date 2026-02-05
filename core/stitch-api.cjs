@@ -116,7 +116,7 @@ async function generateScreen(projectId, prompt, deviceType = 'DESKTOP', modelId
     projectId,
     prompt,
     deviceType,
-    modelId
+    modelId: modelId === 'GEMINI_3_PRO' ? 'GEMINI_3_0_PRO' : modelId
   });
 
   if (result?.structuredContent) {
@@ -187,7 +187,7 @@ async function getProject(name) {
 }
 
 // CLI
-const [,, command, ...args] = process.argv;
+const [, , command, ...args] = process.argv;
 
 async function main() {
   switch (command) {
@@ -259,7 +259,7 @@ Usage:
   node stitch-api.cjs list                                    # List all projects
   node stitch-api.cjs create <title>                          # Create new project
   node stitch-api.cjs project <projectId>                     # Get project details
-  node stitch-api.cjs generate <projectId> "<prompt>"         # Generate screen (DESKTOP, GEMINI_3_PRO)
+  node stitch-api.cjs generate <projectId> "<prompt>"         # Generate screen (DESKTOP, GEMINI_3_0_PRO)
   node stitch-api.cjs generate <projectId> "<prompt>" MOBILE  # Generate mobile screen
   node stitch-api.cjs screens <projectId>                     # List screens in project
   node stitch-api.cjs get <projectId> <screenId>              # Get screen details
@@ -268,7 +268,7 @@ Usage:
 Examples:
   node stitch-api.cjs create "My App"
   node stitch-api.cjs generate 705686758968107418 "Modern dashboard with charts"
-  node stitch-api.cjs generate 705686758968107418 "Login page" MOBILE GEMINI_3_FLASH
+  node stitch-api.cjs generate 705686758968107418 "Login page" MOBILE GEMINI_3_0_FLASH
       `);
   }
 }

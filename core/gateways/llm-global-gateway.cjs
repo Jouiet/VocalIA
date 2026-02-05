@@ -26,8 +26,8 @@ class LLMGateway {
 
         if (this.geminiKey) {
             this.genAI = new GoogleGenerativeAI(this.geminiKey);
-            // gemini-3-flash-preview is the verified 2026 frontier (Jan 2026)
-            this.geminiModel = this.genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+            // gemini-3.0-flash is the verified 2026 frontier
+            this.geminiModel = this.genAI.getGenerativeModel({ model: "gemini-3.0-flash" });
         }
     }
 
@@ -149,8 +149,8 @@ class LLMGateway {
         }
 
         if (res.status === 400 || res.status === 404) {
-            console.warn("[LLM] Claude Opus 4.5 not available. Falling back to Claude 3.5 Sonnet...");
-            res = await tryModel("claude-3-5-sonnet-20241022");
+            console.warn("[LLM] Claude Opus 4.5 not available. Falling back to Claude 4.5 Sonnet...");
+            res = await tryModel("claude-4-5-sonnet-20260201");
         }
 
         return this._handleFetchResponse(res, 'Claude');

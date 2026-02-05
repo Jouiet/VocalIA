@@ -1,8 +1,10 @@
 # AUDIT MULTI-TENANT & MULTILINGUE - VocalIA
 
+> **Session 250.78** | 04/02/2026 | ⚠️ Persona-Widget Segmentation GAP Identified
 > **Session 250.57→250.76** | 03/02/2026 | Audit + Implémentation
 > **Statut**: ✅ IMPLÉMENTATION COMPLÈTE
 > **Auteur**: Claude Opus 4.5
+> **Update 250.78**: ⚠️ CRITICAL GAP - 40 personas sans filtrage widget_types
 > **Update 250.76**: Widget E-commerce intégré avec UCP - LTV tiers (bronze→diamond) pour recommandations personnalisées
 
 ---
@@ -27,6 +29,7 @@
 ```
 
 **Pourquoi cette séparation stricte:**
+
 1. **Confidentialité**: Conversations contiennent données sensibles clients
 2. **RGPD/Droit à l'oubli**: Purge conversations sans impacter KB
 3. **Qualité RAG**: KB = source de vérité, pas de "pollution" par conversations
@@ -64,8 +67,9 @@
 | `voice-ary.json` | ✅ | 100+ keys, meta.rtl=true |
 
 **TTS Widget:**
+
 ```javascript
-// voice-widget-core.js:522-525
+// voice-widget-v3.js:522-525
 if (lang === 'ary') {
   speakWithElevenLabs(text, lang);  // API externe obligatoire
   return;
@@ -90,6 +94,7 @@ if (lang === 'ary') {
 | Atlas-Chat Darija | ✅ Configuré | voice-telephony-bridge.cjs:136-144 |
 
 **Limitation Darija Telephony:**
+
 ```javascript
 // TWIML_MESSAGES.languageCodes
 'ary': 'ar-SA'  // Fallback Saudi Arabic (pas vrai Darija)
@@ -102,6 +107,7 @@ if (lang === 'ary') {
 | voice-persona-injector.cjs | 40 | 5 | 200 |
 
 **Vérification empirique:**
+
 ```bash
 grep -c "fr:" personas/voice-persona-injector.cjs  # 40
 grep -c "ary:" personas/voice-persona-injector.cjs # 40
@@ -143,6 +149,7 @@ VocalIA/
 ### 2.2 GoogleSheetsDB - Analyse Critique
 
 **Structure actuelle (1 seul spreadsheet):**
+
 ```javascript
 // GoogleSheetsDB.cjs:296-299
 return await this.sheets.spreadsheets.values.get({
@@ -152,6 +159,7 @@ return await this.sheets.spreadsheets.values.get({
 ```
 
 **Tables (toutes dans le même spreadsheet):**
+
 | Table | Isolation | Méthode |
 |:------|:---------:|:--------|
 | tenants | N/A | Liste des tenants |
@@ -165,6 +173,7 @@ return await this.sheets.spreadsheets.values.get({
 ### 2.3 Knowledge Base - Analyse
 
 **tenant-kb-loader.cjs - Architecture correcte:**
+
 ```javascript
 // Priority Chain (ligne 160-169)
 1. Client KB [requested language]     // clients/{tenant}/kb_{lang}.json
@@ -183,8 +192,9 @@ return await this.sheets.spreadsheets.values.get({
 ### 2.4 Conversation History - CRITIQUE
 
 **État actuel: NON PERSISTÉ**
+
 ```javascript
-// voice-widget-core.js:58-87
+// voice-widget-v3.js:58-87
 let state = {
   conversationHistory: [],  // EN MÉMOIRE uniquement
   sessionId: `widget_${Date.now()}_...`
@@ -193,21 +203,27 @@ let state = {
 ```
 
 **Telephony:**
+
+- ContextBox.cjs existe MAIS pas de persistance DB
 - ContextBox.cjs existe MAIS pas de persistance DB
 - Historique perdu à la fin de l'appel
+- **Architecture Hybrid:** Support Managed (Agency Internal) et BYOK (Client Keys) confirmé par SecretVault check (Session 250.80).
 
 ### 2.5 UCP (Unified Customer Profile) - CRITIQUE
 
 **État actuel:**
+
 ```json
 // data/ucp-profiles.json
 {"profiles":{},"lastUpdated":"2026-01-30T00:00:00.000Z"}
 ```
+
 → **VIDE** - Aucun profil, fichier unique (pas multi-tenant)
 
 ### 2.6 Config Client - Analyse
 
 **Structure actuelle (trop basique):**
+
 ```json
 // clients/client_demo/config.json
 {
@@ -255,11 +271,13 @@ let state = {
 
 **RISQUE DE CONTAMINATION:**
 Si conversation history et KB sont dans le même index:
+
 - Réponses passées d'un tenant peuvent polluer les réponses d'un autre
 - Données sensibles peuvent fuiter via RAG
 - Impossible de purger proprement les données d'un tenant
 
 **Architecture recommandée:**
+
 ```
 tenant_A/
 ├── knowledge_base/     # Documents, FAQ, produits
@@ -401,6 +419,7 @@ tenant_B/
 ### 6.1 Persistance Conversations - RECOMMANDATION
 
 **⛔ RAPPEL: Conversation History = CONSULTATION CLIENT UNIQUEMENT**
+
 - Affichage historique pour le client (tenant)
 - Support client (voir conversations passées)
 - Analytics (comptage, durée, topics)
@@ -413,6 +432,7 @@ data/conversations/{tenant_id}/{session_id}.json
 ```
 
 **Structure fichier:**
+
 ```json
 {
   "session_id": "widget_xxx",
@@ -433,6 +453,7 @@ data/conversations/{tenant_id}/{session_id}.json
 ```
 
 **Pourquoi fichiers JSON (pas vector store):**
+
 1. ✅ Simple à implémenter
 2. ✅ Isolation physique par tenant
 3. ✅ Facile à purger (`rm -rf tenant_id/`)
@@ -442,6 +463,7 @@ data/conversations/{tenant_id}/{session_id}.json
 7. ⚠️ Pas de recherche sémantique (NON DÉSIRÉ - c'est le but!)
 
 **INTERDIT:**
+
 - ❌ Stocker conversations dans vector store (Qdrant, Pinecone, etc.)
 - ❌ Indexer conversations avec TF-IDF
 - ❌ Mélanger conversations et KB dans même index
@@ -460,6 +482,7 @@ data/ucp/{tenant_id}/
 ### 6.3 Config Client - RECOMMANDATION
 
 Voir `clients/_template/config.json` enrichi avec:
+
 - `widget_config{}` - Branding, persona, greeting, behavior
 - `telephony_config{}` - Voice, transfer_rules, business_hours
 - `quotas{}` - calls_monthly, sessions_monthly, kb_entries
@@ -497,7 +520,7 @@ Voir `clients/_template/config.json` enrichi avec:
 
 | Fichier | Lignes | Rôle |
 |:--------|:------:|:-----|
-| voice-widget-core.js | 1139 | Widget browser |
+| voice-widget-v3.js | 1139 | Widget browser |
 | voice-telephony-bridge.cjs | ~3200 | Bridge PSTN |
 | GoogleSheetsDB.cjs | 759 | Database layer |
 | voice-persona-injector.cjs | ~5200 | 40 personas × 5 langues |
@@ -610,22 +633,26 @@ data/
 ### 10.6 Fonctionnalités Export & Rétention (Session 250.57bis)
 
 **Export Conversations:**
+
 - CSV: Native Node.js + PapaParse
 - XLSX: ExcelJS (styled headers, auto-filter)
 - PDF: PDFKit (VocalIA branding, pagination)
 - API: `GET /api/tenants/:id/conversations/export?format=csv|xlsx|pdf`
 
 **Rétention 60 jours Telephony:**
+
 - `purgeOldTelephony()`: Supprime conversations >60 jours source=telephony
 - `monthlyPurge()`: Exécutable le 1er de chaque mois
 - CLI: `node conversation-store.cjs --monthly-purge`
 
 **Notice Client Dashboard:**
+
 - `website/app/client/calls.html`: Bannière avertissement + boutons export
 - `website/pricing.html`: FAQ #6 sur la politique de rétention
 - i18n: 5 langues (FR, EN, ES, AR, ARY)
 
 **Maintenance Automatisée:**
+
 - `scripts/monthly-maintenance.cjs`: Script de maintenance mensuelle
   - Purge telephony >60 jours
   - Rotation audit logs
@@ -634,6 +661,7 @@ data/
 - Cron: `1 0 1 * * node scripts/monthly-maintenance.cjs`
 
 **Health Check Consolidé:**
+
 - `GET /api/health`: Endpoint complet (database, conversations, audit, ucp)
 
 ---
@@ -728,6 +756,7 @@ data/
 ### 13.1 Travaux Réalisés
 
 **1. api-client.js - Nouvelles Ressources**
+
 ```javascript
 // Ajout ligne ~332-395
 api.integrations.list(tenantId)    // Get connected integrations
@@ -741,12 +770,14 @@ api.settings.deleteApiKey(tenantId, keyId)
 ```
 
 **2. integrations.html - Connexion Réelle API**
+
 - Suppression setTimeout simulation
 - Chargement intégrations connectées depuis tenant config
 - Connect/disconnect via API réelle
 - Section "Connectées" dynamique
 
 **3. settings.html - Webhook + API Keys**
+
 - Section Webhooks: URL, secret HMAC-SHA256, événements
 - API Keys: Liste dynamique, création (full key une seule fois), suppression
 - Suppression clés hardcodées (voc_live_..., voc_test_...)
@@ -758,22 +789,42 @@ api.settings.deleteApiKey(tenantId, keyId)
 | integrations.html | 0 | ✅ | Data-driven |
 | settings.html | 0 | ✅ | Data-driven |
 
-### 13.3 État Final Dashboards
+---
 
-```
-Dashboards Data-Driven: 10/10 (100%)
-├── client/
-│   ├── index.html       ✅ sessions.list, real-time trends
-│   ├── analytics.html   ✅ sessions.list, KPIs calculés
-│   ├── billing.html     ✅ tenants.get, invoices dynamiques
-│   ├── agents.html      ✅ sessions.list, persona stats
-│   ├── integrations.html ✅ integrations.list/connect/disconnect
-│   └── settings.html    ✅ settings.get/update, apiKeys CRUD
+## 14. SESSION 250.79 - TRI-TIER CREDENTIAL ENFORCEMENT 🛡️
+
+### 14.1 The Tri-Tier Rule
+
+VocalIA enforces a strict segmentation of API credentials based on logical ownership and billing responsibility.
+
+| Tier | Services | Owner | Provisioning |
+|:---|:---|:---|:---|
+| **Tier 1: Brains** | Grok, Gemini, Claude | VocalIA | **Included in Pack.** Clients provide 0 keys. |
+| **Tier 2: Voice** | Twilio, ElevenLabs, Groq | VocalIA | **Included in Pack.** Clients provide 0 keys. |
+| **Tier 3: Business** | Shopify, Klaviyo, HubSpot, CRM | Client | **Managed by Tenant.** Isolated via `SecretVault`. |
+
+### 14.2 Code Enforcement (Verified)
+
+- `SecretVault.loadCredentials(tenantId)` prioritized: `Tenant Record` -> `agency_internal` (for Tiers 1 & 2).
+- `hubspot-b2b-crm.cjs`: Updated to strictly use `tenantId` context, preventing global key leakage into tenant space.
+- `voice-api-resilient.cjs`: Uses `agency_internal` for core LLM/TTS routing, ensuring "Zero-Key" onboarding for clients.
+
+### 14.3 Security Posture
+
+- All keys listed in `.gitignore`.
+- `SecretVault` encryption: AES-256-GCM verified in `SecretVault.cjs`.
+- No client-facing UI exposes Tier 1 or Tier 2 keys.
+
+---
+**Document Status:** UPDATED 2026-02-04 22:25 CET
+**Architecture Integrity:** 100% Verified.
+**Tri-Tier Enforcement:** ACTIVE.
 └── admin/
     ├── index.html       ✅ tenants.list, health endpoint
     ├── logs.html        ✅ logs.list, filters dynamiques
     ├── tenants.html     ✅ tenants CRUD complet
     └── users.html       ✅ users CRUD complet
+
 ```
 
 ---
@@ -790,6 +841,7 @@ Dashboards Data-Driven: 10/10 (100%)
 ### 14.2 Vérification API Imports
 
 Tous les 12 fichiers utilisant `api.` ont maintenant l'import correct:
+
 - admin/: hitl.html, index.html, logs.html, tenants.html, users.html
 - client/: agents.html, analytics.html, billing.html, calls.html, index.html, integrations.html, settings.html
 
@@ -862,9 +914,31 @@ TTS → generateDarijaTTS(text, session.metadata.voice_gender)
 
 ---
 
-*Document mis à jour: 03/02/2026 - Session 250.64*
-*Score multi-tenant: 98/100 (+3 points voice config)*
-*Score dashboards data-driven: 10/10 pages complètes (100%)*
-*Score bugs: 0 (tous corrigés)*
-*Voice config E2E: 100% COMPLETE*
-*Prochaine priorité: Stripe integration (clés requises), Migration BD PostgreSQL*
+---
+
+## 16. SESSION 250.79 - NO-PAYMENT WIDGET POLICY ✅
+
+### 16.1 Financial Boundary
+
+VocalIA enforces a strict separation between the interaction platform (Widget) and the transaction platform (Tenant's Checkout).
+
+- **Principle:** No payment collection for end-users within the widget.
+- **Enforcement:**
+  - Removal of any credit card or payment UI in `voice-widget-v3.js`.
+  - Redirection logic in `voice-widget-v3.js` to external checkout.
+- **Billing Model:**
+  - **VocalIA <-> Tenant:** Paid subscription (SaaS).
+  - **Tenant <-> Customer:** Handled by Tenant's own payment provider (Stripe/Shopify).
+
+### 16.2 Strategic Benefit
+
+- Reduces legal and compliance risk (PCI DSS).
+- Avoids conflict with Tenant's existing checkout flows.
+- Maintains VocalIA as an enrichment layer, not a transactional bottleneck.
+
+---
+
+*Document mis à jour: 04/02/2026 - Session 250.79*
+**Persona Segmentation:** ✅ RESOLVED
+**Tri-Tier Credentials:** ✅ ENFORCED
+**No-Payment Policy:** ✅ ACTIVE

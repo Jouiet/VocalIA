@@ -796,6 +796,33 @@ session.metadata = {
 
 ---
 
-*Document: Session 250.64 | 03/02/2026*
-*Exigence: Multi-Tenant KB + Voice Preferences - Chaque client = KB + voix unique*
+---
+
+## 16. SESSION 250.79 - TRI-TIER CREDENTIAL ARCHITECTURE ✅
+
+### 16.1 Definition
+
+Enforces explicit separation between VocalIA-managed infrastructure and Tenant-managed integrations.
+
+- **Tier 1 & 2 (Brains & Voice):** Grok, Gemini, Claude, Twilio, ElevenLabs.
+  - **Ownership:** VocalIA.
+  - **Provisioning:** Automatic via `agency_internal` fallback in `SecretVault`.
+  - **Client UI:** Hidden. Clients do not see or edit these keys.
+- **Tier 3 (Ecosystem):** CRM, Shopify, Klaviyo, Google.
+  - **Ownership:** Tenant (Client).
+  - **Provisioning:** Manual via Tenant Dashboard -> Settings.
+  - **Isolation:** Strictly isolated in `clients/{tenant_id}/credentials.json`.
+
+### 16.2 Strategic Benefit
+
+- Removes onboarding friction (no "Get an OpenAI key" steps).
+- Protects VocalIA's wholesale pricing margins.
+- Ensures 100% data sovereignity for client business data.
+
+---
+**Status:** VALIDATED.
+**Forensic Audit:** ZERO DEBT.
+*Session 250.77: Product Matrix VALIDATED - 4 products (B2B/B2C/Ecom/Telephony) avec visual display config*
+*Exigence: Multi-Tenant KB + Voice Preferences + Persona-Widget Validation*
+
 *Sources: ElevenLabs, Microsoft Azure, GitHub, HuggingFace, Industry Blogs*

@@ -116,17 +116,74 @@ function getLocale() {
 }
 
 /**
+ * Geo-IP Mapping configuration
+ */
+const GEO_MAPPING = {
+  'MA': { lang: 'fr', currency: 'MAD', symbol: 'DH' },
+  'FR': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'ES': { lang: 'es', currency: 'EUR', symbol: '€' },
+  'SA': { lang: 'en', currency: 'USD', symbol: '$' },
+  'AE': { lang: 'en', currency: 'USD', symbol: '$' },
+  'QA': { lang: 'en', currency: 'USD', symbol: '$' },
+  'US': { lang: 'en', currency: 'USD', symbol: '$' }
+};
+
+const DEFAULT_GEO = { lang: 'en', currency: 'USD', symbol: '$' };
+
+/**
+ * Detect user location and return suggested config
+ * @returns {Promise<Object>} Geo config
+ */
+async function detectUserGeo() {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    if (!response.ok) throw new Error('Geo-IP service unavailable');
+    const data = await response.json();
+    const config = GEO_MAPPING[data.country_code] || DEFAULT_GEO;
+    console.log(`[i18n] Detected location: ${data.country_name} (${data.country_code}). Using: ${config.lang}/${config.currency}`);
+    return config;
+  } catch (e) {
+    console.warn('[i18n] Geo detection failed, using defaults:', e);
+    return DEFAULT_GEO;
+  }
+}
+
+/**
+ * Get currency information for the active locale
+ * @returns {Object} { currency: 'MAD', symbol: 'DH' }
+ */
+function getCurrencyInfo() {
+  return {
+    currency: localStorage.getItem('vocalia_currency') || 'USD',
+    symbol: localStorage.getItem('vocalia_symbol') || '$'
+  };
+}
+
+/**
  * Initialize i18n with geo-detected or stored locale
- * @param {string} geoLang - Geo-detected language
  * @returns {Promise<string>} Active locale
  */
-async function initI18n(geoLang) {
-  // Priority: URL param > localStorage > geo detection > default
+async function initI18n() {
+  // 1. Detect Geo (but don't override explicit choices yet)
+  let geoConfig = DEFAULT_GEO;
+  try {
+    geoConfig = await detectUserGeo();
+  } catch (e) {
+    console.warn('[i18n] Initialization geo-detection fail:', e);
+  }
+
+  // Set defaults if not present
+  if (!localStorage.getItem('vocalia_currency')) {
+    localStorage.setItem('vocalia_currency', geoConfig.currency);
+    localStorage.setItem('vocalia_symbol', geoConfig.symbol);
+  }
+
+  // 2. Priority: URL param > localStorage > geo detection > default
   const urlParams = new URLSearchParams(window.location.search);
   const urlLang = urlParams.get('lang');
   const storedLang = localStorage.getItem('vocalia_lang');
 
-  const locale = urlLang || storedLang || geoLang || 'fr';
+  const locale = urlLang || storedLang || geoConfig.lang || 'fr';
   await setLocale(locale);
 
   return locale;
@@ -199,10 +256,10 @@ function translatePage() {
 
 // Export for ES modules
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { loadTranslations, t, setLocale, getLocale, initI18n, translatePage };
+  module.exports = { loadTranslations, t, setLocale, getLocale, initI18n, translatePage, getCurrencyInfo };
 }
 
 // Export for browser
 if (typeof window !== 'undefined') {
-  window.VocaliaI18n = { loadTranslations, t, setLocale, getLocale, initI18n, translatePage };
+  window.VocaliaI18n = { loadTranslations, t, setLocale, getLocale, initI18n, translatePage, getCurrencyInfo };
 }

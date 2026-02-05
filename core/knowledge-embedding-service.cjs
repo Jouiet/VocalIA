@@ -45,12 +45,13 @@ class KnowledgeEmbeddingService {
     /**
      * Generate embedding for a single text chunk
      */
-    async getEmbedding(id, text) {
+    async getEmbedding(id, text, apiKey = null) {
         if (this.cache[id]) return this.cache[id];
 
         try {
             console.log(`[Embedding] Generating for chunk: ${id}...`);
-            const result = await model.embedContent(text);
+            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : model;
+            const result = await targetModel.embedContent(text);
             const embedding = result.embedding.values;
 
             this.cache[id] = embedding;
@@ -81,9 +82,10 @@ class KnowledgeEmbeddingService {
     /**
      * Generate embedding for a query (Real-time)
      */
-    async getQueryEmbedding(query) {
+    async getQueryEmbedding(query, apiKey = null) {
         try {
-            const result = await model.embedContent(query);
+            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : model;
+            const result = await targetModel.embedContent(query);
             return result.embedding.values;
         } catch (e) {
             console.error('[Embedding] Query embedding failed:', e.message);

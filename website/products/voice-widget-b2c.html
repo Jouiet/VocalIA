@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Widget B2C - VocalIA</title>
+  <link href="/public/css/style.css?v=251" rel="stylesheet">
+  <style>
+    :root {
+      --quantum-void: #050505;
+      --vocalia-primary: #5E6AD2;
+      --glass-bg: rgba(10, 10, 10, 0.75);
+    }
+
+    body {
+      background: var(--quantum-void);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+
+<body class="bg-[#050505]">
+  <!-- Hero -->
+  <section class="min-h-[70vh] flex items-center justify-center p-6 text-center">
+    <div class="max-w-4xl mx-auto">
+      <div
+        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm mb-6">
+        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+        SOTA B2C Solution
+      </div>
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">L'Intelligence Vocale pour <span class="text-indigo-400">Services
+          Locaux</span></h1>
+      <p class="text-xl text-zinc-400 mb-10">Automatisez vos prises de RDV et commandes avec notre widget visuel
+        intelligent.</p>
+      <div class="flex gap-4 justify-center">
+        <a href="/pricing" class="px-8 py-4 bg-vocalia-500 rounded-xl font-bold hover:bg-vocalia-400 transition">Essayer
+          pour 49$</a>
+        <button class="px-8 py-4 glass rounded-xl font-bold hover:bg-white/5 transition">Voir Démo MENU</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Features -->
+  <section class="py-24 px-6 border-t border-white/5">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+      <div class="glass p-8 rounded-2xl">
+        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-6">
+          <i data-lucide="calendar" class="text-indigo-400"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-4">RDV Automatisés</h3>
+        <p class="text-zinc-400">Synchronisation directe avec Google Calendar et Calendly.</p>
+      </div>
+      <div class="glass p-8 rounded-2xl">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-6">
+          <i data-lucide="clipboard-list" class="text-emerald-400"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-4">Catalogue Visuel</h3>
+        <p class="text-zinc-400">Affichez vos menus ou services directement dans le widget pendant la conversation.</p>
+      </div>
+      <div class="glass p-8 rounded-2xl">
+        <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center mb-6">
+          <i data-lucide="languages" class="text-amber-400"></i>
+        </div>
+        <h3 class="text-2xl font-bold mb-4">Darija & Arabe</h3>
+        <p class="text-zinc-400">Optimisé pour le marché MENA avec un support vocal parfait.</p>
+      </div>
+    </div>
+  </section>
+
+  <script src="/src/lib/i18n.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+    VocaliaI18n.initI18n();
+  </script>
+</body>
+
+</html>

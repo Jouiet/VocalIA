@@ -17,15 +17,14 @@ export function initVocalia(config) {
         ...config
     };
 
-    // Load Script dynamically from CDN/API
+    // Load Script dynamically from CDN/API (Unified V3 Kernel)
     if (!document.getElementById('vocalia-script')) {
-        const mode = window.VOCALIA_CONFIG.ecommerceMode ? 'ecommerce' : 'b2b';
         const script = document.createElement('script');
         script.id = 'vocalia-script';
-        script.src = `https://api.vocalia.ma/voice-assistant/voice-widget-${mode}.js`;
+        script.src = `https://api.vocalia.ma/voice-assistant/voice-widget-v3.js`;
         script.defer = true;
         document.body.appendChild(script);
-        console.log(`[VocalIA] Initializing ${mode} widget via NPM`);
+        console.log(`[VocalIA] Initializing unified V3 widget via NPM`);
     }
 }
 

@@ -40,7 +40,7 @@ class VocaliaVoiceWidget extends HTMLElement {
         // Create Script Tag
         const script = document.createElement('script');
         // Wix is predominantly e-commerce, but we load the split kernel
-        const kernel = window.VOCALIA_CONFIG.ecommerceMode ? 'voice-widget-ecommerce.js' : 'voice-widget-b2b.js';
+        const kernel = 'voice-widget-v3.js';
         script.src = `https://api.vocalia.ma/voice-assistant/${kernel}`;
         script.async = true;
 

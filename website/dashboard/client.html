@@ -16,8 +16,9 @@
   <!-- Tailwind CSS (Sovereign) -->
   <link href="/public/css/style.css" rel="stylesheet">
   <!-- Content Security Policy (Hardened) -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <!-- Inter Font -->
@@ -35,17 +36,46 @@
        Security: SRI omitted intentionally - Plausible updates script frequently.
        Risk accepted: Trusted vendor, <1KB script, no sensitive data, CSP restricted. -->
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
-  
+
 </head>
 
-<body class="bg-slate-800 text-white min-h-screen">
+
+<body class="bg-[#050505] text-white min-h-screen">
+  <style>
+    :root {
+      --quantum-void: #050505;
+      --glass-bg: rgba(10, 10, 10, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.08);
+    }
+
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(94, 106, 210, 0.3);
+      background: rgba(255, 255, 255, 0.05);
+    }
+  </style>
+
   <!-- Skip Link for Accessibility -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
     Aller au contenu principal
   </a>
 
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation" aria-label="Navigation client">
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation"
+    aria-label="Navigation client">
     <!-- Logo -->
     <div class="p-6 border-b border-slate-600">
       <a href="/" class="flex items-center space-x-2">
@@ -137,14 +167,17 @@
             <div id="langDropdown"
               class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-slate-700/95 backdrop-blur-xl border border-slate-600/50 shadow-xl z-50 overflow-hidden">
               <button type="button" data-action="switchLang" data-params="fr"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span data-i18n="dashboard.fr_franais_34">FR
-                - Français</span></button>
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                  data-i18n="dashboard.fr_franais_34">FR
+                  - Français</span></button>
               <button type="button" data-action="switchLang" data-params="en"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span data-i18n="dashboard.en_english_33">EN
-                - English</span></button>
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                  data-i18n="dashboard.en_english_33">EN
+                  - English</span></button>
               <button type="button" data-action="switchLang" data-params="es"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span data-i18n="dashboard.es_espaol_32">ES
-                - Español</span></button>
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                  data-i18n="dashboard.es_espaol_32">ES
+                  - Español</span></button>
               <button type="button" data-action="switchLang" data-params="ar" dir="rtl"
                 class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">العربية
                 - AR</button>
@@ -201,7 +234,8 @@
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.minutes_used">Minutes utilisées</p>
             <!-- Progress bar -->
             <div class="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
-              <div id="minutes-progress" class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full" style="width: 0%">
+              <div id="minutes-progress" class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full"
+                style="width: 0%">
               </div>
             </div>
           </div>
@@ -291,7 +325,8 @@
           <div class="space-y-4">
             <div data-lang="fr">
               <div class="flex justify-between text-sm mb-1">
-                <span class="flex items-center"><span class="mr-2">🇫🇷</span><span data-i18n="dashboard.franais_30">Français</span></span>
+                <span class="flex items-center"><span class="mr-2">🇫🇷</span><span
+                    data-i18n="dashboard.franais_30">Français</span></span>
                 <span id="lang-pct-fr" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
@@ -300,7 +335,8 @@
             </div>
             <div data-lang="ary">
               <div class="flex justify-between text-sm mb-1">
-                <span class="flex items-center"><span class="mr-2">🇲🇦</span><span data-i18n="dashboard.darija_29">Darija</span></span>
+                <span class="flex items-center"><span class="mr-2">🇲🇦</span><span
+                    data-i18n="dashboard.darija_29">Darija</span></span>
                 <span id="lang-pct-ary" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
@@ -309,7 +345,8 @@
             </div>
             <div data-lang="en">
               <div class="flex justify-between text-sm mb-1">
-                <span class="flex items-center"><span class="mr-2">🇬🇧</span><span data-i18n="dashboard.anglais_28">Anglais</span></span>
+                <span class="flex items-center"><span class="mr-2">🇬🇧</span><span
+                    data-i18n="dashboard.anglais_28">Anglais</span></span>
                 <span id="lang-pct-en" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
@@ -318,7 +355,8 @@
             </div>
             <div data-lang="ar">
               <div class="flex justify-between text-sm mb-1">
-                <span class="flex items-center"><span class="mr-2">🇸🇦</span><span data-i18n="dashboard.arabe_27">Arabe</span></span>
+                <span class="flex items-center"><span class="mr-2">🇸🇦</span><span
+                    data-i18n="dashboard.arabe_27">Arabe</span></span>
                 <span id="lang-pct-ar" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
@@ -327,7 +365,8 @@
             </div>
             <div data-lang="es">
               <div class="flex justify-between text-sm mb-1">
-                <span class="flex items-center"><span class="mr-2">🇪🇸</span><span data-i18n="dashboard.espagnol_26">Espagnol</span></span>
+                <span class="flex items-center"><span class="mr-2">🇪🇸</span><span
+                    data-i18n="dashboard.espagnol_26">Espagnol</span></span>
                 <span id="lang-pct-es" class="text-vocalia-400">-</span>
               </div>
               <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
@@ -344,7 +383,8 @@
         <div id="agents" class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.agents.title">Agents IA actifs</h3>
-            <button type="button" data-action="configureAgents" aria-label="Configurer les agents IA" class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
+            <button type="button" data-action="configureAgents" aria-label="Configurer les agents IA"
+              class="px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition text-sm font-medium"
               data-i18n="dashboard.agents.configure">+
               Configurer</button>
           </div>
@@ -357,14 +397,18 @@
                   <i data-lucide="shopping-cart" class="w-8 h-8 text-amber-400"></i>
                 </div>
                 <div>
-                  <h4 class="font-medium"><span data-i18n="dashboard.support_ecommerce_11"><span data-i18n="dashboard.support_ecommerce_25">Support E-commerce</span></span></h4>
+                  <h4 class="font-medium"><span data-i18n="dashboard.support_ecommerce_11"><span
+                        data-i18n="dashboard.support_ecommerce_25">Support E-commerce</span></span></h4>
                   <p class="text-sm text-vocalia-400">universal_ecom_v1 • FR, ARY</p>
                 </div>
               </div>
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
-                    class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span><span data-i18n="dashboard.actif_5"><span data-i18n="dashboard.actif_22"><span data-i18n="dashboard.actif_24">Actif</span></span></span></span>
-                <button type="button" data-action="agentSettings" data-params="universal_ecom_v1" aria-label="Paramètres agent E-commerce" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                    class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span><span
+                    data-i18n="dashboard.actif_5"><span data-i18n="dashboard.actif_22"><span
+                        data-i18n="dashboard.actif_24">Actif</span></span></span></span>
+                <button type="button" data-action="agentSettings" data-params="universal_ecom_v1"
+                  aria-label="Paramètres agent E-commerce" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
@@ -377,14 +421,16 @@
                   <i data-lucide="calendar" class="w-8 h-8 text-indigo-400"></i>
                 </div>
                 <div>
-                  <h4 class="font-medium"><span data-i18n="dashboard.prise_de_rdv_10"><span data-i18n="dashboard.prise_de_rdv_23">Prise de RDV</span></span></h4>
+                  <h4 class="font-medium"><span data-i18n="dashboard.prise_de_rdv_10"><span
+                        data-i18n="dashboard.prise_de_rdv_23">Prise de RDV</span></span></h4>
                   <p class="text-sm text-vocalia-400">dental_intake_v1 • FR</p>
                 </div>
               </div>
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
-                <button type="button" data-action="agentSettings" data-params="dental_intake_v1" aria-label="Paramètres agent RDV" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                <button type="button" data-action="agentSettings" data-params="dental_intake_v1"
+                  aria-label="Paramètres agent RDV" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
@@ -397,14 +443,17 @@
                   <i data-lucide="building" class="w-8 h-8 text-slate-400"></i>
                 </div>
                 <div>
-                  <h4 class="font-medium"><span data-i18n="dashboard.conciergerie_9"><span data-i18n="dashboard.conciergerie_21">Conciergerie</span></span></h4>
+                  <h4 class="font-medium"><span data-i18n="dashboard.conciergerie_9"><span
+                        data-i18n="dashboard.conciergerie_21">Conciergerie</span></span></h4>
                   <p class="text-sm text-vocalia-400">concierge_v1 • FR, EN, AR</p>
                 </div>
               </div>
               <div class="flex items-center space-x-3">
                 <span class="flex items-center text-sm text-yellow-400"><i data-lucide="pause-circle"
-                    class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span><span data-i18n="dashboard.pause_20">Pause</span></span>
-                <button type="button" data-action="agentSettings" data-params="concierge_v1" aria-label="Paramètres agent Conciergerie" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                    class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span><span
+                    data-i18n="dashboard.pause_20">Pause</span></span>
+                <button type="button" data-action="agentSettings" data-params="concierge_v1"
+                  aria-label="Paramètres agent Conciergerie" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
@@ -416,8 +465,9 @@
         <div id="calls" class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.calls.recent">Appels récents</h3>
-            <button type="button" data-action="viewAllCalls" aria-label="Voir tous les appels" class="text-vocalia-400 hover:text-white text-sm transition"
-              data-i18n="dashboard.calls.view_all">Voir tout →</button>
+            <button type="button" data-action="viewAllCalls" aria-label="Voir tous les appels"
+              class="text-vocalia-400 hover:text-white text-sm transition" data-i18n="dashboard.calls.view_all">Voir
+              tout →</button>
           </div>
           <div class="space-y-3">
             <!-- Call 1 -->
@@ -497,7 +547,8 @@
             <p id="billing-price" class="text-sm text-vocalia-400">-</p>
           </div>
           <div class="p-4 rounded-xl bg-slate-700/30">
-            <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.extra_mins">Minutes supplémentaires</p>
+            <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.extra_mins">Minutes supplémentaires
+            </p>
             <p id="billing-extra" class="text-2xl font-bold">0</p>
             <p id="billing-remaining" class="text-sm text-vocalia-400">- min incluses</p>
           </div>
@@ -624,7 +675,7 @@
 
         // Filter sessions for this specific tenant only
         const tenantSessions = (sessionsData.data || []).filter(s => s.tenant_id === tenant.id);
-          ? sessionsData.data || []
+          ?sessionsData.data || []
           : (sessionsData.data || []).filter(s => s.tenant_id === tenant.id);
 
         // Calculate metrics from sessions
@@ -804,8 +855,15 @@
       if (remainingEl) remainingEl.textContent = `${maxMins.toLocaleString()} min incluses`;
 
       // Update next bill amount
+      const info = VocaliaI18n.getCurrencyInfo();
       const nextAmountEl = document.getElementById('billing-next-amount');
-      if (nextAmountEl) nextAmountEl.textContent = price.toLocaleString() + '€';
+      if (nextAmountEl) {
+        if (info.currency === 'MAD') {
+          nextAmountEl.textContent = price.toLocaleString() + ' DH';
+        } else {
+          nextAmountEl.textContent = info.symbol + price.toLocaleString();
+        }
+      }
 
       // Update next bill date
       const nextDateEl = document.getElementById('billing-next-date');
@@ -886,9 +944,9 @@
           <button data-action="closeModal" class="mt-6 w-full px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition"><span data-i18n="dashboard.fermer_8"><span data-i18n="dashboard.fermer_14">Fermer</span></span></button>
         </div>
       `;
-      modal.onclick = (e) => { if (e.target === modal) { modal.remove(); if(typeof lucide !== 'undefined') lucide.createIcons(); } };
+      modal.onclick = (e) => { if (e.target === modal) { modal.remove(); if (typeof lucide !== 'undefined') lucide.createIcons(); } };
       document.body.appendChild(modal);
-      if(typeof lucide !== 'undefined') lucide.createIcons();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
     }
 
     function configureAgents() {
@@ -979,6 +1037,13 @@
       // Geo & I18n
       const geo = await VocaliaGeo.getGeo();
       await VocaliaI18n.initI18n(geo.lang);
+
+      // Sync currency info to localStorage from geo if not set
+      if (!localStorage.getItem('vocalia_currency')) {
+        localStorage.setItem('vocalia_currency', geo.currency);
+        localStorage.setItem('vocalia_symbol', geo.symbol);
+      }
+
       VocaliaI18n.translatePage();
 
       // Date localization
@@ -1007,92 +1072,94 @@
   </script>
 
   <!-- Lucide Icons 2026 -->
-  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
-  
-  
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
+
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          } else {
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
 
-    // i18n init - Priority: localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        var storedLang = localStorage.getItem('vocalia_lang');
-        if (storedLang) {
-          await VocaliaI18n.setLocale(storedLang);
-        } else if (typeof VocaliaGeo !== 'undefined') {
-          var geo = await VocaliaGeo.getGeo();
-          await VocaliaI18n.setLocale(geo.lang);
-        } else {
-          await VocaliaI18n.setLocale('fr');
-        }
+      // i18n init - Priority: localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          var storedLang = localStorage.getItem('vocalia_lang');
+          if (storedLang) {
+            await VocaliaI18n.setLocale(storedLang);
+          } else if (typeof VocaliaGeo !== 'undefined') {
+            var geo = await VocaliaGeo.getGeo();
+            await VocaliaI18n.setLocale(geo.lang);
+          } else {
+            await VocaliaI18n.setLocale('fr');
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-    }
+      }
 
-    // Re-init on load
-    window.addEventListener('load', initLucide);
-    window.addEventListener('load', initI18n);
-  })();
+      // Re-init on load
+      window.addEventListener('load', initLucide);
+      window.addEventListener('load', initI18n);
+    })();
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js" defer></script>

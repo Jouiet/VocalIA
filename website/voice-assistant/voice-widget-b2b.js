@@ -358,6 +358,7 @@
                     message: text,
                     language: state.currentLang,
                     sessionId: state.sessionId,
+                    widget_type: 'B2B', // Enforce B2B Persona
                     history: state.conversationHistory.slice(-6)
                 })
             });

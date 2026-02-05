@@ -56,7 +56,7 @@ To win in the 2026 AI marketplace, our distribution strategy leverages three "Un
 1. **Darija (Moroccan Arabic) Sovereignty:**
     * Unlike generic US-based voice agents, VocalIA handles Moroccan code-switching (French/Darija) natively via `mirroringRules` in the persona injector.
 2. **Voice Exit-Intent Popup (E-commerce):**
-    * Verified functionality in `voice-widget-ecommerce.js`. It catches abandoning users with a voice prompt rather than just a visual pop-up, increasing recovery by an estimated 25%.
+    * Verified functionality in `voice-widget-v3.js`. It catches abandoning users with a voice prompt rather than just a visual pop-up, increasing recovery by an estimated 25%.
 3. **Low-Latency SSE Streaming:**
     * The "Zero Latency" implementation in `voice-api-resilient.cjs` ensures that voice responses start under 500ms, essential for professional B2B lead generation.
 
@@ -130,7 +130,8 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 
 ### Rationale
 
-- **Business Positioning:** VocalIA is a premium business solution, not a charity project or an MVP demo.
+* **Business Positioning:** VocalIA is a premium business solution, not a charity project or an MVP demo.
+
 * **Target Audience:** CEOs and Marketing Professionals speak "ROI, Revenue, Leads", not "API, JSON, Latency".
 * **Trust:** Claiming "Free" then asking for 49€ destroys credibility. Transparency is conversion.
 
@@ -155,3 +156,168 @@ As part of the "Ultrathink" initiative, we have enforced a policy of **Radical C
 | Webhook | Automated Actions |
 
 **Status:** ENFORCED. All pages verified. 4 commits deployed.
+
+---
+
+## 7. PRODUCT MATRIX (2026-02-04 - Session Validated)
+
+> [!IMPORTANT]
+> **Directive:** VocalIA commercialise 4 produits distincts avec des cibles marketing différenciées.
+
+### 7.1 Final Product Configuration
+
+| Produit | Cible Marketing | Type Technique | Visual Display | CATALOG_TYPE |
+|---------|-----------------|----------------|----------------|--------------|
+| **Voice Widget B2B** | Entreprises, Lead Gen, Agences | `voice-widget-b2b.js` (413 LOC) | ❌ Non | N/A |
+| **Voice Widget B2C** | Restaurants, Services, Travel | `voice-widget-v3.js` (3,091 LOC) | ✅ Oui | MENU, SERVICES, TRIPS |
+| **Voice Widget Ecom** | E-commerce, Retail, Shopify | `voice-widget-v3.js` (5,650 LOC) | ✅ Oui | PRODUCTS |
+| **Voice Telephony** | Tous verticaux (PSTN) | `voice-telephony-bridge.cjs` (168KB) | ⚠️ Audio only | ALL |
+
+### 7.2 Visual Display Capabilities (Code Evidence)
+
+| Feature | Fichier | Lignes | Status |
+|---------|---------|--------|--------|
+| Product Cards | `voice-widget-v3.js` | 471-593 | ✅ IMPLÉMENTÉ |
+| Product Carousel | `voice-widget-v3.js` | 472-478 | ✅ IMPLÉMENTÉ |
+| `generateProductCardHTML()` | `voice-widget-v3.js` | 796+ | ✅ IMPLÉMENTÉ |
+| Tenant-provided images | `product.image || product.images?.[0]` | 797-798 | ✅ IMPLÉMENTÉ |
+
+### 7.3 Sector Conversion Stats (Web Research - VERIFIED)
+
+| Secteur | Métrique | Source |
+|---------|----------|--------|
+| **Restaurant** | +40% AOV avec visual menus | simpleqr.io |
+| **Restaurant** | 12.3% vs 3.1% conversion chatbot | amraandelma.com |
+| **Travel** | +18-25% conversion AI personalization | mindfulecotourism.com |
+| **E-commerce** | +23% conversion AI chatbot | amraandelma.com |
+| **General** | 51% businesses use chatbots 2025 | conferbot.com |
+
+### 7.4 Widget Kernel Selection Guide
+
+| Vertical | Widget | Config |
+|----------|--------|--------|
+| Agence, SaaS B2B | `voice-widget-b2b.js` | `ECOMMERCE_MODE: false` |
+| Restaurant, Bakery | `voice-widget-v3.js` | `CATALOG_TYPE: MENU` |
+| Salon, Garage, Spa | `voice-widget-v3.js` | `CATALOG_TYPE: SERVICES` |
+| Travel Agency | `voice-widget-v3.js` | `CATALOG_TYPE: TRIPS` |
+| Car Rental | `voice-widget-v3.js` | `CATALOG_TYPE: FLEET` |
+| Shopify, WooCommerce | `voice-widget-v3.js` | `CATALOG_TYPE: PRODUCTS` |
+| Téléphonie PSTN | `voice-telephony-bridge.cjs` | 40 personas |
+
+---
+
+## 8. ACTIONABLE PLAN (2026-02-04)
+
+### Phase 1: Marketing Differentiation (J+1 à J+3)
+
+* [ ] 1.1 Créer page produit Voice Widget B2C
+* [ ] 1.2 Mettre à jour `pricing.html` avec 3 produits distincts
+* [ ] 1.3 Documenter différenciation dans SITEMAP-PLAN.md
+
+### Phase 2: Visual Display Configuration (J+4 à J+7)
+
+* [ ] 2.1 Documenter schéma JSON pour MENU avec images
+* [ ] 2.2 Documenter schéma JSON pour TRIPS avec images
+* [ ] 2.3 Créer sample catalogs pour demos
+
+### Phase 3: Tenant Documentation (J+8 à J+10)
+
+* [ ] 3.1 Guide onboarding B2C Restaurant
+* [ ] 3.2 Guide onboarding B2C Travel
+* [ ] 3.3 Guide onboarding E-commerce
+
+### Phase 4: Validation Technique (J+11 à J+14)
+
+* [ ] 4.1 Test visual display MENU type
+* [ ] 4.2 Test visual display TRIPS type
+* [ ] 4.3 Test visual display PRODUCTS type
+
+---
+
+## 9. ⚠️ PERSONA-WIDGET SEGMENTATION (Session 250.78 - CRITICAL GAP)
+
+> [!CAUTION]
+> **GAP CRITIQUE:** Les 40 personas sont disponibles pour TOUS les widgets sans validation.
+
+### 9.1 Problème Identifié
+
+| Fait | Détail |
+|------|--------|
+| **Nombre de personas** | 40 dans `voice-persona-injector.cjs` |
+| **Widget types** | 4 (B2B, B2C, Ecom, Telephony) |
+| **Filtrage actuel** | ❌ AUCUN - Pas de champ `widget_types` |
+| **Risque** | UNIVERSAL_ECOMMERCE charge dans B2B widget |
+
+### 9.2 Persona-Widget Compatibility Matrix
+
+| Widget Type | Personas Compatibles |
+|:------------|:--------------------|
+| **B2B** | AGENCY, CONTRACTOR, CONSULTANT, IT_SERVICES, RECRUITER, ACCOUNTANT, ARCHITECT, COUNSELOR, NOTARY, REAL_ESTATE_AGENT, BUILDER, COLLECTOR, INSURER, LOGISTICIAN, MANUFACTURER, TRAINER, PLANNER, FUNERAL, PROPERTY, DENTAL |
+| **B2C** | RESTAURATEUR, TRAVEL_AGENT, CONCIERGE, HAIRDRESSER, STYLIST, HEALER, DOCTOR, SPECIALIST, PHARMACIST, MECHANIC, RENTER, CLEANER, GYM, BAKERY, PRODUCER, DISPATCHER, DENTAL, TRAINER, PLANNER |
+| **ECOM** | UNIVERSAL_ECOMMERCE, RETAILER, GROCERY, BAKERY, PRODUCER, DISPATCHER |
+| **TELEPHONY** | Tous les 40 personas (universel) |
+
+### 9.3 Code Evidence (GAP)
+
+```javascript
+// voice-persona-injector.cjs:5662-5672
+archetypeKey = clientConfig.sector;  // ⚠️ NO WIDGET TYPE VALIDATION
+```
+
+### 9.4 Implémentation Verified ✅ (Session 250.78)
+
+| Phase | Action | Fichier | Status |
+|-------|--------|---------|--------|
+| 1 | Ajouter `widget_types` à chaque PERSONA | `voice-persona-injector.cjs` | ✅ DONE |
+| 2 | Valider `widgetType` dans `getPersona()` | `voice-persona-injector.cjs` | ✅ DONE |
+| 3 | Passer `widgetType` depuis widgets | `voice-widget-*.js` | ✅ DONE |
+| 4 | Mettre à jour `client_registry.json` | `personas/client_registry.json` | ✅ DONE |
+
+---
+
+## 10. TRI-TIER CREDENTIAL ARCHITECTURE (Session 250.79)
+
+> [!IMPORTANT]
+> **Strict Policy:** VocalIA differentiates between "Pro-Included" services (Platform Utility) and "Client-Owned" platforms (Business Integrations).
+
+### 10.1 Tier Definition & Key Ownership
+
+| Tier | Type | Services | Ownership | Billing | Source |
+|:---|:---|:---|:---|:---|:---|
+| **Tier 1: Intelligence** | Logic | Grok (xAI), Gemini (Google), Claude (Anthropic) | **VocalIA** | Included | Agency Key |
+| **Tier 2: Infrastructure** | Telecom | ElevenLabs (TTS), Groq (ASR) | **VocalIA** | Included | Agency Key |
+| **Tier 3: Ecosystem** | Integrations | HubSpot, Shopify, Klaviyo, Salesforce, Google, Slack, etc. | **Tenant (Client)** | Client-Paid | Tenant Key |
+| **Hybrid** | Telephony | Twilio (PSTN/SMS) | **Dual** | **Managed** (Agency) or **BYOK** (Client) | Hybrid |
+
+### 10.2 Architectural Constraints
+
+1. **Zero-Credential Onboarding (Managed):**
+    * Standard Clients (SMEs) DO NOT provide API keys for AI Models or Telephony.
+    * The `SecretVault` and `agency_internal` fallback ensures these are served automatically from VocalIA's secure infrastructure.
+2. **Sovereign Logic (BYOK - Enterprise):**
+    * **Twilio BYOK:** Large Enterprises (Clinics, Banks) can bring their own SIP Trunk/Number by providing `TWILIO_ACCOUNT_SID` via SecretVault.
+    * Integrations (HubSpot, Shopify, etc. - Tier 3) MUST support both Global keys (internal monitoring) and Tenant keys (client data).
+    * Credential lookup priority: `Tenant Key (SecretVault)` -> `VocalIA Key (Internal Env)`.
+3. **Hybrid Integrations:**
+    * Platforms where both VocalIA and Clients have credentials must maintain strict isolation using the `tenantId` context in `SecretVault`.
+
+---
+
+## 11. NO-PAYMENT WIDGET POLICY (Session 250.79)
+
+> [!IMPORTANT]
+> **Strict Operational Boundary:** The VocalIA widget is an interaction and orchestration layer, NOT a payment terminal for end-users.
+
+### 11.1 Policy Definition
+
+1. **Zero-Transaction Architecture:** The widget MUST NOT contain any payment UI, checkout flows, or credit card collection fields for the customers of our tenants.
+2. **Referral Only:** If a transaction is required (e.g., E-commerce checkout), the widget SHOULD provide a secure link to the Tenant's native checkout page (Shopify, Stripe, etc.) rather than processing it internally.
+3. **B2B2B/C Clarity:** VocalIA bills the **Tenant** (Client). The Tenant bills their own **Customers**. There is NO direct financial relationship between VocalIA and the Tenant's customers within the widget environment.
+
+---
+
+> **Document Status:** UPDATED 2026-02-04 22:25 CET  
+> **Persona Segmentation:** ✅ VERIFIED & IMPLEMENTED  
+> **Credential Tiering:** ✅ ENFORCED  
+> **Payment Policy:** ✅ NO-PAYMENT BOUNDARY DEFINED  
+> **Next Session:** Final review of integration modules for compliance.

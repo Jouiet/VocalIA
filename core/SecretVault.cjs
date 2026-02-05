@@ -18,13 +18,15 @@ const path = require('path');
 const crypto = require('crypto');
 
 // Configuration
-const CLIENTS_DIR = path.join(process.cwd(), 'clients');
-const ENCRYPTION_KEY = process.env.VOCALIA_VAULT_KEY || 'default-dev-key-change-in-prod';
+const CLIENTS_DIR = path.join(__dirname, '../clients');
+const ENCRYPTION_KEY = process.env.VOCALIA_VAULT_KEY;
 const ALGORITHM = 'aes-256-gcm';
 
-// Session 250.43: Warn if using default encryption key
-if (!process.env.VOCALIA_VAULT_KEY) {
-  console.warn('⚠️ [SecretVault] VOCALIA_VAULT_KEY not set - using default dev key. DO NOT USE IN PRODUCTION!');
+// Session 250.43: Strict check for encryption key
+// Session 179-ULTRATHINK Hardening: Enforce secure key management
+if (!ENCRYPTION_KEY) {
+  console.error('❌ [SecretVault] CRITICAL: VOCALIA_VAULT_KEY is not set!');
+  console.warn('⚠️ [SecretVault] Vault operations (encrypt/decrypt) will fail. Set this variable in .env or system environment.');
 }
 
 class SecretVault {
@@ -48,6 +50,9 @@ class SecretVault {
    * @returns {string} Encrypted value (base64)
    */
   encrypt(value) {
+    if (!ENCRYPTION_KEY) {
+      throw new Error('SecretVault encryption key not configured (VOCALIA_VAULT_KEY)');
+    }
     const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
@@ -65,6 +70,9 @@ class SecretVault {
    * @returns {string} Decrypted value
    */
   decrypt(encryptedValue) {
+    if (!ENCRYPTION_KEY) {
+      throw new Error('SecretVault encryption key not configured (VOCALIA_VAULT_KEY)');
+    }
     try {
       const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
       const buffer = Buffer.from(encryptedValue, 'base64');
@@ -294,6 +302,7 @@ module.exports.SecretVault = SecretVault;
 
 // CLI
 if (require.main === module) {
+  require('dotenv').config({ path: path.join(__dirname, '../.env') });
   const args = process.argv.slice(2);
 
   if (args.includes('--health')) {

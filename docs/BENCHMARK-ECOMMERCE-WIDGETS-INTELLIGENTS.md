@@ -6,6 +6,7 @@
 > **Status**: RECHERCHE COMPLETE - En attente validation pour implementation
 >
 > **Update Session 250.75**: Deep-dive SOTA sur AI Recommendations Visuelles
+>
 > - Section 3 completement reecrite (650+ lignes)
 > - Architectures SOTA: Two-Tower, GNN, NCF, DCN documentees
 > - Marqo E-commerce Embeddings benchmark (+17.6% MRR vs baseline)
@@ -21,14 +22,16 @@
 ### Contexte VocalIA
 
 VocalIA dispose d'un **Voice Widget** (browser) unique sur le marche avec:
+
 - Support 5 langues (FR, EN, ES, AR, Darija)
 - Integration AI multi-provider (Grok, Gemini, Claude, Atlas-Chat)
-- 6 connecteurs e-commerce (~64% couverture marche)
+- 9 connecteurs e-commerce/CRM (~85% couverture marche)
 - 10 function tools catalogue dynamique
 
 ### Opportunite Identifiee
 
 Le marche des widgets e-commerce intelligents represente **$8.65B en 2025** avec une croissance de **37.9% CAGR**. L'integration de widgets complementaires au Voice Widget VocalIA pourrait:
+
 - Augmenter les conversions de **25-40%** (multi-canal)
 - Reduire l'abandon panier de **22-30%**
 - Augmenter l'AOV de **15-25%**
@@ -201,6 +204,7 @@ Le marche des widgets e-commerce intelligents represente **$8.65B en 2025** avec
 ```
 
 **Avantages Two-Tower:**
+
 - Latence sub-milliseconde pour retrieval
 - User embeddings pre-calcules, product embeddings caches
 - Compatible avec vector databases (Redis, Pinecone, Milvus)
@@ -222,12 +226,14 @@ Le marche des widgets e-commerce intelligents represente **$8.65B en 2025** avec
 | Open Source | **Oui** | Non | Non | Oui |
 
 **Caracteristiques Marqo:**
+
 - Entraine sur **200M+ product pairs** de grands retailers
 - Optimise pour **product title + description + image**
 - Support **multimodal** (texte + image ensemble)
 - License **Apache 2.0** (open source commercial)
 
 **Benchmark officiel Marqo (Ecommerce Embedding Benchmark v1.0):**
+
 ```
 Model                           MRR      nDCG@10   nDCG@100
 ─────────────────────────────────────────────────────────────
@@ -265,6 +271,7 @@ Google Vertex AI               0.498    0.512     0.601
 | Dashboard | UI admin inclus |
 
 **Architecture Gorse:**
+
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         GORSE ARCHITECTURE                          │
@@ -294,6 +301,7 @@ Google Vertex AI               0.498    0.512     0.601
 ```
 
 **API Gorse:**
+
 ```bash
 # Insert feedback (purchase, view, click)
 POST /api/feedback
@@ -327,12 +335,14 @@ GET /api/neighbors/{item_id}?n=10
 #### 3.5.1 Redis Vector Search (RECOMMANDE pour VocalIA)
 
 **Pourquoi Redis:**
+
 - VocalIA utilise deja Redis-compatible caching (LRU)
 - Latence <1ms pour vector search
 - HNSW algorithm built-in
 - Pas de service externe a gerer
 
 **Schema Redis Vector:**
+
 ```redis
 # Create index
 FT.CREATE product_idx ON HASH PREFIX 1 product:
@@ -475,6 +485,7 @@ const LTV_TIERS = {
 #### 3.7.1 "Frequently Bought Together" (Association Rules)
 
 **Algorithme Apriori:**
+
 ```python
 # Pseudo-code
 from mlxtend.frequent_patterns import apriori, association_rules
@@ -497,6 +508,7 @@ rules = association_rules(frequent, metric="lift", min_threshold=1.5)
 ```
 
 **Implementation VocalIA:**
+
 ```javascript
 // core/association-rules.cjs (A CREER)
 async function computeFrequentlyBought(tenantId, productId, topK = 5) {
@@ -893,6 +905,7 @@ Triggers Recommandes:
 ### 8.2 Multi-Canal = +94% Conversions
 
 Sequence recommandee:
+
 1. **T+15min**: Push notification (si mobile)
 2. **T+1h**: Email avec produits
 3. **T+24h**: SMS avec offre limitee
@@ -1025,12 +1038,14 @@ Sweet spot: 20-30% au-dessus de l'AOV
 ### 13.2 Stack Recommande par Taille de Boutique
 
 **PME (<$100K/an)**:
+
 - Chatbot: Tidio Free
 - Social Proof: TrustPulse ($5)
 - Reviews: Judge.me Free
 - **Total**: $5-15/mo
 
 **Mid-Market ($100K-$1M/an)**:
+
 - Chatbot: Rep AI ($99)
 - Recommendations: Wiser ($49)
 - Exit-Intent: OptinMonster ($14)
@@ -1039,6 +1054,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 - **Total**: $240/mo
 
 **Enterprise ($1M+/an)**:
+
 - Full Yotpo suite
 - Rebuy
 - Custom integrations
@@ -1140,6 +1156,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 ## 15. Sources Completes
 
 ### Recherche Web - Widgets E-commerce
+
 - [LiveChat Statistics](https://www.livechat.com/success/key-live-chat-statistics/)
 - [Tidio Blog](https://www.tidio.com/blog/live-chat-statistics/)
 - [Shopify AI CRO](https://www.shopify.com/blog/ai-conversion-rate-optimization)
@@ -1151,6 +1168,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 - [AgentiveAI Cart Abandonment](https://agentiveaiq.com/blog/5-ai-powered-cro-examples-that-reduce-cart-abandonment)
 
 ### Recherche Web - AI Recommendations SOTA
+
 - [Marqo E-commerce Embeddings Blog](https://www.marqo.ai/blog/ecommerce-embeddings)
 - [Marqo Benchmark Methodology](https://www.marqo.ai/blog/ecommerce-embedding-benchmark)
 - [Redis Vector Search Documentation](https://redis.io/docs/interact/search-and-query/query/vector-search/)
@@ -1159,11 +1177,13 @@ Sweet spot: 20-30% au-dessus de l'AOV
 - [Netflix Recommendations System](https://netflixtechblog.com/system-architectures-for-personalization-and-recommendation-e081aa94b5d8)
 
 ### GitHub Repositories - Chatbots
+
 - [Shopify/shop-chat-agent](https://github.com/Shopify/shop-chat-agent)
 - [sendbird/ecommerce-ai-chatbot](https://github.com/sendbird/ecommerce-ai-chatbot)
 - [tomlin7/ecommerce-chatbot](https://github.com/tomlin7/ecommerce-chatbot)
 
 ### GitHub Repositories - Recommendation Systems (SOTA)
+
 - [gorse-io/gorse](https://github.com/gorse-io/gorse) - Go recommender (8.8K stars)
 - [marqo-ai/marqo](https://github.com/marqo-ai/marqo) - Vector search (5.2K stars)
 - [microsoft/recommenders](https://github.com/microsoft/recommenders) - Best practices (19K stars)
@@ -1172,6 +1192,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 - [benfred/implicit](https://github.com/benfred/implicit) - Fast ALS (3.5K stars)
 
 ### HuggingFace Models - E-commerce Embeddings
+
 - [Marqo/marqo-ecommerce-embeddings-L](https://huggingface.co/Marqo/marqo-ecommerce-embeddings-L) - SOTA (+17.6% MRR)
 - [Marqo/marqo-ecommerce-embeddings-B](https://huggingface.co/Marqo/marqo-ecommerce-embeddings-B) - Lightweight version
 - [jinaai/jina-clip-v2](https://huggingface.co/jinaai/jina-clip-v2) - Multimodal embeddings
@@ -1179,6 +1200,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 - [jtlicardo/llama_3.2-1b-ecommerce-intent](https://huggingface.co/jtlicardo/llama_3.2-1b-ecommerce-intent-gptq-4bit) - Intent detection
 
 ### Documentation Technique - Vector Search
+
 - [Redis Vector Similarity Search](https://redis.io/docs/latest/develop/interact/search-and-query/query/vector-search/)
 - [HNSW Algorithm Paper](https://arxiv.org/abs/1603.09320)
 - [FAISS Documentation](https://github.com/facebookresearch/faiss/wiki)
@@ -1197,25 +1219,27 @@ Sweet spot: 20-30% au-dessus de l'AOV
 
 ### Findings SOTA AI Recommendations (Session 250.75)
 
-5. **Marqo E-commerce Embeddings = SOTA** avec +17.6% MRR et +45.1% nDCG@10 vs Amazon Titan
-6. **Two-Tower Architecture recommandee** pour latence sub-milliseconde et scalabilite
-7. **Redis Vector Search** compatible avec infrastructure VocalIA existante (LRU cache)
-8. **Assets VocalIA a exploiter:**
+1. **Marqo E-commerce Embeddings = SOTA** avec +17.6% MRR et +45.1% nDCG@10 vs Amazon Titan
+2. **Two-Tower Architecture recommandee** pour latence sub-milliseconde et scalabilite
+3. **Redis Vector Search** compatible avec infrastructure VocalIA existante (LRU cache)
+4. **Assets VocalIA a exploiter:**
    - `core/knowledge-embedding-service.cjs` - Base pour product embeddings
    - `core/ucp-store.cjs` - LTV tiers pour personnalisation
    - `core/tenant-catalog-store.cjs` - Multi-tenant ready
    - 6 catalog connectors (Shopify, WooCommerce, Magento, Square, Lightspeed, Custom)
-9. **Voice + Visual Recommendations = DIFFERENCIATEUR UNIQUE** - Aucun concurrent ne propose de recommendations vocales interactives
+5. **Voice + Visual Recommendations = DIFFERENCIATEUR UNIQUE** - Aucun concurrent ne propose de recommendations vocales interactives
 
 ### Recommandation
 
 **Developper une "Widget Suite" VocalIA** qui combine:
+
 - Le Voice Widget existant (avantage concurrentiel)
 - 3-4 widgets visuels complementaires (Recommendations, Social Proof, Quiz)
 - Une couche de notifications comportementales
 - Une architecture multi-tenant coherente avec le systeme actuel
 
 **Pour AI Recommendations specifiquement:**
+
 - Utiliser Marqo E-commerce Embeddings (open-source, SOTA)
 - Implementer Redis Vector Search avec HNSW
 - Integrer avec UCP Store pour personnalisation par LTV tier
@@ -1351,6 +1375,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 | Telephony | `telephony/voice-telephony-bridge.cjs` | check_order_status, check_product_stock |
 
 **LE WIDGET ACTUEL NE FAIT PAS:**
+
 - ❌ Affichage produits visuel
 - ❌ Add to cart
 - ❌ Checkout integration
@@ -1402,6 +1427,7 @@ Cette architecture change fondamentalement le profil de risque.
 | Browser support limite (~60%) | 🔴 HAUTE | 🟢 NUL | Text fallback automatique (code ligne 94) |
 
 **Evidence code (voice-widget-core.js):**
+
 ```javascript
 // Ligne 398 - Input texte TOUJOURS present
 <input type="text" class="va-input" id="va-input" ...>
@@ -1417,6 +1443,7 @@ ${!needsTextFallback && hasSpeechRecognition ? `<button class="va-mic-btn">` : '
 **CLAIM:** "Voice commerce = $45-62B market"
 
 **VERITE:**
+
 ```
 Smart Speaker Voice Shopping: $62B (2025)
   └─ Amazon Echo, Google Home
@@ -1485,6 +1512,7 @@ Cela change fondamentalement la strategie: **investment progressif avec mesure e
 | 4 | Conditionnel | Scale si P1-P3 positifs | Revenue incremental | ROI positif |
 
 **PRINCIPE DATA-DRIVEN:**
+
 - Phase 1 = Mesure naturelle (hybrid = A/B test gratuit)
 - Chaque phase = Go/No-Go base sur DATA
 - Ne PAS promettre +25% AOV avant mesure empirique
@@ -1513,6 +1541,7 @@ User arrive → Widget hybrid (text + voice) → User CHOISIT modalite
 ```
 
 **Tracking existant (voice-widget-core.js ligne 160):**
+
 ```javascript
 function trackEvent(eventName, params = {}) {
   gtag('event', eventName, eventData);
@@ -1521,6 +1550,7 @@ function trackEvent(eventName, params = {}) {
 ```
 
 **A ajouter pour mesure complete:**
+
 ```javascript
 trackEvent('input_method_used', { method: 'voice' | 'text' });
 trackEvent('conversion', { method, value, product_count });

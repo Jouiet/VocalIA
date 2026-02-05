@@ -26,6 +26,10 @@ const CACHE_DIR = path.join(__dirname, '../data/embeddings');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: 'text-embedding-004' });
 
+// Marqo Configuration
+const MARQO_URL = process.env.MARQO_URL || 'http://localhost:8882';
+const MARQO_API_KEY = process.env.MARQO_API_KEY;
+
 // Embedding dimensions (Gemini text-embedding-004)
 const EMBEDDING_DIM = 768;
 
@@ -147,6 +151,28 @@ class ProductEmbeddingService {
   }
 
   /**
+   * Internal unified embedding driver
+   * Session 250.82: Standardized driver selection (Marqo SOTA vs Gemini)
+   */
+  async _getInternalEmbedding(text) {
+    if (process.env.MARQO_URL) {
+      const marqoResult = await this._getMarqoEmbedding(text);
+      if (marqoResult) return marqoResult;
+
+      console.warn('[ProductEmbedding] Marqo failed, falling back to Gemini.');
+    }
+
+    // Fallback: Gemini text-embedding-004
+    try {
+      const result = await embeddingModel.embedContent(text);
+      return result.embedding.values;
+    } catch (e) {
+      console.error('[ProductEmbedding] Gemini embedding failed:', e.message);
+      return null;
+    }
+  }
+
+  /**
    * Generate embedding for a single product
    * @param {string} tenantId - Tenant identifier
    * @param {object} product - Product object with id, title, description, etc.
@@ -171,22 +197,53 @@ class ProductEmbeddingService {
     try {
       this.stats.misses++;
       const text = this._generateProductText(product);
-      console.log(`[ProductEmbedding] Generating for ${tenantId}:${productId}...`);
+      const embedding = await this._getInternalEmbedding(text);
 
-      const result = await embeddingModel.embedContent(text);
-      const embedding = result.embedding.values;
+      if (!embedding) throw new Error('Failed to generate embedding');
 
       // Cache with metadata
       cache[productId] = {
         embedding,
         text: text.substring(0, 200), // Store truncated text for debugging
-        generatedAt: new Date().toISOString()
+        generatedAt: new Date().toISOString(),
+        provider: process.env.MARQO_URL ? 'marqo' : 'gemini'
       };
 
       return embedding;
     } catch (e) {
       this.stats.errors++;
       console.error(`[ProductEmbedding] Failed for ${productId}:`, e.message);
+      return null;
+    }
+  }
+
+  /**
+   * Internal helper for Marqo Embeddings API
+   * Note: Marqo docs usually prioritize indexing, but we can extract vectors 
+   * or use Marqo as the vector store directly.
+   */
+  async _getMarqoEmbedding(text) {
+    try {
+      const response = await fetch(`${MARQO_URL}/embeddings`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(MARQO_API_KEY && { 'x-api-key': MARQO_API_KEY })
+        },
+        body: JSON.stringify({
+          text: [text],
+          model: 'hf/ecom-multilingual-e5-base' // SOTA e-commerce model
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Marqo API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.embeddings[0];
+    } catch (e) {
+      // Don't log warning here, handled in _getInternalEmbedding
       return null;
     }
   }
@@ -227,16 +284,18 @@ class ProductEmbeddingService {
         continue;
       }
 
-      // Generate embedding
+      // Generate embedding using unified driver (Marqo-aware)
       try {
         const text = this._generateProductText(product);
-        const result = await embeddingModel.embedContent(text);
-        const embedding = result.embedding.values;
+        const embedding = await this._getInternalEmbedding(text);
+
+        if (!embedding) throw new Error('Failed to generate embedding');
 
         cache[productId] = {
           embedding,
           text: text.substring(0, 200),
-          generatedAt: new Date().toISOString()
+          generatedAt: new Date().toISOString(),
+          provider: process.env.MARQO_URL ? 'marqo' : 'gemini'
         };
 
         generated++;
@@ -280,8 +339,7 @@ class ProductEmbeddingService {
    */
   async getQueryEmbedding(query) {
     try {
-      const result = await embeddingModel.embedContent(query);
-      return result.embedding.values;
+      return await this._getInternalEmbedding(query);
     } catch (e) {
       console.error('[ProductEmbedding] Query embedding failed:', e.message);
       return null;

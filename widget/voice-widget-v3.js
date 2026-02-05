@@ -182,6 +182,41 @@
   }
 
   /**
+   * SOTA: Sovereign Dynamic Pull - Load tenant-specific configuration
+   */
+  async function loadTenantConfig() {
+    if (!state.tenantId) return;
+
+    console.log(`[VocalIA] SOTA: Pulling dynamic config for tenant: ${state.tenantId}`);
+    const url = `${CONFIG.VOICE_API_URL.replace('/respond', '/config')}?tenantId=${encodeURIComponent(state.tenantId)}`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Config pull failed');
+
+      const data = await response.json();
+      if (data.success) {
+        // Apply branding
+        if (data.branding.primaryColor) {
+          CONFIG.primaryColor = data.branding.primaryColor;
+          // Update CSS variables if widget already created
+          const root = document.getElementById('voice-assistant-widget');
+          if (root) {
+            root.style.setProperty('--va-primary', CONFIG.primaryColor);
+          }
+        }
+
+        state.tenantConfig = data;
+        trackEvent('tenant_config_loaded', { tenantId: state.tenantId });
+        return data;
+      }
+    } catch (error) {
+      console.warn('[VocalIA] Sovereign Pull failed, using static defaults:', error.message);
+    }
+    return null;
+  }
+
+  /**
    * Load language file
    */
   async function loadLanguage(langCode) {
@@ -2721,6 +2756,7 @@
           message: userMessage,
           language: state.currentLang,
           sessionId: state.sessionId || `widget_${Date.now()}`,
+          widget_type: 'B2C',
           history: state.conversationHistory.slice(-10).map(m => ({
             role: m.role,
             content: m.content
@@ -3002,9 +3038,17 @@
 
   async function init() {
     try {
+      console.log('[VocalIA] Initializing Widget v3.0.0 (Unified Kernel)');
+      captureAttribution();
+
+      // 1. Detect language
       const lang = detectLanguage();
       console.log(`[VocalIA] Detected language: ${lang}`);
 
+      // 2. Load tenant config (SOTA Sovereign Pull)
+      await loadTenantConfig();
+
+      // 3. Load language data
       await loadLanguage(lang);
       console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
 

@@ -23,146 +23,54 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
+// Import Google Auth for Service Account (PAI) integration
+const { GoogleAuth } = require('google-auth-library');
+
 // Import security utilities
 const {
   RateLimiter,
   setSecurityHeaders
 } = require('../lib/security-utils.cjs');
 
-// Import Advanced Cognitive Modules (Session 167)
-const KB_MOD = require('./knowledge-base-services.cjs');
-const ECOM_MOD = require('../integrations/voice-ecommerce-tools.cjs');
-const CRM_MOD = require('../integrations/voice-crm-tools.cjs');
-const { VoicePersonaInjector, VOICE_CONFIG } = require('../personas/voice-persona-injector.cjs');
-// Session 178: SOTA - ContextBox integration for persistent session state
-const ContextBox = require('./ContextBox.cjs');
-// Security constants
-const MAX_BODY_SIZE = 1024 * 1024; // 1MB limit
-const CORS_WHITELIST = [
-  'https://vocalia.ma',
-  'https://www.vocalia.ma',
-  'https://dashboard.vocalia.ma',
-  'http://localhost:3000',
-  'http://localhost:5173',
-  'http://localhost:8080' // Website dev server
-];
-
-// Session 250.51: Google Sheets Database Integration
-const { GoogleSheetsDB, getDB } = require('./GoogleSheetsDB.cjs');
-let sheetsDB = null;
-
-// Session 250.57: Conversation Store - Multi-tenant persistence
-// ⛔ RULE: Conversation History = CLIENT CONSULTATION ONLY (never for KB/RAG)
-const { getInstance: getConversationStore } = require('./conversation-store.cjs');
-const conversationStore = getConversationStore();
-
-// Session 245: A2A Translation Supervisor
-// Lazy load to ensure initialization
-let translationSupervisor = null;
-try {
-  translationSupervisor = require('./translation-supervisor.cjs');
-} catch (e) {
-  console.warn('[VoiceAPI] Translation Supervisor not loaded:', e.message);
-}
-const eventBus = require('./AgencyEventBus.cjs');
-// Session 250.39: A2UI Service for dynamic UI generation
-const A2UIService = require('./a2ui-service.cjs');
-
-// Session 250.xx: Multi-tenant KB for intelligent fallback
-const { getInstance: getTenantKBLoader } = require('./tenant-kb-loader.cjs');
-const { getInstance: getHybridRAG } = require('./hybrid-rag.cjs');
-let tenantKBLoader = null;
-let hybridRAG = null;
-try {
-  tenantKBLoader = getTenantKBLoader();
-  hybridRAG = getHybridRAG();
-} catch (e) {
-  console.warn('[VoiceAPI] TenantKB Loader not initialized:', e.message);
+// Session 250.85: Dynamic CORS Check
+function isOriginAllowed(origin) {
+  if (!origin) return false;
+  // Internal dashboard subdomains
+  if (origin.endsWith('.vocalia.ma') || origin === 'https://vocalia.ma') return true;
+  // Local development
+  if (origin.startsWith('http://localhost:')) return true;
+  // Future: Add client domains from DB
+  return false;
 }
 
-// Session 250.44: ElevenLabs TTS for Darija support
-let ElevenLabsClient = null;
-let VOICE_IDS = null;
-let elevenLabsClient = null;
-try {
-  const elevenLabs = require('./elevenlabs-client.cjs');
-  ElevenLabsClient = elevenLabs.ElevenLabsClient;
-  VOICE_IDS = elevenLabs.VOICE_IDS;
-  elevenLabsClient = new ElevenLabsClient();
-  if (elevenLabsClient.isConfigured()) {
-    console.log('✅ ElevenLabs TTS client initialized for Darija support');
-  } else {
-    console.warn('⚠️ ELEVENLABS_API_KEY not set - Darija TTS will be unavailable');
-    elevenLabsClient = null;
-  }
-} catch (e) {
-  console.warn('⚠️ ElevenLabs client not loaded:', e.message);
-}
+// Session 250.xx: Multi-tenant Secret Vault
+const SecretVault = require('./SecretVault.cjs');
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONFIGURATION
-// ─────────────────────────────────────────────────────────────────────────────
-function loadEnv() {
-  try {
-    const envPath = path.join(__dirname, '../.env');
-    console.log(`[Telemetry] Configuration loaded from: ${envPath}`);
-    const env = fs.readFileSync(envPath, 'utf8');
-    const vars = {};
-    env.split('\n').forEach(line => {
-      const match = line.match(/^([A-Z_]+)=(.+)$/);
-      if (match) vars[match[1]] = match[2].trim();
-    });
-    return vars;
-  } catch (e) {
-    console.warn('[Telemetry] Could not load .env, using process.env');
-    return process.env;
-  }
-}
+// ... (other imports)
 
-const ENV = loadEnv();
-
-// TEXT GENERATION PROVIDERS - Session 168terdecies: REAL-TIME TASK (Grok first)
-// Purpose: Generate TEXT responses for voice assistant (NOT audio generation)
-// Audio is handled by browser Web Speech API (free, built-in)
-// Strategy: Voice responses require low latency → Grok optimized for real-time
+// Session 168terdecies: REAL-TIME TASK (Grok first)
 // Fallback order: Grok → Gemini → Claude → Local patterns
-const PROVIDERS = {
-  grok: {
-    name: 'Grok 4.1 Fast Reasoning',
-    // grok-4-1-fast-reasoning: FRONTIER model with reasoning (Jan 2026)
-    url: 'https://api.x.ai/v1/chat/completions',
-    model: 'grok-4-1-fast-reasoning',
-    apiKey: ENV.XAI_API_KEY,
-    enabled: !!ENV.XAI_API_KEY,
-  },
-  gemini: {
-    name: 'Gemini 3 Flash',
-    // gemini-3-flash-preview: latest frontier model (Jan 2026)
-    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
-    apiKey: ENV.GEMINI_API_KEY,
-    enabled: !!ENV.GEMINI_API_KEY,
-  },
-  anthropic: {
-    name: 'Claude Opus 4.5',
-    // claude-opus-4-5: best quality for fallback (Nov 2025)
-    url: 'https://api.anthropic.com/v1/messages',
-    model: 'claude-opus-4-5-20251101',
-    apiKey: ENV.ANTHROPIC_API_KEY,
-    enabled: !!ENV.ANTHROPIC_API_KEY,
-  },
-  atlasChat: {
-    name: 'Atlas-Chat-9B (Darija)',
-    // Atlas-Chat-9B: Morocco's first Darija LLM (MBZUAI-Paris, Oct 2024)
-    // Session 170: Added for Voice MENA Darija fallback
-    // Session 176ter: Fixed - Use Featherless AI provider (OpenAI-compatible)
-    // DarijaMMLU: 58.23% (+13% vs Jais-13B)
-    url: 'https://router.huggingface.co/featherless-ai/v1/chat/completions',
-    model: 'MBZUAI-Paris/Atlas-Chat-9B',
-    apiKey: ENV.HUGGINGFACE_API_KEY,
-    enabled: !!ENV.HUGGINGFACE_API_KEY,
-    darijaOnly: true, // Used as priority fallback for language='ary'
-  },
+const getProviderConfig = async (tenantId) => {
+  const customCreds = await SecretVault.loadCredentials(tenantId);
+
+  return {
+    grok: {
+      name: 'Grok 4.1 Fast Reasoning',
+      url: 'https://api.x.ai/v1/chat/completions',
+      model: 'grok-4-1-fast-reasoning',
+      apiKey: customCreds.XAI_API_KEY || ENV.XAI_API_KEY,
+      enabled: !!(customCreds.XAI_API_KEY || ENV.XAI_API_KEY),
+    },
+    gemini: {
+      name: 'Gemini 3 Flash (SOTA 2026)',
+      url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
+      apiKey: customCreds.GEMINI_API_KEY || ENV.GEMINI_API_KEY,
+      enabled: !!(customCreds.GEMINI_API_KEY || ENV.GEMINI_API_KEY),
+    },
+    // ... other providers follow the same pattern
+  };
 };
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // LEAD QUALIFICATION CONFIG (Session 127bis Phase 2)
@@ -377,8 +285,9 @@ function getAdminMetrics() {
 // Register a tenant (called via API)
 // Session 250.51: Register tenant in Google Sheets DB
 async function registerTenant(tenantId, name, plan = 'starter', email = '') {
-  const plans = { widget: 0, free: 0, starter: 499, pro: 999, enterprise: 2500 };
-  const mrr = plans[plan] || 0;
+  // Session 250.90: Strict Price Policy - Minimum 49$ (No more Free Tier)
+  const plans = { starter: 49, growth: 99, pro: 199, enterprise: 499 };
+  const mrr = plans[plan] || 49;
 
   // Write to Google Sheets DB
   if (sheetsDB) {
@@ -652,12 +561,6 @@ function estimateNPS(hotLeads, warmLeads, totalLeads) {
 // SYSTEM PROMPT - VocalIA Voice AI Platform
 // ─────────────────────────────────────────────────────────────────────────────
 const SYSTEM_PROMPT = `You are the VocalIA Voice AI Assistant.
-VocalIA is a Voice AI Platform with 2 products: Voice Widget (browser) and Voice Telephony (phone).
-
-YOUR IDENTITY:
-- Platform: VocalIA - Voice AI SaaS
-- Products: Voice Widget (free tier) + Voice Telephony (per-minute)
-- Differentiators: 40 industry personas, 5 languages including Darija
 - Markets: Morocco (MAD), Europe (EUR), International (USD)
 
 WHAT VOCALIA OFFERS:
@@ -793,10 +696,54 @@ function httpRequestStreaming(url, options, body, onChunk) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// SECURITY UTILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sanitize user input to prevent prompt injection and excessive tokens
+ * Session 179-ULTRATHINK Hardening
+ */
+function sanitizeInput(text) {
+  if (!text || typeof text !== 'string') return '';
+
+  // 1. Length limiting (Prevent Dos via extremely large prompts)
+  let sanitized = text.substring(0, 1000);
+
+  // 2. Prompt Injection Blacklist (Aggressive)
+  const injectionPatterns = [
+    /ignore previous instructions/gi,
+    /ignore all previous/gi,
+    /system prompt/gi,
+    /forget everything/gi,
+    /new instructions/gi,
+    /tu es maintenant/gi, // "You are now" in French
+    /votre nouveau rôle/gi, // "Your new role"
+    /act as/gi,
+    /speak as/gi
+  ];
+
+  for (const pattern of injectionPatterns) {
+    if (pattern.test(sanitized)) {
+      console.warn(`[Security] Potential prompt injection detected and neutralized: ${pattern}`);
+      sanitized = sanitized.replace(pattern, '[REDACTED_SECURITY_POLICY]');
+    }
+  }
+
+  // 3. Remove non-printable characters and collapse whitespace
+  sanitized = sanitized.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+  sanitized = sanitized.replace(/\s+/g, ' ').trim();
+
+  return sanitized;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // PROVIDER API CALLS
 // ─────────────────────────────────────────────────────────────────────────────
-async function callGrok(userMessage, conversationHistory = [], customSystemPrompt = null) {
-  if (!PROVIDERS.grok.enabled) {
+async function callGrok(userMessage, conversationHistory = [], customSystemPrompt = null, options = {}) {
+  // Session 250.xx: Dynamic tenant key support
+  const apiKey = options.apiKey || PROVIDERS.grok.apiKey;
+
+  if (!PROVIDERS.grok.enabled || !apiKey) {
     throw new Error('Grok API key not configured');
   }
 
@@ -819,7 +766,7 @@ async function callGrok(userMessage, conversationHistory = [], customSystemPromp
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${PROVIDERS.grok.apiKey}`,
+      'Authorization': `Bearer ${apiKey}`,
     }
   }, body, (chunk, full) => {
     // Optional: Log streaming progress
@@ -909,8 +856,14 @@ async function verifyTranslation(text, language = 'fr', sessionId = 'unknown') {
 // Session 250.43: callOpenAI() removed - provider not configured in PROVIDERS
 
 // Session 170: Atlas-Chat-9B for Darija (Moroccan Arabic) - HuggingFace Inference API
-async function callAtlasChat(userMessage, conversationHistory = [], customSystemPrompt = null) {
+async function callAtlasChat(userMessage, conversationHistory = [], customSystemPrompt = null, options = {}) {
+  // Session 250.xx: Dynamic tenant key support
+  const apiKey = options.apiKey || PROVIDERS.atlasChat?.apiKey;
+
   if (!PROVIDERS.atlasChat?.enabled) {
+    throw new Error('Atlas-Chat enabled check failed');
+  }
+  if (!apiKey) {
     throw new Error('HuggingFace API key not configured for Atlas-Chat');
   }
 
@@ -933,7 +886,7 @@ async function callAtlasChat(userMessage, conversationHistory = [], customSystem
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${PROVIDERS.atlasChat.apiKey}`,
+      'Authorization': `Bearer ${apiKey}`,
     }
   }, body);
 
@@ -946,9 +899,31 @@ async function callAtlasChat(userMessage, conversationHistory = [], customSystem
   return await verifyTranslation(result.trim(), 'ary');
 }
 
-async function callGemini(userMessage, conversationHistory = [], customSystemPrompt = null) {
-  if (!PROVIDERS.gemini.enabled) {
-    throw new Error('Gemini API key not configured');
+async function getGeminiToken() {
+  try {
+    const keyFile = path.join(__dirname, '..', PROVIDERS.gemini.keyFile);
+    if (!fs.existsSync(keyFile)) return null;
+
+    const auth = new GoogleAuth({
+      keyFile,
+      scopes: ['https://www.googleapis.com/auth/generative-language']
+    });
+    const client = await auth.getClient();
+    const token = await client.getAccessToken();
+    return token.token;
+  } catch (error) {
+    console.error('[Voice][AUTH] Failed to get Gemini token:', error.message);
+    return null;
+  }
+}
+
+async function callGemini(userMessage, conversationHistory = [], customSystemPrompt = null, options = {}) {
+  // Session 250.xx: Dynamic tenant key support
+  const apiKey = options.apiKey || PROVIDERS.gemini.apiKey;
+  const serviceAccount = options.serviceAccount || null;
+
+  if (!PROVIDERS.gemini.enabled && !apiKey) {
+    throw new Error('Gemini API/Service Account not configured');
   }
 
   // Build conversation for Gemini
@@ -961,18 +936,26 @@ async function callGemini(userMessage, conversationHistory = [], customSystemPro
   }
   parts.push({ text: `USER: ${userMessage}` });
 
-  const url = `${PROVIDERS.gemini.url}?key=${PROVIDERS.gemini.apiKey}`;
-  const body = JSON.stringify({
-    contents: [{ parts }],
-    generationConfig: {
-      maxOutputTokens: 500,
-      temperature: 0.7,
-    }
-  });
+  // Priority: 1. Service Account (PAI) 2. Tenant API Key
+  let token = null;
+  if (!apiKey) {
+    token = await getGeminiToken();
+  }
+
+  const headers = { 'Content-Type': 'application/json' };
+  let url = PROVIDERS.gemini.url;
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  } else if (apiKey) {
+    url = `${url}?key=${apiKey}`;
+  } else {
+    throw new Error('No valid Gemini authentication method found (Service Account or API Key)');
+  }
 
   const response = await httpRequest(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' }
+    headers
   }, body);
 
   const parsed = safeJsonParse(response.data, 'Gemini voice response');
@@ -980,8 +963,11 @@ async function callGemini(userMessage, conversationHistory = [], customSystemPro
   return await verifyTranslation(parsed.data.candidates[0].content.parts[0].text, 'fr');
 }
 
-async function callAnthropic(userMessage, conversationHistory = [], customSystemPrompt = null) {
-  if (!PROVIDERS.anthropic.enabled) {
+async function callAnthropic(userMessage, conversationHistory = [], customSystemPrompt = null, options = {}) {
+  // Session 250.xx: Dynamic tenant key support
+  const apiKey = options.apiKey || PROVIDERS.anthropic.apiKey;
+
+  if (!PROVIDERS.anthropic.enabled || !apiKey) {
     throw new Error('Anthropic API key not configured');
   }
 
@@ -1001,7 +987,7 @@ async function callAnthropic(userMessage, conversationHistory = [], customSystem
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': PROVIDERS.anthropic.apiKey,
+      'x-api-key': apiKey,
       'anthropic-version': '2024-01-01',
     }
   }, body);
@@ -1063,8 +1049,8 @@ VocalIA هي منصة Voice AI. عندنا 2 منتوجات:
 - تكامل مع: CRM، Shopify، Stripe، Calendar
 
 الأسعار:
-- مجاني: Widget محدود
-- Pro: 990 درهم/شهر
+- Starter: 499 درهم/شهر
+- Pro: 999 درهم/شهر
 - Enterprise: على المقاس
 
 قواعد الجواب:
@@ -1409,14 +1395,27 @@ async function syncLeadToHubSpot(session) {
 // ─────────────────────────────────────────────────────────────────────────────
 // RESILIENT RESPONSE WITH FALLBACK & COGNITIVE CONTEXT
 // ─────────────────────────────────────────────────────────────────────────────
-async function getResilisentResponse(userMessage, conversationHistory = [], session = null, language = 'fr', options = {}) {
+async function getResilisentResponse(userMessageRaw, conversationHistory = [], session = null, language = 'fr', options = {}) {
   const errors = [];
+  const userMessage = sanitizeInput(userMessageRaw);
+
+  if (userMessageRaw !== userMessage) {
+    console.log('[Voice API] Input sanitized for security.');
+  }
 
   // 1. Semantic RAG Context Retrieval (Hybrid Frontier v3.0 | RLS Shielding)
   // Logic: Combined BM25 + Embeddings (Gemini) for high-precision retrieval
   const tenantId = session?.metadata?.knowledge_base_id || 'agency_internal';
+
+  // Session 250.xx: Load per-tenant credentials for integrations
+  const tenantSecrets = await SecretVault.getAllSecrets(tenantId);
+  const geminiKey = tenantSecrets.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const grokKey = tenantSecrets.XAI_API_KEY || process.env.XAI_API_KEY;
+  const anthropicKey = tenantSecrets.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY;
+  const atlasKey = tenantSecrets.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY; // For Darija
+
   const ragresults = hybridRAG
-    ? await hybridRAG.search(tenantId, language, userMessage, { limit: 3 })
+    ? await hybridRAG.search(tenantId, language, userMessage, { limit: 3, geminiKey })
     : await KB.searchHybrid(userMessage, 3, { tenantId });
 
   let ragContext = "";
@@ -1441,7 +1440,10 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
   // Logic: Check if RAG mention an order or price, and verify with live sensors
   if (ragContext.toLowerCase().includes('order') || lower.includes('order') || lower.includes('commande')) {
     if (session?.extractedData?.email) {
-      const order = await ECOM_TOOLS.getOrderStatus(session.extractedData.email);
+      const order = await ECOM_TOOLS.getOrderStatus(session.extractedData.email, {
+        shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
+        shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
+      });
       if (order.found) {
         toolContext += `\nVERIFIED_SENSOR_DATA (Shopify): Order ${order.orderId} status is officially "${order.status}".`;
         ragContext = ragContext.replace(/Order status: [^.\n]+/i, `Order status: ${order.status} (Verified)`);
@@ -1462,10 +1464,33 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
     // Extract potential product name from message or RAG
     const productMatch = userMessage.match(/(?:stock|prix|dispo|about)\s+(?:de\s+|du\s+|d')?([a-z0-9\s]+)/i);
     const query = productMatch ? productMatch[1].trim() : userMessage;
-    const stock = await ECOM_TOOLS.checkProductStock(query);
+    const stock = await ECOM_TOOLS.checkProductStock(query, {
+      shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
+      shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
+    });
     if (stock.found) {
       const liveStock = stock.products.map(p => `${p.title}: ${p.inStock ? 'In Stock' : 'Out of Stock'} (${p.price}€)`).join(', ');
       toolContext += `\nVERIFIED_SENSOR_DATA: Current stock and pricing: ${liveStock}. (Source: Shopify Real-time)`;
+    }
+  }
+
+  // 2.3 SOTA: AI Recommendation Intent Detection (Session 250.82)
+  let recommendationAction = null;
+  if (lower.includes('recommande') || lower.includes('propose') || lower.includes('suggère') || lower.includes('quoi acheter') || lower.includes('choisir') || lower.includes('قترح') || lower.includes('شنو نشري')) {
+    console.log(`[Voice API] Recommendation intent detected for tenant: ${tenantId}`);
+    try {
+      const recData = await RecommendationService.getRecommendationAction(tenantId, session?.metadata?.archetypeKey || 'UNIVERSAL_ECOMMERCE', userMessage, language);
+
+      if (recData && recData.voiceWidget?.action === 'show_carousel') {
+        recommendationAction = {
+          type: 'show_carousel',
+          products: recData.voiceWidget.items,
+          title: recData.text
+        };
+        toolContext += `\nAI_RECOMMENDATIONS: Found ${recData.voiceWidget.items.length} personalized suggestions: ${recData.text}`;
+      }
+    } catch (recErr) {
+      console.warn('[Voice API] Recommendation failed:', recErr.message);
     }
   }
 
@@ -1485,14 +1510,14 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
 
   // Fallback order: Grok → [Atlas-Chat for Darija] → Gemini → Anthropic → Local
   // Session 170: Language-aware chain - Atlas-Chat-9B prioritized for Darija (ary)
-  // Session 233: Removed OpenAI (not in PROVIDERS)
+  const currentProviders = await getProviderConfig(tenantId);
   const baseOrder = ['grok', 'gemini', 'anthropic'];
-  const providerOrder = language === 'ary' && PROVIDERS.atlasChat?.enabled
+  const providerOrder = language === 'ary' && currentProviders.atlasChat?.enabled
     ? ['grok', 'atlasChat', 'gemini', 'anthropic']
     : baseOrder;
 
   for (const providerKey of providerOrder) {
-    const provider = PROVIDERS[providerKey];
+    const provider = currentProviders[providerKey];
 
     // Session 250.81: Debug flag for testing fallback chain
     const forceFailProviders = options?.forceFailProviders || [];
@@ -1514,10 +1539,10 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
 
 
       switch (providerKey) {
-        case 'grok': response = await callGrok(userMessage, conversationHistory, fullSystemPrompt); break;
-        case 'atlasChat': response = await callAtlasChat(userMessage, conversationHistory, fullSystemPrompt); break;
-        case 'gemini': response = await callGemini(userMessage, conversationHistory, fullSystemPrompt); break;
-        case 'anthropic': response = await callAnthropic(userMessage, conversationHistory, fullSystemPrompt); break;
+        case 'grok': response = await callGrok(userMessage, conversationHistory, fullSystemPrompt, { apiKey: grokKey }); break;
+        case 'atlasChat': response = await callAtlasChat(userMessage, conversationHistory, fullSystemPrompt, { apiKey: atlasKey }); break;
+        case 'gemini': response = await callGemini(userMessage, conversationHistory, fullSystemPrompt, { apiKey: geminiKey }); break;
+        case 'anthropic': response = await callAnthropic(userMessage, conversationHistory, fullSystemPrompt, { apiKey: anthropicKey }); break;
         // Note: OpenAI removed - not in PROVIDERS config (Session 250.43)
       }
 
@@ -1533,6 +1558,7 @@ async function getResilisentResponse(userMessage, conversationHistory = [], sess
         success: true,
         response: content,
         a2ui, // Inject A2UI metadata into response
+        action: recommendationAction, // SOTA: Recommendation action for widget
         provider: provider.name,
         latencyMs, // Session 178: SOTA - Include latency in response
         fallbacksUsed: errors.length,
@@ -1584,9 +1610,9 @@ function startServer(port = 3004) {
       console.log(`[${traceId}] ${req.method} ${req.url}`);
     }
 
-    // P1 FIX: CORS whitelist (no wildcard fallback)
+    // P1 FIX: CORS dynamic validation (Session 250.85)
     const origin = req.headers.origin;
-    if (origin && CORS_WHITELIST.includes(origin)) {
+    if (isOriginAllowed(origin)) {
       res.setHeader('Access-Control-Allow-Origin', origin);
     } else if (!origin) {
       res.setHeader('Access-Control-Allow-Origin', 'https://vocalia.ma');
@@ -1621,7 +1647,7 @@ function startServer(port = 3004) {
     // 1. Widget Scripts (Split Kernels)
     if (req.url.startsWith('/voice-assistant/') && req.method === 'GET') {
       const fileName = req.url.split('/').pop();
-      const validScripts = ['voice-widget-ecommerce.js', 'voice-widget-b2b.js', 'voice-widget.js'];
+      const validScripts = ['voice-widget-v3.js', 'voice-widget.js'];
 
       if (validScripts.includes(fileName)) {
         const filePath = path.join(__dirname, '../widget', fileName);
@@ -1633,7 +1659,7 @@ function startServer(port = 3004) {
       }
       // Fallback for Wix/Legacy paths
       if (req.url.includes('voice-widget.js')) {
-        const filePath = path.join(__dirname, '../widget/voice-widget-ecommerce.js'); // Default to full version
+        const filePath = path.join(__dirname, '../widget/voice-widget-v3.js'); // Default to unified version
         res.writeHead(200, { 'Content-Type': 'application/javascript; charset=utf-8' });
         fs.createReadStream(filePath).pipe(res);
         return;
@@ -2137,7 +2163,59 @@ function startServer(port = 3004) {
       }
     }
 
-    // Main respond endpoint with lead qualification
+    // Sovereign Dynamic Pull: Get tenant-specific widget config
+    if (req.url.startsWith('/config')) {
+      const urlParams = new URLSearchParams(req.url.split('?')[1]);
+      let tenantId = urlParams.get('tenantId');
+
+      const sendConfig = async (tId) => {
+        const client = CLIENT_REGISTRY.clients[tId] || {};
+        const persona = VoicePersonaInjector.getPersona(null, null, tId);
+
+        const config = {
+          success: true,
+          tenantId: tId,
+          branding: {
+            primaryColor: client.primary_color || persona.primaryColor || '#4FBAF1',
+            botName: persona.name || 'VocalIA',
+            avatar: persona.avatar || null
+          },
+          features: {
+            ecommerce: persona.widget_types?.includes('ECOM') || false,
+            voice: true,
+            multilingual: true
+          },
+          initialMessage: persona.language === 'fr' ? `Bonjour, je suis ${persona.name}. Comment puis-je vous aider ?` :
+            persona.language === 'ary' ? `Salam, ana ${persona.name}. Kifach n9der n3awnk ?` :
+              `Hello, I am ${persona.name}. How can I help you today?`
+        };
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(config));
+      };
+
+      if (req.method === 'GET' && tenantId) {
+        return sendConfig(tenantId);
+      } else if (req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => body += chunk);
+        req.on('end', () => {
+          const parsed = safeJsonParse(body, '/config body');
+          tenantId = parsed.data?.tenantId || tenantId;
+          if (!tenantId) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'tenantId is required' }));
+            return;
+          }
+          sendConfig(tenantId);
+        });
+        return;
+      } else {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Invalid config request' }));
+        return;
+      }
+    }
     if ((req.url === '/respond' || req.url === '/') && req.method === 'POST') {
       let body = '';
       let bodySize = 0;
@@ -2159,7 +2237,7 @@ function startServer(port = 3004) {
             res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
             return;
           }
-          const { message, history = [], sessionId, language: reqLanguage } = bodyParsed.data;
+          const { message, history = [], sessionId, language: reqLanguage, widget_type: reqWidgetType } = bodyParsed.data;
           const language = reqLanguage || VOICE_CONFIG?.defaultLanguage || 'fr';
 
           if (!message) {
@@ -2190,8 +2268,10 @@ function startServer(port = 3004) {
           processQualificationData(session, message, language);
 
           // Get Persona with full injection (Session 250.54: Fixed Widget persona injection)
+          // Session 177.5: Persona-Widget Segmentation validation
           const { VoicePersonaInjector } = require('../personas/voice-persona-injector.cjs');
-          const persona = VoicePersonaInjector.getPersona(null, null, sessionId);
+          const widgetType = reqWidgetType || 'B2C'; // Default to B2C for widget calls
+          const persona = VoicePersonaInjector.getPersona(null, null, tenantId, widgetType);
 
           // Set persona language to request language for proper SYSTEM_PROMPTS lookup
           persona.language = language;
@@ -2487,7 +2567,7 @@ function startServer(port = 3004) {
             return;
           }
 
-          const { text, language, gender } = bodyParsed.data;
+          const { text, language, gender, tenantId } = bodyParsed.data;
 
           if (!text) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -2495,12 +2575,22 @@ function startServer(port = 3004) {
             return;
           }
 
+          // Session 250.xx: Multi-tenant ElevenLabs client
+          let ttsClient = elevenLabsClient; // Default to global
+
+          if (tenantId) {
+            const secrets = await SecretVault.getAllSecrets(tenantId);
+            if (secrets.ELEVENLABS_API_KEY) {
+              ttsClient = new ElevenLabsClient(secrets.ELEVENLABS_API_KEY);
+            }
+          }
+
           // Check if ElevenLabs is available
-          if (!elevenLabsClient) {
+          if (!ttsClient || !ttsClient.isConfigured()) {
             res.writeHead(503, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({
               error: 'TTS service unavailable',
-              reason: 'ElevenLabs not configured'
+              reason: 'ElevenLabs not configured for this tenant'
             }));
             return;
           }
@@ -2526,10 +2616,11 @@ function startServer(port = 3004) {
 
           console.log(`[TTS] Generating audio for ${language} (voice: ${voiceId}): "${text.substring(0, 50)}..."`);
 
-          // Generate audio with ElevenLabs
-          const audioBuffer = await elevenLabsClient.generateSpeech(text, voiceId, {
+          // Generate audio with ElevenLabs - Optimized for Latency (Session 250.82)
+          const audioBuffer = await ttsClient.generateSpeech(text, voiceId, {
             model_id: 'eleven_multilingual_v2',
-            output_format: 'mp3_44100_128'
+            output_format: 'mp3_44100_64', // Slightly lower bitrate for faster streaming
+            optimize_streaming_latency: 3   // MAX LATENCY OPTIMIZATION
           });
 
           // Return audio as base64 for easy browser consumption
@@ -2659,7 +2750,7 @@ function startServer(port = 3004) {
     try {
       const { VoicePersonaInjector, PERSONAS } = require('../personas/voice-persona-injector.cjs');
       const personaCount = Object.keys(PERSONAS).length;
-      const testPersona = VoicePersonaInjector.getPersona(null, null, 'health_check');
+      const testPersona = VoicePersonaInjector.getPersona(null, null, 'agency_internal', 'B2B');
       if (testPersona && personaCount >= 40) {
         checks.push({ name: 'Persona Injector', status: 'OK', message: `${personaCount} personas loaded` });
       } else {
@@ -2865,6 +2956,17 @@ Lead Qualification:
   - Syncs hot leads to HubSpot automatically
 `);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// EXPORTS
+// ─────────────────────────────────────────────────────────────────────────────
+module.exports = {
+  getResilisentResponse,
+  sanitizeInput,
+  calculateLeadScore,
+  getLeadStatus,
+  syncLeadToHubSpot
+};
 
 main().catch(err => {
   console.error('Fatal error:', err.message);

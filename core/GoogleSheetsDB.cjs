@@ -78,6 +78,24 @@ class GoogleSheetsDB {
     this.cacheTTL = options.cacheTTL || 60000; // 1 minute default
     this.maxRetries = options.maxRetries || 3;
     this.initialized = false;
+    this.locks = new Map(); // Concurrency locks: sheet -> Promise
+  }
+
+  /**
+   * Internal lock to serialize operations on a per-sheet basis
+   * Prevents Read-Modify-Write race conditions
+   */
+  async acquireLock(sheet) {
+    while (this.locks.get(sheet)) {
+      await this.locks.get(sheet);
+    }
+    let resolve;
+    const promise = new Promise(r => resolve = r);
+    this.locks.set(sheet, promise);
+    return () => {
+      this.locks.delete(sheet);
+      resolve();
+    };
   }
 
   /**
@@ -350,49 +368,56 @@ class GoogleSheetsDB {
 
   /**
    * UPDATE - Update record by ID
+   * Session 179-ULTRATHINK: Added sheet-level lock to prevent RMW race conditions
    */
   async update(sheet, id, data) {
     await this.init();
+    const release = await this.acquireLock(sheet);
 
-    // Find row index
-    const response = await this.withRetry(async () => {
-      return await this.sheets.spreadsheets.values.get({
-        spreadsheetId: this.config.spreadsheetId,
-        range: `${sheet}!A:A`
+    try {
+      // Find row index
+      const response = await this.withRetry(async () => {
+        return await this.sheets.spreadsheets.values.get({
+          spreadsheetId: this.config.spreadsheetId,
+          range: `${sheet}!A:A`
+        });
       });
-    });
 
-    const ids = response.data.values || [];
-    const rowIndex = ids.findIndex(row => row[0] === id);
+      const ids = response.data.values || [];
+      const rowIndex = ids.findIndex(row => row[0] === id);
 
-    if (rowIndex === -1) {
-      throw new Error(`Record not found: ${sheet}:${id}`);
+      if (rowIndex === -1) {
+        throw new Error(`Record not found: ${sheet}:${id}`);
+      }
+
+      // Get current record and merge
+      // Use noCache to ensure we get the latest data if multiple processes were locked
+      const current = await this.findById(sheet, id);
+      const updated = {
+        ...current,
+        ...data,
+        id, // Preserve ID
+        updated_at: this.timestamp()
+      };
+
+      const row = this.objectToRow(sheet, updated);
+      const range = `${sheet}!A${rowIndex + 1}:${String.fromCharCode(64 + row.length)}${rowIndex + 1}`;
+
+      await this.withRetry(async () => {
+        await this.sheets.spreadsheets.values.update({
+          spreadsheetId: this.config.spreadsheetId,
+          range,
+          valueInputOption: 'RAW',
+          requestBody: { values: [row] }
+        });
+      });
+
+      this.invalidateCache(sheet);
+      console.log(`✅ [GoogleSheetsDB] Updated ${sheet}:${id}`);
+      return updated;
+    } finally {
+      release();
     }
-
-    // Get current record and merge
-    const current = await this.findById(sheet, id);
-    const updated = {
-      ...current,
-      ...data,
-      id, // Preserve ID
-      updated_at: this.timestamp()
-    };
-
-    const row = this.objectToRow(sheet, updated);
-    const range = `${sheet}!A${rowIndex + 1}:${String.fromCharCode(64 + row.length)}${rowIndex + 1}`;
-
-    await this.withRetry(async () => {
-      await this.sheets.spreadsheets.values.update({
-        spreadsheetId: this.config.spreadsheetId,
-        range,
-        valueInputOption: 'RAW',
-        requestBody: { values: [row] }
-      });
-    });
-
-    this.invalidateCache(sheet);
-    console.log(`✅ [GoogleSheetsDB] Updated ${sheet}:${id}`);
-    return updated;
   }
 
   /**

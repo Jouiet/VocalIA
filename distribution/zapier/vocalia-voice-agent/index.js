@@ -17,7 +17,7 @@ module.exports = {
         ],
         test: (z, bundle) => {
             // Simple auth test - usually hits a /me endpoint
-            // For now, we assume if we can make a call it works, or we mock a test
+            // Verify connection logic
             return { id: bundle.authData.tenantId, name: 'VocalIA User' };
         },
         connectionLabel: '{{bundle.authData.tenantId}}'

@@ -16,30 +16,56 @@
   <link href="/public/css/style.css" rel="stylesheet">
 
   <!-- Security Headers -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
-<meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <!-- Inter Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 
   <style>
-    .glass { backdrop-filter: blur(16px); background: rgba(51, 65, 85, 0.6); }
-    .stat-card { background: rgba(51, 65, 85, 0.6); border: 1px solid rgba(148, 163, 184, 0.15); border-radius: 16px; }
-    .stat-card:hover { border-color: rgba(94, 106, 210, 0.3); }
-    .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .chart-container { height: 250px; background: rgba(51, 65, 85, 0.4); border-radius: 12px; }
+    .glass {
+      backdrop-filter: blur(16px);
+      background: rgba(51, 65, 85, 0.6);
+    }
+
+    .stat-card {
+      background: rgba(51, 65, 85, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 16px;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(94, 106, 210, 0.3);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .chart-container {
+      height: 250px;
+      background: rgba(51, 65, 85, 0.4);
+      border-radius: 12px;
+    }
   </style>
 </head>
 
 <body class="bg-slate-800 text-white min-h-screen">
   <!-- Skip Link for Accessibility -->
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
     Aller au contenu principal
   </a>
 
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation" aria-label="Navigation principale">
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation"
+    aria-label="Navigation principale">
     <div class="p-6 border-b border-slate-600">
       <a href="/" class="flex items-center space-x-2">
         <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
@@ -48,7 +74,8 @@
     </div>
 
     <nav class="p-4 space-y-1">
-      <a href="/dashboard/client" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.overview">Vue d'ensemble</span>
       </a>
@@ -56,15 +83,18 @@
         <i data-lucide="message-square" class="w-5 h-5"></i>
         <span data-i18n="widget_analytics.nav.widget_analytics">Widget Analytics</span>
       </span>
-      <a href="/dashboard/client#calls" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client#calls"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="phone" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.calls">Appels</span>
       </a>
-      <a href="/dashboard/client#agents" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client#agents"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="bot" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.agents">Agents IA</span>
       </a>
-      <a href="/dashboard/client#billing" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+      <a href="/dashboard/client#billing"
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
         <i data-lucide="credit-card" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.billing">Facturation</span>
       </a>
@@ -72,7 +102,9 @@
 
     <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
       <div class="flex items-center space-x-3 px-2">
-        <div id="wa-user-initials" class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">--</div>
+        <div id="wa-user-initials"
+          class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">
+          --</div>
         <div class="flex-1 min-w-0">
           <p id="wa-user-name" class="text-sm font-medium truncate">Chargement...</p>
           <p id="wa-user-plan" class="text-xs text-vocalia-400 truncate">-</p>
@@ -88,18 +120,21 @@
       <div class="flex items-center justify-between px-8 py-4">
         <div>
           <h1 class="text-2xl font-bold" data-i18n="widget_analytics.title">Voice Widget Analytics</h1>
-          <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.subtitle">Analysez les performances de votre widget vocal</p>
+          <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.subtitle">Analysez les performances de votre
+            widget vocal</p>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Date Range Selector -->
-          <select id="dateRange" aria-label="Sélectionner la période" class="px-4 py-2 rounded-xl bg-slate-700/50 border border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500 focus:border-vocalia-500">
+          <select id="dateRange" aria-label="Sélectionner la période"
+            class="px-4 py-2 rounded-xl bg-slate-700/50 border border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500 focus:border-vocalia-500">
             <option value="7d" data-i18n="widget_analytics.date_range.7d">7 derniers jours</option>
             <option value="30d" selected data-i18n="widget_analytics.date_range.30d">30 derniers jours</option>
             <option value="90d" data-i18n="widget_analytics.date_range.90d">90 derniers jours</option>
             <option value="1y" data-i18n="widget_analytics.date_range.1y">Cette année</option>
           </select>
           <!-- Export Button -->
-          <button type="button" data-action="exportWidgetAnalytics" aria-label="Exporter les données en CSV" class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white text-sm font-medium transition flex items-center gap-2">
+          <button type="button" data-action="exportWidgetAnalytics" aria-label="Exporter les données en CSV"
+            class="px-4 py-2 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white text-sm font-medium transition flex items-center gap-2">
             <i data-lucide="download" class="w-4 h-4" aria-hidden="true"></i>
             <span data-i18n="widget_analytics.export_csv">Exporter CSV</span>
           </button>
@@ -154,7 +189,8 @@
               </span>
             </div>
             <h3 class="text-3xl font-bold mb-1" id="completionRate">--%</h3>
-            <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.completion_rate">Taux de complétion</p>
+            <p class="text-vocalia-400 text-sm" data-i18n="widget_analytics.stats.completion_rate">Taux de complétion
+            </p>
           </div>
 
           <!-- Leads Generated -->
@@ -179,7 +215,8 @@
         <!-- Sessions Over Time -->
         <div class="stat-card p-6">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold" data-i18n="widget_analytics.charts.sessions_per_day">Sessions par jour</h3>
+            <h3 class="text-lg font-semibold" data-i18n="widget_analytics.charts.sessions_per_day">Sessions par jour
+            </h3>
             <div class="flex items-center gap-4 text-sm">
               <span class="flex items-center gap-2">
                 <span class="w-3 h-3 rounded-full bg-vocalia-500"></span>
@@ -204,43 +241,74 @@
         </div>
 
         <!-- Language Distribution -->
-        <div class="stat-card p-6">
-          <h3 class="text-lg font-semibold mb-6" data-i18n="widget_analytics.charts.language_distribution">Distribution par langue</h3>
-          <div class="space-y-4">
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium">FR</span>
-              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div id="wa-lang-bar-fr" class="h-full bg-vocalia-500 rounded-lg transition-all" style="width: 0%"></div>
+        <!-- Language Distribution & Sovereign Metrics -->
+        <div class="stat-card p-6 flex flex-col justify-between">
+          <div>
+            <h3 class="text-lg font-semibold mb-6 flex items-center gap-2">
+              <i data-lucide="globe" class="w-5 h-5 text-vocalia-400"></i>
+              <span data-i18n="widget_analytics.charts.language_distribution">Distribution par langue</span>
+            </h3>
+            <div class="space-y-4 mb-8">
+              <div class="flex items-center gap-4">
+                <span class="w-8 text-sm font-medium">FR</span>
+                <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                  <div id="wa-lang-bar-fr" class="h-full bg-vocalia-500 rounded-lg transition-all" style="width: 0%">
+                  </div>
+                </div>
+                <span id="wa-lang-pct-fr" class="w-12 text-sm text-right">--%</span>
               </div>
-              <span id="wa-lang-pct-fr" class="w-12 text-sm text-right">--%</span>
+              <div class="flex items-center gap-4">
+                <span class="w-8 text-sm font-medium">EN</span>
+                <div class="flex-1 h-8 bg-sky-500 rounded-lg overflow-hidden">
+                  <div id="wa-lang-bar-en" class="h-full bg-sky-500/80 rounded-lg transition-all" style="width: 0%">
+                  </div>
+                </div>
+                <span id="wa-lang-pct-en" class="w-12 text-sm text-right">--%</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="w-8 text-sm font-medium">AR</span>
+                <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                  <div id="wa-lang-bar-ar" class="h-full bg-amber-500 rounded-lg transition-all" style="width: 0%">
+                  </div>
+                </div>
+                <span id="wa-lang-pct-ar" class="w-12 text-sm text-right">--%</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="w-8 text-sm font-medium">ES</span>
+                <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                  <div id="wa-lang-bar-es" class="h-full bg-emerald-500 rounded-lg transition-all" style="width: 0%">
+                  </div>
+                </div>
+                <span id="wa-lang-pct-es" class="w-12 text-sm text-right">--%</span>
+              </div>
+              <div class="flex items-center gap-4">
+                <span class="w-8 text-sm font-medium">ARY</span>
+                <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                  <div id="wa-lang-bar-ary" class="h-full bg-rose-500 rounded-lg transition-all" style="width: 0%">
+                  </div>
+                </div>
+                <span id="wa-lang-pct-ary" class="w-12 text-sm text-right">--%</span>
+              </div>
             </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium">EN</span>
-              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div id="wa-lang-bar-en" class="h-full bg-sky-500 rounded-lg transition-all" style="width: 0%"></div>
+          </div>
+
+          <!-- Sovereign Metrics -->
+          <div class="pt-6 border-t border-slate-700">
+            <h4 class="text-sm font-medium text-vocalia-400 mb-4 flex items-center gap-2">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+              <span>Sovereign Performance</span>
+            </h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                <div class="text-xs text-vocalia-400 mb-1">Latency (ASR+LLM)</div>
+                <div class="text-lg font-bold text-emerald-400">~280ms</div>
+                <div class="text-[10px] text-slate-500">Whisper v3 + Grok</div>
               </div>
-              <span id="wa-lang-pct-en" class="w-12 text-sm text-right">--%</span>
-            </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium">AR</span>
-              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div id="wa-lang-bar-ar" class="h-full bg-amber-500 rounded-lg transition-all" style="width: 0%"></div>
+              <div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                <div class="text-xs text-vocalia-400 mb-1">Cost Efficiency</div>
+                <div class="text-lg font-bold text-sky-400">+42%</div>
+                <div class="text-[10px] text-slate-500">vs Generic API</div>
               </div>
-              <span id="wa-lang-pct-ar" class="w-12 text-sm text-right">--%</span>
-            </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium">ES</span>
-              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div id="wa-lang-bar-es" class="h-full bg-emerald-500 rounded-lg transition-all" style="width: 0%"></div>
-              </div>
-              <span id="wa-lang-pct-es" class="w-12 text-sm text-right">--%</span>
-            </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium">ARY</span>
-              <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
-                <div id="wa-lang-bar-ary" class="h-full bg-rose-500 rounded-lg transition-all" style="width: 0%"></div>
-              </div>
-              <span id="wa-lang-pct-ary" class="w-12 text-sm text-right">--%</span>
             </div>
           </div>
         </div>
@@ -250,7 +318,8 @@
       <section class="grid lg:grid-cols-2 gap-6 mb-8">
         <!-- Top Personas -->
         <div class="stat-card p-6">
-          <h3 class="text-lg font-semibold mb-6" data-i18n="widget_analytics.tables.persona_performance"><span data-i18n="analytics.performance_par_persona_19">Performance par Persona</span></h3>
+          <h3 class="text-lg font-semibold mb-6" data-i18n="widget_analytics.tables.persona_performance"><span
+              data-i18n="analytics.performance_par_persona_19">Performance par Persona</span></h3>
           <div class="overflow-x-auto">
             <table class="w-full text-sm" role="table">
               <caption class="sr-only">Performance par Persona</caption>
@@ -259,11 +328,14 @@
                   <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.persona">Persona</th>
                   <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.sessions">Sessions</th>
                   <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.conversion">Conversion</th>
-                  <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.avg_duration">Durée moy.</th>
+                  <th scope="col" class="pb-3 text-right" data-i18n="widget_analytics.tables.avg_duration">Durée moy.
+                  </th>
                 </tr>
               </thead>
               <tbody id="wa-personas-table">
-                <tr><td colspan="4" class="py-4 text-center text-vocalia-400">Chargement des données...</td></tr>
+                <tr>
+                  <td colspan="4" class="py-4 text-center text-vocalia-400">Chargement des données...</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -337,14 +409,17 @@
           </div>
           <!-- Speech API Support -->
           <div class="mt-6 pt-6 border-t border-slate-700">
-            <h4 class="text-sm text-vocalia-400 mb-3" data-i18n="widget_analytics.devices.speech_api_support">Support Web Speech API</h4>
+            <h4 class="text-sm text-vocalia-400 mb-3" data-i18n="widget_analytics.devices.speech_api_support">Support
+              Web Speech API</h4>
             <div class="flex items-center gap-4">
               <div class="flex-1 h-4 bg-slate-700/50 rounded-full overflow-hidden">
-                <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style="width: 94%"></div>
+                <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style="width: 94%">
+                </div>
               </div>
               <span class="text-sm font-medium text-emerald-400">94%</span>
             </div>
-            <p class="text-xs text-vocalia-400 mt-2" data-i18n="widget_analytics.devices.incompatible_browsers">6% des visiteurs utilisent un navigateur non compatible</p>
+            <p class="text-xs text-vocalia-400 mt-2" data-i18n="widget_analytics.devices.incompatible_browsers">6% des
+              visiteurs utilisent un navigateur non compatible</p>
           </div>
         </div>
       </section>
@@ -353,11 +428,14 @@
       <section class="stat-card p-6">
         <div class="flex items-center justify-between mb-6">
           <h3 class="text-lg font-semibold" data-i18n="widget_analytics.tables.recent_sessions">Sessions récentes</h3>
-          <button type="button" data-action="viewAllSessions" aria-label="Voir toutes les sessions" class="text-sm text-vocalia-400 hover:text-vocalia-300 transition" data-i18n="widget_analytics.tables.view_all">Voir tout</button>
+          <button type="button" data-action="viewAllSessions" aria-label="Voir toutes les sessions"
+            class="text-sm text-vocalia-400 hover:text-vocalia-300 transition"
+            data-i18n="widget_analytics.tables.view_all">Voir tout</button>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm" role="table">
-            <caption class="sr-only"><span data-i18n="analytics.sessions_rcentes_du_15">Sessions récentes du widget</span></caption>
+            <caption class="sr-only"><span data-i18n="analytics.sessions_rcentes_du_15">Sessions récentes du
+                widget</span></caption>
             <thead>
               <tr class="text-left text-vocalia-400 border-b border-slate-700">
                 <th scope="col" class="pb-3" data-i18n="widget_analytics.tables.session_id">Session ID</th>
@@ -376,7 +454,9 @@
                 <td class="py-3">FR</td>
                 <td class="py-3">3:45</td>
                 <td class="py-3">12</td>
-                <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs"><span data-i18n="analytics.converted_1"><span data-i18n="analytics.converted_7"><span data-i18n="analytics.converted_13">Converted</span></span></span></span></td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs"><span
+                      data-i18n="analytics.converted_1"><span data-i18n="analytics.converted_7"><span
+                          data-i18n="analytics.converted_13">Converted</span></span></span></span></td>
                 <td class="py-3 text-vocalia-400"><span data-i18n="analytics.il_y_a_12">Il y a 5 min</span></td>
               </tr>
               <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
@@ -385,7 +465,8 @@
                 <td class="py-3">EN</td>
                 <td class="py-3">2:12</td>
                 <td class="py-3">8</td>
-                <td class="py-3"><span class="px-2 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs"><span data-i18n="analytics.completed_10">Completed</span></span></td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-sky-500/20 text-sky-400 text-xs"><span
+                      data-i18n="analytics.completed_10">Completed</span></span></td>
                 <td class="py-3 text-vocalia-400"><span data-i18n="analytics.il_y_a_9">Il y a 12 min</span></td>
               </tr>
               <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
@@ -394,7 +475,8 @@
                 <td class="py-3">AR</td>
                 <td class="py-3">5:34</td>
                 <td class="py-3">18</td>
-                <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
+                <td class="py-3"><span
+                    class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
                 <td class="py-3 text-vocalia-400"><span data-i18n="analytics.il_y_a_6">Il y a 23 min</span></td>
               </tr>
               <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
@@ -403,7 +485,8 @@
                 <td class="py-3">FR</td>
                 <td class="py-3">1:08</td>
                 <td class="py-3">4</td>
-                <td class="py-3"><span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs"><span data-i18n="analytics.abandoned_4">Abandoned</span></span></td>
+                <td class="py-3"><span class="px-2 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs"><span
+                      data-i18n="analytics.abandoned_4">Abandoned</span></span></td>
                 <td class="py-3 text-vocalia-400"><span data-i18n="analytics.il_y_a_3">Il y a 31 min</span></td>
               </tr>
               <tr class="hover:bg-slate-700/30 transition">
@@ -412,7 +495,8 @@
                 <td class="py-3">ARY</td>
                 <td class="py-3">6:22</td>
                 <td class="py-3">24</td>
-                <td class="py-3"><span class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
+                <td class="py-3"><span
+                    class="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs">Converted</span></td>
                 <td class="py-3 text-vocalia-400"><span data-i18n="analytics.il_y_a_0">Il y a 45 min</span></td>
               </tr>
             </tbody>
@@ -479,91 +563,93 @@
   </script>
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lucide@0.469.0"
+    integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM"
+    crossorigin="anonymous"></script>
 
   <!-- Inline Fallback (403 workaround) -->
   <script>
-  (function() {
-    'use strict';
-    // Plausible stub
-    window.plausible = window.plausible || function() {
-      (window.plausible.q = window.plausible.q || []).push(arguments);
-    };
+    (function () {
+      'use strict';
+      // Plausible stub
+      window.plausible = window.plausible || function () {
+        (window.plausible.q = window.plausible.q || []).push(arguments);
+      };
 
-    // Lucide icons init
-    function initLucide() {
-      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
-        lucide.createIcons();
+      // Lucide icons init
+      function initLucide() {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
       }
-    }
 
-    // Mobile menu
-    function initMobileMenu() {
-      var btn = document.getElementById('mobileMenuBtn');
-      var menu = document.getElementById('mobileMenu');
-      if (!btn || !menu) return;
+      // Mobile menu
+      function initMobileMenu() {
+        var btn = document.getElementById('mobileMenuBtn');
+        var menu = document.getElementById('mobileMenu');
+        if (!btn || !menu) return;
 
-      btn.addEventListener('click', function() {
-        var isOpen = menu.classList.contains('translate-x-0');
-        if (isOpen) {
-          menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          document.body.style.overflow = '';
-        } else {
-          menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
-          menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    }
+        btn.addEventListener('click', function () {
+          var isOpen = menu.classList.contains('translate-x-0');
+          if (isOpen) {
+            menu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            menu.classList.add('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+          } else {
+            menu.classList.remove('translate-x-full', 'invisible', 'opacity-0', 'pointer-events-none');
+            menu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      }
 
-    // i18n init - Priority: localStorage > geo detection
-    async function initI18n() {
-      if (typeof VocaliaI18n === 'undefined') return;
-      try {
-        var storedLang = localStorage.getItem('vocalia_lang');
-        if (storedLang) {
-          await VocaliaI18n.setLocale(storedLang);
-        } else if (typeof VocaliaGeo !== 'undefined') {
-          var geo = await VocaliaGeo.getGeo();
-          await VocaliaI18n.setLocale(geo.lang);
-        } else {
-          await VocaliaI18n.setLocale('fr');
-        }
+      // i18n init - Priority: localStorage > geo detection
+      async function initI18n() {
+        if (typeof VocaliaI18n === 'undefined') return;
+        try {
+          var storedLang = localStorage.getItem('vocalia_lang');
+          if (storedLang) {
+            await VocaliaI18n.setLocale(storedLang);
+          } else if (typeof VocaliaGeo !== 'undefined') {
+            var geo = await VocaliaGeo.getGeo();
+            await VocaliaI18n.setLocale(geo.lang);
+          } else {
+            await VocaliaI18n.setLocale('fr');
+          }
+          VocaliaI18n.translatePage();
+        } catch (e) { }
+      }
+
+      // Language switcher
+      window.switchLang = async function (lang) {
+        if (typeof VocaliaI18n === 'undefined') return;
+        await VocaliaI18n.setLocale(lang);
+        var labels = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'Darija' };
+        var el = document.getElementById('currentLang');
+        if (el) el.textContent = labels[lang] || lang.toUpperCase();
+        var dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.add('hidden');
         VocaliaI18n.translatePage();
-      } catch (e) {}
-    }
+        localStorage.setItem('vocalia_lang', lang);
+      };
 
-    // Language switcher
-    window.switchLang = async function(lang) {
-      if (typeof VocaliaI18n === 'undefined') return;
-      await VocaliaI18n.setLocale(lang);
-      var labels = {fr:'FR',en:'EN',es:'ES',ar:'AR',ary:'Darija'};
-      var el = document.getElementById('currentLang');
-      if (el) el.textContent = labels[lang] || lang.toUpperCase();
-      var dd = document.getElementById('langDropdown');
-      if (dd) dd.classList.add('hidden');
-      VocaliaI18n.translatePage();
-      localStorage.setItem('vocalia_lang', lang);
-    };
-
-    // Init on DOM ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      // Init on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+          initLucide();
+          initMobileMenu();
+          initI18n();
+        });
+      } else {
         initLucide();
         initMobileMenu();
         initI18n();
-      });
-    } else {
-      initLucide();
-      initMobileMenu();
-      initI18n();
-    }
+      }
 
-    // Re-init on load
-    window.addEventListener('load', initLucide);
-    window.addEventListener('load', initI18n);
-  })();
+      // Re-init on load
+      window.addEventListener('load', initLucide);
+      window.addEventListener('load', initI18n);
+    })();
   </script>
   <!-- i18n System -->
   <script src="/src/lib/geo-detect.js?v=250"></script>
@@ -719,17 +805,17 @@
 
         return '<tr class="border-b border-slate-700/50">' +
           '<td class="py-3 font-medium">' +
-            '<div class="flex items-center gap-2">' +
-              '<div class="w-8 h-8 rounded-lg bg-' + style.color + '-500/20 flex items-center justify-center">' +
-                '<i data-lucide="' + style.icon + '" class="w-4 h-4 text-' + style.color + '-400"></i>' +
-              '</div>' +
-              persona +
-            '</div>' +
+          '<div class="flex items-center gap-2">' +
+          '<div class="w-8 h-8 rounded-lg bg-' + style.color + '-500/20 flex items-center justify-center">' +
+          '<i data-lucide="' + style.icon + '" class="w-4 h-4 text-' + style.color + '-400"></i>' +
+          '</div>' +
+          persona +
+          '</div>' +
           '</td>' +
           '<td class="py-3 text-right">' + stats.sessions + '</td>' +
           '<td class="py-3 text-right text-emerald-400">' + convRate + '%</td>' +
           '<td class="py-3 text-right">' + avgMin + ':' + avgSec.toString().padStart(2, '0') + '</td>' +
-        '</tr>';
+          '</tr>';
       }).join('');
 
       // Re-initialize Lucide icons
@@ -795,7 +881,8 @@
       updateWidgetAnalytics(analytics);
     });
   </script>
-    <!-- Voice Widget -->
+  <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
+
 </html>

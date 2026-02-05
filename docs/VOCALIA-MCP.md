@@ -1,13 +1,16 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.8.0 | 03/02/2026 | Session 250.76 | BM25 RAG SOTA | **182 tools** | **28 integrations**
+> Version: 0.8.1 | 04/02/2026 | Session 250.78 | BM25 RAG SOTA | **182 tools** | **28 integrations**
+> **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (40 personas ↔ 4 widgets)
+> **Session 250.77**: Product Matrix VALIDATED - 4 products (B2B/B2C/Ecom/Telephony) with visual display config
 > **Session 250.76**: E-commerce Widget Phase 1 - Product Cards + Voice/Text Tracking + UCP/MCP Integration
 > **Session 250.64**: Voice config E2E fix - tenant voice preferences DB→Telephony, 27 voix ElevenLabs
 > **Protocol Gap:** A2A ✅ (4 agents) | AG-UI v3.0 ✅ (17 events + e-commerce) | UCP ✅ (7 tools) | MCP ✅ (182 tools)
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
 > **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds (19 tools)
-> **Widget E-commerce:** Product UI ✅ | Carousel ✅ | Voice/Text A/B ✅ | UCP LTV ✅
+> **Widget Products:** B2B (413 LOC) | B2C (3,091 LOC) | Ecom (5,650 LOC) | Telephony (168KB)
+> **Personas:** 40 total | ⚠️ No `widget_types` filtering (GAP)
 
 ## Qu'est-ce que MCP?
 
@@ -100,7 +103,7 @@ Ces tools fonctionnent sans aucun service externe:
 | `voice_generate_response` | voice-api-resilient.cjs | :3004 |
 | `voice_providers_status` | voice-api-resilient.cjs | :3004 |
 | `knowledge_search` | voice-api-resilient.cjs | :3004 |
-| `telephony_initiate_call` | voice-telephony-bridge.cjs | :3009 + TWILIO_* |
+| `telephony_initiate_call` | voice-telephony-bridge.cjs | TWILIO_* (Managed or BYOK) |
 | `telephony_get_status` | voice-telephony-bridge.cjs | :3009 |
 | `telephony_transfer_call` | Active call session | :3009 |
 | `crm_get_customer` | HubSpot | HUBSPOT_API_KEY |
@@ -789,6 +792,7 @@ Liste tous les fichiers exportés dans le répertoire exports.
 **Prérequis:** `STRIPE_SECRET_KEY` (Multi-tenant: `STRIPE_SECRET_KEY_<TENANT>`)
 
 **Voice Commerce Flow:**
+
 ```
 Caller: "Je veux payer"
 → stripe_create_payment_link (product_name: "Consultation", amount: 5000)
@@ -1182,6 +1186,7 @@ VocalIA implémente le protocole [AG-UI](https://docs.ag-ui.com/) (CopilotKit Op
 | Global exposure | ✅ | `window.VocaliaAGUI` |
 
 **Usage externe:**
+
 ```javascript
 // Subscribe to AG-UI events
 window.VocaliaAGUI.on('*', (event) => {
