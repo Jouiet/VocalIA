@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> **v6.99.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
+> **v7.0.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
 > 70 pages | 22k+ i18n keys | 5 langs (FR/EN/ES/AR/ARY) | RTL | 309 unit + 375 E2E tests (99.5%)
 > **203 MCP Tools** | 40 Personas | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Klaviyo 5 | Twilio 5
-> ✅ **SESSION 250.91:** Widget B2B v2.2.0 deployed (#5E6AD2 branding), Strategic docs 100% DONE, Git synced
+> ✅ **SESSION 250.92:** I18N Deep Surgery - French contamination eliminated (en: 7→0, es: 34→0), 306/309 tests pass
 
 ## Quick Reference
 
