@@ -101,13 +101,13 @@
     "frequency_fr": "",
     "agentic_level": 1,
     "script_ref": "voice-widget-core.js",
-    "strategic_intent": "freemium_acquisition",
-    "business_outcome": "Free tier acquisition, website conversion optimization, upsell to telephony",
-    "marketing_science": "Freemium conversion funnel, PLG (Product-Led Growth), zero-friction onboarding",
+    "strategic_intent": "trial_based_acquisition",
+    "business_outcome": "Trial-to-paid conversion, website conversion optimization, upsell to telephony",
+    "marketing_science": "14-day trial conversion funnel, PLG (Product-Led Growth), low-friction onboarding",
     "diagnostic_truth": "",
     "systemic_risk": "",
     "tenant_id": "agency_internal",
-    "text": "Voice Widget Core Widget Vocal Core Zero-cost voice assistant using native browser APIs. Drop-in integration with 2 lines of code. Assistant vocal cout zero utilisant APIs navigateur natives. Integration instantanee avec 2 lignes de code. Lightweight browser-based voice assistant leveraging Web Speech API for transcription and synthesis. Zero infrastructure cost, instant deployment for any website. widget web-speech-api zero-cost drop-in-widget customizable-ui multi-language website-assistant product-search faq-bot lead-capture voice-api-resilient persona-injector google-chrome safari edge vocalia widget chatbot assistant-vocal web-speech-api gratuit free zero-cost embed integration wordpress shopify wix squarespace site-web landing-page homepage contact-page freemium_acquisition Freemium conversion funnel, PLG (Product-Led Growth), zero-friction onboarding Free tier acquisition, website conversion optimization, upsell to telephony Architectural Priority: Structural Foundation"
+    "text": "Voice Widget Core Widget Vocal Core Zero-cost voice assistant using native browser APIs. Drop-in integration with 2 lines of code. Assistant vocal cout zero utilisant APIs navigateur natives. Integration instantanee avec 2 lignes de code. Lightweight browser-based voice assistant leveraging Web Speech API for transcription and synthesis. Zero infrastructure cost, instant deployment for any website. widget web-speech-api zero-cost drop-in-widget customizable-ui multi-language website-assistant product-search faq-bot lead-capture voice-api-resilient persona-injector google-chrome safari edge vocalia widget chatbot assistant-vocal web-speech-api gratuit free zero-cost embed integration wordpress shopify wix squarespace site-web landing-page homepage contact-page trial_based_acquisition 14-day trial conversion funnel, PLG (Product-Led Growth), low-friction onboarding Trial-to-paid conversion, website conversion optimization, upsell to telephony Architectural Priority: Structural Foundation"
   },
   {
     "id": "voice-widget-templates",
@@ -474,16 +474,16 @@
     "text": "dental intake Dentiste dentiste Le Dr. Lumière est notre dentiste principal, spécialiste en implantologie et esthétique dentaire."
   },
   {
-    "id": "faq_agency_v3_products",
+    "id": "faq_agency_v3_produits",
     "type": "faq",
-    "title": "Products FAQ",
+    "title": "Produits FAQ",
     "title_fr": "FAQ Produits",
     "category": "faq",
     "persona_id": "agency_v3",
-    "topic": "products",
-    "answer_fr": "VocalIA propose 2 produits Voice AI: Voice Widget (assistant vocal 24/7 pour sites web) et Voice Telephony (ligne téléphonique IA via Twilio).",
+    "topic": "produits",
+    "answer_fr": "VocalIA propose 4 produits Voice AI: Voice Widget B2B (qualification leads), Voice Widget B2C (support e-commerce), Widget E-commerce (8 intégrations) et Voice Telephony AI (ligne PSTN via Twilio).",
     "tenant_id": "agency_internal",
-    "text": "agency Products produits VocalIA propose 2 produits Voice AI: Voice Widget (assistant vocal 24/7 pour sites web) et Voice Telephony (ligne téléphonique IA via Twilio)."
+    "text": "agency Produits produits VocalIA propose 4 produits Voice AI: Voice Widget B2B (qualification leads), Voice Widget B2C (support e-commerce), Widget E-commerce (8 intégrations) et Voice Telephony AI (ligne PSTN via Twilio)."
   },
   {
     "id": "faq_agency_v3_personas",
@@ -498,16 +498,16 @@
     "text": "agency Personas personas 40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus."
   },
   {
-    "id": "faq_agency_v3_languages",
+    "id": "faq_agency_v3_langues",
     "type": "faq",
-    "title": "Languages FAQ",
+    "title": "Langues FAQ",
     "title_fr": "FAQ Langues",
     "category": "faq",
     "persona_id": "agency_v3",
-    "topic": "languages",
+    "topic": "langues",
     "answer_fr": "5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain).",
     "tenant_id": "agency_internal",
-    "text": "agency Languages langues 5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain)."
+    "text": "agency Langues langues 5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain)."
   },
   {
     "id": "faq_agency_v3_contact",
@@ -520,6 +520,30 @@
     "answer_fr": "Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma.",
     "tenant_id": "agency_internal",
     "text": "agency Contact contact Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma."
+  },
+  {
+    "id": "faq_agency_v3_tarifs",
+    "type": "faq",
+    "title": "Tarifs FAQ",
+    "title_fr": "FAQ Tarifs",
+    "category": "faq",
+    "persona_id": "agency_v3",
+    "topic": "tarifs",
+    "answer_fr": "Essai 14 jours inclus, Starter 490 DH/mois, Pro 990 DH/mois, Enterprise sur devis.",
+    "tenant_id": "agency_internal",
+    "text": "agency Tarifs tarifs Essai 14 jours inclus, Starter 490 DH/mois, Pro 990 DH/mois, Enterprise sur devis. price pricing cost fee"
+  },
+  {
+    "id": "faq_agency_v3_integrations",
+    "type": "faq",
+    "title": "Integrations FAQ",
+    "title_fr": "FAQ Integrations",
+    "category": "faq",
+    "persona_id": "agency_v3",
+    "topic": "integrations",
+    "answer_fr": "31+ intégrations natives (HubSpot, Shopify, Stripe, Calendly...) et 203 MCP tools.",
+    "tenant_id": "agency_internal",
+    "text": "agency Integrations integrations 31+ intégrations natives (HubSpot, Shopify, Stripe, Calendly...) et 203 MCP tools."
   },
   {
     "id": "faq_healer_v1_specialites",
@@ -2330,7 +2354,7 @@
   {
     "id": "policy_contact",
     "title": "CONTACT",
-    "text": "Contact VocalIA via website vocalia.ma or phone +212 6 00 00 00 00. For technical support, email support@vocalia.ma. Business inquiries go to contact@vocalia.ma. Response time is typically within 24 business hours. contact phone telephone email reach joindre appeler call message write",
+    "text": "Contact VocalIA via website vocalia.ma/contact or email contact@vocalia.ma. For technical support, email support@vocalia.ma. Business inquiries: contact@vocalia.ma. Book a demo at vocalia.ma/booking. Response time is typically within 24 business hours. contact phone telephone email reach joindre appeler call message write",
     "tenant_id": "agency_internal",
     "metadata": {
       "type": "policy",
