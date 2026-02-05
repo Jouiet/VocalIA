@@ -40,6 +40,16 @@ Ce document consolidé contient:
 | **VOCALIA-MCP.md** | MCP Server (203 tools) | ✅ |
 | **INTEGRATIONS-ROADMAP.md** | Roadmap intégrations | ✅ |
 
+### WordPress/WooCommerce (Session 250.94 - COMPLETE)
+
+| Composant | Fichier | Lignes | Status |
+|:----------|:--------|:------:|:------:|
+| MCP WooCommerce Tools | `mcp-server/src/tools/woocommerce.ts` | 687 | ✅ 7 tools |
+| WordPress Plugin | `plugins/wordpress/vocalia-voice-widget.php` | 514 | ✅ |
+| Catalog Connector | `core/catalog-connector.cjs` | ~200 | ✅ |
+
+**Note:** `wordpress.ts` MCP N'EST PAS nécessaire - WooCommerce couvre le besoin e-commerce WordPress.
+
 ### Audits & Forensique
 
 | Document | Description | Status |

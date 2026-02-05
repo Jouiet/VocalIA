@@ -404,7 +404,7 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 > **Widget EventBus:** ✅ COMPLETED (via backend)
 > **Widget B2B Production:** ✅ v2.2.0 deployed with correct branding (#5E6AD2)
 > **Tests:** 306/309 pass (3 skip), MCP build OK
-> **Next:** WordPress MCP (P3), Tenant Documentation (P3)
+> **Next:** Tenant Documentation (P3) | **WordPress:** ✅ RESOLVED via woocommerce.ts (7 tools)
 
 ---
 
@@ -440,7 +440,7 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 | `klaviyo.ts` | ✅ `klaviyo-ecommerce.cjs` | ✅ 5 tools | **DONE** |
 | `twilio.ts` | ✅ `voice-telephony-bridge.cjs` | ✅ 5 tools | **DONE** |
 | WhatsApp | ✅ Backend ready | ✅ In twilio.ts | **DONE** |
-| `wordpress.ts` | ✅ `distribution/wordpress/` | ⏳ P3 | Deferred (complex architecture) |
+| `wordpress.ts` | ✅ N/A | ✅ **woocommerce.ts (7 tools)** | **RESOLVED** - WordPress e-commerce = WooCommerce, déjà couvert |
 
 ### 14.4 Widget-System Protocol Analysis (✅ RESOLVED)
 
@@ -471,22 +471,34 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 | `@hubspot/api-client` | ✅ UTILISÉ | `integrations/hubspot-b2b-crm.cjs:26` |
 | `google-spreadsheet` | ⚠️ REDONDANT | GoogleSheetsDB uses `googleapis` directly |
 
-### 14.7 WordPress Distribution (VERIFIED EXISTS)
+### 14.7 WordPress/WooCommerce Architecture (✅ COMPLETE - Session 250.94)
 
-```
-distribution/wordpress/vocalia-voice-assistant/
-├── vocalia-voice-assistant.php
-├── includes/
-├── assets/
-└── readme.txt
+**FAIT VÉRIFIÉ:** VocalIA a une couverture WordPress/WooCommerce COMPLÈTE via 3 composants:
 
-plugins/wordpress/vocalia-voice/
-├── vocalia-voice.php
-├── admin/
-└── assets/
-```
+| Composant | Fichier | Lignes | Fonction |
+|:----------|:--------|:------:|:---------|
+| **MCP WooCommerce Tools** | `mcp-server/src/tools/woocommerce.ts` | 687 | 7 tools REST v3 |
+| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | 514 | Widget injection |
+| **WordPress Plugin Ecom** | `distribution/wordpress/vocalia-voice-agent/vocalia-voice-agent.php` | 161 | WooCommerce widget |
+| **Catalog Connector** | `core/catalog-connector.cjs` (WooCommerceCatalogConnector) | ~200 | Sync produits |
+| **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | 389 | checkOrderStatus, getOrderHistory |
 
-**Status:** WordPress plugin EXISTS, but no MCP `wordpress.ts` tool file.
+**WooCommerce MCP Tools (7):**
+- `woocommerce_list_orders` - Liste commandes
+- `woocommerce_get_order` - Détails commande
+- `woocommerce_update_order` - Màj statut commande
+- `woocommerce_list_products` - Liste produits
+- `woocommerce_get_product` - Détails produit
+- `woocommerce_list_customers` - Liste clients
+- `woocommerce_get_customer` - Détails client
+
+**Pourquoi `wordpress.ts` N'EST PAS nécessaire:**
+- WordPress MCP (mcp-adapter, InstaWP) gère posts/pages/users/plugins
+- VocalIA n'a PAS besoin de gérer le contenu WordPress
+- VocalIA a besoin de données e-commerce → `woocommerce.ts` (7 tools) ✅
+- VocalIA a besoin d'injection widget → `vocalia-voice-widget.php` ✅
+
+**Status:** ✅ **COMPLETE** - Aucune tâche restante pour WordPress.
 
 ---
 

@@ -83,6 +83,45 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | **PrestaShop** | 10 | 1.91% | Webservice (FULL CRUD) |
 | **BigCommerce** | 9 | 1% | REST v2/v3 (FULL CRUD) |
 
+### WordPress/WooCommerce Architecture (Session 250.94 - VÉRIFIÉ)
+
+**VocalIA a une couverture WordPress/WooCommerce COMPLÈTE via 3 composants:**
+
+| Composant | Fichier | Lignes | Fonction |
+|:----------|:--------|:------:|:---------|
+| **MCP WooCommerce Tools** | `mcp-server/src/tools/woocommerce.ts` | **687** | 7 tools REST API v3 |
+| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (40 personas, 5 langues) |
+| **WordPress Plugin Ecom** | `distribution/wordpress/vocalia-voice-agent/vocalia-voice-agent.php` | **161** | WooCommerce widget (B2B/B2C/Ecom modes) |
+| **Catalog Connector** | `core/catalog-connector.cjs` (WooCommerceCatalogConnector) | **~200** | Sync produits REST v3 |
+| **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | **389** | checkOrderStatus(), getOrderHistory() |
+
+**WooCommerce MCP Tools (7):**
+
+| Tool | Fonction | Credential |
+|:-----|:---------|:-----------|
+| `woocommerce_list_orders` | Liste commandes avec filtres | WOOCOMMERCE_* |
+| `woocommerce_get_order` | Détails commande par ID | WOOCOMMERCE_* |
+| `woocommerce_update_order` | Màj statut commande | WOOCOMMERCE_* |
+| `woocommerce_list_products` | Liste produits catalogue | WOOCOMMERCE_* |
+| `woocommerce_get_product` | Détails produit par ID | WOOCOMMERCE_* |
+| `woocommerce_list_customers` | Liste clients | WOOCOMMERCE_* |
+| `woocommerce_get_customer` | Détails client par ID | WOOCOMMERCE_* |
+
+**Credentials requis:**
+```bash
+WOOCOMMERCE_URL=https://store.example.com
+WOOCOMMERCE_CONSUMER_KEY=ck_xxxxxxxxxxxx
+WOOCOMMERCE_CONSUMER_SECRET=cs_xxxxxxxxxxxx
+```
+
+**Pourquoi `wordpress.ts` N'EST PAS nécessaire:**
+- Les WordPress MCP génériques (mcp-adapter, InstaWP) gèrent posts/pages/users/plugins
+- VocalIA n'a **PAS besoin** de gérer le contenu WordPress
+- VocalIA a besoin de **données e-commerce** → `woocommerce.ts` (7 tools) ✅
+- VocalIA a besoin d'**injection widget** → `vocalia-voice-widget.php` ✅
+
+**Status:** ✅ **COMPLETE** - Market share WordPress e-commerce = 33-39% (WooCommerce) = COUVERT
+
 ### Tools Toujours Disponibles (15)
 
 Ces tools fonctionnent sans aucun service externe:
@@ -143,10 +182,11 @@ Ces tools fonctionnent sans aucun service externe:
 - 5 langues natives (FR, EN, ES, AR, ARY)
 - 19 intégrations pré-connectées (95%)
 - Google Workspace complet (Calendar, Sheets, Drive, Docs)
-- 3 CRM inline (HubSpot, Pipedrive, Zoho) - ⚠️ HubSpot/Klaviyo MCP modules MANQUENT
-- 7 E-commerce (Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop)
-- 2 Support (Freshdesk, Zendesk) - ❌ Intercom/Crisp NON IMPLÉMENTÉS
-- 2 Calendriers (Google Calendar, Calendly) - ❌ Cal.com NON IMPLÉMENTÉ
+- 3 CRM (HubSpot 7 tools, Pipedrive 7 tools, Zoho 6 tools) ✅ COMPLETE
+- 7 E-commerce (Shopify 8, WooCommerce 7, Magento 10, Wix 6, Squarespace 7, BigCommerce 9, PrestaShop 10) ✅
+- 2 Support (Freshdesk 6, Zendesk 6) ✅ COMPLETE
+- 2 Calendriers (Google Calendar, Calendly 6 tools) ✅ COMPLETE
+- **WordPress/WooCommerce:** ✅ COMPLETE - Voir section dédiée ci-dessous
 
 ---
 

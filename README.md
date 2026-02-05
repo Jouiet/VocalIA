@@ -155,6 +155,16 @@ SHOPIFY_ACCESS_TOKEN=
 SHOPIFY_STORE=
 ```
 
+## WordPress/WooCommerce Integration (COMPLETE)
+
+| Composant | Fichier | Lignes | Fonction |
+|:----------|:--------|:------:|:---------|
+| MCP WooCommerce Tools | `mcp-server/src/tools/woocommerce.ts` | 687 | 7 tools REST v3 |
+| WordPress Plugin | `plugins/wordpress/vocalia-voice-widget.php` | 514 | Widget injection |
+| Catalog Connector | `core/catalog-connector.cjs` | ~200 | WooCommerceCatalogConnector |
+
+**WooCommerce MCP Tools (7):** list_orders, get_order, update_order, list_products, get_product, list_customers, get_customer
+
 ## Competitive Positioning
 
 | Feature | Vapi | Retell | VocalIA |
@@ -164,6 +174,7 @@ SHOPIFY_STORE=
 | Darija Support | ❌ | ❌ | ✅ |
 | Multi-Personas | ❌ | ❌ | ✅ (40) |
 | MCP Server | ❌ | ❌ | ✅ (203 tools) |
+| WordPress/WooCommerce | ❌ | ❌ | ✅ (7 tools + plugin) |
 | Self-Hosted | ❌ | ❌ | ✅ |
 | E2E Tests | ❌ | ❌ | ✅ (375 tests) |
 

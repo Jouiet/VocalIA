@@ -100,6 +100,18 @@ HITL_SLACK_WEBHOOK=              # Notifications
 | ar | Arabic MSA | ✅ Full |
 | ary | Darija (Moroccan) | ✅ Native support (ElevenLabs) |
 
+## WordPress/WooCommerce (COMPLETE - Session 250.94)
+
+| Composant | Fichier | Lignes | Tools |
+|:----------|:--------|:------:|:-----:|
+| MCP WooCommerce | `woocommerce.ts` | 687 | 7 |
+| WordPress Plugin | `vocalia-voice-widget.php` | 514 | N/A |
+| Catalog Connector | `catalog-connector.cjs` | ~200 | N/A |
+
+**WooCommerce Tools:** list_orders, get_order, update_order, list_products, get_product, list_customers, get_customer
+
+**Note:** `wordpress.ts` MCP N'EST PAS nécessaire - WooCommerce couvre le besoin e-commerce WordPress.
+
 ## Avantages Concurrentiels
 | Avantage | Description |
 |:---------|:------------|
@@ -109,3 +121,4 @@ HITL_SLACK_WEBHOOK=              # Notifications
 | Langues | Seul avec Darija native |
 | MCP Tools | 203 tools (vérifié) |
 | E-commerce | 7 platforms, ~64% market coverage |
+| WordPress | ✅ WooCommerce 7 tools + Plugin PHP |

@@ -65,3 +65,22 @@ wc -l integrations/*.cjs   # 2,234
 | MCP tools | **203** | grep count |
 | Langues | **5** | FR, EN, ES, AR, ARY |
 | Services | **7** | ports 3004, 3007, 3009, 3010, 3011, 3012, 3013 |
+| WooCommerce MCP | **7** tools | `grep -c "server.tool(woocommerceTools" mcp-server/src/index.ts` |
+| WooCommerce.ts | **687** lignes | `wc -l mcp-server/src/tools/woocommerce.ts` |
+| WordPress Plugin | **514** lignes | `wc -l plugins/wordpress/vocalia-voice-widget.php` |
+
+## WordPress/WooCommerce (COMPLETE - Session 250.94)
+
+```bash
+# WooCommerce MCP tools (7)
+grep -c "server.tool(woocommerceTools" mcp-server/src/index.ts
+
+# WooCommerce.ts lines
+wc -l mcp-server/src/tools/woocommerce.ts  # 687
+
+# WordPress Plugin lines
+wc -l plugins/wordpress/vocalia-voice-widget.php  # 514
+wc -l distribution/wordpress/vocalia-voice-agent/vocalia-voice-agent.php  # 161
+```
+
+**Note:** `wordpress.ts` MCP N'EST PAS nécessaire - WooCommerce couvre le besoin.

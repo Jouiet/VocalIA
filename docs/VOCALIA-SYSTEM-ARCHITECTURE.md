@@ -663,6 +663,40 @@ Methods:
 | BigCommerce | 1% | 9 | ✅ |
 | **Total** | **~64%** | **57** | |
 
+### 7.4 WordPress/WooCommerce Architecture (Session 250.94 - COMPLETE)
+
+**VocalIA a une couverture WordPress/WooCommerce COMPLÈTE via 3 composants:**
+
+| Composant | Fichier | Lignes | Fonction |
+|:----------|:--------|:------:|:---------|
+| **MCP WooCommerce Tools** | `mcp-server/src/tools/woocommerce.ts` | **687** | 7 tools REST API v3 |
+| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (40 personas, 5 langues) |
+| **WordPress Plugin Ecom** | `distribution/wordpress/vocalia-voice-agent/vocalia-voice-agent.php` | **161** | WooCommerce widget |
+| **Catalog Connector** | `core/catalog-connector.cjs` (WooCommerceCatalogConnector) | **~200** | Sync produits REST v3 |
+| **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | **389** | checkOrderStatus(), getOrderHistory() |
+
+**WooCommerce MCP Tools (7):**
+- `woocommerce_list_orders` - Liste commandes avec filtres
+- `woocommerce_get_order` - Détails commande par ID
+- `woocommerce_update_order` - Màj statut commande
+- `woocommerce_list_products` - Liste produits catalogue
+- `woocommerce_get_product` - Détails produit par ID
+- `woocommerce_list_customers` - Liste clients
+- `woocommerce_get_customer` - Détails client par ID
+
+**Credentials requis:**
+```bash
+WOOCOMMERCE_URL=https://store.example.com
+WOOCOMMERCE_CONSUMER_KEY=ck_xxxxxxxxxxxx
+WOOCOMMERCE_CONSUMER_SECRET=cs_xxxxxxxxxxxx
+```
+
+**Pourquoi `wordpress.ts` MCP N'EST PAS nécessaire:**
+- Les WordPress MCP génériques (mcp-adapter, InstaWP) gèrent posts/pages/users/plugins
+- VocalIA n'a **PAS besoin** de gérer le contenu WordPress
+- VocalIA a besoin de **données e-commerce** → `woocommerce.ts` (7 tools) ✅
+- VocalIA a besoin d'**injection widget** → `vocalia-voice-widget.php` ✅
+
 ---
 
 ## 8. ARCHITECTURE INTÉGRATIONS

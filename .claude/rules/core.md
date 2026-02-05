@@ -47,6 +47,18 @@ for (const key of requiredEnv) {
 | TWILIO_AUTH_TOKEN | Telephony | Pour PSTN |
 | TWILIO_PHONE_NUMBER | Telephony | Pour PSTN |
 | ANTHROPIC_API_KEY | Claude Fallback | ⚠️ Optional |
+| WOOCOMMERCE_URL | WooCommerce E-commerce | Pour WP tenants |
+| WOOCOMMERCE_CONSUMER_KEY | WooCommerce E-commerce | Pour WP tenants |
+| WOOCOMMERCE_CONSUMER_SECRET | WooCommerce E-commerce | Pour WP tenants |
+
+## WordPress/WooCommerce (COMPLETE)
+| Composant | Fichier | Lignes | Tools |
+|:----------|:--------|:------:|:-----:|
+| MCP WooCommerce | `mcp-server/src/tools/woocommerce.ts` | 687 | 7 |
+| WordPress Plugin | `plugins/wordpress/vocalia-voice-widget.php` | 514 | - |
+| Catalog Connector | `core/catalog-connector.cjs` | ~200 | - |
+
+**Note:** `wordpress.ts` MCP N'EST PAS nécessaire - WooCommerce couvre le besoin.
 
 ## Services (7 Ports)
 | Service | Port | Commande |

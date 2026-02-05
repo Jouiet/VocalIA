@@ -137,8 +137,23 @@ git push origin main
 | Multi-tenant KB | ✅ |
 | A2A Protocol | ✅ 4 agents |
 | UCP/CDP | ✅ 7 tools |
+| WordPress/WooCommerce | ✅ 7 MCP tools + PHP plugin |
 | PWA | ✅ |
 | A/B Testing | ✅ |
+
+## WordPress/WooCommerce (COMPLETE - Session 250.94)
+
+| Composant | Fichier | Lignes | Fonction |
+|:----------|:--------|:------:|:---------|
+| **MCP WooCommerce** | `mcp-server/src/tools/woocommerce.ts` | 687 | 7 tools REST v3 |
+| **WordPress Plugin** | `plugins/wordpress/vocalia-voice-widget.php` | 514 | Widget injection |
+| **Catalog Connector** | `core/catalog-connector.cjs` | ~200 | WooCommerceCatalogConnector |
+| **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | 389 | checkOrderStatus, getOrderHistory |
+
+**WooCommerce MCP Tools (7):**
+`woocommerce_list_orders`, `woocommerce_get_order`, `woocommerce_update_order`, `woocommerce_list_products`, `woocommerce_get_product`, `woocommerce_list_customers`, `woocommerce_get_customer`
+
+**Note:** `wordpress.ts` MCP N'EST PAS nécessaire - WooCommerce couvre 100% du besoin e-commerce WordPress.
 
 ---
 

@@ -147,4 +147,30 @@ npm run start:all
 
 ---
 
+## WordPress/WooCommerce (COMPLETE - Session 250.94)
+
+**Architecture 3 Composants:**
+
+| Composant | Fichier | Lignes | Fonction |
+|:----------|:--------|:------:|:---------|
+| MCP WooCommerce | `mcp-server/src/tools/woocommerce.ts` | 687 | 7 tools REST v3 |
+| WordPress Plugin | `plugins/wordpress/vocalia-voice-widget.php` | 514 | Widget injection |
+| Catalog Connector | `core/catalog-connector.cjs` | ~200 | WooCommerceCatalogConnector |
+
+**WooCommerce MCP Tools (7):**
+- `woocommerce_list_orders`, `woocommerce_get_order`, `woocommerce_update_order`
+- `woocommerce_list_products`, `woocommerce_get_product`
+- `woocommerce_list_customers`, `woocommerce_get_customer`
+
+**Credentials:**
+```bash
+WOOCOMMERCE_URL=https://store.example.com
+WOOCOMMERCE_CONSUMER_KEY=ck_xxxx
+WOOCOMMERCE_CONSUMER_SECRET=cs_xxxx
+```
+
+**Note:** `wordpress.ts` MCP N'EST PAS nécessaire - VocalIA utilise WooCommerce pour e-commerce WordPress.
+
+---
+
 *VocalIA Voice AI Platform - Session 250.94*
