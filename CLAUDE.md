@@ -1,9 +1,10 @@
 # VocalIA - Voice AI Platform
 
-> **v7.1.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
-> 70 pages | 22k+ i18n keys | 5 langs (FR/EN/ES/AR/ARY) | RTL | 309 unit + 375 E2E tests (99.5%)
-> **203 MCP Tools** | 40 Personas | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Klaviyo 5 | Twilio 5
-> ✅ **SESSION 250.94:** Voice Tools Production - CRM (351 lines: HubSpot+Pipedrive) + Ecom (389 lines: Shopify+WooCommerce) → Real APIs. Skeletons eliminated.
+> **v7.2.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
+> **76 pages** | 23,790 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | 306 unit + 375 E2E tests (99.5%)
+> **203 MCP Tools** | 40 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
+> **~140k lines total** | Core 32,727 + Telephony 4,709 + Personas 5,995 + Widget 9,107 + MCP 17,630 + Website 31,353
+> ✅ **SESSION 250.94:** Voice Tools Production - CRM (351 lines: HubSpot+Pipedrive) + Ecom (389 lines: Shopify+WooCommerce) → Real APIs. ALL SKELETONS ELIMINATED.
 
 ## Quick Reference
 
@@ -19,20 +20,20 @@
 ## Architecture
 
 ```
-VocalIA/                              # ~107,000 lines
-├── core/           # 38 modules (~18,000 lines)
-│   ├── voice-api-resilient.cjs   # Multi-AI fallback (port 3004)
-│   ├── grok-voice-realtime.cjs   # WebSocket audio (port 3007)
-│   ├── db-api.cjs                # REST API + Auth (port 3013)
-│   ├── auth-service.cjs          # JWT + bcrypt
-│   ├── GoogleSheetsDB.cjs        # Database (7 tables)
+VocalIA/                              # ~140,000 lines (VÉRIFIÉ wc -l 05/02/2026)
+├── core/           # 38 modules (32,727 lines)
+│   ├── voice-api-resilient.cjs   # Multi-AI fallback (3,018 lines, port 3004)
+│   ├── grok-voice-realtime.cjs   # WebSocket audio (1,109 lines, port 3007)
+│   ├── db-api.cjs                # REST API + Auth (2,721 lines, port 3013)
+│   ├── voice-crm-tools.cjs       # HubSpot + Pipedrive API (351 lines) ← SESSION 250.94
+│   ├── voice-ecommerce-tools.cjs # Shopify + WooCommerce API (389 lines) ← SESSION 250.94
 │   └── [+33 modules]
-├── telephony/      # PSTN bridge (3,194 lines, 13 function tools)
-├── personas/       # 40 personas SOTA (5,280 lines)
-├── widget/         # Browser widget + 8 e-commerce widgets
-├── website/        # 70 pages (51 public + 19 webapp)
-│   └── src/locales/   # 5 langs (22k+ keys)
-├── mcp-server/     # 203 tools TypeScript (v0.9.0)
+├── telephony/      # PSTN bridge (4,709 lines, 25 function tools)
+├── personas/       # 40 personas SOTA (5,995 lines)
+├── widget/         # 8 e-commerce widgets (9,107 lines)
+├── website/        # 76 pages (public + webapp)
+│   └── src/locales/   # 5 langs (23,790 lines)
+├── mcp-server/     # 203 tools TypeScript (17,630 lines, v0.8.0)
 └── docs/           # SESSION-HISTORY.md for detailed logs
 ```
 
