@@ -61,8 +61,8 @@
         accentColor: '#10B981',
         darkBg: '#191E35',
 
-        // Paths
-        LANG_PATH: '/lang/widget-{lang}.json', // Served by VocalIA API
+        // Paths - FIXED Session 250.90: Correct path to language files
+        LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
 
         // Cache
         SLOT_CACHE_TTL: 5 * 60 * 1000,

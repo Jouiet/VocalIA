@@ -39,8 +39,8 @@
         EXIT_INTENT_DELAY: 5000,
         EXIT_INTENT_COOLDOWN: 24 * 60 * 60 * 1000,
 
-        // Paths
-        LANG_PATH: '/lang/widget-{lang}.json', // Served by VocalIA API
+        // Paths - FIXED Session 250.90: Correct path to language files
+        LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
 
         // Auto-detection
         AUTO_DETECT_LANGUAGES: {
