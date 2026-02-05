@@ -1,16 +1,19 @@
 /**
  * VocalIA Voice Widget - B2B/Lead Gen Specialized Kernel
- * Version: 2.1.0 (B2B) | Session 250.91
+ * Version: 2.2.0 (B2B) | Session 250.91
  *
- * DESIGN: SOBER & PROFESSIONAL - VocalIA Branding (Violet/Purple)
+ * DESIGN: SOBER & PROFESSIONAL - VocalIA Deep Indigo (#5E6AD2)
  * FEATURES: Voice Chat, Lead Qualification, Booking, FAQ, Exit Intent (Lead Magnet)
  * EXCLUDED: E-commerce, Product Cards, Carousels, Cart Recovery
  *
  * FIXES Session 250.91:
  * - Added missing initEventListeners() and togglePanel() functions
  * - Fixed logo path: /logo.png -> /public/images/logo.webp
- * - Updated colors to VocalIA branding (violet/purple)
- * - Fixed shadow colors to match brand
+ * - v2.2.0: CORRECT colors from DESIGN-BRANDING-SYSTEM.md:
+ *   - Primary: #5E6AD2 (VocalIA Deep Indigo, Linear inspired)
+ *   - Dark: #4f46e5 (indigo-600)
+ *   - Accent: #818cf8 (indigo-400)
+ *   - All rgba shadows: rgba(94, 106, 210, ...)
  */
 
 (function () {
@@ -34,11 +37,11 @@
         SOCIAL_PROOF_ENABLED: true,
         AI_MODE: true,
 
-        // UI Configuration - VocalIA Branding (OKLCH hue 275 = violet/purple)
-        primaryColor: '#7C3AED',    // violet-600 - VocalIA brand primary
-        primaryDark: '#6D28D9',     // violet-700 - VocalIA brand dark
-        accentColor: '#A78BFA',     // violet-400 - VocalIA brand accent
-        darkBg: '#0F172A',          // slate-900 - Dark background
+        // UI Configuration - VocalIA Official Branding (DESIGN-BRANDING-SYSTEM.md)
+        primaryColor: '#5E6AD2',    // VocalIA Deep Indigo (Linear inspired) - PRIMARY BRAND
+        primaryDark: '#4f46e5',     // indigo-600 - Primary hover
+        accentColor: '#818cf8',     // indigo-400 - Secondary accents
+        darkBg: '#0f172a',          // slate-900 - Primary Dark BG
 
         // Timeouts
         API_TIMEOUT: 15000,
@@ -208,16 +211,16 @@
           width: 60px; height: 60px; border-radius: 50%;
           background: linear-gradient(135deg, var(--va-primary) 0%, var(--va-primary-dark) 100%);
           border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+          box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4);
           transition: all 0.3s ease; position: relative;
         }
-        .va-trigger:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(124, 58, 237, 0.6); }
+        .va-trigger:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(94, 106, 210, 0.6); }
         .va-trigger img { width: 36px; height: 36px; object-fit: contain; border-radius: 50%; }
 
         .va-panel {
           display: none; position: absolute; bottom: 70px; ${position}: 0;
           width: 380px; max-height: 520px; background: var(--va-dark);
-          border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 16px;
+          border: 1px solid rgba(94, 106, 210, 0.3); border-radius: 16px;
           overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
           flex-direction: column;
         }
@@ -238,24 +241,24 @@
         .va-messages { flex: 1; overflow-y: auto; padding: 16px; min-height: 220px; max-height: 350px; }
         .va-message { margin-bottom: 12px; display: flex; gap: 8px; }
         .va-message-content { max-width: 85%; padding: 12px 16px; border-radius: 16px; font-size: 14px; line-height: 1.5; }
-        .va-message.assistant .va-message-content { background: rgba(124, 58, 237, 0.15); color: #e5e5e5; border-bottom-left-radius: 4px; }
+        .va-message.assistant .va-message-content { background: rgba(94, 106, 210, 0.15); color: #e5e5e5; border-bottom-left-radius: 4px; }
         .va-message.user { justify-content: flex-end; }
         .va-message.user .va-message-content { background: var(--va-primary); color: white; border-bottom-right-radius: 4px; }
 
-        .va-input-area { padding: 12px 16px; border-top: 1px solid rgba(124, 58, 237, 0.2); display: flex; gap: 8px; background: rgba(0,0,0,0.2); }
-        .va-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 24px; padding: 12px 18px; color: white; outline: none; font-size: 14px; }
-        .va-input:focus { border-color: var(--va-primary); box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2); }
+        .va-input-area { padding: 12px 16px; border-top: 1px solid rgba(94, 106, 210, 0.2); display: flex; gap: 8px; background: rgba(0,0,0,0.2); }
+        .va-input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(94, 106, 210, 0.3); border-radius: 24px; padding: 12px 18px; color: white; outline: none; font-size: 14px; }
+        .va-input:focus { border-color: var(--va-primary); box-shadow: 0 0 0 2px rgba(94, 106, 210, 0.2); }
         .va-input::placeholder { color: rgba(255,255,255,0.5); }
 
         .va-btn { width: 44px; height: 44px; border-radius: 50%; background: var(--va-primary); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
         .va-btn:hover { background: var(--va-primary-dark); transform: scale(1.05); }
         .va-btn.listening { background: #DC2626; animation: vaPulse 1.5s infinite; }
-        .va-btn-send { background: transparent; border: 1px solid rgba(124, 58, 237, 0.5); }
-        .va-btn-send:hover { background: rgba(124, 58, 237, 0.2); border-color: var(--va-primary); }
+        .va-btn-send { background: transparent; border: 1px solid rgba(94, 106, 210, 0.5); }
+        .va-btn-send:hover { background: rgba(94, 106, 210, 0.2); border-color: var(--va-primary); }
 
         @keyframes vaPulse { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
 
-        .va-visualizer { height: 40px; display: none; padding: 0 16px; align-items: center; justify-content: center; background: rgba(124, 58, 237, 0.1); }
+        .va-visualizer { height: 40px; display: none; padding: 0 16px; align-items: center; justify-content: center; background: rgba(94, 106, 210, 0.1); }
         .va-visualizer.active { display: flex; }
         .va-visualizer-bar { width: 4px; background: var(--va-accent); margin: 0 3px; border-radius: 2px; animation: vaSound 0.5s infinite alternate; }
         .va-visualizer-bar:nth-child(1) { animation-delay: 0s; }
