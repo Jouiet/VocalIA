@@ -180,7 +180,7 @@ const PersonaKeyEnum = z.enum([
 ]);
 
 // =============================================================================
-// FACTUAL DATA - 40 PERSONAS (from voice-persona-injector.cjs)
+// FACTUAL DATA - 40 PERSONAS (synced from voice-persona-injector.cjs - Session 250.90)
 // =============================================================================
 
 const PERSONAS_DATA = {
@@ -188,8 +188,6 @@ const PERSONAS_DATA = {
     { key: "AGENCY", name: "VocalIA Architect", industries: ["marketing", "consulting"], voice: "ara", sensitivity: "normal" },
     { key: "DENTAL", name: "Cabinet Dentaire", industries: ["dental", "healthcare"], voice: "eve", sensitivity: "high" },
     { key: "PROPERTY", name: "Property Management", industries: ["real-estate"], voice: "leo", sensitivity: "normal" },
-    { key: "HOA", name: "HOA Support", industries: ["community", "residential"], voice: "sal", sensitivity: "normal" },
-    { key: "SCHOOL", name: "School Attendance", industries: ["education"], voice: "mika", sensitivity: "high" },
     { key: "CONTRACTOR", name: "Contractor Leads", industries: ["construction", "trades"], voice: "rex", sensitivity: "normal" },
     { key: "FUNERAL", name: "Funeral Services", industries: ["funeral", "memorial"], voice: "valentin", sensitivity: "high" },
   ],
@@ -202,8 +200,6 @@ const PERSONAS_DATA = {
     { key: "RECRUITER", name: "Talent Acquisition", industries: ["HR", "staffing"], voice: "sal", sensitivity: "normal" },
     { key: "DISPATCHER", name: "Logistique Express", industries: ["logistics"], voice: "leo", sensitivity: "normal" },
     { key: "COLLECTOR", name: "Recouvrement Éthique", industries: ["finance"], voice: "rex", sensitivity: "normal" },
-    { key: "SURVEYOR", name: "Satisfaction Client", industries: ["CSAT", "NPS"], voice: "mika", sensitivity: "normal" },
-    { key: "GOVERNOR", name: "Mairie de Proximité", industries: ["government"], voice: "sal", sensitivity: "normal" },
     { key: "INSURER", name: "Assurance Horizon", industries: ["insurance"], voice: "eve", sensitivity: "normal" },
   ],
   extended: [
@@ -219,6 +215,22 @@ const PERSONAS_DATA = {
     { key: "GYM", name: "Fitness Center", industries: ["gym"], voice: "rex", sensitivity: "normal" },
     { key: "UNIVERSAL_ECOMMERCE", name: "E-commerce Support", industries: ["e-commerce"], voice: "mika", sensitivity: "normal" },
     { key: "UNIVERSAL_SME", name: "SME Assistant", industries: ["small-business"], voice: "sal", sensitivity: "normal" },
+  ],
+  pme: [
+    { key: "RETAILER", name: "Commerce de Proximité", industries: ["retail"], voice: "mika", sensitivity: "normal" },
+    { key: "BUILDER", name: "Entreprise BTP", industries: ["construction"], voice: "rex", sensitivity: "normal" },
+    { key: "RESTAURATEUR", name: "Restaurant & Traiteur", industries: ["food-service"], voice: "eve", sensitivity: "normal" },
+    { key: "TRAVEL_AGENT", name: "Agence de Voyage", industries: ["travel"], voice: "mika", sensitivity: "normal" },
+    { key: "CONSULTANT", name: "Cabinet Conseil", industries: ["consulting"], voice: "sal", sensitivity: "normal" },
+    { key: "IT_SERVICES", name: "Prestataire IT", industries: ["technology"], voice: "leo", sensitivity: "normal" },
+    { key: "MANUFACTURER", name: "Industrie PME", industries: ["manufacturing"], voice: "rex", sensitivity: "normal" },
+    { key: "DOCTOR", name: "Cabinet Médical", industries: ["healthcare"], voice: "eve", sensitivity: "high" },
+    { key: "NOTARY", name: "Étude Notariale", industries: ["legal"], voice: "sal", sensitivity: "high" },
+    { key: "BAKERY", name: "Boulangerie Pâtisserie", industries: ["food-retail"], voice: "eve", sensitivity: "normal" },
+    { key: "SPECIALIST", name: "Spécialiste Métier", industries: ["specialist"], voice: "sal", sensitivity: "normal" },
+    { key: "REAL_ESTATE_AGENT", name: "Agent Immobilier", industries: ["real-estate"], voice: "leo", sensitivity: "normal" },
+    { key: "HAIRDRESSER", name: "Salon de Coiffure", industries: ["beauty"], voice: "eve", sensitivity: "normal" },
+    { key: "GROCERY", name: "Épicerie & Livraison", industries: ["grocery", "delivery"], voice: "mika", sensitivity: "normal" },
   ],
 };
 

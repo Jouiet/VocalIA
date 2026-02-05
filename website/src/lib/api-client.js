@@ -247,19 +247,6 @@ class APIClient {
 
   /**
    * Get tenants resource client
-   */
-  get tenants() {
-    return {
-      list: (params) => this.get('/db/tenants', params),
-      get: (id) => this.get(`/db/tenants/${id}`),
-      create: (data) => this.post('/db/tenants', data),
-      update: (id, data) => this.put(`/db/tenants/${id}`, data),
-      delete: (id) => this.delete(`/db/tenants/${id}`)
-    };
-  }
-
-  /**
-   * Get tenants resource client
    * Session 250.63: Direct tenant access for voice preferences
    */
   get tenants() {

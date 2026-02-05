@@ -9,7 +9,7 @@
  */
 
 const DB_API_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:3012/api/db'
+  ? 'http://localhost:3013/api/db'
   : 'https://api.vocalia.ma/db';
 
 class DBClient {
