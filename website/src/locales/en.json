@@ -78,7 +78,8 @@
       "platform_desc": "Pre-trained AI personas for all industries",
       "personas_label": "SOTA Personas",
       "languages_label": "Languages",
-      "availability_label": "Availability"
+      "availability_label": "Availability",
+      "voice_active": "Voice Active"
     },
     "calls": {
       "recent": "Recent Calls",
@@ -87,6 +88,8 @@
       "export": "Export",
       "retention_title": "Retention Policy",
       "retention_notice": "Telephony call history is automatically deleted after 60 days on the 1st of each month. Download your data if you wish to keep it longer.",
+      "waveform_preview": "Voice Preview",
+      "voice_ai_processed": "Processed by Voice AI",
       "status": {
         "converted": "Converted",
         "support": "Support",
@@ -394,6 +397,10 @@
     "mcp_tools_label": "MCP Tools",
     "native_label": "Integrations",
     "zapier_label": "Apps via Zapier",
+    "connected": "Connected",
+    "empty_title": "No integrations connected",
+    "empty_desc": "Connect your CRM, e-commerce and support tools to automate your workflows with the voice assistant.",
+    "add_first": "Add your first integration",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "Voice AI Agents for Businesses",

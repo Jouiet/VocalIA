@@ -118,9 +118,20 @@
 
         <!-- Connected Integrations -->
         <section>
-          <h2 class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">Connectées</h2>
+          <h2 class="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4" data-i18n="integrations.connected">Connectées</h2>
           <div id="connected-integrations" class="space-y-3">
-            <p class="text-slate-500 text-sm">Aucune intégration connectée</p>
+            <!-- Empty State (Phase 4.1 - Professional Empty States) -->
+            <div id="empty-state-connected" class="flex flex-col items-center justify-center py-12 px-6 bg-white dark:bg-slate-800 rounded-xl border border-dashed border-slate-300 dark:border-slate-600">
+              <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center mb-4">
+                <i data-lucide="plug-zap" class="w-8 h-8 text-slate-400"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2" data-i18n="integrations.empty_title">Aucune intégration connectée</h3>
+              <p class="text-slate-500 text-center max-w-md mb-6" data-i18n="integrations.empty_desc">Connectez vos outils CRM, e-commerce et support pour automatiser vos workflows avec l'assistant vocal.</p>
+              <a href="#crm-section" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span data-i18n="integrations.add_first">Ajouter votre première intégration</span>
+              </a>
+            </div>
           </div>
         </section>
 

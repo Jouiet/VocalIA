@@ -78,7 +78,8 @@
       "platform_desc": "Personas IA pre-entrenados para todos los sectores",
       "personas_label": "Personas SOTA",
       "languages_label": "Idiomas",
-      "availability_label": "Disponibilidad"
+      "availability_label": "Disponibilidad",
+      "voice_active": "Voz Activa"
     },
     "calls": {
       "recent": "Llamadas recientes",
@@ -87,6 +88,8 @@
       "export": "Exportar",
       "retention_title": "Política de retención",
       "retention_notice": "El historial de llamadas telefónicas se elimina automáticamente después de 60 días el 1º de cada mes. Descargue sus datos si desea conservarlos más tiempo.",
+      "waveform_preview": "Vista previa de voz",
+      "voice_ai_processed": "Procesado por Voice AI",
       "status": {
         "converted": "Convertido",
         "support": "Soporte",
@@ -394,6 +397,10 @@
     "mcp_tools_label": "MCP Tools",
     "native_label": "Integraciones",
     "zapier_label": "Apps via Zapier",
+    "connected": "Conectadas",
+    "empty_title": "Ninguna integración conectada",
+    "empty_desc": "Conecte sus herramientas CRM, e-commerce y soporte para automatizar sus flujos de trabajo con el asistente de voz.",
+    "add_first": "Agregar su primera integración",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "Preparado para la AI Act",
     "agents_vocaux_ia_2": "Agentes Vocales IA para Empresas",

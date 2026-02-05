@@ -13,6 +13,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/src/lib/voice-visualizer.js"></script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="flex h-screen overflow-hidden">
@@ -97,10 +98,18 @@
 
       <div class="px-6 py-6">
         <!-- Platform Showcase Banner -->
-        <div class="mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
-          <div class="flex items-center justify-between flex-wrap gap-4">
+        <div class="mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 text-white relative overflow-hidden">
+          <!-- Mini Voice Visualizer Background -->
+          <canvas id="mini-voice-visualizer" class="absolute inset-0 w-full h-full opacity-30 pointer-events-none"></canvas>
+          <div class="relative z-10 flex items-center justify-between flex-wrap gap-4">
             <div>
-              <h2 class="text-2xl font-bold" data-i18n="agents.platform_power">Puissance de la Plateforme</h2>
+              <div class="flex items-center gap-3 mb-1">
+                <h2 class="text-2xl font-bold" data-i18n="agents.platform_power">Puissance de la Plateforme</h2>
+                <span class="flex items-center gap-1 px-2 py-1 bg-white/20 rounded-full text-xs">
+                  <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span data-i18n="agents.voice_active">Voice Active</span>
+                </span>
+              </div>
               <p class="text-indigo-100 mt-1" data-i18n="agents.platform_desc">Personas IA pré-entraînés pour tous les secteurs</p>
             </div>
             <div class="flex gap-6">
@@ -288,6 +297,24 @@
 
     // Initialize Lucide icons
     lucide.createIcons();
+
+    // Initialize Mini Voice Visualizer (Phase 3.1 - Voice Identity)
+    // Subtle bars mode with indigo/purple colors matching banner
+    if (window.VoiceVisualizer) {
+      const miniViz = new VoiceVisualizer('#mini-voice-visualizer', {
+        mode: 'bars',
+        primaryColor: '#818CF8',     // Indigo-400
+        secondaryColor: '#A78BFA',   // Purple-400
+        accentColor: '#C4B5FD',      // Purple-300
+        glowColor: '#818CF8',
+        barCount: 24,                // Fewer bars for subtle effect
+        sensitivity: 0.6,            // Lower sensitivity for calm animation
+        smoothing: 0.85,
+        demo: true,
+        showAmbient: false           // No ambient glow (banner has gradient)
+      });
+      miniViz.startDemo();
+    }
 
     if (!auth.requireAuth()) {
       throw new Error('Not authenticated');

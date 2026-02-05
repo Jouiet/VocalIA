@@ -78,7 +78,8 @@
       "platform_desc": "شخصيات ذكية مدربين مسبقًا لكل القطاعات",
       "personas_label": "شخصيات SOTA",
       "languages_label": "اللغات",
-      "availability_label": "التوفر"
+      "availability_label": "التوفر",
+      "voice_active": "الصوت خدام"
     },
     "calls": {
       "recent": "المكالمات الأخيرة",
@@ -87,6 +88,8 @@
       "export": "صدّر",
       "retention_title": "سياسة الاحتفاظ",
       "retention_notice": "تاريخ المكالمات كيتمسح أوتوماتيكياً من بعد 60 يوم فـ أول كل شهر. نزّل البيانات ديالك إلا بغيتي تحتافظ بيها أكثر.",
+      "waveform_preview": "معاينة الصوت",
+      "voice_ai_processed": "تعالج بـ Voice AI",
       "status": {
         "converted": "تحول",
         "support": "دعم",
@@ -394,6 +397,10 @@
     "mcp_tools_label": "أدوات MCP",
     "native_label": "تكاملات",
     "zapier_label": "تطبيقات عبر Zapier",
+    "connected": "متصلين",
+    "empty_title": "ما كاين حتى تكامل متصل",
+    "empty_desc": "ربط الأدوات ديال CRM والتجارة الإلكترونية والدعم باش تأتمت العمليات مع المساعد الصوتي.",
+    "add_first": "زيد أول تكامل ديالك",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "AI Act Ready",
     "agents_vocaux_ia_2": "وكلاء صوتيين بـ AI للشركات",

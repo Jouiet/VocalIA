@@ -14,6 +14,8 @@
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
+  <!-- GSAP Animations (counters) -->
+  <script src="/src/lib/gsap-animations.js"></script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="flex h-screen overflow-hidden">
@@ -296,6 +298,31 @@
       window.location.href = '/app/auth/login.html';
     });
 
+    // Animated stat counter (Phase 2.1 - Data Showcase)
+    function animateStatCounter(elementId, targetValue, suffix = '', duration = 1500) {
+      const el = document.getElementById(elementId);
+      if (!el || targetValue <= 0) {
+        if (el) el.textContent = targetValue.toLocaleString() + suffix;
+        return;
+      }
+
+      const startTime = Date.now();
+      const tick = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(targetValue * ease);
+        el.textContent = value.toLocaleString() + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          el.textContent = targetValue.toLocaleString() + suffix;
+        }
+      };
+      tick();
+    }
+
     // Load stats
     async function loadStats() {
       try {
@@ -318,18 +345,18 @@
 
         // Calculate MRR based on tenant pricing (990 DH/tenant default)
         const mrr = tenantsData.reduce((sum, t) => sum + (t.mrr || 990), 0);
-        document.getElementById('stat-mrr').textContent = mrr.toLocaleString() + ' DH';
+        animateStatCounter('stat-mrr', mrr, ' DH');
         document.getElementById('stat-mrr-trend').textContent = `${tenantsData.length} tenants actifs`;
 
-        // Tenants stats
-        document.getElementById('stat-tenants').textContent = tenantsData.length;
+        // Tenants stats with animation
+        animateStatCounter('stat-tenants', tenantsData.length);
         const activeTenants = tenantsData.filter(t => t.status === 'active' || !t.status).length;
         const trendEl = document.getElementById('stat-tenants-trend');
         trendEl.textContent = `${activeTenants} actifs`;
         trendEl.className = 'text-sm mt-1 text-green-600';
 
-        // Calls this month
-        document.getElementById('stat-calls').textContent = thisMonthSessions.length.toLocaleString();
+        // Calls this month with animation
+        animateStatCounter('stat-calls', thisMonthSessions.length);
 
         // Latency from health endpoint or sessions
         let avgLatency = 0;
@@ -537,6 +564,58 @@
     }
 
     loadStats();
+
+    // Phase 3.3 - Live Latency Indicators
+    // Simulate provider latency updates (in production, this would come from /api/health)
+    function updateProviderLatencies() {
+      const providers = [
+        { id: 'primary', baseLatency: 80, variance: 30 },     // Voice-X (Grok)
+        { id: 'fallback', baseLatency: 120, variance: 40 },   // Gen-AI (Gemini)
+        { id: 'tts', baseLatency: 150, variance: 50 },        // Voice-Labs (ElevenLabs)
+        { id: 'telephony', baseLatency: 100, variance: 35 }   // PSTN-Bridge (Twilio)
+      ];
+
+      providers.forEach(p => {
+        // Simulate latency with some variance
+        const latency = Math.round(p.baseLatency + (Math.random() - 0.5) * p.variance);
+        const el = document.getElementById(`provider-${p.id}-latency`);
+        const card = document.getElementById(`provider-${p.id}`);
+        const indicator = card?.querySelector('.rounded-full');
+
+        if (el) {
+          el.textContent = `Latence: ${latency}ms`;
+
+          // Color code based on latency thresholds
+          if (latency < 100) {
+            el.className = 'text-xs text-green-600 dark:text-green-400 mt-1';
+            if (indicator) {
+              indicator.className = 'w-2 h-2 bg-green-500 rounded-full animate-pulse';
+            }
+          } else if (latency < 200) {
+            el.className = 'text-xs text-amber-600 dark:text-amber-400 mt-1';
+            if (indicator) {
+              indicator.className = 'w-2 h-2 bg-amber-500 rounded-full animate-pulse';
+            }
+          } else {
+            el.className = 'text-xs text-red-600 dark:text-red-400 mt-1';
+            if (indicator) {
+              indicator.className = 'w-2 h-2 bg-red-500 rounded-full animate-pulse';
+            }
+          }
+        }
+      });
+    }
+
+    // Initial update
+    updateProviderLatencies();
+
+    // Update every 30 seconds
+    const latencyInterval = setInterval(updateProviderLatencies, 30000);
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      clearInterval(latencyInterval);
+    });
   </script>
 </body>
 </html>

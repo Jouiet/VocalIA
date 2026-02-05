@@ -78,7 +78,8 @@
       "platform_desc": "شخصيات ذكاء اصطناعي مدربة مسبقًا لجميع القطاعات",
       "personas_label": "شخصيات SOTA",
       "languages_label": "اللغات",
-      "availability_label": "التوفر"
+      "availability_label": "التوفر",
+      "voice_active": "الصوت نشط"
     },
     "calls": {
       "recent": "المكالمات الأخيرة",
@@ -87,6 +88,8 @@
       "export": "تصدير",
       "retention_title": "سياسة الاحتفاظ",
       "retention_notice": "يتم حذف سجل المكالمات الهاتفية تلقائياً بعد 60 يوماً في الأول من كل شهر. قم بتنزيل بياناتك إذا كنت ترغب في الاحتفاظ بها لفترة أطول.",
+      "waveform_preview": "معاينة صوتية",
+      "voice_ai_processed": "تمت المعالجة بواسطة Voice AI",
       "status": {
         "converted": "تم التحويل",
         "support": "دعم",
@@ -394,6 +397,10 @@
     "mcp_tools_label": "أدوات MCP",
     "native_label": "تكاملات",
     "zapier_label": "تطبيقات عبر Zapier",
+    "connected": "متصلة",
+    "empty_title": "لا توجد تكاملات متصلة",
+    "empty_desc": "قم بتوصيل أدوات CRM والتجارة الإلكترونية والدعم لأتمتة سير العمل مع المساعد الصوتي.",
+    "add_first": "أضف أول تكامل لك",
     "aes256_0": "AES-256",
     "ai_act_ready_1": "جاهز لقانون الذكاء الاصطناعي AI Act",
     "agents_vocaux_ia_2": "وكلاء صوتيون بالذكاء الاصطناعي للشركات",

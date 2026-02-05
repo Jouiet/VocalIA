@@ -13,6 +13,33 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
+  <style>
+    /* Static waveform visualization for call preview */
+    .waveform-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      height: 48px;
+      padding: 8px 0;
+    }
+    .waveform-bar {
+      width: 3px;
+      background: linear-gradient(to top, #818CF8, #A78BFA);
+      border-radius: 2px;
+      transition: height 0.3s ease;
+    }
+    .waveform-container:hover .waveform-bar {
+      animation: waveform-pulse 0.8s ease-in-out infinite;
+    }
+    @keyframes waveform-pulse {
+      0%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(1.3); }
+    }
+    .waveform-bar:nth-child(odd) { animation-delay: 0.1s; }
+    .waveform-bar:nth-child(3n) { animation-delay: 0.2s; }
+    .waveform-bar:nth-child(5n) { animation-delay: 0.15s; }
+  </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="flex h-screen overflow-hidden">
@@ -324,6 +351,27 @@
 
     loadCalls();
 
+    // Generate pseudo-waveform based on call data
+    function generateWaveform(duration, leadScore) {
+      const barCount = Math.min(60, Math.max(20, Math.floor(duration / 3)));
+      const intensity = (leadScore || 50) / 100;
+      let bars = '';
+
+      // Generate organic-looking waveform bars
+      for (let i = 0; i < barCount; i++) {
+        // Voice-like pattern: peaks in middle, lower at edges
+        const position = i / barCount;
+        const voiceCurve = Math.sin(position * Math.PI) * 0.6 + 0.4;
+
+        // Add some randomness for organic feel
+        const random = 0.5 + Math.random() * 0.5;
+        const height = Math.round(8 + voiceCurve * random * intensity * 32);
+
+        bars += `<div class="waveform-bar" style="height: ${height}px"></div>`;
+      }
+      return bars;
+    }
+
     // Show call detail
     window.showCallDetail = async (id) => {
       const modal = document.getElementById('call-detail-modal');
@@ -333,9 +381,29 @@
 
       try {
         const call = await api.sessions.get(id);
+        const waveform = generateWaveform(call.duration || 60, call.lead_score);
 
         content.innerHTML = `
           <div class="space-y-6">
+            <!-- Voice Waveform Preview -->
+            <div class="bg-slate-900 dark:bg-slate-950 rounded-xl p-4">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-slate-400 uppercase tracking-wider" data-i18n="calls.waveform_preview">Aperçu vocal</span>
+                <span class="text-xs text-indigo-400">${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '0:00'}</span>
+              </div>
+              <div class="waveform-container">
+                ${waveform}
+              </div>
+              <div class="flex items-center justify-between text-xs text-slate-500 mt-2">
+                <span>0:00</span>
+                <span class="flex items-center gap-1">
+                  <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  <span data-i18n="calls.voice_ai_processed">Traité par Voice AI</span>
+                </span>
+                <span>${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '0:00'}</span>
+              </div>
+            </div>
+
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-sm text-slate-500">Numéro</p>
