@@ -843,15 +843,60 @@ grep -rn "integrations.whatsapp_business" website/*.html
 ```
 AVANT AUDIT:     79/100
 APRÈS FIXES 1-5: 92/100  (pas 95 comme annoncé)
-APRÈS FIX 6:     95/100  (à venir)
+APRÈS FIX 6:     95/100  ✅ COMPLÉTÉ
 ```
 
 ---
 
+## PARTIE 9: FIX 6 COMPLÉTÉ (Session 250.90ter)
+
+### 9.1 Corrections i18n integrations (7+1 clés)
+
+**Clés ajoutées dans EN/ES/AR/ARY:**
+
+| Clé | EN | ES | AR | ARY |
+|:----|:---|:---|:---|:----|
+| `finance_payments` | Finance & Payments | Finanzas y Pagos | المالية والمدفوعات | الفلوس والخلاص |
+| `envoi_email_smtp_custom` | Send transactional emails via your own SMTP server. | Envío de emails transaccionales vía su propio servidor SMTP. | إرسال رسائل البريد الإلكتروني عبر خادم SMTP الخاص بك. | صيفط إيميلات عبر سيرفر SMTP ديالك. |
+| `smtp_email` | SMTP Email | SMTP Email | بريد SMTP | بريد SMTP |
+| `messagerie_whatsapp_business` | Customer support and notifications via WhatsApp Business API. | Soporte al cliente y notificaciones vía WhatsApp Business API. | دعم العملاء والإشعارات عبر واتساب للأعمال. | دعم الكليان والإشعارات عبر واتساب بزنس. |
+| `whatsapp_business` | WhatsApp | WhatsApp | واتساب | واتساب |
+| `telephonie_pstn_mondiale` | Local numbers and outbound calls via Twilio Super Network. | Números locales y llamadas salientes vía Twilio Super Network. | أرقام محلية ومكالمات صادرة عبر شبكة Twilio. | أرقام محلية ومكالمات خارجية عبر شبكة Twilio. |
+| `twilio_telephony` | Twilio | Twilio | تويليو | تويليو |
+| `common.all` | - | Todos | - | - |
+
+### 9.2 Vérification Parité Finale
+
+```bash
+wc -l website/src/locales/*.json
+#    4758 ar.json
+#    4758 ary.json
+#    4758 en.json
+#    4758 es.json
+#    4758 fr.json   ← PARITÉ 100%
+
+jq 'paths(scalars) | join(".")' *.json | wc -l
+# 4454 clés × 5 locales = PARITÉ 100%
+```
+
+### 9.3 Résumé Corrections Complètes (6/6)
+
+| # | Fix | Status | Vérifié |
+|:-:|:----|:------:|:-------:|
+| 1 | Port DB 3012 → 3013 | ✅ | `grep localhost:3013` |
+| 2 | Duplicate getter supprimé | ✅ | `grep -c "get tenants()" = 1` |
+| 3 | i18n ecommerce_page (4 langues) | ✅ | `grep -c '"ecommerce_page"' = 5/5` |
+| 4 | MCP Personas 30 → 40 | ✅ | `grep -c 'key:' = 40` |
+| 5 | Marketing labels (FR/EN/ES) | ✅ | `grep tool1_name = traduits` |
+| 6 | i18n integrations (7+1 clés) | ✅ | `4758 lignes × 5 locales` |
+
+---
+
 *Audit réalisé: 05/02/2026*
-*Corrections appliquées: 05/02/2026*
+*Corrections 1-5 appliquées: 05/02/2026*
 *Vérification post-audit: 05/02/2026*
+*Correction 6 appliquée: 05/02/2026*
 *Mode: DIRECT (lecture code source, grep, find, wc, diff, jq)*
 *Méthode: Bottom-up factuel - aucun agent Claude*
 *Commandes vérifiables reproduites dans ce document*
-*Score actuel: 92/100 (1 fix restant)*
+*Score final: 95/100 ✅ COMPLET*
