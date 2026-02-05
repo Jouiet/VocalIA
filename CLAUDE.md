@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> **v7.0.1** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
+> **v7.1.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
 > 70 pages | 22k+ i18n keys | 5 langs (FR/EN/ES/AR/ARY) | RTL | 309 unit + 375 E2E tests (99.5%)
 > **203 MCP Tools** | 40 Personas | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Klaviyo 5 | Twilio 5
-> ✅ **SESSION 250.93:** I18N Complete Surgery - ar.json (4→0), ary.json (24→0), en.json (2→0) French contamination fixed, 306/309 tests pass
+> ✅ **SESSION 250.94:** Voice Tools Production - CRM (351 lines: HubSpot+Pipedrive) + Ecom (389 lines: Shopify+WooCommerce) → Real APIs. Skeletons eliminated.
 
 ## Quick Reference
 

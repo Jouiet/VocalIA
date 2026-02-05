@@ -79,8 +79,23 @@ To win in the 2026 AI marketplace, our distribution strategy leverages three "Un
 * [x] **Documentation Sync:** Ensure `docs.vocalia.ma` accurately reflects the split-kernel architecture and the new API endpoints.
 * [x] **Tiered Beta:** Onboard 5 B2B clients and 5 E-commerce clients to verify quota enforcement and multi-tenant performance.
 
-**Factual State: 90% PRODUCTION READY (Core Stable, Integrations Disconnected).**
-**Debt Level: CRITICAL (Voice Agents are Isolated from MCP Tools).**
+**Factual State: 95% PRODUCTION READY (Core Stable, Integrations Connected).**
+**Debt Level: RESOLVED (Session 250.94 - Voice Tools Wired to Real APIs).**
+
+### Session 250.94 - Voice Tools Production Implementation
+
+| Module | Previous State | Current State | Lines |
+|:-------|:---------------|:--------------|:-----:|
+| `voice-crm-tools.cjs` | ❌ Skeleton ("Waiting for Real API") | ✅ HubSpot + Pipedrive | 351 |
+| `voice-ecommerce-tools.cjs` | ❌ Skeleton ("connexion pas active") | ✅ Shopify + WooCommerce | 389 |
+
+**New Methods Implemented:**
+- `lookupCustomer()` - Real HubSpot/Pipedrive search
+- `createLead()` - Real HubSpot contact creation
+- `updateCustomer()` - Real HubSpot PATCH
+- `logCall()` - Real HubSpot call engagement
+- `checkOrderStatus()` - Real Shopify GraphQL + WooCommerce REST
+- `getOrderHistory()` - Real Shopify customer orders
 
 ---
 
