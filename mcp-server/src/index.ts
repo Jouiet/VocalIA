@@ -3,9 +3,9 @@
  * VocalIA MCP Server - SOTA Implementation
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
- * Session 250.28 - v0.8.0 - CDP Enhanced UCP + A2A Protocol Compliance
+ * Session 250.87 - v0.9.0 - HubSpot + Klaviyo + Twilio MCP Tools
  *
- * TOOL CATEGORIES (182 tools - 23 inline, 159 external modules):
+ * TOOL CATEGORIES (203 tools - 23 inline, 180 external modules):
  *
  * INLINE TOOLS (23):
  * - System Tools (3): translation_qa_check, api_status, system_languages [ALWAYS]
@@ -43,7 +43,11 @@
  * - Make Tools (5): make_trigger_webhook, make_list_scenarios, make_get_scenario, make_run_scenario, make_list_executions [REQUIRE MAKE]
  * - n8n Tools (5): n8n_trigger_webhook, n8n_list_workflows, n8n_get_workflow, n8n_activate_workflow, n8n_list_executions [REQUIRE N8N]
  *
- * TOTAL: 117 tools (SOTA - Vapi has 8, Twilio has 5)
+ * - HubSpot Tools (7): hubspot_create_contact, hubspot_search_contacts, hubspot_get_contact, hubspot_update_contact, hubspot_create_deal, hubspot_log_call, hubspot_list_pipelines [REQUIRE HUBSPOT]
+ * - Klaviyo Tools (5): klaviyo_create_profile, klaviyo_get_profile, klaviyo_track_event, klaviyo_subscribe, klaviyo_list_segments [REQUIRE KLAVIYO]
+ * - Twilio MCP Tools (5): twilio_send_sms, twilio_make_call, twilio_get_call, twilio_list_calls, twilio_send_whatsapp [REQUIRE TWILIO]
+ *
+ * TOTAL: 203 tools (SOTA - Vapi has 8, Twilio has 5)
  * E-commerce coverage: ~64% of global market (WooCommerce+Shopify+Magento+Wix+Squarespace+BigCommerce+PrestaShop)
  *
  * CRITICAL: Never use console.log - it corrupts JSON-RPC transport.
@@ -83,6 +87,9 @@ import { prestashopTools } from "./tools/prestashop.js";
 import { shopifyTools } from "./tools/shopify.js";
 import { stripeTools } from "./tools/stripe.js";
 import { recommendationTools } from "./tools/recommendations.js";
+import { hubspotTools } from "./tools/hubspot.js";
+import { klaviyoTools } from "./tools/klaviyo.js";
+import { twilioTools } from "./tools/twilio.js";
 
 const execAsync = promisify(exec);
 
@@ -1471,17 +1478,52 @@ server.tool(recommendationTools.get_personalized.name, recommendationTools.get_p
 server.tool(recommendationTools.learn_from_orders.name, recommendationTools.learn_from_orders.parameters, recommendationTools.learn_from_orders.handler);
 
 // =============================================================================
+// HUBSPOT TOOLS (7) - CRM + CTI Integration
+// =============================================================================
+
+server.tool(hubspotTools.create_contact.name, hubspotTools.create_contact.parameters, hubspotTools.create_contact.handler);
+server.tool(hubspotTools.search_contacts.name, hubspotTools.search_contacts.parameters, hubspotTools.search_contacts.handler);
+server.tool(hubspotTools.get_contact.name, hubspotTools.get_contact.parameters, hubspotTools.get_contact.handler);
+server.tool(hubspotTools.update_contact.name, hubspotTools.update_contact.parameters, hubspotTools.update_contact.handler);
+server.tool(hubspotTools.create_deal.name, hubspotTools.create_deal.parameters, hubspotTools.create_deal.handler);
+server.tool(hubspotTools.log_call.name, hubspotTools.log_call.parameters, hubspotTools.log_call.handler);
+server.tool(hubspotTools.list_pipelines.name, hubspotTools.list_pipelines.parameters, hubspotTools.list_pipelines.handler);
+
+// =============================================================================
+// KLAVIYO TOOLS (5) - Marketing Automation
+// =============================================================================
+
+server.tool(klaviyoTools.create_profile.name, klaviyoTools.create_profile.parameters, klaviyoTools.create_profile.handler);
+server.tool(klaviyoTools.get_profile.name, klaviyoTools.get_profile.parameters, klaviyoTools.get_profile.handler);
+server.tool(klaviyoTools.track_event.name, klaviyoTools.track_event.parameters, klaviyoTools.track_event.handler);
+server.tool(klaviyoTools.subscribe.name, klaviyoTools.subscribe.parameters, klaviyoTools.subscribe.handler);
+server.tool(klaviyoTools.list_segments.name, klaviyoTools.list_segments.parameters, klaviyoTools.list_segments.handler);
+
+// =============================================================================
+// TWILIO TOOLS (5) - SMS + Voice + WhatsApp
+// =============================================================================
+
+server.tool(twilioTools.send_sms.name, twilioTools.send_sms.parameters, twilioTools.send_sms.handler);
+server.tool(twilioTools.make_call.name, twilioTools.make_call.parameters, twilioTools.make_call.handler);
+server.tool(twilioTools.get_call.name, twilioTools.get_call.parameters, twilioTools.get_call.handler);
+server.tool(twilioTools.list_calls.name, twilioTools.list_calls.parameters, twilioTools.list_calls.handler);
+server.tool(twilioTools.send_whatsapp.name, twilioTools.send_whatsapp.parameters, twilioTools.send_whatsapp.handler);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("VocalIA MCP Server v0.8.0 running on stdio");
+  console.error("VocalIA MCP Server v0.9.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 182 (11 always available, 171 require external services)");
+  console.error("Tools: 203 (11 always available, 192 require external services)");
   console.error("E-commerce: Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop (~64% market)");
+  console.error("CRM: HubSpot (7 tools - CTI, Contacts, Deals, Pipelines)");
+  console.error("Marketing: Klaviyo (5 tools - Profiles, Events, Segments)");
+  console.error("Communications: Twilio (5 tools - SMS, Voice, WhatsApp)");
   console.error("Payments: Stripe (19 tools - Payment Links, Checkout, Invoices, Refunds)");
   console.error("Integrations: 28 native + iPaaS (Zapier/Make/n8n → +7000 apps)");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);

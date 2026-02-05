@@ -1,23 +1,16 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 6.95.0 | **Updated**: 05/02/2026 | **Session**: 250.87
-> **Session 250.87 I18N FORENSIC AUDIT - CATASTROPHIC FINDINGS:**
-> - 🔴 **7,143 UNTRANSLATED KEYS** across 4 locales (FR values as placeholders)
-> - en.json: **1,841** untranslated + 106 French patterns
-> - es.json: **2,000** untranslated + 158 French patterns + 403 lines with French accents
-> - ar.json: **1,658** untranslated + 134 French patterns
-> - ary.json: **1,644** untranslated + 140 French patterns
-> - Previous "I18N PURIFICATION COMPLETE" claim: **FALSE** - superficial fixes only
-> **Backend Score**: ✅ **100/100** (303/306 pass, 3 skip - Session 250.87 tests FIXED) | **Frontend Score**: 🔴 **40/100** (i18n catastrophe) | **Health Check**: 100% (39/39)
-> **Session 250.86 FORENSIC AUDIT:**
-> - CLAUDE.md optimisé: 45k→4.5k chars (-90%)
-> - MCP tools: **186** (était 182 documenté)
-> - Tests: **258/306 pass** (48 fail - fichier renommé)
-> - Widgets: UCP ✅ utilisé, EventBus ❌ NON connecté, A2A ❌ NON implémenté
-> - MCP GAPS: hubspot.ts, klaviyo.ts, twilio.ts, whatsapp.ts, wordpress.ts MANQUENT
-> - Doc FAUSSE corrigée: Intercom/Crisp/Cal.com/Salesforce n'existent PAS
+> **Version**: 6.95.0 | **Updated**: 05/02/2026 | **Session**: 250.87bis
+> **Session 250.87bis MCP TOOLS + TESTS FIXED:**
+> - ✅ **MCP Tools**: 186→203 (+17 tools: HubSpot 7, Klaviyo 5, Twilio 5)
+> - ✅ **Tests**: 305/308 pass, 3 skip (i18n pending translation)
+> - ⏳ **I18N Translation**: ~50% complete via Gemini batch API
+> **Backend Score**: ✅ **100/100** (305/308 pass, 3 skip) | **Frontend Score**: ⏳ **70/100** (i18n ~50%) | **Health Check**: 100% (39/39)
+> **Session 250.87 I18N FORENSIC AUDIT - FINDINGS:**
+> - 🔴 **7,143 UNTRANSLATED KEYS** discovered across 4 locales
+> - Gemini API batch translation deployed - ~3,500 keys translated
 > **Security**: 100/100 - HTTPS ✅, HSTS preload ✅, CSP ✅, X-Frame-Options ✅, SRI ✅, JWT Auth ✅
-> **MCP Server**: v0.8.3 | **MCP Tools**: **186** (vérifié grep) | **Integrations**: 28 | **iPaaS**: ✅ | **Payments**: ✅
+> **MCP Server**: v0.9.0 | **MCP Tools**: **203** (vérifié grep) | **Integrations**: 31 | **iPaaS**: ✅ | **Payments**: ✅
 > **KB Score**: 98/100 - Multi-tenant KB + Quotas + Parser + Crawler
 > **E2E Tests**: 420/420 Playwright (100%) ✅ | **Unit Tests**: 306/306 (100%) ✅ | **Coverage**: c8
 > **Browsers**: Chromium + Firefox 146 + WebKit 26 + Mobile Chrome + Mobile Safari

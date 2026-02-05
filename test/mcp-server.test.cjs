@@ -1,7 +1,7 @@
 /**
  * VocalIA MCP Server Tests
  *
- * Tests for the MCP server (186 tools across 26 categories) - Updated Session 250.87
+ * Tests for the MCP server (203 tools across 29 categories) - Updated Session 250.87
  * Run: node --test test/mcp-server.test.cjs
  */
 
@@ -22,11 +22,11 @@ describe('MCP Server Structure', () => {
     assert.ok(fs.existsSync(MCP_TOOLS_DIR), 'tools directory should exist');
   });
 
-  test('Index has 186 tool registrations', () => {
+  test('Index has 203 tool registrations', () => {
     const content = fs.readFileSync(MCP_INDEX_PATH, 'utf8');
     const toolCount = (content.match(/server\.tool\(/g) || []).length;
-    // Updated Session 250.87: 182→186 tools (verified via grep)
-    assert.strictEqual(toolCount, 186, `Should have 186 tools, found ${toolCount}`);
+    // Updated Session 250.87: 186→203 tools (HubSpot 7 + Klaviyo 5 + Twilio 5)
+    assert.strictEqual(toolCount, 203, `Should have 203 tools, found ${toolCount}`);
   });
 
   test('Index is substantial (>70k chars)', () => {
@@ -61,7 +61,10 @@ describe('MCP Tool Files', () => {
     'slack.ts',
     'ucp.ts',
     'export.ts',
-    'email.ts'
+    'email.ts',
+    'hubspot.ts',   // Session 250.87 - CRM CTI
+    'klaviyo.ts',   // Session 250.87 - Marketing Automation
+    'twilio.ts'     // Session 250.87 - SMS/Voice/WhatsApp
   ];
 
   for (const tool of expectedTools) {

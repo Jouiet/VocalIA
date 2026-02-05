@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> **v6.94.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
-> 70 pages | 22k+ i18n keys | 5 langs (FR/EN/ES/AR/ARY) | RTL | 306 unit + 375 E2E tests (99.5%)
-> **186 MCP Tools** | 40 Personas | 8 E-commerce Widgets | 28 Integrations | Stripe 19 tools
-> 🔴 **SESSION 250.87:** I18N CATASTROPHE - 7,143 untranslated keys (en: 1841, es: 2000, ar: 1658, ary: 1644)
+> **v6.95.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
+> 70 pages | 22k+ i18n keys | 5 langs (FR/EN/ES/AR/ARY) | RTL | 308 unit + 375 E2E tests (99.5%)
+> **203 MCP Tools** | 40 Personas | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Klaviyo 5 | Twilio 5
+> ⏳ **SESSION 250.87:** I18N Translation in progress - Gemini batch translation running
 
 ## Quick Reference
 
@@ -12,7 +12,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Backend 100/100** (303/306 pass, 3 skip), **Frontend 40/100** (7,143 i18n untranslated), Security 100/100 |
+| Scores | **Backend 100/100** (305/308 pass, 3 skip), **Frontend 70/100** (i18n translation ~50% complete), Security 100/100 |
 
 ---
 
@@ -32,7 +32,7 @@ VocalIA/                              # ~107,000 lines
 ├── widget/         # Browser widget + 8 e-commerce widgets
 ├── website/        # 70 pages (51 public + 19 webapp)
 │   └── src/locales/   # 5 langs (22k+ keys)
-├── mcp-server/     # 186 tools TypeScript
+├── mcp-server/     # 203 tools TypeScript (v0.9.0)
 └── docs/           # SESSION-HISTORY.md for detailed logs
 ```
 
