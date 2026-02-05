@@ -22,6 +22,9 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config(); // Load environment variables
+const ENV = process.env;    // Map process.env to ENV for legacy compatibility
+
 
 // Import Google Auth for Service Account (PAI) integration
 const { GoogleAuth } = require('google-auth-library');
@@ -45,8 +48,15 @@ function isOriginAllowed(origin) {
 
 // Session 250.xx: Multi-tenant Secret Vault
 const SecretVault = require('./SecretVault.cjs');
+const ContextBox = require('./ContextBox.cjs'); // Missing import fixed
 
-// ... (other imports)
+
+// Session 250.81: Protocol Bridge (A2A, AG-UI, UCP)
+const eventBus = require('./AgencyEventBus.cjs');
+const A2UIService = require('./a2ui-service.cjs');
+const hybridRAG = require('./hybrid-rag.cjs').getInstance(); // Fixed singleton usage
+
+
 
 // Session 168terdecies: REAL-TIME TASK (Grok first)
 // Fallback order: Grok → Gemini → Claude → Local patterns
@@ -178,8 +188,29 @@ const adminMetrics = {
   lastHealthCheck: Date.now()
 };
 
+// System logs buffer (keeps last 100 logs)
+const systemLogs = [];
+const MAX_LOGS = 100;
+
+function addSystemLog(level, message, details = {}) {
+  const log = {
+    timestamp: new Date().toISOString(),
+    time: new Date().toLocaleTimeString('fr-FR'),
+    level,
+    message,
+    details
+  };
+  systemLogs.unshift(log);
+  if (systemLogs.length > MAX_LOGS) systemLogs.pop();
+  return log;
+}
+
+// Initialize with startup log (port logged at server start)
+addSystemLog('INFO', 'Voice API Resilient module loaded');
+
 // Session 250.51: Load tenants from Google Sheets Database
 async function loadTenantsFromDB() {
+
   try {
     sheetsDB = await getDB();
     const tenants = await sheetsDB.findAll('tenants');
@@ -207,7 +238,7 @@ async function loadTenantsFromDB() {
   } catch (error) {
     adminMetrics.systemHealth.database = 'error';
     addSystemLog('ERROR', `Failed to load tenants from DB: ${error.message}`);
-    // Fallback to empty state - no mock data
+    // Resilient fallback: return empty state on DB failure
     return false;
   }
 }
@@ -217,25 +248,7 @@ loadTenantsFromDB().catch(err => {
   console.error('❌ [AdminMetrics] DB init failed:', err.message);
 });
 
-// System logs buffer (keeps last 100 logs)
-const systemLogs = [];
-const MAX_LOGS = 100;
 
-function addSystemLog(level, message, details = {}) {
-  const log = {
-    timestamp: new Date().toISOString(),
-    time: new Date().toLocaleTimeString('fr-FR'),
-    level,
-    message,
-    details
-  };
-  systemLogs.unshift(log);
-  if (systemLogs.length > MAX_LOGS) systemLogs.pop();
-  return log;
-}
-
-// Initialize with startup log (port logged at server start)
-addSystemLog('INFO', 'Voice API Resilient module loaded');
 
 // Get admin dashboard metrics
 function getAdminMetrics() {
@@ -340,10 +353,12 @@ async function registerTenant(tenantId, name, plan = 'starter', email = '') {
 }
 
 // Initialize Cognitive Modules
-const KB = new KB_MOD.ServiceKnowledgeBase();
-KB.load();
-const ECOM_TOOLS = ECOM_MOD; // voice-ecommerce-tools.cjs exports an instance
-const CRM_TOOLS = CRM_MOD; // voice-crm-tools.cjs exports an instance
+const KB = require('./knowledge-base-services.cjs'); // Corrected filename (plural)
+// KB.load(); // Moved to service init
+
+const ECOM_TOOLS = require('./voice-ecommerce-tools.cjs');
+const CRM_TOOLS = require('./voice-crm-tools.cjs');
+
 
 /**
  * Session 178: SOTA - Get or create lead session with ContextBox persistence
@@ -2313,6 +2328,15 @@ function startServer(port = 3004) {
           let hubspotSync = null;
           if (session.qualificationComplete && session.status === 'hot') {
             hubspotSync = await syncLeadToHubSpot(session);
+            // Session 250.87bis: A2A Event - Lead Qualified (Hot)
+            eventBus.publish('lead.qualified', {
+              sessionId: leadSessionId,
+              tenantId,
+              score: session.score,
+              status: session.status,
+              extractedData: session.extractedData,
+              hubspotSynced: !!hubspotSync
+            });
           }
 
           // Session 250: Update dashboard metrics
@@ -2321,6 +2345,26 @@ function startServer(port = 3004) {
           // Session 250.57: Increment session usage on first message of session
           if (session.messages.length === 1) {
             db.incrementUsage(tenantId, 'sessions');
+            // Session 250.87bis: A2A Event - Voice Session Start
+            eventBus.publish('voice.session_start', {
+              sessionId: leadSessionId,
+              tenantId,
+              language,
+              persona: persona?.id || 'default',
+              widgetType: widgetType,
+              source: 'widget'
+            });
+          }
+
+          // Session 250.87bis: A2A Event - Lead Qualification Update
+          if (session.score > 0) {
+            eventBus.publish('voice.qualification_updated', {
+              sessionId: leadSessionId,
+              tenantId,
+              score: session.score,
+              status: session.status,
+              delta: session.scoreBreakdown
+            });
           }
 
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -2680,7 +2724,7 @@ function startServer(port = 3004) {
           if (db) {
             try {
               // Try to create in 'contacts' sheet, if not exists it might fail or create
-              // If we strictly follow the user "NO MOCK", we must ensure this actually works or logs safely
+              // Attempt DB creation, fall back to safe logging on failure
               // We'll log to system logs + attempt DB creation
               await db.create('contacts', {
                 name,
