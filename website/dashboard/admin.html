@@ -300,8 +300,7 @@
             <div class="flex items-center justify-between p-3 rounded-xl bg-slate-700/30">
               <div class="flex items-center space-x-3">
                 <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
-                <span class="font-medium"><span data-i18n="admin.voice_api_59">Voice API</span></span>
-                <span class="text-xs text-vocalia-400 font-mono">:3004</span>
+                <span class="font-medium"><span data-i18n="admin.voice_api_59">API Vocale</span></span>
               </div>
               <span class="text-sm text-green-400" data-i18n="dashboard.health.operational"><span
                   data-i18n="admin.oprationnel_53"><span data-i18n="admin.oprationnel_55"><span
@@ -310,25 +309,22 @@
             <div class="flex items-center justify-between p-3 rounded-xl bg-slate-700/30">
               <div class="flex items-center space-x-3">
                 <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
-                <span class="font-medium"><span data-i18n="admin.ai_realtime_58">AI Realtime</span></span>
-                <span class="text-xs text-vocalia-400 font-mono">:3007</span>
+                <span class="font-medium"><span data-i18n="admin.ai_realtime_58">IA Temps-réel</span></span>
               </div>
               <span class="text-sm text-green-400">Opérationnel</span>
             </div>
             <div class="flex items-center justify-between p-3 rounded-xl bg-slate-700/30">
               <div class="flex items-center space-x-3">
                 <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
-                <span class="font-medium"><span data-i18n="admin.telephony_bridge_56">Telephony Bridge</span></span>
-                <span class="text-xs text-vocalia-400 font-mono">:3009</span>
+                <span class="font-medium"><span data-i18n="admin.telephony_bridge_56">Passerelle Télécom</span></span>
               </div>
               <span class="text-sm text-green-400">Opérationnel</span>
             </div>
             <div class="flex items-center justify-between p-3 rounded-xl bg-slate-700/30">
               <div class="flex items-center space-x-3">
                 <i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i>
-                <span class="font-medium"><span data-i18n="admin.website_47"><span
-                      data-i18n="admin.website_54">Website</span></span></span>
-                <span class="text-xs text-vocalia-400 font-mono">:8080</span>
+                <span class="font-medium"><span data-i18n="admin.website_47"><span data-i18n="admin.website_54">Site
+                      Web</span></span></span>
               </div>
               <span class="text-sm text-green-400">Opérationnel</span>
             </div>
@@ -338,7 +334,7 @@
         <!-- Health Check Results -->
         <div class="liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold"><span data-i18n="admin.health_check_52">Health Check</span></h3>
+            <h3 class="text-lg font-semibold"><span data-i18n="admin.health_check_52">Diagnostic Système</span></h3>
             <span id="health-total"
               class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-sm font-medium">-/-</span>
           </div>
@@ -354,7 +350,7 @@
             </div>
           </div>
           <div id="health-status-bar" class="mt-4 p-3 rounded-xl bg-slate-700/30 border border-slate-600">
-            <p class="text-sm text-vocalia-400 font-mono">$ Chargement...</p>
+            <p class="text-sm text-vocalia-400 font-mono">$ Initialisation...</p>
             <p id="health-last-check" class="text-xs text-vocalia-400 mt-1">-</p>
           </div>
         </div>
@@ -365,22 +361,22 @@
         <!-- Top Tenants -->
         <div id="tenants" class="lg:col-span-2 liquid-glass p-6">
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold" data-i18n="dashboard.tenants.title">Top Tenants</h3>
+            <h3 class="text-lg font-semibold" data-i18n="dashboard.tenants.title">Clients Principaux</h3>
             <button type="button" data-action="viewAllTenants" aria-label="Voir tous les tenants"
               class="text-vocalia-400 hover:text-white text-sm transition" data-i18n="dashboard.calls.view_all">Voir
               tous →</button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full" role="table">
-              <caption class="sr-only"><span data-i18n="admin.liste_des_tenants_46">Liste des tenants actifs</span>
+              <caption class="sr-only"><span data-i18n="admin.liste_des_tenants_46">Liste des clients actifs</span>
               </caption>
               <thead>
                 <tr class="text-left text-vocalia-400 text-sm border-b border-slate-600">
-                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.tenant">Tenant</th>
-                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.plan">Plan</th>
-                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.calls">Appels/mois</th>
-                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.mrr">MRR</th>
-                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.status">Status</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.tenant">Client</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.plan">Forfait</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.calls">Volume</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.mrr">Revenu</th>
+                  <th scope="col" class="pb-3 font-medium" data-i18n="dashboard.tenants.table.status">État</th>
                 </tr>
               </thead>
               <tbody id="tenants-table-body" class="divide-y divide-vocalia-700/30">
@@ -388,7 +384,7 @@
                 <tr class="hover:bg-slate-700/20">
                   <td colspan="5" class="py-8 text-center text-vocalia-400">
                     <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2"></i>
-                    Chargement des tenants...
+                    Chargement des données...
                   </td>
                 </tr>
               </tbody>
@@ -398,20 +394,20 @@
 
         <!-- Revenue Breakdown - Session 250.51: Data loaded from Google Sheets -->
         <div id="revenue" class="liquid-glass p-6">
-          <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.charts.revenue_split">Répartition revenus</h3>
+          <h3 class="text-lg font-semibold mb-6" data-i18n="dashboard.charts.revenue_split">Répartition Revenus</h3>
           <div class="space-y-4">
             <!-- Populated by updateRevenueBreakdown() from real DB data -->
             <div class="text-center text-vocalia-400 py-4">
               <i data-lucide="loader-2" class="w-5 h-5 animate-spin inline-block mr-2"></i>
-              Chargement des données...
+              Analyse financière...
             </div>
           </div>
           <div class="mt-6 p-4 rounded-xl bg-slate-700/30">
             <div class="flex justify-between items-center">
-              <span class="text-vocalia-400"><span data-i18n="admin.total_mrr_45">Total MRR</span></span>
+              <span class="text-vocalia-400"><span data-i18n="admin.total_mrr_45">Total Mensuel</span></span>
               <span id="total-mrr-display" class="text-2xl font-bold gradient-text">-</span>
             </div>
-            <p id="total-arr-display" class="text-xs text-vocalia-500 mt-1">ARR projeté: -</p>
+            <p id="total-arr-display" class="text-xs text-vocalia-500 mt-1">Projection Annuelle: -</p>
           </div>
         </div>
       </section>
@@ -421,7 +417,7 @@
         <!-- API Usage Widget -->
         <div id="api" class="dashboard-widget liquid-glass" data-widget-id="api-usage">
           <div class="widget-header p-6 pb-0">
-            <h3 class="widget-title text-lg font-semibold" data-i18n="dashboard.sidebar.api">Utilisation API (24h)</h3>
+            <h3 class="widget-title text-lg font-semibold" data-i18n="dashboard.sidebar.api">Consommation IA (24h)</h3>
           </div>
           <div class="widget-content p-6 pt-4">
             <div class="space-y-4">
@@ -431,8 +427,9 @@
                     <span class="text-sm">X</span>
                   </div>
                   <div>
-                    <p class="font-medium"><span data-i18n="admin.ai_primary_44">AI Primary</span></p>
-                    <p class="text-xs text-vocalia-400"><span data-i18n="admin.provider_1_43">Provider 1</span></p>
+                    <p class="font-medium"><span data-i18n="admin.ai_primary_44">Cerveau Principal</span></p>
+                    <p class="text-xs text-vocalia-400"><span data-i18n="admin.provider_1_43">Haute Intelligence</span>
+                    </p>
                   </div>
                 </div>
                 <div class="text-right">
@@ -447,8 +444,8 @@
                     <span class="text-sm">G</span>
                   </div>
                   <div>
-                    <p class="font-medium"><span data-i18n="admin.ai_fallback_41">AI Fallback</span></p>
-                    <p class="text-xs text-vocalia-400"><span data-i18n="admin.provider_2_40">Provider 2</span></p>
+                    <p class="font-medium"><span data-i18n="admin.ai_fallback_41">Cerveau Rapide</span></p>
+                    <p class="text-xs text-vocalia-400"><span data-i18n="admin.provider_2_40">Haute Vélocité</span></p>
                   </div>
                 </div>
                 <div class="text-right">
@@ -462,8 +459,8 @@
                     <span class="text-sm">T</span>
                   </div>
                   <div>
-                    <p class="font-medium">PSTN</p>
-                    <p class="text-xs text-vocalia-400"><span data-i18n="admin.tlphonie_38">Téléphonie</span></p>
+                    <p class="font-medium">Réseau Télécom</p>
+                    <p class="text-xs text-vocalia-400"><span data-i18n="admin.tlphonie_38">Interconnexion</span></p>
                   </div>
                 </div>
                 <div class="text-right">
@@ -477,13 +474,13 @@
                     <span class="text-sm">11</span>
                   </div>
                   <div>
-                    <p class="font-medium"><span data-i18n="admin.elevenlabs_36">ElevenLabs</span></p>
-                    <p class="text-xs text-vocalia-400">TTS/STT</p>
+                    <p class="font-medium"><span data-i18n="admin.elevenlabs_36">Synthèse Vocale</span></p>
+                    <p class="text-xs text-vocalia-400">Haute Fidélité</p>
                   </div>
                 </div>
                 <div class="text-right">
                   <p id="api-usage-tts" class="font-semibold">-</p>
-                  <p class="text-xs text-vocalia-400"><span data-i18n="admin.caractres_35">caractères</span></p>
+                  <p class="text-xs text-vocalia-400"><span data-i18n="admin.caractres_35">unités</span></p>
                 </div>
               </div>
             </div>
@@ -494,13 +491,13 @@
         <div id="logs" class="dashboard-widget liquid-glass" data-widget-id="logs">
           <div class="widget-header p-6 pb-0">
             <div class="flex items-center justify-between">
-              <h3 class="widget-title text-lg font-semibold" data-i18n="dashboard.sidebar.logs">Logs récents</h3>
+              <h3 class="widget-title text-lg font-semibold" data-i18n="dashboard.sidebar.logs">Journal d'Activité</h3>
               <select id="logs-filter" data-action="filterLogs"
                 class="bg-slate-700 border border-vocalia-700 rounded-lg px-3 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-vocalia-500">
-                <option value="all">Tous</option>
-                <option value="error"><span data-i18n="admin.erreurs_34">Erreurs</span></option>
-                <option value="warn"><span data-i18n="admin.warnings_33">Warnings</span></option>
-                <option value="info">Info</option>
+                <option value="all">Tout</option>
+                <option value="error"><span data-i18n="admin.erreurs_34">Incidents</span></option>
+                <option value="warn"><span data-i18n="admin.warnings_33">Avertissements</span></option>
+                <option value="info">Information</option>
               </select>
             </div>
           </div>
@@ -521,8 +518,8 @@
                 <i data-lucide="database" class="w-5 h-5 text-emerald-400"></i>
               </div>
               <div>
-                <h3 class="text-lg font-semibold" data-i18n="dashboard.sidebar.database">Base de données</h3>
-                <p class="text-xs text-vocalia-400">Google Sheets CRUD</p>
+                <h3 class="text-lg font-semibold" data-i18n="dashboard.sidebar.database">Base de Données</h3>
+                <p class="text-xs text-vocalia-400">Gestion Clients & Sessions</p>
               </div>
             </div>
             <div class="flex items-center space-x-2">
@@ -1135,7 +1132,7 @@
 
     // Session 250.51: Initialize logs container - data loaded from DB via fetchAdminMetrics
     function initializeLogs() {
-      // No mock data - logs will be loaded from Google Sheets DB
+      // Logs will be loaded from Google Sheets DB
       allLogs = [];
       renderLogs();
     }
