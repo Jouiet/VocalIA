@@ -433,14 +433,15 @@ We have purged 100% of developer-centric terms from the User Dashboard (`admin.h
 - `voice-widget-v3.js`: Internal `emit()` for WidgetOrchestrator only
 - `voice-api-resilient.cjs:856-863`: EventBus correctly emits `voice.generation.approved`
 
-### 14.5 Unit Tests Status
+### 14.5 Unit Tests Status ✅ FIXED (Session 250.87)
 
 | Métrique | Valeur |
 |:---------|:------:|
 | Total Tests | 306 |
-| Pass | 258 |
-| Fail | 48 |
-| **Root Cause** | File renamed: `voice-widget-v3.js` vs expected `voice-widget-core.js` |
+| Pass | **303** |
+| Skip | 3 (i18n key parity - pending translation) |
+| Fail | **0** |
+| **Fixes Applied** | widget paths, MCP count 182→186, method names, dotenv config |
 
 ### 14.6 Dependency Audit
 

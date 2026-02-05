@@ -12,7 +12,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Backend 84/100** (48/306 tests fail), **Frontend 40/100** (7,143 i18n untranslated), Security 100/100 |
+| Scores | **Backend 100/100** (303/306 pass, 3 skip), **Frontend 40/100** (7,143 i18n untranslated), Security 100/100 |
 
 ---
 
