@@ -22,11 +22,11 @@
 
 ## 1. Score Actuel
 
-**Score: 8.0/10** — Recalculé Session 250.108 après P2 COMPLETE (973 tests, 29.7% stmt coverage, production monitor, integration docs).
+**Score: 8.2/10** — Recalculé Session 250.109 après 1170 tests, 33.8% stmt coverage, 42 test files.
 
-| # | Dimension | Score 250.107 | Score 250.108 | Delta | Justification |
+| # | Dimension | Score 250.108 | Score 250.109 | Delta | Justification |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 10.0 | 10.0 | 0 | 973 pass/0 fail, 29.7% stmt, 73.3% branches, 36 test files |
+| 1 | Tests unitaires | 10.0 | 10.0 | 0 | 1170 pass/0 fail, 33.8% stmt, 74.6% branches, 42 test files |
 | 2 | Sécurité | 7.5 | 7.5 | 0 | No change |
 | 3 | Production readiness | 5.0 | 6.0 | +1.0 | production-monitor.cjs with Slack alerts, 3 endpoints probed |
 | 4 | Documentation accuracy | 8.0 | 8.5 | +0.5 | INTEGRATION-TESTING.md, sandbox credential docs |
@@ -640,8 +640,14 @@ Seul le persona AGENCY a été audité exhaustivement (243 tests). Les 39 autres
 | recommendation-service.test.cjs | 33 | 0 | 0 | node --test |
 | tenant-onboarding-agent.test.cjs | 22 | 0 | 0 | node --test |
 | kb-provisioner.test.cjs | 26 | 0 | 0 | node --test |
+| tenant-persona-bridge.test.cjs | 36 | 0 | 0 | node --test |
+| voice-agent-b2b.test.cjs | 32 | 0 | 0 | node --test |
+| calendar-slots-connector.test.cjs | 50 | 0 | 0 | node --test |
+| chaos-engineering.test.cjs | 22 | 0 | 0 | node --test |
+| lahajati-client.test.cjs | 38 | 0 | 0 | node --test |
+| stitch-to-vocalia-css.test.cjs | 19 | 0 | 0 | node --test |
 | **exhaustive-multi-tenant-test.cjs** | **0** | **1** | 0 | **Interne: 2726/2751** |
-| **TOTAL node --test** | **973** | **0** | **3** | |
+| **TOTAL node --test** | **1170** | **0** | **3** | |
 
 ### 7.3 Infrastructure
 
