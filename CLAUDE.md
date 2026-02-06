@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> **v7.9.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
+> **v7.10.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
 > **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | 281 unit + 57 E2E = **338 tests**
 > **203 MCP Tools** | 40 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~80k lines source** | Core 33,728 (53 files) + Telephony 4,709 + Personas 7,374 + Widget 9,107 + MCP/src 17,630 + Lib 921 + Website 31,512
@@ -204,12 +204,15 @@ git push origin main
 - ✅ XSS: Social proof textContent fix (innerHTML count 15 → 9)
 - ✅ client_registry.json: `booking_url` field on 11 booking-required clients
 
+**Session 250.100 Security Hardening Fixes:**
+- ✅ CORS wildcard `*` → origin whitelist in db-api.cjs (vocalia.ma + localhost)
+- ✅ `free_price: "0"` → `"49"` in all 5 locale files (no-free-tier enforced)
+- ✅ innerHTML XSS: addMessage→textContent, product cards→escapeHTML (count 9→5)
+- ✅ B2B notification bubble: innerHTML→textContent
+
 **Work Remaining:**
-- P0: Fix CORS wildcard `*` on db-api.cjs:109 (30m)
 - P0: Register 557 clients into client_registry.json (2h)
-- P1: Fix `free_price: "0"` in 5 locale files line 2194 (15m)
 - P1: Add conversational format to 37 personas (6h)
-- P2: Fix remaining 9 innerHTML usages in V3 widget for XSS safety (1h)
 - P2: Sync function tool names in docs vs actual code (1h)
 
 **Docs:** `docs/AUDIT-MULTI-TENANT-SESSION-250.57.md`, `docs/MULTI-TENANT-KB-OPTIMIZATION-PLAN.md`
@@ -236,7 +239,7 @@ git push origin main
 
 **Policy:** No Free Tier - 14-day trial only
 
-> ⚠️ **Session 250.98 AUDIT**: `free_price: "0"` in 5 locales (line 2194), CORS wildcard db-api, 9 innerHTML XSS (was 15, 6 fixed in 250.99)
+> ✅ **Session 250.100**: CORS wildcard FIXED (origin whitelist), `free_price` FIXED (0→49), innerHTML XSS 15→5
 > ⚠️ **Tests réels**: 281 unit + 57 E2E = 338 total (NOT 681 as previously claimed)
 
 ---
@@ -273,11 +276,11 @@ providers: [
 
 | Finding | Severity | Detail |
 |:--------|:--------:|:-------|
-| CORS wildcard db-api | **HIGH** | `core/db-api.cjs:109` has `Access-Control-Allow-Origin: *` |
-| `free_price: "0"` in locales | **HIGH** | All 5 locale files line 2194 contradict No Free Tier policy |
+| ~~CORS wildcard db-api~~ | ~~**HIGH**~~ | **FIXED** Session 250.100 - Origin whitelist (vocalia.ma + localhost dev) |
+| ~~`free_price: "0"` in locales~~ | ~~**HIGH**~~ | **FIXED** Session 250.100 - Changed to `"49"` in all 5 locales |
 | Tests overcounted | **HIGH** | 338 real tests, not 681 (was 306+375, actual 281+57) |
 | Function tool names wrong in docs | **HIGH** | 12/25 names in docs don't match actual code |
-| innerHTML XSS risk | **MEDIUM** | ~~15~~ **9** occurrences in widget/*.js (6 fixed in social proof, Session 250.99) |
+| ~~innerHTML XSS risk~~ | ~~**MEDIUM**~~ | **REDUCED** 15→5 (sessions 250.99+250.100: textContent, escapeHTML) |
 | 557 tenants not in registry | **MEDIUM** | 580 folders but only 23 in client_registry.json |
 | lib/ not documented | **LOW** | security-utils.cjs (921 lines) missing from architecture docs |
 | ~~Social proof FAKE data~~ | ~~**HIGH**~~ | **FIXED** Session 250.99 - Real backend data, fake names removed |
@@ -285,4 +288,4 @@ providers: [
 | ~~No dashboard widget toggles~~ | ~~**MEDIUM**~~ | **FIXED** Session 250.99 - 3 toggles in settings.html |
 
 *Full session history: `docs/SESSION-HISTORY.md`*
-*Last update: 06/02/2026 - Session 250.99 Deep Surgery*
+*Last update: 06/02/2026 - Session 250.100 Security Hardening*

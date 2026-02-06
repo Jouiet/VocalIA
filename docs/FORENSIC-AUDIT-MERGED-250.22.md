@@ -10,11 +10,12 @@
 > **Session 250.98 FORENSIC AUDIT (06/02/2026)**: 🔴 **7 CRITICAL FINDINGS** - Score révisé à **6.1/10**
 >   - Core: **53 fichiers/33,728 lignes** (docs disaient 38/32,727)
 >   - Tests: **338 réels** (281 unit + 57 E2E), PAS 681 (306+375 était FAUX)
->   - Sécurité: CORS wildcard `*` dans db-api.cjs:109, innerHTML XSS ~~15~~ **9** (6 fixed session 250.99)
->   - i18n: `free_price: "0"` dans 5 locales contredit la politique no-free-tier
+>   - Sécurité: ~~CORS wildcard `*` dans db-api.cjs:109~~ ✅ FIXED session 250.100 (origin whitelist), innerHTML XSS ~~15~~ **5** (10 fixed sessions 250.99+250.100)
+>   - i18n: ~~`free_price: "0"` dans 5 locales~~ ✅ FIXED session 250.100 → `"49"` (no-free-tier enforced)
 >   - Multi-tenant: 580 dossiers clients mais seulement 23 dans registry (GAP 557)
 >   - Function tools: 12/25 noms documentés N'EXISTENT PAS dans le code réel
 >   - `lib/security-utils.cjs` (921 lignes) non documenté nulle part
+> **Session 250.100 SECURITY HARDENING (06/02/2026)**: ✅ CORS wildcard→whitelist, free_price 0→49 in 5 locales, innerHTML XSS 9→5 (addMessage textContent, product cards escapeHTML)
 > **Session 250.99 DEEP SURGERY (06/02/2026)**: ✅ Social proof FAKE→REAL, B2B booking/social implemented, dashboard toggles, KB booking section, XSS fix (15→9)
 > **Session 250.97octies**: ✅ **MULTI-TENANT SCALE UP** - 30→537 tenants, 2,890 KB files, 12 regions, 40 sectors (B2B=283, B2C=200, ECOM=54)
 > **Session 250.97quinquies**: ✅ **KB AUTO-PROVISIONING COMPLETE** - 30 tenants × 5 languages = 150 KB files, `kb-provisioner.cjs` (380+ lines)

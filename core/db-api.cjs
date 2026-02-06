@@ -104,13 +104,25 @@ const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5 }); // 5 per 1
 const registerLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 3 }); // 3 per hour
 const apiLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minute
 
-// CORS headers
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Content-Type': 'application/json'
-};
+// CORS whitelist (fixes HIGH: wildcard origin)
+const CORS_ALLOWED_ORIGINS = [
+  'https://vocalia.ma',
+  'https://www.vocalia.ma',
+  'https://api.vocalia.ma',
+  'https://app.vocalia.ma'
+];
+
+function getCorsHeaders(req) {
+  const origin = req?.headers?.origin || '';
+  const isLocalDev = origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
+  const isAllowed = CORS_ALLOWED_ORIGINS.includes(origin) || isLocalDev;
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : CORS_ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Content-Type': 'application/json'
+  };
+}
 
 // Rate limiter for DB endpoints
 const dbLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minute
@@ -188,7 +200,7 @@ async function parseBody(req) {
  * Send JSON response
  */
 function sendJson(res, statusCode, data) {
-  res.writeHead(statusCode, CORS_HEADERS);
+  res.writeHead(statusCode, getCorsHeaders(res._corsReq));
   res.end(JSON.stringify(data));
 }
 
@@ -693,6 +705,7 @@ async function handleTelephonyRequest(req, res, path, method, query) {
  * API Router
  */
 async function handleRequest(req, res) {
+  res._corsReq = req; // Attach req for CORS origin check
   const parsedUrl = url.parse(req.url, true);
   const path = parsedUrl.pathname;
   const query = parsedUrl.query;
@@ -700,7 +713,7 @@ async function handleRequest(req, res) {
 
   // CORS preflight
   if (method === 'OPTIONS') {
-    res.writeHead(204, CORS_HEADERS);
+    res.writeHead(204, getCorsHeaders(req));
     res.end();
     return;
   }
@@ -2120,7 +2133,7 @@ async function handleRequest(req, res) {
       };
 
       res.writeHead(200, {
-        ...CORS_HEADERS,
+        ...getCorsHeaders(req),
         'Content-Type': contentTypes[ext] || 'application/octet-stream',
         'Content-Disposition': `attachment; filename="${filename}"`
       });
@@ -2482,6 +2495,18 @@ async function handleRequest(req, res) {
           createData.tenant_id = tenantId;
         }
         const created = await db.create(sheet, createData);
+
+        // Session 250.97quinquies: Auto-provision KB on tenant creation
+        if (sheet === 'tenants' && created.id) {
+          try {
+            const { onTenantCreated } = require('./kb-provisioner.cjs');
+            await onTenantCreated(created);
+          } catch (kbErr) {
+            console.error(`[DB-API] KB provisioning failed for ${created.id}:`, kbErr.message);
+            // Don't fail tenant creation if KB provisioning fails
+          }
+        }
+
         // Broadcast creation to appropriate channel
         if (created.tenant_id) {
           broadcastToTenant(created.tenant_id, sheet, 'created', sheet === 'users' ? filterUserRecord(created) : created);

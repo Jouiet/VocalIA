@@ -18,6 +18,14 @@
   'use strict';
 
   // ============================================================
+  // SECURITY: HTML escape for dynamic content (XSS prevention)
+  // ============================================================
+  function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ============================================================
   // CONFIGURATION
   // ============================================================
 
@@ -693,8 +701,8 @@
         </svg>
       </div>
       <div class="va-notif-text">
-        <span class="va-notif-title">${L.ui.notifTitle}</span>
-        <span class="va-notif-sub">${L.ui.notifSub}</span>
+        <span class="va-notif-title">${escapeHTML(L.ui.notifTitle)}</span>
+        <span class="va-notif-sub">${escapeHTML(L.ui.notifSub)}</span>
       </div>
     `;
 
@@ -746,7 +754,10 @@
     const messagesContainer = document.getElementById('va-messages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `va-message ${type}`;
-    messageDiv.innerHTML = `<div class="va-message-content">${text}</div>`;
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'va-message-content';
+    contentDiv.textContent = text;
+    messageDiv.appendChild(contentDiv);
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
@@ -858,19 +869,19 @@
     }
 
     return `
-      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${product.id}" style="position: relative;">
+      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${escapeHTML(String(product.id))}" style="position: relative;">
         ${badgeHTML}
         ${hasImage
-        ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
+        ? `<img class="va-product-img" src="${escapeHTML(product.image || product.images[0])}" alt="${escapeHTML(product.name)}" loading="lazy" />`
         : `<div class="va-product-img-placeholder">📦</div>`
       }
         <div class="va-product-info">
-          <p class="va-product-name">${product.name}</p>
+          <p class="va-product-name">${escapeHTML(product.name)}</p>
           <div class="va-product-price">
             ${formatPrice(product.price, product.currency)}
             ${isOnSale ? `<span class="va-product-price-old">${formatPrice(product.compare_at_price, product.currency)}</span>` : ''}
           </div>
-          ${stockText ? `<p class="va-product-stock ${stockClass}">${stockText}</p>` : ''}
+          ${stockText ? `<p class="va-product-stock ${stockClass}">${escapeHTML(stockText)}</p>` : ''}
         </div>
       </div>
     `;
@@ -891,28 +902,33 @@
     const hasImage = product.image || product.images?.[0];
     const inStock = product.available !== false && product.in_stock !== false;
 
+    const safeId = escapeHTML(String(product.id));
+    const safeName = escapeHTML(product.name);
+    const safeDesc = product.description ? escapeHTML(product.description) : '';
+    const safeImg = hasImage ? escapeHTML(product.image || product.images[0]) : '';
+    const safeUrl = product.url ? escapeHTML(product.url) : '';
     productDiv.innerHTML = `
       <div class="va-message-content">
-        <div class="va-single-product" data-product-id="${product.id}">
+        <div class="va-single-product" data-product-id="${safeId}">
           <div class="va-single-product-row">
             ${hasImage
-        ? `<img class="va-single-product-img" src="${product.image || product.images[0]}" alt="${product.name}" />`
+        ? `<img class="va-single-product-img" src="${safeImg}" alt="${safeName}" />`
         : `<div class="va-single-product-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>`
       }
             <div class="va-single-product-details">
-              <h4 class="va-single-product-name">${product.name}</h4>
-              ${product.description ? `<p class="va-single-product-desc">${product.description}</p>` : ''}
+              <h4 class="va-single-product-name">${safeName}</h4>
+              ${safeDesc ? `<p class="va-single-product-desc">${safeDesc}</p>` : ''}
               <div class="va-single-product-price">${formatPrice(product.price, product.currency)}</div>
             </div>
           </div>
           <div class="va-product-actions">
-            <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${product.id}')" ${!inStock ? 'disabled' : ''}>
+            <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${safeId}')" ${!inStock ? 'disabled' : ''}>
               ${inStock
         ? (state.langData?.ecommerce?.viewDetails || 'Voir détails')
         : (state.langData?.ecommerce?.notifyMe || 'Me notifier')
       }
             </button>
-            ${product.url ? `<button class="va-product-btn secondary" onclick="window.open('${product.url}', '_blank')">
+            ${safeUrl ? `<button class="va-product-btn secondary" onclick="window.open('${safeUrl}', '_blank')">
               ${state.langData?.ecommerce?.buyNow || 'Acheter'}
             </button>` : ''}
           </div>
@@ -967,7 +983,7 @@
         <div class="va-carousel-header">
           <span class="va-carousel-title">
             <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ${displayTitle}
+            ${escapeHTML(displayTitle)}
           </span>
           <div class="va-carousel-nav">
             <button onclick="document.getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">

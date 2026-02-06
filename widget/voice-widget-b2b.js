@@ -340,7 +340,10 @@
 
         const bubble = document.createElement('div');
         bubble.className = 'va-notif-bubble';
-        bubble.innerHTML = `<div class="va-notif-bubble-content">👋 ${L.ui.notifTitle || 'Besoin d\'aide ?'}</div>`;
+        const bubbleContent = document.createElement('div');
+        bubbleContent.className = 'va-notif-bubble-content';
+        bubbleContent.textContent = '👋 ' + (L.ui.notifTitle || 'Besoin d\'aide ?');
+        bubble.appendChild(bubbleContent);
         trigger.parentNode.appendChild(bubble);
         setTimeout(() => bubble.remove(), 6000);
     }

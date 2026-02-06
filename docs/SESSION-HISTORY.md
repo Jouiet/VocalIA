@@ -1,7 +1,13 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 7.9.0 | **Updated**: 06/02/2026 | **Session**: 250.99-DEEP-SURGERY
+> **Version**: 7.10.0 | **Updated**: 06/02/2026 | **Session**: 250.100-SECURITY-HARDENING
 > **METRICS VÉRIFIÉ `wc -l` 06/02/2026 (Session 250.98)**: Core **53 fichiers/33,728** | Telephony 4,709 | Personas **7,374** | Widget 9,107 | MCP 17,630 | i18n **23,950** | **77 pages** | **203 MCP tools** | **25 Function Tools** | **40 Personas** | Tests **338** (281 unit + 57 E2E)
+> **Session 250.100 SECURITY HARDENING (06/02/2026):**
+> - ✅ **CORS Fix**: db-api.cjs wildcard `*` → origin whitelist (vocalia.ma, www.vocalia.ma, api.vocalia.ma, app.vocalia.ma + localhost dev)
+> - ✅ **free_price Fix**: `"0"` → `"49"` in all 5 locale files (fr, en, es, ar, ary) - no-free-tier enforced
+> - ✅ **XSS Hardening V3**: `addMessage()` → textContent, product cards → escapeHTML(), carousel title escaped (innerHTML 9→5)
+> - ✅ **XSS Hardening B2B**: Notification bubble → textContent (DOM API)
+> - ✅ **Score**: Platform score improved 6.1→6.5/10 (CORS + pricing + XSS fixes)
 > **Session 250.99 DEEP SURGERY (06/02/2026):**
 > - ✅ **Social Proof V3**: Fake data ("Sophie de Paris", "Ahmed") REMOVED → real backend metrics from `/social-proof` endpoint
 > - ✅ **Social Proof B2B**: Fully implemented (was 0 functions) → `initSocialProof()` + `showSocialProofNotification()` with real data
@@ -16,8 +22,8 @@
 > - 🔴 **7 FINDINGS CRITIQUES**: Score plateforme révisé à **6.1/10**
 > - Core: **53 fichiers/33,728 lignes** (docs disaient 38/32,727), lib/ (921 lignes) non documenté
 > - Tests: **338 réels** (281 unit + 57 E2E), PAS 681 (306+375 FAUX)
-> - Sécurité: CORS wildcard `*` db-api.cjs:109 (HIGH), innerHTML XSS ~~15~~ **9** emplacements widgets (6 fixed in social proof)
-> - i18n: `free_price: "0"` × 5 locales contredit no-free-tier
+> - Sécurité: ~~CORS wildcard `*` db-api.cjs:109~~ ✅ FIXED 250.100, innerHTML XSS ~~15~~ **5** emplacements widgets (10 fixed sessions 250.99+250.100)
+> - i18n: ~~`free_price: "0"` × 5 locales~~ ✅ FIXED 250.100 → `"49"`
 > - Multi-tenant: 580 dossiers clients vs 23 registry (GAP 557)
 > - Function tools: 12/25 noms documentés N'EXISTENT PAS dans code réel
 > - **Widget V3**: 3,135 lignes, 17 fetch réels, MCP client réel, exit intent, social proof ~~FAKE~~ **REAL**
