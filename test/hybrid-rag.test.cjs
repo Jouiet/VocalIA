@@ -245,3 +245,175 @@ describe('BM25 Algorithm Verification', () => {
     assert.ok(rareIdf > commonIdf, 'Rare terms should have higher IDF');
   });
 });
+
+// ─── HybridRAG _fuseResults (RRF) ──────────────────────────────
+
+describe('HybridRAG _fuseResults (Reciprocal Rank Fusion)', () => {
+  test('fuses sparse and dense results', () => {
+    const rag = new HybridRAG();
+    const sparse = [
+      { id: 'A', text: 'doc A', sparseScore: 2.5 },
+      { id: 'B', text: 'doc B', sparseScore: 1.8 }
+    ];
+    const dense = [
+      { id: 'B', text: 'doc B', denseScore: 0.95 },
+      { id: 'C', text: 'doc C', denseScore: 0.88 }
+    ];
+    const results = rag._fuseResults(sparse, dense, 5);
+    assert.ok(results.length >= 2);
+    // B appears in both → highest RRF score
+    assert.strictEqual(results[0].id, 'B');
+    assert.ok(results[0].rrfScore > results[1].rrfScore);
+  });
+
+  test('returns empty array for empty inputs', () => {
+    const rag = new HybridRAG();
+    const results = rag._fuseResults([], [], 5);
+    assert.deepStrictEqual(results, []);
+  });
+
+  test('handles sparse-only results', () => {
+    const rag = new HybridRAG();
+    const sparse = [
+      { id: 'A', text: 'doc A', sparseScore: 3.0 },
+      { id: 'B', text: 'doc B', sparseScore: 1.5 }
+    ];
+    const results = rag._fuseResults(sparse, [], 5);
+    assert.strictEqual(results.length, 2);
+    assert.strictEqual(results[0].id, 'A');
+  });
+
+  test('handles dense-only results', () => {
+    const rag = new HybridRAG();
+    const dense = [
+      { id: 'X', text: 'doc X', denseScore: 0.99 },
+      { id: 'Y', text: 'doc Y', denseScore: 0.75 }
+    ];
+    const results = rag._fuseResults([], dense, 5);
+    assert.strictEqual(results.length, 2);
+    assert.strictEqual(results[0].id, 'X');
+  });
+
+  test('respects limit parameter', () => {
+    const rag = new HybridRAG();
+    const sparse = Array.from({ length: 10 }, (_, i) => ({ id: `S${i}`, text: `sparse ${i}`, sparseScore: 10 - i }));
+    const dense = Array.from({ length: 10 }, (_, i) => ({ id: `D${i}`, text: `dense ${i}`, denseScore: 0.9 - i * 0.05 }));
+    const results = rag._fuseResults(sparse, dense, 3);
+    assert.strictEqual(results.length, 3);
+  });
+
+  test('overlapping items get boosted score', () => {
+    const rag = new HybridRAG();
+    const sparse = [
+      { id: 'overlap', text: 'both results', sparseScore: 1.0 },
+      { id: 'sparse_only', text: 'only sparse', sparseScore: 5.0 }
+    ];
+    const dense = [
+      { id: 'overlap', text: 'both results', denseScore: 0.9 },
+      { id: 'dense_only', text: 'only dense', denseScore: 0.8 }
+    ];
+    const results = rag._fuseResults(sparse, dense, 5);
+    const overlap = results.find(r => r.id === 'overlap');
+    const sparseOnly = results.find(r => r.id === 'sparse_only');
+    assert.ok(overlap.rrfScore > sparseOnly.rrfScore, 'Overlapping result should have higher RRF score');
+  });
+
+  test('results have rrfScore property', () => {
+    const rag = new HybridRAG();
+    const sparse = [{ id: 'A', text: 'test', sparseScore: 1.0 }];
+    const results = rag._fuseResults(sparse, [], 5);
+    assert.strictEqual(typeof results[0].rrfScore, 'number');
+    assert.ok(results[0].rrfScore > 0);
+  });
+
+  test('results sorted by rrfScore descending', () => {
+    const rag = new HybridRAG();
+    const sparse = [
+      { id: 'A', text: 'a', sparseScore: 3.0 },
+      { id: 'B', text: 'b', sparseScore: 2.0 },
+      { id: 'C', text: 'c', sparseScore: 1.0 }
+    ];
+    const results = rag._fuseResults(sparse, [], 5);
+    for (let i = 1; i < results.length; i++) {
+      assert.ok(results[i - 1].rrfScore >= results[i].rrfScore);
+    }
+  });
+});
+
+// ─── HybridRAG invalidate ───────────────────────────────────────
+
+describe('HybridRAG invalidate', () => {
+  test('removes matching tenant engines', () => {
+    const rag = new HybridRAG();
+    rag.tenantEngines.set('tenant1:fr', { bm25: {} });
+    rag.tenantEngines.set('tenant1:en', { bm25: {} });
+    rag.tenantEngines.set('tenant2:fr', { bm25: {} });
+    rag.invalidate('tenant1');
+    assert.strictEqual(rag.tenantEngines.size, 1);
+    assert.ok(rag.tenantEngines.has('tenant2:fr'));
+  });
+
+  test('no-op for non-matching tenant', () => {
+    const rag = new HybridRAG();
+    rag.tenantEngines.set('t1:fr', { bm25: {} });
+    rag.invalidate('t2');
+    assert.strictEqual(rag.tenantEngines.size, 1);
+  });
+
+  test('removes all languages for a tenant', () => {
+    const rag = new HybridRAG();
+    rag.tenantEngines.set('t1:fr', {});
+    rag.tenantEngines.set('t1:en', {});
+    rag.tenantEngines.set('t1:es', {});
+    rag.tenantEngines.set('t1:ar', {});
+    rag.tenantEngines.set('t1:ary', {});
+    rag.invalidate('t1');
+    assert.strictEqual(rag.tenantEngines.size, 0);
+  });
+});
+
+// ─── HybridRAG getInstance ─────────────────────────────────────
+
+describe('HybridRAG getInstance', () => {
+  const { getInstance } = require('../core/hybrid-rag.cjs');
+
+  test('returns HybridRAG instance', () => {
+    const inst = getInstance();
+    assert.ok(inst instanceof HybridRAG);
+  });
+
+  test('returns same instance (singleton)', () => {
+    const a = getInstance();
+    const b = getInstance();
+    assert.strictEqual(a, b);
+  });
+});
+
+// ─── HybridRAG exports ─────────────────────────────────────────
+
+describe('HybridRAG exports', () => {
+  const mod = require('../core/hybrid-rag.cjs');
+
+  test('exports HybridRAG class', () => {
+    assert.strictEqual(typeof mod.HybridRAG, 'function');
+  });
+
+  test('exports getInstance function', () => {
+    assert.strictEqual(typeof mod.getInstance, 'function');
+  });
+
+  test('HybridRAG has _fuseResults method', () => {
+    const rag = new HybridRAG();
+    assert.strictEqual(typeof rag._fuseResults, 'function');
+  });
+
+  test('HybridRAG has invalidate method', () => {
+    const rag = new HybridRAG();
+    assert.strictEqual(typeof rag.invalidate, 'function');
+  });
+
+  test('HybridRAG has ensureDirectory method', () => {
+    const rag = new HybridRAG();
+    assert.strictEqual(typeof rag.ensureDirectory, 'function');
+  });
+});
