@@ -216,6 +216,103 @@ describe('TenantContext credential getters', () => {
   });
 });
 
+// ─── Credential getter edge cases ─────────────────────────────────
+
+describe('TenantContext credential getter edge cases', () => {
+  test('getShopifyCredentials uses SHOPIFY_STORE secret over shop_domain', () => {
+    const ctx = new TenantContext('t1');
+    ctx.integrations = { shopify: { enabled: true, shop_domain: 'fallback.myshopify.com' } };
+    ctx.secrets = { SHOPIFY_STORE: 'primary.myshopify.com', SHOPIFY_ACCESS_TOKEN: 'tok' };
+    const creds = ctx.getShopifyCredentials();
+    assert.strictEqual(creds.store, 'primary.myshopify.com');
+  });
+
+  test('getShopifyCredentials custom API version', () => {
+    const ctx = new TenantContext('t1');
+    ctx.integrations = { shopify: { enabled: true } };
+    ctx.secrets = { SHOPIFY_API_VERSION: '2025-01' };
+    const creds = ctx.getShopifyCredentials();
+    assert.strictEqual(creds.apiVersion, '2025-01');
+  });
+
+  test('getKlaviyoCredentials uses ACCESS_TOKEN fallback', () => {
+    const ctx = new TenantContext('t1');
+    ctx.integrations = { klaviyo: { enabled: true } };
+    ctx.secrets = { KLAVIYO_ACCESS_TOKEN: 'access_tok' };
+    const creds = ctx.getKlaviyoCredentials();
+    assert.strictEqual(creds.apiKey, 'access_tok');
+  });
+
+  test('getKlaviyoCredentials prefers API_KEY over ACCESS_TOKEN', () => {
+    const ctx = new TenantContext('t1');
+    ctx.integrations = { klaviyo: { enabled: true } };
+    ctx.secrets = { KLAVIYO_API_KEY: 'api_key', KLAVIYO_ACCESS_TOKEN: 'access_tok' };
+    const creds = ctx.getKlaviyoCredentials();
+    assert.strictEqual(creds.apiKey, 'api_key');
+  });
+
+  test('getGoogleCredentials includes GSC_SITE_URL', () => {
+    const ctx = new TenantContext('t1');
+    ctx.integrations = { google: { enabled: true } };
+    ctx.secrets = { GSC_SITE_URL: 'https://vocalia.ma' };
+    const creds = ctx.getGoogleCredentials();
+    assert.strictEqual(creds.siteUrl, 'https://vocalia.ma');
+  });
+});
+
+// ─── checkRequiredIntegrations edge cases ─────────────────────────
+
+describe('TenantContext checkRequiredIntegrations edge cases', () => {
+  test('undefined integration counts as missing', () => {
+    const ctx = new TenantContext('t1');
+    const result = ctx.checkRequiredIntegrations(['stripe']);
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.missing.includes('stripe'));
+  });
+
+  test('integration without enabled property counts as missing', () => {
+    const ctx = new TenantContext('t1');
+    ctx.integrations = { hubspot: {} };
+    const result = ctx.checkRequiredIntegrations(['hubspot']);
+    assert.strictEqual(result.valid, false);
+  });
+});
+
+// ─── checkRequiredSecrets edge cases ──────────────────────────────
+
+describe('TenantContext checkRequiredSecrets edge cases', () => {
+  test('empty string secret counts as missing', () => {
+    const ctx = new TenantContext('t1');
+    ctx.secrets = { KEY: '' };
+    const result = ctx.checkRequiredSecrets(['KEY']);
+    assert.strictEqual(result.valid, false);
+  });
+
+  test('falsy values count as missing', () => {
+    const ctx = new TenantContext('t1');
+    ctx.secrets = { KEY: null };
+    const result = ctx.checkRequiredSecrets(['KEY']);
+    assert.strictEqual(result.valid, false);
+  });
+});
+
+// ─── listTenants ──────────────────────────────────────────────────
+
+describe('TenantContext listTenants', () => {
+  test('returns array', () => {
+    const tenants = TenantContext.listTenants();
+    assert.ok(Array.isArray(tenants));
+  });
+
+  test('each tenant has id and name', () => {
+    const tenants = TenantContext.listTenants();
+    for (const t of tenants) {
+      assert.ok(t.id, 'Tenant missing id');
+      assert.ok(t.name, 'Tenant missing name');
+    }
+  });
+});
+
 // ─── Static build ──────────────────────────────────────────────────
 
 describe('TenantContext static build', () => {
@@ -224,5 +321,30 @@ describe('TenantContext static build', () => {
       () => TenantContext.build('absolutely_nonexistent_abc_000'),
       /Tenant config not found/
     );
+  });
+});
+
+// ─── Exports ──────────────────────────────────────────────────────
+
+describe('TenantContext exports', () => {
+  test('exports TenantContext class', () => {
+    assert.strictEqual(typeof TenantContext, 'function');
+  });
+
+  test('TenantContext has static build method', () => {
+    assert.strictEqual(typeof TenantContext.build, 'function');
+  });
+
+  test('TenantContext has static listTenants method', () => {
+    assert.strictEqual(typeof TenantContext.listTenants, 'function');
+  });
+
+  test('instance has all methods', () => {
+    const ctx = new TenantContext('t1');
+    const methods = ['loadConfig', 'loadSecrets', 'build', 'checkRequiredIntegrations',
+      'checkRequiredSecrets', 'getShopifyCredentials', 'getKlaviyoCredentials', 'getGoogleCredentials'];
+    for (const m of methods) {
+      assert.strictEqual(typeof ctx[m], 'function', `Missing method: ${m}`);
+    }
   });
 });

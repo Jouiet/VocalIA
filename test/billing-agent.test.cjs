@@ -204,6 +204,106 @@ describe('BillingAgent constructor', () => {
   });
 });
 
+// ─── getState ──────────────────────────────────────────────────────
+
+describe('BillingAgent getState', () => {
+  test('returns IDLE for unknown session', () => {
+    const state = billingInstance.getState('unknown-session-xyz');
+    assert.strictEqual(state, STATES.IDLE);
+  });
+
+  test('returns idle string', () => {
+    const state = billingInstance.getState('another-unknown');
+    assert.strictEqual(state, 'idle');
+  });
+});
+
+// ─── constructor with custom options ────────────────────────────────
+
+describe('BillingAgent custom constructor', () => {
+  test('accepts custom defaultPrice', () => {
+    const agent = new BillingAgent({ defaultPrice: 99900 });
+    assert.strictEqual(agent.defaultPrice, 99900);
+  });
+
+  test('accepts custom currency', () => {
+    const agent = new BillingAgent({ currency: 'mad' });
+    assert.strictEqual(agent.currency, 'mad');
+  });
+
+  test('defaults when no options', () => {
+    const agent = new BillingAgent();
+    assert.strictEqual(agent.defaultPrice, 50000);
+    assert.strictEqual(agent.currency, 'eur');
+  });
+
+  test('taskHistory starts empty', () => {
+    const agent = new BillingAgent();
+    assert.strictEqual(agent.taskHistory.size, 0);
+  });
+});
+
+// ─── recordTaskState bounded history ────────────────────────────────
+
+describe('BillingAgent recordTaskState bounded', () => {
+  test('details are spread into entry', () => {
+    const corrId = `test-details-${Date.now()}`;
+    billingInstance.recordTaskState(corrId, 'working', { customer: 'cust_123', amount: 500 });
+    const history = billingInstance.getTaskHistory(corrId);
+    assert.strictEqual(history[0].customer, 'cust_123');
+    assert.strictEqual(history[0].amount, 500);
+  });
+
+  test('timestamp is valid ISO string', () => {
+    const corrId = `test-iso-${Date.now()}`;
+    billingInstance.recordTaskState(corrId, 'submitted');
+    const ts = billingInstance.getTaskHistory(corrId)[0].timestamp;
+    assert.ok(!isNaN(Date.parse(ts)));
+  });
+});
+
+// ─── AGENT_CARD skills structure ────────────────────────────────────
+
+describe('BillingAgent AGENT_CARD skills detail', () => {
+  test('all skills have id, name, description', () => {
+    const card = billingInstance.getAgentCard();
+    for (const skill of card.skills) {
+      assert.ok(skill.id, 'Missing skill id');
+      assert.ok(skill.name, 'Missing skill name');
+      assert.ok(skill.description, 'Missing skill description');
+    }
+  });
+
+  test('all skills have input/output modes', () => {
+    const card = billingInstance.getAgentCard();
+    for (const skill of card.skills) {
+      assert.ok(Array.isArray(skill.inputModes));
+      assert.ok(Array.isArray(skill.outputModes));
+    }
+  });
+
+  test('default modes are application/json', () => {
+    const card = billingInstance.getAgentCard();
+    assert.ok(card.defaultInputModes.includes('application/json'));
+    assert.ok(card.defaultOutputModes.includes('application/json'));
+  });
+});
+
+// ─── STATES as static property ──────────────────────────────────────
+
+describe('BillingAgent static STATES', () => {
+  test('BillingAgent.STATES matches exported STATES', () => {
+    assert.deepStrictEqual(BillingAgent.STATES, STATES);
+  });
+
+  test('all state values are lowercase strings', () => {
+    for (const [key, val] of Object.entries(STATES)) {
+      assert.strictEqual(typeof val, 'string');
+      assert.strictEqual(val, val.toLowerCase());
+    }
+  });
+});
+
 // ─── Exports ────────────────────────────────────────────────────────
 
 describe('BillingAgent exports', () => {
@@ -214,6 +314,10 @@ describe('BillingAgent exports', () => {
   test('exports STATES', () => {
     assert.ok(STATES);
     assert.strictEqual(typeof STATES, 'object');
+  });
+
+  test('exports trackCost function', () => {
+    assert.strictEqual(typeof billingInstance.constructor.trackCost, 'function');
   });
 
   test('instance has processSessionBilling method', () => {
@@ -230,5 +334,17 @@ describe('BillingAgent exports', () => {
 
   test('instance has getTaskHistory method', () => {
     assert.strictEqual(typeof billingInstance.getTaskHistory, 'function');
+  });
+
+  test('instance has getState method', () => {
+    assert.strictEqual(typeof billingInstance.getState, 'function');
+  });
+
+  test('instance has handleInvoicePaid method', () => {
+    assert.strictEqual(typeof billingInstance.handleInvoicePaid, 'function');
+  });
+
+  test('instance has handleInvoicePaidWebhook method', () => {
+    assert.strictEqual(typeof billingInstance.handleInvoicePaidWebhook, 'function');
   });
 });

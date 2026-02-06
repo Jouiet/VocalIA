@@ -127,3 +127,58 @@ describe('OAuthGateway exchangeCode errors', () => {
     );
   });
 });
+
+// NOTE: getAuthUrl success tests excluded because getAuthUrl calls generateState
+// which uses setTimeout(10min), keeping the event loop alive and hanging tests.
+
+// NOTE: generateState tests excluded because setTimeout(10min) keeps event loop alive.
+// verifyState is tested above with unknown state tokens.
+
+describe('OAUTH_PROVIDERS detail', () => {
+  test('google has 4 scopes', () => {
+    const scopes = Object.keys(OAUTH_PROVIDERS.google.scopes);
+    assert.strictEqual(scopes.length, 4);
+    assert.ok(scopes.includes('calendar'));
+    assert.ok(scopes.includes('sheets'));
+    assert.ok(scopes.includes('drive'));
+    assert.ok(scopes.includes('gmail'));
+  });
+
+  test('hubspot has crm scope with contacts', () => {
+    assert.ok(OAUTH_PROVIDERS.hubspot.scopes.crm.includes('contacts'));
+  });
+
+  test('shopify uses template URLs', () => {
+    assert.ok(OAUTH_PROVIDERS.shopify.authUrlTemplate);
+    assert.ok(OAUTH_PROVIDERS.shopify.tokenUrlTemplate);
+    assert.ok(OAUTH_PROVIDERS.shopify.authUrlTemplate.includes('{shop}'));
+  });
+
+  test('slack has webhook scope', () => {
+    assert.ok(OAUTH_PROVIDERS.slack.scopes.default.includes('incoming-webhook'));
+  });
+
+  test('all providers have name', () => {
+    for (const [key, cfg] of Object.entries(OAUTH_PROVIDERS)) {
+      assert.ok(cfg.name, `${key} missing name`);
+    }
+  });
+});
+
+describe('OAuthGateway exports', () => {
+  test('exports OAuthGateway class', () => {
+    assert.strictEqual(typeof OAuthGateway, 'function');
+  });
+
+  test('exports OAUTH_PROVIDERS', () => {
+    assert.strictEqual(typeof OAUTH_PROVIDERS, 'object');
+  });
+
+  test('instance has all methods', () => {
+    const gw = new OAuthGateway();
+    assert.strictEqual(typeof gw.generateState, 'function');
+    assert.strictEqual(typeof gw.verifyState, 'function');
+    assert.strictEqual(typeof gw.getAuthUrl, 'function');
+    assert.strictEqual(typeof gw.exchangeCode, 'function');
+  });
+});
