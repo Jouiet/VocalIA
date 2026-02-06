@@ -603,8 +603,14 @@ Seul le persona AGENCY a été audité exhaustivement (243 tests). Les 39 autres
 | widget-output-quality-test.cjs | 1 (11 sub) | 0 | 0 | node --test |
 | conversation-store.test.cjs | 24 | 0 | 0 | node --test |
 | compliance-guardian.test.cjs | 19 | 0 | 0 | node --test |
+| ucp-store.test.cjs | 31 | 0 | 0 | node --test |
+| ab-analytics.test.cjs | 9 | 0 | 0 | node --test |
+| hybrid-rag.test.cjs | 15 | 0 | 0 | node --test |
+| kb-provisioner.test.cjs | 17 | 0 | 0 | node --test |
+| audit-store.test.cjs | 24 | 0 | 0 | node --test |
+| integration-tools.test.cjs | 20 | 0 | 0 | node --test |
 | **exhaustive-multi-tenant-test.cjs** | **0** | **1** | 0 | **Interne: 2726/2751** |
-| **TOTAL node --test** | **349** | **1** | **3** | |
+| **TOTAL node --test** | **464** | **1** | **3** | |
 
 ### 7.3 Infrastructure
 
@@ -706,5 +712,5 @@ P2-2b-d (coverage → 70%, 4h) → P2-1 (OpenAPI, 3h) → P2-4 (integration mock
 ---
 
 *Document mis à jour le 2026-02-06 — Session 250.106*
-*P0 complete (6/6), P1 complete (7/7), P2 partial (3/7). Score: 5.8 → 7.0/10*
+*P0 complete (6/6), P1 complete (7/7), P2 partial (5/7). Score: 5.8 → 7.0/10*
 *Remaining: P2 (4 tasks) + P3 (5 tasks) = ~29h estimated*
