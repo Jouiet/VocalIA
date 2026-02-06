@@ -376,7 +376,7 @@ if (require.main === module) {
     const providerIdx = args.indexOf('--provider');
     const tenantIdx = args.indexOf('--tenant');
     const provider = providerIdx !== -1 ? args[providerIdx + 1] : 'google';
-    const tenantId = tenantIdx !== -1 ? args[tenantIdx + 1] : 'agency_internal';
+    const tenantId = tenantIdx !== -1 ? args[tenantIdx + 1] : 'unknown';
 
     try {
       const url = gateway.getAuthUrl(tenantId, provider, ['calendar', 'sheets']);

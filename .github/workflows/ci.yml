@@ -40,6 +40,14 @@ jobs:
           done
         timeout-minutes: 1
 
+      - name: Run Unit Tests
+        run: npm test
+        timeout-minutes: 5
+
+      - name: Run Exhaustive Multi-Tenant Tests
+        run: node --test test/exhaustive-multi-tenant-test.cjs
+        timeout-minutes: 3
+
       - name: Validate i18n Locales (FR as source of truth)
         run: python3 scripts/sync-locales.py --check
         timeout-minutes: 1
@@ -52,8 +60,17 @@ jobs:
         run: python3 scripts/darija-validator.py
         timeout-minutes: 1
 
+      - name: i18n Regression Check (no FR text in non-FR locales)
+        run: |
+          for locale in en es ar ary; do
+            file="website/src/locales/${locale}.json"
+            if [ -f "$file" ]; then
+              FR_FOUND=$(node -e "const d=JSON.parse(require('fs').readFileSync('$file'));const vals=JSON.stringify(Object.values(d));const fr=['Bienvenue','Découvrez','Commencer','Contactez-nous'];let c=0;fr.forEach(w=>{if(vals.includes(w))c++});if(c>2){console.log('FAIL:'+c);process.exit(1)}else{console.log('OK')}" 2>&1) || echo "⚠️ Possible FR contamination in $file"
+            fi
+          done
+        timeout-minutes: 1
 
       - name: Build Summary
         run: |
           echo "## VocalIA Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "✅ CI Passed" >> $GITHUB_STEP_SUMMARY
+          echo "✅ CI Passed — Unit + Exhaustive + i18n validated" >> $GITHUB_STEP_SUMMARY

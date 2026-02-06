@@ -6,10 +6,18 @@
  * Features:
  * - CRUD operations (create, read, update, delete)
  * - Query/filter capabilities
- * - In-memory caching with TTL
+ * - In-memory caching with TTL (default 60s)
  * - Auto-retry on rate limits
  * - Batch operations for performance
  * - Schema validation
+ *
+ * Known Limits:
+ * - No ACID transactions (eventual consistency)
+ * - Google API rate limit: 100 req/100s per user
+ * - Network latency on every cache miss (~200-500ms)
+ * - No automatic backup (rely on Google Sheets version history)
+ * - Max 10 million cells per spreadsheet
+ * - NOT suitable for high-throughput writes (>1 write/sec sustained)
  *
  * @version 1.0.0
  * @author VocalIA
@@ -25,11 +33,40 @@ const CONFIG_PATH = path.join(__dirname, '../data/google-sheets-config.json');
 const TOKENS_PATH = path.join(__dirname, '../data/google-oauth-tokens.json');
 
 // Schema definitions
+// Session 250.97quater: Extended tenant schema for multi-tenant persona support
 const SCHEMAS = {
   tenants: {
-    columns: ['id', 'name', 'plan', 'mrr', 'status', 'email', 'phone', 'nps_score', 'conversion_rate', 'qualified_leads', 'voice_language', 'voice_gender', 'active_persona', 'created_at', 'updated_at'],
+    columns: [
+      // Core identity
+      'id', 'name', 'email', 'phone',
+      // Subscription
+      'plan', 'mrr', 'status',
+      // Analytics
+      'nps_score', 'conversion_rate', 'qualified_leads',
+      // Voice config
+      'voice_language', 'voice_gender', 'active_persona',
+      // === NEW: Multi-tenant persona fields (Session 250.97quater) ===
+      'business_name',      // Commercial name for prompts
+      'sector',             // Maps to PERSONAS archetype (DENTAL, GYM, etc.)
+      'widget_type',        // B2B, B2C, ECOM
+      'address',            // Full business address
+      'horaires',           // Opening hours
+      'services',           // JSON array of services
+      'zones',              // JSON array of service zones
+      'currency',           // EUR, MAD, USD
+      'knowledge_base_id',  // tenant_xxx or null
+      'payment_method',     // CARD, BANK, CASH
+      'payment_details',    // Payment instructions
+      // Timestamps
+      'created_at', 'updated_at'
+    ],
     required: ['name', 'email'],
-    defaults: { plan: 'free', mrr: 0, status: 'active', nps_score: 0, conversion_rate: 0, qualified_leads: 0, voice_language: 'fr', voice_gender: 'female', active_persona: 'agency_v3' }
+    defaults: {
+      plan: 'trial', mrr: 0, status: 'active',
+      nps_score: 0, conversion_rate: 0, qualified_leads: 0,
+      voice_language: 'fr', voice_gender: 'female', active_persona: null,
+      widget_type: 'B2C', currency: 'EUR', sector: 'UNIVERSAL_SME'
+    }
   },
   sessions: {
     columns: ['id', 'tenant_id', 'calls', 'duration_sec', 'cost_usd', 'persona', 'lang', 'timestamp'],

@@ -337,7 +337,7 @@ class ContextBox {
                 contextId,
                 ...data
             }, {
-                tenantId: data.tenantId || 'agency_internal',
+                tenantId: data.tenantId || 'unknown',
                 source: 'ContextBox.v3'
             }).catch(() => {}); // Non-blocking
         } catch (e) {

@@ -13,6 +13,12 @@
 (function(global) {
   'use strict';
 
+  // SECURITY: HTML escape for dynamic content (XSS prevention)
+  function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
   // CSS for the carousel
   const CAROUSEL_CSS = `
     .va-reco-overlay {
@@ -300,7 +306,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-            <span>${title}</span>
+            <span>${escapeHTML(title)}</span>
           </div>
           <button class="va-reco-close" aria-label="${L.close}">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -369,10 +375,15 @@
       const image = item.image || item.images?.[0]?.src;
       const reason = this._getReasonLabel(item.reason);
 
+      const safeId = escapeHTML(String(item.id || item.productId || ''));
+      const safeName = escapeHTML(name);
+      const safeImage = image ? escapeHTML(image) : '';
+      const safeReason = reason ? escapeHTML(reason) : '';
+
       return `
-        <div class="va-reco-card" data-product-id="${item.id || item.productId}" tabindex="0">
-          ${image
-            ? `<img class="va-reco-image" src="${image}" alt="${name}" loading="lazy" onerror="this.style.display='none'">`
+        <div class="va-reco-card" data-product-id="${safeId}" tabindex="0">
+          ${safeImage
+            ? `<img class="va-reco-image" src="${safeImage}" alt="${safeName}" loading="lazy" onerror="this.style.display='none'">`
             : `<div class="va-reco-image-placeholder">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -380,10 +391,10 @@
               </div>`
           }
           <div class="va-reco-info">
-            <div class="va-reco-name">${name}</div>
+            <div class="va-reco-name">${safeName}</div>
             ${price ? `<div class="va-reco-price">${price}</div>` : ''}
-            ${reason ? `<div class="va-reco-reason">${reason}</div>` : ''}
-            ${item.similarity ? `<span class="va-reco-badge">${item.similarity}% ${L.match}</span>` : ''}
+            ${safeReason ? `<div class="va-reco-reason">${safeReason}</div>` : ''}
+            ${item.similarity ? `<span class="va-reco-badge">${parseInt(item.similarity) || 0}% ${escapeHTML(L.match)}</span>` : ''}
           </div>
         </div>
       `;

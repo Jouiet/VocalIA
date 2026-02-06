@@ -450,7 +450,7 @@ class ServiceKnowledgeBase {
         marketing_science: marketingScience,
         diagnostic_truth: diagnosticTruth,
         systemic_risk: systemicRisk,
-        tenant_id: 'agency_internal', // Default for agency-wide knowledge
+        tenant_id: 'shared', // Shared knowledge available to all tenants
 
         text: [
           ...textParts,
@@ -524,7 +524,7 @@ class ServiceKnowledgeBase {
             persona_id: personaId,
             topic: topic,
             answer_fr: answer,
-            tenant_id: 'agency_internal',
+            tenant_id: 'shared',
             text: searchText
           };
 
@@ -553,7 +553,7 @@ class ServiceKnowledgeBase {
           id: `policy_${key}`,
           title: key.replace(/_/g, ' ').toUpperCase(),
           text: `${policy.text} ${policy.keywords ? policy.keywords.join(' ') : ''}`,
-          tenant_id: policy.tenant_id || 'agency_internal',
+          tenant_id: policy.tenant_id || 'shared',
           metadata: { type: 'policy', key }
         });
       }
@@ -630,15 +630,16 @@ class ServiceKnowledgeBase {
    */
   async asyncSearchHybrid(query, limit = 5, options = {}) {
     if (!this.isLoaded) this.load();
-    const tenantId = options.tenantId || 'agency_internal';
+    const tenantId = options.tenantId || 'unknown';
     const language = options.language || 'fr';
 
+    if (!options.tenantId) console.warn('[RAG] No tenantId provided, using "unknown"');
     console.log(`[RAG] Hybrid search for tenant: ${tenantId}, language: ${language}`);
 
     // 1. Strict Tenant Isolation - Filter Chunks BEFORE Search
     const tenantChunks = this.chunks.filter(c =>
       c.tenant_id === tenantId ||
-      c.tenant_id === 'agency_internal' ||
+      c.tenant_id === 'shared' ||
       c.tenant_id === 'universal'
     );
 
@@ -728,12 +729,12 @@ class ServiceKnowledgeBase {
   graphSearch(query, options = {}) {
     if (!this.isLoaded) this.load();
     const lower = query.toLowerCase();
-    const tenantId = options.tenantId || 'agency_internal';
+    const tenantId = options.tenantId || 'unknown';
 
     // Find matching nodes
     const matches = this.graph.nodes.filter(n =>
       (n.label.toLowerCase().includes(lower) || n.id.toLowerCase().includes(lower)) &&
-      (!n.tenant_id || n.tenant_id === tenantId || n.tenant_id === 'agency_internal')
+      (!n.tenant_id || n.tenant_id === tenantId || n.tenant_id === 'shared')
     );
 
     const related = [];
@@ -840,7 +841,7 @@ async function main() {
     let query = args.slice(queryIndex).join(' ');
 
     const tenantIndex = args.indexOf('--tenant');
-    let tenantId = 'agency_internal';
+    let tenantId = 'shared'; // CLI default — use --tenant to specify
     if (tenantIndex !== -1) {
       tenantId = args[tenantIndex + 1];
       // Remove tenant args from query

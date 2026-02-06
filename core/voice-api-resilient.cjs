@@ -1545,7 +1545,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 
   // 1. Semantic RAG Context Retrieval (Hybrid Frontier v3.0 | RLS Shielding)
   // Logic: Combined BM25 + Embeddings (Gemini) for high-precision retrieval
-  const tenantId = session?.metadata?.knowledge_base_id || 'agency_internal';
+  const tenantId = session?.metadata?.knowledge_base_id || session?.metadata?.tenant_id || 'unknown';
 
   // Session 250.xx: Load per-tenant credentials for integrations
   const tenantSecrets = await SecretVault.getAllSecrets(tenantId);
@@ -2481,7 +2481,7 @@ function startServer(port = 3004) {
             persona_id: persona.id,
             persona_name: persona.name,
             // CRITICAL: Map tenant_id to knowledge_base_id for RAG context
-            knowledge_base_id: tenantId === 'default' ? 'agency_internal' : tenantId
+            knowledge_base_id: tenantId === 'default' ? tenantId : tenantId
           };
 
           const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language, { forceFailProviders: bodyParsed.data.forceFailProviders });

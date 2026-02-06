@@ -118,7 +118,7 @@ class ClientRegistry {
 
         // Fallback to hardcoded
         if (!config) {
-            config = FALLBACK_CLIENTS[tenantId] || FALLBACK_CLIENTS['agency_internal'];
+            config = FALLBACK_CLIENTS[tenantId] || null; // No silent fallback to agency
         }
 
         // Cache and return

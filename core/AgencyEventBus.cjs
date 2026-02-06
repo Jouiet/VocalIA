@@ -196,7 +196,7 @@ class AgencyEventBus extends EventEmitter {
      * @param {object} options - { tenantId, priority, correlationId }
      */
     async publish(eventType, payload, options = {}) {
-        const tenantId = options.tenantId || 'agency_internal';
+        const tenantId = options.tenantId || 'unknown';
         const eventId = options.eventId || this._generateEventId(tenantId, eventType, payload);
 
         // Idempotency check

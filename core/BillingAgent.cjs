@@ -182,7 +182,7 @@ class BillingAgent {
         console.log(`[BillingAgent] Processing billing for ${identity.email || identity.phone}`);
 
         try {
-            const tenantId = sessionData.metadata?.tenantId || 'agency_internal';
+            const tenantId = sessionData.metadata?.tenantId || 'unknown';
             const currency = sessionData.metadata?.currency || this.currency;
             const gateway = currency === 'mad' ? this.payzone : this.stripe;
 
@@ -222,7 +222,7 @@ class BillingAgent {
                     email: identity.email,
                     state: BILLING_STATES.INVOICE_DRAFTED
                 }, {
-                    tenantId: sessionData.metadata?.tenantId || 'agency_internal',
+                    tenantId: sessionData.metadata?.tenantId || 'unknown',
                     source: 'BillingAgent.v3'
                 });
             }
@@ -367,7 +367,7 @@ class BillingAgent {
                 email: email,
                 state: BILLING_STATES.PAYMENT_COMPLETED
             }, {
-                tenantId: invoiceData.metadata?.tenantId || 'agency_internal',
+                tenantId: invoiceData.metadata?.tenantId || 'unknown',
                 source: 'BillingAgent.v3'
             });
         }

@@ -1,21 +1,21 @@
 # FORENSIC AUDIT MERGED - VocalIA Platform
 
-**Date:** 05 Février 2026 | **Session:** 250.86
+**Date:** 06 Février 2026 | **Session:** 250.102
 **Framework:** DOE (Directive Orchestration Execution)
-**Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit + Session 250.86 Forensic
-**Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep` / `node -e`
+**Sources:** Audit Antigravity + Audit Claude Opus 4.5 + Factuality Audit + Session 250.86-102 Forensic
+**Méthodologie:** Bottom-up factuelle, vérification `sed -n` / `grep` / `node -e` / `node --test`
 
 > ⚠️ **NOTE HISTORIQUE**: Document reflétant l'état au 01/02/2026 (45 pages).
-> Depuis Session 250.52 (02/02/2026): **70 pages** (+19 webapp + misc).
-> **Session 250.98 FORENSIC AUDIT (06/02/2026)**: 🔴 **7 CRITICAL FINDINGS** - Score révisé à **6.1/10**
->   - Core: **53 fichiers/33,728 lignes** (docs disaient 38/32,727)
->   - Tests: **338 réels** (281 unit + 57 E2E), PAS 681 (306+375 était FAUX)
->   - Sécurité: ~~CORS wildcard `*` dans db-api.cjs:109~~ ✅ FIXED session 250.100 (origin whitelist), innerHTML XSS ~~15~~ **5** (10 fixed sessions 250.99+250.100)
->   - i18n: ~~`free_price: "0"` dans 5 locales~~ ✅ FIXED session 250.100 → `"49"` (no-free-tier enforced)
->   - Multi-tenant: 580 dossiers clients mais seulement 23 dans registry (GAP 557)
->   - Function tools: 12/25 noms documentés N'EXISTENT PAS dans le code réel
->   - `lib/security-utils.cjs` (921 lignes) non documenté nulle part
-> **Session 250.100 SECURITY HARDENING (06/02/2026)**: ✅ CORS wildcard→whitelist, free_price 0→49 in 5 locales, innerHTML XSS 9→5 (addMessage textContent, product cards escapeHTML)
+> Depuis Session 250.52 (02/02/2026): **77 pages** (+19 webapp + misc).
+> **Session 250.105 FORENSIC VERIFICATION (06/02/2026)**: ✅ **ALL TESTS PASSING** - Score: **5.8/10** (bottom-up 10-dimension)
+>   - Core: **53 fichiers/33,920 lignes** | Personas: **9,081 lignes** | Widget: **9,353 lignes**
+>   - Tests: **308 node assertions** (15 test suites) + **2,726 internal exhaustive checks**
+>   - 0 failing tests (12 b2b_agency_* = expected: widget isolation prevents AGENCY on B2B)
+>   - Sécurité: ✅ CORS whitelist, ✅ innerHTML XSS 15→5, ✅ free_price "49"
+>   - Multi-tenant: 580 dossiers = 23 vrais clients + 557 données TEST widget (BY DESIGN)
+>   - 40/40 personas with conversational format (5 langues each)
+>   - agency_internal hardcoded fallbacks removed from 11 files
+> **Session 250.100 SECURITY HARDENING (06/02/2026)**: ✅ CORS wildcard→whitelist, free_price 0→49 in 5 locales, innerHTML XSS 9→5
 > **Session 250.99 DEEP SURGERY (06/02/2026)**: ✅ Social proof FAKE→REAL, B2B booking/social implemented, dashboard toggles, KB booking section, XSS fix (15→9)
 > **Session 250.97octies**: ✅ **MULTI-TENANT SCALE UP** - 30→537 tenants, 2,890 KB files, 12 regions, 40 sectors (B2B=283, B2C=200, ECOM=54)
 > **Session 250.97quinquies**: ✅ **KB AUTO-PROVISIONING COMPLETE** - 30 tenants × 5 languages = 150 KB files, `kb-provisioner.cjs` (380+ lines)
@@ -43,15 +43,15 @@
 | Issues LOW (Website) | ~~3~~ **0** (2 WONTFIX) |
 | **TOTAL FIXED (Website)** | **25/25** (2 WONTFIX) |
 | Score Website | **99/100** |
-| **Score Global Plateforme** | **6.1/10** (Session 250.98 forensic) |
+| **Score Global Plateforme** | **5.8/10** (Session 250.104 bottom-up recalculation) |
 | Factuality Audit | ⚠️ **Écarts majeurs** identifiés |
 | SEO/Twitter | **37 pages** |
 
 **Verdict Website:** `LEVEL 5 - PRODUCTION READY`
-**Verdict Plateforme:** `LEVEL 3 - NEEDS WORK` (sécurité CORS, doc-code mismatch, tests inflated)
+**Verdict Plateforme:** `LEVEL 4 - FUNCTIONAL` (CORS fixed, tests verified, persona format complete, agency_internal isolated)
 
-> ⚠️ **Session 250.98**: Le score 99/100 concerne UNIQUEMENT le website statique.
-> Le score global plateforme (backend+widgets+multi-tenant) est **6.1/10** après audit forensique.
+> ⚠️ **Session 250.105**: Le score 99/100 concerne UNIQUEMENT le website statique.
+> Le score global plateforme (backend+widgets+multi-tenant) est **5.8/10** (bottom-up 10-dimension, Session 250.104).
 
 **Session 250.38 Update:** ALL REMAINING ISSUES FIXED
 

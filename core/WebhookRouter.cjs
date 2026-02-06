@@ -168,12 +168,12 @@ class WebhookRouter {
     switch (provider) {
       case 'hubspot':
         // HubSpot can include portal ID which maps to tenant
-        return body.portalId ? `hubspot_${body.portalId}` : 'agency_internal';
+        return body.portalId ? `hubspot_${body.portalId}` : 'unknown_webhook';
 
       case 'shopify':
         // Shopify domain in header
         const shopDomain = headers['x-shopify-shop-domain'];
-        return shopDomain ? `shopify_${shopDomain.replace('.myshopify.com', '')}` : 'agency_internal';
+        return shopDomain ? `shopify_${shopDomain.replace('.myshopify.com', '')}` : 'unknown_webhook';
 
       case 'stripe':
         // Stripe account ID
@@ -181,7 +181,7 @@ class WebhookRouter {
         break;
     }
 
-    return 'agency_internal'; // Default
+    return 'unknown_webhook'; // Default — tenant must be identified from payload
   }
 
   /**

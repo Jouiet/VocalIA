@@ -361,9 +361,9 @@
     "category": "faq",
     "persona_id": "universal_ecom_v1",
     "topic": "support",
-    "answer_fr": "Email support: support@{{client_domain}}",
+    "answer_fr": "Email support: support@vocalia.ma",
     "tenant_id": "agency_internal",
-    "text": "universal ecom Support support Email support: support@{{client_domain}}"
+    "text": "universal ecom Support support Email support: support@vocalia.ma"
   },
   {
     "id": "faq_universal_ecom_v1_horaires",

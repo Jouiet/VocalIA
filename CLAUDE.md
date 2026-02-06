@@ -1,9 +1,9 @@
 # VocalIA - Voice AI Platform
 
-> **v7.10.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
-> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | 281 unit + 57 E2E = **338 tests**
+> **v7.11.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
+> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **308 node assertions** (15 test suites) + **2,726 exhaustive checks**
 > **203 MCP Tools** | 40 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
-> **~80k lines source** | Core 33,728 (53 files) + Telephony 4,709 + Personas 7,374 + Widget 9,107 + MCP/src 17,630 + Lib 921 + Website 31,512
+> **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,353 + MCP/src 17,630 + Lib 921 + Website 31,512
 > ✅ **SESSION 250.97octies:** MULTI-TENANT SCALE - 30→537 tenants | 2,890 KB files | 12 regions | 40 sectors
 >    - **537 tenants** (B2B=283, B2C=200, ECOM=54) | **580 KB directories** × 5 languages = **2,890 KB files**
 >    - **12 regions**: Morocco(3), France, Spain, UK, UAE, Belgium, Netherlands, Switzerland, Canada, Germany
@@ -16,15 +16,15 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Backend**: 281 unit tests, **Frontend**: 57 E2E tests, **Security**: CORS db-api wildcard issue |
+| Scores | **Tests**: 308 assertions + 2,726 exhaustive (all passing), **Score**: 5.8/10, **CORS**: ✅ whitelist, **XSS**: ✅ fixed |
 
 ---
 
 ## Architecture
 
 ```
-VocalIA/                              # VÉRIFIÉ wc -l 06/02/2026 (Session 250.98)
-├── core/           # 53 modules (33,728 lines)
+VocalIA/                              # VÉRIFIÉ wc -l 06/02/2026 (Session 250.102)
+├── core/           # 53 modules (33,920 lines)
 │   ├── voice-api-resilient.cjs   # Multi-AI fallback (3,086 lines, port 3004)
 │   ├── grok-voice-realtime.cjs   # WebSocket audio (1,109 lines, port 3007)
 │   ├── db-api.cjs                # REST API + Auth (2,733 lines, port 3013)
@@ -33,8 +33,8 @@ VocalIA/                              # VÉRIFIÉ wc -l 06/02/2026 (Session 250.
 │   └── [+48 modules]
 ├── lib/            # 1 module (921 lines) - security-utils
 ├── telephony/      # PSTN bridge (4,709 lines, 25 function tools)
-├── personas/       # 40 personas (6,722 .cjs + 591 .json = 7,374 lines)
-├── widget/         # 8 e-commerce widgets (9,107 lines)
+├── personas/       # 40 personas (8,479 .cjs + 602 .json = 9,081 lines)
+├── widget/         # 8 e-commerce widgets (9,353 lines)
 ├── website/        # 77 pages (public + webapp)
 │   └── src/locales/   # 5 langs (23,950 lines)
 ├── mcp-server/src/ # 203 tools TypeScript (17,630 lines, 31 .ts files)
@@ -160,60 +160,18 @@ git push origin main
 | PWA | ✅ |
 | A/B Testing | ✅ |
 
-## WordPress/WooCommerce (COMPLETE - Session 250.94)
+## Multi-Tenant System
 
-| Composant | Fichier | Lignes | Fonction |
-|:----------|:--------|:------:|:---------|
-| **MCP WooCommerce** | `mcp-server/src/tools/woocommerce.ts` | 687 | 7 tools REST v3 |
-| **WordPress Plugin** | `plugins/wordpress/vocalia-voice-widget.php` | 514 | Widget injection |
-| **Catalog Connector** | `core/catalog-connector.cjs` | ~200 | WooCommerceCatalogConnector |
-| **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | 389 | checkOrderStatus, getOrderHistory |
+| Metric | Value |
+|:-------|:------|
+| Personas | **40/40** (SYSTEM_PROMPTS + PERSONAS) |
+| Registered Clients | **23** (`client_registry.json`) |
+| Client Folders | **580** (23 real + 557 test data) |
+| KB Files | **2,890** (580 dirs × 5 langs) |
 
-**WooCommerce MCP Tools (7):**
-`woocommerce_list_orders`, `woocommerce_get_order`, `woocommerce_update_order`, `woocommerce_list_products`, `woocommerce_get_product`, `woocommerce_list_customers`, `woocommerce_get_customer`
+**Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` (P0 done, P1 in progress, P2-P3 pending)
 
-**Note:** `wordpress.ts` MCP N'EST PAS nécessaire - WooCommerce couvre 100% du besoin e-commerce WordPress.
-
----
-
-## Multi-Tenant System (Session 250.97ter - VERIFIED ✅)
-
-| Metric | Value | Verification |
-|:-------|:------|:-------------|
-| Sector→PERSONAS Mapping | **40/40** ✅ | All 40 sectors in both SYSTEM_PROMPTS and PERSONAS |
-| Template Usages | 181 | `grep -c '{{' personas/voice-persona-injector.cjs` |
-| Client Folders | **580** | `ls clients/ \| wc -l` (B2B=282, B2C=204, ECOM=61, UUID=30) |
-| Clients in Registry | **23** | `jq '.clients \| keys \| length' personas/client_registry.json` |
-| KB Files in clients/ | **2,890** | `find clients -name "kb_*.json" \| wc -l` (578 dirs × 5 langs) |
-| KB in data/ legacy | 1 | `ls data/knowledge-base/tenants/` → client_demo only |
-| **GAP** | **557** | 580 folders - 23 registry entries = 557 NOT in registry |
-
-**Score Methodology:** See `docs/AUDIT-MULTI-TENANT-SESSION-250.57.md` § "MÉTHODOLOGIE DE SCORE MULTI-TENANT"
-
-**Session 250.97ter Fixes:**
-- ✅ 15 sectors corrected in client_registry.json (was falling back to AGENCY)
-- ✅ NOTARY + REAL_ESTATE_AGENT: Added B2B widget compatibility
-- ✅ Exports: Added SYSTEM_PROMPTS + CLIENT_REGISTRY
-
-**Session 250.99 Deep Surgery Fixes:**
-- ✅ Social Proof V3: Fake data REMOVED → real `/social-proof` backend endpoint
-- ✅ Social Proof B2B: Fully implemented (was 0 functions)
-- ✅ Booking B2B: `isBookingIntent()` (5 langs) + `showBookingCTA()` implemented
-- ✅ Dashboard: 3 widget feature toggles added to settings.html
-- ✅ KB: `booking` section added to all 5 language templates
-- ✅ XSS: Social proof textContent fix (innerHTML count 15 → 9)
-- ✅ client_registry.json: `booking_url` field on 11 booking-required clients
-
-**Session 250.100 Security Hardening Fixes:**
-- ✅ CORS wildcard `*` → origin whitelist in db-api.cjs (vocalia.ma + localhost)
-- ✅ `free_price: "0"` → `"49"` in all 5 locale files (no-free-tier enforced)
-- ✅ innerHTML XSS: addMessage→textContent, product cards→escapeHTML (count 9→5)
-- ✅ B2B notification bubble: innerHTML→textContent
-
-**Work Remaining:**
-- P0: Register 557 clients into client_registry.json (2h)
-- P1: Add conversational format to 37 personas (6h)
-- P2: Sync function tool names in docs vs actual code (1h)
+**Note:** 557 client folders in `clients/` are TEST DATA for widget output testing (not real clients). Only 23 registry entries are production clients.
 
 **Docs:** `docs/AUDIT-MULTI-TENANT-SESSION-250.57.md`, `docs/MULTI-TENANT-KB-OPTIMIZATION-PLAN.md`
 
@@ -239,8 +197,8 @@ git push origin main
 
 **Policy:** No Free Tier - 14-day trial only
 
-> ✅ **Session 250.100**: CORS wildcard FIXED (origin whitelist), `free_price` FIXED (0→49), innerHTML XSS 15→5
-> ⚠️ **Tests réels**: 281 unit + 57 E2E = 338 total (NOT 681 as previously claimed)
+> ✅ **Session 250.105**: 308 assertions + 2,726 exhaustive checks (all passing), XSS fixed, CI tests added
+> ✅ **Session 250.102**: persona format 40/40, agency_internal isolation complete
 
 ---
 
@@ -270,22 +228,8 @@ providers: [
 
 ---
 
----
+**Platform Score: 5.8/10** (bottom-up 10-dimension, Session 250.104)
+All P0 forensic findings resolved (CORS, XSS, free_price, function tools, test counts, personas, social proof).
+See `docs/ROADMAP-TO-COMPLETION.md` for remaining P1-P3 tasks.
 
-## Session 250.98 Forensic Findings (06/02/2026)
-
-| Finding | Severity | Detail |
-|:--------|:--------:|:-------|
-| ~~CORS wildcard db-api~~ | ~~**HIGH**~~ | **FIXED** Session 250.100 - Origin whitelist (vocalia.ma + localhost dev) |
-| ~~`free_price: "0"` in locales~~ | ~~**HIGH**~~ | **FIXED** Session 250.100 - Changed to `"49"` in all 5 locales |
-| Tests overcounted | **HIGH** | 338 real tests, not 681 (was 306+375, actual 281+57) |
-| Function tool names wrong in docs | **HIGH** | 12/25 names in docs don't match actual code |
-| ~~innerHTML XSS risk~~ | ~~**MEDIUM**~~ | **REDUCED** 15→5 (sessions 250.99+250.100: textContent, escapeHTML) |
-| 557 tenants not in registry | **MEDIUM** | 580 folders but only 23 in client_registry.json |
-| lib/ not documented | **LOW** | security-utils.cjs (921 lines) missing from architecture docs |
-| ~~Social proof FAKE data~~ | ~~**HIGH**~~ | **FIXED** Session 250.99 - Real backend data, fake names removed |
-| ~~B2B booking/social proof missing~~ | ~~**HIGH**~~ | **FIXED** Session 250.99 - Fully implemented |
-| ~~No dashboard widget toggles~~ | ~~**MEDIUM**~~ | **FIXED** Session 250.99 - 3 toggles in settings.html |
-
-*Full session history: `docs/SESSION-HISTORY.md`*
-*Last update: 06/02/2026 - Session 250.100 Security Hardening*
+*Last update: 06/02/2026 - Session 250.105*

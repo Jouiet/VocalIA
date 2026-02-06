@@ -1,7 +1,13 @@
 # Analyse Stratégique: Plateforme Voice AI MENA
 >
-> Version: 6.99.0 | 05/02/2026 | DÉCISION: ✅ **GO** - Production ready for FR/MAD market
-> **Session 250.91**: ✅ **PRODUCTION READY** - Widget B2B v2.2.0 deployed, 306/309 tests pass, 203 MCP tools
+> Version: 7.10.0 | 06/02/2026 | DÉCISION: 🟡 **GO** - Score plateforme **6.5/10** (Sessions 250.99-250.101). CORS FIXED, pricing FIXED, XSS 15→5
+> **Session 250.101**: ✅ **CLARIFICATION** - 557 dossiers = test data widget. Score 6.5/10. All critical blockers resolved.
+> **Session 250.100**: ✅ CORS origin whitelist, free_price 0→49, innerHTML 9→5
+> **Session 250.99**: ✅ Social proof REAL backend, B2B booking+social proof, dashboard toggles
+> **Session 250.98**: ~~🔴 **FORENSIC**~~ - Core 53 fichiers/33,728 lignes. Tests 338 réels. ~~CORS wildcard~~ FIXED.
+> **Session 250.89-EXHAUSTIF**: ✅ **AGENCY WIDGET 100%** - 243/243 tests × 5 langues (FR/EN/ES/AR/ARY), prompt optimisé
+> **Session 250.97octies**: ✅ **MULTI-TENANT SCALE** - 537 tenants, 40 sectors, 12 regions (incl. Morocco×3)
+> **Session 250.91**: ✅ Widget B2B v2.2.0 deployed, 203 MCP tools
 > **Session 250.87**: ⚠️ I18N Technical Debt documented - 7,143 keys to review for non-FR markets (future sprint)
 > **Session 250.80**: ✅ **STRATEGIC ROUTING** - MENA Region strictly routed to EN/USD (Gulf) & FR/MAD (Maghreb)
 > **Session 250.78**: ✅ Persona-Widget Segmentation GAP RESOLVED
@@ -19,7 +25,7 @@
 | TTS Darija | ✅ TESTÉ OK | ElevenLabs Ghizlane: 1.3s latence |
 | STT Darija | ✅ TESTÉ OK | ElevenLabs Scribe Maghrebi: 707ms |
 | LLM Darija | ✅ TESTÉ OK | Grok-4: génère Darija authentique |
-| Multi-tenant | ✅ OPÉRATIONNEL | 23 clients configurés, 20 secteurs |
+| Multi-tenant | ✅ OPÉRATIONNEL | **537 clients** configurés, **40 secteurs**, **12 régions** |
 | Cibles clients | ✅ DÉFINIES | 20 secteurs B2B Maroc (incl. beauty/fitness) |
 | **Viabilité économique** | ✅ **VALIDÉE** | COGS **$0.007/min** @ marge **91%** (Web Widget) |
 
@@ -605,17 +611,17 @@ curl -X POST https://api.telnyx.com/v2/number_orders \
 
 ### 3.4 Stack Technique Existant
 
-| Script | Lignes | Fonction | Status |
+| Script | Lignes (250.105) | Fonction | Status |
 |--------|--------|----------|--------|
-| voice-api-resilient.cjs | 1,298 | API multi-provider (Grok→Gemini→Claude) | ✅ Production |
-| voice-telephony-bridge.cjs | 2,570 | Bridge Twilio PSTN ↔ Grok WebSocket | ✅ Code ready |
-| voice-widget-templates.cjs | 800 | Templates configurables | ✅ Production |
-| voice-agent-b2b.cjs | 719 | Agent B2B spécialisé | ✅ Production |
-| voice-persona-injector.cjs | 625 | Injection de personnalité | ✅ Production |
+| voice-api-resilient.cjs | 3,086 | API multi-provider (Grok→Gemini→Claude) | ✅ Production |
+| voice-telephony-bridge.cjs | 4,709 | Bridge Twilio PSTN ↔ Grok WebSocket, 25 function tools | ✅ Code ready |
+| voice-persona-injector.cjs | 6,722 | 40 personas × 5 langues | ✅ Production |
+| db-api.cjs | 2,733 | REST API + Auth + WebSocket | ✅ Production |
 | voice-quality-sensor.cjs | 282 | Monitoring qualité | ✅ Production |
-| voice-ecommerce-tools.cjs | 148 | Outils e-commerce | ✅ Production |
-| voice-crm-tools.cjs | 104 | Intégration CRM | ✅ Production |
-| **TOTAL** | **6,546** | - | - |
+| voice-ecommerce-tools.cjs | 389 | Outils e-commerce (Shopify/WooCommerce) | ✅ Production |
+| voice-crm-tools.cjs | 351 | Intégration CRM (HubSpot/Pipedrive) | ✅ Production |
+| **Core Backend TOTAL** | **33,920** | 53 fichiers (`wc -l core/*.cjs`) | - |
+| **Platform TOTAL** | **~55,000** | Core + Telephony + Personas + Widget + Lib | - |
 
 ### 3.5 Fonctionnalités Opérationnelles
 

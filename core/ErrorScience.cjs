@@ -396,7 +396,7 @@ class ErrorScience {
             component,
             error: typeof error === 'string' ? error : error?.message || 'Unknown error',
             severity: severity || 'medium',
-            tenantId: tenantId || 'agency_internal',
+            tenantId: tenantId || 'unknown',
             status: 'error',
             pressure: severity === 'critical' ? 100 : severity === 'high' ? 85 : 70
         };

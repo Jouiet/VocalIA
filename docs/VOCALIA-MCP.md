@@ -1,7 +1,11 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.9.0 | 05/02/2026 | Session 250.91 | BM25 RAG SOTA | **203 tools** | **28 tool files**
+> Version: 0.9.2 | 06/02/2026 | Session 250.98-FORENSIC | BM25 RAG SOTA | **203 tools** (22 inline + 181 modules) | **29 tool files**
+> **Session 250.101**: ✅ **DOCS UPDATE** - 557 dossiers = test data. Score 6.5/10. CORS+XSS+pricing all FIXED (250.99-250.100)
+> **Session 250.98**: ~~🔴 **FORENSIC**~~ - 203 tools confirmé (22 inline index.ts + 181 via 29 catégories). 29 fichiers tools/ (pas 28).
+> **Session 250.89-EXHAUSTIF**: ✅ AGENCY WIDGET TENANT - 243/243 tests (100%), prompt engineering × 5 langues
+> **Session 250.97octies**: ✅ MULTI-TENANT SCALE - 537 tenants × 40 sectors × 12 regions = 2,890 KB files
 > **Session 250.91**: ✅ ALL BLOCKERS RESOLVED - 306/309 tests pass, Widget B2B v2.2.0 deployed
 > **Session 250.90**: ✅ I18N 100% COMPLETE - All 5 languages, Spanish decontamination done
 > **Session 250.87bis**: ✅ MCP GAPS FILLED - hubspot.ts (7), klaviyo.ts (5), twilio.ts (5 incl. WhatsApp) = +17 tools

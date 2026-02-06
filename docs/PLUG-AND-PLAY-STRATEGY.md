@@ -2,9 +2,15 @@
 
 ## Agence ET Plug-and-Play: Plan d'Implémentation SOTA
 
-> **Version:** 2.19 | **Date:** 05/02/2026 | **Session:** 250.94
+> **Version:** 2.23 | **Date:** 06/02/2026 | **Session:** 250.98-FORENSIC
 > **Approche:** Bottom-Up Factuelle | **Méthodologie:** Forensic Audit & Code Refactor
-> **Status:** ✅ **PRODUCTION READY** - Voice Tools Connected to Real APIs
+> **Status:** 🟡 **IMPROVED** - Score plateforme **6.5/10** (Sessions 250.99-250.101). CORS FIXED, free_price FIXED, XSS 15→5, social proof+booking REAL
+> **Session 250.101**: ✅ 557 dossiers clients = TEST DATA widget (pas vrais clients). Docs corrigés.
+> **Session 250.100**: ✅ CORS origin whitelist, free_price 0→49, innerHTML 9→5 (textContent+escapeHTML)
+> **Session 250.99**: ✅ Social proof V3 FAKE→real backend, B2B booking+social proof fully implemented, dashboard 3 toggles
+> **Session 250.89-EXHAUSTIF**: ✅ AGENCY WIDGET TENANT - 243/243 tests (100%), 5 langues, prompt engineering optimisé
+> **Session 250.97octies**: ✅ MULTI-TENANT SCALE UP - 30→537 tenants, 2,890 KB files, 12 regions, 40 sectors covered
+> **Session 250.97quinquies**: ✅ KB Auto-Provisioning COMPLETE - 30 tenants × 5 langs = 150 KB files, `kb-provisioner.cjs` (380+ lines)
 > **Session 250.94**: ✅ Voice CRM/Ecom tools → PRODUCTION (740 lines, HubSpot+Pipedrive+Shopify+WooCommerce)
 > **Session 250.93**: ✅ I18N Complete Surgery - 35 entries decontaminated (ar, ary, en, es)
 > **Session 250.91**: ✅ Widget B2B v2.2.0 deployed, branding correct (#5E6AD2), 306/309 tests pass
@@ -85,7 +91,7 @@ Pas de wishful thinking. Pas de claims non vérifiés.
 | E-commerce | **95%** | 95% | ✅ 7 platforms (~64% market) + Voice Order Tracking |
 | Multi-tenant | **95%** | 95% | ✅ SecretVault, OAuth Gateway, Webhooks |
 | **Integrations** | **95%** | 95% | ✅ 31/31 native integrations (MCP) |
-| **GLOBAL** | **95%** | **95%** | ✅ Session 250.94 - Voice Tools Production Ready |
+| **GLOBAL** | **~70%** | **~70%** | ⚠️ Session 250.105 - Core functional, gaps remain (see ROADMAP-TO-COMPLETION.md) |
 
 ### 1.3 Investissement Requis
 
@@ -268,14 +274,14 @@ POST https://a.klaviyo.com/oauth/token
 
 **Audit Verdict:** 75% of "Native" integrations claimed on the website **DO NOT EXIST** in the codebase.
 
-| Integration | Claimed | Reality | Gap |
+| Integration | Claimed | Reality (Session 250.105) | Status |
 |:---|:---|:---|:---|
-| **Calendars** | Google, Outlook, Calendly | Native | ❌ **100% GAP** (JSON only) |
-| **Sales** | Salesforce, Pipedrive, Zoho | Native | ❌ **100% GAP** (Missing) |
-| **Support** | Zendesk, Intercom | Native | ❌ **100% GAP** (Missing) |
-| **Comms** | Slack, Teams | Native | ❌ **100% GAP** (Missing) |
+| **Calendars** | Google, Outlook, Calendly | Calendly MCP: 6 tools + Calendar: 2 tools | ✅ **RESOLVED** via MCP |
+| **Sales** | Salesforce, Pipedrive, Zoho | Pipedrive MCP: 7 tools + Zoho MCP: 6 tools | ✅ **RESOLVED** via MCP (Salesforce excluded) |
+| **Support** | Zendesk, Intercom | Zendesk MCP: 6 tools + Freshdesk: 6 tools | ✅ **RESOLVED** via MCP (Intercom excluded) |
+| **Comms** | Slack, Teams | Slack MCP: 1 tool + Twilio: 5 tools | ⚠️ **PARTIAL** (Teams not implemented) |
 
-**Strategic Resolution:** Use MCP to implement these as **Plug-and-Play Tools** in Phase 4.
+**Status:** 203 MCP tools implemented (Session 250.87bis+). Most integration gaps resolved via MCP server.
 
 ### 4.2 Blockers Prioritaires
 

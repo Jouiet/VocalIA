@@ -265,7 +265,7 @@ const TWIML_MESSAGES = {
     'en': 'en-US',
     'es': 'es-ES',
     'ar': 'ar-SA',
-    'ary': 'ar-SA'  // Darija fallback to Saudi Arabic for Twilio TTS
+    'ary': 'ar-MA'  // Darija → Moroccan Arabic (better STT recognition than ar-SA)
   },
 
   // Connection message
@@ -2942,7 +2942,7 @@ async function translateQueryToFrench(query, sourceLang) {
 }
 
 async function handleSearchKnowledgeBase(session, args) {
-  const kbId = session.metadata?.knowledge_base_id || session.metadata?.persona_id || 'agency_v3';
+  const kbId = session.metadata?.knowledge_base_id || session.metadata?.persona_id || 'unknown';
   const sessionLang = session.metadata?.language || CONFIG.defaultLanguage;
   const tenantId = session.metadata?.tenant_id || 'default';  // Session 250.45: Per-tenant KB
   let query = args.query.toLowerCase();
