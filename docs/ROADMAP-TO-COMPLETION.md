@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-06 | **Session:** 250.108
+> **Date:** 2026-02-06 | **Session:** 250.111
 > **Score actuel:** 8.0/10 (updated after 973 tests + P2 COMPLETE + production monitor)
 > **Méthodologie:** Chaque tâche est liée à un FAIT vérifié par commande. Zéro supposition.
 > **Source:** Audit croisé de 13 documents (AGENCY-WIDGET-AUDIT, AUDIT-MULTI-TENANT, MULTI-TENANT-KB-OPTIMIZATION, STRATEGIC-DIRECTIVES, WIDGET_COMMERCIALIZATION_AUDIT, WIDGET_SPLIT_PLAN, COMMERCIALIZATION_MARKETPLACES_AUDIT, AUDIT-LANGUAGE-SUPPORT, VOICE-MENA-PLATFORM-ANALYSIS, FORENSIC-AUDIT-MERGED, VOCALIA-MCP, PLUG-AND-PLAY-STRATEGY, SESSION-HISTORY) + vérification codebase.
@@ -22,11 +22,11 @@
 
 ## 1. Score Actuel
 
-**Score: 8.3/10** — Recalculé Session 250.110 après 1379 tests, 38.4% stmt coverage, 48 test files.
+**Score: 8.4/10** — Recalculé Session 250.111 après 1496 tests, 39.4% stmt coverage, 51 test files.
 
 | # | Dimension | Score 250.108 | Score 250.109 | Delta | Justification |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 10.0 | 10.0 | 0 | 1379 pass/0 fail, 38.4% stmt, 75.0% branches, 48 test files |
+| 1 | Tests unitaires | 10.0 | 10.0 | 0 | 1496 pass/0 fail, 39.4% stmt, 75.2% branches, 51 test files |
 | 2 | Sécurité | 7.5 | 7.5 | 0 | No change |
 | 3 | Production readiness | 5.0 | 6.0 | +1.0 | production-monitor.cjs with Slack alerts, 3 endpoints probed |
 | 4 | Documentation accuracy | 8.0 | 8.5 | +0.5 | INTEGRATION-TESTING.md, sandbox credential docs |
@@ -654,7 +654,10 @@ Seul le persona AGENCY a été audité exhaustivement (243 tests). Les 39 autres
 | **exhaustive-multi-tenant-test.cjs** | **0** | **1** | 0 | **Interne: 2726/2751** |
 | a2ui-service.test.cjs | 35 | 0 | 0 | node --test |
 | remotion-service.test.cjs | 23 | 0 | 0 | node --test |
-| **TOTAL node --test** | **1379** | **0** | **3** | |
+| revenue-science.test.cjs | 47 | 0 | 0 | node --test |
+| context-box.test.cjs | 35 | 0 | 0 | node --test |
+| billing-agent.test.cjs | 35 | 0 | 0 | node --test |
+| **TOTAL node --test** | **1496** | **0** | **3** | |
 
 ### 7.3 Infrastructure
 
@@ -747,6 +750,7 @@ create_booking          get_recommendations    qualify_lead
 | Coverage +4%: tenant-persona-bridge(36), voice-agent-b2b(32), calendar-slots-connector(50), chaos-engineering(22), lahajati-client(38), stitch-to-vocalia-css(19) | 250.109 | 1170 tests, 33.8% stmt, 74.6% branches, 42.5% functions |
 | Coverage +3%: kb-crawler(41), remotion-hitl(40), grok-client(23), tenant-catalog-store(47) | 250.110 | 1321 tests, 36.8% stmt, 75.0% branches, 42.7% functions |
 | Coverage +1.6%: a2ui-service(35), remotion-service(23) | 250.110 | 1379 tests, 38.4% stmt, 75.0% branches, 42.7% functions |
+| Coverage +1.0%: revenue-science(47), context-box(35), billing-agent(35) | 250.111 | 1496 tests, 39.4% stmt, 75.2% branches, 45.0% functions |
 
 ---
 
