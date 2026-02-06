@@ -367,27 +367,52 @@
 
                 if (cdrsData.success && cdrsData.data.length > 0) {
                     const table = document.getElementById('cdr-table');
-                    table.innerHTML = cdrsData.data.map(cdr => {
+                    table.innerHTML = '';
+                    cdrsData.data.forEach(cdr => {
                         const date = new Date(cdr.timestamp);
                         const timeAgo = formatTimeAgo(date);
-                        const duration = `${Math.floor(cdr.duration_sec / 60)}:${(cdr.duration_sec % 60).toString().padStart(2, '0')}`;
+                        const mins = Math.floor((parseInt(cdr.duration_sec) || 0) / 60);
+                        const secs = (parseInt(cdr.duration_sec) || 0) % 60;
+                        const duration = mins + ':' + secs.toString().padStart(2, '0');
 
-                        return `
-                            <tr class="border-b border-white/[0.08] hover:bg-white/[0.03] transition">
-                                <td class="py-3 font-mono text-xs">${cdr.number}</td>
-                                <td class="py-3">${cdr.persona}</td>
-                                <td class="py-3">${cdr.language.toUpperCase()}</td>
-                                <td class="py-3">${duration}</td>
-                                <td class="py-3 font-medium text-emerald-400">Inbound</td>
-                                <td class="py-3">
-                                    <span class="px-2 py-1 rounded-full ${cdr.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'} text-xs">
-                                        ${cdr.status}
-                                    </span>
-                                </td>
-                                <td class="py-3 text-vocalia-400">${timeAgo}</td>
-                            </tr>
-                        `;
-                    }).join('');
+                        const tr = document.createElement('tr');
+                        tr.className = 'border-b border-white/[0.08] hover:bg-white/[0.03] transition';
+
+                        const tdNumber = document.createElement('td');
+                        tdNumber.className = 'py-3 font-mono text-xs';
+                        tdNumber.textContent = cdr.number || '';
+
+                        const tdPersona = document.createElement('td');
+                        tdPersona.className = 'py-3';
+                        tdPersona.textContent = cdr.persona || '';
+
+                        const tdLang = document.createElement('td');
+                        tdLang.className = 'py-3';
+                        tdLang.textContent = (cdr.language || '').toUpperCase();
+
+                        const tdDuration = document.createElement('td');
+                        tdDuration.className = 'py-3';
+                        tdDuration.textContent = duration;
+
+                        const tdDirection = document.createElement('td');
+                        tdDirection.className = 'py-3 font-medium text-emerald-400';
+                        tdDirection.textContent = 'Inbound';
+
+                        const tdStatus = document.createElement('td');
+                        tdStatus.className = 'py-3';
+                        const statusSpan = document.createElement('span');
+                        statusSpan.className = 'px-2 py-1 rounded-full text-xs ' +
+                            (cdr.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400');
+                        statusSpan.textContent = cdr.status || 'Unknown';
+                        tdStatus.appendChild(statusSpan);
+
+                        const tdTime = document.createElement('td');
+                        tdTime.className = 'py-3 text-vocalia-400';
+                        tdTime.textContent = timeAgo;
+
+                        tr.append(tdNumber, tdPersona, tdLang, tdDuration, tdDirection, tdStatus, tdTime);
+                        table.appendChild(tr);
+                    });
                 }
 
                 // Fetch User Info (Sidebar)

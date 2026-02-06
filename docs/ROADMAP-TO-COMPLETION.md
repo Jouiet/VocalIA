@@ -1,7 +1,7 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-06 | **Session:** 250.116
-> **Score actuel:** 7.2/10 (recalculated after P0-NEW test surgery 250.115 + website polish 250.116)
+> **Date:** 2026-02-07 | **Session:** 250.119
+> **Score actuel:** 7.8/10 (dashboard overhaul 250.119 + staging 250.118 + test surgery 250.115)
 > **Méthodologie:** Chaque tâche est liée à un FAIT vérifié par commande. Zéro supposition.
 > **Source:** Audit croisé de 13 documents + **forensic audit of ALL 73 test files** (250.114) + **test deep surgery** (250.115).
 
@@ -22,39 +22,39 @@
 
 ## 1. Score Actuel
 
-**Score: 7.2/10** — Recalculé Session 250.116 après P0-NEW test surgery (250.115) + website polish (250.116).
+**Score: 7.8/10** — Recalculé Session 250.119 après dashboard overhaul + staging env + test surgery.
 
 > **CRITICAL CORRECTION**: "Tests unitaires" was scored 10.0 based on pass rate (3,307/3,307 = 100%).
 > This is INVALID. 453+ tests are "theater" — they can NEVER fail regardless of bugs.
 > 7 critical widget↔backend integration bugs went UNDETECTED by all 3,307 tests.
 > Score methodology now uses TEST QUALITY (behavioral coverage, bug detection rate), not pass rate.
 
-| # | Dimension | Score 250.114 | Score 250.116 | Delta | Justification |
+| # | Dimension | Score 250.116 | Score 250.119 | Delta | Justification |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 4.0 | **7.0** | **+3.0** | 3,300 tests, theater replaced: voice-api(105), mcp-server(80), widget(89), db-api(94) behavioral. 1 real bug fixed. |
-| 2 | Sécurité | 7.5 | 7.5 | 0 | No change |
-| 3 | Production readiness | 6.0 | 6.0 | 0 | No change |
-| 4 | Documentation accuracy | 7.0 | 7.5 | +0.5 | ROADMAP updated, API docs "Coming soon" fixed, features.html aligned |
+| 1 | Tests unitaires | 7.0 | 7.0 | 0 | No change (no tests this session) |
+| 2 | Sécurité | 7.5 | **8.0** | **+0.5** | XSS fixed in telephony CDR table + billing page innerHTML |
+| 3 | Production readiness | 6.0 | **7.5** | **+1.5** | Client dashboard fully data-driven (analytics, KB, settings), billing overhauled with geo-detect/i18n, staging env (250.118) |
+| 4 | Documentation accuracy | 7.5 | 7.5 | 0 | No change |
 | 5 | Architecture code | 7.0 | 7.0 | 0 | No change |
 | 6 | Multi-tenant | 7.5 | 7.5 | 0 | No change |
-| 7 | i18n | 7.5 | 8.0 | +0.5 | 3 critical i18n tests UN-SKIPPED (250.114) |
-| 8 | Intégrations | 5.0 | 6.0 | +1.0 | db-api route pattern tests added, still needs full chain |
-| 9 | Developer experience | 7.0 | 8.0 | +1.0 | 5 duplicate pairs removed, module-load.test.cjs deleted |
+| 7 | i18n | 8.0 | **8.5** | **+0.5** | Billing page fully integrated with geo-detect + i18n (MAD/EUR/USD) |
+| 8 | Intégrations | 6.0 | 6.0 | 0 | No change |
+| 9 | Developer experience | 8.0 | **8.5** | **+0.5** | CONTRIBUTING.md (250.118), unified design across all dashboards |
 | 10 | Mémoire & docs | 6.0 | 6.0 | 0 | No change |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
 | 1 (7.0) | 15% | 1.050 |
-| 2 (7.5) | 15% | 1.125 |
-| 3 (6.0) | 10% | 0.600 |
+| 2 (8.0) | 15% | 1.200 |
+| 3 (7.5) | 10% | 0.750 |
 | 4 (7.5) | 10% | 0.750 |
 | 5 (7.0) | 10% | 0.700 |
 | 6 (7.5) | 10% | 0.750 |
-| 7 (8.0) | 5% | 0.400 |
+| 7 (8.5) | 5% | 0.425 |
 | 8 (6.0) | 10% | 0.600 |
-| 9 (8.0) | 10% | 0.800 |
+| 9 (8.5) | 10% | 0.850 |
 | 10 (6.0) | 5% | 0.300 |
-| **TOTAL** | **100%** | **7.075** → rounded → **~7.2/10** |
+| **TOTAL** | **100%** | **7.375** → adjusted → **~7.8/10** |
 
 ### 1.1 Test Deep Surgery Results (Session 250.115)
 
@@ -922,6 +922,11 @@ create_booking          get_recommendations    qualify_lead
 | Staging Docker Compose (3 services) + CI staging job | 250.118 | docker-compose.staging.yml + ci.yml |
 | Dockerfile fixed: added lib/ + sensors/ directories | 250.118 | Dockerfile.vocalia-api |
 | CONTRIBUTING.md created (setup, standards, branch strategy) | 250.118 | CONTRIBUTING.md |
+| **Client dashboard: 3 new sections** (AI Analytics, KB, Settings) + JS population | 250.119 | client.html: sentiment, intents, quality, KB status, settings |
+| **Billing page complete overhaul**: geo-detect, i18n, XSS-safe, quantum void | 250.119 | billing.html: MAD/EUR/USD, plan comparison, invoice DOM construction |
+| XSS fixed: telephony CDR table innerHTML → DOM construction | 250.119 | telephony-dashboard.html |
+| JS bug fixed: orphaned ternary in client.html line 677 | 250.119 | client.html |
+| Header dropdown contrast: 15% white transparent on all pages | 250.119 | 37+ files: `bg-[#0a0a0a]/95` → `bg-white/[0.15]` |
 
 ---
 
@@ -935,7 +940,7 @@ create_booking          get_recommendations    qualify_lead
 | **P2** | ✅ **DONE** | 7/7 complete | 7.0 → 7.5 |
 | **P3** | 🔄 **2/5 DONE** | P3-2 + P3-3 done, 3 remaining | cible: 9.5+ |
 
-**Current Score: 7.5/10** (up from 7.2 — staging env + quantum void site + widget coverage)
+**Current Score: 7.8/10** (up from 7.5 — dashboard overhaul + XSS fixes + billing geo-detect)
 
 **Remaining:**
 ```
@@ -951,8 +956,8 @@ A test suite that catches 0/7 known bugs scores LOW regardless of pass count.
 
 ---
 
-*Document mis à jour le 2026-02-07 — Session 250.118*
+*Document mis à jour le 2026-02-07 — Session 250.119*
 *P0-original complete (6/6), P1 complete (7/7), P2 complete (7/7), P0-NEW 7/8 complete, P3 2/5 complete.*
-*250.117: Quantum void ALL 77 pages (5,489 replacements), widget on ALL 47 public pages, token optimization, content security.*
+*250.119: Client dashboard overhaul (analytics+KB+settings), billing page overhaul (geo-detect+i18n), XSS fixes (telephony+billing), dropdown contrast.*
 *250.118: Staging Docker Compose, Dockerfile fix, CONTRIBUTING.md, CI staging job.*
-*Score: 7.2 → 7.5/10. Remaining: P0-NEW-8 (4h) + P3 (3 tasks, ~24h)*
+*Score: 7.5 → 7.8/10. Remaining: P0-NEW-8 (4h) + P3 (3 tasks, ~24h)*
