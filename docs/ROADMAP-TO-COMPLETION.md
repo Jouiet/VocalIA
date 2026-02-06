@@ -22,11 +22,11 @@
 
 ## 1. Score Actuel
 
-**Score: 8.2/10** — Recalculé Session 250.109 après 1170 tests, 33.8% stmt coverage, 42 test files.
+**Score: 8.3/10** — Recalculé Session 250.110 après 1321 tests, 36.8% stmt coverage, 46 test files.
 
 | # | Dimension | Score 250.108 | Score 250.109 | Delta | Justification |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 10.0 | 10.0 | 0 | 1170 pass/0 fail, 33.8% stmt, 74.6% branches, 42 test files |
+| 1 | Tests unitaires | 10.0 | 10.0 | 0 | 1321 pass/0 fail, 36.8% stmt, 75.0% branches, 46 test files |
 | 2 | Sécurité | 7.5 | 7.5 | 0 | No change |
 | 3 | Production readiness | 5.0 | 6.0 | +1.0 | production-monitor.cjs with Slack alerts, 3 endpoints probed |
 | 4 | Documentation accuracy | 8.0 | 8.5 | +0.5 | INTEGRATION-TESTING.md, sandbox credential docs |
@@ -395,6 +395,7 @@ Le CI actuel ne fait que:
 - [x] **P2-2b.** Identified 33 core files at 0% coverage (250.106)
 - [x] **P2-2c.** Added tests: ucp-store(31), audit-store(24), ab-analytics(9), hybrid-rag(15), kb-provisioner(17) = **+96 tests**
 - [x] **P2-2d.** Coverage 16.25% → **22.5%** statements, 65% → **70.04%** branches (250.107). +6 test files: kb-quotas(30), marketing-science(19), translation-supervisor(35), gateways(28), kb-parser(38), vector-store(25) = +175 tests
+- [x] **P2-2e.** Coverage 33.8% → **36.8%** statements, 74.6% → **75.0%** branches (250.110). +4 test files: kb-crawler(41), remotion-hitl(40), grok-client(23), tenant-catalog-store(47) = +151 tests
 
 **Effort:** ~4h | **Impact:** Tests 9.5→10
 
@@ -646,8 +647,12 @@ Seul le persona AGENCY a été audité exhaustivement (243 tests). Les 39 autres
 | chaos-engineering.test.cjs | 22 | 0 | 0 | node --test |
 | lahajati-client.test.cjs | 38 | 0 | 0 | node --test |
 | stitch-to-vocalia-css.test.cjs | 19 | 0 | 0 | node --test |
+| kb-crawler.test.cjs | 41 | 0 | 0 | node --test |
+| remotion-hitl.test.cjs | 40 | 0 | 0 | node --test |
+| grok-client.test.cjs | 23 | 0 | 0 | node --test |
+| tenant-catalog-store.test.cjs | 47 | 0 | 0 | node --test |
 | **exhaustive-multi-tenant-test.cjs** | **0** | **1** | 0 | **Interne: 2726/2751** |
-| **TOTAL node --test** | **1170** | **0** | **3** | |
+| **TOTAL node --test** | **1321** | **0** | **3** | |
 
 ### 7.3 Infrastructure
 
@@ -737,6 +742,8 @@ create_booking          get_recommendations    qualify_lead
 | P2 COMPLETE (7/7) | 250.108 | All P2 tasks resolved |
 | Coverage +3%: auth-service(41), tenant-logger(23), auth-middleware(34), error-science(29), client-registry(20) | 250.108 | 883 tests, 27.4% stmt, 71.2% branches |
 | Coverage +2.3%: tenant-context(26), recommendation-service(33), tenant-onboarding-agent(22), kb-provisioner(26) | 250.108 | 973 tests, 29.7% stmt, 73.3% branches, 41.9% functions |
+| Coverage +4%: tenant-persona-bridge(36), voice-agent-b2b(32), calendar-slots-connector(50), chaos-engineering(22), lahajati-client(38), stitch-to-vocalia-css(19) | 250.109 | 1170 tests, 33.8% stmt, 74.6% branches, 42.5% functions |
+| Coverage +3%: kb-crawler(41), remotion-hitl(40), grok-client(23), tenant-catalog-store(47) | 250.110 | 1321 tests, 36.8% stmt, 75.0% branches, 42.7% functions |
 
 ---
 
