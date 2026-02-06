@@ -49,6 +49,7 @@ function isOriginAllowed(origin) {
 // Session 250.xx: Multi-tenant Secret Vault
 const SecretVault = require('./SecretVault.cjs');
 const ContextBox = require('./ContextBox.cjs'); // Missing import fixed
+const { getDB } = require('./GoogleSheetsDB.cjs'); // Session 250.89: DB for quota check
 
 
 // Session 250.81: Protocol Bridge (A2A, AG-UI, UCP)
@@ -56,28 +57,73 @@ const eventBus = require('./AgencyEventBus.cjs');
 const A2UIService = require('./a2ui-service.cjs');
 const hybridRAG = require('./hybrid-rag.cjs').getInstance(); // Fixed singleton usage
 
+// Session 250.89: A2A Translation Supervisor (optional, null if not configured)
+let translationSupervisor = null;
+
 
 
 // Session 168terdecies: REAL-TIME TASK (Grok first)
 // Fallback order: Grok → Gemini → Claude → Local patterns
+
+// Session 250.89: Security constant for request body size limit (1MB)
+const MAX_BODY_SIZE = 1024 * 1024;
+
+// Session 250.89: Global PROVIDERS for immediate availability (fixes startup crash)
+const PROVIDERS = {
+  grok: {
+    name: 'Grok 4.1 Fast Reasoning',
+    url: 'https://api.x.ai/v1/chat/completions',
+    model: 'grok-4-1-fast-reasoning',
+    apiKey: ENV.XAI_API_KEY,
+    enabled: !!ENV.XAI_API_KEY,
+  },
+  gemini: {
+    name: 'Gemini 3 Flash (SOTA 2026)',
+    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
+    apiKey: ENV.GEMINI_API_KEY,
+    enabled: !!ENV.GEMINI_API_KEY,
+  },
+  anthropic: {
+    name: 'Claude Opus 4.5',
+    url: 'https://api.anthropic.com/v1/messages',
+    model: 'claude-opus-4-5-20251101',
+    apiKey: ENV.ANTHROPIC_API_KEY,
+    enabled: !!ENV.ANTHROPIC_API_KEY,
+  },
+  atlasChat: {
+    name: 'Atlas-Chat-9B (Darija)',
+    url: 'https://api-inference.huggingface.co/models/MBZUAI-Paris/Atlas-Chat-9B',
+    model: 'Atlas-Chat-9B',
+    apiKey: ENV.HUGGINGFACE_API_KEY,
+    enabled: !!ENV.HUGGINGFACE_API_KEY,
+  }
+};
+
+// Async version for tenant-specific credentials
 const getProviderConfig = async (tenantId) => {
   const customCreds = await SecretVault.loadCredentials(tenantId);
 
   return {
     grok: {
-      name: 'Grok 4.1 Fast Reasoning',
-      url: 'https://api.x.ai/v1/chat/completions',
-      model: 'grok-4-1-fast-reasoning',
+      ...PROVIDERS.grok,
       apiKey: customCreds.XAI_API_KEY || ENV.XAI_API_KEY,
       enabled: !!(customCreds.XAI_API_KEY || ENV.XAI_API_KEY),
     },
     gemini: {
-      name: 'Gemini 3 Flash (SOTA 2026)',
-      url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
+      ...PROVIDERS.gemini,
       apiKey: customCreds.GEMINI_API_KEY || ENV.GEMINI_API_KEY,
       enabled: !!(customCreds.GEMINI_API_KEY || ENV.GEMINI_API_KEY),
     },
-    // ... other providers follow the same pattern
+    anthropic: {
+      ...PROVIDERS.anthropic,
+      apiKey: customCreds.ANTHROPIC_API_KEY || ENV.ANTHROPIC_API_KEY,
+      enabled: !!(customCreds.ANTHROPIC_API_KEY || ENV.ANTHROPIC_API_KEY),
+    },
+    atlasChat: {
+      ...PROVIDERS.atlasChat,
+      apiKey: customCreds.HUGGINGFACE_API_KEY || ENV.HUGGINGFACE_API_KEY,
+      enabled: !!(customCreds.HUGGINGFACE_API_KEY || ENV.HUGGINGFACE_API_KEY),
+    }
   };
 };
 
@@ -353,8 +399,8 @@ async function registerTenant(tenantId, name, plan = 'starter', email = '') {
 }
 
 // Initialize Cognitive Modules
-const KB = require('./knowledge-base-services.cjs'); // Corrected filename (plural)
-// KB.load(); // Moved to service init
+const { ServiceKnowledgeBase } = require('./knowledge-base-services.cjs');
+const KB = new ServiceKnowledgeBase(); // Session 250.89: Create instance for KB methods
 
 const ECOM_TOOLS = require('./voice-ecommerce-tools.cjs');
 const CRM_TOOLS = require('./voice-crm-tools.cjs');
@@ -967,6 +1013,15 @@ async function callGemini(userMessage, conversationHistory = [], customSystemPro
   } else {
     throw new Error('No valid Gemini authentication method found (Service Account or API Key)');
   }
+
+  // Session 250.89: Build request body for Gemini
+  const body = JSON.stringify({
+    contents: [{ parts }],
+    generationConfig: {
+      maxOutputTokens: 500,
+      temperature: 0.7
+    }
+  });
 
   const response = await httpRequest(url, {
     method: 'POST',
