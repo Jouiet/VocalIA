@@ -131,16 +131,14 @@ paths:
 
   /trigger-call:
     post:
-      summary: Zapier Call Trigger
+      summary: Zapier Call Trigger (Legacy)
       description: |
-        Triggers an outbound call to a lead. Designed for Zapier/Make integrations.
-        Requires authenticated API Key.
-      operationId: triggerCall
+        Legacy alias for /api/trigger-call. Use /api/trigger-call instead.
+      operationId: triggerCallLegacy
+      deprecated: true
       tags:
         - Voice
         - Integrations
-      security:
-        - ApiKeyAuth: []
       requestBody:
         required: true
         content:
@@ -153,30 +151,11 @@ paths:
               properties:
                 phone:
                   type: string
-                  description: "Lead phone number (E.164)"
-                name:
-                  type: string
-                  description: "Lead name"
                 tenantId:
                   type: string
-                  description: "Tenant ID"
-                context:
-                  type: object
-                  description: "Additional context for the call (source, intent)"
       responses:
         '200':
-          description: Call initiated successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  callSid:
-                    type: string
-                  status:
-                    type: string
-        '401':
-          description: Unauthorized
+          description: Call initiated
         '502':
           description: Telephony Bridge unavailable
 
@@ -263,33 +242,370 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DashboardMetricsResponse'
-              example:
-                stats:
-                  totalCalls: 1247
-                  minutesUsed: 1456
-                  conversionRate: 34.2
-                  nps: 87
-                leads:
-                  hot: 42
-                  warm: 89
-                  cool: 156
-                  cold: 78
-                  total: 365
-                charts:
-                  dailyCalls:
-                    - date: "2026-01-25"
-                      calls: 45
-                    - date: "2026-01-26"
-                      calls: 67
-                  languages:
-                    fr: 62
-                    en: 25
-                    ar: 8
-                    es: 3
-                    ary: 2
-                provider: "Grok 4.1 Fast Reasoning"
-                avgLatencyMs: 245
-                lastUpdated: 1738339200000
+
+  /metrics:
+    get:
+      summary: Prometheus Metrics
+      description: Returns Prometheus-compatible metrics for monitoring
+      operationId: getMetrics
+      tags:
+        - System
+      responses:
+        '200':
+          description: Prometheus metrics
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /config:
+    get:
+      summary: Widget Configuration
+      description: Returns widget configuration including feature flags and booking data for a tenant
+      operationId: getConfig
+      tags:
+        - Widget
+      parameters:
+        - name: tenantId
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Widget configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tenantId:
+                    type: string
+                  features:
+                    type: object
+                    properties:
+                      social_proof_enabled:
+                        type: boolean
+                      booking_enabled:
+                        type: boolean
+                      exit_intent_enabled:
+                        type: boolean
+                  booking:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        nullable: true
+                      phone:
+                        type: string
+                        nullable: true
+
+  /social-proof:
+    get:
+      summary: Social Proof Data
+      description: Returns anonymized real-time social proof messages from aggregated metrics
+      operationId: getSocialProof
+      tags:
+        - Widget
+      parameters:
+        - name: tenantId
+          in: query
+          schema:
+            type: string
+        - name: lang
+          in: query
+          schema:
+            type: string
+            enum: [fr, en, es, ar, ary]
+            default: fr
+      responses:
+        '200':
+          description: Social proof messages (empty array if no data)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        text:
+                          type: string
+                        icon:
+                          type: string
+                        time:
+                          type: string
+
+  /tts:
+    post:
+      summary: Text-to-Speech
+      description: Converts text to speech audio using ElevenLabs or Web Speech API fallback
+      operationId: postTTS
+      tags:
+        - Voice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - text
+              properties:
+                text:
+                  type: string
+                  description: Text to convert to speech
+                language:
+                  type: string
+                  enum: [fr, en, es, ar, ary]
+                  default: fr
+                voice:
+                  type: string
+                  description: Voice ID (ElevenLabs)
+      responses:
+        '200':
+          description: Audio data
+          content:
+            audio/mpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Missing text parameter
+
+  /api/contact:
+    post:
+      summary: Contact Form Submission
+      description: Processes contact form submissions from the website
+      operationId: postContact
+      tags:
+        - Lead Qualification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                message:
+                  type: string
+      responses:
+        '200':
+          description: Contact submitted
+        '400':
+          description: Missing required fields
+
+  /api/trigger-call:
+    post:
+      summary: Trigger Outbound Call
+      description: Triggers an outbound call via the telephony bridge
+      operationId: triggerOutboundCall
+      tags:
+        - Voice
+        - Integrations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - phone
+                - tenantId
+              properties:
+                phone:
+                  type: string
+                tenantId:
+                  type: string
+                name:
+                  type: string
+                context:
+                  type: object
+      responses:
+        '200':
+          description: Call initiated
+        '502':
+          description: Telephony bridge unavailable
+
+  /api/health/grok:
+    get:
+      summary: Grok Provider Health
+      description: Returns Grok API health status and latency
+      operationId: getGrokHealth
+      tags:
+        - System
+      responses:
+        '200':
+          description: Grok health status
+
+  /api/health/telephony:
+    get:
+      summary: Telephony Bridge Health
+      description: Returns telephony bridge health status
+      operationId: getTelephonyHealth
+      tags:
+        - System
+      responses:
+        '200':
+          description: Telephony health status
+
+  /api/fallback/{provider}:
+    get:
+      summary: Fallback Provider Status
+      description: Returns status for a specific fallback provider
+      operationId: getFallbackStatus
+      tags:
+        - System
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [grok, gemini, anthropic, atlas, local]
+      responses:
+        '200':
+          description: Provider status
+
+  /admin/metrics:
+    get:
+      summary: Admin Metrics
+      description: Returns platform-wide metrics for admin dashboard
+      operationId: getAdminMetrics
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Admin metrics
+
+  /admin/tenants:
+    get:
+      summary: List Tenants
+      description: Returns list of all tenants with their status
+      operationId: listTenants
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Tenant list
+    post:
+      summary: Create Tenant
+      description: Creates a new tenant with KB provisioning
+      operationId: createTenant
+      tags:
+        - Admin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - business_name
+              properties:
+                business_name:
+                  type: string
+                sector:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: string
+      responses:
+        '201':
+          description: Tenant created
+        '400':
+          description: Invalid data
+
+  /admin/refresh:
+    post:
+      summary: Refresh Cache
+      description: Forces a refresh of cached data (tenants, configs)
+      operationId: adminRefresh
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Cache refreshed
+
+  /admin/logs:
+    get:
+      summary: System Logs
+      description: Returns recent system logs
+      operationId: getAdminLogs
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Log entries
+
+  /admin/logs/export:
+    get:
+      summary: Export Logs
+      description: Exports system logs in CSV or JSON format
+      operationId: exportAdminLogs
+      tags:
+        - Admin
+      parameters:
+        - name: format
+          in: query
+          schema:
+            type: string
+            enum: [csv, json]
+            default: json
+      responses:
+        '200':
+          description: Exported logs
+
+  /admin/health:
+    get:
+      summary: Admin Health Overview
+      description: Returns comprehensive health status for all services
+      operationId: getAdminHealth
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Full health status
+
+  /a2ui/generate:
+    post:
+      summary: A2UI Generate
+      description: Generates adaptive UI components via A2UI service
+      operationId: a2uiGenerate
+      tags:
+        - Widget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Generated UI
+
+  /a2ui/health:
+    get:
+      summary: A2UI Health
+      description: Returns A2UI service health status
+      operationId: a2uiHealth
+      tags:
+        - Widget
+      responses:
+        '200':
+          description: A2UI health
 
 components:
   schemas:
@@ -569,3 +885,9 @@ tags:
     description: BANT lead qualification endpoints
   - name: Dashboard
     description: Client dashboard metrics endpoints
+  - name: Widget
+    description: Widget configuration, social proof, and A2UI endpoints
+  - name: Admin
+    description: Admin dashboard and tenant management endpoints
+  - name: Integrations
+    description: Third-party integration endpoints (Zapier, telephony)

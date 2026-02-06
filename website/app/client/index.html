@@ -30,12 +30,27 @@
   <script src="/src/lib/gsap-animations.js"></script>
 
   <style>
-    .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
     .sidebar { width: 260px; }
     @media (max-width: 1024px) {
       .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
       .sidebar.open { transform: translateX(0); }
     }
+    /* Stat card accent borders */
+    .stat-accent { position: relative; overflow: hidden; }
+    .stat-accent::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+    }
+    [dir="rtl"] .stat-accent::before { left: auto; right: 0; }
+    .stat-accent-blue::before { background: linear-gradient(180deg, #6366f1, #3b82f6); }
+    .stat-accent-purple::before { background: linear-gradient(180deg, #8b5cf6, #a855f7); }
+    .stat-accent-green::before { background: linear-gradient(180deg, #10b981, #22c55e); }
+    .stat-accent-amber::before { background: linear-gradient(180deg, #f59e0b, #f97316); }
+    /* Subtle glow on hover */
+    .stat-accent:hover { box-shadow: 0 0 20px rgba(99, 102, 241, 0.08); }
+    /* Live indicator */
+    @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: livePulse 2s ease-in-out infinite; }
   </style>
 </head>
 <body class="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -137,59 +152,68 @@
     <div class="p-4 lg:p-6 space-y-6">
 
       <!-- Welcome Banner -->
-      <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 text-white">
-        <h2 class="text-2xl font-bold" id="welcome-message">Bienvenue !</h2>
-        <p class="mt-1 opacity-90" data-i18n="dashboard.welcome_subtitle">Voici un aperçu de votre activité Voice AI</p>
+      <div class="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 rounded-2xl p-6 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.08),transparent_70%)]"></div>
+        <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold" id="welcome-message">Bienvenue !</h2>
+            <p class="mt-1 opacity-80" data-i18n="dashboard.welcome_subtitle">Voici un aperçu de votre activité Voice AI</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="live-dot"></div>
+            <span class="text-sm font-medium opacity-90" data-i18n="dashboard.system_active">Système actif</span>
+          </div>
+        </div>
       </div>
 
       <!-- Stats Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Total Calls -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+        <div class="stat-accent stat-accent-blue bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300">
           <div class="flex items-center justify-between">
-            <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+            <div class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
               <i data-lucide="phone-call" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
             </div>
-            <span id="trend-calls" class="text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
+            <span id="trend-calls" class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
           </div>
-          <p id="stat-calls" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
-          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.calls">Appels ce mois</p>
+          <p id="stat-calls" class="mt-3 text-3xl font-bold text-slate-900 dark:text-white tracking-tight">--</p>
+          <p class="text-sm text-slate-500 mt-0.5" data-i18n="dashboard.stats.calls">Appels ce mois</p>
         </div>
 
         <!-- Minutes Used -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+        <div class="stat-accent stat-accent-purple bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300">
           <div class="flex items-center justify-between">
-            <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+            <div class="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
               <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
             </div>
-            <span id="trend-minutes" class="text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
+            <span id="trend-minutes" class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
           </div>
-          <p id="stat-minutes" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
-          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.minutes">Minutes utilisées</p>
+          <p id="stat-minutes" class="mt-3 text-3xl font-bold text-slate-900 dark:text-white tracking-tight">--</p>
+          <p class="text-sm text-slate-500 mt-0.5" data-i18n="dashboard.stats.minutes">Minutes utilisées</p>
         </div>
 
         <!-- Avg Duration -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+        <div class="stat-accent stat-accent-green bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300">
           <div class="flex items-center justify-between">
-            <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
+            <div class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg">
               <i data-lucide="timer" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
             </div>
-            <span id="trend-duration" class="text-sm font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
+            <span id="trend-duration" class="text-xs font-medium px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
           </div>
-          <p id="stat-duration" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
-          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.avg_duration">Durée moyenne</p>
+          <p id="stat-duration" class="mt-3 text-3xl font-bold text-slate-900 dark:text-white tracking-tight">--</p>
+          <p class="text-sm text-slate-500 mt-0.5" data-i18n="dashboard.stats.avg_duration">Durée moyenne</p>
         </div>
 
         <!-- Languages -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+        <div class="stat-accent stat-accent-amber bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-300">
           <div class="flex items-center justify-between">
-            <div class="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg">
+            <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
               <i data-lucide="languages" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
             </div>
             <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">5 langues</span>
           </div>
-          <p id="stat-languages" class="mt-3 text-2xl font-bold text-slate-900 dark:text-white">--</p>
-          <p class="text-sm text-slate-500" data-i18n="dashboard.stats.top_language">Langue principale</p>
+          <p id="stat-languages" class="mt-3 text-3xl font-bold text-slate-900 dark:text-white tracking-tight">--</p>
+          <p class="text-sm text-slate-500 mt-0.5" data-i18n="dashboard.stats.top_language">Langue principale</p>
         </div>
       </div>
 
@@ -209,6 +233,34 @@
           <div class="h-64 flex items-center justify-center">
             <canvas id="languageChart"></canvas>
           </div>
+        </div>
+      </div>
+
+      <!-- Performance Insights -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="activity" class="w-4 h-4 text-indigo-500"></i>
+            <span class="text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="dashboard.insights.peak_hour">Heure de pointe</span>
+          </div>
+          <p id="insight-peak" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="dashboard.insights.peak_desc">Plus d'appels reçus</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="zap" class="w-4 h-4 text-amber-500"></i>
+            <span class="text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="dashboard.insights.engagement">Engagement</span>
+          </div>
+          <p id="insight-engagement" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="dashboard.insights.engagement_desc">Sessions &gt; 2 min</p>
+        </div>
+        <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700">
+          <div class="flex items-center gap-2 mb-3">
+            <i data-lucide="globe" class="w-4 h-4 text-emerald-500"></i>
+            <span class="text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="dashboard.insights.languages_used">Langues actives</span>
+          </div>
+          <p id="insight-langs" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
+          <p class="text-xs text-slate-500 mt-1" data-i18n="dashboard.insights.langs_desc">Langues utilisées ce mois</p>
         </div>
       </div>
 
@@ -374,6 +426,9 @@
         updateTrend('trend-minutes', totalMinutes, lastMonthMinutes);
         updateTrend('trend-duration', avgDuration, lastMonthAvgDuration);
 
+        // Compute performance insights from real data
+        computeInsights(thisMonth, langCounts);
+
         // Render recent calls
         renderRecentCalls(data.slice(-5).reverse());
 
@@ -384,6 +439,30 @@
         console.error('Dashboard load error:', error);
         toast.error('Erreur de chargement des données');
       }
+    }
+
+    // Compute performance insights from real session data
+    function computeInsights(sessions, langCounts) {
+      // Peak hour
+      const hourCounts = {};
+      sessions.forEach(s => {
+        const h = new Date(s.created_at || s.timestamp).getHours();
+        hourCounts[h] = (hourCounts[h] || 0) + 1;
+      });
+      const peakEntry = Object.entries(hourCounts).sort((a, b) => b[1] - a[1])[0];
+      const peakEl = document.getElementById('insight-peak');
+      if (peakEl) peakEl.textContent = peakEntry ? `${peakEntry[0]}h00` : '--';
+
+      // Engagement: sessions > 120s
+      const engaged = sessions.filter(s => (parseInt(s.duration_sec) || 0) > 120).length;
+      const engRate = sessions.length > 0 ? Math.round((engaged / sessions.length) * 100) : 0;
+      const engEl = document.getElementById('insight-engagement');
+      if (engEl) engEl.textContent = sessions.length > 0 ? `${engRate}%` : '--';
+
+      // Active languages count
+      const activeLangs = Object.keys(langCounts).length;
+      const langsEl = document.getElementById('insight-langs');
+      if (langsEl) langsEl.textContent = activeLangs > 0 ? `${activeLangs}/5` : '--';
     }
 
     // Calculate and display trend
@@ -425,20 +504,37 @@
         return;
       }
 
-      container.innerHTML = calls.map(call => `
-        <div class="p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
-          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-            <i data-lucide="phone" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p class="font-medium text-slate-900 dark:text-white truncate">${call.persona || 'Agent IA'}</p>
-            <p class="text-sm text-slate-500">${Math.round((call.duration_sec || 0) / 60)} min • ${call.lang?.toUpperCase() || 'FR'}</p>
-          </div>
-          <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400">
-            Terminé
-          </span>
-        </div>
-      `).join('');
+      container.innerHTML = '';
+      calls.forEach(call => {
+        const row = document.createElement('div');
+        row.className = 'p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors';
+
+        const avatar = document.createElement('div');
+        avatar.className = 'w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/20 flex items-center justify-center flex-shrink-0';
+        avatar.innerHTML = '<i data-lucide="phone" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>';
+
+        const info = document.createElement('div');
+        info.className = 'flex-1 min-w-0';
+        const nameP = document.createElement('p');
+        nameP.className = 'font-medium text-slate-900 dark:text-white truncate';
+        nameP.textContent = call.persona || 'Agent IA';
+        const metaP = document.createElement('p');
+        metaP.className = 'text-sm text-slate-500';
+        const dur = Math.round((call.duration_sec || 0) / 60);
+        const lang = (call.lang || 'fr').toUpperCase();
+        metaP.textContent = `${dur} min \u2022 ${lang}`;
+        info.appendChild(nameP);
+        info.appendChild(metaP);
+
+        const badge = document.createElement('span');
+        badge.className = 'px-2.5 py-1 text-xs font-medium rounded-full bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 flex-shrink-0';
+        badge.textContent = 'Terminé';
+
+        row.appendChild(avatar);
+        row.appendChild(info);
+        row.appendChild(badge);
+        container.appendChild(row);
+      });
 
       lucide.createIcons();
     }
@@ -463,6 +559,11 @@
           callsByDay.push(count);
         }
 
+        // Create gradient for bar chart
+        const barGradient = callCtx.createLinearGradient(0, 0, 0, callCtx.canvas.height);
+        barGradient.addColorStop(0, 'rgba(99, 102, 241, 0.9)');
+        barGradient.addColorStop(1, 'rgba(139, 92, 246, 0.6)');
+
         new Chart(callCtx, {
           type: 'bar',
           data: {
@@ -470,17 +571,27 @@
             datasets: [{
               label: 'Appels',
               data: callsByDay,
-              backgroundColor: 'rgba(99, 102, 241, 0.8)',
-              borderRadius: 6
+              backgroundColor: barGradient,
+              borderRadius: 8,
+              borderSkipped: false
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                cornerRadius: 8,
+                padding: 10,
+                titleFont: { family: 'Inter, sans-serif', weight: '600' },
+                bodyFont: { family: 'Inter, sans-serif' }
+              }
+            },
             scales: {
-              y: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.1)' } },
-              x: { grid: { display: false } }
+              y: { beginAtZero: true, grid: { color: 'rgba(148, 163, 184, 0.08)' }, ticks: { font: { family: 'Inter' } } },
+              x: { grid: { display: false }, ticks: { font: { family: 'Inter' } } }
             }
           }
         });
@@ -513,13 +624,27 @@
           type: 'doughnut',
           data: {
             labels,
-            datasets: [{ data, backgroundColor: colors }]
+            datasets: [{
+              data,
+              backgroundColor: colors,
+              borderWidth: 0,
+              hoverOffset: 6
+            }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            cutout: '65%',
             plugins: {
-              legend: { position: 'right' }
+              legend: {
+                position: 'right',
+                labels: { usePointStyle: true, padding: 16, font: { family: 'Inter, sans-serif' } }
+              },
+              tooltip: {
+                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                cornerRadius: 8,
+                padding: 10
+              }
             }
           }
         });

@@ -16,6 +16,10 @@
   <script src="/src/lib/i18n.js"></script>
   <!-- GSAP Animations (counters) -->
   <script src="/src/lib/gsap-animations.js"></script>
+  <style>
+    @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: livePulse 2s ease-in-out infinite; }
+  </style>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
   <div class="flex h-screen overflow-hidden">
@@ -450,7 +454,7 @@
         activities.push({
           icon: 'user-plus',
           iconColor: 'green',
-          text: \`Tenant <strong>\${latestTenant.name || latestTenant.id}</strong> inscrit\`,
+          plainText: `Tenant ${latestTenant.name || latestTenant.id} inscrit`,
           time: formatTimeAgo(latestTenant.created_at)
         });
       }
@@ -463,7 +467,7 @@
       activities.push({
         icon: 'phone',
         iconColor: 'blue',
-        text: \`<strong>\${todayCalls.toLocaleString()}</strong> appels traités aujourd'hui\`,
+        plainText: `${todayCalls.toLocaleString()} appels traités aujourd'hui`,
         time: 'Mise à jour automatique'
       });
 
@@ -472,8 +476,9 @@
         activities.push({
           icon: 'alert-triangle',
           iconColor: 'amber',
-          text: \`<strong>\${pendingHitl}</strong> approbations HITL en attente\`,
-          time: '<a href="hitl.html" class="text-indigo-600 hover:underline">Voir les demandes</a>'
+          plainText: `${pendingHitl} approbations HITL en attente`,
+          time: 'Voir les demandes',
+          timeHtml: '<a href="hitl.html" class="text-indigo-600 hover:underline">Voir les demandes</a>'
         });
       }
 
@@ -481,21 +486,38 @@
       activities.push({
         icon: 'database',
         iconColor: 'purple',
-        text: \`<strong>\${sessions.length.toLocaleString()}</strong> sessions totales\`,
+        plainText: `${sessions.length.toLocaleString()} sessions totales`,
         time: 'Base de données'
       });
 
-      container.innerHTML = activities.map(a => \`
-        <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg">
-          <div class="w-8 h-8 rounded-full bg-\${a.iconColor}-100 dark:bg-\${a.iconColor}-900/30 flex items-center justify-center">
-            <i data-lucide="\${a.icon}" class="w-4 h-4 text-\${a.iconColor}-600"></i>
-          </div>
-          <div class="flex-1">
-            <p class="text-sm text-slate-900 dark:text-white">\${a.text}</p>
-            <p class="text-xs text-slate-500">\${a.time}</p>
-          </div>
-        </div>
-      \`).join('');
+      container.innerHTML = '';
+      activities.forEach(a => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-900 rounded-lg';
+
+        const iconDiv = document.createElement('div');
+        iconDiv.className = `w-8 h-8 rounded-full bg-${a.iconColor}-100 dark:bg-${a.iconColor}-900/30 flex items-center justify-center`;
+        iconDiv.innerHTML = `<i data-lucide="${a.icon}" class="w-4 h-4 text-${a.iconColor}-600"></i>`;
+
+        const textDiv = document.createElement('div');
+        textDiv.className = 'flex-1';
+        const textP = document.createElement('p');
+        textP.className = 'text-sm text-slate-900 dark:text-white';
+        textP.textContent = a.plainText;
+        const timeP = document.createElement('p');
+        timeP.className = 'text-xs text-slate-500';
+        if (a.timeHtml) {
+          timeP.innerHTML = a.timeHtml;
+        } else {
+          timeP.textContent = a.time;
+        }
+        textDiv.appendChild(textP);
+        textDiv.appendChild(timeP);
+
+        row.appendChild(iconDiv);
+        row.appendChild(textDiv);
+        container.appendChild(row);
+      });
 
       lucide.createIcons();
     }
@@ -565,57 +587,53 @@
 
     loadStats();
 
-    // Phase 3.3 - Live Latency Indicators
-    // Simulate provider latency updates (in production, this would come from /api/health)
-    function updateProviderLatencies() {
-      const providers = [
-        { id: 'primary', baseLatency: 80, variance: 30 },     // Voice-X (Grok)
-        { id: 'fallback', baseLatency: 120, variance: 40 },   // Gen-AI (Gemini)
-        { id: 'tts', baseLatency: 150, variance: 50 },        // Voice-Labs (ElevenLabs)
-        { id: 'telephony', baseLatency: 100, variance: 35 }   // PSTN-Bridge (Twilio)
-      ];
+    // Live Latency — real health endpoint polling
+    async function updateProviderLatencies() {
+      const providers = ['primary', 'fallback', 'tts', 'telephony'];
+      try {
+        const start = Date.now();
+        const res = await fetch('/api/health');
+        const apiLatency = Date.now() - start;
+        const health = res.ok ? await res.json() : null;
 
-      providers.forEach(p => {
-        // Simulate latency with some variance
-        const latency = Math.round(p.baseLatency + (Math.random() - 0.5) * p.variance);
-        const el = document.getElementById(`provider-${p.id}-latency`);
-        const card = document.getElementById(`provider-${p.id}`);
-        const indicator = card?.querySelector('.rounded-full');
+        providers.forEach(p => {
+          const el = document.getElementById(`provider-${p}-latency`);
+          const card = document.getElementById(`provider-${p}`);
+          const indicator = card?.querySelector('.rounded-full');
+          if (!el) return;
 
-        if (el) {
-          el.textContent = `Latence: ${latency}ms`;
+          // Use real API latency as baseline for all providers
+          const latency = health ? apiLatency : 0;
+          const isUp = health && health.status !== 'error';
 
-          // Color code based on latency thresholds
-          if (latency < 100) {
+          el.textContent = isUp ? `Latence: ${latency}ms` : 'Indisponible';
+
+          if (isUp && latency < 200) {
             el.className = 'text-xs text-green-600 dark:text-green-400 mt-1';
-            if (indicator) {
-              indicator.className = 'w-2 h-2 bg-green-500 rounded-full animate-pulse';
-            }
-          } else if (latency < 200) {
+            if (indicator) indicator.className = 'w-2 h-2 bg-green-500 rounded-full animate-pulse';
+          } else if (isUp && latency < 500) {
             el.className = 'text-xs text-amber-600 dark:text-amber-400 mt-1';
-            if (indicator) {
-              indicator.className = 'w-2 h-2 bg-amber-500 rounded-full animate-pulse';
-            }
+            if (indicator) indicator.className = 'w-2 h-2 bg-amber-500 rounded-full';
           } else {
             el.className = 'text-xs text-red-600 dark:text-red-400 mt-1';
-            if (indicator) {
-              indicator.className = 'w-2 h-2 bg-red-500 rounded-full animate-pulse';
-            }
+            if (indicator) indicator.className = 'w-2 h-2 bg-red-500 rounded-full';
           }
-        }
-      });
+        });
+      } catch {
+        providers.forEach(p => {
+          const el = document.getElementById(`provider-${p}-latency`);
+          if (el) {
+            el.textContent = 'Hors ligne';
+            el.className = 'text-xs text-slate-500 mt-1';
+          }
+        });
+      }
     }
 
-    // Initial update
+    // Initial update + poll every 30s
     updateProviderLatencies();
-
-    // Update every 30 seconds
     const latencyInterval = setInterval(updateProviderLatencies, 30000);
-
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-      clearInterval(latencyInterval);
-    });
+    window.addEventListener('beforeunload', () => clearInterval(latencyInterval));
   </script>
 </body>
 </html>

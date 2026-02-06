@@ -369,7 +369,7 @@ class APIClient {
           // Session 250.63: Voice preferences
           voice_language: tenant?.voice_language || 'fr',
           voice_gender: tenant?.voice_gender || 'female',
-          active_persona: tenant?.active_persona || 'agency_v3'
+          active_persona: tenant?.active_persona || 'UNIVERSAL_SME'
         };
       },
       update: async (tenantId, data) => {

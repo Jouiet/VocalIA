@@ -373,7 +373,7 @@ describe('Voice Widget Security', () => {
   });
 
   it('Uses HTTPS for API endpoints', () => {
-    const httpMatches = widgetContent.match(/http:\/\/(?!localhost)/g);
+    const httpMatches = widgetContent.match(/http:\/\/(?!localhost|www\.w3\.org)/g);
     assert.ok(!httpMatches || httpMatches.length === 0,
               'Should not use non-localhost HTTP URLs');
   });
