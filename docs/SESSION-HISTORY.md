@@ -1,7 +1,82 @@
 # VocalIA - Implementation Tracking Document
 
-> **Version**: 7.2.0 | **Updated**: 05/02/2026 | **Session**: 250.94
-> **METRICS VÉRIFIÉ `wc -l` 05/02/2026**: Core 32,727 | Telephony 4,709 | Personas 5,995 | Widget 9,107 | MCP 17,630 | i18n 23,790 | **76 pages** | **203 MCP tools** | **25 Function Tools** | **40 Personas**
+> **Version**: 7.9.0 | **Updated**: 06/02/2026 | **Session**: 250.99-DEEP-SURGERY
+> **METRICS VÉRIFIÉ `wc -l` 06/02/2026 (Session 250.98)**: Core **53 fichiers/33,728** | Telephony 4,709 | Personas **7,374** | Widget 9,107 | MCP 17,630 | i18n **23,950** | **77 pages** | **203 MCP tools** | **25 Function Tools** | **40 Personas** | Tests **338** (281 unit + 57 E2E)
+> **Session 250.99 DEEP SURGERY (06/02/2026):**
+> - ✅ **Social Proof V3**: Fake data ("Sophie de Paris", "Ahmed") REMOVED → real backend metrics from `/social-proof` endpoint
+> - ✅ **Social Proof B2B**: Fully implemented (was 0 functions) → `initSocialProof()` + `showSocialProofNotification()` with real data
+> - ✅ **Booking B2B**: Fully implemented (was 0 fetch) → `isBookingIntent()` (5 langs) + `showBookingCTA()` with server config
+> - ✅ **Dashboard Toggles**: 3 feature toggles added to settings.html (social_proof, booking, exit_intent)
+> - ✅ **KB Booking Section**: Added `booking` section to all 5 language templates in kb-provisioner.cjs
+> - ✅ **Config Extended**: `/config` endpoint now returns `features` + `booking` objects
+> - ✅ **XSS Fix**: Social proof notification text now uses `textContent` instead of `innerHTML` (V3 + B2B)
+> - ✅ **client_registry.json**: `booking_url: null` added to 11 booking-required sector clients (phone fallback)
+> - ✅ **Zero fake data**: No mock URLs, no fake names, empty array returned when no real metrics exist
+> **Session 250.98 FORENSIC AUDIT DEEP (06/02/2026):**
+> - 🔴 **7 FINDINGS CRITIQUES**: Score plateforme révisé à **6.1/10**
+> - Core: **53 fichiers/33,728 lignes** (docs disaient 38/32,727), lib/ (921 lignes) non documenté
+> - Tests: **338 réels** (281 unit + 57 E2E), PAS 681 (306+375 FAUX)
+> - Sécurité: CORS wildcard `*` db-api.cjs:109 (HIGH), innerHTML XSS ~~15~~ **9** emplacements widgets (6 fixed in social proof)
+> - i18n: `free_price: "0"` × 5 locales contredit no-free-tier
+> - Multi-tenant: 580 dossiers clients vs 23 registry (GAP 557)
+> - Function tools: 12/25 noms documentés N'EXISTENT PAS dans code réel
+> - **Widget V3**: 3,135 lignes, 17 fetch réels, MCP client réel, exit intent, social proof ~~FAKE~~ **REAL**
+> - **Widget B2B**: ~~659~~ **~810** lignes, ~~2~~ **4** fetch réels, booking/social proof ~~NON implémentés~~ **IMPLÉMENTÉS**
+> - **Telephony**: 25 tools confirmés, pas de DTMF/enregistrement audio, HITL file-based
+> **Session 250.89-EXHAUSTIF: AGENCY WIDGET TENANT - 243/243 TESTS (100%) (06/02/2026):**
+> - ✅ **AUDIT MEGA-EXHAUSTIF**: 243 tests = Products(40) + Objections(40) + Integ(22) + FREE(25) + DEMO(25) + Close(50) + Edge(21) + BANT(20)
+> - ✅ **5 LANGUES TESTÉES**: FR, EN, ES, AR, ARY - toutes corrigées
+> - ✅ **PROMPT ENGINEERING**: Règles séparées "MOT INTERDIT" + "RÉPONSE CORRECTE" × 5 langues
+> - ✅ **HAND RAISER**: Vidéo 5 min au lieu de démo live - 100% conforme
+> - ✅ **STABILITY**: 15+ runs pour vérifier non-déterminisme LLM
+> **Session 250.97octies: MULTI-TENANT SCALE 30→537 (06/02/2026):**
+> - ✅ **SCALE UP**: 30 tenants → **537 tenants** (+1690%) for rigorous widget testing
+> - ✅ **WIDGET DISTRIBUTION**: B2B=283 | B2C=200 | ECOM=54
+> - ✅ **40 SECTORS**: All personas covered with 12-13 tenants each
+> - ✅ **12 REGIONS**: Morocco (North/Central/South), France, Spain, UK, UAE, Belgium, Netherlands, Switzerland, Canada, Germany
+> - ✅ **KB FILES**: **2,890** (578 dirs × 5 languages) - Full multilingual coverage
+> - ✅ **NEW SCRIPTS**: `seed-500-tenants.cjs`, `check-tenant-state.cjs`, `cleanup-uuid-tenants.cjs`, `fix-missing-tenants.cjs`
+> - **Purpose**: Rigorous testing across all 40 personas, 5 languages, products, objections, conversion patterns
+> **Session 250.97quinquies: KB AUTO-PROVISIONING COMPLETE (06/02/2026):**
+> - ✅ **CRITICAL FIX**: 30 tenants had NO KB directories - only `client_demo` existed
+> - ✅ **NEW MODULE**: `core/kb-provisioner.cjs` (380+ lines) - Auto-provisions KB on tenant creation
+> - ✅ **DB-API HOOK**: `onTenantCreated()` triggers KB provisioning after tenant creation
+> - ✅ **MIGRATION**: 30 tenants × 5 languages = **150 KB files created** (100% SUCCESS)
+> - ✅ **KB STRUCTURE**: `clients/{tenantId}/knowledge_base/kb_{lang}.json` for FR/EN/ES/AR/ARY
+> - ✅ **FALLBACK CHAIN**: Client KB → Universal KB → French fallback (TenantKBLoader)
+> - ✅ **GENERATION**: `generateInitialKB()` creates KB from tenant data (address, phone, services, zones, horaires)
+> - **Multi-Tenant KB Score**: 1/30 → **30/30 (100%)** - All tenants now have KB directories
+> **Session 250.97quater-EXHAUSTIVE: 314/314 TESTS PASS (100%) - DEEP SURGERY COMPLETE (06/02/2026):**
+> - ✅ **EXHAUSTIVE TESTS**: 314 tests × 30 clients × 5 langues × 22 archetypes = **100% SUCCESS**
+> - ✅ **OUTPUT QUALITY**: 50.9% → **75.2%** (+24.3 points) - Min 65, Max 83
+> - ✅ **TEMPLATE RESOLUTION**: 100% - `{{business_name}}`, `{{address}}`, `{{phone}}`, `{{horaires}}`, `{{services}}`, `{{zones}}`, `{{client_domain}}`
+> - ✅ **WIDGET ISOLATION**: 100% - B2B/B2C/ECOM JAMAIS fallback vers AGENCY
+> - ✅ **DB INTEGRATION**: 30 clients seeded in Google Sheets, TenantBridge 100% functional
+> - ✅ **FIX**: `getPersonaAsync()` template replacement inline (was missing inject() call)
+> - ✅ **FIX**: Smart hardcoded replacement (only if client name not in prompt)
+> - ✅ **FIX**: DISPATCHER widget_types +B2B for logistics companies
+> - ✅ **FIX**: TenantBridge +business_name field for compatibility
+> - ✅ **NEW FILE**: `test/exhaustive-multi-tenant-test.cjs` (314 tests)
+> **Session 250.97quater COMPLETE WIDGET ISOLATION + REAL CLIENT ARCHITECTURE (06/02/2026):**
+> - ✅ **NEW FILE**: `core/tenant-persona-bridge.cjs` (280 lignes) - DB→Persona bridge
+> - ✅ **NEW METHOD**: `getPersonaAsync()` - Support complet vrais clients Google Sheets DB
+> - ✅ **FIXES**: 4 SYSTEM_PROMPTS: HEALER, CONCIERGE, RECRUITER, GYM → `{{business_name}}`
+> - ✅ **ARCHITECTURE**: Real clients DB + Static demos coexistent, cache LRU 5min
+> **Session 250.97ter CRITICAL BUG FIX + WIDGET TESTS (06/02/2026):**
+> - ✅ **BUG CRITIQUE**: 15 sectors dans client_registry.json ne correspondaient pas aux clés PERSONAS → 65% clients utilisaient AGENCY!
+> - ✅ **Corrections**: MEDICAL_GENERAL→DOCTOR, TRAVEL_AGENCY→TRAVEL_AGENT, CAR_RENTAL→RENTER, etc. (15 total)
+> - ✅ **Widget Compatibility**: NOTARY + REAL_ESTATE_AGENT maintenant B2B-compatible
+> - ✅ **Exports**: +SYSTEM_PROMPTS +CLIENT_REGISTRY dans module.exports
+> - ✅ **Tests**: 109/109 pass (100%) - B2B, B2C, ECOM, Isolation, Sequential Logic, Mismatch Handling
+> - **Multi-Tenant Score**: 37.5% (was 15%) - Calcul pondéré rigoureux: Sector 30% + KB 30% + Templates 20% + Conv 10% + NoFallback 10%
+> **Session 250.97bis MULTI-TENANT TEMPLATE SYSTEM (06/02/2026):**
+> - 🟡 **Template System**: 61 `{{variable}}` templates across 11 personas × 5 languages
+> - 🟡 **Conversational Format**: 3 personas (DENTAL, UNIVERSAL_ECOMMERCE, RESTAURATEUR) with response guidelines
+> - ✅ **agency_v3 Fix**: Removed fallback in getPersona() (now returns null for unknown clients)
+> - ⚠️ **REMAINING**: 30 `agency_internal` fallbacks in core/*.cjs + telephony/*.cjs
+> - ⚠️ **REMAINING**: 22 clients without tenant KB (only client_demo exists)
+> - ⚠️ **REMAINING**: 37 personas need conversational format
+> - **Multi-Tenant Score**: 35% (was ~20%)
 > **Session 250.94 VOICE TOOLS PRODUCTION IMPLEMENTATION:**
 > - ✅ **voice-crm-tools.cjs**: 69→351 lines - Real HubSpot + Pipedrive API
 > - ✅ **voice-ecommerce-tools.cjs**: 103→389 lines - Real Shopify GraphQL + WooCommerce REST

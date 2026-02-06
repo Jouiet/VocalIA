@@ -134,6 +134,7 @@
     },
     // Social Proof/FOMO (Session 250.78)
     socialProof: {
+      messages: [],
       notificationsShown: 0,
       intervalId: null,
       lastShownTime: 0
@@ -2357,10 +2358,29 @@
    * Initialize social proof notifications
    * Shows recent activity to create urgency/trust
    */
-  function initSocialProof() {
+  async function initSocialProof() {
     if (!CONFIG.SOCIAL_PROOF_ENABLED) return;
 
-    // Initial delay before starting notifications
+    // Fetch real metrics from backend
+    try {
+      const baseUrl = CONFIG.VOICE_API_URL.replace('/respond', '');
+      const lang = state.currentLang || 'fr';
+      const resp = await fetch(`${baseUrl}/social-proof?lang=${lang}`, { signal: AbortSignal.timeout(5000) });
+      const data = await resp.json();
+
+      if (data.success && Array.isArray(data.messages) && data.messages.length > 0) {
+        state.socialProof.messages = data.messages;
+      } else {
+        // No real data - don't show fake notifications
+        console.log('[VocalIA] Social proof: no real data available, skipping');
+        return;
+      }
+    } catch (e) {
+      console.warn('[VocalIA] Social proof fetch failed, skipping:', e.message);
+      return;
+    }
+
+    // Start cycle only with real data
     setTimeout(() => {
       showSocialProofNotification();
       state.socialProof.intervalId = setInterval(() => {
@@ -2372,93 +2392,86 @@
       }, CONFIG.SOCIAL_PROOF_INTERVAL);
     }, CONFIG.SOCIAL_PROOF_DELAY);
 
-    console.log('[VocalIA] Social proof notifications initialized');
+    console.log('[VocalIA] Social proof initialized with', state.socialProof.messages.length, 'real messages');
   }
 
   /**
    * Generate and show a social proof notification
    */
   function showSocialProofNotification() {
-    // Don't show if widget is open
     if (state.isOpen) return;
+    if (state.socialProof.messages.length === 0) return;
 
     const L = state.langData || {};
     const isRTL = L?.meta?.rtl || false;
-    const proofs = L?.socialProof?.messages || getDefaultSocialProofMessages();
+    const proof = state.socialProof.messages[state.socialProof.notificationsShown % state.socialProof.messages.length];
 
-    // Pick a random proof message
-    const proof = proofs[Math.floor(Math.random() * proofs.length)];
-
-    // Create notification
     const notification = document.createElement('div');
     notification.className = 'va-social-proof';
-    notification.id = `va-sp-${Date.now()}`;
-    notification.innerHTML = `
-      <style>
-        .va-social-proof {
-          position: fixed; bottom: 100px; ${isRTL ? 'left' : 'right'}: 25px;
-          max-width: 280px; background: linear-gradient(145deg, #1e2642, #191e35);
-          border: 1px solid rgba(79,186,241,0.2); border-radius: 12px;
-          padding: 12px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-          z-index: 99997; font-family: Inter, -apple-system, sans-serif;
-          animation: slideInRight 0.4s ease, fadeOut 0.3s ease ${CONFIG.SOCIAL_PROOF_DURATION - 300}ms forwards;
-          ${isRTL ? 'direction: rtl;' : ''}
-        }
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(${isRTL ? '-' : ''}30px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fadeOut {
-          from { opacity: 1; }
-          to { opacity: 0; }
-        }
-        .va-sp-content { display: flex; align-items: center; gap: 10px; }
-        .va-sp-icon {
-          width: 36px; height: 36px; border-radius: 50%;
-          background: linear-gradient(135deg, #4FBAF1, #10B981);
-          display: flex; align-items: center; justify-content: center;
-          flex-shrink: 0;
-        }
-        .va-sp-icon svg { width: 18px; height: 18px; fill: white; }
-        .va-sp-text { font-size: 13px; color: rgba(255,255,255,0.9); line-height: 1.4; }
-        .va-sp-time { font-size: 11px; color: rgba(79,186,241,0.7); margin-top: 4px; }
-        .va-sp-close {
-          position: absolute; top: 6px; ${isRTL ? 'left' : 'right'}: 6px;
-          background: none; border: none; cursor: pointer;
-          color: rgba(255,255,255,0.4); padding: 2px;
-        }
-        .va-sp-close:hover { color: rgba(255,255,255,0.7); }
-      </style>
+    const notifId = `va-sp-${Date.now()}`;
+    notification.id = notifId;
 
-      <button class="va-sp-close" aria-label="Fermer">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-        </svg>
-      </button>
-
-      <div class="va-sp-content">
-        <div class="va-sp-icon">
-          <svg viewBox="0 0 24 24">${proof.icon || '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
-        </div>
-        <div>
-          <div class="va-sp-text">${proof.text}</div>
-          <div class="va-sp-time">${proof.time || getRandomTimeAgo(L)}</div>
-        </div>
-      </div>
+    // Styles (static - safe for innerHTML)
+    const style = document.createElement('style');
+    style.textContent = `
+      .va-social-proof {
+        position: fixed; bottom: 100px; ${isRTL ? 'left' : 'right'}: 25px;
+        max-width: 280px; background: linear-gradient(145deg, #1e2642, #191e35);
+        border: 1px solid rgba(79,186,241,0.2); border-radius: 12px;
+        padding: 12px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        z-index: 99997; font-family: Inter, -apple-system, sans-serif;
+        animation: slideInRight 0.4s ease, fadeOut 0.3s ease ${CONFIG.SOCIAL_PROOF_DURATION - 300}ms forwards;
+        ${isRTL ? 'direction: rtl;' : ''}
+      }
+      @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(${isRTL ? '-' : ''}30px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+      @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
     `;
+    notification.appendChild(style);
 
-    document.body.appendChild(notification);
+    // Build content safely with textContent (XSS fix)
+    const content = document.createElement('div');
+    content.style.cssText = 'display:flex;align-items:center;gap:10px;';
+
+    const iconDiv = document.createElement('div');
+    iconDiv.style.cssText = 'width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#4FBAF1,#10B981);display:flex;align-items:center;justify-content:center;flex-shrink:0;';
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('width', '18');
+    svg.setAttribute('height', '18');
+    svg.setAttribute('fill', 'white');
+    svg.innerHTML = proof.icon || '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+    iconDiv.appendChild(svg);
+
+    const textWrap = document.createElement('div');
+    const textEl = document.createElement('div');
+    textEl.style.cssText = 'font-size:13px;color:rgba(255,255,255,0.9);line-height:1.4;';
+    textEl.textContent = proof.text; // textContent = XSS safe
+    const timeEl = document.createElement('div');
+    timeEl.style.cssText = 'font-size:11px;color:rgba(79,186,241,0.7);margin-top:4px;';
+    timeEl.textContent = proof.time || '';
+    textWrap.appendChild(textEl);
+    textWrap.appendChild(timeEl);
+
+    content.appendChild(iconDiv);
+    content.appendChild(textWrap);
 
     // Close button
-    notification.querySelector('.va-sp-close').addEventListener('click', () => {
-      notification.remove();
-    });
+    const closeBtn = document.createElement('button');
+    closeBtn.style.cssText = 'position:absolute;top:6px;' + (isRTL ? 'left' : 'right') + ':6px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.4);padding:2px;';
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+    closeBtn.addEventListener('click', () => notification.remove());
 
-    // Auto-remove after duration
+    notification.appendChild(closeBtn);
+    notification.appendChild(content);
+    document.body.appendChild(notification);
+
     setTimeout(() => {
-      if (document.getElementById(notification.id)) {
-        notification.remove();
-      }
+      const el = document.getElementById(notifId);
+      if (el) el.remove();
     }, CONFIG.SOCIAL_PROOF_DURATION);
 
     state.socialProof.notificationsShown++;
@@ -2466,22 +2479,8 @@
     trackEvent('social_proof_shown', { index: state.socialProof.notificationsShown });
   }
 
-  function getRandomTimeAgo(L) {
-    const times = L?.socialProof?.times || [
-      'Il y a 2 min', 'Il y a 5 min', 'Il y a 12 min', 'Il y a 23 min', 'Il y a 1h'
-    ];
-    return times[Math.floor(Math.random() * times.length)];
-  }
-
-  function getDefaultSocialProofMessages() {
-    return [
-      { text: 'Sophie de Paris vient de demander une démo', icon: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>' },
-      { text: 'Une entreprise a automatisé 500 appels ce mois', icon: '<path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>' },
-      { text: 'Nouveau client: Cabinet dentaire à Casablanca', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>' },
-      { text: 'Ahmed a réservé un rendez-vous via l\'assistant', icon: '<path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-7-9c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>' },
-      { text: '12 leads qualifiés générés aujourd\'hui', icon: '<path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>' }
-    ];
-  }
+  // getRandomTimeAgo and getDefaultSocialProofMessages REMOVED
+  // Social proof now uses only real backend data (no fake names/data)
 
   // ============================================================
   // BOOKING SYSTEM

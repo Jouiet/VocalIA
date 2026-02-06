@@ -7,6 +7,17 @@
 
 > ⚠️ **NOTE HISTORIQUE**: Document reflétant l'état au 01/02/2026 (45 pages).
 > Depuis Session 250.52 (02/02/2026): **70 pages** (+19 webapp + misc).
+> **Session 250.98 FORENSIC AUDIT (06/02/2026)**: 🔴 **7 CRITICAL FINDINGS** - Score révisé à **6.1/10**
+>   - Core: **53 fichiers/33,728 lignes** (docs disaient 38/32,727)
+>   - Tests: **338 réels** (281 unit + 57 E2E), PAS 681 (306+375 était FAUX)
+>   - Sécurité: CORS wildcard `*` dans db-api.cjs:109, innerHTML XSS ~~15~~ **9** (6 fixed session 250.99)
+>   - i18n: `free_price: "0"` dans 5 locales contredit la politique no-free-tier
+>   - Multi-tenant: 580 dossiers clients mais seulement 23 dans registry (GAP 557)
+>   - Function tools: 12/25 noms documentés N'EXISTENT PAS dans le code réel
+>   - `lib/security-utils.cjs` (921 lignes) non documenté nulle part
+> **Session 250.99 DEEP SURGERY (06/02/2026)**: ✅ Social proof FAKE→REAL, B2B booking/social implemented, dashboard toggles, KB booking section, XSS fix (15→9)
+> **Session 250.97octies**: ✅ **MULTI-TENANT SCALE UP** - 30→537 tenants, 2,890 KB files, 12 regions, 40 sectors (B2B=283, B2C=200, ECOM=54)
+> **Session 250.97quinquies**: ✅ **KB AUTO-PROVISIONING COMPLETE** - 30 tenants × 5 languages = 150 KB files, `kb-provisioner.cjs` (380+ lines)
 > **Session 250.91**: ✅ **ALL BLOCKERS RESOLVED** - MCP 203 tools, i18n 100%, Widget B2B v2.2.0 deployed
 > **Session 250.90**: ✅ **I18N COMPLETE** - All 5 languages translated, Spanish decontamination (82 entries fixed)
 > **Session 250.87bis**: ✅ **MCP GAPS FILLED** - hubspot.ts (7), klaviyo.ts (5), twilio.ts (5 incl. WhatsApp) = +17 tools
@@ -24,17 +35,22 @@
 
 | Métrique | Valeur |
 |:---------|:------:|
-| Pages HTML | **45** |
-| Issues CRITICAL | ~~9~~ **0** |
-| Issues HIGH | ~~6~~ **0** |
-| Issues MEDIUM | ~~7~~ **0** |
-| Issues LOW | ~~3~~ **0** (2 WONTFIX) |
-| **TOTAL FIXED** | **25/25** (2 WONTFIX) |
-| Score Global | **99/100** |
-| Factuality Audit | **100%** |
+| Pages HTML | **77** (vérifié Session 250.98) |
+| Issues CRITICAL (Website) | ~~9~~ **0** |
+| Issues HIGH (Website) | ~~6~~ **0** |
+| Issues MEDIUM (Website) | ~~7~~ **0** |
+| Issues LOW (Website) | ~~3~~ **0** (2 WONTFIX) |
+| **TOTAL FIXED (Website)** | **25/25** (2 WONTFIX) |
+| Score Website | **99/100** |
+| **Score Global Plateforme** | **6.1/10** (Session 250.98 forensic) |
+| Factuality Audit | ⚠️ **Écarts majeurs** identifiés |
 | SEO/Twitter | **37 pages** |
 
-**Verdict:** `LEVEL 5 - PRODUCTION READY`
+**Verdict Website:** `LEVEL 5 - PRODUCTION READY`
+**Verdict Plateforme:** `LEVEL 3 - NEEDS WORK` (sécurité CORS, doc-code mismatch, tests inflated)
+
+> ⚠️ **Session 250.98**: Le score 99/100 concerne UNIQUEMENT le website statique.
+> Le score global plateforme (backend+widgets+multi-tenant) est **6.1/10** après audit forensique.
 
 **Session 250.38 Update:** ALL REMAINING ISSUES FIXED
 

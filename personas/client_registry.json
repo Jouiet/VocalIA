@@ -21,11 +21,12 @@
             "payment_details": "https://buy.stripe.com/dental_deposit_99",
             "phone": "+33198765432",
             "address": "45 Rue de la Santé, Lyon",
-            "widget_type": "B2B"
+            "widget_type": "B2B",
+            "booking_url": null
         },
         "client_hoa_01": {
             "name": "Sunnyvale HOA",
-            "sector": "HOA",
+            "sector": "PROPERTY",
             "currency": "USD",
             "language": "en",
             "knowledge_base_id": "hoa_support_v1",
@@ -73,7 +74,7 @@
         },
         "medecin_general_01": {
             "name": "Cabinet Dr. Bennani",
-            "sector": "MEDICAL_GENERAL",
+            "sector": "DOCTOR",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "medical_general_v1",
@@ -82,6 +83,7 @@
             "phone": "+212522334455",
             "address": "Bd Zerktouni, Casablanca",
             "widget_type": "B2C",
+            "booking_url": null,
             "services": [
                 "consultation",
                 "certificat_medical",
@@ -92,7 +94,7 @@
         },
         "medecin_specialiste_01": {
             "name": "Dr. El Amrani - Cardiologue",
-            "sector": "MEDICAL_SPECIALIST",
+            "sector": "SPECIALIST",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "medical_specialist_v1",
@@ -101,6 +103,7 @@
             "phone": "+212537889900",
             "address": "Clinique Atlas, Rabat",
             "widget_type": "B2C",
+            "booking_url": null,
             "specialite": "cardiologie",
             "services": [
                 "consultation",
@@ -121,6 +124,7 @@
             "phone": "+212522667788",
             "address": "Maarif, Casablanca",
             "widget_type": "B2C",
+            "booking_url": null,
             "services": [
                 "detartrage",
                 "extraction",
@@ -132,7 +136,7 @@
         },
         "agence_voyage_01": {
             "name": "Atlas Voyages",
-            "sector": "TRAVEL_AGENCY",
+            "sector": "TRAVEL_AGENT",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "travel_agency_v1",
@@ -158,7 +162,7 @@
         },
         "location_voiture_01": {
             "name": "Maroc Cars Location",
-            "sector": "CAR_RENTAL",
+            "sector": "RENTER",
             "currency": "MAD",
             "language": "ary",
             "knowledge_base_id": "car_rental_v1",
@@ -167,6 +171,7 @@
             "phone": "+212661990088",
             "address": "Aéroport Mohammed V, Casablanca",
             "widget_type": "B2C",
+            "booking_url": null,
             "services": [
                 "location_courte",
                 "location_longue",
@@ -192,6 +197,7 @@
             "phone": "+212537778899",
             "address": "Agdal, Rabat",
             "widget_type": "B2B",
+            "booking_url": null,
             "services": [
                 "acte_vente",
                 "succession",
@@ -203,7 +209,7 @@
         },
         "agence_immo_01": {
             "name": "Immobilier Casa Pro",
-            "sector": "REAL_ESTATE",
+            "sector": "REAL_ESTATE_AGENT",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "real_estate_v1",
@@ -212,6 +218,7 @@
             "phone": "+212522445566",
             "address": "Bd Anfa, Casablanca",
             "widget_type": "B2B",
+            "horaires": "Lun-Sam 9h-18h",
             "services": [
                 "vente",
                 "location",
@@ -227,7 +234,7 @@
         },
         "agence_event_01": {
             "name": "Marrakech Events",
-            "sector": "EVENT_AGENCY",
+            "sector": "PLANNER",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "event_agency_v1",
@@ -247,7 +254,7 @@
         },
         "agence_commerciale_01": {
             "name": "Force Vente Maroc",
-            "sector": "SALES_AGENCY",
+            "sector": "RECRUITER",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "sales_agency_v1",
@@ -256,6 +263,7 @@
             "phone": "+212522334455",
             "address": "Sidi Maarouf, Casablanca",
             "widget_type": "B2B",
+            "horaires": "Lun-Ven 8h30-18h30",
             "services": [
                 "prospection",
                 "negociation",
@@ -271,7 +279,7 @@
         },
         "concessionnaire_auto_01": {
             "name": "Auto Galaxy Maroc",
-            "sector": "CAR_DEALER",
+            "sector": "RETAILER",
             "currency": "MAD",
             "language": "ary",
             "knowledge_base_id": "car_dealer_v1",
@@ -297,7 +305,7 @@
         },
         "assurance_01": {
             "name": "Assurances Al Amane",
-            "sector": "INSURANCE",
+            "sector": "INSURER",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "insurance_v1",
@@ -323,7 +331,7 @@
         },
         "hotel_marrakech_01": {
             "name": "Riad Jardin Secret",
-            "sector": "HOTEL",
+            "sector": "CONCIERGE",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "hotel_v1",
@@ -332,6 +340,8 @@
             "phone": "+212524443322",
             "address": "Médina, Marrakech",
             "widget_type": "B2C",
+            "booking_url": null,
+            "horaires": "Réception 24h/24",
             "services": [
                 "hebergement",
                 "petit_dejeuner",
@@ -344,7 +354,7 @@
         },
         "hotel_agadir_01": {
             "name": "Atlantic Beach Resort",
-            "sector": "HOTEL",
+            "sector": "CONCIERGE",
             "currency": "MAD",
             "language": "en",
             "knowledge_base_id": "hotel_v1",
@@ -353,6 +363,7 @@
             "phone": "+212528776655",
             "address": "Bd 20 Août, Agadir",
             "widget_type": "B2C",
+            "booking_url": null,
             "services": [
                 "all_inclusive",
                 "spa",
@@ -365,7 +376,7 @@
         },
         "salon_coiffure_casa_01": {
             "name": "Coiffure Prestige Casa",
-            "sector": "HAIR_SALON",
+            "sector": "HAIRDRESSER",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "hair_salon_v1",
@@ -374,6 +385,7 @@
             "phone": "+212522334466",
             "address": "Maarif, Casablanca",
             "widget_type": "B2C",
+            "booking_url": null,
             "services": [
                 "coupe",
                 "coloration",
@@ -385,7 +397,7 @@
         },
         "beauty_salon_rabat_01": {
             "name": "Institut Beauté Royale",
-            "sector": "BEAUTY_SALON",
+            "sector": "STYLIST",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "beauty_salon_v1",
@@ -394,6 +406,7 @@
             "phone": "+212537889911",
             "address": "Agdal, Rabat",
             "widget_type": "B2C",
+            "booking_url": null,
             "services": [
                 "soins_visage",
                 "epilation",
@@ -405,7 +418,7 @@
         },
         "spa_marrakech_01": {
             "name": "Hammam & Spa Palmeraie",
-            "sector": "SPA",
+            "sector": "HEALER",
             "currency": "MAD",
             "language": "fr",
             "knowledge_base_id": "spa_v1",
@@ -414,6 +427,7 @@
             "phone": "+212524557788",
             "address": "Palmeraie, Marrakech",
             "widget_type": "B2C",
+            "booking_url": null,
             "services": [
                 "hammam",
                 "massage",
@@ -425,7 +439,7 @@
         },
         "fitness_casa_01": {
             "name": "City Gym Casablanca",
-            "sector": "FITNESS_GYM",
+            "sector": "GYM",
             "currency": "MAD",
             "language": "ary",
             "knowledge_base_id": "fitness_v1",

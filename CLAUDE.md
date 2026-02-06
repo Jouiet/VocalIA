@@ -1,10 +1,13 @@
 # VocalIA - Voice AI Platform
 
-> **v7.3.0** | 05/02/2026 | Health: 100% | Production: https://vocalia.ma
-> **77 pages** | 23,795 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | 306 unit + 375 E2E tests (99.5%)
+> **v7.9.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
+> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | 281 unit + 57 E2E = **338 tests**
 > **203 MCP Tools** | 40 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
-> **~140k lines total** | Core 32,727 + Telephony 4,709 + Personas 5,995 + Widget 9,107 + MCP 17,630 + Website 31,353
-> ✅ **SESSION 250.96:** Forensic Audit Frontend 100% DONE - 17 console.log removed, signup CTA, mentions-legales.html, Score 95/100
+> **~80k lines source** | Core 33,728 (53 files) + Telephony 4,709 + Personas 7,374 + Widget 9,107 + MCP/src 17,630 + Lib 921 + Website 31,512
+> ✅ **SESSION 250.97octies:** MULTI-TENANT SCALE - 30→537 tenants | 2,890 KB files | 12 regions | 40 sectors
+>    - **537 tenants** (B2B=283, B2C=200, ECOM=54) | **580 KB directories** × 5 languages = **2,890 KB files**
+>    - **12 regions**: Morocco(3), France, Spain, UK, UAE, Belgium, Netherlands, Switzerland, Canada, Germany
+>    - **40 personas covered**: 12-13 tenants each | Widget testing infrastructure PRODUCTION READY
 
 ## Quick Reference
 
@@ -13,27 +16,29 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Backend 100/100** (306/309 pass, 3 skip), **Frontend 100/100** (i18n 100%), Security 100/100 |
+| Scores | **Backend**: 281 unit tests, **Frontend**: 57 E2E tests, **Security**: CORS db-api wildcard issue |
 
 ---
 
 ## Architecture
 
 ```
-VocalIA/                              # ~140,000 lines (VÉRIFIÉ wc -l 05/02/2026)
-├── core/           # 38 modules (32,727 lines)
-│   ├── voice-api-resilient.cjs   # Multi-AI fallback (3,018 lines, port 3004)
+VocalIA/                              # VÉRIFIÉ wc -l 06/02/2026 (Session 250.98)
+├── core/           # 53 modules (33,728 lines)
+│   ├── voice-api-resilient.cjs   # Multi-AI fallback (3,086 lines, port 3004)
 │   ├── grok-voice-realtime.cjs   # WebSocket audio (1,109 lines, port 3007)
-│   ├── db-api.cjs                # REST API + Auth (2,721 lines, port 3013)
-│   ├── voice-crm-tools.cjs       # HubSpot + Pipedrive API (351 lines) ← SESSION 250.94
-│   ├── voice-ecommerce-tools.cjs # Shopify + WooCommerce API (389 lines) ← SESSION 250.94
-│   └── [+33 modules]
+│   ├── db-api.cjs                # REST API + Auth (2,733 lines, port 3013)
+│   ├── voice-crm-tools.cjs       # HubSpot + Pipedrive API (351 lines)
+│   ├── voice-ecommerce-tools.cjs # Shopify + WooCommerce API (389 lines)
+│   └── [+48 modules]
+├── lib/            # 1 module (921 lines) - security-utils
 ├── telephony/      # PSTN bridge (4,709 lines, 25 function tools)
-├── personas/       # 40 personas SOTA (5,995 lines)
+├── personas/       # 40 personas (6,722 .cjs + 591 .json = 7,374 lines)
 ├── widget/         # 8 e-commerce widgets (9,107 lines)
-├── website/        # 76 pages (public + webapp)
-│   └── src/locales/   # 5 langs (23,790 lines)
-├── mcp-server/     # 203 tools TypeScript (17,630 lines, v0.8.0)
+├── website/        # 77 pages (public + webapp)
+│   └── src/locales/   # 5 langs (23,950 lines)
+├── mcp-server/src/ # 203 tools TypeScript (17,630 lines, 31 .ts files)
+├── clients/        # 580 tenant directories (auto-generated)
 └── docs/           # SESSION-HISTORY.md for detailed logs
 ```
 
@@ -106,7 +111,7 @@ git push origin main
 
 ---
 
-## MCP Server (186 Tools - Verified)
+## MCP Server (203 Tools - Verified `grep -c "server.tool(" mcp-server/src/index.ts`)
 
 | Category | Tools |
 |:---------|:-----:|
@@ -119,12 +124,26 @@ git push origin main
 | Wix | 6 |
 | Squarespace | 7 |
 | Pipedrive | 7 |
-| Zendesk + Freshdesk | 12 |
-| Google Suite | 17 |
+| Zendesk | 6 |
+| Freshdesk | 6 |
+| Gmail | 7 |
+| Drive | 6 |
+| Sheets | 5 |
+| Docs | 4 |
+| Calendly | 6 |
 | UCP/CDP | 7 |
-| iPaaS | 9 |
+| Zoho | 6 |
+| Klaviyo | 5 |
+| Twilio | 5 |
+| Make | 5 |
+| n8n | 5 |
+| Zapier | 3 |
 | Export | 5 |
-| Other | ~49 |
+| Email | 3 |
+| Recommendations | 4 |
+| Calendar | 2 |
+| Slack | 1 |
+| Inline (system/voice/persona) | 22 |
 
 ---
 
@@ -157,13 +176,53 @@ git push origin main
 
 ---
 
+## Multi-Tenant System (Session 250.97ter - VERIFIED ✅)
+
+| Metric | Value | Verification |
+|:-------|:------|:-------------|
+| Sector→PERSONAS Mapping | **40/40** ✅ | All 40 sectors in both SYSTEM_PROMPTS and PERSONAS |
+| Template Usages | 181 | `grep -c '{{' personas/voice-persona-injector.cjs` |
+| Client Folders | **580** | `ls clients/ \| wc -l` (B2B=282, B2C=204, ECOM=61, UUID=30) |
+| Clients in Registry | **23** | `jq '.clients \| keys \| length' personas/client_registry.json` |
+| KB Files in clients/ | **2,890** | `find clients -name "kb_*.json" \| wc -l` (578 dirs × 5 langs) |
+| KB in data/ legacy | 1 | `ls data/knowledge-base/tenants/` → client_demo only |
+| **GAP** | **557** | 580 folders - 23 registry entries = 557 NOT in registry |
+
+**Score Methodology:** See `docs/AUDIT-MULTI-TENANT-SESSION-250.57.md` § "MÉTHODOLOGIE DE SCORE MULTI-TENANT"
+
+**Session 250.97ter Fixes:**
+- ✅ 15 sectors corrected in client_registry.json (was falling back to AGENCY)
+- ✅ NOTARY + REAL_ESTATE_AGENT: Added B2B widget compatibility
+- ✅ Exports: Added SYSTEM_PROMPTS + CLIENT_REGISTRY
+
+**Session 250.99 Deep Surgery Fixes:**
+- ✅ Social Proof V3: Fake data REMOVED → real `/social-proof` backend endpoint
+- ✅ Social Proof B2B: Fully implemented (was 0 functions)
+- ✅ Booking B2B: `isBookingIntent()` (5 langs) + `showBookingCTA()` implemented
+- ✅ Dashboard: 3 widget feature toggles added to settings.html
+- ✅ KB: `booking` section added to all 5 language templates
+- ✅ XSS: Social proof textContent fix (innerHTML count 15 → 9)
+- ✅ client_registry.json: `booking_url` field on 11 booking-required clients
+
+**Work Remaining:**
+- P0: Fix CORS wildcard `*` on db-api.cjs:109 (30m)
+- P0: Register 557 clients into client_registry.json (2h)
+- P1: Fix `free_price: "0"` in 5 locale files line 2194 (15m)
+- P1: Add conversational format to 37 personas (6h)
+- P2: Fix remaining 9 innerHTML usages in V3 widget for XSS safety (1h)
+- P2: Sync function tool names in docs vs actual code (1h)
+
+**Docs:** `docs/AUDIT-MULTI-TENANT-SESSION-250.57.md`, `docs/MULTI-TENANT-KB-OPTIMIZATION-PLAN.md`
+
+---
+
 ## Documentation
 
 | Doc | Content |
 |:----|:--------|
 | `docs/VOCALIA-SYSTEM-ARCHITECTURE.md` | Full architecture (988 lines) |
 | `docs/SESSION-HISTORY.md` | **All session logs** |
-| `docs/VOCALIA-MCP.md` | MCP 186 tools |
+| `docs/VOCALIA-MCP.md` | MCP 203 tools |
 | `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant |
 
 ---
@@ -177,7 +236,8 @@ git push origin main
 
 **Policy:** No Free Tier - 14-day trial only
 
-> ⚠️ **Session 250.86 AUDIT**: i18n contamination (47 "free" claims), MCP gaps (5 modules missing)
+> ⚠️ **Session 250.98 AUDIT**: `free_price: "0"` in 5 locales (line 2194), CORS wildcard db-api, 9 innerHTML XSS (was 15, 6 fixed in 250.99)
+> ⚠️ **Tests réels**: 281 unit + 57 E2E = 338 total (NOT 681 as previously claimed)
 
 ---
 
@@ -207,5 +267,22 @@ providers: [
 
 ---
 
+---
+
+## Session 250.98 Forensic Findings (06/02/2026)
+
+| Finding | Severity | Detail |
+|:--------|:--------:|:-------|
+| CORS wildcard db-api | **HIGH** | `core/db-api.cjs:109` has `Access-Control-Allow-Origin: *` |
+| `free_price: "0"` in locales | **HIGH** | All 5 locale files line 2194 contradict No Free Tier policy |
+| Tests overcounted | **HIGH** | 338 real tests, not 681 (was 306+375, actual 281+57) |
+| Function tool names wrong in docs | **HIGH** | 12/25 names in docs don't match actual code |
+| innerHTML XSS risk | **MEDIUM** | ~~15~~ **9** occurrences in widget/*.js (6 fixed in social proof, Session 250.99) |
+| 557 tenants not in registry | **MEDIUM** | 580 folders but only 23 in client_registry.json |
+| lib/ not documented | **LOW** | security-utils.cjs (921 lines) missing from architecture docs |
+| ~~Social proof FAKE data~~ | ~~**HIGH**~~ | **FIXED** Session 250.99 - Real backend data, fake names removed |
+| ~~B2B booking/social proof missing~~ | ~~**HIGH**~~ | **FIXED** Session 250.99 - Fully implemented |
+| ~~No dashboard widget toggles~~ | ~~**MEDIUM**~~ | **FIXED** Session 250.99 - 3 toggles in settings.html |
+
 *Full session history: `docs/SESSION-HISTORY.md`*
-*Last update: 05/02/2026*
+*Last update: 06/02/2026 - Session 250.99 Deep Surgery*

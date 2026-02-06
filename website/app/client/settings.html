@@ -202,6 +202,42 @@
           </div>
         </div>
 
+        <!-- Widget Features -->
+        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Fonctionnalités Widget</h3>
+          <div class="space-y-4">
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Social Proof</p>
+                <p class="text-sm text-slate-500">Notifications de preuve sociale (données réelles)</p>
+              </div>
+              <input type="checkbox" id="feat-social-proof" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+            </label>
+
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Booking / Rendez-vous</p>
+                <p class="text-sm text-slate-500">CTA de réservation dans le widget</p>
+              </div>
+              <input type="checkbox" id="feat-booking" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+            </label>
+
+            <label class="flex items-center justify-between cursor-pointer">
+              <div>
+                <p class="font-medium text-slate-900 dark:text-white">Exit Intent</p>
+                <p class="text-sm text-slate-500">Message automatique quand le visiteur quitte</p>
+              </div>
+              <input type="checkbox" id="feat-exit-intent" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+            </label>
+
+            <div class="pt-4">
+              <button type="button" id="save-widget-features-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Notifications -->
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
           <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Notifications</h3>
@@ -415,8 +451,50 @@
       }
     };
 
+    // Load widget features from tenant config
+    async function loadWidgetFeatures() {
+      if (!tenantId) return;
+      try {
+        const baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+          ? 'http://localhost:3004' : 'https://api.vocalia.ma';
+        const resp = await fetch(`${baseUrl}/config?tenantId=${encodeURIComponent(tenantId)}`);
+        const data = await resp.json();
+        if (data.success && data.features) {
+          document.getElementById('feat-social-proof').checked = data.features.social_proof_enabled !== false;
+          document.getElementById('feat-booking').checked = data.features.booking_enabled !== false;
+          document.getElementById('feat-exit-intent').checked = data.features.exit_intent_enabled !== false;
+        }
+      } catch (e) {
+        console.warn('Failed to load widget features:', e.message);
+      }
+    }
+
+    // Save widget features
+    document.getElementById('save-widget-features-btn').addEventListener('click', async () => {
+      if (!tenantId) {
+        toast.error('Tenant non identifié');
+        return;
+      }
+      const loading = modal.loading('Enregistrement...');
+      try {
+        await api.settings.update(tenantId, {
+          widget_features: {
+            social_proof_enabled: document.getElementById('feat-social-proof').checked,
+            booking_enabled: document.getElementById('feat-booking').checked,
+            exit_intent_enabled: document.getElementById('feat-exit-intent').checked
+          }
+        });
+        loading.close();
+        toast.success('Fonctionnalités widget mises à jour');
+      } catch (error) {
+        loading.close();
+        toast.error('Erreur lors de la sauvegarde');
+      }
+    });
+
     // Load settings on page load
     loadSettings();
+    loadWidgetFeatures();
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
       await auth.logout();

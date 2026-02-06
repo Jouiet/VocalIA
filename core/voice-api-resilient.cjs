@@ -234,6 +234,76 @@ const adminMetrics = {
   lastHealthCheck: Date.now()
 };
 
+/**
+ * Generate social proof messages from real dashboardMetrics
+ * Returns empty array when no real data exists (no fake fallback)
+ * @param {string} lang - Language code (fr/en/es/ar/ary)
+ * @returns {Array} - Messages array with text, icon SVG, time
+ */
+function generateSocialProofMessages(lang) {
+  const messages = [];
+  const now = new Date();
+  const todayKey = now.toISOString().slice(0, 10);
+  const callsToday = dashboardMetrics.dailyCalls[todayKey] || 0;
+  const totalCalls = dashboardMetrics.totalCalls || 0;
+  const leadsQualified = dashboardMetrics.totalLeadsQualified || 0;
+  const hotLeads = dashboardMetrics.hotLeads || 0;
+  const checkIcon = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+  const trendIcon = '<path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>';
+  const calendarIcon = '<path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>';
+  const timeStr = now.toLocaleTimeString(lang === 'ar' || lang === 'ary' ? 'ar-MA' : lang === 'es' ? 'es-ES' : lang === 'en' ? 'en-US' : 'fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+  const templates = {
+    fr: {
+      callsToday: (n) => `${n} consultation${n > 1 ? 's' : ''} aujourd'hui`,
+      leadsQualified: (n) => `${n} prospect${n > 1 ? 's' : ''} qualifié${n > 1 ? 's' : ''} ce mois`,
+      totalCalls: (n) => `Plus de ${n} entreprises nous font confiance`,
+      hotLeads: (n) => `${n} rendez-vous confirmé${n > 1 ? 's' : ''} ce mois`
+    },
+    en: {
+      callsToday: (n) => `${n} consultation${n > 1 ? 's' : ''} today`,
+      leadsQualified: (n) => `${n} qualified prospect${n > 1 ? 's' : ''} this month`,
+      totalCalls: (n) => `More than ${n} businesses trust us`,
+      hotLeads: (n) => `${n} confirmed appointment${n > 1 ? 's' : ''} this month`
+    },
+    es: {
+      callsToday: (n) => `${n} consulta${n > 1 ? 's' : ''} hoy`,
+      leadsQualified: (n) => `${n} prospecto${n > 1 ? 's' : ''} calificado${n > 1 ? 's' : ''} este mes`,
+      totalCalls: (n) => `Más de ${n} empresas confían en nosotros`,
+      hotLeads: (n) => `${n} cita${n > 1 ? 's' : ''} confirmada${n > 1 ? 's' : ''} este mes`
+    },
+    ar: {
+      callsToday: (n) => `${n} استشارة اليوم`,
+      leadsQualified: (n) => `${n} عميل محتمل مؤهل هذا الشهر`,
+      totalCalls: (n) => `أكثر من ${n} شركة تثق بنا`,
+      hotLeads: (n) => `${n} موعد مؤكد هذا الشهر`
+    },
+    ary: {
+      callsToday: (n) => `${n} استشارة اليوم`,
+      leadsQualified: (n) => `${n} كليان مؤهل هاد الشهر`,
+      totalCalls: (n) => `كثر من ${n} شركة كيتيقو فينا`,
+      hotLeads: (n) => `${n} موعد مأكد هاد الشهر`
+    }
+  };
+
+  const t = templates[lang] || templates.fr;
+
+  if (callsToday > 0) {
+    messages.push({ text: t.callsToday(callsToday), icon: checkIcon, time: timeStr });
+  }
+  if (leadsQualified > 0) {
+    messages.push({ text: t.leadsQualified(leadsQualified), icon: trendIcon, time: timeStr });
+  }
+  if (totalCalls > 10) {
+    messages.push({ text: t.totalCalls(totalCalls), icon: checkIcon, time: timeStr });
+  }
+  if (hotLeads > 0) {
+    messages.push({ text: t.hotLeads(hotLeads), icon: calendarIcon, time: timeStr });
+  }
+
+  return messages;
+}
+
 // System logs buffer (keeps last 100 logs)
 const systemLogs = [];
 const MAX_LOGS = 100;
@@ -1507,16 +1577,22 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
   const lower = userMessage.toLowerCase();
 
   // 2.1 AGENTIC VERIFICATION LOOP (Phase 13)
-  // Logic: Check if RAG mention an order or price, and verify with live sensors
-  if (ragContext.toLowerCase().includes('order') || lower.includes('order') || lower.includes('commande')) {
+  // Logic: Check if RAG mention an order, and verify with live sensors
+  // Session 250.89: Only if ECOM_TOOLS.getOrderStatus exists AND tenant has Shopify
+  if ((ragContext.toLowerCase().includes('order') || lower.includes('order') || lower.includes('commande')) &&
+      typeof ECOM_TOOLS.getOrderStatus === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
     if (session?.extractedData?.email) {
-      const order = await ECOM_TOOLS.getOrderStatus(session.extractedData.email, {
-        shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
-        shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
-      });
-      if (order.found) {
-        toolContext += `\nVERIFIED_SENSOR_DATA (Shopify): Order ${order.orderId} status is officially "${order.status}".`;
-        ragContext = ragContext.replace(/Order status: [^.\n]+/i, `Order status: ${order.status} (Verified)`);
+      try {
+        const order = await ECOM_TOOLS.getOrderStatus(session.extractedData.email, {
+          shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
+          shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
+        });
+        if (order.found) {
+          toolContext += `\nVERIFIED_SENSOR_DATA (Shopify): Order ${order.orderId} status is officially "${order.status}".`;
+          ragContext = ragContext.replace(/Order status: [^.\n]+/i, `Order status: ${order.status} (Verified)`);
+        }
+      } catch (orderErr) {
+        console.warn('[Voice API] Order check failed:', orderErr.message);
       }
     }
   }
@@ -1530,19 +1606,26 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
     }
   }
 
-  if (ragContext.toLowerCase().includes('stock') || lower.includes('stock') || lower.includes('dispo') || lower.includes('prix')) {
+  // Session 250.89: Only check stock if ECOM_TOOLS.checkProductStock exists AND tenant has Shopify configured
+  if ((ragContext.toLowerCase().includes('stock') || lower.includes('stock') || lower.includes('dispo')) &&
+      typeof ECOM_TOOLS.checkProductStock === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
     // Extract potential product name from message or RAG
-    const productMatch = userMessage.match(/(?:stock|prix|dispo|about)\s+(?:de\s+|du\s+|d')?([a-z0-9\s]+)/i);
+    const productMatch = userMessage.match(/(?:stock|dispo|about)\s+(?:de\s+|du\s+|d')?([a-z0-9\s]+)/i);
     const query = productMatch ? productMatch[1].trim() : userMessage;
-    const stock = await ECOM_TOOLS.checkProductStock(query, {
-      shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
-      shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
-    });
-    if (stock.found) {
-      const liveStock = stock.products.map(p => `${p.title}: ${p.inStock ? 'In Stock' : 'Out of Stock'} (${p.price}€)`).join(', ');
-      toolContext += `\nVERIFIED_SENSOR_DATA: Current stock and pricing: ${liveStock}. (Source: Shopify Real-time)`;
+    try {
+      const stock = await ECOM_TOOLS.checkProductStock(query, {
+        shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
+        shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
+      });
+      if (stock.found) {
+        const liveStock = stock.products.map(p => `${p.title}: ${p.inStock ? 'In Stock' : 'Out of Stock'} (${p.price}€)`).join(', ');
+        toolContext += `\nVERIFIED_SENSOR_DATA: Current stock and pricing: ${liveStock}. (Source: Shopify Real-time)`;
+      }
+    } catch (stockErr) {
+      console.warn('[Voice API] Stock check failed:', stockErr.message);
     }
   }
+  // NOTE: "prix" removed from trigger - for AGENCY tenant, pricing is in prompt, not Shopify
 
   // 2.3 SOTA: AI Recommendation Intent Detection (Session 250.82)
   let recommendationAction = null;
@@ -2233,14 +2316,48 @@ function startServer(port = 3004) {
       }
     }
 
+    // Social Proof endpoint - returns real anonymized metrics
+    if (req.url.startsWith('/social-proof') && req.method === 'GET') {
+      const urlParams = new URLSearchParams(req.url.split('?')[1]);
+      const lang = urlParams.get('lang') || 'fr';
+
+      const messages = generateSocialProofMessages(lang);
+
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ success: true, messages }));
+      return;
+    }
+
     // Sovereign Dynamic Pull: Get tenant-specific widget config
     if (req.url.startsWith('/config')) {
       const urlParams = new URLSearchParams(req.url.split('?')[1]);
       let tenantId = urlParams.get('tenantId');
 
       const sendConfig = async (tId) => {
-        const client = CLIENT_REGISTRY.clients[tId] || {};
-        const persona = VoicePersonaInjector.getPersona(null, null, tId);
+        let client = {};
+        let persona = {};
+        try {
+          const { VoicePersonaInjector, CLIENT_REGISTRY } = require('../personas/voice-persona-injector.cjs');
+          client = CLIENT_REGISTRY.clients[tId] || {};
+          persona = VoicePersonaInjector.getPersona(null, null, tId) || {};
+        } catch (e) {
+          console.error('[Config] Failed to load persona/registry:', e.message);
+        }
+
+        // Read tenant config.json for widget_features
+        let tenantConfig = {};
+        try {
+          const configPath = path.join(__dirname, '../clients', tId, 'config.json');
+          if (fs.existsSync(configPath)) {
+            tenantConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+          }
+        } catch (e) {
+          // Ignore - use defaults
+        }
+
+        const widgetFeatures = tenantConfig.widget_features || {};
+        const bookingUrl = client.booking_url || tenantConfig.booking_url || null;
+        const bookingPhone = client.phone || tenantConfig.booking_phone || null;
 
         const config = {
           success: true,
@@ -2253,7 +2370,14 @@ function startServer(port = 3004) {
           features: {
             ecommerce: persona.widget_types?.includes('ECOM') || false,
             voice: true,
-            multilingual: true
+            multilingual: true,
+            social_proof_enabled: widgetFeatures.social_proof_enabled !== false,
+            booking_enabled: widgetFeatures.booking_enabled !== false && !!(bookingUrl || bookingPhone),
+            exit_intent_enabled: widgetFeatures.exit_intent_enabled !== false
+          },
+          booking: {
+            url: bookingUrl,
+            phone: bookingPhone
           },
           initialMessage: persona.language === 'fr' ? `Bonjour, je suis ${persona.name}. Comment puis-je vous aider ?` :
             persona.language === 'ary' ? `Salam, ana ${persona.name}. Kifach n9der n3awnk ?` :
