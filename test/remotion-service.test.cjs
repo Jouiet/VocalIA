@@ -23,9 +23,19 @@ const {
   COMPOSITIONS,
   LANGUAGES,
   HITL_ENABLED,
+  VOCALIA_METRICS,
   listCompositions,
   healthCheck,
-  getHITL
+  getHITL,
+  renderComposition,
+  renderCompositionDirect,
+  queueForApproval,
+  processApproved,
+  renderAll,
+  renderAllLanguages,
+  generateVideo,
+  installDependencies,
+  startStudio
 } = require('../core/remotion-service.cjs');
 
 // ─── COMPOSITIONS ───────────────────────────────────────────────────
@@ -186,5 +196,141 @@ describe('RemotionService healthCheck', () => {
     assert.ok(health.metrics);
     assert.strictEqual(health.metrics.personas, 40);
     assert.strictEqual(health.metrics.languages, 5);
+  });
+
+  test('returns totalCompositions count', () => {
+    const health = healthCheck();
+    const expected = Object.keys(COMPOSITIONS).length * LANGUAGES.length + Object.keys(COMPOSITIONS).length;
+    assert.strictEqual(health.totalCompositions, expected);
+  });
+
+  test('returns ready boolean', () => {
+    const health = healthCheck();
+    assert.strictEqual(typeof health.ready, 'boolean');
+  });
+
+  test('returns outputs object', () => {
+    const health = healthCheck();
+    assert.ok(health.outputs);
+    for (const key of Object.keys(COMPOSITIONS)) {
+      assert.ok(health.outputs[key] !== undefined, `Missing output for ${key}`);
+      assert.strictEqual(typeof health.outputs[key].exists, 'boolean');
+      assert.strictEqual(typeof health.outputs[key].size, 'number');
+    }
+  });
+
+  test('returns version string', () => {
+    const health = healthCheck();
+    assert.strictEqual(typeof health.version, 'string');
+  });
+});
+
+// ─── VOCALIA_METRICS ─────────────────────────────────────────────
+
+describe('RemotionService VOCALIA_METRICS', () => {
+  test('has personas count', () => {
+    assert.strictEqual(VOCALIA_METRICS.personas, 40);
+  });
+
+  test('has languages count', () => {
+    assert.strictEqual(VOCALIA_METRICS.languages, 5);
+  });
+
+  test('has mcpTools count', () => {
+    assert.strictEqual(typeof VOCALIA_METRICS.mcpTools, 'number');
+    assert.ok(VOCALIA_METRICS.mcpTools > 100);
+  });
+
+  test('has integrations count', () => {
+    assert.strictEqual(typeof VOCALIA_METRICS.integrations, 'number');
+    assert.ok(VOCALIA_METRICS.integrations > 10);
+  });
+
+  test('has ecommercePlatforms count', () => {
+    assert.strictEqual(VOCALIA_METRICS.ecommercePlatforms, 7);
+  });
+
+  test('has stripeTools count', () => {
+    assert.strictEqual(VOCALIA_METRICS.stripeTools, 19);
+  });
+});
+
+// ─── COMPOSITIONS detail ────────────────────────────────────────
+
+describe('RemotionService COMPOSITIONS detail', () => {
+  test('socialclip compositions have 15s duration', () => {
+    const socialKeys = Object.keys(COMPOSITIONS).filter(k => k.startsWith('socialclip'));
+    assert.strictEqual(socialKeys.length, 3);
+    for (const key of socialKeys) {
+      assert.strictEqual(COMPOSITIONS[key].duration, 15);
+    }
+  });
+
+  test('integration compositions have 40s duration', () => {
+    const integrationKeys = Object.keys(COMPOSITIONS).filter(k => k.startsWith('integration'));
+    assert.strictEqual(integrationKeys.length, 3);
+    for (const key of integrationKeys) {
+      assert.strictEqual(COMPOSITIONS[key].duration, 40);
+    }
+  });
+
+  test('only thumbnail is a still', () => {
+    const stills = Object.entries(COMPOSITIONS).filter(([, c]) => c.isStill);
+    assert.strictEqual(stills.length, 1);
+    assert.strictEqual(stills[0][0], 'thumbnail');
+  });
+
+  test('all non-still compositions output mp4', () => {
+    for (const [key, comp] of Object.entries(COMPOSITIONS)) {
+      if (!comp.isStill) {
+        assert.ok(comp.output.endsWith('.mp4'), `${key} should output mp4`);
+      }
+    }
+  });
+
+  test('onboarding is the longest at 60s', () => {
+    const longest = Object.entries(COMPOSITIONS).reduce((max, [, c]) => Math.max(max, c.duration), 0);
+    assert.strictEqual(longest, 60);
+    assert.strictEqual(COMPOSITIONS.onboarding.duration, 60);
+  });
+});
+
+// ─── Exports ──────────────────────────────────────────────────────
+
+describe('RemotionService exports', () => {
+  test('exports renderComposition function', () => {
+    assert.strictEqual(typeof renderComposition, 'function');
+  });
+
+  test('exports renderCompositionDirect function', () => {
+    assert.strictEqual(typeof renderCompositionDirect, 'function');
+  });
+
+  test('exports queueForApproval function', () => {
+    assert.strictEqual(typeof queueForApproval, 'function');
+  });
+
+  test('exports processApproved function', () => {
+    assert.strictEqual(typeof processApproved, 'function');
+  });
+
+  test('exports renderAll function', () => {
+    assert.strictEqual(typeof renderAll, 'function');
+  });
+
+  test('exports renderAllLanguages function', () => {
+    assert.strictEqual(typeof renderAllLanguages, 'function');
+  });
+
+  test('exports generateVideo function', () => {
+    assert.strictEqual(typeof generateVideo, 'function');
+  });
+
+  test('exports installDependencies function', () => {
+    assert.strictEqual(typeof installDependencies, 'function');
+  });
+
+  test('exports startStudio function', () => {
+    assert.strictEqual(typeof startStudio, 'function');
   });
 });

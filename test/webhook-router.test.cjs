@@ -203,3 +203,164 @@ describe('WebhookRouter logEvent', () => {
     assert.ok(lastEvent.timestamp);
   });
 });
+
+// ─── extractTenantId ──────────────────────────────────────────────
+
+describe('WebhookRouter extractTenantId', () => {
+  const router = new WebhookRouter();
+
+  test('uses x-tenant-id header when present', () => {
+    const tenantId = router.extractTenantId('hubspot', { 'x-tenant-id': 'custom_tenant' }, {});
+    assert.strictEqual(tenantId, 'custom_tenant');
+  });
+
+  test('extracts HubSpot tenant from portalId', () => {
+    const tenantId = router.extractTenantId('hubspot', {}, { portalId: 12345 });
+    assert.strictEqual(tenantId, 'hubspot_12345');
+  });
+
+  test('returns unknown_webhook for HubSpot without portalId', () => {
+    const tenantId = router.extractTenantId('hubspot', {}, {});
+    assert.strictEqual(tenantId, 'unknown_webhook');
+  });
+
+  test('extracts Shopify tenant from shop domain header', () => {
+    const tenantId = router.extractTenantId('shopify', { 'x-shopify-shop-domain': 'mystore.myshopify.com' }, {});
+    assert.strictEqual(tenantId, 'shopify_mystore');
+  });
+
+  test('returns unknown_webhook for Shopify without domain', () => {
+    const tenantId = router.extractTenantId('shopify', {}, {});
+    assert.strictEqual(tenantId, 'unknown_webhook');
+  });
+
+  test('extracts Stripe tenant from account', () => {
+    const tenantId = router.extractTenantId('stripe', {}, { account: 'acct_123abc' });
+    assert.strictEqual(tenantId, 'stripe_acct_123abc');
+  });
+
+  test('returns unknown_webhook for Stripe without account', () => {
+    const tenantId = router.extractTenantId('stripe', {}, {});
+    assert.strictEqual(tenantId, 'unknown_webhook');
+  });
+
+  test('returns unknown_webhook for unknown provider', () => {
+    const tenantId = router.extractTenantId('unknown', {}, {});
+    assert.strictEqual(tenantId, 'unknown_webhook');
+  });
+
+  test('x-tenant-id header takes priority over provider extraction', () => {
+    const tenantId = router.extractTenantId('shopify', {
+      'x-tenant-id': 'override_tenant',
+      'x-shopify-shop-domain': 'ignored.myshopify.com'
+    }, {});
+    assert.strictEqual(tenantId, 'override_tenant');
+  });
+});
+
+// ─── getEventType ─────────────────────────────────────────────────
+
+describe('WebhookRouter getEventType', () => {
+  const router = new WebhookRouter();
+
+  test('HubSpot uses subscriptionType', () => {
+    assert.strictEqual(router.getEventType('hubspot', {}, { subscriptionType: 'contact.creation' }), 'contact.creation');
+  });
+
+  test('HubSpot falls back to eventType', () => {
+    assert.strictEqual(router.getEventType('hubspot', {}, { eventType: 'deal.updated' }), 'deal.updated');
+  });
+
+  test('HubSpot returns unknown when no type field', () => {
+    assert.strictEqual(router.getEventType('hubspot', {}, {}), 'unknown');
+  });
+
+  test('Shopify uses x-shopify-topic header', () => {
+    assert.strictEqual(router.getEventType('shopify', { 'x-shopify-topic': 'orders/create' }, {}), 'orders/create');
+  });
+
+  test('Shopify returns unknown without header', () => {
+    assert.strictEqual(router.getEventType('shopify', {}, {}), 'unknown');
+  });
+
+  test('Stripe uses body.type', () => {
+    assert.strictEqual(router.getEventType('stripe', {}, { type: 'payment_intent.succeeded' }), 'payment_intent.succeeded');
+  });
+
+  test('Klaviyo uses body.event', () => {
+    assert.strictEqual(router.getEventType('klaviyo', {}, { event: 'track' }), 'track');
+  });
+
+  test('Google uses message.attributes.eventType', () => {
+    const body = { message: { attributes: { eventType: 'sync' } } };
+    assert.strictEqual(router.getEventType('google', {}, body), 'sync');
+  });
+
+  test('unknown provider falls back to body.type', () => {
+    assert.strictEqual(router.getEventType('other', {}, { type: 'custom' }), 'custom');
+  });
+
+  test('unknown provider falls back to body.event', () => {
+    assert.strictEqual(router.getEventType('other', {}, { event: 'custom_event' }), 'custom_event');
+  });
+});
+
+// ─── Klaviyo and Google signature verification ─────────────────────
+
+describe('Klaviyo signature verification', () => {
+  test('always returns true (simplified)', () => {
+    assert.strictEqual(WEBHOOK_PROVIDERS.klaviyo.verifySignature('payload', 'sig', 'secret'), true);
+  });
+});
+
+describe('Google signature verification', () => {
+  test('always returns true (JWT simplified)', () => {
+    assert.strictEqual(WEBHOOK_PROVIDERS.google.verifySignature(), true);
+  });
+});
+
+// ─── WEBHOOK_PROVIDERS detail ──────────────────────────────────────
+
+describe('WEBHOOK_PROVIDERS detail', () => {
+  test('has 5 providers total', () => {
+    assert.strictEqual(Object.keys(WEBHOOK_PROVIDERS).length, 5);
+  });
+
+  test('all providers have name', () => {
+    for (const [key, cfg] of Object.entries(WEBHOOK_PROVIDERS)) {
+      assert.ok(cfg.name, `${key} missing name`);
+    }
+  });
+
+  test('all providers have verifySignature function', () => {
+    for (const [key, cfg] of Object.entries(WEBHOOK_PROVIDERS)) {
+      assert.strictEqual(typeof cfg.verifySignature, 'function', `${key} missing verifySignature`);
+    }
+  });
+});
+
+// ─── Exports ──────────────────────────────────────────────────────
+
+describe('WebhookRouter exports', () => {
+  test('exports WebhookRouter class', () => {
+    assert.strictEqual(typeof WebhookRouter, 'function');
+  });
+
+  test('exports WEBHOOK_PROVIDERS', () => {
+    assert.strictEqual(typeof WEBHOOK_PROVIDERS, 'object');
+  });
+
+  test('default export is router instance', () => {
+    const mod = require('../core/WebhookRouter.cjs');
+    assert.ok(mod instanceof WebhookRouter);
+  });
+
+  test('instance has all methods', () => {
+    const router = new WebhookRouter();
+    const methods = ['registerHandler', 'processEvent', 'extractTenantId',
+      'getEventType', 'logEvent', 'healthCheck', 'ensureEventsDir'];
+    for (const m of methods) {
+      assert.strictEqual(typeof router[m], 'function', `Missing method: ${m}`);
+    }
+  });
+});

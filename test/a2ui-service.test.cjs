@@ -264,6 +264,89 @@ describe('A2UI generateUI', () => {
   });
 });
 
+// ─── buildStitchPrompt ──────────────────────────────────────────────
+
+describe('A2UI buildStitchPrompt', () => {
+  test('booking prompt mentions slots', () => {
+    const prompt = a2uiService.buildStitchPrompt('booking', { slots: [1, 2, 3] }, 'fr');
+    assert.ok(prompt.includes('3'));
+    assert.ok(prompt.includes('booking') || prompt.includes('date'));
+    assert.ok(prompt.includes('fr'));
+  });
+
+  test('lead_form prompt mentions fields', () => {
+    const prompt = a2uiService.buildStitchPrompt('lead_form', {
+      fields: [{ name: 'email' }, { name: 'phone' }]
+    }, 'en');
+    assert.ok(prompt.includes('email'));
+    assert.ok(prompt.includes('phone'));
+    assert.ok(prompt.includes('en'));
+  });
+
+  test('cart prompt mentions items', () => {
+    const prompt = a2uiService.buildStitchPrompt('cart', { items: [1, 2, 3] }, 'fr');
+    assert.ok(prompt.includes('3'));
+    assert.ok(prompt.includes('cart') || prompt.includes('shopping'));
+  });
+
+  test('confirmation prompt includes message', () => {
+    const prompt = a2uiService.buildStitchPrompt('confirmation', { message: 'RDV confirmé' }, 'fr');
+    assert.ok(prompt.includes('RDV confirmé'));
+  });
+
+  test('unknown type falls back to confirmation', () => {
+    const prompt = a2uiService.buildStitchPrompt('unknown', {}, 'fr');
+    assert.ok(prompt.includes('confirmation') || prompt.includes('success'));
+  });
+
+  test('default slots count when none provided', () => {
+    const prompt = a2uiService.buildStitchPrompt('booking', {}, 'en');
+    assert.ok(prompt.includes('6')); // default: 6 time slots
+  });
+});
+
+// ─── cache management ────────────────────────────────────────────
+
+describe('A2UI cache management', () => {
+  test('cache starts as Map', () => {
+    assert.ok(a2uiService.cache instanceof Map);
+  });
+
+  test('cache clear removes all entries', async () => {
+    await a2uiService.generateUI({ type: 'booking', context: { slots: [] }, language: 'fr' });
+    assert.ok(a2uiService.cache.size > 0);
+    a2uiService.cache.clear();
+    assert.strictEqual(a2uiService.cache.size, 0);
+  });
+
+  test('different contexts produce different cache keys', async () => {
+    a2uiService.cache.clear();
+    await a2uiService.generateUI({ type: 'booking', context: { slots: [] }, language: 'fr' });
+    await a2uiService.generateUI({ type: 'booking', context: { slots: [{ label: 'x', value: 'x' }] }, language: 'fr' });
+    assert.strictEqual(a2uiService.cache.size, 2);
+  });
+});
+
+// ─── constructor ──────────────────────────────────────────────────
+
+describe('A2UI constructor', () => {
+  test('stitchEnabled defaults to false', () => {
+    assert.strictEqual(a2uiService.stitchEnabled, false);
+  });
+
+  test('projectId defaults to null', () => {
+    assert.strictEqual(a2uiService.projectId, null);
+  });
+
+  test('has initialize method', () => {
+    assert.strictEqual(typeof a2uiService.initialize, 'function');
+  });
+
+  test('has buildStitchPrompt method', () => {
+    assert.strictEqual(typeof a2uiService.buildStitchPrompt, 'function');
+  });
+});
+
 // ─── health ─────────────────────────────────────────────────────────
 
 describe('A2UI health', () => {
@@ -275,5 +358,19 @@ describe('A2UI health', () => {
     assert.ok(health.templatesAvailable.includes('booking'));
     assert.ok(health.templatesAvailable.includes('cart'));
     assert.strictEqual(typeof health.cacheSize, 'number');
+  });
+
+  test('health includes all 4 template types', async () => {
+    const health = await a2uiService.health();
+    assert.ok(health.templatesAvailable.includes('booking'));
+    assert.ok(health.templatesAvailable.includes('lead_form'));
+    assert.ok(health.templatesAvailable.includes('cart'));
+    assert.ok(health.templatesAvailable.includes('confirmation'));
+    assert.strictEqual(health.templatesAvailable.length, 4);
+  });
+
+  test('health reports stitchEnabled', async () => {
+    const health = await a2uiService.health();
+    assert.strictEqual(typeof health.stitchEnabled, 'boolean');
   });
 });
