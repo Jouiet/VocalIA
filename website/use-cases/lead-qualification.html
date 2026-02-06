@@ -62,7 +62,7 @@
   </script>
 
   <!-- Critical CSS -->
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -85,17 +85,17 @@
       background-clip: text;
     }
     .glass {
-      background: rgba(51, 65, 85, 0.85);
+      background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .stat-card {
       background: linear-gradient(135deg, rgba(94,106,210,0.15), rgba(99,102,241,0.05));
       border: 1px solid rgba(99,102,241,0.2);
     }
     .bant-card {
-      background: linear-gradient(135deg, rgba(51, 65, 85, 0.7), rgba(30, 41, 59, 0.85));
-      border: 1px solid rgba(148, 163, 184, 0.15);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(10, 10, 10, 0.85));
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .feature-card {
       background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(16,185,129,0.05));
@@ -112,7 +112,7 @@
   
 </head>
 
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Skip Link -->
 
     <a href="#main-content"
@@ -155,7 +155,7 @@
 
               <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
@@ -192,7 +192,7 @@
 
                   </a>
 
-                  <hr class="border-slate-600/50 my-2">
+                  <hr class="border-white/[0.08] my-2">
 
                   <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
 
@@ -219,7 +219,7 @@
 
               <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-white/[0.08]">
 
                   <div class="grid grid-cols-3 gap-6">
 
@@ -305,13 +305,13 @@
 
                     <!-- Column 3: Featured -->
 
-                    <div class="bg-slate-700/30 rounded-lg p-4">
+                    <div class="bg-white/[0.03] rounded-lg p-4">
 
                       <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span data-i18n="uc_leads.populaire_22">Populaire</span></div>
 
                       <div class="space-y-3">
 
-                        <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/features" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -325,7 +325,7 @@
 
                         </a>
 
-                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -365,7 +365,7 @@
 
               <div class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.docs">Documentation</span></a>
 
@@ -391,36 +391,36 @@
 
             <!-- Language Switcher -->
             <div class="relative">
-              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
+              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.04] transition-colors" aria-label="Changer de langue">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 <span id="currentLang" class="text-sm font-medium">FR</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
               </button>
-              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
-                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50 overflow-hidden">
+                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127467;&#127479;</span>
                   <span class="text-sm"><span data-i18n="uc_leads.francais_18">Francais</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127468;&#127463;</span>
                   <span class="text-sm"><span data-i18n="uc_leads.english_17">English</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127466;&#127480;</span>
                   <span class="text-sm"><span data-i18n="uc_leads.espanol_16">Espanol</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127480;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127474;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
                 </button>
               </div>
             </div>
 
-            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
+            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-white/[0.04] focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
           </button>
@@ -433,7 +433,7 @@
 
       <!-- Mobile Menu Drawer -->
 
-      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-[#050505]/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
 
         <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
 
@@ -443,7 +443,7 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
 
-            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
 
@@ -461,7 +461,7 @@
 
             </a>
 
-            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
 
@@ -489,13 +489,13 @@
 
             <div class="grid grid-cols-2 gap-2">
 
-              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
+              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
 
-              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
+              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
 
-              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
+              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
 
-              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
+              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
 
             </div>
 
@@ -507,17 +507,17 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
 
-            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
+            <a href="/docs" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
 
-            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+            <a href="/integrations" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
 
-            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
+            <a href="/blog" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
 
           <!-- Mobile CTA -->
 
           <div class="space-y-3">
 
-            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center font-medium text-white">
 
               Tarifs
 
@@ -545,7 +545,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <!-- Breadcrumb -->
         <nav class="mb-8">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white" data-i18n="usecases_leads_page.breadcrumb_home">Accueil</a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/use-cases/e-commerce" class="hover:text-white"><span data-i18n="uc_leads.cas_dusage_8">Cas d'usage</span></a></li>
@@ -564,14 +564,14 @@
               <span class="gradient-text" data-i18n="usecases_leads_page.hero_title">Voice AI pour</span><br>
               <span data-i18n="usecases_leads_page.hero_title_accent">Qualification de Leads</span>
             </h1>
-            <p class="text-xl text-slate-300 mb-8" data-i18n="usecases_leads_page.hero_subtitle">
+            <p class="text-xl text-zinc-300 mb-8" data-i18n="usecases_leads_page.hero_subtitle">
               Qualifiez automatiquement les leads avec le framework BANT, scoring temps réel et synchronisation CRM.
             </p>
             <div class="flex flex-wrap gap-4">
               <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-lg font-semibold transition-all transform hover:scale-105" data-i18n="usecases_leads_page.cta_demo">
                 Demander une démo
               </a>
-              <a href="/docs" class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors" data-i18n="usecases_leads_page.cta_docs">
+              <a href="/docs" class="px-6 py-3 border border-white/[0.08] hover:border-vocalia-500 rounded-lg font-semibold transition-colors" data-i18n="usecases_leads_page.cta_docs">
                 Documentation API
               </a>
             </div>
@@ -579,19 +579,19 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="stat-card rounded-2xl p-6 text-center">
               <div class="text-4xl font-bold text-vocalia-400 mb-2">95%</div>
-              <div class="text-slate-400" data-i18n="usecases_leads_page.stats_qualification_rate">Taux Qualification</div>
+              <div class="text-zinc-400" data-i18n="usecases_leads_page.stats_qualification_rate">Taux Qualification</div>
             </div>
             <div class="stat-card rounded-2xl p-6 text-center">
               <div class="text-4xl font-bold text-vocalia-400 mb-2">+40%</div>
-              <div class="text-slate-400" data-i18n="usecases_leads_page.stats_conversion">Conversion</div>
+              <div class="text-zinc-400" data-i18n="usecases_leads_page.stats_conversion">Conversion</div>
             </div>
             <div class="stat-card rounded-2xl p-6 text-center">
               <div class="text-4xl font-bold text-vocalia-400 mb-2">&lt;5s</div>
-              <div class="text-slate-400" data-i18n="usecases_leads_page.stats_response_time">Temps Réponse</div>
+              <div class="text-zinc-400" data-i18n="usecases_leads_page.stats_response_time">Temps Réponse</div>
             </div>
             <div class="stat-card rounded-2xl p-6 text-center">
               <div class="text-4xl font-bold text-vocalia-400 mb-2">-60%</div>
-              <div class="text-slate-400" data-i18n="usecases_leads_page.stats_cost_per_lead">Coût par Lead</div>
+              <div class="text-zinc-400" data-i18n="usecases_leads_page.stats_cost_per_lead">Coût par Lead</div>
             </div>
           </div>
         </div>
@@ -599,11 +599,11 @@
     </section>
 
     <!-- BANT Framework -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_leads_page.bant_title">Framework BANT automatisé</h2>
-          <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="usecases_leads_page.bant_subtitle">L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualification</p>
+          <p class="text-zinc-400 max-w-2xl mx-auto" data-i18n="usecases_leads_page.bant_subtitle">L'IA évalue chaque lead selon 4 critères essentiels et génère un score de qualification</p>
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div class="bant-card rounded-xl p-6">
@@ -611,10 +611,10 @@
               <span class="text-2xl font-bold text-vocalia-400">B</span>
             </div>
             <h3 class="text-xl font-bold mb-2" data-i18n="usecases_leads_page.bant_budget_title"><span data-i18n="uc_leads.budget_6">Budget</span></h3>
-            <p class="text-slate-400 text-sm mb-4">Le prospect a-t-il le budget pour votre solution? L'IA détecte les signaux d'achat et la capacité d'investissement.</p>
+            <p class="text-zinc-400 text-sm mb-4">Le prospect a-t-il le budget pour votre solution? L'IA détecte les signaux d'achat et la capacité d'investissement.</p>
             <div class="space-y-2">
-              <div class="text-xs text-slate-500">Questions types:</div>
-              <ul class="text-sm text-slate-400 space-y-1">
+              <div class="text-xs text-zinc-500">Questions types:</div>
+              <ul class="text-sm text-zinc-400 space-y-1">
                 <li>• "Quel budget avez-vous prévu?"</li>
                 <li>• "Comment financez-vous ce projet?"</li>
               </ul>
@@ -625,10 +625,10 @@
               <span class="text-2xl font-bold text-vocalia-400">A</span>
             </div>
             <h3 class="text-xl font-bold mb-2" data-i18n="usecases_leads_page.bant_authority_title"><span data-i18n="uc_leads.authority_5">Authority</span></h3>
-            <p class="text-slate-400 text-sm mb-4">Le contact est-il décisionnaire ou influenceur? L'IA identifie le rôle dans le processus d'achat.</p>
+            <p class="text-zinc-400 text-sm mb-4">Le contact est-il décisionnaire ou influenceur? L'IA identifie le rôle dans le processus d'achat.</p>
             <div class="space-y-2">
-              <div class="text-xs text-slate-500">Questions types:</div>
-              <ul class="text-sm text-slate-400 space-y-1">
+              <div class="text-xs text-zinc-500">Questions types:</div>
+              <ul class="text-sm text-zinc-400 space-y-1">
                 <li>• "Qui prend la décision finale?"</li>
                 <li>• "D'autres personnes sont-elles impliquées?"</li>
               </ul>
@@ -639,10 +639,10 @@
               <span class="text-2xl font-bold text-vocalia-400">N</span>
             </div>
             <h3 class="text-xl font-bold mb-2" data-i18n="usecases_leads_page.bant_need_title">Need</h3>
-            <p class="text-slate-400 text-sm mb-4">Le besoin est-il réel et urgent? L'IA évalue la douleur business et l'adéquation avec votre offre.</p>
+            <p class="text-zinc-400 text-sm mb-4">Le besoin est-il réel et urgent? L'IA évalue la douleur business et l'adéquation avec votre offre.</p>
             <div class="space-y-2">
-              <div class="text-xs text-slate-500">Questions types:</div>
-              <ul class="text-sm text-slate-400 space-y-1">
+              <div class="text-xs text-zinc-500">Questions types:</div>
+              <ul class="text-sm text-zinc-400 space-y-1">
                 <li>• "Quel problème cherchez-vous à résoudre?"</li>
                 <li>• "Quelles solutions avez-vous essayées?"</li>
               </ul>
@@ -653,10 +653,10 @@
               <span class="text-2xl font-bold text-vocalia-400">T</span>
             </div>
             <h3 class="text-xl font-bold mb-2" data-i18n="usecases_leads_page.bant_timeline_title"><span data-i18n="uc_leads.timeline_4">Timeline</span></h3>
-            <p class="text-slate-400 text-sm mb-4">Quand le prospect compte-t-il décider? L'IA détermine l'urgence et les échéances projet.</p>
+            <p class="text-zinc-400 text-sm mb-4">Quand le prospect compte-t-il décider? L'IA détermine l'urgence et les échéances projet.</p>
             <div class="space-y-2">
-              <div class="text-xs text-slate-500">Questions types:</div>
-              <ul class="text-sm text-slate-400 space-y-1">
+              <div class="text-xs text-zinc-500">Questions types:</div>
+              <ul class="text-sm text-zinc-400 space-y-1">
                 <li>• "Quand souhaitez-vous démarrer?"</li>
                 <li>• "Y a-t-il une échéance particulière?"</li>
               </ul>
@@ -672,7 +672,7 @@
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 class="text-3xl font-bold mb-6" data-i18n="usecases_leads_page.score_title">Score de qualification en temps réel</h2>
-            <p class="text-slate-300 mb-6" data-i18n="usecases_leads_page.score_desc">
+            <p class="text-zinc-300 mb-6" data-i18n="usecases_leads_page.score_desc">
               À la fin de chaque conversation, VocalIA génère un score BANT complet et une recommandation d'action.
             </p>
             <ul class="space-y-4">
@@ -682,7 +682,7 @@
                 </div>
                 <div>
                   <span class="font-semibold">Score 80-100:</span>
-                  <span class="text-slate-400"> Hot lead - Transfert immédiat au commercial</span>
+                  <span class="text-zinc-400"> Hot lead - Transfert immédiat au commercial</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
@@ -691,7 +691,7 @@
                 </div>
                 <div>
                   <span class="font-semibold">Score 50-79:</span>
-                  <span class="text-slate-400"> Warm lead - Nurturing automatisé</span>
+                  <span class="text-zinc-400"> Warm lead - Nurturing automatisé</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
@@ -700,7 +700,7 @@
                 </div>
                 <div>
                   <span class="font-semibold">Score 0-49:</span>
-                  <span class="text-slate-400"> Cold lead - Séquence email long-terme</span>
+                  <span class="text-zinc-400"> Cold lead - Séquence email long-terme</span>
                 </div>
               </li>
             </ul>
@@ -715,43 +715,43 @@
             </div>
             <div class="space-y-4">
               <div class="flex justify-between items-center">
-                <span class="text-slate-400">Budget</span>
+                <span class="text-zinc-400">Budget</span>
                 <div class="flex items-center gap-2">
-                  <div class="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div class="w-24 h-2 bg-white/[0.06] rounded-full overflow-hidden">
                     <div class="h-full bg-emerald-500 rounded-full" style="width: 90%"></div>
                   </div>
                   <span class="text-sm">90%</span>
                 </div>
               </div>
               <div class="flex justify-between items-center">
-                <span class="text-slate-400">Authority</span>
+                <span class="text-zinc-400">Authority</span>
                 <div class="flex items-center gap-2">
-                  <div class="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div class="w-24 h-2 bg-white/[0.06] rounded-full overflow-hidden">
                     <div class="h-full bg-emerald-500 rounded-full" style="width: 85%"></div>
                   </div>
                   <span class="text-sm">85%</span>
                 </div>
               </div>
               <div class="flex justify-between items-center">
-                <span class="text-slate-400">Need</span>
+                <span class="text-zinc-400">Need</span>
                 <div class="flex items-center gap-2">
-                  <div class="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div class="w-24 h-2 bg-white/[0.06] rounded-full overflow-hidden">
                     <div class="h-full bg-emerald-500 rounded-full" style="width: 95%"></div>
                   </div>
                   <span class="text-sm">95%</span>
                 </div>
               </div>
               <div class="flex justify-between items-center">
-                <span class="text-slate-400">Timeline</span>
+                <span class="text-zinc-400">Timeline</span>
                 <div class="flex items-center gap-2">
-                  <div class="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+                  <div class="w-24 h-2 bg-white/[0.06] rounded-full overflow-hidden">
                     <div class="h-full bg-amber-500 rounded-full" style="width: 78%"></div>
                   </div>
                   <span class="text-sm">78%</span>
                 </div>
               </div>
             </div>
-            <div class="mt-6 pt-6 border-t border-slate-700">
+            <div class="mt-6 pt-6 border-t border-white/[0.08]">
               <div class="flex items-center gap-2 text-emerald-400">
                 <i data-lucide="sparkles" class="w-5 h-5"></i>
                 <span class="font-semibold">Recommandation: Transfert commercial immédiat</span>
@@ -763,7 +763,7 @@
     </section>
 
     <!-- Features -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold mb-4" data-i18n="usecases_leads_page.features_title">Fonctionnalités de qualification</h2>
@@ -774,55 +774,55 @@
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_leads_page.feature_adaptive_title">Questionnaire adaptatif</h3>
-            <p class="text-slate-400" data-i18n="usecases_leads_page.feature_adaptive_desc">Les questions s'adaptent en temps réel selon les réponses. Conversation naturelle, pas interrogatoire.</p>
+            <p class="text-zinc-400" data-i18n="usecases_leads_page.feature_adaptive_desc">Les questions s'adaptent en temps réel selon les réponses. Conversation naturelle, pas interrogatoire.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_leads_page.feature_transfer_title">Transfert à chaud</h3>
-            <p class="text-slate-400" data-i18n="usecases_leads_page.feature_transfer_desc">Lead qualifié? Transfert instantané au commercial disponible avec briefing contextuel complet.</p>
+            <p class="text-zinc-400" data-i18n="usecases_leads_page.feature_transfer_desc">Lead qualifié? Transfert instantané au commercial disponible avec briefing contextuel complet.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_leads_page.feature_crm_title">CRM sync</h3>
-            <p class="text-slate-400" data-i18n="usecases_leads_page.feature_crm_desc">Score et données enrichies synchronisés automatiquement avec HubSpot, Pipedrive, Zoho CRM.</p>
+            <p class="text-zinc-400" data-i18n="usecases_leads_page.feature_crm_desc">Score et données enrichies synchronisés automatiquement avec HubSpot, Pipedrive, Zoho CRM.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_leads_page.feature_alerts_title">Alertes temps réel</h3>
-            <p class="text-slate-400" data-i18n="usecases_leads_page.feature_alerts_desc">Notification Slack/email immédiate pour chaque hot lead. Ne laissez plus refroidir vos prospects.</p>
+            <p class="text-zinc-400" data-i18n="usecases_leads_page.feature_alerts_desc">Notification Slack/email immédiate pour chaque hot lead. Ne laissez plus refroidir vos prospects.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_leads_page.feature_analytics_title">Analytics pipeline</h3>
-            <p class="text-slate-400" data-i18n="usecases_leads_page.feature_analytics_desc">Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre processus de vente.</p>
+            <p class="text-zinc-400" data-i18n="usecases_leads_page.feature_analytics_desc">Visualisez votre funnel, identifiez les goulots d'étranglement, optimisez votre processus de vente.</p>
           </div>
           <div class="feature-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-4">
               <i data-lucide="check-circle" class="w-6 h-6 text-emerald-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="usecases_leads_page.feature_objections_title">Gestion objections</h3>
-            <p class="text-slate-400" data-i18n="usecases_leads_page.feature_objections_desc">L'IA traite les objections courantes et relance les leads hésitants avec les bons arguments.</p>
+            <p class="text-zinc-400" data-i18n="usecases_leads_page.feature_objections_desc">L'IA traite les objections courantes et relance les leads hésitants avec les bons arguments.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- CTA Section - Modern 2026 (Linear/Vercel inspired) -->
-  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900">
+  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
     <!-- Soft radial glow - gradient as lighting -->
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]"></div>
     <!-- Top border glow -->
     <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent"></div>
     <!-- Bottom border glow -->
-    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-600/30 to-transparent"></div>
+    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent"></div>
 
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <!-- Badge -->
@@ -832,7 +832,7 @@
       </div>
 
       <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer Votre Service Client?</h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
+      <p class="text-lg text-zinc-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
 
       <!-- CTA Buttons - Linear style -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -852,14 +852,14 @@
 </main>
   <!-- Footer -->
   <!-- Newsletter CTA -->
-  <section class="py-12 bg-slate-900/50" id="newsletter">
+  <section class="py-12 bg-white/[0.02]" id="newsletter">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
             <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
           </h3>
-          <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
+          <p class="text-zinc-400 text-sm" data-i18n="newsletter.subtitle">
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
@@ -868,7 +868,7 @@
             type="email"
             placeholder="votre@email.com"
             data-i18n-placeholder="newsletter.placeholder"
-            class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
+            class="flex-1 px-4 py-2.5 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required
             aria-label="Adresse email"
           >
@@ -879,7 +879,7 @@
       </div>
     </div>
   </section>
-<footer class="bg-slate-900 border-t border-slate-800">
+<footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -902,16 +902,16 @@
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
@@ -968,29 +968,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="uc_leads.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="uc_leads.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>

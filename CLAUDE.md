@@ -1,13 +1,12 @@
 # VocalIA - Voice AI Platform
 
 > **v7.11.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
-> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **308 node assertions** (15 test suites) + **2,726 exhaustive checks**
+> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,307 tests** (73 files, 3 skip)
 > **203 MCP Tools** | 40 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,353 + MCP/src 17,630 + Lib 921 + Website 31,512
-> ✅ **SESSION 250.97octies:** MULTI-TENANT SCALE - 30→537 tenants | 2,890 KB files | 12 regions | 40 sectors
+> ⚠️ **SESSION 250.114 FORENSIC AUDIT**: ~453 theater tests (source-grep, typeof, module-load), 5 duplicate pairs, MAIN API 0 function calls tested
 >    - **537 tenants** (B2B=283, B2C=200, ECOM=54) | **580 KB directories** × 5 languages = **2,890 KB files**
->    - **12 regions**: Morocco(3), France, Spain, UK, UAE, Belgium, Netherlands, Switzerland, Canada, Germany
->    - **40 personas covered**: 12-13 tenants each | Widget testing infrastructure PRODUCTION READY
+>    - **40 personas covered**: 12-13 tenants each | 12 regions
 
 ## Quick Reference
 
@@ -16,7 +15,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Tests**: 308 assertions + 2,726 exhaustive (all passing), **Score**: 5.8/10, **CORS**: ✅ whitelist, **XSS**: ✅ fixed |
+| Scores | **Tests**: 3,307 (73 files) — ⚠️ ~453 theater tests, **Score**: 5.2/10 (recalculated 250.114), **CORS**: ✅, **XSS**: ✅ |
 
 ---
 
@@ -169,11 +168,24 @@ git push origin main
 | Client Folders | **580** (23 real + 557 test data) |
 | KB Files | **2,890** (580 dirs × 5 langs) |
 
-**Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` (P0 done, P1 in progress, P2-P3 pending)
+**Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` — P0-P2 done BUT new P0 test quality tasks added (250.114 forensic audit)
 
-**Note:** 557 client folders in `clients/` are TEST DATA for widget output testing (not real clients). Only 23 registry entries are production clients.
+**557 client folders** in `clients/` = TEST DATA (not real clients). Only 23 registry entries are production.
 
-**Docs:** `docs/AUDIT-MULTI-TENANT-SESSION-250.57.md`, `docs/MULTI-TENANT-KB-OPTIMIZATION-PLAN.md`
+## ⚠️ Test Quality Crisis (Session 250.114)
+
+| Anti-Pattern | Count | Worst Files |
+|:-------------|:-----:|:------------|
+| source-grep (content.includes) | 121 | voice-api(38), widget(57), mcp-server(26) |
+| typeof === 'function' | 263 | 43 files (product-embedding:14, knowledge-base:13, grok-realtime:13) |
+| existsSync | 46 | 16 files (mcp-server:8, audit-store:5) |
+| module-load assert.ok | 20 | module-load.test.cjs (ALL) |
+| duplicate pairs | 156 | 5 PascalCase+kebab-case pairs |
+| skipped tests | 3 | i18n.test.cjs (key parity, structure, counts) |
+
+**Critical: MAIN API (3,086 lines) has 34 tests — ALL source-grep, ZERO function calls.**
+**Critical: DB API (2,733 lines, 40+ routes) has 49 tests — ZERO route handler tests.**
+**Critical: 7 widget<->backend integration bugs went UNDETECTED by 3,307 tests.**
 
 ---
 
@@ -197,8 +209,9 @@ git push origin main
 
 **Policy:** No Free Tier - 14-day trial only
 
-> ✅ **Session 250.105**: 308 assertions + 2,726 exhaustive checks (all passing), XSS fixed, CI tests added
-> ✅ **Session 250.102**: persona format 40/40, agency_internal isolation complete
+> ⚠️ **Session 250.114**: Test forensic audit — 453 theater tests, score recalculated 8.0→5.2
+> ✅ **Session 250.113**: Coverage 52.57% stmts, 2,611 tests, kb-crawler regex bug fix
+> ✅ **Session 250.105**: XSS fixed, CI tests added, function tool docs corrected
 
 ---
 
@@ -228,8 +241,7 @@ providers: [
 
 ---
 
-**Platform Score: 5.8/10** (bottom-up 10-dimension, Session 250.104)
-All P0 forensic findings resolved (CORS, XSS, free_price, function tools, test counts, personas, social proof).
-See `docs/ROADMAP-TO-COMPLETION.md` for remaining P1-P3 tasks.
+**Platform Score: 5.2/10** (recalculated 250.114 — Tests unitaires 10.0→4.0 after forensic audit)
+P0-P2 resolved. NEW P0 test quality tasks added. See `docs/ROADMAP-TO-COMPLETION.md`.
 
-*Last update: 06/02/2026 - Session 250.105*
+*Last update: 06/02/2026 - Session 250.114 (Test Forensic Audit)*

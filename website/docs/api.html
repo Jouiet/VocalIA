@@ -63,7 +63,7 @@
   </script>
 
   <!-- Critical CSS -->
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -86,19 +86,19 @@
       background-clip: text;
     }
     .glass {
-      background: rgba(51, 65, 85, 0.85);
+      background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .code-block {
       background: #0f172a;
-      border: 1px solid rgba(148, 163, 184, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 12px;
       overflow: hidden;
     }
     .code-header {
-      background: rgba(15, 23, 42, 0.8);
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      background: rgba(10, 10, 10, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       padding: 0.75rem 1rem;
       display: flex;
       justify-content: space-between;
@@ -145,7 +145,7 @@
     .param-table th, .param-table td {
       padding: 0.75rem;
       text-align: left;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .param-table th {
       color: #94a3b8;
@@ -171,7 +171,7 @@
   
 </head>
 
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Skip Link -->
 
     <a href="#main-content"
@@ -214,7 +214,7 @@
 
               <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
@@ -251,7 +251,7 @@
 
                   </a>
 
-                  <hr class="border-slate-600/50 my-2">
+                  <hr class="border-white/[0.08] my-2">
 
                   <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
 
@@ -278,7 +278,7 @@
 
               <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-white/[0.08]">
 
                   <div class="grid grid-cols-3 gap-6">
 
@@ -364,13 +364,13 @@
 
                     <!-- Column 3: Featured -->
 
-                    <div class="bg-slate-700/30 rounded-lg p-4">
+                    <div class="bg-white/[0.03] rounded-lg p-4">
 
                       <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span data-i18n="docs_api.populaire_186">Populaire</span></div>
 
                       <div class="space-y-3">
 
-                        <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/features" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -384,7 +384,7 @@
 
                         </a>
 
-                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -424,7 +424,7 @@
 
               <div class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.docs">Documentation</span></a>
 
@@ -450,36 +450,36 @@
 
             <!-- Language Switcher -->
             <div class="relative">
-              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
+              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.04] transition-colors" aria-label="Changer de langue">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 <span id="currentLang" class="text-sm font-medium">FR</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
               </button>
-              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
-                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50 overflow-hidden">
+                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127467;&#127479;</span>
                   <span class="text-sm"><span data-i18n="docs_api.francais_182">Francais</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127468;&#127463;</span>
                   <span class="text-sm"><span data-i18n="docs_api.english_181">English</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127466;&#127480;</span>
                   <span class="text-sm"><span data-i18n="docs_api.espanol_180">Espanol</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127480;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127474;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
                 </button>
               </div>
             </div>
 
-            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
+            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-white/[0.04] focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
           </button>
@@ -492,7 +492,7 @@
 
       <!-- Mobile Menu Drawer -->
 
-      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-[#050505]/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
 
         <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
 
@@ -502,7 +502,7 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
 
-            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
 
@@ -522,7 +522,7 @@
 
             </a>
 
-            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
 
@@ -550,13 +550,13 @@
 
             <div class="grid grid-cols-2 gap-2">
 
-              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
+              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
 
-              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
+              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
 
-              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
+              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
 
-              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
+              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
 
             </div>
 
@@ -568,17 +568,17 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
 
-            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
+            <a href="/docs" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
 
-            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+            <a href="/integrations" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
 
-            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
+            <a href="/blog" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
 
           <!-- Mobile CTA -->
 
           <div class="space-y-3">
 
-            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center font-medium text-white">
 
               Tarifs
 
@@ -601,9 +601,9 @@
     
   <div class="flex pt-16">
     <!-- Sidebar -->
-    <aside class="hidden lg:block w-64 fixed left-0 top-16 bottom-0 overflow-y-auto border-r border-slate-700/50 bg-slate-900/50">
+    <aside class="hidden lg:block w-64 fixed left-0 top-16 bottom-0 overflow-y-auto border-r border-white/[0.08] bg-white/[0.02]">
       <div class="p-4">
-        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-4"><span data-i18n="docs_api.api_reference_150"><span data-i18n="docs_api.api_reference_172">API Reference</span></span></h3>
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-4"><span data-i18n="docs_api.api_reference_150"><span data-i18n="docs_api.api_reference_172">API Reference</span></span></h3>
 
         <div class="space-y-1">
           <a href="#introduction" class="sidebar-link active"><span data-i18n="docs_api.introduction_171">Introduction</span></a>
@@ -611,14 +611,14 @@
           <a href="#base-url" class="sidebar-link"><span data-i18n="docs_api.base_url_169">Base URL</span></a>
         </div>
 
-        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4">Voice Widget</h3>
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-8 mb-4">Voice Widget</h3>
         <div class="space-y-1">
           <a href="#widget-embed" class="sidebar-link"><span data-i18n="docs_api.intgration_widget_167">Intégration Widget</span></a>
           <a href="#widget-config" class="sidebar-link"><span data-i18n="docs_api.configuration_157"><span data-i18n="docs_api.configuration_166">Configuration</span></span></a>
           <a href="#widget-events" class="sidebar-link"><span data-i18n="docs_api.vnements_165">Événements</span></a>
         </div>
 
-        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.voice_telephony_164">Voice Telephony</span></h3>
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.voice_telephony_164">Voice Telephony</span></h3>
         <div class="space-y-1">
           <a href="#calls-create" class="sidebar-link"><span data-i18n="docs_api.crer_un_appel_163">Créer un appel</span></a>
           <a href="#calls-get" class="sidebar-link"><span data-i18n="docs_api.rcuprer_un_appel_162">Récupérer un appel</span></a>
@@ -626,20 +626,20 @@
           <a href="#calls-transfer" class="sidebar-link"><span data-i18n="docs_api.transfrer_160">Transférer</span></a>
         </div>
 
-        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.websockets_159">WebSockets</span></h3>
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.websockets_159">WebSockets</span></h3>
         <div class="space-y-1">
           <a href="#ws-connection" class="sidebar-link"><span data-i18n="nav.login">Connexion</span></a>
           <a href="#ws-events" class="sidebar-link">Événements temps réel</a>
         </div>
 
-        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.webhooks_158">Webhooks</span></h3>
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.webhooks_158">Webhooks</span></h3>
         <div class="space-y-1">
           <a href="#webhooks-setup" class="sidebar-link">Configuration</a>
           <a href="#webhooks-events" class="sidebar-link"><span data-i18n="docs_api.types_dvnements_156">Types d'événements</span></a>
           <a href="#webhooks-security" class="sidebar-link"><span data-i18n="docs_api.scurit_155">Sécurité</span></a>
         </div>
 
-        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.rfrences_154">Références</span></h3>
+        <h3 class="text-sm font-semibold text-zinc-400 uppercase tracking-wider mt-8 mb-4"><span data-i18n="docs_api.rfrences_154">Références</span></h3>
         <div class="space-y-1">
           <a href="#errors" class="sidebar-link"><span data-i18n="docs_api.codes_derreur_30"><span data-i18n="docs_api.codes_derreur_153">Codes d'erreur</span></span></a>
           <a href="#rate-limits" class="sidebar-link"><span data-i18n="docs_api.rate_limits_19"><span data-i18n="docs_api.rate_limits_152">Rate Limits</span></span></a>
@@ -654,7 +654,7 @@
 
         <!-- Breadcrumb -->
         <nav class="mb-8" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white transition"><span data-i18n="docs_api.accueil_151">Accueil</span></a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/docs" class="hover:text-white transition"><span data-i18n="footer.links.docs">Documentation</span></a></li>
@@ -666,7 +666,7 @@
         <!-- Introduction -->
         <section id="introduction" class="mb-16">
           <h1 class="text-4xl font-extrabold mb-4"><span data-i18n="docs_api_page.hero_title">API</span> <span class="gradient-text" data-i18n="docs_api_page.hero_title_accent">Reference</span></h1>
-          <p class="text-xl text-slate-300 mb-8" data-i18n="docs_api_page.hero_subtitle">
+          <p class="text-xl text-zinc-300 mb-8" data-i18n="docs_api_page.hero_subtitle">
             Documentation complète de l'API VocalIA pour intégrer Voice Widget et Voice Telephony dans vos applications.
           </p>
 
@@ -678,7 +678,7 @@
                 </div>
                 <h3 class="font-semibold" data-i18n="docs_api_page.card_rest_title">REST API</h3>
               </div>
-              <p class="text-slate-400 text-sm" data-i18n="docs_api_page.card_rest_desc">Endpoints HTTP pour créer, gérer et monitorer vos appels vocaux.</p>
+              <p class="text-zinc-400 text-sm" data-i18n="docs_api_page.card_rest_desc">Endpoints HTTP pour créer, gérer et monitorer vos appels vocaux.</p>
             </div>
             <div class="glass rounded-xl p-6">
               <div class="flex items-center gap-3 mb-3">
@@ -687,7 +687,7 @@
                 </div>
                 <h3 class="font-semibold" data-i18n="docs_api_page.card_ws_title">WebSockets</h3>
               </div>
-              <p class="text-slate-400 text-sm" data-i18n="docs_api_page.card_ws_desc">Connexion temps réel pour audio streaming et événements live.</p>
+              <p class="text-zinc-400 text-sm" data-i18n="docs_api_page.card_ws_desc">Connexion temps réel pour audio streaming et événements live.</p>
             </div>
           </div>
         </section>
@@ -695,14 +695,14 @@
         <!-- Authentication -->
         <section id="authentication" class="mb-16">
           <h2 class="text-2xl font-bold mb-4" data-i18n="docs_api_page.auth_title">Authentification</h2>
-          <p class="text-slate-300 mb-6" data-i18n="docs_api_page.auth_desc">
+          <p class="text-zinc-300 mb-6" data-i18n="docs_api_page.auth_desc">
             L'API VocalIA utilise des clés API pour l'authentification. Incluez votre clé dans le header Authorization de chaque requête.
           </p>
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm" data-i18n="docs_api_page.auth_header">HTTP Header</span>
-              <button type="button" class="text-slate-400 hover:text-white text-sm" data-i18n="docs_api_page.auth_copy"><span data-i18n="docs_api.copier_92"><span data-i18n="docs_api.copier_146">Copier</span></span></button>
+              <span class="text-zinc-400 text-sm" data-i18n="docs_api_page.auth_header">HTTP Header</span>
+              <button type="button" class="text-zinc-400 hover:text-white text-sm" data-i18n="docs_api_page.auth_copy"><span data-i18n="docs_api.copier_92"><span data-i18n="docs_api.copier_146">Copier</span></span></button>
             </div>
             <div class="code-content">
               <pre><span class="token-key"><span data-i18n="docs_api.authorization_149">Authorization</span></span>: Bearer <span class="token-string">voc_sk_live_xxxxxxxxxxxxxxxxxxxxxxxx</span></pre>
@@ -714,7 +714,7 @@
               <i data-lucide="code" class="w-5 h-5 text-amber-400"></i>
               <span data-i18n="docs_api_page.auth_security_title">Sécurité des clés API</span>
             </h3>
-            <ul class="text-slate-400 text-sm space-y-2">
+            <ul class="text-zinc-400 text-sm space-y-2">
               <li>• <span data-i18n="docs_api_page.auth_security_item1">Ne jamais exposer vos clés côté client (frontend)</span></li>
               <li>• <span data-i18n="docs_api_page.auth_security_item2">Utilisez des variables d'environnement</span></li>
               <li>• <span data-i18n="docs_api_page.auth_security_item3">Régénérez vos clés si compromises</span></li>
@@ -728,7 +728,7 @@
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm" data-i18n="docs_api_page.base_url_production">Production</span>
+              <span class="text-zinc-400 text-sm" data-i18n="docs_api_page.base_url_production">Production</span>
             </div>
             <div class="code-content">
               <pre><span class="token-string">https://api.vocalia.ma/v1</span></pre>
@@ -737,7 +737,7 @@
 
           <div class="code-block">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.sandbox_test_148">Sandbox (Test)</span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.sandbox_test_148">Sandbox (Test)</span></span>
             </div>
             <div class="code-content">
               <pre><span class="token-string">https://sandbox.api.vocalia.ma/v1</span></pre>
@@ -748,14 +748,14 @@
         <!-- Voice Widget -->
         <section id="widget-embed" class="mb-16">
           <h2 class="text-2xl font-bold mb-4"><span data-i18n="docs_api.voice_widget_intgration_147">Voice Widget - Intégration</span></h2>
-          <p class="text-slate-300 mb-6">
+          <p class="text-zinc-300 mb-6">
             Intégrez le Voice Widget en ajoutant simplement une balise script à votre page.
           </p>
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">HTML</span>
-              <button type="button" class="text-slate-400 hover:text-white text-sm">Copier</button>
+              <span class="text-zinc-400 text-sm">HTML</span>
+              <button type="button" class="text-zinc-400 hover:text-white text-sm">Copier</button>
             </div>
             <div class="code-content">
               <pre><span class="token-comment">&lt;!-- VocalIA Voice Widget --&gt;</span>
@@ -788,33 +788,33 @@
               <tbody>
                 <tr>
                   <td><code class="text-vocalia-400">apiKey</code> <span class="param-required"><span data-i18n="docs_api.requis_107"><span data-i18n="docs_api.requis_110"><span data-i18n="docs_api.requis_134"><span data-i18n="docs_api.requis_137">requis</span></span></span></span></span></td>
-                  <td class="text-slate-400"><span data-i18n="docs_api.string_76"><span data-i18n="docs_api.string_95"><span data-i18n="docs_api.string_103"><span data-i18n="docs_api.string_106"><span data-i18n="docs_api.string_109"><span data-i18n="docs_api.string_126"><span data-i18n="docs_api.string_129"><span data-i18n="docs_api.string_133"><span data-i18n="docs_api.string_136">string</span></span></span></span></span></span></span></span></span></td>
-                  <td class="text-slate-300">Clé API publique (voc_pk_*)</td>
+                  <td class="text-zinc-400"><span data-i18n="docs_api.string_76"><span data-i18n="docs_api.string_95"><span data-i18n="docs_api.string_103"><span data-i18n="docs_api.string_106"><span data-i18n="docs_api.string_109"><span data-i18n="docs_api.string_126"><span data-i18n="docs_api.string_129"><span data-i18n="docs_api.string_133"><span data-i18n="docs_api.string_136">string</span></span></span></span></span></span></span></span></span></td>
+                  <td class="text-zinc-300">Clé API publique (voc_pk_*)</td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400">agentId</code> <span class="param-required">requis</span></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.id_de_lagent_132">ID de l'agent vocal configuré</span></td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.id_de_lagent_132">ID de l'agent vocal configuré</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400">language</code> <span class="param-optional"><span data-i18n="docs_api.optionnel_96"><span data-i18n="docs_api.optionnel_100"><span data-i18n="docs_api.optionnel_104"><span data-i18n="docs_api.optionnel_119"><span data-i18n="docs_api.optionnel_123"><span data-i18n="docs_api.optionnel_127"><span data-i18n="docs_api.optionnel_130">optionnel</span></span></span></span></span></span></span></span></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300">Langue: fr, en, ar, es, ary (default: fr)</td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300">Langue: fr, en, ar, es, ary (default: fr)</td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400">position</code> <span class="param-optional">optionnel</span></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.bottomright_bottomleft_topright_125">bottom-right, bottom-left, top-right, top-left</span></td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.bottomright_bottomleft_topright_125">bottom-right, bottom-left, top-right, top-left</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.theme_124">theme</span></code> <span class="param-optional">optionnel</span></td>
-                  <td class="text-slate-400"><span data-i18n="docs_api.object_99"><span data-i18n="docs_api.object_122">object</span></span></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.personnalisation_couleurs_primarycolor_121">Personnalisation couleurs (primaryColor, etc.)</span></td>
+                  <td class="text-zinc-400"><span data-i18n="docs_api.object_99"><span data-i18n="docs_api.object_122">object</span></span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.personnalisation_couleurs_primarycolor_121">Personnalisation couleurs (primaryColor, etc.)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.onready_120">onReady</span></code> <span class="param-optional">optionnel</span></td>
-                  <td class="text-slate-400"><span data-i18n="docs_api.function_33"><span data-i18n="docs_api.function_118">function</span></span></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.callback_quand_le_117">Callback quand le widget est prêt</span></td>
+                  <td class="text-zinc-400"><span data-i18n="docs_api.function_33"><span data-i18n="docs_api.function_118">function</span></span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.callback_quand_le_117">Callback quand le widget est prêt</span></td>
                 </tr>
               </tbody>
             </table>
@@ -827,7 +827,7 @@
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.javascript_70"><span data-i18n="docs_api.javascript_115">JavaScript</span></span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.javascript_70"><span data-i18n="docs_api.javascript_115">JavaScript</span></span></span>
             </div>
             <div class="code-content">
               <pre>VocalIA.on(<span class="token-string">'conversationStart'</span>, (data) => {
@@ -852,13 +852,13 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
             <span class="method-badge method-post">POST</span>
             Créer un appel
           </h2>
-          <p class="text-slate-300 mb-6">
+          <p class="text-zinc-300 mb-6">
             Initie un appel sortant vers un numéro de téléphone.
           </p>
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.endpoint_73"><span data-i18n="docs_api.endpoint_87"><span data-i18n="docs_api.endpoint_89"><span data-i18n="docs_api.endpoint_114">Endpoint</span></span></span></span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.endpoint_73"><span data-i18n="docs_api.endpoint_87"><span data-i18n="docs_api.endpoint_89"><span data-i18n="docs_api.endpoint_114">Endpoint</span></span></span></span></span>
             </div>
             <div class="code-content">
               <pre>POST /v1/calls</pre>
@@ -878,28 +878,28 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
               <tbody>
                 <tr>
                   <td><code class="text-vocalia-400">to</code> <span class="param-required">requis</span></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300">Numéro destination (E.164: +212612345678)</td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300">Numéro destination (E.164: +212612345678)</td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400">agentId</code> <span class="param-required">requis</span></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.id_de_lagent_105">ID de l'agent vocal</span></td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.id_de_lagent_105">ID de l'agent vocal</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400">from</code> <span class="param-optional">optionnel</span></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.numro_appelant_si_102">Numéro appelant (si plusieurs configurés)</span></td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.numro_appelant_si_102">Numéro appelant (si plusieurs configurés)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.metadata_101">metadata</span></code> <span class="param-optional">optionnel</span></td>
-                  <td class="text-slate-400">object</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.donnes_personnalises_passer_98">Données personnalisées à passer à l'agent</span></td>
+                  <td class="text-zinc-400">object</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.donnes_personnalises_passer_98">Données personnalisées à passer à l'agent</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.webhookurl_97">webhookUrl</span></code> <span class="param-optional">optionnel</span></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.url_pour_recevoir_94">URL pour recevoir les événements de l'appel</span></td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.url_pour_recevoir_94">URL pour recevoir les événements de l'appel</span></td>
                 </tr>
               </tbody>
             </table>
@@ -908,8 +908,8 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
           <h3 class="font-semibold mb-3"><span data-i18n="docs_api.exemple_de_requte_93">Exemple de requête</span></h3>
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">cURL</span>
-              <button type="button" class="text-slate-400 hover:text-white text-sm">Copier</button>
+              <span class="text-zinc-400 text-sm">cURL</span>
+              <button type="button" class="text-zinc-400 hover:text-white text-sm">Copier</button>
             </div>
             <div class="code-content">
               <pre>curl -X POST https://api.vocalia.ma/v1/calls \
@@ -929,7 +929,7 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
           <h3 class="font-semibold mb-3"><span data-i18n="docs_api.rponse_91">Réponse</span></h3>
           <div class="code-block">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.json_201_created_90">JSON - 201 Created</span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.json_201_created_90">JSON - 201 Created</span></span>
             </div>
             <div class="code-content">
               <pre>{
@@ -957,7 +957,7 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">Endpoint</span>
+              <span class="text-zinc-400 text-sm">Endpoint</span>
             </div>
             <div class="code-content">
               <pre>GET /v1/calls/{call_id}</pre>
@@ -966,7 +966,7 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
 
           <div class="code-block">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.json_200_ok_88">JSON - 200 OK</span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.json_200_ok_88">JSON - 200 OK</span></span>
             </div>
             <div class="code-content">
               <pre>{
@@ -997,7 +997,7 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">Endpoint</span>
+              <span class="text-zinc-400 text-sm">Endpoint</span>
             </div>
             <div class="code-content">
               <pre>GET /v1/calls?limit=20&status=completed&from=2026-01-01</pre>
@@ -1017,28 +1017,28 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
               <tbody>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.limit_83">limit</span></code></td>
-                  <td class="text-slate-400"><span data-i18n="docs_api.integer_79"><span data-i18n="docs_api.integer_82">integer</span></span></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.nombre_de_rsultats_81">Nombre de résultats (max 100, default 20)</span></td>
+                  <td class="text-zinc-400"><span data-i18n="docs_api.integer_79"><span data-i18n="docs_api.integer_82">integer</span></span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.nombre_de_rsultats_81">Nombre de résultats (max 100, default 20)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.offset_80">offset</span></code></td>
-                  <td class="text-slate-400">integer</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.offset_pour_pagination_78">Offset pour pagination</span></td>
+                  <td class="text-zinc-400">integer</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.offset_pour_pagination_78">Offset pour pagination</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.status_77">status</span></code></td>
-                  <td class="text-slate-400">string</td>
-                  <td class="text-slate-300">Filtrer par status: initiating, ringing, in-progress, completed, failed</td>
+                  <td class="text-zinc-400">string</td>
+                  <td class="text-zinc-300">Filtrer par status: initiating, ringing, in-progress, completed, failed</td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400">from</code></td>
-                  <td class="text-slate-400">date</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.date_de_dbut_75">Date de début (ISO 8601)</span></td>
+                  <td class="text-zinc-400">date</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.date_de_dbut_75">Date de début (ISO 8601)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400">to</code></td>
-                  <td class="text-slate-400">date</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.date_de_fin_74">Date de fin (ISO 8601)</span></td>
+                  <td class="text-zinc-400">date</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.date_de_fin_74">Date de fin (ISO 8601)</span></td>
                 </tr>
               </tbody>
             </table>
@@ -1054,7 +1054,7 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">Endpoint</span>
+              <span class="text-zinc-400 text-sm">Endpoint</span>
             </div>
             <div class="code-content">
               <pre>POST /v1/calls/{call_id}/transfer</pre>
@@ -1063,7 +1063,7 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
 
           <div class="code-block">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.request_body_72">Request Body</span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.request_body_72">Request Body</span></span>
             </div>
             <div class="code-content">
               <pre>{
@@ -1080,13 +1080,13 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
             <span class="method-badge method-ws">WS</span>
             WebSocket - Connexion
           </h2>
-          <p class="text-slate-300 mb-6">
+          <p class="text-zinc-300 mb-6">
             Connexion WebSocket pour audio streaming bidirectionnel en temps réel.
           </p>
 
           <div class="code-block mb-6">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.websocket_url_71">WebSocket URL</span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.websocket_url_71">WebSocket URL</span></span>
             </div>
             <div class="code-content">
               <pre>wss://realtime.vocalia.ma/v1/stream?apiKey=voc_sk_live_xxxx</pre>
@@ -1095,7 +1095,7 @@ VocalIA.on(<span class="token-string">'error'</span>, (error) => {
 
           <div class="code-block">
             <div class="code-header">
-              <span class="text-slate-400 text-sm">JavaScript</span>
+              <span class="text-zinc-400 text-sm">JavaScript</span>
             </div>
             <div class="code-content">
               <pre><span class="token-key"><span data-i18n="docs_api.const_32"><span data-i18n="docs_api.const_34"><span data-i18n="docs_api.const_65"><span data-i18n="docs_api.const_69">const</span></span></span></span></span> ws = <span class="token-key">new</span> WebSocket(
@@ -1130,19 +1130,19 @@ ws.onmessage = (event) => {
           <div class="space-y-4">
             <div class="glass rounded-xl p-4">
               <h3 class="font-semibold mb-2 text-vocalia-400"><span data-i18n="docs_api.audio_63">audio</span></h3>
-              <p class="text-slate-400 text-sm"><span data-i18n="docs_api.audio_pcm_16bit_62">Audio PCM 16-bit mono encodé en base64 à jouer.</span></p>
+              <p class="text-zinc-400 text-sm"><span data-i18n="docs_api.audio_pcm_16bit_62">Audio PCM 16-bit mono encodé en base64 à jouer.</span></p>
             </div>
             <div class="glass rounded-xl p-4">
               <h3 class="font-semibold mb-2 text-vocalia-400"><span data-i18n="docs_api.transcript_61">transcript</span></h3>
-              <p class="text-slate-400 text-sm"><span data-i18n="docs_api.transcription_en_temps_60">Transcription en temps réel (partielle et finale).</span></p>
+              <p class="text-zinc-400 text-sm"><span data-i18n="docs_api.transcription_en_temps_60">Transcription en temps réel (partielle et finale).</span></p>
             </div>
             <div class="glass rounded-xl p-4">
               <h3 class="font-semibold mb-2 text-vocalia-400">function_call</h3>
-              <p class="text-slate-400 text-sm"><span data-i18n="docs_api.lagent_veut_excuter_59">L'agent veut exécuter une fonction (transfer, booking, etc.).</span></p>
+              <p class="text-zinc-400 text-sm"><span data-i18n="docs_api.lagent_veut_excuter_59">L'agent veut exécuter une fonction (transfer, booking, etc.).</span></p>
             </div>
             <div class="glass rounded-xl p-4">
               <h3 class="font-semibold mb-2 text-vocalia-400">end</h3>
-              <p class="text-slate-400 text-sm"><span data-i18n="docs_api.fin_de_la_58">Fin de la conversation avec résumé et metadata.</span></p>
+              <p class="text-zinc-400 text-sm"><span data-i18n="docs_api.fin_de_la_58">Fin de la conversation avec résumé et metadata.</span></p>
             </div>
           </div>
         </section>
@@ -1150,13 +1150,13 @@ ws.onmessage = (event) => {
         <!-- Webhooks Setup -->
         <section id="webhooks-setup" class="mb-16">
           <h2 class="text-2xl font-bold mb-4"><span data-i18n="docs_api.webhooks_configuration_57">Webhooks - Configuration</span></h2>
-          <p class="text-slate-300 mb-6">
+          <p class="text-zinc-300 mb-6">
             Configurez des webhooks pour recevoir des notifications en temps réel sur vos appels.
           </p>
 
           <div class="code-block">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.exemple_de_payload_56">Exemple de payload webhook</span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.exemple_de_payload_56">Exemple de payload webhook</span></span>
             </div>
             <div class="code-content">
               <pre>{
@@ -1189,35 +1189,35 @@ ws.onmessage = (event) => {
               <tbody>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.callinitiated_52">call.initiated</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.appel_initi_en_51">Appel initié, en attente de connexion</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.appel_initi_en_51">Appel initié, en attente de connexion</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.callringing_50">call.ringing</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.tlphone_sonne_chez_49">Téléphone sonne chez le destinataire</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.tlphone_sonne_chez_49">Téléphone sonne chez le destinataire</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.callanswered_48">call.answered</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.appel_dcroch_conversation_47">Appel décroché, conversation en cours</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.appel_dcroch_conversation_47">Appel décroché, conversation en cours</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.callcompleted_46">call.completed</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.appel_termin_avec_45">Appel terminé avec succès</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.appel_termin_avec_45">Appel terminé avec succès</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.callfailed_44">call.failed</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.appel_chou_occup_43">Appel échoué (occupé, pas de réponse, etc.)</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.appel_chou_occup_43">Appel échoué (occupé, pas de réponse, etc.)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.calltransferred_42">call.transferred</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.appel_transfr_vers_41">Appel transféré vers un humain</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.appel_transfr_vers_41">Appel transféré vers un humain</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.leadqualified_40">lead.qualified</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.lead_qualifi_score_39">Lead qualifié (score BANT disponible)</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.lead_qualifi_score_39">Lead qualifié (score BANT disponible)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-vocalia-400"><span data-i18n="docs_api.bookingcreated_38">booking.created</span></code></td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.rdv_cr_via_37">RDV créé via l'agent vocal</span></td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.rdv_cr_via_37">RDV créé via l'agent vocal</span></td>
                 </tr>
               </tbody>
             </table>
@@ -1227,13 +1227,13 @@ ws.onmessage = (event) => {
         <!-- Webhook Security -->
         <section id="webhooks-security" class="mb-16">
           <h2 class="text-2xl font-bold mb-4"><span data-i18n="docs_api.webhooks_scurit_36">Webhooks - Sécurité</span></h2>
-          <p class="text-slate-300 mb-6">
+          <p class="text-zinc-300 mb-6">
             Validez l'authenticité des webhooks avec la signature HMAC-SHA256.
           </p>
 
           <div class="code-block">
             <div class="code-header">
-              <span class="text-slate-400 text-sm"><span data-i18n="docs_api.nodejs_vrification_signature_35">Node.js - Vérification signature</span></span>
+              <span class="text-zinc-400 text-sm"><span data-i18n="docs_api.nodejs_vrification_signature_35">Node.js - Vérification signature</span></span>
             </div>
             <div class="code-content">
               <pre><span class="token-key">const</span> crypto = require(<span class="token-string">'crypto'</span>);
@@ -1269,43 +1269,43 @@ ws.onmessage = (event) => {
               <tbody>
                 <tr>
                   <td><code class="text-red-400">invalid_api_key</code></td>
-                  <td class="text-slate-400">401</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.cl_api_invalide_27">Clé API invalide ou expirée</span></td>
+                  <td class="text-zinc-400">401</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.cl_api_invalide_27">Clé API invalide ou expirée</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-red-400">insufficient_permissions</code></td>
-                  <td class="text-slate-400">403</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.permissions_insuffisantes_pour_26">Permissions insuffisantes pour cette action</span></td>
+                  <td class="text-zinc-400">403</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.permissions_insuffisantes_pour_26">Permissions insuffisantes pour cette action</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-red-400">resource_not_found</code></td>
-                  <td class="text-slate-400">404</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.ressource_non_trouve_25">Ressource non trouvée (appel, agent, etc.)</span></td>
+                  <td class="text-zinc-400">404</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.ressource_non_trouve_25">Ressource non trouvée (appel, agent, etc.)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-red-400">invalid_phone_number</code></td>
-                  <td class="text-slate-400">400</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.numro_de_tlphone_24">Numéro de téléphone invalide (format E.164)</span></td>
+                  <td class="text-zinc-400">400</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.numro_de_tlphone_24">Numéro de téléphone invalide (format E.164)</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-red-400">rate_limit_exceeded</code></td>
-                  <td class="text-slate-400">429</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.limite_de_requtes_23">Limite de requêtes dépassée</span></td>
+                  <td class="text-zinc-400">429</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.limite_de_requtes_23">Limite de requêtes dépassée</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-red-400">insufficient_credits</code></td>
-                  <td class="text-slate-400">402</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.crdits_insuffisants_pour_22">Crédits insuffisants pour cette opération</span></td>
+                  <td class="text-zinc-400">402</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.crdits_insuffisants_pour_22">Crédits insuffisants pour cette opération</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-red-400">agent_not_configured</code></td>
-                  <td class="text-slate-400">400</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.agent_non_configur_21">Agent non configuré ou désactivé</span></td>
+                  <td class="text-zinc-400">400</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.agent_non_configur_21">Agent non configuré ou désactivé</span></td>
                 </tr>
                 <tr>
                   <td><code class="text-red-400">internal_error</code></td>
-                  <td class="text-slate-400">500</td>
-                  <td class="text-slate-300"><span data-i18n="docs_api.erreur_interne_ressayez_20">Erreur interne, réessayez plus tard</span></td>
+                  <td class="text-zinc-400">500</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.erreur_interne_ressayez_20">Erreur interne, réessayez plus tard</span></td>
                 </tr>
               </tbody>
             </table>
@@ -1327,19 +1327,19 @@ ws.onmessage = (event) => {
               </thead>
               <tbody>
                 <tr>
-                  <td class="text-slate-300"><span data-i18n="docs_api.starter_17">Starter</span></td>
-                  <td class="text-slate-400">60</td>
-                  <td class="text-slate-400">5</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.starter_17">Starter</span></td>
+                  <td class="text-zinc-400">60</td>
+                  <td class="text-zinc-400">5</td>
                 </tr>
                 <tr>
-                  <td class="text-slate-300">Pro</td>
-                  <td class="text-slate-400">300</td>
-                  <td class="text-slate-400">25</td>
+                  <td class="text-zinc-300">Pro</td>
+                  <td class="text-zinc-400">300</td>
+                  <td class="text-zinc-400">25</td>
                 </tr>
                 <tr>
-                  <td class="text-slate-300"><span data-i18n="docs_api.enterprise_16">Enterprise</span></td>
-                  <td class="text-slate-400">1000+</td>
-                  <td class="text-slate-400">100+</td>
+                  <td class="text-zinc-300"><span data-i18n="docs_api.enterprise_16">Enterprise</span></td>
+                  <td class="text-zinc-400">1000+</td>
+                  <td class="text-zinc-400">100+</td>
                 </tr>
               </tbody>
             </table>
@@ -1365,11 +1365,11 @@ ws.onmessage = (event) => {
             <div class="glass rounded-xl p-6">
               <div class="flex items-center gap-3 mb-3">
                 <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
-                  <i data-lucide="package" class="w-5 h-5 text-slate-400"></i>
+                  <i data-lucide="package" class="w-5 h-5 text-zinc-400"></i>
                 </div>
                 <div>
                   <h3 class="font-semibold"><span data-i18n="docs_api.nodejs_11">Node.js</span></h3>
-                  <code class="text-sm text-slate-400">npm install @vocalia/sdk</code>
+                  <code class="text-sm text-zinc-400">npm install @vocalia/sdk</code>
                 </div>
               </div>
               <a href="https://github.com/Jouiet/VoicalAI/vocalia-node" class="text-vocalia-400 text-sm hover:underline">GitHub →</a>
@@ -1382,7 +1382,7 @@ ws.onmessage = (event) => {
                 </div>
                 <div>
                   <h3 class="font-semibold"><span data-i18n="docs_api.python_10">Python</span></h3>
-                  <code class="text-sm text-slate-400"><span data-i18n="docs_api.pip_install_vocalia_9">pip install vocalia</span></code>
+                  <code class="text-sm text-zinc-400"><span data-i18n="docs_api.pip_install_vocalia_9">pip install vocalia</span></code>
                 </div>
               </div>
               <a href="https://github.com/Jouiet/VoicalAI/vocalia-python" class="text-vocalia-400 text-sm hover:underline">GitHub →</a>
@@ -1395,7 +1395,7 @@ ws.onmessage = (event) => {
                 </div>
                 <div>
                   <h3 class="font-semibold">Ruby</h3>
-                  <code class="text-sm text-slate-400">REST API via net/http</code>
+                  <code class="text-sm text-zinc-400">REST API via net/http</code>
                 </div>
               </div>
               <div class="code-block mt-3">
@@ -1424,7 +1424,7 @@ puts JSON.parse(res.body)</pre>
                 </div>
                 <div>
                   <h3 class="font-semibold">Go</h3>
-                  <code class="text-sm text-slate-400">REST API via net/http</code>
+                  <code class="text-sm text-zinc-400">REST API via net/http</code>
                 </div>
               </div>
               <div class="code-block mt-3">
@@ -1451,12 +1451,12 @@ resp, _ := http.DefaultClient.Do(req)</pre>
         <!-- CTA -->
         <section class="glass rounded-2xl p-8 text-center">
           <h2 class="text-2xl font-bold mb-4"><span data-i18n="docs_api.prt_intgrer_vocalia_5">Prêt à intégrer VocalIA ?</span></h2>
-          <p class="text-slate-400 mb-6"><span data-i18n="docs_api.crez_votre_compte_4">Créez votre compte et obtenez vos clés API en quelques minutes.</span></p>
+          <p class="text-zinc-400 mb-6"><span data-i18n="docs_api.crez_votre_compte_4">Créez votre compte et obtenez vos clés API en quelques minutes.</span></p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/contact" class="px-6 py-3 bg-vocalia-500 hover:bg-vocalia-600 rounded-xl font-semibold transition">
               Accéder au Dashboard
             </a>
-            <a href="/docs" class="px-6 py-3 glass hover:bg-slate-700/50 rounded-xl font-semibold transition">
+            <a href="/docs" class="px-6 py-3 glass hover:bg-white/[0.04] rounded-xl font-semibold transition">
               Retour à la documentation
             </a>
           </div>
@@ -1467,14 +1467,14 @@ resp, _ := http.DefaultClient.Do(req)</pre>
   </div>
   <!-- Footer -->
   <!-- Newsletter CTA -->
-  <section class="py-12 bg-slate-900/50" id="newsletter">
+  <section class="py-12 bg-white/[0.02]" id="newsletter">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
             <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
           </h3>
-          <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
+          <p class="text-zinc-400 text-sm" data-i18n="newsletter.subtitle">
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
@@ -1483,7 +1483,7 @@ resp, _ := http.DefaultClient.Do(req)</pre>
             type="email"
             placeholder="votre@email.com"
             data-i18n-placeholder="newsletter.placeholder"
-            class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
+            class="flex-1 px-4 py-2.5 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required
             aria-label="Adresse email"
           >
@@ -1494,7 +1494,7 @@ resp, _ := http.DefaultClient.Do(req)</pre>
       </div>
     </div>
   </section>
-<footer class="bg-slate-900 border-t border-slate-800">
+<footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -1517,16 +1517,16 @@ resp, _ := http.DefaultClient.Do(req)</pre>
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
@@ -1583,29 +1583,29 @@ resp, _ := http.DefaultClient.Do(req)</pre>
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="docs_api.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="docs_api.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -1717,5 +1717,7 @@ resp, _ := http.DefaultClient.Do(req)</pre>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
     <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

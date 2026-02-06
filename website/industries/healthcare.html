@@ -62,7 +62,7 @@
   </script>
 
   <!-- Critical CSS -->
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -85,9 +85,9 @@
       background-clip: text;
     }
     .glass {
-      background: rgba(51, 65, 85, 0.85);
+      background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .stat-card {
       background: linear-gradient(135deg, rgba(94,106,210,0.15), rgba(99,102,241,0.05));
@@ -115,7 +115,7 @@
   
 </head>
 
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Skip Link -->
 
     <a href="#main-content"
@@ -158,7 +158,7 @@
 
               <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
@@ -195,7 +195,7 @@
 
                   </a>
 
-                  <hr class="border-slate-600/50 my-2">
+                  <hr class="border-white/[0.08] my-2">
 
                   <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
 
@@ -222,7 +222,7 @@
 
               <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-white/[0.08]">
 
                   <div class="grid grid-cols-3 gap-6">
 
@@ -308,13 +308,13 @@
 
                     <!-- Column 3: Featured -->
 
-                    <div class="bg-slate-700/30 rounded-lg p-4">
+                    <div class="bg-white/[0.03] rounded-lg p-4">
 
                       <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span data-i18n="ind_health.populaire_32">Populaire</span></div>
 
                       <div class="space-y-3">
 
-                        <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/features" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -328,7 +328,7 @@
 
                         </a>
 
-                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -368,7 +368,7 @@
 
               <div class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.docs">Documentation</span></a>
 
@@ -394,36 +394,36 @@
 
             <!-- Language Switcher -->
             <div class="relative">
-              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
+              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.04] transition-colors" aria-label="Changer de langue">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 <span id="currentLang" class="text-sm font-medium">FR</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
               </button>
-              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
-                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50 overflow-hidden">
+                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127467;&#127479;</span>
                   <span class="text-sm"><span data-i18n="ind_health.francais_28">Francais</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127468;&#127463;</span>
                   <span class="text-sm"><span data-i18n="ind_health.english_27">English</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127466;&#127480;</span>
                   <span class="text-sm"><span data-i18n="ind_health.espanol_26">Espanol</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127480;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127474;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
                 </button>
               </div>
             </div>
 
-            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
+            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-white/[0.04] focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
           </button>
@@ -436,7 +436,7 @@
 
       <!-- Mobile Menu Drawer -->
 
-      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-[#050505]/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
 
         <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
 
@@ -446,7 +446,7 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
 
-            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
 
@@ -464,7 +464,7 @@
 
             </a>
 
-            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
 
@@ -492,13 +492,13 @@
 
             <div class="grid grid-cols-2 gap-2">
 
-              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
+              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
 
-              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.healthcare"><span data-i18n="ind_health.sant_16">Santé</span></span></a>
+              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.healthcare"><span data-i18n="ind_health.sant_16">Santé</span></span></a>
 
-              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
+              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
 
-              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
+              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
 
             </div>
 
@@ -510,17 +510,17 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
 
-            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
+            <a href="/docs" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
 
-            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+            <a href="/integrations" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
 
-            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
+            <a href="/blog" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
 
           <!-- Mobile CTA -->
 
           <div class="space-y-3">
 
-            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center font-medium text-white">
 
               Tarifs
 
@@ -548,7 +548,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <!-- Breadcrumb -->
         <nav class="mb-8" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white transition"><span data-i18n="ind_health.accueil_18">Accueil</span></a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/industries/healthcare" class="hover:text-white transition"><span data-i18n="ind_health.industries_17">Industries</span></a></li>
@@ -577,7 +577,7 @@
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6">
             <span data-i18n="industries_healthcare_page.hero_title">IA Vocale pour la</span> <span class="gradient-text" data-i18n="industries_healthcare_page.hero_title_accent">Santé & Médical</span>
           </h1>
-          <p class="text-xl text-slate-300 mb-8 max-w-3xl mx-auto" data-i18n="industries_healthcare_page.hero_subtitle">
+          <p class="text-xl text-zinc-300 mb-8 max-w-3xl mx-auto" data-i18n="industries_healthcare_page.hero_subtitle">
             Automatisez la gestion des rendez-vous, réduisez les no-shows de 60%, et offrez un accueil patient 24h/24 avec une IA conforme aux normes de santé.
           </p>
 
@@ -585,19 +585,19 @@
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-10">
             <div class="stat-card rounded-xl p-4">
               <div class="text-3xl font-bold text-vocalia-400">-60%</div>
-              <div class="text-sm text-slate-400" data-i18n="industries_healthcare_page.stats_noshow_reduction">Réduction No-Shows</div>
+              <div class="text-sm text-zinc-400" data-i18n="industries_healthcare_page.stats_noshow_reduction">Réduction No-Shows</div>
             </div>
             <div class="stat-card rounded-xl p-4">
               <div class="text-3xl font-bold text-vocalia-400">24/7</div>
-              <div class="text-sm text-slate-400" data-i18n="industries_healthcare_page.stats_availability">Disponibilité</div>
+              <div class="text-sm text-zinc-400" data-i18n="industries_healthcare_page.stats_availability">Disponibilité</div>
             </div>
             <div class="stat-card rounded-xl p-4">
               <div class="text-3xl font-bold text-vocalia-400">&lt;30s</div>
-              <div class="text-sm text-slate-400" data-i18n="industries_healthcare_page.stats_time_saved">Temps Gagné</div>
+              <div class="text-sm text-zinc-400" data-i18n="industries_healthcare_page.stats_time_saved">Temps Gagné</div>
             </div>
             <div class="stat-card rounded-xl p-4">
               <div class="text-3xl font-bold text-vocalia-400">98%</div>
-              <div class="text-sm text-slate-400" data-i18n="industries_healthcare_page.stats_patient_satisfaction">Satisfaction Patient</div>
+              <div class="text-sm text-zinc-400" data-i18n="industries_healthcare_page.stats_patient_satisfaction">Satisfaction Patient</div>
             </div>
           </div>
 
@@ -605,7 +605,7 @@
             <a href="/contact" class="px-8 py-4 bg-vocalia-500 hover:bg-vocalia-600 rounded-xl font-semibold transition transform hover:scale-105" data-i18n="industries_healthcare_page.hero_cta">
               Demander une Démo
             </a>
-            <a href="/docs" class="px-8 py-4 glass hover:bg-slate-700/50 rounded-xl font-semibold transition" data-i18n="industries_healthcare_page.hero_cta_secondary">
+            <a href="/docs" class="px-8 py-4 glass hover:bg-white/[0.04] rounded-xl font-semibold transition" data-i18n="industries_healthcare_page.hero_cta_secondary">
               Voir les Tarifs
             </a>
           </div>
@@ -614,7 +614,7 @@
     </section>
 
     <!-- Challenges Section -->
-    <section class="py-20 border-t border-slate-700/50">
+    <section class="py-20 border-t border-white/[0.08]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <span class="text-vocalia-400 font-semibold text-sm uppercase tracking-wider" data-i18n="industries_healthcare_page.challenges_title">Défis du Secteur Santé</span>
@@ -627,7 +627,7 @@
               <i data-lucide="headphones" class="w-6 h-6 text-red-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="industries_healthcare_page.challenge2_title">Secrétariat Débordé</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.challenge2_desc">Le personnel administratif passe 60% de son temps au téléphone au lieu d'accueillir les patients.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.challenge2_desc">Le personnel administratif passe 60% de son temps au téléphone au lieu d'accueillir les patients.</p>
           </div>
 
           <div class="challenge-card rounded-xl p-6">
@@ -635,7 +635,7 @@
               <i data-lucide="calendar-x" class="w-6 h-6 text-red-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="industries_healthcare_page.challenge1_title">No-Shows Coûteux</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.challenge1_desc">25% des RDV médicaux ne sont pas honorés, générant des pertes financières et désorganisant les plannings.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.challenge1_desc">25% des RDV médicaux ne sont pas honorés, générant des pertes financières et désorganisant les plannings.</p>
           </div>
 
           <div class="challenge-card rounded-xl p-6">
@@ -643,7 +643,7 @@
               <i data-lucide="shield-alert" class="w-6 h-6 text-red-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="industries_healthcare_page.challenge6_title">Conformité Complexe</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.challenge6_desc">Les normes HIPAA, RGPD Santé et HDS exigent une sécurité renforcée des données patients.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.challenge6_desc">Les normes HIPAA, RGPD Santé et HDS exigent une sécurité renforcée des données patients.</p>
           </div>
 
           <div class="challenge-card rounded-xl p-6">
@@ -651,7 +651,7 @@
               <i data-lucide="phone" class="w-6 h-6 text-red-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="industries_healthcare_page.challenge3_title">Accueil Limité</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.challenge3_desc">Les patients ne peuvent appeler qu'aux heures de bureau, créant frustration et appels manqués.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.challenge3_desc">Les patients ne peuvent appeler qu'aux heures de bureau, créant frustration et appels manqués.</p>
           </div>
 
           <div class="challenge-card rounded-xl p-6">
@@ -659,7 +659,7 @@
               <i data-lucide="clipboard-list" class="w-6 h-6 text-red-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="industries_healthcare_page.challenge4_title">Pré-Consultation Manuelle</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.challenge4_desc">La collecte d'informations pré-consultation est chronophage et source d'erreurs.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.challenge4_desc">La collecte d'informations pré-consultation est chronophage et source d'erreurs.</p>
           </div>
 
           <div class="challenge-card rounded-xl p-6">
@@ -667,14 +667,14 @@
               <i data-lucide="heart-pulse" class="w-6 h-6 text-red-400"></i>
             </div>
             <h3 class="text-lg font-semibold mb-2" data-i18n="industries_healthcare_page.challenge5_title">Suivi Post-Op Négligé</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.challenge5_desc">Le suivi après intervention est souvent insuffisant par manque de ressources.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.challenge5_desc">Le suivi après intervention est souvent insuffisant par manque de ressources.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Solutions Section -->
-    <section class="py-20 bg-slate-900/50">
+    <section class="py-20 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <span class="text-vocalia-400 font-semibold text-sm uppercase tracking-wider" data-i18n="industries_healthcare_page.solutions_title">Solutions VocalIA Santé</span>
@@ -687,8 +687,8 @@
               <i data-lucide="calendar" class="w-7 h-7 text-emerald-400"></i>
             </div>
             <h3 class="text-xl font-bold mb-3" data-i18n="industries_healthcare_page.solution1_title">Prise de RDV Intelligente</h3>
-            <p class="text-slate-400 mb-4" data-i18n="industries_healthcare_page.solution1_desc">Synchronisation calendrier, gestion multi-praticiens, créneaux d'urgence.</p>
-            <ul class="space-y-2 text-sm text-slate-300">
+            <p class="text-zinc-400 mb-4" data-i18n="industries_healthcare_page.solution1_desc">Synchronisation calendrier, gestion multi-praticiens, créneaux d'urgence.</p>
+            <ul class="space-y-2 text-sm text-zinc-300">
               <li class="flex items-center gap-2">
                 <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
                 <span data-i18n="industries_healthcare_page.solution1_feature1">Sync Google Calendar</span>
@@ -709,8 +709,8 @@
               <i data-lucide="bell" class="w-7 h-7 text-emerald-400"></i>
             </div>
             <h3 class="text-xl font-bold mb-3" data-i18n="industries_healthcare_page.solution2_title">Rappels Automatisés</h3>
-            <p class="text-slate-400 mb-4" data-i18n="industries_healthcare_page.solution2_desc">Réduction des no-shows de 60% grâce aux rappels vocaux personnalisés.</p>
-            <ul class="space-y-2 text-sm text-slate-300">
+            <p class="text-zinc-400 mb-4" data-i18n="industries_healthcare_page.solution2_desc">Réduction des no-shows de 60% grâce aux rappels vocaux personnalisés.</p>
+            <ul class="space-y-2 text-sm text-zinc-300">
               <li class="flex items-center gap-2">
                 <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
                 <span data-i18n="industries_healthcare_page.solution2_feature1">J-2, J-1, H-2 rappels</span>
@@ -731,8 +731,8 @@
               <i data-lucide="activity" class="w-7 h-7 text-emerald-400"></i>
             </div>
             <h3 class="text-xl font-bold mb-3" data-i18n="industries_healthcare_page.solution3_title">Pré-Consultation IA</h3>
-            <p class="text-slate-400 mb-4" data-i18n="industries_healthcare_page.solution3_desc">Collecte automatique des symptômes et antécédents avant la consultation.</p>
-            <ul class="space-y-2 text-sm text-slate-300">
+            <p class="text-zinc-400 mb-4" data-i18n="industries_healthcare_page.solution3_desc">Collecte automatique des symptômes et antécédents avant la consultation.</p>
+            <ul class="space-y-2 text-sm text-zinc-300">
               <li class="flex items-center gap-2">
                 <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
                 <span data-i18n="industries_healthcare_page.solution3_feature1">Questionnaire vocal</span>
@@ -753,8 +753,8 @@
               <i data-lucide="check-circle" class="w-7 h-7 text-emerald-400"></i>
             </div>
             <h3 class="text-xl font-bold mb-3" data-i18n="industries_healthcare_page.solution4_title">Suivi Post-Opératoire</h3>
-            <p class="text-slate-400 mb-4" data-i18n="industries_healthcare_page.solution4_desc">Appels de suivi automatisés avec détection d'anomalies et alertes praticien.</p>
-            <ul class="space-y-2 text-sm text-slate-300">
+            <p class="text-zinc-400 mb-4" data-i18n="industries_healthcare_page.solution4_desc">Appels de suivi automatisés avec détection d'anomalies et alertes praticien.</p>
+            <ul class="space-y-2 text-sm text-zinc-300">
               <li class="flex items-center gap-2">
                 <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
                 <span data-i18n="industries_healthcare_page.solution4_feature1">Appels J+1, J+7, J+30</span>
@@ -774,12 +774,12 @@
     </section>
 
     <!-- Compliance Section -->
-    <section class="py-20 border-t border-slate-700/50">
+    <section class="py-20 border-t border-white/[0.08]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <span class="text-vocalia-400 font-semibold text-sm uppercase tracking-wider" data-i18n="industries_healthcare_page.compliance_title">Conformité Santé</span>
           <h2 class="text-3xl sm:text-4xl font-bold mt-3" data-i18n="industries_healthcare_page.compliance_subtitle">Certifications et normes respectées</h2>
-          <p class="text-slate-400 mt-4 max-w-2xl mx-auto">VocalIA respecte les normes les plus strictes pour la protection des données de santé.</p>
+          <p class="text-zinc-400 mt-4 max-w-2xl mx-auto">VocalIA respecte les normes les plus strictes pour la protection des données de santé.</p>
         </div>
 
         <div class="grid md:grid-cols-3 gap-6">
@@ -788,7 +788,7 @@
               <i data-lucide="heart-pulse" class="w-12 h-12 text-rose-400"></i>
             </div>
             <h3 class="text-lg font-bold mb-2" data-i18n="industries_healthcare_page.compliance_hipaa_title">HIPAA Ready</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.compliance_hipaa_desc">Conforme aux exigences de protection des données de santé américaines.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.compliance_hipaa_desc">Conforme aux exigences de protection des données de santé américaines.</p>
           </div>
 
           <div class="glass rounded-2xl p-8 text-center">
@@ -796,7 +796,7 @@
               <i data-lucide="globe" class="w-12 h-12 text-blue-400"></i>
             </div>
             <h3 class="text-lg font-bold mb-2" data-i18n="industries_healthcare_page.compliance_rgpd_title">RGPD Santé</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.compliance_rgpd_desc">Données hébergées en Europe, consentement explicite, droit à l'oubli.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.compliance_rgpd_desc">Données hébergées en Europe, consentement explicite, droit à l'oubli.</p>
           </div>
 
           <div class="glass rounded-2xl p-8 text-center">
@@ -804,7 +804,7 @@
               <i data-lucide="lock-keyhole" class="w-12 h-12 text-amber-400"></i>
             </div>
             <h3 class="text-lg font-bold mb-2" data-i18n="industries_healthcare_page.compliance_hds_title">HDS Compatible</h3>
-            <p class="text-slate-400 text-sm" data-i18n="industries_healthcare_page.compliance_hds_desc">Compatible avec les exigences d'Hébergement de Données de Santé.</p>
+            <p class="text-zinc-400 text-sm" data-i18n="industries_healthcare_page.compliance_hds_desc">Compatible avec les exigences d'Hébergement de Données de Santé.</p>
           </div>
         </div>
 
@@ -815,25 +815,25 @@
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mx-auto mb-3">
                 <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
               </div>
-              <p class="text-sm text-slate-300"><span data-i18n="ind_health.chiffrement_aes256_14">Chiffrement AES-256</span></p>
+              <p class="text-sm text-zinc-300"><span data-i18n="ind_health.chiffrement_aes256_14">Chiffrement AES-256</span></p>
             </div>
             <div class="text-center">
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mx-auto mb-3">
                 <i data-lucide="shield-check" class="w-6 h-6 text-vocalia-400"></i>
               </div>
-              <p class="text-sm text-slate-300"><span data-i18n="ind_health.tls_13_13">TLS 1.3</span></p>
+              <p class="text-sm text-zinc-300"><span data-i18n="ind_health.tls_13_13">TLS 1.3</span></p>
             </div>
             <div class="text-center">
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mx-auto mb-3">
                 <i data-lucide="eye" class="w-6 h-6 text-vocalia-400"></i>
               </div>
-              <p class="text-sm text-slate-300"><span data-i18n="ind_health.audit_trails_12">Audit trails</span></p>
+              <p class="text-sm text-zinc-300"><span data-i18n="ind_health.audit_trails_12">Audit trails</span></p>
             </div>
             <div class="text-center">
               <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center mx-auto mb-3">
                 <i data-lucide="sparkles" class="w-6 h-6 text-vocalia-400"></i>
               </div>
-              <p class="text-sm text-slate-300"><span data-i18n="ind_health.pas_de_stockage_11">Pas de stockage audio</span></p>
+              <p class="text-sm text-zinc-300"><span data-i18n="ind_health.pas_de_stockage_11">Pas de stockage audio</span></p>
             </div>
           </div>
         </div>
@@ -841,7 +841,7 @@
     </section>
 
     <!-- Integrations Section -->
-    <section class="py-20 bg-slate-900/50">
+    <section class="py-20 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <span class="text-vocalia-400 font-semibold text-sm uppercase tracking-wider" data-i18n="industries_healthcare_page.integrations_title">Intégrations Médicales</span>
@@ -854,7 +854,7 @@
               <i data-lucide="clipboard-list" class="w-8 h-8 text-indigo-400"></i>
             </div>
             <h3 class="font-semibold mb-2"><span data-i18n="ind_health.agendas_mdicaux_10">Agendas Médicaux</span></h3>
-            <p class="text-slate-400 text-sm"><span data-i18n="ind_health.via_zapier_make_7"><span data-i18n="ind_health.via_zapier_make_9">Via Zapier, Make, n8n</span></span></p>
+            <p class="text-zinc-400 text-sm"><span data-i18n="ind_health.via_zapier_make_7"><span data-i18n="ind_health.via_zapier_make_9">Via Zapier, Make, n8n</span></span></p>
           </div>
 
           <div class="integration-card rounded-xl p-6 text-center">
@@ -862,7 +862,7 @@
               <i data-lucide="heart-pulse" class="w-8 h-8 text-rose-400"></i>
             </div>
             <h3 class="font-semibold mb-2"><span data-i18n="ind_health.logiciels_mdicaux_8">Logiciels Médicaux</span></h3>
-            <p class="text-slate-400 text-sm">Via Zapier, Make, n8n</p>
+            <p class="text-zinc-400 text-sm">Via Zapier, Make, n8n</p>
           </div>
 
           <div class="integration-card rounded-xl p-6 text-center">
@@ -870,7 +870,7 @@
               <i data-lucide="smartphone" class="w-8 h-8 text-purple-400"></i>
             </div>
             <h3 class="font-semibold mb-2">SMS/Email</h3>
-            <p class="text-slate-400 text-sm"><span data-i18n="ind_health.confirmations_multicanal_6">Confirmations multicanal</span></p>
+            <p class="text-zinc-400 text-sm"><span data-i18n="ind_health.confirmations_multicanal_6">Confirmations multicanal</span></p>
           </div>
 
           <div class="integration-card rounded-xl p-6 text-center">
@@ -878,20 +878,20 @@
               <i data-lucide="phone" class="w-8 h-8 text-emerald-400"></i>
             </div>
             <h3 class="font-semibold mb-2"><span data-i18n="ind_health.tlphonie_5">Téléphonie</span></h3>
-            <p class="text-slate-400 text-sm"><span data-i18n="ind_health.sip_pbx_pstn_4">SIP, PBX, PSTN</span></p>
+            <p class="text-zinc-400 text-sm"><span data-i18n="ind_health.sip_pbx_pstn_4">SIP, PBX, PSTN</span></p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- CTA Section - Modern 2026 (Linear/Vercel inspired) -->
-  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900">
+  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
     <!-- Soft radial glow - gradient as lighting -->
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]"></div>
     <!-- Top border glow -->
     <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent"></div>
     <!-- Bottom border glow -->
-    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-600/30 to-transparent"></div>
+    <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent"></div>
 
     <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <!-- Badge -->
@@ -901,7 +901,7 @@
       </div>
 
       <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer Votre Service Client?</h2>
-      <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
+      <p class="text-lg text-zinc-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent vocal IA en moins de 5 minutes.</p>
 
       <!-- CTA Buttons - Linear style -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
@@ -921,14 +921,14 @@
 </main>
   <!-- Footer -->
   <!-- Newsletter CTA -->
-  <section class="py-12 bg-slate-900/50" id="newsletter">
+  <section class="py-12 bg-white/[0.02]" id="newsletter">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
             <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
           </h3>
-          <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
+          <p class="text-zinc-400 text-sm" data-i18n="newsletter.subtitle">
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
@@ -937,7 +937,7 @@
             type="email"
             placeholder="votre@email.com"
             data-i18n-placeholder="newsletter.placeholder"
-            class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
+            class="flex-1 px-4 py-2.5 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required
             aria-label="Adresse email"
           >
@@ -948,7 +948,7 @@
       </div>
     </div>
   </section>
-<footer class="bg-slate-900 border-t border-slate-800">
+<footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -971,16 +971,16 @@
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
@@ -1037,29 +1037,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="ind_health.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="ind_health.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -1161,5 +1161,7 @@
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
     <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

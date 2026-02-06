@@ -60,7 +60,7 @@
   </script>
 
   <!-- Critical CSS -->
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -83,13 +83,13 @@
       background-clip: text;
     }
     .glass {
-      background: rgba(51, 65, 85, 0.85);
+      background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .usecase-card {
       background: linear-gradient(135deg, rgba(51, 65, 85, 0.9), rgba(30, 41, 59, 0.95));
-      border: 1px solid rgba(148, 163, 184, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       transition: all 0.3s ease;
     }
     .usecase-card:hover {
@@ -103,7 +103,7 @@
     }
     .featured-card {
       background: linear-gradient(135deg, rgba(51, 65, 85, 0.9), rgba(30, 41, 59, 0.95));
-      border: 1px solid rgba(148, 163, 184, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       transition: all 0.3s ease;
     }
     .featured-card:hover {
@@ -113,7 +113,7 @@
     }
     .workflow-step {
       background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
   </style>
   <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
@@ -121,7 +121,7 @@
   
 </head>
 
-<body class="bg-slate-900 text-white antialiased">
+<body class="bg-[#0a0a0a] text-white antialiased">
   <!-- Skip to main content for accessibility -->
   <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-vocalia-500 text-white px-4 py-2 rounded-lg z-50">
     Aller au contenu principal
@@ -167,7 +167,7 @@
 
   <main id="main-content">
     <!-- Hero Section -->
-    <section class="pt-24 pb-16 bg-gradient-to-b from-slate-900 via-slate-800/50 to-slate-900">
+    <section class="pt-24 pb-16 bg-gradient-to-b from-[#050505] via-[#050505]/50 to-[#0a0a0a]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl">
           <h1 class="text-4xl lg:text-5xl font-bold mb-6">
@@ -197,7 +197,7 @@
     </section>
 
     <!-- Featured Use Cases -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold mb-8" data-i18n="usecases_index_page.featured_title">4 Cas d'Usage Principaux</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -293,7 +293,7 @@
     </section>
 
     <!-- Integration Stack -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
           <h2 class="text-2xl font-bold mb-4" data-i18n="usecases_index_page.integrations_title">Stack d'Intégrations</h2>
@@ -355,7 +355,7 @@
           <a href="/contact" class="px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
             <span data-i18n="usecases_index_page.cta_primary">Essai 14 Jours</span>
           </a>
-          <a href="/docs/" class="px-8 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition">
+          <a href="/docs/" class="px-8 py-3 bg-white/[0.06] hover:bg-white/[0.1] rounded-xl font-medium transition">
             <span data-i18n="usecases_index_page.cta_secondary">Voir la Documentation</span>
           </a>
         </div>
@@ -364,7 +364,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -387,16 +387,16 @@
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
@@ -453,29 +453,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="uc_index.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="uc_index.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -593,5 +593,7 @@
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

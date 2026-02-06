@@ -55,5 +55,12 @@ data/google-*.json
 data/exports/
 data/events/system/*.jsonl
 data/logs/maintenance-*.json
+data/contexts/
 test-results/
 playwright-report/
+
+# Auto-generated tenant directories (557+ folders, test data)
+clients/
+
+# Plan files (session-specific)
+.claude/plans/

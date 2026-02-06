@@ -33,7 +33,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+<body class="min-h-screen bg-zinc-50 dark:bg-[#0a0a0a] flex items-center justify-center p-4">
 
   <!-- Login Card -->
   <div class="w-full max-w-md">
@@ -41,15 +41,15 @@
     <div class="text-center mb-8">
       <a href="/" class="inline-flex items-center gap-2">
         <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-        <span class="text-2xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        <span class="text-2xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
       </a>
     </div>
 
     <!-- Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+    <div class="bg-white dark:bg-white/[0.06] rounded-2xl shadow-xl border border-zinc-200 dark:border-white/[0.08] p-8">
       <div class="text-center mb-6">
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="auth.login_title">Connexion</h1>
-        <p class="text-slate-600 dark:text-slate-400 mt-2" data-i18n="auth.login_subtitle">
+        <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="auth.login_title">Connexion</h1>
+        <p class="text-zinc-600 dark:text-zinc-400 mt-2" data-i18n="auth.login_subtitle">
           Accédez à votre tableau de bord
         </p>
       </div>
@@ -66,12 +66,12 @@
       <form id="login-form" class="space-y-5">
         <!-- Email -->
         <div>
-          <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="auth.email">
+          <label for="email" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5" data-i18n="auth.email">
             Email
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pr-3 flex items-center pointer-events-none">
-              <i data-lucide="mail" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="mail" class="w-5 h-5 text-zinc-400"></i>
             </div>
             <input
               type="email"
@@ -79,7 +79,7 @@
               name="email"
               required
               autocomplete="email"
-              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
               placeholder="vous@exemple.com"
               data-i18n-placeholder="auth.email_placeholder"
             >
@@ -89,7 +89,7 @@
         <!-- Password -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
-            <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300" data-i18n="auth.password">
+            <label for="password" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300" data-i18n="auth.password">
               Mot de passe
             </label>
             <a href="forgot-password.html" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline" data-i18n="auth.forgot_password">
@@ -98,7 +98,7 @@
           </div>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pr-3 flex items-center pointer-events-none">
-              <i data-lucide="lock" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="lock" class="w-5 h-5 text-zinc-400"></i>
             </div>
             <input
               type="password"
@@ -107,7 +107,7 @@
               required
               autocomplete="current-password"
               minlength="8"
-              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-10 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-10 py-2.5 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
               placeholder="••••••••"
             >
             <button
@@ -115,7 +115,7 @@
               id="toggle-password"
               class="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 pr-3 rtl:pl-3 flex items-center"
             >
-              <i data-lucide="eye" class="w-5 h-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"></i>
+              <i data-lucide="eye" class="w-5 h-5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"></i>
             </button>
           </div>
         </div>
@@ -126,9 +126,9 @@
             type="checkbox"
             id="remember"
             name="remember"
-            class="w-4 h-4 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500"
+            class="w-4 h-4 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500"
           >
-          <label for="remember" class="ml-2 rtl:ml-0 rtl:mr-2 text-sm text-slate-600 dark:text-slate-400" data-i18n="auth.remember_me">
+          <label for="remember" class="ml-2 rtl:ml-0 rtl:mr-2 text-sm text-zinc-600 dark:text-zinc-400" data-i18n="auth.remember_me">
             Se souvenir de moi
           </label>
         </div>
@@ -147,10 +147,10 @@
       <!-- Divider -->
       <div class="relative my-6">
         <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+          <div class="w-full border-t border-zinc-200 dark:border-white/[0.08]"></div>
         </div>
         <div class="relative flex justify-center text-sm">
-          <span class="px-2 bg-white dark:bg-slate-800 text-slate-500" data-i18n="auth.or">ou</span>
+          <span class="px-2 bg-white dark:bg-white/[0.06] text-zinc-500" data-i18n="auth.or">ou</span>
         </div>
       </div>
 
@@ -159,7 +159,7 @@
         <button
           type="button"
           id="google-login"
-          class="w-full py-2.5 px-4 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+          class="w-full py-2.5 px-4 bg-white dark:bg-white/[0.06] border border-zinc-300 dark:border-white/[0.08] hover:bg-zinc-50 dark:hover:bg-white/[0.1] text-zinc-700 dark:text-zinc-200 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           <svg class="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -172,7 +172,7 @@
       </div>
 
       <!-- Sign Up Link -->
-      <p class="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+      <p class="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
         <span data-i18n="auth.no_account">Pas encore de compte ?</span>
         <a href="signup.html" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium" data-i18n="auth.signup_link">
           Créer un compte
@@ -182,13 +182,13 @@
 
     <!-- Language Switcher -->
     <div class="flex justify-center gap-2 mt-6">
-      <button data-action="switchLang" data-params="fr" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">FR</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="en" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">EN</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="es" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">ES</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">عربي</button>
+      <button data-action="switchLang" data-params="fr" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">FR</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="en" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">EN</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="es" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">ES</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">عربي</button>
     </div>
   </div>
 

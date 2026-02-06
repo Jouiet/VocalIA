@@ -57,13 +57,13 @@
   }
   </script>
 
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
   <link href="/public/css/style.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .glass { background: rgba(51, 65, 85, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(148, 163, 184, 0.25); }
+    .glass { background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .prose { max-width: 65ch; }
     .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
     .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
@@ -85,7 +85,7 @@
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
   
 </head>
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Simple Nav -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass">
     <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -95,16 +95,16 @@
       </a>
       <div class="flex items-center gap-4">
         <div class="relative">
-          <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-700/50 transition text-sm">
+          <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-1 px-2 py-1 rounded hover:bg-white/[0.04] transition text-sm">
             <span id="currentLang">FR</span>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 rounded-lg bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50">
-            <button type="button" data-action="switchLang" data-params="fr" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_clinique_amal_rappel.francais_110">Francais</span></button>
-            <button type="button" data-action="switchLang" data-params="en" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_clinique_amal_rappel.english_109">English</span></button>
-            <button type="button" data-action="switchLang" data-params="es" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_clinique_amal_rappel.espanol_108">Espanol</span></button>
-            <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">العربية</button>
-            <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">الدارجة</button>
+          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 rounded-lg bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50">
+            <button type="button" data-action="switchLang" data-params="fr" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_clinique_amal_rappel.francais_110">Francais</span></button>
+            <button type="button" data-action="switchLang" data-params="en" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_clinique_amal_rappel.english_109">English</span></button>
+            <button type="button" data-action="switchLang" data-params="es" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_clinique_amal_rappel.espanol_108">Espanol</span></button>
+            <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full px-3 py-2 hover:bg-white/[0.04] text-right text-sm">العربية</button>
+            <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full px-3 py-2 hover:bg-white/[0.04] text-right text-sm">الدارجة</button>
           </div>
         </div>
         <a href="/blog" class="text-vocalia-300 hover:text-white transition text-sm">← Retour au blog</a>
@@ -117,7 +117,7 @@
       <!-- Header -->
       <header class="mb-12">
         <nav class="mb-6" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white transition"><span data-i18n="blog_clinique_amal_rappel.accueil_107">Accueil</span></a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
@@ -132,7 +132,7 @@
           Clinique Amal : <span class="gradient-text">-60%</span> de rendez-vous manqués grâce àux rappels vocaux IA
         </h1>
 
-        <div class="flex items-center gap-4 text-slate-400">
+        <div class="flex items-center gap-4 text-zinc-400">
           <div class="flex items-center gap-2">
             <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center">
               <span class="text-sm font-semibold">VA</span>
@@ -152,7 +152,7 @@
           <i data-lucide="list" class="w-5 h-5 text-vocalia-400"></i>
           Sommaire
         </h2>
-        <ol class="space-y-2 text-slate-300">
+        <ol class="space-y-2 text-zinc-300">
           <li><a href="#contexte" class="hover:text-vocalia-400 transition">1. Contexte : le secteur santé au Maroc</a></li>
           <li><a href="#probleme" class="hover:text-vocalia-400 transition">2. Le problème : des no-shows qui coûtent cher</a></li>
           <li><a href="#solution" class="hover:text-vocalia-400 transition">3. La solution : rappels vocaux intelligents</a></li>
@@ -177,7 +177,7 @@
           </p>
         </div>
 
-        <p class="text-xl text-slate-300 mb-8">
+        <p class="text-xl text-zinc-300 mb-8">
           La Clinique Amal, située dans le quartier Maarif à Casablanca, traitait en moyenne 200 rendez-vous par semaine.
           Avec un taux de no-show de 25%, elle perdait près de 50 consultations hebdomadaires. Découvrez comment VocalIA
           a transformé cette situation en seulement 3 mois.
@@ -187,19 +187,19 @@
         <div class="grid md:grid-cols-4 gap-4 my-8">
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-emerald-400 mb-1">-60%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_clinique_amal_rappel.noshows_103">No-shows</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.noshows_103">No-shows</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-vocalia-400 mb-1">42 000</div>
-            <div class="text-xs text-slate-400">MAD/mois récupérés</div>
+            <div class="text-xs text-zinc-400">MAD/mois récupérés</div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-amber-400 mb-1">85%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_rponse_83"><span data-i18n="blog_clinique_amal_rappel.taux_de_rponse_102">Taux de réponse</span></span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_rponse_83"><span data-i18n="blog_clinique_amal_rappel.taux_de_rponse_102">Taux de réponse</span></span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-sky-400 mb-1">1 580%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_clinique_amal_rappel.roi_mensuel_101">ROI mensuel</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.roi_mensuel_101">ROI mensuel</span></div>
           </div>
         </div>
 
@@ -220,24 +220,24 @@
         <div class="glass rounded-xl p-6 my-6">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.type_dtablissement_99">Type d'établissement</span></th>
-                <th class="text-center py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.taux_noshow_moyen_98">Taux no-show moyen</span></th>
-                <th class="text-center py-2 text-slate-400">Coût moyen/no-show</th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.type_dtablissement_99">Type d'établissement</span></th>
+                <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_noshow_moyen_98">Taux no-show moyen</span></th>
+                <th class="text-center py-2 text-zinc-400">Coût moyen/no-show</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.mdecine_gnrale_97">Médecine générale</span></td>
                 <td class="text-center">15-20%</td>
                 <td class="text-center">200-300 MAD</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.spcialistes_96">Spécialistes</span></td>
                 <td class="text-center">20-30%</td>
                 <td class="text-center">350-500 MAD</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.dentaires_95">Dentaires</span></td>
                 <td class="text-center">25-35%</td>
                 <td class="text-center">400-600 MAD</td>
@@ -273,7 +273,7 @@
         <div class="grid md:grid-cols-2 gap-4 my-6">
           <div class="glass rounded-lg p-4">
             <h4 class="font-semibold text-rose-400 mb-2"><span data-i18n="blog_clinique_amal_rappel.causes_principales_92">Causes principales</span></h4>
-            <ul class="text-sm text-slate-300 space-y-1">
+            <ul class="text-sm text-zinc-300 space-y-1">
               <li>• Oubli simple (42%)</li>
               <li>• Empêchement de dernière minute (28%)</li>
               <li>• Confusion sur la date/heure (15%)</li>
@@ -283,7 +283,7 @@
           </div>
           <div class="glass rounded-lg p-4">
             <h4 class="font-semibold text-amber-400 mb-2"><span data-i18n="blog_clinique_amal_rappel.profil_des_patients_91">Profil des patients à risque</span></h4>
-            <ul class="text-sm text-slate-300 space-y-1">
+            <ul class="text-sm text-zinc-300 space-y-1">
               <li>• Jeunes actifs (25-35 ans)</li>
               <li>• RDV pris > 2 semaines à l'avance</li>
               <li>• Nouveaux patients (pas d'historique)</li>
@@ -301,15 +301,15 @@
         <div class="grid md:grid-cols-3 gap-4 my-8">
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-rose-400 mb-2">25%</div>
-            <div class="text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_noshow_89">Taux de no-show (avant)</span></div>
+            <div class="text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_noshow_89">Taux de no-show (avant)</span></div>
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">17 500 MAD</div>
-            <div class="text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.perte_hebdomadaire_88">Perte hebdomadaire</span></div>
+            <div class="text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.perte_hebdomadaire_88">Perte hebdomadaire</span></div>
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">20%</div>
-            <div class="text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.taux_douverture_sms_87">Taux d'ouverture SMS</span></div>
+            <div class="text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_douverture_sms_87">Taux d'ouverture SMS</span></div>
           </div>
         </div>
 
@@ -329,34 +329,34 @@
           <h3 class="text-lg font-semibold mb-4"><span data-i18n="blog_clinique_amal_rappel.avantages_des_rappels_86">Avantages des rappels vocaux vs SMS</span></h3>
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.critre_85">Critère</span></th>
-                <th class="text-center py-2 text-slate-400">SMS</th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.critre_85">Critère</span></th>
+                <th class="text-center py-2 text-zinc-400">SMS</th>
                 <th class="text-center py-2 text-vocalia-400"><span data-i18n="blog_clinique_amal_rappel.appel_vocal_vocalia_84">Appel vocal VocalIA</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2">Taux de réponse</td>
                 <td class="text-center">20%</td>
                 <td class="text-center text-emerald-400">85%</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.interaction_possible_82">Interaction possible</span></td>
                 <td class="text-center text-rose-400">Non</td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_clinique_amal_rappel.oui_confirmation_report_81">Oui (confirmation, report)</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.personnalisation_80">Personnalisation</span></td>
                 <td class="text-center"><span data-i18n="blog_clinique_amal_rappel.limite_79">Limitée</span></td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_clinique_amal_rappel.nom_mdecin_date_78">Nom, médecin, date</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.accessibilit_seniors_77">Accessibilité seniors</span></td>
                 <td class="text-center text-rose-400"><span data-i18n="blog_clinique_amal_rappel.faible_76">Faible</span></td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_clinique_amal_rappel.excellente_75">Excellente</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.support_darija_26"><span data-i18n="blog_clinique_amal_rappel.support_darija_74">Support Darija</span></span></td>
                 <td class="text-center text-rose-400"><span data-i18n="blog_clinique_amal_rappel.complexe_73">Complexe</span></td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_clinique_amal_rappel.natif_72">Natif</span></td>
@@ -384,7 +384,7 @@
               </div>
               <div>
                 <h4 class="font-semibold mb-1"><span data-i18n="blog_clinique_amal_rappel.premier_rappel_68">Premier rappel</span></h4>
-                <p class="text-slate-300 text-sm">
+                <p class="text-zinc-300 text-sm">
                   L'agent vocal confirme le rendez-vous et propose un report si nécessaire.
                   Si le patient ne répond pas, un rappel est programmé 4h plus tard.
                 </p>
@@ -399,7 +399,7 @@
               </div>
               <div>
                 <h4 class="font-semibold mb-1"><span data-i18n="blog_clinique_amal_rappel.rappel_de_confirmation_67">Rappel de confirmation</span></h4>
-                <p class="text-slate-300 text-sm">
+                <p class="text-zinc-300 text-sm">
                   Vérification finale avec rappel de l'adresse, des documents à apporter,
                   et des consignes spécifiques (jeûne, etc.).
                 </p>
@@ -414,7 +414,7 @@
               </div>
               <div>
                 <h4 class="font-semibold mb-1"><span data-i18n="blog_clinique_amal_rappel.rappel_de_courtoisie_66">Rappel de courtoisie</span></h4>
-                <p class="text-slate-300 text-sm">
+                <p class="text-zinc-300 text-sm">
                   Pour les rendez-vous en fin de journée uniquement. Rappel léger avec estimation
                   du temps de trajet si le patient a partagé sa localisation.
                 </p>
@@ -427,7 +427,7 @@
 
         <div class="glass rounded-xl p-6 my-6 font-mono text-sm">
           <p class="text-vocalia-400 mb-2">// Appel J-1</p>
-          <p class="text-slate-300">
+          <p class="text-zinc-300">
             "Bonjour Madame Fatima, ici l'assistant virtuel de la Clinique Amal.
             Je vous rappelle votre rendez-vous demain à 10h30 avec le Dr. Bennani.
             <br/><br/>
@@ -437,7 +437,7 @@
         </div>
 
         <div class="quote-card rounded-xl p-6 my-8">
-          <p class="text-lg italic text-slate-300 mb-4">
+          <p class="text-lg italic text-zinc-300 mb-4">
             "Les patients apprécient vraiment d'être appelés. Beaucoup nous disent que ça leur rappelle
             le service personnalisé d'autrefois, mais avec l'efficacité d'aujourd'hui."
           </p>
@@ -451,28 +451,28 @@
         <div class="glass rounded-xl p-6 my-8">
           <div class="space-y-4">
             <div class="flex items-center gap-4">
-              <div class="w-24 text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.semaine_1_63">Semaine 1</span></div>
+              <div class="w-24 text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.semaine_1_63">Semaine 1</span></div>
               <div class="flex-1 h-2 bg-vocalia-500/30 rounded-full">
                 <div class="h-2 bg-vocalia-500 rounded-full" style="width: 100%"></div>
               </div>
               <div class="text-sm"><span data-i18n="blog_clinique_amal_rappel.audit_et_configuration_62">Audit et configuration</span></div>
             </div>
             <div class="flex items-center gap-4">
-              <div class="w-24 text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.semaine_2_61">Semaine 2</span></div>
+              <div class="w-24 text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.semaine_2_61">Semaine 2</span></div>
               <div class="flex-1 h-2 bg-vocalia-500/30 rounded-full">
                 <div class="h-2 bg-vocalia-500 rounded-full" style="width: 100%"></div>
               </div>
               <div class="text-sm"><span data-i18n="blog_clinique_amal_rappel.intgration_api_medivox_60">Intégration API Medivox</span></div>
             </div>
             <div class="flex items-center gap-4">
-              <div class="w-24 text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.semaine_3_59">Semaine 3</span></div>
+              <div class="w-24 text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.semaine_3_59">Semaine 3</span></div>
               <div class="flex-1 h-2 bg-vocalia-500/30 rounded-full">
                 <div class="h-2 bg-vocalia-500 rounded-full" style="width: 100%"></div>
               </div>
               <div class="text-sm"><span data-i18n="blog_clinique_amal_rappel.tests_pilotes_20_58">Tests pilotes (20% patients)</span></div>
             </div>
             <div class="flex items-center gap-4">
-              <div class="w-24 text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.semaine_4_57">Semaine 4</span></div>
+              <div class="w-24 text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.semaine_4_57">Semaine 4</span></div>
               <div class="flex-1 h-2 bg-emerald-500/30 rounded-full">
                 <div class="h-2 bg-emerald-500 rounded-full" style="width: 100%"></div>
               </div>
@@ -489,7 +489,7 @@
 
         <div class="glass rounded-xl p-6 my-6">
           <h4 class="font-semibold mb-3"><span data-i18n="blog_clinique_amal_rappel.architecture_dintgration_54">Architecture d'intégration</span></h4>
-          <ul class="space-y-2 text-slate-300">
+          <ul class="space-y-2 text-zinc-300">
             <li class="flex items-center gap-2">
               <i data-lucide="database" class="w-4 h-4 text-vocalia-400"></i>
               <span><strong><span data-i18n="blog_clinique_amal_rappel.medivox_53">Medivox</span></strong> → Webhook push des nouveaux RDV</span>
@@ -524,42 +524,42 @@
         <div class="grid md:grid-cols-2 gap-4 my-8">
           <div class="stat-card rounded-xl p-6">
             <div class="flex items-center justify-between mb-4">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_noshow_49">Taux de no-show</span></span>
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_de_noshow_49">Taux de no-show</span></span>
               <span class="text-emerald-400 font-semibold">-60%</span>
             </div>
             <div class="flex items-baseline gap-2">
               <span class="text-3xl font-bold text-white">10%</span>
-              <span class="text-slate-500 line-through">25%</span>
+              <span class="text-zinc-500 line-through">25%</span>
             </div>
           </div>
           <div class="stat-card rounded-xl p-6">
             <div class="flex items-center justify-between mb-4">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.revenus_rcuprs_48">Revenus récupérés</span></span>
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.revenus_rcuprs_48">Revenus récupérés</span></span>
               <span class="text-emerald-400 font-semibold">+10 500 MAD/sem</span>
             </div>
             <div class="flex items-baseline gap-2">
               <span class="text-3xl font-bold text-white">42 000 MAD</span>
-              <span class="text-sm text-slate-400">/mois</span>
+              <span class="text-sm text-zinc-400">/mois</span>
             </div>
           </div>
           <div class="stat-card rounded-xl p-6">
             <div class="flex items-center justify-between mb-4">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.temps_secrtariat_47">Temps secrétariat</span></span>
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.temps_secrtariat_47">Temps secrétariat</span></span>
               <span class="text-emerald-400 font-semibold">-15h/sem</span>
             </div>
             <div class="flex items-baseline gap-2">
               <span class="text-3xl font-bold text-white">60h</span>
-              <span class="text-sm text-slate-400">/mois économisées</span>
+              <span class="text-sm text-zinc-400">/mois économisées</span>
             </div>
           </div>
           <div class="stat-card rounded-xl p-6">
             <div class="flex items-center justify-between mb-4">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.satisfaction_patients_46">Satisfaction patients</span></span>
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.satisfaction_patients_46">Satisfaction patients</span></span>
               <span class="text-emerald-400 font-semibold">+18%</span>
             </div>
             <div class="flex items-baseline gap-2">
               <span class="text-3xl font-bold text-white">92%</span>
-              <span class="text-sm text-slate-400"><span data-i18n="blog_clinique_amal_rappel.apprcient_le_service_45">apprécient le service</span></span>
+              <span class="text-sm text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.apprcient_le_service_45">apprécient le service</span></span>
             </div>
           </div>
         </div>
@@ -568,20 +568,20 @@
 
         <div class="glass rounded-xl p-6 my-8">
           <div class="space-y-3">
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.cot_vocalia_mensuel_43">Coût VocalIA mensuel (Pro)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.cot_vocalia_mensuel_43">Coût VocalIA mensuel (Pro)</span></span>
               <span class="text-white font-semibold">2 500 MAD</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.revenus_rcuprs_noshows_42">Revenus récupérés (no-shows évités)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.revenus_rcuprs_noshows_42">Revenus récupérés (no-shows évités)</span></span>
               <span class="text-emerald-400 font-semibold">+42 000 MAD</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.conomie_temps_secrtariat_41">Économie temps secrétariat (60h × 30 MAD)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.conomie_temps_secrtariat_41">Économie temps secrétariat (60h × 30 MAD)</span></span>
               <span class="text-emerald-400 font-semibold">+1 800 MAD</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_clinique_amal_rappel.rduction_stress_quipe_40">Réduction stress équipe (qualitatif)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.rduction_stress_quipe_40">Réduction stress équipe (qualitatif)</span></span>
               <span class="text-emerald-400 font-semibold">+++</span>
             </div>
             <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
@@ -596,27 +596,27 @@
         <div class="overflow-x-auto my-8">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-2 text-slate-400">Mois</th>
-                <th class="text-center py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.taux_noshow_37">Taux no-show</span></th>
-                <th class="text-center py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.rdv_rcuprs_36">RDV récupérés</span></th>
-                <th class="text-center py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.revenus_35">Revenus</span></th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-2 text-zinc-400">Mois</th>
+                <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.taux_noshow_37">Taux no-show</span></th>
+                <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.rdv_rcuprs_36">RDV récupérés</span></th>
+                <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.revenus_35">Revenus</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.avant_vocalia_34">Avant VocalIA</span></td>
                 <td class="text-center text-rose-400">25%</td>
                 <td class="text-center">-</td>
                 <td class="text-center">-</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.mois_1_33">Mois 1</span></td>
                 <td class="text-center">18%</td>
                 <td class="text-center">28/sem</td>
                 <td class="text-center">+9 800 MAD</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.mois_2_32">Mois 2</span></td>
                 <td class="text-center">13%</td>
                 <td class="text-center">48/sem</td>
@@ -644,16 +644,16 @@
 
         <div class="grid md:grid-cols-2 gap-4 my-8">
           <div class="quote-card rounded-xl p-4">
-            <p class="text-slate-300 italic mb-2">
+            <p class="text-zinc-300 italic mb-2">
               "L'appel en Darija m'a vraiment fait plaisir. J'ai pu reporter mon rendez-vous directement, sans avoir à rappeler la clinique."
             </p>
-            <p class="text-sm text-slate-400">— Aicha, 67 ans, Maarif</p>
+            <p class="text-sm text-zinc-400">— Aicha, 67 ans, Maarif</p>
           </div>
           <div class="quote-card rounded-xl p-4">
-            <p class="text-slate-300 italic mb-2">
+            <p class="text-zinc-300 italic mb-2">
               "Je reçois tellement de SMS que je ne les lis plus. L'appel, je décroche. C'est plus humain."
             </p>
-            <p class="text-sm text-slate-400">— Youssef, 34 ans, Anfa</p>
+            <p class="text-sm text-zinc-400">— Youssef, 34 ans, Anfa</p>
           </div>
         </div>
 
@@ -672,27 +672,27 @@
         <div class="overflow-x-auto my-8">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.solution_23">Solution</span></th>
-                <th class="text-center py-2 text-slate-400">Coût</th>
-                <th class="text-center py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.efficacit_22">Efficacité</span></th>
-                <th class="text-center py-2 text-slate-400"><span data-i18n="blog_clinique_amal_rappel.verdict_21">Verdict</span></th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.solution_23">Solution</span></th>
+                <th class="text-center py-2 text-zinc-400">Coût</th>
+                <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.efficacit_22">Efficacité</span></th>
+                <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_clinique_amal_rappel.verdict_21">Verdict</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.sms_automatiques_20">SMS automatiques</span></td>
                 <td class="text-center">~500 MAD/mois</td>
                 <td class="text-center text-rose-400">-15% no-shows</td>
                 <td class="text-center"><span data-i18n="blog_clinique_amal_rappel.insuffisant_19">Insuffisant</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_clinique_amal_rappel.appels_manuels_18">Appels manuels</span></td>
                 <td class="text-center">~8 000 MAD/mois</td>
                 <td class="text-center text-amber-400">-50% no-shows</td>
                 <td class="text-center"><span data-i18n="blog_clinique_amal_rappel.coteux_17">Coûteux</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2">Email + WhatsApp</td>
                 <td class="text-center">~1 000 MAD/mois</td>
                 <td class="text-center text-amber-400">-30% no-shows</td>
@@ -713,32 +713,32 @@
         <div class="space-y-4 my-8">
           <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
             <h4 class="font-semibold text-emerald-400 mb-1">✓ Commencer par un pilote</h4>
-            <p class="text-slate-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.tester_sur_20_13">Tester sur 20% des patients pendant 2 semaines avant le déploiement complet.</span></p>
+            <p class="text-zinc-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.tester_sur_20_13">Tester sur 20% des patients pendant 2 semaines avant le déploiement complet.</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
             <h4 class="font-semibold text-emerald-400 mb-1">✓ Personnaliser le persona vocal</h4>
-            <p class="text-slate-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.adapter_le_ton_12">Adapter le ton et le vocabulaire à la patientèle (formel vs chaleureux).</span></p>
+            <p class="text-zinc-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.adapter_le_ton_12">Adapter le ton et le vocabulaire à la patientèle (formel vs chaleureux).</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
             <h4 class="font-semibold text-emerald-400 mb-1">✓ Proposer le multilingue dès le départ</h4>
-            <p class="text-slate-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.les_patients_gs_11">Les patients âgés préfèrent souvent le Darija ou l'arabe classique.</span></p>
+            <p class="text-zinc-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.les_patients_gs_11">Les patients âgés préfèrent souvent le Darija ou l'arabe classique.</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-emerald-500">
             <h4 class="font-semibold text-emerald-400 mb-1">✓ Former l'équipe sur le dashboard</h4>
-            <p class="text-slate-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.les_secrtaires_doivent_10">Les secrétaires doivent pouvoir suivre les confirmations en temps réel.</span></p>
+            <p class="text-zinc-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.les_secrtaires_doivent_10">Les secrétaires doivent pouvoir suivre les confirmations en temps réel.</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">✗ Ne pas appeler trop tôt le matin</h4>
-            <p class="text-slate-300 text-sm">Éviter les appels avant 9h — taux de rejet plus élevé.</p>
+            <p class="text-zinc-300 text-sm">Éviter les appels avant 9h — taux de rejet plus élevé.</p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">✗ Ne pas multiplier les rappels</h4>
-            <p class="text-slate-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.maximum_3_points_9">Maximum 3 points de contact. Au-delà, risque d'agacement.</span></p>
+            <p class="text-zinc-300 text-sm"><span data-i18n="blog_clinique_amal_rappel.maximum_3_points_9">Maximum 3 points de contact. Au-delà, risque d'agacement.</span></p>
           </div>
         </div>
 
@@ -746,50 +746,50 @@
 
         <div class="space-y-4 my-8">
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Les patients âgés comprennent-ils les appels automatiques ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Oui, c'est même la population qui répond le mieux (taux de 92%). L'appel vocal est plus naturel
               qu'un SMS pour les seniors. Le support Darija natif aide énormément.
             </div>
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Que se passe-t-il si le patient ne répond pas ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               VocalIA réessaie automatiquement 4h plus tard, jusqu'à 3 tentatives par point de contact.
               En dernier recours, un SMS de secours est envoyé.
             </div>
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Le système s'intègre-t-il à notre logiciel existant ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               VocalIA dispose de 31+ intégrations natives (dont Medivox, Doctolib, MonDocteur).
               Pour les logiciels non listés, une API REST permet l'intégration en 1-2 semaines.
             </div>
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Les données patients sont-elles sécurisées ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Absolument. VocalIA est 100% conforme RGPD et respecte la réglementation marocaine CNDP.
               Chiffrement AES-256, hébergement sécurisé, aucune rétention des enregistrements vocaux.
             </div>
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Quel est le ROI typique dans le secteur santé ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               En moyenne, nos clients santé observent un ROI de 800-1 500% sur les 3 premiers mois.
               Le payback period est généralement inférieur à 2 semaines.
             </div>
@@ -799,7 +799,7 @@
         <!-- CTA Final -->
         <div class="glass rounded-xl p-8 my-12 text-center">
           <h3 class="text-2xl font-bold mb-4"><span data-i18n="blog_clinique_amal_rappel.votre_clinique_aussi_8">Votre clinique aussi peut réduire ses no-shows</span></h3>
-          <p class="text-slate-400 mb-6 max-w-lg mx-auto">
+          <p class="text-zinc-400 mb-6 max-w-lg mx-auto">
             Découvrez comment VocalIA peut s'adapter à votre établissement de santé.
             Audit gratuit et estimation ROI personnalisée.
           </p>
@@ -807,14 +807,14 @@
             <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
               Demander une démonstration
             </a>
-            <a href="/industries/healthcare" class="inline-block px-8 py-3 border border-slate-600 hover:border-vocalia-400 rounded-xl font-semibold transition">
+            <a href="/industries/healthcare" class="inline-block px-8 py-3 border border-white/[0.08] hover:border-vocalia-400 rounded-xl font-semibold transition">
               En savoir plus : Santé
             </a>
           </div>
         </div>
 
         <!-- Related Articles -->
-        <div class="border-t border-slate-700 pt-8 mt-12">
+        <div class="border-t border-white/[0.08] pt-8 mt-12">
           <h3 class="text-lg font-semibold mb-6"><span data-i18n="blog_clinique_amal_rappel.articles_connexes_7">Articles connexes</span></h3>
           <div class="grid md:grid-cols-2 gap-4">
             <a href="/blog/articles/reduire-couts-support-voice-ai" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
@@ -832,7 +832,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -855,16 +855,16 @@
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
@@ -921,29 +921,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="blog_clinique_amal_rappel.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="blog_clinique_amal_rappel.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -1063,5 +1063,7 @@
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
     <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

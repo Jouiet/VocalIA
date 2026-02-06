@@ -15,39 +15,39 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
-      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+    <aside id="sidebar" class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
+      <div class="p-4 border-b border-zinc-200 dark:border-white/[0.08]">
         <a href="/app/client/" class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
-          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+          <span class="text-xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
         </a>
       </div>
 
       <nav class="flex-1 p-4 space-y-1">
-        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span>Tableau de bord</span>
         </a>
-        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="phone" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.calls">Appels</span>
         </a>
-        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="bot" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.agents">Agents IA</span>
         </a>
-        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="package" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.catalog">Catalogue</span>
         </a>
-        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="book-open" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
         </a>
-        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="plug" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.integrations">Intégrations</span>
         </a>
@@ -55,27 +55,27 @@
           <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.analytics">Analytics</span>
         </a>
-        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="credit-card" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.billing">Facturation</span>
         </a>
-        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="settings" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.settings">Paramètres</span>
         </a>
       </nav>
 
-      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 border-t border-zinc-200 dark:border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
             <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
-            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+            <p id="user-name" class="text-sm font-medium text-zinc-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-zinc-500 truncate"></p>
           </div>
-          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
+            <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
       </div>
@@ -83,19 +83,19 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Analytics</h1>
-            <p class="text-slate-600 dark:text-slate-400">Analysez vos performances</p>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Analytics</h1>
+            <p class="text-zinc-600 dark:text-zinc-400">Analysez vos performances</p>
           </div>
           <div class="flex items-center gap-3">
-            <select id="date-range" class="px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+            <select id="date-range" class="px-3 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
               <option value="7d">7 derniers jours</option>
               <option value="30d" selected>30 derniers jours</option>
               <option value="90d">90 derniers jours</option>
             </select>
-            <button id="export-btn" class="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+            <button id="export-btn" class="inline-flex items-center gap-2 px-4 py-2 border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 font-medium rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.06] transition-colors">
               <i data-lucide="download" class="w-4 h-4"></i>
               Exporter
             </button>
@@ -106,53 +106,53 @@
       <div class="px-6 py-6 space-y-6">
         <!-- KPIs -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.total_calls">Appels totaux</span>
-              <span id="kpi-calls-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
+              <span class="text-sm text-zinc-500" data-i18n="analytics.kpi.total_calls">Appels totaux</span>
+              <span id="kpi-calls-trend" class="text-xs px-2 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
             </div>
-            <p id="kpi-calls" class="text-3xl font-bold text-slate-900 dark:text-white">--</p>
-            <p id="kpi-calls-sub" class="text-sm text-slate-500 mt-1">--</p>
+            <p id="kpi-calls" class="text-3xl font-bold text-zinc-900 dark:text-white">--</p>
+            <p id="kpi-calls-sub" class="text-sm text-zinc-500 mt-1">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.conversion">Taux de complétion</span>
-              <span id="kpi-conv-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
+              <span class="text-sm text-zinc-500" data-i18n="analytics.kpi.conversion">Taux de complétion</span>
+              <span id="kpi-conv-trend" class="text-xs px-2 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
             </div>
-            <p id="kpi-conversion" class="text-3xl font-bold text-slate-900 dark:text-white">--%</p>
-            <p id="kpi-conv-sub" class="text-sm text-slate-500 mt-1">--</p>
+            <p id="kpi-conversion" class="text-3xl font-bold text-zinc-900 dark:text-white">--%</p>
+            <p id="kpi-conv-sub" class="text-sm text-zinc-500 mt-1">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.duration">Durée moyenne</span>
-              <span id="kpi-duration-trend" class="text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">--</span>
+              <span class="text-sm text-zinc-500" data-i18n="analytics.kpi.duration">Durée moyenne</span>
+              <span id="kpi-duration-trend" class="text-xs px-2 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
             </div>
-            <p id="kpi-duration" class="text-3xl font-bold text-slate-900 dark:text-white">--:--</p>
-            <p id="kpi-duration-sub" class="text-sm text-slate-500 mt-1">--</p>
+            <p id="kpi-duration" class="text-3xl font-bold text-zinc-900 dark:text-white">--:--</p>
+            <p id="kpi-duration-sub" class="text-sm text-zinc-500 mt-1">--</p>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center justify-between mb-3">
-              <span class="text-sm text-slate-500" data-i18n="analytics.kpi.languages">Langues actives</span>
+              <span class="text-sm text-zinc-500" data-i18n="analytics.kpi.languages">Langues actives</span>
               <span class="text-xs px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600">5 supportées</span>
             </div>
-            <p id="kpi-languages" class="text-3xl font-bold text-slate-900 dark:text-white">--</p>
-            <p id="kpi-languages-sub" class="text-sm text-slate-500 mt-1">--</p>
+            <p id="kpi-languages" class="text-3xl font-bold text-zinc-900 dark:text-white">--</p>
+            <p id="kpi-languages-sub" class="text-sm text-zinc-500 mt-1">--</p>
           </div>
         </div>
 
         <!-- Charts Row -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Call Volume Chart -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Volume d'appels</h3>
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+            <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Volume d'appels</h3>
             <div class="h-64">
               <canvas id="calls-chart"></canvas>
             </div>
           </div>
 
           <!-- Conversion Chart -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Taux de conversion</h3>
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+            <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Taux de conversion</h3>
             <div class="h-64">
               <canvas id="conversion-chart"></canvas>
             </div>
@@ -162,24 +162,24 @@
         <!-- Distribution Charts -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <!-- By Language -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par langue</h3>
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+            <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Par langue</h3>
             <div class="h-48">
               <canvas id="language-chart"></canvas>
             </div>
           </div>
 
           <!-- By Persona -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par persona</h3>
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+            <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Par persona</h3>
             <div class="h-48">
               <canvas id="persona-chart"></canvas>
             </div>
           </div>
 
           <!-- By Hour -->
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
-            <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Par heure</h3>
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+            <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Par heure</h3>
             <div class="h-48">
               <canvas id="hour-chart"></canvas>
             </div>
@@ -187,27 +187,27 @@
         </div>
 
         <!-- Voice vs Text Input Methods (E-commerce Widget Phase 1) -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="analytics.input_methods">Méthodes de saisie</h3>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="analytics.input_methods">Méthodes de saisie</h3>
             <span class="text-xs px-2 py-1 rounded bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600" data-i18n="analytics.widget_v3">Widget v3.0</span>
           </div>
           <div class="grid grid-cols-2 gap-4 mb-4">
-            <div class="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
               <div class="flex items-center justify-center gap-2 mb-2">
                 <i data-lucide="keyboard" class="w-5 h-5 text-blue-500"></i>
-                <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.text_input">Texte</span>
+                <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="analytics.text_input">Texte</span>
               </div>
-              <p id="kpi-text-count" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
-              <p id="kpi-text-pct" class="text-sm text-slate-500">--%</p>
+              <p id="kpi-text-count" class="text-2xl font-bold text-zinc-900 dark:text-white">--</p>
+              <p id="kpi-text-pct" class="text-sm text-zinc-500">--%</p>
             </div>
-            <div class="text-center p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+            <div class="text-center p-4 bg-zinc-50 dark:bg-white/[0.04] rounded-lg">
               <div class="flex items-center justify-center gap-2 mb-2">
                 <i data-lucide="mic" class="w-5 h-5 text-green-500"></i>
-                <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.voice_input">Voix</span>
+                <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="analytics.voice_input">Voix</span>
               </div>
-              <p id="kpi-voice-count" class="text-2xl font-bold text-slate-900 dark:text-white">--</p>
-              <p id="kpi-voice-pct" class="text-sm text-slate-500">--%</p>
+              <p id="kpi-voice-count" class="text-2xl font-bold text-zinc-900 dark:text-white">--</p>
+              <p id="kpi-voice-pct" class="text-sm text-zinc-500">--%</p>
             </div>
           </div>
           <div class="h-32">
@@ -216,39 +216,39 @@
         </div>
 
         <!-- E-commerce Widget Metrics -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="analytics.ecommerce_metrics">E-commerce Widget</h3>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="analytics.ecommerce_metrics">E-commerce Widget</h3>
             <span class="text-xs px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600" data-i18n="analytics.phase1">Phase 1</span>
           </div>
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.product_searches">Recherches produits</span>
-              <span id="kpi-product-searches" class="font-medium text-slate-900 dark:text-white">--</span>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="analytics.product_searches">Recherches produits</span>
+              <span id="kpi-product-searches" class="font-medium text-zinc-900 dark:text-white">--</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.carousels_shown">Carrousels affichés</span>
-              <span id="kpi-carousels-shown" class="font-medium text-slate-900 dark:text-white">--</span>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="analytics.carousels_shown">Carrousels affichés</span>
+              <span id="kpi-carousels-shown" class="font-medium text-zinc-900 dark:text-white">--</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.product_clicks">Clics produits</span>
-              <span id="kpi-product-clicks" class="font-medium text-slate-900 dark:text-white">--</span>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="analytics.product_clicks">Clics produits</span>
+              <span id="kpi-product-clicks" class="font-medium text-zinc-900 dark:text-white">--</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-sm text-slate-600 dark:text-slate-400" data-i18n="analytics.carousel_ctr">CTR Carrousel</span>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="analytics.carousel_ctr">CTR Carrousel</span>
               <span id="kpi-carousel-ctr" class="font-medium text-emerald-600">--%</span>
             </div>
           </div>
-          <div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-            <h4 class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2" data-i18n="analytics.ltv_distribution">Distribution LTV</h4>
+          <div class="mt-4 pt-4 border-t border-zinc-200 dark:border-white/[0.08]">
+            <h4 class="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="analytics.ltv_distribution">Distribution LTV</h4>
             <div class="flex gap-2">
               <div class="flex-1 text-center p-2 bg-amber-100 dark:bg-amber-900/30 rounded">
                 <span class="text-xs text-amber-700 dark:text-amber-400">Bronze</span>
                 <p id="ltv-bronze" class="font-bold text-amber-800 dark:text-amber-300">--</p>
               </div>
-              <div class="flex-1 text-center p-2 bg-slate-200 dark:bg-slate-600 rounded">
-                <span class="text-xs text-slate-600 dark:text-slate-300">Silver</span>
-                <p id="ltv-silver" class="font-bold text-slate-700 dark:text-slate-200">--</p>
+              <div class="flex-1 text-center p-2 bg-zinc-200 dark:bg-white/[0.08] rounded">
+                <span class="text-xs text-zinc-600 dark:text-zinc-300">Silver</span>
+                <p id="ltv-silver" class="font-bold text-zinc-700 dark:text-zinc-200">--</p>
               </div>
               <div class="flex-1 text-center p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded">
                 <span class="text-xs text-yellow-700 dark:text-yellow-400">Gold</span>
@@ -263,21 +263,21 @@
         </div>
 
         <!-- Top Performers -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="analytics.top_performers">Top Personas</h3>
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="analytics.top_performers">Top Personas</h3>
           <div class="overflow-x-auto">
             <table class="w-full text-sm">
               <thead>
-                <tr class="text-left text-slate-500 border-b border-slate-200 dark:border-slate-700">
+                <tr class="text-left text-zinc-500 border-b border-zinc-200 dark:border-white/[0.08]">
                   <th class="pb-3 font-medium" data-i18n="analytics.table.persona">Persona</th>
                   <th class="pb-3 font-medium" data-i18n="analytics.table.calls">Appels</th>
                   <th class="pb-3 font-medium" data-i18n="analytics.table.completion">Complétion</th>
                   <th class="pb-3 font-medium" data-i18n="analytics.table.avg_duration">Durée moy.</th>
                 </tr>
               </thead>
-              <tbody id="top-personas-table" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody id="top-personas-table" class="divide-y divide-zinc-200 dark:divide-white/[0.08]">
                 <tr>
-                  <td colspan="4" class="py-6 text-center text-slate-400">
+                  <td colspan="4" class="py-6 text-center text-zinc-400">
                     <i data-lucide="loader-2" class="w-5 h-5 inline-block animate-spin mr-2"></i>
                     <span data-i18n="common.loading">Chargement...</span>
                   </td>
@@ -401,7 +401,7 @@
 
       if (previous === 0 && current === 0) {
         el.textContent = '--';
-        el.className = 'text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500';
+        el.className = 'text-xs px-2 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.06] text-zinc-500';
         return;
       }
 
@@ -415,7 +415,7 @@
         el.className = 'text-xs px-2 py-0.5 rounded bg-red-100 dark:bg-red-900/30 text-red-600';
       } else {
         el.textContent = '0%';
-        el.className = 'text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500';
+        el.className = 'text-xs px-2 py-0.5 rounded bg-zinc-100 dark:bg-white/[0.06] text-zinc-500';
       }
     }
 
@@ -458,7 +458,7 @@
       if (sorted.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="4" class="py-6 text-center text-slate-400" data-i18n="analytics.no_data">Aucune donnée disponible</td>
+            <td colspan="4" class="py-6 text-center text-zinc-400" data-i18n="analytics.no_data">Aucune donnée disponible</td>
           </tr>
         `;
         return;
@@ -466,10 +466,10 @@
 
       tbody.innerHTML = sorted.map(p => `
         <tr>
-          <td class="py-3 text-slate-900 dark:text-white font-medium">${p.name}</td>
-          <td class="py-3 text-slate-600 dark:text-slate-300">${p.calls.toLocaleString()}</td>
-          <td class="py-3 font-medium ${p.completion >= 50 ? 'text-green-600' : p.completion >= 30 ? 'text-amber-600' : 'text-slate-500'}">${p.completion}%</td>
-          <td class="py-3 text-slate-600 dark:text-slate-300">${formatDuration(p.avgDuration)}</td>
+          <td class="py-3 text-zinc-900 dark:text-white font-medium">${p.name}</td>
+          <td class="py-3 text-zinc-600 dark:text-zinc-300">${p.calls.toLocaleString()}</td>
+          <td class="py-3 font-medium ${p.completion >= 50 ? 'text-green-600' : p.completion >= 30 ? 'text-amber-600' : 'text-zinc-500'}">${p.completion}%</td>
+          <td class="py-3 text-zinc-600 dark:text-zinc-300">${formatDuration(p.avgDuration)}</td>
         </tr>
       `).join('');
     }

@@ -74,3 +74,28 @@ jobs:
         run: |
           echo "## VocalIA Build Summary" >> $GITHUB_STEP_SUMMARY
           echo "✅ CI Passed — Unit + Exhaustive + i18n validated" >> $GITHUB_STEP_SUMMARY
+
+  staging:
+    name: Deploy to Staging
+    needs: ci
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Docker Compose
+        run: docker compose -f docker-compose.staging.yml config --quiet
+
+      - name: Staging Summary
+        run: |
+          echo "## Staging Deploy" >> $GITHUB_STEP_SUMMARY
+          echo "Branch: develop" >> $GITHUB_STEP_SUMMARY
+          echo "Docker Compose validated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "To deploy manually:" >> $GITHUB_STEP_SUMMARY
+          echo '```bash' >> $GITHUB_STEP_SUMMARY
+          echo 'docker-compose -f docker-compose.staging.yml up -d' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY

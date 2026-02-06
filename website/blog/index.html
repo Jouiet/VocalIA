@@ -59,7 +59,7 @@
   </script>
 
   <!-- Critical CSS -->
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}</style>
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -82,13 +82,13 @@
       background-clip: text;
     }
     .glass {
-      background: rgba(51, 65, 85, 0.85);
+      background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .blog-card {
-      background: linear-gradient(135deg, rgba(51, 65, 85, 0.5), rgba(30, 41, 59, 0.8));
-      border: 1px solid rgba(148, 163, 184, 0.15);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(10, 10, 10, 0.8));
+      border: 1px solid rgba(255, 255, 255, 0.06);
       transition: all 0.3s ease;
     }
     .blog-card:hover {
@@ -115,7 +115,7 @@
   
 </head>
 
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Skip Link -->
 
     <a href="#main-content"
@@ -158,7 +158,7 @@
 
               <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/products/voice-widget" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
 
@@ -195,7 +195,7 @@
 
                   </a>
 
-                  <hr class="border-slate-600/50 my-2">
+                  <hr class="border-white/[0.08] my-2">
 
                   <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
 
@@ -222,7 +222,7 @@
 
               <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-white/[0.08]">
 
                   <div class="grid grid-cols-3 gap-6">
 
@@ -308,13 +308,13 @@
 
                     <!-- Column 3: Featured -->
 
-                    <div class="bg-slate-700/30 rounded-lg p-4">
+                    <div class="bg-white/[0.03] rounded-lg p-4">
 
                       <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span data-i18n="blog_index.populaire_38">Populaire</span></div>
 
                       <div class="space-y-3">
 
-                        <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/features" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -328,7 +328,7 @@
 
                         </a>
 
-                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        <a href="/blog/articles/vocalia-lance-support-darija" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                           <div class="flex items-center gap-2 mb-1">
 
@@ -368,7 +368,7 @@
 
               <div class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-                <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+                <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                   <a href="/docs" class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span data-i18n="footer.links.docs">Documentation</span></a>
 
@@ -394,36 +394,36 @@
 
             <!-- Language Switcher -->
             <div class="relative">
-              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors" aria-label="Changer de langue">
+              <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.04] transition-colors" aria-label="Changer de langue">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                 <span id="currentLang" class="text-sm font-medium">FR</span>
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
               </button>
-              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
-                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+              <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50 overflow-hidden">
+                <button type="button" data-action="switchLang" data-params="fr" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127467;&#127479;</span>
                   <span class="text-sm"><span data-i18n="blog_index.francais_34">Francais</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="en" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127468;&#127463;</span>
                   <span class="text-sm"><span data-i18n="blog_index.english_33">English</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                <button type="button" data-action="switchLang" data-params="es" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                   <span class="text-lg">&#127466;&#127480;</span>
                   <span class="text-sm"><span data-i18n="blog_index.espanol_32">Espanol</span></span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127480;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
                 </button>
-                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                   <span class="text-lg">&#127474;&#127462;</span>
                   <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
                 </button>
               </div>
             </div>
 
-            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
+            <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-white/[0.04] focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition" aria-label="Menu mobile">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
           </button>
@@ -436,7 +436,7 @@
 
       <!-- Mobile Menu Drawer -->
 
-      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+      <div id="mobileMenu" class="md:hidden fixed inset-0 top-16 bg-[#050505]/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
 
         <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
 
@@ -446,7 +446,7 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
 
-            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
 
@@ -466,7 +466,7 @@
 
             </a>
 
-            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            <a href="/products/voice-telephony" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
               <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
 
@@ -494,13 +494,13 @@
 
             <div class="grid grid-cols-2 gap-2">
 
-              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
+              <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.ecommerce">E-commerce</span></a>
 
-              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
+              <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.healthcare">Santé</span></a>
 
-              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
+              <a href="/use-cases/customer-support" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.customer_support">Service Client</span></a>
 
-              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
+              <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.real_estate">Immobilier</span></a>
 
             </div>
 
@@ -512,17 +512,17 @@
 
             <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
 
-            <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
+            <a href="/docs" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.docs">Documentation</span></a>
 
-            <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
+            <a href="/integrations" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.integrations">Intégrations</span></a>
 
-            <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
+            <a href="/blog" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span data-i18n="footer.links.blog">Blog</span></a></div>
 
           <!-- Mobile CTA -->
 
           <div class="space-y-3">
 
-            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+            <a href="/pricing" class="block w-full py-3 px-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center font-medium text-white">
 
               Tarifs
 
@@ -550,7 +550,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <!-- Breadcrumb -->
         <nav class="mb-8" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white transition"><span data-i18n="blog_index.accueil_24">Accueil</span></a></li>
             <li><span class="mx-2">/</span></li>
             <li class="text-vocalia-400">Blog</li>
@@ -561,17 +561,17 @@
           <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6">
             Blog <span class="gradient-text">VocalIA</span>
           </h1>
-          <p class="text-xl text-slate-300 mb-8">
+          <p class="text-xl text-zinc-300 mb-8">
             Actualités Voice AI, guides d'intégration, études de cas et insights de l'industrie.
           </p>
 
           <!-- Categories Filter -->
           <div class="flex flex-wrap justify-center gap-3">
             <button type="button" class="px-4 py-2 bg-vocalia-500 rounded-full text-sm font-medium">Tous</button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition"><span data-i18n="blog_index.guides_22">Guides</span></button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition"><span data-i18n="blog_index.actualits_21">Actualités</span></button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition"><span data-i18n="blog_index.tudes_de_cas_20">Études de cas</span></button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-slate-300 hover:text-white transition"><span data-i18n="blog_index.tutoriels_19">Tutoriels</span></button>
+            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.guides_22">Guides</span></button>
+            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.actualits_21">Actualités</span></button>
+            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.tudes_de_cas_20">Études de cas</span></button>
+            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.tutoriels_19">Tutoriels</span></button>
           </div>
         </div>
       </div>
@@ -593,7 +593,7 @@
               <h2 class="text-2xl md:text-3xl font-bold mb-4">
                 Comment réduire de 70% vos coûts support client avec Voice AI
               </h2>
-              <p class="text-slate-400 mb-6">
+              <p class="text-zinc-400 mb-6">
                 Découvrez comment les entreprises leaders utilisent l'IA vocale pour automatiser leur support client tout en améliorant la satisfaction. Guide complet avec ROI calculator.
               </p>
               <div class="flex items-center justify-between">
@@ -603,7 +603,7 @@
                   </div>
                   <div>
                     <p class="text-sm font-medium"><span data-i18n="blog_index.quipe_vocalia_16">Équipe VocalIA</span></p>
-                    <p class="text-xs text-slate-400">29 janvier 2026 · 12 min</p>
+                    <p class="text-xs text-zinc-400">29 janvier 2026 · 12 min</p>
                   </div>
                 </div>
                 <a href="/blog/articles/reduire-couts-support-voice-ai" class="text-vocalia-400 hover:text-vocalia-300 font-medium flex items-center gap-2">
@@ -633,11 +633,11 @@
               <h3 class="text-xl font-bold mb-3">
                 VocalIA lance le support Darija pour le marché marocain
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Première plateforme Voice AI à supporter le dialecte marocain grâce à un modèle IA spécialisé.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">28 janvier 2026</p>
+                <p class="text-xs text-zinc-500">28 janvier 2026</p>
                 <a href="/blog/articles/vocalia-lance-support-darija" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -653,11 +653,11 @@
               <h3 class="text-xl font-bold mb-3">
                 Clinique Amal : -60% de no-shows grâce aux rappels vocaux
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Comment une clinique de Casablanca a réduit ses rendez-vous manqués avec VocalIA.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">25 janvier 2026</p>
+                <p class="text-xs text-zinc-500">25 janvier 2026</p>
                 <a href="/blog/articles/clinique-amal-rappels-vocaux" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -673,11 +673,11 @@
               <h3 class="text-xl font-bold mb-3">
                 Intégrer VocalIA à Shopify en 5 minutes
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Guide pas à pas pour connecter votre boutique e-commerce à notre assistant vocal.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">22 janvier 2026</p>
+                <p class="text-xs text-zinc-500">22 janvier 2026</p>
                 <a href="/blog/articles/integrer-vocalia-shopify" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -693,11 +693,11 @@
               <h3 class="text-xl font-bold mb-3">
                 RGPD & Voice AI : Guide de conformité 2026
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Tout ce que vous devez savoir sur la protection des données vocales en Europe.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">18 janvier 2026</p>
+                <p class="text-xs text-zinc-500">18 janvier 2026</p>
                 <a href="/blog/articles/rgpd-voice-ai-guide-2026" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -713,11 +713,11 @@
               <h3 class="text-xl font-bold mb-3">
                 Agence Immo Plus : +45% de conversion leads
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Comment l'IA vocale qualifie les leads immobiliers 24/7 à Rabat et Marrakech.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">15 janvier 2026</p>
+                <p class="text-xs text-zinc-500">15 janvier 2026</p>
                 <a href="/blog/articles/agence-immo-plus-conversion" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -733,11 +733,11 @@
               <h3 class="text-xl font-bold mb-3">
                 AI Act Europe : Ce qui change pour les Voice AI
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Analyse des implications du règlement européen sur l'IA pour les assistants vocaux.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">10 janvier 2026</p>
+                <p class="text-xs text-zinc-500">10 janvier 2026</p>
                 <a href="/blog/articles/ai-act-europe-voice-ai" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -753,11 +753,11 @@
               <h3 class="text-xl font-bold mb-3">
                 Guide BANT : Qualifier vos leads par téléphone avec l'IA
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Maîtrisez la méthode BANT et automatisez la qualification de vos prospects avec Voice AI.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">31 janvier 2026</p>
+                <p class="text-xs text-zinc-500">31 janvier 2026</p>
                 <a href="/blog/articles/guide-qualification-leads-bant" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -772,11 +772,11 @@
               <h3 class="text-xl font-bold mb-3">
                 Voice AI vs Chatbot : le guide complet 2026
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Comparaison détaillée entre IA vocale et chatbot texte. Avantages, inconvénients, ROI.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">31 janvier 2026</p>
+                <p class="text-xs text-zinc-500">31 janvier 2026</p>
                 <a href="/blog/articles/voice-ai-vs-chatbot-comparatif" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -791,11 +791,11 @@
               <h3 class="text-xl font-bold mb-3">
                 Automatiser la prise de RDV téléphonique avec l'IA
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Réduisez les no-shows de 60% et libérez votre équipe des tâches répétitives.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">31 janvier 2026</p>
+                <p class="text-xs text-zinc-500">31 janvier 2026</p>
                 <a href="/blog/articles/automatiser-prise-rdv-telephonique" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -810,11 +810,11 @@
               <h3 class="text-xl font-bold mb-3">
                 7 tendances IA vocale à surveiller en 2026
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 Agents autonomes, multimodalité, AI Act... Ce qui va transformer le marché cette année.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">31 janvier 2026</p>
+                <p class="text-xs text-zinc-500">31 janvier 2026</p>
                 <a href="/blog/articles/tendances-ia-vocale-2026" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -829,11 +829,11 @@
               <h3 class="text-xl font-bold mb-3">
                 Comment choisir sa solution Voice AI en 2026
               </h3>
-              <p class="text-slate-400 text-sm mb-4">
+              <p class="text-zinc-400 text-sm mb-4">
                 10 critères essentiels et comparatif des principales plateformes Voice AI.
               </p>
               <div class="flex items-center justify-between">
-                <p class="text-xs text-slate-500">31 janvier 2026</p>
+                <p class="text-xs text-zinc-500">31 janvier 2026</p>
                 <a href="/blog/articles/comment-choisir-solution-voice-ai" class="text-vocalia-400 text-sm hover:underline">Lire →</a>
               </div>
             </div>
@@ -843,13 +843,13 @@
         <!-- Pagination -->
         <div class="flex justify-center mt-12">
           <nav class="flex items-center gap-2">
-            <button type="button" class="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-400 hover:text-white transition" disabled>
+            <button type="button" class="w-10 h-10 glass rounded-lg flex items-center justify-center text-zinc-400 hover:text-white transition" disabled>
               <i data-lucide="chevron-left" class="w-5 h-5"></i>
             </button>
             <button type="button" class="w-10 h-10 bg-vocalia-500 rounded-lg font-medium">1</button>
-            <button type="button" class="w-10 h-10 glass rounded-lg font-medium text-slate-300 hover:text-white transition">2</button>
-            <button type="button" class="w-10 h-10 glass rounded-lg font-medium text-slate-300 hover:text-white transition">3</button>
-            <button type="button" class="w-10 h-10 glass rounded-lg flex items-center justify-center text-slate-300 hover:text-white transition">
+            <button type="button" class="w-10 h-10 glass rounded-lg font-medium text-zinc-300 hover:text-white transition">2</button>
+            <button type="button" class="w-10 h-10 glass rounded-lg font-medium text-zinc-300 hover:text-white transition">3</button>
+            <button type="button" class="w-10 h-10 glass rounded-lg flex items-center justify-center text-zinc-300 hover:text-white transition">
               <i data-lucide="chevron-right" class="w-5 h-5"></i>
             </button>
           </nav>
@@ -857,14 +857,14 @@
       </div>
     </section>
   <!-- Newsletter CTA -->
-  <section class="py-12 bg-slate-900/50" id="newsletter">
+  <section class="py-12 bg-white/[0.02]" id="newsletter">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
             <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice AI</span>
           </h3>
-          <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
+          <p class="text-zinc-400 text-sm" data-i18n="newsletter.subtitle">
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
@@ -873,7 +873,7 @@
             type="email"
             placeholder="votre@email.com"
             data-i18n-placeholder="newsletter.placeholder"
-            class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
+            class="flex-1 px-4 py-2.5 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required
             aria-label="Adresse email"
           >
@@ -887,7 +887,7 @@
 </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -910,16 +910,16 @@
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
@@ -976,29 +976,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="blog_index.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="blog_index.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -1100,5 +1100,7 @@
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
     <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

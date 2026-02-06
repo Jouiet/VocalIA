@@ -9,16 +9,16 @@
   <link rel="stylesheet" href="/src/styles/main.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
   <!-- Header -->
-  <header class="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 py-4">
+  <header class="bg-white dark:bg-white/[0.06] border-b border-zinc-200 dark:border-white/[0.08] py-4">
     <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
       <a href="/" class="flex items-center gap-2">
         <img src="/public/images/logo.webp" alt="VocalIA" class="h-8">
-        <span class="font-bold text-xl text-slate-900 dark:text-white">VocalIA</span>
+        <span class="font-bold text-xl text-zinc-900 dark:text-white">VocalIA</span>
       </a>
       <div class="flex items-center gap-4">
-        <select id="language-selector" class="text-sm border border-slate-300 dark:border-slate-600 rounded-lg px-2 py-1 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+        <select id="language-selector" class="text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg px-2 py-1 bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
           <option value="fr">Français</option>
           <option value="en">English</option>
           <option value="es">Español</option>
@@ -33,10 +33,10 @@
     <!-- Progress Bar -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-sm font-medium text-slate-700 dark:text-slate-300" data-i18n="onboarding.progress">Configuration</span>
-        <span id="progress-text" class="text-sm text-slate-500 dark:text-slate-400">1/4</span>
+        <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300" data-i18n="onboarding.progress">Configuration</span>
+        <span id="progress-text" class="text-sm text-zinc-500 dark:text-zinc-400">1/4</span>
       </div>
-      <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+      <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
         <div id="progress-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 25%"></div>
       </div>
     </div>
@@ -47,25 +47,25 @@
         <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
           <i data-lucide="sparkles" class="w-8 h-8 text-indigo-600 dark:text-indigo-400"></i>
         </div>
-        <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="onboarding.welcome_title">Bienvenue sur VocalIA</h1>
-        <p class="text-lg text-slate-600 dark:text-slate-400" data-i18n="onboarding.welcome_subtitle">Configurez votre assistant vocal IA en quelques étapes</p>
+        <h1 class="text-3xl font-bold text-zinc-900 dark:text-white mb-2" data-i18n="onboarding.welcome_title">Bienvenue sur VocalIA</h1>
+        <p class="text-lg text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.welcome_subtitle">Configurez votre assistant vocal IA en quelques étapes</p>
       </div>
 
       <div class="grid gap-4 md:grid-cols-3 mb-8">
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08]">
           <i data-lucide="mic" class="w-8 h-8 text-indigo-600 dark:text-indigo-400 mb-3"></i>
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-1" data-i18n="onboarding.feature1_title">Widget Vocal</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="onboarding.feature1_desc">Intégrez un assistant vocal sur votre site web</p>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-1" data-i18n="onboarding.feature1_title">Widget Vocal</h3>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.feature1_desc">Intégrez un assistant vocal sur votre site web</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08]">
           <i data-lucide="phone" class="w-8 h-8 text-green-600 dark:text-green-400 mb-3"></i>
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-1" data-i18n="onboarding.feature2_title">Téléphonie IA</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="onboarding.feature2_desc">Automatisez vos appels entrants et sortants</p>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-1" data-i18n="onboarding.feature2_title">Téléphonie IA</h3>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.feature2_desc">Automatisez vos appels entrants et sortants</p>
         </div>
-        <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08]">
           <i data-lucide="brain" class="w-8 h-8 text-purple-600 dark:text-purple-400 mb-3"></i>
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-1" data-i18n="onboarding.feature3_title">40 Personas</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="onboarding.feature3_desc">Choisissez parmi 40 personnalités spécialisées</p>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-1" data-i18n="onboarding.feature3_title">40 Personas</h3>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.feature3_desc">Choisissez parmi 40 personnalités spécialisées</p>
         </div>
       </div>
 
@@ -74,17 +74,17 @@
 
     <!-- Step 2: Business Info -->
     <section id="step-2" class="step-content hidden">
-      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6" data-i18n="onboarding.business_title">Informations sur votre entreprise</h2>
+      <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6" data-i18n="onboarding.business_title">Informations sur votre entreprise</h2>
 
       <form id="business-form" class="space-y-6">
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="onboarding.company_name">Nom de l'entreprise</label>
-          <input type="text" name="company" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="onboarding.company_name">Nom de l'entreprise</label>
+          <input type="text" name="company" required class="w-full px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="onboarding.industry">Secteur d'activité</label>
-          <select name="industry" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="onboarding.industry">Secteur d'activité</label>
+          <select name="industry" required class="w-full px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="" data-i18n="onboarding.select_industry">Sélectionnez...</option>
             <option value="ecommerce" data-i18n="onboarding.industry_ecommerce">E-commerce</option>
             <option value="healthcare" data-i18n="onboarding.industry_healthcare">Santé</option>
@@ -96,8 +96,8 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="onboarding.team_size">Taille de l'équipe</label>
-          <select name="team_size" required class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="onboarding.team_size">Taille de l'équipe</label>
+          <select name="team_size" required class="w-full px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="1-5">1-5</option>
             <option value="6-20">6-20</option>
             <option value="21-50">21-50</option>
@@ -107,7 +107,7 @@
         </div>
 
         <div class="flex gap-4">
-          <button type="button" onclick="prevStep()" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-3 px-6 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors" data-i18n="common.back">Retour</button>
+          <button type="button" onclick="prevStep()" class="flex-1 bg-zinc-200 dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200 py-3 px-6 rounded-lg font-medium hover:bg-zinc-300 dark:hover:bg-white/[0.1] transition-colors" data-i18n="common.back">Retour</button>
           <button type="button" onclick="nextStep()" class="flex-1 bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition-colors" data-i18n="common.continue">Continuer</button>
         </div>
       </form>
@@ -115,64 +115,64 @@
 
     <!-- Step 3: Agent Configuration -->
     <section id="step-3" class="step-content hidden">
-      <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-6" data-i18n="onboarding.agent_title">Configurez votre agent vocal</h2>
+      <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-6" data-i18n="onboarding.agent_title">Configurez votre agent vocal</h2>
 
       <div class="space-y-6">
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3" data-i18n="onboarding.select_persona">Choisissez un persona</label>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3" data-i18n="onboarding.select_persona">Choisissez un persona</label>
           <div class="grid gap-3 md:grid-cols-2" id="persona-grid">
             <label class="persona-card cursor-pointer">
               <input type="radio" name="persona" value="AGENCY" class="hidden" checked>
-              <div class="p-4 border-2 border-slate-200 dark:border-slate-700 rounded-xl hover:border-indigo-400 transition-colors persona-box">
+              <div class="p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-400 transition-colors persona-box">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center">
                     <i data-lucide="briefcase" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
                   </div>
                   <div>
-                    <div class="font-medium text-slate-900 dark:text-white">VocalIA Consultant</div>
-                    <div class="text-sm text-slate-500 dark:text-slate-400" data-i18n="onboarding.persona_agency">Qualification B2B, prise de RDV</div>
+                    <div class="font-medium text-zinc-900 dark:text-white">VocalIA Consultant</div>
+                    <div class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="onboarding.persona_agency">Qualification B2B, prise de RDV</div>
                   </div>
                 </div>
               </div>
             </label>
             <label class="persona-card cursor-pointer">
               <input type="radio" name="persona" value="UNIVERSAL_ECOMMERCE" class="hidden">
-              <div class="p-4 border-2 border-slate-200 dark:border-slate-700 rounded-xl hover:border-indigo-400 transition-colors persona-box">
+              <div class="p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-400 transition-colors persona-box">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
                     <i data-lucide="shopping-cart" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
                   </div>
                   <div>
-                    <div class="font-medium text-slate-900 dark:text-white">E-commerce</div>
-                    <div class="text-sm text-slate-500 dark:text-slate-400" data-i18n="onboarding.persona_ecommerce">Commandes, SAV, retours</div>
+                    <div class="font-medium text-zinc-900 dark:text-white">E-commerce</div>
+                    <div class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="onboarding.persona_ecommerce">Commandes, SAV, retours</div>
                   </div>
                 </div>
               </div>
             </label>
             <label class="persona-card cursor-pointer">
               <input type="radio" name="persona" value="DENTAL" class="hidden">
-              <div class="p-4 border-2 border-slate-200 dark:border-slate-700 rounded-xl hover:border-indigo-400 transition-colors persona-box">
+              <div class="p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-400 transition-colors persona-box">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/30 rounded-full flex items-center justify-center">
                     <i data-lucide="heart-pulse" class="w-5 h-5 text-cyan-600 dark:text-cyan-400"></i>
                   </div>
                   <div>
-                    <div class="font-medium text-slate-900 dark:text-white">Santé</div>
-                    <div class="text-sm text-slate-500 dark:text-slate-400" data-i18n="onboarding.persona_health">RDV médicaux, rappels</div>
+                    <div class="font-medium text-zinc-900 dark:text-white">Santé</div>
+                    <div class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="onboarding.persona_health">RDV médicaux, rappels</div>
                   </div>
                 </div>
               </div>
             </label>
             <label class="persona-card cursor-pointer">
               <input type="radio" name="persona" value="PROPERTY" class="hidden">
-              <div class="p-4 border-2 border-slate-200 dark:border-slate-700 rounded-xl hover:border-indigo-400 transition-colors persona-box">
+              <div class="p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-400 transition-colors persona-box">
                 <div class="flex items-center gap-3">
                   <div class="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center">
                     <i data-lucide="home" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
                   </div>
                   <div>
-                    <div class="font-medium text-slate-900 dark:text-white">Immobilier</div>
-                    <div class="text-sm text-slate-500 dark:text-slate-400" data-i18n="onboarding.persona_realestate">Visites, estimations</div>
+                    <div class="font-medium text-zinc-900 dark:text-white">Immobilier</div>
+                    <div class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="onboarding.persona_realestate">Visites, estimations</div>
                   </div>
                 </div>
               </div>
@@ -181,8 +181,8 @@
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="onboarding.voice_language">Langue de l'agent</label>
-          <select id="voice-lang" class="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="onboarding.voice_language">Langue de l'agent</label>
+          <select id="voice-lang" class="w-full px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="fr">Français</option>
             <option value="en">English</option>
             <option value="es">Español</option>
@@ -192,7 +192,7 @@
         </div>
 
         <div class="flex gap-4">
-          <button type="button" onclick="prevStep()" class="flex-1 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-3 px-6 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors" data-i18n="common.back">Retour</button>
+          <button type="button" onclick="prevStep()" class="flex-1 bg-zinc-200 dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200 py-3 px-6 rounded-lg font-medium hover:bg-zinc-300 dark:hover:bg-white/[0.1] transition-colors" data-i18n="common.back">Retour</button>
           <button type="button" onclick="nextStep()" class="flex-1 bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition-colors" data-i18n="common.continue">Continuer</button>
         </div>
       </div>
@@ -204,20 +204,20 @@
         <div class="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
           <i data-lucide="check-circle" class="w-10 h-10 text-green-600 dark:text-green-400"></i>
         </div>
-        <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="onboarding.complete_title">Configuration terminée!</h2>
-        <p class="text-lg text-slate-600 dark:text-slate-400" data-i18n="onboarding.complete_subtitle">Votre assistant vocal est prêt à l'emploi</p>
+        <h2 class="text-3xl font-bold text-zinc-900 dark:text-white mb-2" data-i18n="onboarding.complete_title">Configuration terminée!</h2>
+        <p class="text-lg text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.complete_subtitle">Votre assistant vocal est prêt à l'emploi</p>
       </div>
 
-      <div class="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 mb-6">
-        <h3 class="font-semibold text-slate-900 dark:text-white mb-4" data-i18n="onboarding.next_steps">Prochaines étapes</h3>
+      <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08] mb-6">
+        <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="onboarding.next_steps">Prochaines étapes</h3>
         <ul class="space-y-3">
           <li class="flex items-start gap-3">
             <div class="w-6 h-6 bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
               <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">1</span>
             </div>
             <div>
-              <div class="font-medium text-slate-900 dark:text-white" data-i18n="onboarding.step1_title">Testez votre agent</div>
-              <div class="text-sm text-slate-600 dark:text-slate-400" data-i18n="onboarding.step1_desc">Essayez une conversation dans le simulateur</div>
+              <div class="font-medium text-zinc-900 dark:text-white" data-i18n="onboarding.step1_title">Testez votre agent</div>
+              <div class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.step1_desc">Essayez une conversation dans le simulateur</div>
             </div>
           </li>
           <li class="flex items-start gap-3">
@@ -225,8 +225,8 @@
               <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">2</span>
             </div>
             <div>
-              <div class="font-medium text-slate-900 dark:text-white" data-i18n="onboarding.step2_title">Ajoutez votre base de connaissances</div>
-              <div class="text-sm text-slate-600 dark:text-slate-400" data-i18n="onboarding.step2_desc">Importez vos FAQs et informations produit</div>
+              <div class="font-medium text-zinc-900 dark:text-white" data-i18n="onboarding.step2_title">Ajoutez votre base de connaissances</div>
+              <div class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.step2_desc">Importez vos FAQs et informations produit</div>
             </div>
           </li>
           <li class="flex items-start gap-3">
@@ -234,8 +234,8 @@
               <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">3</span>
             </div>
             <div>
-              <div class="font-medium text-slate-900 dark:text-white" data-i18n="onboarding.step3_title">Intégrez sur votre site</div>
-              <div class="text-sm text-slate-600 dark:text-slate-400" data-i18n="onboarding.step3_desc">Copiez le code du widget sur votre site web</div>
+              <div class="font-medium text-zinc-900 dark:text-white" data-i18n="onboarding.step3_title">Intégrez sur votre site</div>
+              <div class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.step3_desc">Copiez le code du widget sur votre site web</div>
             </div>
           </li>
         </ul>

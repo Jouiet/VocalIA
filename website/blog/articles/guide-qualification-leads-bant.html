@@ -56,13 +56,13 @@
   }
   </script>
 
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
   <link href="/public/css/style.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .glass { background: rgba(51, 65, 85, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(148, 163, 184, 0.25); }
+    .glass { background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .prose { max-width: 65ch; }
     .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
     .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
@@ -87,7 +87,7 @@
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
   
 </head>
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Simple Nav -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass">
     <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -97,16 +97,16 @@
       </a>
       <div class="flex items-center gap-4">
         <div class="relative">
-          <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-700/50 transition text-sm">
+          <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-1 px-2 py-1 rounded hover:bg-white/[0.04] transition text-sm">
             <span id="currentLang">FR</span>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 rounded-lg bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50">
-            <button type="button" data-action="switchLang" data-params="fr" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_guide_qualification_.franais_94">Français</span></button>
-            <button type="button" data-action="switchLang" data-params="en" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_guide_qualification_.english_93">English</span></button>
-            <button type="button" data-action="switchLang" data-params="es" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_guide_qualification_.espaol_92">Español</span></button>
-            <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">العربية</button>
-            <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">الدارجة</button>
+          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 rounded-lg bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50">
+            <button type="button" data-action="switchLang" data-params="fr" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_guide_qualification_.franais_94">Français</span></button>
+            <button type="button" data-action="switchLang" data-params="en" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_guide_qualification_.english_93">English</span></button>
+            <button type="button" data-action="switchLang" data-params="es" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_guide_qualification_.espaol_92">Español</span></button>
+            <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full px-3 py-2 hover:bg-white/[0.04] text-right text-sm">العربية</button>
+            <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full px-3 py-2 hover:bg-white/[0.04] text-right text-sm">الدارجة</button>
           </div>
         </div>
         <a href="/blog" class="text-vocalia-300 hover:text-white transition text-sm">← Retour au blog</a>
@@ -119,7 +119,7 @@
       <!-- Header -->
       <header class="mb-12">
         <nav class="mb-6" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white transition"><span data-i18n="blog_guide_qualification_.accueil_91">Accueil</span></a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
@@ -134,7 +134,7 @@
           Guide <span class="gradient-text">BANT</span> : Qualifier vos leads par téléphone avec l'IA vocale
         </h1>
 
-        <div class="flex items-center gap-4 text-slate-400">
+        <div class="flex items-center gap-4 text-zinc-400">
           <div class="flex items-center gap-2">
             <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center">
               <span class="text-sm font-semibold">VA</span>
@@ -154,7 +154,7 @@
           <i data-lucide="list" class="w-5 h-5 text-vocalia-400"></i>
           Sommaire
         </h2>
-        <ol class="space-y-2 text-slate-300">
+        <ol class="space-y-2 text-zinc-300">
           <li><a href="#introduction" class="hover:text-vocalia-400 transition">1. Qu'est-ce que la méthode BANT ?</a></li>
           <li><a href="#budget" class="hover:text-vocalia-400 transition">2. B - Budget : Évaluer la capacité financière</a></li>
           <li><a href="#authority" class="hover:text-vocalia-400 transition">3. A - Authority : Identifier le décideur</a></li>
@@ -170,7 +170,7 @@
 
       <!-- Content -->
       <div class="prose">
-        <p class="text-xl text-slate-300 mb-8">
+        <p class="text-xl text-zinc-300 mb-8">
           La qualification des leads est l'étape la plus critique du cycle de vente. Un lead mal qualifié coûte
           en moyenne <strong>150€</strong> en temps commercial perdu. Ce guide vous montre comment maîtriser
           la méthode BANT et l'automatiser avec l'IA vocale pour qualifier vos prospects 24/7.
@@ -180,19 +180,19 @@
         <div class="grid md:grid-cols-4 gap-4 my-8">
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-emerald-400 mb-1">+40%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_guide_qualification_.conversion_87">Conversion</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_guide_qualification_.conversion_87">Conversion</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-vocalia-400 mb-1">-60%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_guide_qualification_.temps_perdu_86">Temps perdu</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_guide_qualification_.temps_perdu_86">Temps perdu</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-amber-400 mb-1">24/7</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_guide_qualification_.disponibilit_85">Disponibilité</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_guide_qualification_.disponibilit_85">Disponibilité</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-sky-400 mb-1">0.06€</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_guide_qualification_.par_minute_84">Par minute</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_guide_qualification_.par_minute_84">Par minute</span></div>
           </div>
         </div>
 
@@ -211,7 +211,7 @@
               </div>
               <h3 class="text-lg font-semibold text-emerald-400 m-0"><span data-i18n="blog_guide_qualification_.budget_83">Budget</span></h3>
             </div>
-            <p class="text-slate-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.le_prospect_atil_82">Le prospect a-t-il les moyens d'acheter votre solution ?</span></p>
+            <p class="text-zinc-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.le_prospect_atil_82">Le prospect a-t-il les moyens d'acheter votre solution ?</span></p>
           </div>
 
           <div class="bant-card bant-a">
@@ -221,7 +221,7 @@
               </div>
               <h3 class="text-lg font-semibold text-blue-400 m-0"><span data-i18n="blog_guide_qualification_.authority_81">Authority</span></h3>
             </div>
-            <p class="text-slate-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.estce_le_dcideur_80">Est-ce le décideur ou un influenceur ?</span></p>
+            <p class="text-zinc-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.estce_le_dcideur_80">Est-ce le décideur ou un influenceur ?</span></p>
           </div>
 
           <div class="bant-card bant-n">
@@ -231,7 +231,7 @@
               </div>
               <h3 class="text-lg font-semibold text-purple-400 m-0">Need</h3>
             </div>
-            <p class="text-slate-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.quel_problme_cherchetil_79">Quel problème cherche-t-il à résoudre ?</span></p>
+            <p class="text-zinc-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.quel_problme_cherchetil_79">Quel problème cherche-t-il à résoudre ?</span></p>
           </div>
 
           <div class="bant-card bant-t">
@@ -241,7 +241,7 @@
               </div>
               <h3 class="text-lg font-semibold text-orange-400 m-0"><span data-i18n="blog_guide_qualification_.timeline_78">Timeline</span></h3>
             </div>
-            <p class="text-slate-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.dans_quel_dlai_77">Dans quel délai compte-t-il prendre une décision ?</span></p>
+            <p class="text-zinc-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.dans_quel_dlai_77">Dans quel délai compte-t-il prendre une décision ?</span></p>
           </div>
         </div>
 
@@ -269,7 +269,7 @@
 
         <div class="glass rounded-xl p-6 my-6">
           <h4 class="font-semibold mb-3 text-emerald-400"><span data-i18n="blog_guide_qualification_.questions_directes_b2b_70">Questions directes (B2B)</span></h4>
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li>"Avez-vous déjà défini une enveloppe budgétaire pour ce projet ?"</li>
             <li>"Quel investissement envisagez-vous pour cette solution ?"</li>
             <li>"Comment se situe ce projet dans vos priorités budgétaires de l'année ?"</li>
@@ -278,7 +278,7 @@
 
         <div class="glass rounded-xl p-6 my-6">
           <h4 class="font-semibold mb-3 text-emerald-400">Questions indirectes (B2C/sensible)</h4>
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li>"Nos solutions commencent à 500€/mois, est-ce dans votre zone de confort ?"</li>
             <li>"Utilisez-vous actuellement une solution payante ? Quel type d'investissement ?"</li>
             <li>"Préférez-vous un achat ou une location/abonnement ?"</li>
@@ -290,24 +290,24 @@
         <div class="overflow-x-auto my-6">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_guide_qualification_.signal_68">Signal</span></th>
-                <th class="text-center py-2 text-slate-400"><span data-i18n="blog_guide_qualification_.score_31"><span data-i18n="blog_guide_qualification_.score_39"><span data-i18n="blog_guide_qualification_.score_67">Score</span></span></span></th>
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_guide_qualification_.action_66">Action</span></th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_guide_qualification_.signal_68">Signal</span></th>
+                <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_guide_qualification_.score_31"><span data-i18n="blog_guide_qualification_.score_39"><span data-i18n="blog_guide_qualification_.score_67">Score</span></span></span></th>
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_guide_qualification_.action_66">Action</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.budget_confirm_dans_65">Budget confirmé dans la fourchette</span></td>
                 <td class="text-center text-emerald-400">25/25</td>
                 <td><span data-i18n="blog_guide_qualification_.continuer_qualification_64">Continuer qualification</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.budget_en_cours_63">Budget en cours de validation</span></td>
                 <td class="text-center text-amber-400">15/25</td>
                 <td><span data-i18n="blog_guide_qualification_.planifier_suivi_62">Planifier suivi</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.budget_infrieur_mais_61">Budget inférieur mais flexible</span></td>
                 <td class="text-center text-amber-400">10/25</td>
                 <td><span data-i18n="blog_guide_qualification_.proposer_entre_de_60">Proposer entrée de gamme</span></td>
@@ -331,7 +331,7 @@
         <h3><span data-i18n="blog_guide_qualification_.questions_de_qualification_57">Questions de qualification Authority</span></h3>
 
         <div class="glass rounded-xl p-6 my-6">
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li>"Qui d'autre sera impliqué dans cette décision ?"</li>
             <li>"Quel est votre rôle dans le processus d'achat ?"</li>
             <li>"Devez-vous valider avec quelqu'un avant de prendre une décision ?"</li>
@@ -345,19 +345,19 @@
         <div class="grid md:grid-cols-2 gap-4 my-6">
           <div class="glass rounded-lg p-4">
             <h4 class="font-semibold text-blue-400 mb-2"><span data-i18n="blog_guide_qualification_.dcideur_25_pts_55">Décideur (25 pts)</span></h4>
-            <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.signe_le_chque_54">Signe le chèque, valide seul. Priorité maximale.</span></p>
+            <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.signe_le_chque_54">Signe le chèque, valide seul. Priorité maximale.</span></p>
           </div>
           <div class="glass rounded-lg p-4">
             <h4 class="font-semibold text-amber-400 mb-2"><span data-i18n="blog_guide_qualification_.influenceur_15_pts_53">Influenceur (15 pts)</span></h4>
-            <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.recommande_au_dcideur_52">Recommande au décideur. Peut bloquer ou accélérer.</span></p>
+            <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.recommande_au_dcideur_52">Recommande au décideur. Peut bloquer ou accélérer.</span></p>
           </div>
           <div class="glass rounded-lg p-4">
             <h4 class="font-semibold text-purple-400 mb-2"><span data-i18n="blog_guide_qualification_.utilisateur_10_pts_51">Utilisateur (10 pts)</span></h4>
-            <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.utilisera_la_solution_50">Utilisera la solution. Feedback important mais pas décisif.</span></p>
+            <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.utilisera_la_solution_50">Utilisera la solution. Feedback important mais pas décisif.</span></p>
           </div>
           <div class="glass rounded-lg p-4">
-            <h4 class="font-semibold text-slate-400 mb-2"><span data-i18n="blog_guide_qualification_.curieux_5_pts_49">Curieux (5 pts)</span></h4>
-            <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.recherche_dinformation_sans_48">Recherche d'information sans projet concret.</span></p>
+            <h4 class="font-semibold text-zinc-400 mb-2"><span data-i18n="blog_guide_qualification_.curieux_5_pts_49">Curieux (5 pts)</span></h4>
+            <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.recherche_dinformation_sans_48">Recherche d'information sans projet concret.</span></p>
           </div>
         </div>
 
@@ -374,19 +374,19 @@
           <div class="space-y-4">
             <div>
               <h4 class="font-semibold text-purple-400 mb-1"><span data-i18n="blog_guide_qualification_.s_situation_45">S - Situation</span></h4>
-              <p class="text-sm text-slate-300 mb-0">"Comment gérez-vous actuellement [processus] ?"</p>
+              <p class="text-sm text-zinc-300 mb-0">"Comment gérez-vous actuellement [processus] ?"</p>
             </div>
             <div>
               <h4 class="font-semibold text-purple-400 mb-1"><span data-i18n="blog_guide_qualification_.p_problme_44">P - Problème</span></h4>
-              <p class="text-sm text-slate-300 mb-0">"Quelles difficultés rencontrez-vous avec cette approche ?"</p>
+              <p class="text-sm text-zinc-300 mb-0">"Quelles difficultés rencontrez-vous avec cette approche ?"</p>
             </div>
             <div>
               <h4 class="font-semibold text-purple-400 mb-1"><span data-i18n="blog_guide_qualification_.i_implication_43">I - Implication</span></h4>
-              <p class="text-sm text-slate-300 mb-0">"Quel impact cela a-t-il sur votre activité/équipe ?"</p>
+              <p class="text-sm text-zinc-300 mb-0">"Quel impact cela a-t-il sur votre activité/équipe ?"</p>
             </div>
             <div>
               <h4 class="font-semibold text-purple-400 mb-1"><span data-i18n="blog_guide_qualification_.n_needpayoff_42">N - Need-payoff</span></h4>
-              <p class="text-sm text-slate-300 mb-0">"Si vous pouviez résoudre ce problème, qu'est-ce que cela changerait ?"</p>
+              <p class="text-sm text-zinc-300 mb-0">"Si vous pouviez résoudre ce problème, qu'est-ce que cela changerait ?"</p>
             </div>
           </div>
         </div>
@@ -396,21 +396,21 @@
         <div class="overflow-x-auto my-6">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_guide_qualification_.niveau_de_besoin_40">Niveau de besoin</span></th>
-                <th class="text-center py-2 text-slate-400">Score</th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_guide_qualification_.niveau_de_besoin_40">Niveau de besoin</span></th>
+                <th class="text-center py-2 text-zinc-400">Score</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.besoin_critique_impact_38">Besoin critique, impact business mesurable</span></td>
                 <td class="text-center text-emerald-400">25/25</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.besoin_identifi_amlioration_37">Besoin identifié, amélioration souhaitée</span></td>
                 <td class="text-center text-amber-400">15/25</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.besoin_vague_exploration_36">Besoin vague, exploration</span></td>
                 <td class="text-center text-amber-400">10/25</td>
               </tr>
@@ -432,7 +432,7 @@
         <h3><span data-i18n="blog_guide_qualification_.questions_de_qualification_34">Questions de qualification Timeline</span></h3>
 
         <div class="glass rounded-xl p-6 my-6">
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li>"Dans quel délai souhaitez-vous mettre en place cette solution ?"</li>
             <li>"Y a-t-il un événement ou une échéance qui motive ce timing ?"</li>
             <li>"Avez-vous déjà commencé à évaluer d'autres solutions ?"</li>
@@ -446,31 +446,31 @@
         <div class="overflow-x-auto my-6">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_guide_qualification_.dlai_32">Délai</span></th>
-                <th class="text-center py-2 text-slate-400">Score</th>
-                <th class="text-left py-2 text-slate-400"><span data-i18n="blog_guide_qualification_.priorit_30">Priorité</span></th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_guide_qualification_.dlai_32">Délai</span></th>
+                <th class="text-center py-2 text-zinc-400">Score</th>
+                <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_guide_qualification_.priorit_30">Priorité</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.immdiat_ce_mois_29">Immédiat (ce mois)</span></td>
                 <td class="text-center text-emerald-400">25/25</td>
                 <td class="text-emerald-400"><span data-i18n="blog_guide_qualification_.hot_traitement_immdiat_28">HOT - Traitement immédiat</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.court_terme_13_27">Court terme (1-3 mois)</span></td>
                 <td class="text-center text-emerald-400">20/25</td>
                 <td class="text-amber-400"><span data-i18n="blog_guide_qualification_.warm_suivi_actif_26">WARM - Suivi actif</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.moyen_terme_36_25">Moyen terme (3-6 mois)</span></td>
                 <td class="text-center text-amber-400">10/25</td>
                 <td><span data-i18n="blog_guide_qualification_.nurturing_mensuel_24">Nurturing mensuel</span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-2"><span data-i18n="blog_guide_qualification_.long_terme_612_23">Long terme (6-12 mois)</span></td>
-                <td class="text-center text-slate-400">5/25</td>
+                <td class="text-center text-zinc-400">5/25</td>
                 <td><span data-i18n="blog_guide_qualification_.nurturing_trimestriel_22">Nurturing trimestriel</span></td>
               </tr>
               <tr>
@@ -494,28 +494,28 @@
             <div class="flex items-center justify-between p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
               <div>
                 <span class="font-semibold text-emerald-400">80-100 : HOT LEAD</span>
-                <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.transfert_immdiat_vers_18">Transfert immédiat vers commercial senior</span></p>
+                <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.transfert_immdiat_vers_18">Transfert immédiat vers commercial senior</span></p>
               </div>
               <span class="text-2xl">🔥</span>
             </div>
             <div class="flex items-center justify-between p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
               <div>
                 <span class="font-semibold text-amber-400">60-79 : WARM LEAD</span>
-                <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.qualification_approfondie_proposition_17">Qualification approfondie, proposition sous 48h</span></p>
+                <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.qualification_approfondie_proposition_17">Qualification approfondie, proposition sous 48h</span></p>
               </div>
               <span class="text-2xl">☀️</span>
             </div>
             <div class="flex items-center justify-between p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
               <div>
                 <span class="font-semibold text-blue-400">40-59 : COOL LEAD</span>
-                <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.nurturing_actif_contenu_16">Nurturing actif, contenu éducatif</span></p>
+                <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.nurturing_actif_contenu_16">Nurturing actif, contenu éducatif</span></p>
               </div>
               <span class="text-2xl">❄️</span>
             </div>
-            <div class="flex items-center justify-between p-3 rounded-lg bg-slate-500/10 border border-slate-500/30">
+            <div class="flex items-center justify-between p-3 rounded-lg bg-zinc-500/10 border border-white/[0.1]/30">
               <div>
-                <span class="font-semibold text-slate-400">0-39 : COLD LEAD</span>
-                <p class="text-sm text-slate-300 mb-0"><span data-i18n="blog_guide_qualification_.base_marketing_newsletter_15">Base marketing, newsletter</span></p>
+                <span class="font-semibold text-zinc-400">0-39 : COLD LEAD</span>
+                <p class="text-sm text-zinc-300 mb-0"><span data-i18n="blog_guide_qualification_.base_marketing_newsletter_15">Base marketing, newsletter</span></p>
               </div>
               <span class="text-2xl">🧊</span>
             </div>
@@ -533,7 +533,7 @@
 
         <div class="glass rounded-xl p-6 my-6 font-mono text-sm">
           <p class="text-vocalia-400 mb-2">// Configuration BANT - Dashboard VocalIA</p>
-          <pre class="text-slate-300 overflow-x-auto">
+          <pre class="text-zinc-300 overflow-x-auto">
 {
   "qualification": {
     "method": "BANT",
@@ -557,32 +557,32 @@
         <div class="space-y-4 my-8">
           <div class="glass rounded-xl p-4 border-l-4 border-vocalia-500">
             <h4 class="font-semibold mb-1">Étape 1 : Accueil et contexte</h4>
-            <p class="text-sm text-slate-300 mb-0">
+            <p class="text-sm text-zinc-300 mb-0">
               "Bonjour, merci de contacter VocalIA. Je suis l'assistant virtuel, je vais vous poser quelques
               questions pour vous orienter vers la meilleure solution. Cela prendra moins de 2 minutes."
             </p>
           </div>
           <div class="glass rounded-xl p-4 border-l-4 border-emerald-500">
             <h4 class="font-semibold mb-1">Étape 2 : Need (commencer par le besoin)</h4>
-            <p class="text-sm text-slate-300 mb-0">
+            <p class="text-sm text-zinc-300 mb-0">
               "Quel défi cherchez-vous à résoudre ? Support client, qualification de leads, prise de rendez-vous ?"
             </p>
           </div>
           <div class="glass rounded-xl p-4 border-l-4 border-blue-500">
             <h4 class="font-semibold mb-1">Étape 3 : Authority</h4>
-            <p class="text-sm text-slate-300 mb-0">
+            <p class="text-sm text-zinc-300 mb-0">
               "Serez-vous le décideur pour ce projet, ou travaillez-vous avec d'autres personnes ?"
             </p>
           </div>
           <div class="glass rounded-xl p-4 border-l-4 border-orange-500">
             <h4 class="font-semibold mb-1">Étape 4 : Timeline</h4>
-            <p class="text-sm text-slate-300 mb-0">
+            <p class="text-sm text-zinc-300 mb-0">
               "Dans quel délai souhaitez-vous déployer cette solution ?"
             </p>
           </div>
           <div class="glass rounded-xl p-4 border-l-4 border-purple-500">
             <h4 class="font-semibold mb-1">Étape 5 : Budget (naturellement en fin)</h4>
-            <p class="text-sm text-slate-300 mb-0">
+            <p class="text-sm text-zinc-300 mb-0">
               "Nos solutions démarrent à 399 DH/mois. Cela correspond-il à votre budget ?"
             </p>
           </div>
@@ -593,7 +593,7 @@
         <h3><span data-i18n="blog_guide_qualification_.immobilier_12">Immobilier</span></h3>
 
         <div class="glass rounded-xl p-6 my-6">
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li><strong>N :</strong> "Recherchez-vous un bien à acheter, louer, ou êtes-vous vendeur ?"</li>
             <li><strong>B :</strong> "Quelle est votre fourchette de budget pour ce projet ?"</li>
             <li><strong>A :</strong> "Êtes-vous l'acheteur principal ou achetez-vous en couple/famille ?"</li>
@@ -604,7 +604,7 @@
         <h3>Santé / Cliniques</h3>
 
         <div class="glass rounded-xl p-6 my-6">
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li><strong>N :</strong> "Quel type de consultation recherchez-vous ?"</li>
             <li><strong>A :</strong> "Le rendez-vous est pour vous-même ou pour un proche ?"</li>
             <li><strong>T :</strong> "S'agit-il d'une urgence ou d'un suivi régulier ?"</li>
@@ -615,7 +615,7 @@
         <h3>E-commerce / Retail</h3>
 
         <div class="glass rounded-xl p-6 my-6">
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li><strong>N :</strong> "Que recherchez-vous exactement ? Couleur, taille, modèle ?"</li>
             <li><strong>T :</strong> "Avez-vous besoin du produit pour une date précise ?"</li>
             <li><strong>B :</strong> "Préférez-vous le paiement en une fois ou en plusieurs fois ?"</li>
@@ -628,27 +628,27 @@
         <div class="space-y-4 my-8">
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">1. Poser le budget en premier</h4>
-            <p class="text-slate-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.tablissez_dabord_la_11">Établissez d'abord la valeur avant de parler prix. Commencez par le Need.</span></p>
+            <p class="text-zinc-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.tablissez_dabord_la_11">Établissez d'abord la valeur avant de parler prix. Commencez par le Need.</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">2. Ignorer les signaux non-verbaux</h4>
-            <p class="text-slate-300 text-sm mb-0">Un "hmm" ou un silence prolongé sont des signaux. L'IA vocale les détecte aussi.</p>
+            <p class="text-zinc-300 text-sm mb-0">Un "hmm" ou un silence prolongé sont des signaux. L'IA vocale les détecte aussi.</p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">3. Disqualifier trop vite</h4>
-            <p class="text-slate-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.un_score_bas_10">Un score bas sur un critère peut être compensé par les autres.</span></p>
+            <p class="text-zinc-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.un_score_bas_10">Un score bas sur un critère peut être compensé par les autres.</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">4. Ne pas adapter au contexte culturel</h4>
-            <p class="text-slate-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.au_maroc_la_9">Au Maroc, la relation prime. Prenez le temps de créer le lien.</span></p>
+            <p class="text-zinc-300 text-sm mb-0"><span data-i18n="blog_guide_qualification_.au_maroc_la_9">Au Maroc, la relation prime. Prenez le temps de créer le lien.</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">5. Oublier de valider</h4>
-            <p class="text-slate-300 text-sm mb-0">Résumez toujours la qualification : "Si je comprends bien, vous cherchez..."</p>
+            <p class="text-zinc-300 text-sm mb-0">Résumez toujours la qualification : "Si je comprends bien, vous cherchez..."</p>
           </div>
         </div>
 
@@ -656,10 +656,10 @@
 
         <div class="space-y-4 my-8">
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               BANT est-il adapté au B2C ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Oui, avec des adaptations. En B2C, le "A" (Authority) est souvent simplifié (acheteur principal ?),
               et le "T" (Timeline) est généralement plus court. Les questions doivent être plus naturelles
               et moins "interview".
@@ -667,20 +667,20 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Combien de questions poser pour qualifier ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Idéalement 4-6 questions sur 2-3 minutes maximum. Chaque question BANT peut être couverte
               en une question bien formulée. Au-delà, vous risquez de lasser le prospect.
             </div>
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Comment gérer un prospect qui refuse de répondre au budget ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               C'est courant et légitime. Utilisez des fourchettes : "Nos clients investissent généralement
               entre X et Y, est-ce dans votre zone de confort ?" ou passez au Need pour revenir au budget
               naturellement.
@@ -688,10 +688,10 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               L'IA peut-elle vraiment qualifier aussi bien qu'un humain ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Pour les 60-70% de leads "standards", oui. L'IA excelle sur les questions structurées et le scoring.
               Pour les cas complexes (objections, émotions), le transfert vers un humain reste préférable.
               VocalIA détecte ces cas et transfère automatiquement.
@@ -699,10 +699,10 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Quel ROI attendre de la qualification automatisée ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               En moyenne : +40% de conversion (leads mieux qualifiés), -60% de temps commercial sur
               la qualification, et récupération des leads hors horaires (20-30% du total).
               ROI typique : 3-6 mois.
@@ -713,7 +713,7 @@
         <!-- CTA Final -->
         <div class="glass rounded-xl p-8 my-12 text-center">
           <h3 class="text-2xl font-bold mb-4"><span data-i18n="blog_guide_qualification_.automatisez_votre_qualification_8">Automatisez votre qualification BANT</span></h3>
-          <p class="text-slate-400 mb-6 max-w-lg mx-auto">
+          <p class="text-zinc-400 mb-6 max-w-lg mx-auto">
             VocalIA qualifie vos leads 24/7 avec la méthode BANT et transfère uniquement
             les prospects chauds à votre équipe commerciale.
           </p>
@@ -721,14 +721,14 @@
             <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
               Demander une démo
             </a>
-            <a href="/use-cases/lead-qualification" class="inline-block px-8 py-3 border border-slate-600 hover:border-vocalia-400 rounded-xl font-semibold transition">
+            <a href="/use-cases/lead-qualification" class="inline-block px-8 py-3 border border-white/[0.08] hover:border-vocalia-400 rounded-xl font-semibold transition">
               En savoir plus
             </a>
           </div>
         </div>
 
         <!-- Related Articles -->
-        <div class="border-t border-slate-700 pt-8 mt-12">
+        <div class="border-t border-white/[0.08] pt-8 mt-12">
           <h3 class="text-lg font-semibold mb-6"><span data-i18n="blog_guide_qualification_.articles_connexes_7">Articles connexes</span></h3>
           <div class="grid md:grid-cols-2 gap-4">
             <a href="/blog/articles/agence-immo-plus-conversion" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
@@ -746,7 +746,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="mb-10">
         <a href="/" class="flex items-center space-x-2 mb-4">
@@ -765,16 +765,16 @@
           </a>
         </div>
         <div class="flex space-x-3">
-          <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="X">
+          <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="X">
             <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy">
           </a>
-          <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="LinkedIn">
+          <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="LinkedIn">
             <i data-lucide="linkedin" class="w-4 h-4"></i>
           </a>
-          <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="GitHub">
+          <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="GitHub">
             <i data-lucide="github" class="w-4 h-4"></i>
           </a>
-          <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="YouTube">
+          <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="YouTube">
             <i data-lucide="youtube" class="w-4 h-4"></i>
           </a>
         </div>
@@ -822,27 +822,27 @@
         </div>
       </div>
 
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="blog_guide_qualification_.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="blog_guide_qualification_.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -962,5 +962,7 @@
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

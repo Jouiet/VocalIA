@@ -83,7 +83,7 @@
 
   <style>
     .glass {
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(10, 10, 10, 0.8);
       backdrop-filter: blur(12px);
     }
 
@@ -117,8 +117,8 @@
 
     /* Form styling */
     .form-input {
-      background: rgba(30, 41, 59, 0.5);
-      border: 1px solid rgba(71, 85, 105, 0.5);
+      background: rgba(10, 10, 10, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.2s ease;
     }
 
@@ -141,7 +141,7 @@
 
 </head>
 
-<body class="bg-slate-900 text-white font-inter min-h-screen">
+<body class="bg-[#0a0a0a] text-white font-inter min-h-screen">
   <!-- Skip Link -->
   <a href="#main-content"
     class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
@@ -149,7 +149,7 @@
   </a>
 
   <!-- Minimal Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-800/50">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/[0.06]/50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <a href="/" class="flex items-center space-x-2">
@@ -166,7 +166,7 @@
           <span class="text-zinc-400 text-sm hidden sm:block" data-i18n="signup_page.already_account">Déjà un compte
             ?</span>
           <a href="/contact"
-            class="px-4 py-2 rounded-lg border border-slate-600 hover:border-slate-500 transition font-medium text-sm"
+            class="px-4 py-2 rounded-lg border border-white/[0.08] hover:border-white/[0.1] transition font-medium text-sm"
             data-i18n="signup_page.login">
             Connexion
           </a>
@@ -196,7 +196,7 @@
         </h2>
         <div class="grid md:grid-cols-3 gap-4">
           <!-- Business Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="free" data-action="selectPlan"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="free" data-action="selectPlan"
             data-params="free">
             <div class="flex justify-between items-start mb-3">
               <div>
@@ -205,7 +205,7 @@
                     class="text-sm font-normal text-zinc-400" id="free-currency"><span
                       data-i18n="signup_page.per_month">/mois</span></span></p>
               </div>
-              <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
+              <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
                 <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -236,7 +236,7 @@
           </div>
 
           <!-- Starter Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer" data-plan="starter"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="starter"
             data-action="selectPlan" data-params="starter">
             <div class="flex justify-between items-start mb-3">
               <div>
@@ -244,7 +244,7 @@
                 <p class="text-2xl font-bold text-white"><span id="starter-price">99</span><span
                     class="text-sm font-normal text-zinc-400" id="starter-currency">€/mois</span></p>
               </div>
-              <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
+              <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
                 <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -275,7 +275,7 @@
           </div>
 
           <!-- Pro Plan -->
-          <div class="plan-card rounded-xl p-5 bg-slate-800/50 cursor-pointer relative" data-plan="pro"
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer relative" data-plan="pro"
             data-action="selectPlan" data-params="pro">
             <div
               class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-indigo-500 text-white text-xs font-semibold rounded-full"
@@ -288,7 +288,7 @@
                 <p class="text-2xl font-bold text-white"><span id="pro-price">299</span><span
                     class="text-sm font-normal text-zinc-400" id="pro-currency">€/mois</span></p>
               </div>
-              <div class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center plan-check">
+              <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
                 <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -373,7 +373,7 @@
           <!-- Terms -->
           <div class="flex items-start gap-3">
             <input type="checkbox" id="terms" name="terms" required
-              class="mt-1 w-4 h-4 rounded border-slate-600 bg-slate-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-slate-900">
+              class="mt-1 w-4 h-4 rounded border-white/[0.08] bg-white/[0.06] text-indigo-500 focus:ring-indigo-500 focus:ring-offset-[#050505]">
             <label for="terms" class="text-sm text-zinc-400">
               <span data-i18n="signup_page.terms_agree">J'accepte les</span>
               <a href="/terms" class="text-indigo-400 hover:text-indigo-300"><span
@@ -396,17 +396,17 @@
           <!-- Or separator -->
           <div class="relative my-6">
             <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-slate-700"></div>
+              <div class="w-full border-t border-white/[0.08]"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-              <span class="px-4 bg-slate-900 text-zinc-400" data-i18n="signup_page.or">ou</span>
+              <span class="px-4 bg-[#0a0a0a] text-zinc-400" data-i18n="signup_page.or">ou</span>
             </div>
           </div>
 
         </form>
 
         <!-- Trust Badges -->
-        <div class="mt-8 pt-6 border-t border-slate-800">
+        <div class="mt-8 pt-6 border-t border-white/[0.06]">
           <div class="flex flex-wrap justify-center gap-4 text-xs text-zinc-400">
             <div class="flex items-center gap-1.5">
               <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -434,7 +434,7 @@
   </main>
 
   <!-- Minimal Footer (intentional for signup conversion) -->
-  <footer class="bg-slate-900 border-t border-slate-800 py-6">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06] py-6">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
     </div>

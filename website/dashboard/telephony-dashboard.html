@@ -29,12 +29,12 @@
     <style>
         .glass {
             backdrop-filter: blur(16px);
-            background: rgba(51, 65, 85, 0.6);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         .stat-card {
-            background: rgba(51, 65, 85, 0.6);
-            border: 1px solid rgba(148, 163, 184, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
         }
 
@@ -56,7 +56,7 @@
     </style>
 </head>
 
-<body class="bg-slate-800 text-white min-h-screen">
+<body class="bg-[#050505] text-white min-h-screen">
     <!-- Skip Link for Accessibility -->
     <a href="#main-content"
         class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-vocalia-500 focus:text-white focus:rounded-lg">
@@ -64,9 +64,9 @@
     </a>
 
     <!-- Sidebar -->
-    <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation"
+    <aside class="fixed left-0 top-0 bottom-0 w-64 bg-white/[0.06] border-r border-white/[0.08] z-40" role="navigation"
         aria-label="Navigation principale">
-        <div class="p-6 border-b border-slate-600">
+        <div class="p-6 border-b border-white/[0.08]">
             <a href="/" class="flex items-center space-x-2">
                 <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
                 <span class="text-xl font-bold gradient-text">VocalIA</span>
@@ -75,12 +75,12 @@
 
         <nav class="p-4 space-y-1">
             <a href="/dashboard/client"
-                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
                 <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
                 <span>Vue d'ensemble</span>
             </a>
             <a href="/dashboard/widget-analytics"
-                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
                 <i data-lucide="message-square" class="w-5 h-5"></i>
                 <span>Widget Analytics</span>
             </a>
@@ -89,18 +89,18 @@
                 <span>Telephony SOTA</span>
             </span>
             <a href="/dashboard/client#agents"
-                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
                 <i data-lucide="bot" class="w-5 h-5"></i>
                 <span>Agents IA</span>
             </a>
             <a href="/dashboard/client#billing"
-                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+                class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
                 <i data-lucide="credit-card" class="w-5 h-5"></i>
                 <span>Facturation</span>
             </a>
         </nav>
 
-        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.08]">
             <div class="flex items-center space-x-3 px-2">
                 <div id="wa-user-initials"
                     class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">
@@ -116,7 +116,7 @@
     <!-- Main Content -->
     <main class="ml-64 min-h-screen" id="main-content">
         <!-- Top Bar -->
-        <header class="sticky top-0 z-30 bg-slate-800/80 backdrop-blur-xl border-b border-slate-600">
+        <header class="sticky top-0 z-30 bg-white/[0.06] backdrop-blur-xl border-b border-white/[0.08]">
             <div class="flex items-center justify-between px-8 py-4">
                 <div>
                     <h1 class="text-2xl font-bold">Telephony Dashboard</h1>
@@ -124,7 +124,7 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <select id="dateRange"
-                        class="px-4 py-2 rounded-xl bg-slate-700/50 border border-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+                        class="px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
                         <option value="7d">7 derniers jours</option>
                         <option value="30d" selected>30 derniers jours</option>
                     </select>
@@ -198,7 +198,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-4">
                             <span class="w-8 text-sm font-medium">ARY</span>
-                            <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                            <div class="flex-1 h-8 bg-white/[0.04] rounded-lg overflow-hidden">
                                 <div id="bar-ary" class="h-full bg-rose-500 rounded-lg transition-all"
                                     style="width: 45%"></div>
                             </div>
@@ -206,7 +206,7 @@
                         </div>
                         <div class="flex items-center gap-4">
                             <span class="w-8 text-sm font-medium">FR</span>
-                            <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                            <div class="flex-1 h-8 bg-white/[0.04] rounded-lg overflow-hidden">
                                 <div id="bar-fr" class="h-full bg-vocalia-500 rounded-lg transition-all"
                                     style="width: 40%"></div>
                             </div>
@@ -214,7 +214,7 @@
                         </div>
                         <div class="flex items-center gap-4">
                             <span class="w-8 text-sm font-medium">EN</span>
-                            <div class="flex-1 h-8 bg-slate-700/50 rounded-lg overflow-hidden">
+                            <div class="flex-1 h-8 bg-white/[0.04] rounded-lg overflow-hidden">
                                 <div id="bar-en" class="h-full bg-sky-500 rounded-lg transition-all" style="width: 10%">
                                 </div>
                             </div>
@@ -260,7 +260,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
-                            <tr class="text-left text-vocalia-400 border-b border-slate-700">
+                            <tr class="text-left text-vocalia-400 border-b border-white/[0.08]">
                                 <th class="pb-3">Numéro</th>
                                 <th class="pb-3">Persona</th>
                                 <th class="pb-3">Langue</th>
@@ -373,7 +373,7 @@
                         const duration = `${Math.floor(cdr.duration_sec / 60)}:${(cdr.duration_sec % 60).toString().padStart(2, '0')}`;
 
                         return `
-                            <tr class="border-b border-slate-700/50 hover:bg-slate-700/30 transition">
+                            <tr class="border-b border-white/[0.08] hover:bg-white/[0.03] transition">
                                 <td class="py-3 font-mono text-xs">${cdr.number}</td>
                                 <td class="py-3">${cdr.persona}</td>
                                 <td class="py-3">${cdr.language.toUpperCase()}</td>

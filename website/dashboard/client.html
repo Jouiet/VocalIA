@@ -74,10 +74,10 @@
   </a>
 
   <!-- Sidebar -->
-  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-slate-800/80 border-r border-slate-600 z-40" role="navigation"
+  <aside class="fixed left-0 top-0 bottom-0 w-64 bg-white/[0.06] border-r border-white/[0.08] z-40" role="navigation"
     aria-label="Navigation client">
     <!-- Logo -->
-    <div class="p-6 border-b border-slate-600">
+    <div class="p-6 border-b border-white/[0.08]">
       <a href="/" class="flex items-center space-x-2">
         <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
         <span class="text-xl font-bold gradient-text"><span data-i18n="dashboard.vocalia_37">VocalIA</span></span>
@@ -91,39 +91,39 @@
         <span data-i18n="dashboard.sidebar.overview">Vue d'ensemble</span>
       </a>
       <a href="#calls"
-        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
         <i data-lucide="phone" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.calls">Appels</span>
       </a>
       <a href="#agents"
-        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
         <i data-lucide="bot" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.agents">Agents IA</span>
       </a>
       <a href="#knowledge"
-        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
         <i data-lucide="book-open" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.knowledge">Knowledge Base</span>
       </a>
       <a href="#analytics"
-        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
         <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.analytics">Analytics</span>
       </a>
       <a href="#billing"
-        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
         <i data-lucide="credit-card" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.billing">Facturation</span>
       </a>
       <a href="#settings"
-        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-slate-700/50 hover:text-white transition">
+        class="flex items-center space-x-3 px-4 py-3 rounded-xl text-vocalia-300 hover:bg-white/[0.04] hover:text-white transition">
         <i data-lucide="settings" class="w-5 h-5"></i>
         <span data-i18n="dashboard.sidebar.settings">Paramètres</span>
       </a>
     </nav>
 
     <!-- User info -->
-    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-600">
+    <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-white/[0.08]">
       <div class="flex items-center space-x-3 px-2">
         <div id="user-initials"
           class="w-10 h-10 rounded-full bg-gradient-to-br from-vocalia-400 to-vocalia-500 flex items-center justify-center font-semibold">
@@ -133,7 +133,7 @@
           <p id="user-plan" class="text-xs text-vocalia-400 truncate">-</p>
         </div>
         <button type="button" data-action="showActivityPanel" aria-label="Voir l'activité récente"
-          class="p-2 rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none transition">
+          class="p-2 rounded-lg hover:bg-white/[0.04] focus:ring-2 focus:ring-vocalia-500 focus:ring-offset-2 focus:ring-offset-[#050505] focus:outline-none transition">
           <i data-lucide="activity" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
         </button>
       </div>
@@ -143,7 +143,7 @@
   <!-- Main Content -->
   <main class="ml-64 min-h-screen" id="main-content">
     <!-- Top Bar -->
-    <header class="sticky top-0 z-30 bg-slate-800/80 backdrop-blur-xl border-b border-slate-600">
+    <header class="sticky top-0 z-30 bg-white/[0.06] backdrop-blur-xl border-b border-white/[0.08]">
       <div class="flex items-center justify-between px-8 py-4">
         <div>
           <h1 class="text-2xl font-bold" data-i18n="dashboard.sidebar.overview">Tableau de bord</h1>
@@ -154,7 +154,7 @@
           <!-- Language Switcher -->
           <div class="relative">
             <button type="button" id="langToggleBtn" data-action="toggleLangDropdown"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.04] transition-colors"
               aria-label="Changer de langue" aria-expanded="false" aria-haspopup="true" aria-controls="langDropdown">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -165,24 +165,24 @@
               <span id="currentLang" class="text-sm font-medium">FR</span>
             </button>
             <div id="langDropdown"
-              class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-slate-700/95 backdrop-blur-xl border border-slate-600/50 shadow-xl z-50 overflow-hidden">
+              class="hidden absolute right-0 mt-2 w-36 rounded-xl bg-white/[0.06]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50 overflow-hidden">
               <button type="button" data-action="switchLang" data-params="fr"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.1]/50 transition-colors text-left text-sm"><span
                   data-i18n="dashboard.fr_franais_34">FR
                   - Français</span></button>
               <button type="button" data-action="switchLang" data-params="en"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.1]/50 transition-colors text-left text-sm"><span
                   data-i18n="dashboard.en_english_33">EN
                   - English</span></button>
               <button type="button" data-action="switchLang" data-params="es"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-left text-sm"><span
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.1]/50 transition-colors text-left text-sm"><span
                   data-i18n="dashboard.es_espaol_32">ES
                   - Español</span></button>
               <button type="button" data-action="switchLang" data-params="ar" dir="rtl"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">العربية
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.1]/50 transition-colors text-right text-sm">العربية
                 - AR</button>
               <button type="button" data-action="switchLang" data-params="ary" dir="rtl"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-600/50 transition-colors text-right text-sm">الدارجة
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.1]/50 transition-colors text-right text-sm">الدارجة
                 - ARY</button>
             </div>
           </div>
@@ -233,7 +233,7 @@
             <h3 class="text-3xl font-bold mb-1" id="minutesUsed">-</h3>
             <p class="text-vocalia-400 text-sm" data-i18n="dashboard.stats.minutes_used">Minutes utilisées</p>
             <!-- Progress bar -->
-            <div class="mt-3 h-2 bg-slate-700 rounded-full overflow-hidden">
+            <div class="mt-3 h-2 bg-white/[0.06] rounded-full overflow-hidden">
               <div id="minutes-progress" class="h-full bg-gradient-to-r from-vocalia-500 to-vocalia-400 rounded-full"
                 style="width: 0%">
               </div>
@@ -273,7 +273,7 @@
           <div class="flex items-center justify-between mb-6">
             <h3 class="text-lg font-semibold" data-i18n="dashboard.charts.call_volume">Volume d'appels</h3>
             <select
-              class="bg-slate-700 border border-vocalia-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
+              class="bg-white/[0.06] border border-vocalia-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-vocalia-500">
               <option>7 derniers jours</option>
               <option>30 derniers jours</option>
               <option><span data-i18n="dashboard.ce_mois_31">Ce mois</span></option>
@@ -329,7 +329,7 @@
                     data-i18n="dashboard.franais_30">Français</span></span>
                 <span id="lang-pct-fr" class="text-vocalia-400">-</span>
               </div>
-              <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div class="h-2 bg-white/[0.06] rounded-full overflow-hidden">
                 <div id="lang-bar-fr" class="h-full bg-vocalia-500 rounded-full" style="width: 0%"></div>
               </div>
             </div>
@@ -339,7 +339,7 @@
                     data-i18n="dashboard.darija_29">Darija</span></span>
                 <span id="lang-pct-ary" class="text-vocalia-400">-</span>
               </div>
-              <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div class="h-2 bg-white/[0.06] rounded-full overflow-hidden">
                 <div id="lang-bar-ary" class="h-full bg-vocalia-400 rounded-full" style="width: 0%"></div>
               </div>
             </div>
@@ -349,7 +349,7 @@
                     data-i18n="dashboard.anglais_28">Anglais</span></span>
                 <span id="lang-pct-en" class="text-vocalia-400">-</span>
               </div>
-              <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div class="h-2 bg-white/[0.06] rounded-full overflow-hidden">
                 <div id="lang-bar-en" class="h-full bg-vocalia-300 rounded-full" style="width: 0%"></div>
               </div>
             </div>
@@ -359,7 +359,7 @@
                     data-i18n="dashboard.arabe_27">Arabe</span></span>
                 <span id="lang-pct-ar" class="text-vocalia-400">-</span>
               </div>
-              <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div class="h-2 bg-white/[0.06] rounded-full overflow-hidden">
                 <div id="lang-bar-ar" class="h-full bg-vocalia-200 rounded-full" style="width: 0%"></div>
               </div>
             </div>
@@ -369,7 +369,7 @@
                     data-i18n="dashboard.espagnol_26">Espagnol</span></span>
                 <span id="lang-pct-es" class="text-vocalia-400">-</span>
               </div>
-              <div class="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div class="h-2 bg-white/[0.06] rounded-full overflow-hidden">
                 <div id="lang-bar-es" class="h-full bg-vocalia-100 rounded-full" style="width: 0%"></div>
               </div>
             </div>
@@ -390,7 +390,7 @@
           </div>
           <div class="space-y-4">
             <!-- Agent 1 -->
-            <div class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-green-400/20 flex items-center justify-center">
@@ -408,13 +408,13 @@
                     data-i18n="dashboard.actif_5"><span data-i18n="dashboard.actif_22"><span
                         data-i18n="dashboard.actif_24">Actif</span></span></span></span>
                 <button type="button" data-action="agentSettings" data-params="universal_ecom_v1"
-                  aria-label="Paramètres agent E-commerce" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                  aria-label="Paramètres agent E-commerce" class="p-2 rounded-lg hover:bg-white/[0.1]/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
             <!-- Agent 2 -->
-            <div class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-400/20 flex items-center justify-center">
@@ -430,17 +430,17 @@
                 <span class="flex items-center text-sm text-green-400"><i data-lucide="check-circle"
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span>Actif</span>
                 <button type="button" data-action="agentSettings" data-params="dental_intake_v1"
-                  aria-label="Paramètres agent RDV" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                  aria-label="Paramètres agent RDV" class="p-2 rounded-lg hover:bg-white/[0.1]/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
             <!-- Agent 3 -->
-            <div class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-vocalia-700/30">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-vocalia-700/30">
               <div class="flex items-center space-x-4">
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-400/20 flex items-center justify-center">
-                  <i data-lucide="building" class="w-8 h-8 text-slate-400"></i>
+                  <i data-lucide="building" class="w-8 h-8 text-zinc-400"></i>
                 </div>
                 <div>
                   <h4 class="font-medium"><span data-i18n="dashboard.conciergerie_9"><span
@@ -453,7 +453,7 @@
                     class="w-4 h-4 mr-1.5"></i><span class="sr-only">Statut:</span><span
                     data-i18n="dashboard.pause_20">Pause</span></span>
                 <button type="button" data-action="agentSettings" data-params="concierge_v1"
-                  aria-label="Paramètres agent Conciergerie" class="p-2 rounded-lg hover:bg-slate-600/50 transition">
+                  aria-label="Paramètres agent Conciergerie" class="p-2 rounded-lg hover:bg-white/[0.1]/50 transition">
                   <i data-lucide="more-vertical" class="w-5 h-5 text-vocalia-400" aria-hidden="true"></i>
                 </button>
               </div>
@@ -471,7 +471,7 @@
           </div>
           <div class="space-y-3">
             <!-- Call 1 -->
-            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-700/30 transition">
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.03] transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
                   <i data-lucide="check" class="w-5 h-5 text-green-400"></i>
@@ -486,7 +486,7 @@
                 data-i18n="dashboard.calls.status.converted">Converti</span>
             </div>
             <!-- Call 2 -->
-            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-700/30 transition">
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.03] transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
                   <i data-lucide="message-circle" class="w-5 h-5 text-blue-400"></i>
@@ -501,7 +501,7 @@
                 data-i18n="dashboard.calls.status.support">Support</span>
             </div>
             <!-- Call 3 -->
-            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-700/30 transition">
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.03] transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center">
                   <i data-lucide="phone-forwarded" class="w-5 h-5 text-yellow-400"></i>
@@ -516,7 +516,7 @@
                 data-i18n="dashboard.calls.status.transferred">Transféré</span>
             </div>
             <!-- Call 4 -->
-            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-slate-700/30 transition">
+            <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.03] transition">
               <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
                   <i data-lucide="alert-circle" class="w-5 h-5 text-red-400"></i>
@@ -541,18 +541,18 @@
           <span id="billing-period" class="text-vocalia-400 text-sm">Période: -</span>
         </div>
         <div class="grid md:grid-cols-3 gap-6">
-          <div class="p-4 rounded-xl bg-slate-700/30">
+          <div class="p-4 rounded-xl bg-white/[0.03]">
             <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.current_plan">Forfait actuel</p>
             <p id="billing-plan" class="text-2xl font-bold">-</p>
             <p id="billing-price" class="text-sm text-vocalia-400">-</p>
           </div>
-          <div class="p-4 rounded-xl bg-slate-700/30">
+          <div class="p-4 rounded-xl bg-white/[0.03]">
             <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.extra_mins">Minutes supplémentaires
             </p>
             <p id="billing-extra" class="text-2xl font-bold">0</p>
             <p id="billing-remaining" class="text-sm text-vocalia-400">- min incluses</p>
           </div>
-          <div class="p-4 rounded-xl bg-slate-700/30">
+          <div class="p-4 rounded-xl bg-white/[0.03]">
             <p class="text-vocalia-400 text-sm mb-1" data-i18n="dashboard.billing.next_bill">Prochaine facture</p>
             <p id="billing-next-amount" class="text-2xl font-bold">-</p>
             <p id="billing-next-date" class="text-sm text-vocalia-400">-</p>
@@ -907,10 +907,10 @@
       const modal = document.createElement('div');
       modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
       modal.innerHTML = `
-        <div class="bg-slate-800 border border-slate-600 rounded-2xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-auto">
+        <div class="bg-white/[0.06] border border-white/[0.08] rounded-2xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-auto">
           <h3 class="text-xl font-semibold mb-4"><span data-i18n="dashboard.activit_rcente_18">Activité Récente</span></h3>
           <div class="space-y-3">
-            <div class="flex items-start gap-3 p-3 rounded-lg bg-slate-700/30">
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-white/[0.03]">
               <div class="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
                 <i data-lucide="check" class="w-4 h-4 text-green-400"></i>
               </div>
@@ -919,7 +919,7 @@
                 <p class="text-xs text-vocalia-400">+212 6XX XXX XX1 - Il y a 5 min</p>
               </div>
             </div>
-            <div class="flex items-start gap-3 p-3 rounded-lg bg-slate-700/30">
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-white/[0.03]">
               <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
                 <i data-lucide="calendar" class="w-4 h-4 text-blue-400"></i>
               </div>
@@ -928,7 +928,7 @@
                 <p class="text-xs text-vocalia-400"><span data-i18n="dashboard.dr_alaoui_demain_15">Dr. Alaoui - Demain 14h30</span></p>
               </div>
             </div>
-            <div class="flex items-start gap-3 p-3 rounded-lg bg-slate-700/30">
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-white/[0.03]">
               <div class="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center flex-shrink-0">
                 <i data-lucide="alert-circle" class="w-4 h-4 text-amber-400"></i>
               </div>
@@ -951,25 +951,25 @@
       const modal = document.createElement('div');
       modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
       modal.innerHTML = `
-        <div class="bg-slate-800 border border-slate-600 rounded-2xl p-6 max-w-md w-full mx-4">
+        <div class="bg-white/[0.06] border border-white/[0.08] rounded-2xl p-6 max-w-md w-full mx-4">
           <h3 class="text-xl font-semibold mb-4"><span data-i18n="dashboard.configurer_les_agents_13">Configurer les Agents IA</span></h3>
           <p class="text-vocalia-400 mb-6"><span data-i18n="dashboard.slectionnez_un_agent_12">Sélectionnez un agent à configurer ou créez-en un nouveau.</span></p>
           <div class="space-y-3 mb-6">
-            <button data-action="agentSettings" data-params="universal_ecom_v1" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+            <button data-action="agentSettings" data-params="universal_ecom_v1" class="w-full p-3 rounded-lg bg-white/[0.04] hover:bg-white/[0.1]/50 text-left">
               <span class="font-medium">Support E-commerce</span>
               <span class="text-sm text-vocalia-400 block">universal_ecom_v1</span>
             </button>
-            <button data-action="agentSettings" data-params="dental_intake_v1" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+            <button data-action="agentSettings" data-params="dental_intake_v1" class="w-full p-3 rounded-lg bg-white/[0.04] hover:bg-white/[0.1]/50 text-left">
               <span class="font-medium">Prise de RDV</span>
               <span class="text-sm text-vocalia-400 block">dental_intake_v1</span>
             </button>
-            <button data-action="agentSettings" data-params="concierge_v1" class="w-full p-3 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-left">
+            <button data-action="agentSettings" data-params="concierge_v1" class="w-full p-3 rounded-lg bg-white/[0.04] hover:bg-white/[0.1]/50 text-left">
               <span class="font-medium">Conciergerie</span>
               <span class="text-sm text-vocalia-400 block">concierge_v1</span>
             </button>
           </div>
           <div class="flex gap-3">
-            <button data-action="closeModal" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition">Fermer</button>
+            <button data-action="closeModal" class="flex-1 px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] transition">Fermer</button>
             <button data-action="newAgentPlaceholder" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">+ Nouveau</button>
           </div>
         </div>
@@ -985,13 +985,13 @@
       const modal = document.createElement('div');
       modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
       modal.innerHTML = `
-        <div class="bg-slate-800 border border-slate-600 rounded-2xl p-6 max-w-md w-full mx-4">
+        <div class="bg-white/[0.06] border border-white/[0.08] rounded-2xl p-6 max-w-md w-full mx-4">
           <h3 class="text-xl font-semibold mb-4"><span data-i18n="dashboard.paramtres_agent_7">Paramètres Agent</span></h3>
-          <p class="text-vocalia-400 mb-2">Agent ID: <code class="bg-slate-700 px-2 py-1 rounded">${agentId}</code></p>
+          <p class="text-vocalia-400 mb-2">Agent ID: <code class="bg-white/[0.06] px-2 py-1 rounded">${agentId}</code></p>
           <div class="space-y-4 my-6">
             <div>
               <label class="block text-sm text-vocalia-400 mb-2"><span data-i18n="dashboard.status_6">Status</span></label>
-              <select class="w-full p-2 rounded-lg bg-slate-700/50 border border-slate-600">
+              <select class="w-full p-2 rounded-lg bg-white/[0.04] border border-white/[0.08]">
                 <option value="active">Actif</option>
                 <option value="paused"><span data-i18n="dashboard.en_pause_4">En pause</span></option>
                 <option value="disabled"><span data-i18n="dashboard.dsactiv_3">Désactivé</span></option>
@@ -1008,7 +1008,7 @@
             </div>
           </div>
           <div class="flex gap-3">
-            <button data-action="closeModal" class="flex-1 px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-600 transition"><span data-i18n="dashboard.annuler_1">Annuler</span></button>
+            <button data-action="closeModal" class="flex-1 px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] transition"><span data-i18n="dashboard.annuler_1">Annuler</span></button>
             <button data-action="saveSettings" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition"><span data-i18n="dashboard.sauvegarder_0">Sauvegarder</span></button>
           </div>
         </div>

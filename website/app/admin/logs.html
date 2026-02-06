@@ -14,11 +14,11 @@
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-slate-900 text-white flex flex-col">
-      <div class="p-4 border-b border-slate-700">
+    <aside class="w-64 bg-[#0a0a0a] text-white flex flex-col">
+      <div class="p-4 border-b border-white/[0.08]">
         <div class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
           <span class="text-xl font-bold">VocalIA</span>
@@ -27,45 +27,45 @@
       </div>
 
       <nav class="flex-1 p-4 space-y-1">
-        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span data-i18n="admin.nav.dashboard">Dashboard</span>
         </a>
-        <a href="tenants.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+        <a href="tenants.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white">
           <i data-lucide="building-2" class="w-5 h-5"></i>
           <span data-i18n="admin.nav.tenants">Tenants</span>
         </a>
-        <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+        <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white">
           <i data-lucide="users" class="w-5 h-5"></i>
           <span data-i18n="admin.nav.users">Utilisateurs</span>
         </a>
-        <a href="logs.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800 text-white">
+        <a href="logs.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#050505] text-white">
           <i data-lucide="scroll-text" class="w-5 h-5"></i>
           <span data-i18n="admin.nav.logs">Logs</span>
         </a>
-        <a href="hitl.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+        <a href="hitl.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white">
           <i data-lucide="check-circle" class="w-5 h-5"></i>
           <span data-i18n="admin.nav.hitl">HITL</span>
         </a>
-        <div class="pt-4 mt-4 border-t border-slate-700">
-          <a href="/app/client/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white">
+        <div class="pt-4 mt-4 border-t border-white/[0.08]">
+          <a href="/app/client/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white">
             <i data-lucide="arrow-left" class="w-5 h-5"></i>
             <span data-i18n="admin.nav.back_client">Retour client</span>
           </a>
         </div>
       </nav>
 
-      <div class="p-4 border-t border-slate-700">
+      <div class="p-4 border-t border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center">
             <span id="admin-initials" class="font-medium">--</span>
           </div>
           <div class="flex-1 min-w-0">
             <p id="admin-name" class="text-sm font-medium truncate">Admin</p>
-            <p id="admin-email" class="text-xs text-slate-400 truncate"></p>
+            <p id="admin-email" class="text-xs text-zinc-400 truncate"></p>
           </div>
-          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-800">
-            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-white/[0.06]">
+            <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
       </div>
@@ -73,18 +73,18 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Logs Système</h1>
-            <p class="text-slate-600 dark:text-slate-400">Activité et événements en temps réel</p>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Logs Système</h1>
+            <p class="text-zinc-600 dark:text-zinc-400">Activité et événements en temps réel</p>
           </div>
           <div class="flex items-center gap-3">
             <label class="flex items-center gap-2">
-              <input type="checkbox" id="auto-refresh" checked class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
-              <span class="text-sm text-slate-600 dark:text-slate-400">Auto-refresh</span>
+              <input type="checkbox" id="auto-refresh" checked class="w-4 h-4 text-indigo-600 border-zinc-300 rounded focus:ring-indigo-500">
+              <span class="text-sm text-zinc-600 dark:text-zinc-400">Auto-refresh</span>
             </label>
-            <button id="export-btn" class="inline-flex items-center gap-2 px-4 py-2 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+            <button id="export-btn" class="inline-flex items-center gap-2 px-4 py-2 border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 font-medium rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] transition-colors">
               <i data-lucide="download" class="w-4 h-4"></i>
               Exporter
             </button>
@@ -94,11 +94,11 @@
 
       <div class="px-6 py-6">
         <!-- Filters -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 mb-6 hover:shadow-lg transition-all duration-200">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 mb-6 hover:shadow-lg transition-all duration-200">
           <div class="flex flex-wrap items-center gap-4">
             <div>
-              <label class="block text-xs text-slate-500 mb-1">Niveau</label>
-              <select id="filter-level" class="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <label class="block text-xs text-zinc-500 mb-1">Niveau</label>
+              <select id="filter-level" class="px-3 py-1.5 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="">Tous</option>
                 <option value="error">Error</option>
                 <option value="warn">Warning</option>
@@ -107,8 +107,8 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs text-slate-500 mb-1">Service</label>
-              <select id="filter-service" class="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <label class="block text-xs text-zinc-500 mb-1">Service</label>
+              <select id="filter-service" class="px-3 py-1.5 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="" data-i18n="common.all">Tous</option>
                 <option value="voice-api" data-i18n="admin.services.voice">Assistant Vocal</option>
                 <option value="grok" data-i18n="admin.services.realtime">Communication Temps Réel</option>
@@ -118,8 +118,8 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs text-slate-500 mb-1">Période</label>
-              <select id="filter-period" class="px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <label class="block text-xs text-zinc-500 mb-1">Période</label>
+              <select id="filter-period" class="px-3 py-1.5 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="1h">Dernière heure</option>
                 <option value="24h" selected>24 heures</option>
                 <option value="7d">7 jours</option>
@@ -127,63 +127,63 @@
               </select>
             </div>
             <div class="flex-1">
-              <label class="block text-xs text-slate-500 mb-1">Recherche</label>
-              <input type="text" id="filter-search" placeholder="Rechercher dans les logs..." class="w-full px-3 py-1.5 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <label class="block text-xs text-zinc-500 mb-1">Recherche</label>
+              <input type="text" id="filter-search" placeholder="Rechercher dans les logs..." class="w-full px-3 py-1.5 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
             </div>
           </div>
         </div>
 
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                 <i data-lucide="alert-circle" class="w-5 h-5 text-red-600"></i>
               </div>
               <div>
                 <p class="text-2xl font-bold text-red-600" id="stat-errors">0</p>
-                <p class="text-sm text-slate-500">Errors</p>
+                <p class="text-sm text-zinc-500">Errors</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                 <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600"></i>
               </div>
               <div>
                 <p class="text-2xl font-bold text-amber-600" id="stat-warnings">0</p>
-                <p class="text-sm text-slate-500">Warnings</p>
+                <p class="text-sm text-zinc-500">Warnings</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
                 <i data-lucide="info" class="w-5 h-5 text-blue-600"></i>
               </div>
               <div>
                 <p class="text-2xl font-bold text-blue-600" id="stat-info">0</p>
-                <p class="text-sm text-slate-500">Info</p>
+                <p class="text-sm text-zinc-500">Info</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
-                <i data-lucide="terminal" class="w-5 h-5 text-slate-600"></i>
+              <div class="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-white/[0.06] flex items-center justify-center">
+                <i data-lucide="terminal" class="w-5 h-5 text-zinc-600"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-total">0</p>
-                <p class="text-sm text-slate-500">Total</p>
+                <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-total">0</p>
+                <p class="text-sm text-zinc-500">Total</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Logs List -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg transition-all duration-200">
-          <div id="logs-container" class="divide-y divide-slate-200 dark:divide-slate-700 max-h-[600px] overflow-y-auto font-mono text-sm">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-hidden hover:shadow-lg transition-all duration-200">
+          <div id="logs-container" class="divide-y divide-zinc-200 dark:divide-white/[0.08] max-h-[600px] overflow-y-auto font-mono text-sm">
             <!-- Logs will be rendered here -->
           </div>
         </div>
@@ -254,21 +254,21 @@
         error: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
         warn: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
         info: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-        debug: 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300'
-      }[level] || 'bg-slate-100 text-slate-800';
+        debug: 'bg-zinc-100 text-zinc-800 dark:bg-white/[0.06] dark:text-zinc-300'
+      }[level] || 'bg-zinc-100 text-zinc-800';
     }
 
     function renderLogs(logs) {
       logsContainer.innerHTML = logs.map(log => `
-        <div class="p-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer" onclick="this.querySelector('.details').classList.toggle('hidden')">
+        <div class="p-3 hover:bg-zinc-50 dark:hover:bg-white/[0.08]/50 cursor-pointer" onclick="this.querySelector('.details').classList.toggle('hidden')">
           <div class="flex items-start gap-3">
-            <span class="text-xs text-slate-400 whitespace-nowrap">${new Date(log.timestamp).toLocaleTimeString()}</span>
+            <span class="text-xs text-zinc-400 whitespace-nowrap">${new Date(log.timestamp).toLocaleTimeString()}</span>
             <span class="px-1.5 py-0.5 text-xs rounded ${getLevelColor(log.level)} uppercase font-medium">${log.level}</span>
-            <span class="px-1.5 py-0.5 text-xs bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 rounded">${log.service}</span>
-            <span class="text-slate-700 dark:text-slate-300 flex-1">${log.message}</span>
+            <span class="px-1.5 py-0.5 text-xs bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 rounded">${log.service}</span>
+            <span class="text-zinc-700 dark:text-zinc-300 flex-1">${log.message}</span>
           </div>
           ${log.details ? `
-            <div class="details hidden mt-2 ml-[140px] text-xs text-slate-500 bg-slate-50 dark:bg-slate-900 p-2 rounded">
+            <div class="details hidden mt-2 ml-[140px] text-xs text-zinc-500 bg-zinc-50 dark:bg-[#0a0a0a] p-2 rounded">
               <pre>${JSON.stringify(log.details, null, 2)}</pre>
             </div>
           ` : ''}

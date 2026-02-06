@@ -14,47 +14,47 @@
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
-      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+    <aside id="sidebar" class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
+      <div class="p-4 border-b border-zinc-200 dark:border-white/[0.08]">
         <a href="/app/client/" class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
-          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+          <span class="text-xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
         </a>
       </div>
 
       <nav class="flex-1 p-4 space-y-1">
-        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span>Tableau de bord</span>
         </a>
-        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="phone" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.calls">Appels</span>
         </a>
-        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="bot" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.agents">Agents IA</span>
         </a>
-        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="package" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.catalog">Catalogue</span>
         </a>
-        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="book-open" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
         </a>
-        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="plug" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.integrations">Intégrations</span>
         </a>
-        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.analytics">Analytics</span>
         </a>
-        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
           <i data-lucide="credit-card" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.billing">Facturation</span>
         </a>
@@ -64,17 +64,17 @@
         </a>
       </nav>
 
-      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 border-t border-zinc-200 dark:border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
             <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
-            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+            <p id="user-name" class="text-sm font-medium text-zinc-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-zinc-500 truncate"></p>
           </div>
-          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.06]">
+            <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
       </div>
@@ -82,45 +82,45 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Paramètres</h1>
-            <p class="text-slate-600 dark:text-slate-400">Gérez votre compte et préférences</p>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Paramètres</h1>
+            <p class="text-zinc-600 dark:text-zinc-400">Gérez votre compte et préférences</p>
           </div>
         </div>
       </header>
 
       <div class="px-6 py-6 max-w-3xl space-y-6">
         <!-- Profile -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Profil</h3>
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Profil</h3>
           <form id="profile-form" class="space-y-4">
             <div class="flex items-center gap-4 mb-6">
               <div class="w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
                 <span class="text-2xl text-indigo-600 dark:text-indigo-400 font-bold" id="profile-initials">--</span>
               </div>
-              <button type="button" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700">
+              <button type="button" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.06]">
                 Changer la photo
               </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nom complet</label>
-                <input type="text" id="profile-name" required minlength="2" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nom complet</label>
+                <input type="text" id="profile-name" required minlength="2" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
-                <input type="email" id="profile-email" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Email</label>
+                <input type="email" id="profile-email" required class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Téléphone</label>
-                <input type="tel" id="profile-phone" placeholder="+212 6XX XXX XXX" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Téléphone</label>
+                <input type="tel" id="profile-phone" placeholder="+212 6XX XXX XXX" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Poste</label>
-                <input type="text" id="profile-title" placeholder="Ex: Directeur Commercial" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Poste</label>
+                <input type="text" id="profile-title" placeholder="Ex: Directeur Commercial" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
             </div>
 
@@ -133,21 +133,21 @@
         </div>
 
         <!-- Password -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Mot de passe</h3>
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Mot de passe</h3>
           <form id="password-form" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Mot de passe actuel</label>
-              <input type="password" id="current-password" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Mot de passe actuel</label>
+              <input type="password" id="current-password" required class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nouveau mot de passe</label>
-                <input type="password" id="new-password" required minlength="8" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nouveau mot de passe</label>
+                <input type="password" id="new-password" required minlength="8" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Confirmer</label>
-                <input type="password" id="confirm-password" required minlength="8" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Confirmer</label>
+                <input type="password" id="confirm-password" required minlength="8" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
             </div>
             <div class="pt-4">
@@ -159,15 +159,15 @@
         </div>
 
         <!-- Preferences -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Préférences</h3>
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Préférences</h3>
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Langue</p>
-                <p class="text-sm text-slate-500">Langue de l'interface</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Langue</p>
+                <p class="text-sm text-zinc-500">Langue de l'interface</p>
               </div>
-              <select id="pref-language" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <select id="pref-language" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="fr">Français</option>
                 <option value="en">English</option>
                 <option value="es">Español</option>
@@ -178,10 +178,10 @@
 
             <div class="flex items-center justify-between">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Thème</p>
-                <p class="text-sm text-slate-500">Apparence de l'interface</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Thème</p>
+                <p class="text-sm text-zinc-500">Apparence de l'interface</p>
               </div>
-              <select id="pref-theme" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <select id="pref-theme" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="light">Clair</option>
                 <option value="dark">Sombre</option>
                 <option value="system">Système</option>
@@ -190,10 +190,10 @@
 
             <div class="flex items-center justify-between">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Fuseau horaire</p>
-                <p class="text-sm text-slate-500">Pour les rapports et statistiques</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Fuseau horaire</p>
+                <p class="text-sm text-zinc-500">Pour les rapports et statistiques</p>
               </div>
-              <select id="pref-timezone" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              <select id="pref-timezone" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="Africa/Casablanca">Casablanca (GMT+1)</option>
                 <option value="Europe/Paris">Paris (GMT+1)</option>
                 <option value="Europe/London">Londres (GMT)</option>
@@ -203,31 +203,31 @@
         </div>
 
         <!-- Widget Features -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Fonctionnalités Widget</h3>
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Fonctionnalités Widget</h3>
           <div class="space-y-4">
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Social Proof</p>
-                <p class="text-sm text-slate-500">Notifications de preuve sociale (données réelles)</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Social Proof</p>
+                <p class="text-sm text-zinc-500">Notifications de preuve sociale (données réelles)</p>
               </div>
-              <input type="checkbox" id="feat-social-proof" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+              <input type="checkbox" id="feat-social-proof" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Booking / Rendez-vous</p>
-                <p class="text-sm text-slate-500">CTA de réservation dans le widget</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Booking / Rendez-vous</p>
+                <p class="text-sm text-zinc-500">CTA de réservation dans le widget</p>
               </div>
-              <input type="checkbox" id="feat-booking" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+              <input type="checkbox" id="feat-booking" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Exit Intent</p>
-                <p class="text-sm text-slate-500">Message automatique quand le visiteur quitte</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Exit Intent</p>
+                <p class="text-sm text-zinc-500">Message automatique quand le visiteur quitte</p>
               </div>
-              <input type="checkbox" id="feat-exit-intent" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+              <input type="checkbox" id="feat-exit-intent" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <div class="pt-4">
@@ -239,76 +239,76 @@
         </div>
 
         <!-- Notifications -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Notifications</h3>
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Notifications</h3>
           <div class="space-y-4">
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Nouveaux appels</p>
-                <p class="text-sm text-slate-500">Notification en temps réel</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Nouveaux appels</p>
+                <p class="text-sm text-zinc-500">Notification en temps réel</p>
               </div>
-              <input type="checkbox" id="notif-calls" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+              <input type="checkbox" id="notif-calls" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Leads qualifiés</p>
-                <p class="text-sm text-slate-500">Quand un lead atteint 70%+</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Leads qualifiés</p>
+                <p class="text-sm text-zinc-500">Quand un lead atteint 70%+</p>
               </div>
-              <input type="checkbox" id="notif-leads" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+              <input type="checkbox" id="notif-leads" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Rapport hebdomadaire</p>
-                <p class="text-sm text-slate-500">Résumé chaque lundi</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Rapport hebdomadaire</p>
+                <p class="text-sm text-zinc-500">Résumé chaque lundi</p>
               </div>
-              <input type="checkbox" id="notif-weekly" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+              <input type="checkbox" id="notif-weekly" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-slate-900 dark:text-white">Alertes système</p>
-                <p class="text-sm text-slate-500">Interruptions et maintenance</p>
+                <p class="font-medium text-zinc-900 dark:text-white">Alertes système</p>
+                <p class="text-sm text-zinc-500">Interruptions et maintenance</p>
               </div>
-              <input type="checkbox" id="notif-system" checked class="w-5 h-5 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500">
+              <input type="checkbox" id="notif-system" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
           </div>
         </div>
 
         <!-- Webhooks -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-slate-900 dark:text-white mb-4">Webhooks</h3>
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Webhooks</h3>
           <form id="webhook-form" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">URL du webhook</label>
-              <input type="url" id="webhook-url" placeholder="https://votre-serveur.com/webhook" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">URL du webhook</label>
+              <input type="url" id="webhook-url" placeholder="https://votre-serveur.com/webhook" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Secret (HMAC-SHA256)</label>
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Secret (HMAC-SHA256)</label>
               <div class="flex gap-2">
-                <input type="text" id="webhook-secret" readonly class="flex-1 px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white font-mono text-sm">
-                <button type="button" id="generate-secret-btn" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 text-sm">
+                <input type="text" id="webhook-secret" readonly class="flex-1 px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-zinc-50 dark:bg-white/[0.06] text-zinc-900 dark:text-white font-mono text-sm">
+                <button type="button" id="generate-secret-btn" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.06] text-sm">
                   Générer
                 </button>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Événements</label>
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Événements</label>
               <div class="grid grid-cols-2 gap-2">
-                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <label class="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
                   <input type="checkbox" name="webhook_events" value="call.started" class="w-4 h-4 text-indigo-600 rounded">
                   call.started
                 </label>
-                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <label class="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
                   <input type="checkbox" name="webhook_events" value="call.completed" class="w-4 h-4 text-indigo-600 rounded">
                   call.completed
                 </label>
-                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <label class="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
                   <input type="checkbox" name="webhook_events" value="lead.qualified" class="w-4 h-4 text-indigo-600 rounded">
                   lead.qualified
                 </label>
-                <label class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                <label class="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
                   <input type="checkbox" name="webhook_events" value="booking.created" class="w-4 h-4 text-indigo-600 rounded">
                   booking.created
                 </label>
@@ -323,15 +323,15 @@
         </div>
 
         <!-- API Keys -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 hover:shadow-lg transition-all duration-200">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-slate-900 dark:text-white">Clés API</h3>
+            <h3 class="font-semibold text-zinc-900 dark:text-white">Clés API</h3>
             <button id="new-key-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
               Nouvelle clé
             </button>
           </div>
           <div id="api-keys-list" class="space-y-3">
-            <p class="text-slate-500 text-sm">Chargement...</p>
+            <p class="text-zinc-500 text-sm">Chargement...</p>
           </div>
         </div>
 
@@ -412,19 +412,19 @@
     function renderApiKeys(keys) {
       const container = document.getElementById('api-keys-list');
       if (!keys || keys.length === 0) {
-        container.innerHTML = '<p class="text-slate-500 text-sm">Aucune clé API. Cliquez sur "Nouvelle clé" pour en créer une.</p>';
+        container.innerHTML = '<p class="text-zinc-500 text-sm">Aucune clé API. Cliquez sur "Nouvelle clé" pour en créer une.</p>';
         return;
       }
 
       container.innerHTML = keys.map(k => `
-        <div class="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+        <div class="flex items-center justify-between p-3 border border-zinc-200 dark:border-white/[0.08] rounded-lg">
           <div>
-            <p class="font-medium text-slate-900 dark:text-white">${k.name}</p>
-            <p class="text-sm text-slate-500 font-mono">${k.key || '••••••••••••••••'}</p>
+            <p class="font-medium text-zinc-900 dark:text-white">${k.name}</p>
+            <p class="text-sm text-zinc-500 font-mono">${k.key || '••••••••••••••••'}</p>
           </div>
           <div class="flex items-center gap-2">
             <span class="text-xs px-2 py-1 rounded ${k.type === 'production' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}">${k.type}</span>
-            <button onclick="deleteApiKey('${k.id}')" class="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-red-500" title="Supprimer">
+            <button onclick="deleteApiKey('${k.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded text-red-500" title="Supprimer">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </div>

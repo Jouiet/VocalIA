@@ -132,13 +132,13 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
   <link href="/public/css/style.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .glass { background: rgba(51, 65, 85, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(148, 163, 184, 0.25); }
+    .glass { background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .prose { max-width: 65ch; }
     .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
     .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
@@ -154,7 +154,7 @@
 
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
 </head>
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <nav class="fixed top-0 left-0 right-0 z-50 glass">
     <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
       <a href="/" class="flex items-center space-x-2">
@@ -170,7 +170,7 @@
       <header class="mb-12">
         <!-- Breadcrumb Navigation -->
         <nav class="mb-6" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white transition"><span data-i18n="blog_comment_choisir_solu.accueil_66">Accueil</span></a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
@@ -183,7 +183,7 @@
         <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
           Comment <span class="gradient-text"><span data-i18n="blog_comment_choisir_solu.choisir_63">choisir</span></span> sa solution Voice AI en 2026
         </h1>
-        <div class="flex items-center gap-4 text-slate-400 flex-wrap">
+        <div class="flex items-center gap-4 text-zinc-400 flex-wrap">
           <div class="flex items-center gap-2">
             <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center">
               <span class="text-sm font-semibold">VA</span>
@@ -199,7 +199,7 @@
 
       <nav class="glass rounded-xl p-6 mb-12" aria-label="Table des matières">
         <h2 class="text-lg font-semibold mb-4"><span data-i18n="blog_comment_choisir_solu.sommaire_61">Sommaire</span></h2>
-        <ol class="space-y-2 text-slate-300">
+        <ol class="space-y-2 text-zinc-300">
           <li><a href="#criteres" class="hover:text-vocalia-400 transition">1. Les 10 critères essentiels</a></li>
           <li><a href="#comparatif" class="hover:text-vocalia-400 transition">2. Comparatif des solutions 2026</a></li>
           <li><a href="#questions" class="hover:text-vocalia-400 transition">3. Questions à poser aux vendeurs</a></li>
@@ -211,7 +211,7 @@
       </nav>
 
       <div class="prose">
-        <p class="text-xl text-slate-300 mb-8">
+        <p class="text-xl text-zinc-300 mb-8">
           Le marché Voice AI compte aujourd'hui plus de <strong>50 solutions</strong>. Comment choisir la bonne
           pour votre entreprise ? Ce guide vous donne les 10 critères clés, un comparatif objectif des
           principales plateformes, et les pièges à éviter absolument.
@@ -220,15 +220,15 @@
         <div class="grid md:grid-cols-3 gap-4 my-8">
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-vocalia-400 mb-1">50+</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_comment_choisir_solu.solutions_sur_le_60">Solutions sur le marché</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_comment_choisir_solu.solutions_sur_le_60">Solutions sur le marché</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-emerald-400 mb-1">10</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_comment_choisir_solu.critres_essentiels_59">Critères essentiels</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_comment_choisir_solu.critres_essentiels_59">Critères essentiels</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-amber-400 mb-1">60%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_comment_choisir_solu.cart_de_prix_58">Écart de prix possible</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_comment_choisir_solu.cart_de_prix_58">Écart de prix possible</span></div>
           </div>
         </div>
 
@@ -242,13 +242,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.tarification_transparente_57">Tarification transparente</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Méfiez-vous des coûts cachés : frais de setup, minimum d'engagement, coût des intégrations.
                   Préférez un modèle <strong><span data-i18n="blog_comment_choisir_solu.la_minute_56">à la minute</span></strong> avec tarif unique tout inclus.
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-amber-400">À vérifier :</strong>
-                  <span class="text-slate-400"> Prix setup, prix minute, frais téléphonie, coût intégrations, minimum mensuel</span>
+                  <span class="text-zinc-400"> Prix setup, prix minute, frais téléphonie, coût intégrations, minimum mensuel</span>
                 </div>
               </div>
             </div>
@@ -261,13 +261,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.latence_de_rponse_55">Latence de réponse</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Une latence > 1.5 secondes crée une conversation robotique. Les meilleures solutions
                   descendent sous <strong>500ms</strong> end-to-end.
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-emerald-400">Benchmark :</strong>
-                  <span class="text-slate-400"> VocalIA &lt;500ms | Retell &lt;600ms | Bland &lt;700ms | Vapi &lt;800ms</span>
+                  <span class="text-zinc-400"> VocalIA &lt;500ms | Retell &lt;600ms | Bland &lt;700ms | Vapi &lt;800ms</span>
                 </div>
               </div>
             </div>
@@ -280,13 +280,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.qualit_des_voix_54">Qualité des voix</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Testez les voix en conditions réelles. La qualité varie énormément entre les fournisseurs.
                   Demandez des échantillons dans <strong><span data-i18n="blog_comment_choisir_solu.votre_langue_17"><span data-i18n="blog_comment_choisir_solu.votre_langue_53">votre langue</span></span></strong>.
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-amber-400">Attention :</strong>
-                  <span class="text-slate-400"> Les démos utilisent souvent les meilleures voix. Testez celles que vous utiliserez réellement.</span>
+                  <span class="text-zinc-400"> Les démos utilisent souvent les meilleures voix. Testez celles que vous utiliserez réellement.</span>
                 </div>
               </div>
             </div>
@@ -299,13 +299,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.langues_supportes_52">Langues supportées</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Au-delà de l'anglais, vérifiez la qualité sur le français, l'arabe, et les dialectes
                   régionaux si pertinents (Darija, dialectes du Golfe).
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-vocalia-400">VocalIA :</strong>
-                  <span class="text-slate-400"> 5 langues natives (FR, EN, ES, AR, Darija) — seul acteur avec Darija natif</span>
+                  <span class="text-zinc-400"> 5 langues natives (FR, EN, ES, AR, Darija) — seul acteur avec Darija natif</span>
                 </div>
               </div>
             </div>
@@ -318,13 +318,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.intgrations_natives_51">Intégrations natives</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Combien d'intégrations prêtes à l'emploi ? CRM (HubSpot, Pipedrive), e-commerce (Shopify),
                   calendrier (Calendly, Google), paiement (Stripe).
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-vocalia-400">VocalIA :</strong>
-                  <span class="text-slate-400"> 31+ intégrations natives + 203 outils MCP</span>
+                  <span class="text-zinc-400"> 31+ intégrations natives + 203 outils MCP</span>
                 </div>
               </div>
             </div>
@@ -337,13 +337,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.conformit_rglementaire_50">Conformité réglementaire</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   RGPD, AI Act européen (août 2026), hébergement des données. Demandez les certifications
                   et la localisation des serveurs.
                 </p>
                 <div class="bg-rose-500/10 border border-rose-500/30 rounded-lg p-3 text-sm mt-2">
                   <strong class="text-rose-400">AI Act :</strong>
-                  <span class="text-slate-300"> Sanctions jusqu'à 7% du CA global. Vérifiez que votre fournisseur est "AI Act Ready".</span>
+                  <span class="text-zinc-300"> Sanctions jusqu'à 7% du CA global. Vérifiez que votre fournisseur est "AI Act Ready".</span>
                 </div>
               </div>
             </div>
@@ -356,13 +356,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.personnalisation_du_persona_49">Personnalisation du persona</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Peut-on créer un agent avec la personnalité de votre marque ? Ton, vocabulaire métier,
                   comportement face aux objections.
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-vocalia-400">VocalIA :</strong>
-                  <span class="text-slate-400"> 40 personas métier pré-configurés (DENTAL, PROPERTY, ECOMMERCE, etc.)</span>
+                  <span class="text-zinc-400"> 40 personas métier pré-configurés (DENTAL, PROPERTY, ECOMMERCE, etc.)</span>
                 </div>
               </div>
             </div>
@@ -375,13 +375,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.transfert_vers_humain_48">Transfert vers humain</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   L'IA doit savoir quand escalader. Vérifiez les conditions de transfert automatique
                   et la qualité du handover contextuel.
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-amber-400">À vérifier :</strong>
-                  <span class="text-slate-400"> Détection frustration, transfert à la demande, contexte transmis à l'humain</span>
+                  <span class="text-zinc-400"> Détection frustration, transfert à la demande, contexte transmis à l'humain</span>
                 </div>
               </div>
             </div>
@@ -394,13 +394,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.analytics_et_reporting_47">Analytics et reporting</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Quelles métriques sont disponibles ? Transcriptions, sentiment, taux de résolution,
                   scoring des leads, export des données.
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-vocalia-400">VocalIA :</strong>
-                  <span class="text-slate-400"> Dashboard temps réel, export CSV/XLSX/PDF, transcriptions, scoring BANT</span>
+                  <span class="text-zinc-400"> Dashboard temps réel, export CSV/XLSX/PDF, transcriptions, scoring BANT</span>
                 </div>
               </div>
             </div>
@@ -413,13 +413,13 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2 mt-0"><span data-i18n="blog_comment_choisir_solu.support_et_onboarding_46">Support et onboarding</span></h3>
-                <p class="text-slate-300 mb-2">
+                <p class="text-zinc-300 mb-2">
                   Quel niveau de support ? Self-service, chat, téléphone ? Temps de réponse garanti ?
                   Formation incluse ?
                 </p>
-                <div class="bg-slate-800/50 rounded-lg p-3 text-sm">
+                <div class="bg-white/[0.04] rounded-lg p-3 text-sm">
                   <strong class="text-vocalia-400">VocalIA :</strong>
-                  <span class="text-slate-400"> Support FR/EN, onboarding personnalisé, documentation complète</span>
+                  <span class="text-zinc-400"> Support FR/EN, onboarding personnalisé, documentation complète</span>
                 </div>
               </div>
             </div>
@@ -436,65 +436,65 @@
         <div class="overflow-x-auto my-8">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-3 text-slate-400"><span data-i18n="blog_comment_choisir_solu.critre_45">Critère</span></th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-3 text-zinc-400"><span data-i18n="blog_comment_choisir_solu.critre_45">Critère</span></th>
                 <th class="text-center py-3 text-vocalia-400">VocalIA</th>
-                <th class="text-center py-3 text-slate-400"><span data-i18n="blog_comment_choisir_solu.vapiai_43">Vapi.ai</span></th>
-                <th class="text-center py-3 text-slate-400"><span data-i18n="blog_comment_choisir_solu.retellai_42">Retell.ai</span></th>
-                <th class="text-center py-3 text-slate-400"><span data-i18n="blog_comment_choisir_solu.bland_ai_41">Bland AI</span></th>
+                <th class="text-center py-3 text-zinc-400"><span data-i18n="blog_comment_choisir_solu.vapiai_43">Vapi.ai</span></th>
+                <th class="text-center py-3 text-zinc-400"><span data-i18n="blog_comment_choisir_solu.retellai_42">Retell.ai</span></th>
+                <th class="text-center py-3 text-zinc-400"><span data-i18n="blog_comment_choisir_solu.bland_ai_41">Bland AI</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3">Prix / minute</td>
                 <td class="text-center text-emerald-400 font-semibold">0.06€</td>
                 <td class="text-center">0.15€</td>
                 <td class="text-center">0.12€</td>
                 <td class="text-center">0.09€</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_comment_choisir_solu.latence_40">Latence</span></td>
                 <td class="text-center text-emerald-400">&lt;500ms</td>
                 <td class="text-center">&lt;800ms</td>
                 <td class="text-center">&lt;600ms</td>
                 <td class="text-center">&lt;700ms</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_comment_choisir_solu.langues_39">Langues</span></td>
                 <td class="text-center text-emerald-400">5 (incl. Darija)</td>
                 <td class="text-center">30+</td>
                 <td class="text-center">20+</td>
                 <td class="text-center">10+</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_comment_choisir_solu.intgrations_38">Intégrations</span></td>
                 <td class="text-center text-emerald-400">31 natives</td>
                 <td class="text-center">15+</td>
                 <td class="text-center">10+</td>
                 <td class="text-center">5+</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3">RGPD</td>
                 <td class="text-center text-emerald-400">✓</td>
                 <td class="text-center">✓</td>
                 <td class="text-center"><span data-i18n="blog_comment_choisir_solu.partiel_37">Partiel</span></td>
                 <td class="text-center">✗</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_comment_choisir_solu.ai_act_ready_36">AI Act Ready</span></td>
                 <td class="text-center text-emerald-400">✓</td>
                 <td class="text-center">✗</td>
                 <td class="text-center">✗</td>
                 <td class="text-center">✗</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_comment_choisir_solu.personas_mtier_35">Personas métier</span></td>
                 <td class="text-center text-emerald-400">40</td>
                 <td class="text-center">0</td>
                 <td class="text-center">5</td>
                 <td class="text-center">0</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_comment_choisir_solu.support_fr_34">Support FR</span></td>
                 <td class="text-center text-emerald-400">✓</td>
                 <td class="text-center">✗</td>
@@ -513,8 +513,8 @@
         </div>
 
         <div class="glass rounded-xl p-4 my-6 text-sm">
-          <strong class="text-slate-400">Note de transparence :</strong>
-          <span class="text-slate-500"> Ce comparatif est établi par VocalIA. Les données sont vérifiées sur les sites officiels
+          <strong class="text-zinc-400">Note de transparence :</strong>
+          <span class="text-zinc-500"> Ce comparatif est établi par VocalIA. Les données sont vérifiées sur les sites officiels
           des concurrents (janvier 2026). Vapi propose plus de langues, mais VocalIA est le seul avec Darija natif
           et un pricing agressif pour le marché FR/MENA.</span>
         </div>
@@ -526,7 +526,7 @@
         </p>
 
         <div class="glass rounded-xl p-6 my-8">
-          <ul class="text-slate-300 space-y-3">
+          <ul class="text-zinc-300 space-y-3">
             <li>✓ "Quel est le coût total pour 1 000 minutes/mois, <strong><span data-i18n="blog_comment_choisir_solu.tout_inclus_31">tout inclus</span></strong> ?"</li>
             <li>✓ "Puis-je tester votre solution en <strong><span data-i18n="blog_comment_choisir_solu.conditions_relles_30">conditions réelles</span></strong> avant de m'engager ?"</li>
             <li>✓ "Où sont hébergées les données et les enregistrements vocaux ?"</li>
@@ -545,7 +545,7 @@
         <div class="space-y-4 my-8">
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1"><span data-i18n="blog_comment_choisir_solu.tarif_dappel_spar_22">Tarif d'appel séparé</span></h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Certains affichent un tarif bas mais facturent les appels sortants séparément.
               Demandez le prix <strong>"all-in"</strong> incluant téléphonie PSTN.
             </p>
@@ -553,7 +553,7 @@
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1"><span data-i18n="blog_comment_choisir_solu.engagement_minimum_21">Engagement minimum</span></h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Méfiez-vous des contrats annuels avec minimum de consommation.
               Préférez le <strong><span data-i18n="blog_comment_choisir_solu.paiement_mensuel_sans_20">paiement mensuel sans engagement</span></strong>.
             </p>
@@ -561,7 +561,7 @@
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">Intégrations "sur devis"</h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Si l'intégration à votre CRM nécessite un développement custom facturé,
               le coût peut rapidement <strong><span data-i18n="blog_comment_choisir_solu.exploser_19">exploser</span></strong>. Vérifiez les intégrations natives.
             </p>
@@ -569,7 +569,7 @@
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1"><span data-i18n="blog_comment_choisir_solu.qualit_des_voix_18">Qualité des voix en démo</span></h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Les démos utilisent souvent les meilleures voix. Testez les voix que vous
               utiliserez réellement dans <strong>votre langue</strong>.
             </p>
@@ -577,7 +577,7 @@
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">Latence "en conditions idéales"</h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Les specs affichent souvent la latence minimale. Demandez la latence
               <strong><span data-i18n="blog_comment_choisir_solu.p95_en_production_16">P95 en production</span></strong> (95e percentile).
             </p>
@@ -585,7 +585,7 @@
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1"><span data-i18n="blog_comment_choisir_solu.pas_de_support_15">Pas de support local</span></h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Un support en anglais uniquement peut être problématique pour les équipes
               non-anglophones. Vérifiez la <strong><span data-i18n="blog_comment_choisir_solu.disponibilit_du_support_14">disponibilité du support en français</span></strong>.
             </p>
@@ -596,7 +596,7 @@
 
         <div class="glass rounded-xl p-6 my-8">
           <h3 class="text-lg font-semibold mb-4"><span data-i18n="blog_comment_choisir_solu.avant_de_signer_13">Avant de signer</span></h3>
-          <ul class="text-slate-300 space-y-2">
+          <ul class="text-zinc-300 space-y-2">
             <li>☐ J'ai testé la solution en conditions réelles (pas juste une démo)</li>
             <li>☐ J'ai le détail complet des coûts (setup, minutes, téléphonie, intégrations)</li>
             <li>☐ J'ai vérifié la qualité des voix dans ma langue</li>
@@ -619,7 +619,7 @@
         <div class="space-y-4 my-8">
           <div class="glass rounded-xl p-4 border-l-4 border-vocalia-500">
             <h4 class="font-semibold mb-1">1. Test de latence (5 min)</h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Appelez l'agent et chronométrez le temps entre la fin de votre phrase et le début de la réponse.
               Répétez 10 fois et calculez la moyenne. Acceptable : &lt;1s. Idéal : &lt;500ms.
             </p>
@@ -627,7 +627,7 @@
 
           <div class="glass rounded-xl p-4 border-l-4 border-vocalia-500">
             <h4 class="font-semibold mb-1">2. Test de compréhension (10 min)</h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Posez des questions avec accents régionaux, bruits de fond, ou formulations inhabituelles.
               L'agent doit comprendre et répondre correctement &gt;90% du temps.
             </p>
@@ -635,7 +635,7 @@
 
           <div class="glass rounded-xl p-4 border-l-4 border-vocalia-500">
             <h4 class="font-semibold mb-1">3. Test d'escalade (5 min)</h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Demandez explicitement à parler à un humain. Exprimez de la frustration.
               Vérifiez que l'agent escalade correctement et transmet le contexte.
             </p>
@@ -643,7 +643,7 @@
 
           <div class="glass rounded-xl p-4 border-l-4 border-vocalia-500">
             <h4 class="font-semibold mb-1">4. Test d'intégration (30 min)</h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Connectez votre CRM et vérifiez que les données circulent correctement.
               Créez un lead, mettez à jour un contact, déclenchez une action.
             </p>
@@ -651,7 +651,7 @@
 
           <div class="glass rounded-xl p-4 border-l-4 border-vocalia-500">
             <h4 class="font-semibold mb-1">5. Test de charge (optionnel)</h4>
-            <p class="text-slate-300 text-sm mb-0">
+            <p class="text-zinc-300 text-sm mb-0">
               Si vous attendez un volume important, demandez un test de charge.
               Vérifiez la stabilité avec 10+ appels simultanés.
             </p>
@@ -662,11 +662,11 @@
 
         <div class="space-y-4 my-8">
           <details class="glass rounded-xl">
-            <summary class="p-4 font-semibold hover:bg-slate-700/30 rounded-xl flex items-center justify-between">
+            <summary class="p-4 font-semibold hover:bg-white/[0.03] rounded-xl flex items-center justify-between">
               <span><span data-i18n="blog_comment_choisir_solu.quel_est_le_12">Quel est le prix moyen d'une solution Voice AI ?</span></span>
-              <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400"></i>
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Les prix varient de <strong>0.06€ à 0.15€</strong> par minute selon les fournisseurs.
               VocalIA propose le tarif le plus compétitif à 0.06€/minute, soit 60% moins cher que
               Vapi (0.15€) ou Retell (0.12€). Attention aux frais cachés : setup, minimum d'engagement,
@@ -675,11 +675,11 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 font-semibold hover:bg-slate-700/30 rounded-xl flex items-center justify-between">
+            <summary class="p-4 font-semibold hover:bg-white/[0.03] rounded-xl flex items-center justify-between">
               <span><span data-i18n="blog_comment_choisir_solu.quelle_latence_est_11">Quelle latence est acceptable ?</span></span>
-              <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400"></i>
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Une latence supérieure à <strong>1.5 secondes</strong> crée une conversation robotique.
               Les meilleures solutions descendent sous <strong>500ms</strong> end-to-end.
               VocalIA atteint moins de 500ms grâce à son architecture optimisée.
@@ -687,11 +687,11 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 font-semibold hover:bg-slate-700/30 rounded-xl flex items-center justify-between">
+            <summary class="p-4 font-semibold hover:bg-white/[0.03] rounded-xl flex items-center justify-between">
               <span><span data-i18n="blog_comment_choisir_solu.comment_viter_les_10">Comment éviter les pièges courants ?</span></span>
-              <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400"></i>
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Les pièges les plus courants sont : <strong>1)</strong> Le tarif d'appel facturé séparément,
               <strong>2)</strong> L'engagement minimum annuel, <strong>3)</strong> Les intégrations sur devis,
               <strong>4)</strong> La qualité des voix qui diffère de la démo.
@@ -700,11 +700,11 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 font-semibold hover:bg-slate-700/30 rounded-xl flex items-center justify-between">
+            <summary class="p-4 font-semibold hover:bg-white/[0.03] rounded-xl flex items-center justify-between">
               <span><span data-i18n="blog_comment_choisir_solu.vocalia_estelle_conforme_9">VocalIA est-elle conforme au RGPD et à l'AI Act ?</span></span>
-              <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400"></i>
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Oui, VocalIA est <strong><span data-i18n="blog_comment_choisir_solu.conforme_au_rgpd_8">conforme au RGPD</span></strong> et prête pour l'<strong>AI Act européen</strong>
               (août 2026). La plateforme inclut nativement la déclaration d'IA, les logs d'audit,
               le transfert humain à la demande, et l'hébergement des données en Europe.
@@ -712,11 +712,11 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 font-semibold hover:bg-slate-700/30 rounded-xl flex items-center justify-between">
+            <summary class="p-4 font-semibold hover:bg-white/[0.03] rounded-xl flex items-center justify-between">
               <span><span data-i18n="blog_comment_choisir_solu.combien_dintgrations_vocalia_6">Combien d'intégrations VocalIA propose-t-elle ?</span></span>
-              <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400"></i>
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               VocalIA propose <strong>31+ intégrations natives</strong> (HubSpot, Pipedrive, Shopify, Stripe,
               Calendly, Google Calendar, etc.) et <strong>203 outils MCP</strong> pour connecter vos
               systèmes existants. C'est plus que la plupart des concurrents.
@@ -724,11 +724,11 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 font-semibold hover:bg-slate-700/30 rounded-xl flex items-center justify-between">
+            <summary class="p-4 font-semibold hover:bg-white/[0.03] rounded-xl flex items-center justify-between">
               <span><span data-i18n="blog_comment_choisir_solu.puisje_tester_vocalia_5">Puis-je tester VocalIA gratuitement ?</span></span>
-              <i data-lucide="chevron-down" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400"></i>
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Oui, VocalIA propose un <strong><span data-i18n="blog_comment_choisir_solu.essai_gratuit_4">essai gratuit</span></strong> sans engagement.
               Vous pouvez tester toutes les fonctionnalités, y compris les intégrations,
               avant de vous engager. Demandez une démo pour commencer.
@@ -738,7 +738,7 @@
 
         <div class="glass rounded-xl p-8 my-12 text-center">
           <h3 class="text-2xl font-bold mb-4"><span data-i18n="blog_comment_choisir_solu.comparez_par_vousmme_3">Comparez par vous-même</span></h3>
-          <p class="text-slate-400 mb-6">
+          <p class="text-zinc-400 mb-6">
             Testez VocalIA gratuitement et comparez avec votre solution actuelle.
             40 personas métier, 31+ intégrations, 0.06€/min.
           </p>
@@ -746,7 +746,7 @@
             <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
               Essai gratuit
             </a>
-            <a href="/pricing" class="inline-block px-8 py-3 border border-slate-600 hover:border-vocalia-400 rounded-xl font-semibold transition">
+            <a href="/pricing" class="inline-block px-8 py-3 border border-white/[0.08] hover:border-vocalia-400 rounded-xl font-semibold transition">
               Voir les tarifs
             </a>
           </div>
@@ -782,7 +782,7 @@
     </article>
   </main><!-- Footer -->
   <!-- Newsletter CTA loads separately via data-component="newsletter-cta" -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -805,16 +805,16 @@
           </div>
           <!-- Social Links (WCAG 2.1 AA: min 44x44px touch targets) -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-5 h-5 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-5 h-5"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-5 h-5"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-5 h-5"></i>
             </a>
           </div>
@@ -871,29 +871,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span>AI Act Ready</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span>AES-256</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -994,5 +994,7 @@
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

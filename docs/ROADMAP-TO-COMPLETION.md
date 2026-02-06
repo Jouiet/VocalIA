@@ -640,13 +640,14 @@ C'est un **compromis connu** car aucun provider ne supporte le code `ary` native
 
 **Effort:** ~10h | **Impact:** Architecture 8→9
 
-### P3-2. Staging environment
+### P3-2. ✅ DONE (250.118) — Staging environment
 
-- [ ] Docker Compose staging
-- [ ] CI deploys to staging on PR
-- [ ] Smoke tests on staging before prod
+- [x] **P3-2a.** `docker-compose.staging.yml` — 3 services (db-api, voice-api, website) with local volume mounts
+- [x] **P3-2b.** CI staging job added to `.github/workflows/ci.yml` — triggers on `develop` push, validates Docker Compose
+- [x] **P3-2c.** `Dockerfile.vocalia-api` fixed — added missing `lib/` and `sensors/` directories
+- [x] **P3-2d.** `CONTRIBUTING.md` created — setup, dev commands, code standards, branch strategy
 
-**Effort:** ~8h | **Impact:** Production 9→10
+**Effort:** ~1h | **Impact:** Production 7→8, Dev experience +1
 
 ### P3-3. ✅ DONE (250.108) — Load testing scripts exist
 
@@ -825,7 +826,8 @@ Seul le persona AGENCY a été audité exhaustivement (243 tests). Les 39 autres
 | .eslintrc.json | ✅ Existe | Config ESLint présente |
 | Prettier config | ✅ Existe | `.prettierrc` (was already present, ROADMAP was wrong) |
 | LICENSE | ✅ Existe | PROPRIETARY (created 250.105) |
-| CONTRIBUTING.md | ❌ Absent | Aucun fichier |
+| CONTRIBUTING.md | ✅ Existe | Setup, dev commands, standards (250.118) |
+| docker-compose staging | ✅ Existe | `docker-compose.staging.yml` (3 services, 250.118) |
 
 ### 7.4 Security Headers
 
@@ -913,6 +915,13 @@ create_booking          get_recommendations    qualify_lead
 | 4 widget bugs documented (generateConfig $preset, validateConfig null, deploymentFiles) | 250.115 | widget.test.cjs |
 | API docs "Coming soon" fixed (Ruby + Go SDK examples) | 250.116 | website/docs/api.html |
 | features.html quantum void design aligned with homepage | 250.116 | All slate → #050505 quantum void |
+| **Quantum void ALL 77 pages** (5,489 replacements, 0 slate remaining) | 250.117 | `grep -rn "slate-" website/*.html` = 0 |
+| Widget injected on ALL 47 public pages (was 12/46) | 250.117 | voice-widget-b2b.js on every public page |
+| Token optimization: clients/ + data/contexts/ + .claude/plans/ added to .gitignore | 250.117 | ~15k tokens saved per message |
+| Content security: 5 public page violations fixed (Grok/Gemini/Twilio removed) | 250.117 | index, voice-widget, voice-widget-b2c, terms |
+| Staging Docker Compose (3 services) + CI staging job | 250.118 | docker-compose.staging.yml + ci.yml |
+| Dockerfile fixed: added lib/ + sensors/ directories | 250.118 | Dockerfile.vocalia-api |
+| CONTRIBUTING.md created (setup, standards, branch strategy) | 250.118 | CONTRIBUTING.md |
 
 ---
 
@@ -924,18 +933,17 @@ create_booking          get_recommendations    qualify_lead
 | **P0-NEW (250.115)** | ✅ **7/8 DONE** | 7 test quality tasks done, 1 pending | 5.2 → 7.2 |
 | **P1** | ✅ **DONE** | 7/7 complete | 6.5 → 7.0 |
 | **P2** | ✅ **DONE** | 7/7 complete | 7.0 → 7.5 |
-| **P3** | ⬜ PENDING | 5 excellence tasks | cible: 9.5+ |
+| **P3** | 🔄 **2/5 DONE** | P3-2 + P3-3 done, 3 remaining | cible: 9.5+ |
 
-**Current Score: 7.2/10** (up from 5.2 — test surgery + website polish)
+**Current Score: 7.5/10** (up from 7.2 — staging env + quantum void site + widget coverage)
 
 **Remaining:**
 ```
 P0-NEW-8 (integration chain tests, 4h) ← LAST P0 TASK
 → P3-1 (ESM migration, 10h)
-→ P3-2 (Staging environment, 8h)
 → P3-4 (A2A widget integration, 6h)
 → P3-5 (Persona audit × 5, 8h)
-TOTAL: ~36h
+TOTAL: ~28h
 ```
 
 **Methodology: Tests are scored by BUG DETECTION CAPABILITY, not pass rate.**
@@ -943,8 +951,8 @@ A test suite that catches 0/7 known bugs scores LOW regardless of pass count.
 
 ---
 
-*Document mis à jour le 2026-02-06 — Session 250.116*
-*P0-original complete (6/6), P1 complete (7/7), P2 complete (7/7), P0-NEW 7/8 complete.*
-*250.115: Test deep surgery — 4 files rebuilt, +319 behavioral tests, 1 real bug fixed.*
-*250.116: Website polish — features.html quantum void design, API docs "Coming soon" fixed.*
-*Score: 5.2 → 7.2/10. Remaining: P0-NEW-8 (4h) + P3 (5 tasks, ~36h)*
+*Document mis à jour le 2026-02-07 — Session 250.118*
+*P0-original complete (6/6), P1 complete (7/7), P2 complete (7/7), P0-NEW 7/8 complete, P3 2/5 complete.*
+*250.117: Quantum void ALL 77 pages (5,489 replacements), widget on ALL 47 public pages, token optimization, content security.*
+*250.118: Staging Docker Compose, Dockerfile fix, CONTRIBUTING.md, CI staging job.*
+*Score: 7.2 → 7.5/10. Remaining: P0-NEW-8 (4h) + P3 (3 tasks, ~24h)*

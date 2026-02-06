@@ -57,13 +57,13 @@
   }
   </script>
 
-  <style>body{background:#1e293b;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
+  <style>body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif;margin:0}</style>
   <link href="/public/css/style.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     .gradient-text { background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .glass { background: rgba(51, 65, 85, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(148, 163, 184, 0.25); }
+    .glass { background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
     .prose { max-width: 65ch; }
     .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; }
     .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.75rem; }
@@ -84,7 +84,7 @@
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
   
 </head>
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Simple Nav -->
   <nav class="fixed top-0 left-0 right-0 z-50 glass">
     <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
@@ -94,16 +94,16 @@
       </a>
       <div class="flex items-center gap-4">
         <div class="relative">
-          <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-1 px-2 py-1 rounded hover:bg-slate-700/50 transition text-sm">
+          <button type="button" data-action="toggleLangDropdown" class="flex items-center gap-1 px-2 py-1 rounded hover:bg-white/[0.04] transition text-sm">
             <span id="currentLang">FR</span>
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 rounded-lg bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50">
-            <button type="button" data-action="switchLang" data-params="fr" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_reduire_couts_suppor.francais_114">Francais</span></button>
-            <button type="button" data-action="switchLang" data-params="en" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_reduire_couts_suppor.english_113">English</span></button>
-            <button type="button" data-action="switchLang" data-params="es" class="w-full px-3 py-2 hover:bg-slate-700/50 text-left text-sm"><span data-i18n="blog_reduire_couts_suppor.espanol_112">Espanol</span></button>
-            <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">العربية</button>
-            <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full px-3 py-2 hover:bg-slate-700/50 text-right text-sm">الدارجة</button>
+          <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 rounded-lg bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50">
+            <button type="button" data-action="switchLang" data-params="fr" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_reduire_couts_suppor.francais_114">Francais</span></button>
+            <button type="button" data-action="switchLang" data-params="en" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_reduire_couts_suppor.english_113">English</span></button>
+            <button type="button" data-action="switchLang" data-params="es" class="w-full px-3 py-2 hover:bg-white/[0.04] text-left text-sm"><span data-i18n="blog_reduire_couts_suppor.espanol_112">Espanol</span></button>
+            <button type="button" data-action="switchLang" data-params="ar" dir="rtl" class="w-full px-3 py-2 hover:bg-white/[0.04] text-right text-sm">العربية</button>
+            <button type="button" data-action="switchLang" data-params="ary" dir="rtl" class="w-full px-3 py-2 hover:bg-white/[0.04] text-right text-sm">الدارجة</button>
           </div>
         </div>
         <a href="/blog" class="text-vocalia-300 hover:text-white transition text-sm">← Retour au blog</a>
@@ -116,7 +116,7 @@
       <!-- Header -->
       <header class="mb-12">
         <nav class="mb-6" aria-label="Breadcrumb">
-          <ol class="flex items-center space-x-2 text-sm text-slate-400">
+          <ol class="flex items-center space-x-2 text-sm text-zinc-400">
             <li><a href="/" class="hover:text-white transition"><span data-i18n="blog_reduire_couts_suppor.accueil_111">Accueil</span></a></li>
             <li><span class="mx-2">/</span></li>
             <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
@@ -131,7 +131,7 @@
           Comment réduire de <span class="gradient-text">70%</span> vos coûts support client avec Voice AI
         </h1>
 
-        <div class="flex items-center gap-4 text-slate-400">
+        <div class="flex items-center gap-4 text-zinc-400">
           <div class="flex items-center gap-2">
             <div class="w-10 h-10 rounded-full bg-vocalia-500/20 flex items-center justify-center">
               <span class="text-sm font-semibold">VA</span>
@@ -151,7 +151,7 @@
           <i data-lucide="list" class="w-5 h-5 text-vocalia-400"></i>
           Sommaire
         </h2>
-        <ol class="space-y-2 text-slate-300">
+        <ol class="space-y-2 text-zinc-300">
           <li><a href="#cout-reel" class="hover:text-vocalia-400 transition">1. Le coût réel du support client traditionnel</a></li>
           <li><a href="#anatomie-couts" class="hover:text-vocalia-400 transition">2. Anatomie détaillée des coûts cachés</a></li>
           <li><a href="#comment-voice-ai" class="hover:text-vocalia-400 transition">3. Comment Voice AI réduit les coûts</a></li>
@@ -167,7 +167,7 @@
 
       <!-- Content -->
       <div class="prose">
-        <p class="text-xl text-slate-300 mb-8">
+        <p class="text-xl text-zinc-300 mb-8">
           Les coûts de support client représentent en moyenne <strong>15-20% du budget opérationnel</strong> des entreprises.
           L'IA vocale permet de réduire ces coûts de 70% tout en améliorant la satisfaction client de 25%.
           Ce guide complet vous montre comment, avec des calculs ROI détaillés et des exemples concrets.
@@ -177,19 +177,19 @@
         <div class="grid md:grid-cols-4 gap-4 my-8">
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-emerald-400 mb-1">70%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_reduire_couts_suppor.rduction_cots_107">Réduction coûts</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.rduction_cots_107">Réduction coûts</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-vocalia-400 mb-1">24/7</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_reduire_couts_suppor.disponibilit_76"><span data-i18n="blog_reduire_couts_suppor.disponibilit_106">Disponibilité</span></span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.disponibilit_76"><span data-i18n="blog_reduire_couts_suppor.disponibilit_106">Disponibilité</span></span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-amber-400 mb-1">0.06€</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_reduire_couts_suppor.par_minute_105">Par minute</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.par_minute_105">Par minute</span></div>
           </div>
           <div class="stat-card rounded-xl p-4 text-center">
             <div class="text-2xl font-bold text-sky-400 mb-1">+25%</div>
-            <div class="text-xs text-slate-400"><span data-i18n="blog_reduire_couts_suppor.csat_amlior_104">CSAT amélioré</span></div>
+            <div class="text-xs text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.csat_amlior_104">CSAT amélioré</span></div>
           </div>
         </div>
 
@@ -203,15 +203,15 @@
         <div class="grid md:grid-cols-3 gap-4 my-8">
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">35 000€</div>
-            <div class="text-sm text-slate-400">Coût annuel / agent (Maroc)</div>
+            <div class="text-sm text-zinc-400">Coût annuel / agent (Maroc)</div>
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">8-12€</div>
-            <div class="text-sm text-slate-400"><span data-i18n="blog_reduire_couts_suppor.par_interaction_tlphonique_103">Par interaction téléphonique</span></div>
+            <div class="text-sm text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.par_interaction_tlphonique_103">Par interaction téléphonique</span></div>
           </div>
           <div class="stat-card rounded-xl p-6 text-center">
             <div class="text-3xl font-bold text-white mb-2">60%</div>
-            <div class="text-sm text-slate-400"><span data-i18n="blog_reduire_couts_suppor.taux_doccupation_rel_102">Taux d'occupation réel</span></div>
+            <div class="text-sm text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.taux_doccupation_rel_102">Taux d'occupation réel</span></div>
           </div>
         </div>
 
@@ -225,39 +225,39 @@
         <div class="glass rounded-xl p-6 my-8">
           <h3 class="text-lg font-semibold mb-4"><span data-i18n="blog_reduire_couts_suppor.dcomposition_du_cot_101">Décomposition du coût total par agent</span></h3>
           <div class="space-y-3">
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.salaire_brut_annuel_100">Salaire brut annuel</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.salaire_brut_annuel_100">Salaire brut annuel</span></span>
               <span class="text-white font-semibold">24 000€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.charges_sociales_42_99">Charges sociales (42%)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.charges_sociales_42_99">Charges sociales (42%)</span></span>
               <span class="text-white font-semibold">10 080€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.formation_initiale_3_98">Formation initiale (3 semaines)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.formation_initiale_3_98">Formation initiale (3 semaines)</span></span>
               <span class="text-white font-semibold">2 500€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Formation continue (24h/an)</span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400">Formation continue (24h/an)</span>
               <span class="text-white font-semibold">1 200€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.quipement_pc_casque_97">Équipement (PC, casque, licence)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.quipement_pc_casque_97">Équipement (PC, casque, licence)</span></span>
               <span class="text-white font-semibold">1 500€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Supervision (ratio 1:8)</span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400">Supervision (ratio 1:8)</span>
               <span class="text-white font-semibold">4 375€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Locaux (8m² × 150€/m²)</span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400">Locaux (8m² × 150€/m²)</span>
               <span class="text-white font-semibold">1 200€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.turnover_30_recrutement_96">Turnover (30%, recrutement)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.turnover_30_recrutement_96">Turnover (30%, recrutement)</span></span>
               <span class="text-white font-semibold">3 500€</span>
             </div>
-            <div class="flex justify-between pt-2 bg-slate-700/30 -mx-6 px-6 py-3 rounded-b-xl">
+            <div class="flex justify-between pt-2 bg-white/[0.03] -mx-6 px-6 py-3 rounded-b-xl">
               <span class="text-white font-bold"><span data-i18n="blog_reduire_couts_suppor.cot_total_rel_95">COÛT TOTAL RÉEL</span></span>
               <span class="text-rose-400 font-bold text-xl">48 355€/an</span>
             </div>
@@ -297,7 +297,7 @@
         <div class="grid md:grid-cols-2 gap-4 my-6">
           <div class="glass rounded-lg p-4">
             <h4 class="font-semibold text-vocalia-400 mb-2"><span data-i18n="blog_reduire_couts_suppor.automatisable_immdiatement_93">Automatisable immédiatement</span></h4>
-            <ul class="text-sm text-slate-300 space-y-1">
+            <ul class="text-sm text-zinc-300 space-y-1">
               <li>✓ Statut de commande (15-20%)</li>
               <li>✓ Horaires et adresses (8-12%)</li>
               <li>✓ FAQ produits/services (10-15%)</li>
@@ -307,7 +307,7 @@
           </div>
           <div class="glass rounded-lg p-4">
             <h4 class="font-semibold text-amber-400 mb-2"><span data-i18n="blog_reduire_couts_suppor.ncessite_un_humain_92">Nécessite un humain</span></h4>
-            <ul class="text-sm text-slate-300 space-y-1">
+            <ul class="text-sm text-zinc-300 space-y-1">
               <li>→ Réclamations complexes (15-20%)</li>
               <li>→ Négociations commerciales (5-10%)</li>
               <li>→ Support technique avancé (10-15%)</li>
@@ -328,29 +328,29 @@
 
         <table class="w-full my-6 text-sm">
           <thead>
-            <tr class="border-b border-slate-600">
-              <th class="text-left py-2 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.tape_91">Étape</span></th>
-              <th class="text-center py-2 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.agent_humain_80"><span data-i18n="blog_reduire_couts_suppor.agent_humain_90">Agent humain</span></span></th>
+            <tr class="border-b border-white/[0.08]">
+              <th class="text-left py-2 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.tape_91">Étape</span></th>
+              <th class="text-center py-2 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.agent_humain_80"><span data-i18n="blog_reduire_couts_suppor.agent_humain_90">Agent humain</span></span></th>
               <th class="text-center py-2 text-vocalia-400"><span data-i18n="blog_reduire_couts_suppor.voice_ai_79"><span data-i18n="blog_reduire_couts_suppor.voice_ai_89">Voice AI</span></span></th>
             </tr>
           </thead>
           <tbody>
-            <tr class="border-b border-slate-700">
+            <tr class="border-b border-white/[0.08]">
               <td class="py-2"><span data-i18n="blog_reduire_couts_suppor.identification_client_88">Identification client</span></td>
               <td class="text-center">30-60 sec</td>
               <td class="text-center text-emerald-400"><span data-i18n="blog_reduire_couts_suppor.instant_85"><span data-i18n="blog_reduire_couts_suppor.instant_87">Instant</span></span></td>
             </tr>
-            <tr class="border-b border-slate-700">
+            <tr class="border-b border-white/[0.08]">
               <td class="py-2"><span data-i18n="blog_reduire_couts_suppor.recherche_historique_86">Recherche historique</span></td>
               <td class="text-center">45-90 sec</td>
               <td class="text-center text-emerald-400">Instant</td>
             </tr>
-            <tr class="border-b border-slate-700">
+            <tr class="border-b border-white/[0.08]">
               <td class="py-2"><span data-i18n="blog_reduire_couts_suppor.recherche_base_de_84">Recherche base de connaissances</span></td>
               <td class="text-center">30-120 sec</td>
               <td class="text-center text-emerald-400">0.5 sec</td>
             </tr>
-            <tr class="border-b border-slate-700">
+            <tr class="border-b border-white/[0.08]">
               <td class="py-2">Saisie ticket/CRM</td>
               <td class="text-center">60-90 sec</td>
               <td class="text-center text-emerald-400">Auto</td>
@@ -395,57 +395,57 @@
         <div class="overflow-x-auto my-8">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-3 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.critre_81">Critère</span></th>
-                <th class="text-center py-3 text-slate-400">Agent humain</th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-3 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.critre_81">Critère</span></th>
+                <th class="text-center py-3 text-zinc-400">Agent humain</th>
                 <th class="text-center py-3 text-vocalia-400">Voice AI</th>
-                <th class="text-center py-3 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.chatbot_texte_78">Chatbot texte</span></th>
+                <th class="text-center py-3 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.chatbot_texte_78">Chatbot texte</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.cot_par_interaction_77">Coût par interaction</span></td>
                 <td class="text-center">8-12€</td>
                 <td class="text-center text-emerald-400">0.18-0.36€</td>
                 <td class="text-center">0.05-0.10€</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3">Disponibilité</td>
                 <td class="text-center">8h-20h (coûteux 24/7)</td>
                 <td class="text-center text-emerald-400">24/7 inclus</td>
                 <td class="text-center">24/7 inclus</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.temps_de_rponse_16"><span data-i18n="blog_reduire_couts_suppor.temps_de_rponse_75">Temps de réponse</span></span></td>
                 <td class="text-center">1-5 min attente</td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_reduire_couts_suppor.immdiat_73"><span data-i18n="blog_reduire_couts_suppor.immdiat_74">Immédiat</span></span></td>
                 <td class="text-center">Immédiat</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.accessibilit_seniors_72">Accessibilité seniors</span></td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_reduire_couts_suppor.excellente_70"><span data-i18n="blog_reduire_couts_suppor.excellente_71">Excellente</span></span></td>
                 <td class="text-center text-emerald-400">Excellente</td>
                 <td class="text-center text-rose-400"><span data-i18n="blog_reduire_couts_suppor.faible_64"><span data-i18n="blog_reduire_couts_suppor.faible_69">Faible</span></span></td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.multitches_conduite_68">Multi-tâches (conduite)</span></td>
                 <td class="text-center text-emerald-400">Oui</td>
                 <td class="text-center text-emerald-400">Oui</td>
                 <td class="text-center text-rose-400">Non</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.empathie_perue_67">Empathie perçue</span></td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_reduire_couts_suppor.leve_66">Élevée</span></td>
                 <td class="text-center"><span data-i18n="blog_reduire_couts_suppor.bonne_65">Bonne</span></td>
                 <td class="text-center text-rose-400">Faible</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.monte_en_charge_63">Montée en charge</span></td>
                 <td class="text-center text-rose-400"><span data-i18n="blog_reduire_couts_suppor.semaines_62">Semaines</span></td>
                 <td class="text-center text-emerald-400"><span data-i18n="blog_reduire_couts_suppor.immdiate_60"><span data-i18n="blog_reduire_couts_suppor.immdiate_61">Immédiate</span></span></td>
                 <td class="text-center text-emerald-400">Immédiate</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.langues_59">Langues</span></td>
                 <td class="text-center">1-2 (recrutement)</td>
                 <td class="text-center text-emerald-400">5+ natives</td>
@@ -468,28 +468,28 @@
         <div class="glass rounded-xl p-6 my-8">
           <h4 class="text-lg font-semibold mb-4"><span data-i18n="blog_reduire_couts_suppor.situation_actuelle_55">Situation actuelle</span></h4>
           <div class="space-y-3">
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.volume_mensuel_54">Volume mensuel</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.volume_mensuel_54">Volume mensuel</span></span>
               <span class="text-white font-semibold">10 000 appels</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.cot_moyen_par_53">Coût moyen par appel (8€)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.cot_moyen_par_53">Coût moyen par appel (8€)</span></span>
               <span class="text-rose-400 font-semibold">80 000€/mois</span>
             </div>
           </div>
 
           <h4 class="text-lg font-semibold mt-6 mb-4"><span data-i18n="blog_reduire_couts_suppor.avec_vocalia_60_52">Avec VocalIA (60% automatisé)</span></h4>
           <div class="space-y-3">
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">6 000 appels IA (3min × 0.06€)</span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400">6 000 appels IA (3min × 0.06€)</span>
               <span class="text-emerald-400 font-semibold">1 080€/mois</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">4 000 appels humains (8€)</span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400">4 000 appels humains (8€)</span>
               <span class="text-white font-semibold">32 000€/mois</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.abonnement_vocalia_pro_51">Abonnement VocalIA Pro</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.abonnement_vocalia_pro_51">Abonnement VocalIA Pro</span></span>
               <span class="text-white font-semibold">1 199 DH/mois (~110€)</span>
             </div>
             <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
@@ -503,7 +503,7 @@
 
         <div class="glass rounded-xl p-6 my-8">
           <h4 class="text-lg font-semibold mb-4"><span data-i18n="blog_reduire_couts_suppor.profil_49">Profil</span></h4>
-          <ul class="text-slate-300 mb-4">
+          <ul class="text-zinc-300 mb-4">
             <li>• Volume normal : 5 000 appels/mois</li>
             <li>• Pic (Black Friday, Noël) : 25 000 appels/mois</li>
             <li>• 70% des appels = statut commande, retours, FAQ</li>
@@ -511,12 +511,12 @@
 
           <h4 class="text-lg font-semibold mt-6 mb-4"><span data-i18n="blog_reduire_couts_suppor.roi_pendant_les_48">ROI pendant les pics</span></h4>
           <div class="space-y-3">
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.cot_intrimaires_20_47">Coût intérimaires (20 agents × 2 mois)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.cot_intrimaires_20_47">Coût intérimaires (20 agents × 2 mois)</span></span>
               <span class="text-rose-400 font-semibold">70 000€</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.cot_vocalia_50_46">Coût VocalIA (50 000 appels × 3min × 0.06€)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.cot_vocalia_50_46">Coût VocalIA (50 000 appels × 3min × 0.06€)</span></span>
               <span class="text-emerald-400 font-semibold">9 000€</span>
             </div>
             <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
@@ -530,7 +530,7 @@
 
         <div class="glass rounded-xl p-6 my-8">
           <h4 class="text-lg font-semibold mb-4"><span data-i18n="blog_reduire_couts_suppor.problmatique_44">Problématique</span></h4>
-          <ul class="text-slate-300 mb-4">
+          <ul class="text-zinc-300 mb-4">
             <li>• 3 000 appels/mois (80% prises de RDV)</li>
             <li>• 2 secrétaires médicales (60 000€/an total)</li>
             <li>• 25% d'appels perdus aux heures de pointe</li>
@@ -539,16 +539,16 @@
 
           <h4 class="text-lg font-semibold mt-6 mb-4"><span data-i18n="blog_reduire_couts_suppor.rsultats_avec_vocalia_43">Résultats avec VocalIA</span></h4>
           <div class="space-y-3">
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.conomie_personnel_1_42">Économie personnel (1 secrétaire)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.conomie_personnel_1_42">Économie personnel (1 secrétaire)</span></span>
               <span class="text-emerald-400 font-semibold">30 000€/an</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400">Récupération appels perdus (750/mois × 50€)</span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400">Récupération appels perdus (750/mois × 50€)</span>
               <span class="text-emerald-400 font-semibold">37 500€/an</span>
             </div>
-            <div class="flex justify-between border-b border-slate-600 pb-2">
-              <span class="text-slate-400"><span data-i18n="blog_reduire_couts_suppor.rduction_noshows_60_41">Réduction no-shows (-60% × 200€ × 450)</span></span>
+            <div class="flex justify-between border-b border-white/[0.08] pb-2">
+              <span class="text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.rduction_noshows_60_41">Réduction no-shows (-60% × 200€ × 450)</span></span>
               <span class="text-emerald-400 font-semibold">54 000€/an</span>
             </div>
             <div class="flex justify-between pt-2 bg-emerald-500/10 -mx-6 px-6 py-3 rounded-b-xl">
@@ -563,39 +563,39 @@
         <div class="overflow-x-auto my-8">
           <table class="w-full text-sm">
             <thead>
-              <tr class="border-b border-slate-600">
-                <th class="text-left py-3 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.industrie_39">Industrie</span></th>
-                <th class="text-center py-3 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.taux_automatisation_38">Taux automatisation</span></th>
-                <th class="text-center py-3 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.conomie_moyenne_37">Économie moyenne</span></th>
-                <th class="text-center py-3 text-slate-400"><span data-i18n="blog_reduire_couts_suppor.roi_moyen_36">ROI moyen</span></th>
+              <tr class="border-b border-white/[0.08]">
+                <th class="text-left py-3 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.industrie_39">Industrie</span></th>
+                <th class="text-center py-3 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.taux_automatisation_38">Taux automatisation</span></th>
+                <th class="text-center py-3 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.conomie_moyenne_37">Économie moyenne</span></th>
+                <th class="text-center py-3 text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.roi_moyen_36">ROI moyen</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.ecommerce_35">E-commerce</span></td>
                 <td class="text-center">70-80%</td>
                 <td class="text-center text-emerald-400">65-75%</td>
                 <td class="text-center">3-6 mois</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3">Santé / Cliniques</td>
                 <td class="text-center">75-85%</td>
                 <td class="text-center text-emerald-400">60-70%</td>
                 <td class="text-center">2-4 mois</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.immobilier_34">Immobilier</span></td>
                 <td class="text-center">60-70%</td>
                 <td class="text-center text-emerald-400">50-60%</td>
                 <td class="text-center">4-6 mois</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.htellerie_33">Hôtellerie</span></td>
                 <td class="text-center">65-75%</td>
                 <td class="text-center text-emerald-400">55-65%</td>
                 <td class="text-center">3-5 mois</td>
               </tr>
-              <tr class="border-b border-slate-700">
+              <tr class="border-b border-white/[0.08]">
                 <td class="py-3"><span data-i18n="blog_reduire_couts_suppor.services_financiers_32">Services financiers</span></td>
                 <td class="text-center">50-60%</td>
                 <td class="text-center text-emerald-400">45-55%</td>
@@ -621,11 +621,11 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2"><span data-i18n="blog_reduire_couts_suppor.audit_des_interactions_30">Audit des interactions (1 semaine)</span></h3>
-                <p class="text-slate-300">
+                <p class="text-zinc-300">
                   Analysez 2 semaines d'appels pour identifier les 20% de requêtes qui représentent 80% du volume.
                   Classez-les par type : FAQ, transactions, réclamations, RDV.
                 </p>
-                <div class="mt-3 text-sm text-slate-400">
+                <div class="mt-3 text-sm text-zinc-400">
                   <strong>Livrable :</strong> Matrice de priorisation avec volume et complexité par type de requête.
                 </div>
               </div>
@@ -639,11 +639,11 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2"><span data-i18n="blog_reduire_couts_suppor.configuration_du_persona_29">Configuration du persona (2-3 jours)</span></h3>
-                <p class="text-slate-300">
+                <p class="text-zinc-300">
                   Choisissez parmi les 40 personas VocalIA pré-configurés ou créez le vôtre.
                   Définissez le ton, le vocabulaire métier, et les scripts de réponse.
                 </p>
-                <div class="mt-3 text-sm text-slate-400">
+                <div class="mt-3 text-sm text-zinc-400">
                   <strong>Livrable :</strong> Persona configuré avec base de connaissances métier.
                 </div>
               </div>
@@ -657,11 +657,11 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2">Intégrations CRM/ERP (1 semaine)</h3>
-                <p class="text-slate-300">
+                <p class="text-zinc-300">
                   Connectez VocalIA à vos systèmes existants : CRM, e-commerce, agenda, ERP.
                   31+ intégrations natives disponibles (Shopify, HubSpot, Calendly, etc.).
                 </p>
-                <div class="mt-3 text-sm text-slate-400">
+                <div class="mt-3 text-sm text-zinc-400">
                   <strong>Livrable :</strong> Flux de données bidirectionnels fonctionnels.
                 </div>
               </div>
@@ -675,11 +675,11 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2"><span data-i18n="blog_reduire_couts_suppor.pilote_contrl_2_28">Pilote contrôlé (2 semaines)</span></h3>
-                <p class="text-slate-300">
+                <p class="text-zinc-300">
                   Déployez sur 20% du trafic. Surveillez le taux de résolution, la satisfaction,
                   et les transferts vers humains. Ajustez les scripts.
                 </p>
-                <div class="mt-3 text-sm text-slate-400">
+                <div class="mt-3 text-sm text-zinc-400">
                   <strong>Livrable :</strong> Rapport de performance avec métriques clés.
                 </div>
               </div>
@@ -693,11 +693,11 @@
               </div>
               <div>
                 <h3 class="text-lg font-semibold mb-2"><span data-i18n="blog_reduire_couts_suppor.dploiement_progressif_1_27">Déploiement progressif (1 mois)</span></h3>
-                <p class="text-slate-300">
+                <p class="text-zinc-300">
                   Étendez à 50%, puis 80%, puis 100% du trafic automatisable.
                   Formez l'équipe humaine à traiter uniquement les cas complexes.
                 </p>
-                <div class="mt-3 text-sm text-slate-400">
+                <div class="mt-3 text-sm text-zinc-400">
                   <strong>Livrable :</strong> Documentation opérationnelle et playbook de transfert.
                 </div>
               </div>
@@ -715,10 +715,10 @@
               </div>
               <div>
                 <h4 class="font-semibold"><span data-i18n="blog_reduire_couts_suppor.clinique_amal_26">Clinique Amal</span></h4>
-                <span class="text-sm text-slate-400"><span data-i18n="blog_reduire_couts_suppor.casablanca_sant_25">Casablanca, Santé</span></span>
+                <span class="text-sm text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.casablanca_sant_25">Casablanca, Santé</span></span>
               </div>
             </div>
-            <ul class="text-slate-300 space-y-2">
+            <ul class="text-zinc-300 space-y-2">
               <li class="flex justify-between">
                 <span><span data-i18n="blog_reduire_couts_suppor.rduction_noshows_24">Réduction no-shows</span></span>
                 <span class="text-emerald-400 font-semibold">-60%</span>
@@ -741,10 +741,10 @@
               </div>
               <div>
                 <h4 class="font-semibold"><span data-i18n="blog_reduire_couts_suppor.agence_immo_plus_21">Agence Immo Plus</span></h4>
-                <span class="text-sm text-slate-400"><span data-i18n="blog_reduire_couts_suppor.rabat_immobilier_20">Rabat, Immobilier</span></span>
+                <span class="text-sm text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.rabat_immobilier_20">Rabat, Immobilier</span></span>
               </div>
             </div>
-            <ul class="text-slate-300 space-y-2">
+            <ul class="text-zinc-300 space-y-2">
               <li class="flex justify-between">
                 <span><span data-i18n="blog_reduire_couts_suppor.conversion_leads_19">Conversion leads</span></span>
                 <span class="text-emerald-400 font-semibold">+45%</span>
@@ -767,10 +767,10 @@
               </div>
               <div>
                 <h4 class="font-semibold"><span data-i18n="blog_reduire_couts_suppor.ecommerce_mode_18">E-commerce Mode</span></h4>
-                <span class="text-sm text-slate-400"><span data-i18n="blog_reduire_couts_suppor.marrakech_retail_17">Marrakech, Retail</span></span>
+                <span class="text-sm text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.marrakech_retail_17">Marrakech, Retail</span></span>
               </div>
             </div>
-            <ul class="text-slate-300 space-y-2">
+            <ul class="text-zinc-300 space-y-2">
               <li class="flex justify-between">
                 <span>Temps de réponse</span>
                 <span class="text-emerald-400 font-semibold">-70%</span>
@@ -793,10 +793,10 @@
               </div>
               <div>
                 <h4 class="font-semibold"><span data-i18n="blog_reduire_couts_suppor.riad_luxe_14">Riad Luxe</span></h4>
-                <span class="text-sm text-slate-400"><span data-i18n="blog_reduire_couts_suppor.fs_htellerie_13">Fès, Hôtellerie</span></span>
+                <span class="text-sm text-zinc-400"><span data-i18n="blog_reduire_couts_suppor.fs_htellerie_13">Fès, Hôtellerie</span></span>
               </div>
             </div>
-            <ul class="text-slate-300 space-y-2">
+            <ul class="text-zinc-300 space-y-2">
               <li class="flex justify-between">
                 <span><span data-i18n="blog_reduire_couts_suppor.rservations_directes_12">Réservations directes</span></span>
                 <span class="text-emerald-400 font-semibold">+35%</span>
@@ -818,37 +818,37 @@
         <div class="space-y-4 my-8">
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">1. Vouloir tout automatiser d'un coup</h4>
-            <p class="text-slate-300 text-sm"><span data-i18n="blog_reduire_couts_suppor.commencez_par_les_9">Commencez par les FAQ simples (20% des requêtes). Étendez progressivement.</span></p>
+            <p class="text-zinc-300 text-sm"><span data-i18n="blog_reduire_couts_suppor.commencez_par_les_9">Commencez par les FAQ simples (20% des requêtes). Étendez progressivement.</span></p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">2. Ignorer le transfert vers l'humain</h4>
-            <p class="text-slate-300 text-sm">Prévoyez toujours une option "parler à un conseiller". L'IA détecte quand escalader.</p>
+            <p class="text-zinc-300 text-sm">Prévoyez toujours une option "parler à un conseiller". L'IA détecte quand escalader.</p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">3. Sous-estimer la base de connaissances</h4>
-            <p class="text-slate-300 text-sm">80% de la qualité vient de la KB. Investissez dans la documentation métier.</p>
+            <p class="text-zinc-300 text-sm">80% de la qualité vient de la KB. Investissez dans la documentation métier.</p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">4. Ne pas mesurer avant/après</h4>
-            <p class="text-slate-300 text-sm">Établissez des métriques baseline (coût/appel, CSAT, temps résolution) avant déploiement.</p>
+            <p class="text-zinc-300 text-sm">Établissez des métriques baseline (coût/appel, CSAT, temps résolution) avant déploiement.</p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">5. Oublier la formation équipe</h4>
-            <p class="text-slate-300 text-sm">Vos agents doivent comprendre l'IA, superviser les cas complexes, et améliorer les scripts.</p>
+            <p class="text-zinc-300 text-sm">Vos agents doivent comprendre l'IA, superviser les cas complexes, et améliorer les scripts.</p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">6. Choisir un ton inadapté</h4>
-            <p class="text-slate-300 text-sm">Le persona doit correspondre à votre marque. Trop formel ou trop casual nuit à l'expérience.</p>
+            <p class="text-zinc-300 text-sm">Le persona doit correspondre à votre marque. Trop formel ou trop casual nuit à l'expérience.</p>
           </div>
 
           <div class="glass rounded-lg p-4 border-l-4 border-rose-500">
             <h4 class="font-semibold text-rose-400 mb-1">7. Ignorer le multilingue</h4>
-            <p class="text-slate-300 text-sm"><span data-i18n="blog_reduire_couts_suppor.au_maroc_40_8">Au Maroc, 40% des clients préfèrent le Darija. Ne les excluez pas.</span></p>
+            <p class="text-zinc-300 text-sm"><span data-i18n="blog_reduire_couts_suppor.au_maroc_40_8">Au Maroc, 40% des clients préfèrent le Darija. Ne les excluez pas.</span></p>
           </div>
         </div>
 
@@ -856,10 +856,10 @@
 
         <div class="space-y-4 my-8">
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               L'IA vocale remplace-t-elle les agents humains ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Non, elle les libère des tâches répétitives. Les agents se concentrent sur les cas complexes,
               la vente conseil, et les situations émotionnelles. La plupart de nos clients réaffectent
               leurs agents plutôt que de les licencier.
@@ -867,20 +867,20 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Combien de temps pour voir des résultats ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Les premières économies sont visibles dès le premier mois. Le ROI complet se mesure
               généralement à 3 mois, une fois le déploiement terminé et les scripts optimisés.
             </div>
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Et si les clients n'aiment pas parler à une IA ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Nos études montrent que 73% des clients préfèrent une résolution immédiate par IA
               à 5 minutes d'attente pour un humain. L'option de transfert reste toujours disponible
               pour les 27% qui le préfèrent.
@@ -888,10 +888,10 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Les données clients sont-elles sécurisées ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               VocalIA est 100% conforme RGPD avec chiffrement AES-256, hébergement européen,
               et certifications SOC2 en cours. Aucune donnée n'est utilisée pour entraîner
               d'autres modèles.
@@ -899,10 +899,10 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Quel est le coût réel par minute ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               0.06€/minute avec VocalIA, contre 0.15-0.25€ chez les concurrents.
               Ce tarif inclut la reconnaissance vocale, le traitement IA, et la synthèse vocale.
               Pas de frais cachés.
@@ -910,10 +910,10 @@
           </details>
 
           <details class="glass rounded-xl">
-            <summary class="p-4 cursor-pointer font-semibold hover:bg-slate-700/30 rounded-xl">
+            <summary class="p-4 cursor-pointer font-semibold hover:bg-white/[0.03] rounded-xl">
               Peut-on intégrer à notre téléphonie existante ?
             </summary>
-            <div class="px-4 pb-4 text-slate-300">
+            <div class="px-4 pb-4 text-zinc-300">
               Oui, VocalIA s'intègre via SIP trunk à tout PBX (Asterisk, 3CX, FreePBX, etc.)
               ou via transfert d'appel simple. Installation en moins de 2 heures.
             </div>
@@ -923,7 +923,7 @@
         <!-- CTA Final -->
         <div class="glass rounded-xl p-8 my-12 text-center">
           <h3 class="text-2xl font-bold mb-4"><span data-i18n="blog_reduire_couts_suppor.prt_rduire_vos_7">Prêt à réduire vos coûts support ?</span></h3>
-          <p class="text-slate-400 mb-6 max-w-lg mx-auto">
+          <p class="text-zinc-400 mb-6 max-w-lg mx-auto">
             Obtenez une estimation ROI personnalisée pour votre entreprise.
             Notre équipe analyse gratuitement vos flux d'appels.
           </p>
@@ -931,14 +931,14 @@
             <a href="/contact" class="inline-block px-8 py-3 bg-vocalia-500 hover:bg-vocalia-400 rounded-xl font-semibold transition">
               Demander une démo gratuite
             </a>
-            <a href="/pricing" class="inline-block px-8 py-3 border border-slate-600 hover:border-vocalia-400 rounded-xl font-semibold transition">
+            <a href="/pricing" class="inline-block px-8 py-3 border border-white/[0.08] hover:border-vocalia-400 rounded-xl font-semibold transition">
               Voir les tarifs
             </a>
           </div>
         </div>
 
         <!-- Related Articles -->
-        <div class="border-t border-slate-700 pt-8 mt-12">
+        <div class="border-t border-white/[0.08] pt-8 mt-12">
           <h3 class="text-lg font-semibold mb-6"><span data-i18n="blog_reduire_couts_suppor.articles_connexes_6">Articles connexes</span></h3>
           <div class="grid md:grid-cols-2 gap-4">
             <a href="/blog/articles/clinique-amal-rappels-vocaux" class="glass rounded-lg p-4 hover:border-vocalia-400 transition">
@@ -956,7 +956,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -979,16 +979,16 @@
           </div>
           <!-- Social Links -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-4 h-4"></i>
             </a>
           </div>
@@ -1045,29 +1045,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="blog_reduire_couts_suppor.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="blog_reduire_couts_suppor.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -1187,5 +1187,7 @@
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
     <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

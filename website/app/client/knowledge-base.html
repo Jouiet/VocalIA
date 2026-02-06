@@ -15,31 +15,31 @@
   <script src="/src/lib/i18n.js"></script>
   <script src="/src/lib/api-client.js"></script>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
-      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+    <aside id="sidebar" class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
+      <div class="p-4 border-b border-zinc-200 dark:border-white/[0.08]">
         <a href="/app/client/" class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
-          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+          <span class="text-xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
         </a>
       </div>
 
       <nav class="flex-1 p-4 space-y-1">
-        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span>Tableau de bord</span>
         </a>
-        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="phone" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.calls">Appels</span>
         </a>
-        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="bot" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.agents">Agents IA</span>
         </a>
-        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="package" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.catalog">Catalogue</span>
         </a>
@@ -47,35 +47,35 @@
           <i data-lucide="book-open" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
         </a>
-        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="plug" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.integrations">Intégrations</span>
         </a>
-        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.analytics">Analytics</span>
         </a>
-        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="credit-card" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.billing">Facturation</span>
         </a>
-        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="settings" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.settings">Paramètres</span>
         </a>
       </nav>
 
-      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 border-t border-zinc-200 dark:border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
             <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
-            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+            <p id="user-name" class="text-sm font-medium text-zinc-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-zinc-500 truncate"></p>
           </div>
-          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+            <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
       </div>
@@ -83,14 +83,14 @@
 
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="kb.title">Base de Connaissances</h1>
-            <p class="text-slate-600 dark:text-slate-400" data-i18n="kb.subtitle">Personnalisez les réponses de votre agent IA</p>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="kb.title">Base de Connaissances</h1>
+            <p class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.subtitle">Personnalisez les réponses de votre agent IA</p>
           </div>
           <div class="flex items-center gap-3">
-            <button id="btn-import" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+            <button id="btn-import" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
               <i data-lucide="upload" class="w-4 h-4"></i>
               <span data-i18n="kb.import">Importer</span>
             </button>
@@ -105,58 +105,58 @@
       <div class="px-6 py-6 space-y-6">
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
                 <i data-lucide="file-text" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.entries">Entrées</p>
-                <p id="stat-entries" class="text-2xl font-bold text-slate-900 dark:text-white">-</p>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.entries">Entrées</p>
+                <p id="stat-entries" class="text-2xl font-bold text-zinc-900 dark:text-white">-</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
                 <i data-lucide="globe" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.languages">Langues</p>
-                <p id="stat-languages" class="text-2xl font-bold text-slate-900 dark:text-white">5</p>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.languages">Langues</p>
+                <p id="stat-languages" class="text-2xl font-bold text-zinc-900 dark:text-white">5</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                 <i data-lucide="database" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.index_size">Index TF-IDF</p>
-                <p id="stat-index" class="text-2xl font-bold text-slate-900 dark:text-white">-</p>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.index_size">Index TF-IDF</p>
+                <p id="stat-index" class="text-2xl font-bold text-zinc-900 dark:text-white">-</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                 <i data-lucide="clock" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="kb.stats.last_update">Dernière MAJ</p>
-                <p id="stat-updated" class="text-lg font-bold text-slate-900 dark:text-white">-</p>
+                <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="kb.stats.last_update">Dernière MAJ</p>
+                <p id="stat-updated" class="text-lg font-bold text-zinc-900 dark:text-white">-</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Quota Usage -->
-        <div id="quota-section" class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+        <div id="quota-section" class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2">
-              <i data-lucide="gauge" class="w-5 h-5 text-slate-500"></i>
-              <h3 class="font-medium text-slate-900 dark:text-white" data-i18n="kb.quota.title">Utilisation du Quota</h3>
+              <i data-lucide="gauge" class="w-5 h-5 text-zinc-500"></i>
+              <h3 class="font-medium text-zinc-900 dark:text-white" data-i18n="kb.quota.title">Utilisation du Quota</h3>
             </div>
             <span id="quota-plan" class="px-2 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400">-</span>
           </div>
@@ -164,30 +164,30 @@
             <!-- Entries Quota -->
             <div>
               <div class="flex justify-between text-sm mb-1">
-                <span class="text-slate-600 dark:text-slate-400" data-i18n="kb.quota.entries">Entrées</span>
-                <span id="quota-entries-text" class="text-slate-900 dark:text-white">-/-</span>
+                <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.entries">Entrées</span>
+                <span id="quota-entries-text" class="text-zinc-900 dark:text-white">-/-</span>
               </div>
-              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+              <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
                 <div id="quota-entries-bar" class="bg-indigo-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
               </div>
             </div>
             <!-- Storage Quota -->
             <div>
               <div class="flex justify-between text-sm mb-1">
-                <span class="text-slate-600 dark:text-slate-400" data-i18n="kb.quota.storage">Stockage</span>
-                <span id="quota-storage-text" class="text-slate-900 dark:text-white">-/-</span>
+                <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.storage">Stockage</span>
+                <span id="quota-storage-text" class="text-zinc-900 dark:text-white">-/-</span>
               </div>
-              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+              <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
                 <div id="quota-storage-bar" class="bg-emerald-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
               </div>
             </div>
             <!-- Languages Quota -->
             <div>
               <div class="flex justify-between text-sm mb-1">
-                <span class="text-slate-600 dark:text-slate-400" data-i18n="kb.quota.languages">Langues</span>
-                <span id="quota-languages-text" class="text-slate-900 dark:text-white">-/-</span>
+                <span class="text-zinc-600 dark:text-zinc-400" data-i18n="kb.quota.languages">Langues</span>
+                <span id="quota-languages-text" class="text-zinc-900 dark:text-white">-/-</span>
               </div>
-              <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+              <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-2">
                 <div id="quota-languages-bar" class="bg-amber-600 h-2 rounded-full transition-[width] duration-700 ease-out" style="width: 0%"></div>
               </div>
             </div>
@@ -197,26 +197,26 @@
         </div>
 
         <!-- Filters & Search -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
           <div class="flex flex-wrap items-center gap-4">
             <div class="flex-1 min-w-[200px]">
               <div class="relative">
-                <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
-                <input type="text" id="search-input" placeholder="Rechercher dans la KB..." class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <i data-lucide="search" class="w-5 h-5 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="search-input" placeholder="Rechercher dans la KB..." class="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
             </div>
-            <select id="filter-language" class="px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <select id="filter-language" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               <option value="fr">Français (FR)</option>
               <option value="en">English (EN)</option>
               <option value="es">Español (ES)</option>
               <option value="ar">العربية (AR)</option>
               <option value="ary">الدارجة (ARY)</option>
             </select>
-            <button id="btn-crawl-url" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+            <button id="btn-crawl-url" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
               <i data-lucide="globe" class="w-4 h-4"></i>
               <span data-i18n="kb.crawl_url">Crawler URL</span>
             </button>
-            <button id="btn-rebuild-index" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 flex items-center gap-2">
+            <button id="btn-rebuild-index" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08] flex items-center gap-2">
               <i data-lucide="refresh-cw" class="w-4 h-4"></i>
               <span data-i18n="kb.rebuild_index">Reconstruire Index</span>
             </button>
@@ -228,20 +228,20 @@
         </div>
 
         <!-- KB Entries Table -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden hover:shadow-lg transition-all duration-200">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-hidden hover:shadow-lg transition-all duration-200">
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
+              <thead class="bg-zinc-50 dark:bg-[#0a0a0a]/50 border-b border-zinc-200 dark:border-white/[0.08]">
                 <tr>
-                  <th class="text-left px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.key">Clé</th>
-                  <th class="text-left px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.content">Contenu</th>
-                  <th class="text-left px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.type">Type</th>
-                  <th class="text-right px-4 py-3 text-sm font-medium text-slate-600 dark:text-slate-400" data-i18n="kb.table.actions">Actions</th>
+                  <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.key">Clé</th>
+                  <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.content">Contenu</th>
+                  <th class="text-left px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.type">Type</th>
+                  <th class="text-right px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="kb.table.actions">Actions</th>
                 </tr>
               </thead>
-              <tbody id="kb-entries-body" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody id="kb-entries-body" class="divide-y divide-zinc-200 dark:divide-white/[0.08]">
                 <tr>
-                  <td colspan="4" class="px-4 py-8 text-center text-slate-500">
+                  <td colspan="4" class="px-4 py-8 text-center text-zinc-500">
                     <i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto mb-2"></i>
                     <p data-i18n="kb.loading">Chargement...</p>
                   </td>
@@ -257,31 +257,31 @@
   <!-- Add/Edit Entry Modal -->
   <div id="entry-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="entry-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h3 id="entry-modal-title" class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="kb.modal.add_title">Ajouter une entrée</h3>
-        <button id="entry-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-2xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
+        <h3 id="entry-modal-title" class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.modal.add_title">Ajouter une entrée</h3>
+        <button id="entry-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
       </div>
       <form id="entry-form" class="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.key">Clé (identifiant unique)</label>
-          <input type="text" id="entry-key" required pattern="[a-z0-9_]+" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: horaires, livraison, promotions">
-          <p class="text-xs text-slate-500 mt-1" data-i18n="kb.modal.key_hint">Lettres minuscules, chiffres et underscores uniquement</p>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.key">Clé (identifiant unique)</label>
+          <input type="text" id="entry-key" required pattern="[a-z0-9_]+" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: horaires, livraison, promotions">
+          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.key_hint">Lettres minuscules, chiffres et underscores uniquement</p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.response">Réponse (texte affiché à l'utilisateur)</label>
-          <textarea id="entry-response" rows="3" required class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: Notre boutique est ouverte du lundi au samedi de 9h à 20h."></textarea>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.response">Réponse (texte affiché à l'utilisateur)</label>
+          <textarea id="entry-response" rows="3" required class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ex: Notre boutique est ouverte du lundi au samedi de 9h à 20h."></textarea>
         </div>
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.details">Détails (JSON optionnel)</label>
-          <textarea id="entry-details" rows="4" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder='{"lundi": "09:00-20:00", "mardi": "09:00-20:00"}'></textarea>
-          <p class="text-xs text-slate-500 mt-1" data-i18n="kb.modal.details_hint">Format JSON valide pour les données structurées</p>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.details">Détails (JSON optionnel)</label>
+          <textarea id="entry-details" rows="4" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder='{"lundi": "09:00-20:00", "mardi": "09:00-20:00"}'></textarea>
+          <p class="text-xs text-zinc-500 mt-1" data-i18n="kb.modal.details_hint">Format JSON valide pour les données structurées</p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.modal.language">Langue</label>
-          <select id="entry-language" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.modal.language">Langue</label>
+          <select id="entry-language" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="fr">Français (FR)</option>
             <option value="en">English (EN)</option>
             <option value="es">Español (ES)</option>
@@ -290,8 +290,8 @@
           </select>
         </div>
       </form>
-      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
-        <button type="button" id="entry-modal-cancel" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#0a0a0a]/50">
+        <button type="button" id="entry-modal-cancel" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <span data-i18n="common.cancel">Annuler</span>
         </button>
         <button type="submit" form="entry-form" class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
@@ -304,18 +304,18 @@
   <!-- Import Modal -->
   <div id="import-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="import-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="kb.import_modal.title">Importer des données</h3>
-        <button id="import-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
+        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.import_modal.title">Importer des données</h3>
+        <button id="import-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
       </div>
       <div class="p-6 space-y-4">
-        <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center" id="drop-zone">
-          <i data-lucide="upload-cloud" class="w-12 h-12 text-slate-400 mx-auto mb-4"></i>
-          <p class="text-slate-700 dark:text-slate-300 mb-2" data-i18n="kb.import_modal.drop_text">Glissez un fichier JSON ou CSV ici</p>
-          <p class="text-sm text-slate-500 mb-4" data-i18n="kb.import_modal.or">ou</p>
+        <div class="border-2 border-dashed border-zinc-300 dark:border-white/[0.08] rounded-lg p-8 text-center" id="drop-zone">
+          <i data-lucide="upload-cloud" class="w-12 h-12 text-zinc-400 mx-auto mb-4"></i>
+          <p class="text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="kb.import_modal.drop_text">Glissez un fichier JSON ou CSV ici</p>
+          <p class="text-sm text-zinc-500 mb-4" data-i18n="kb.import_modal.or">ou</p>
           <label class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg cursor-pointer inline-block">
             <span data-i18n="kb.import_modal.browse">Parcourir</span>
             <input type="file" id="import-file" accept=".json,.csv" class="hidden">
@@ -323,22 +323,22 @@
         </div>
         <div id="import-preview" class="hidden">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-slate-700 dark:text-slate-300" data-i18n="kb.import_modal.preview">Aperçu</span>
-            <span id="import-file-name" class="text-sm text-slate-500"></span>
+            <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300" data-i18n="kb.import_modal.preview">Aperçu</span>
+            <span id="import-file-name" class="text-sm text-zinc-500"></span>
           </div>
-          <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-3 max-h-48 overflow-auto">
-            <pre id="import-data-preview" class="text-xs text-slate-600 dark:text-slate-400 font-mono"></pre>
+          <div class="bg-zinc-50 dark:bg-[#0a0a0a] rounded-lg p-3 max-h-48 overflow-auto">
+            <pre id="import-data-preview" class="text-xs text-zinc-600 dark:text-zinc-400 font-mono"></pre>
           </div>
         </div>
         <div>
           <label class="flex items-center gap-2">
-            <input type="checkbox" id="import-overwrite" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-            <span class="text-sm text-slate-700 dark:text-slate-300" data-i18n="kb.import_modal.overwrite">Écraser les entrées existantes</span>
+            <input type="checkbox" id="import-overwrite" checked class="rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-sm text-zinc-700 dark:text-zinc-300" data-i18n="kb.import_modal.overwrite">Écraser les entrées existantes</span>
           </label>
         </div>
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.import_modal.language">Langue cible</label>
-          <select id="import-language" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.import_modal.language">Langue cible</label>
+          <select id="import-language" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="fr">Français (FR)</option>
             <option value="en">English (EN)</option>
             <option value="es">Español (ES)</option>
@@ -347,8 +347,8 @@
           </select>
         </div>
       </div>
-      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
-        <button type="button" id="import-modal-cancel" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#0a0a0a]/50">
+        <button type="button" id="import-modal-cancel" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <span data-i18n="common.cancel">Annuler</span>
         </button>
         <button type="button" id="import-submit" disabled class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg">
@@ -361,26 +361,26 @@
   <!-- Crawler URL Modal -->
   <div id="crawl-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="crawl-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
-        <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="kb.crawl_modal.title">Crawler un site web</h3>
-        <button id="crawl-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-xl bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
+        <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="kb.crawl_modal.title">Crawler un site web</h3>
+        <button id="crawl-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
       </div>
       <div class="p-6 space-y-4">
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.crawl_modal.url">URL du site web</label>
-          <input type="url" id="crawl-url" required placeholder="https://www.example.com" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.crawl_modal.url">URL du site web</label>
+          <input type="url" id="crawl-url" required placeholder="https://www.example.com" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.crawl_modal.max_pages">Pages max</label>
-            <input type="number" id="crawl-max-pages" value="10" min="1" max="50" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.crawl_modal.max_pages">Pages max</label>
+            <input type="number" id="crawl-max-pages" value="10" min="1" max="50" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="kb.crawl_modal.language">Langue</label>
-            <select id="crawl-language" class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="kb.crawl_modal.language">Langue</label>
+            <select id="crawl-language" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               <option value="fr">Français</option>
               <option value="en">English</option>
               <option value="es">Español</option>
@@ -391,25 +391,25 @@
         </div>
         <div>
           <label class="flex items-center gap-2">
-            <input type="checkbox" id="crawl-single" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-            <span class="text-sm text-slate-700 dark:text-slate-300" data-i18n="kb.crawl_modal.single_page">Page unique seulement</span>
+            <input type="checkbox" id="crawl-single" class="rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <span class="text-sm text-zinc-700 dark:text-zinc-300" data-i18n="kb.crawl_modal.single_page">Page unique seulement</span>
           </label>
         </div>
-        <div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-3">
-          <p class="text-xs text-slate-500 dark:text-slate-400">
+        <div class="bg-zinc-50 dark:bg-[#0a0a0a]/50 rounded-lg p-3">
+          <p class="text-xs text-zinc-500 dark:text-zinc-400">
             <i data-lucide="info" class="w-3 h-3 inline mr-1"></i>
             <span data-i18n="kb.crawl_modal.info">Le crawler extraira automatiquement les FAQ, horaires, informations de contact et autres données pertinentes du site web.</span>
           </p>
         </div>
         <div id="crawl-progress" class="hidden">
-          <div class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+          <div class="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
             <i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i>
             <span data-i18n="kb.crawl_modal.crawling">Crawling en cours...</span>
           </div>
         </div>
       </div>
-      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
-        <button type="button" id="crawl-modal-cancel" class="px-4 py-2 text-sm border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
+      <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#0a0a0a]/50">
+        <button type="button" id="crawl-modal-cancel" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <span data-i18n="common.cancel">Annuler</span>
         </button>
         <button type="button" id="crawl-submit" class="px-4 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg flex items-center gap-2">
@@ -423,19 +423,19 @@
   <!-- Test Chatbot Modal -->
   <div id="chatbot-modal" class="fixed inset-0 z-50 hidden">
     <div class="absolute inset-0 bg-black/50" id="chatbot-modal-backdrop"></div>
-    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white dark:bg-slate-800 rounded-xl shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
-      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+    <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white dark:bg-white/[0.06] rounded-xl shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-zinc-200 dark:border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
             <i data-lucide="bot" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
           </div>
           <div>
-            <h3 class="font-semibold text-slate-900 dark:text-white" data-i18n="kb.chatbot.title">Test du Chatbot</h3>
-            <p class="text-xs text-slate-500" data-i18n="kb.chatbot.subtitle">Testez les réponses de votre KB</p>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="kb.chatbot.title">Test du Chatbot</h3>
+            <p class="text-xs text-zinc-500" data-i18n="kb.chatbot.subtitle">Testez les réponses de votre KB</p>
           </div>
         </div>
-        <button id="chatbot-modal-close" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
+        <button id="chatbot-modal-close" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <i data-lucide="x" class="w-5 h-5 text-zinc-500"></i>
         </button>
       </div>
       <div id="chatbot-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
@@ -443,14 +443,14 @@
           <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
             <i data-lucide="bot" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
           </div>
-          <div class="bg-slate-100 dark:bg-slate-700 rounded-lg px-4 py-2 max-w-[80%]">
-            <p class="text-slate-700 dark:text-slate-200" data-i18n="kb.chatbot.welcome">Bonjour ! Testez votre base de connaissances en posant une question.</p>
+          <div class="bg-zinc-100 dark:bg-white/[0.06] rounded-lg px-4 py-2 max-w-[80%]">
+            <p class="text-zinc-700 dark:text-zinc-200" data-i18n="kb.chatbot.welcome">Bonjour ! Testez votre base de connaissances en posant une question.</p>
           </div>
         </div>
       </div>
-      <div class="border-t border-slate-200 dark:border-slate-700 p-4">
+      <div class="border-t border-zinc-200 dark:border-white/[0.08] p-4">
         <form id="chatbot-form" class="flex items-center gap-2">
-          <input type="text" id="chatbot-input" placeholder="Posez une question..." class="flex-1 px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <input type="text" id="chatbot-input" placeholder="Posez une question..." class="flex-1 px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
           <button type="submit" class="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
             <i data-lucide="send" class="w-5 h-5"></i>
           </button>
@@ -629,7 +629,7 @@
       if (filtered.length === 0) {
         entriesBody.innerHTML = `
           <tr>
-            <td colspan="4" class="px-4 py-8 text-center text-slate-500">
+            <td colspan="4" class="px-4 py-8 text-center text-zinc-500">
               <i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2"></i>
               <p>Aucune entrée trouvée</p>
             </td>
@@ -643,21 +643,21 @@
         const response = typeof value === 'object' ? (value.response || JSON.stringify(value).slice(0, 100)) : String(value);
         const type = typeof value === 'object' ? 'Objet' : 'Texte';
         return `
-          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+          <tr class="hover:bg-zinc-50 dark:hover:bg-white/[0.08]/50">
             <td class="px-4 py-3">
-              <code class="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded text-sm text-slate-700 dark:text-slate-300">${escapeHtml(key)}</code>
+              <code class="px-2 py-1 bg-zinc-100 dark:bg-white/[0.06] rounded text-sm text-zinc-700 dark:text-zinc-300">${escapeHtml(key)}</code>
             </td>
             <td class="px-4 py-3">
-              <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">${escapeHtml(response)}</p>
+              <p class="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">${escapeHtml(response)}</p>
             </td>
             <td class="px-4 py-3">
-              <span class="px-2 py-1 text-xs rounded-full ${type === 'Objet' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400'}">${type}</span>
+              <span class="px-2 py-1 text-xs rounded-full ${type === 'Objet' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-zinc-100 text-zinc-600 dark:bg-white/[0.06] dark:text-zinc-400'}">${type}</span>
             </td>
             <td class="px-4 py-3 text-right">
-              <button onclick="editEntry('${key}')" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-indigo-600">
+              <button onclick="editEntry('${key}')" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08] text-zinc-500 hover:text-indigo-600">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
               </button>
-              <button onclick="deleteEntry('${key}')" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-red-600">
+              <button onclick="deleteEntry('${key}')" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08] text-zinc-500 hover:text-red-600">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
             </td>
@@ -1057,8 +1057,8 @@
             <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
               <i data-lucide="bot" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
             </div>
-            <div class="bg-slate-100 dark:bg-slate-700 rounded-lg px-4 py-2 max-w-[80%]">
-              <p class="text-slate-700 dark:text-slate-200">${escapeHtml(response)}</p>
+            <div class="bg-zinc-100 dark:bg-white/[0.06] rounded-lg px-4 py-2 max-w-[80%]">
+              <p class="text-zinc-700 dark:text-zinc-200">${escapeHtml(response)}</p>
             </div>
           </div>
         `;
@@ -1080,8 +1080,8 @@
             <div class="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0">
               <i data-lucide="bot" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
             </div>
-            <div class="bg-slate-100 dark:bg-slate-700 rounded-lg px-4 py-2 max-w-[80%]">
-              <p class="text-slate-700 dark:text-slate-200">${escapeHtml(response)}</p>
+            <div class="bg-zinc-100 dark:bg-white/[0.06] rounded-lg px-4 py-2 max-w-[80%]">
+              <p class="text-zinc-700 dark:text-zinc-200">${escapeHtml(response)}</p>
             </div>
           </div>
         `;

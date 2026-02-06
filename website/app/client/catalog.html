@@ -16,31 +16,31 @@
   <script src="/src/lib/i18n.js"></script>
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside id="sidebar"
-      class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
-      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+      class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
+      <div class="p-4 border-b border-zinc-200 dark:border-white/[0.08]">
         <a href="/app/client/" class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
-          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+          <span class="text-xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
         </a>
       </div>
 
       <nav class="flex-1 p-4 space-y-1">
         <a href="index.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.overview">Tableau de bord</span>
         </a>
         <a href="calls.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="phone" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.calls">Appels</span>
         </a>
         <a href="agents.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="bot" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.agents">Agents IA</span>
         </a>
@@ -50,43 +50,43 @@
           <span data-i18n="dashboard.nav.catalog">Catalogue</span>
         </a>
         <a href="knowledge-base.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="book-open" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
         </a>
         <a href="integrations.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="plug" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.integrations">Intégrations</span>
         </a>
         <a href="analytics.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.analytics">Analytics</span>
         </a>
         <a href="billing.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="credit-card" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.billing">Facturation</span>
         </a>
         <a href="settings.html"
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="settings" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.settings">Paramètres</span>
         </a>
       </nav>
 
-      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 border-t border-zinc-200 dark:border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
             <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
-            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+            <p id="user-name" class="text-sm font-medium text-zinc-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-zinc-500 truncate"></p>
           </div>
-          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+            <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
       </div>
@@ -95,17 +95,17 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
       <header
-        class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+        class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="catalog.title">Catalogue Produits
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="catalog.title">Catalogue Produits
             </h1>
-            <p class="text-slate-600 dark:text-slate-400" data-i18n="catalog.subtitle">Gérez vos produits, menus et
+            <p class="text-zinc-600 dark:text-zinc-400" data-i18n="catalog.subtitle">Gérez vos produits, menus et
               services pour l'IA vocale</p>
           </div>
           <div class="flex gap-3">
             <button id="import-btn"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600 transition-colors">
+              class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-white/[0.06] border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 font-medium rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.1] transition-colors">
               <i data-lucide="upload" class="w-5 h-5"></i>
               <span data-i18n="catalog.import">Importer</span>
             </button>
@@ -121,58 +121,58 @@
       <div class="px-6 py-6">
         <!-- Catalog Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
                 <i data-lucide="package" class="w-6 h-6 text-indigo-600 dark:text-indigo-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.total">Total articles</p>
-                <p id="stat-total" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="catalog.stats.total">Total articles</p>
+                <p id="stat-total" class="text-2xl font-bold text-zinc-900 dark:text-white">0</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
                 <i data-lucide="check-circle" class="w-6 h-6 text-green-600 dark:text-green-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.available">Disponibles
+                <p class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="catalog.stats.available">Disponibles
                 </p>
-                <p id="stat-available" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+                <p id="stat-available" class="text-2xl font-bold text-zinc-900 dark:text-white">0</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-lg bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center">
                 <i data-lucide="alert-triangle" class="w-6 h-6 text-amber-600 dark:text-amber-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.low_stock">Stock faible
+                <p class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="catalog.stats.low_stock">Stock faible
                 </p>
-                <p id="stat-low-stock" class="text-2xl font-bold text-slate-900 dark:text-white">0</p>
+                <p id="stat-low-stock" class="text-2xl font-bold text-zinc-900 dark:text-white">0</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center">
                 <i data-lucide="refresh-cw" class="w-6 h-6 text-purple-600 dark:text-purple-400"></i>
               </div>
               <div>
-                <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.stats.last_sync">Dernière sync
+                <p class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="catalog.stats.last_sync">Dernière sync
                 </p>
-                <p id="stat-last-sync" class="text-lg font-medium text-slate-900 dark:text-white">-</p>
+                <p id="stat-last-sync" class="text-lg font-medium text-zinc-900 dark:text-white">-</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Catalog Type Selector -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 mb-6 hover:shadow-lg transition-all duration-200">
-          <div class="border-b border-slate-200 dark:border-slate-700 px-4">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] mb-6 hover:shadow-lg transition-all duration-200">
+          <div class="border-b border-zinc-200 dark:border-white/[0.08] px-4">
             <nav class="flex gap-1 -mb-px">
               <button
                 class="catalog-tab active px-4 py-3 text-sm font-medium border-b-2 border-indigo-600 text-indigo-600 dark:text-indigo-400"
@@ -181,25 +181,25 @@
                 <span data-i18n="catalog.type.products">Produits</span>
               </button>
               <button
-                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 data-type="menu">
                 <i data-lucide="utensils" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.menu">Menu</span>
               </button>
               <button
-                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 data-type="services">
                 <i data-lucide="wrench" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.services">Services</span>
               </button>
               <button
-                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 data-type="fleet">
                 <i data-lucide="car" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.fleet">Véhicules</span>
               </button>
               <button
-                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+                class="catalog-tab px-4 py-3 text-sm font-medium border-b-2 border-transparent text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 data-type="trips">
                 <i data-lucide="plane" class="w-4 h-4 inline mr-2"></i>
                 <span data-i18n="catalog.type.trips">Voyages</span>
@@ -208,20 +208,20 @@
           </div>
 
           <!-- Search & Filters -->
-          <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+          <div class="p-4 border-b border-zinc-200 dark:border-white/[0.08]">
             <div class="flex flex-col md:flex-row gap-4">
               <div class="flex-1 relative">
-                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400"></i>
                 <input type="text" id="search-input"
-                  class="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  class="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Rechercher un article..." data-i18n-placeholder="catalog.search_placeholder">
               </div>
               <select id="category-filter"
-                class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                class="px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
                 <option value="" data-i18n="catalog.filter.all_categories">Toutes les catégories</option>
               </select>
               <select id="status-filter"
-                class="px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                class="px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
                 <option value="" data-i18n="catalog.filter.all_status">Tous les statuts</option>
                 <option value="available" data-i18n="catalog.filter.available">Disponible</option>
                 <option value="low_stock" data-i18n="catalog.filter.low_stock">Stock faible</option>
@@ -233,35 +233,35 @@
           <!-- Catalog Items Table -->
           <div class="overflow-x-auto">
             <table class="w-full">
-              <thead class="bg-slate-50 dark:bg-slate-700/50">
+              <thead class="bg-zinc-50 dark:bg-white/[0.06]/50">
                 <tr>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    class="px-4 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.item">Article</span>
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    class="px-4 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.category">Catégorie</span>
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    class="px-4 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.price">Prix</span>
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    class="px-4 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.stock">Stock</span>
                   </th>
                   <th
-                    class="px-4 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    class="px-4 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.status">Statut</span>
                   </th>
                   <th
-                    class="px-4 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                    class="px-4 py-3 text-right text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     <span data-i18n="catalog.table.actions">Actions</span>
                   </th>
                 </tr>
               </thead>
-              <tbody id="catalog-items" class="divide-y divide-slate-200 dark:divide-slate-700">
+              <tbody id="catalog-items" class="divide-y divide-zinc-200 dark:divide-white/[0.08]">
                 <!-- Items will be loaded dynamically -->
               </tbody>
             </table>
@@ -270,12 +270,12 @@
           <!-- Empty State -->
           <div id="empty-state" class="hidden p-12 text-center">
             <div
-              class="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
-              <i data-lucide="package-x" class="w-8 h-8 text-slate-400"></i>
+              class="w-16 h-16 mx-auto mb-4 rounded-full bg-zinc-100 dark:bg-white/[0.06] flex items-center justify-center">
+              <i data-lucide="package-x" class="w-8 h-8 text-zinc-400"></i>
             </div>
-            <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-2" data-i18n="catalog.empty.title">Aucun
+            <h3 class="text-lg font-medium text-zinc-900 dark:text-white mb-2" data-i18n="catalog.empty.title">Aucun
               article</h3>
-            <p class="text-slate-500 dark:text-slate-400 mb-4" data-i18n="catalog.empty.description">Commencez par
+            <p class="text-zinc-500 dark:text-zinc-400 mb-4" data-i18n="catalog.empty.description">Commencez par
               importer votre catalogue ou ajouter des articles manuellement.</p>
             <button id="empty-import-btn"
               class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
@@ -285,8 +285,8 @@
           </div>
 
           <!-- Pagination -->
-          <div class="px-4 py-3 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between">
-            <p class="text-sm text-slate-500 dark:text-slate-400">
+          <div class="px-4 py-3 border-t border-zinc-200 dark:border-white/[0.08] flex items-center justify-between">
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">
               <span data-i18n="catalog.showing">Affichage de</span>
               <span id="page-start">1</span>-<span id="page-end">10</span>
               <span data-i18n="catalog.of">sur</span>
@@ -295,12 +295,12 @@
             </p>
             <div class="flex gap-2">
               <button id="prev-page"
-                class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50"
+                class="px-3 py-1 border border-zinc-300 dark:border-white/[0.08] rounded text-sm disabled:opacity-50"
                 disabled>
                 <i data-lucide="chevron-left" class="w-4 h-4"></i>
               </button>
               <button id="next-page"
-                class="px-3 py-1 border border-slate-300 dark:border-slate-600 rounded text-sm disabled:opacity-50">
+                class="px-3 py-1 border border-zinc-300 dark:border-white/[0.08] rounded text-sm disabled:opacity-50">
                 <i data-lucide="chevron-right" class="w-4 h-4"></i>
               </button>
             </div>
@@ -331,47 +331,47 @@
   <div id="import-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen px-4">
       <div class="fixed inset-0 bg-black/50" id="import-modal-backdrop"></div>
-      <div class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-lg w-full p-6">
+      <div class="relative bg-white dark:bg-white/[0.06] rounded-xl shadow-xl max-w-lg w-full p-6">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.import_modal.title">
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="catalog.import_modal.title">
             Importer le catalogue</h3>
-          <button id="close-import-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+          <button id="close-import-modal" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+            <i data-lucide="x" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
 
         <div class="space-y-4">
-          <div class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-8 text-center">
+          <div class="border-2 border-dashed border-zinc-300 dark:border-white/[0.08] rounded-lg p-8 text-center">
             <input type="file" id="file-input" class="hidden" accept=".json,.csv,.xlsx">
-            <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-slate-400 mb-4"></i>
-            <p class="text-slate-600 dark:text-slate-400 mb-2" data-i18n="catalog.import_modal.drag_drop">Glissez un
+            <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-zinc-400 mb-4"></i>
+            <p class="text-zinc-600 dark:text-zinc-400 mb-2" data-i18n="catalog.import_modal.drag_drop">Glissez un
               fichier ici ou</p>
             <button id="browse-files" class="text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
               data-i18n="catalog.import_modal.browse">parcourir</button>
-            <p class="text-xs text-slate-400 mt-2" data-i18n="catalog.import_modal.formats">Formats: JSON, CSV, XLSX</p>
+            <p class="text-xs text-zinc-400 mt-2" data-i18n="catalog.import_modal.formats">Formats: JSON, CSV, XLSX</p>
           </div>
 
           <div class="flex items-center gap-4">
-            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></div>
-            <span class="text-sm text-slate-500" data-i18n="catalog.import_modal.or">ou</span>
-            <div class="h-px flex-1 bg-slate-200 dark:bg-slate-700"></div>
+            <div class="h-px flex-1 bg-zinc-200 dark:bg-white/[0.06]"></div>
+            <span class="text-sm text-zinc-500" data-i18n="catalog.import_modal.or">ou</span>
+            <div class="h-px flex-1 bg-zinc-200 dark:bg-white/[0.06]"></div>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
               data-i18n="catalog.import_modal.connect">Connecter une plateforme</label>
             <div class="grid grid-cols-2 gap-3">
               <button
-                class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700"
+                class="connect-platform flex items-center gap-3 p-3 border border-zinc-300 dark:border-white/[0.08] rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08]"
                 data-platform="shopify">
                 <img src="/public/images/logos/shopify.svg" alt="Shopify" class="w-8 h-8">
-                <span class="font-medium text-slate-700 dark:text-slate-300">Shopify</span>
+                <span class="font-medium text-zinc-700 dark:text-zinc-300">Shopify</span>
               </button>
               <button
-                class="connect-platform flex items-center gap-3 p-3 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700"
+                class="connect-platform flex items-center gap-3 p-3 border border-zinc-300 dark:border-white/[0.08] rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.08]"
                 data-platform="woocommerce">
                 <img src="/public/images/logos/woocommerce.svg" alt="WooCommerce" class="w-8 h-8">
-                <span class="font-medium text-slate-700 dark:text-slate-300">WooCommerce</span>
+                <span class="font-medium text-zinc-700 dark:text-zinc-300">WooCommerce</span>
               </button>
             </div>
           </div>
@@ -379,7 +379,7 @@
 
         <div class="mt-6 flex justify-end gap-3">
           <button id="cancel-import"
-            class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+            class="px-4 py-2 text-zinc-700 dark:text-zinc-300 font-medium rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]"
             data-i18n="common.cancel">Annuler</button>
           <button id="confirm-import"
             class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg disabled:opacity-50"
@@ -394,81 +394,81 @@
     <div class="flex items-center justify-center min-h-screen px-4">
       <div class="fixed inset-0 bg-black/50" id="add-modal-backdrop"></div>
       <div
-        class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+        class="relative bg-white dark:bg-white/[0.06] rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.add_modal.title">Ajouter
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="catalog.add_modal.title">Ajouter
             un article</h3>
-          <button id="close-add-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+          <button id="close-add-modal" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+            <i data-lucide="x" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
 
         <form id="add-item-form" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.name">Nom *</label>
               <input type="text" name="name" required
-                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.sku">SKU/ID</label>
               <input type="text" name="sku"
-                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.price">Prix *</label>
               <input type="number" name="price" step="0.01" required
-                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
             <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
                 data-i18n="catalog.form.stock">Stock</label>
               <input type="number" name="stock" min="0"
-                class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+                class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
             </div>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               data-i18n="catalog.form.category">Catégorie</label>
             <input type="text" name="category"
-              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+              class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               data-i18n="catalog.form.description">Description</label>
             <textarea name="description" rows="3"
-              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"></textarea>
+              class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white"></textarea>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1"
+            <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1"
               data-i18n="catalog.form.voice_description">Description vocale</label>
             <textarea name="voice_description" rows="2"
-              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+              class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white"
               placeholder="Comment l'IA doit présenter cet article..."></textarea>
-            <p class="text-xs text-slate-500 mt-1" data-i18n="catalog.form.voice_hint">Conseil: Écrivez comme si vous
+            <p class="text-xs text-zinc-500 mt-1" data-i18n="catalog.form.voice_hint">Conseil: Écrivez comme si vous
               parliez au téléphone.</p>
           </div>
 
           <div class="flex items-center gap-2">
             <input type="checkbox" name="available" id="item-available" checked
-              class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-            <label for="item-available" class="text-sm text-slate-700 dark:text-slate-300"
+              class="rounded border-zinc-300 text-indigo-600 focus:ring-indigo-500">
+            <label for="item-available" class="text-sm text-zinc-700 dark:text-zinc-300"
               data-i18n="catalog.form.available">Disponible à la vente</label>
           </div>
         </form>
 
         <div class="mt-6 flex justify-end gap-3">
           <button id="cancel-add"
-            class="px-4 py-2 text-slate-700 dark:text-slate-300 font-medium rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700"
+            class="px-4 py-2 text-zinc-700 dark:text-zinc-300 font-medium rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]"
             data-i18n="common.cancel">Annuler</button>
           <button id="save-item" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg"
             data-i18n="common.save">Enregistrer</button>
@@ -482,60 +482,60 @@
     <div class="flex items-center justify-center min-h-screen px-4">
       <div class="fixed inset-0 bg-black/50" id="connector-modal-backdrop"></div>
       <div
-        class="relative bg-white dark:bg-slate-800 rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
+        class="relative bg-white dark:bg-white/[0.06] rounded-xl shadow-xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between mb-4">
-          <h3 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="catalog.connector.title">Connecter
+          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="catalog.connector.title">Connecter
             une plateforme e-commerce</h3>
-          <button id="close-connector-modal" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+          <button id="close-connector-modal" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+            <i data-lucide="x" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
 
         <!-- Platform Selection -->
         <div id="connector-platforms" class="space-y-4">
-          <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="catalog.connector.description">Connectez
+          <p class="text-sm text-zinc-500 dark:text-zinc-400" data-i18n="catalog.connector.description">Connectez
             votre boutique pour synchroniser automatiquement vos produits.</p>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <button
-              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-500 transition-colors"
               data-platform="shopify">
               <img src="/public/images/logos/shopify.svg" alt="Shopify" class="w-12 h-12"
                 onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
-                <span class="font-semibold text-slate-900 dark:text-white">Shopify</span>
-                <p class="text-xs text-slate-500">10.32% part de marché</p>
+                <span class="font-semibold text-zinc-900 dark:text-white">Shopify</span>
+                <p class="text-xs text-zinc-500">10.32% part de marché</p>
               </div>
             </button>
             <button
-              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-500 transition-colors"
               data-platform="woocommerce">
               <img src="/public/images/logos/woocommerce.svg" alt="WooCommerce" class="w-12 h-12"
                 onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
-                <span class="font-semibold text-slate-900 dark:text-white">WooCommerce</span>
-                <p class="text-xs text-slate-500">33-39% part de marché</p>
+                <span class="font-semibold text-zinc-900 dark:text-white">WooCommerce</span>
+                <p class="text-xs text-zinc-500">33-39% part de marché</p>
               </div>
             </button>
             <button
-              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-500 transition-colors"
               data-platform="magento">
               <img src="/public/images/logos/magento.svg" alt="Magento" class="w-12 h-12"
                 onerror="this.src='/images/placeholder.svg'">
               <div class="text-left">
-                <span class="font-semibold text-slate-900 dark:text-white">Magento/Adobe</span>
-                <p class="text-xs text-slate-500">8% part de marché</p>
+                <span class="font-semibold text-zinc-900 dark:text-white">Magento/Adobe</span>
+                <p class="text-xs text-zinc-500">8% part de marché</p>
               </div>
             </button>
             <button
-              class="platform-btn flex items-center gap-4 p-4 border-2 border-slate-200 dark:border-slate-600 rounded-xl hover:border-indigo-500 transition-colors"
+              class="platform-btn flex items-center gap-4 p-4 border-2 border-zinc-200 dark:border-white/[0.08] rounded-xl hover:border-indigo-500 transition-colors"
               data-platform="custom">
-              <div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
-                <i data-lucide="file-json" class="w-6 h-6 text-slate-500"></i>
+              <div class="w-12 h-12 rounded-lg bg-zinc-100 dark:bg-white/[0.06] flex items-center justify-center">
+                <i data-lucide="file-json" class="w-6 h-6 text-zinc-500"></i>
               </div>
               <div class="text-left">
-                <span class="font-semibold text-slate-900 dark:text-white">JSON/CSV</span>
-                <p class="text-xs text-slate-500">Import manuel</p>
+                <span class="font-semibold text-zinc-900 dark:text-white">JSON/CSV</span>
+                <p class="text-xs text-zinc-500">Import manuel</p>
               </div>
             </button>
           </div>
@@ -544,18 +544,18 @@
         <!-- Configuration Form (hidden by default) -->
         <div id="connector-config" class="hidden space-y-4">
           <div class="flex items-center gap-3 mb-4">
-            <button id="back-to-platforms" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-              <i data-lucide="arrow-left" class="w-5 h-5 text-slate-400"></i>
+            <button id="back-to-platforms" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+              <i data-lucide="arrow-left" class="w-5 h-5 text-zinc-400"></i>
             </button>
             <img id="selected-platform-icon" src="" alt="" class="w-10 h-10">
-            <span id="selected-platform-name" class="font-semibold text-slate-900 dark:text-white"></span>
+            <span id="selected-platform-name" class="font-semibold text-zinc-900 dark:text-white"></span>
           </div>
 
           <form id="connector-form" class="space-y-4">
             <!-- Dynamic fields based on platform -->
             <div id="config-fields"></div>
 
-            <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
+            <div class="pt-4 border-t border-zinc-200 dark:border-white/[0.08]">
               <button type="submit" id="connect-btn"
                 class="w-full px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg flex items-center justify-center gap-2">
                 <i data-lucide="plug" class="w-5 h-5"></i>
@@ -564,7 +564,7 @@
             </div>
           </form>
 
-          <p class="text-xs text-slate-500 text-center">
+          <p class="text-xs text-zinc-500 text-center">
             <i data-lucide="lock" class="w-3 h-3 inline"></i>
             <span data-i18n="catalog.connector.secure">Connexion sécurisée. Vos identifiants sont chiffrés.</span>
           </p>
@@ -629,10 +629,10 @@
       tab.addEventListener('click', () => {
         catalogTabs.forEach(t => {
           t.classList.remove('active', 'border-indigo-600', 'text-indigo-600', 'dark:text-indigo-400');
-          t.classList.add('border-transparent', 'text-slate-500');
+          t.classList.add('border-transparent', 'text-zinc-500');
         });
         tab.classList.add('active', 'border-indigo-600', 'text-indigo-600', 'dark:text-indigo-400');
-        tab.classList.remove('border-transparent', 'text-slate-500');
+        tab.classList.remove('border-transparent', 'text-zinc-500');
         currentType = tab.dataset.type;
         loadCatalog();
       });
@@ -947,35 +947,35 @@
         }
 
         return `
-          <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+          <tr class="hover:bg-zinc-50 dark:hover:bg-white/[0.08]/50">
             <td class="px-4 py-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center flex-shrink-0">
-                  <i data-lucide="package" class="w-5 h-5 text-slate-400"></i>
+                <div class="w-10 h-10 rounded-lg bg-zinc-100 dark:bg-white/[0.06] flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="package" class="w-5 h-5 text-zinc-400"></i>
                 </div>
                 <div>
-                  <p class="font-medium text-slate-900 dark:text-white">${item.name}</p>
-                  <p class="text-xs text-slate-500">${item.id || '-'}</p>
+                  <p class="font-medium text-zinc-900 dark:text-white">${item.name}</p>
+                  <p class="text-xs text-zinc-500">${item.id || '-'}</p>
                 </div>
               </div>
             </td>
             <td class="px-4 py-3">
-              <span class="text-sm text-slate-600 dark:text-slate-400">${item.category || '-'}</span>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400">${item.category || '-'}</span>
             </td>
             <td class="px-4 py-3">
-              <span class="font-medium text-slate-900 dark:text-white">${item.price} ${item.currency || 'MAD'}</span>
+              <span class="font-medium text-zinc-900 dark:text-white">${item.price} ${item.currency || 'MAD'}</span>
             </td>
             <td class="px-4 py-3">
-              <span class="text-sm text-slate-600 dark:text-slate-400">${item.stock !== undefined ? item.stock : '-'}</span>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400">${item.stock !== undefined ? item.stock : '-'}</span>
             </td>
             <td class="px-4 py-3">
               ${statusBadge}
             </td>
             <td class="px-4 py-3 text-right">
-              <button class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-400 hover:text-slate-600" onclick="editItem('${item.id}')">
+              <button class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08] text-zinc-400 hover:text-zinc-600" onclick="editItem('${item.id}')">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
               </button>
-              <button class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-slate-400 hover:text-red-600" onclick="deleteItem('${item.id}')">
+              <button class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-zinc-400 hover:text-red-600" onclick="deleteItem('${item.id}')">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
             </td>
@@ -1210,17 +1210,17 @@
       // Build form fields
       const fieldsHtml = config.fields.map(field => `
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">${field.label}${field.required ? ' *' : ''}</label>
+          <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">${field.label}${field.required ? ' *' : ''}</label>
           <input type="${field.type || 'text'}" name="${field.name}" ${field.required ? 'required' : ''}
             value="${field.defaultValue || ''}"
             placeholder="${field.placeholder}"
-            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white">
+            class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
         </div>
       `).join('');
 
       const helpHtml = config.help ? `
-        <div class="p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-          <p class="text-xs text-slate-500 dark:text-slate-400">
+        <div class="p-3 bg-zinc-50 dark:bg-white/[0.06]/50 rounded-lg">
+          <p class="text-xs text-zinc-500 dark:text-zinc-400">
             <i data-lucide="info" class="w-3 h-3 inline mr-1"></i>
             <strong>Où trouver les identifiants:</strong> ${config.help}
           </p>

@@ -30,19 +30,19 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+<body class="min-h-screen bg-zinc-50 dark:bg-[#0a0a0a] flex items-center justify-center p-4">
 
   <div class="w-full max-w-md">
     <!-- Logo -->
     <div class="text-center mb-8">
       <a href="/" class="inline-flex items-center gap-2">
         <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-        <span class="text-2xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        <span class="text-2xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
       </a>
     </div>
 
     <!-- Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+    <div class="bg-white dark:bg-white/[0.06] rounded-2xl shadow-xl border border-zinc-200 dark:border-white/[0.08] p-8">
       <!-- Loading View -->
       <div id="loading-view">
         <div class="text-center">
@@ -52,10 +52,10 @@
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.verifying">
+          <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2" data-i18n="auth.verifying">
             Vérification en cours...
           </h2>
-          <p class="text-slate-600 dark:text-slate-400" data-i18n="auth.verifying_message">
+          <p class="text-zinc-600 dark:text-zinc-400" data-i18n="auth.verifying_message">
             Veuillez patienter pendant que nous vérifions votre adresse email.
           </p>
         </div>
@@ -67,10 +67,10 @@
           <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
             <i data-lucide="check-circle" class="w-8 h-8 text-green-600 dark:text-green-400"></i>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.email_verified_title">
+          <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2" data-i18n="auth.email_verified_title">
             Email vérifié !
           </h2>
-          <p class="text-slate-600 dark:text-slate-400 mb-6" data-i18n="auth.email_verified_message">
+          <p class="text-zinc-600 dark:text-zinc-400 mb-6" data-i18n="auth.email_verified_message">
             Votre adresse email a été vérifiée avec succès. Vous pouvez maintenant accéder à toutes les fonctionnalités.
           </p>
           <a
@@ -89,10 +89,10 @@
           <div class="w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mx-auto mb-4">
             <i data-lucide="x-circle" class="w-8 h-8 text-red-600 dark:text-red-400"></i>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.verification_failed_title">
+          <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2" data-i18n="auth.verification_failed_title">
             Vérification échouée
           </h2>
-          <p id="error-message" class="text-slate-600 dark:text-slate-400 mb-6">
+          <p id="error-message" class="text-zinc-600 dark:text-zinc-400 mb-6">
             Le lien de vérification est invalide ou a expiré.
           </p>
           <div class="space-y-3">
@@ -105,7 +105,7 @@
             </button>
             <a
               href="login.html"
-              class="w-full py-2.5 px-4 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+              class="w-full py-2.5 px-4 bg-zinc-100 dark:bg-white/[0.06] hover:bg-zinc-200 dark:hover:bg-white/[0.1] text-zinc-700 dark:text-zinc-200 font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <i data-lucide="arrow-left" class="w-4 h-4"></i>
               <span data-i18n="auth.back_to_login">Retour à la connexion</span>
@@ -120,10 +120,10 @@
           <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-4">
             <i data-lucide="info" class="w-8 h-8 text-blue-600 dark:text-blue-400"></i>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.already_verified_title">
+          <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2" data-i18n="auth.already_verified_title">
             Déjà vérifié
           </h2>
-          <p class="text-slate-600 dark:text-slate-400 mb-6" data-i18n="auth.already_verified_message">
+          <p class="text-zinc-600 dark:text-zinc-400 mb-6" data-i18n="auth.already_verified_message">
             Votre adresse email a déjà été vérifiée. Vous pouvez vous connecter.
           </p>
           <a
@@ -142,10 +142,10 @@
           <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
             <i data-lucide="mail-check" class="w-8 h-8 text-green-600 dark:text-green-400"></i>
           </div>
-          <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2" data-i18n="auth.resend_success_title">
+          <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2" data-i18n="auth.resend_success_title">
             Email envoyé !
           </h2>
-          <p class="text-slate-600 dark:text-slate-400 mb-6" data-i18n="auth.resend_success_message">
+          <p class="text-zinc-600 dark:text-zinc-400 mb-6" data-i18n="auth.resend_success_message">
             Un nouvel email de vérification a été envoyé. Vérifiez votre boîte de réception.
           </p>
           <div class="bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
@@ -162,13 +162,13 @@
 
     <!-- Language Switcher -->
     <div class="flex justify-center gap-2 mt-6">
-      <button data-action="switchLang" data-params="fr" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">FR</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="en" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">EN</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="es" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">ES</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">عربي</button>
+      <button data-action="switchLang" data-params="fr" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">FR</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="en" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">EN</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="es" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">ES</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">عربي</button>
     </div>
   </div>
 

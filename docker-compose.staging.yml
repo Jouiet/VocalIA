@@ -1,0 +1,95 @@
+# VocalIA Staging Deployment
+# Deploy: docker-compose -f docker-compose.staging.yml up -d
+# Access: staging.vocalia.ma (or localhost:3004/3013)
+
+services:
+  vocalia-db-api:
+    image: node:20-alpine
+    container_name: vocalia-db-api-staging
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - NODE_ENV=staging
+      - PORT=3013
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}
+      - ALLOWED_ORIGINS=https://staging.vocalia.ma,http://localhost:8080
+    volumes:
+      - ./core:/app/core:ro
+      - ./lib:/app/lib:ro
+      - ./personas:/app/personas:ro
+      - ./data:/app/data:ro
+      - ./package.json:/app/package.json:ro
+      - ./package-lock.json:/app/package-lock.json:ro
+      - staging-node-modules:/app/node_modules
+    command: >
+      sh -c "
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node core/db-api.cjs
+      "
+    ports:
+      - "3013:3013"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3013/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  vocalia-api:
+    image: node:20-alpine
+    container_name: vocalia-api-staging
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      - NODE_ENV=staging
+      - PORT=3004
+      - XAI_API_KEY=${XAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - ALLOWED_ORIGINS=https://staging.vocalia.ma,http://localhost:8080
+    volumes:
+      - ./core:/app/core:ro
+      - ./lib:/app/lib:ro
+      - ./personas:/app/personas:ro
+      - ./telephony:/app/telephony:ro
+      - ./integrations:/app/integrations:ro
+      - ./data:/app/data:ro
+      - ./package.json:/app/package.json:ro
+      - ./package-lock.json:/app/package-lock.json:ro
+      - staging-node-modules:/app/node_modules
+    command: >
+      sh -c "
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node core/voice-api-resilient.cjs --server --port=3004
+      "
+    ports:
+      - "3004:3004"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  vocalia-website:
+    image: node:20-alpine
+    container_name: vocalia-website-staging
+    restart: unless-stopped
+    working_dir: /app
+    command: npx serve -s website -l 8080
+    volumes:
+      - ./website:/app/website:ro
+      - ./package.json:/app/package.json:ro
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  staging-node-modules:

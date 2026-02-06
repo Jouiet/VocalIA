@@ -41,21 +41,21 @@
     .waveform-bar:nth-child(5n) { animation-delay: 0.15s; }
   </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col">
+    <aside id="sidebar" class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
       <!-- Logo -->
-      <div class="p-4 border-b border-slate-200 dark:border-slate-700">
+      <div class="p-4 border-b border-zinc-200 dark:border-white/[0.08]">
         <a href="/app/client/" class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
-          <span class="text-xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+          <span class="text-xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
         </a>
       </div>
 
       <!-- Navigation -->
       <nav class="flex-1 p-4 space-y-1">
-        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span>Tableau de bord</span>
         </a>
@@ -63,48 +63,48 @@
           <i data-lucide="phone" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.calls">Appels</span>
         </a>
-        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="bot" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.agents">Agents IA</span>
         </a>
-        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="package" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.catalog">Catalogue</span>
         </a>
-        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="book-open" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
         </a>
-        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="plug" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.integrations">Intégrations</span>
         </a>
-        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.analytics">Analytics</span>
         </a>
-        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="credit-card" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.billing">Facturation</span>
         </a>
-        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700">
+        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
           <i data-lucide="settings" class="w-5 h-5"></i>
           <span data-i18n="dashboard.nav.settings">Paramètres</span>
         </a>
       </nav>
 
       <!-- User Menu -->
-      <div class="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div class="p-4 border-t border-zinc-200 dark:border-white/[0.08]">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
             <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p id="user-name" class="text-sm font-medium text-slate-900 dark:text-white truncate">Chargement...</p>
-            <p id="user-email" class="text-xs text-slate-500 truncate"></p>
+            <p id="user-name" class="text-sm font-medium text-zinc-900 dark:text-white truncate">Chargement...</p>
+            <p id="user-email" class="text-xs text-zinc-500 truncate"></p>
           </div>
-          <button id="logout-btn" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-            <i data-lucide="log-out" class="w-5 h-5 text-slate-400"></i>
+          <button id="logout-btn" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+            <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
       </div>
@@ -113,36 +113,36 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-auto">
       <!-- Header -->
-      <header class="sticky top-0 z-10 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 px-6 py-4">
+      <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Historique des appels</h1>
-            <p class="text-slate-600 dark:text-slate-400">Consultez et analysez vos appels</p>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Historique des appels</h1>
+            <p class="text-zinc-600 dark:text-zinc-400">Consultez et analysez vos appels</p>
           </div>
           <div class="flex items-center gap-3">
             <!-- Export Dropdown -->
             <div class="relative">
-              <button id="export-btn" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-600">
+              <button id="export-btn" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-200 bg-white dark:bg-white/[0.06] border border-zinc-300 dark:border-white/[0.08] rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.1]">
                 <i data-lucide="download" class="w-4 h-4"></i>
                 <span data-i18n="calls.export">Exporter</span>
                 <i data-lucide="chevron-down" class="w-4 h-4"></i>
               </button>
-              <div id="export-menu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg z-20">
-                <button onclick="exportCalls('csv')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+              <div id="export-menu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-white/[0.06] border border-zinc-200 dark:border-white/[0.08] rounded-lg shadow-lg z-20">
+                <button onclick="exportCalls('csv')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
                   <i data-lucide="file-text" class="w-4 h-4"></i>
                   <span>CSV</span>
                 </button>
-                <button onclick="exportCalls('xlsx')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <button onclick="exportCalls('xlsx')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
                   <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
                   <span>Excel (XLSX)</span>
                 </button>
-                <button onclick="exportCalls('pdf')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700">
+                <button onclick="exportCalls('pdf')" class="w-full flex items-center gap-2 px-4 py-2 text-sm text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
                   <i data-lucide="file" class="w-4 h-4"></i>
                   <span>PDF</span>
                 </button>
               </div>
             </div>
-            <select id="date-range" class="px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+            <select id="date-range" class="px-3 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
               <option value="7d">7 derniers jours</option>
               <option value="30d" selected>30 derniers jours</option>
               <option value="90d">90 derniers jours</option>
@@ -166,54 +166,54 @@
       <!-- Stats -->
       <div class="px-6 py-6">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
                 <i data-lucide="phone-incoming" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-total">--</p>
-                <p class="text-sm text-slate-500">Total appels</p>
+                <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-total">--</p>
+                <p class="text-sm text-zinc-500">Total appels</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                 <i data-lucide="check-circle" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-success">--</p>
-                <p class="text-sm text-slate-500">Appels réussis</p>
+                <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-success">--</p>
+                <p class="text-sm text-zinc-500">Appels réussis</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
                 <i data-lucide="clock" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-duration">--</p>
-                <p class="text-sm text-slate-500">Durée moyenne</p>
+                <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-duration">--</p>
+                <p class="text-sm text-zinc-500">Durée moyenne</p>
               </div>
             </div>
           </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 hover:shadow-lg transition-all duration-200">
+          <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4 hover:shadow-lg transition-all duration-200">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                 <i data-lucide="target" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-slate-900 dark:text-white" id="stat-conversion">--</p>
-                <p class="text-sm text-slate-500">Taux conversion</p>
+                <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="stat-conversion">--</p>
+                <p class="text-sm text-zinc-500">Taux conversion</p>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Calls Table -->
-        <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all duration-200">
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
           <div id="calls-table"></div>
         </div>
       </div>
@@ -223,11 +223,11 @@
   <!-- Call Detail Modal -->
   <div id="call-detail-modal" class="hidden fixed inset-0 z-50">
     <div class="absolute inset-0 bg-black/50" onclick="closeCallDetail()"></div>
-    <div class="absolute inset-y-0 right-0 w-full max-w-lg bg-white dark:bg-slate-800 shadow-xl overflow-auto">
-      <div class="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex items-center justify-between">
-        <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Détails de l'appel</h2>
-        <button onclick="closeCallDetail()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">
-          <i data-lucide="x" class="w-5 h-5 text-slate-400"></i>
+    <div class="absolute inset-y-0 right-0 w-full max-w-lg bg-white dark:bg-white/[0.06] shadow-xl overflow-auto">
+      <div class="sticky top-0 bg-white dark:bg-white/[0.06] border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-zinc-900 dark:text-white">Détails de l'appel</h2>
+        <button onclick="closeCallDetail()" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <i data-lucide="x" class="w-5 h-5 text-zinc-400"></i>
         </button>
       </div>
       <div id="call-detail-content" class="p-6">
@@ -301,14 +301,14 @@
         { key: 'lead_score', label: 'Score',
           render: (val) => {
             if (!val) return '-';
-            const color = val >= 70 ? 'text-green-600' : val >= 40 ? 'text-amber-600' : 'text-slate-400';
+            const color = val >= 70 ? 'text-green-600' : val >= 40 ? 'text-amber-600' : 'text-zinc-400';
             return `<span class="font-medium ${color}">${val}%</span>`;
           }
         },
         { key: 'actions', label: '',
           render: (val, row) => `
-            <button onclick="showCallDetail('${row.id}')" class="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-700">
-              <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button onclick="showCallDetail('${row.id}')" class="p-1 rounded hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+              <svg class="w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
             </button>
@@ -386,15 +386,15 @@
         content.innerHTML = `
           <div class="space-y-6">
             <!-- Voice Waveform Preview -->
-            <div class="bg-slate-900 dark:bg-slate-950 rounded-xl p-4">
+            <div class="bg-[#0a0a0a] dark:bg-[#050505] rounded-xl p-4">
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs text-slate-400 uppercase tracking-wider" data-i18n="calls.waveform_preview">Aperçu vocal</span>
+                <span class="text-xs text-zinc-400 uppercase tracking-wider" data-i18n="calls.waveform_preview">Aperçu vocal</span>
                 <span class="text-xs text-indigo-400">${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '0:00'}</span>
               </div>
               <div class="waveform-container">
                 ${waveform}
               </div>
-              <div class="flex items-center justify-between text-xs text-slate-500 mt-2">
+              <div class="flex items-center justify-between text-xs text-zinc-500 mt-2">
                 <span>0:00</span>
                 <span class="flex items-center gap-1">
                   <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -406,55 +406,55 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <p class="text-sm text-slate-500">Numéro</p>
-                <p class="font-medium text-slate-900 dark:text-white">${call.caller_phone || '-'}</p>
+                <p class="text-sm text-zinc-500">Numéro</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${call.caller_phone || '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-slate-500">Date</p>
-                <p class="font-medium text-slate-900 dark:text-white">${new Date(call.created_at).toLocaleString()}</p>
+                <p class="text-sm text-zinc-500">Date</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${new Date(call.created_at).toLocaleString()}</p>
               </div>
               <div>
-                <p class="text-sm text-slate-500">Agent</p>
-                <p class="font-medium text-slate-900 dark:text-white">${call.persona || '-'}</p>
+                <p class="text-sm text-zinc-500">Agent</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${call.persona || '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-slate-500">Durée</p>
-                <p class="font-medium text-slate-900 dark:text-white">${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '-'}</p>
+                <p class="text-sm text-zinc-500">Durée</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-slate-500">Statut</p>
-                <p class="font-medium text-slate-900 dark:text-white">${call.status || '-'}</p>
+                <p class="text-sm text-zinc-500">Statut</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${call.status || '-'}</p>
               </div>
               <div>
-                <p class="text-sm text-slate-500">Score lead</p>
-                <p class="font-medium text-slate-900 dark:text-white">${call.lead_score ? call.lead_score + '%' : '-'}</p>
+                <p class="text-sm text-zinc-500">Score lead</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${call.lead_score ? call.lead_score + '%' : '-'}</p>
               </div>
             </div>
 
             ${call.transcript ? `
               <div>
-                <p class="text-sm text-slate-500 mb-2">Transcription</p>
-                <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 max-h-64 overflow-y-auto">
-                  <pre class="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap">${call.transcript}</pre>
+                <p class="text-sm text-zinc-500 mb-2">Transcription</p>
+                <div class="bg-zinc-50 dark:bg-[#0a0a0a] rounded-lg p-4 max-h-64 overflow-y-auto">
+                  <pre class="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">${call.transcript}</pre>
                 </div>
               </div>
             ` : ''}
 
             ${call.summary ? `
               <div>
-                <p class="text-sm text-slate-500 mb-2">Résumé</p>
-                <p class="text-slate-700 dark:text-slate-300">${call.summary}</p>
+                <p class="text-sm text-zinc-500 mb-2">Résumé</p>
+                <p class="text-zinc-700 dark:text-zinc-300">${call.summary}</p>
               </div>
             ` : ''}
 
             ${call.bant_score ? `
               <div>
-                <p class="text-sm text-slate-500 mb-2">Qualification BANT</p>
+                <p class="text-sm text-zinc-500 mb-2">Qualification BANT</p>
                 <div class="grid grid-cols-4 gap-2">
                   ${['budget', 'authority', 'need', 'timeline'].map(key => `
-                    <div class="text-center p-2 bg-slate-50 dark:bg-slate-900 rounded-lg">
-                      <p class="text-xs text-slate-500 uppercase">${key[0]}</p>
-                      <p class="text-lg font-bold ${call.bant_score[key] >= 70 ? 'text-green-600' : 'text-slate-600'}">${call.bant_score[key] || 0}%</p>
+                    <div class="text-center p-2 bg-zinc-50 dark:bg-[#0a0a0a] rounded-lg">
+                      <p class="text-xs text-zinc-500 uppercase">${key[0]}</p>
+                      <p class="text-lg font-bold ${call.bant_score[key] >= 70 ? 'text-green-600' : 'text-zinc-600'}">${call.bant_score[key] || 0}%</p>
                     </div>
                   `).join('')}
                 </div>

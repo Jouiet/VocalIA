@@ -37,7 +37,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
+<body class="min-h-screen bg-zinc-50 dark:bg-[#0a0a0a] flex items-center justify-center p-4">
 
   <!-- Signup Card -->
   <div class="w-full max-w-md">
@@ -45,15 +45,15 @@
     <div class="text-center mb-8">
       <a href="/" class="inline-flex items-center gap-2">
         <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-        <span class="text-2xl font-bold text-slate-900 dark:text-white">VocalIA</span>
+        <span class="text-2xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
       </a>
     </div>
 
     <!-- Card -->
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+    <div class="bg-white dark:bg-white/[0.06] rounded-2xl shadow-xl border border-zinc-200 dark:border-white/[0.08] p-8">
       <div class="text-center mb-6">
-        <h1 class="text-2xl font-bold text-slate-900 dark:text-white" data-i18n="auth.signup_title">Créer un compte</h1>
-        <p class="text-slate-600 dark:text-slate-400 mt-2" data-i18n="auth.signup_subtitle">
+        <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="auth.signup_title">Créer un compte</h1>
+        <p class="text-zinc-600 dark:text-zinc-400 mt-2" data-i18n="auth.signup_subtitle">
           Commencez gratuitement avec VocalIA
         </p>
       </div>
@@ -83,12 +83,12 @@
       <form id="signup-form" class="space-y-5">
         <!-- Name -->
         <div>
-          <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="auth.name">
+          <label for="name" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5" data-i18n="auth.name">
             Nom complet
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pr-3 flex items-center pointer-events-none">
-              <i data-lucide="user" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="user" class="w-5 h-5 text-zinc-400"></i>
             </div>
             <input
               type="text"
@@ -96,7 +96,7 @@
               name="name"
               required
               autocomplete="name"
-              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
               placeholder="Jean Dupont"
               data-i18n-placeholder="auth.name_placeholder"
             >
@@ -105,12 +105,12 @@
 
         <!-- Email -->
         <div>
-          <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="auth.email">
+          <label for="email" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5" data-i18n="auth.email">
             Email professionnel
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pr-3 flex items-center pointer-events-none">
-              <i data-lucide="mail" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="mail" class="w-5 h-5 text-zinc-400"></i>
             </div>
             <input
               type="email"
@@ -118,7 +118,7 @@
               name="email"
               required
               autocomplete="email"
-              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
               placeholder="vous@entreprise.com"
               data-i18n-placeholder="auth.email_placeholder"
             >
@@ -127,12 +127,12 @@
 
         <!-- Password -->
         <div>
-          <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="auth.password">
+          <label for="password" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5" data-i18n="auth.password">
             Mot de passe
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pr-3 flex items-center pointer-events-none">
-              <i data-lucide="lock" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="lock" class="w-5 h-5 text-zinc-400"></i>
             </div>
             <input
               type="password"
@@ -141,7 +141,7 @@
               required
               autocomplete="new-password"
               minlength="8"
-              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-10 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-10 py-2.5 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
               placeholder="Minimum 8 caractères"
             >
             <button
@@ -149,17 +149,17 @@
               id="toggle-password"
               class="absolute inset-y-0 right-0 rtl:right-auto rtl:left-0 pr-3 rtl:pl-3 flex items-center"
             >
-              <i data-lucide="eye" class="w-5 h-5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"></i>
+              <i data-lucide="eye" class="w-5 h-5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"></i>
             </button>
           </div>
 
           <!-- Password Strength -->
           <div class="mt-2">
-            <div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1">
-              <div id="password-strength" class="password-strength bg-slate-400 rounded-full" style="width: 0%"></div>
+            <div class="w-full bg-zinc-200 dark:bg-white/[0.06] rounded-full h-1">
+              <div id="password-strength" class="password-strength bg-zinc-400 rounded-full" style="width: 0%"></div>
             </div>
             <div class="flex justify-between mt-1">
-              <span id="password-hint" class="text-xs text-slate-500"></span>
+              <span id="password-hint" class="text-xs text-zinc-500"></span>
               <span id="password-level" class="text-xs font-medium"></span>
             </div>
           </div>
@@ -167,12 +167,12 @@
 
         <!-- Confirm Password -->
         <div>
-          <label for="confirm-password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="auth.confirm_password">
+          <label for="confirm-password" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5" data-i18n="auth.confirm_password">
             Confirmer le mot de passe
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 rtl:left-auto rtl:right-0 pl-3 rtl:pr-3 flex items-center pointer-events-none">
-              <i data-lucide="lock" class="w-5 h-5 text-slate-400"></i>
+              <i data-lucide="lock" class="w-5 h-5 text-zinc-400"></i>
             </div>
             <input
               type="password"
@@ -180,7 +180,7 @@
               name="confirm-password"
               required
               autocomplete="new-password"
-              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
+              class="input-focus block w-full pl-10 rtl:pl-3 rtl:pr-10 pr-3 py-2.5 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors"
               placeholder="Répétez le mot de passe"
             >
           </div>
@@ -193,9 +193,9 @@
             id="terms"
             name="terms"
             required
-            class="mt-1 w-4 h-4 text-indigo-600 border-slate-300 dark:border-slate-600 rounded focus:ring-indigo-500"
+            class="mt-1 w-4 h-4 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500"
           >
-          <label for="terms" class="ml-2 rtl:ml-0 rtl:mr-2 text-sm text-slate-600 dark:text-slate-400">
+          <label for="terms" class="ml-2 rtl:ml-0 rtl:mr-2 text-sm text-zinc-600 dark:text-zinc-400">
             <span data-i18n="auth.accept_terms">J'accepte les</span>
             <a href="/terms" class="text-indigo-600 dark:text-indigo-400 hover:underline" data-i18n="auth.terms_link">conditions d'utilisation</a>
             <span data-i18n="auth.and">et la</span>
@@ -215,7 +215,7 @@
       </form>
 
       <!-- Login Link -->
-      <p class="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
+      <p class="mt-6 text-center text-sm text-zinc-600 dark:text-zinc-400">
         <span data-i18n="auth.already_account">Déjà un compte ?</span>
         <a href="login.html" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium" data-i18n="auth.login_link">
           Se connecter
@@ -225,13 +225,13 @@
 
     <!-- Language Switcher -->
     <div class="flex justify-center gap-2 mt-6">
-      <button data-action="switchLang" data-params="fr" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">FR</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="en" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">EN</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="es" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">ES</button>
-      <span class="text-slate-300">|</span>
-      <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">عربي</button>
+      <button data-action="switchLang" data-params="fr" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">FR</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="en" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">EN</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="es" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">ES</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">عربي</button>
     </div>
   </div>
 
@@ -307,7 +307,7 @@
       passwordStrengthBar.style.width = `${strength}%`;
 
       if (strength === 0) {
-        passwordStrengthBar.className = 'password-strength rounded-full bg-slate-400';
+        passwordStrengthBar.className = 'password-strength rounded-full bg-zinc-400';
         passwordLevel.textContent = '';
         passwordHint.textContent = '';
       } else if (strength <= 25) {

@@ -18,9 +18,11 @@ RUN npm ci --only=production --ignore-scripts
 
 # Copy application code
 COPY core/ ./core/
+COPY lib/ ./lib/
 COPY telephony/ ./telephony/
 COPY personas/ ./personas/
 COPY integrations/ ./integrations/
+COPY sensors/ ./sensors/
 COPY data/knowledge-base/ ./data/knowledge-base/
 
 # Create data directories

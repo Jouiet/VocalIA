@@ -82,7 +82,7 @@
   <!-- Critical CSS -->
   <style>
     body {
-      background: #1e293b;
+      background: #050505;
       color: #fff;
       font-family: Inter, system-ui, sans-serif;
       margin: 0
@@ -122,14 +122,14 @@
     }
 
     .glass {
-      background: rgba(51, 65, 85, 0.85);
+      background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .integration-card {
-      background: linear-gradient(135deg, rgba(51, 65, 85, 0.7), rgba(30, 41, 59, 0.85));
-      border: 1px solid rgba(148, 163, 184, 0.15);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(10, 10, 10, 0.85));
+      border: 1px solid rgba(255, 255, 255, 0.06);
       transition: all 0.3s ease;
     }
 
@@ -149,7 +149,7 @@
 
 </head>
 
-<body class="bg-slate-800 text-white antialiased">
+<body class="bg-[#050505] text-white antialiased">
   <!-- Skip Link -->
 
   <a href="#main-content"
@@ -196,7 +196,7 @@
             <div
               class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+              <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                 <a href="/products/voice-widget"
                   class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
@@ -241,7 +241,7 @@
 
                 </a>
 
-                <hr class="border-slate-600/50 my-2">
+                <hr class="border-white/[0.08] my-2">
 
                 <a href="/features"
                   class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-vocalia-400 hover:text-white">
@@ -272,7 +272,7 @@
             <div
               class="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-[680px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-slate-600/50">
+              <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-6 shadow-2xl border border-white/[0.08]">
 
                 <div class="grid grid-cols-3 gap-6">
 
@@ -368,14 +368,14 @@
 
                   <!-- Column 3: Featured -->
 
-                  <div class="bg-slate-700/30 rounded-lg p-4">
+                  <div class="bg-white/[0.06]/30 rounded-lg p-4">
 
                     <div class="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3"><span
                         data-i18n="integrations.populaire_74">Populaire</span></div>
 
                     <div class="space-y-3">
 
-                      <a href="/features" class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                      <a href="/features" class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                         <div class="flex items-center gap-2 mb-1">
 
@@ -391,7 +391,7 @@
                       </a>
 
                       <a href="/blog/articles/vocalia-lance-support-darija"
-                        class="block p-3 bg-slate-800/50 rounded-lg hover:bg-slate-700/50 transition">
+                        class="block p-3 bg-white/[0.04] rounded-lg hover:bg-white/[0.04] transition">
 
                         <div class="flex items-center gap-2 mb-1">
 
@@ -438,7 +438,7 @@
             <div
               class="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
 
-              <div class="bg-slate-800/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-slate-600/50">
+              <div class="bg-[#0a0a0a]/95 backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
 
                 <a href="/docs"
                   class="block py-2 px-3 rounded-lg hover:bg-white/5 transition text-zinc-300 hover:text-white"><span
@@ -472,7 +472,7 @@
           <!-- Language Switcher -->
           <div class="relative">
             <button type="button" data-action="toggleLangDropdown"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-slate-700/50 transition-colors"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-white/[0.04] transition-colors"
               aria-label="Changer de langue">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
                 stroke-linecap="round" stroke-linejoin="round">
@@ -486,29 +486,29 @@
               </svg>
             </button>
             <div id="langDropdown"
-              class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-slate-800/95 backdrop-blur-xl border border-slate-700/50 shadow-xl z-50 overflow-hidden">
+              class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-[#0a0a0a]/95 backdrop-blur-xl border border-white/[0.08] shadow-xl z-50 overflow-hidden">
               <button type="button" data-action="switchLang" data-params="fr"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                 <span class="text-lg">&#127467;&#127479;</span>
                 <span class="text-sm"><span data-i18n="integrations.francais_70">Francais</span></span>
               </button>
               <button type="button" data-action="switchLang" data-params="en"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                 <span class="text-lg">&#127468;&#127463;</span>
                 <span class="text-sm"><span data-i18n="integrations.english_69">English</span></span>
               </button>
               <button type="button" data-action="switchLang" data-params="es"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-left">
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-left">
                 <span class="text-lg">&#127466;&#127480;</span>
                 <span class="text-sm"><span data-i18n="integrations.espanol_68">Espanol</span></span>
               </button>
               <button type="button" data-action="switchLang" data-params="ar" dir="rtl"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                 <span class="text-lg">&#127480;&#127462;</span>
                 <span class="text-sm">&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</span>
               </button>
               <button type="button" data-action="switchLang" data-params="ary" dir="rtl"
-                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700/50 transition-colors text-right">
+                class="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.04] transition-colors text-right">
                 <span class="text-lg">&#127474;&#127462;</span>
                 <span class="text-sm">&#1575;&#1604;&#1583;&#1575;&#1585;&#1580;&#1577;</span>
               </button>
@@ -516,7 +516,7 @@
           </div>
 
           <button type="button" id="mobileMenuBtn"
-            class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-slate-700/50 focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition"
+            class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-white/[0.04] focus:ring-2 focus:ring-vocalia-500 focus:outline-none transition"
             aria-label="Menu mobile">
             <i id="menuIconOpen" data-lucide="menu" class="w-6 h-6 text-vocalia-200"></i>
             <i id="menuIconClose" data-lucide="x" class="w-6 h-6 text-vocalia-200 hidden"></i>
@@ -531,7 +531,7 @@
     <!-- Mobile Menu Drawer -->
 
     <div id="mobileMenu"
-      class="md:hidden fixed inset-0 top-16 bg-slate-900/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
+      class="md:hidden fixed inset-0 top-16 bg-[#050505]/98 backdrop-blur-xl z-40 transform translate-x-full invisible opacity-0 transition-all duration-300 ease-out pointer-events-none">
 
       <div class="max-h-[calc(100vh-4rem)] overflow-y-auto p-6 pb-24">
 
@@ -541,7 +541,7 @@
 
           <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Produits</h3>
 
-          <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+          <a href="/products/voice-widget" class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
             <div class="w-10 h-10 rounded-lg bg-vocalia-500/20 flex items-center justify-center">
 
@@ -563,7 +563,7 @@
           </a>
 
           <a href="/products/voice-telephony"
-            class="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-800 transition">
+            class="flex items-center gap-3 p-3 rounded-lg hover:bg-white/[0.06] transition">
 
             <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
 
@@ -591,18 +591,18 @@
 
           <div class="grid grid-cols-2 gap-2">
 
-            <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+            <a href="/use-cases/e-commerce" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span
                 data-i18n="footer.links.ecommerce"><span
                   data-i18n="integrations.ecommerce_54">E-commerce</span></span></a>
 
-            <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+            <a href="/industries/healthcare" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span
                 data-i18n="footer.links.healthcare">Santé</span></a>
 
             <a href="/use-cases/customer-support"
-              class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+              class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span
                 data-i18n="footer.links.customer_support">Service Client</span></a>
 
-            <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+            <a href="/industries/real-estate" class="p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span
                 data-i18n="footer.links.real_estate">Immobilier</span></a>
 
           </div>
@@ -615,13 +615,13 @@
 
           <h3 class="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Ressources</h3>
 
-          <a href="/docs" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+          <a href="/docs" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span
               data-i18n="footer.links.docs">Documentation</span></a>
 
-          <a href="/integrations" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+          <a href="/integrations" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span
               data-i18n="footer.links.integrations">Intégrations</span></a>
 
-          <a href="/blog" class="block p-3 rounded-lg hover:bg-slate-800 transition text-zinc-300"><span
+          <a href="/blog" class="block p-3 rounded-lg hover:bg-white/[0.06] transition text-zinc-300"><span
               data-i18n="footer.links.blog">Blog</span></a>
         </div>
 
@@ -630,7 +630,7 @@
         <div class="space-y-3">
 
           <a href="/pricing"
-            class="block w-full py-3 px-4 rounded-xl bg-slate-800/50 border border-slate-700 text-center font-medium text-white">
+            class="block w-full py-3 px-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center font-medium text-white">
 
             Tarifs
 
@@ -666,7 +666,7 @@
           <span data-i18n="integrations_page.hero_title">Connectez VocalIA à</span><br><span class="gradient-text"
             data-i18n="integrations_page.hero_title_accent">votre stack existant</span>
         </h1>
-        <p class="text-xl text-slate-300 max-w-3xl mx-auto mb-8" data-i18n="integrations_page.hero_subtitle">
+        <p class="text-xl text-zinc-300 max-w-3xl mx-auto mb-8" data-i18n="integrations_page.hero_subtitle">
           Synchronisez vos données client, automatisez vos workflows et enrichissez vos conversations IA avec nos
           intégrations natives.
         </p>
@@ -677,7 +677,7 @@
             Documentation API
           </a>
           <a href="/contact"
-            class="px-6 py-3 border border-slate-600 hover:border-vocalia-500 rounded-lg font-semibold transition-colors"
+            class="px-6 py-3 border border-white/[0.08] hover:border-vocalia-500 rounded-lg font-semibold transition-colors"
             data-i18n="integrations_page.cta_request">
             Demander une intégration
           </a>
@@ -699,7 +699,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.hubspot_60">HubSpot</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_deals_59">Sync contacts,
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_deals_59">Sync contacts,
                 deals, et activités. Création automatique de tickets.</span></p>
 
           </div>
@@ -709,7 +709,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.pipedrive_58">Pipedrive</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_deals_57">Gestion des deals
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_deals_57">Gestion des deals
                 et pipeline. Logs d'appels automatiques.</span></p>
 
           </div>
@@ -719,7 +719,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.zoho_crm_56">Zoho CRM</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_et_55">Sync contacts et
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.sync_contacts_et_55">Sync contacts et
                 leads. Automatisation des workflows.</span></p>
 
           </div>
@@ -728,7 +728,7 @@
     </section>
 
     <!-- E-commerce Integrations -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-4 mb-8">
           <h2 class="text-2xl font-bold">E-commerce</h2>
@@ -741,7 +741,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.shopify_53">Shopify</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.suivi_commandes_stock_52">Suivi
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.suivi_commandes_stock_52">Suivi
                 commandes, stock, clients. Lookup par email ou numéro.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -750,7 +750,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.woocommerce_51">WooCommerce</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.api_rest_pour_50">API REST pour
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.api_rest_pour_50">API REST pour
                 commandes, produits et clients WordPress.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -759,7 +759,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.magento_49">Magento</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span
+            <p class="text-zinc-400 text-sm mb-4"><span
                 data-i18n="integrations.intgration_entreprise_pour_48">Intégration entreprise pour catalogues et
                 commandes complexes.</span></p>
           </div>
@@ -769,7 +769,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.bigcommerce_47">BigCommerce</span></h3>
-            <p class="text-slate-400 text-sm mb-4">Plateforme B2B/B2C. Gestion multi-storefront et inventaire avancé.
+            <p class="text-zinc-400 text-sm mb-4">Plateforme B2B/B2C. Gestion multi-storefront et inventaire avancé.
             </p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -778,7 +778,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.prestashop_46">PrestaShop</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span
+            <p class="text-zinc-400 text-sm mb-4"><span
                 data-i18n="integrations.solution_ecommerce_opensource_45">Solution e-commerce open-source. API REST pour
                 produits et commandes.</span></p>
           </div>
@@ -788,7 +788,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.klaviyo_44">Klaviyo</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span
+            <p class="text-zinc-400 text-sm mb-4"><span
                 data-i18n="integrations.segmentation_client_tags_43">Segmentation client, tags, et historique d'achats
                 pour personnalisation.</span></p>
           </div>
@@ -810,7 +810,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.zapier_42">Zapier</span></h3>
-            <p class="text-slate-400 text-sm mb-4">Connectez 7000+ apps sans code. Triggers et actions automatiques.</p>
+            <p class="text-zinc-400 text-sm mb-4">Connectez 7000+ apps sans code. Triggers et actions automatiques.</p>
           </div>
           <div class="integration-card rounded-xl p-6">
             <div class="w-12 h-12 rounded-xl bg-white shadow-md flex items-center justify-center mb-4">
@@ -818,7 +818,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.makecom_41">Make.com</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span
+            <p class="text-zinc-400 text-sm mb-4"><span
                 data-i18n="integrations.scnarios_visuels_complexes_40">Scénarios visuels complexes avec branchements
                 conditionnels avancés.</span></p>
           </div>
@@ -827,7 +827,7 @@
               <img src="/public/images/logos/n8n.svg?v=249.13" alt="n8n" class="w-8 h-8 object-contain" loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2">n8n</h3>
-            <p class="text-slate-400 text-sm mb-4"><span
+            <p class="text-zinc-400 text-sm mb-4"><span
                 data-i18n="integrations.alternative_opensource_selfhosted_39">Alternative open-source self-hosted.
                 Contrôle total des données client.</span></p>
           </div>
@@ -850,7 +850,7 @@
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_sheets_37">Google Sheets</span>
             </h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_criture_36">Lecture et
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_criture_36">Lecture et
                 écriture de données. Export automatique des leads et appels.</span></p>
 
           </div>
@@ -861,7 +861,7 @@
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_drive_35">Google Drive</span>
             </h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.upload_des_enregistrements_34">Upload
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.upload_des_enregistrements_34">Upload
                 des enregistrements et rapports. Création de dossiers par client.</span></p>
 
           </div>
@@ -871,7 +871,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_docs_33">Google Docs</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gnration_de_rapports_32">Génération de
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.gnration_de_rapports_32">Génération de
                 rapports et transcriptions. Templates personnalisables.</span></p>
 
           </div>
@@ -881,7 +881,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.gmail_31">Gmail</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_envoi_30">Lecture et envoi
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.lecture_et_envoi_30">Lecture et envoi
                 d'emails. Recherche, labels, et drafts via API Gmail.</span></p>
 
           </div>
@@ -890,7 +890,7 @@
     </section>
 
     <!-- Scheduling -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-4 mb-8">
           <h2 class="text-2xl font-bold">Scheduling & Calendar</h2>
@@ -903,7 +903,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.calendly_29">Calendly</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span
+            <p class="text-zinc-400 text-sm mb-4"><span
                 data-i18n="integrations.planification_automatique_de_28">Planification automatique de rendez-vous.
                 Disponibilités en temps réel.</span></p>
           </div>
@@ -914,7 +914,7 @@
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.google_calendar_27">Google
                 Calendar</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.cration_dvnements_et_26">Création
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.cration_dvnements_et_26">Création
                 d'événements et vérification de disponibilités automatique.</span></p>
           </div>
         </div>
@@ -935,7 +935,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.freshdesk_25">Freshdesk</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.cration_et_suivi_24">Création et suivi
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.cration_et_suivi_24">Création et suivi
                 de tickets. Historique client accessible pendant l'appel.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -944,7 +944,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.zendesk_23">Zendesk</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_tickets_22">Gestion des
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.gestion_des_tickets_22">Gestion des
                 tickets et base de connaissances. Escalade automatique.</span></p>
           </div>
         </div>
@@ -952,7 +952,7 @@
     </section>
 
     <!-- Communication -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center gap-4 mb-8">
           <h2 class="text-2xl font-bold"><span data-i18n="integrations.communication_21">Communication &
@@ -966,7 +966,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.slack_20">Slack</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span
+            <p class="text-zinc-400 text-sm mb-4"><span
                 data-i18n="integrations.notifications_en_temps_19">Notifications en temps réel. Alertes pour leads
                 chauds et appels manqués.</span></p>
           </div>
@@ -976,7 +976,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.whatsapp_business">WhatsApp</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.messagerie_whatsapp_business">Support
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.messagerie_whatsapp_business">Support
                 client et notifications via WhatsApp Business API.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -985,7 +985,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.twilio_telephony">Twilio</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.telephonie_pstn_mondiale">Numéros
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.telephonie_pstn_mondiale">Numéros
                 locaux et appels sortants via réseau Twilio Super Network.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -994,7 +994,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.smtp_email">SMTP Email</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.envoi_email_smtp_custom">Envoi d'emails
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.envoi_email_smtp_custom">Envoi d'emails
                 transactionnels via votre propre serveur SMTP.</span></p>
           </div>
         </div>
@@ -1015,7 +1015,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.stripe_18">Stripe</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.paiements_scuriss_payment_17">Paiements
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.paiements_scuriss_payment_17">Paiements
                 sécurisés. Payment Links, Checkout, Invoices et remboursements.</span></p>
           </div>
         </div>
@@ -1036,7 +1036,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.wordpress_16">WordPress</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.plugin_1clic_pour_15">Plugin 1-clic
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.plugin_1clic_pour_15">Plugin 1-clic
                 pour ajouter le voice widget. 40 personas, 5 langues.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -1044,7 +1044,7 @@
               <img src="/public/images/logos/wix.svg?v=249.13" alt="Wix" class="w-8 h-8 object-contain" loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2">Wix</h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.intgration_widget_via_14">Intégration
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.intgration_widget_via_14">Intégration
                 widget via embed HTML. Compatible avec tous les templates Wix.</span></p>
           </div>
           <div class="integration-card rounded-xl p-6">
@@ -1053,7 +1053,7 @@
                 loading="lazy">
             </div>
             <h3 class="text-lg font-semibold mb-2"><span data-i18n="integrations.squarespace_13">Squarespace</span></h3>
-            <p class="text-slate-400 text-sm mb-4"><span data-i18n="integrations.code_injection_pour_12">Code injection
+            <p class="text-zinc-400 text-sm mb-4"><span data-i18n="integrations.code_injection_pour_12">Code injection
                 pour widget voice. Personnalisation couleurs et position.</span></p>
           </div>
         </div>
@@ -1061,7 +1061,7 @@
     </section>
 
     <!-- API Section -->
-    <section class="py-16 bg-slate-900/50">
+    <section class="py-16 bg-white/[0.02]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -1071,7 +1071,7 @@
             </span>
             <h2 class="text-3xl font-bold mb-6"><span data-i18n="integrations.construisez_vos_propres_11">Construisez
                 vos propres intégrations</span></h2>
-            <p class="text-slate-300 mb-6">
+            <p class="text-zinc-300 mb-6">
               Notre API RESTful complète vous permet de créer des intégrations personnalisées avec n'importe quel
               système.
             </p>
@@ -1110,7 +1110,7 @@
               <div class="w-3 h-3 rounded-full bg-green-500"></div>
             </div>
             <pre
-              class="text-slate-300 overflow-x-auto"><code><span class="text-slate-500">// Exemple: Créer un appel sortant</span>
+              class="text-zinc-300 overflow-x-auto"><code><span class="text-zinc-500">// Exemple: Créer un appel sortant</span>
 <span class="text-purple-400"><span data-i18n="integrations.const_5"><span data-i18n="integrations.const_7">const</span></span></span> response = <span class="text-purple-400"><span data-i18n="integrations.await_4"><span data-i18n="integrations.await_6">await</span></span></span> fetch(
   <span class="text-emerald-400">'https://api.vocalia.ma/v1/calls'</span>,
   {
@@ -1138,7 +1138,7 @@
     </section>
 
     <!-- CTA Section - Modern 2026 (Linear/Vercel inspired) -->
-    <section class="py-24 relative overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900">
+    <section class="py-24 relative overflow-hidden bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
       <!-- Soft radial glow - gradient as lighting -->
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]">
       </div>
@@ -1146,7 +1146,7 @@
       <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-vocalia-500/40 to-transparent">
       </div>
       <!-- Bottom border glow -->
-      <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-600/30 to-transparent">
+      <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent">
       </div>
 
       <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -1159,7 +1159,7 @@
 
         <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-white" data-i18n="cta.title">Prêt à Transformer
           Votre Service Client?</h2>
-        <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent
+        <p class="text-lg text-zinc-400 mb-10 max-w-2xl mx-auto" data-i18n="cta.subtitle">Déployez votre premier agent
           vocal IA en moins de 5 minutes.</p>
 
         <!-- CTA Buttons - Linear style -->
@@ -1182,21 +1182,21 @@
   </main>
   <!-- Footer -->
   <!-- Newsletter CTA -->
-  <section class="py-12 bg-slate-900/50" id="newsletter">
+  <section class="py-12 bg-white/[0.02]" id="newsletter">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="glass rounded-2xl p-6 md:p-8 border border-slate-700/50">
+      <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]">
         <div class="text-center mb-6">
           <h3 class="text-lg md:text-xl font-semibold text-white mb-2">
             <span data-i18n="newsletter.title">Restez informé des actualités</span> <span class="gradient-text">Voice
               AI</span>
           </h3>
-          <p class="text-slate-400 text-sm" data-i18n="newsletter.subtitle">
+          <p class="text-zinc-400 text-sm" data-i18n="newsletter.subtitle">
             Recevez nos conseils Voice AI et mises à jour produit.
           </p>
         </div>
         <form class="flex flex-col sm:flex-row gap-3" data-form-action="submitNewsletter">
           <input type="email" placeholder="votre@email.com" data-i18n-placeholder="newsletter.placeholder"
-            class="flex-1 px-4 py-2.5 bg-slate-800/80 border border-slate-600/50 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
+            class="flex-1 px-4 py-2.5 bg-white/[0.06] border border-white/[0.08] rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:border-vocalia-400 focus:ring-1 focus:ring-vocalia-400/20 transition text-sm"
             required aria-label="Adresse email">
           <button type="submit"
             class="px-5 py-2.5 bg-vocalia-500 hover:bg-vocalia-400 rounded-lg font-semibold text-sm text-white transition-all whitespace-nowrap"
@@ -1207,7 +1207,7 @@
       </div>
     </div>
   </section>
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -1233,23 +1233,23 @@
         <!-- Social Links -->
         <div class="flex space-x-3">
           <a href="https://x.com/vocalia_ma"
-            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
             aria-label="X">
             <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70"
               loading="lazy">
           </a>
           <a href="https://linkedin.com/company/vocalia"
-            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
             aria-label="LinkedIn">
             <i data-lucide="linkedin" class="w-4 h-4"></i>
           </a>
           <a href="https://github.com/Jouiet/VoicalAI"
-            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
             aria-label="GitHub">
             <i data-lucide="github" class="w-4 h-4"></i>
           </a>
           <a href="https://youtube.com/@vocalia"
-            class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
+            class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none"
             aria-label="YouTube">
             <i data-lucide="youtube" class="w-4 h-4"></i>
           </a>
@@ -1326,29 +1326,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span><span data-i18n="integrations.ai_act_ready_1">AI Act Ready</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span><span data-i18n="integrations.aes256_0">AES-256</span></span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>

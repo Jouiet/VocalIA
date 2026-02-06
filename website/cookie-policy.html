@@ -82,9 +82,9 @@
 
   <style>
     .glass {
-      background: rgba(30, 41, 59, 0.85);
+      background: rgba(10, 10, 10, 0.85);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(148, 163, 184, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .legal-content h2 {
       color: #a5b4fc;
@@ -117,7 +117,7 @@
     .cookie-table th, .cookie-table td {
       padding: 0.75rem 1rem;
       text-align: left;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .cookie-table th {
       background: rgba(99, 102, 241, 0.1);
@@ -130,7 +130,7 @@
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-100 min-h-screen">
+<body class="bg-[#050505] text-zinc-100 min-h-screen">
   <!-- Skip Link -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-indigo-600 text-white px-4 py-2 rounded-lg z-50">
     Aller au contenu principal
@@ -145,8 +145,8 @@
           <span class="font-bold text-lg text-white"><span data-i18n="cookies.vocalia_0"><span data-i18n="cookies.vocalia_34">VocalIA</span></span></span>
         </a>
         <div class="flex items-center space-x-4">
-          <a href="/privacy" class="text-slate-300 hover:text-white text-sm"><span data-i18n="footer.links.privacy">Confidentialité</span></a>
-          <a href="/terms" class="text-slate-300 hover:text-white text-sm"><span data-i18n="footer.links.terms">CGU</span></a>
+          <a href="/privacy" class="text-zinc-300 hover:text-white text-sm"><span data-i18n="footer.links.privacy">Confidentialité</span></a>
+          <a href="/terms" class="text-zinc-300 hover:text-white text-sm"><span data-i18n="footer.links.terms">CGU</span></a>
           <a href="/contact" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-lg text-sm font-medium transition"><span data-i18n="footer.links.contact">Contact</span></a>
         </div>
       </div>
@@ -158,18 +158,18 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header -->
       <div class="mb-12">
-        <nav class="flex items-center space-x-2 text-sm text-slate-400 mb-6">
+        <nav class="flex items-center space-x-2 text-sm text-zinc-400 mb-6">
           <a href="/" class="hover:text-white"><span data-i18n="cookies.accueil_33">Accueil</span></a>
           <i data-lucide="chevron-right" class="w-4 h-4"></i>
-          <span class="text-slate-200"><span data-i18n="cookies.politique_des_cookies_31"><span data-i18n="cookies.politique_des_cookies_32">Politique des Cookies</span></span></span>
+          <span class="text-zinc-200"><span data-i18n="cookies.politique_des_cookies_31"><span data-i18n="cookies.politique_des_cookies_32">Politique des Cookies</span></span></span>
         </nav>
         <h1 class="text-4xl font-bold text-white mb-4">Politique des Cookies</h1>
-        <p class="text-slate-400">Dernière mise à jour : 31 janvier 2026</p>
+        <p class="text-zinc-400">Dernière mise à jour : 31 janvier 2026</p>
       </div>
 
       <!-- Content -->
       <div class="glass rounded-2xl p-8 md:p-12 legal-content">
-        <p class="text-lg text-slate-300">
+        <p class="text-lg text-zinc-300">
           VocalIA s'engage à protéger votre vie privée. Cette politique explique comment nous utilisons les cookies et technologies similaires sur notre site web.
         </p>
 
@@ -251,7 +251,7 @@
         <p>
           Pour supprimer vos préférences VocalIA, ouvrez la console de développement (F12) et exécutez :
         </p>
-        <pre class="bg-slate-900 p-4 rounded-lg text-sm text-slate-300 overflow-x-auto"><code>localStorage.removeItem('vocalia_lang');
+        <pre class="bg-[#0a0a0a] p-4 rounded-lg text-sm text-zinc-300 overflow-x-auto"><code>localStorage.removeItem('vocalia_lang');
 localStorage.removeItem('vocalia_currency');
 localStorage.removeItem('vocalia_theme');</code></pre>
 
@@ -278,8 +278,8 @@ localStorage.removeItem('vocalia_theme');</code></pre>
           <li>Formulaire : <a href="/contact" class="text-indigo-400 hover:text-indigo-300"><span data-i18n="cookies.page_contact_3">Page Contact</span></a></li>
         </ul>
 
-        <div class="mt-12 pt-8 border-t border-slate-700">
-          <p class="text-sm text-slate-500">
+        <div class="mt-12 pt-8 border-t border-white/[0.08]">
+          <p class="text-sm text-zinc-500">
             Voir aussi : <a href="/privacy" class="text-indigo-400 hover:text-indigo-300"><span data-i18n="cookies.politique_de_confidentialit_2">Politique de Confidentialité</span></a> | <a href="/terms" class="text-indigo-400 hover:text-indigo-300"><span data-i18n="cookies.conditions_dutilisation_1">Conditions d'Utilisation</span></a>
           </p>
         </div>
@@ -287,7 +287,7 @@ localStorage.removeItem('vocalia_theme');</code></pre>
     </div>
   </main><!-- Footer -->
   <!-- Newsletter CTA loads separately via data-component="newsletter-cta" -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -310,16 +310,16 @@ localStorage.removeItem('vocalia_theme');</code></pre>
           </div>
           <!-- Social Links (WCAG 2.1 AA: min 44x44px touch targets) -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-5 h-5 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-5 h-5"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-5 h-5"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-5 h-5"></i>
             </a>
           </div>
@@ -376,29 +376,29 @@ localStorage.removeItem('vocalia_theme');</code></pre>
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span>AI Act Ready</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span>AES-256</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>
@@ -502,5 +502,7 @@ localStorage.removeItem('vocalia_theme');</code></pre>
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>

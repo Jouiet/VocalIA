@@ -75,13 +75,13 @@
 
   <style>
     .glass {
-      background: rgba(30, 41, 59, 0.7);
+      background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(24px);
-      border: 1px solid rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .input-field {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(148, 163, 184, 0.2);
+      background: rgba(10, 10, 10, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       transition: all 0.2s;
     }
     .input-field:focus {
@@ -106,12 +106,12 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: rgba(148, 163, 184, 0.2);
+      background: rgba(255, 255, 255, 0.06);
     }
   </style>
 </head>
 
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-[#050505] text-zinc-100 min-h-screen flex flex-col">
   <!-- Skip Link -->
   <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-indigo-600 text-white px-4 py-2 rounded-lg z-50">
     Aller au contenu principal
@@ -136,17 +136,17 @@
       <div class="glass rounded-2xl p-8 shadow-2xl">
         <div class="text-center mb-8">
           <h1 class="text-2xl font-bold text-white mb-2" data-i18n="login_page.title">Connexion</h1>
-          <p class="text-slate-400" data-i18n="login_page.subtitle">Accédez à votre tableau de bord</p>
+          <p class="text-zinc-400" data-i18n="login_page.subtitle">Accédez à votre tableau de bord</p>
         </div>
 
         <form action="https://api.vocalia.ma/auth/login" method="POST" class="space-y-5">
           <!-- Email -->
           <div>
-            <label for="email" class="block text-sm font-medium text-slate-300 mb-2" data-i18n="login_page.email">
+            <label for="email" class="block text-sm font-medium text-zinc-300 mb-2" data-i18n="login_page.email">
               Adresse email
             </label>
             <div class="relative">
-              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+              <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500"></i>
               <input
                 type="email"
                 id="email"
@@ -154,7 +154,7 @@
                 required
                 autocomplete="email"
                 placeholder="vous@entreprise.com"
-                class="input-field w-full pl-11 pr-4 py-3 rounded-xl text-white placeholder-slate-500"
+                class="input-field w-full pl-11 pr-4 py-3 rounded-xl text-white placeholder-zinc-500"
               >
             </div>
           </div>
@@ -162,7 +162,7 @@
           <!-- Password -->
           <div>
             <div class="flex items-center justify-between mb-2">
-              <label for="password" class="block text-sm font-medium text-slate-300" data-i18n="login_page.password">
+              <label for="password" class="block text-sm font-medium text-zinc-300" data-i18n="login_page.password">
                 Mot de passe
               </label>
               <a href="/contact" class="text-sm text-indigo-400 hover:text-indigo-300" data-i18n="login_page.forgot">
@@ -170,7 +170,7 @@
               </a>
             </div>
             <div class="relative">
-              <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500"></i>
+              <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500"></i>
               <input
                 type="password"
                 id="password"
@@ -178,9 +178,9 @@
                 required
                 autocomplete="current-password"
                 placeholder="••••••••"
-                class="input-field w-full pl-11 pr-12 py-3 rounded-xl text-white placeholder-slate-500"
+                class="input-field w-full pl-11 pr-12 py-3 rounded-xl text-white placeholder-zinc-500"
               >
-              <button type="button" data-action="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300">
+              <button type="button" data-action="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300">
                 <i data-lucide="eye" id="eyeIcon" class="w-5 h-5"></i>
               </button>
             </div>
@@ -192,9 +192,9 @@
               type="checkbox"
               id="remember"
               name="remember"
-              class="w-4 h-4 rounded border-slate-600 bg-slate-800 text-indigo-600 focus:ring-indigo-500 focus:ring-offset-slate-900"
+              class="w-4 h-4 rounded border-white/[0.08] bg-white/[0.06] text-indigo-600 focus:ring-indigo-500 focus:ring-offset-[#050505]"
             >
-            <label for="remember" class="ml-2 text-sm text-slate-400" data-i18n="login_page.remember">
+            <label for="remember" class="ml-2 text-sm text-zinc-400" data-i18n="login_page.remember">
               Se souvenir de moi
             </label>
           </div>
@@ -207,22 +207,22 @@
         </form>
 
         <!-- Divider -->
-        <div class="divider my-6 text-sm text-slate-500" data-i18n="login_page.or">ou</div>
+        <div class="divider my-6 text-sm text-zinc-500" data-i18n="login_page.or">ou</div>
 
         <!-- SSO Options -->
         <div class="space-y-3">
-          <button type="button" class="w-full py-3 px-4 rounded-xl border border-slate-700 hover:border-slate-600 bg-slate-800/50 hover:bg-slate-800 transition flex items-center justify-center space-x-3 text-slate-300">
+          <button type="button" class="w-full py-3 px-4 rounded-xl border border-white/[0.08] hover:border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] transition flex items-center justify-center space-x-3 text-zinc-300">
             <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z"/></svg>
             <span data-i18n="login_page.google">Continuer avec Google</span>
           </button>
-          <button type="button" class="w-full py-3 px-4 rounded-xl border border-slate-700 hover:border-slate-600 bg-slate-800/50 hover:bg-slate-800 transition flex items-center justify-center space-x-3 text-slate-300">
+          <button type="button" class="w-full py-3 px-4 rounded-xl border border-white/[0.08] hover:border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] transition flex items-center justify-center space-x-3 text-zinc-300">
             <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
             <span data-i18n="login_page.github">Continuer avec GitHub</span>
           </button>
         </div>
 
         <!-- Sign Up Link -->
-        <p class="mt-8 text-center text-sm text-slate-400">
+        <p class="mt-8 text-center text-sm text-zinc-400">
           <span data-i18n="login_page.no_account">Pas encore de compte ?</span>
           <a href="/signup" class="text-indigo-400 hover:text-indigo-300 font-medium ml-1" data-i18n="login_page.signup">
             Créer un compte
@@ -231,14 +231,14 @@
       </div>
 
       <!-- Security Note -->
-      <div class="mt-6 flex items-center justify-center space-x-2 text-sm text-slate-500">
+      <div class="mt-6 flex items-center justify-center space-x-2 text-sm text-zinc-500">
         <i data-lucide="shield-check" class="w-4 h-4"></i>
         <span data-i18n="login_page.security">Connexion sécurisée avec chiffrement SSL</span>
       </div>
     </div>
   </main><!-- Footer -->
   <!-- Newsletter CTA loads separately via data-component="newsletter-cta" -->
-  <footer class="bg-slate-900 border-t border-slate-800">
+  <footer class="bg-[#0a0a0a] border-t border-white/[0.06]">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Brand Section -->
@@ -261,16 +261,16 @@
           </div>
           <!-- Social Links (WCAG 2.1 AA: min 44x44px touch targets) -->
           <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
+            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
               <img src="/public/images/logos/xai.svg" alt="X" class="w-5 h-5 brightness-0 invert opacity-70" loading="lazy" >
             </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
+            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-5 h-5"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
               <i data-lucide="github" class="w-5 h-5"></i>
             </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
+            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
               <i data-lucide="youtube" class="w-5 h-5"></i>
             </a>
           </div>
@@ -327,29 +327,29 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="border-t border-slate-800 mt-8 pt-8">
+      <div class="border-t border-white/[0.06] mt-8 pt-8">
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
 
           <!-- Trust Badges -->
           <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
               <span>RGPD</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
               <span>AI Act Ready</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
               <span>AES-256</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
               <span>5 Langues</span>
             </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-slate-800/50 rounded-full">
+            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
               <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
               <span>99.9% Uptime</span>
             </div>

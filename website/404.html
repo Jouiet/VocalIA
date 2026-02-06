@@ -60,7 +60,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
 
   <style>
-    .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
+    .glass { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(12px); }
     .gradient-text { background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .vocalia-gradient { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
 
@@ -111,7 +111,7 @@
   
 </head>
 
-<body class="bg-slate-900 text-white font-inter min-h-screen flex flex-col">
+<body class="bg-[#0a0a0a] text-white font-inter min-h-screen flex flex-col">
   <!-- Skip Link -->
   <a href="#main-content"
     class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
@@ -119,7 +119,7 @@
   </a>
 
   <!-- Minimal Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-800/50">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/[0.04]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <a href="/" class="flex items-center space-x-2">
@@ -164,7 +164,7 @@
           </svg>
           <span data-i18n="error_page.back_home">Retour à l'accueil</span>
         </a>
-        <a href="/contact" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 transition font-medium">
+        <a href="/contact" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.06] border border-white/[0.08] transition font-medium">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
           </svg>
@@ -173,19 +173,19 @@
       </div>
 
       <!-- Quick Links -->
-      <div class="mt-12 pt-8 border-t border-slate-800">
+      <div class="mt-12 pt-8 border-t border-white/[0.06]">
         <p class="text-zinc-400 text-sm mb-4" data-i18n="error_page.popular_pages">Pages populaires :</p>
         <div class="flex flex-wrap justify-center gap-3">
-          <a href="/features" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+          <a href="/features" class="px-4 py-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.06] text-zinc-300 hover:text-white text-sm transition">
             Fonctionnalités
           </a>
-          <a href="/pricing" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+          <a href="/pricing" class="px-4 py-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.06] text-zinc-300 hover:text-white text-sm transition">
             Tarifs
           </a>
-          <a href="/docs" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+          <a href="/docs" class="px-4 py-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.06] text-zinc-300 hover:text-white text-sm transition">
             Documentation
           </a>
-          <a href="/blog" class="px-4 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-800 text-zinc-300 hover:text-white text-sm transition">
+          <a href="/blog" class="px-4 py-2 rounded-lg bg-white/[0.04] hover:bg-white/[0.06] text-zinc-300 hover:text-white text-sm transition">
             Blog
           </a>
         </div>
@@ -194,7 +194,7 @@
   </main>
 
   <!-- Minimal Footer -->
-  <footer class="py-6 border-t border-slate-800">
+  <footer class="py-6 border-t border-white/[0.06]">
     <div class="max-w-7xl mx-auto px-4 text-center">
       <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
     </div>
@@ -296,5 +296,7 @@
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <!-- VocalIA Voice Widget -->
+  <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
 </body>
 </html>
