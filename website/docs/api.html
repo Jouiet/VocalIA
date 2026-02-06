@@ -1395,10 +1395,26 @@ ws.onmessage = (event) => {
                 </div>
                 <div>
                   <h3 class="font-semibold">Ruby</h3>
-                  <code class="text-sm text-slate-400"><span data-i18n="docs_api.gem_install_vocalia_8">gem install vocalia</span></code>
+                  <code class="text-sm text-slate-400">REST API via net/http</code>
                 </div>
               </div>
-              <span class="text-slate-500 text-sm"><span data-i18n="docs_api.coming_soon_6"><span data-i18n="docs_api.coming_soon_7">Coming soon</span></span></span>
+              <div class="code-block mt-3">
+                <div class="code-content">
+                  <pre><span class="token-key">require</span> <span class="token-string">'net/http'</span>
+<span class="token-key">require</span> <span class="token-string">'json'</span>
+
+uri = URI(<span class="token-string">'https://api.vocalia.ma/respond'</span>)
+res = Net::HTTP.post(uri,
+  { message: <span class="token-string">'Bonjour'</span>,
+    language: <span class="token-string">'fr'</span>,
+    tenant_id: <span class="token-string">'your_tenant'</span>
+  }.to_json,
+  <span class="token-string">'Content-Type'</span> => <span class="token-string">'application/json'</span>,
+  <span class="token-string">'Authorization'</span> => <span class="token-string">"Bearer #{api_key}"</span>
+)
+puts JSON.parse(res.body)</pre>
+                </div>
+              </div>
             </div>
 
             <div class="glass rounded-xl p-6">
@@ -1408,10 +1424,26 @@ ws.onmessage = (event) => {
                 </div>
                 <div>
                   <h3 class="font-semibold">Go</h3>
-                  <code class="text-sm text-slate-400">go get vocalia.ma/sdk</code>
+                  <code class="text-sm text-slate-400">REST API via net/http</code>
                 </div>
               </div>
-              <span class="text-slate-500 text-sm">Coming soon</span>
+              <div class="code-block mt-3">
+                <div class="code-content">
+                  <pre><span class="token-key">import</span> (<span class="token-string">"bytes"</span>; <span class="token-string">"net/http"</span>; <span class="token-string">"encoding/json"</span>)
+
+body, _ := json.Marshal(map[string]string{
+  <span class="token-string">"message"</span>:   <span class="token-string">"Bonjour"</span>,
+  <span class="token-string">"language"</span>:  <span class="token-string">"fr"</span>,
+  <span class="token-string">"tenant_id"</span>: <span class="token-string">"your_tenant"</span>,
+})
+req, _ := http.NewRequest(<span class="token-string">"POST"</span>,
+  <span class="token-string">"https://api.vocalia.ma/respond"</span>,
+  bytes.NewBuffer(body))
+req.Header.Set(<span class="token-string">"Content-Type"</span>, <span class="token-string">"application/json"</span>)
+req.Header.Set(<span class="token-string">"Authorization"</span>, <span class="token-string">"Bearer "+apiKey</span>)
+resp, _ := http.DefaultClient.Do(req)</pre>
+                </div>
+              </div>
             </div>
           </div>
         </section>
