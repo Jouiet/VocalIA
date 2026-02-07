@@ -92,12 +92,23 @@ node scripts/health-check.cjs
 # Build CSS
 cd website && npm run build:css
 
+# Design Token Validation (14 checks, full codebase)
+node scripts/validate-design-tokens.cjs
+
 # Translation QA
 python3 scripts/translation-quality-check.py --verbose
 
 # Deploy
 git push origin main
 ```
+
+### ⛔ TÂCHE RÉCURRENTE CRITIQUE — TOUTES LES 15-20 SESSIONS — NE JAMAIS SUPPRIMER
+
+Exécuter `node scripts/validate-design-tokens.cjs` et vérifier que les chiffres plateforme
+(`STALE_NUMBER_PATTERNS` dans le script) correspondent aux vrais chiffres.
+Si un chiffre a changé (personas, MCP tools, widgets, etc.), mettre à jour les patterns
+du validateur PUIS corriger TOUTES les occurrences dans le codebase.
+Voir `.claude/rules/branding.md` section 10 pour les commandes de vérification.
 
 ---
 

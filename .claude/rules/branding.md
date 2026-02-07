@@ -224,8 +224,30 @@ The homepage init code must NOT set `primaryColor`, `secondaryColor`, `accentCol
 node scripts/validate-design-tokens.cjs
 ```
 
-Detects: forbidden hex colors, rogue patterns, unapproved values.
-Run BEFORE any commit touching CSS/HTML.
+**v2.1** — 14 checks, scans full codebase (HTML + JS + CSS + core + data)
+Detects: forbidden colors, rogue patterns, widget duplication, stale numbers, opacity violations, etc.
+
+**Run BEFORE any commit touching CSS/HTML/widget/core.**
+
+### ⛔ TÂCHE RÉCURRENTE CRITIQUE — NE JAMAIS SUPPRIMER
+
+**Toutes les 15-20 sessions**, exécuter le validateur ET vérifier que `STALE_NUMBER_PATTERNS` dans
+`scripts/validate-design-tokens.cjs` est à jour avec les vrais chiffres de la plateforme:
+
+| Chiffre | Variable | Source de vérité | Commande |
+|:--------|:---------|:-----------------|:---------|
+| Personas | `PLATFORM_NUMBERS.personas` | `voice-persona-injector.cjs` | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs \| sort -u \| wc -l` |
+| MCP Tools | `PLATFORM_NUMBERS.mcpTools` | `mcp-server/src/index.ts` | `grep -c "server.tool(" mcp-server/src/index.ts` |
+| Function Tools | `PLATFORM_NUMBERS.functionTools` | `voice-telephony-bridge.cjs` | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
+| Widgets | `PLATFORM_NUMBERS.widgets` | `widget/*.js` | `ls widget/*.js \| wc -l` |
+| Languages | `PLATFORM_NUMBERS.languages` | Locale files | `ls website/src/locales/*.json \| wc -l` |
+
+**Si un chiffre a changé**: mettre à jour `STALE_NUMBER_PATTERNS` pour détecter l'ancienne valeur,
+puis corriger toutes les occurrences dans le codebase.
+
+**Historique des changements de chiffres:**
+- Session 250.120: Personas 40 → 38 (5 eliminated)
+- Session 250.124: MCP tools 182 → 203 (stale value eradicated)
 
 ---
 
