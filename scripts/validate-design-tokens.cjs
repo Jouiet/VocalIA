@@ -1,179 +1,518 @@
 'use strict';
 
 /**
- * VocalIA Design Token Validator
- * Scans HTML files for forbidden/rogue colors and inconsistent patterns.
+ * VocalIA Design Token Validator v2.0
+ * Ultra-rigorous branding compliance checker.
+ * Validates ALL 10 sections of .claude/rules/branding.md
+ *
+ * Scans: HTML, JS (widgets), CSS files
  * Run: node scripts/validate-design-tokens.cjs
  *
- * Session 250.122 | 07/02/2026
+ * Session 250.124 | 07/02/2026
  */
 
 const fs = require('fs');
 const path = require('path');
 
-// ── Approved palette (from homepage + input.css @theme) ──
+const WEBSITE_DIR = path.join(__dirname, '..', 'website');
+const ROOT_DIR = path.join(__dirname, '..');
+
+// ═══════════════════════════════════════════════════════
+// SECTION 1: Color Palette
+// ═══════════════════════════════════════════════════════
+
 const APPROVED_HEX = new Set([
-  '#050505', // quantum-void (body)
-  '#09090b', // surface-900 (nav, footer)
-  '#0c0c0f', // surface-800 (dropdowns, cards)
-  '#111114', // surface-700
-  '#18181b', // surface-600
-  '#27272a', // surface-500
-  '#3f3f46', // surface-400
-  '#52525b', // surface-300
-  '#71717a', // surface-200 / zinc-500
-  '#a1a1aa', // surface-100 / zinc-400
-  '#fafafa', // surface-50 / zinc-50
-  '#f4f4f5', '#e4e4e7', '#d4d4d8', // zinc 100-300
-  '#5e6ad2', '#5E6AD2', // vocalia primary
-  '#a5b4fc', // indigo-300
-  '#60a5fa', '#3b82f6', '#2563eb', // blue
-  '#a78bfa', '#8b5cf6', '#7c3aed', // violet
-  '#34d399', '#10b981', '#059669', // emerald
-  '#fbbf24', '#f59e0b', // amber
-  '#fb7185', '#f43f5e', '#e11d48', // rose
-  '#1e293b', '#334155', '#475569', '#64748b', // bg-base/raised/elevated/overlay
-  // Extended Tailwind palette (used in features, blog, docs, auth)
-  '#6366f1', '#4f46e5', '#818cf8', '#c4b5fd', // indigo extended
-  '#a855f7', '#c792ea', // purple
-  '#22c55e', '#6ee7b7', // green
-  '#ef4444', '#f87171', // red
-  '#f97316', '#fb923c', '#fdba74', // orange
-  '#06b6d4', // cyan
-  '#94a3b8', '#cbd5e1', '#e2e8f0', // slate
-  '#0f172a', '#0f0f23', // slate-900 / dark variants
-  '#667eea', '#764ba2', '#4f5abd', // auth gradient
-  '#c3e88d', '#82aaff', '#546e7a', // syntax highlight (code blocks)
-  '#4285f4', '#34a853', '#fbbc05', '#ea4335', // Google brand (OAuth)
+  // Surface colors (quantum void design system)
+  '#050505', '#09090b', '#0c0c0f', '#111114', '#18181b',
+  '#27272a', '#3f3f46', '#52525b', '#71717a', '#a1a1aa', '#fafafa',
+  // Zinc extended
+  '#f4f4f5', '#e4e4e7', '#d4d4d8',
+  // Brand colors
+  '#5e6ad2', '#4f46e5', '#818cf8', '#a5b4fc',
+  // Blue
+  '#60a5fa', '#3b82f6', '#2563eb',
+  // Violet
+  '#a78bfa', '#8b5cf6', '#7c3aed',
+  // Emerald
+  '#34d399', '#10b981', '#059669',
+  // Amber
+  '#fbbf24', '#f59e0b',
+  // Rose
+  '#fb7185', '#f43f5e', '#e11d48',
+  // Red
+  '#ef4444', '#f87171',
+  // Orange
+  '#f97316', '#fb923c', '#fdba74',
+  // Cyan
+  '#06b6d4',
+  // Green
+  '#22c55e', '#6ee7b7',
+  // Extended Tailwind (used in features, blog, docs, auth)
+  '#6366f1', '#c4b5fd', '#a855f7', '#c792ea',
+  '#94a3b8', '#cbd5e1', '#e2e8f0',
+  '#1e293b', '#334155', '#475569', '#64748b',
+  '#0f172a', '#0f0f23',
+  // Auth gradient
+  '#667eea', '#764ba2', '#4f5abd',
+  // Syntax highlight (code blocks)
+  '#c3e88d', '#82aaff', '#546e7a',
+  // Google brand (OAuth)
+  '#4285f4', '#34a853', '#fbbc05', '#ea4335',
+  // Visualizer (electric blue)
+  '#5dade2', '#85c1e9',
+  // Widget
+  '#0f172a',
+  // White/black
+  '#ffffff', '#000000',
 ]);
 
-// ── Explicitly forbidden colors ──
 const FORBIDDEN_HEX = {
-  '#0c0e1a': 'Blue-tint rogue. Use #0c0c0f (surface-800)',
-  '#0a0a0a': 'Off-void rogue. Use #050505 (quantum-void)',
-  '#1a1a2e': 'Purple-tint rogue. Use surface colors',
-  '#0d0d12': 'Rogue dark. Use #0c0c0f (surface-800)',
-  '#1e1e2e': 'Rogue blue-dark. Use #18181b (surface-600)',
+  '#0c0e1a': 'Blue-tint rogue → use #0c0c0f (surface-800)',
+  '#0a0a0a': 'Off-void rogue → use #050505 (quantum-void)',
+  '#1a1a2e': 'Purple-tint rogue → use surface colors',
+  '#0d0d12': 'Rogue dark → use #0c0c0f (surface-800)',
+  '#1e1e2e': 'Rogue blue-dark → use #18181b (surface-600)',
 };
 
-// ── Forbidden patterns (regex + reason) ──
+// ═══════════════════════════════════════════════════════
+// SECTION 2: Widget Rules
+// ═══════════════════════════════════════════════════════
+
+const WIDGET_EXPECTED_VERSION = '2.3.0';
+
+// Pages that use voice-widget.js (NOT voice-widget-b2b.js)
+const VOICE_WIDGET_ONLY_PAGES = new Set([
+  'docs/index.html',
+  'signup.html',
+]);
+
+// Pages that use voice-widget-ecommerce.js
+const ECOMMERCE_WIDGET_PAGES = new Set([
+  'use-cases/e-commerce.html',
+]);
+
+// ═══════════════════════════════════════════════════════
+// SECTION 4: Forbidden Opacity Patterns
+// ═══════════════════════════════════════════════════════
+
 const FORBIDDEN_PATTERNS = [
-  {
-    regex: /<section[^>]*bg-white\/\[0\.02\]/g,
-    reason: 'bg-white/[0.02] on <section> creates banding. Use transparent body.'
-  },
-  {
-    regex: /to-\[#0a0a0a\]/g,
-    reason: 'Gradient endpoint #0a0a0a != body #050505. Use to-[#050505].'
-  },
-  {
-    regex: /via-\[#0a0a0a\]/g,
-    reason: 'Gradient via-stop #0a0a0a != body #050505. Use via-[#050505].'
-  },
-  {
-    regex: /bg-\[#0c0e1a\]/g,
-    reason: 'Rogue color #0c0e1a. Use bg-[#0c0c0f] (surface-800).'
-  },
-  {
-    regex: /\/\[0\.92\]/g,
-    reason: '92% opacity = semi-transparent. Use 100% opaque or /95 minimum.'
-  },
+  // Forbidden gradient endpoints
+  { regex: /to-\[#0a0a0a\]/g, reason: 'Gradient endpoint #0a0a0a forbidden → use to-[#050505]' },
+  { regex: /via-\[#0a0a0a\]/g, reason: 'Gradient via #0a0a0a forbidden → use via-[#050505]' },
+  // Forbidden rogue bg
+  { regex: /bg-\[#0c0e1a\]/g, reason: 'Rogue bg #0c0e1a → use bg-[#0c0c0f]' },
+  { regex: /bg-\[#1a1a2e\]/g, reason: 'Rogue bg #1a1a2e → use surface colors' },
+  { regex: /bg-\[#0d0d12\]/g, reason: 'Rogue bg #0d0d12 → use bg-[#0c0c0f]' },
+  { regex: /bg-\[#1e1e2e\]/g, reason: 'Rogue bg #1e1e2e → use bg-[#18181b]' },
+  // Forbidden opacities
+  { regex: /bg-white\/\[0\.15\]/g, reason: 'bg-white/[0.15] too bright for quantum void → max 0.06' },
+  { regex: /\/\[0\.92\]/g, reason: '92% opacity = bleed-through → use 100% opaque or /95 min' },
+  // Forbidden section backgrounds
+  { regex: /<section[^>]*bg-white\/\[0\.02\]/g, reason: 'bg-white/[0.02] on <section> creates banding' },
 ];
 
-// ── Scan all HTML files ──
-function findHtmlFiles(dir) {
+// ═══════════════════════════════════════════════════════
+// SECTION 7: Platform Numbers
+// ═══════════════════════════════════════════════════════
+
+const PLATFORM_NUMBERS = {
+  personas: 38,
+  functionTools: 25,
+  mcpTools: 203,
+  languages: 5,
+  widgets: 8,
+};
+
+// Stale number patterns (detect old counts)
+const STALE_NUMBER_PATTERNS = [
+  { regex: /\b40\s+persona/gi, reason: 'Stale count "40 personas" → should be 38' },
+  { regex: /\b40\s+Persona/g, reason: 'Stale count "40 Persona" → should be 38' },
+  { regex: />40<\/.*persona/gi, reason: 'Stale "40" persona in HTML → should be 38' },
+];
+
+// ═══════════════════════════════════════════════════════
+// File Discovery
+// ═══════════════════════════════════════════════════════
+
+function findFiles(dir, extensions, excludeDirs = ['node_modules', '.git', 'coverage', 'clients', '.locale-backups']) {
   const results = [];
-  const items = fs.readdirSync(dir, { withFileTypes: true });
+  let items;
+  try { items = fs.readdirSync(dir, { withFileTypes: true }); } catch { return results; }
   for (const item of items) {
     const fullPath = path.join(dir, item.name);
-    if (item.isDirectory() && !['node_modules', '.git', 'coverage', 'clients'].includes(item.name)) {
-      results.push(...findHtmlFiles(fullPath));
-    } else if (item.isFile() && item.name.endsWith('.html')) {
+    if (item.isDirectory() && !excludeDirs.includes(item.name)) {
+      results.push(...findFiles(fullPath, extensions, excludeDirs));
+    } else if (item.isFile() && extensions.some(ext => item.name.endsWith(ext))) {
       results.push(fullPath);
     }
   }
   return results;
 }
 
+// ═══════════════════════════════════════════════════════
+// Validator Engine
+// ═══════════════════════════════════════════════════════
+
 function validate() {
-  const websiteDir = path.join(__dirname, '..', 'website');
-  const files = findHtmlFiles(websiteDir);
-  let totalErrors = 0;
-  let totalWarnings = 0;
   const errors = [];
   const warnings = [];
 
-  for (const file of files) {
-    const content = fs.readFileSync(file, 'utf-8');
-    const relPath = path.relative(path.join(__dirname, '..'), file);
-    const lines = content.split('\n');
+  // Scan HTML + JS + CSS
+  const htmlFiles = findFiles(WEBSITE_DIR, ['.html']);
+  const jsFiles = [
+    ...findFiles(path.join(WEBSITE_DIR, 'voice-assistant'), ['.js']),
+    ...findFiles(path.join(WEBSITE_DIR, 'src', 'lib'), ['.js']),
+  ];
+  const cssFiles = findFiles(path.join(WEBSITE_DIR, 'src'), ['.css']);
+  const allFiles = [...htmlFiles, ...jsFiles, ...cssFiles];
 
-    // Check forbidden hex colors
+  const relPath = (f) => path.relative(ROOT_DIR, f);
+
+  // ── CHECK 1: Forbidden hex colors (all files) ──
+  for (const file of allFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const lines = content.split('\n');
+    const rel = relPath(file);
+
     for (const [hex, reason] of Object.entries(FORBIDDEN_HEX)) {
       for (let i = 0; i < lines.length; i++) {
-        if (lines[i].includes(hex)) {
-          errors.push(`${relPath}:${i + 1} FORBIDDEN ${hex} — ${reason}`);
-          totalErrors++;
+        if (lines[i].toLowerCase().includes(hex)) {
+          errors.push({ file: rel, line: i + 1, rule: 'FORBIDDEN_COLOR', msg: `${hex} — ${reason}` });
         }
       }
     }
+  }
 
-    // Check forbidden patterns
+  // ── CHECK 2: Forbidden patterns (all files) ──
+  for (const file of allFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+
     for (const { regex, reason } of FORBIDDEN_PATTERNS) {
-      const globalRegex = new RegExp(regex.source, 'g');
+      const globalRegex = new RegExp(regex.source, regex.flags);
       let match;
       while ((match = globalRegex.exec(content)) !== null) {
         const lineNum = content.substring(0, match.index).split('\n').length;
-        errors.push(`${relPath}:${lineNum} FORBIDDEN PATTERN ${match[0]} — ${reason}`);
-        totalErrors++;
+        errors.push({ file: rel, line: lineNum, rule: 'FORBIDDEN_PATTERN', msg: `${match[0]} — ${reason}` });
       }
     }
+  }
 
-    // Check for unapproved arbitrary hex colors (warnings)
-    const hexMatches = content.matchAll(/#[0-9a-fA-F]{6}/g);
+  // ── CHECK 3: Unknown hex (HTML files only, warnings) ──
+  for (const file of htmlFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+    const lines = content.split('\n');
+
+    const hexMatches = content.matchAll(/#[0-9a-fA-F]{6}(?![0-9a-fA-F])/g);
     for (const match of hexMatches) {
       const hex = match[0].toLowerCase();
       if (!APPROVED_HEX.has(hex) && !FORBIDDEN_HEX[hex]) {
         const lineNum = content.substring(0, match.index).split('\n').length;
         const line = lines[lineNum - 1] || '';
-        // Skip if it's inside a <script> or <style> or HTML entities
-        if (!line.includes('&#x') && !line.includes('script')) {
-          warnings.push(`${relPath}:${lineNum} UNKNOWN HEX ${match[0]} — not in approved palette`);
-          totalWarnings++;
+        // Skip HTML entities, script content, meta tags, SVG, comments
+        if (!line.includes('&#x') && !line.includes('<script') && !line.includes('<!--')
+            && !line.includes('content="') && !line.includes('<meta')) {
+          warnings.push({ file: rel, line: lineNum, rule: 'UNKNOWN_HEX', msg: `${match[0]} not in approved palette` });
         }
       }
     }
   }
 
-  // ── Report ──
-  console.log('╔══════════════════════════════════════════════════╗');
-  console.log('║     VocalIA Design Token Validator v1.0         ║');
-  console.log('╚══════════════════════════════════════════════════╝');
-  console.log(`Scanned: ${files.length} HTML files\n`);
+  // ── CHECK 4: Widget duplication (one widget per page) ──
+  // Only count actual <script src="...widget..."> tags, not code examples/docs
+  for (const file of htmlFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+    const lines = content.split('\n');
+
+    let b2bCount = 0;
+    let stdCount = 0;
+    let ecomCount = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      // Only count lines that are actual <script src="..."> tags
+      if (/<script\s[^>]*src=/.test(line)) {
+        if (line.includes('voice-widget-b2b.js')) b2bCount++;
+        else if (line.includes('voice-widget-ecommerce.js')) ecomCount++;
+        else if (/voice-widget\.js/.test(line) && !line.includes('voice-widget-b2b') && !line.includes('voice-widget-ecommerce')) stdCount++;
+      }
+    }
+
+    const totalWidgets = b2bCount + stdCount + ecomCount;
+    if (totalWidgets > 1) {
+      errors.push({ file: rel, line: 0, rule: 'WIDGET_DUPLICATE', msg: `${totalWidgets} widget scripts loaded — only 1 allowed per page` });
+    }
+  }
+
+  // ── CHECK 5: Widget version consistency ──
+  for (const file of htmlFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+
+    // Check all widget script tags for version
+    const widgetRefs = content.matchAll(/voice-widget(?:-b2b|-ecommerce)?\.js\?v=([0-9.]+)/g);
+    for (const match of widgetRefs) {
+      if (match[1] !== WIDGET_EXPECTED_VERSION) {
+        const lineNum = content.substring(0, match.index).split('\n').length;
+        errors.push({ file: rel, line: lineNum, rule: 'WIDGET_VERSION', msg: `version ${match[1]} ≠ expected ${WIDGET_EXPECTED_VERSION}` });
+      }
+    }
+
+    // Check widget scripts WITHOUT version param
+    const noVersion = content.matchAll(/voice-widget(?:-b2b|-ecommerce)?\.js(?:"|'|\s)/g);
+    for (const match of noVersion) {
+      const matchText = match[0].trim();
+      if (!matchText.includes('?v=')) {
+        const lineNum = content.substring(0, match.index).split('\n').length;
+        const line = (content.split('\n')[lineNum - 1] || '').trim();
+        // Only flag if it's in a <script> tag (not a comment or text)
+        if (line.includes('<script') || line.includes('src=')) {
+          warnings.push({ file: rel, line: lineNum, rule: 'WIDGET_NO_VERSION', msg: `widget script missing ?v= cache-bust param` });
+        }
+      }
+    }
+  }
+
+  // ── CHECK 6: Widget page assignment (correct widget on correct page) ──
+  for (const file of htmlFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+    const relToWebsite = path.relative(WEBSITE_DIR, file);
+
+    // Pages that should use voice-widget.js
+    if (VOICE_WIDGET_ONLY_PAGES.has(relToWebsite)) {
+      if (content.includes('voice-widget-b2b.js')) {
+        warnings.push({ file: rel, line: 0, rule: 'WIDGET_WRONG_TYPE', msg: `should use voice-widget.js, not voice-widget-b2b.js` });
+      }
+    }
+
+    // Pages that should use ecommerce widget
+    if (ECOMMERCE_WIDGET_PAGES.has(relToWebsite)) {
+      if (!content.includes('voice-widget-ecommerce.js')) {
+        warnings.push({ file: rel, line: 0, rule: 'WIDGET_WRONG_TYPE', msg: `should use voice-widget-ecommerce.js` });
+      }
+    }
+  }
+
+  // ── CHECK 7: Visualizer color overrides ──
+  const indexHtml = path.join(WEBSITE_DIR, 'index.html');
+  if (fs.existsSync(indexHtml)) {
+    const content = fs.readFileSync(indexHtml, 'utf-8');
+    const colorOverrides = ['primaryColor', 'secondaryColor', 'accentColor', 'glowColor'];
+    for (const prop of colorOverrides) {
+      // Check inside VoiceVisualizer constructor calls
+      const regex = new RegExp(`new\\s+VoiceVisualizer\\([^)]*${prop}`, 'g');
+      let match;
+      while ((match = regex.exec(content)) !== null) {
+        const lineNum = content.substring(0, match.index).split('\n').length;
+        errors.push({ file: relPath(indexHtml), line: lineNum, rule: 'VISUALIZER_OVERRIDE', msg: `${prop} override found — let defaults apply (electric blue)` });
+      }
+    }
+  }
+
+  // ── CHECK 8: Stale platform numbers ──
+  for (const file of htmlFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+
+    for (const { regex, reason } of STALE_NUMBER_PATTERNS) {
+      const globalRegex = new RegExp(regex.source, regex.flags);
+      let match;
+      while ((match = globalRegex.exec(content)) !== null) {
+        const lineNum = content.substring(0, match.index).split('\n').length;
+        errors.push({ file: rel, line: lineNum, rule: 'STALE_NUMBER', msg: `"${match[0].trim()}" — ${reason}` });
+      }
+    }
+  }
+
+  // ── CHECK 9: Locale file stale numbers ──
+  const localeDir = path.join(WEBSITE_DIR, 'src', 'locales');
+  if (fs.existsSync(localeDir)) {
+    const localeFiles = findFiles(localeDir, ['.json']);
+    for (const file of localeFiles) {
+      const content = fs.readFileSync(file, 'utf-8');
+      const rel = relPath(file);
+
+      // Check for "40" near persona-related keys
+      const lines = content.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].toLowerCase();
+        if (line.includes('"40') && (line.includes('persona') || line.includes('شخصية'))) {
+          errors.push({ file: rel, line: i + 1, rule: 'STALE_LOCALE', msg: `"40" persona count → should be 38` });
+        }
+      }
+    }
+  }
+
+  // ── CHECK 10: border-white/[0.08] on footer/nav (forbidden) ──
+  const componentFiles = [
+    path.join(WEBSITE_DIR, 'components', 'header.html'),
+    path.join(WEBSITE_DIR, 'components', 'footer.html'),
+  ];
+  for (const file of componentFiles) {
+    if (!fs.existsSync(file)) continue;
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+
+    const matches = content.matchAll(/border-white\/\[0\.08\]/g);
+    for (const match of matches) {
+      const lineNum = content.substring(0, match.index).split('\n').length;
+      const line = (content.split('\n')[lineNum - 1] || '');
+      // OK inside dropdown separator, forbidden on nav/footer border
+      if (line.includes('border-b') || line.includes('border-t')) {
+        errors.push({ file: rel, line: lineNum, rule: 'OPACITY_NAV_FOOTER', msg: `border-white/[0.08] on nav/footer — too visible → use border-white/[0.04]` });
+      }
+    }
+  }
+
+  // ── CHECK 11: Widget pulse animation presence ──
+  const widgetB2B = path.join(WEBSITE_DIR, 'voice-assistant', 'voice-widget-b2b.js');
+  if (fs.existsSync(widgetB2B)) {
+    const content = fs.readFileSync(widgetB2B, 'utf-8');
+    if (!content.includes('vaTriggerPulse')) {
+      errors.push({ file: relPath(widgetB2B), line: 0, rule: 'WIDGET_NO_PULSE', msg: 'Missing vaTriggerPulse animation on .va-trigger' });
+    }
+  }
+
+  const widgetStd = path.join(WEBSITE_DIR, 'voice-assistant', 'voice-widget.js');
+  if (fs.existsSync(widgetStd)) {
+    const content = fs.readFileSync(widgetStd, 'utf-8');
+    if (!content.includes('TriggerPulse') && !content.includes('triggerPulse')) {
+      warnings.push({ file: relPath(widgetStd), line: 0, rule: 'WIDGET_NO_PULSE', msg: 'Missing pulse animation on trigger button' });
+    }
+  }
+
+  // ── CHECK 12: Language switcher — 5 languages present in header ──
+  const headerFile = path.join(WEBSITE_DIR, 'components', 'header.html');
+  if (fs.existsSync(headerFile)) {
+    const content = fs.readFileSync(headerFile, 'utf-8');
+    const requiredLangs = ['fr', 'en', 'es', 'ar', 'ary'];
+    for (const lang of requiredLangs) {
+      const pattern = new RegExp(`data-params=["']${lang}["']`);
+      if (!pattern.test(content)) {
+        errors.push({ file: relPath(headerFile), line: 0, rule: 'LANG_MISSING', msg: `Language "${lang}" missing from switcher` });
+      }
+    }
+  }
+
+  // ── CHECK 13: components.js script execution ──
+  const componentsJs = path.join(WEBSITE_DIR, 'src', 'lib', 'components.js');
+  if (fs.existsSync(componentsJs)) {
+    const content = fs.readFileSync(componentsJs, 'utf-8');
+    // Verify it handles script execution (not just outerHTML)
+    if (content.includes('el.outerHTML = html') && !content.includes('createElement(\'script')
+        && !content.includes('createElement("script')) {
+      errors.push({ file: relPath(componentsJs), line: 0, rule: 'COMPONENTS_NO_SCRIPT', msg: 'outerHTML used without script re-execution — lang switcher will break' });
+    }
+  }
+
+  // ── CHECK 14: CSS variables in input.css ──
+  const inputCss = path.join(WEBSITE_DIR, 'src', 'input.css');
+  if (fs.existsSync(inputCss)) {
+    const content = fs.readFileSync(inputCss, 'utf-8');
+    const requiredVars = ['--nav-bg', '--dropdown-bg', '--footer-bg', '--section-border'];
+    for (const v of requiredVars) {
+      if (!content.includes(v)) {
+        warnings.push({ file: relPath(inputCss), line: 0, rule: 'CSS_VAR_MISSING', msg: `Required CSS variable "${v}" not found` });
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════
+  // Report
+  // ═══════════════════════════════════════════════════════
+
+  const totalFiles = allFiles.length;
+  const totalChecks = 14;
+
+  console.log('╔══════════════════════════════════════════════════════════════╗');
+  console.log('║        VocalIA Design Token Validator v2.0                  ║');
+  console.log('║  Ultra-rigorous branding compliance (14 checks)            ║');
+  console.log('╚══════════════════════════════════════════════════════════════╝');
+  console.log(`\nScanned: ${totalFiles} files (${htmlFiles.length} HTML + ${jsFiles.length} JS + ${cssFiles.length} CSS)`);
+  console.log(`Checks: ${totalChecks} rules enforced\n`);
+
+  // Group errors by rule
+  const errorsByRule = {};
+  for (const e of errors) {
+    if (!errorsByRule[e.rule]) errorsByRule[e.rule] = [];
+    errorsByRule[e.rule].push(e);
+  }
+
+  const warningsByRule = {};
+  for (const w of warnings) {
+    if (!warningsByRule[w.rule]) warningsByRule[w.rule] = [];
+    warningsByRule[w.rule].push(w);
+  }
 
   if (errors.length > 0) {
-    console.log(`❌ ERRORS (${totalErrors}):`);
-    for (const e of errors) {
-      console.log(`  ${e}`);
+    console.log(`❌ ERRORS (${errors.length}):`);
+    for (const [rule, items] of Object.entries(errorsByRule)) {
+      console.log(`\n  [${rule}] (${items.length})`);
+      for (const e of items) {
+        console.log(`    ${e.file}${e.line ? ':' + e.line : ''} — ${e.msg}`);
+      }
     }
     console.log();
   }
 
   if (warnings.length > 0) {
-    console.log(`⚠️  WARNINGS (${totalWarnings}):`);
-    for (const w of warnings) {
-      console.log(`  ${w}`);
+    console.log(`⚠️  WARNINGS (${warnings.length}):`);
+    for (const [rule, items] of Object.entries(warningsByRule)) {
+      console.log(`\n  [${rule}] (${items.length})`);
+      for (const w of items.slice(0, 10)) {
+        console.log(`    ${w.file}${w.line ? ':' + w.line : ''} — ${w.msg}`);
+      }
+      if (items.length > 10) {
+        console.log(`    ... and ${items.length - 10} more`);
+      }
     }
     console.log();
   }
 
-  if (totalErrors === 0 && totalWarnings === 0) {
-    console.log('✅ All design tokens are consistent with the approved palette.');
-  } else if (totalErrors === 0) {
-    console.log(`✅ No forbidden colors. ${totalWarnings} unknown hex values (review recommended).`);
-  } else {
-    console.log(`❌ ${totalErrors} errors, ${totalWarnings} warnings. Fix errors before committing.`);
+  // Summary table
+  console.log('┌────────────────────────────────┬────────┐');
+  console.log('│ Check                          │ Status │');
+  console.log('├────────────────────────────────┼────────┤');
+  const checks = [
+    ['1. Forbidden colors', 'FORBIDDEN_COLOR'],
+    ['2. Forbidden patterns', 'FORBIDDEN_PATTERN'],
+    ['3. Unknown hex colors', 'UNKNOWN_HEX'],
+    ['4. Widget duplication', 'WIDGET_DUPLICATE'],
+    ['5. Widget version', 'WIDGET_VERSION'],
+    ['6. Widget page assignment', 'WIDGET_WRONG_TYPE'],
+    ['7. Visualizer overrides', 'VISUALIZER_OVERRIDE'],
+    ['8. Stale numbers (HTML)', 'STALE_NUMBER'],
+    ['9. Stale numbers (locales)', 'STALE_LOCALE'],
+    ['10. Footer/nav opacity', 'OPACITY_NAV_FOOTER'],
+    ['11. Widget pulse anim', 'WIDGET_NO_PULSE'],
+    ['12. Language switcher', 'LANG_MISSING'],
+    ['13. Components.js scripts', 'COMPONENTS_NO_SCRIPT'],
+    ['14. CSS variables', 'CSS_VAR_MISSING'],
+  ];
+
+  for (const [name, rule] of checks) {
+    const eCount = (errorsByRule[rule] || []).length;
+    const wCount = (warningsByRule[rule] || []).length;
+    let status;
+    if (eCount > 0) status = `❌ ${eCount}`;
+    else if (wCount > 0) status = `⚠️  ${wCount}`;
+    else status = '✅';
+    console.log(`│ ${name.padEnd(30)} │ ${status.padEnd(6)} │`);
+  }
+  console.log('└────────────────────────────────┴────────┘');
+
+  console.log(`\nTotal: ${errors.length} errors, ${warnings.length} warnings`);
+
+  if (errors.length > 0) {
+    console.log('\n❌ FAIL — Fix all errors before committing.');
     process.exit(1);
+  } else if (warnings.length > 0) {
+    console.log('\n⚠️  PASS with warnings — Review recommended.');
+  } else {
+    console.log('\n✅ ALL CLEAR — Branding fully compliant.');
   }
 }
 
