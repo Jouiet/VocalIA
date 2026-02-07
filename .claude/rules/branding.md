@@ -185,7 +185,7 @@ The homepage init code must NOT set `primaryColor`, `secondaryColor`, `accentCol
 
 ---
 
-## 7. Platform Numbers (VERIFIED 07/02/2026)
+## 7. Platform Numbers (VERIFIED 08/02/2026)
 
 | Metric | Value | Source |
 |:-------|:------|:-------|
@@ -193,7 +193,7 @@ The homepage init code must NOT set `primaryColor`, `secondaryColor`, `accentCol
 | Function Tools | **25** | `voice-telephony-bridge.cjs` |
 | MCP Tools | **203** | `mcp-server/src/index.ts` |
 | Languages | **5** | FR, EN, ES, AR, ARY |
-| Widgets | **8** | `widget/*.js` |
+| Widgets | **7** | `widget/*.js` (intelligent-fallback.js deleted) |
 
 ### RULE: Update ALL HTML + ALL 5 locale files when numbers change
 

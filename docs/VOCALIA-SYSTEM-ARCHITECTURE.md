@@ -1,6 +1,6 @@
 # VocalIA - Architecture Système Complète
 ## Document Consolidé de Référence
-### Version 2.0.0 | 05/02/2026 | Session 250.94 (PRODUCTION READY)
+### Version 2.1.0 | 08/02/2026 | Session 250.139 (Code Complete — 0 live customers)
 
 > **DOCUMENT UNIQUE DE RÉFÉRENCE** - Remplace tous les documents d'architecture fragmentés
 > Généré par analyse bottom-up factuelle exhaustive du codebase
@@ -37,22 +37,23 @@
 | **Produits** | Voice Widget (Browser) + Voice Telephony (PSTN) |
 | **Langues** | 5 (FR, EN, ES, AR, ARY/Darija) |
 
-### 1.2 Métriques Globales (VÉRIFIÉ `wc -l` 05/02/2026)
+### 1.2 Metriques Globales (VERIFIE `wc -l` 08/02/2026 — Session 250.139)
 
-| Composant | Fichiers | Lignes | Vérification |
+| Composant | Fichiers | Lignes | Verification |
 |:----------|:--------:|:------:|:-------------|
-| Core Backend | 38 | **32,727** | `wc -l core/*.cjs` |
-| Telephony | 1 | **4,709** | `wc -l telephony/*.cjs` |
-| Personas | 2 | **5,995** | `wc -l personas/*.cjs` |
-| Widget | 8 | **9,107** | `wc -l widget/*.js` |
+| Core Backend | 54 | **34,533** | `wc -l core/*.cjs` |
+| Telephony | 1 | **4,732** | `wc -l telephony/*.cjs` |
+| Personas | 3 | **8,700** | `wc -l personas/*.cjs personas/*.json` |
+| Widget | 7 | **9,671** | `wc -l widget/*.js` |
 | Sensors | 4 | **822** | `wc -l sensors/*.cjs` |
 | Integrations | 7 | **2,234** | `wc -l integrations/*.cjs` |
-| MCP Server (TS) | 25+ | **17,630** | `wc -l mcp-server/src/**/*.ts` |
-| Website Libs (JS) | 21 | **7,563** | `wc -l website/src/lib/*.js` |
-| Website HTML | **76** | ~28,000 | `find website -name "*.html"` |
-| Locales (JSON) | 5 | **23,790** | `wc -l website/src/locales/*.json` |
-| **TOTAL Backend** | **~86** | **~55,594** | (core+telephony+personas+widget+sensors+integrations) |
-| **TOTAL avec MCP** | **~111** | **~104,000** | Backend + MCP + Website Libs + Locales |
+| Lib | 1 | **923** | `wc -l lib/*.cjs` |
+| MCP Server (TS) | 32 | **19,173** | `wc -l mcp-server/src/**/*.ts` |
+| Website Libs (JS) | ~21 | **7,581** | `wc -l website/src/lib/*.js` |
+| Website HTML | **78** | ~28,000 | `find website -name "*.html"` |
+| Locales (JSON) | 5 | **23,995** | `wc -l website/src/locales/*.json` |
+| **TOTAL Backend** | **~77** | **~61,615** | (core+telephony+personas+widget+sensors+integrations+lib) |
+| **TOTAL avec MCP** | **~109** | **~80,788** | Backend + MCP |
 
 ### 1.3 Diagramme d'Architecture Globale
 

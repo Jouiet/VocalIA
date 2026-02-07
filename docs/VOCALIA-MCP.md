@@ -1,25 +1,18 @@
 # VocalIA MCP Server
 
-> Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 0.9.2 | 06/02/2026 | Session 250.98-FORENSIC | BM25 RAG SOTA | **203 tools** (22 inline + 181 modules) | **29 tool files**
-> **Session 250.101**: ✅ **DOCS UPDATE** - 557 dossiers = test data. Score 6.5/10. CORS+XSS+pricing all FIXED (250.99-250.100)
-> **Session 250.98**: ~~🔴 **FORENSIC**~~ - 203 tools confirmé (22 inline index.ts + 181 via 29 catégories). 29 fichiers tools/ (pas 28).
-> **Session 250.89-EXHAUSTIF**: ✅ AGENCY WIDGET TENANT - 243/243 tests (100%), prompt engineering × 5 langues
-> **Session 250.97octies**: ✅ MULTI-TENANT SCALE - 537 tenants × 40 sectors × 12 regions = 2,890 KB files
-> **Session 250.91**: ✅ ALL BLOCKERS RESOLVED - 306/309 tests pass, Widget B2B v2.2.0 deployed
-> **Session 250.90**: ✅ I18N 100% COMPLETE - All 5 languages, Spanish decontamination done
-> **Session 250.87bis**: ✅ MCP GAPS FILLED - hubspot.ts (7), klaviyo.ts (5), twilio.ts (5 incl. WhatsApp) = +17 tools
-> **Session 250.91 FORENSIC AUDIT**: Deleted orphan `whatsapp-voice-bridge.cjs` (contained PLACEHOLDERS)
+> Model Context Protocol (MCP) server exposant les capacites VocalIA Voice AI Platform.
+> Version: 0.9.3 | 08/02/2026 | Session 250.139 | **203 tools** (22 inline + 181 modules) | **32 .ts files** | **19,173 lines**
+> **Status**: Code complete. **0 tools connected to real external APIs.** All tools require per-tenant API key configuration.
 > **Protocol Status:**
 >
-> - **A2A (Event Bus)**: ✅ Widget events via voice-api-resilient.cjs → AgencyEventBus
-> - **AG-UI (Dynamic UI)**: ✅ Widget Orchestrator (7 widgets)
-> - **UCP (ContextBox)**: ✅ ACTIVE - LTV tiers (bronze→diamond)
-> - **MCP (Tools)**: ✅ 203 tools verified
-> **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**
-> **Payments:** Stripe ✅ → Payment Links, Checkout, Invoices, Refunds (19 tools)
-> **Widget Products:** B2B (659 LOC) | B2C (3,135 LOC) | Ecom (5,650 LOC) | Telephony (170KB)
-> **Personas:** 40 total | ✅ `widget_types` filtering IMPLEMENTED
+> - **A2A (Event Bus)**: ✅ coded (widget events → AgencyEventBus) — not connected to real traffic
+> - **AG-UI (Dynamic UI)**: ✅ coded (Widget Orchestrator, 7 widgets) — 0 real users
+> - **UCP (ContextBox)**: ✅ coded (LTV tiers bronze→diamond) — 0 real profiles
+> - **MCP (Tools)**: ✅ 203 tools verified in TypeScript — 0 API keys configured
+> **iPaaS:** Zapier, Make, n8n — code exists, 0 webhooks configured
+> **Payments:** Stripe 19 tools — code exists, 0 Stripe keys configured
+> **Widget Products:** B2B (1,122 LOC) | ECOM core (3,383 LOC) | ECOM bundle (8,549 LOC, 6 IIFEs)
+> **Personas:** 38 total | ✅ `widget_types` filtering coded
 
 ## Qu'est-ce que MCP?
 

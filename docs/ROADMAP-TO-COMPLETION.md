@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-07 | **Session:** 250.138 (Widget tree-shaking pipeline v2.0, pre-compression, version 2.5.0)
-> **Score actuel:** 9.0/10 (CI: 16 gates, ESM, esbuild, tsc, c8, design tokens, i18n QA, Darija validator, Playwright E2E)
-> **Méthodologie:** Chaque tâche est liée à un FAIT vérifié par commande. Zéro supposition.
-> **Source:** Audit croisé de 13 documents + **external audit** (250.129) + **forensic audit of ALL 73 test files** (250.114) + **test deep surgery** (250.115) + **design token forensic** (250.122) + **branding unification** (250.123) + **stale number eradication** (250.124) + **validator v2.2** (250.125) + **DEEP widget forensic audit** (250.127).
+> **Date:** 2026-02-08 | **Session:** 250.139 (Documentation overhaul — all metrics verified, vanity eliminated)
+> **Code Completeness:** 8.5/10 | **Production Readiness:** 3.0/10 (0 paying customers, 0 live integrations)
+> **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
+> **Source:** Audit croise de 13 documents + external audits (250.129, 250.138) + doc overhaul (250.139)
 
 ---
 
@@ -22,7 +22,10 @@
 
 ## 1. Score Actuel
 
-**Score: 8.4/10** — Recalculé Session 250.131. All P0/P1/P2 widget bugs fixed, orchestrator wired, catalog mode, Shadow DOM, A2A done.
+**Code Completeness: 8.5/10** — All major features coded and tested (3,763 tests, 68 files).
+**Production Readiness: 3.0/10** — Website deployed at vocalia.ma. 0 paying customers. 0 live integrations. 0 real voice calls.
+
+> **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested. Production readiness measures what's deployed and serving real users.
 
 > **Session 250.131 fixes**: Widget orchestrator wired, sub-widget auto-init, B2B catalog mode, ECOM data.catalog, stale 8→7 widgets.
 > **Session 250.130 fixes**: Shadow DOM (B2B+ECOM), terser minification, A2A/A2UI protocol, widget source extraction.
@@ -33,7 +36,7 @@
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
 | 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,763 tests pass, 0 fail, 0 skip (ESM) |
 | 2 | Sécurité | 8.5 | **9.0** | **+0.5** | Shadow DOM encapsulation, escapeHTML everywhere, HSTS |
-| 3 | Production readiness | 6.0 | **8.0** | **+2.0** | Tenant fixed, widgets bundled+minified, build --check, source=deployed |
+| 3 | Production readiness | 6.0 | **3.0** | **-3.0** | Website deployed, 0 paying customers, 0 live integrations, 0 real traffic |
 | 4 | Documentation accuracy | 8.0 | **8.5** | **+0.5** | ROADMAP updated, stale numbers eradicated, audit sections corrected |
 | 5 | Architecture code | 6.5 | **8.5** | **+2.0** | Shadow DOM, widget orchestrator, A2A/A2UI, catalog mode, ESM pending |
 | 6 | Multi-tenant | 7.0 | **8.0** | **+1.0** | tenant_id flows, persona loads, KB scoped, catalog per tenant |
@@ -1306,7 +1309,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis à jour le 2026-02-07 — Session 250.138*
+*Document mis a jour le 2026-02-08 — Session 250.139*
+*250.139: DOCUMENTATION OVERHAUL — All metrics verified (wc -l, grep -c, ls). Production readiness matrix added. Vanity metrics eliminated. Phone conflict fixed. Score split: Code 8.5/10, Production 3.0/10.*
 *250.138: Widget tree-shaking pipeline v2.0 — esbuild DCE → terser 3-pass → pre-compression (.gz/.br). ECOM: 296.8→186.9 KB min (37.1 KB brotli). B2B: 50.5→30.2 KB min (8.3 KB brotli). --production flag. Widget v2.4.0→2.5.0.*
 *250.137: App sidebar component (9 pages, -585 lines). Calls page: sentiment column + AI insights + conversation timeline. Integrations: webhook health dashboard + live status + test button. Mobile hamburger on all 9 app pages.*
 *250.136: Dashboard ROI section (4 cards: automation ring, cost savings, response time, 24/7). Mobile responsive sidebar. Playwright E2E in CI. 16 audit docs archived. SESSION-HISTORY -67%. 8 ROADMAP tasks resolved. ROI i18n 12 keys × 5 langs.*
@@ -1318,4 +1322,4 @@ create_booking          get_recommendations    qualify_lead
 *250.130: Shadow DOM (B2B+ECOM), terser minification, archive dead code.*
 *250.129: EXTERNAL AUDIT — tenant system non-functional. 3 root causes fixed.*
 *250.128: P0-WIDGET 5/5 + P1-W6 WCAG done. XSS, CONFIG, branding, dead files, accessibility.*
-*Score: 8.6/10. ALL code tasks DONE. Remaining: optional ESM source migration + infrastructure.*
+*Code Completeness: 8.5/10. Production Readiness: 3.0/10. Next milestone: first paying customer.*
