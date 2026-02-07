@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > **v7.11.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
-> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,307 tests** (73 files, 3 skip)
+> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **4,011 tests** (74 files, 0 skip)
 > **203 MCP Tools** | 38 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,353 + MCP/src 17,630 + Lib 921 + Website 31,512
 > ⚠️ **SESSION 250.114 FORENSIC AUDIT**: ~453 theater tests (source-grep, typeof, module-load), 5 duplicate pairs, MAIN API 0 function calls tested
@@ -15,7 +15,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Tests**: 3,307 (73 files) — ⚠️ ~453 theater tests, **Score**: 7.9/10 (250.120), **CORS**: ✅, **XSS**: ✅ |
+| Scores | **Tests**: 4,011 (74 files, 0 skip) — **Score**: 8.4/10 (250.125), **CORS**: ✅, **XSS**: ✅ |
 
 ---
 
@@ -252,7 +252,7 @@ providers: [
 
 ---
 
-**Platform Score: 7.9/10** (250.120 — persona cleanup, admin dashboard, integration bugs resolved as false positives)
+**Platform Score: 8.4/10** (250.125 — validator v2.3, persona audit 711 tests, stale numbers eradicated, branding unification)
 P0-P2 resolved. NEW P0 test quality tasks added. See `docs/ROADMAP-TO-COMPLETION.md`.
 
-*Last update: 07/02/2026 - Session 250.120 (Persona elimination + admin dashboard + integration verification)*
+*Last update: 07/02/2026 - Session 250.125 (Validator v2.3 17 checks + persona audit 711 tests + stale numbers eradication + branding unification 70 files)*

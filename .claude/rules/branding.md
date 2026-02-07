@@ -224,8 +224,8 @@ The homepage init code must NOT set `primaryColor`, `secondaryColor`, `accentCol
 node scripts/validate-design-tokens.cjs
 ```
 
-**v2.1** — 14 checks, scans full codebase (HTML + JS + CSS + core + data)
-Detects: forbidden colors, rogue patterns, widget duplication, stale numbers, opacity violations, etc.
+**v2.3** — 17 checks, scans full codebase (HTML + JS + CSS + core + data)
+Detects: forbidden colors, rogue patterns, widget duplication, stale numbers, opacity violations, component coverage, header/footer structure, i18n.js, etc.
 
 **Run BEFORE any commit touching CSS/HTML/widget/core.**
 

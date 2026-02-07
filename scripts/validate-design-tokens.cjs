@@ -1,15 +1,17 @@
 'use strict';
 
 /**
- * VocalIA Design Token Validator v2.1
+ * VocalIA Design Token Validator v2.3
  * Ultra-rigorous branding compliance checker.
- * Validates ALL 10 sections of .claude/rules/branding.md
+ * Validates ALL sections of .claude/rules/branding.md
  * + Full codebase stale number detection (personas, MCP tools)
+ * + Component system coverage on ALL public pages
+ * + Header/footer structural integrity (nav links, i18n, lang switcher)
  *
  * Scans: HTML, JS (widgets + core), CSS, JSON (locales + data)
  * Run: node scripts/validate-design-tokens.cjs
  *
- * Session 250.124 | 07/02/2026
+ * Session 250.125 | 07/02/2026
  */
 
 const fs = require('fs');
@@ -450,16 +452,120 @@ function validate() {
     }
   }
 
+  // ── CHECK 15: Component system coverage (ALL public pages) ──
+  // Public pages = everything EXCEPT app/, dashboard/, components/
+  // Redirect pages (meta http-equiv="refresh") are warnings, not errors
+  const EXCLUDED_DIRS = ['app', 'dashboard', 'components'];
+  for (const file of htmlFiles) {
+    const relToWebsite = path.relative(WEBSITE_DIR, file);
+    const topDir = relToWebsite.split(path.sep)[0];
+
+    // Skip non-public pages
+    if (EXCLUDED_DIRS.includes(topDir)) continue;
+
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+    const isRedirect = /meta\s+http-equiv=["']refresh["']/i.test(content);
+
+    const hasComponents = content.includes('components.js');
+    const hasHeader = content.includes('data-component="header"') || content.includes("data-component='header'");
+    const hasFooter = content.includes('data-component="footer"') || content.includes("data-component='footer'");
+    const hasEventDelegation = content.includes('event-delegation.js');
+    const hasI18n = content.includes('i18n.js');
+
+    const missing = [];
+    if (!hasComponents) missing.push('components.js');
+    if (!hasHeader) missing.push('data-component="header"');
+    if (!hasFooter) missing.push('data-component="footer"');
+    if (!hasEventDelegation) missing.push('event-delegation.js');
+    if (!hasI18n) missing.push('i18n.js');
+
+    if (missing.length > 0) {
+      const msg = `Missing: ${missing.join(', ')}`;
+      if (isRedirect) {
+        warnings.push({ file: rel, line: 0, rule: 'COMPONENT_COVERAGE', msg: `${msg} (redirect page — acceptable exception)` });
+      } else {
+        errors.push({ file: rel, line: 0, rule: 'COMPONENT_COVERAGE', msg });
+      }
+    }
+  }
+
+  // ── CHECK 16: Header/footer structural integrity ──
+  const headerFile2 = path.join(WEBSITE_DIR, 'components', 'header.html');
+  const footerFile = path.join(WEBSITE_DIR, 'components', 'footer.html');
+
+  if (fs.existsSync(headerFile2)) {
+    const content = fs.readFileSync(headerFile2, 'utf-8');
+    const rel = relPath(headerFile2);
+
+    // Header must have navigation links
+    const requiredNavLinks = ['/features', '/pricing', '/products/voice-widget', '/products/voice-telephony'];
+    for (const link of requiredNavLinks) {
+      if (!content.includes(`href="${link}"`)) {
+        errors.push({ file: rel, line: 0, rule: 'HEADER_STRUCTURE', msg: `Missing nav link: ${link}` });
+      }
+    }
+
+    // Header must have mobile menu with same 5 language buttons
+    const desktopLangs = (content.match(/data-params="(fr|en|es|ar|ary)"/g) || []).length;
+    if (desktopLangs < 10) {
+      errors.push({ file: rel, line: 0, rule: 'HEADER_STRUCTURE', msg: `Only ${desktopLangs}/10 lang buttons (need 5 desktop + 5 mobile)` });
+    }
+
+    // Header must have CTA buttons (booking/login)
+    if (!content.includes('/booking') && !content.includes('/login')) {
+      warnings.push({ file: rel, line: 0, rule: 'HEADER_STRUCTURE', msg: 'Missing CTA link (/booking or /login)' });
+    }
+
+    // Header must have data-i18n for translateable text
+    const i18nCount = (content.match(/data-i18n="/g) || []).length;
+    if (i18nCount < 5) {
+      errors.push({ file: rel, line: 0, rule: 'HEADER_STRUCTURE', msg: `Only ${i18nCount} data-i18n attributes — header must be fully translateable` });
+    }
+  }
+
+  if (fs.existsSync(footerFile)) {
+    const content = fs.readFileSync(footerFile, 'utf-8');
+    const rel = relPath(footerFile);
+
+    // Footer must have 4 category sections
+    const requiredSections = ['footer.product', 'footer.solutions', 'nav.resources', 'footer.company'];
+    for (const section of requiredSections) {
+      if (!content.includes(`data-i18n="${section}"`)) {
+        errors.push({ file: rel, line: 0, rule: 'FOOTER_STRUCTURE', msg: `Missing section: ${section}` });
+      }
+    }
+
+    // Footer must have legal links
+    const requiredFooterLinks = ['/privacy', '/terms', '/contact'];
+    for (const link of requiredFooterLinks) {
+      if (!content.includes(`href="${link}"`)) {
+        errors.push({ file: rel, line: 0, rule: 'FOOTER_STRUCTURE', msg: `Missing legal link: ${link}` });
+      }
+    }
+
+    // Footer must have data-i18n for translateable text
+    const footerI18nCount = (content.match(/data-i18n="/g) || []).length;
+    if (footerI18nCount < 10) {
+      errors.push({ file: rel, line: 0, rule: 'FOOTER_STRUCTURE', msg: `Only ${footerI18nCount} data-i18n attributes — footer must be fully translateable` });
+    }
+
+    // Footer must have social links
+    if (!content.includes('aria-label="LinkedIn"') && !content.includes('aria-label="GitHub"')) {
+      warnings.push({ file: rel, line: 0, rule: 'FOOTER_STRUCTURE', msg: 'Missing social media links' });
+    }
+  }
+
   // ═══════════════════════════════════════════════════════
   // Report
   // ═══════════════════════════════════════════════════════
 
   const totalFiles = allFiles.length;
-  const totalChecks = 14;
+  const totalChecks = 17;
 
   console.log('╔══════════════════════════════════════════════════════════════╗');
-  console.log('║        VocalIA Design Token Validator v2.1                  ║');
-  console.log('║  Full codebase branding compliance (14 checks)            ║');
+  console.log('║        VocalIA Design Token Validator v2.3                  ║');
+  console.log('║  Full codebase branding compliance (17 checks)            ║');
   console.log('╚══════════════════════════════════════════════════════════════╝');
   console.log(`\nScanned: ${totalFiles} files (${htmlFiles.length} HTML + ${jsFiles.length} JS + ${cssFiles.length} CSS)`);
   console.log(`Checks: ${totalChecks} rules enforced\n`);
@@ -521,6 +627,9 @@ function validate() {
     ['12. Language switcher', 'LANG_MISSING'],
     ['13. Components.js scripts', 'COMPONENTS_NO_SCRIPT'],
     ['14. CSS variables', 'CSS_VAR_MISSING'],
+    ['15. Component coverage', 'COMPONENT_COVERAGE'],
+    ['16. Header structure', 'HEADER_STRUCTURE'],
+    ['17. Footer structure', 'FOOTER_STRUCTURE'],
   ];
 
   for (const [name, rule] of checks) {

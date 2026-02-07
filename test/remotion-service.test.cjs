@@ -195,7 +195,7 @@ describe('RemotionService healthCheck', () => {
   test('returns metrics object', () => {
     const health = healthCheck();
     assert.ok(health.metrics);
-    assert.strictEqual(health.metrics.personas, 40);
+    assert.strictEqual(health.metrics.personas, 38, 'Personas: 38 (5 eliminated session 250.120)');
     assert.strictEqual(health.metrics.languages, 5);
   });
 
@@ -230,7 +230,7 @@ describe('RemotionService healthCheck', () => {
 
 describe('RemotionService VOCALIA_METRICS', () => {
   test('has personas count', () => {
-    assert.strictEqual(VOCALIA_METRICS.personas, 40);
+    assert.strictEqual(VOCALIA_METRICS.personas, 38, 'Personas: 38 (5 eliminated session 250.120)');
   });
 
   test('has languages count', () => {

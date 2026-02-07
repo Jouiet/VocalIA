@@ -7058,7 +7058,7 @@ const PERSONAS = {
         widget_types: ['B2C', 'TELEPHONY'],
         name: 'Spécialiste Santé',
         voice: 'valentin',
-        sensitivity: 'obsessive', // Medical sensitivity
+        sensitivity: 'high', // Medical sensitivity
         personality_traits: ['expert', 'precise', 'caring', 'thorough'],
         background: 'Medical specialist office assistant. Handles referrals, specialized consultations, and complex medical scheduling.',
         tone_guidelines: {
