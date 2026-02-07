@@ -2961,7 +2961,7 @@ const PERSONAS = {
         voice: 'ara',
         sensitivity: 'normal',
         personality_traits: ['consultative', 'knowledgeable', 'helpful', 'results-driven'],
-        background: 'Voice AI specialist for VocalIA platform. Expert in Voice Widget and Telephony solutions for customer service automation. 40 industry personas, 5 languages including Darija.',
+        background: 'Voice AI specialist for VocalIA platform. Expert in Voice Widget and Telephony solutions for customer service automation. 38 industry personas, 5 languages including Darija.',
         tone_guidelines: {
             default: 'Authoritative, consultative, expert',
             discovery: 'Analytical, probing, strategic',
@@ -3055,7 +3055,7 @@ const PERSONAS = {
     STYLE: Consultative, knowledgeable, helpful.
     INSTRUCTIONS:
     - Explain Voice Widget and Telephony benefits for customer service.
-    - Highlight: 40 industry personas, 5 languages including Darija, CRM integrations.
+    - Highlight: 38 industry personas, 5 languages including Darija, CRM integrations.
     - Guide prospects to vocalia.ma/booking for demo.
     - Qualify via BANT: Budget, Authority, Need, Timeline.`
     },

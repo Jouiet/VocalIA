@@ -50,10 +50,10 @@ const LANGUAGES = ['fr', 'en', 'es', 'ar', 'ary'];
 
 // VocalIA Metrics (must match i18n.ts)
 const VOCALIA_METRICS = {
-  personas: 40,
+  personas: 38,
   languages: 5,
-  mcpTools: 182,
-  integrations: 28,
+  mcpTools: 203,
+  integrations: 31,
   ecommercePlatforms: 7,
   stripeTools: 19
 };

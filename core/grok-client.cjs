@@ -126,12 +126,12 @@ const BASE_SYSTEM_PROMPT = `Tu es l'assistant IA de VocalIA, une plateforme Voic
    - Qualification BANT, rappels automatiques
    - Tarification compétitive à la minute
 
-## 40 PERSONAS INDUSTRIE
+## 38 PERSONAS INDUSTRIE
 
 Personas pré-configurés pour: dentistes, immobilier, contractors,
 restaurants, e-commerce, PME, salons, avocats, médecins, etc.
 
-## INTÉGRATIONS (via MCP Server - 182 tools)
+## INTÉGRATIONS (via MCP Server - 203 tools)
 
 - CRM: HubSpot, Pipedrive, Zoho
 - E-commerce: Shopify, WooCommerce, Magento, PrestaShop

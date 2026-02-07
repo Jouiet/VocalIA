@@ -15,7 +15,7 @@ const INTELLIGENT_FALLBACK = {
             response: {
                 fr: "VocalIA propose 4 produits Voice AI :\n\n1. **Voice Widget B2B** - Qualification leads et support commercial\n2. **Voice Widget B2C** - Support client e-commerce 24/7\n3. **Widget E-commerce** - 8 intégrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony AI** (0.06€/min) - Ligne téléphonique IA PSTN\n\nNos atouts : 38 personas, 5 langues dont Darija, 31+ intégrations, 203 MCP tools.",
                 en: "VocalIA offers 4 Voice AI products:\n\n1. **Voice Widget B2B** - Lead qualification and sales support\n2. **Voice Widget B2C** - 24/7 e-commerce customer support\n3. **E-commerce Widget** - 8 integrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony AI** (€0.06/min) - AI PSTN phone line\n\nStrengths: 38 personas, 5 languages including Darija, 31+ integrations, 203 MCP tools.",
-                ary: "VocalIA 3andha 4 dial produits Voice AI:\n\n1. **Voice Widget B2B** - تأهيل العملاء والدعم التجاري\n2. **Voice Widget B2C** - دعم العملاء للتجارة الإلكترونية 24/7\n3. **Widget E-commerce** - 8 تكاملات (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony AI** (0.06€/دقيقة) - خط تيليفون ذكي PSTN\n\nالمزايا: 40 persona، 5 لغات بما فيها الدارجة، 31+ تكاملات."
+                ary: "VocalIA 3andha 4 dial produits Voice AI:\n\n1. **Voice Widget B2B** - تأهيل العملاء والدعم التجاري\n2. **Voice Widget B2C** - دعم العملاء للتجارة الإلكترونية 24/7\n3. **Widget E-commerce** - 8 تكاملات (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony AI** (0.06€/دقيقة) - خط تيليفون ذكي PSTN\n\nالمزايا: 38 persona، 5 لغات بما فيها الدارجة، 31+ تكاملات."
             }
         },
 

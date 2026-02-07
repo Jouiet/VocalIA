@@ -1,11 +1,12 @@
 'use strict';
 
 /**
- * VocalIA Design Token Validator v2.0
+ * VocalIA Design Token Validator v2.1
  * Ultra-rigorous branding compliance checker.
  * Validates ALL 10 sections of .claude/rules/branding.md
+ * + Full codebase stale number detection (personas, MCP tools)
  *
- * Scans: HTML, JS (widgets), CSS files
+ * Scans: HTML, JS (widgets + core), CSS, JSON (locales + data)
  * Run: node scripts/validate-design-tokens.cjs
  *
  * Session 250.124 | 07/02/2026
@@ -123,11 +124,20 @@ const PLATFORM_NUMBERS = {
   widgets: 8,
 };
 
-// Stale number patterns (detect old counts)
+// Stale number patterns (detect old counts across ALL file types)
 const STALE_NUMBER_PATTERNS = [
-  { regex: /\b40\s+persona/gi, reason: 'Stale count "40 personas" → should be 38' },
-  { regex: /\b40\s+Persona/g, reason: 'Stale count "40 Persona" → should be 38' },
+  // Personas: was 40, now 38
+  { regex: /\b40\s+persona/gi, reason: 'Stale "40 personas" → should be 38' },
+  { regex: /\b40\s+Persona/g, reason: 'Stale "40 Persona" → should be 38' },
   { regex: />40<\/.*persona/gi, reason: 'Stale "40" persona in HTML → should be 38' },
+  { regex: /40 industry persona/gi, reason: 'Stale "40 industry personas" → should be 38' },
+  { regex: /40 PERSONAS/g, reason: 'Stale "40 PERSONAS" → should be 38' },
+  { regex: /40 SOTA persona/gi, reason: 'Stale "40 SOTA personas" → should be 38' },
+  { regex: /40 pre-configured/gi, reason: 'Stale "40 pre-configured" → should be 38' },
+  // MCP Tools: was 182, now 203
+  { regex: /\b182\s+(?:MCP\s+)?tools?\b/gi, reason: 'Stale "182 tools" → should be 203' },
+  { regex: /\b182\s+integration/gi, reason: 'Stale "182 integration" → should be 203' },
+  { regex: /MCP[^)]*182/gi, reason: 'Stale "MCP...182" → should be 203' },
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -312,8 +322,23 @@ function validate() {
     }
   }
 
-  // ── CHECK 8: Stale platform numbers ──
-  for (const file of htmlFiles) {
+  // ── CHECK 8: Stale platform numbers (FULL codebase scan) ──
+  const codebaseFiles = [
+    ...findFiles(WEBSITE_DIR, ['.html', '.js', '.json']),
+    ...findFiles(path.join(ROOT_DIR, 'core'), ['.cjs', '.js']),
+    ...findFiles(path.join(ROOT_DIR, 'personas'), ['.cjs', '.json']),
+    ...findFiles(path.join(ROOT_DIR, 'widget'), ['.js']),
+    ...findFiles(path.join(ROOT_DIR, 'telephony'), ['.cjs', '.json']),
+    ...findFiles(path.join(ROOT_DIR, 'data'), ['.json']),
+    ...findFiles(path.join(ROOT_DIR, 'scripts'), ['.cjs', '.js']),
+  ];
+  // Exclude: this validator, coverage, generated indexes
+  const codebaseFilesFiltered = codebaseFiles.filter(f =>
+    !f.includes('validate-design-tokens') && !f.includes('coverage')
+    && !f.includes('tfidf_index') && !f.includes('automations-registry-index')
+  );
+
+  for (const file of codebaseFilesFiltered) {
     const content = fs.readFileSync(file, 'utf-8');
     const rel = relPath(file);
 
@@ -335,12 +360,17 @@ function validate() {
       const content = fs.readFileSync(file, 'utf-8');
       const rel = relPath(file);
 
-      // Check for "40" near persona-related keys
+      // Check for stale numbers in locale values
       const lines = content.split('\n');
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].toLowerCase();
+        // Stale persona count
         if (line.includes('"40') && (line.includes('persona') || line.includes('شخصية'))) {
           errors.push({ file: rel, line: i + 1, rule: 'STALE_LOCALE', msg: `"40" persona count → should be 38` });
+        }
+        // Stale MCP tools count
+        if (line.includes('182') && (line.includes('tool') || line.includes('mcp') || line.includes('outil'))) {
+          errors.push({ file: rel, line: i + 1, rule: 'STALE_LOCALE', msg: `"182" MCP tools count → should be 203` });
         }
       }
     }
@@ -428,8 +458,8 @@ function validate() {
   const totalChecks = 14;
 
   console.log('╔══════════════════════════════════════════════════════════════╗');
-  console.log('║        VocalIA Design Token Validator v2.0                  ║');
-  console.log('║  Ultra-rigorous branding compliance (14 checks)            ║');
+  console.log('║        VocalIA Design Token Validator v2.1                  ║');
+  console.log('║  Full codebase branding compliance (14 checks)            ║');
   console.log('╚══════════════════════════════════════════════════════════════╝');
   console.log(`\nScanned: ${totalFiles} files (${htmlFiles.length} HTML + ${jsFiles.length} JS + ${cssFiles.length} CSS)`);
   console.log(`Checks: ${totalChecks} rules enforced\n`);

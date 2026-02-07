@@ -13,9 +13,9 @@
  * Technology Stack:
  * - Grok Voice API (xAI) for real-time voice
  * - Multi-AI fallback (Grok → Gemini → Claude → Atlas for Darija)
- * - 40 Industry Personas (SOTA structure)
+ * - 38 Industry Personas (SOTA structure)
  * - 5 Languages: FR, EN, ES, AR, Darija
- * - MCP Server with 182 tools
+ * - MCP Server with 203 tools
  *
  * A2A Protocol Compliance: Agent Card + Task Lifecycle
  *
@@ -58,7 +58,7 @@ const AGENT_CARD = {
     {
       id: "persona_guidance",
       name: "Persona Guidance",
-      description: "Help select from 40 industry personas (dental, property, contractor, etc.)",
+      description: "Help select from 38 industry personas (dental, property, contractor, etc.)",
       inputModes: ["audio", "text"],
       outputModes: ["audio", "text"]
     },
@@ -269,7 +269,7 @@ PRODUCT 2: VOICE TELEPHONY (PSTN AI Bridge)
 - Cost: Competitive per-minute pricing
 
 ═══════════════════════════════════════════════════════════════════
-40 INDUSTRY PERSONAS
+38 INDUSTRY PERSONAS
 ═══════════════════════════════════════════════════════════════════
 VocalIA offers pre-configured AI personas for specific industries:
 
@@ -290,7 +290,7 @@ Each persona includes:
 TECHNICAL CAPABILITIES
 ═══════════════════════════════════════════════════════════════════
 - Multi-AI Fallback: Grok → Gemini → Claude → Atlas (for Darija)
-- MCP Server: 182 tools for CRM, e-commerce, calendar integration
+- MCP Server: 203 tools for CRM, e-commerce, calendar integration
 - E-commerce: Shopify, WooCommerce, Magento, PrestaShop, etc.
 - CRM: HubSpot, Pipedrive, Zoho
 - Payments: Stripe integration (19 tools)
@@ -315,7 +315,7 @@ VOICE RESPONSE GUIDELINES
 IMPORTANT RULES
 ═══════════════════════════════════════════════════════════════════
 - VocalIA = Voice AI Platform: Voice Widget + Voice Telephony
-- 40 industry personas across 5 languages
+- 38 industry personas across 5 languages
 - Always be honest about capabilities and limitations
 `;
   }
@@ -504,12 +504,12 @@ IMPORTANT RULES
 
     // VOICE AI GENERAL
     if (input.includes('voice') || input.includes('ai assistant')) {
-      return "VocalIA offers two Voice AI products: a browser-based Widget for websites and Telephony for real phone calls. Both support 5 languages including Darija and have 40 industry personas. Which interests you?";
+      return "VocalIA offers two Voice AI products: a browser-based Widget for websites and Telephony for real phone calls. Both support 5 languages including Darija and have 38 industry personas. Which interests you?";
     }
 
     // PERSONAS
     if (input.includes('persona') || input.includes('industry') || input.includes('sector') || input.includes('template')) {
-      return "We have 40 pre-configured industry personas: dental clinics, real estate, contractors, restaurants, e-commerce, and more. Each includes industry-specific vocabulary and lead qualification. What's your industry?";
+      return "We have 38 pre-configured industry personas: dental clinics, real estate, contractors, restaurants, e-commerce, and more. Each includes industry-specific vocabulary and lead qualification. What's your industry?";
     }
 
     // LANGUAGES / DARIJA
@@ -519,7 +519,7 @@ IMPORTANT RULES
 
     // INTEGRATIONS
     if (input.includes('integrat') || input.includes('crm') || input.includes('shopify') || input.includes('hubspot') || input.includes('connect')) {
-      return "Our MCP Server provides 182 tools for integration with Shopify, WooCommerce, HubSpot, Pipedrive, Stripe, Google Calendar, and more. The Voice AI can check orders, book appointments, and update CRM records.";
+      return "Our MCP Server provides 203 tools for integration with Shopify, WooCommerce, HubSpot, Pipedrive, Stripe, Google Calendar, and more. The Voice AI can check orders, book appointments, and update CRM records.";
     }
 
     // E-COMMERCE (redirect to integration, not standalone)
@@ -534,7 +534,7 @@ IMPORTANT RULES
 
     // WHAT DO YOU DO / SERVICES
     if (input.includes('what do you') || input.includes('services') || input.includes('do you offer') || input.includes('about')) {
-      return "VocalIA is a Voice AI platform with two products: Voice Widget for websites and Voice Telephony for phone calls. We have 40 industry personas and support 5 languages including Darija. How can I help?";
+      return "VocalIA is a Voice AI platform with two products: Voice Widget for websites and Voice Telephony for phone calls. We have 38 industry personas and support 5 languages including Darija. How can I help?";
     }
 
     // CONTEXT-BASED (if RAG found something)
@@ -543,7 +543,7 @@ IMPORTANT RULES
     }
 
     // DEFAULT
-    return "VocalIA provides Voice AI solutions: a browser Widget for 24/7 website support and Telephony for AI-powered phone lines. We support 5 languages and have 40 industry personas. What would you like to know?";
+    return "VocalIA provides Voice AI solutions: a browser Widget for 24/7 website support and Telephony for AI-powered phone lines. We support 5 languages and have 38 industry personas. What would you like to know?";
   }
 
   endSession() {
