@@ -358,30 +358,5 @@ describe('ElevenLabs TTS_CACHE', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────
-
-describe('ElevenLabs exports', () => {
-  test('exports ElevenLabsClient class', () => {
-    assert.strictEqual(typeof ElevenLabsClient, 'function');
-  });
-
-  test('exports VOICE_IDS object', () => {
-    assert.strictEqual(typeof VOICE_IDS, 'object');
-  });
-
-  test('exports MODELS object', () => {
-    assert.strictEqual(typeof MODELS, 'object');
-  });
-
-  test('exports getVoiceIdForLanguage function', () => {
-    assert.strictEqual(typeof getVoiceIdForLanguage, 'function');
-  });
-
-  test('exports OPTIMIZE_STREAMING_LATENCY number', () => {
-    assert.strictEqual(typeof OPTIMIZE_STREAMING_LATENCY, 'number');
-  });
-
-  test('exports TTS_CACHE Map', () => {
-    assert.ok(TTS_CACHE instanceof Map);
-  });
-});
+// NOTE: Exports are proven by behavioral tests above (ElevenLabsClient, VOICE_IDS,
+// MODELS, getVoiceIdForLanguage, OPTIMIZE_STREAMING_LATENCY, TTS_CACHE).

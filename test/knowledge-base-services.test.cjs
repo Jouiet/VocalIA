@@ -519,27 +519,13 @@ describe('BM25 scoring correctness', () => {
   });
 });
 
-// ─── Exports ─────────────────────────────────────────────────────
+// ─── BM25 parameters ────────────────────────────────────────────
 
-describe('KnowledgeBaseServices exports', () => {
-  test('exports ServiceKnowledgeBase class', () => {
-    assert.strictEqual(typeof ServiceKnowledgeBase, 'function');
-  });
-
-  test('exports TFIDFIndex class', () => {
-    assert.strictEqual(typeof TFIDFIndex, 'function');
-  });
-
-  test('TFIDFIndex is BM25 implementation', () => {
+describe('KnowledgeBaseServices BM25 parameters', () => {
+  test('TFIDFIndex has standard BM25 k1 and b values', () => {
     const index = new TFIDFIndex();
-    // Verify BM25 parameters exist
-    assert.strictEqual(typeof index.k1, 'number');
-    assert.strictEqual(typeof index.b, 'number');
-  });
-
-  test('ServiceKnowledgeBase has build method', () => {
-    const kb = new ServiceKnowledgeBase();
-    assert.strictEqual(typeof kb.build, 'function');
+    assert.strictEqual(index.k1, 1.5);
+    assert.strictEqual(index.b, 0.75);
   });
 });
 
@@ -694,32 +680,5 @@ describe('ServiceKnowledgeBase getStatus', () => {
   });
 });
 
-// ─── ServiceKnowledgeBase methods existence ─────────────────────
-
-describe('ServiceKnowledgeBase methods', () => {
-  const kb = new ServiceKnowledgeBase();
-
-  test('has load method', () => {
-    assert.strictEqual(typeof kb.load, 'function');
-  });
-
-  test('has search method', () => {
-    assert.strictEqual(typeof kb.search, 'function');
-  });
-
-  test('has graphSearch method', () => {
-    assert.strictEqual(typeof kb.graphSearch, 'function');
-  });
-
-  test('has formatForVoice method', () => {
-    assert.strictEqual(typeof kb.formatForVoice, 'function');
-  });
-
-  test('has getStatus method', () => {
-    assert.strictEqual(typeof kb.getStatus, 'function');
-  });
-
-  test('has asyncSearchHybrid method', () => {
-    assert.strictEqual(typeof kb.asyncSearchHybrid, 'function');
-  });
-});
+// NOTE: ServiceKnowledgeBase methods are proven by behavioral tests above
+// (formatForVoice, graphSearch, getStatus, TFIDFIndex.search, etc.)

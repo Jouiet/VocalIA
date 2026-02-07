@@ -506,30 +506,5 @@ describe('TenantCatalogStore getInstance', () => {
   });
 });
 
-// ─── Exports ───────────────────────────────────────────────────────
-
-describe('TenantCatalogStore exports', () => {
-  test('exports TenantCatalogStore class', () => {
-    assert.strictEqual(typeof TenantCatalogStore, 'function');
-  });
-
-  test('exports getInstance function', () => {
-    assert.strictEqual(typeof getInstance, 'function');
-  });
-
-  test('exports CONFIG object', () => {
-    assert.strictEqual(typeof CONFIG, 'object');
-  });
-
-  test('instance has all methods', () => {
-    const store = new TenantCatalogStore();
-    const methods = ['init', 'registerTenant', 'unregisterTenant', 'getConnector',
-      'syncTenant', 'startAutoSync', 'stopAutoSync', 'browseCatalog', 'getItemDetails',
-      'getMenu', 'checkAvailability', 'searchCatalog', 'getServices', 'getAvailableSlots',
-      'bookSlot', 'getStats', 'getItems', 'getItem', 'addItem', 'updateItem', 'removeItem',
-      'syncCatalog', 'invalidateCache', 'shutdown'];
-    for (const m of methods) {
-      assert.strictEqual(typeof store[m], 'function', `Missing method: ${m}`);
-    }
-  });
-});
+// NOTE: Exports are proven by behavioral tests above (TenantCatalogStore, getInstance, CONFIG,
+// registerTenant, browseCatalog, getStats, etc.)

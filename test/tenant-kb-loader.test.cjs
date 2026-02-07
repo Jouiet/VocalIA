@@ -271,28 +271,14 @@ describe('TenantKBLoader getInstance', () => {
   });
 });
 
-// ─── TenantKBLoader methods ─────────────────────────────────────
+// ─── TenantKBLoader getStats ────────────────────────────────────
 
-describe('TenantKBLoader methods', () => {
-  test('has getKB method', () => {
-    const loader = new TenantKBLoader();
-    assert.strictEqual(typeof loader.getKB, 'function');
-  });
-
-  test('has loadWithFallback method', () => {
-    const loader = new TenantKBLoader();
-    assert.strictEqual(typeof loader.loadWithFallback, 'function');
-  });
-
-  test('has getStats method', () => {
-    const loader = new TenantKBLoader();
-    assert.strictEqual(typeof loader.getStats, 'function');
-  });
-
-  test('getStats returns object', () => {
+describe('TenantKBLoader getStats', () => {
+  test('getStats returns object with expected structure', () => {
     const loader = new TenantKBLoader();
     const stats = loader.getStats();
     assert.strictEqual(typeof stats, 'object');
+    assert.ok(stats !== null);
   });
 });
 
@@ -525,26 +511,5 @@ describe('TenantKBLoader getClientDefaultLanguage', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────
-
-describe('TenantKBLoader exports', () => {
-  test('exports TenantKBLoader class', () => {
-    assert.strictEqual(typeof TenantKBLoader, 'function');
-  });
-
-  test('exports getInstance function', () => {
-    assert.strictEqual(typeof getInstance, 'function');
-  });
-
-  test('exports LRUCache class', () => {
-    assert.strictEqual(typeof LRUCache, 'function');
-  });
-
-  test('exports SUPPORTED_LANGUAGES array', () => {
-    assert.ok(Array.isArray(SUPPORTED_LANGUAGES));
-  });
-
-  test('exports DEFAULT_LANGUAGE string', () => {
-    assert.strictEqual(typeof DEFAULT_LANGUAGE, 'string');
-  });
-});
+// NOTE: Exports are proven by behavioral tests above (getInstance singleton,
+// LRUCache, SUPPORTED_LANGUAGES, mergeKB, getClientDefaultLanguage, etc.)

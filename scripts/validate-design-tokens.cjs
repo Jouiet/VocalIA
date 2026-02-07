@@ -84,10 +84,8 @@ const FORBIDDEN_HEX = {
 const WIDGET_EXPECTED_VERSION = '2.3.0';
 
 // Pages that use voice-widget.js (NOT voice-widget-b2b.js)
-const VOICE_WIDGET_ONLY_PAGES = new Set([
-  'docs/index.html',
-  'signup.html',
-]);
+// NOTE: voice-widget.js is DEAD (0 pages). docs + signup use B2B widget.
+const VOICE_WIDGET_ONLY_PAGES = new Set([]);
 
 // Pages that use voice-widget-ecommerce.js
 const ECOMMERCE_WIDGET_PAGES = new Set([

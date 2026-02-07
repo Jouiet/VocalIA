@@ -21,24 +21,6 @@ const assert = require('node:assert');
 const mod = require('../core/OAuthGateway.cjs');
 const { OAuthGateway, OAUTH_PROVIDERS } = mod;
 
-// ─── Exports ─────────────────────────────────────────────────────────────────
-
-describe('OAuthGateway exports', () => {
-  test('exports OAuthGateway class', () => {
-    assert.strictEqual(typeof OAuthGateway, 'function');
-  });
-
-  test('exports OAUTH_PROVIDERS object', () => {
-    assert.ok(OAUTH_PROVIDERS);
-    assert.strictEqual(typeof OAUTH_PROVIDERS, 'object');
-  });
-
-  test('default export is OAuthGateway instance', () => {
-    assert.ok(mod);
-    assert.ok(mod instanceof OAuthGateway);
-  });
-});
-
 // ─── OAUTH_PROVIDERS ─────────────────────────────────────────────────────────
 
 describe('OAUTH_PROVIDERS structure', () => {
@@ -218,35 +200,7 @@ describe('OAuthGateway getAuthUrl', () => {
     }
   });
 
-  test('has getAuthUrl method', () => {
-    assert.strictEqual(typeof gw.getAuthUrl, 'function');
-  });
 });
 
-// ─── Class methods existence ─────────────────────────────────────────────────
-
-describe('OAuthGateway class methods', () => {
-  test('has start method', () => {
-    assert.strictEqual(typeof OAuthGateway.prototype.start, 'function');
-  });
-
-  test('has generateState method', () => {
-    assert.strictEqual(typeof OAuthGateway.prototype.generateState, 'function');
-  });
-
-  test('has verifyState method', () => {
-    assert.strictEqual(typeof OAuthGateway.prototype.verifyState, 'function');
-  });
-
-  test('has getAuthUrl method', () => {
-    assert.strictEqual(typeof OAuthGateway.prototype.getAuthUrl, 'function');
-  });
-
-  test('has exchangeCode method', () => {
-    assert.strictEqual(typeof OAuthGateway.prototype.exchangeCode, 'function');
-  });
-
-  test('has saveTokens method', () => {
-    assert.strictEqual(typeof OAuthGateway.prototype.saveTokens, 'function');
-  });
-});
+// NOTE: OAuthGateway methods are proven by behavioral tests above
+// (generateState, verifyState, getAuthUrl, constructor, OAUTH_PROVIDERS, etc.)

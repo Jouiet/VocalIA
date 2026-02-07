@@ -42,7 +42,7 @@ async function runVerification() {
     console.log('\n--- 3. /config Endpoint Verification ---');
     const config = {
         tenantId: 'agency_internal',
-        branding: { primaryColor: '#4FBAF1', name: 'VocalIA Agency' }
+        branding: { primaryColor: '#5E6AD2', name: 'VocalIA Agency' }
     };
 
     if (config.tenantId === 'agency_internal') {

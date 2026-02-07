@@ -67,55 +67,8 @@ describe('RemotionHITL STATES', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────────
-
-describe('RemotionHITL exports', () => {
-  test('exports queueVideo function', () => {
-    assert.strictEqual(typeof queueVideo, 'function');
-  });
-
-  test('exports getPending function', () => {
-    assert.strictEqual(typeof getPending, 'function');
-  });
-
-  test('exports getVideo function', () => {
-    assert.strictEqual(typeof getVideo, 'function');
-  });
-
-  test('exports approveVideo function', () => {
-    assert.strictEqual(typeof approveVideo, 'function');
-  });
-
-  test('exports rejectVideo function', () => {
-    assert.strictEqual(typeof rejectVideo, 'function');
-  });
-
-  test('exports markRendering function', () => {
-    assert.strictEqual(typeof markRendering, 'function');
-  });
-
-  test('exports markCompleted function', () => {
-    assert.strictEqual(typeof markCompleted, 'function');
-  });
-
-  test('exports markFailed function', () => {
-    assert.strictEqual(typeof markFailed, 'function');
-  });
-
-  test('exports getStats function', () => {
-    assert.strictEqual(typeof getStats, 'function');
-  });
-
-  test('exports getAuditLog function', () => {
-    assert.strictEqual(typeof getAuditLog, 'function');
-  });
-
-  test('exports hitlEvents emitter', () => {
-    assert.ok(hitlEvents);
-    assert.strictEqual(typeof hitlEvents.on, 'function');
-    assert.strictEqual(typeof hitlEvents.emit, 'function');
-  });
-});
+// NOTE: Export existence is proven by the behavioral tests below.
+// No separate "typeof === 'function'" theater section needed.
 
 // ─── Queue Workflow ─────────────────────────────────────────────────
 
@@ -242,15 +195,15 @@ describe('RemotionHITL queue workflow', () => {
 // ─── Stats ──────────────────────────────────────────────────────────
 
 describe('RemotionHITL getStats', () => {
-  test('returns stats object with expected fields', () => {
+  test('returns stats object with all state counts', () => {
     const stats = getStats();
-    assert.strictEqual(typeof stats.total, 'number');
-    assert.strictEqual(typeof stats.pending, 'number');
-    assert.strictEqual(typeof stats.approved, 'number');
-    assert.strictEqual(typeof stats.rejected, 'number');
-    assert.strictEqual(typeof stats.rendering, 'number');
-    assert.strictEqual(typeof stats.completed, 'number');
-    assert.strictEqual(typeof stats.failed, 'number');
+    assert.ok(stats.total >= 0, 'total should be non-negative');
+    assert.ok(stats.pending >= 0, 'pending should be non-negative');
+    assert.ok(stats.approved >= 0, 'approved should be non-negative');
+    assert.ok(stats.rejected >= 0, 'rejected should be non-negative');
+    assert.ok(stats.rendering >= 0, 'rendering should be non-negative');
+    assert.ok(stats.completed >= 0, 'completed should be non-negative');
+    assert.ok(stats.failed >= 0, 'failed should be non-negative');
   });
 
   test('total equals sum of all states', () => {
@@ -258,6 +211,14 @@ describe('RemotionHITL getStats', () => {
     const sum = stats.pending + stats.approved + stats.rejected +
                 stats.rendering + stats.completed + stats.failed;
     assert.strictEqual(stats.total, sum);
+  });
+
+  test('stats reflect queued items', () => {
+    const statsBefore = getStats();
+    queueVideo({ composition: 'test-stats-count' });
+    const statsAfter = getStats();
+    assert.strictEqual(statsAfter.total, statsBefore.total + 1, 'Total should increment');
+    assert.strictEqual(statsAfter.pending, statsBefore.pending + 1, 'Pending should increment');
   });
 });
 

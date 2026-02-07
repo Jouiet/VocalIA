@@ -230,8 +230,13 @@
           border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
           box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4);
           transition: all 0.3s ease; position: relative;
+          animation: vaTriggerPulse 2.5s ease-in-out infinite;
         }
-        .va-trigger:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(94, 106, 210, 0.6); }
+        .va-trigger:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(94, 106, 210, 0.6); animation: none; }
+        @keyframes vaTriggerPulse {
+          0%, 100% { box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4); transform: scale(1); }
+          50% { box-shadow: 0 4px 30px rgba(94, 106, 210, 0.7); transform: scale(1.02); }
+        }
         .va-trigger img { width: 36px; height: 36px; object-fit: contain; border-radius: 50%; }
 
         .va-panel {
@@ -301,7 +306,7 @@
         <img src="${CONFIG.LOGO_PATH}" alt="VocalIA" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22white%22><path d=%22M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z%22/><path d=%22M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z%22/></svg>'"/>
       </button>
 
-      <div class="va-panel" id="va-panel">
+      <div class="va-panel" id="va-panel" role="dialog" aria-label="${L.ui.headerTitle || 'VocalIA Assistant'}" aria-modal="true">
         <div class="va-header">
           <div class="va-header-logo">
             <img src="${CONFIG.LOGO_PATH}" alt="VocalIA" onerror="this.style.display='none'"/>
@@ -310,14 +315,14 @@
             <h3>${L.ui.headerTitle || 'VocalIA Assistant'}</h3>
             <p>${L.ui.headerSubtitleVoice || 'Expert IA'}</p>
           </div>
-          <button class="va-close" id="va-close" aria-label="Fermer">✕</button>
+          <button class="va-close" id="va-close" aria-label="${L.ui.ariaClose || 'Fermer'}">✕</button>
         </div>
 
-        <div class="va-visualizer" id="va-visualizer">
+        <div class="va-visualizer" id="va-visualizer" aria-hidden="true">
           ${Array.from({ length: 8 }, () => '<div class="va-visualizer-bar"></div>').join('')}
         </div>
 
-        <div class="va-messages" id="va-messages"></div>
+        <div class="va-messages" id="va-messages" aria-live="polite" aria-relevant="additions"></div>
 
         <div class="va-input-area">
           <input type="text" class="va-input" id="va-input" placeholder="${L.ui.placeholder || 'Posez votre question...'}" autocomplete="off">
@@ -382,6 +387,32 @@
             initSpeechRecognition();
             micBtn.addEventListener('click', toggleListening);
         }
+
+        // Keyboard: Escape to close, Tab focus trap
+        document.addEventListener('keydown', (e) => {
+            if (!state.isOpen) return;
+            if (e.key === 'Escape') {
+                togglePanel();
+                const trigger = document.getElementById('va-trigger');
+                if (trigger) trigger.focus();
+                return;
+            }
+            if (e.key === 'Tab') {
+                const panel = document.getElementById('va-panel');
+                if (!panel) return;
+                const focusable = panel.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
 
         trackEvent('widget_initialized', { language: state.currentLang });
     }

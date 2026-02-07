@@ -21,7 +21,7 @@ const path = require('path');
 const DESIGN_TOKENS = {
   colors: {
     '#191E35': 'var(--secondary)',
-    '#4FBAF1': 'var(--primary)',
+    '#5E6AD2': 'var(--primary)',
     '#10B981': 'var(--accent)',
     '#8B5CF6': 'var(--purple)',
     '#F59E0B': 'var(--orange)',
@@ -76,7 +76,7 @@ const DESIGN_TOKENS = {
 const CSS_VARS = `
 /* VocalIA Design System Variables (injected) */
 :root {
-  --primary: #4FBAF1;
+  --primary: #5E6AD2;
   --secondary: #191E35;
   --accent: #10B981;
   --purple: #8B5CF6;

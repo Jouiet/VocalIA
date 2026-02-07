@@ -224,33 +224,9 @@ describe('GrokClient queryKnowledgeBase', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────────
+// ─── API boundary (encapsulation) ────────────────────────────────────
 
-describe('GrokClient exports', () => {
-  test('exports chatCompletion function', () => {
-    assert.strictEqual(typeof chatCompletion, 'function');
-  });
-
-  test('exports generateAuditAnalysis function', () => {
-    assert.strictEqual(typeof generateAuditAnalysis, 'function');
-  });
-
-  test('exports generateEmailContent function', () => {
-    assert.strictEqual(typeof generateEmailContent, 'function');
-  });
-
-  test('exports queryKnowledgeBase function', () => {
-    assert.strictEqual(typeof queryKnowledgeBase, 'function');
-  });
-
-  test('exports initRAG function', () => {
-    assert.strictEqual(typeof initRAG, 'function');
-  });
-
-  test('exports BASE_SYSTEM_PROMPT string', () => {
-    assert.strictEqual(typeof BASE_SYSTEM_PROMPT, 'string');
-  });
-
+describe('GrokClient API boundary', () => {
   test('does not export internal helpers (ragQuery, getKnowledgeContext)', () => {
     const mod = require('../core/grok-client.cjs');
     assert.strictEqual(mod.ragQuery, undefined);

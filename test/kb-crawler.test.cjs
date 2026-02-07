@@ -659,27 +659,5 @@ describe('KBCrawler extractJsonLd detail', () => {
   });
 });
 
-// ─── Exports ───────────────────────────────────────────────────────
-
-describe('KBCrawler exports', () => {
-  test('exports KBCrawler class', () => {
-    assert.strictEqual(typeof KBCrawler, 'function');
-  });
-
-  test('exports PAGE_PATTERNS object', () => {
-    assert.strictEqual(typeof PAGE_PATTERNS, 'object');
-  });
-
-  test('instance has all methods', () => {
-    const c = new KBCrawler();
-    const methods = ['crawlURL', 'crawlSite', 'findSitemap', 'parseSitemap',
-      'isRelevantPage', 'detectPageType', 'fetchPage', 'extractContent',
-      'extractJsonLd', 'extractFAQ', 'extractContact', 'extractHours',
-      'extractDelivery', 'extractReturns', 'extractGeneral',
-      'stripHtml', 'normalizeKey', 'sleep',
-      'formatHoursResponse', 'formatDeliveryResponse'];
-    for (const m of methods) {
-      assert.strictEqual(typeof c[m], 'function', `Missing method: ${m}`);
-    }
-  });
-});
+// NOTE: KBCrawler and PAGE_PATTERNS exports proven by behavioral tests above
+// (new KBCrawler(), PAGE_PATTERNS used in detectPageType/isRelevantPage tests).

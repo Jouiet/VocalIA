@@ -17,30 +17,7 @@ const assert = require('node:assert');
 
 const crmTools = require('../core/voice-crm-tools.cjs');
 
-// ─── Module exports ──────────────────────────────────────────────
-
-describe('VoiceCRMTools exports', () => {
-  test('exports lookupCustomer function', () => {
-    assert.strictEqual(typeof crmTools.lookupCustomer, 'function');
-  });
-
-  test('exports createLead function', () => {
-    assert.strictEqual(typeof crmTools.createLead, 'function');
-  });
-
-  test('exports updateCustomer function', () => {
-    assert.strictEqual(typeof crmTools.updateCustomer, 'function');
-  });
-
-  test('exports logCall function', () => {
-    assert.strictEqual(typeof crmTools.logCall, 'function');
-  });
-
-  test('exports exactly 4 functions', () => {
-    const keys = Object.keys(crmTools);
-    assert.strictEqual(keys.length, 4);
-  });
-});
+// NOTE: Exports are proven by behavioral tests below (lookupCustomer, createLead, updateCustomer, logCall).
 
 // ─── lookupCustomer without credentials ──────────────────────────
 

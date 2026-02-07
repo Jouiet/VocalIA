@@ -19,17 +19,7 @@ const assert = require('node:assert');
 const { HybridRAG } = require('../core/hybrid-rag.cjs');
 
 describe('HybridRAG Module', () => {
-  test('exports HybridRAG class', () => {
-    assert.strictEqual(typeof HybridRAG, 'function');
-  });
-
-  test('HybridRAG instance has expected methods', () => {
-    const rag = new HybridRAG();
-    assert.strictEqual(typeof rag.search, 'function');
-    assert.strictEqual(typeof rag._getEngine, 'function');
-  });
-
-  test('HybridRAG has tenantEngines map', () => {
+  test('HybridRAG creates instance with empty tenantEngines map', () => {
     const rag = new HybridRAG();
     assert.ok(rag.tenantEngines instanceof Map);
     assert.strictEqual(rag.tenantEngines.size, 0);
@@ -389,34 +379,8 @@ describe('HybridRAG getInstance', () => {
   });
 });
 
-// ─── HybridRAG exports ─────────────────────────────────────────
-
-describe('HybridRAG exports', () => {
-  const mod = require('../core/hybrid-rag.cjs');
-
-  test('exports HybridRAG class', () => {
-    assert.strictEqual(typeof mod.HybridRAG, 'function');
-  });
-
-  test('exports getInstance function', () => {
-    assert.strictEqual(typeof mod.getInstance, 'function');
-  });
-
-  test('HybridRAG has _fuseResults method', () => {
-    const rag = new HybridRAG();
-    assert.strictEqual(typeof rag._fuseResults, 'function');
-  });
-
-  test('HybridRAG has invalidate method', () => {
-    const rag = new HybridRAG();
-    assert.strictEqual(typeof rag.invalidate, 'function');
-  });
-
-  test('HybridRAG has ensureDirectory method', () => {
-    const rag = new HybridRAG();
-    assert.strictEqual(typeof rag.ensureDirectory, 'function');
-  });
-});
+// NOTE: HybridRAG exports are proven by behavioral tests above
+// (getInstance singleton, _fuseResults ranking, BM25 edge cases, etc.)
 
 // ─── BM25 Edge Cases ────────────────────────────────────────────
 

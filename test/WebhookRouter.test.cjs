@@ -25,24 +25,6 @@ const crypto = require('crypto');
 const mod = require('../core/WebhookRouter.cjs');
 const { WebhookRouter, WEBHOOK_PROVIDERS } = mod;
 
-// ─── Module exports ─────────────────────────────────────────────────────────
-
-describe('WebhookRouter exports', () => {
-  test('exports WebhookRouter class', () => {
-    assert.strictEqual(typeof WebhookRouter, 'function');
-  });
-
-  test('exports WEBHOOK_PROVIDERS object', () => {
-    assert.ok(WEBHOOK_PROVIDERS);
-    assert.strictEqual(typeof WEBHOOK_PROVIDERS, 'object');
-  });
-
-  test('default export is WebhookRouter instance', () => {
-    assert.ok(mod);
-    assert.ok(mod instanceof WebhookRouter);
-  });
-});
-
 // ─── WEBHOOK_PROVIDERS structure ────────────────────────────────────────────
 
 describe('WEBHOOK_PROVIDERS structure', () => {
@@ -285,42 +267,4 @@ describe('WebhookRouter registerHandler', () => {
   });
 });
 
-// ─── Class methods existence ────────────────────────────────────────────────
-
-describe('WebhookRouter class methods', () => {
-  test('has start method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.start, 'function');
-  });
-
-  test('has stop method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.stop, 'function');
-  });
-
-  test('has registerHandler method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.registerHandler, 'function');
-  });
-
-  test('has processEvent method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.processEvent, 'function');
-  });
-
-  test('has extractTenantId method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.extractTenantId, 'function');
-  });
-
-  test('has getEventType method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.getEventType, 'function');
-  });
-
-  test('has logEvent method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.logEvent, 'function');
-  });
-
-  test('has ensureEventsDir method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.ensureEventsDir, 'function');
-  });
-
-  test('has healthCheck method', () => {
-    assert.strictEqual(typeof WebhookRouter.prototype.healthCheck, 'function');
-  });
-});
+// NOTE: Class methods are proven by behavioral tests above (extractTenantId, getEventType, registerHandler, etc.)

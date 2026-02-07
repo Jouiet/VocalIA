@@ -271,31 +271,7 @@ describe('ChaosEngineering category grouping', () => {
   });
 });
 
-// ─── exports ────────────────────────────────────────────────────────
-
-describe('ChaosEngineering exports', () => {
-  test('exports runExperiment function', () => {
-    assert.strictEqual(typeof runExperiment, 'function');
-  });
-
-  test('exports runAllSafe function', () => {
-    assert.strictEqual(typeof runAllSafe, 'function');
-  });
-
-  test('exports EXPERIMENTS object', () => {
-    assert.strictEqual(typeof EXPERIMENTS, 'object');
-    assert.ok(!Array.isArray(EXPERIMENTS));
-  });
-
-  test('exports CONFIG object', () => {
-    assert.strictEqual(typeof CONFIG, 'object');
-    assert.ok(!Array.isArray(CONFIG));
-  });
-
-  test('exports listExperiments function', () => {
-    assert.strictEqual(typeof listExperiments, 'function');
-  });
-});
+// NOTE: Exports are proven by behavioral tests (EXPERIMENTS, CONFIG, runExperiment, runAllSafe, listExperiments).
 
 // ─── listExperiments ──────────────────────────────────────────────
 

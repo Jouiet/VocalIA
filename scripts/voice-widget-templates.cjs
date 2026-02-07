@@ -25,7 +25,7 @@ const INDUSTRY_PRESETS = {
     name: 'E-commerce',
     description: 'Boutiques en ligne, Shopify, WooCommerce',
     colors: {
-      primary: '#4FBAF1',
+      primary: '#5E6AD2',
       primaryDark: '#2B6685',
       accent: '#10B981'
     },
@@ -121,7 +121,7 @@ OBJECTIVE: Convert visitors into qualified leads.`,
     name: 'Agence Digitale',
     description: 'Agences marketing, web, communication',
     colors: {
-      primary: '#4FBAF1',
+      primary: '#5E6AD2',
       primaryDark: '#2B6685',
       accent: '#10B981'
     },
@@ -412,7 +412,7 @@ OBJECTIVE: Qualify needs and schedule a visit.`,
 // ─────────────────────────────────────────────────────────────────────────────
 function generateConfig(options) {
   const {
-    preset = 'agency',
+    preset = options.industry || 'agency',
     clientName = 'Client',
     domain = 'client.com',
     email = `contact@${options.domain || 'client.com'}`,
@@ -530,6 +530,10 @@ function generateConfig(options) {
 // VALIDATOR
 // ─────────────────────────────────────────────────────────────────────────────
 function validateConfig(config) {
+  if (!config || typeof config !== 'object') {
+    return { valid: false, errors: ['config must be a non-null object'], warnings: [], score: 0 };
+  }
+
   const errors = [];
   const warnings = [];
 
@@ -567,6 +571,10 @@ function validateConfig(config) {
 // DEPLOYMENT HELPER
 // ─────────────────────────────────────────────────────────────────────────────
 function generateDeploymentFiles(config, outputDir) {
+  if (!outputDir || typeof outputDir !== 'string') {
+    throw new TypeError('outputDir is required and must be a string');
+  }
+
   const files = [];
 
   // 1. Main config JSON

@@ -12,7 +12,7 @@ export function initVocalia(config) {
     window.VOCALIA_CONFIG = {
         tenantId: config.tenantId,
         position: config.position || 'bottom-right',
-        themeColor: config.primaryColor || '#4FBAF1',
+        themeColor: config.primaryColor || '#5E6AD2',
         ecommerceMode: config.ecommerceMode !== undefined ? config.ecommerceMode : true,
         ...config
     };

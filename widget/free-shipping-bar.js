@@ -126,8 +126,8 @@
       left: 0;
       right: 0;
       z-index: 9999;
-      background: linear-gradient(135deg, #191E35 0%, #0F1225 100%);
-      border-bottom: 1px solid rgba(79, 186, 241, 0.3);
+      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      border-bottom: 1px solid rgba(94, 106, 210, 0.3);
       padding: 12px 20px;
       transform: translateY(-100%);
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -200,7 +200,7 @@
     }
 
     .va-shipping-amount {
-      color: #4FBAF1;
+      color: #5E6AD2;
       font-size: 16px;
       font-weight: 700;
     }
@@ -219,7 +219,7 @@
 
     .va-shipping-progress {
       height: 100%;
-      background: linear-gradient(90deg, #4FBAF1 0%, #10B981 100%);
+      background: linear-gradient(90deg, #5E6AD2 0%, #10B981 100%);
       border-radius: 4px;
       transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
@@ -427,7 +427,7 @@
         container.style.top = 'auto';
         container.style.bottom = '0';
         container.style.borderBottom = 'none';
-        container.style.borderTop = '1px solid rgba(79, 186, 241, 0.3)';
+        container.style.borderTop = '1px solid rgba(94, 106, 210, 0.3)';
       }
 
       container.innerHTML = this.getBarHTML();

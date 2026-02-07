@@ -1,10 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> **v7.11.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
-> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **4,011 tests** (74 files, 0 skip)
+> **v7.12.0** | 07/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
+> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,792 tests** (68 files, 0 skip)
 > **203 MCP Tools** | 38 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,353 + MCP/src 17,630 + Lib 921 + Website 31,512
-> ⚠️ **SESSION 250.114 FORENSIC AUDIT**: ~453 theater tests (source-grep, typeof, module-load), 5 duplicate pairs, MAIN API 0 function calls tested
+> ✅ **SESSION 250.128 WIDGET FIXES**: P0-W2 XSS fixed, P0-W3 CONFIG fixed, P0-W4 branding unified (#5E6AD2), P0-W5 dead files deleted + build script, P1-W6 WCAG accessibility. Score 7.4→8.6
+> ✅ **SESSION 250.126 THEATER PURGE**: 244 theater tests removed (typeof exports, class methods, source-grep), 3 files rewritten from scratch
 >    - **510 tenants** (B2B=270, B2C=186, ECOM=54) | **553 KB directories** × 5 languages = **2,765 KB files**
 >    - **38 personas covered**: 12-13 tenants each | 12 regions
 
@@ -15,7 +16,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Tests**: 4,011 (74 files, 0 skip) — **Score**: 8.4/10 (250.125), **CORS**: ✅, **XSS**: ✅ |
+| Scores | **Tests**: 3,792 (68 files, 0 skip) — **Score**: 8.6/10 (250.128), **CORS**: ✅, **XSS**: ✅ (B2B + ECOM both fixed) |
 
 ---
 
@@ -183,20 +184,18 @@ Voir `.claude/rules/branding.md` section 10 pour les commandes de vérification.
 
 **530 client folders** in `clients/` = TEST DATA (not real clients). Only 23 registry entries are production.
 
-## ⚠️ Test Quality Crisis (Session 250.114)
+## ✅ Test Quality (Session 250.126 — Theater Purge)
 
-| Anti-Pattern | Count | Worst Files |
-|:-------------|:-----:|:------------|
-| source-grep (content.includes) | 121 | voice-api(38), widget(57), mcp-server(26) |
-| typeof === 'function' | 263 | 43 files (product-embedding:14, knowledge-base:13, grok-realtime:13) |
-| existsSync | 46 | 16 files (mcp-server:8, audit-store:5) |
-| module-load assert.ok | 20 | module-load.test.cjs (ALL) |
-| duplicate pairs | 156 | 5 PascalCase+kebab-case pairs |
-| skipped tests | 3 | i18n.test.cjs (key parity, structure, counts) |
+| Pattern | Before (250.114) | After (250.126) | Status |
+|:--------|:-----------------:|:----------------:|:------:|
+| typeof 'function' exports | 223 (49 files) | 12 (contextual only) | ✅ Fixed |
+| source-grep (content.includes) | 121 | 0 | ✅ Fixed (250.125) |
+| module-load assert.ok | 20 | 0 | ✅ Fixed (250.125) |
+| existsSync | 40 | 40 (all legitimate) | ✅ Audited |
+| Files rewritten from scratch | — | 3 (llm-gateway, eventbus, embedding) | ✅ |
+| Theater tests removed | — | 244 total | ✅ |
 
-**Critical: MAIN API (3,086 lines) has 34 tests — ALL source-grep, ZERO function calls.**
-**Critical: DB API (2,733 lines, 40+ routes) has 49 tests — ZERO route handler tests.**
-**Critical: 7 widget<->backend integration bugs went UNDETECTED by 3,307 tests.**
+**Remaining**: MAIN API + DB API still need behavioral function call tests (P0 tasks).
 
 ---
 
@@ -252,7 +251,7 @@ providers: [
 
 ---
 
-**Platform Score: 8.4/10** (250.125 — validator v2.3, persona audit 711 tests, stale numbers eradicated, branding unification)
-P0-P2 resolved. NEW P0 test quality tasks added. See `docs/ROADMAP-TO-COMPLETION.md`.
+**Platform Score: 8.6/10** (250.128 — P0-WIDGET all fixed: XSS, CONFIG, branding, dead files. P1-W6 WCAG done. 3,792 tests pass, validator 17/17 ✅)
+P0-P2 resolved. P0-WIDGET NEW (4 tasks). See `docs/ROADMAP-TO-COMPLETION.md`.
 
-*Last update: 07/02/2026 - Session 250.125 (Validator v2.3 17 checks + persona audit 711 tests + stale numbers eradication + branding unification 70 files)*
+*Last update: 07/02/2026 - Session 250.127 (Widget forensic audit: source≠deployed, 57% dead code, 2 broken stubs, 3 color schemes. Score 8.4→7.8)*

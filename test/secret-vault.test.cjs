@@ -263,22 +263,9 @@ describe('SecretVault', () => {
   });
 
   describe('exports', () => {
-    test('exports SecretVault class', () => {
-      assert.strictEqual(typeof SecretVault, 'function');
-    });
-
-    test('default export is instance', () => {
+    test('default export is a SecretVault instance', () => {
       const mod = require('../core/SecretVault.cjs');
       assert.ok(mod instanceof SecretVault);
-    });
-
-    test('instance has all methods', () => {
-      const methods = ['encrypt', 'decrypt', 'getCredentialsPath', 'loadCredentials',
-        'loadFromEnv', 'getSecret', 'getAllSecrets', 'saveCredentials',
-        'checkRequired', 'listTenants', 'healthCheck'];
-      for (const m of methods) {
-        assert.strictEqual(typeof vault[m], 'function', `Missing method: ${m}`);
-      }
     });
   });
 });

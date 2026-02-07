@@ -254,13 +254,6 @@ describe('TenantLogger static methods', () => {
     assert.strictEqual(count, 0);
   });
 
-  test('getRecentLogs is a static method', () => {
-    assert.strictEqual(typeof TenantLogger.getRecentLogs, 'function');
-  });
-
-  test('cleanOldLogs is a static method', () => {
-    assert.strictEqual(typeof TenantLogger.cleanOldLogs, 'function');
-  });
 });
 
 // ─── File I/O (merged from tenant-logger.test.cjs) ─────────────────────────

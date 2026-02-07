@@ -1028,51 +1028,8 @@ describe('CatalogConnectorFactory getAllConnectorsInfo', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────
-
-describe('catalog-connector exports', () => {
-  test('exports CatalogConnector base class', () => {
-    assert.strictEqual(typeof CatalogConnector, 'function');
-  });
-
-  test('exports CustomCatalogConnector', () => {
-    assert.strictEqual(typeof CustomCatalogConnector, 'function');
-  });
-
-  test('exports ShopifyCatalogConnector', () => {
-    assert.strictEqual(typeof ShopifyCatalogConnector, 'function');
-  });
-
-  test('exports WooCommerceCatalogConnector', () => {
-    assert.strictEqual(typeof WooCommerceCatalogConnector, 'function');
-  });
-
-  test('exports SquareCatalogConnector', () => {
-    assert.strictEqual(typeof SquareCatalogConnector, 'function');
-  });
-
-  test('exports LightspeedCatalogConnector', () => {
-    assert.strictEqual(typeof LightspeedCatalogConnector, 'function');
-  });
-
-  test('exports MagentoCatalogConnector', () => {
-    assert.strictEqual(typeof MagentoCatalogConnector, 'function');
-  });
-
-  test('exports CatalogConnectorFactory', () => {
-    assert.strictEqual(typeof CatalogConnectorFactory, 'function');
-  });
-
-  test('exports CATALOG_TYPES object', () => {
-    assert.strictEqual(typeof CATALOG_TYPES, 'object');
-    assert.ok(CATALOG_TYPES !== null);
-  });
-
-  test('exports CONNECTOR_STATUS object', () => {
-    assert.strictEqual(typeof CONNECTOR_STATUS, 'object');
-    assert.ok(CONNECTOR_STATUS !== null);
-  });
-});
+// NOTE: Exports are proven by behavioral tests above (CATALOG_TYPES, CONNECTOR_STATUS,
+// CustomCatalogConnector, CatalogConnectorFactory, e-commerce constructors, etc.)
 
 // ─── CatalogConnectorFactory static methods ─────────────────────
 

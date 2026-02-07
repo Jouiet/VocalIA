@@ -395,20 +395,4 @@ describe('AgencyEventBus shutdown', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────
-
-describe('AgencyEventBus exports', () => {
-  test('default export is eventBus instance', () => {
-    assert.ok(eventBus);
-    assert.strictEqual(typeof eventBus.publish, 'function');
-  });
-
-  test('exports AgencyEventBus class', () => {
-    assert.strictEqual(typeof AgencyEventBus, 'function');
-  });
-
-  test('exports EVENT_SCHEMAS object', () => {
-    assert.ok(EVENT_SCHEMAS);
-    assert.strictEqual(typeof EVENT_SCHEMAS, 'object');
-  });
-});
+// NOTE: Exports are proven by behavioral tests above (publish, subscribe, EVENT_SCHEMAS, metrics, etc.)

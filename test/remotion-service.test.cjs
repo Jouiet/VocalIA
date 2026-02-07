@@ -157,10 +157,6 @@ describe('RemotionService HITL', () => {
 // ─── listCompositions ───────────────────────────────────────────────
 
 describe('RemotionService listCompositions', () => {
-  test('is a function', () => {
-    assert.strictEqual(typeof listCompositions, 'function');
-  });
-
   test('executes without error', () => {
     // listCompositions is a CLI display function (console.log output)
     assert.doesNotThrow(() => listCompositions());
@@ -296,49 +292,8 @@ describe('RemotionService COMPOSITIONS detail', () => {
   });
 });
 
-// ─── Exports ──────────────────────────────────────────────────────
-
-describe('RemotionService exports', () => {
-  test('exports renderComposition function', () => {
-    assert.strictEqual(typeof renderComposition, 'function');
-  });
-
-  test('exports renderCompositionDirect function', () => {
-    assert.strictEqual(typeof renderCompositionDirect, 'function');
-  });
-
-  test('exports queueForApproval function', () => {
-    assert.strictEqual(typeof queueForApproval, 'function');
-  });
-
-  test('exports processApproved function', () => {
-    assert.strictEqual(typeof processApproved, 'function');
-  });
-
-  test('exports renderAll function', () => {
-    assert.strictEqual(typeof renderAll, 'function');
-  });
-
-  test('exports renderAllLanguages function', () => {
-    assert.strictEqual(typeof renderAllLanguages, 'function');
-  });
-
-  test('exports generateVideo function', () => {
-    assert.strictEqual(typeof generateVideo, 'function');
-  });
-
-  test('exports installDependencies function', () => {
-    assert.strictEqual(typeof installDependencies, 'function');
-  });
-
-  test('exports startStudio function', () => {
-    assert.strictEqual(typeof startStudio, 'function');
-  });
-
-  test('exports getCompositionId function', () => {
-    assert.strictEqual(typeof getCompositionId, 'function');
-  });
-});
+// NOTE: Export existence is proven by the behavioral tests (COMPOSITIONS, LANGUAGES,
+// healthCheck, getCompositionId, etc.) — no separate typeof theater needed.
 
 // ─── getCompositionId ────────────────────────────────────────────
 

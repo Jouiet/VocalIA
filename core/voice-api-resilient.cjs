@@ -2364,7 +2364,7 @@ function startServer(port = 3004) {
           success: true,
           tenantId: tId,
           branding: {
-            primaryColor: client.primary_color || persona.primaryColor || '#4FBAF1',
+            primaryColor: client.primary_color || persona.primaryColor || '#5E6AD2',
             botName: persona.name || 'VocalIA',
             avatar: persona.avatar || null
           },
@@ -3058,6 +3058,16 @@ function startServer(port = 3004) {
 
   process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
   process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+  process.on('uncaughtException', (err) => {
+    console.error('❌ [Server] Uncaught exception:', err.message);
+    console.error(err.stack);
+    gracefulShutdown('uncaughtException');
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    console.error('❌ [Server] Unhandled rejection:', reason);
+  });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

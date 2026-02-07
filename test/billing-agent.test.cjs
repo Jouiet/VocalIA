@@ -304,50 +304,8 @@ describe('BillingAgent static STATES', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────────
-
-describe('BillingAgent exports', () => {
-  test('exports BillingAgent class', () => {
-    assert.strictEqual(typeof BillingAgent, 'function');
-  });
-
-  test('exports STATES', () => {
-    assert.ok(STATES);
-    assert.strictEqual(typeof STATES, 'object');
-  });
-
-  test('exports trackCost function', () => {
-    assert.strictEqual(typeof billingInstance.constructor.trackCost, 'function');
-  });
-
-  test('instance has processSessionBilling method', () => {
-    assert.strictEqual(typeof billingInstance.processSessionBilling, 'function');
-  });
-
-  test('instance has getAgentCard method', () => {
-    assert.strictEqual(typeof billingInstance.getAgentCard, 'function');
-  });
-
-  test('instance has recordTaskState method', () => {
-    assert.strictEqual(typeof billingInstance.recordTaskState, 'function');
-  });
-
-  test('instance has getTaskHistory method', () => {
-    assert.strictEqual(typeof billingInstance.getTaskHistory, 'function');
-  });
-
-  test('instance has getState method', () => {
-    assert.strictEqual(typeof billingInstance.getState, 'function');
-  });
-
-  test('instance has handleInvoicePaid method', () => {
-    assert.strictEqual(typeof billingInstance.handleInvoicePaid, 'function');
-  });
-
-  test('instance has handleInvoicePaidWebhook method', () => {
-    assert.strictEqual(typeof billingInstance.handleInvoicePaidWebhook, 'function');
-  });
-});
+// NOTE: BillingAgent exports are proven by behavioral tests above
+// (processSessionBilling, getAgentCard, recordTaskState, getTaskHistory, STATES, etc.)
 
 // ─── processSessionBilling (no API) ─────────────────────────────
 

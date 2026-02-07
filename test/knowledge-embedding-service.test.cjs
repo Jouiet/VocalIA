@@ -5,10 +5,10 @@
  *
  * Tests:
  * - cosineSimilarity (pure math: dot product, norms, edge cases)
- * - Constructor (cache initialization)
- * - Instance methods existence
+ * - Cache management (_loadCache, _saveCache)
+ * - Singleton instance behavior
  *
- * NOTE: Does NOT call Gemini API. Tests pure math and structure only.
+ * NOTE: Does NOT call Gemini API. Tests pure math and cache logic only.
  *
  * Run: node --test test/knowledge-embedding-service.test.cjs
  */
@@ -62,13 +62,6 @@ describe('KnowledgeEmbeddingService cosineSimilarity', () => {
     assert.ok(Math.abs(sim - 1.0) < 0.0001);
   });
 
-  test('returns number', () => {
-    const a = [0.5, 0.3, 0.8];
-    const b = [0.2, 0.7, 0.1];
-    const sim = embeddingService.cosineSimilarity(a, b);
-    assert.strictEqual(typeof sim, 'number');
-  });
-
   test('result is between -1 and 1', () => {
     const a = [0.1, -0.5, 0.3, 0.8, -0.2];
     const b = [-0.3, 0.7, 0.1, -0.4, 0.6];
@@ -76,13 +69,13 @@ describe('KnowledgeEmbeddingService cosineSimilarity', () => {
     assert.ok(sim >= -1.001 && sim <= 1.001);
   });
 
-  test('works with high-dimensional vectors', () => {
-    const dim = 768; // Gemini embedding dimension
+  test('works with high-dimensional vectors (768D Gemini)', () => {
+    const dim = 768;
     const a = Array.from({ length: dim }, (_, i) => Math.sin(i));
     const b = Array.from({ length: dim }, (_, i) => Math.cos(i));
     const sim = embeddingService.cosineSimilarity(a, b);
-    assert.strictEqual(typeof sim, 'number');
-    assert.ok(!isNaN(sim));
+    assert.ok(!isNaN(sim), 'Should produce valid number');
+    assert.ok(sim >= -1.001 && sim <= 1.001, 'Should be in valid range');
   });
 
   test('commutative: sim(a,b) === sim(b,a)', () => {
@@ -92,56 +85,48 @@ describe('KnowledgeEmbeddingService cosineSimilarity', () => {
     const sim2 = embeddingService.cosineSimilarity(b, a);
     assert.ok(Math.abs(sim1 - sim2) < 0.0001);
   });
-});
 
-// ─── Constructor / cache ─────────────────────────────────────────
-
-describe('KnowledgeEmbeddingService constructor', () => {
-  test('instance exists', () => {
-    assert.ok(embeddingService);
-  });
-
-  test('has cache object', () => {
-    assert.strictEqual(typeof embeddingService.cache, 'object');
-  });
-});
-
-// ─── Instance methods ────────────────────────────────────────────
-
-describe('KnowledgeEmbeddingService methods', () => {
-  test('has getEmbedding method', () => {
-    assert.strictEqual(typeof embeddingService.getEmbedding, 'function');
-  });
-
-  test('has batchEmbed method', () => {
-    assert.strictEqual(typeof embeddingService.batchEmbed, 'function');
-  });
-
-  test('has getQueryEmbedding method', () => {
-    assert.strictEqual(typeof embeddingService.getQueryEmbedding, 'function');
-  });
-
-  test('has cosineSimilarity method', () => {
-    assert.strictEqual(typeof embeddingService.cosineSimilarity, 'function');
-  });
-
-  test('has _loadCache method', () => {
-    assert.strictEqual(typeof embeddingService._loadCache, 'function');
-  });
-
-  test('has _saveCache method', () => {
-    assert.strictEqual(typeof embeddingService._saveCache, 'function');
+  test('unit vectors similarity matches dot product', () => {
+    // For unit vectors, cosine similarity = dot product
+    const normalize = (v) => {
+      const norm = Math.sqrt(v.reduce((s, x) => s + x * x, 0));
+      return v.map(x => x / norm);
+    };
+    const a = normalize([3, 4]);
+    const b = normalize([1, 0]);
+    const sim = embeddingService.cosineSimilarity(a, b);
+    const dot = a[0] * b[0] + a[1] * b[1];
+    assert.ok(Math.abs(sim - dot) < 0.0001, 'For unit vectors, cosine sim should equal dot product');
   });
 });
 
-// ─── Exports ─────────────────────────────────────────────────────
+// ─── Cache behavior ──────────────────────────────────────────────
 
-describe('KnowledgeEmbeddingService exports', () => {
-  test('default export is object', () => {
-    assert.strictEqual(typeof embeddingService, 'object');
+describe('KnowledgeEmbeddingService cache', () => {
+  test('has cache object initialized', () => {
+    assert.ok(embeddingService.cache !== undefined, 'Should have cache');
   });
 
-  test('is not null', () => {
-    assert.ok(embeddingService !== null);
+  test('_loadCache executes without error', () => {
+    assert.doesNotThrow(() => embeddingService._loadCache());
+  });
+
+  test('_saveCache executes without error', () => {
+    assert.doesNotThrow(() => embeddingService._saveCache());
+  });
+});
+
+// ─── Singleton ───────────────────────────────────────────────────
+
+describe('KnowledgeEmbeddingService singleton', () => {
+  test('same instance on multiple requires', () => {
+    const instance2 = require('../core/knowledge-embedding-service.cjs');
+    assert.strictEqual(embeddingService, instance2);
+  });
+
+  test('cosineSimilarity is callable on the instance', () => {
+    // Actually call it to verify it works, not just typeof check
+    const result = embeddingService.cosineSimilarity([1, 0], [0, 1]);
+    assert.ok(Math.abs(result) < 0.0001, 'Orthogonal vectors should return ~0');
   });
 });

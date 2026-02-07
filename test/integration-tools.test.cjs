@@ -26,22 +26,6 @@ describe('Voice CRM Tools', () => {
     assert.ok(crmTools);
   });
 
-  test('exports lookupCustomer function', () => {
-    assert.strictEqual(typeof crmTools.lookupCustomer, 'function');
-  });
-
-  test('exports createLead function', () => {
-    assert.strictEqual(typeof crmTools.createLead, 'function');
-  });
-
-  test('exports updateCustomer function', () => {
-    assert.strictEqual(typeof crmTools.updateCustomer, 'function');
-  });
-
-  test('exports logCall function', () => {
-    assert.strictEqual(typeof crmTools.logCall, 'function');
-  });
-
   test('lookupCustomer returns object with found=false when no creds', async () => {
     const result = await crmTools.lookupCustomer('test@example.com', '__no_creds_tenant__');
     assert.ok(result);
@@ -85,14 +69,6 @@ describe('Voice E-commerce Tools', () => {
     assert.ok(ecomTools);
   });
 
-  test('exports checkOrderStatus function', () => {
-    assert.strictEqual(typeof ecomTools.checkOrderStatus, 'function');
-  });
-
-  test('exports getOrderHistory function', () => {
-    assert.strictEqual(typeof ecomTools.getOrderHistory, 'function');
-  });
-
   test('checkOrderStatus handles missing credentials', async () => {
     const result = await ecomTools.checkOrderStatus('test@example.com', 'ORD-001', '__no_creds_tenant__');
     assert.ok(result);
@@ -119,10 +95,6 @@ describe('Catalog Connector Factory', () => {
     assert.ok(CATALOG_TYPES);
   });
 
-  test('CatalogConnectorFactory has create method', () => {
-    assert.strictEqual(typeof factory.create, 'function');
-  });
-
   test('CATALOG_TYPES has expected types', () => {
     assert.ok(CATALOG_TYPES.PRODUCTS);
   });
@@ -134,10 +106,6 @@ describe('SecretVault', () => {
   test('module loads without error', () => {
     SecretVault = require('../core/SecretVault.cjs');
     assert.ok(SecretVault);
-  });
-
-  test('has loadCredentials method', () => {
-    assert.strictEqual(typeof SecretVault.loadCredentials, 'function');
   });
 
   test('loadCredentials returns object for unknown tenant', async () => {

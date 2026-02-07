@@ -30,7 +30,7 @@ describe('StitchToVocalIA DESIGN_TOKENS', () => {
   });
 
   test('maps VocalIA primary color', () => {
-    assert.strictEqual(DESIGN_TOKENS.colors['#4FBAF1'], 'var(--primary)');
+    assert.strictEqual(DESIGN_TOKENS.colors['#5E6AD2'], 'var(--primary)');
   });
 
   test('maps VocalIA secondary color', () => {
@@ -86,14 +86,14 @@ describe('StitchToVocalIA convertStitchToVocalIA', () => {
 
   test('converts hex colors to CSS variables', () => {
     const input = createTempHtml(`<html><head></head><body>
-      <div class="bg-[#4FBAF1]">Primary</div>
+      <div class="bg-[#5E6AD2]">Primary</div>
       <div class="text-[#191E35]">Secondary</div>
     </body></html>`);
 
     const result = convertStitchToVocalIA(input);
     assert.ok(result.includes('var(--primary)'));
     assert.ok(result.includes('var(--secondary)'));
-    assert.ok(!result.includes('bg-[#4FBAF1]'));
+    assert.ok(!result.includes('bg-[#5E6AD2]'));
   });
 
   test('converts component class names', () => {
@@ -117,7 +117,7 @@ describe('StitchToVocalIA convertStitchToVocalIA', () => {
   test('injects VocalIA CSS variables', () => {
     const input = createTempHtml(`<html><head></head><body></body></html>`);
     const result = convertStitchToVocalIA(input);
-    assert.ok(result.includes('--primary: #4FBAF1'));
+    assert.ok(result.includes('--primary: #5E6AD2'));
     assert.ok(result.includes('--secondary: #191E35'));
   });
 

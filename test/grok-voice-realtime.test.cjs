@@ -167,79 +167,8 @@ describe('GeminiTTSFallback.mapVoice', () => {
 // ─── GrokRealtimeSession class ──────────────────────────────────────────────
 
 describe('GrokRealtimeSession class', () => {
-  test('is a constructor function', () => {
-    assert.strictEqual(typeof GrokRealtimeSession, 'function');
-  });
-
-  test('has prototype methods', () => {
-    assert.strictEqual(typeof GrokRealtimeSession.prototype.connect, 'function');
-    assert.strictEqual(typeof GrokRealtimeSession.prototype.disconnect, 'function');
-    assert.strictEqual(typeof GrokRealtimeSession.prototype.sendAudio, 'function');
-    assert.strictEqual(typeof GrokRealtimeSession.prototype.sendText, 'function');
-  });
-
   test('extends EventEmitter', () => {
     const { EventEmitter } = require('events');
     assert.ok(GrokRealtimeSession.prototype instanceof EventEmitter);
-  });
-});
-
-// ─── GrokRealtimeProxy class ────────────────────────────────────────────────
-
-describe('GrokRealtimeProxy class', () => {
-  test('is a constructor function', () => {
-    assert.strictEqual(typeof GrokRealtimeProxy, 'function');
-  });
-
-  test('has prototype methods', () => {
-    assert.strictEqual(typeof GrokRealtimeProxy.prototype.start, 'function');
-    assert.strictEqual(typeof GrokRealtimeProxy.prototype.stop, 'function');
-  });
-});
-
-// ─── GeminiTTSFallback class ────────────────────────────────────────────────
-
-describe('GeminiTTSFallback class', () => {
-  test('is a constructor function', () => {
-    assert.strictEqual(typeof GeminiTTSFallback, 'function');
-  });
-
-  test('has static mapVoice method', () => {
-    assert.strictEqual(typeof GeminiTTSFallback.mapVoice, 'function');
-  });
-
-  test('has prototype methods', () => {
-    assert.strictEqual(typeof GeminiTTSFallback.prototype.synthesize, 'function');
-    assert.strictEqual(typeof GeminiTTSFallback.prototype.healthCheck, 'function');
-    assert.strictEqual(typeof GeminiTTSFallback.prototype.getStats, 'function');
-  });
-});
-
-// ─── Exports ────────────────────────────────────────────────────────────────
-
-describe('GrokRealtime exports', () => {
-  test('exports 5 items', () => {
-    const mod = require('../core/grok-voice-realtime.cjs');
-    assert.strictEqual(Object.keys(mod).length, 5);
-  });
-
-  test('exports GrokRealtimeSession', () => {
-    assert.ok(GrokRealtimeSession);
-  });
-
-  test('exports GrokRealtimeProxy', () => {
-    assert.ok(GrokRealtimeProxy);
-  });
-
-  test('exports GeminiTTSFallback', () => {
-    assert.ok(GeminiTTSFallback);
-  });
-
-  test('exports CONFIG', () => {
-    assert.ok(CONFIG);
-  });
-
-  test('exports GEMINI_CONFIG', () => {
-    assert.ok(GEMINI_CONFIG);
   });
 });

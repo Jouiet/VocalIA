@@ -458,31 +458,6 @@ describe('Telephony HITL_CONFIG', () => {
   });
 });
 
-// ─── Module exports ──────────────────────────────────────────────
-
-describe('Telephony exports', () => {
-  test('exports handleSearchKnowledgeBase', () => {
-    assert.strictEqual(typeof bridge.handleSearchKnowledgeBase, 'function');
-  });
-
-  test('exports handleQualifyLead', () => {
-    assert.strictEqual(typeof bridge.handleQualifyLead, 'function');
-  });
-
-  test('exports handleCreateBooking', () => {
-    assert.strictEqual(typeof bridge.handleCreateBooking, 'function');
-  });
-
-  test('exports handleTransferCall', () => {
-    assert.strictEqual(typeof bridge.handleTransferCall, 'function');
-  });
-
-  test('exports listPendingActions', () => {
-    assert.strictEqual(typeof bridge.listPendingActions, 'function');
-  });
-
-  test('exports HITL_CONFIG object', () => {
-    assert.strictEqual(typeof HITL_CONFIG, 'object');
-    assert.ok(HITL_CONFIG !== null);
-  });
-});
+// NOTE: Telephony exports are proven by behavioral tests above
+// (getGrokVoiceFromPreferences, getTwiMLLanguage, detectFinancialCommitment, calculateBANTScore,
+// detectQueryLanguage, safeJsonParse, generateSessionId, checkRateLimit, CONFIG, HITL_CONFIG).

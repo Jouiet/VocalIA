@@ -102,15 +102,21 @@ describe('Widget generateConfig', () => {
     assert.match(cfg.branding.primaryColor, /^#[0-9A-Fa-f]{6}$/);
   });
 
-  test('BUG: industry param does not set $preset (always agency)', () => {
-    // Documents a real bug: industry param is ignored for $preset
+  test('industry param sets $preset correctly', () => {
     const cfg = templates.generateConfig({
       industry: 'healthcare',
       clientName: 'Cabinet Dr. Test'
     });
-    // $preset should be 'healthcare' but is 'agency' — bug
-    assert.strictEqual(cfg.$preset, 'agency',
-      'BUG DOCUMENTED: $preset is always "agency" regardless of industry param');
+    assert.strictEqual(cfg.$preset, 'healthcare');
+  });
+
+  test('preset param takes priority over industry', () => {
+    const cfg = templates.generateConfig({
+      preset: 'dental',
+      industry: 'healthcare',
+      clientName: 'Test'
+    });
+    assert.strictEqual(cfg.$preset, 'dental');
   });
 
   test('includes $schema and $generator metadata', () => {
@@ -165,10 +171,20 @@ describe('Widget validateConfig', () => {
     assert.ok(Array.isArray(result.warnings));
   });
 
-  test('BUG: validateConfig(null) throws instead of returning error', () => {
-    // Documents a real bug: should return {valid: false} but throws TypeError
-    assert.throws(() => templates.validateConfig(null), TypeError,
-      'BUG DOCUMENTED: validateConfig(null) throws instead of graceful error');
+  test('validateConfig(null) returns valid:false gracefully', () => {
+    const result = templates.validateConfig(null);
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.errors.length > 0);
+  });
+
+  test('validateConfig(undefined) returns valid:false gracefully', () => {
+    const result = templates.validateConfig(undefined);
+    assert.strictEqual(result.valid, false);
+  });
+
+  test('validateConfig(42) returns valid:false gracefully', () => {
+    const result = templates.validateConfig(42);
+    assert.strictEqual(result.valid, false);
   });
 
   test('empty object fails validation', () => {
@@ -371,17 +387,16 @@ describe('Widget v3 XSS audit', () => {
 // ─── Widget Template: generateDeploymentFiles ───────────────────────────────
 
 describe('Widget generateDeploymentFiles', () => {
-  test('function exists', () => {
-    assert.strictEqual(typeof templates.generateDeploymentFiles, 'function');
-  });
-
-  test('BUG: throws on valid config (missing path argument)', () => {
-    // Documents a real bug: generateDeploymentFiles needs a path but config doesn't provide one
+  test('throws TypeError when outputDir is missing', () => {
     const cfg = templates.generateConfig({
       industry: 'ecommerce',
       clientName: 'Test Shop'
     });
-    assert.throws(() => templates.generateDeploymentFiles(cfg), TypeError,
-      'BUG DOCUMENTED: generateDeploymentFiles throws TypeError on valid config');
+    assert.throws(() => templates.generateDeploymentFiles(cfg), TypeError);
+  });
+
+  test('throws TypeError when outputDir is null', () => {
+    const cfg = templates.generateConfig({ clientName: 'Test' });
+    assert.throws(() => templates.generateDeploymentFiles(cfg, null), TypeError);
   });
 });

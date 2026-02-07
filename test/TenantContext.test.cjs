@@ -357,52 +357,11 @@ describe('TenantContext loadConfig', () => {
 // ─── Static methods ─────────────────────────────────────────────────────────
 
 describe('TenantContext static methods', () => {
-  test('build is a static async method', () => {
-    assert.strictEqual(typeof TenantContext.build, 'function');
-  });
-
-  test('listTenants is a static method', () => {
-    assert.strictEqual(typeof TenantContext.listTenants, 'function');
-  });
-
   test('listTenants returns an array', () => {
     const result = TenantContext.listTenants();
     assert.ok(Array.isArray(result));
   });
 });
 
-// ─── Class structure ────────────────────────────────────────────────────────
-
-describe('TenantContext class structure', () => {
-  test('has loadConfig method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.loadConfig, 'function');
-  });
-
-  test('has loadSecrets method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.loadSecrets, 'function');
-  });
-
-  test('has build instance method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.build, 'function');
-  });
-
-  test('has checkRequiredIntegrations method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.checkRequiredIntegrations, 'function');
-  });
-
-  test('has checkRequiredSecrets method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.checkRequiredSecrets, 'function');
-  });
-
-  test('has getShopifyCredentials method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.getShopifyCredentials, 'function');
-  });
-
-  test('has getKlaviyoCredentials method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.getKlaviyoCredentials, 'function');
-  });
-
-  test('has getGoogleCredentials method', () => {
-    assert.strictEqual(typeof TenantContext.prototype.getGoogleCredentials, 'function');
-  });
-});
+// NOTE: Class methods are proven by behavioral tests above (constructor, checkRequiredIntegrations,
+// checkRequiredSecrets, getShopifyCredentials, getKlaviyoCredentials, getGoogleCredentials, loadConfig).

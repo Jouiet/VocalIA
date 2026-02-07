@@ -40,6 +40,14 @@
         ECOMMERCE_MODE: true, // Enable product display in widget
         MAX_CAROUSEL_ITEMS: 5, // Maximum products in carousel
 
+        // Base API URL (for recommendations, product details, quiz)
+        API_BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3013'
+            : 'https://api.vocalia.ma',
+
+        // Booking API (Google Apps Script)
+        BOOKING_API: 'https://script.google.com/macros/s/AKfycbzXKtu88n0Z-oFiBm5kJYPmGOi29maowtMv2vEQ0o5Xhp4sayNdnm2cNBaAx2OlHkUK/exec',
+
         // Exit-Intent Voice Popup (UNIQUE COMPETITIVE ADVANTAGE - Session 250.78)
         EXIT_INTENT_ENABLED: true,
         EXIT_INTENT_DELAY: 3000,
@@ -56,10 +64,10 @@
         SOCIAL_PROOF_DELAY: 8000,
 
         // Branding
-        primaryColor: '#4FBAF1',
-        primaryDark: '#2B6685',
+        primaryColor: '#5E6AD2',
+        primaryDark: '#4f46e5',
         accentColor: '#10B981',
-        darkBg: '#191E35',
+        darkBg: '#0f172a',
 
         // Paths - FIXED Session 250.90: Correct path to language files
         LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
@@ -78,6 +86,20 @@
             'ary': 'ary'
         }
     };
+
+    // ============================================================
+    // SECURITY UTILITIES
+    // ============================================================
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function escapeAttr(text) {
+        return String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
     // ============================================================
     // STATE
@@ -286,7 +308,7 @@
           width: 60px; height: 60px; border-radius: 50%;
           background: linear-gradient(135deg, var(--va-primary) 0%, var(--va-primary-dark) 50%, var(--va-accent) 100%);
           border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 4px 20px rgba(79, 186, 241, 0.4);
+          box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4);
           transition: all 0.3s ease; position: relative;
           animation: pulse-glow 2s ease-in-out infinite;
         }
@@ -301,8 +323,8 @@
           opacity: 0; animation: pulse-ring-outer 2s ease-out infinite 0.5s;
         }
         @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 4px 20px rgba(79, 186, 241, 0.4); transform: scale(1); }
-          50% { box-shadow: 0 4px 30px rgba(79, 186, 241, 0.7); transform: scale(1.02); }
+          0%, 100% { box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4); transform: scale(1); }
+          50% { box-shadow: 0 4px 30px rgba(94, 106, 210, 0.7); transform: scale(1.02); }
         }
         @keyframes pulse-ring {
           0% { transform: scale(1); opacity: 0.6; }
@@ -313,14 +335,14 @@
           100% { transform: scale(1.6); opacity: 0; }
         }
         .va-trigger:hover {
-          transform: scale(1.1); box-shadow: 0 6px 30px rgba(79, 186, 241, 0.6); animation: none;
+          transform: scale(1.1); box-shadow: 0 6px 30px rgba(94, 106, 210, 0.6); animation: none;
         }
         .va-trigger:hover::before, .va-trigger:hover::after { animation: none; opacity: 0; }
         .va-trigger img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; }
         .va-trigger.listening { animation: pulse 1.5s infinite; }
         @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(79, 186, 241, 0.7); }
-          50% { box-shadow: 0 0 0 15px rgba(79, 186, 241, 0); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(94, 106, 210, 0.7); }
+          50% { box-shadow: 0 0 0 15px rgba(94, 106, 210, 0); }
         }
         .va-panel {
           display: none; position: absolute; bottom: 70px; ${position}: 0;
@@ -385,7 +407,7 @@
         /* Voice Waveform Visualizer (SOTA 2026) */
         .va-visualizer {
           height: 48px; padding: 8px 16px; display: none;
-          background: linear-gradient(180deg, rgba(79,186,241,0.1) 0%, transparent 100%);
+          background: linear-gradient(180deg, rgba(94,106,210,0.1) 0%, transparent 100%);
           border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .va-visualizer.active { display: block; animation: fadeIn 0.3s ease; }
@@ -443,8 +465,8 @@
           30% { transform: translateY(-6px); }
         }
         .va-cta {
-          padding: 12px 16px; background: rgba(79, 186, 241, 0.1);
-          border-top: 1px solid rgba(79, 186, 241, 0.2);
+          padding: 12px 16px; background: rgba(94, 106, 210, 0.1);
+          border-top: 1px solid rgba(94, 106, 210, 0.2);
         }
         .va-cta a {
           display: block; text-align: center; padding: 10px;
@@ -479,7 +501,7 @@
         }
         .va-product-card:hover {
           border-color: var(--va-primary); transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(79, 186, 241, 0.2);
+          box-shadow: 0 4px 12px rgba(94, 106, 210, 0.2);
         }
         .va-product-card.featured {
           border-color: var(--va-accent);
@@ -491,7 +513,7 @@
         }
         .va-product-img-placeholder {
           width: 100%; height: 100px; display: flex; align-items: center; justify-content: center;
-          background: linear-gradient(135deg, rgba(79,186,241,0.1) 0%, rgba(16,185,129,0.1) 100%);
+          background: linear-gradient(135deg, rgba(94,106,210,0.1) 0%, rgba(16,185,129,0.1) 100%);
           color: rgba(255,255,255,0.3); font-size: 32px;
         }
         .va-product-info { padding: 10px; }
@@ -591,7 +613,7 @@
         <img src="/logo.png" alt="VocalIA" />
       </button>
 
-      <div class="va-panel" id="va-panel">
+      <div class="va-panel" id="va-panel" role="dialog" aria-label="${L.ui.headerTitle}" aria-modal="true">
         <div class="va-header">
           <div class="va-header-icon">
             <img src="/logo.png" alt="VocalIA" />
@@ -606,14 +628,14 @@
         </div>
 
         <!-- Voice Waveform Visualizer (SOTA 2026) -->
-        <div class="va-visualizer" id="va-visualizer">
+        <div class="va-visualizer" id="va-visualizer" aria-hidden="true">
           <div class="va-visualizer-bars" id="va-visualizer-bars">
             ${Array.from({ length: 10 }, () => '<div class="va-visualizer-bar"></div>').join('')}
           </div>
           <div class="va-visualizer-label" id="va-visualizer-label">${L.ui.voiceReady || 'Voice Ready'}</div>
         </div>
 
-        <div class="va-messages" id="va-messages"></div>
+        <div class="va-messages" id="va-messages" aria-live="polite" aria-relevant="additions"></div>
 
         <div class="va-input-area">
           <input type="text" class="va-input" id="va-input" placeholder="${L.ui.placeholder}">
@@ -659,9 +681,9 @@
       display: flex; align-items: center; gap: 10px;
       background: rgba(25, 30, 53, 0.95);
       backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(79, 186, 241, 0.3);
+      border: 1px solid rgba(94, 106, 210, 0.3);
       padding: 12px 16px; border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(79, 186, 241, 0.15);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 20px rgba(94, 106, 210, 0.15);
       animation: notifSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer; white-space: nowrap; z-index: 9999;
       ${isRTL ? 'direction: rtl; flex-direction: row-reverse;' : ''}
@@ -669,7 +691,7 @@
 
         // Style inner elements
         const icon = bubble.querySelector('.va-notif-icon');
-        if (icon) icon.style.cssText = 'width: 32px; height: 32px; background: linear-gradient(135deg, rgba(79, 186, 241, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #4FBAF1; flex-shrink: 0;';
+        if (icon) icon.style.cssText = 'width: 32px; height: 32px; background: linear-gradient(135deg, rgba(94, 106, 210, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #5E6AD2; flex-shrink: 0;';
 
         const textContainer = bubble.querySelector('.va-notif-text');
         if (textContainer) textContainer.style.cssText = 'display: flex; flex-direction: column; gap: 2px;';
@@ -682,7 +704,7 @@
 
         // Arrow
         const arrow = document.createElement('div');
-        arrow.style.cssText = `position: absolute; bottom: -6px; ${position}: 24px; width: 12px; height: 12px; background: rgba(25, 30, 53, 0.95); border-${isRTL ? 'left' : 'right'}: 1px solid rgba(79, 186, 241, 0.3); border-bottom: 1px solid rgba(79, 186, 241, 0.3); transform: rotate(${isRTL ? '-' : ''}45deg);`;
+        arrow.style.cssText = `position: absolute; bottom: -6px; ${position}: 24px; width: 12px; height: 12px; background: rgba(25, 30, 53, 0.95); border-${isRTL ? 'left' : 'right'}: 1px solid rgba(94, 106, 210, 0.3); border-bottom: 1px solid rgba(94, 106, 210, 0.3); transform: rotate(${isRTL ? '-' : ''}45deg);`;
         bubble.appendChild(arrow);
 
         trigger.parentNode.appendChild(bubble);
@@ -702,7 +724,7 @@
         const messagesContainer = document.getElementById('va-messages');
         const messageDiv = document.createElement('div');
         messageDiv.className = `va-message ${type}`;
-        messageDiv.innerHTML = `<div class="va-message-content">${text}</div>`;
+        messageDiv.innerHTML = `<div class="va-message-content">${escapeHtml(text)}</div>`;
         messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
@@ -847,28 +869,34 @@
         const hasImage = product.image || product.images?.[0];
         const inStock = product.available !== false && product.in_stock !== false;
 
+        const safeId = escapeAttr(product.id);
+        const safeName = escapeHtml(product.name || '');
+        const safeDesc = product.description ? escapeHtml(product.description) : '';
+        const safeImage = escapeAttr(product.image || product.images?.[0] || '');
+        const safeUrl = product.url ? escapeAttr(product.url) : '';
+
         productDiv.innerHTML = `
       <div class="va-message-content">
-        <div class="va-single-product" data-product-id="${product.id}">
+        <div class="va-single-product" data-product-id="${safeId}">
           <div class="va-single-product-row">
             ${hasImage
-                ? `<img class="va-single-product-img" src="${product.image || product.images[0]}" alt="${product.name}" />`
+                ? `<img class="va-single-product-img" src="${safeImage}" alt="${safeName}" />`
                 : `<div class="va-single-product-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>`
             }
             <div class="va-single-product-details">
-              <h4 class="va-single-product-name">${product.name}</h4>
-              ${product.description ? `<p class="va-single-product-desc">${product.description}</p>` : ''}
+              <h4 class="va-single-product-name">${safeName}</h4>
+              ${safeDesc ? `<p class="va-single-product-desc">${safeDesc}</p>` : ''}
               <div class="va-single-product-price">${formatPrice(product.price, product.currency)}</div>
             </div>
           </div>
           <div class="va-product-actions">
-            <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${product.id}')" ${!inStock ? 'disabled' : ''}>
+            <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${safeId}')" ${!inStock ? 'disabled' : ''}>
               ${inStock
                 ? (state.langData?.ecommerce?.viewDetails || 'Voir détails')
                 : (state.langData?.ecommerce?.notifyMe || 'Me notifier')
             }
             </button>
-            ${product.url ? `<button class="va-product-btn secondary" onclick="window.open('${product.url}', '_blank')">
+            ${safeUrl ? `<button class="va-product-btn secondary" onclick="window.open('${safeUrl}', '_blank')">
               ${state.langData?.ecommerce?.buyNow || 'Acheter'}
             </button>` : ''}
           </div>
@@ -998,7 +1026,7 @@
         try {
             const endpoint = options.search
                 ? `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/search`
-                : `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items`;
+                : `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog`;
 
             const params = new URLSearchParams();
             if (options.category) params.append('category', options.category);
@@ -1228,7 +1256,7 @@
 
         try {
             const response = await fetch(
-                `${CONFIG.API_BASE_URL}/api/tenants/${state.tenantId}/catalog/items/${productId}`
+                `${CONFIG.API_BASE_URL}/api/tenants/${state.tenantId}/catalog/${encodeURIComponent(productId)}`
             );
             if (response.ok) {
                 const data = await response.json();
@@ -2174,9 +2202,9 @@
         .va-exit-popup {
           background: linear-gradient(145deg, #1e2642 0%, #191e35 100%);
           border-radius: 24px; padding: 32px; max-width: 420px; width: 90%;
-          box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(79,186,241,0.15);
+          box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(94,106,210,0.15);
           position: relative; text-align: center;
-          border: 1px solid rgba(79,186,241,0.2);
+          border: 1px solid rgba(94,106,210,0.2);
           ${isRTL ? 'direction: rtl;' : ''}
         }
         .va-exit-close {
@@ -2189,9 +2217,9 @@
         .va-exit-close svg { width: 16px; height: 16px; fill: white; }
         .va-exit-icon {
           width: 80px; height: 80px; border-radius: 50%;
-          background: linear-gradient(135deg, var(--va-primary, #4FBAF1) 0%, #10B981 100%);
+          background: linear-gradient(135deg, var(--va-primary, #5E6AD2) 0%, #10B981 100%);
           margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 8px 32px rgba(79,186,241,0.4);
+          box-shadow: 0 8px 32px rgba(94,106,210,0.4);
           animation: pulse-glow 2s ease-in-out infinite;
         }
         .va-exit-icon svg { width: 40px; height: 40px; fill: white; }
@@ -2213,18 +2241,18 @@
           border: none;
         }
         .va-exit-btn-primary {
-          background: linear-gradient(135deg, #4FBAF1 0%, #10B981 100%);
-          color: white; box-shadow: 0 4px 20px rgba(79,186,241,0.4);
+          background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
+          color: white; box-shadow: 0 4px 20px rgba(94,106,210,0.4);
         }
         .va-exit-btn-primary:hover {
-          transform: translateY(-2px); box-shadow: 0 6px 30px rgba(79,186,241,0.6);
+          transform: translateY(-2px); box-shadow: 0 6px 30px rgba(94,106,210,0.6);
         }
         .va-exit-btn-secondary {
           background: rgba(255,255,255,0.1); color: white;
         }
         .va-exit-btn-secondary:hover { background: rgba(255,255,255,0.15); }
         .va-exit-voice-hint {
-          font-size: 12px; color: rgba(79,186,241,0.8); margin-top: 16px;
+          font-size: 12px; color: rgba(94,106,210,0.8); margin-top: 16px;
           display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         .va-exit-voice-hint svg { width: 14px; height: 14px; fill: currentColor; }
@@ -2350,7 +2378,7 @@
         .va-social-proof {
           position: fixed; bottom: 100px; ${isRTL ? 'left' : 'right'}: 25px;
           max-width: 280px; background: linear-gradient(145deg, #1e2642, #191e35);
-          border: 1px solid rgba(79,186,241,0.2); border-radius: 12px;
+          border: 1px solid rgba(94,106,210,0.2); border-radius: 12px;
           padding: 12px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
           z-index: 99997; font-family: Inter, -apple-system, sans-serif;
           animation: slideInRight 0.4s ease, fadeOut 0.3s ease ${CONFIG.SOCIAL_PROOF_DURATION - 300}ms forwards;
@@ -2367,13 +2395,13 @@
         .va-sp-content { display: flex; align-items: center; gap: 10px; }
         .va-sp-icon {
           width: 36px; height: 36px; border-radius: 50%;
-          background: linear-gradient(135deg, #4FBAF1, #10B981);
+          background: linear-gradient(135deg, #5E6AD2, #10B981);
           display: flex; align-items: center; justify-content: center;
           flex-shrink: 0;
         }
         .va-sp-icon svg { width: 18px; height: 18px; fill: white; }
         .va-sp-text { font-size: 13px; color: rgba(255,255,255,0.9); line-height: 1.4; }
-        .va-sp-time { font-size: 11px; color: rgba(79,186,241,0.7); margin-top: 4px; }
+        .va-sp-time { font-size: 11px; color: rgba(94,106,210,0.7); margin-top: 4px; }
         .va-sp-close {
           position: absolute; top: 6px; ${isRTL ? 'left' : 'right'}: 6px;
           background: none; border: none; cursor: pointer;
@@ -2982,6 +3010,32 @@
                 micBtn.addEventListener('click', toggleListening);
             }
         }
+
+        // Keyboard: Escape to close, Tab focus trap
+        document.addEventListener('keydown', (e) => {
+            if (!state.isOpen) return;
+            if (e.key === 'Escape') {
+                togglePanel();
+                const trigger = document.getElementById('va-trigger');
+                if (trigger) trigger.focus();
+                return;
+            }
+            if (e.key === 'Tab') {
+                const panel = document.getElementById('va-panel');
+                if (!panel) return;
+                const focusable = panel.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
     }
 
     // ============================================================
@@ -3273,14 +3327,14 @@
     }
 
     .va-abandoned-cart-modal {
-      background: linear-gradient(135deg, #191E35 0%, #0F1225 100%);
-      border: 1px solid rgba(79, 186, 241, 0.3);
+      background: linear-gradient(135deg, #0f172a 0%, #0c1220 100%);
+      border: 1px solid rgba(94, 106, 210, 0.3);
       border-radius: 24px;
       max-width: 480px;
       width: 95%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(79, 186, 241, 0.2);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(94, 106, 210, 0.2);
       animation: vaCartSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -3302,14 +3356,14 @@
     .va-cart-header {
       padding: 24px 24px 16px;
       text-align: center;
-      border-bottom: 1px solid rgba(79, 186, 241, 0.15);
+      border-bottom: 1px solid rgba(94, 106, 210, 0.15);
     }
 
     .va-cart-icon {
       width: 64px;
       height: 64px;
       margin: 0 auto 16px;
-      background: linear-gradient(135deg, #4FBAF1 0%, #10B981 100%);
+      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -3318,8 +3372,8 @@
     }
 
     @keyframes vaPulseCart {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 186, 241, 0.4); }
-      50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(79, 186, 241, 0); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(94, 106, 210, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(94, 106, 210, 0); }
     }
 
     .va-cart-icon svg {
@@ -3342,7 +3396,7 @@
     }
 
     .va-cart-value {
-      background: rgba(79, 186, 241, 0.1);
+      background: rgba(94, 106, 210, 0.1);
       border-radius: 12px;
       padding: 12px 16px;
       margin: 16px 24px;
@@ -3357,13 +3411,13 @@
     }
 
     .va-cart-value-amount {
-      color: #4FBAF1;
+      color: #5E6AD2;
       font-size: 20px;
       font-weight: 700;
     }
 
     .va-cart-offer {
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(79, 186, 241, 0.15) 100%);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(94, 106, 210, 0.15) 100%);
       border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: 12px;
       padding: 12px 16px;
@@ -3414,7 +3468,7 @@
       height: 48px;
       border-radius: 8px;
       object-fit: cover;
-      border: 1px solid rgba(79, 186, 241, 0.2);
+      border: 1px solid rgba(94, 106, 210, 0.2);
       flex-shrink: 0;
     }
 
@@ -3436,13 +3490,13 @@
     }
 
     .va-recovery-option:hover {
-      background: rgba(79, 186, 241, 0.1);
-      border-color: rgba(79, 186, 241, 0.3);
+      background: rgba(94, 106, 210, 0.1);
+      border-color: rgba(94, 106, 210, 0.3);
     }
 
     .va-recovery-option.selected {
-      background: rgba(79, 186, 241, 0.15);
-      border-color: #4FBAF1;
+      background: rgba(94, 106, 210, 0.15);
+      border-color: #5E6AD2;
     }
 
     .va-recovery-option-icon {
@@ -3456,7 +3510,7 @@
     }
 
     .va-recovery-option-icon.voice {
-      background: linear-gradient(135deg, #4FBAF1 0%, #2B6685 100%);
+      background: linear-gradient(135deg, #5E6AD2 0%, #4f46e5 100%);
     }
 
     .va-recovery-option-icon.sms {
@@ -3498,7 +3552,7 @@
     }
 
     .va-recovery-option.selected .va-recovery-option-radio {
-      border-color: #4FBAF1;
+      border-color: #5E6AD2;
     }
 
     .va-recovery-option.selected .va-recovery-option-radio::after {
@@ -3509,7 +3563,7 @@
       transform: translate(-50%, -50%);
       width: 10px;
       height: 10px;
-      background: #4FBAF1;
+      background: #5E6AD2;
       border-radius: 50%;
     }
 
@@ -3531,7 +3585,7 @@
     }
 
     .va-cart-input:focus {
-      border-color: #4FBAF1;
+      border-color: #5E6AD2;
     }
 
     .va-cart-input::placeholder {
@@ -3564,23 +3618,23 @@
     }
 
     .va-cart-btn.primary {
-      background: linear-gradient(135deg, #4FBAF1 0%, #10B981 100%);
+      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
       color: white;
     }
 
     .va-cart-btn.primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(79, 186, 241, 0.4);
+      box-shadow: 0 8px 25px rgba(94, 106, 210, 0.4);
     }
 
     .va-cart-btn.secondary {
-      background: rgba(79, 186, 241, 0.1);
-      color: #4FBAF1;
-      border: 1px solid rgba(79, 186, 241, 0.3);
+      background: rgba(94, 106, 210, 0.1);
+      color: #5E6AD2;
+      border: 1px solid rgba(94, 106, 210, 0.3);
     }
 
     .va-cart-btn.secondary:hover {
-      background: rgba(79, 186, 241, 0.2);
+      background: rgba(94, 106, 210, 0.2);
     }
 
     .va-cart-btn.text {

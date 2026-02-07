@@ -191,7 +191,7 @@
   // ============================================================
 
   const DEFAULT_PRIZES = [
-    { id: 'discount5', probability: 30, color: '#4FBAF1', code: 'SPIN5' },
+    { id: 'discount5', probability: 30, color: '#5E6AD2', code: 'SPIN5' },
     { id: 'discount10', probability: 25, color: '#10B981', code: 'SPIN10' },
     { id: 'discount15', probability: 15, color: '#F59E0B', code: 'SPIN15' },
     { id: 'discount20', probability: 10, color: '#8B5CF6', code: 'SPIN20' },
@@ -228,14 +228,14 @@
     }
 
     .va-spin-modal {
-      background: linear-gradient(135deg, #191E35 0%, #0F1225 100%);
-      border: 2px solid rgba(79, 186, 241, 0.3);
+      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      border: 2px solid rgba(94, 106, 210, 0.3);
       border-radius: 24px;
       max-width: 440px;
       width: 95%;
       padding: 32px;
       text-align: center;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(79, 186, 241, 0.2);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(94, 106, 210, 0.2);
       animation: vaSpinModalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -285,7 +285,7 @@
       font-size: 28px;
       font-weight: 700;
       margin: 0 0 8px;
-      background: linear-gradient(135deg, #4FBAF1 0%, #10B981 100%);
+      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -310,7 +310,7 @@
       border-radius: 50%;
       position: relative;
       transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-      box-shadow: 0 0 0 8px rgba(79, 186, 241, 0.3), 0 0 0 12px rgba(79, 186, 241, 0.15);
+      box-shadow: 0 0 0 8px rgba(94, 106, 210, 0.3), 0 0 0 12px rgba(94, 106, 210, 0.15);
     }
 
     .va-spin-wheel.spinning {
@@ -373,8 +373,8 @@
       width: 60px;
       height: 60px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #191E35 0%, #0F1225 100%);
-      border: 4px solid #4FBAF1;
+      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      border: 4px solid #5E6AD2;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -385,7 +385,7 @@
     .va-spin-center svg {
       width: 24px;
       height: 24px;
-      fill: #4FBAF1;
+      fill: #5E6AD2;
     }
 
     .va-spin-email-form {
@@ -414,7 +414,7 @@
     }
 
     .va-spin-email-input:focus {
-      border-color: #4FBAF1;
+      border-color: #5E6AD2;
     }
 
     .va-spin-email-input::placeholder {
@@ -452,13 +452,13 @@
     }
 
     .va-spin-btn.secondary {
-      background: rgba(79, 186, 241, 0.1);
-      color: #4FBAF1;
-      border: 1px solid rgba(79, 186, 241, 0.3);
+      background: rgba(94, 106, 210, 0.1);
+      color: #5E6AD2;
+      border: 1px solid rgba(94, 106, 210, 0.3);
     }
 
     .va-spin-btn.secondary:hover {
-      background: rgba(79, 186, 241, 0.2);
+      background: rgba(94, 106, 210, 0.2);
     }
 
     /* Result state */
@@ -521,8 +521,8 @@
     }
 
     .va-spin-code-container {
-      background: rgba(79, 186, 241, 0.1);
-      border: 1px dashed #4FBAF1;
+      background: rgba(94, 106, 210, 0.1);
+      border: 1px dashed #5E6AD2;
       border-radius: 12px;
       padding: 16px;
       margin-bottom: 16px;
@@ -535,7 +535,7 @@
     }
 
     .va-spin-code {
-      color: #4FBAF1;
+      color: #5E6AD2;
       font-size: 28px;
       font-weight: 700;
       font-family: 'Courier New', monospace;
@@ -546,16 +546,16 @@
       margin-top: 12px;
       padding: 8px 16px;
       background: transparent;
-      border: 1px solid rgba(79, 186, 241, 0.5);
+      border: 1px solid rgba(94, 106, 210, 0.5);
       border-radius: 8px;
-      color: #4FBAF1;
+      color: #5E6AD2;
       font-size: 14px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .va-spin-copy-btn:hover {
-      background: rgba(79, 186, 241, 0.1);
+      background: rgba(94, 106, 210, 0.1);
     }
 
     .va-spin-copy-btn.copied {
@@ -984,7 +984,7 @@
     }
 
     showConfetti() {
-      const colors = ['#4FBAF1', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
+      const colors = ['#5E6AD2', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
       const confettiCount = 50;
 
       for (let i = 0; i < confettiCount; i++) {

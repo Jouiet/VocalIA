@@ -259,7 +259,7 @@ Endpoint non configuré. Utiliser le formulaire de contact par défaut.
 ## Personnalisation
 
 ### Couleurs
-- Primary: ${branding.primaryColor || '#4FBAF1'}
+- Primary: ${branding.primaryColor || '#5E6AD2'}
 - Primary Dark: ${branding.primaryDark || '#2B6685'}
 - Accent: ${branding.accentColor || '#10B981'}
 - Dark BG: ${branding.darkBg || '#191E35'}

@@ -63,29 +63,8 @@ function mockRes() {
   return res;
 }
 
-// ─── Module Exports ──────────────────────────────────────────────────────────
-
-describe('AB Analytics module exports', () => {
-  test('exports logEvent function', () => {
-    assert.strictEqual(typeof abAnalytics.logEvent, 'function');
-  });
-
-  test('exports getExperimentStats function', () => {
-    assert.strictEqual(typeof abAnalytics.getExperimentStats, 'function');
-  });
-
-  test('exports getAllExperiments function', () => {
-    assert.strictEqual(typeof abAnalytics.getAllExperiments, 'function');
-  });
-
-  test('exports createAnalyticsMiddleware function', () => {
-    assert.strictEqual(typeof abAnalytics.createAnalyticsMiddleware, 'function');
-  });
-
-  test('exports exactly 4 items', () => {
-    assert.strictEqual(Object.keys(abAnalytics).length, 4);
-  });
-});
+// NOTE: Exports are proven by behavioral tests below (logEvent, getExperimentStats,
+// getAllExperiments, createAnalyticsMiddleware).
 
 // ─── Event Logging ───────────────────────────────────────────────────────────
 

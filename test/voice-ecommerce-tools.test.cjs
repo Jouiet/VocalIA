@@ -19,34 +19,7 @@ const assert = require('node:assert');
 const ecomTools = require('../core/voice-ecommerce-tools.cjs');
 const { getVoiceFriendlyStatus } = ecomTools;
 
-// ─── Module exports ──────────────────────────────────────────────
-
-describe('VoiceEcommerceTools exports', () => {
-  test('exports checkOrderStatus function', () => {
-    assert.strictEqual(typeof ecomTools.checkOrderStatus, 'function');
-  });
-
-  test('exports checkStock function', () => {
-    assert.strictEqual(typeof ecomTools.checkStock, 'function');
-  });
-
-  test('exports recommendProducts function', () => {
-    assert.strictEqual(typeof ecomTools.recommendProducts, 'function');
-  });
-
-  test('exports getOrderHistory function', () => {
-    assert.strictEqual(typeof ecomTools.getOrderHistory, 'function');
-  });
-
-  test('exports getVoiceFriendlyStatus', () => {
-    assert.strictEqual(typeof ecomTools.getVoiceFriendlyStatus, 'function');
-  });
-
-  test('exports exactly 5 items', () => {
-    const keys = Object.keys(ecomTools);
-    assert.strictEqual(keys.length, 5);
-  });
-});
+// NOTE: Exports are proven by behavioral tests below (getVoiceFriendlyStatus, checkOrderStatus, etc.)
 
 // ─── getVoiceFriendlyStatus ─────────────────────────────────────
 

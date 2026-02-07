@@ -358,31 +358,5 @@ describe('PayzoneGlobalGateway request errors', () => {
   });
 });
 
-// ─── Exports ─────────────────────────────────────────────────────────
-
-describe('Payzone exports', () => {
-  test('PayzoneGateway is a class', () => {
-    assert.strictEqual(typeof PayzoneGateway, 'function');
-  });
-
-  test('PayzoneGlobalGateway is a class', () => {
-    assert.strictEqual(typeof PayzoneGlobalGateway, 'function');
-  });
-
-  test('PayzoneGateway instance has all methods', () => {
-    const gw = new PayzoneGateway({ merchantId: 'm', password: 'p', secretKey: 's' });
-    assert.strictEqual(typeof gw.generateSignature, 'function');
-    assert.strictEqual(typeof gw.processPayment, 'function');
-    assert.strictEqual(typeof gw.buildXml, 'function');
-    assert.strictEqual(typeof gw.parseResponse, 'function');
-  });
-
-  test('PayzoneGlobalGateway instance has all methods', () => {
-    const gw = new PayzoneGlobalGateway({ merchantId: 'm', secretKey: 's' });
-    const methods = ['request', 'processPayment', 'generateIdempotencyKey',
-      '_generateOrderId', 'verifyWebhookSignature', '_parseResponse', 'healthCheck'];
-    for (const m of methods) {
-      assert.strictEqual(typeof gw[m], 'function', `Missing method: ${m}`);
-    }
-  });
-});
+// NOTE: Payzone exports/methods are proven by behavioral tests above
+// (generateSignature, buildXml, processPayment, verifyWebhookSignature, etc.)

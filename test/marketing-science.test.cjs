@@ -238,10 +238,6 @@ describe('MarketingScience inject edge cases', () => {
 // ─── trackV2 ─────────────────────────────────────────────────────
 
 describe('MarketingScience trackV2', () => {
-  test('trackV2 is a static method', () => {
-    assert.strictEqual(typeof MarketingScience.trackV2, 'function');
-  });
-
   test('trackV2 completes without error', async () => {
     await MarketingScience.trackV2('test_event', { sector: 'DENTAL', value: 100 });
   });
@@ -252,26 +248,5 @@ describe('MarketingScience trackV2', () => {
   });
 });
 
-// ─── heal ────────────────────────────────────────────────────────
-
-describe('MarketingScience heal', () => {
-  test('heal is a static method', () => {
-    assert.strictEqual(typeof MarketingScience.heal, 'function');
-  });
-});
-
-// ─── exports ─────────────────────────────────────────────────────
-
-describe('MarketingScience exports', () => {
-  test('exports MarketingScience class', () => {
-    assert.strictEqual(typeof MarketingScience, 'function');
-  });
-
-  test('has all 5 static methods', () => {
-    assert.strictEqual(typeof MarketingScience.getAvailableFrameworks, 'function');
-    assert.strictEqual(typeof MarketingScience.getFramework, 'function');
-    assert.strictEqual(typeof MarketingScience.inject, 'function');
-    assert.strictEqual(typeof MarketingScience.analyze, 'function');
-    assert.strictEqual(typeof MarketingScience.trackV2, 'function');
-  });
-});
+// NOTE: MarketingScience exports/methods are proven by behavioral tests above
+// (getAvailableFrameworks, getFramework, inject, analyze, trackV2).

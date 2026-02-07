@@ -29,13 +29,24 @@
             ? 'http://localhost:3004/respond'
             : 'https://api.vocalia.ma/respond',
 
-        BOOKING_API: 'https://script.google.com/macros/s/AKfycbw9JP0YCJV47HL5zahXHweJgjEfNsyiFYFKZXGFUTS9c3SKrmRZdJEg0tcWnvA-P2Jl/exec',
+        CONFIG_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3004/config'
+            : 'https://api.vocalia.ma/config',
+        SOCIAL_PROOF_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3004/social-proof'
+            : 'https://api.vocalia.ma/social-proof',
 
         // Feature Flags - B2B Preset
         ECOMMERCE_MODE: false, // HARDCODED FALSE
         EXIT_INTENT_ENABLED: true,
         SOCIAL_PROOF_ENABLED: true,
         AI_MODE: true,
+
+        // Social Proof Timing
+        SOCIAL_PROOF_DELAY: 10000,
+        SOCIAL_PROOF_INTERVAL: 25000,
+        SOCIAL_PROOF_DURATION: 5000,
+        SOCIAL_PROOF_MAX_SHOWN: 4,
 
         // UI Configuration - VocalIA Official Branding (DESIGN-BRANDING-SYSTEM.md)
         primaryColor: '#5E6AD2',    // VocalIA Deep Indigo (Linear inspired) - PRIMARY BRAND
@@ -104,9 +115,15 @@
             triggered: false
         },
         socialProof: {
+            messages: [],
             notificationsShown: 0,
             intervalId: null,
             lastShownTime: 0
+        },
+        bookingConfig: {
+            url: null,
+            phone: null,
+            enabled: false
         },
         availableSlotsCache: { slots: [], timestamp: 0 }
     };
@@ -215,11 +232,11 @@
           transition: all 0.3s ease; position: relative;
           animation: vaTriggerPulse 2.5s ease-in-out infinite;
         }
-        @keyframes vaTriggerPulse {
-          0%, 100% { box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4); }
-          50% { box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4), 0 0 0 12px rgba(94, 106, 210, 0.15); }
-        }
         .va-trigger:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(94, 106, 210, 0.6); animation: none; }
+        @keyframes vaTriggerPulse {
+          0%, 100% { box-shadow: 0 4px 20px rgba(94, 106, 210, 0.4); transform: scale(1); }
+          50% { box-shadow: 0 4px 30px rgba(94, 106, 210, 0.7); transform: scale(1.02); }
+        }
         .va-trigger img { width: 36px; height: 36px; object-fit: contain; border-radius: 50%; }
 
         .va-panel {
@@ -289,7 +306,7 @@
         <img src="${CONFIG.LOGO_PATH}" alt="VocalIA" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22white%22><path d=%22M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z%22/><path d=%22M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z%22/></svg>'"/>
       </button>
 
-      <div class="va-panel" id="va-panel">
+      <div class="va-panel" id="va-panel" role="dialog" aria-label="${L.ui.headerTitle || 'VocalIA Assistant'}" aria-modal="true">
         <div class="va-header">
           <div class="va-header-logo">
             <img src="${CONFIG.LOGO_PATH}" alt="VocalIA" onerror="this.style.display='none'"/>
@@ -298,14 +315,14 @@
             <h3>${L.ui.headerTitle || 'VocalIA Assistant'}</h3>
             <p>${L.ui.headerSubtitleVoice || 'Expert IA'}</p>
           </div>
-          <button class="va-close" id="va-close" aria-label="Fermer">✕</button>
+          <button class="va-close" id="va-close" aria-label="${L.ui.ariaClose || 'Fermer'}">✕</button>
         </div>
 
-        <div class="va-visualizer" id="va-visualizer">
+        <div class="va-visualizer" id="va-visualizer" aria-hidden="true">
           ${Array.from({ length: 8 }, () => '<div class="va-visualizer-bar"></div>').join('')}
         </div>
 
-        <div class="va-messages" id="va-messages"></div>
+        <div class="va-messages" id="va-messages" aria-live="polite" aria-relevant="additions"></div>
 
         <div class="va-input-area">
           <input type="text" class="va-input" id="va-input" placeholder="${L.ui.placeholder || 'Posez votre question...'}" autocomplete="off">
@@ -328,7 +345,10 @@
 
         const bubble = document.createElement('div');
         bubble.className = 'va-notif-bubble';
-        bubble.innerHTML = `<div class="va-notif-bubble-content">👋 ${L.ui.notifTitle || 'Besoin d\'aide ?'}</div>`;
+        const bubbleContent = document.createElement('div');
+        bubbleContent.className = 'va-notif-bubble-content';
+        bubbleContent.textContent = '👋 ' + (L.ui.notifTitle || 'Besoin d\'aide ?');
+        bubble.appendChild(bubbleContent);
         trigger.parentNode.appendChild(bubble);
         setTimeout(() => bubble.remove(), 6000);
     }
@@ -367,6 +387,32 @@
             initSpeechRecognition();
             micBtn.addEventListener('click', toggleListening);
         }
+
+        // Keyboard: Escape to close, Tab focus trap
+        document.addEventListener('keydown', (e) => {
+            if (!state.isOpen) return;
+            if (e.key === 'Escape') {
+                togglePanel();
+                const trigger = document.getElementById('va-trigger');
+                if (trigger) trigger.focus();
+                return;
+            }
+            if (e.key === 'Tab') {
+                const panel = document.getElementById('va-panel');
+                if (!panel) return;
+                const focusable = panel.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
 
         trackEvent('widget_initialized', { language: state.currentLang });
     }
@@ -528,6 +574,10 @@
             const data = await response.json();
             if (data.response) {
                 addMessage(data.response, 'assistant');
+                // Check if user had booking intent and show CTA
+                if (state.bookingConfig.enabled && isBookingIntent(text)) {
+                    showBookingCTA();
+                }
             } else {
                 addMessage(state.langData?.ui?.errorMessage || 'Désolé, une erreur s\'est produite.', 'assistant');
             }
@@ -623,6 +673,190 @@
     }
 
     // ============================================================
+    // SOCIAL PROOF (Real data from backend)
+    // ============================================================
+
+    async function initSocialProof() {
+        if (!CONFIG.SOCIAL_PROOF_ENABLED) return;
+
+        try {
+            const url = `${CONFIG.SOCIAL_PROOF_API_URL}?lang=${state.currentLang}`;
+            const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            const data = await response.json();
+
+            if (data.success && Array.isArray(data.messages) && data.messages.length > 0) {
+                state.socialProof.messages = data.messages;
+            } else {
+                // No real data available - don't show fake notifications
+                return;
+            }
+        } catch (e) {
+            console.warn('[VocalIA B2B] Social proof fetch failed, skipping:', e.message);
+            return;
+        }
+
+        // Start notification cycle only if we have real messages
+        setTimeout(() => {
+            showSocialProofNotification();
+            state.socialProof.intervalId = setInterval(() => {
+                if (state.socialProof.notificationsShown < CONFIG.SOCIAL_PROOF_MAX_SHOWN) {
+                    showSocialProofNotification();
+                } else {
+                    clearInterval(state.socialProof.intervalId);
+                }
+            }, CONFIG.SOCIAL_PROOF_INTERVAL);
+        }, CONFIG.SOCIAL_PROOF_DELAY);
+
+        console.log('[VocalIA B2B] Social proof initialized with', state.socialProof.messages.length, 'messages');
+    }
+
+    function showSocialProofNotification() {
+        if (state.isOpen) return;
+        if (state.socialProof.messages.length === 0) return;
+
+        const isRTL = state.currentLang === 'ar' || state.currentLang === 'ary';
+        const proof = state.socialProof.messages[state.socialProof.notificationsShown % state.socialProof.messages.length];
+
+        const notification = document.createElement('div');
+        notification.className = 'va-b2b-social-proof';
+        const notifId = `va-b2b-sp-${Date.now()}`;
+        notification.id = notifId;
+
+        // Build styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .va-b2b-social-proof {
+                position: fixed; bottom: 100px; ${isRTL ? 'left' : 'right'}: 25px;
+                max-width: 280px; background: linear-gradient(145deg, #1e2642, #191e35);
+                border: 1px solid rgba(94, 106, 210, 0.25); border-radius: 12px;
+                padding: 12px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                z-index: 99997; font-family: Inter, -apple-system, sans-serif;
+                animation: vaB2bSlideIn 0.4s ease, vaB2bFadeOut 0.3s ease ${CONFIG.SOCIAL_PROOF_DURATION - 300}ms forwards;
+                ${isRTL ? 'direction: rtl;' : ''}
+            }
+            @keyframes vaB2bSlideIn {
+                from { opacity: 0; transform: translateX(${isRTL ? '-' : ''}30px); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+            @keyframes vaB2bFadeOut { from { opacity: 1; } to { opacity: 0; } }
+        `;
+        notification.appendChild(style);
+
+        // Build content safely with textContent (no innerHTML for dynamic data)
+        const content = document.createElement('div');
+        content.style.cssText = 'display:flex;align-items:center;gap:10px;';
+
+        const iconDiv = document.createElement('div');
+        iconDiv.style.cssText = 'width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#5E6AD2,#818cf8);display:flex;align-items:center;justify-content:center;flex-shrink:0;';
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('width', '18');
+        svg.setAttribute('height', '18');
+        svg.setAttribute('fill', 'white');
+        const defaultIcon = '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>';
+        const iconContent = proof.icon && /^<(?:path|circle|rect|line|polyline|polygon|ellipse|g)\s/.test(proof.icon.trim()) ? proof.icon : defaultIcon;
+        svg.innerHTML = iconContent;
+        iconDiv.appendChild(svg);
+
+        const textWrap = document.createElement('div');
+        const textEl = document.createElement('div');
+        textEl.style.cssText = 'font-size:13px;color:rgba(255,255,255,0.9);line-height:1.4;';
+        textEl.textContent = proof.text;
+        const timeEl = document.createElement('div');
+        timeEl.style.cssText = 'font-size:11px;color:rgba(94,106,210,0.7);margin-top:4px;';
+        timeEl.textContent = proof.time || '';
+        textWrap.appendChild(textEl);
+        textWrap.appendChild(timeEl);
+
+        content.appendChild(iconDiv);
+        content.appendChild(textWrap);
+
+        // Close button
+        const closeBtn = document.createElement('button');
+        closeBtn.style.cssText = 'position:absolute;top:6px;' + (isRTL ? 'left' : 'right') + ':6px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.4);padding:2px;';
+        closeBtn.setAttribute('aria-label', 'Close');
+        closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
+        closeBtn.addEventListener('click', () => notification.remove());
+
+        notification.appendChild(closeBtn);
+        notification.appendChild(content);
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            const el = document.getElementById(notifId);
+            if (el) el.remove();
+        }, CONFIG.SOCIAL_PROOF_DURATION);
+
+        state.socialProof.notificationsShown++;
+        state.socialProof.lastShownTime = Date.now();
+        trackEvent('social_proof_shown', { index: state.socialProof.notificationsShown });
+    }
+
+    // ============================================================
+    // BOOKING REDIRECT (Real booking URL from backend config)
+    // ============================================================
+
+    function isBookingIntent(text) {
+        const lower = text.toLowerCase();
+        const keywords = {
+            fr: ['rendez-vous', 'rdv', 'réserver', 'booking', 'prendre rdv', 'disponibilité', 'créneau', 'réservation'],
+            en: ['appointment', 'book', 'booking', 'schedule', 'reserve', 'availability', 'slot'],
+            es: ['cita', 'reservar', 'reserva', 'programar', 'disponibilidad', 'horario'],
+            ar: ['موعد', 'حجز', 'احجز', 'متاح', 'وقت'],
+            ary: ['موعد', 'حجز', 'نحجز', 'وقت', 'كريني', 'ردفو']
+        };
+        const langKeywords = keywords[state.currentLang] || keywords.fr;
+        return langKeywords.some(kw => lower.includes(kw));
+    }
+
+    function showBookingCTA() {
+        if (!state.bookingConfig.enabled) return;
+
+        const container = document.getElementById('va-messages');
+        if (!container) return;
+
+        const ctaDiv = document.createElement('div');
+        ctaDiv.className = 'va-message assistant';
+        const content = document.createElement('div');
+        content.className = 'va-message-content';
+        content.style.cssText = 'padding:12px 16px;';
+
+        const labels = {
+            fr: { online: 'Réserver en ligne', call: 'Appeler pour réserver' },
+            en: { online: 'Book online', call: 'Call to book' },
+            es: { online: 'Reservar en línea', call: 'Llamar para reservar' },
+            ar: { online: 'احجز عبر الإنترنت', call: 'اتصل للحجز' },
+            ary: { online: 'احجز أونلاين', call: 'عيط باش تحجز' }
+        };
+        const l = labels[state.currentLang] || labels.fr;
+
+        const btnStyle = 'display:inline-block;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;margin:4px 4px 4px 0;transition:opacity 0.2s;';
+
+        if (state.bookingConfig.url) {
+            const bookLink = document.createElement('a');
+            bookLink.href = state.bookingConfig.url;
+            bookLink.target = '_blank';
+            bookLink.rel = 'noopener noreferrer';
+            bookLink.style.cssText = btnStyle + 'background:#5E6AD2;color:white;';
+            bookLink.textContent = l.online;
+            content.appendChild(bookLink);
+        }
+
+        if (state.bookingConfig.phone) {
+            const phoneLink = document.createElement('a');
+            phoneLink.href = `tel:${state.bookingConfig.phone}`;
+            phoneLink.style.cssText = btnStyle + 'background:rgba(94,106,210,0.15);color:#818cf8;border:1px solid rgba(94,106,210,0.3);';
+            phoneLink.textContent = l.call;
+            content.appendChild(phoneLink);
+        }
+
+        ctaDiv.appendChild(content);
+        container.appendChild(ctaDiv);
+        container.scrollTop = container.scrollHeight;
+        trackEvent('booking_cta_shown');
+    }
+
+    // ============================================================
     // INITIALIZATION
     // ============================================================
 
@@ -647,6 +881,33 @@
             captureAttribution();
             createWidget();
             initExitIntent();
+
+            // Fetch tenant config for feature flags + booking data
+            if (state.tenantId) {
+                try {
+                    const configResp = await fetch(`${CONFIG.CONFIG_API_URL}?tenantId=${encodeURIComponent(state.tenantId)}`, { signal: AbortSignal.timeout(5000) });
+                    const configData = await configResp.json();
+                    if (configData.success) {
+                        // Apply server feature flags
+                        if (configData.features) {
+                            CONFIG.SOCIAL_PROOF_ENABLED = configData.features.social_proof_enabled !== false;
+                            CONFIG.EXIT_INTENT_ENABLED = configData.features.exit_intent_enabled !== false;
+                        }
+                        // Store booking config
+                        if (configData.booking) {
+                            state.bookingConfig.url = configData.booking.url || null;
+                            state.bookingConfig.phone = configData.booking.phone || null;
+                            state.bookingConfig.enabled = configData.features?.booking_enabled && !!(configData.booking.url || configData.booking.phone);
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[VocalIA B2B] Config fetch failed, using defaults:', e.message);
+                }
+            }
+
+            initSocialProof();
+
+            console.log(`[VocalIA B2B] Widget v2.2.0 initialized | Lang: ${state.currentLang} | Booking: ${state.bookingConfig.enabled}`);
         } catch (error) {
             console.error('[VocalIA B2B] Init error:', error);
         }

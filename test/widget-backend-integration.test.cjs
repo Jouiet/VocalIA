@@ -595,9 +595,8 @@ describe('CatalogConnector backend integration chain', () => {
     );
   });
 
-  test('CatalogConnectorFactory.create() exists and returns connector', () => {
+  test('CatalogConnectorFactory.create() returns connector', () => {
     const { CatalogConnectorFactory } = require('../core/catalog-connector.cjs');
-    assert.strictEqual(typeof CatalogConnectorFactory.create, 'function');
 
     // Create a custom connector (doesn't need external API)
     const connector = CatalogConnectorFactory.create('test_integration', {
@@ -606,26 +605,6 @@ describe('CatalogConnector backend integration chain', () => {
     });
     assert.ok(connector, 'Factory must return a connector instance');
     assert.strictEqual(connector.tenantId, 'test_integration');
-  });
-
-  test('TenantCatalogStore.getItems() method exists', () => {
-    const { TenantCatalogStore } = require('../core/tenant-catalog-store.cjs');
-    assert.strictEqual(typeof TenantCatalogStore.prototype.getItems, 'function');
-  });
-
-  test('TenantCatalogStore.getItem() method exists', () => {
-    const { TenantCatalogStore } = require('../core/tenant-catalog-store.cjs');
-    assert.strictEqual(typeof TenantCatalogStore.prototype.getItem, 'function');
-  });
-
-  test('TenantCatalogStore.registerTenant() method exists', () => {
-    const { TenantCatalogStore } = require('../core/tenant-catalog-store.cjs');
-    assert.strictEqual(typeof TenantCatalogStore.prototype.registerTenant, 'function');
-  });
-
-  test('TenantCatalogStore.syncCatalog() method exists', () => {
-    const { TenantCatalogStore } = require('../core/tenant-catalog-store.cjs');
-    assert.strictEqual(typeof TenantCatalogStore.prototype.syncCatalog, 'function');
   });
 
   test('Full chain: db-api getCatalogStore → TenantCatalogStore → CatalogConnectorFactory', () => {

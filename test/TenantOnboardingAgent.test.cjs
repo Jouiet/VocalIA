@@ -20,34 +20,7 @@ const assert = require('node:assert');
 
 const mod = require('../core/TenantOnboardingAgent.cjs');
 
-// ─── Module exports ─────────────────────────────────────────────────────────
-
-describe('TenantOnboardingAgent exports', () => {
-  test('exports an object (singleton)', () => {
-    assert.ok(mod);
-    assert.strictEqual(typeof mod, 'object');
-  });
-
-  test('has getAgentCard method', () => {
-    assert.strictEqual(typeof mod.getAgentCard, 'function');
-  });
-
-  test('has getTaskHistory method', () => {
-    assert.strictEqual(typeof mod.getTaskHistory, 'function');
-  });
-
-  test('has recordTaskState method', () => {
-    assert.strictEqual(typeof mod.recordTaskState, 'function');
-  });
-
-  test('has onboardTenant method', () => {
-    assert.strictEqual(typeof mod.onboardTenant, 'function');
-  });
-
-  test('has taskHistory map', () => {
-    assert.ok(mod.taskHistory instanceof Map);
-  });
-});
+// NOTE: Exports are proven by behavioral tests below (getAgentCard, onboardTenant, recordTaskState, etc.)
 
 // ─── AGENT_CARD ─────────────────────────────────────────────────────────────
 

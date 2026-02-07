@@ -656,29 +656,5 @@ describe('GoogleSheetsDB schema column counts', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────
-
-describe('GoogleSheetsDB exports', () => {
-  test('exports GoogleSheetsDB class', () => {
-    assert.strictEqual(typeof GoogleSheetsDB, 'function');
-  });
-
-  test('exports getDB function', () => {
-    assert.strictEqual(typeof getDB, 'function');
-  });
-
-  test('exports SCHEMAS object', () => {
-    assert.ok(SCHEMAS);
-    assert.strictEqual(typeof SCHEMAS, 'object');
-  });
-
-  test('instance has all pure methods', () => {
-    const db = new GoogleSheetsDB();
-    const methods = ['generateId', 'timestamp', 'cacheKey', 'getCache', 'setCache',
-      'invalidateCache', 'validate', 'applyDefaults', 'rowToObject', 'objectToRow',
-      'getUrl', 'acquireLock', 'checkQuota', 'incrementUsage', 'getQuotaStatus', 'resetUsage'];
-    for (const m of methods) {
-      assert.strictEqual(typeof db[m], 'function', `Missing method: ${m}`);
-    }
-  });
-});
+// NOTE: Exports are proven by behavioral tests above (GoogleSheetsDB, getDB, SCHEMAS,
+// generateId, timestamp, cacheKey, validate, applyDefaults, acquireLock, checkQuota, etc.)

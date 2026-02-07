@@ -21,7 +21,6 @@ const guardian = require('../core/compliance-guardian.cjs');
 describe('ComplianceGuardian', () => {
   test('module exports a singleton instance', () => {
     assert.ok(guardian, 'Should export an instance');
-    assert.strictEqual(typeof guardian.validate, 'function');
   });
 
   test('has rules array with 5 rules', () => {

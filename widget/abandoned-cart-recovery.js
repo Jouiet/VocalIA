@@ -189,14 +189,14 @@
     }
 
     .va-abandoned-cart-modal {
-      background: linear-gradient(135deg, #191E35 0%, #0F1225 100%);
-      border: 1px solid rgba(79, 186, 241, 0.3);
+      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      border: 1px solid rgba(94, 106, 210, 0.3);
       border-radius: 24px;
       max-width: 480px;
       width: 95%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(79, 186, 241, 0.2);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(94, 106, 210, 0.2);
       animation: vaCartSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -218,14 +218,14 @@
     .va-cart-header {
       padding: 24px 24px 16px;
       text-align: center;
-      border-bottom: 1px solid rgba(79, 186, 241, 0.15);
+      border-bottom: 1px solid rgba(94, 106, 210, 0.15);
     }
 
     .va-cart-icon {
       width: 64px;
       height: 64px;
       margin: 0 auto 16px;
-      background: linear-gradient(135deg, #4FBAF1 0%, #10B981 100%);
+      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -234,8 +234,8 @@
     }
 
     @keyframes vaPulseCart {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(79, 186, 241, 0.4); }
-      50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(79, 186, 241, 0); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(94, 106, 210, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(94, 106, 210, 0); }
     }
 
     .va-cart-icon svg {
@@ -258,7 +258,7 @@
     }
 
     .va-cart-value {
-      background: rgba(79, 186, 241, 0.1);
+      background: rgba(94, 106, 210, 0.1);
       border-radius: 12px;
       padding: 12px 16px;
       margin: 16px 24px;
@@ -273,13 +273,13 @@
     }
 
     .va-cart-value-amount {
-      color: #4FBAF1;
+      color: #5E6AD2;
       font-size: 20px;
       font-weight: 700;
     }
 
     .va-cart-offer {
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(79, 186, 241, 0.15) 100%);
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(94, 106, 210, 0.15) 100%);
       border: 1px solid rgba(16, 185, 129, 0.3);
       border-radius: 12px;
       padding: 12px 16px;
@@ -330,7 +330,7 @@
       height: 48px;
       border-radius: 8px;
       object-fit: cover;
-      border: 1px solid rgba(79, 186, 241, 0.2);
+      border: 1px solid rgba(94, 106, 210, 0.2);
       flex-shrink: 0;
     }
 
@@ -352,13 +352,13 @@
     }
 
     .va-recovery-option:hover {
-      background: rgba(79, 186, 241, 0.1);
-      border-color: rgba(79, 186, 241, 0.3);
+      background: rgba(94, 106, 210, 0.1);
+      border-color: rgba(94, 106, 210, 0.3);
     }
 
     .va-recovery-option.selected {
-      background: rgba(79, 186, 241, 0.15);
-      border-color: #4FBAF1;
+      background: rgba(94, 106, 210, 0.15);
+      border-color: #5E6AD2;
     }
 
     .va-recovery-option-icon {
@@ -372,7 +372,7 @@
     }
 
     .va-recovery-option-icon.voice {
-      background: linear-gradient(135deg, #4FBAF1 0%, #2B6685 100%);
+      background: linear-gradient(135deg, #5E6AD2 0%, #4f46e5 100%);
     }
 
     .va-recovery-option-icon.sms {
@@ -414,7 +414,7 @@
     }
 
     .va-recovery-option.selected .va-recovery-option-radio {
-      border-color: #4FBAF1;
+      border-color: #5E6AD2;
     }
 
     .va-recovery-option.selected .va-recovery-option-radio::after {
@@ -425,7 +425,7 @@
       transform: translate(-50%, -50%);
       width: 10px;
       height: 10px;
-      background: #4FBAF1;
+      background: #5E6AD2;
       border-radius: 50%;
     }
 
@@ -447,7 +447,7 @@
     }
 
     .va-cart-input:focus {
-      border-color: #4FBAF1;
+      border-color: #5E6AD2;
     }
 
     .va-cart-input::placeholder {
@@ -480,23 +480,23 @@
     }
 
     .va-cart-btn.primary {
-      background: linear-gradient(135deg, #4FBAF1 0%, #10B981 100%);
+      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
       color: white;
     }
 
     .va-cart-btn.primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(79, 186, 241, 0.4);
+      box-shadow: 0 8px 25px rgba(94, 106, 210, 0.4);
     }
 
     .va-cart-btn.secondary {
-      background: rgba(79, 186, 241, 0.1);
-      color: #4FBAF1;
-      border: 1px solid rgba(79, 186, 241, 0.3);
+      background: rgba(94, 106, 210, 0.1);
+      color: #5E6AD2;
+      border: 1px solid rgba(94, 106, 210, 0.3);
     }
 
     .va-cart-btn.secondary:hover {
-      background: rgba(79, 186, 241, 0.2);
+      background: rgba(94, 106, 210, 0.2);
     }
 
     .va-cart-btn.text {

@@ -23,37 +23,8 @@ const assert = require('node:assert');
 
 const a2uiService = require('../core/a2ui-service.cjs');
 
-// ─── COMPONENT_TEMPLATES ────────────────────────────────────────────
-
-describe('A2UI COMPONENT_TEMPLATES', () => {
-  test('service is an object', () => {
-    assert.strictEqual(typeof a2uiService, 'object');
-  });
-
-  test('has generateUI method', () => {
-    assert.strictEqual(typeof a2uiService.generateUI, 'function');
-  });
-
-  test('has generateFromTemplate method', () => {
-    assert.strictEqual(typeof a2uiService.generateFromTemplate, 'function');
-  });
-
-  test('has localizeContext method', () => {
-    assert.strictEqual(typeof a2uiService.localizeContext, 'function');
-  });
-
-  test('has extractActions method', () => {
-    assert.strictEqual(typeof a2uiService.extractActions, 'function');
-  });
-
-  test('has sanitizeHTML method', () => {
-    assert.strictEqual(typeof a2uiService.sanitizeHTML, 'function');
-  });
-
-  test('has health method', () => {
-    assert.strictEqual(typeof a2uiService.health, 'function');
-  });
-});
+// NOTE: A2UI methods are proven by behavioral tests below
+// (generateFromTemplate, localizeContext, extractActions, sanitizeHTML, health).
 
 // ─── generateFromTemplate ───────────────────────────────────────────
 
@@ -338,13 +309,6 @@ describe('A2UI constructor', () => {
     assert.strictEqual(a2uiService.projectId, null);
   });
 
-  test('has initialize method', () => {
-    assert.strictEqual(typeof a2uiService.initialize, 'function');
-  });
-
-  test('has buildStitchPrompt method', () => {
-    assert.strictEqual(typeof a2uiService.buildStitchPrompt, 'function');
-  });
 });
 
 // ─── health ─────────────────────────────────────────────────────────

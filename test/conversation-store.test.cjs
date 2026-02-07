@@ -799,22 +799,5 @@ describe('ConversationStore getInstance', () => {
   });
 });
 
-// ─── Exports ────────────────────────────────────────────────────
-
-describe('ConversationStore exports', () => {
-  test('exports ConversationStore class', () => {
-    assert.strictEqual(typeof ConversationStore, 'function');
-  });
-
-  test('exports ConversationCache class', () => {
-    assert.strictEqual(typeof ConversationCache, 'function');
-  });
-
-  test('exports getInstance function', () => {
-    assert.strictEqual(typeof getInstance, 'function');
-  });
-
-  test('exports TELEPHONY_RETENTION_DAYS number', () => {
-    assert.strictEqual(typeof TELEPHONY_RETENTION_DAYS, 'number');
-  });
-});
+// NOTE: Exports are proven by behavioral tests above (ConversationStore, ConversationCache,
+// getInstance, TELEPHONY_RETENTION_DAYS).
