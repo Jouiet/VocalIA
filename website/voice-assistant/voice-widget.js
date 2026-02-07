@@ -185,8 +185,13 @@
           border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
           box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
           transition: all 0.3s ease; position: relative;
+          animation: vaTriggerPulse 2.5s ease-in-out infinite;
         }
-        .va-trigger:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(37, 99, 235, 0.6); }
+        @keyframes vaTriggerPulse {
+          0%, 100% { box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4); }
+          50% { box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4), 0 0 0 12px rgba(37, 99, 235, 0.15); }
+        }
+        .va-trigger:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(37, 99, 235, 0.6); animation: none; }
         .va-trigger img { width: 32px; height: 32px; object-fit: contain; }
         
         .va-panel {

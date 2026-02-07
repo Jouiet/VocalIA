@@ -151,6 +151,12 @@
     --vocalia-glow: rgba(94, 106, 210, 0.4);
     --glass-bg: rgba(10, 10, 10, 0.75);
     --glass-border: rgba(255, 255, 255, 0.08);
+
+    /* Navigation & Layout (Session 250.122 — centralized, no rogue colors) */
+    --nav-bg: rgba(9, 9, 11, 0.95);
+    --dropdown-bg: #0c0c0f;
+    --footer-bg: #09090b;
+    --section-border: rgba(255, 255, 255, 0.04);
   }
 
   html {

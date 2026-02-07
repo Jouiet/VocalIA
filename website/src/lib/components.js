@@ -58,8 +58,27 @@
       const html = await loadComponent(componentName);
 
       if (html) {
-        // Replace placeholder with component
-        el.outerHTML = html;
+        // Create a temporary container to parse the HTML
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+
+        // Extract script tags before DOM insertion (innerHTML won't execute them)
+        const scripts = Array.from(temp.querySelectorAll('script'));
+        scripts.forEach(s => s.remove());
+
+        // Replace placeholder with component HTML (without scripts)
+        el.outerHTML = temp.innerHTML;
+
+        // Execute scripts by creating fresh script elements
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
       }
     });
 

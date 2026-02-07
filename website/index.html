@@ -315,7 +315,7 @@
         <div id="demoModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog"
           aria-modal="true">
           <!-- Backdrop -->
-          <div class="fixed inset-0 bg-[#0c0e1a]/[0.92] backdrop-blur-xl transition-opacity opacity-0" id="modalBackdrop">
+          <div class="fixed inset-0 bg-[#0c0c0f] backdrop-blur-xl transition-opacity opacity-0" id="modalBackdrop">
           </div>
 
           <div class="fixed inset-0 z-10 overflow-y-auto">
@@ -363,7 +363,7 @@
             </div>
             <div class="glass rounded-2xl p-6 text-center hover:-translate-y-2 transition-all duration-500 group">
               <div class="text-4xl font-bold font-mono text-white mb-1">
-                <span data-counter="40">40</span>
+                <span data-counter="38">38</span>
               </div>
               <div class="text-xs uppercase tracking-widest text-zinc-500 font-mono" data-i18n="stats.personas">Market
                 Personas</div>
@@ -981,7 +981,7 @@
   </section>
 
   <!-- CTA Section - Modern 2026 (Linear/Vercel inspired) -->
-  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-[#050505] to-[#0a0a0a]">
+  <section class="py-24 relative overflow-hidden bg-gradient-to-b from-[#050505] to-[#050505]">
     <!-- Soft radial glow - gradient as lighting -->
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_40%,_rgba(99,91,255,0.15),transparent)]">
     </div>
@@ -1025,7 +1025,7 @@
     </div>
   </section>
   <!-- Newsletter CTA -->
-  <section class="py-12 bg-white/[0.02]" id="newsletter">
+  <section class="py-12" id="newsletter">
     <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="glass rounded-2xl p-6 md:p-8 border border-white/[0.08]">
         <div class="text-center mb-6">
@@ -1066,7 +1066,7 @@
   <script src="/src/lib/card-tilt.js" defer></script>
 
   <!-- VocalIA Voice Widget - Try our product! -->
-  <script src="/voice-assistant/voice-widget-b2b.js?v=2.2.0" defer></script>
+  <script src="/voice-assistant/voice-widget-b2b.js?v=2.3.0" defer></script>
 
   <!-- Lucide Icons 2026 -->
   <script src="https://unpkg.com/lucide@0.469.0"
@@ -1185,18 +1185,18 @@
             var canvas = entry.target;
             var config = configs.find(function (c) { return document.querySelector(c.id) === canvas; });
 
-            if (entry.isIntersecting && config && !loadedVisualizers[config.id]) {
-              var viz = new VoiceVisualizer(config.id, {
-                mode: config.mode,
-                primaryColor: '#5E6AD2',
-                secondaryColor: '#a5b4fc',
-                accentColor: '#5E6AD2',
-                glowColor: 'rgba(94, 106, 210, 0.4)',
-                barCount: config.barCount || 32,
-                animate: true
-              });
-              loadedVisualizers[config.id] = viz;
-              viz.start();
+            if (entry.isIntersecting && config) {
+              if (!loadedVisualizers[config.id]) {
+                var viz = new VoiceVisualizer(config.id, {
+                  mode: config.mode,
+                  barCount: config.barCount || 32,
+                  animate: true
+                });
+                loadedVisualizers[config.id] = viz;
+                viz.start();
+              } else {
+                loadedVisualizers[config.id].start();
+              }
             } else if (!entry.isIntersecting && config && loadedVisualizers[config.id]) {
               loadedVisualizers[config.id].stop();
             }
