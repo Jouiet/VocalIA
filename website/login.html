@@ -112,6 +112,9 @@
 </head>
 
 <body class="bg-[#050505] text-zinc-100 min-h-screen flex flex-col">
+  <!-- Header -->
+  <div data-component="header"></div>
+
 <!-- Background Pattern -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none">
     <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
@@ -119,7 +122,7 @@
   </div>
 
   <!-- Main Content -->
-  <main id="main-content" class="flex-1 flex items-center justify-center px-4 py-12 relative">
+  <main id="main-content" class="flex-1 flex items-center justify-center px-4 pt-24 pb-12 relative">
     <div class="w-full max-w-md">
       <!-- Logo -->
       <a href="/" class="flex items-center justify-center space-x-3 mb-8">
@@ -342,6 +345,7 @@
     window.addEventListener('load', initI18n);
   })();
   </script>
+  <script src="/src/lib/event-delegation.js?v=250" defer></script>
   <script src="/src/lib/components.js" defer></script>
 </body>
 </html>

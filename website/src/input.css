@@ -339,6 +339,16 @@
   }
 
   /* =======================================================================
+     Glass - Glassmorphism base (dark mode default)
+     ======================================================================= */
+  .glass {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* =======================================================================
      Glass Panel - Premium glassmorphism
      ======================================================================= */
   .glass-panel {
@@ -1326,12 +1336,6 @@
 /* =======================================================================
    Light Mode Component Overrides
    ======================================================================= */
-html.light .glass,
-[data-theme="light"] .glass {
-  background: rgba(255, 255, 255, 0.8);
-  border-color: rgba(0, 0, 0, 0.08);
-}
-
 html.light .glass-panel,
 [data-theme="light"] .glass-panel {
   background: rgba(255, 255, 255, 0.9);
