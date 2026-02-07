@@ -56,6 +56,11 @@
         EXIT_INTENT_MOBILE_SCROLL_RATIO: 0.3,
         EXIT_INTENT_PAGES: null,
 
+        // Social Proof API (fetch real data from backend)
+        SOCIAL_PROOF_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3004/social-proof'
+            : 'https://api.vocalia.ma/social-proof',
+
         // Social Proof/FOMO Notifications (Session 250.78)
         SOCIAL_PROOF_ENABLED: true,
         SOCIAL_PROOF_INTERVAL: 25000,
@@ -2339,8 +2344,20 @@
      * Initialize social proof notifications
      * Shows recent activity to create urgency/trust
      */
-    function initSocialProof() {
+    async function initSocialProof() {
         if (!CONFIG.SOCIAL_PROOF_ENABLED) return;
+
+        // Fetch real social proof data from backend (like B2B widget)
+        try {
+            const url = `${CONFIG.SOCIAL_PROOF_API_URL}?lang=${state.currentLang}`;
+            const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            const data = await response.json();
+            if (data.success && Array.isArray(data.messages) && data.messages.length > 0) {
+                state.socialProof.messages = data.messages;
+            }
+        } catch (e) {
+            console.warn('[VocalIA ECOM] Social proof fetch failed, using fallback:', e.message);
+        }
 
         // Initial delay before starting notifications
         setTimeout(() => {
@@ -2364,7 +2381,9 @@
 
         const L = state.langData || {};
         const isRTL = L?.meta?.rtl || false;
-        const proofs = L?.socialProof?.messages || getDefaultSocialProofMessages();
+        const proofs = state.socialProof.messages.length > 0
+            ? state.socialProof.messages
+            : (L?.socialProof?.messages || getDefaultSocialProofMessages());
 
         // Pick a random proof message
         const proof = proofs[Math.floor(Math.random() * proofs.length)];
@@ -2736,6 +2755,7 @@
                     message: userMessage,
                     language: state.currentLang,
                     sessionId: state.sessionId || `widget_${Date.now()}`,
+                    tenant_id: state.tenantId,
                     widget_type: 'ECOM', // Enforce E-commerce Persona
                     history: state.conversationHistory.slice(-10).map(m => ({
                         role: m.role,

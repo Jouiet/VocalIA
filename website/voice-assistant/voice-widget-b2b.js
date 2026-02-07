@@ -562,7 +562,7 @@
                     message: text,
                     language: state.currentLang,
                     sessionId: state.sessionId,
-                    tenantId: state.tenantId,
+                    tenant_id: state.tenantId,
                     widget_type: 'B2B',
                     history: state.conversationHistory.slice(-6)
                 })

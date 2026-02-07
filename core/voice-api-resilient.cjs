@@ -2444,7 +2444,7 @@ function startServer(port = 3004) {
           console.log(`[Voice API] Processing (${language}): "${message.substring(0, 50)}..."`);
 
           // Session 250.57: Check quota before processing
-          const tenantId = bodyParsed.data.tenant_id || 'default';
+          const tenantId = bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default';
           const db = getDB();
           const quotaCheck = db.checkQuota(tenantId, 'sessions');
           if (!quotaCheck.allowed) {
@@ -2493,7 +2493,7 @@ function startServer(port = 3004) {
           // Session 250.57: Persist conversation (multi-tenant)
           // ⛔ RULE: This is for CLIENT CONSULTATION ONLY - NEVER for KB/RAG
           try {
-            const tenantId = bodyParsed.data.tenant_id || 'default';
+            const tenantId = bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default';
             conversationStore.addMessage(tenantId, leadSessionId, 'user', message, {
               language, source: 'widget', persona: persona?.id
             });

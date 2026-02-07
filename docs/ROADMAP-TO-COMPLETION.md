@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-07 | **Session:** 250.128 (Widget fixes)
-> **Score actuel:** 8.6/10 (P0-WIDGET W2-W5 + P1-W6 DONE — XSS fixed, CONFIG fixed, branding unified, dead files deleted, WCAG accessibility added)
+> **Date:** 2026-02-07 | **Session:** 250.129 (External audit fixes)
+> **Score actuel:** 7.2/10 (External audit: tenant system non-functional → 3 root causes fixed)
 > **Méthodologie:** Chaque tâche est liée à un FAIT vérifié par commande. Zéro supposition.
-> **Source:** Audit croisé de 13 documents + **forensic audit of ALL 73 test files** (250.114) + **test deep surgery** (250.115) + **design token forensic** (250.122) + **branding unification** (250.123) + **stale number eradication** (250.124) + **validator v2.2** (250.125) + **DEEP widget forensic audit** (250.127).
+> **Source:** Audit croisé de 13 documents + **external audit** (250.129) + **forensic audit of ALL 73 test files** (250.114) + **test deep surgery** (250.115) + **design token forensic** (250.122) + **branding unification** (250.123) + **stale number eradication** (250.124) + **validator v2.2** (250.125) + **DEEP widget forensic audit** (250.127).
 
 ---
 
@@ -22,38 +22,41 @@
 
 ## 1. Score Actuel
 
-**Score: 8.6/10** — Recalculé Session 250.128. P0-WIDGET W2-W5 + P1-W6 ALL DONE.
+**Score: 7.2/10** — Recalculé Session 250.129. External audit revealed tenant system non-functional. 3 root causes fixed.
 
-> **Session 250.128 fixes**: XSS (escapeHtml+escapeAttr), CONFIG (API_BASE_URL+BOOKING_API+endpoint),
-> branding (#4FBAF1→#5E6AD2 across 15+ files), dead file cleanup (3 deleted), build script,
-> WCAG accessibility (role=dialog, Escape, focus trap), pulse animation, B2B source=deployed sync.
+> **Session 250.129 fixes (external audit)**:
+> - ROOT CAUSE #1: `data-vocalia-tenant="agency_internal"` added to ALL 50 pages (was 0)
+> - ROOT CAUSE #2: Backend accepts both `tenant_id` AND `tenantId`. B2B widget sends `tenant_id` (snake_case). ECOM /respond now sends `tenant_id`.
+> - ROOT CAUSE #3: GA4 gtag.js infrastructure added to header.html component (needs Measurement ID: `G-XXXXXXXXXX`)
+> - ECOM social proof now fetches /social-proof backend (like B2B), falls back to hardcoded
+> **Session 250.128 fixes**: XSS, CONFIG, branding, dead files, WCAG, build script, pulse animation.
 
-| # | Dimension | Score 250.127 | Score 250.128 | Delta | Justification |
+| # | Dimension | Score 250.128 | Score 250.129 | Delta | Justification |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
 | 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,792 tests pass, 0 fail, 0 skip |
-| 2 | Sécurité | 6.5 | **8.5** | **+2.0** | escapeHtml+escapeAttr in ecom, textContent in source v3, B2B escapeHtml |
-| 3 | Production readiness | 6.5 | **8.5** | **+2.0** | CONFIG.API_BASE_URL+BOOKING_API added, /catalog route fixed, all endpoints valid |
-| 4 | Documentation accuracy | 8.0 | **9.0** | **+1.0** | ROADMAP updated with verified fixes, all claims now correct |
-| 5 | Architecture code | 5.5 | **8.0** | **+2.5** | Dead files deleted, build script created, B2B source synced, validator 17/17 |
-| 6 | Multi-tenant | 7.5 | 7.5 | 0 | No change |
-| 7 | i18n | 8.5 | **9.0** | **+0.5** | aria labels use i18n, close button uses L.ui.ariaClose |
-| 8 | Intégrations | 6.5 | 6.5 | 0 | No change |
-| 9 | Developer experience | 7.5 | **9.0** | **+1.5** | Build script with --check mode, source=deployed sync, validator updated |
+| 2 | Sécurité | 8.5 | 8.5 | 0 | escapeHtml+escapeAttr everywhere, XSS fixed |
+| 3 | Production readiness | 8.5 | **6.0** | **-2.5** | External audit: tenant system was broken. Fixed but GA4 needs Measurement ID |
+| 4 | Documentation accuracy | 9.0 | **8.0** | **-1.0** | External audit revealed undocumented tenant bugs |
+| 5 | Architecture code | 8.0 | **6.5** | **-1.5** | camelCase/snake_case mismatch was critical. Fixed. ECOM still divergent source/deployed |
+| 6 | Multi-tenant | 7.5 | **7.0** | **-0.5** | Was 1/10 (external audit) → 7.0 after fixes (tenant_id flows, persona loads correctly) |
+| 7 | i18n | 9.0 | 9.0 | 0 | No change |
+| 8 | Intégrations | 6.5 | **7.0** | **+0.5** | Social proof ECOM now fetches backend, booking will activate with tenant |
+| 9 | Developer experience | 9.0 | 9.0 | 0 | Build script, validator, source sync |
 | 10 | Mémoire & docs | 6.0 | 6.0 | 0 | No change |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
 | 1 (7.0) | 15% | 1.050 |
 | 2 (8.5) | 15% | 1.275 |
-| 3 (8.5) | 10% | 0.850 |
-| 4 (9.0) | 10% | 0.900 |
-| 5 (8.0) | 10% | 0.800 |
-| 6 (7.5) | 10% | 0.750 |
+| 3 (6.0) | 10% | 0.600 |
+| 4 (8.0) | 10% | 0.800 |
+| 5 (6.5) | 10% | 0.650 |
+| 6 (7.0) | 10% | 0.700 |
 | 7 (9.0) | 5% | 0.450 |
-| 8 (6.5) | 10% | 0.650 |
+| 8 (7.0) | 10% | 0.700 |
 | 9 (9.0) | 10% | 0.900 |
 | 10 (6.0) | 5% | 0.300 |
-| **TOTAL** | **100%** | **7.925** → adjusted → **~8.6/10** |
+| **TOTAL** | **100%** | **7.425** → **~7.2/10** |
 
 ### 1.0 Widget System DEEP Forensic Audit (Session 250.127)
 
@@ -795,6 +798,56 @@ B2B source synced to deployed (pulse animation added + WCAG).
 
 ---
 
+## 4C. P0-TENANT — External Audit Findings (Session 250.129)
+
+> **Context:** External forensic audit revealed tenant system completely non-functional on vocalia.ma.
+> 3 root causes identified, ALL FIXED in this session.
+
+### P0-T1. ✅ DONE (250.129) — data-vocalia-tenant on all pages
+
+**Fait vérifié (250.129):** `grep -r 'data-vocalia-tenant' website/**/*.html` = 0 results BEFORE fix, 50 results AFTER.
+
+- [x] **P0-T1a.** Added `data-vocalia-tenant="agency_internal"` to all 49 B2B + 1 ECOM script tags
+- [x] **P0-T1b.** Verified: `grep -r 'data-vocalia-tenant="agency_internal"' website/ --include="*.html" | wc -l` = **50**
+
+**Impact:** Unblocks persona selection (AGENCY instead of UNIVERSAL_SME), config fetch, booking, e-commerce features.
+
+---
+
+### P0-T2. ✅ DONE (250.129) — camelCase/snake_case tenant_id fix
+
+**Fait vérifié (250.129):**
+- B2B widget was sending `tenantId` (camelCase), backend reading `tenant_id` (snake_case)
+- ECOM widget was NOT sending tenant_id at all in /respond body
+
+**Fixes:**
+- [x] **P0-T2a.** Backend `voice-api-resilient.cjs:2447,2496`: reads `bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default'`
+- [x] **P0-T2b.** B2B widget source+deployed: `tenantId` → `tenant_id` in /respond body
+- [x] **P0-T2c.** ECOM widget deployed: added `tenant_id: state.tenantId` to /respond body
+
+---
+
+### P0-T3. ✅ DONE (250.129) — GA4 gtag.js infrastructure
+
+**Fait vérifié (250.129):** No gtag.js loaded on any page. All trackEvent() calls = no-ops.
+
+- [x] **P0-T3a.** Added GA4 gtag.js snippet to `website/components/header.html` (loaded on all 47+ pages)
+- [ ] **P0-T3b.** PENDING: Replace `G-XXXXXXXXXX` with actual GA4 Measurement ID (requires Google Analytics setup)
+
+**Note:** Infrastructure is ready. trackEvent() will start working as soon as Measurement ID is configured.
+
+---
+
+### P0-T4. ✅ DONE (250.129) — ECOM social proof backend fetch
+
+**Fait vérifié (250.129):** ECOM used hardcoded French social proof. B2B fetched from /social-proof backend.
+
+- [x] **P0-T4a.** Added `SOCIAL_PROOF_API_URL` to ECOM CONFIG (localhost/prod detection)
+- [x] **P0-T4b.** Modified `initSocialProof()` to fetch backend first, fallback to hardcoded
+- [x] **P0-T4c.** `showSocialProofNotification()` prioritizes backend data over hardcoded fallback
+
+---
+
 ### P2-W7. Shadow DOM encapsulation
 
 **Fait vérifié:** All widgets use IIFE with injected `<style>` tags. CSS can leak from/to host page.
@@ -1162,6 +1215,16 @@ create_booking          get_recommendations    qualify_lead
 | **Validator v2.2**: CHECK 15 component system coverage on all public pages | 250.125 | 48 public pages checked, 47 compliant, 1 redirect exception |
 | **Theater purge**: 244 typeof/exports theater tests removed from 33 files, 3 rewritten | 250.126 | 4,040→3,796 tests, 0 regressions |
 | **WIDGET FORENSIC AUDIT**: source≠deployed, 57% dead code, 2 broken stubs, 3 color schemes | 250.127 | Score 8.4→7.8 |
+| **P0-W2 XSS FIXED**: escapeHtml() + escapeAttr() in ecom widget, addMessage sanitized | 250.128 | voice-widget-ecommerce.js |
+| **P0-W3 CONFIG FIXED**: API_BASE_URL + BOOKING_API added, /catalog path fixed | 250.128 | ECOM CONFIG block complete |
+| **P0-W4 BRANDING**: #4FBAF1 → #5E6AD2 in 15+ files (ecom, scripts, widgets, CSS) | 250.128 | RGB 94,106,210 everywhere |
+| **P0-W5 CLEANUP**: 3 dead files deleted, build-widgets.cjs created (concat+md5) | 250.128 | voice-widget.js, intelligent-fallback.js, .bak |
+| **P1-W6 WCAG**: role=dialog, aria-modal, aria-live, Escape, Tab trap, aria-hidden | 250.128 | B2B + ECOM both accessible |
+| **EXTERNAL AUDIT**: 10 bugs reported, 8 confirmed, 2 already fixed (250.128) | 250.129 | Score 8.6→7.2 (audit revelation) |
+| **P0-T1**: data-vocalia-tenant="agency_internal" on ALL 50 widget script tags | 250.129 | 49 B2B + 1 ECOM page |
+| **P0-T2**: camelCase→snake_case fix: backend accepts both, widgets send tenant_id | 250.129 | voice-api-resilient.cjs + both widgets |
+| **P0-T3**: GA4 gtag.js infrastructure added to header.html component | 250.129 | Placeholder G-XXXXXXXXXX (needs real ID) |
+| **P0-T4**: ECOM social proof: backend fetch with AbortSignal.timeout(5s) + fallback | 250.129 | initSocialProof() async |
 
 ---
 
@@ -1173,33 +1236,34 @@ create_booking          get_recommendations    qualify_lead
 | **P0-NEW (250.115)** | ✅ **8/8 DONE** | All test quality tasks done | 5.2 → 7.2 |
 | **P1** | ✅ **DONE** | 7/7 complete | 6.5 → 7.0 |
 | **P2** | ✅ **DONE** | 7/7 complete | 7.0 → 7.5 |
-| **P0-WIDGET (250.128)** | ✅ **4/4 DONE** | XSS, CONFIG, branding, cleanup | 7.4 → **8.6** |
-| **P1-WIDGET (250.127)** | ❌ **0/3 DONE** | E-commerce deploy, i18n, a11y | cible: 8.5 |
-| **P2-WIDGET (250.127)** | ❌ **0/3 DONE** | Shadow DOM, CDN, archive | cible: 9.0 |
+| **P0-WIDGET (250.128)** | ✅ **5/5 DONE** | XSS, CONFIG, branding, cleanup, WCAG | 7.4 → 8.6 |
+| **P0-TENANT (250.129)** | ✅ **4/4 DONE** | tenant_id, camelCase, GA4, social proof | 8.6 → **7.2** (score DOWN due to audit revelation) |
+| **P2-WIDGET** | ❌ **0/3 DONE** | Shadow DOM, CDN, archive | cible: 8.5 |
 | **P3** | 🔄 **3/5 DONE** | P3-2 + P3-3 + P3-5 done, 2 remaining | cible: 9.5+ |
 
-**Current Score: 7.8/10** (DOWN from 8.4 — widget forensic audit revealed source≠deployed drift, dead code, broken stubs)
+**Current Score: 7.2/10** (DOWN from 8.6 — external audit revealed tenant system non-functional, 3 root causes fixed)
 
 **Remaining:**
 ```
-→ P0-WIDGET: W1-W4 (unify deployed, fix branding, build script, test deployed) — 8h
-→ P1-WIDGET: W5-W7 (deploy e-com widgets, i18n fallback, accessibility) — 9h
-→ P2-WIDGET: W8-W10 (shadow DOM, CDN, archive dead code) — 13h
-→ P3-1 (ESM migration, 10h)
-→ P3-4 (A2A widget integration, 6h)
-TOTAL: ~46h to 9.5+
+→ P0-T3b: Replace GA4 placeholder G-XXXXXXXXXX with actual Measurement ID
+→ P2-W7: Shadow DOM encapsulation (6h)
+→ P2-W8: Minification + CDN (5h)
+→ P2-W9: Archive source dead code / consolidate v3 source + ecom CONFIG (2h)
+→ P3-1: ESM migration (10h)
+→ P3-4: A2A widget integration (6h)
+TOTAL: ~29h to 9.0+
 ```
 
-**Methodology: Tests are scored by BUG DETECTION CAPABILITY, not pass rate.**
-A test suite that catches 0/7 known bugs scores LOW regardless of pass count.
-**NEW (250.127): Architecture scored by DEPLOYED output, not source code quality.**
-A widget that exists in source but is NEVER deployed scores ZERO for architecture.
+**Methodology:**
+- Tests scored by BUG DETECTION CAPABILITY, not pass rate.
+- Architecture scored by DEPLOYED output, not source code quality.
+- **NEW (250.129): Tenant system scored by ACTUAL FUNCTIONALITY on vocalia.ma, not code existence.**
 
 ---
 
-*Document mis à jour le 2026-02-07 — Session 250.127*
-*P0-original complete (6/6), P1 complete (7/7), P2 complete (7/7), P0-NEW 8/8 complete, P3 3/5 complete.*
-*250.127: WIDGET FORENSIC AUDIT — source≠deployed, 57% dead code, 2 broken pages, 3 color schemes. Score 8.4→7.8.*
-*250.126: Theater purge — 244 tests removed from 33 files, 3 rewritten from scratch.*
-*250.125: Validator v2.3 — 17 checks, persona audit (711 tests).*
-*Score: 8.4 → 7.8/10. Remaining: P0-WIDGET (8h) + P1-WIDGET (9h) + P2-WIDGET (13h) + P3 (16h) = ~46h*
+*Document mis à jour le 2026-02-07 — Session 250.129*
+*P0-TENANT 4/4 complete: data-vocalia-tenant on 50 pages, camelCase fix, GA4 infra, social proof backend.*
+*250.129: EXTERNAL AUDIT — tenant system non-functional. 3 root causes fixed. Score 8.6→7.2.*
+*250.128: P0-WIDGET 5/5 + P1-W6 WCAG done. XSS, CONFIG, branding, dead files, accessibility.*
+*250.126: Theater purge — 244 tests removed. 250.125: Validator v2.3, persona audit.*
+*Score: 7.2/10. Remaining: P2-WIDGET (13h) + P3 (16h) = ~29h to 9.0+*

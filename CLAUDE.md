@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> **v7.12.0** | 07/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
+> **v7.13.0** | 07/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
 > **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,792 tests** (68 files, 0 skip)
 > **203 MCP Tools** | 38 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,353 + MCP/src 17,630 + Lib 921 + Website 31,512
-> ✅ **SESSION 250.128 WIDGET FIXES**: P0-W2 XSS fixed, P0-W3 CONFIG fixed, P0-W4 branding unified (#5E6AD2), P0-W5 dead files deleted + build script, P1-W6 WCAG accessibility. Score 7.4→8.6
-> ✅ **SESSION 250.126 THEATER PURGE**: 244 theater tests removed (typeof exports, class methods, source-grep), 3 files rewritten from scratch
+> ✅ **SESSION 250.129 TENANT AUDIT**: External audit revealed tenant system non-functional. 4 root causes fixed: data-vocalia-tenant on 50 pages, camelCase→snake_case, GA4 infra, ECOM social proof. Score 8.6→7.2
+> ✅ **SESSION 250.128 WIDGET FIXES**: P0-W2 XSS, P0-W3 CONFIG, P0-W4 branding (#5E6AD2), P0-W5 cleanup, P1-W6 WCAG
 >    - **510 tenants** (B2B=270, B2C=186, ECOM=54) | **553 KB directories** × 5 languages = **2,765 KB files**
 >    - **38 personas covered**: 12-13 tenants each | 12 regions
 
@@ -16,7 +16,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Tests**: 3,792 (68 files, 0 skip) — **Score**: 8.6/10 (250.128), **CORS**: ✅, **XSS**: ✅ (B2B + ECOM both fixed) |
+| Scores | **Tests**: 3,792 (68 files, 0 skip) — **Score**: 7.2/10 (250.129 — tenant audit), **CORS**: ✅, **XSS**: ✅ (B2B + ECOM both fixed) |
 
 ---
 
@@ -180,7 +180,7 @@ Voir `.claude/rules/branding.md` section 10 pour les commandes de vérification.
 | Client Folders | **553** (23 real + 530 test data) |
 | KB Files | **2,765** (553 dirs × 5 langs) |
 
-**Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` — P0-P2 done BUT new P0 test quality tasks added (250.114 forensic audit)
+**Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` — P0-TENANT fixed (250.129). Remaining: GA4 Measurement ID, P2-W7/W8/W9 (Shadow DOM, CDN, archive), P3-1 ESM, P3-4 A2A
 
 **530 client folders** in `clients/` = TEST DATA (not real clients). Only 23 registry entries are production.
 
@@ -251,7 +251,7 @@ providers: [
 
 ---
 
-**Platform Score: 8.6/10** (250.128 — P0-WIDGET all fixed: XSS, CONFIG, branding, dead files. P1-W6 WCAG done. 3,792 tests pass, validator 17/17 ✅)
+**Platform Score: 7.2/10** (250.129 — External audit: tenant system non-functional. 4 fixes: data-vocalia-tenant 50 pages, camelCase→snake_case, GA4 infra, ECOM social proof. 3,792 tests, 0 fail)
 P0-P2 resolved. P0-WIDGET NEW (4 tasks). See `docs/ROADMAP-TO-COMPLETION.md`.
 
 *Last update: 07/02/2026 - Session 250.127 (Widget forensic audit: source≠deployed, 57% dead code, 2 broken stubs, 3 color schemes. Score 8.4→7.8)*
