@@ -82,18 +82,6 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
   <style>
-    .glass {
-      background: rgba(10, 10, 10, 0.8);
-      backdrop-filter: blur(12px);
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
     .vocalia-gradient {
       background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
     }
@@ -452,8 +440,6 @@
         window.location.href = `/dashboard/client?welcome=true`;
       }
     });
-
-
 
     // Update prices based on geo
     function updatePrices(geo) {

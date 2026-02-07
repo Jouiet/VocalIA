@@ -110,26 +110,7 @@
   </script>
 
   <!-- Critical CSS - Phase IV Futrital -->
-  <style>
-    :root {
-      --quantum-void: #050505;
-      --vocalia-primary: #5E6AD2;
-      --glass-bg: rgba(10, 10, 10, 0.75);
-      --glass-border: rgba(255, 255, 255, 0.08);
-    }
-
-    body {
-      background: var(--quantum-void);
-      color: #fff;
-      font-family: 'Inter', system-ui, sans-serif;
-      margin: 0;
-      overflow-x: hidden;
-    }
-
-    .font-mono {
-      font-family: 'JetBrains Mono', monospace;
-    }
-  </style>
+  
 
   <!-- Tailwind CSS -->
   <link rel="preload" href="/public/css/style.css" as="style">
@@ -148,19 +129,6 @@
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
 
   <style>
-    .gradient-text {
-      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .glass {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-    }
-
     .pricing-card {
       background: rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(16px);
@@ -225,16 +193,7 @@
 </head>
 
 <body class="bg-[#050505] text-white antialiased">
-  <!-- Skip Link -->
-
-  <a href="#main-content"
-    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg"><span
-      data-i18n="pricing.aller_au_contenu_27">Aller
-
-      au contenu principal</span></a>
   <div data-component="header"></div>
-
-
 
   <!-- Hero -->
   <section class="relative pt-32 pb-16 overflow-hidden" id="main-content">

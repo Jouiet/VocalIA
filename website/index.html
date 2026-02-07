@@ -103,35 +103,7 @@
   <meta name="apple-mobile-web-app-title" content="VocalIA">
 
   <!-- Critical CSS - Inline for instant render -->
-  <style>
-    :root {
-      --quantum-void: #050505;
-      --vocalia-primary: #5E6AD2;
-      --vocalia-glow: rgba(94, 106, 210, 0.4);
-      --glass-bg: rgba(10, 10, 10, 0.75);
-      --glass-border: rgba(255, 255, 255, 0.08);
-    }
-
-    body {
-      background: var(--quantum-void);
-      color: #fff;
-      font-family: 'Inter', system-ui, sans-serif;
-      margin: 0;
-      overflow-x: hidden;
-    }
-
-    .font-mono {
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0)
-    }
-  </style>
+  
 
   <!-- Tailwind CSS (Sovereign) - Preloaded -->
   <link rel="preload" href="/public/css/style.css?v=224" as="style">
@@ -170,41 +142,6 @@
   </noscript>
 
   <style>
-    /* Custom scrollbar - Enterprise Dark */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #050505;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(161, 161, 170, 0.25);
-      border-radius: 3px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #71717a;
-    }
-
-    /* Gradient text - Deep Indigo */
-    .gradient-text {
-      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 50%, #6366f1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* Glass morphism - Linear-inspired (Phase IV) */
-    .glass {
-      background: var(--glass-bg);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
-    }
-
     /* Noise texture overlay */
     .noise::before {
       content: '';
