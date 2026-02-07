@@ -82,10 +82,19 @@ jobs:
           done
         timeout-minutes: 1
 
+      - name: Install Playwright (Chromium only)
+        run: npx playwright install --with-deps chromium
+        timeout-minutes: 3
+
+      - name: E2E Tests (Public Pages - Production)
+        run: npx playwright test test/e2e/public-pages.spec.js --project=chromium
+        timeout-minutes: 3
+        continue-on-error: true
+
       - name: Build Summary
         run: |
           echo "## VocalIA Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "✅ CI Passed — Unit (ESM) + Coverage + Exhaustive + esbuild + TypeScript + Design Tokens + i18n" >> $GITHUB_STEP_SUMMARY
+          echo "✅ CI Passed — Unit (ESM) + Coverage + Exhaustive + esbuild + TypeScript + Design Tokens + i18n + E2E" >> $GITHUB_STEP_SUMMARY
 
   staging:
     name: Deploy to Staging

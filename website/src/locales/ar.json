@@ -167,6 +167,19 @@
     "jean_dupont_36": "جان دوبونت",
     "vocalia_37": "VocalIA",
     "vocalia_dashboard_client_38": "VocalIA - لوحة تحكم العميل",
+    "roi": {
+      "title": "عائد الاستثمار الصوتي",
+      "automation": "مؤتمت",
+      "cost_savings": "التوفير / شهر",
+      "savings_label": "مقارنة بالوكلاء البشريين",
+      "vs_human": "مقارنة بالبشري",
+      "realtime": "فوري",
+      "avg_response": "متوسط الاستجابة",
+      "ai_agent": "وكيل ذكي",
+      "human_agent": "وكيل بشري",
+      "availability": "توفر الذكاء الاصطناعي",
+      "week_grid": "التغطية الأسبوعية"
+    },
     "nav": {
       "overview": "نظرة عامة",
       "calls": "المكالمات",

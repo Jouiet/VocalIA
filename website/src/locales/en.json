@@ -167,6 +167,19 @@
     "jean_dupont_36": "Jean Dupont",
     "vocalia_37": "VocalIA",
     "vocalia_dashboard_client_38": "VocalIA - Client Dashboard",
+    "roi": {
+      "title": "Voice AI ROI",
+      "automation": "Automated",
+      "cost_savings": "Monthly Savings",
+      "savings_label": "vs human agents",
+      "vs_human": "vs human",
+      "realtime": "Real-time",
+      "avg_response": "Avg Response",
+      "ai_agent": "AI Agent",
+      "human_agent": "Human",
+      "availability": "AI Availability",
+      "week_grid": "Weekly Coverage"
+    },
     "nav": {
       "overview": "Overview",
       "calls": "Calls",

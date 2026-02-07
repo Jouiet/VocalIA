@@ -167,6 +167,19 @@
     "jean_dupont_36": "Jean Dupont",
     "vocalia_37": "VocalIA",
     "vocalia_dashboard_client_38": "VocalIA - لوحة تحكم الكليان",
+    "roi": {
+      "title": "الربح ديال الصوت الذكي",
+      "automation": "أوتوماتيك",
+      "cost_savings": "التوفير / شهر",
+      "savings_label": "مقارنة مع الوكلاء البشريين",
+      "vs_human": "مقارنة مع البشري",
+      "realtime": "فوري",
+      "avg_response": "معدل الجواب",
+      "ai_agent": "وكيل ذكي",
+      "human_agent": "وكيل بشري",
+      "availability": "التوفر ديال الذكاء",
+      "week_grid": "التغطية ديال السيمانة"
+    },
     "nav": {
       "overview": "نظرة عامة",
       "calls": "التيليفونات",
