@@ -3,13 +3,14 @@
         "agency_internal": {
             "name": "VocalIA",
             "sector": "AGENCY",
-            "currency": "MAD",
+            "currency": "USD",
             "language": "fr",
             "knowledge_base_id": "agency_v3",
             "payment_method": "WISE",
-            "phone": "+212600000000",
+            "phone": "+17624224223",
+            "email": "contact@vocalia.ma",
             "booking_url": "https://vocalia.ma/booking",
-            "address": "Casablanca, Morocco",
+            "address": "VocalIA — Voice AI Platform",
             "widget_type": "B2B"
         },
         "client_dental_01": {

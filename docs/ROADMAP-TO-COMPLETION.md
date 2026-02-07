@@ -16,7 +16,8 @@
 5. [P3 — Excellence (Score → 9.5+)](#5-p3-excellence)
 6. [Documentation & Mémoire System](#6-documentation--mémoire-system)
 7. [Registre des Faits Vérifiés](#7-registre-des-faits-vérifiés)
-8. [Tâches Résolues (historique)](#8-tâches-résolues)
+8. [Business Priorities — Audit Nr 2 (250.139)](#8-business-priorities)
+9. [Tâches Résolues (historique)](#9-tâches-résolues)
 
 ---
 
@@ -1007,15 +1008,18 @@ B2B source synced to deployed (pulse animation added + WCAG).
 
 | Métrique | Valeur | Commande |
 |:---------|:------:|:---------|
-| core/*.cjs | 33,920 lignes / 53 fichiers | `wc -l core/*.cjs` |
+| core/*.cjs | 34,533 lignes / 54 fichiers | `wc -l core/*.cjs` |
 | widget/*.js | 9,671 lignes / 7 fichiers | `wc -l widget/*.js` |
-| personas/ | 9,020 lignes / 2 fichiers | `wc -l personas/*.cjs personas/*.json` |
-| telephony/ | 4,709 lignes / 1 fichier | `wc -l telephony/*.cjs` |
-| lib/ | 921 lignes / 1 fichier | `wc -l lib/*.cjs` |
+| personas/ | 8,700 lignes / 2 fichiers | `wc -l personas/*.cjs personas/*.json` |
+| telephony/ | 4,732 lignes / 1 fichier | `wc -l telephony/*.cjs` |
+| lib/ | 923 lignes / 1 fichier | `wc -l lib/*.cjs` |
+| mcp-server/src/ | 19,173 lignes / 32 fichiers | `wc -l mcp-server/src/*.ts` |
 | MCP tools | 203 | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs \| sort -u \| wc -l` |
-| HTML pages | 77 | `find website -name "*.html" \| wc -l` |
+| HTML pages | 78 | `find website -name "*.html" \| wc -l` |
+| Registry clients | 22 | `jq 'keys \| length' personas/client_registry.json` |
+| i18n lines | 23,995 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 | `npm audit --json` |
 | innerHTML total | 30 | `grep -rn "innerHTML" widget/*.js \| wc -l` |
 | innerHTML risque XSS | 0 | All dynamic data now uses escapeHTML/textContent (250.105) |
@@ -1137,7 +1141,62 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-## 8. Tâches Résolues (historique)
+## 8. Business Priorities — Audit Nr 2 (250.139)
+
+> **Source**: External business audit Nr 2 (08/02/2026) — verified against provider pricing pages
+> **Full document**: `docs/BUSINESS-INTELLIGENCE.md`
+
+### 8.1 Priority Matrix (Business Impact / Effort)
+
+| # | Action | Effort | Impact | Status |
+|:-:|:-------|:-------|:-------|:------:|
+| 1 | **Activate GA4** — replace `G-XXXXXXXXXX` in `website/components/header.html` | 5min | 52 events collecting data | ❌ Blocked (needs analytics.google.com account) |
+| 2 | **Increase telephony price** 0.06→0.10-0.12€/min | Decision | Margin 8%→38-50% | ❌ Decision needed |
+| 3 | **Serve brotli** via nginx config on VPS | 30min | Transfer -84% B2B, -88% ECOM | ❌ Infrastructure |
+| 4 | **Booking inline B2B** (copy pattern from ECOM) | 3h | Conversion booking +30-40% (est.) | ❌ Code task |
+| 5 | **Evaluate Telnyx** for Moroccan numbers | 4h | Unblock Morocco, potentially -50% PSTN | ❌ Research |
+| 6 | **Darija differentiated pricing** 0.15-0.20€/min | Decision | Eliminate loss per Darija call | ❌ Decision needed |
+| 7 | **Code-split ECOM widget** (lazy-load IIFEs) | 4h | Mobile performance -60% (est.) | ❌ Code task |
+| 8 | **Fallback STT Firefox/Safari** | 6h | +11% visitors with voice | ❌ Code task |
+| 9 | **Test Qwen3-TTS for Darija** | 8h | Darija TTS cost -93% ($0.10→~$0.005/min) | ❌ Research |
+
+### 8.2 Cost Reality (Verified Feb 2026)
+
+| Product | Price | Cost | Margin | Viable? |
+|:--------|:------|:-----|:-------|:-------:|
+| Widget B2B | 49€/month | ~$8-20/month | **62-85%** | ✅ Excellent |
+| Telephony FR | 0.06€/min | $0.06/min | **~8%** | ❌ Non viable |
+| Telephony Darija | 0.06€/min | $0.15/min | **-$0.085 LOSS** | ❌ Perte sèche |
+
+### 8.3 Twilio Morocco Blocker
+
+- Moroccan numbers: **NOT AVAILABLE** via Twilio
+- Outbound mobile MA: **$0.83/min** (14x France price)
+- **Alternative**: Telnyx (potentially Moroccan numbers, $0.005/min FR inbound)
+- **Strategy**: Morocco = showcase market (Darija differentiator), France/EU = revenue market
+
+### 8.4 What NOT To Do
+
+| Action | Reason |
+|:-------|:-------|
+| Lower widget price (<49€) | Margin already excellent, below Crisp/Intercom |
+| Compete with Intercom frontally | Missing 8+ features, 12+ months of dev |
+| Keep telephony at 0.06€/min | 8% margin = non viable |
+| Push Morocco telephony via Twilio | $0.83/min = economically impossible |
+| Migrate to LiveKit/Voximplant | Bridge works, migration = risk for 25 function tools |
+| CDN (cdn.vocalia.ma) | VPS + nginx + brotli sufficient at current volume |
+
+### 8.5 Competitive Position (Factual)
+
+**Widget**: Only voice-native widget with Darija + 5 languages. 49€/month vs Intercom $39-139/seat. Different product (voice-first sales vs support platform).
+
+**Telephony**: ~$0.06/min (Grok native) vs Vapi $0.15-0.25/min. Structural advantage: Grok bundles LLM+STT+TTS at $0.05/min.
+
+**Feature gaps vs Intercom/Crisp**: No help center, shared inbox, ticketing, email channel, file upload, WhatsApp. VocalIA = voice-first sales/booking assistant ≠ support platform.
+
+---
+
+## 9. Tâches Résolues (historique)
 
 | Tâche | Session | Vérification |
 |:------|:-------:|:-------------|
@@ -1283,7 +1342,7 @@ create_booking          get_recommendations    qualify_lead
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 → cible: 9.5+ |
 
-**Current Score: 9.0/10** (250.137 — App sidebar component, calls AI insights, integrations webhook health, mobile all pages)
+**Code Completeness: 8.5/10** | **Production Readiness: 3.0/10** (250.139 — documentation overhaul, business audit Nr 2)
 
 **Remaining (code — OPTIONAL):**
 ```
@@ -1310,7 +1369,7 @@ create_booking          get_recommendations    qualify_lead
 ---
 
 *Document mis a jour le 2026-02-08 — Session 250.139*
-*250.139: DOCUMENTATION OVERHAUL — All metrics verified (wc -l, grep -c, ls). Production readiness matrix added. Vanity metrics eliminated. Phone conflict fixed. Score split: Code 8.5/10, Production 3.0/10.*
+*250.139: DOCUMENTATION OVERHAUL + BUSINESS AUDIT Nr 2 — All metrics verified (wc -l, grep -c, ls). Production readiness matrix added. Vanity metrics eliminated. Business priorities from external audit: cost structure, pricing analysis, competitive positioning. Score split: Code 8.5/10, Production 3.0/10.*
 *250.138: Widget tree-shaking pipeline v2.0 — esbuild DCE → terser 3-pass → pre-compression (.gz/.br). ECOM: 296.8→186.9 KB min (37.1 KB brotli). B2B: 50.5→30.2 KB min (8.3 KB brotli). --production flag. Widget v2.4.0→2.5.0.*
 *250.137: App sidebar component (9 pages, -585 lines). Calls page: sentiment column + AI insights + conversation timeline. Integrations: webhook health dashboard + live status + test button. Mobile hamburger on all 9 app pages.*
 *250.136: Dashboard ROI section (4 cards: automation ring, cost savings, response time, 24/7). Mobile responsive sidebar. Playwright E2E in CI. 16 audit docs archived. SESSION-HISTORY -67%. 8 ROADMAP tasks resolved. ROI i18n 12 keys × 5 langs.*

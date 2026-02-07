@@ -4,7 +4,7 @@
 > **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
 > **~81k lines source** | Core 34,533 (54) + Telephony 4,732 + Personas 8,700 + Widget 9,671 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
-> ✅ **SESSION 250.139 DOC OVERHAUL**: All documentation audited and corrected. Production readiness matrix added. Vanity metrics eliminated.
+> ✅ **SESSION 250.139 DOC OVERHAUL + BUSINESS AUDIT**: All docs audited. Production readiness matrix. Business intelligence (costs, margins, competitive positioning). Phone: +1 762 422 4223 (Twilio official).
 > ✅ **SESSION 250.138 WIDGET TREE-SHAKING**: Build pipeline v2.0 (esbuild DCE→terser 3-pass→brotli). ECOM: 37.1 KB transfer. B2B: 8.3 KB transfer.
 
 ## Quick Reference
@@ -209,7 +209,7 @@ Verified: `grep -c "server.tool(" mcp-server/src/index.ts` = 203
 | KB Files | **2,765** (553 dirs × 5 langs) | Auto-generated, not real content |
 | Paying Customers | **0** | No billing system active |
 
-**Known bug**: agency_internal has phone conflict (registry: +33..., config.json: +212...) and missing KB directory.
+**Contact**: +1 762 422 4223 (Twilio official) | contact@vocalia.ma
 
 ## Test Quality (Session 250.132 — ESM Migration)
 
@@ -234,18 +234,22 @@ Verified: `grep -c "server.tool(" mcp-server/src/index.ts` = 203
 | `docs/SESSION-HISTORY.md` | All session logs |
 | `docs/VOCALIA-MCP.md` | MCP 203 tools reference |
 | `docs/PLUG-AND-PLAY-STRATEGY.md` | Multi-tenant strategy |
-| `docs/ROADMAP-TO-COMPLETION.md` | Remaining work |
+| `docs/ROADMAP-TO-COMPLETION.md` | Remaining work + business priorities |
+| `docs/BUSINESS-INTELLIGENCE.md` | Cost structure, pricing, competitive analysis |
 
 ---
 
-## Products
+## Products & Economics (Audit Nr 2 — 08/02/2026)
 
-| Product | Pricing | Status |
-|:--------|:--------|:-------|
-| Voice Widget | 49€/month | Code complete, 0 subscribers |
-| Voice Telephony | 0.06€/min | Code complete, not configured |
+| Product | Pricing | Cost | Margin | Status |
+|:--------|:--------|:-----|:-------|:-------|
+| Voice Widget B2B | 49€/month | ~$8-20/mo | **62-85%** | Code complete, 0 subscribers |
+| Voice Telephony FR | 0.06€/min | $0.06/min | **~8%** | ❌ Non viable — reprice to 0.10-0.12€ |
+| Voice Telephony Darija | 0.06€/min | $0.15/min | **LOSS** | ❌ Losing money — reprice to 0.15-0.20€ |
 
 **Policy:** No Free Tier - 14-day trial only
+**Twilio Morocco**: NO Moroccan numbers. Outbound mobile $0.83/min (14x France). Use FR/US numbers.
+**Full analysis**: `docs/BUSINESS-INTELLIGENCE.md`
 
 ---
 
@@ -279,4 +283,4 @@ providers: [
 **Production Readiness: 3.0/10** — Website deployed. Zero paying customers. Zero live integrations. Zero real voice calls.
 **Next milestone**: First paying customer, first connected external API.
 
-*Last update: 08/02/2026 - Session 250.139 (Documentation overhaul: all metrics verified, production readiness matrix, vanity metrics eliminated)*
+*Last update: 08/02/2026 - Session 250.139 (Documentation overhaul + Business Audit Nr 2: costs, margins, competitive analysis, pricing recommendations)*
