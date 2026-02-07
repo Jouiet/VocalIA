@@ -1073,3 +1073,569 @@ describe('catalog-connector exports', () => {
     assert.ok(CONNECTOR_STATUS !== null);
   });
 });
+
+// ─── CatalogConnectorFactory static methods ─────────────────────
+
+describe('CatalogConnectorFactory getAvailableConnectors', () => {
+  test('returns array of connector types', () => {
+    const connectors = CatalogConnectorFactory.getAvailableConnectors();
+    assert.ok(Array.isArray(connectors));
+    assert.ok(connectors.length >= 6);
+  });
+
+  test('includes shopify', () => {
+    const connectors = CatalogConnectorFactory.getAvailableConnectors();
+    assert.ok(connectors.includes('shopify'));
+  });
+
+  test('includes woocommerce', () => {
+    const connectors = CatalogConnectorFactory.getAvailableConnectors();
+    assert.ok(connectors.includes('woocommerce'));
+  });
+
+  test('includes square', () => {
+    const connectors = CatalogConnectorFactory.getAvailableConnectors();
+    assert.ok(connectors.includes('square'));
+  });
+
+  test('includes lightspeed', () => {
+    const connectors = CatalogConnectorFactory.getAvailableConnectors();
+    assert.ok(connectors.includes('lightspeed'));
+  });
+
+  test('includes magento', () => {
+    const connectors = CatalogConnectorFactory.getAvailableConnectors();
+    assert.ok(connectors.includes('magento'));
+  });
+
+  test('includes custom', () => {
+    const connectors = CatalogConnectorFactory.getAvailableConnectors();
+    assert.ok(connectors.includes('custom'));
+  });
+});
+
+describe('CatalogConnectorFactory getConnectorInfo', () => {
+  test('returns info for shopify', () => {
+    const info = CatalogConnectorFactory.getConnectorInfo('shopify');
+    assert.ok(info);
+    assert.strictEqual(info.name, 'Shopify');
+    assert.ok(info.requiredConfig.includes('shop'));
+    assert.ok(info.requiredConfig.includes('accessToken'));
+  });
+
+  test('returns info for woocommerce', () => {
+    const info = CatalogConnectorFactory.getConnectorInfo('woocommerce');
+    assert.ok(info);
+    assert.strictEqual(info.name, 'WooCommerce');
+    assert.ok(info.requiredConfig.includes('storeUrl'));
+  });
+
+  test('is case insensitive', () => {
+    const lower = CatalogConnectorFactory.getConnectorInfo('shopify');
+    const upper = CatalogConnectorFactory.getConnectorInfo('SHOPIFY');
+    assert.strictEqual(lower?.name, upper?.name);
+  });
+
+  test('returns null for unknown type', () => {
+    const info = CatalogConnectorFactory.getConnectorInfo('nonexistent');
+    assert.strictEqual(info, null);
+  });
+
+  test('returns null for null input', () => {
+    const info = CatalogConnectorFactory.getConnectorInfo(null);
+    assert.strictEqual(info, null);
+  });
+});
+
+describe('CatalogConnectorFactory getAllConnectorsInfo', () => {
+  test('returns array of connector metadata', () => {
+    const all = CatalogConnectorFactory.getAllConnectorsInfo();
+    assert.ok(Array.isArray(all));
+    assert.ok(all.length >= 6);
+  });
+
+  test('each entry has type, name, catalogType, requiredConfig', () => {
+    const all = CatalogConnectorFactory.getAllConnectorsInfo();
+    for (const entry of all) {
+      assert.ok(entry.type, `Missing type`);
+      assert.ok(entry.name, `Missing name for ${entry.type}`);
+      assert.ok(entry.catalogType, `Missing catalogType for ${entry.type}`);
+      assert.ok(Array.isArray(entry.requiredConfig), `requiredConfig not array for ${entry.type}`);
+    }
+  });
+
+  test('includes marketShare for each', () => {
+    const all = CatalogConnectorFactory.getAllConnectorsInfo();
+    for (const entry of all) {
+      assert.ok(entry.marketShare !== undefined, `Missing marketShare for ${entry.type}`);
+    }
+  });
+});
+
+describe('CatalogConnectorFactory validateConfig', () => {
+  test('shopify with empty config returns invalid', () => {
+    const result = CatalogConnectorFactory.validateConfig('shopify', {});
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.missing.includes('shop'));
+    assert.ok(result.missing.includes('accessToken'));
+  });
+
+  test('shopify with full config returns valid', () => {
+    const result = CatalogConnectorFactory.validateConfig('shopify', { shop: 'test.myshopify.com', accessToken: 'xxx' });
+    assert.strictEqual(result.valid, true);
+    assert.strictEqual(result.missing.length, 0);
+  });
+
+  test('woocommerce with full config returns valid', () => {
+    const result = CatalogConnectorFactory.validateConfig('woocommerce', {
+      storeUrl: 'https://store.example.com',
+      consumerKey: 'ck_xxx',
+      consumerSecret: 'cs_xxx'
+    });
+    assert.strictEqual(result.valid, true);
+  });
+
+  test('woocommerce missing consumerSecret returns invalid', () => {
+    const result = CatalogConnectorFactory.validateConfig('woocommerce', {
+      storeUrl: 'https://store.example.com',
+      consumerKey: 'ck_xxx'
+    });
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.missing.includes('consumerSecret'));
+  });
+
+  test('unknown connector returns invalid with warning', () => {
+    const result = CatalogConnectorFactory.validateConfig('nonexistent', {});
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.warnings.length > 0);
+    assert.ok(result.warnings[0].includes('Unknown'));
+  });
+
+  test('square without locationId generates warning', () => {
+    const result = CatalogConnectorFactory.validateConfig('square', { accessToken: 'xxx' });
+    assert.strictEqual(result.valid, true);
+    assert.ok(result.warnings.length > 0);
+    assert.ok(result.warnings[0].includes('locationId'));
+  });
+
+  test('lightspeed without series generates warning', () => {
+    const result = CatalogConnectorFactory.validateConfig('lightspeed', { accessToken: 'xxx' });
+    assert.strictEqual(result.valid, true);
+    assert.ok(result.warnings.length > 0);
+    assert.ok(result.warnings[0].includes('series'));
+  });
+
+  test('custom with empty config returns valid', () => {
+    const result = CatalogConnectorFactory.validateConfig('custom', {});
+    assert.strictEqual(result.valid, true);
+    assert.strictEqual(result.missing.length, 0);
+  });
+
+  test('magento missing baseUrl returns invalid', () => {
+    const result = CatalogConnectorFactory.validateConfig('magento', { accessToken: 'xxx' });
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.missing.includes('baseUrl'));
+  });
+});
+
+describe('CatalogConnectorFactory create', () => {
+  test('creates custom connector by default', () => {
+    const conn = CatalogConnectorFactory.create('test_tenant', { source: 'custom' });
+    assert.ok(conn instanceof CustomCatalogConnector);
+  });
+
+  test('creates shopify connector', () => {
+    const conn = CatalogConnectorFactory.create('test_tenant', {
+      source: 'shopify', shop: 'test.myshopify.com', accessToken: 'xxx'
+    });
+    assert.ok(conn instanceof ShopifyCatalogConnector);
+  });
+
+  test('creates woocommerce connector', () => {
+    const conn = CatalogConnectorFactory.create('test_tenant', {
+      source: 'woocommerce', storeUrl: 'https://test.com', consumerKey: 'ck', consumerSecret: 'cs'
+    });
+    assert.ok(conn instanceof WooCommerceCatalogConnector);
+  });
+
+  test('creates square connector', () => {
+    const conn = CatalogConnectorFactory.create('test_tenant', {
+      source: 'square', accessToken: 'xxx'
+    });
+    assert.ok(conn instanceof SquareCatalogConnector);
+  });
+
+  test('creates lightspeed connector', () => {
+    const conn = CatalogConnectorFactory.create('test_tenant', {
+      source: 'lightspeed', accessToken: 'xxx'
+    });
+    assert.ok(conn instanceof LightspeedCatalogConnector);
+  });
+
+  test('creates magento connector', () => {
+    const conn = CatalogConnectorFactory.create('test_tenant', {
+      source: 'magento', baseUrl: 'https://magento.test', accessToken: 'xxx'
+    });
+    assert.ok(conn instanceof MagentoCatalogConnector);
+  });
+
+  test('unknown source falls back to custom', () => {
+    const conn = CatalogConnectorFactory.create('test_tenant', { source: 'unknown_platform' });
+    assert.ok(conn instanceof CustomCatalogConnector);
+  });
+});
+
+// ─── E-commerce connector constructors ──────────────────────────
+
+describe('ShopifyCatalogConnector constructor', () => {
+  test('stores shop and accessToken', () => {
+    const conn = new ShopifyCatalogConnector('t1', { shop: 'my.myshopify.com', accessToken: 'tk' });
+    assert.strictEqual(conn.shop, 'my.myshopify.com');
+    assert.strictEqual(conn.accessToken, 'tk');
+  });
+
+  test('defaults catalogType to PRODUCTS', () => {
+    const conn = new ShopifyCatalogConnector('t1', { shop: 's', accessToken: 't' });
+    assert.strictEqual(conn.catalogType, CATALOG_TYPES.PRODUCTS);
+  });
+});
+
+describe('WooCommerceCatalogConnector constructor', () => {
+  test('stores storeUrl and credentials', () => {
+    const conn = new WooCommerceCatalogConnector('t1', {
+      storeUrl: 'https://store.test', consumerKey: 'ck', consumerSecret: 'cs'
+    });
+    assert.strictEqual(conn.storeUrl, 'https://store.test');
+    assert.strictEqual(conn.consumerKey, 'ck');
+    assert.strictEqual(conn.consumerSecret, 'cs');
+  });
+});
+
+describe('SquareCatalogConnector constructor', () => {
+  test('stores accessToken', () => {
+    const conn = new SquareCatalogConnector('t1', { accessToken: 'sq_tk' });
+    assert.strictEqual(conn.accessToken, 'sq_tk');
+  });
+
+  test('initializes with disconnected status', () => {
+    const conn = new SquareCatalogConnector('t1', { accessToken: 'sq_tk' });
+    assert.strictEqual(conn.status, CONNECTOR_STATUS.DISCONNECTED);
+  });
+});
+
+describe('LightspeedCatalogConnector constructor', () => {
+  test('stores accessToken', () => {
+    const conn = new LightspeedCatalogConnector('t1', { accessToken: 'ls_tk' });
+    assert.strictEqual(conn.accessToken, 'ls_tk');
+  });
+
+  test('defaults series to K (Restaurant)', () => {
+    const conn = new LightspeedCatalogConnector('t1', { accessToken: 'ls_tk' });
+    assert.strictEqual(conn.series, 'K');
+  });
+});
+
+describe('MagentoCatalogConnector constructor', () => {
+  test('stores baseUrl and accessToken', () => {
+    const conn = new MagentoCatalogConnector('t1', { baseUrl: 'https://magento.test', accessToken: 'mg_tk' });
+    assert.strictEqual(conn.baseUrl, 'https://magento.test');
+    assert.strictEqual(conn.accessToken, 'mg_tk');
+  });
+});
+
+// ─── ShopifyCatalogConnector pure methods ────────────────────────
+
+describe('ShopifyCatalogConnector _transformProduct', () => {
+  const conn = new ShopifyCatalogConnector('t1', { shop: 'test', accessToken: 'tok', currency: 'EUR' });
+
+  test('extracts basic product fields', () => {
+    const shopifyProduct = {
+      id: 'gid://shopify/Product/12345',
+      title: 'T-Shirt',
+      handle: 't-shirt',
+      description: 'A nice t-shirt',
+      status: 'ACTIVE',
+      productType: 'Clothing',
+      tags: ['summer', 'cotton'],
+      totalInventory: 10,
+      variants: { edges: [{ node: { id: 'gid://shopify/ProductVariant/111', title: 'Default', price: '29.99', sku: 'TS-001', inventoryQuantity: 10, availableForSale: true, selectedOptions: [] } }] },
+      images: { edges: [{ node: { url: 'https://img.shopify.com/1.jpg', altText: '' } }] }
+    };
+    const result = conn._transformProduct(shopifyProduct);
+    assert.strictEqual(result.id, '12345');
+    assert.strictEqual(result.gid, 'gid://shopify/Product/12345');
+    assert.strictEqual(result.name, 'T-Shirt');
+    assert.strictEqual(result.price, 29.99);
+    assert.strictEqual(result.currency, 'EUR');
+    assert.strictEqual(result.stock, 10);
+    assert.strictEqual(result.in_stock, true);
+    assert.strictEqual(result.sku, 'TS-001');
+    assert.ok(result.voice_description);
+    assert.ok(result.voice_summary);
+  });
+
+  test('handles product with 0 stock', () => {
+    const product = {
+      id: 'gid://shopify/Product/999',
+      title: 'Out of Stock',
+      handle: 'out',
+      description: '',
+      status: 'ACTIVE',
+      productType: '',
+      tags: [],
+      variants: { edges: [{ node: { id: 'gid://shopify/ProductVariant/999', title: 'Default', price: '50', sku: '', inventoryQuantity: 0, availableForSale: false, selectedOptions: [] } }] },
+      images: { edges: [] }
+    };
+    const result = conn._transformProduct(product);
+    assert.strictEqual(result.stock, 0);
+    assert.strictEqual(result.in_stock, false);
+  });
+
+  test('handles product with no variants', () => {
+    const product = {
+      id: 'gid://shopify/Product/0',
+      title: 'No Variants',
+      handle: 'nv',
+      description: '',
+      status: 'ACTIVE',
+      productType: '',
+      tags: [],
+      variants: { edges: [] },
+      images: { edges: [] }
+    };
+    const result = conn._transformProduct(product);
+    assert.strictEqual(result.price, 0);
+    assert.strictEqual(result.sku, '');
+  });
+});
+
+describe('ShopifyCatalogConnector _generateVoiceDescription', () => {
+  const conn = new ShopifyCatalogConnector('t1', { currency: 'MAD' });
+
+  test('includes price', () => {
+    const desc = conn._generateVoiceDescription({ title: 'T-Shirt' }, 199, 10);
+    assert.ok(desc.includes('199'));
+    assert.ok(desc.includes('MAD'));
+  });
+
+  test('marks out of stock', () => {
+    const desc = conn._generateVoiceDescription({ title: 'Item' }, 50, 0);
+    assert.ok(desc.includes('rupture de stock'));
+  });
+
+  test('warns low stock (<= 5)', () => {
+    const desc = conn._generateVoiceDescription({ title: 'Item' }, 50, 3);
+    assert.ok(desc.includes('plus que 3'));
+  });
+
+  test('no stock warning for stock > 5', () => {
+    const desc = conn._generateVoiceDescription({ title: 'Item' }, 50, 10);
+    assert.ok(!desc.includes('rupture'));
+    assert.ok(!desc.includes('plus que'));
+  });
+});
+
+describe('ShopifyCatalogConnector _generateVoiceSummary', () => {
+  const conn = new ShopifyCatalogConnector('t1', { currency: 'EUR' });
+
+  test('formats summary correctly', () => {
+    assert.strictEqual(conn._generateVoiceSummary({ title: 'Jean Slim' }, 399), 'Jean Slim à 399 EUR');
+  });
+});
+
+// ─── WooCommerceCatalogConnector pure methods ────────────────────
+
+describe('WooCommerceCatalogConnector _stripHtml', () => {
+  const conn = new WooCommerceCatalogConnector('t1');
+
+  test('strips HTML tags', () => {
+    assert.strictEqual(conn._stripHtml('<p>Hello <b>world</b></p>'), 'Hello world');
+  });
+
+  test('replaces &nbsp;', () => {
+    assert.strictEqual(conn._stripHtml('Hello&nbsp;World'), 'Hello World');
+  });
+
+  test('trims whitespace', () => {
+    assert.strictEqual(conn._stripHtml('  Hello  '), 'Hello');
+  });
+
+  test('handles empty string', () => {
+    assert.strictEqual(conn._stripHtml(''), '');
+  });
+});
+
+describe('WooCommerceCatalogConnector _transformProduct', () => {
+  const conn = new WooCommerceCatalogConnector('t1', { currency: 'MAD' });
+
+  test('transforms basic WooCommerce product', () => {
+    const wooProduct = {
+      id: 42,
+      sku: 'WOO-001',
+      name: 'Kaftan',
+      slug: 'kaftan',
+      price: '299',
+      regular_price: '399',
+      sale_price: '299',
+      on_sale: true,
+      stock_quantity: 5,
+      stock_status: 'instock',
+      manage_stock: true,
+      type: 'simple',
+      categories: [{ name: 'Clothing' }],
+      tags: [{ name: 'traditional' }],
+      images: [{ src: 'https://img.com/1.jpg' }],
+      attributes: [{ name: 'Color', options: ['Red', 'Blue'] }],
+      description: '<p>Beautiful kaftan</p>',
+      short_description: '<b>Traditional</b>',
+      variations: [42001]
+    };
+    const result = conn._transformProduct(wooProduct);
+    assert.strictEqual(result.id, '42');
+    assert.strictEqual(result.price, 299);
+    assert.strictEqual(result.sale_price, 299);
+    assert.strictEqual(result.on_sale, true);
+    assert.strictEqual(result.in_stock, true);
+    assert.strictEqual(result.description, 'Beautiful kaftan');
+    assert.strictEqual(result.short_description, 'Traditional');
+    assert.ok(result.voice_description.includes('promotion'));
+  });
+});
+
+describe('WooCommerceCatalogConnector _generateVoiceDescription', () => {
+  const conn = new WooCommerceCatalogConnector('t1', { currency: 'MAD' });
+
+  test('includes sale price when on sale', () => {
+    const desc = conn._generateVoiceDescription({ name: 'Item' }, 100, true, 80);
+    assert.ok(desc.includes('promotion'));
+    assert.ok(desc.includes('80'));
+  });
+
+  test('includes regular price when not on sale', () => {
+    const desc = conn._generateVoiceDescription({ name: 'Item' }, 100, true, null);
+    assert.ok(desc.includes('100'));
+    assert.ok(!desc.includes('promotion'));
+  });
+
+  test('marks out of stock', () => {
+    const desc = conn._generateVoiceDescription({ name: 'Item' }, 50, false, null);
+    assert.ok(desc.includes('rupture de stock'));
+  });
+});
+
+// ─── MagentoCatalogConnector _transformProduct ───────────────────
+
+describe('MagentoCatalogConnector _transformProduct', () => {
+  const conn = new MagentoCatalogConnector('t1', { currency: 'EUR' });
+
+  test('transforms Magento product', () => {
+    const product = {
+      id: 100,
+      sku: 'MAG-001',
+      name: 'Widget',
+      price: 49.99,
+      type_id: 'simple',
+      status: 1,
+      visibility: 4,
+      custom_attributes: [
+        { attribute_code: 'description', value: 'A widget' },
+        { attribute_code: 'category_ids', value: '5,10' }
+      ],
+      extension_attributes: { stock_item: { is_in_stock: true, qty: 25 } },
+      media_gallery_entries: [{ file: '/w/widget.jpg' }]
+    };
+    const result = conn._transformProduct(product);
+    assert.strictEqual(result.id, '100');
+    assert.strictEqual(result.sku, 'MAG-001');
+    assert.strictEqual(result.price, 49.99);
+    assert.strictEqual(result.stock, 25);
+    assert.strictEqual(result.in_stock, true);
+    assert.strictEqual(result.description, 'A widget');
+  });
+
+  test('handles product without stock extension', () => {
+    const product = {
+      id: 200,
+      sku: 'MAG-002',
+      name: 'No Stock',
+      price: 10,
+      custom_attributes: [],
+      media_gallery_entries: []
+    };
+    const result = conn._transformProduct(product);
+    assert.strictEqual(result.in_stock, false);
+    assert.strictEqual(result.stock, 0);
+  });
+});
+
+// ─── SquareCatalogConnector _baseUrl ─────────────────────────────
+
+describe('SquareCatalogConnector _baseUrl', () => {
+  test('sandbox uses squareupsandbox', () => {
+    const conn = new SquareCatalogConnector('t1', { environment: 'sandbox' });
+    assert.ok(conn._baseUrl.includes('sandbox'));
+  });
+
+  test('production uses squareup.com', () => {
+    const conn = new SquareCatalogConnector('t1', { environment: 'production' });
+    assert.ok(conn._baseUrl.includes('squareup.com'));
+    assert.ok(!conn._baseUrl.includes('sandbox'));
+  });
+});
+
+// ─── LightspeedCatalogConnector _baseUrl ─────────────────────────
+
+describe('LightspeedCatalogConnector _baseUrl', () => {
+  test('K-Series trial uses trial.lsk URL', () => {
+    const conn = new LightspeedCatalogConnector('t1', { series: 'K', environment: 'trial' });
+    assert.ok(conn._baseUrl.includes('trial'));
+    assert.ok(conn._baseUrl.includes('lsk'));
+  });
+
+  test('K-Series production uses lsk URL', () => {
+    const conn = new LightspeedCatalogConnector('t1', { series: 'K', environment: 'production' });
+    assert.ok(conn._baseUrl.includes('lsk'));
+    assert.ok(!conn._baseUrl.includes('trial'));
+  });
+
+  test('X-Series uses lightspeedapp', () => {
+    const conn = new LightspeedCatalogConnector('t1', { series: 'X' });
+    assert.ok(conn._baseUrl.includes('lightspeedapp'));
+  });
+});
+
+// ─── LightspeedCatalogConnector _parseMenuEntries ────────────────
+
+describe('LightspeedCatalogConnector _parseMenuEntries', () => {
+  const conn = new LightspeedCatalogConnector('t1', { currency: 'MAD' });
+
+  test('parses menuItemEntry', () => {
+    const entries = [
+      { menuItemEntry: { sku: 'SK1', productName: 'Burger', productPrice: 85, richData: { description: 'Juicy' }, allergenCodes: ['GLUTEN'] } }
+    ];
+    const result = conn._parseMenuEntries(entries);
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0].name, 'Burger');
+    assert.strictEqual(result[0].price, 85);
+    assert.deepStrictEqual(result[0].allergens, ['GLUTEN']);
+  });
+
+  test('handles nested menuGroupEntry', () => {
+    const entries = [
+      { menuGroupEntry: { menuEntry: [{ menuItemEntry: { productName: 'Sub', productPrice: 20, sku: 'S1' } }] } }
+    ];
+    const result = conn._parseMenuEntries(entries);
+    assert.strictEqual(result.length, 1);
+    assert.strictEqual(result[0].name, 'Sub');
+  });
+
+  test('returns empty for empty entries', () => {
+    assert.deepStrictEqual(conn._parseMenuEntries([]), []);
+  });
+
+  test('handles entries without menuItemEntry or menuGroupEntry', () => {
+    const entries = [{ menuDealEntry: {} }]; // Deals not yet implemented
+    const result = conn._parseMenuEntries(entries);
+    assert.strictEqual(result.length, 0);
+  });
+});

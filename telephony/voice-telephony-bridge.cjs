@@ -4704,6 +4704,19 @@ if (typeof module !== 'undefined') {
     listPendingActions,
     approveAction,
     rejectAction,
-    HITL_CONFIG
+    HITL_CONFIG,
+    // Pure logic utilities (exported for testing)
+    getGrokVoiceFromPreferences,
+    getTwiMLLanguage,
+    getTwiMLMessage,
+    detectFinancialCommitment,
+    getMatchedFinancialKeywords,
+    calculateBANTScore,
+    getQualificationLabel,
+    detectQueryLanguage,
+    safeJsonParse,
+    generateSessionId,
+    checkRateLimit,
+    CONFIG
   };
 }

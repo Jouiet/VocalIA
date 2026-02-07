@@ -542,3 +542,184 @@ describe('KnowledgeBaseServices exports', () => {
     assert.strictEqual(typeof kb.build, 'function');
   });
 });
+
+// ─── ServiceKnowledgeBase formatForVoice ──────────────────────────
+
+describe('ServiceKnowledgeBase formatForVoice', () => {
+  const kb = new ServiceKnowledgeBase();
+
+  test('returns French fallback for empty results (fr)', () => {
+    const result = kb.formatForVoice([], 'fr');
+    assert.ok(result.includes("pas trouvé"));
+  });
+
+  test('returns English fallback for empty results (en)', () => {
+    const result = kb.formatForVoice([], 'en');
+    assert.ok(result.includes("couldn't find"));
+  });
+
+  test('returns English fallback for null results', () => {
+    const result = kb.formatForVoice(null, 'en');
+    assert.ok(result.includes("couldn't find"));
+  });
+
+  test('formats results with title and benefit', () => {
+    const results = [{
+      title: 'Voice AI',
+      benefit_en: 'Automates calls',
+      strategic_intent: 'Reduce costs',
+      business_outcome: 'Faster response',
+      diagnostic_truth: 'AI is efficient'
+    }];
+    const output = kb.formatForVoice(results, 'en');
+    assert.ok(output.includes('VOICE AI'));
+    assert.ok(output.includes('Automates calls'));
+    assert.ok(output.includes('Reduce costs'));
+    assert.ok(output.includes('Faster response'));
+  });
+
+  test('uses French title when language is fr', () => {
+    const results = [{
+      title: 'Voice AI',
+      title_fr: 'IA Vocale',
+      benefit_en: 'Automates',
+      benefit_fr: 'Automatise',
+      strategic_intent: 'Intent',
+      business_outcome: 'Outcome',
+      diagnostic_truth: 'Truth'
+    }];
+    const output = kb.formatForVoice(results, 'fr');
+    assert.ok(output.includes('IA VOCALE'));
+    assert.ok(output.includes('Automatise'));
+  });
+
+  test('limits to 3 results max', () => {
+    const results = Array.from({ length: 5 }, (_, i) => ({
+      title: `Item ${i}`,
+      benefit_en: `Benefit ${i}`,
+      strategic_intent: 'Intent',
+      business_outcome: 'Outcome',
+      diagnostic_truth: 'Truth'
+    }));
+    const output = kb.formatForVoice(results, 'en');
+    assert.ok(output.includes('ITEM 0'));
+    assert.ok(output.includes('ITEM 2'));
+    assert.ok(!output.includes('ITEM 3'));
+  });
+});
+
+// ─── ServiceKnowledgeBase graphSearch ──────────────────────────────
+
+describe('ServiceKnowledgeBase graphSearch', () => {
+  test('returns empty for no matching nodes', () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.graph = { nodes: [{ id: 'n1', label: 'Email' }], edges: [] };
+    const results = kb.graphSearch('nonexistent');
+    assert.deepStrictEqual(results, []);
+  });
+
+  test('finds matching node by label', () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.graph = {
+      nodes: [
+        { id: 'n1', label: 'Voice AI', type: 'service' },
+        { id: 'n2', label: 'Telephony', type: 'service' }
+      ],
+      edges: [{ from: 'n1', to: 'n2', relation: 'requires' }]
+    };
+    const results = kb.graphSearch('voice');
+    assert.strictEqual(results.length, 1);
+    assert.strictEqual(results[0].node.id, 'n2');
+    assert.strictEqual(results[0].relation, 'requires');
+  });
+
+  test('finds matching node by id', () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.graph = {
+      nodes: [
+        { id: 'voice_ai', label: 'AI Service', type: 'service' },
+        { id: 'stt', label: 'STT Engine', type: 'component' }
+      ],
+      edges: [{ from: 'voice_ai', to: 'stt', relation: 'uses' }]
+    };
+    const results = kb.graphSearch('voice_ai');
+    assert.ok(results.length >= 1);
+  });
+
+  test('returns bidirectional edges', () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.graph = {
+      nodes: [
+        { id: 'n1', label: 'A', type: 's' },
+        { id: 'n2', label: 'B', type: 's' },
+        { id: 'n3', label: 'C', type: 's' }
+      ],
+      edges: [
+        { from: 'n1', to: 'n2', relation: 'depends_on' },
+        { from: 'n3', to: 'n1', relation: 'enhances' }
+      ]
+    };
+    const results = kb.graphSearch('A');
+    assert.strictEqual(results.length, 2);
+  });
+
+  test('filters by tenantId', () => {
+    const kb = new ServiceKnowledgeBase();
+    kb.isLoaded = true;
+    kb.graph = {
+      nodes: [
+        { id: 'n1', label: 'Voice', type: 's', tenant_id: 'tenant_a' },
+        { id: 'n2', label: 'Email', type: 's', tenant_id: 'shared' }
+      ],
+      edges: [{ from: 'n1', to: 'n2', relation: 'uses' }]
+    };
+    const results = kb.graphSearch('voice', { tenantId: 'tenant_b' });
+    assert.strictEqual(results.length, 0);
+  });
+});
+
+// ─── ServiceKnowledgeBase getStatus ───────────────────────────────
+
+describe('ServiceKnowledgeBase getStatus', () => {
+  test('returns exists:false when no status file', () => {
+    const kb = new ServiceKnowledgeBase();
+    const status = kb.getStatus();
+    assert.strictEqual(typeof status, 'object');
+    // Will return exists:true if status.json exists in data dir
+    assert.ok('exists' in status);
+  });
+});
+
+// ─── ServiceKnowledgeBase methods existence ─────────────────────
+
+describe('ServiceKnowledgeBase methods', () => {
+  const kb = new ServiceKnowledgeBase();
+
+  test('has load method', () => {
+    assert.strictEqual(typeof kb.load, 'function');
+  });
+
+  test('has search method', () => {
+    assert.strictEqual(typeof kb.search, 'function');
+  });
+
+  test('has graphSearch method', () => {
+    assert.strictEqual(typeof kb.graphSearch, 'function');
+  });
+
+  test('has formatForVoice method', () => {
+    assert.strictEqual(typeof kb.formatForVoice, 'function');
+  });
+
+  test('has getStatus method', () => {
+    assert.strictEqual(typeof kb.getStatus, 'function');
+  });
+
+  test('has asyncSearchHybrid method', () => {
+    assert.strictEqual(typeof kb.asyncSearchHybrid, 'function');
+  });
+});

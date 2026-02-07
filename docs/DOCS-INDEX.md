@@ -104,7 +104,7 @@ docs/archive/
 |:-----|:------------|
 | **core.md** | Architecture (~140k lignes), 7 services, credentials |
 | **factuality.md** | Métriques vérifiées wc -l/grep -c |
-| **voice-platform.md** | 40 personas, 25 function tools |
+| **voice-platform.md** | 38 personas, 25 function tools |
 | **scripts.md** | 60 fichiers backend (55,594 lignes) |
 | **token-optimization.md** | Token management |
 | **personas-architecture.md** | Structure duale personas |

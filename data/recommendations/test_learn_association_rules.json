@@ -1,0 +1,28 @@
+{
+  "pairs": {
+    "productA": [
+      {
+        "productId": "productB",
+        "support": 1.5,
+        "confidence": 1,
+        "coOccurrences": 30,
+        "isHighConfidence": true
+      }
+    ],
+    "productB": [
+      {
+        "productId": "productA",
+        "support": 1.5,
+        "confidence": 1,
+        "coOccurrences": 30,
+        "isHighConfidence": true
+      }
+    ]
+  },
+  "lastUpdated": "2026-02-06T22:19:00.109Z",
+  "stats": {
+    "totalOrders": 20,
+    "uniqueProducts": 2,
+    "rulesGenerated": 2
+  }
+}

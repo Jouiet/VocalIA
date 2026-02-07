@@ -24,18 +24,6 @@
             "widget_type": "B2B",
             "booking_url": null
         },
-        "client_hoa_01": {
-            "name": "Sunnyvale HOA",
-            "sector": "PROPERTY",
-            "currency": "USD",
-            "language": "en",
-            "knowledge_base_id": "hoa_support_v1",
-            "payment_method": "BANK_TRANSFER",
-            "payment_details": "Account: 123456789 (Chase Bank)",
-            "phone": "+15550199",
-            "address": "88 Sunnyvale Dr, CA",
-            "widget_type": "B2B"
-        },
         "ecom_nike_01": {
             "name": "Nike Reseller Paris",
             "sector": "UNIVERSAL_ECOMMERCE",
@@ -549,13 +537,6 @@
             "icon": "🏢",
             "booking_required": false,
             "typical_duration": 30
-        },
-        "HOA": {
-            "label": "Syndic",
-            "label_ar": "نقابة",
-            "icon": "🏘️",
-            "booking_required": false,
-            "typical_duration": 15
         },
         "UNIVERSAL_ECOMMERCE": {
             "label": "E-commerce",

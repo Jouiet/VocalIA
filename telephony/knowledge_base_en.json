@@ -32,12 +32,6 @@
         "urgence": "Call 911 for life-threatening emergencies. For clinic emergencies, call at opening time 8am.",
         "rdv": "Appointments available by phone or through our patient portal."
     },
-    "mechanic_v1": {
-        "services": "Oil change, brakes, tires, battery, electronic diagnostics, MOT.",
-        "horaires": "Monday-Friday 8:30am-6pm, Saturday 9am-12pm.",
-        "vehicule_courtoisie": "Courtesy vehicle available by reservation.",
-        "garantie": "All repairs guaranteed 1 year parts and labor."
-    },
     "counselor_v1": {
         "domaines": "Labor Law, Family Law, Real Estate Law, Business Law.",
         "honoraires": "First 30-minute consultation is $80.",
@@ -101,12 +95,6 @@
         "garantie_travaux": "All our work is guaranteed 10 years and insured.",
         "delai_intervention": "Work begins within 1-2 weeks depending on project type.",
         "financement": "Payment in 3 or 4 installments available interest-free."
-    },
-    "funeral_v1": {
-        "premier_contact": "Our team is available 24/7 to support you during these difficult times.",
-        "organisation": "We handle all administrative and logistical arrangements.",
-        "personnalisation": "Each ceremony can be personalized according to your wishes and beliefs.",
-        "accompagnement": "A dedicated advisor supports you throughout the process."
     },
     "accountant_v1": {
         "services": "General accounting, tax returns, payroll, business formation.",

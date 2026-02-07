@@ -88,8 +88,9 @@ class OAuthGateway {
       scopes,
       createdAt: Date.now()
     });
-    // Auto-cleanup after 10 minutes
-    setTimeout(() => pendingStates.delete(state), 10 * 60 * 1000);
+    // Auto-cleanup after 10 minutes (unref to not keep process alive)
+    const timer = setTimeout(() => pendingStates.delete(state), 10 * 60 * 1000);
+    if (timer.unref) timer.unref();
     return state;
   }
 

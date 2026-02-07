@@ -85,7 +85,6 @@
     "diagnostic_truth": "",
     "systemic_risk": "",
     "tenant_id": "agency_internal",
-    "text": "Voice Persona Injector Injecteur Persona Vocale Industry-specific AI personalities with BANT, PAS, CIALDINI, AIDA, LAER frameworks. 100% translations in 5 languages. Personnalites IA specifiques par secteur avec frameworks BANT, PAS, CIALDINI, AIDA, LAER. 100% traductions en 5 langues. SOTA persona engineering system providing 40 industry-specific AI personalities with complete SOTA structure: personality_traits, background, tone_guidelines, forbidden_behaviors, example_dialogues. Multi-tenant ready with GPM override for churn rescue. personas 40-personas 5-languages sota-structure marketing-frameworks multi-tenant gpm-override darija-native dental-clinics real-estate contractors funeral-services ecommerce restaurants consultants voice-api-resilient voice-telephony-bridge mcp-server vocalia persona personnalite agent-virtuel assistant-ia dental dentiste immobilier real-estate restaurant ecommerce hotel consulting funeral contractor artisan pme tpe startup entrepreneur independant freelance darija dialecte-marocain maghrebi persona_differentiation BANT scoring, PAS framework, CIALDINI principles, AIDA funnel, LAER objection handling 40% improvement in response quality, industry-specific compliance, Moroccan market advantage with Darija Architectural Priority: Structural Foundation"
   },
   {
     "id": "voice-widget-core",
@@ -493,9 +492,9 @@
     "category": "faq",
     "persona_id": "agency_v3",
     "topic": "personas",
-    "answer_fr": "40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
+    "answer_fr": "38 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
     "tenant_id": "agency_internal",
-    "text": "agency Personas personas 40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus."
+    "text": "agency Personas personas 38 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus."
   },
   {
     "id": "faq_agency_v3_langues",
@@ -594,52 +593,40 @@
     "text": "healer Rdv rdv Prise de rendez-vous possible par téléphone ou via notre portail patient. appointment booking schedule"
   },
   {
-    "id": "faq_mechanic_v1_services",
     "type": "faq",
     "title": "Services FAQ",
     "title_fr": "FAQ Services",
     "category": "faq",
-    "persona_id": "mechanic_v1",
     "topic": "services",
     "answer_fr": "Révision, freins, pneus, batterie, diagnostic électronique, contrôle technique.",
     "tenant_id": "agency_internal",
-    "text": "mechanic Services services Révision, freins, pneus, batterie, diagnostic électronique, contrôle technique."
   },
   {
-    "id": "faq_mechanic_v1_horaires",
     "type": "faq",
     "title": "Horaires FAQ",
     "title_fr": "FAQ Horaires",
     "category": "faq",
-    "persona_id": "mechanic_v1",
     "topic": "horaires",
     "answer_fr": "Lundi-Vendredi 8h30-18h00, Samedi 9h-12h.",
     "tenant_id": "agency_internal",
-    "text": "mechanic Horaires horaires Lundi-Vendredi 8h30-18h00, Samedi 9h-12h. hours schedule opening time"
   },
   {
-    "id": "faq_mechanic_v1_vehicule_courtoisie",
     "type": "faq",
     "title": "Vehicule Courtoisie FAQ",
     "title_fr": "FAQ Vehicule Courtoisie",
     "category": "faq",
-    "persona_id": "mechanic_v1",
     "topic": "vehicule_courtoisie",
     "answer_fr": "Nous prêtons un véhicule de courtoisie sur réservation préalable.",
     "tenant_id": "agency_internal",
-    "text": "mechanic Vehicule Courtoisie vehicule_courtoisie Nous prêtons un véhicule de courtoisie sur réservation préalable."
   },
   {
-    "id": "faq_mechanic_v1_garantie",
     "type": "faq",
     "title": "Garantie FAQ",
     "title_fr": "FAQ Garantie",
     "category": "faq",
-    "persona_id": "mechanic_v1",
     "topic": "garantie",
     "answer_fr": "Toutes nos réparations sont garanties 1 an pièces et main d'œuvre.",
     "tenant_id": "agency_internal",
-    "text": "mechanic Garantie garantie Toutes nos réparations sont garanties 1 an pièces et main d'œuvre."
   },
   {
     "id": "faq_counselor_v1_domaines",
@@ -1170,52 +1157,40 @@
     "text": "contractor Financement financement Possibilité de paiement en 3 ou 4 fois sans frais."
   },
   {
-    "id": "faq_funeral_v1_premier_contact",
     "type": "faq",
     "title": "Premier Contact FAQ",
     "title_fr": "FAQ Premier Contact",
     "category": "faq",
-    "persona_id": "funeral_v1",
     "topic": "premier_contact",
     "answer_fr": "Notre équipe est disponible 24h/24 pour vous accompagner dans ces moments difficiles.",
     "tenant_id": "agency_internal",
-    "text": "funeral Premier Contact premier_contact Notre équipe est disponible 24h/24 pour vous accompagner dans ces moments difficiles."
   },
   {
-    "id": "faq_funeral_v1_organisation",
     "type": "faq",
     "title": "Organisation FAQ",
     "title_fr": "FAQ Organisation",
     "category": "faq",
-    "persona_id": "funeral_v1",
     "topic": "organisation",
     "answer_fr": "Nous nous occupons de toutes les démarches administratives et logistiques.",
     "tenant_id": "agency_internal",
-    "text": "funeral Organisation organisation Nous nous occupons de toutes les démarches administratives et logistiques."
   },
   {
-    "id": "faq_funeral_v1_personnalisation",
     "type": "faq",
     "title": "Personnalisation FAQ",
     "title_fr": "FAQ Personnalisation",
     "category": "faq",
-    "persona_id": "funeral_v1",
     "topic": "personnalisation",
     "answer_fr": "Chaque cérémonie peut être personnalisée selon vos souhaits et croyances.",
     "tenant_id": "agency_internal",
-    "text": "funeral Personnalisation personnalisation Chaque cérémonie peut être personnalisée selon vos souhaits et croyances."
   },
   {
-    "id": "faq_funeral_v1_accompagnement",
     "type": "faq",
     "title": "Accompagnement FAQ",
     "title_fr": "FAQ Accompagnement",
     "category": "faq",
-    "persona_id": "funeral_v1",
     "topic": "accompagnement",
     "answer_fr": "Un conseiller dédié vous accompagne tout au long du processus.",
     "tenant_id": "agency_internal",
-    "text": "funeral Accompagnement accompagnement Un conseiller dédié vous accompagne tout au long du processus."
   },
   {
     "id": "faq_accountant_v1_services",

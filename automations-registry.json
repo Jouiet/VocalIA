@@ -79,11 +79,11 @@
       "strategic_intent": "persona_differentiation",
       "business_outcome": "40% improvement in response quality, industry-specific compliance, Moroccan market advantage with Darija",
       "marketing_science": "BANT scoring, PAS framework, CIALDINI principles, AIDA funnel, LAER objection handling",
-      "capabilities": ["40-personas", "5-languages", "sota-structure", "marketing-frameworks", "multi-tenant", "gpm-override", "darija-native"],
-      "use_cases": ["dental-clinics", "real-estate", "contractors", "funeral-services", "ecommerce", "restaurants", "consultants"],
+      "capabilities": ["38-personas", "5-languages", "sota-structure", "marketing-frameworks", "multi-tenant", "gpm-override", "darija-native"],
+      "use_cases": ["dental-clinics", "real-estate", "contractors", "ecommerce", "restaurants", "consultants"],
       "integrations": ["voice-api-resilient", "voice-telephony-bridge", "mcp-server"],
       "languages": ["fr", "en", "es", "ar", "ary"],
-      "keywords": ["vocalia", "persona", "personnalite", "agent-virtuel", "assistant-ia", "dental", "dentiste", "immobilier", "real-estate", "restaurant", "ecommerce", "hotel", "consulting", "funeral", "contractor", "artisan", "pme", "tpe", "startup", "entrepreneur", "independant", "freelance", "darija", "dialecte-marocain", "maghrebi"]
+      "keywords": ["vocalia", "persona", "personnalite", "agent-virtuel", "assistant-ia", "dental", "dentiste", "immobilier", "real-estate", "restaurant", "ecommerce", "hotel", "consulting", "contractor", "artisan", "pme", "tpe", "startup", "entrepreneur", "independant", "freelance", "darija", "dialecte-marocain", "maghrebi"]
     },
     {
       "id": "voice-widget-core",

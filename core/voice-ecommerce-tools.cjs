@@ -152,6 +152,9 @@ function getVoiceFriendlyStatus(status, fulfillmentStatus, platform) {
 }
 
 module.exports = {
+  // Pure utility (exported for testing)
+  getVoiceFriendlyStatus,
+
   /**
    * Check order status - PRODUCTION IMPLEMENTATION
    * Supports Shopify (GraphQL) and WooCommerce (REST)

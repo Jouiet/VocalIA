@@ -69,10 +69,10 @@ grep -r "agency_internal" core/*.cjs telephony/*.cjs | wc -l
 
 ### ✅ SESSION 250.97octies: MULTI-TENANT SCALE UP (06/02/2026)
 
-**OBJECTIVE**: Scale from 30 to 500+ tenants for rigorous widget testing across all 40 personas, 5 languages, and 12 regions.
+**OBJECTIVE**: Scale from 30 to 500+ tenants for rigorous widget testing across all 38 personas, 5 languages, and 12 regions.
 
 **IMPLEMENTATION**:
-1. Created `scripts/seed-500-tenants.cjs` - Generates 480 tenants (40 personas × 12 regions)
+1. Created `scripts/seed-500-tenants.cjs` - Generates 480 tenants (38 personas × 12 regions)
 2. Created `scripts/check-tenant-state.cjs` - Verification tool
 3. Executed KB provisioning for all new tenants
 
@@ -262,7 +262,6 @@ const {VoicePersonaInjector} = require('./personas/voice-persona-injector.cjs');
 | CAR_DEALER | ❌ N'existait pas | → RETAILER |
 | INSURANCE | ❌ N'existait pas | → INSURER |
 | HOTEL | ❌ N'existait pas | → CONCIERGE |
-| HOA | ❌ N'existait pas | → PROPERTY |
 | HAIR_SALON | ❌ N'existait pas | → HAIRDRESSER |
 | BEAUTY_SALON | ❌ N'existait pas | → STYLIST |
 | SPA | ❌ N'existait pas | → HEALER |
@@ -960,7 +959,7 @@ Voir `clients/_template/config.json` enrichi avec:
 | voice-widget-v3.js | 1139 | Widget browser |
 | voice-telephony-bridge.cjs | ~3200 | Bridge PSTN |
 | GoogleSheetsDB.cjs | 759 | Database layer |
-| voice-persona-injector.cjs | ~5200 | 40 personas × 5 langues |
+| voice-persona-injector.cjs | ~5200 | 38 personas × 5 langues |
 | tenant-kb-loader.cjs | 707 | Multi-tenant KB |
 | voice-fr.json | ~200 | Widget i18n FR |
 | voice-ary.json | ~200 | Widget i18n Darija |
@@ -1720,9 +1719,9 @@ VocalIA enforces a strict separation between the interaction platform (Widget) a
 | **Fallback chain:** grok→gemini→anthropic | `voice-api-resilient.cjs:1584` | Claude est DERNIER recours |
 | **Widget = TEXT DEFAULT** | `widget/voice-widget-v3.js:9` | ~60% users TEXT, ~40% VOICE |
 | **max_tokens = 500** | `voice-api-resilient.cjs:820,942,1051` | = ~375 mots (pas 40!) |
-| **`forbidden_behaviors` existe** | `voice-persona-injector.cjs:1300+` | 40 personas ont déjà des interdits |
-| **`example_dialogues` existe** | `voice-persona-injector.cjs:1364+` | 40 personas ont déjà des exemples |
-| **`escalation_triggers` existe** | `voice-persona-injector.cjs:1306+` | 40 personas ont déjà des triggers |
+| **`forbidden_behaviors` existe** | `voice-persona-injector.cjs:1300+` | 38 personas ont déjà des interdits |
+| **`example_dialogues` existe** | `voice-persona-injector.cjs:1364+` | 38 personas ont déjà des exemples |
+| **`escalation_triggers` existe** | `voice-persona-injector.cjs:1306+` | 38 personas ont déjà des triggers |
 
 #### VERDICT CRITIQUE PAR PROPOSITION
 
@@ -1731,7 +1730,7 @@ VocalIA enforces a strict separation between the interaction platform (Widget) a
 | **P0-1** | <40 mots response_rules | ⚠️ **PARTIELLEMENT VALIDE** | TÉLÉPHONIE OUI (voice-only). WIDGET NON (text-default users veulent plus de détails). **Solution:** Conditionnel selon source. |
 | **P0-2** | Convertir XML structure | ❌ **QUESTIONABLE** | Recherche basée sur **Claude** docs. VocalIA utilise **Grok PRIMARY**. xAI docs: "XML ou Markdown" = équivalent. Pas de preuve d'avantage XML sur Grok. |
 | **P0-3** | Supprimer agency_internal | ✅ **VALIDE** | Fix architecture pure, indépendant du LLM. Isolation tenant nécessaire. |
-| **P1-4** | forbidden_phrases explicites | ⚠️ **DÉJÀ IMPLÉMENTÉ** | `forbidden_behaviors` existe déjà dans 40/40 personas. Vérifier couverture plutôt qu'ajouter. |
+| **P1-4** | forbidden_phrases explicites | ⚠️ **DÉJÀ IMPLÉMENTÉ** | `forbidden_behaviors` existe déjà dans 40/38 personas. Vérifier couverture plutôt qu'ajouter. |
 | **P1-5** | Few-shot examples (2-3) | ⚠️ **RISQUE LATENCE** | `example_dialogues` existe déjà. Ajouter = +tokens = +latence. Voice AI exige <200ms. **Contre-productif.** |
 | **P1-6** | Emotion-aware escalation | ⚠️ **DÉJÀ IMPLÉMENTÉ** | `escalation_triggers` existe déjà. Le "+35% CSAT" n'a pas de source vérifiable dans ma recherche. |
 

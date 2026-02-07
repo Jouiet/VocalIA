@@ -14,10 +14,10 @@
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
 </head>
-<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#0a0a0a] text-white flex flex-col">
+    <aside class="w-64 bg-[#050505] text-white flex flex-col">
       <div class="p-4 border-b border-white/[0.08]">
         <div class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
@@ -155,7 +155,7 @@
           <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] overflow-hidden hover:shadow-lg transition-all duration-200">
             <table class="w-full text-sm">
               <thead>
-                <tr class="text-left text-zinc-500 border-b border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#0a0a0a]">
+                <tr class="text-left text-zinc-500 border-b border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-[#050505]">
                   <th class="px-4 py-3 font-medium">Type</th>
                   <th class="px-4 py-3 font-medium">Détails</th>
                   <th class="px-4 py-3 font-medium">Score</th>
@@ -310,7 +310,7 @@
           ${item.context.bant ? `
             <div class="grid grid-cols-4 gap-2 mb-4">
               ${['budget', 'authority', 'need', 'timeline'].map(key => `
-                <div class="text-center p-2 bg-zinc-50 dark:bg-[#0a0a0a] rounded">
+                <div class="text-center p-2 bg-zinc-50 dark:bg-[#050505] rounded">
                   <p class="text-xs text-zinc-500 uppercase">${key[0]}</p>
                   <p class="text-sm font-bold ${item.context.bant[key] >= 70 ? 'text-green-600' : 'text-zinc-600'}">${item.context.bant[key]}%</p>
                 </div>

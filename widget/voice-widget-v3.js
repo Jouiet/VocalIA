@@ -50,6 +50,10 @@
     CATALOG_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:3013/api/tenants'  // Dev: local DB API
       : 'https://api.vocalia.ma/api/tenants', // Prod: deployed API
+    // DB API base URL (for recommendations, leads, etc.)
+    API_BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3013'  // Dev: local DB API
+      : 'https://api.vocalia.ma', // Prod: deployed API
     ECOMMERCE_MODE: true, // Enable product display in widget
     MAX_CAROUSEL_ITEMS: 5, // Maximum products in carousel
 
@@ -1058,18 +1062,17 @@
     try {
       const endpoint = options.search
         ? `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/search`
-        : `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items`;
+        : `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/browse`;
 
-      const params = new URLSearchParams();
-      if (options.category) params.append('category', options.category);
-      if (options.search) params.append('q', options.search);
-      if (options.limit) params.append('limit', options.limit);
-
-      const url = params.toString() ? `${endpoint}?${params}` : endpoint;
-
-      const response = await fetch(url, {
-        method: 'GET',
+      const response = await fetch(endpoint, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          q: options.search || undefined,
+          category: options.category || undefined,
+          limit: options.limit || CONFIG.MAX_CAROUSEL_ITEMS,
+          inStock: true
+        }),
         signal: AbortSignal.timeout(CONFIG.API_TIMEOUT)
       });
 
@@ -1169,7 +1172,7 @@
 
     try {
       const response = await fetch(
-        `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items/${productId}`,
+        `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/detail/${productId}`,
         { signal: AbortSignal.timeout(CONFIG.API_TIMEOUT) }
       );
 
@@ -1288,7 +1291,7 @@
 
     try {
       const response = await fetch(
-        `${CONFIG.API_BASE_URL}/api/tenants/${state.tenantId}/catalog/items/${productId}`
+        `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/detail/${productId}`
       );
       if (response.ok) {
         const data = await response.json();

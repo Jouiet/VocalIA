@@ -20,7 +20,7 @@
     },
     "agency_v3": {
         "produits": "VocalIA propose 4 produits Voice AI: Voice Widget B2B (qualification leads), Voice Widget B2C (support e-commerce), Widget E-commerce (8 intégrations) et Voice Telephony AI (ligne PSTN via Twilio).",
-        "personas": "40 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
+        "personas": "38 personas sectoriels pré-configurés: dentistes, immobilier, restaurants, e-commerce, PME et plus.",
         "langues": "5 langues supportées: Français, English, Español, العربية et Darija (dialecte marocain).",
         "contact": "Contactez-nous via vocalia.ma/booking ou par email contact@vocalia.ma.",
         "tarifs": "Essai 14 jours inclus, Starter 490 DH/mois, Pro 990 DH/mois, Enterprise sur devis.",
@@ -31,12 +31,6 @@
         "horaires": "Lundi-Vendredi 8h-20h, Samedi 8h-12h.",
         "urgence": "Contactez le 15 pour les urgences vitales. Pour les urgences cabinet, appelez à l'ouverture à 8h.",
         "rdv": "Prise de rendez-vous possible par téléphone ou via notre portail patient."
-    },
-    "mechanic_v1": {
-        "services": "Révision, freins, pneus, batterie, diagnostic électronique, contrôle technique.",
-        "horaires": "Lundi-Vendredi 8h30-18h00, Samedi 9h-12h.",
-        "vehicule_courtoisie": "Nous prêtons un véhicule de courtoisie sur réservation préalable.",
-        "garantie": "Toutes nos réparations sont garanties 1 an pièces et main d'œuvre."
     },
     "counselor_v1": {
         "domaines": "Droit du travail, Droit de la famille, Droit immobilier, Droit des affaires.",
@@ -101,12 +95,6 @@
         "garantie_travaux": "Tous nos travaux sont garantis 10 ans (décennale) et assurés.",
         "delai_intervention": "Intervention sous 1-2 semaines selon le type de travaux.",
         "financement": "Possibilité de paiement en 3 ou 4 fois sans frais."
-    },
-    "funeral_v1": {
-        "premier_contact": "Notre équipe est disponible 24h/24 pour vous accompagner dans ces moments difficiles.",
-        "organisation": "Nous nous occupons de toutes les démarches administratives et logistiques.",
-        "personnalisation": "Chaque cérémonie peut être personnalisée selon vos souhaits et croyances.",
-        "accompagnement": "Un conseiller dédié vous accompagne tout au long du processus."
     },
     "accountant_v1": {
         "services": "Comptabilité générale, déclarations fiscales, bulletins de paie, création d'entreprise.",

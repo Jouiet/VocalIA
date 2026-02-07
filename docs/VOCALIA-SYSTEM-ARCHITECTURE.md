@@ -264,9 +264,9 @@ telephony/voice-telephony-bridge.cjs
 ```
 personas/voice-persona-injector.cjs
 ├── SYSTEM_PROMPTS (lignes 68-805)
-│   └── 40 personas × 5 langues = 200 prompts multilingues
+│   └── 38 personas × 5 langues = 200 prompts multilingues
 ├── PERSONAS (lignes 807-5000)
-│   └── 40 personas avec metadata
+│   └── 38 personas avec metadata
 │       ├── personality_traits
 │       ├── example_dialogues
 │       ├── complaint_scenarios
@@ -285,7 +285,7 @@ AGENCY, UNIVERSAL_ECOMMERCE, DENTAL, PROPERTY, COLLECTOR,
 RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT,
 IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY, BAKERY,
 SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY, CONTRACTOR,
-FUNERAL, HEALER, MECHANIC, COUNSELOR, CONCIERGE,
+HEALER, COUNSELOR, CONCIERGE,
 STYLIST, RECRUITER, DISPATCHER, INSURER, ACCOUNTANT,
 ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER,
 PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_SME
@@ -670,7 +670,7 @@ Methods:
 | Composant | Fichier | Lignes | Fonction |
 |:----------|:--------|:------:|:---------|
 | **MCP WooCommerce Tools** | `mcp-server/src/tools/woocommerce.ts` | **687** | 7 tools REST API v3 |
-| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (40 personas, 5 langues) |
+| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (38 personas, 5 langues) |
 | **WordPress Plugin Ecom** | `distribution/wordpress/vocalia-voice-agent/vocalia-voice-agent.php` | **161** | WooCommerce widget |
 | **Catalog Connector** | `core/catalog-connector.cjs` (WooCommerceCatalogConnector) | **~200** | Sync produits REST v3 |
 | **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | **389** | checkOrderStatus(), getOrderHistory() |

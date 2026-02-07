@@ -111,31 +111,10 @@
   
 </head>
 
-<body class="bg-[#0a0a0a] text-white font-inter min-h-screen flex flex-col">
-  <!-- Skip Link -->
-  <a href="#main-content"
-    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
-    Aller au contenu principal
-  </a>
+<body class="bg-[#050505] text-white font-inter min-h-screen flex flex-col">
+<!-- Minimal Navigation -->
+  <div data-component="header"></div>
 
-  <!-- Minimal Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/[0.04]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <a href="/" class="flex items-center space-x-2">
-          <div class="w-10 h-10 rounded-xl vocalia-gradient flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
-            </svg>
-          </div>
-          <span class="text-xl font-bold gradient-text">VocalIA</span>
-        </a>
-        <a href="/" class="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-400 transition font-medium text-sm" data-i18n="error_page.back_home">
-          Retour à l'accueil
-        </a>
-      </div>
-    </div>
-  </nav>
 
   <!-- Main Content -->
   <main id="main-content" class="flex-1 flex items-center justify-center px-4 pt-16">
@@ -194,11 +173,8 @@
   </main>
 
   <!-- Minimal Footer -->
-  <footer class="py-6 border-t border-white/[0.06]">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-      <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
-    </div>
-  </footer>
+  <div data-component="footer"></div>
+
 
   <!-- i18n -->
   <script src="/src/lib/geo-detect.js"></script>
@@ -298,5 +274,6 @@
   <script src="/voice-assistant/voice-widget.js" defer></script>
   <!-- VocalIA Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
+  <script src="/src/lib/components.js" defer></script>
 </body>
 </html>

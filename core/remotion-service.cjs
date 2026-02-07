@@ -769,5 +769,7 @@ module.exports = {
   HITL_ENABLED,
   COMPOSITIONS,
   LANGUAGES,
-  VOCALIA_METRICS
+  VOCALIA_METRICS,
+  // Pure utility (exported for testing)
+  getCompositionId
 };

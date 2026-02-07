@@ -98,7 +98,7 @@ async function runTests() {
     failed++;
   }
 
-  // Test 4: All 40 personas have multilingual SYSTEM_PROMPTS
+  // Test 4: All 38 personas have multilingual SYSTEM_PROMPTS
   console.log('\nTest 4: All personas have SYSTEM_PROMPTS');
   try {
     const fs = require('fs');

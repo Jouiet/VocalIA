@@ -1559,6 +1559,29 @@ async function handleRequest(req, res) {
   // Session 250.74: CATALOG BROWSE/SEARCH/RECOMMENDATIONS (Widget Integration)
   // ═══════════════════════════════════════════════════════════════
 
+  // Catalog Item Detail (Public) - GET /api/tenants/:id/catalog/detail/:itemId
+  const catalogDetailMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/detail\/([^/]+)$/);
+  if (catalogDetailMatch && method === 'GET') {
+    const [, tenantId, itemId] = catalogDetailMatch;
+    // No auth required for public widget access
+
+    try {
+      const catalogStore = getCatalogStore();
+      const catalogType = query.type || 'PRODUCTS';
+      const item = catalogStore.getItem(tenantId, catalogType, itemId);
+
+      if (!item) {
+        sendError(res, 404, 'Item not found');
+        return;
+      }
+
+      sendJson(res, 200, { success: true, item });
+    } catch (e) {
+      sendError(res, 500, `Catalog detail error: ${e.message}`);
+    }
+    return;
+  }
+
   // Catalog Browse - POST /api/tenants/:id/catalog/browse
   const catalogBrowseMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/browse$/);
   if (catalogBrowseMatch && method === 'POST') {
@@ -1834,6 +1857,59 @@ async function handleRequest(req, res) {
   // ═══════════════════════════════════════════════════════════════
 
   // ═══════════════════════════════════════════════════════════════
+  // ═══════════════════════════════════════════════════════════════
+  // Session 250.113: LEADS ENDPOINT (Voice Quiz + Widget Lead Capture)
+  // ═══════════════════════════════════════════════════════════════
+
+  // Create Lead - POST /api/leads
+  if (path === '/api/leads' && method === 'POST') {
+    try {
+      const body = await readBody(req);
+      const { tenant_id, source, name, email, phone, quiz_answers } = body;
+
+      if (!tenant_id) {
+        return sendError(res, 400, 'tenant_id is required');
+      }
+
+      const leadId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const lead = {
+        id: leadId,
+        tenant_id,
+        source: source || 'widget',
+        name: name || null,
+        email: email || null,
+        phone: phone || null,
+        quiz_answers: quiz_answers || null,
+        created_at: new Date().toISOString(),
+        status: 'new'
+      };
+
+      // Store in memory
+      if (!global.leadsQueue) {
+        global.leadsQueue = [];
+      }
+      global.leadsQueue.push(lead);
+
+      // Persist to Google Sheets if available
+      try {
+        if (sheetsDB) {
+          await sheetsDB.append('leads', lead);
+        }
+      } catch (e) {
+        console.warn('[Leads] Google Sheets persist failed:', e.message);
+      }
+
+      sendJson(res, 201, {
+        success: true,
+        lead_id: leadId,
+        message: 'Lead captured successfully'
+      });
+    } catch (e) {
+      sendError(res, 500, `Lead capture error: ${e.message}`);
+    }
+    return;
+  }
+
   // Session 250.82: CART RECOVERY ENDPOINTS (Voice + SMS + Email)
   // Multi-channel abandoned cart recovery with voice callbacks
   // ═══════════════════════════════════════════════════════════════
@@ -2743,4 +2819,9 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { startServer, handleRequest, broadcast, broadcastToTenant, wsClients };
+module.exports = {
+  startServer, handleRequest, broadcast, broadcastToTenant, wsClients,
+  // Pure utilities (exported for testing)
+  filterUserRecord, filterUserRecords, getCorsHeaders, parseBody, sendJson, sendError,
+  ALLOWED_SHEETS, CORS_ALLOWED_ORIGINS
+};

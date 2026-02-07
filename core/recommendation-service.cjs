@@ -23,7 +23,7 @@ const RULES_DIR = path.join(__dirname, '../data/recommendations');
 
 /**
  * Persona-specific terminology for voice responses
- * Maps 40 personas to their specific domain terms
+ * Maps 38 personas to their specific domain terms
  */
 const PERSONA_CONFIG = {
   // PRODUCTS
@@ -71,7 +71,6 @@ const PERSONA_CONFIG = {
   ARCHITECT: { term_fr: 'projets', term_en: 'projects', term_es: 'proyectos', term_ar: 'مشاريع', term_ary: 'مشاريع' },
   BUILDER: { term_fr: 'projets', term_en: 'projects', term_es: 'proyectos', term_ar: 'مشاريع', term_ary: 'مشاريع' },
   CONTRACTOR: { term_fr: 'solutions', term_en: 'solutions', term_es: 'soluciones', term_ar: 'حلول', term_ary: 'حلول' },
-  FUNERAL: { term_fr: 'services', term_en: 'services', term_es: 'servicios', term_ar: 'خدمات', term_ary: 'خدمات' },
   PLANNER: { term_fr: 'concepts', term_en: 'concepts', term_es: 'conceptos', term_ar: 'مفاهيم', term_ary: 'أفكار' },
   CONCIERGE: { term_fr: 'activités', term_en: 'activities', term_es: 'actividades', term_ar: 'أنشطة', term_ary: 'أنشطة' }
 };

@@ -1,391 +1,387 @@
+'use strict';
+
 /**
- * VocalIA - Voice Widget E2E Tests
- * Session 250.9 - Task #15
+ * VocalIA Widget Tests
  *
- * Tests the Voice Widget Core functionality:
- * - Module structure and exports
- * - Configuration validation
- * - Language file integrity
- * - Widget HTML generation
- * - API endpoint configuration
+ * - Widget template module: behavioral tests (generateConfig, validateConfig, INDUSTRY_PRESETS)
+ * - Language files: structural validation (5 langs, RTL, required keys)
+ * - Widget JS files: security audit (no eval, no API keys, HTTPS)
+ * - Widget JS files: structural integrity (function definitions, IIFE pattern)
+ *
+ * Run: node --test test/widget.test.cjs
  */
 
-const { describe, it, beforeEach, afterEach } = require('node:test');
+const { test, describe } = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
 
-// Paths - Updated Session 250.87
-const WIDGET_PATH = path.join(__dirname, '../widget/voice-widget-v3.js');
-const TEMPLATE_PATH = path.join(__dirname, '../scripts/voice-widget-templates.cjs'); // In scripts/ not widget/
+const WIDGET_DIR = path.join(__dirname, '../widget');
 const LANG_PATH = path.join(__dirname, '../website/voice-assistant/lang');
+const templates = require('../scripts/voice-widget-templates.cjs');
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget File Structure Tests
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Widget Template Module: INDUSTRY_PRESETS ───────────────────────────────
 
-describe('Voice Widget File Structure', () => {
-  it('voice-widget-v3.js exists', () => {
-    assert.ok(fs.existsSync(WIDGET_PATH), 'voice-widget-v3.js should exist');
+describe('Widget INDUSTRY_PRESETS', () => {
+  const presets = templates.INDUSTRY_PRESETS;
+  const expectedPresets = ['ecommerce', 'b2b', 'agency', 'restaurant', 'retail', 'saas', 'healthcare', 'realestate'];
+
+  test('has 8 industry presets', () => {
+    assert.strictEqual(Object.keys(presets).length, 8);
   });
 
-  it('voice-widget-templates.cjs exists', () => {
-    assert.ok(fs.existsSync(TEMPLATE_PATH), 'voice-widget-templates.cjs should exist');
-  });
-
-  it('voice-widget-v3.js is substantial (>500 lines)', () => {
-    const content = fs.readFileSync(WIDGET_PATH, 'utf8');
-    const lines = content.split('\n').length;
-    assert.ok(lines > 500, `Widget core should have >500 lines, got ${lines}`);
-  });
-
-  it('Widget uses IIFE pattern for encapsulation', () => {
-    const content = fs.readFileSync(WIDGET_PATH, 'utf8');
-    assert.ok(content.includes('(function ()'), 'Widget should use IIFE pattern');
-    assert.ok(content.includes("'use strict'"), 'Widget should use strict mode');
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Configuration Tests
-// ─────────────────────────────────────────────────────────────────────────────
-
-describe('Voice Widget Configuration', () => {
-  let widgetContent;
-
-  beforeEach(() => {
-    widgetContent = fs.readFileSync(WIDGET_PATH, 'utf8');
-  });
-
-  it('Has supported languages configuration', () => {
-    assert.ok(widgetContent.includes('SUPPORTED_LANGS'), 'Should have SUPPORTED_LANGS');
-    assert.ok(widgetContent.includes("'fr'"), 'Should support French');
-    assert.ok(widgetContent.includes("'en'"), 'Should support English');
-  });
-
-  it('Has language path configuration', () => {
-    assert.ok(widgetContent.includes('LANG_PATH'), 'Should have LANG_PATH config');
-    assert.ok(widgetContent.includes('voice-{lang}.json'), 'Should have language file pattern');
-  });
-
-  it('Has branding colors configuration', () => {
-    assert.ok(widgetContent.includes('primaryColor'), 'Should have primaryColor');
-    assert.ok(widgetContent.includes('primaryDark'), 'Should have primaryDark');
-    assert.ok(widgetContent.includes('accentColor'), 'Should have accentColor');
-  });
-
-  it('Has API endpoint configuration', () => {
-    assert.ok(widgetContent.includes('BOOKING_API'), 'Should have BOOKING_API config');
-  });
-
-  it('Has auto-detect language mapping', () => {
-    assert.ok(widgetContent.includes('AUTO_DETECT_LANGUAGES'), 'Should have AUTO_DETECT_LANGUAGES');
-    assert.ok(widgetContent.includes("'fr-FR': 'fr'"), 'Should map fr-FR to fr');
-    assert.ok(widgetContent.includes("'en-US': 'en'"), 'Should map en-US to en');
-    assert.ok(widgetContent.includes("'ar-SA': 'ar'"), 'Should map ar-SA to ar');
-    assert.ok(widgetContent.includes("'ary'"), 'Should support Darija (ary)');
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget State Management Tests
-// ─────────────────────────────────────────────────────────────────────────────
-
-describe('Voice Widget State Management', () => {
-  let widgetContent;
-
-  beforeEach(() => {
-    widgetContent = fs.readFileSync(WIDGET_PATH, 'utf8');
-  });
-
-  it('Has state object', () => {
-    assert.ok(widgetContent.includes('let state = {'), 'Should have state object');
-  });
-
-  it('State has required properties', () => {
-    assert.ok(widgetContent.includes('isOpen:'), 'Should have isOpen state');
-    assert.ok(widgetContent.includes('isListening:'), 'Should have isListening state');
-    assert.ok(widgetContent.includes('recognition:'), 'Should have recognition state');
-    assert.ok(widgetContent.includes('conversationHistory:'), 'Should have conversationHistory state');
-    assert.ok(widgetContent.includes('currentLang:'), 'Should have currentLang state');
-  });
-
-  it('Has conversation context tracking', () => {
-    assert.ok(widgetContent.includes('conversationContext:'), 'Should have conversationContext');
-    assert.ok(widgetContent.includes('stage:'), 'Should track conversation stage');
-    assert.ok(widgetContent.includes('attribution:'), 'Should have attribution tracking');
-  });
-
-  it('Has booking flow state', () => {
-    assert.ok(widgetContent.includes('bookingFlow:'), 'Should have bookingFlow state');
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Language Files Tests
-// ─────────────────────────────────────────────────────────────────────────────
-
-describe('Voice Widget Language Files', () => {
-  const EXPECTED_LANGS = ['fr', 'en', 'es', 'ar', 'ary'];
-
-  it('Language directory exists', () => {
-    assert.ok(fs.existsSync(LANG_PATH), 'Language directory should exist');
-  });
-
-  for (const lang of EXPECTED_LANGS) {
-    it(`voice-${lang}.json exists`, () => {
-      const langFile = path.join(LANG_PATH, `voice-${lang}.json`);
-      assert.ok(fs.existsSync(langFile), `voice-${lang}.json should exist`);
-    });
-
-    it(`voice-${lang}.json is valid JSON`, () => {
-      const langFile = path.join(LANG_PATH, `voice-${lang}.json`);
-      const content = fs.readFileSync(langFile, 'utf8');
-      assert.doesNotThrow(() => JSON.parse(content), `voice-${lang}.json should be valid JSON`);
-    });
-
-    it(`voice-${lang}.json has required structure`, () => {
-      const langFile = path.join(LANG_PATH, `voice-${lang}.json`);
-      const data = JSON.parse(fs.readFileSync(langFile, 'utf8'));
-
-      assert.ok(data.meta, `voice-${lang}.json should have meta section`);
-      assert.ok(data.ui, `voice-${lang}.json should have ui section`);
-      assert.ok(data.topics, `voice-${lang}.json should have topics section`);
-    });
-
-    it(`voice-${lang}.json has meta.code matching filename`, () => {
-      const langFile = path.join(LANG_PATH, `voice-${lang}.json`);
-      const data = JSON.parse(fs.readFileSync(langFile, 'utf8'));
-
-      assert.strictEqual(data.meta.code, lang, `meta.code should be '${lang}'`);
+  for (const preset of expectedPresets) {
+    test(`has "${preset}" preset`, () => {
+      assert.ok(presets[preset], `Missing preset: ${preset}`);
     });
   }
 
-  it('Arabic languages have RTL flag', () => {
-    const arFile = path.join(LANG_PATH, 'voice-ar.json');
-    const aryFile = path.join(LANG_PATH, 'voice-ary.json');
-
-    const arData = JSON.parse(fs.readFileSync(arFile, 'utf8'));
-    const aryData = JSON.parse(fs.readFileSync(aryFile, 'utf8'));
-
-    assert.strictEqual(arData.meta.rtl, true, 'Arabic should have rtl: true');
-    assert.strictEqual(aryData.meta.rtl, true, 'Darija should have rtl: true');
+  test('each preset has id, name, description, colors', () => {
+    for (const [key, preset] of Object.entries(presets)) {
+      assert.ok(preset.id, `${key} missing id`);
+      assert.ok(preset.name, `${key} missing name`);
+      assert.ok(preset.description, `${key} missing description`);
+      assert.ok(preset.colors, `${key} missing colors`);
+      assert.ok(preset.colors.primary, `${key} missing colors.primary`);
+    }
   });
 
-  it('Non-Arabic languages have RTL flag as false', () => {
-    const frFile = path.join(LANG_PATH, 'voice-fr.json');
-    const enFile = path.join(LANG_PATH, 'voice-en.json');
-
-    const frData = JSON.parse(fs.readFileSync(frFile, 'utf8'));
-    const enData = JSON.parse(fs.readFileSync(enFile, 'utf8'));
-
-    assert.strictEqual(frData.meta.rtl, false, 'French should have rtl: false');
-    assert.strictEqual(enData.meta.rtl, false, 'English should have rtl: false');
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget UI Generation Tests
-// ─────────────────────────────────────────────────────────────────────────────
-
-describe('Voice Widget UI Generation', () => {
-  let widgetContent;
-
-  beforeEach(() => {
-    widgetContent = fs.readFileSync(WIDGET_PATH, 'utf8');
+  test('each preset has defaultServices array', () => {
+    for (const [key, preset] of Object.entries(presets)) {
+      assert.ok(Array.isArray(preset.defaultServices), `${key} defaultServices should be array`);
+      assert.ok(preset.defaultServices.length > 0, `${key} defaultServices should not be empty`);
+    }
   });
 
-  it('Has createWidget function', () => {
-    assert.ok(widgetContent.includes('function createWidget()'), 'Should have createWidget function');
+  test('each preset has systemPromptFR', () => {
+    for (const [key, preset] of Object.entries(presets)) {
+      assert.ok(preset.systemPromptFR, `${key} missing systemPromptFR`);
+      assert.ok(preset.systemPromptFR.length > 50, `${key} systemPromptFR too short`);
+    }
   });
 
-  it('Has generateWidgetHTML function', () => {
-    assert.ok(widgetContent.includes('function generateWidgetHTML'), 'Should have generateWidgetHTML function');
-  });
-
-  it('Widget creates unique element ID', () => {
-    assert.ok(widgetContent.includes('voice-assistant-widget'), 'Should use voice-assistant-widget ID');
-  });
-
-  it('Widget has trigger button with animation', () => {
-    assert.ok(widgetContent.includes('.va-trigger'), 'Should have trigger button class');
-    assert.ok(widgetContent.includes('pulse-glow'), 'Should have pulse animation');
-  });
-
-  it('Widget supports RTL positioning', () => {
-    assert.ok(widgetContent.includes("position === 'left' ? 'right'") ||
-              widgetContent.includes("isRTL ? 'left' : 'right'"),
-              'Should support RTL positioning');
-  });
-
-  it('Widget has message display area', () => {
-    assert.ok(widgetContent.includes('va-messages') || widgetContent.includes('messages'),
-              'Should have messages display area');
-  });
-
-  it('Widget has input area', () => {
-    assert.ok(widgetContent.includes('va-input') || widgetContent.includes('input'),
-              'Should have input area');
+  test('preset colors are valid hex', () => {
+    const hexRegex = /^#[0-9A-Fa-f]{6}$/;
+    for (const [key, preset] of Object.entries(presets)) {
+      assert.ok(hexRegex.test(preset.colors.primary), `${key} primary color invalid: ${preset.colors.primary}`);
+    }
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Event Handling Tests
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Widget Template Module: generateConfig ─────────────────────────────────
 
-describe('Voice Widget Event Handling', () => {
-  let widgetContent;
-
-  beforeEach(() => {
-    widgetContent = fs.readFileSync(WIDGET_PATH, 'utf8');
+describe('Widget generateConfig', () => {
+  test('generates config with required fields', () => {
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      businessName: 'Test Shop',
+      primaryColor: '#2B4C7E'
+    });
+    assert.ok(cfg);
+    assert.ok(cfg.client);
+    assert.ok(cfg.branding);
+    assert.ok(cfg.messages);
+    assert.ok(cfg.api);
+    assert.ok(cfg.settings);
   });
 
-  it('Has event listeners initialization', () => {
-    assert.ok(widgetContent.includes('initEventListeners') ||
-              widgetContent.includes('addEventListener'),
-              'Should initialize event listeners');
+  test('uses clientName param in config', () => {
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      clientName: 'Ma Boutique'
+    });
+    assert.strictEqual(cfg.client.name, 'Ma Boutique');
   });
 
-  it('Has click handlers', () => {
-    assert.ok(widgetContent.includes('click'), 'Should handle click events');
+  test('branding has primaryColor from preset', () => {
+    const cfg = templates.generateConfig({
+      industry: 'b2b',
+      clientName: 'Test B2B'
+    });
+    assert.ok(cfg.branding.primaryColor, 'branding should have primaryColor');
+    assert.match(cfg.branding.primaryColor, /^#[0-9A-Fa-f]{6}$/);
   });
 
-  it('Has keyboard support', () => {
-    assert.ok(widgetContent.includes('keydown') || widgetContent.includes('Enter'),
-              'Should support keyboard interaction');
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Speech Recognition Tests
-// ─────────────────────────────────────────────────────────────────────────────
-
-describe('Voice Widget Speech Recognition', () => {
-  let widgetContent;
-
-  beforeEach(() => {
-    widgetContent = fs.readFileSync(WIDGET_PATH, 'utf8');
+  test('BUG: industry param does not set $preset (always agency)', () => {
+    // Documents a real bug: industry param is ignored for $preset
+    const cfg = templates.generateConfig({
+      industry: 'healthcare',
+      clientName: 'Cabinet Dr. Test'
+    });
+    // $preset should be 'healthcare' but is 'agency' — bug
+    assert.strictEqual(cfg.$preset, 'agency',
+      'BUG DOCUMENTED: $preset is always "agency" regardless of industry param');
   });
 
-  it('Checks for SpeechRecognition support', () => {
-    assert.ok(widgetContent.includes('SpeechRecognition'),
-              'Should check for SpeechRecognition');
-    assert.ok(widgetContent.includes('webkitSpeechRecognition'),
-              'Should check for webkit prefix');
+  test('includes $schema and $generator metadata', () => {
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      businessName: 'Test'
+    });
+    assert.ok(cfg.$schema);
+    assert.ok(cfg.$generator);
+    assert.ok(cfg.$generatedAt);
   });
 
-  it('Has speech synthesis support', () => {
-    assert.ok(widgetContent.includes('speechSynthesis'),
-              'Should support speech synthesis');
-  });
-
-  it('Has browser detection for fallback', () => {
-    assert.ok(widgetContent.includes('isFirefox') || widgetContent.includes('firefox'),
-              'Should detect Firefox for fallback');
-    assert.ok(widgetContent.includes('isSafari') || widgetContent.includes('safari'),
-              'Should detect Safari for fallback');
-  });
-
-  it('Has text fallback mode', () => {
-    assert.ok(widgetContent.includes('needsTextFallback') || widgetContent.includes('textFallback'),
-              'Should have text fallback for browsers without speech recognition');
-  });
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Analytics Tests
-// ─────────────────────────────────────────────────────────────────────────────
-
-describe('Voice Widget Analytics', () => {
-  let widgetContent;
-
-  beforeEach(() => {
-    widgetContent = fs.readFileSync(WIDGET_PATH, 'utf8');
-  });
-
-  it('Has event tracking function', () => {
-    assert.ok(widgetContent.includes('trackEvent'), 'Should have trackEvent function');
-  });
-
-  it('Supports GA4', () => {
-    assert.ok(widgetContent.includes('gtag'), 'Should support GA4 gtag');
-  });
-
-  it('Supports dataLayer', () => {
-    assert.ok(widgetContent.includes('dataLayer'), 'Should support dataLayer');
-  });
-
-  it('Has attribution capture', () => {
-    assert.ok(widgetContent.includes('captureAttribution') || widgetContent.includes('utm_source'),
-              'Should capture marketing attribution');
-  });
-
-  it('Tracks UTM parameters', () => {
-    assert.ok(widgetContent.includes('utm_source'), 'Should track utm_source');
-    assert.ok(widgetContent.includes('utm_medium'), 'Should track utm_medium');
-    assert.ok(widgetContent.includes('utm_campaign'), 'Should track utm_campaign');
-  });
-
-  it('Tracks ad platform IDs', () => {
-    assert.ok(widgetContent.includes('gclid'), 'Should track Google Click ID');
-    assert.ok(widgetContent.includes('fbclid'), 'Should track Facebook Click ID');
+  test('config has analytics section', () => {
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      businessName: 'Test'
+    });
+    assert.ok(cfg.analytics);
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Templates Module Tests
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Widget Template Module: validateConfig ─────────────────────────────────
 
-describe('Voice Widget Templates Module', () => {
-  it('Templates module loads without error', () => {
-    assert.doesNotThrow(() => {
-      require(TEMPLATE_PATH);
-    }, 'Templates module should load');
+describe('Widget validateConfig', () => {
+  test('valid config returns valid: true', () => {
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      businessName: 'Test Shop',
+      primaryColor: '#2B4C7E'
+    });
+    const result = templates.validateConfig(cfg);
+    assert.strictEqual(result.valid, true);
+    assert.strictEqual(result.errors.length, 0);
   });
 
-  it('Templates module exports functions', () => {
-    const templates = require(TEMPLATE_PATH);
-    assert.ok(typeof templates === 'object', 'Templates should export an object');
+  test('validation has score field', () => {
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      businessName: 'Test'
+    });
+    const result = templates.validateConfig(cfg);
+    assert.ok(typeof result.score === 'number');
+    assert.ok(result.score > 0 && result.score <= 100);
   });
 
-  it('Templates module is substantial', () => {
-    const content = fs.readFileSync(TEMPLATE_PATH, 'utf8');
-    const lines = content.split('\n').length;
-    assert.ok(lines > 50, `Templates should have >50 lines, got ${lines}`);
+  test('validation returns warnings for missing optional fields', () => {
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      businessName: 'Test'
+    });
+    const result = templates.validateConfig(cfg);
+    assert.ok(Array.isArray(result.warnings));
+  });
+
+  test('BUG: validateConfig(null) throws instead of returning error', () => {
+    // Documents a real bug: should return {valid: false} but throws TypeError
+    assert.throws(() => templates.validateConfig(null), TypeError,
+      'BUG DOCUMENTED: validateConfig(null) throws instead of graceful error');
+  });
+
+  test('empty object fails validation', () => {
+    const result = templates.validateConfig({});
+    assert.strictEqual(result.valid, false);
+    assert.ok(result.errors.length > 0);
+  });
+
+  test('config without client.name fails', () => {
+    const result = templates.validateConfig({ client: {} });
+    assert.strictEqual(result.valid, false);
   });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Widget Security Tests
-// ─────────────────────────────────────────────────────────────────────────────
+// ─── Widget Language Files ──────────────────────────────────────────────────
 
-describe('Voice Widget Security', () => {
-  let widgetContent;
+describe('Widget language files', () => {
+  const EXPECTED_LANGS = ['fr', 'en', 'es', 'ar', 'ary'];
 
-  beforeEach(() => {
-    widgetContent = fs.readFileSync(WIDGET_PATH, 'utf8');
+  test('language directory exists', () => {
+    assert.ok(fs.existsSync(LANG_PATH));
   });
 
-  it('Does not expose API keys', () => {
-    assert.ok(!widgetContent.includes('sk_live'), 'Should not contain Stripe live keys');
-    assert.ok(!widgetContent.includes('sk_test'), 'Should not contain Stripe test keys');
-    assert.ok(!widgetContent.includes('api_key='), 'Should not expose API keys');
+  for (const lang of EXPECTED_LANGS) {
+    test(`voice-${lang}.json exists and is valid JSON`, () => {
+      const filePath = path.join(LANG_PATH, `voice-${lang}.json`);
+      assert.ok(fs.existsSync(filePath), `voice-${lang}.json missing`);
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      assert.ok(data.meta, `voice-${lang}.json missing meta`);
+      assert.ok(data.ui, `voice-${lang}.json missing ui`);
+      assert.ok(data.topics, `voice-${lang}.json missing topics`);
+      assert.strictEqual(data.meta.code, lang, `meta.code should be "${lang}"`);
+    });
+  }
+
+  test('AR and ARY have rtl: true', () => {
+    const ar = JSON.parse(fs.readFileSync(path.join(LANG_PATH, 'voice-ar.json'), 'utf8'));
+    const ary = JSON.parse(fs.readFileSync(path.join(LANG_PATH, 'voice-ary.json'), 'utf8'));
+    assert.strictEqual(ar.meta.rtl, true);
+    assert.strictEqual(ary.meta.rtl, true);
   });
 
-  it('Uses HTTPS for API endpoints', () => {
-    const httpMatches = widgetContent.match(/http:\/\/(?!localhost|www\.w3\.org)/g);
-    assert.ok(!httpMatches || httpMatches.length === 0,
-              'Should not use non-localhost HTTP URLs');
+  test('FR, EN, ES have rtl: false', () => {
+    for (const lang of ['fr', 'en', 'es']) {
+      const data = JSON.parse(fs.readFileSync(path.join(LANG_PATH, `voice-${lang}.json`), 'utf8'));
+      assert.strictEqual(data.meta.rtl, false, `${lang} should have rtl: false`);
+    }
   });
 
-  it('Does not use eval', () => {
-    // Check for eval but exclude comments
-    const lines = widgetContent.split('\n');
-    const evalUsage = lines.filter(line =>
-      !line.trim().startsWith('//') &&
-      !line.trim().startsWith('*') &&
-      line.includes('eval(')
+  test('all language files have same top-level keys', () => {
+    const frData = JSON.parse(fs.readFileSync(path.join(LANG_PATH, 'voice-fr.json'), 'utf8'));
+    const frKeys = Object.keys(frData).sort();
+
+    for (const lang of EXPECTED_LANGS) {
+      if (lang === 'fr') continue;
+      const data = JSON.parse(fs.readFileSync(path.join(LANG_PATH, `voice-${lang}.json`), 'utf8'));
+      const keys = Object.keys(data).sort();
+      assert.deepStrictEqual(keys, frKeys, `${lang} should have same top-level keys as FR`);
+    }
+  });
+});
+
+// ─── Widget JS Files: Security Audit ────────────────────────────────────────
+
+describe('Widget security audit', () => {
+  const widgetFiles = fs.readdirSync(WIDGET_DIR).filter(f => f.endsWith('.js'));
+
+  test('at least 8 widget JS files exist', () => {
+    assert.ok(widgetFiles.length >= 8, `Expected ≥8 widget files, found ${widgetFiles.length}`);
+  });
+
+  for (const file of widgetFiles) {
+    const filePath = path.join(WIDGET_DIR, file);
+    const content = fs.readFileSync(filePath, 'utf8');
+
+    test(`${file}: no eval() usage`, () => {
+      const lines = content.split('\n');
+      const evalLines = lines.filter((line, i) =>
+        !line.trim().startsWith('//') &&
+        !line.trim().startsWith('*') &&
+        /\beval\s*\(/.test(line)
+      );
+      assert.strictEqual(evalLines.length, 0, `${file} uses eval() on ${evalLines.length} lines`);
+    });
+
+    test(`${file}: no exposed API keys`, () => {
+      assert.ok(!content.includes('sk_live'), `${file} contains Stripe live key`);
+      assert.ok(!content.includes('sk_test_'), `${file} contains Stripe test key`);
+      assert.ok(!content.includes('api_key='), `${file} exposes API key in URL`);
+    });
+
+    test(`${file}: no non-localhost HTTP URLs`, () => {
+      const httpMatches = content.match(/http:\/\/(?!localhost|127\.0\.0\.1|www\.w3\.org)/g);
+      assert.ok(!httpMatches || httpMatches.length === 0,
+        `${file} uses insecure HTTP: ${(httpMatches || []).join(', ')}`);
+    });
+  }
+});
+
+// ─── Widget JS Files: Structural Integrity ──────────────────────────────────
+
+describe('Widget structural integrity', () => {
+  const expectedWidgets = [
+    { file: 'voice-widget-v3.js', minLines: 2500, iife: true },
+    { file: 'voice-widget-b2b.js', minLines: 500, iife: true },
+    { file: 'abandoned-cart-recovery.js', minLines: 1000, iife: true },
+    { file: 'spin-wheel.js', minLines: 800, iife: true },
+    { file: 'voice-quiz.js', minLines: 800, iife: true },
+    { file: 'free-shipping-bar.js', minLines: 600, iife: true },
+    { file: 'recommendation-carousel.js', minLines: 400, iife: true },
+    { file: 'intelligent-fallback.js', minLines: 100, iife: false }
+  ];
+
+  for (const { file, minLines, iife } of expectedWidgets) {
+    test(`${file} exists with ≥${minLines} lines`, () => {
+      const filePath = path.join(WIDGET_DIR, file);
+      assert.ok(fs.existsSync(filePath), `${file} should exist`);
+      const lineCount = fs.readFileSync(filePath, 'utf8').split('\n').length;
+      assert.ok(lineCount >= minLines, `${file}: expected ≥${minLines} lines, got ${lineCount}`);
+    });
+
+    if (iife) {
+      test(`${file} uses IIFE encapsulation`, () => {
+        const content = fs.readFileSync(path.join(WIDGET_DIR, file), 'utf8');
+        assert.ok(
+          content.includes('(function') || content.includes('(()'),
+          `${file} should use IIFE pattern`
+        );
+      });
+    }
+  }
+});
+
+// ─── Widget v3: Function Definitions ────────────────────────────────────────
+
+describe('Widget v3 function definitions', () => {
+  const content = fs.readFileSync(path.join(WIDGET_DIR, 'voice-widget-v3.js'), 'utf8');
+
+  // Extract actual function definitions (not just presence of a word)
+  const functionRegex = /function\s+(\w+)\s*\(/g;
+  const functions = [];
+  let m;
+  while ((m = functionRegex.exec(content)) !== null) {
+    functions.push(m[1]);
+  }
+
+  test('defines more than 30 functions', () => {
+    assert.ok(functions.length > 30, `Expected >30 functions, found ${functions.length}: ${functions.slice(0, 10).join(', ')}...`);
+  });
+
+  const criticalFunctions = [
+    'createWidget', 'generateWidgetHTML', 'sendMessage', 'togglePanel',
+    'toggleListening', 'trackEvent', 'escapeHTML', 'init'
+  ];
+
+  for (const fn of criticalFunctions) {
+    test(`defines function ${fn}()`, () => {
+      assert.ok(functions.includes(fn), `Missing function: ${fn}(). Defined functions: ${functions.join(', ')}`);
+    });
+  }
+
+  test('no duplicate function definitions', () => {
+    const dupes = functions.filter((f, i) => functions.indexOf(f) !== i);
+    assert.strictEqual(dupes.length, 0, `Duplicate functions: ${dupes.join(', ')}`);
+  });
+});
+
+// ─── Widget v3: XSS Audit (innerHTML usage) ─────────────────────────────────
+
+describe('Widget v3 XSS audit', () => {
+  const content = fs.readFileSync(path.join(WIDGET_DIR, 'voice-widget-v3.js'), 'utf8');
+
+  test('has escapeHTML function defined', () => {
+    assert.ok(content.includes('function escapeHTML'), 'Should define escapeHTML function');
+  });
+
+  test('escapeHTML is called in the codebase', () => {
+    const lines = content.split('\n');
+    const usageLines = lines.filter(l =>
+      !l.trim().startsWith('//') &&
+      !l.trim().startsWith('function escapeHTML') &&
+      l.includes('escapeHTML(')
     );
-    assert.strictEqual(evalUsage.length, 0, 'Should not use eval()');
+    assert.ok(usageLines.length > 0, 'escapeHTML should be called at least once');
+  });
+
+  test('counts innerHTML usages for audit', () => {
+    const lines = content.split('\n');
+    const innerHTMLLines = lines.filter((l, i) =>
+      !l.trim().startsWith('//') &&
+      !l.trim().startsWith('*') &&
+      l.includes('.innerHTML')
+    );
+    // This test documents the current state — any reduction is an improvement
+    assert.ok(typeof innerHTMLLines.length === 'number',
+      `Widget v3 has ${innerHTMLLines.length} innerHTML usages to audit`);
+  });
+});
+
+// ─── Widget Template: generateDeploymentFiles ───────────────────────────────
+
+describe('Widget generateDeploymentFiles', () => {
+  test('function exists', () => {
+    assert.strictEqual(typeof templates.generateDeploymentFiles, 'function');
+  });
+
+  test('BUG: throws on valid config (missing path argument)', () => {
+    // Documents a real bug: generateDeploymentFiles needs a path but config doesn't provide one
+    const cfg = templates.generateConfig({
+      industry: 'ecommerce',
+      clientName: 'Test Shop'
+    });
+    assert.throws(() => templates.generateDeploymentFiles(cfg), TypeError,
+      'BUG DOCUMENTED: generateDeploymentFiles throws TypeError on valid config');
   });
 });

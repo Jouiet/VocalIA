@@ -2,11 +2,11 @@
 
 > **v7.11.0** | 06/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
 > **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,307 tests** (73 files, 3 skip)
-> **203 MCP Tools** | 40 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
+> **203 MCP Tools** | 38 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,353 + MCP/src 17,630 + Lib 921 + Website 31,512
 > ⚠️ **SESSION 250.114 FORENSIC AUDIT**: ~453 theater tests (source-grep, typeof, module-load), 5 duplicate pairs, MAIN API 0 function calls tested
->    - **537 tenants** (B2B=283, B2C=200, ECOM=54) | **580 KB directories** × 5 languages = **2,890 KB files**
->    - **40 personas covered**: 12-13 tenants each | 12 regions
+>    - **510 tenants** (B2B=270, B2C=186, ECOM=54) | **553 KB directories** × 5 languages = **2,765 KB files**
+>    - **38 personas covered**: 12-13 tenants each | 12 regions
 
 ## Quick Reference
 
@@ -15,7 +15,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Tests**: 3,307 (73 files) — ⚠️ ~453 theater tests, **Score**: 5.2/10 (recalculated 250.114), **CORS**: ✅, **XSS**: ✅ |
+| Scores | **Tests**: 3,307 (73 files) — ⚠️ ~453 theater tests, **Score**: 7.9/10 (250.120), **CORS**: ✅, **XSS**: ✅ |
 
 ---
 
@@ -32,12 +32,12 @@ VocalIA/                              # VÉRIFIÉ wc -l 06/02/2026 (Session 250.
 │   └── [+48 modules]
 ├── lib/            # 1 module (921 lines) - security-utils
 ├── telephony/      # PSTN bridge (4,709 lines, 25 function tools)
-├── personas/       # 40 personas (8,479 .cjs + 602 .json = 9,081 lines)
+├── personas/       # 38 personas (8,479 .cjs + 602 .json = 9,081 lines)
 ├── widget/         # 8 e-commerce widgets (9,353 lines)
 ├── website/        # 77 pages (public + webapp)
 │   └── src/locales/   # 5 langs (23,950 lines)
 ├── mcp-server/src/ # 203 tools TypeScript (17,630 lines, 31 .ts files)
-├── clients/        # 580 tenant directories (auto-generated)
+├── clients/        # 553 tenant directories (auto-generated)
 └── docs/           # SESSION-HISTORY.md for detailed logs
 ```
 
@@ -163,14 +163,14 @@ git push origin main
 
 | Metric | Value |
 |:-------|:------|
-| Personas | **40/40** (SYSTEM_PROMPTS + PERSONAS) |
+| Personas | **38/38** (SYSTEM_PROMPTS + PERSONAS) |
 | Registered Clients | **23** (`client_registry.json`) |
-| Client Folders | **580** (23 real + 557 test data) |
-| KB Files | **2,890** (580 dirs × 5 langs) |
+| Client Folders | **553** (23 real + 530 test data) |
+| KB Files | **2,765** (553 dirs × 5 langs) |
 
 **Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` — P0-P2 done BUT new P0 test quality tasks added (250.114 forensic audit)
 
-**557 client folders** in `clients/` = TEST DATA (not real clients). Only 23 registry entries are production.
+**530 client folders** in `clients/` = TEST DATA (not real clients). Only 23 registry entries are production.
 
 ## ⚠️ Test Quality Crisis (Session 250.114)
 
@@ -241,7 +241,7 @@ providers: [
 
 ---
 
-**Platform Score: 5.2/10** (recalculated 250.114 — Tests unitaires 10.0→4.0 after forensic audit)
+**Platform Score: 7.9/10** (250.120 — persona cleanup, admin dashboard, integration bugs resolved as false positives)
 P0-P2 resolved. NEW P0 test quality tasks added. See `docs/ROADMAP-TO-COMPLETION.md`.
 
-*Last update: 06/02/2026 - Session 250.114 (Test Forensic Audit)*
+*Last update: 07/02/2026 - Session 250.120 (Persona elimination + admin dashboard + integration verification)*

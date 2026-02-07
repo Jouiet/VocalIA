@@ -59,7 +59,7 @@ describe('GrokClient BASE_SYSTEM_PROMPT', () => {
     assert.ok(BASE_SYSTEM_PROMPT.includes('Twilio'));
   });
 
-  test('mentions 40 personas', () => {
+  test('mentions 38 personas', () => {
     assert.ok(BASE_SYSTEM_PROMPT.includes('40'));
     assert.ok(BASE_SYSTEM_PROMPT.includes('ersonas') || BASE_SYSTEM_PROMPT.includes('PERSONAS'));
   });

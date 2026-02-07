@@ -41,7 +41,7 @@
     .waveform-bar:nth-child(5n) { animation-delay: 0.15s; }
   </style>
 </head>
-<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside id="sidebar" class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
@@ -386,7 +386,7 @@
         content.innerHTML = `
           <div class="space-y-6">
             <!-- Voice Waveform Preview -->
-            <div class="bg-[#0a0a0a] dark:bg-[#050505] rounded-xl p-4">
+            <div class="bg-[#050505] dark:bg-[#050505] rounded-xl p-4">
               <div class="flex items-center justify-between mb-2">
                 <span class="text-xs text-zinc-400 uppercase tracking-wider" data-i18n="calls.waveform_preview">Aperçu vocal</span>
                 <span class="text-xs text-indigo-400">${call.duration ? Math.floor(call.duration / 60) + ':' + String(call.duration % 60).padStart(2, '0') : '0:00'}</span>
@@ -434,7 +434,7 @@
             ${call.transcript ? `
               <div>
                 <p class="text-sm text-zinc-500 mb-2">Transcription</p>
-                <div class="bg-zinc-50 dark:bg-[#0a0a0a] rounded-lg p-4 max-h-64 overflow-y-auto">
+                <div class="bg-zinc-50 dark:bg-[#050505] rounded-lg p-4 max-h-64 overflow-y-auto">
                   <pre class="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">${call.transcript}</pre>
                 </div>
               </div>
@@ -452,7 +452,7 @@
                 <p class="text-sm text-zinc-500 mb-2">Qualification BANT</p>
                 <div class="grid grid-cols-4 gap-2">
                   ${['budget', 'authority', 'need', 'timeline'].map(key => `
-                    <div class="text-center p-2 bg-zinc-50 dark:bg-[#0a0a0a] rounded-lg">
+                    <div class="text-center p-2 bg-zinc-50 dark:bg-[#050505] rounded-lg">
                       <p class="text-xs text-zinc-500 uppercase">${key[0]}</p>
                       <p class="text-lg font-bold ${call.bant_score[key] >= 70 ? 'text-green-600' : 'text-zinc-600'}">${call.bant_score[key] || 0}%</p>
                     </div>

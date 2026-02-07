@@ -348,3 +348,58 @@ describe('BillingAgent exports', () => {
     assert.strictEqual(typeof billingInstance.handleInvoicePaidWebhook, 'function');
   });
 });
+
+// ─── processSessionBilling (no API) ─────────────────────────────
+
+describe('BillingAgent processSessionBilling', () => {
+  test('returns missing_identity when no email or phone', async () => {
+    const result = await billingInstance.processSessionBilling({
+      pillars: { identity: {} }
+    });
+    assert.strictEqual(result.success, false);
+    assert.strictEqual(result.reason, 'missing_identity');
+  });
+
+  test('returns missing_identity for empty session data', async () => {
+    const result = await billingInstance.processSessionBilling({});
+    assert.strictEqual(result.success, false);
+    assert.strictEqual(result.reason, 'missing_identity');
+  });
+
+  test('returns missing_identity when pillars null', async () => {
+    const result = await billingInstance.processSessionBilling({ pillars: null });
+    assert.strictEqual(result.success, false);
+    assert.strictEqual(result.reason, 'missing_identity');
+  });
+
+  test('returns missing_identity when identity has neither email nor phone', async () => {
+    const result = await billingInstance.processSessionBilling({
+      pillars: { identity: { name: 'Jean' } }
+    });
+    assert.strictEqual(result.success, false);
+    assert.strictEqual(result.reason, 'missing_identity');
+  });
+});
+
+// ─── BillingAgent.trackCost ─────────────────────────────────────
+
+describe('BillingAgent.trackCost', () => {
+  test('returns cost entry with all fields', async () => {
+    const entry = await BillingAgent.trackCost('llm', 0.05, 'test_tenant', { model: 'grok' });
+    assert.strictEqual(entry.category, 'llm');
+    assert.strictEqual(entry.amount, 0.05);
+    assert.strictEqual(entry.tenantId, 'test_tenant');
+    assert.strictEqual(entry.model, 'grok');
+    assert.ok(entry.timestamp);
+  });
+
+  test('timestamp is valid ISO string', async () => {
+    const entry = await BillingAgent.trackCost('tts', 0.01, 'tenant1');
+    assert.ok(!isNaN(Date.parse(entry.timestamp)));
+  });
+
+  test('handles zero cost', async () => {
+    const entry = await BillingAgent.trackCost('cache', 0, 'tenant1');
+    assert.strictEqual(entry.amount, 0);
+  });
+});

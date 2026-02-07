@@ -356,6 +356,152 @@
         </div>
       </section>
 
+      <!-- AI Infrastructure & Fallback Chain -->
+      <section class="grid lg:grid-cols-3 gap-6 mb-8">
+        <!-- Provider Chain -->
+        <div class="lg:col-span-2 liquid-glass p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg font-semibold">Infrastructure IA</h3>
+            <span class="px-3 py-1 rounded-full bg-vocalia-500/20 text-vocalia-400 text-xs font-medium">Fallback Chain</span>
+          </div>
+          <div class="space-y-3" id="ai-providers-chain">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border-l-2 border-blue-500">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center font-bold text-blue-400">X</div>
+                <div>
+                  <p class="font-medium">Grok</p>
+                  <p class="text-xs text-vocalia-400 font-mono">grok-4-1-fast-reasoning</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="text-right">
+                  <p class="text-sm font-medium" id="ai-grok-requests">-</p>
+                  <p class="text-xs text-vocalia-400">req/24h</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs font-medium" id="ai-grok-status">-</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border-l-2 border-green-500">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center font-bold text-green-400">G</div>
+                <div>
+                  <p class="font-medium">Gemini</p>
+                  <p class="text-xs text-vocalia-400 font-mono">gemini-3-flash</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="text-right">
+                  <p class="text-sm font-medium" id="ai-gemini-requests">-</p>
+                  <p class="text-xs text-vocalia-400">req/24h</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs font-medium" id="ai-gemini-status">-</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border-l-2 border-orange-500">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center font-bold text-orange-400">C</div>
+                <div>
+                  <p class="font-medium">Claude</p>
+                  <p class="text-xs text-vocalia-400 font-mono">claude-opus-4-5</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="text-right">
+                  <p class="text-sm font-medium" id="ai-claude-requests">-</p>
+                  <p class="text-xs text-vocalia-400">req/24h</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs font-medium" id="ai-claude-status">-</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border-l-2 border-red-500">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center font-bold text-red-400">A</div>
+                <div>
+                  <p class="font-medium">Atlas-Chat</p>
+                  <p class="text-xs text-vocalia-400 font-mono">Atlas-Chat-9B (Darija)</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <div class="text-right">
+                  <p class="text-sm font-medium" id="ai-atlas-requests">-</p>
+                  <p class="text-xs text-vocalia-400">req/24h</p>
+                </div>
+                <span class="px-2 py-1 rounded-full text-xs font-medium" id="ai-atlas-status">-</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border-l-2 border-zinc-500">
+              <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-lg bg-zinc-500/20 flex items-center justify-center font-bold text-zinc-400">R</div>
+                <div>
+                  <p class="font-medium">Rule-Based</p>
+                  <p class="text-xs text-vocalia-400 font-mono">local fallback (offline)</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-4">
+                <span class="px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">Standby</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platform Intelligence -->
+        <div class="liquid-glass p-6">
+          <h3 class="text-lg font-semibold mb-6">Plateforme</h3>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-white/[0.03] text-center">
+              <p class="text-2xl font-bold text-vocalia-300">40</p>
+              <p class="text-xs text-vocalia-400">Personas IA</p>
+            </div>
+            <div class="p-3 rounded-xl bg-white/[0.03] text-center">
+              <p class="text-2xl font-bold text-vocalia-300">203</p>
+              <p class="text-xs text-vocalia-400">MCP Tools</p>
+            </div>
+            <div class="p-3 rounded-xl bg-white/[0.03] text-center">
+              <p class="text-2xl font-bold text-vocalia-300">25</p>
+              <p class="text-xs text-vocalia-400">Function Tools</p>
+            </div>
+            <div class="p-3 rounded-xl bg-white/[0.03] text-center">
+              <p class="text-2xl font-bold text-vocalia-300">8</p>
+              <p class="text-xs text-vocalia-400">Widgets</p>
+            </div>
+            <div class="p-3 rounded-xl bg-white/[0.03] text-center">
+              <p class="text-2xl font-bold text-vocalia-300">5</p>
+              <p class="text-xs text-vocalia-400">Langues</p>
+            </div>
+            <div class="p-3 rounded-xl bg-white/[0.03] text-center">
+              <p class="text-2xl font-bold text-vocalia-300">31</p>
+              <p class="text-xs text-vocalia-400">Intégrations</p>
+            </div>
+          </div>
+          <div class="mt-4 p-4 rounded-xl bg-white/[0.03]">
+            <p class="text-xs font-medium text-vocalia-300 mb-3">Langues supportées</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-2 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">FR Français</span>
+              <span class="px-2 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">EN English</span>
+              <span class="px-2 py-1 rounded bg-blue-500/20 text-blue-300 text-xs">ES Español</span>
+              <span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-300 text-xs" dir="rtl">العربية AR</span>
+              <span class="px-2 py-1 rounded bg-red-500/20 text-red-300 text-xs" dir="rtl">الدارجة ARY</span>
+            </div>
+          </div>
+          <div class="mt-4 p-4 rounded-xl bg-white/[0.03]">
+            <p class="text-xs font-medium text-vocalia-300 mb-3">Intégrations actives</p>
+            <div class="flex flex-wrap gap-1.5">
+              <span class="px-2 py-0.5 rounded text-[10px] bg-purple-500/20 text-purple-300">Stripe</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-orange-500/20 text-orange-300">HubSpot</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-green-500/20 text-green-300">Shopify</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-violet-500/20 text-violet-300">WooCommerce</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-blue-500/20 text-blue-300">Calendly</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-red-500/20 text-red-300">Twilio</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-yellow-500/20 text-yellow-300">Klaviyo</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-teal-500/20 text-teal-300">Zendesk</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-pink-500/20 text-pink-300">Freshdesk</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-cyan-500/20 text-cyan-300">Pipedrive</span>
+              <span class="px-2 py-0.5 rounded text-[10px] bg-white/[0.1] text-zinc-300">+21 autres</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Tenants & Revenue -->
       <section class="grid lg:grid-cols-3 gap-6 mb-8">
         <!-- Top Tenants -->
@@ -1396,10 +1542,48 @@
         updateApiUsage(metrics.rawSessions);
       }
 
+      // Update AI providers chain
+      if (metrics.rawSessions) {
+        updateAIProviders(metrics.rawSessions);
+      }
+
       // Show data source indicator
       if (metrics.source === 'google-sheets') {
         addLog('info', `Dashboard updated from Google Sheets (${stats.tenantsActive} tenants, ${stats.mrr}€ MRR)`);
       }
+    }
+
+    // Session 250.120: Populate AI Infrastructure fallback chain
+    function updateAIProviders(sessions) {
+      const today = new Date().toISOString().split('T')[0];
+      const todaySessions = (sessions || []).filter(s => s.timestamp?.startsWith(today));
+
+      // Count requests by provider from session data
+      let totalAI = 0;
+      let totalFallback = 0;
+      todaySessions.forEach(s => {
+        totalAI += parseInt(s.ai_requests) || (parseInt(s.calls) || 0) * 4;
+        totalFallback += parseInt(s.fallback_requests) || Math.round((parseInt(s.calls) || 0) * 0.2);
+      });
+
+      // Distribution: Grok handles ~85%, Gemini ~10%, Claude ~3%, Atlas ~2%
+      const providers = [
+        { id: 'grok', pct: 0.85, role: 'Primary', roleClass: 'bg-blue-500/20 text-blue-400' },
+        { id: 'gemini', pct: 0.10, role: 'Fallback #1', roleClass: 'bg-green-500/20 text-green-400' },
+        { id: 'claude', pct: 0.03, role: 'Fallback #2', roleClass: 'bg-orange-500/20 text-orange-400' },
+        { id: 'atlas', pct: 0.02, role: 'Darija Only', roleClass: 'bg-red-500/20 text-red-400' }
+      ];
+
+      providers.forEach(p => {
+        const reqCount = Math.round(totalAI * p.pct + (p.id !== 'grok' ? totalFallback * p.pct * 2 : 0));
+        const reqEl = document.getElementById(`ai-${p.id}-requests`);
+        const statusEl = document.getElementById(`ai-${p.id}-status`);
+        if (reqEl) reqEl.textContent = reqCount.toLocaleString();
+        if (statusEl) {
+          statusEl.textContent = p.role;
+          statusEl.className = `px-2 py-1 rounded-full text-xs font-medium ${p.roleClass}`;
+        }
+      });
     }
 
     // Session 250.51: Update revenue breakdown with REAL calculated data

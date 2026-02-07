@@ -80,7 +80,7 @@
         "what do you sell",
         "shnou 3andkom"
       ],
-      "response": "VocalIA propose 4 produits Voice AI :\n\n1. **Voice Widget B2B** - Qualification leads B2B\n2. **Voice Widget B2C** - Support client e-commerce\n3. **Widget E-commerce** - 8 intégrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA\n\nNos atouts : 40 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quel produit vous intéresse ?"
+      "response": "VocalIA propose 4 produits Voice AI :\n\n1. **Voice Widget B2B** - Qualification leads B2B\n2. **Voice Widget B2C** - Support client e-commerce\n3. **Widget E-commerce** - 8 intégrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA\n\nNos atouts : 38 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quel produit vous intéresse ?"
     },
     "pricing": {
       "keywords": [
@@ -178,7 +178,7 @@
         "voix",
         "ton"
       ],
-      "response": "VocalIA propose 40 personas pré-configurés pour différents secteurs : Immobilier, Dentaire, E-commerce, Hôtellerie... Chaque persona a son ton, vocabulaire et expertise métier. Quel secteur vous intéresse ?"
+      "response": "VocalIA propose 38 personas pré-configurés pour différents secteurs : Immobilier, Dentaire, E-commerce, Hôtellerie... Chaque persona a son ton, vocabulaire et expertise métier. Quel secteur vous intéresse ?"
     },
     "no": {
       "keywords": [

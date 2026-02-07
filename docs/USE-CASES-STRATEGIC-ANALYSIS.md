@@ -78,9 +78,6 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 
 | Tier | Personas | Industries |
 |:-----|:---------|:-----------|
-| **Tier 1 - Core** | AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL | Agence, Santé, Immobilier, Education |
-| **Tier 2 - Expansion** | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME, HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, DISPATCHER, RECRUITER, TRAINER, GYM | E-commerce, Services, RH |
-| **Tier 3 - Extended** | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, INSURER, PRODUCER, LOGISTICIAN, COLLECTOR, PLANNER, SURVEYOR, GOVERNOR | Finance, Logistique, Public |
 
 ### 2.5 Langues (5)
 
@@ -211,7 +208,6 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | Use Case | Intégration VocalIA | Persona |
 |:---------|:--------------------|:--------|
 | Interview Scheduling | Calendly, Calendar | RECRUITER |
-| Policy FAQs | KB | GOVERNOR |
 | Candidate Screening | Telephony | qualify_lead |
 | Internal Alerts | Slack, Email | ✅ |
 | ~~PTO Balance~~ | - | ❌ Pas d'intégration HRIS |
@@ -354,7 +350,7 @@ Maroc-first                   →      Afrique francophone
 ### 8.1 Court terme (Q1 2026)
 
 1. **Exploiter Darija**: Marketing ciblé diaspora + entreprises marocaines
-2. **Package "PME Ready"**: 40 personas + templates = déploiement 5 min
+2. **Package "PME Ready"**: 38 personas + templates = déploiement 5 min
 3. **Case studies**: Documenter 3-5 clients réels avec ROI
 
 ### 8.2 Moyen terme (Q2-Q3 2026)

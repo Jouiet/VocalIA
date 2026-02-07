@@ -494,6 +494,168 @@ describe('GoogleSheetsDB getDB', () => {
   });
 });
 
+// ─── getUrl ──────────────────────────────────────────────────────
+
+describe('GoogleSheetsDB getUrl', () => {
+  test('returns null when config not set', () => {
+    const db = new GoogleSheetsDB();
+    assert.strictEqual(db.getUrl(), null);
+  });
+
+  test('returns url from config', () => {
+    const db = new GoogleSheetsDB();
+    db.config = { url: 'https://docs.google.com/spreadsheets/d/abc' };
+    assert.strictEqual(db.getUrl(), 'https://docs.google.com/spreadsheets/d/abc');
+  });
+
+  test('returns null when config has no url', () => {
+    const db = new GoogleSheetsDB();
+    db.config = { spreadsheetId: 'abc' };
+    assert.strictEqual(db.getUrl(), null);
+  });
+});
+
+// ─── acquireLock ─────────────────────────────────────────────────
+
+describe('GoogleSheetsDB acquireLock', () => {
+  test('returns a release function', async () => {
+    const db = new GoogleSheetsDB();
+    const release = await db.acquireLock('tenants');
+    assert.strictEqual(typeof release, 'function');
+    release();
+  });
+
+  test('sets lock on sheet', async () => {
+    const db = new GoogleSheetsDB();
+    const release = await db.acquireLock('tenants');
+    assert.ok(db.locks.has('tenants'));
+    release();
+  });
+
+  test('clears lock on release', async () => {
+    const db = new GoogleSheetsDB();
+    const release = await db.acquireLock('tenants');
+    release();
+    assert.strictEqual(db.locks.has('tenants'), false);
+  });
+
+  test('different sheets can lock independently', async () => {
+    const db = new GoogleSheetsDB();
+    const release1 = await db.acquireLock('tenants');
+    const release2 = await db.acquireLock('sessions');
+    assert.ok(db.locks.has('tenants'));
+    assert.ok(db.locks.has('sessions'));
+    release1();
+    release2();
+  });
+});
+
+// ─── withRetry ──────────────────────────────────────────────────
+
+describe('GoogleSheetsDB withRetry', () => {
+  test('returns result on success', async () => {
+    const db = new GoogleSheetsDB();
+    const result = await db.withRetry(async () => 'success');
+    assert.strictEqual(result, 'success');
+  });
+
+  test('throws on non-429 error immediately', async () => {
+    const db = new GoogleSheetsDB();
+    await assert.rejects(
+      () => db.withRetry(async () => { throw new Error('bad request'); }),
+      /bad request/
+    );
+  });
+});
+
+// ─── checkQuota (pure logic, no FS) ─────────────────────────────
+
+describe('GoogleSheetsDB checkQuota (no config)', () => {
+  test('returns allowed=true when no config found', () => {
+    const db = new GoogleSheetsDB();
+    const result = db.checkQuota('nonexistent_tenant', 'calls');
+    assert.strictEqual(result.allowed, true);
+    assert.strictEqual(result.limit, Infinity);
+    assert.ok(result.error);
+  });
+
+  test('returns allowed=true for invalid quota type', () => {
+    const db = new GoogleSheetsDB();
+    const result = db.checkQuota('nonexistent_tenant', 'invalid_type');
+    assert.strictEqual(result.allowed, true);
+  });
+});
+
+// ─── incrementUsage (pure logic, no FS) ─────────────────────────
+
+describe('GoogleSheetsDB incrementUsage (no config)', () => {
+  test('returns success=false when no config found', () => {
+    const db = new GoogleSheetsDB();
+    const result = db.incrementUsage('nonexistent_tenant', 'calls');
+    assert.strictEqual(result.success, false);
+    assert.ok(result.error);
+  });
+
+  test('returns success=false for invalid usage type', () => {
+    const db = new GoogleSheetsDB();
+    const result = db.incrementUsage('nonexistent_tenant', 'invalid');
+    assert.strictEqual(result.success, false);
+  });
+});
+
+// ─── getQuotaStatus (pure logic, no FS) ─────────────────────────
+
+describe('GoogleSheetsDB getQuotaStatus (no config)', () => {
+  test('returns error when config not found', () => {
+    const db = new GoogleSheetsDB();
+    const result = db.getQuotaStatus('nonexistent_tenant');
+    assert.ok(result.error);
+    assert.strictEqual(result.tenantId, 'nonexistent_tenant');
+  });
+});
+
+// ─── resetUsage ─────────────────────────────────────────────────
+
+describe('GoogleSheetsDB resetUsage (no config)', () => {
+  test('returns false when no config found', () => {
+    const db = new GoogleSheetsDB();
+    const result = db.resetUsage('nonexistent_tenant');
+    assert.strictEqual(result, false);
+  });
+});
+
+// ─── Schema column counts ───────────────────────────────────────
+
+describe('GoogleSheetsDB schema column counts', () => {
+  test('tenants has 26 columns', () => {
+    assert.strictEqual(SCHEMAS.tenants.columns.length, 26);
+  });
+
+  test('sessions has 8 columns', () => {
+    assert.strictEqual(SCHEMAS.sessions.columns.length, 8);
+  });
+
+  test('logs has 5 columns', () => {
+    assert.strictEqual(SCHEMAS.logs.columns.length, 5);
+  });
+
+  test('users has 20 columns', () => {
+    assert.strictEqual(SCHEMAS.users.columns.length, 20);
+  });
+
+  test('auth_sessions has 7 columns', () => {
+    assert.strictEqual(SCHEMAS.auth_sessions.columns.length, 7);
+  });
+
+  test('hitl_pending has 8 columns', () => {
+    assert.strictEqual(SCHEMAS.hitl_pending.columns.length, 8);
+  });
+
+  test('hitl_history has 11 columns', () => {
+    assert.strictEqual(SCHEMAS.hitl_history.columns.length, 11);
+  });
+});
+
 // ─── Exports ────────────────────────────────────────────────────
 
 describe('GoogleSheetsDB exports', () => {
@@ -508,5 +670,15 @@ describe('GoogleSheetsDB exports', () => {
   test('exports SCHEMAS object', () => {
     assert.ok(SCHEMAS);
     assert.strictEqual(typeof SCHEMAS, 'object');
+  });
+
+  test('instance has all pure methods', () => {
+    const db = new GoogleSheetsDB();
+    const methods = ['generateId', 'timestamp', 'cacheKey', 'getCache', 'setCache',
+      'invalidateCache', 'validate', 'applyDefaults', 'rowToObject', 'objectToRow',
+      'getUrl', 'acquireLock', 'checkQuota', 'incrementUsage', 'getQuotaStatus', 'resetUsage'];
+    for (const m of methods) {
+      assert.strictEqual(typeof db[m], 'function', `Missing method: ${m}`);
+    }
   });
 });

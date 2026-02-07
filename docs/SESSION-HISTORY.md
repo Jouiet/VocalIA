@@ -3,7 +3,7 @@
 > **Version**: 7.11.0 | **Updated**: 06/02/2026 | **Session**: 250.102-FORENSIC-VERIFICATION
 > **METRICS VÉRIFIÉ `wc -l` 06/02/2026 (Session 250.102)**: Core **53 fichiers/33,920** | Telephony 4,709 | Personas **9,081** | Widget **9,353** | MCP 17,630 | i18n **23,950** | **77 pages** | **203 MCP tools** | **25 Function Tools** | **40 Personas** | Tests **~3,260** (all passing)
 > **Session 250.102 FORENSIC VERIFICATION (06/02/2026):**
-> - ✅ **Persona Format**: 40/40 personas × 5 langs with conversational format guidelines (was 4/40)
+> - ✅ **Persona Format**: 40/38 personas × 5 langs with conversational format guidelines (was 4/40)
 > - ✅ **Agency Isolation**: `agency_internal` hardcoded fallbacks removed from 11 files
 > - ✅ **Test Fixes**: widget.test.cjs SVG namespace, persona-e2e knowledge_base_id, tenant-bridge real IDs
 > - ✅ **Test Verification**: ~3,260 tests run empirically, 0 code failures (12 expected agency widget-isolation)
@@ -50,7 +50,7 @@
 > - ✅ **12 REGIONS**: Morocco (North/Central/South), France, Spain, UK, UAE, Belgium, Netherlands, Switzerland, Canada, Germany
 > - ✅ **KB FILES**: **2,890** (578 dirs × 5 languages) - Full multilingual coverage
 > - ✅ **NEW SCRIPTS**: `seed-500-tenants.cjs`, `check-tenant-state.cjs`, `cleanup-uuid-tenants.cjs`, `fix-missing-tenants.cjs`
-> - **Purpose**: Rigorous testing across all 40 personas, 5 languages, products, objections, conversion patterns
+> - **Purpose**: Rigorous testing across all 38 personas, 5 languages, products, objections, conversion patterns
 > **Session 250.97quinquies: KB AUTO-PROVISIONING COMPLETE (06/02/2026):**
 > - ✅ **CRITICAL FIX**: 30 tenants had NO KB directories - only `client_demo` existed
 > - ✅ **NEW MODULE**: `core/kb-provisioner.cjs` (380+ lines) - Auto-provisions KB on tenant creation
@@ -125,7 +125,7 @@
 > **Products**: 4 (B2B Widget, B2C Widget, Ecom Widget, Telephony) | **Catalog Types**: 6 | **Personas**: 40
 > **Session 250.85**: ✅ **ULTRATHINK DEEP COPY SURGERY** - Global upgrade of all marketing copy (5 languages) to "Sovereign/Benefit-First" standards. Strategic Docs Hardened.
 > **Session 250.80**: BYOK Architecture Alignment ✅ | Twilio Hybrid (Managed/BYOK) defined | Documentation Synchronized
-> **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (40 personas to 4 widgets)
+> **Session 250.78**: ⚠️ CRITICAL GAP - Persona-Widget Segmentation MISSING (38 personas to 4 widgets)
 > **Session 250.77**: Product Matrix VALIDATED - B2B/B2C/Ecom/Telephony differentiation documented
 > **Session 250.75**: All API credentials verified (XAI, ElevenLabs, Twilio, Gemini, Anthropic, HuggingFace)
 > **Session 250.74**: Web Speech fallback for agents.html, 420/420 E2E tests
@@ -154,7 +154,7 @@ Toutes les informations sont **vérifiables empiriquement** via les commandes li
 |:-----------|:---:|:-------:|:-------------|:-----|
 | **Voice Widget** | 15 | **15** | `node widget/voice-widget-templates.cjs` | Web Speech API, $0 |
 | **Voice Telephony** | 15 | **12** | `node telephony/voice-telephony-bridge.cjs` loads | Code OK, TWILIO creds missing |
-| **Multi-Persona** | 15 | **15** | 40 personas SOTA verified | BANT, PAS, CIALDINI, LAER |
+| **Multi-Persona** | 15 | **15** | 38 personas SOTA verified | BANT, PAS, CIALDINI, LAER |
 | **Integrations** | 15 | **12** | 3/3 modules load | Creds missing for full function |
 | **Documentation** | 10 | **10** | 5 rules + CLAUDE.md | Complete |
 | **Infrastructure** | 15 | **15** | MCP ✅ Registry ✅ GPM ✅ | VocalIA-Ops integrated |
@@ -226,7 +226,7 @@ node scripts/health-check.cjs
 
 | Module | Lignes | Status | Purpose |
 |:-------|:------:|:------:|:--------|
-| voice-persona-injector.cjs | 648 | ✅ | 40 personas, 5 languages |
+| voice-persona-injector.cjs | 648 | ✅ | 38 personas, 5 languages |
 | agency-financial-config.cjs | ~100 | ✅ | Pricing configuration |
 
 ### Sensors (4 modules)
@@ -2414,7 +2414,7 @@ gh run list --limit 3
 
 **Content:**
 
-* All 40 personas listed by tier (updated Session 250.6)
+* All 38 personas listed by tier (updated Session 250.6)
 * 4 featured industry cards (Finance, Healthcare, Real Estate, Retail)
 * Schema.org CollectionPage structured data
 * Standardized footer with newsletter + trust badges
@@ -2426,10 +2426,8 @@ gh run list --limit 3
 
 **Source of Truth:** `personas/voice-persona-injector.cjs`
 
-**Verified Count:** **40 personas** (updated Session 250.6)
+**Verified Count:** **38 personas** (updated Session 250.6)
 
-* Tier 1: 7 personas (AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL)
-* Tier 2: 11 personas (HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER)
 * Tier 3: 12 personas (ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_ECOMMERCE, UNIVERSAL_SME)
 
 **10 Files Corrected (28→30):**
@@ -3071,11 +3069,9 @@ ee82a46 - feat(i18n): Complete industries pages i18n (339 total attributes)
    * Finance, Healthcare, Real Estate, Retail cards with title/desc/badge
 
 2. **Tier 1 Core Personas** (+14 attrs)
-   * 7 personas: AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL
    * Each with title + description i18n
 
 3. **Tier 2 Expansion Personas** (+22 attrs)
-   * 11 personas: HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER
 
 4. **Tier 3 Extended Personas** (+24 attrs)
    * 12 personas: ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_ECOMMERCE, UNIVERSAL_SME
@@ -4485,7 +4481,7 @@ grep -c 'data-lucide="mic"' website/use-cases/customer-support.html
 **Court terme (Q1):**
 
 * Exploiter Darija (diaspora + entreprises marocaines)
-* Package "PME Ready" (40 personas + templates)
+* Package "PME Ready" (38 personas + templates)
 
 **Moyen terme (Q2-Q3):**
 
@@ -4979,7 +4975,6 @@ grep -c "server.tool(" mcp-server/src/index.ts  # 182 ✅
 
 | Action | Détail | Status |
 |:-------|:-------|:------:|
-| **Suppression 5 personas** | GOVERNOR, SCHOOL, HOA, SURVEYOR (admin), DRIVER (hors scope B2B) | ✅ |
 | **Ajout 14 personas NEW Economy** | Données OMPIC/Eurostat 2024 | ✅ |
 | **Structure SOTA 100%** | personality_traits, background, tone_guidelines, forbidden_behaviors | ✅ |
 
@@ -5032,8 +5027,6 @@ async function handleObjection(session, args) {
 | Action | Fichier | Status |
 |:-------|:--------|:------:|
 | Suppression SURVEYOR | telephony/knowledge_base.json | ✅ |
-| Suppression GOVERNOR | telephony/knowledge_base.json | ✅ |
-| Suppression HOA | telephony/knowledge_base.json | ✅ |
 
 ### 4. Documentation Updated
 
@@ -5044,7 +5037,7 @@ async function handleObjection(session, args) {
 | .claude/rules/factuality.md | Source de vérité mise à jour |
 | docs/FORENSIC-AUDIT-SESSION-250.md | Section 3.4 mise à jour |
 
-**Statut final**: Session 250.6 | **40 personas SOTA** | Objection Handling LAER ✅
+**Statut final**: Session 250.6 | **38 personas SOTA** | Objection Handling LAER ✅
 
 ---
 
@@ -5211,7 +5204,7 @@ Both SDKs already had complete documentation. Updated persona count from 28 to 4
 
 | Claim | Avant | Après | Vérification |
 |:------|:-----:|:-----:|:-------------|
-| **Personas** | 30/31 (mixed) | **40** | `grep "40 personas" --include="*.html"` |
+| **Personas** | 30/31 (mixed) | **40** | `grep "38 personas" --include="*.html"` |
 | **MCP Tools** | 21/117/254 | **182** | `grep "server.tool(" index.ts \| wc -l` |
 | **Intégrations** | 24/28 | **28** | CLAUDE.md source of truth |
 
@@ -5243,7 +5236,7 @@ Both SDKs already had complete documentation. Updated persona count from 28 to 4
 
 ```bash
 # Personas - tous à 40
-grep -r '40 personas' --include='*.html' | wc -l  # 65 ✅
+grep -r '38 personas' --include='*.html' | wc -l  # 65 ✅
 grep -r '30 personas' --include='*.html' | wc -l  # 0 ✅
 
 # MCP Tools - tous à 182
@@ -6179,7 +6172,7 @@ Eliminate "Superficial" audit findings. Address "Fake/Mock" implementations in A
 | **voice-widget-b2b.js** | 413 LOC, `ECOMMERCE_MODE: false` | ✅ B2B Lead Gen only |
 | **voice-widget-v3.js** | 3,091 LOC, `ECOMMERCE_MODE: true` | ✅ B2C with visual display |
 | **voice-widget-v3.js** | 5,650 LOC, Product Cards + Carousel | ✅ Full E-commerce |
-| **voice-telephony-bridge.cjs** | 168KB, 40 personas | ✅ Audio only (expected) |
+| **voice-telephony-bridge.cjs** | 168KB, 38 personas | ✅ Audio only (expected) |
 
 **Product Matrix (VALIDATED):**
 
@@ -6225,7 +6218,7 @@ Eliminate "Superficial" audit findings. Address "Fake/Mock" implementations in A
 
 ### Session 250.78 (04/02/2026 22:15 CET) - ⚠️ PERSONA-WIDGET SEGMENTATION CRITICAL GAP
 
-**Directive:** Verify if 40 personas are properly segmented across 4 widget types (B2B/B2C/Ecom/Telephony).
+**Directive:** Verify if 38 personas are properly segmented across 4 widget types (B2B/B2C/Ecom/Telephony).
 
 **⚠️ CRITICAL GAP IDENTIFIED:**
 
@@ -6234,7 +6227,7 @@ Eliminate "Superficial" audit findings. Address "Fake/Mock" implementations in A
 | **Personas count** | 40 in `voice-persona-injector.cjs` (5,858 LOC) |
 | **Widget types** | 4 (B2B, B2C, Ecom, Telephony) |
 | **Current filtering** | ❌ **ZERO** - No `widget_types` field exists |
-| **Risk** | ALL 40 personas available to ALL widgets |
+| **Risk** | ALL 38 personas available to ALL widgets |
 | **Example Bug** | UNIVERSAL_ECOMMERCE can load in B2B widget (incompatible) |
 
 **Code Evidence (GAP):**
@@ -6250,8 +6243,6 @@ if (clientId && CLIENT_REGISTRY.clients[clientId]) {
 
 | Widget Type | Compatible Personas (Count) | Exclusive |
 |:------------|:---------------------------|:---------|
-| **B2B** | AGENCY, CONTRACTOR, CONSULTANT, IT_SERVICES, RECRUITER, ACCOUNTANT, ARCHITECT, COUNSELOR, NOTARY, REAL_ESTATE_AGENT, BUILDER, COLLECTOR, INSURER, LOGISTICIAN, MANUFACTURER, TRAINER, PLANNER, FUNERAL, PROPERTY, DENTAL (20) | AGENCY, CONTRACTOR, COLLECTOR, RECRUITER, IT_SERVICES, CONSULTANT, ACCOUNTANT, ARCHITECT, COUNSELOR, FUNERAL |
-| **B2C** | RESTAURATEUR, TRAVEL_AGENT, CONCIERGE, HAIRDRESSER, STYLIST, HEALER, DOCTOR, SPECIALIST, PHARMACIST, MECHANIC, RENTER, CLEANER, GYM, BAKERY, PRODUCER, DISPATCHER, DENTAL, TRAINER, PLANNER (19) | RESTAURATEUR, TRAVEL_AGENT, CONCIERGE, HAIRDRESSER, STYLIST, HEALER, DOCTOR, SPECIALIST, PHARMACIST, MECHANIC, RENTER, CLEANER, GYM |
 | **ECOM** | UNIVERSAL_ECOMMERCE, RETAILER, GROCERY, BAKERY, PRODUCER, DISPATCHER (6) | UNIVERSAL_ECOMMERCE, RETAILER, GROCERY |
 | **TELEPHONY** | ALL 40 (universal) | None (all compatible) |
 

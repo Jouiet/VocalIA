@@ -514,7 +514,7 @@ class KBCrawler {
     const text = this.stripHtml(html);
 
     // Look for return period
-    const periodeMatch = text.match(/retour[^.]*(\d+\s*jours?)/i);
+    const periodeMatch = text.match(/retour[^.]*?(\d+\s*jours?)/i);
     const policy = {};
 
     if (periodeMatch) {

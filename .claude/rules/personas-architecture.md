@@ -16,7 +16,7 @@ SYSTEM_PROMPTS = {
     ar: "البرومبت بالعربية...",
     ary: "البرومبت بالدارجة..."
   },
-  // ... 40 personas × 5 langues = 200 prompts
+  // ... 38 personas × 5 langues = 200 prompts
 }
 ```
 
@@ -39,7 +39,7 @@ PERSONAS = {
     complaint_scenarios: [...],
     systemPrompt: "fallback EN only..."
   },
-  // ... 40 personas
+  // ... 38 personas
 }
 ```
 

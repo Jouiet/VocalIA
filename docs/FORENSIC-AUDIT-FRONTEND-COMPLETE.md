@@ -445,7 +445,7 @@ grep -c 'from-red' website/dashboard/admin.html  # 4 occurrences
 
 ```bash
 # Personas - all claims now 40
-grep -r '40 personas' --include='*.html' --include='*.json' | wc -l  # 65 ✅
+grep -r '38 personas' --include='*.html' --include='*.json' | wc -l  # 65 ✅
 grep -r '30 personas' --include='*.html' --include='*.json' | grep -v translation-qa | wc -l  # 0 ✅
 
 # MCP Tools - all claims now 182

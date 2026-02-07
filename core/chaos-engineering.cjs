@@ -759,6 +759,7 @@ module.exports = {
   EXPERIMENTS,
   runExperiment,
   runAllSafe,
+  listExperiments,
   CONFIG
 };
 

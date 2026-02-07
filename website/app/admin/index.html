@@ -21,10 +21,10 @@
     .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: livePulse 2s ease-in-out infinite; }
   </style>
 </head>
-<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#0a0a0a] text-white flex flex-col">
+    <aside class="w-64 bg-[#050505] text-white flex flex-col">
       <div class="p-4 border-b border-white/[0.08]">
         <div class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
@@ -493,7 +493,7 @@
       container.innerHTML = '';
       activities.forEach(a => {
         const row = document.createElement('div');
-        row.className = 'flex items-center gap-3 p-3 bg-zinc-50 dark:bg-[#0a0a0a] rounded-lg';
+        row.className = 'flex items-center gap-3 p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg';
 
         const iconDiv = document.createElement('div');
         iconDiv.className = `w-8 h-8 rounded-full bg-${a.iconColor}-100 dark:bg-${a.iconColor}-900/30 flex items-center justify-center`;

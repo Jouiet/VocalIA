@@ -103,13 +103,11 @@ GET    /api/db/:sheet/query     → Query with filters
 
 | Tier | Count | Personas |
 |:-----|:-----:|:---------|
-| Tier 1 - Premium B2B | 5 | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
-| Tier 2 - Services | 19 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER, ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM |
 | Tier 3 - Universal | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
 | Tier 4 - PME Réelle | 14 | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY, BAKERY, SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY |
 
 **Architecture duale intentionnelle:**
-- `SYSTEM_PROMPTS`: Prompts multilingues (5 langues × 40 personas = 200 prompts)
+- `SYSTEM_PROMPTS`: Prompts multilingues (5 langues × 38 personas = 200 prompts)
 - `PERSONAS`: Metadata + fallback systemPrompt EN
 
 ### 1.6 Credentials Requis
@@ -310,7 +308,6 @@ awk '/^const PERSONAS = \{/,/^};/' personas/voice-persona-injector.cjs | grep -E
 
 **Personas dans MCP mais PAS dans Backend (4):**
 ```
-GOVERNOR, HOA, SCHOOL, SURVEYOR
 ```
 
 **Personas dans Backend mais PAS dans MCP (14):**
@@ -427,9 +424,6 @@ RESTAURATEUR, RETAILER, SPECIALIST, TRAVEL_AGENT
 ### 5.1.1 Détail Anomalie #4 (CRITIQUE)
 
 **MCP PERSONAS_DATA contient 4 personas INEXISTANTS dans le backend:**
-- `GOVERNOR` - N'existe pas dans voice-persona-injector.cjs
-- `HOA` - N'existe pas dans voice-persona-injector.cjs
-- `SCHOOL` - N'existe pas dans voice-persona-injector.cjs
 - `SURVEYOR` - N'existe pas dans voice-persona-injector.cjs
 
 **MCP PERSONAS_DATA manque 14 personas du backend:**
@@ -522,7 +516,7 @@ es.json:  "tool1_name": "qualify_lead"            # 🔴 NON TRADUIT
 
 # Fix 3: Personas count MCP
 # Fichier: mcp-server/src/index.ts
-# Aligner personas_list() sur les 40 personas de voice-persona-injector.cjs
+# Aligner personas_list() sur les 38 personas de voice-persona-injector.cjs
 ```
 
 ### Phase 2: Corrections Importantes (P1) - Cette semaine
@@ -588,7 +582,7 @@ es.json:  "tool1_name": "qualify_lead"            # 🔴 NON TRADUIT
 |:----------|:-----------:|:-----------:|:--------|
 | Backend | 95/100 | 95/100 | Production-ready |
 | Frontend | 75/100 | **95/100** | ✅ CORRIGÉ |
-| MCP Server | 70/100 | **95/100** | ✅ CORRIGÉ (40 personas) |
+| MCP Server | 70/100 | **95/100** | ✅ CORRIGÉ (38 personas) |
 | API Contracts | 80/100 | **95/100** | ✅ CORRIGÉ (port 3013) |
 
 ### CORRECTIONS P0 (IMMÉDIAT)
@@ -606,7 +600,6 @@ sed -i '' 's/localhost:3012/localhost:3013/' website/src/lib/db-client.js
 
 # Fix 4: MCP Personas (CRITIQUE)
 # Mettre à jour PERSONAS_DATA dans mcp-server/src/index.ts:
-# - Supprimer: GOVERNOR, HOA, SCHOOL, SURVEYOR
 # - Ajouter: BAKERY, BUILDER, CONSULTANT, DOCTOR, GROCERY, HAIRDRESSER,
 #           IT_SERVICES, MANUFACTURER, NOTARY, REAL_ESTATE_AGENT,
 #           RESTAURATEUR, RETAILER, SPECIALIST, TRAVEL_AGENT
@@ -682,12 +675,11 @@ sed -i '' 's/localhost:3012/localhost:3013/' website/src/lib/db-client.js
   - ary.json (Darija)
 
 ### Fix 4: MCP Personas Sync (mcp-server/src/index.ts)
-- Supprimé personas fantômes: GOVERNOR, HOA, SCHOOL, SURVEYOR
 - Ajouté nouveau tier `pme` avec 14 personas:
   - RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT
   - IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY, BAKERY
   - SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY
-- Total: 40 personas (aligné avec backend)
+- Total: 38 personas (aligné avec backend)
 
 ### Fix 5: Jargon Technique Marketing (voice-telephony.html + i18n)
 - HTML: Remplacé 11 termes hardcodés par `data-i18n` keys

@@ -14,10 +14,10 @@
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
 </head>
-<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#0a0a0a] text-white flex flex-col">
+    <aside class="w-64 bg-[#050505] text-white flex flex-col">
       <div class="p-4 border-b border-white/[0.08]">
         <div class="flex items-center gap-2">
           <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
@@ -419,10 +419,10 @@
 
     window.changePersona = async (id) => {
       const personas = [
-        'AGENCY', 'DENTAL', 'PROPERTY', 'CONTRACTOR', 'FUNERAL',
+        'AGENCY', 'DENTAL', 'PROPERTY', 'CONTRACTOR',
         'UNIVERSAL_ECOMMERCE', 'UNIVERSAL_SME', 'RETAILER', 'RESTAURATEUR',
         'DOCTOR', 'NOTARY', 'CONSULTANT', 'IT_SERVICES', 'TRAVEL_AGENT',
-        'INSURER', 'RECRUITER', 'HEALER', 'MECHANIC', 'COUNSELOR'
+        'INSURER', 'RECRUITER', 'HEALER', 'COUNSELOR'
       ];
 
       const persona = await modal.prompt('Persona (ex: AGENCY, DENTAL, DOCTOR...)', {

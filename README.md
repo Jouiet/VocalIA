@@ -92,7 +92,7 @@ VocalIA/                          # ~140,000 lignes total
 ├── telephony/               # 1 fichier (4,709 lignes)
 │   └── voice-telephony-bridge.cjs (25 function tools)
 ├── personas/                # 2 fichiers (5,995 lignes)
-│   └── voice-persona-injector.cjs (40 personas)
+│   └── voice-persona-injector.cjs (38 personas)
 ├── integrations/            # 7 fichiers (2,234 lignes)
 ├── sensors/                 # 4 fichiers (822 lignes)
 ├── mcp-server/              # TypeScript (17,630 lignes, 203 tools)
@@ -121,10 +121,10 @@ VocalIA/                          # ~140,000 lignes total
 - HITL (Human-in-the-Loop) controls
 - WhatsApp/SMS confirmation
 
-### Multi-Tenant Personas (40)
+### Multi-Tenant Personas (38)
 
-- Tier 1 (Core): AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL
-- Tier 2 (Expansion): HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER...
+- Tier 1 (Core): AGENCY, DENTAL, PROPERTY, CONTRACTOR
+- Tier 2 (Expansion): HEALER, COUNSELOR, CONCIERGE, STYLIST, RECRUITER...
 - Tier 3 (Universal): UNIVERSAL_ECOMMERCE, UNIVERSAL_SME
 - Tier 4 (Economy): RETAILER, BUILDER, RESTAURATEUR, CONSULTANT, DOCTOR, NOTARY...
 

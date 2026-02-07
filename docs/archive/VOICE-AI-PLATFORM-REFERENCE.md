@@ -74,7 +74,7 @@
 │  ├─────────────────────────────────────────────────────────────────────┤    │
 │  │  voice-api-resilient.cjs    (1,508 L) - Multi-AI text generation    │    │
 │  │  grok-voice-realtime.cjs    (1,112 L) - WebSocket PCM16 audio       │    │
-│  │  voice-persona-injector.cjs   (648 L) - 40 personas multi-tenant    │    │
+│  │  voice-persona-injector.cjs   (648 L) - 38 personas multi-tenant    │    │
 │  │  voice-agent-b2b.cjs          (719 L) - B2B specific flows          │    │
 │  │  voice-widget-templates.cjs   (800 L) - Widget configurations       │    │
 │  │  voice-ecommerce-tools.cjs    (149 L) - Shopify/Klaviyo integration │    │
@@ -95,7 +95,7 @@
 | voice-widget-core.js | 1,012 | Browser widget (Web Speech) | - |
 | voice-widget-templates.cjs | 800 | Widget configs | - |
 | voice-agent-b2b.cjs | 719 | B2B flows | - |
-| voice-persona-injector.cjs | 648 | 40 personas | - |
+| voice-persona-injector.cjs | 648 | 38 personas | - |
 | voice-quality-sensor.cjs | 282 | Health checks | - |
 | voice-ecommerce-tools.cjs | 149 | Shopify/Klaviyo | - |
 | voice-crm-tools.cjs | 104 | HubSpot | - |
@@ -232,17 +232,13 @@ turn_detection: {
 | 1 | AGENCY | VocalIA Architect | ara | normal |
 | 2 | DENTAL | Cabinet Dentaire Lumière | eve | high |
 | 3 | PROPERTY | Atlas Property Management | leo | normal |
-| 4 | HOA | Sunnyvale HOA Hotline | sal | normal |
-| 5 | SCHOOL | Lincoln High Attendance | mika | high |
 | 6 | CONTRACTOR | Apex Roofing & Solar | rex | normal |
-| 7 | FUNERAL | Willow Creek Funeral Home | valentin | obsessive |
 
 ### 4.2 Tier 2: Expansion (11 personas)
 
 | # | Key | Name | Voice | Sensitivity |
 |:--|:----|:-----|:------|:------------|
 | 8 | HEALER | Centre de Santé Intégral | eve | high |
-| 9 | MECHANIC | Auto Expert Service | leo | normal |
 | 10 | COUNSELOR | Cabinet Juridique Associé | ara | high |
 | 11 | CONCIERGE | L'Hôtel de la Plage | sal | normal |
 | 12 | STYLIST | Espace Beauté & Spa | sara | normal |
@@ -250,7 +246,6 @@ turn_detection: {
 | 14 | DISPATCHER | Logistique Express | rex | normal |
 | 15 | COLLECTOR | Service Recouvrement | valentin | high |
 | 16 | SURVEYOR | Unité Satisfaction Client | mika | normal |
-| 17 | GOVERNOR | Mairie de Proximité | tom | high |
 | 18 | INSURER | Assurance Horizon | rex | normal |
 
 ### 4.3 Tier 3: Top 30 (12 personas)
@@ -282,7 +277,6 @@ turn_detection: {
 | Services | 8 | fr, ary | EUR, MAD, USD |
 | Beauty/Wellness | 4 | fr, ary | MAD |
 | Fitness | 1 | ary | MAD |
-| HOA | 1 | en | USD |
 
 ---
 
@@ -316,8 +310,6 @@ Personas avec prompts en FR, EN, et ARY (Darija):
 - UNIVERSAL_ECOMMERCE: ✅ FR, EN, ARY
 - DENTAL: ✅ FR, EN, ARY
 - PROPERTY: ✅ FR, ARY, AR
-- HOA: ✅ FR, ARY, AR
-- SCHOOL: ✅ FR, ARY, AR
 - COLLECTOR: ✅ FR, ARY, AR
 
 ---
@@ -457,7 +449,7 @@ geminiVoices: ['Kore', 'Puck', 'Zephyr', 'Enceladus', 'Algieba', 'Sulafat', 'Aoe
 | **Maqsam** | MENA | ✅ Arabic AI | - | Customer service software, built for MENA | [maqsam.com](https://maqsam.com/) |
 | **Lahajati** | - | ✅ 108 dialectes | - | TTS/STT, 99% accuracy | [lahajati.ai](https://lahajati.ai/en) |
 | **DataQueue** | MENA | ✅ Gulf/Egyptian/Levantine | - | First avec DID MENA | [zawya.com](https://www.zawya.com/en/press-release/companies-news/the-first-arabic-voice-ai-that-understands-every-dialect-launched-ndy1b4qf) |
-| **3A** | Maroc/FR | ✅ Atlas-Chat-9B | Self-funded | Widget+Telephony, 40 personas | Local |
+| **3A** | Maroc/FR | ✅ Atlas-Chat-9B | Self-funded | Widget+Telephony, 38 personas | Local |
 
 **Menace concurrentielle MENA:**
 - **SAWT IA** = Concurrent direct Maroc (même marché cible)
@@ -466,7 +458,7 @@ geminiVoices: ['Kore', 'Puck', 'Zephyr', 'Enceladus', 'Algieba', 'Sulafat', 'Aoe
 
 **Différenciateur 3A vs MENA:**
 - Widget + Telephony combinés (unique)
-- Multi-tenant 40 personas (unique)
+- Multi-tenant 38 personas (unique)
 - Open-source-based (Atlas-Chat-9B) vs proprietary
 
 ---
@@ -628,7 +620,7 @@ node automations/agency/core/voice-telephony-bridge.cjs &
 | `voice-widget-core.js` | 1,012 | Widget browser (Web Speech API, $0) |
 | `voice-widget-templates.cjs` | 800+ | Templates industrie (e-commerce, B2B, agency) |
 | `voice-agent-b2b.cjs` | 719 | B2B dual-role assistant (Sales 60% / Support 40%) |
-| `voice-persona-injector.cjs` | 648 | 40 personas, 5 langues, marketing science |
+| `voice-persona-injector.cjs` | 648 | 38 personas, 5 langues, marketing science |
 | `voice-quality-sensor.cjs` | 282 | Health monitoring GPM |
 | `voice-ecommerce-tools.cjs` | 149 | Shopify + Klaviyo integration |
 | `voice-crm-tools.cjs` | 104 | HubSpot CRM sync |

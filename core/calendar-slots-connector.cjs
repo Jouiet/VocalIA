@@ -16,7 +16,7 @@
  * - Uses exponential backoff on 403/429 errors
  *
  * Personas covered:
- * - healer, dental, mechanic, stylist, hairdresser, gym, trainer, cleaner
+ * - healer, dental, stylist, hairdresser, gym, trainer, cleaner
  *
  * Inspired by:
  * - Cal.com (https://github.com/calcom/cal.com) - leading open-source scheduler

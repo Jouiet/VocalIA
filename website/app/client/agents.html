@@ -15,7 +15,7 @@
   <script src="/src/lib/i18n.js"></script>
   <script src="/src/lib/voice-visualizer.js"></script>
 </head>
-<body class="bg-zinc-50 dark:bg-[#0a0a0a] min-h-screen">
+<body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside id="sidebar" class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
@@ -338,7 +338,6 @@
       { key: 'DENTAL', name: 'Assistant Dentaire', desc: 'Gestion cabinet dentaire', icon: 'stethoscope', category: 'Santé' },
       { key: 'PROPERTY', name: 'Agent Immobilier', desc: 'Ventes et locations', icon: 'home', category: 'Immobilier' },
       { key: 'CONTRACTOR', name: 'Artisan Pro', desc: 'Devis et planification', icon: 'hammer', category: 'Services' },
-      { key: 'FUNERAL', name: 'Conseiller Funéraire', desc: 'Services funéraires', icon: 'heart', category: 'Services' },
       { key: 'UNIVERSAL_ECOMMERCE', name: 'E-commerce', desc: 'Support client boutique', icon: 'shopping-cart', category: 'E-commerce' },
       { key: 'UNIVERSAL_SME', name: 'PME Universel', desc: 'Toutes entreprises', icon: 'building-2', category: 'Entreprise' },
       { key: 'RETAILER', name: 'Commerçant', desc: 'Commerce de détail', icon: 'store', category: 'Commerce' },
@@ -634,7 +633,7 @@
     // New agent button - Request custom persona (Enterprise feature)
     document.getElementById('new-agent-btn').addEventListener('click', async () => {
       const confirmed = await modal.confirm(
-        'VocalIA propose 40 personas pré-configurés couvrant la plupart des secteurs.\n\n' +
+        'VocalIA propose 38 personas pré-configurés couvrant la plupart des secteurs.\n\n' +
         'Pour un persona personnalisé (voix, comportement, base de connaissances spécifique), ' +
         'contactez notre équipe Enterprise.\n\n' +
         'Voulez-vous envoyer une demande de persona personnalisé ?',

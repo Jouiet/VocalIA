@@ -371,6 +371,126 @@ describe('TenantCatalogStore voice generators', () => {
   });
 });
 
+// ─── getConnector / getStats ────────────────────────────────────────
+
+describe('TenantCatalogStore getConnector', () => {
+  test('returns undefined for unregistered tenant', () => {
+    const store = new TenantCatalogStore();
+    assert.strictEqual(store.getConnector('nonexistent'), undefined);
+  });
+});
+
+describe('TenantCatalogStore getStats', () => {
+  test('returns empty stats for fresh store', () => {
+    const store = new TenantCatalogStore();
+    const stats = store.getStats();
+    assert.strictEqual(stats.tenantsCount, 0);
+    assert.deepStrictEqual(stats.tenants, []);
+    assert.ok(stats.cache);
+    assert.strictEqual(stats.cache.size, 0);
+    assert.ok(stats.config);
+    assert.strictEqual(stats.config.cacheMaxSize, CONFIG.cacheMaxSize);
+  });
+});
+
+// ─── invalidateCache ───────────────────────────────────────────────
+
+describe('TenantCatalogStore invalidateCache', () => {
+  test('removes cache entries for specific tenant', () => {
+    const store = new TenantCatalogStore();
+    store.cache.set('tenant1:browse:x', 'data1');
+    store.cache.set('tenant1:search:y', 'data2');
+    store.cache.set('tenant2:browse:z', 'data3');
+    store.invalidateCache('tenant1');
+    assert.strictEqual(store.cache.get('tenant1:browse:x'), null);
+    assert.strictEqual(store.cache.get('tenant1:search:y'), null);
+    assert.strictEqual(store.cache.get('tenant2:browse:z'), 'data3');
+  });
+});
+
+// ─── getItems / getItem (no connector) ─────────────────────────────
+
+describe('TenantCatalogStore getItems/getItem', () => {
+  test('getItems returns empty for unregistered tenant', () => {
+    const store = new TenantCatalogStore();
+    assert.deepStrictEqual(store.getItems('nonexistent'), []);
+  });
+
+  test('getItem returns null for unregistered tenant', () => {
+    const store = new TenantCatalogStore();
+    assert.strictEqual(store.getItem('nonexistent', 'PRODUCTS', 'item1'), null);
+  });
+});
+
+// ─── addItem / updateItem / removeItem (no connector) ──────────────
+
+describe('TenantCatalogStore CRUD (no connector)', () => {
+  test('addItem returns false for unregistered tenant', () => {
+    const store = new TenantCatalogStore();
+    assert.strictEqual(store.addItem('nonexistent', 'PRODUCTS', { id: '1', name: 'Widget' }), false);
+  });
+
+  test('updateItem returns false for unregistered tenant', () => {
+    const store = new TenantCatalogStore();
+    assert.strictEqual(store.updateItem('nonexistent', 'PRODUCTS', '1', { name: 'New' }), false);
+  });
+
+  test('removeItem returns false for unregistered tenant', () => {
+    const store = new TenantCatalogStore();
+    assert.strictEqual(store.removeItem('nonexistent', 'PRODUCTS', '1'), false);
+  });
+});
+
+// ─── Voice generators edge cases ───────────────────────────────────
+
+describe('TenantCatalogStore voice generators edge cases', () => {
+  const store = new TenantCatalogStore();
+
+  test('slots summary: null slots', () => {
+    const result = store._generateSlotsSummary('2027-01-01', null);
+    assert.ok(result.includes('Aucun créneau'));
+  });
+
+  test('browse summary: items without category', () => {
+    const items = [{ name: 'Widget A' }, { name: 'Widget B' }];
+    const result = store._generateBrowseSummary(items, null);
+    assert.ok(result.includes('proposons'));
+    assert.ok(result.includes('Widget A'));
+  });
+
+  test('item voice description: stock=0 shows indisponible', () => {
+    const result = store._generateItemVoiceDescription({ name: 'Item', stock: 0 });
+    assert.ok(result.includes('indisponible'));
+  });
+
+  test('item voice description: default currency dirhams', () => {
+    const result = store._generateItemVoiceDescription({ name: 'Item', price: 100 });
+    assert.ok(result.includes('dirhams'));
+  });
+
+  test('availability: no itemName uses default text', () => {
+    const result = store._generateAvailabilityVoiceResponse({
+      available: false
+    });
+    assert.ok(result.includes('Ce produit'));
+  });
+
+  test('search summary: single result with voice description', () => {
+    const result = store._generateSearchSummary('widget', [
+      { name: 'Widget', voiceDescription: 'A special widget for testing' }
+    ]);
+    assert.ok(result.includes('special widget'));
+  });
+
+  test('search summary: single result without voice description', () => {
+    const result = store._generateSearchSummary('widget', [
+      { name: 'Widget', price: 50 }
+    ]);
+    assert.ok(result.includes('Widget'));
+    assert.ok(result.includes('50'));
+  });
+});
+
 // ─── getInstance singleton ──────────────────────────────────────────
 
 describe('TenantCatalogStore getInstance', () => {
@@ -383,5 +503,33 @@ describe('TenantCatalogStore getInstance', () => {
     const a = getInstance();
     const b = getInstance();
     assert.strictEqual(a, b);
+  });
+});
+
+// ─── Exports ───────────────────────────────────────────────────────
+
+describe('TenantCatalogStore exports', () => {
+  test('exports TenantCatalogStore class', () => {
+    assert.strictEqual(typeof TenantCatalogStore, 'function');
+  });
+
+  test('exports getInstance function', () => {
+    assert.strictEqual(typeof getInstance, 'function');
+  });
+
+  test('exports CONFIG object', () => {
+    assert.strictEqual(typeof CONFIG, 'object');
+  });
+
+  test('instance has all methods', () => {
+    const store = new TenantCatalogStore();
+    const methods = ['init', 'registerTenant', 'unregisterTenant', 'getConnector',
+      'syncTenant', 'startAutoSync', 'stopAutoSync', 'browseCatalog', 'getItemDetails',
+      'getMenu', 'checkAvailability', 'searchCatalog', 'getServices', 'getAvailableSlots',
+      'bookSlot', 'getStats', 'getItems', 'getItem', 'addItem', 'updateItem', 'removeItem',
+      'syncCatalog', 'invalidateCache', 'shutdown'];
+    for (const m of methods) {
+      assert.strictEqual(typeof store[m], 'function', `Missing method: ${m}`);
+    }
   });
 });

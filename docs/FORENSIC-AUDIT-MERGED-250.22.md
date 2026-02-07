@@ -13,7 +13,7 @@
 >   - 0 failing tests (12 b2b_agency_* = expected: widget isolation prevents AGENCY on B2B)
 >   - Sécurité: ✅ CORS whitelist, ✅ innerHTML XSS 15→5, ✅ free_price "49"
 >   - Multi-tenant: 580 dossiers = 23 vrais clients + 557 données TEST widget (BY DESIGN)
->   - 40/40 personas with conversational format (5 langues each)
+>   - 40/38 personas with conversational format (5 langues each)
 >   - agency_internal hardcoded fallbacks removed from 11 files
 > **Session 250.100 SECURITY HARDENING (06/02/2026)**: ✅ CORS wildcard→whitelist, free_price 0→49 in 5 locales, innerHTML XSS 9→5
 > **Session 250.99 DEEP SURGERY (06/02/2026)**: ✅ Social proof FAKE→REAL, B2B booking/social implemented, dashboard toggles, KB booking section, XSS fix (15→9)
@@ -331,7 +331,7 @@ MODÈLE FREEMIUM VÉRIFIÉ:
 3. **Privacy-First** - Plausible Analytics (GDPR), localStorage
 4. **Design Moderne** - Glassmorphism, GSAP animations
 5. **i18n Complet** - 5 langues incluant Darija (unique sur marché)
-6. **MCP Riche** - 182 tools, 40 personas
+6. **MCP Riche** - 182 tools, 38 personas
 
 ### WEAKNESSES
 

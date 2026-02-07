@@ -6,7 +6,7 @@
 > **Session 250.97octies** | 06/02/2026 | ✅ **SCALE UP 30→537 TENANTS** - 2,890 KB files × 12 regions
 > **Session 250.97quinquies** | 06/02/2026 | ✅ **KB AUTO-PROVISIONING COMPLETE** - 30 tenants × 5 languages = 150 KB files
 > **Session 250.97ter** | 06/02/2026 | ✅ **CRITICAL BUG FIX** - Sector→PERSONAS mapping + 109/109 tests pass
-> **Session 250.97bis** | 06/02/2026 | 🟡 **PARTIAL FIX** - Template System + Conversational Format (3/40 personas)
+> **Session 250.97bis** | 06/02/2026 | 🟡 **PARTIAL FIX** - Template System + Conversational Format (3/38 personas)
 > **Session 250.97** | 05/02/2026 | 🔴 **FORENSIC AUDIT** - 9 systemic problems identified
 > **Statut Actuel**: 🟡 KB files provisionnés (2,890) | Score plateforme **6.5/10** (CORS+pricing+XSS fixed sessions 250.99+250.100)
 > **Score Formula**: `(Sector×0.30) + (KB×0.30) + (Templates×0.20) + (ConvFormat×0.10) + (NoFallback×0.10)`
@@ -30,7 +30,7 @@ node test/multi-tenant-widget-test.cjs                           # 109/109 PASS 
 |:---------|:------:|:-----:|:---:|:------:|
 | Sector→PERSONAS Mapping | **40/40** | 40 | 0 | ✅ FAIT |
 | Templates `{{business_name}}` | 181 | 200 | **-19** | 🟡 90% |
-| Format Conversationnel | 3 personas | 40 personas | **-37** | 🔴 7.5% |
+| Format Conversationnel | 3 personas | 38 personas | **-37** | 🔴 7.5% |
 | Fallbacks `agency_internal` | 30 | 0 | **-30** | 🔴 TODO |
 | Tenants avec KB | **537** | 537 | 0 | ✅ **100%** |
 | Widget Tests | **109/109** | 109 | 0 | ✅ 100% |
@@ -72,7 +72,6 @@ node test/multi-tenant-widget-test.cjs                           # 109/109 PASS 
 | # | Tâche | Personas | Effort | Status |
 |:-:|:------|:---------|:------:|:------:|
 | 1.1 | Format Conv. DENTAL, ECOM, RESTO | 3 personas × 5 langs | - | ✅ FAIT |
-| 1.2 | Format Conv. Tier 1 (PROPERTY, CONTRACTOR, FUNERAL) | 3 personas × 5 langs | 1h | ⏳ TODO |
 | 1.3 | Format Conv. Tier 2 (19 personas) | 19 personas × 5 langs | 4h | ⏳ TODO |
 | 1.4 | Format Conv. Tier 3-4 (15 personas) | 15 personas × 5 langs | 3h | ⏳ TODO |
 
@@ -158,11 +157,11 @@ find clients -name "kb_*.json" | wc -l  # Expected: 2,890
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │  telephony/                                                     │
-│  ├── knowledge_base.json      ← 40 personas FR (UNIVERSEL)     │
-│  ├── knowledge_base_en.json   ← 40 personas EN (UNIVERSEL)     │
-│  ├── knowledge_base_es.json   ← 40 personas ES (UNIVERSEL)     │
-│  ├── knowledge_base_ar.json   ← 40 personas AR (UNIVERSEL)     │
-│  └── knowledge_base_ary.json  ← 40 personas ARY (UNIVERSEL)    │
+│  ├── knowledge_base.json      ← 38 personas FR (UNIVERSEL)     │
+│  ├── knowledge_base_en.json   ← 38 personas EN (UNIVERSEL)     │
+│  ├── knowledge_base_es.json   ← 38 personas ES (UNIVERSEL)     │
+│  ├── knowledge_base_ar.json   ← 38 personas AR (UNIVERSEL)     │
+│  └── knowledge_base_ary.json  ← 38 personas ARY (UNIVERSEL)    │
 │                                                                 │
 │  data/knowledge-base/                                           │
 │  ├── chunks.json              ← Index BM25 (GLOBAL)             │

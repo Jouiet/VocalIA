@@ -33,7 +33,7 @@ SEMANTIC_FIXES = [
     (r'Retail|Commerce|E-commerce|Boutique', 'package', 'shopping-bag'),
     (r'Hôtel|Hotel|Hospitality', 'package', 'bed'),
     (r'Restaurant|Food', 'package', 'utensils'),
-    (r'Education|École|School', 'package', 'graduation-cap'),
+    (r'Education|École', 'package', 'graduation-cap'),
     (r'Transport|Logistics', 'package', 'truck'),
     (r'Assurance|Insurance', 'package', 'shield'),
     (r'Juridique|Legal|Avocat', 'package', 'scale'),

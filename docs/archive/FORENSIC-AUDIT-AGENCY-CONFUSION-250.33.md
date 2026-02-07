@@ -13,7 +13,7 @@
 | Métrique | Avant | Après |
 |:---------|:-----:|:-----:|
 | Incohérences "automation agency" | 8 fichiers | **0** ✅ |
-| Incohérences "30 vs 40 personas" | 14 fichiers | **0** ✅ |
+| Incohérences "30 vs 38 personas" | 14 fichiers | **0** ✅ |
 | Références agency_v2 obsolètes | 5 fichiers | **0** ✅ |
 | Patterns "Holistic/Flywheel/profit leak" | 12 | **0** ✅ |
 | **TOTAL CORRIGÉ** | 28+ | **28+** ✅ |
@@ -232,11 +232,11 @@ grep -r "agency_v2" --include="*.json" --include="*.cjs" | wc -l
 
 ---
 
-## 4. CATÉGORIE C: INCOHÉRENCE NUMÉRIQUE (30 vs 40 personas)
+## 4. CATÉGORIE C: INCOHÉRENCE NUMÉRIQUE (30 vs 38 personas)
 
 ### Source de Vérité: CLAUDE.md
 ```
-40 personas SOTA
+38 personas SOTA
 ```
 
 ### Fichiers déclarant "30 personas" (OBSOLÈTE):
@@ -321,7 +321,7 @@ grep -ri "holistic" --include="*.ts" --include="*.cjs" | wc -l
 
 ```
 SOURCES DE VÉRITÉ (CORRECTES)
-├── CLAUDE.md → "Voice AI SaaS Platform", "40 personas"
+├── CLAUDE.md → "Voice AI SaaS Platform", "38 personas"
 ├── personas/voice-persona-injector.cjs → AGENCY v3 (correct)
 └── telephony/knowledge_base.json → agency_v3 (correct)
 
@@ -358,7 +358,7 @@ DOCUMENTATION HISTORIQUE
 - Documentation historique (SESSION-HISTORY) perpétue la confusion
 
 ### 8.4 Risque Marketing
-- "30 personas" affiché alors que "40 personas" existe
+- "30 personas" affiché alors que "38 personas" existe
 - Sous-estimation des capacités produit
 
 ---
@@ -389,12 +389,12 @@ DOCUMENTATION HISTORIQUE
 ### Priorité P3 (Métriques 30→40) ✅ DONE
 | # | Fichier | Status |
 |:-:|---------|:------:|
-| 10 | `README.md` | ✅ 40 personas |
+| 10 | `README.md` | ✅ 38 personas |
 | 11 | `mcp-server/src/index.ts:167` | ✅ 40 PERSONAS |
-| 12 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | ✅ 40 personas |
-| 13 | `plugins/wordpress/*.php` | ✅ 40 personas |
-| 14 | `plugins/wordpress/readme.txt` | ✅ 40 personas |
-| 15 | `website/src/locales/en.json` | ✅ 40 personas (8 lines) |
+| 12 | `docs/VOICE-AI-PLATFORM-REFERENCE.md` | ✅ 38 personas |
+| 13 | `plugins/wordpress/*.php` | ✅ 38 personas |
+| 14 | `plugins/wordpress/readme.txt` | ✅ 38 personas |
+| 15 | `website/src/locales/en.json` | ✅ 38 personas (8 lines) |
 | 16 | `website/src/locales/ar.json` | ✅ 40 شخصية (2 lines) |
 | 17 | `website/src/locales/ary.json` | ✅ 40 شخصية (2 lines) |
 
@@ -429,13 +429,13 @@ sed -n '808p' core/voice-api-resilient.cjs | grep -c "Voice AI Platform"
 sed -n '211,221p' mcp-server/src/index.ts | grep -c "Voice AI"
 # Expected: ≥2
 
-# 40 personas partout
+# 38 personas partout
 grep -r "30 personas\|30 industry\|30 Multi-Tenant" \
   --include="*.md" --include="*.json" --include="*.php" --include="*.txt" | wc -l
 # Expected: 0
 
-# 40 personas présent
-grep -r "40 personas\|40 industry" --include="*.md" | wc -l
+# 38 personas présent
+grep -r "38 personas\|40 industry" --include="*.md" | wc -l
 # Expected: ≥5
 ```
 
@@ -451,7 +451,7 @@ grep -r "40 personas\|40 industry" --include="*.md" | wc -l
 | Patterns "profit leak" | 2 | **0** ✅ | grep verified |
 | Références agency_v2 | 5 fichiers | **0** ✅ | grep verified |
 | "30 personas" (obsolète) | 14+ fichiers | **0** ✅ | grep verified |
-| "40 personas" (correct) | ~5 | **20+** ✅ | grep count |
+| "38 personas" (correct) | ~5 | **20+** ✅ | grep count |
 | Cohérence AGENCY persona | 50% | **100%** ✅ | diff verified |
 
 **Commandes de vérification exécutées (31/01/2026):**
@@ -470,14 +470,14 @@ grep -r "30.*personas\|30 industry" plugins/ website/src/locales/ README.md | gr
 1. **VocalIA = Voice AI SaaS Platform** (source: CLAUDE.md)
 2. Le persona AGENCY existe pour les **clients agences** utilisant VocalIA, pas pour définir VocalIA
 3. L'audit 250.31 a corrigé certains fichiers mais **en a manqué 18+**
-4. La métrique "30 personas" est obsolète - la valeur correcte est **40 personas**
+4. La métrique "30 personas" est obsolète - la valeur correcte est **38 personas**
 5. Les fallbacks et configurations utilisent encore `agency_v2` au lieu de `agency_v3`
 
 ### Contradictions Documentées
 | Document | Claim | Réalité |
 |----------|-------|---------|
 | FORENSIC-AUDIT-MERGED-250.22.md | "Patterns éliminés: (0)" | 12+ patterns actifs |
-| README.md | "30 personas" | 40 personas (CLAUDE.md) |
+| README.md | "30 personas" | 38 personas (CLAUDE.md) |
 | SESSION-HISTORY.md | "Agency Tool" | Voice AI Platform |
 
 ### Recommandation
@@ -577,7 +577,7 @@ diff <(sed -n '211,221p' mcp-server/src/index.ts) <(sed -n '69,94p' personas/voi
 ```
 > VocalIA est une plateforme Voice AI B2B pour entreprises.
 > Deux produits: Voice Widget (browser, gratuit) et Voice Telephony (PSTN, payant).
-> 40 personas IA, 5 langues...
+> 38 personas IA, 5 langues...
 ```
 
 ### 13.8 robots.txt
@@ -665,7 +665,7 @@ La confusion "agence" concerne les claims MARKETING et PROMPTS, pas les identifi
 grep -c "agency_v2" data/knowledge-base/chunks.json  # 0 ✅ (was 4)
 grep -c "Holistic" mcp-server/src/index.ts           # 0 ✅ (was 2)
 grep -c "30 personas" website/src/locales/en.json    # 0 ✅ (was 8+)
-grep -c "40 personas" website/src/locales/en.json    # 4 ✅
+grep -c "38 personas" website/src/locales/en.json    # 4 ✅
 grep -c "Voice AI Platform" sdks/node/README.md      # 1 ✅
 grep -c "plateforme Voice AI" website/llms.txt       # 1 ✅
 grep -c "Voice AI" mcp-server/src/index.ts           # 2 ✅

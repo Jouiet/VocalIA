@@ -57,8 +57,8 @@ transfer_call
 
 | Tier | Count | Examples |
 |:-----|:-----:|:---------|
-| Core | 5 | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
-| Expansion | 19 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST... |
+| Core | 4 | AGENCY, DENTAL, PROPERTY, CONTRACTOR |
+| Expansion | 18 | HEALER, COUNSELOR, CONCIERGE, STYLIST... |
 | Universal | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
 | Economy | 14 | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT... |
 

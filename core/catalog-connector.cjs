@@ -15,11 +15,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// Catalog types aligned with 40 personas
+// Catalog types aligned with 38 personas
 const CATALOG_TYPES = {
   PRODUCTS: 'products',      // universal_ecom, retailer, grocery, producer
   MENU: 'menu',              // restaurateur, bakery
-  SERVICES: 'services',      // mechanic, stylist, healer, dental, gym, hairdresser, cleaner, trainer
+  SERVICES: 'services',      // stylist, healer, dental, gym, hairdresser, cleaner, trainer
   FLEET: 'fleet',            // renter
   TRIPS: 'trips',            // travel_agent
   PACKAGES: 'packages'       // concierge, planner

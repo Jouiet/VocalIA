@@ -24,7 +24,7 @@
 | Voice API (text gen) | 1,508 | ✅ | ❌ DOWN |
 | Grok Realtime (audio) | 1,112 | ✅ | ❌ DOWN |
 | Telephony Bridge (PSTN) | 2,658 | ✅ | ❌ TWILIO missing |
-| Voice Personas | 648 | ✅ | ✅ (40 personas) |
+| Voice Personas | 648 | ✅ | ✅ (38 personas) |
 | **TOTAL** | **8,992** | **✅** | **0/3 UP** |
 
 ### Blocage Principal

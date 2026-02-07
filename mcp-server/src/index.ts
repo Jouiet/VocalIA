@@ -162,12 +162,12 @@ const server = new McpServer({
 // =============================================================================
 
 const LanguageEnum = z.enum(["fr", "en", "es", "ar", "ary"]);
-// Session 250.43: Synced with 40 personas from voice-persona-injector.cjs
+// Session 250.120: Synced with 38 personas from voice-persona-injector.cjs
 const PersonaKeyEnum = z.enum([
-  // Tier 1 - Core (5)
-  "AGENCY", "DENTAL", "PROPERTY", "CONTRACTOR", "FUNERAL",
-  // Tier 2 - Expansion (19)
-  "HEALER", "MECHANIC", "COUNSELOR", "CONCIERGE", "STYLIST", "RECRUITER",
+  // Tier 1 - Core (4)
+  "AGENCY", "DENTAL", "PROPERTY", "CONTRACTOR",
+  // Tier 2 - Expansion (18)
+  "HEALER", "COUNSELOR", "CONCIERGE", "STYLIST", "RECRUITER",
   "DISPATCHER", "COLLECTOR", "INSURER", "ACCOUNTANT", "ARCHITECT",
   "PHARMACIST", "RENTER", "LOGISTICIAN", "TRAINER", "PLANNER",
   "PRODUCER", "CLEANER", "GYM",
@@ -180,7 +180,7 @@ const PersonaKeyEnum = z.enum([
 ]);
 
 // =============================================================================
-// FACTUAL DATA - 40 PERSONAS (synced from voice-persona-injector.cjs - Session 250.90)
+// FACTUAL DATA - 38 PERSONAS (synced from voice-persona-injector.cjs - Session 250.120)
 // =============================================================================
 
 const PERSONAS_DATA = {
@@ -189,11 +189,9 @@ const PERSONAS_DATA = {
     { key: "DENTAL", name: "Cabinet Dentaire", industries: ["dental", "healthcare"], voice: "eve", sensitivity: "high" },
     { key: "PROPERTY", name: "Property Management", industries: ["real-estate"], voice: "leo", sensitivity: "normal" },
     { key: "CONTRACTOR", name: "Contractor Leads", industries: ["construction", "trades"], voice: "rex", sensitivity: "normal" },
-    { key: "FUNERAL", name: "Funeral Services", industries: ["funeral", "memorial"], voice: "valentin", sensitivity: "high" },
   ],
   expansion: [
     { key: "HEALER", name: "Centre de Santé", industries: ["clinic", "wellness"], voice: "eve", sensitivity: "high" },
-    { key: "MECHANIC", name: "Auto Expert Service", industries: ["automotive"], voice: "leo", sensitivity: "normal" },
     { key: "COUNSELOR", name: "Cabinet Juridique", industries: ["legal"], voice: "sal", sensitivity: "high" },
     { key: "CONCIERGE", name: "Hôtel Concierge", industries: ["hospitality"], voice: "mika", sensitivity: "normal" },
     { key: "STYLIST", name: "Espace Beauté & Spa", industries: ["beauty", "salon"], voice: "eve", sensitivity: "normal" },
@@ -241,7 +239,7 @@ const SYSTEM_PROMPTS: Record<string, Record<string, string>> = {
 1. Voice Widget: Assistant vocal 24/7 pour sites web
 2. Voice Telephony: Ligne téléphonique IA (via Twilio)
 OBJECTIF: Qualifier le prospect et proposer une démo à vocalia.ma/booking.
-ATOUTS: 40 personas sectoriels, 5 langues dont Darija, intégrations CRM/e-commerce.`,
+ATOUTS: 38 personas sectoriels, 5 langues dont Darija, intégrations CRM/e-commerce.`,
     en: `You are VocalIA's Voice AI consultant. VocalIA is a Voice AI platform with 2 products:
 1. Voice Widget: 24/7 voice assistant for websites
 2. Voice Telephony: AI phone line (via Twilio)
@@ -251,7 +249,7 @@ STRENGTHS: 40 industry personas, 5 languages including Darija, CRM/e-commerce in
 1. Voice Widget: Asistente de voz 24/7 para sitios web
 2. Voice Telephony: Línea telefónica IA (via Twilio)
 OBJETIVO: Calificar prospectos y ofrecer demo en vocalia.ma/booking.
-FORTALEZAS: 40 personas sectoriales, 5 idiomas incluyendo Darija, integraciones CRM/e-commerce.`,
+FORTALEZAS: 38 personas sectoriales, 5 idiomas incluyendo Darija, integraciones CRM/e-commerce.`,
     ar: `أنت مستشار Voice AI في فوكاليا. فوكاليا هي منصة Voice AI بمنتجين:
 1. Voice Widget: مساعد صوتي 24/7 للمواقع
 2. Voice Telephony: خط هاتف ذكي (Twilio)
@@ -422,7 +420,7 @@ server.tool(
 // PERSONA TOOLS (3) - LOCAL, NO API NEEDED
 // =============================================================================
 
-// Tool 3: personas_list - List all 40 personas by tier
+// Tool 3: personas_list - List all 38 personas by tier
 server.tool(
   "personas_list",
   {

@@ -29,7 +29,7 @@
 
 | Action | Détail | Status |
 |:-------|:-------|:------:|
-| **40/40 personas traduits** | escalation_triggers, complaint_scenarios, example_dialogues | ✅ |
+| **40/38 personas traduits** | escalation_triggers, complaint_scenarios, example_dialogues | ✅ |
 | **5 langues** | FR, EN, ES, AR, ARY (Darija) | ✅ |
 | **Format multilingue** | `{fr, en, es, ar, ary}` object format | ✅ |
 | **getLocalizedText()** | Helper function pour backward compatibility | ✅ |
@@ -37,7 +37,7 @@
 
 **Métriques finales i18n:**
 
-- **40 personas** avec behavioral context traduit
+- **38 personas** avec behavioral context traduit
 - **~175 complaint_scenarios** traduits × 5 langues = **~875 traductions**
 - **~120 escalation_triggers** traduits × 5 langues = **~600 traductions**
 - **~50 example_dialogues** (user+assistant) × 5 langues = **~500 traductions**
@@ -47,8 +47,6 @@
 
 | Tier | Personas | Status |
 |:-----|:--------:|:------:|
-| Tier 1 (Core) | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL | ✅ |
-| Tier 2 (Expansion) | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER | ✅ |
 | Tier 3 (Specialized) | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM | ✅ |
 | Universal | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME | ✅ |
 | Tier 4 (NEW Economy) | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY, BAKERY, SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY | ✅ |
@@ -60,7 +58,7 @@
 | **Personas HITL-compliant** | **23 complaint_scenarios corrigés** (promesses financières → transmission pour validation) | ✅ |
 | **Forbidden behaviors** | Déjà présent: "Giving refunds without proper process" (2 personas) | ✅ |
 | **Pattern unifié** | "Je transmets votre dossier pour validation" au lieu de "remboursement immédiat" | ✅ |
-| **Vérification exhaustive** | 40/40 personas auditées, 175 scénarios vérifiés | ✅ |
+| **Vérification exhaustive** | 40/38 personas auditées, 175 scénarios vérifiés | ✅ |
 
 **Métriques finales:**
 
@@ -198,7 +196,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 |:-------|:-------|:------:|
 | **Complaint Handling 40/40** | escalation_triggers, complaint_scenarios | ✅ |
 | **tone_guidelines.complaint** | Ton empathique pour réclamations | ✅ |
-| **escalation_triggers** | Conditions + actions + messages (40 personas) | ✅ |
+| **escalation_triggers** | Conditions + actions + messages (38 personas) | ✅ |
 | **complaint_scenarios** | 5-6 scénarios spécifiques par persona | ✅ |
 | **Framework LAER** | Listen, Acknowledge, Explore, Respond | ✅ |
 | **Warm Handoff** | Protocoles d'escalation humains | ✅ |
@@ -214,7 +212,6 @@ if (detectFinancialCommitment(complaintResponse)) {
 
 | Action | Détail | Status |
 |:-------|:-------|:------:|
-| **Suppression 5 personas hors scope** | GOVERNOR, SCHOOL, HOA, SURVEYOR (admin), DRIVER | ✅ |
 | **Ajout 14 personas NEW Economy** | Données OMPIC/Eurostat 2024 | ✅ |
 | **GROCERY réinstauré** | Marché $128M Maroc + $59B Europe (livraison grocery) | ✅ |
 | **Structure SOTA 100%** | personality_traits, background, tone_guidelines, forbidden_behaviors, example_dialogues | ✅ |
@@ -273,7 +270,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 | **Complaint Handling 40/40** | 4h | Gestion réclamations SOTA | ⭐⭐⭐⭐⭐ | ✅ DONE (Session 250.9) |
 | **HITL Financial Complaints** | 2h | Zéro engagement non approuvé | ⭐⭐⭐⭐⭐ | ✅ DONE (Session 250.12) |
 | **Shelf Bidirectionnel** | 1h | Partage JO-AAA ↔ VocalIA | ⭐⭐⭐⭐ | ✅ DONE (Session 250.11) |
-| **Sync Shelf personas** | 30min | 40 personas dans shelf | ⭐⭐⭐ | ✅ DONE (Session 250.16) |
+| **Sync Shelf personas** | 30min | 38 personas dans shelf | ⭐⭐⭐ | ✅ DONE (Session 250.16) |
 
 ---
 
@@ -290,7 +287,7 @@ if (detectFinancialCommitment(complaintResponse)) {
 
 | Source | Chemin | Rôle |
 |:-------|:-------|:-----|
-| Personas principale | `personas/voice-persona-injector.cjs` | Définition 40 personas SOTA |
+| Personas principale | `personas/voice-persona-injector.cjs` | Définition 38 personas SOTA |
 | Client registry | `personas/client_registry.json` | Multi-tenant config |
 | KB Services | `core/knowledge-base-services.cjs` | Moteur RAG BM25 |
 | KB Chunks | `data/knowledge-base/chunks.json` | Documents indexés |
@@ -347,17 +344,12 @@ node script.cjs --status
 
 | Tier | Nombre | Personas |
 |:-----|:------:|:---------|
-| **Tier 1 - Core Business** | 5 | AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL |
-| **Tier 2 - Expansion** | 19 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER, ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM |
 | **Tier 3 - Universal** | 2 | UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
 | **Tier 4 - NEW Economy** | 14 | RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT, CONSULTANT, IT_SERVICES, MANUFACTURER, DOCTOR, NOTARY, BAKERY, SPECIALIST, REAL_ESTATE_AGENT, HAIRDRESSER, GROCERY |
 | **TOTAL** | **40** | |
 
 **Personas supprimées (5)** - hors scope B2B:
 
-- GOVERNOR (admin publique - pas PME)
-- SCHOOL (établissements scolaires - pas B2B)
-- HOA (syndic copropriété - niche trop spécifique)
 - SURVEYOR (outil interne CSAT - pas client final)
 - DRIVER (VTC individuel - couvert par DISPATCHER/RENTER)
 
@@ -376,11 +368,11 @@ grep -E "^\s+id: '" personas/voice-persona-injector.cjs | wc -l
 
 #### 3.1.3 Traductions Multilingues - ÉTAT RÉEL (MÀJ Session 250.7)
 
-**SYSTEM_PROMPTS** (lignes 37-760): **40/40 personas** ont des entrées complètes.
+**SYSTEM_PROMPTS** (lignes 37-760): **40/38 personas** ont des entrées complètes.
 
 | Persona | FR | EN | ARY | AR | ES | Status |
 |:--------|:--:|:--:|:---:|:--:|:--:|:------:|
-| Toutes 40 personas | ✅ | ✅ | ✅ | ✅ | ✅ | **5/5** |
+| Toutes 38 personas | ✅ | ✅ | ✅ | ✅ | ✅ | **5/5** |
 
 **Couverture réelle par langue**:
 
@@ -449,8 +441,6 @@ grep -c "^        ary:" personas/voice-persona-injector.cjs  # 40 ✅
 | Niveau | Count | Personas |
 |:-------|:-----:|:---------|
 | `normal` | 29 | Standard operations |
-| `high` | 9 | DENTAL, HEALER, COUNSELOR, DOCTOR, SPECIALIST, ACCOUNTANT, PHARMACIST, NOTARY, FUNERAL (modéré) |
-| `obsessive` | 1 | FUNERAL (Zero hallucinations) |
 
 ### 3.3 Mécanisme d'Injection
 
@@ -478,7 +468,6 @@ grep -c "^        ary:" personas/voice-persona-injector.cjs  # 40 ✅
 |:----------|:---------|:------|
 | BANT | AGENCY, CONTRACTOR, RECRUITER | Lead qualification |
 | PAS | COLLECTOR | Debt recovery |
-| CIALDINI | HOA, GOVERNOR, HEALER | Authority & Liking |
 | AIDA | UNIVERSAL_ECOMMERCE | Sales conversion |
 
 ### 3.4 Comparaison SOTA
@@ -498,11 +487,11 @@ grep -c "^        ary:" personas/voice-persona-injector.cjs  # 40 ✅
 
 | Best Practice | VocalIA | Status | Gap |
 |:--------------|:--------|:------:|:---:|
-| Personality traits | ✅ 40/40 personas | 🟢 | RÉSOLU |
-| Background/backstory | ✅ 40/40 personas | 🟢 | RÉSOLU |
+| Personality traits | ✅ 40/38 personas | 🟢 | RÉSOLU |
+| Background/backstory | ✅ 40/38 personas | 🟢 | RÉSOLU |
 | Few-shot examples | ✅ 40/40 example_dialogues | 🟢 | RÉSOLU |
-| Tone guidelines | ✅ 40/40 personas | 🟢 | RÉSOLU |
-| Forbidden behaviors | ✅ 40/40 personas | 🟢 | RÉSOLU |
+| Tone guidelines | ✅ 40/38 personas | 🟢 | RÉSOLU |
+| Forbidden behaviors | ✅ 40/38 personas | 🟢 | RÉSOLU |
 | Escalation triggers | ✅ Personas sensibles | 🟢 | RÉSOLU |
 | Multilingual | ✅ FR 100%, EN 100%, ARY 100%, AR 100%, ES 100% | 🟢 | **RÉSOLU** |
 | Voice diversity | ✅ 9 voix | 🟢 | OK |
@@ -562,7 +551,7 @@ grep -c "^        ary:" personas/voice-persona-injector.cjs  # 40 ✅
 | `chunks.json` | `data/knowledge-base/` | 8,474 B | ✅ Existe | 18 chunks **VIDES** |
 | `tfidf_index.json` | `data/knowledge-base/` | 10,492 B | ✅ Existe | Index BM25 valide |
 | `status.json` | `data/knowledge-base/` | 227 B | ✅ Existe | Metadata build |
-| `knowledge_base.json` | `telephony/` | ~12 KB | ✅ Existe | **40 personas FAQ RICHES** |
+| `knowledge_base.json` | `telephony/` | ~12 KB | ✅ Existe | **38 personas FAQ RICHES** |
 | `knowledge_base_ary.json` | `telephony/` | ~2 KB | ✅ Existe | FAQ Darija |
 | `knowledge-graph.json` | `data/knowledge-base/` | 10,979 B | ✅ CRÉÉ | Graph RAG: 23 nodes, 38 edges |
 | `knowledge_base_policies.json` | `data/knowledge-base/` | - | ❌ ABSENT | Policies non injectées |
@@ -642,7 +631,7 @@ cost-tracking-sensor, lead-velocity-sensor, retention-sensor
 
 #### 4.5.1 Comparaison Contenu
 
-**Legacy KB** (`telephony/knowledge_base.json`) - **40 personas** (MÀJ Session 250.7):
+**Legacy KB** (`telephony/knowledge_base.json`) - **38 personas** (MÀJ Session 250.7):
 
 ```json
 {
@@ -754,7 +743,7 @@ const score = 1 / (i + 60);
 ┌─────────────────────────────────────┬─────────────────────────────────────┐
 │            STRENGTHS                │            WEAKNESSES               │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
-│ ✅ 40 personas B2B scope rigoureux  │ ⚠️ Chunks RAG pauvres (6.6 tokens)  │
+│ ✅ 38 personas B2B scope rigoureux  │ ⚠️ Chunks RAG pauvres (6.6 tokens)  │
 │ ✅ 100% structure SOTA:             │    (enrichissement à planifier)     │
 │    - personality_traits             │                                     │
 │    - background                     │                                     │
@@ -774,7 +763,6 @@ const score = 1 / (i + 60);
 │          OPPORTUNITIES              │              THREATS                │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │ 🚀 A/B testing objection handling   │ ⚠️ Hallucinations sur personas      │
-│                                     │    sensibles (FUNERAL, DOCTOR)      │
 │ 🚀 A/B testing réponses objections  │ ⚠️ Incohérence ton entre canaux     │
 │ 🚀 Analytics conversion par persona │                                     │
 └─────────────────────────────────────┴─────────────────────────────────────┘
@@ -782,9 +770,6 @@ const score = 1 / (i + 60);
 
 **Personas supprimées (5) - hors scope B2B:**
 
-- GOVERNOR (admin publique)
-- SCHOOL (établissements scolaires)
-- HOA (syndic copropriété)
 - SURVEYOR (outil interne CSAT)
 - DRIVER (VTC individuel - couvert par DISPATCHER/RENTER)
 
@@ -802,7 +787,7 @@ const score = 1 / (i + 60);
 │ ✅ Multi-tenant RLS fonctionnel     │ ❌ knowledge-graph.json absent      │
 │ ✅ Policy boosting codé             │ ❌ policies.json absent             │
 │ ✅ Graph search codé                │ ❌ Avg doc length: 6.6 vs 100+      │
-│ ✅ Legacy KB riche (40 personas)    │                                     │
+│ ✅ Legacy KB riche (38 personas)    │                                     │
 │ ✅ Dense embeddings path corrigé    │                                     │
 │                                     │ ❌ Avg doc length: 6.6 vs 100+      │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
@@ -823,13 +808,13 @@ const score = 1 / (i + 60);
 │       FORCES COMBINÉES              │       FAIBLESSES COMBINÉES          │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │ • Architecture solide               │ • KB RAG chunks pauvres (6.6 tokens)│
-│ • 40 personas SOTA structure        │   (enrichissement à planifier)      │
-│ • KB FAQ: 40/40 personas couverts   │                                     │
+│ • 38 personas SOTA structure        │   (enrichissement à planifier)      │
+│ • KB FAQ: 40/38 personas couverts   │                                     │
 │ • 100% traductions (5 langues)      │                                     │
 │ • Objection Handling LAER           │                                     │
 │ • Multi-tenant ready                │                                     │
 │ • Différenciateurs business         │                                     │
-│   (40 personas, Darija, 6 objec.)   │                                     │
+│   (38 personas, Darija, 6 objec.)   │                                     │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
 │     OPPORTUNITÉS STRATÉGIQUES       │         RISQUES STRATÉGIQUES        │
 ├─────────────────────────────────────┼─────────────────────────────────────┤
@@ -1081,7 +1066,7 @@ DENTAL: {
 
 | # | Action | Effort | Fichier | Validation | Status |
 |:-:|:-------|:------:|:--------|:-----------|:------:|
-| 3.1 | Merger legacy KB dans RAG | 4h | `knowledge-base-services.cjs` | 165 FAQ entries from 40 personas | ✅ DONE (Session 250.15) |
+| 3.1 | Merger legacy KB dans RAG | 4h | `knowledge-base-services.cjs` | 165 FAQ entries from 38 personas | ✅ DONE (Session 250.15) |
 | 3.2 | Créer knowledge-graph.json | 1j | `data/knowledge-base/` | 23 nodes, 38 edges | ✅ DONE |
 | 3.3 | Créer policies.json | 4h | `data/knowledge-base/` | 10 policies, policy boosting actif | ✅ DONE (Session 250.15) |
 | 3.4 | ~~Implémenter ColBERT reranker~~ | ~~3j~~ | - | **SUPPRIMÉ** - ROI insuffisant (193 chunks, latence GPU, complexité) | ❌ REJETÉ |
@@ -1137,7 +1122,7 @@ DENTAL: {
 | Métrique | Avant | Actuel | Cible | Validation |
 |:---------|:-----:|:------:|:-----:|:-----------|
 | Chunks sémantiques riches | 0% | **100%** | 100% | ✅ 12/12 automations avec benefit_en |
-| Personas dans SYSTEM_PROMPTS | 23% | **100%** | 100% | ✅ 40/40 personas |
+| Personas dans SYSTEM_PROMPTS | 23% | **100%** | 100% | ✅ 40/38 personas |
 | Traductions FR | 23% | **100%** | 100% | ✅ 40/40 |
 | Traductions EN | 23% | **100%** | 100% | ✅ 40/40 |
 | Traductions ARY | 0% | **100%** | 100% | ✅ 40/40 |
@@ -1431,7 +1416,7 @@ node core/knowledge-base-services.cjs --search "voice assistant"
 *MÀJ: 31/01/2026 - Session 250.16*
 *✅ Personas: 40/40 SOTA structure, 100% traductions (5 langues)*
 *✅ KB: **1701 termes** vocabulary (+28%), 193 chunks, knowledge-graph.json créé (23 nodes, 38 edges)*
-*✅ Legacy KB merged: 165 FAQ entries from 40 personas*
+*✅ Legacy KB merged: 165 FAQ entries from 38 personas*
 *✅ Policies.json créé: 10 policy boosting rules*
 *✅ Enrichissement 100%: strategic_intent 12/12, business_outcome 12/12, marketing_science 12/12*
 *✅ Query Translation (tRAG): Cross-lingual AR/ES/ARY → FR avant BM25*

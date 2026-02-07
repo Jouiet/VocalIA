@@ -41,7 +41,6 @@
 | PLANNER | 173 | 1000+ | Types événements, capacités, options |
 | COUNSELOR | 198 | 1000+ | Spécialités, confidentialité |
 | INSURER | 168 | 1000+ | Types contrats, sinistres |
-| MECHANIC | 198 | 1000+ | Services, diagnostic, pièces |
 | ... | | | |
 
 **Template enrichi (>1000 chars):**

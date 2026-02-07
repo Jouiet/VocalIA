@@ -141,39 +141,10 @@
 
 </head>
 
-<body class="bg-[#0a0a0a] text-white font-inter min-h-screen">
-  <!-- Skip Link -->
-  <a href="#main-content"
-    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-indigo-500 text-white rounded-lg">
-    Aller au contenu principal
-  </a>
+<body class="bg-[#050505] text-white font-inter min-h-screen">
+<!-- Minimal Navigation -->
+  <div data-component="header"></div>
 
-  <!-- Minimal Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/[0.06]/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <a href="/" class="flex items-center space-x-2">
-          <div class="w-10 h-10 rounded-xl vocalia-gradient flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z">
-              </path>
-            </svg>
-          </div>
-          <span class="text-xl font-bold gradient-text"><span data-i18n="signup.vocalia_2">VocalIA</span></span>
-        </a>
-        <div class="flex items-center gap-4">
-          <span class="text-zinc-400 text-sm hidden sm:block" data-i18n="signup_page.already_account">Déjà un compte
-            ?</span>
-          <a href="/contact"
-            class="px-4 py-2 rounded-lg border border-white/[0.08] hover:border-white/[0.1] transition font-medium text-sm"
-            data-i18n="signup_page.login">
-            Connexion
-          </a>
-        </div>
-      </div>
-    </div>
-  </nav>
 
   <!-- Main Content -->
   <main id="main-content" class="pt-24 pb-16 bg-grid min-h-screen">
@@ -307,7 +278,7 @@
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span data-i18n="signup_page.pro_f2">40 personas métier</span>
+                <span data-i18n="signup_page.pro_f2">38 personas métier</span>
               </li>
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -399,7 +370,7 @@
               <div class="w-full border-t border-white/[0.08]"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-              <span class="px-4 bg-[#0a0a0a] text-zinc-400" data-i18n="signup_page.or">ou</span>
+              <span class="px-4 bg-[#050505] text-zinc-400" data-i18n="signup_page.or">ou</span>
             </div>
           </div>
 
@@ -434,11 +405,8 @@
   </main>
 
   <!-- Minimal Footer (intentional for signup conversion) -->
-  <footer class="bg-[#0c0e1a]/[0.92] backdrop-blur-xl border-t border-white/[0.08] py-6">
-    <div class="max-w-7xl mx-auto px-4 text-center">
-      <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
-    </div>
-  </footer>
+  <div data-component="footer"></div>
+
 
   <!-- Scripts -->
   <script src="/src/lib/geo-detect.js"></script>
@@ -606,6 +574,7 @@
   </script>
   <!-- Voice Widget -->
   <script src="/voice-assistant/voice-widget.js" defer></script>
+  <script src="/src/lib/components.js" defer></script>
 </body>
 
 </html>

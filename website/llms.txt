@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> VocalIA est une plateforme Voice AI pour entreprises. Quatre produits: Voice Widget B2B, Voice Widget B2C, Widget E-commerce, Voice Telephony AI. 40 personas IA, 5 langues (FR, EN, ES, AR, Darija), 31+ integrations natives, 203 MCP tools. Marche cible: PME Maroc, Europe, International.
+> VocalIA est une plateforme Voice AI pour entreprises. Quatre produits: Voice Widget B2B, Voice Widget B2C, Widget E-commerce, Voice Telephony AI. 38 personas IA, 5 langues (FR, EN, ES, AR, Darija), 31+ integrations natives, 203 MCP tools. Marche cible: PME Maroc, Europe, International.
 
 VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels entrants et sortants. La plateforme se distingue par son support natif du Darija (dialecte marocain), son pricing 60% moins cher que les alternatives, et son architecture multi-tenant plug-and-play.
 
@@ -38,7 +38,7 @@ VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels 
 
 - Architecture: Multi-AI fallback (Grok > Gemini > Claude > Atlas)
 - Langues: Francais, English, Espanol, Arabic MSA, Darija
-- Personas: 40 personas SOTA (e-commerce, immobilier, sante, services...)
+- Personas: 38 personas SOTA (e-commerce, immobilier, sante, services...)
 - MCP Server: 203 tools, 25 categories
 - Security: CSP, HTTPS, AES-256-GCM pour credentials
 

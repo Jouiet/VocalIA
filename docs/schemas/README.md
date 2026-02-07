@@ -12,7 +12,7 @@ JSON Schema definitions for VocalIA Dynamic Catalog system. All schemas follow J
 |:-------|:-----|:---------|:------------|
 | **Product** | `vocalia-catalog-product-v1.json` | universal_ecom, retailer, grocery, producer | E-commerce products with variants, stock, pricing |
 | **Menu** | `vocalia-catalog-menu-v1.json` | restaurateur, bakery | Restaurant/bakery menus with allergens, dietary info |
-| **Services** | `vocalia-catalog-services-v1.json` | mechanic, stylist, healer, dental, gym, spa, planner, notary, architect | Services with appointment slots and providers |
+| **Services** | `vocalia-catalog-services-v1.json` | stylist, healer, dental, gym, spa, planner, notary, architect | Services with appointment slots and providers |
 | **Fleet** | `vocalia-catalog-fleet-v1.json` | renter | Vehicle rental fleet with availability, locations |
 | **Trips** | `vocalia-catalog-trips-v1.json` | travel_agent, concierge | Travel packages with itineraries, departures |
 
@@ -66,11 +66,11 @@ All schemas include `voice_description` fields optimized for TTS:
 |:-----|:---------|:-------|
 | **CRITICAL** (10) | universal_ecom, retailer, grocery, producer | Product |
 | **CRITICAL** (10) | restaurateur, bakery | Menu |
-| **MEDIUM** (10) | mechanic, stylist, healer, dental, gym, spa | Services |
+| **MEDIUM** (10) | stylist, healer, dental, gym, spa | Services |
 | **MEDIUM** (10) | renter | Fleet |
 | **MEDIUM** (10) | travel_agent, concierge | Trips |
 
-**Total Coverage**: 23/40 personas (58%)
+**Total Coverage**: 23/38 personas (58%)
 
 ## Related Files
 

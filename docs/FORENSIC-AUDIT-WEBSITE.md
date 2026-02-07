@@ -427,14 +427,12 @@ Icons audit revealed VocalIA was using Heroicons v1 (2019-2020 style) with `stro
 
 ### Personas Factuality Fix
 
-**Issue:** Inconsistency "28 personas" vs "40 personas" across site.
+**Issue:** Inconsistency "28 personas" vs "38 personas" across site.
 
-**Source of Truth:** `personas/voice-persona-injector.cjs` → **40 personas verified**
+**Source of Truth:** `personas/voice-persona-injector.cjs` → **38 personas verified**
 
 | Tier | Count | Personas |
 |:-----|:-----:|:---------|
-| Tier 1 | 7 | AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL |
-| Tier 2 | 11 | HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER |
 | Tier 3 | 12 | ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM, UNIVERSAL_ECOMMERCE, UNIVERSAL_SME |
 
 **10 Files Corrected (28→30):**

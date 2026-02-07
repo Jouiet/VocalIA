@@ -150,7 +150,7 @@
       {
         "@type": "HowToStep",
         "name": "Configuration du persona",
-        "text": "Choisissez parmi les 40 personas VocalIA (DENTAL, PROPERTY, STYLIST, etc.)"
+        "text": "Choisissez parmi les 38 personas VocalIA (DENTAL, PROPERTY, STYLIST, etc.)"
       },
       {
         "@type": "HowToStep",
@@ -192,15 +192,8 @@
   <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
 </head>
 <body class="bg-[#050505] text-white antialiased">
-  <nav class="fixed top-0 left-0 right-0 z-50 glass">
-    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="/" class="flex items-center space-x-2">
-        <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
-        <span class="font-bold gradient-text"><span data-i18n="blog_automatiser_prise_rd.vocalia_1"><span data-i18n="blog_automatiser_prise_rd.vocalia_71">VocalIA</span></span></span>
-      </a>
-      <a href="/blog" class="text-vocalia-300 hover:text-white transition text-sm">← Retour au blog</a>
-    </div>
-  </nav>
+  <div data-component="header"></div>
+
 
   <main class="pt-24 pb-16" id="main-content">
     <article class="max-w-4xl mx-auto px-4">
@@ -661,7 +654,7 @@
           <li>
             <strong><span data-i18n="blog_automatiser_prise_rd.configuration_du_persona_12">Configuration du persona</span></strong>
             <p class="text-sm text-zinc-400 mt-1">
-              Choisissez parmi les 40 personas VocalIA (DENTAL, PROPERTY, STYLIST, etc.) ou personnalisez
+              Choisissez parmi les 38 personas VocalIA (DENTAL, PROPERTY, STYLIST, etc.) ou personnalisez
               le vôtre. Définissez le ton, le vocabulaire métier, et les règles d'escalade.
             </p>
           </li>
@@ -801,127 +794,8 @@
       </div>
     </article>
   </main><!-- Footer -->
-  <!-- Newsletter CTA loads separately via data-component="newsletter-cta" -->
-  <footer class="bg-[#0c0e1a]/[0.92] backdrop-blur-xl border-t border-white/[0.08]">
-    <!-- Main Footer -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Brand Section -->
-      <div class="mb-10">
-          <a href="/" class="flex items-center space-x-3 mb-4">
-            <img src="/public/images/logo.webp" alt="VocalIA" class="w-14 h-14 rounded-xl object-contain">
-            <span class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
-          </a>
-          <p class="text-zinc-400 mb-4 text-sm">Agents Vocaux IA pour Entreprises</p>
-          <!-- Contact Info -->
-          <div class="space-y-2 text-sm text-zinc-400 mb-4">
-            <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="mail" class="w-4 h-4"></i>
-              contact@vocalia.ma
-            </a>
-            <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
-              <i data-lucide="phone" class="w-4 h-4"></i>
-              +1 762 422 4223
-            </a>
-          </div>
-          <!-- Social Links (WCAG 2.1 AA: min 44x44px touch targets) -->
-          <div class="flex space-x-3">
-            <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
-              <img src="/public/images/logos/xai.svg" alt="X" class="w-5 h-5 brightness-0 invert opacity-70" loading="lazy" >
-            </a>
-            <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
-              <i data-lucide="linkedin" class="w-5 h-5"></i>
-            </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
-              <i data-lucide="github" class="w-5 h-5"></i>
-            </a>
-            <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
-              <i data-lucide="youtube" class="w-5 h-5"></i>
-            </a>
-          </div>
-        </div>
+  <div data-component="footer"></div>
 
-      <!-- Categories Row - Inline with proper spacing -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
-        <!-- Product -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.product">Produit</span></h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/features" class="hover:text-white transition"><span data-i18n="nav.features">Fonctionnalités</span></a></li>
-            <li><a href="/pricing" class="hover:text-white transition"><span data-i18n="nav.pricing">Tarifs</span></a></li>
-            <li><a href="/products/voice-widget" class="hover:text-white transition"><span data-i18n="products.voice_widget">Voice Widget</span></a></li>
-            <li><a href="/products/voice-telephony" class="hover:text-white transition"><span data-i18n="products.voice_telephony">Voice Telephony</span></a></li>
-            <li><a href="/integrations" class="hover:text-white transition"><span data-i18n="footer.links.integrations">Intégrations</span></a></li>
-          </ul>
-        </div>
-
-        <!-- Solutions -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.solutions">Solutions</span></h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/use-cases" class="hover:text-white transition"><span data-i18n="footer.links.use_cases">Cas d\'Usage</span></a></li>
-            <li><a href="/industries/" class="hover:text-white transition"><span data-i18n="footer.links.industries">Par Industrie</span></a></li>
-            <li><a href="/use-cases/e-commerce" class="hover:text-white transition"><span data-i18n="footer.links.ecommerce">E-commerce</span></a></li>
-            <li><a href="/use-cases/customer-support" class="hover:text-white transition"><span data-i18n="footer.links.customer_support">Service Client</span></a></li>
-            <li><a href="/industries/healthcare" class="hover:text-white transition"><span data-i18n="footer.links.healthcare">Santé</span></a></li>
-          </ul>
-        </div>
-
-        <!-- Ressources -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="nav.resources">Ressources</span></h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/docs" class="hover:text-white transition"><span data-i18n="footer.links.docs">Documentation</span></a></li>
-            <li><a href="/docs/api" class="hover:text-white transition"><span data-i18n="footer.links.api">API Reference</span></a></li>
-            <li><a href="/blog" class="hover:text-white transition"><span data-i18n="footer.links.blog">Blog</span></a></li>
-            <li><a href="/academie-business" class="hover:text-white transition"><span data-i18n="footer.links.academy">Académie Business</span></a></li>
-          </ul>
-        </div>
-
-        <!-- Entreprise -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4"><span data-i18n="footer.company">Entreprise</span></h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/about" class="hover:text-white transition"><span data-i18n="footer.links.about">À propos</span></a></li>
-            <li><a href="/contact" class="hover:text-white transition"><span data-i18n="footer.links.contact">Contact</span></a></li>
-            <li><a href="/privacy" class="hover:text-white transition"><span data-i18n="footer.links.privacy">Confidentialité</span></a></li>
-            <li><a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a></li>
-            <li><a href="/investor" class="hover:text-white transition"><span data-i18n="footer.links.investors">Investisseurs</span></a></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Bottom Bar -->
-      <div class="border-t border-white/[0.06] mt-8 pt-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
-
-          <!-- Trust Badges -->
-          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-              <span>RGPD</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
-              <span>AI Act Ready</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
-              <span>AES-256</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
-              <span>5 Langues</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
-              <span>99.9% Uptime</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
   <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
   
   <script src="/src/lib/geo-detect.js?v=250"></script>
@@ -1016,5 +890,6 @@
   <script src="/voice-assistant/voice-widget.js" defer></script>
   <!-- VocalIA Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
+  <script src="/src/lib/components.js" defer></script>
 </body>
 </html>

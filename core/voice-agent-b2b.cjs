@@ -151,7 +151,7 @@ const SERVICE_PACKS = {
     price: 'Sur devis',
     description: 'Unlimited Voice AI with dedicated support',
     description_fr: 'Voice AI illimité avec support dédié',
-    includes: ['Telephony illimité', '40 personas', 'Multi-tenant', 'SLA dédié', 'Intégrations custom']
+    includes: ['Telephony illimité', '38 personas', 'Multi-tenant', 'SLA dédié', 'Intégrations custom']
   }
 };
 
@@ -273,8 +273,8 @@ PRODUCT 2: VOICE TELEPHONY (PSTN AI Bridge)
 ═══════════════════════════════════════════════════════════════════
 VocalIA offers pre-configured AI personas for specific industries:
 
-Tier 1 (Core): AGENCY, DENTAL, PROPERTY, CONTRACTOR, FUNERAL
-Tier 2 (Expansion): HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST,
+Tier 1 (Core): AGENCY, DENTAL, PROPERTY, CONTRACTOR
+Tier 2 (Expansion): HEALER, COUNSELOR, CONCIERGE, STYLIST,
                    RECRUITER, DISPATCHER, COLLECTOR, INSURER, etc.
 Tier 3 (Universal): UNIVERSAL_ECOMMERCE, UNIVERSAL_SME
 Tier 4 (NEW Economy): RETAILER, BUILDER, RESTAURATEUR, TRAVEL_AGENT,

@@ -99,19 +99,8 @@
 
 <body class="bg-[#050505] text-white">
   <!-- Navigation (minimal for landing page) -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/[0.08]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <a href="/" class="flex items-center space-x-2">
-          <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-          <span class="text-xl font-bold gradient-text"><span data-i18n="referral.vocalia_36">VocalIA</span></span>
-        </a>
-        <a href="/signup?ref=referral" class="px-6 py-2.5 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-white font-semibold transition">
-          Devenir Partenaire
-        </a>
-      </div>
-    </div>
-  </nav>
+  <div data-component="header"></div>
+
 
   <!-- Hero Section -->
   <section id="main-content" class="pt-32 pb-20 relative overflow-hidden">
@@ -352,16 +341,8 @@
   </section>
 
   <!-- Simple Footer -->
-  <footer class="py-8 border-t border-white/[0.08]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
-      <p class="text-zinc-400 text-sm">© 2026 VocalIA. Tous droits réservés.</p>
-      <div class="flex items-center gap-6 text-sm text-zinc-400">
-        <a href="/terms" class="hover:text-white transition"><span data-i18n="footer.links.terms">CGU</span></a>
-        <a href="/privacy" class="hover:text-white transition"><span data-i18n="footer.links.privacy">Confidentialité</span></a>
-        <a href="/contact" class="hover:text-white transition"><span data-i18n="footer.links.contact">Contact</span></a>
-      </div>
-    </div>
-  </footer>
+  <div data-component="footer"></div>
+
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
@@ -487,5 +468,6 @@
   <script src="/voice-assistant/voice-widget.js" defer></script>
   <!-- VocalIA Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
+  <script src="/src/lib/components.js" defer></script>
 </body>
 </html>

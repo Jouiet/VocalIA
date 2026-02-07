@@ -74,7 +74,7 @@
 |:---------|:----------------|:------------|
 | Design générique | Pas de différenciation visuelle | Cards = `bg-white rounded-xl border` |
 | Aucune animation | Interface statique, pas "vivante" | 0 import GSAP |
-| Tech non exposée | Savoir-faire invisible | 40 personas, 203 MCP tools absents |
+| Tech non exposée | Savoir-faire invisible | 38 personas, 203 MCP tools absents |
 | Charts basiques | Manque de sophistication | Chart.js brut sans customization |
 | Pas de voice identity | Rien ne dit "Voice AI Platform" | 0 visualizer audio |
 

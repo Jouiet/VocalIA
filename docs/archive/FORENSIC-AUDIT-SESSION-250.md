@@ -258,7 +258,6 @@ node -e "const m = require('./personas/voice-persona-injector.cjs'); console.log
 ### Restructuration Session 250.6
 
 **Supprimées (5):**
-- GOVERNOR, SCHOOL, HOA, SURVEYOR (Admin publique/syndic hors scope business PME)
 - DRIVER (VTC individuel hors scope B2B - couvert par DISPATCHER/RENTER)
 
 **Ajoutées (14):** Basées sur données économiques OMPIC/Eurostat 2024
@@ -269,10 +268,8 @@ node -e "const m = require('./personas/voice-persona-injector.cjs'); console.log
 ### Liste des 40 Personas
 
 **TIER 1 - Core Business (5):**
-1. AGENCY, 2. DENTAL, 3. PROPERTY, 4. CONTRACTOR, 5. FUNERAL
 
 **TIER 2 - Expansion (17):**
-6. HEALER, 7. MECHANIC, 8. COUNSELOR, 9. CONCIERGE, 10. STYLIST, 11. RECRUITER,
 12. DISPATCHER, 13. COLLECTOR, 14. INSURER, 15. ACCOUNTANT, 16. ARCHITECT,
 17. PHARMACIST, 18. RENTER, 19. LOGISTICIAN, 20. TRAINER, 21. PLANNER, 22. PRODUCER,
 23. CLEANER, 24. GYM
@@ -287,7 +284,7 @@ node -e "const m = require('./personas/voice-persona-injector.cjs'); console.log
 
 ### Structure SOTA Enrichie (100%)
 
-Toutes les 40 personas ont maintenant:
+Toutes les 38 personas ont maintenant:
 - `personality_traits`: 3-4 traits caractéristiques
 - `background`: Contexte professionnel
 - `tone_guidelines`: Ton par situation
@@ -1083,15 +1080,9 @@ cat website/public/site.webmanifest
 * 1. AGENCY (Default): VocalIA Sales Assistant
 * 2. DENTAL: Patient Intake & Scheduling
 * 3. PROPERTY: Maintenance Request Handling
-* 4. HOA: Support Hotline & Rules
-* 5. SCHOOL: Absence Reporting Line
-* 7. FUNERAL: Compassionate Intake (High Sensitivity)
 
 // Header APRÈS:
 * PERSONAS (30 total):
-* TIER 1 - Gold Rush (7): AGENCY, DENTAL, PROPERTY, HOA, SCHOOL, CONTRACTOR, FUNERAL
-* TIER 2 - Expansion (21): HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER,
-*   DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER, ACCOUNTANT, ARCHITECT,
 *   PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM
 * TIER 3 - Universal (2): UNIVERSAL_ECOMMERCE, UNIVERSAL_SME
 ```
@@ -1111,7 +1102,7 @@ TOTAL: 652 lignes - Plugin complet
 
 **Fonctionnalités (plugin original):**
 - Settings page WordPress admin
-- 40 personas configurables (Session 250.6)
+- 38 personas configurables (Session 250.6)
 - 5 langues supportées (FR, EN, ES, AR, Darija)
 - Position/thème/couleur personnalisables
 - Shortcode `[vocalia_widget]`

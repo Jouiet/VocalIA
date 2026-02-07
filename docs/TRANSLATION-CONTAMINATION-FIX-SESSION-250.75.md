@@ -241,13 +241,13 @@ awk '/^const SYSTEM_PROMPTS/,/^};/' personas/voice-persona-injector.cjs | grep -
 
 # Verify all have 5 languages
 python3 -c "..." # (script verified 40/40)
-# Result: ✅ 40/40 personas have ALL 5 languages
+# Result: ✅ 40/38 personas have ALL 5 languages
 ```
 
 ### Conclusion
 
 **SYSTEM CORRECTLY DESIGNED:**
-- All 40 personas have complete 5-language support in SYSTEM_PROMPTS
+- All 38 personas have complete 5-language support in SYSTEM_PROMPTS
 - Language is explicitly set from request/tenant config before inject()
 - Darija has additional authentic expression injection
 - Fallback chain ensures no prompt is ever empty

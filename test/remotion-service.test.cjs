@@ -35,7 +35,8 @@ const {
   renderAllLanguages,
   generateVideo,
   installDependencies,
-  startStudio
+  startStudio,
+  getCompositionId
 } = require('../core/remotion-service.cjs');
 
 // ─── COMPOSITIONS ───────────────────────────────────────────────────
@@ -332,5 +333,53 @@ describe('RemotionService exports', () => {
 
   test('exports startStudio function', () => {
     assert.strictEqual(typeof startStudio, 'function');
+  });
+
+  test('exports getCompositionId function', () => {
+    assert.strictEqual(typeof getCompositionId, 'function');
+  });
+});
+
+// ─── getCompositionId ────────────────────────────────────────────
+
+describe('RemotionService getCompositionId', () => {
+  test('returns baseId for fr language', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', 'fr'), 'VocaliaDemo');
+  });
+
+  test('returns baseId for null language', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', null), 'VocaliaDemo');
+  });
+
+  test('returns baseId for undefined language', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', undefined), 'VocaliaDemo');
+  });
+
+  test('returns baseId for empty string language', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', ''), 'VocaliaDemo');
+  });
+
+  test('appends -EN for English', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', 'en'), 'VocaliaDemo-EN');
+  });
+
+  test('appends -ES for Spanish', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', 'es'), 'VocaliaDemo-ES');
+  });
+
+  test('appends -AR for Arabic', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', 'ar'), 'VocaliaDemo-AR');
+  });
+
+  test('appends -ARY for Darija', () => {
+    assert.strictEqual(getCompositionId('VocaliaDemo', 'ary'), 'VocaliaDemo-ARY');
+  });
+
+  test('uppercases language code', () => {
+    assert.strictEqual(getCompositionId('Test', 'de'), 'Test-DE');
+  });
+
+  test('works with FeatureShowcase', () => {
+    assert.strictEqual(getCompositionId('FeatureShowcase', 'en'), 'FeatureShowcase-EN');
   });
 });

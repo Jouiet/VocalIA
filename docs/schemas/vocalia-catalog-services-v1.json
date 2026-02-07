@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "vocalia-catalog-services-v1",
   "title": "VocalIA Services Catalog Schema",
-  "description": "Schema for service-based businesses with appointment slots (mechanic, stylist, healer, dental, gym, spa, planner, notary, architect personas)",
+  "description": "Schema for service-based businesses with appointment slots (stylist, healer, dental, gym, spa, planner, notary, architect personas)",
   "type": "object",
   "required": ["$schema", "tenant_id", "last_sync", "services"],
   "properties": {
@@ -39,7 +39,7 @@
       "items": {
         "$ref": "#/$defs/provider"
       },
-      "description": "Service providers (e.g., stylists, mechanics)"
+      "description": "Service providers (e.g., stylists, dentists)"
     }
   },
   "$defs": {

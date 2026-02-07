@@ -4,7 +4,7 @@
  * VocalIA RecommendationService Tests
  *
  * Tests:
- * - PERSONA_CONFIG (40 personas with 5-lang terminology)
+ * - PERSONA_CONFIG (38 personas with 5-lang terminology)
  * - AssociationRulesEngine (learn, getFrequentlyBoughtTogether, getCartRecommendations, _isComplementary)
  * - RecommendationService (_generateUserQuery, _applyLTVReranking, _applyDiversity,
  *   _formatVoiceResponse, _getNoRecommendationsResponse)

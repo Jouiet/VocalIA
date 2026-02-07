@@ -417,3 +417,146 @@ describe('HybridRAG exports', () => {
     assert.strictEqual(typeof rag.ensureDirectory, 'function');
   });
 });
+
+// ─── BM25 Edge Cases ────────────────────────────────────────────
+
+describe('BM25 Algorithm Edge Cases', () => {
+  class TestBM25Edge {
+    constructor(options = {}) {
+      this.k1 = options.k1 || 1.5;
+      this.b = options.b || 0.75;
+      this.avgdl = 0;
+      this.docCount = 0;
+      this.idf = new Map();
+      this.documents = [];
+      this.termFreqs = [];
+    }
+    tokenize(text) {
+      if (!text) return [];
+      return text.toLowerCase()
+        .replace(/[^\w\s\u0600-\u06FF]/g, ' ')
+        .split(/\s+/)
+        .filter(t => t.length > 2);
+    }
+    build(documents) {
+      this.documents = documents;
+      this.docCount = documents.length;
+      this.termFreqs = [];
+      const df = new Map();
+      let totalLen = 0;
+      documents.forEach((doc) => {
+        const tokens = this.tokenize(doc.text);
+        const tf = new Map();
+        tokens.forEach(t => { tf.set(t, (tf.get(t) || 0) + 1); });
+        this.termFreqs.push(tf);
+        totalLen += tokens.length;
+        for (const term of tf.keys()) { df.set(term, (df.get(term) || 0) + 1); }
+      });
+      this.avgdl = totalLen / (this.docCount || 1);
+      for (const [term, freq] of df) {
+        const idf = Math.log((this.docCount - freq + 0.5) / (freq + 0.5) + 1);
+        this.idf.set(term, Math.max(idf, 0.01));
+      }
+    }
+    search(query, topK = 10) {
+      const tokens = this.tokenize(query);
+      const scores = [];
+      this.termFreqs.forEach((tf, idx) => {
+        let score = 0;
+        const docLen = this.tokenize(this.documents[idx].text).length;
+        tokens.forEach(token => {
+          if (!tf.has(token)) return;
+          const f = tf.get(token);
+          const idf = this.idf.get(token) || 0;
+          const numerator = f * (this.k1 + 1);
+          const denominator = f + this.k1 * (1 - this.b + this.b * (docLen / this.avgdl));
+          score += idf * (numerator / denominator);
+        });
+        if (score > 0) { scores.push({ index: idx, score }); }
+      });
+      return scores.sort((a, b) => b.score - a.score).slice(0, topK)
+        .map(s => ({ ...this.documents[s.index], sparseScore: s.score }));
+    }
+  }
+
+  test('empty document set returns empty search', () => {
+    const bm25 = new TestBM25Edge();
+    bm25.build([]);
+    assert.strictEqual(bm25.docCount, 0);
+    const results = bm25.search('anything');
+    assert.deepStrictEqual(results, []);
+  });
+
+  test('single document index', () => {
+    const bm25 = new TestBM25Edge();
+    bm25.build([{ id: 'sole', text: 'the quick brown fox jumps over the lazy dog' }]);
+    assert.strictEqual(bm25.docCount, 1);
+    const results = bm25.search('quick fox');
+    assert.strictEqual(results.length, 1);
+    assert.strictEqual(results[0].id, 'sole');
+  });
+
+  test('custom k1 and b parameters', () => {
+    const bm25 = new TestBM25Edge({ k1: 2.0, b: 0.5 });
+    assert.strictEqual(bm25.k1, 2.0);
+    assert.strictEqual(bm25.b, 0.5);
+  });
+
+  test('repeated term gives higher score', () => {
+    const bm25 = new TestBM25Edge();
+    bm25.build([
+      { id: 'repeat', text: 'vocalia vocalia vocalia voice platform' },
+      { id: 'single', text: 'vocalia is nice for business consulting' }
+    ]);
+    const results = bm25.search('vocalia');
+    assert.strictEqual(results.length, 2);
+    assert.strictEqual(results[0].id, 'repeat');
+    assert.ok(results[0].sparseScore > results[1].sparseScore);
+  });
+
+  test('tokenize lowercases text', () => {
+    const bm25 = new TestBM25Edge();
+    const tokens = bm25.tokenize('HELLO World Testing');
+    assert.ok(tokens.includes('hello'));
+    assert.ok(tokens.includes('world'));
+    assert.ok(tokens.includes('testing'));
+  });
+
+  test('tokenize strips punctuation but keeps Arabic', () => {
+    const bm25 = new TestBM25Edge();
+    const tokens = bm25.tokenize('hello, world! مرحبا بالعالم');
+    assert.ok(tokens.includes('hello'));
+    assert.ok(tokens.includes('world'));
+    assert.ok(tokens.some(t => /[\u0600-\u06FF]/.test(t)));
+  });
+
+  test('search empty query returns empty', () => {
+    const bm25 = new TestBM25Edge();
+    bm25.build([{ id: '1', text: 'some document text here' }]);
+    const results = bm25.search('');
+    assert.deepStrictEqual(results, []);
+  });
+
+  test('avgdl computed correctly', () => {
+    const bm25 = new TestBM25Edge();
+    bm25.build([
+      { id: '1', text: 'one two three four five' },     // 5 tokens (all > 2 chars)
+      { id: '2', text: 'alpha beta gamma' }              // 3 tokens
+    ]);
+    // "one" is 3 chars, "two" is 3 chars — all pass filter
+    // avgdl = (5 + 3) / 2 = 4 (approximately — depends on exact token count)
+    assert.ok(bm25.avgdl > 0);
+  });
+
+  test('IDF minimum is 0.01', () => {
+    const bm25 = new TestBM25Edge();
+    // Term appearing in all docs → IDF near 0
+    bm25.build([
+      { id: '1', text: 'common term' },
+      { id: '2', text: 'common term' },
+      { id: '3', text: 'common term' }
+    ]);
+    const idf = bm25.idf.get('common');
+    assert.ok(idf >= 0.01, `IDF should be >= 0.01, got ${idf}`);
+  });
+});

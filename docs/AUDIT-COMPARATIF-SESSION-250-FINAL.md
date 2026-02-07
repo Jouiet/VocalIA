@@ -43,7 +43,7 @@ TOTAL: 652 lignes de code PHP fonctionnel
 - ✅ Settings API (register_settings)
 - ✅ Widget render (wp_footer hook)
 - ✅ Multi-language support (5 langues)
-- ✅ 40 personas intégrés (Session 250.6)
+- ✅ 38 personas intégrés (Session 250.6)
 - ✅ Shortcode support
 - ✅ CDN widget loader
 - ✅ Sanitization (sanitize_text_field, esc_attr)

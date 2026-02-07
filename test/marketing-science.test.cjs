@@ -171,3 +171,107 @@ describe('MarketingScience analyze()', () => {
     assert.ok(result.feedback.includes('API down'));
   });
 });
+
+// ─── Framework detail checks ─────────────────────────────────────
+
+describe('MarketingScience framework details', () => {
+  test('UVP framework includes clarity rules', () => {
+    const uvp = MarketingScience.getFramework('UVP');
+    assert.ok(uvp);
+    assert.strictEqual(uvp.name, 'Unique Value Proposition');
+    assert.ok(uvp.instruction.includes('What is it'));
+    assert.ok(uvp.instruction.includes('Who is it for'));
+  });
+
+  test('CIALDINI has 6 principles', () => {
+    const cialdini = MarketingScience.getFramework('CIALDINI');
+    assert.ok(cialdini.instruction.includes('RECIPROCITY'));
+    assert.ok(cialdini.instruction.includes('SCARCITY'));
+    assert.ok(cialdini.instruction.includes('AUTHORITY'));
+    assert.ok(cialdini.instruction.includes('CONSISTENCY'));
+    assert.ok(cialdini.instruction.includes('LIKING'));
+    assert.ok(cialdini.instruction.includes('SOCIAL PROOF'));
+  });
+
+  test('SB7 has all 6 elements', () => {
+    const sb7 = MarketingScience.getFramework('SB7');
+    assert.ok(sb7.instruction.includes('HERO'));
+    assert.ok(sb7.instruction.includes('VILLAIN'));
+    assert.ok(sb7.instruction.includes('GUIDE'));
+    assert.ok(sb7.instruction.includes('PLAN'));
+    assert.ok(sb7.instruction.includes('FAILURE'));
+    assert.ok(sb7.instruction.includes('SUCCESS'));
+  });
+
+  test('each framework has non-empty description', () => {
+    for (const key of MarketingScience.getAvailableFrameworks()) {
+      const fw = MarketingScience.getFramework(key);
+      assert.ok(fw.description.length > 5, `${key} description too short`);
+    }
+  });
+});
+
+// ─── inject edge cases ───────────────────────────────────────────
+
+describe('MarketingScience inject edge cases', () => {
+  test('inject SB7 includes StoryBrand', () => {
+    const result = MarketingScience.inject('SB7', 'Company story');
+    assert.ok(result.includes('StoryBrand 7'));
+  });
+
+  test('inject CIALDINI includes persuasion', () => {
+    const result = MarketingScience.inject('CIALDINI', 'Sales email');
+    assert.ok(result.includes('Persuasion') || result.includes('PERSUASION'));
+  });
+
+  test('inject BANT includes qualification', () => {
+    const result = MarketingScience.inject('BANT', 'Lead call script');
+    assert.ok(result.includes('BANT') || result.includes('BUDGET'));
+  });
+
+  test('inject UVP includes clarity', () => {
+    const result = MarketingScience.inject('UVP', 'Landing page');
+    assert.ok(result.includes('CLARITY') || result.includes('Unique Value'));
+  });
+});
+
+// ─── trackV2 ─────────────────────────────────────────────────────
+
+describe('MarketingScience trackV2', () => {
+  test('trackV2 is a static method', () => {
+    assert.strictEqual(typeof MarketingScience.trackV2, 'function');
+  });
+
+  test('trackV2 completes without error', async () => {
+    await MarketingScience.trackV2('test_event', { sector: 'DENTAL', value: 100 });
+  });
+
+  test('trackV2 handles missing sector', async () => {
+    await MarketingScience.trackV2('test_event', { value: 50 });
+    // Should not throw
+  });
+});
+
+// ─── heal ────────────────────────────────────────────────────────
+
+describe('MarketingScience heal', () => {
+  test('heal is a static method', () => {
+    assert.strictEqual(typeof MarketingScience.heal, 'function');
+  });
+});
+
+// ─── exports ─────────────────────────────────────────────────────
+
+describe('MarketingScience exports', () => {
+  test('exports MarketingScience class', () => {
+    assert.strictEqual(typeof MarketingScience, 'function');
+  });
+
+  test('has all 5 static methods', () => {
+    assert.strictEqual(typeof MarketingScience.getAvailableFrameworks, 'function');
+    assert.strictEqual(typeof MarketingScience.getFramework, 'function');
+    assert.strictEqual(typeof MarketingScience.inject, 'function');
+    assert.strictEqual(typeof MarketingScience.analyze, 'function');
+    assert.strictEqual(typeof MarketingScience.trackV2, 'function');
+  });
+});

@@ -94,7 +94,7 @@ MCP permet à Claude Desktop d'interagir directement avec des services externes 
 | Composant | Fichier | Lignes | Fonction |
 |:----------|:--------|:------:|:---------|
 | **MCP WooCommerce Tools** | `mcp-server/src/tools/woocommerce.ts` | **687** | 7 tools REST API v3 |
-| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (40 personas, 5 langues) |
+| **WordPress Plugin B2B** | `plugins/wordpress/vocalia-voice-widget.php` | **514** | Widget injection (38 personas, 5 langues) |
 | **WordPress Plugin Ecom** | `distribution/wordpress/vocalia-voice-agent/vocalia-voice-agent.php` | **161** | WooCommerce widget (B2B/B2C/Ecom modes) |
 | **Catalog Connector** | `core/catalog-connector.cjs` (WooCommerceCatalogConnector) | **~200** | Sync produits REST v3 |
 | **Voice Ecom Tools** | `core/voice-ecommerce-tools.cjs` | **389** | checkOrderStatus(), getOrderHistory() |
@@ -132,7 +132,7 @@ Ces tools fonctionnent sans aucun service externe:
 
 | Tool | Description | Persistence |
 |:-----|:------------|:------------|
-| `personas_list` | Liste les 40 personas par tier | Local |
+| `personas_list` | Liste les 38 personas par tier | Local |
 | `personas_get` | Détails d'un persona spécifique | Local |
 | `personas_get_system_prompt` | System prompt dans une langue | Local |
 | `qualify_lead` | Calcul BANT avec scoring avancé | Local |
@@ -180,7 +180,7 @@ Ces tools fonctionnent sans aucun service externe:
 
 - **186 tools** - 23x plus que Vapi (8 tools)
 - **iPaaS complet** (Zapier, Make, n8n) → +7000 apps connectables
-- 40 personas multi-industrie intégrés
+- 38 personas multi-industrie intégrés
 - Qualification BANT automatique avec scoring avancé
 - Support Darija (Atlas-Chat-9B)
 - 5 langues natives (FR, EN, ES, AR, ARY)
@@ -269,7 +269,7 @@ Vérifie le status des providers AI (Grok, Gemini, Claude, Atlas-Chat).
 
 #### `personas_list`
 
-Liste les 40 personas par tier.
+Liste les 38 personas par tier.
 
 | Paramètre | Type | Requis | Description |
 |:----------|:-----|:------:|:------------|
@@ -959,14 +959,11 @@ Source de vérité pour les configurations :
 | AGENCY | VocalIA Architect | marketing, consulting | ara | normal |
 | DENTAL | Cabinet Dentaire | dental, healthcare | eve | high |
 | PROPERTY | Property Management | real-estate | leo | normal |
-| HOA | HOA Support | community, residential | sal | normal |
-| SCHOOL | School Attendance | education | mika | high |
 | CONTRACTOR | Contractor Leads | construction, trades | rex | normal |
-| FUNERAL | Funeral Services | funeral, memorial | valentin | high |
 
-### Tier 2 - Expansion (11)
+### Tier 2 - Expansion (18)
 
-HEALER, MECHANIC, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, SURVEYOR, GOVERNOR, INSURER
+HEALER, COUNSELOR, CONCIERGE, STYLIST, RECRUITER, DISPATCHER, COLLECTOR, INSURER, ACCOUNTANT, ARCHITECT, PHARMACIST, RENTER, LOGISTICIAN, TRAINER, PLANNER, PRODUCER, CLEANER, GYM
 
 ### Tier 3 - Extended (12)
 

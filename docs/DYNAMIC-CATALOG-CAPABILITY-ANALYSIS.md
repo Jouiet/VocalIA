@@ -298,7 +298,6 @@ data/knowledge-base/
 
 | Tool | Personas | Description | Paramètres |
 |:-----|:---------|:------------|:-----------|
-| `get_services` | mechanic, stylist, cleaner, trainer | Liste services + tarifs | `category` |
 | `get_slots` | healer, dental, gym, hairdresser | Créneaux disponibles | `service_id`, `date_range` |
 | `book_slot` | ALL services | Réserver un créneau | `slot_id`, `client_info` |
 | `get_packages` | concierge, planner, gym | Forfaits/Packages | `type` |
@@ -579,7 +578,6 @@ data/knowledge-base/
 }
 ```
 
-### Schema C: Services + Créneaux (mechanic, stylist, healer, dental, gym)
 
 ```json
 {

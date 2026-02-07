@@ -860,8 +860,9 @@ function sanitizeInput(text) {
     }
   }
 
-  // 3. Remove non-printable characters and collapse whitespace
-  sanitized = sanitized.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+  // 3. Replace whitespace-class control chars with space, remove truly non-printable
+  sanitized = sanitized.replace(/[\t\n\r\x0B\x0C]/g, ' ');
+  sanitized = sanitized.replace(/[\x00-\x08\x0E-\x1F\x7F-\x9F]/g, '');
   sanitized = sanitized.replace(/\s+/g, ' ').trim();
 
   return sanitized;
@@ -1184,7 +1185,7 @@ VocalIA هي منصة Voice AI. عندنا 2 منتوجات:
 2. Voice Telephony: رقم تيليفون ذكي كيجاوب على المكالمات
 
 شنو كنقدمو:
-- 40 persona حسب الصناعة: طبيب، عقار، مطعم، متجر...
+- 38 persona حسب الصناعة: طبيب، عقار، مطعم، متجر...
 - 5 لغات: فرنسية، إنجليزية، إسبانية، عربية، دارجة
 - تكامل مع: CRM، Shopify، Stripe، Calendar
 
@@ -3188,10 +3189,20 @@ module.exports = {
   sanitizeInput,
   calculateLeadScore,
   getLeadStatus,
-  syncLeadToHubSpot
+  syncLeadToHubSpot,
+  extractBudget,
+  extractTimeline,
+  extractDecisionMaker,
+  extractIndustryFit,
+  extractEmail,
+  extractPhone,
+  extractName,
+  QUALIFICATION
 };
 
-main().catch(err => {
-  console.error('Fatal error:', err.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err.message);
+    process.exit(1);
+  });
+}

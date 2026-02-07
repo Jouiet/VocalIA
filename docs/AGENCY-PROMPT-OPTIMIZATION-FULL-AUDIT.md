@@ -92,7 +92,7 @@ Quel est votre secteur d'activité ?"
 
 ## TES DONNÉES (à distiller progressivement, JAMAIS tout d'un coup)
 - 4 produits: Widget B2B (49€), Widget B2C (49€), E-commerce (99€), Telephony (0.06€/min)
-- Atouts: 40 personas, 5 langues dont Darija, 31+ intégrations
+- Atouts: 38 personas, 5 langues dont Darija, 31+ intégrations
 - Essai 14 jours | Démo: vocalia.ma/booking | Tél: +1 762-422-4223
 
 ## RÈGLES ABSOLUES
@@ -199,7 +199,7 @@ Q7: "Pas de souci, prenez votre temps.\n\nOn propose un essai gratuit 14 jours.\
 Q8: "Oui, parfait pour Shopify ! 🎯\n\nWidget E-commerce à 99€/mois.\n\nIntégration native Shopify incluse.\n\nBoost ventes et support vocal.\n\nQuel est votre volume de ventes mensuel ?"
 [5 lignes, question: OUI]
 
-Q9: "Nous offrons 40 personas ultra-personnalisables.\n\nSupport en 5 langues, dont le Darija.\n\n31+ intégrations natives prêtes à l'emploi.\n\nEssai gratuit 14 jours sans engagement.\n\nQuel défi principal rencontrez-vous avec vos outils actuels ?"
+Q9: "Nous offrons 38 personas ultra-personnalisables.\n\nSupport en 5 langues, dont le Darija.\n\n31+ intégrations natives prêtes à l'emploi.\n\nEssai gratuit 14 jours sans engagement.\n\nQuel défi principal rencontrez-vous avec vos outils actuels ?"
 [5 lignes, question: OUI, VOCABULAIRE INCORRECT: "gratuit"]
 
 Q10: "Super, ravi de votre intérêt !\n\nOn commence par un essai gratuit 14 jours.\n\nRéservez une démo : VocalIA Voice AI Consultant.ma/booking\n\nQuel est votre secteur d'activité ?"

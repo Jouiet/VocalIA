@@ -173,7 +173,7 @@ MULTI-TENANT DIRECTOR - Session 166sexies FIX
 
 | Fichier | Chemin | Langues | Statut |
 |---------|--------|---------|--------|
-| `knowledge_base.json` | `telephony/` | FR (40 personas) | ✅ **V3.0** |
+| `knowledge_base.json` | `telephony/` | FR (38 personas) | ✅ **V3.0** |
 | `chunks.json` | `data/knowledge-base/` | FR/EN (12 automations) | ✅ **BM25 RAG** |
 | `tfidf_index.json` | `data/knowledge-base/` | FR/EN | ✅ **415 vocabulary** |
 

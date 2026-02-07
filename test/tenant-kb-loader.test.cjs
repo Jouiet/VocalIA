@@ -296,6 +296,235 @@ describe('TenantKBLoader methods', () => {
   });
 });
 
+// ─── mergeKB ─────────────────────────────────────────────────────
+
+describe('TenantKBLoader mergeKB', () => {
+  const loader = new TenantKBLoader();
+
+  test('merges universal and client KB', () => {
+    const universal = { faq: { q1: 'What is VocalIA?' } };
+    const client = { hours: { open: '9-17' } };
+    const merged = loader.mergeKB(universal, client);
+    assert.deepStrictEqual(merged.faq, { q1: 'What is VocalIA?' });
+    assert.deepStrictEqual(merged.hours, { open: '9-17' });
+  });
+
+  test('client overrides universal for same key', () => {
+    const universal = { info: { name: 'Default' } };
+    const client = { info: { name: 'Custom' } };
+    const merged = loader.mergeKB(universal, client);
+    assert.strictEqual(merged.info.name, 'Custom');
+  });
+
+  test('deep merges objects (client extends universal)', () => {
+    const universal = { faq: { q1: 'A1', q2: 'A2' } };
+    const client = { faq: { q3: 'A3' } };
+    const merged = loader.mergeKB(universal, client);
+    assert.strictEqual(merged.faq.q1, 'A1');
+    assert.strictEqual(merged.faq.q3, 'A3');
+  });
+
+  test('arrays are directly overridden (not merged)', () => {
+    const universal = { tags: ['a', 'b'] };
+    const client = { tags: ['c'] };
+    const merged = loader.mergeKB(universal, client);
+    assert.deepStrictEqual(merged.tags, ['c']);
+  });
+
+  test('primitives are directly overridden', () => {
+    const universal = { version: 1 };
+    const client = { version: 2 };
+    const merged = loader.mergeKB(universal, client);
+    assert.strictEqual(merged.version, 2);
+  });
+
+  test('adds __meta with merged flag', () => {
+    const merged = loader.mergeKB({}, {});
+    assert.strictEqual(merged.__meta.merged, true);
+  });
+
+  test('__meta includes universalPersonas count', () => {
+    const universal = { faq: {}, hours: {}, contact: {} };
+    const merged = loader.mergeKB(universal, {});
+    assert.strictEqual(merged.__meta.universalPersonas, 3);
+  });
+
+  test('__meta includes clientOverrides count', () => {
+    const client = { custom1: 'a', custom2: 'b' };
+    const merged = loader.mergeKB({}, client);
+    assert.strictEqual(merged.__meta.clientOverrides, 2);
+  });
+
+  test('strips __meta from client before merge', () => {
+    const client = { __meta: { old: true }, data: 'value' };
+    const merged = loader.mergeKB({}, client);
+    assert.strictEqual(merged.__meta.old, true);
+    assert.strictEqual(merged.data, 'value');
+  });
+
+  test('handles empty universal', () => {
+    const merged = loader.mergeKB({}, { key: 'val' });
+    assert.strictEqual(merged.key, 'val');
+  });
+
+  test('handles empty client', () => {
+    const merged = loader.mergeKB({ key: 'val' }, {});
+    assert.strictEqual(merged.key, 'val');
+  });
+});
+
+// ─── extractPersona ─────────────────────────────────────────────
+
+describe('TenantKBLoader extractPersona', () => {
+  const loader = new TenantKBLoader();
+
+  test('returns null for null personaId', () => {
+    const kb = { AGENCY: { name: 'Agency' } };
+    assert.deepStrictEqual(loader.extractPersona(kb, null), kb);
+  });
+
+  test('extracts existing persona', () => {
+    const kb = { AGENCY: { name: 'Agency' }, DENTAL: { name: 'Dental' } };
+    assert.deepStrictEqual(loader.extractPersona(kb, 'AGENCY'), { name: 'Agency' });
+  });
+
+  test('returns null for missing persona', () => {
+    const kb = { AGENCY: { name: 'Agency' } };
+    assert.strictEqual(loader.extractPersona(kb, 'NONEXISTENT'), null);
+  });
+});
+
+// ─── tokenize ───────────────────────────────────────────────────
+
+describe('TenantKBLoader tokenize', () => {
+  const loader = new TenantKBLoader();
+
+  test('lowercases text', () => {
+    const tokens = loader.tokenize('Hello World');
+    assert.ok(tokens.includes('hello'));
+    assert.ok(tokens.includes('world'));
+  });
+
+  test('filters tokens shorter than 3 chars', () => {
+    const tokens = loader.tokenize('I am a big dog');
+    assert.ok(!tokens.includes('am'));
+    assert.ok(!tokens.includes('a'));
+    assert.ok(tokens.includes('big'));
+    assert.ok(tokens.includes('dog'));
+  });
+
+  test('removes punctuation', () => {
+    const tokens = loader.tokenize('Hello, world! How are you?');
+    assert.ok(!tokens.some(t => t.includes(',')));
+    assert.ok(!tokens.some(t => t.includes('!')));
+    assert.ok(!tokens.some(t => t.includes('?')));
+  });
+
+  test('preserves Arabic characters', () => {
+    const tokens = loader.tokenize('مرحبا بالعالم');
+    assert.ok(tokens.length > 0);
+    assert.ok(tokens.some(t => /[\u0600-\u06FF]/.test(t)));
+  });
+
+  test('splits on whitespace', () => {
+    const tokens = loader.tokenize('one   two   three');
+    assert.ok(tokens.includes('one'));
+    assert.ok(tokens.includes('two'));
+    assert.ok(tokens.includes('three'));
+  });
+
+  test('returns empty array for empty string', () => {
+    const tokens = loader.tokenize('');
+    assert.deepStrictEqual(tokens, []);
+  });
+
+  test('handles mixed content', () => {
+    const tokens = loader.tokenize('VocalIA est une plateforme AI');
+    assert.ok(tokens.includes('vocalia'));
+    assert.ok(tokens.includes('est'));
+    assert.ok(tokens.includes('une'));
+    assert.ok(tokens.includes('plateforme'));
+  });
+});
+
+// ─── calculateRelevance ────────────────────────────────────────
+
+describe('TenantKBLoader calculateRelevance', () => {
+  const loader = new TenantKBLoader();
+
+  test('returns 0 for no match', () => {
+    assert.strictEqual(loader.calculateRelevance('hello world', 'xyz'), 0);
+  });
+
+  test('returns count for single word match', () => {
+    const score = loader.calculateRelevance('hello hello hello', 'hello');
+    assert.strictEqual(score, 3);
+  });
+
+  test('sums matches for multi-word query', () => {
+    const score = loader.calculateRelevance('hello world hello', 'hello world');
+    assert.ok(score >= 3); // hello:2 + world:1 = 3
+  });
+
+  test('case-insensitive matching', () => {
+    const score = loader.calculateRelevance('Hello HELLO hello', 'hello');
+    assert.strictEqual(score, 3);
+  });
+
+  test('higher score for more occurrences', () => {
+    const low = loader.calculateRelevance('cat', 'cat');
+    const high = loader.calculateRelevance('cat cat cat cat', 'cat');
+    assert.ok(high > low);
+  });
+});
+
+// ─── invalidateCache ────────────────────────────────────────────
+
+describe('TenantKBLoader invalidateCache', () => {
+  test('invalidates all entries for a tenant', () => {
+    const loader = new TenantKBLoader();
+    loader.cache.set('tenant1:fr', { data: 'fr' });
+    loader.cache.set('tenant1:en', { data: 'en' });
+    loader.cache.set('tenant2:fr', { data: 'fr' });
+    loader.invalidateCache('tenant1');
+    assert.strictEqual(loader.cache.get('tenant1:fr'), null);
+    assert.strictEqual(loader.cache.get('tenant1:en'), null);
+    assert.deepStrictEqual(loader.cache.get('tenant2:fr'), { data: 'fr' });
+  });
+});
+
+// ─── refreshUniversalKB ─────────────────────────────────────────
+
+describe('TenantKBLoader refreshUniversalKB', () => {
+  test('clears cache after refresh', () => {
+    const loader = new TenantKBLoader();
+    loader.cache.set('test:fr', { data: 'test' });
+    loader.refreshUniversalKB();
+    assert.strictEqual(loader.cache.stats().size, 0);
+  });
+});
+
+// ─── cleanup ────────────────────────────────────────────────────
+
+describe('TenantKBLoader cleanup', () => {
+  test('clears cache on cleanup', () => {
+    const loader = new TenantKBLoader();
+    loader.cache.set('test:fr', { data: 'test' });
+    loader.cleanup();
+    assert.strictEqual(loader.cache.stats().size, 0);
+  });
+});
+
+// ─── getClientDefaultLanguage ────────────────────────────────────
+
+describe('TenantKBLoader getClientDefaultLanguage', () => {
+  test('returns fr for nonexistent tenant', async () => {
+    const loader = new TenantKBLoader();
+    const lang = await loader.getClientDefaultLanguage('nonexistent_tenant_xyz');
+    assert.strictEqual(lang, 'fr');
+  });
+});
+
 // ─── Exports ────────────────────────────────────────────────────
 
 describe('TenantKBLoader exports', () => {

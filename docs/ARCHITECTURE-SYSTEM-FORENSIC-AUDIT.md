@@ -232,7 +232,7 @@ SYSTEM_PROMPTS = {
     ar: "البرومبت...",
     ary: "الدارجة..."
   },
-  // ... 40 personas × 5 langues = 200 prompts
+  // ... 38 personas × 5 langues = 200 prompts
 }
 
 // STRUCTURE 2: PERSONAS (Lignes 807-5000)
@@ -517,11 +517,11 @@ graphSearch(query, {tenantId}) [knowledge-base-services.cjs]
 | Atlas-Chat | ❌ Non | HUGGINGFACE_API_KEY manquant |
 | Local Fallback | ✅ Oui | Utilisé par défaut |
 
-**Conséquence:** En production, toutes les réponses utilisent le fallback local (pattern matching), PAS les 40 personas avec AI.
+**Conséquence:** En production, toutes les réponses utilisent le fallback local (pattern matching), PAS les 38 personas avec AI.
 
 ### 13.3 Action Requise (Ops)
 
-Pour activer les 40 personas en production:
+Pour activer les 38 personas en production:
 1. Configurer les variables d'environnement sur le serveur VPS
 2. Redémarrer le service voice-api-resilient
 

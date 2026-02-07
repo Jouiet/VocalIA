@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voice Widget - VocalIA | Assistant Vocal IA pour Sites Web</title>
   <meta name="description"
-    content="Assistant vocal IA pour votre site web. 3 variantes optimisées: B2B (Lead Gen), B2C (Support Client), E-commerce (Conversion). 40 personas, 5 langues, STT/TTS natif.">
+    content="Assistant vocal IA pour votre site web. 3 variantes optimisées: B2B (Lead Gen), B2C (Support Client), E-commerce (Conversion). 38 personas, 5 langues, STT/TTS natif.">
   <link rel="canonical" href="https://vocalia.ma/products/voice-widget" />
 
   <!-- Hreflang for i18n SEO (5 languages) -->
@@ -22,7 +22,7 @@
   <meta property="og:url" content="https://vocalia.ma/products/voice-widget" />
   <meta property="og:title" content="Voice Widget - VocalIA | Assistant Vocal IA" />
   <meta property="og:description"
-    content="Assistant vocal IA pour sites web. B2B, B2C, E-commerce. 40 personas, 5 langues." />
+    content="Assistant vocal IA pour sites web. B2B, B2C, E-commerce. 38 personas, 5 langues." />
   <meta property="og:image" content="https://vocalia.ma/public/images/products/voice-widget-og.webp" />
 
   <!-- Twitter Card -->
@@ -63,120 +63,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-[#0a0a0a] text-white font-sans antialiased">
-  <!-- Skip Link -->
-  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[100] px-4 py-2 bg-vocalia-500 text-white rounded-lg"
-    data-i18n="a11y.skip_to_content">Aller au contenu principal</a>
+<body class="bg-[#050505] text-white font-sans antialiased">
+  <div data-component="header"></div>
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0c0e1a]/[0.92] backdrop-blur-xl border-b border-white/[0.04]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <a href="/" class="flex items-center space-x-2">
-          <img src="/public/images/logo.webp" alt="VocalIA" class="w-12 h-12 rounded-xl object-contain">
-          <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
-        </a>
-
-        <!-- Desktop Nav with Mega Menu -->
-        <div class="hidden md:flex items-center space-x-1">
-          <!-- Products Dropdown -->
-          <div class="relative group">
-            <button type="button" class="px-4 py-2 text-zinc-300 hover:text-white transition flex items-center gap-1" data-i18n="nav.products">
-              Produits
-              <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition-transform duration-200"></i>
-            </button>
-            <div class="absolute top-full left-0 pt-2 w-72 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none group-hover:pointer-events-auto z-50">
-              <div class="bg-[#0c0e1a]/[0.92] backdrop-blur-xl rounded-xl p-4 shadow-2xl border border-white/[0.08]">
-                <a href="/products/voice-widget-b2b" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
-                  <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center shrink-0">
-                    <i data-lucide="zap" class="w-5 h-5 text-indigo-400"></i>
-                  </div>
-                  <div>
-                    <div class="font-semibold text-white">Voice Widget B2B</div>
-                    <div class="text-sm text-zinc-400">Lead Gen & Sales Assistant</div>
-                  </div>
-                </a>
-                <a href="/products/voice-widget-b2c" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
-                  <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0">
-                    <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i>
-                  </div>
-                  <div>
-                    <div class="font-semibold text-white">Voice Widget B2C</div>
-                    <div class="text-sm text-zinc-400">AI Receptionist local services</div>
-                  </div>
-                </a>
-                <a href="/products/voice-widget-ecommerce" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
-                  <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center shrink-0">
-                    <i data-lucide="shopping-cart" class="w-5 h-5 text-orange-400"></i>
-                  </div>
-                  <div>
-                    <div class="font-semibold text-white">Widget E-commerce</div>
-                    <div class="text-sm text-zinc-400">Suite de 8 widgets IA revenus</div>
-                  </div>
-                </a>
-                <a href="/products/voice-telephony" class="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition">
-                  <div class="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center shrink-0">
-                    <i data-lucide="phone" class="w-5 h-5 text-violet-400"></i>
-                  </div>
-                  <div>
-                    <div class="font-semibold text-white">Voice Telephony AI</div>
-                    <div class="text-sm text-zinc-400">Agents Téléphoniques PSTN</div>
-                  </div>
-                </a>
-                <hr class="border-white/[0.08] my-2">
-                <a href="/features" class="flex items-center gap-2 p-3 rounded-lg hover:bg-white/5 transition text-indigo-400 hover:text-white">
-                  <i data-lucide="lightbulb" class="w-5 h-5"></i>
-                  <span data-i18n="nav.features">Toutes les fonctionnalités</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <a href="/pricing" class="px-4 py-2 text-zinc-300 hover:text-white transition" data-i18n="nav.pricing">Tarifs</a>
-          <a href="/integrations" class="px-4 py-2 text-zinc-300 hover:text-white transition" data-i18n="nav.integrations">Intégrations</a>
-          <a href="/docs" class="px-4 py-2 text-zinc-300 hover:text-white transition" data-i18n="footer.links.docs">Documentation</a>
-        </div>
-
-        <!-- CTA + Lang -->
-        <div class="flex items-center space-x-3">
-          <!-- Language Switcher -->
-          <div class="relative">
-            <button type="button" id="langBtn" data-action="toggleLangDropdown" aria-label="Choisir la langue"
-              class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.04] transition text-sm">
-              <i data-lucide="globe" class="w-4 h-4 text-indigo-400"></i>
-              <span id="currentLang">FR</span>
-              <i data-lucide="chevron-down" class="w-3 h-3 opacity-60"></i>
-            </button>
-            <div id="langDropdown" class="hidden absolute right-0 mt-2 w-40 rounded-xl bg-[#0c0e1a]/[0.92] backdrop-blur-xl shadow-2xl border border-white/[0.08] overflow-hidden z-50">
-              <button type="button" data-action="switchLang" data-params="fr" class="w-full px-4 py-2.5 text-left hover:bg-indigo-500/20 flex items-center gap-3 transition">
-                <span class="text-base">🇫🇷</span><span>Français</span>
-              </button>
-              <button type="button" data-action="switchLang" data-params="en" class="w-full px-4 py-2.5 text-left hover:bg-indigo-500/20 flex items-center gap-3 transition">
-                <span class="text-base">🇬🇧</span><span>English</span>
-              </button>
-              <button type="button" data-action="switchLang" data-params="es" class="w-full px-4 py-2.5 text-left hover:bg-indigo-500/20 flex items-center gap-3 transition">
-                <span class="text-base">🇪🇸</span><span>Español</span>
-              </button>
-              <button type="button" data-action="switchLang" data-params="ar" class="w-full px-4 py-2.5 text-left hover:bg-indigo-500/20 flex items-center gap-3 transition" dir="rtl">
-                <span class="text-base">🇸🇦</span><span>العربية</span>
-              </button>
-              <button type="button" data-action="switchLang" data-params="ary" class="w-full px-4 py-2.5 text-left hover:bg-indigo-500/20 flex items-center gap-3 transition" dir="rtl">
-                <span class="text-base">🇲🇦</span><span>الدارجة</span>
-              </button>
-            </div>
-          </div>
-
-          <a href="/login" class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition font-medium" data-i18n="nav.login">Connexion</a>
-
-          <!-- Mobile Hamburger -->
-          <button type="button" id="mobileMenuBtn" class="md:hidden p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-white/[0.04] transition" aria-label="Menu mobile">
-            <i data-lucide="menu" class="w-6 h-6"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  </nav>
 
   <!-- Hero Section -->
   <main id="main" class="pt-24">
@@ -210,7 +99,7 @@
 
         <p class="text-xl text-zinc-300 max-w-3xl mx-auto mb-12" data-i18n="voice_widget_page.hero_subtitle">
           Intégrez un assistant vocal intelligent sur votre site web. STT/TTS natif via Web Speech API.
-          Réponses IA multi-provider avec 5 niveaux de redondance. 40 personas métier, 5 langues dont Darija.
+          Réponses IA multi-provider avec 5 niveaux de redondance. 38 personas métier, 5 langues dont Darija.
         </p>
 
         <!-- Key Stats -->
@@ -422,121 +311,8 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-[#0c0e1a]/[0.92] backdrop-blur-xl border-t border-white/[0.08]">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <!-- Brand Section -->
-      <div class="mb-10">
-        <a href="/" class="flex items-center space-x-3 mb-4">
-          <img src="/public/images/logo.webp" alt="VocalIA" class="w-14 h-14 rounded-xl object-contain">
-          <span class="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-300 bg-clip-text text-transparent">VocalIA</span>
-        </a>
-        <p class="text-zinc-400 mb-4 text-sm" data-i18n="footer.tagline">Agents Vocaux IA pour Entreprises</p>
-        <div class="space-y-2 text-sm text-zinc-400 mb-4">
-          <a href="mailto:contact@vocalia.ma" class="flex items-center gap-2 hover:text-white transition">
-            <i data-lucide="mail" class="w-4 h-4"></i> contact@vocalia.ma
-          </a>
-          <a href="tel:+17624224223" class="flex items-center gap-2 hover:text-white transition">
-            <i data-lucide="phone" class="w-4 h-4"></i> +1 762 422 4223
-          </a>
-        </div>
-        <!-- Social Links -->
-        <div class="flex space-x-3">
-          <a href="https://x.com/vocalia_ma" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="X">
-            <img src="/public/images/logos/xai.svg" alt="X" class="w-4 h-4 brightness-0 invert opacity-70" loading="lazy">
-          </a>
-          <a href="https://linkedin.com/company/vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="LinkedIn">
-            <i data-lucide="linkedin" class="w-4 h-4"></i>
-          </a>
-          <a href="https://github.com/Jouiet/VoicalAI" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="GitHub">
-            <i data-lucide="github" class="w-4 h-4"></i>
-          </a>
-          <a href="https://youtube.com/@vocalia" class="w-11 h-11 rounded-lg bg-white/[0.06] hover:bg-white/[0.06] flex items-center justify-center text-zinc-400 hover:text-white transition focus:ring-2 focus:ring-vocalia-500 focus:outline-none" aria-label="YouTube">
-            <i data-lucide="youtube" class="w-4 h-4"></i>
-          </a>
-        </div>
-      </div>
+  <div data-component="footer"></div>
 
-      <!-- Categories Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 lg:gap-16 mb-10">
-        <!-- Product -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4" data-i18n="footer.product">Produit</h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/features" class="hover:text-white transition" data-i18n="nav.features">Fonctionnalités</a></li>
-            <li><a href="/pricing" class="hover:text-white transition" data-i18n="nav.pricing">Tarifs</a></li>
-            <li><a href="/products/voice-widget" class="hover:text-white transition" data-i18n="products.voice_widget">Voice Widget</a></li>
-            <li><a href="/products/voice-telephony" class="hover:text-white transition" data-i18n="products.voice_telephony">Voice Telephony</a></li>
-            <li><a href="/integrations" class="hover:text-white transition" data-i18n="footer.links.integrations">Intégrations</a></li>
-          </ul>
-        </div>
-
-        <!-- Solutions -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4" data-i18n="footer.solutions">Solutions</h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/use-cases" class="hover:text-white transition" data-i18n="footer.links.use_cases">Cas d'Usage</a></li>
-            <li><a href="/industries/" class="hover:text-white transition" data-i18n="footer.links.industries">Par Industrie</a></li>
-            <li><a href="/use-cases/e-commerce" class="hover:text-white transition" data-i18n="footer.links.ecommerce">E-commerce</a></li>
-            <li><a href="/use-cases/customer-support" class="hover:text-white transition" data-i18n="footer.links.customer_support">Service Client</a></li>
-            <li><a href="/industries/healthcare" class="hover:text-white transition" data-i18n="footer.links.healthcare">Santé</a></li>
-          </ul>
-        </div>
-
-        <!-- Resources -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4" data-i18n="footer.resources">Ressources</h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/docs" class="hover:text-white transition" data-i18n="footer.links.docs">Documentation</a></li>
-            <li><a href="/docs/api" class="hover:text-white transition" data-i18n="footer.links.api">API Reference</a></li>
-            <li><a href="/blog" class="hover:text-white transition" data-i18n="footer.links.blog">Blog</a></li>
-            <li><a href="/academie-business" class="hover:text-white transition" data-i18n="footer.links.academy">Académie Business</a></li>
-          </ul>
-        </div>
-
-        <!-- Company -->
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4" data-i18n="footer.company">Entreprise</h4>
-          <ul class="space-y-3 text-sm text-zinc-400">
-            <li><a href="/about" class="hover:text-white transition" data-i18n="footer.links.about">À propos</a></li>
-            <li><a href="/contact" class="hover:text-white transition" data-i18n="footer.links.contact">Contact</a></li>
-            <li><a href="/privacy" class="hover:text-white transition" data-i18n="footer.links.privacy">Confidentialité</a></li>
-            <li><a href="/terms" class="hover:text-white transition" data-i18n="footer.links.terms">CGU</a></li>
-            <li><a href="/investor" class="hover:text-white transition" data-i18n="footer.links.investors">Investisseurs</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Bottom Bar -->
-      <div class="border-t border-white/[0.06] mt-8 pt-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <p class="text-zinc-400 text-sm" data-i18n="footer.copyright">© 2026 VocalIA. Tous droits réservés.</p>
-          <!-- Trust Badges -->
-          <div class="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-              <span>RGPD</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
-              <span data-i18n="home.ai_act_ready_1">AI Act Ready</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="lock" class="w-4 h-4 text-amber-400"></i>
-              <span data-i18n="home.aes256_0">AES-256</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="globe" class="w-4 h-4 text-sky-400"></i>
-              <span data-i18n="pricing_page.table_languages">5 Langues</span>
-            </div>
-            <div class="flex items-center gap-1.5 px-2 py-1 bg-white/[0.04] rounded-full">
-              <i data-lucide="activity" class="w-4 h-4 text-rose-400"></i>
-              <span data-i18n="pricing.stats.uptime">99.9% Uptime</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <!-- Scripts -->
   <script src="/src/lib/geo-detect.js?v=250"></script>
@@ -552,5 +328,6 @@
   </script>
   <!-- VocalIA Voice Widget -->
   <script src="/voice-assistant/voice-widget-b2b.js" defer></script>
+  <script src="/src/lib/components.js" defer></script>
 </body>
 </html>

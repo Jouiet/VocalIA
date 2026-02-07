@@ -71,9 +71,6 @@ const SECTOR_TO_ARCHETYPE = {
     'fitness': 'GYM',
     'gym': 'GYM',
     'sport': 'GYM',
-    'auto': 'MECHANIC',
-    'garage': 'MECHANIC',
-    'repair': 'MECHANIC',
     'cleaning': 'CLEANER',
     'nettoyage': 'CLEANER',
 
