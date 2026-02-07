@@ -81,7 +81,7 @@ const FORBIDDEN_HEX = {
 // SECTION 2: Widget Rules
 // ═══════════════════════════════════════════════════════
 
-const WIDGET_EXPECTED_VERSION = '2.3.0';
+const WIDGET_EXPECTED_VERSION = '2.4.0';
 
 // Pages that use voice-widget.js (NOT voice-widget-b2b.js)
 // NOTE: voice-widget.js is DEAD (0 pages). docs + signup use B2B widget.
@@ -262,7 +262,7 @@ function validate() {
     const rel = relPath(file);
 
     // Check all widget script tags for version
-    const widgetRefs = content.matchAll(/voice-widget(?:-b2b|-ecommerce)?\.js\?v=([0-9.]+)/g);
+    const widgetRefs = content.matchAll(/voice-widget(?:-b2b|-ecommerce)?(?:\.min)?\.js\?v=([0-9.]+)/g);
     for (const match of widgetRefs) {
       if (match[1] !== WIDGET_EXPECTED_VERSION) {
         const lineNum = content.substring(0, match.index).split('\n').length;
@@ -293,15 +293,15 @@ function validate() {
 
     // Pages that should use voice-widget.js
     if (VOICE_WIDGET_ONLY_PAGES.has(relToWebsite)) {
-      if (content.includes('voice-widget-b2b.js')) {
-        warnings.push({ file: rel, line: 0, rule: 'WIDGET_WRONG_TYPE', msg: `should use voice-widget.js, not voice-widget-b2b.js` });
+      if (content.includes('voice-widget-b2b')) {
+        warnings.push({ file: rel, line: 0, rule: 'WIDGET_WRONG_TYPE', msg: `should use voice-widget.js, not voice-widget-b2b` });
       }
     }
 
     // Pages that should use ecommerce widget
     if (ECOMMERCE_WIDGET_PAGES.has(relToWebsite)) {
-      if (!content.includes('voice-widget-ecommerce.js')) {
-        warnings.push({ file: rel, line: 0, rule: 'WIDGET_WRONG_TYPE', msg: `should use voice-widget-ecommerce.js` });
+      if (!content.includes('voice-widget-ecommerce')) {
+        warnings.push({ file: rel, line: 0, rule: 'WIDGET_WRONG_TYPE', msg: `should use voice-widget-ecommerce` });
       }
     }
   }

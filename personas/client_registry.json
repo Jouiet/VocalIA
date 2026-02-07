@@ -8,6 +8,7 @@
             "knowledge_base_id": "agency_v3",
             "payment_method": "WISE",
             "phone": "+33123456789",
+            "booking_url": "https://vocalia.ma/booking",
             "address": "123 Tech Avenue, Paris",
             "widget_type": "B2B"
         },

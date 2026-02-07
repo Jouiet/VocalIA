@@ -1248,6 +1248,10 @@ create_booking          get_recommendations    qualify_lead
 | **Admin dashboard**: Enhanced to match client sophistication (639→1031 lines) | 250.134 | Health gauge, heatmap, trends |
 | **Admin sub-pages**: Responsive sidebar + mobile toggle on all 4 pages | 250.134 | tenants, users, logs, hitl |
 | **Admin i18n**: 10 new keys (health.*, heatmap.*) in all 5 locale files | 250.134 | FR, EN, ES, AR, ARY |
+| **Counter-audit**: External forensic audit v2 verified — 14/14 corrections ✅, 4 audit errors found | 250.135 | ECOM Shadow DOM exists, social proof 5 langs |
+| **Widget minification**: 50 pages switched .js→.min.js (B2B -40%, ECOM -37%) | 250.135 | version 2.3.0→2.4.0 |
+| **Booking URL**: Added booking_url to agency_internal registry | 250.135 | B2B CTA shows phone+URL |
+| **Stale "30"**: Fixed 3 widget lang files (EN/AR/ARY) "30 personas"→"38" | 250.135 | voice-en/ar/ary.json |
 
 ---
 
@@ -1264,7 +1268,7 @@ create_booking          get_recommendations    qualify_lead
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 → cible: 9.5+ |
 
-**Current Score: 8.8/10** (250.134 — Admin dashboard enhanced: health gauge, heatmap, responsive sidebar, i18n)
+**Current Score: 8.8/10** (250.135 — Counter-audit verified, .min.js switch, booking_url, stale "30" fix)
 
 **Remaining (code — OPTIONAL):**
 ```
@@ -1291,7 +1295,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis à jour le 2026-02-07 — Session 250.134*
+*Document mis à jour le 2026-02-07 — Session 250.135*
+*250.135: Counter-audit (14/14 corrections verified, 4 audit errors found). Widget .min.js switch (50 pages, -37/40%). Booking URL added. Stale "30"→"38" fixed in 3 files.*
 *250.134: Admin dashboard enhanced — health gauge (SVG ring), heatmap (7d×24h), responsive sidebar all 5 pages, i18n 10 new keys × 5 langs.*
 *250.133: CI hardened — tsc --noEmit MCP server, c8 coverage threshold (45%), rogue #0f0f23 fixed, onboarding 6 bugs fixed, stale "40" in fr.json, lucide pinned.*
 *250.132: ESM migration — 69 test files .cjs→.mjs, esbuild production bundler (3 bundles), const→let bug fix. 3,763 tests pass.*
