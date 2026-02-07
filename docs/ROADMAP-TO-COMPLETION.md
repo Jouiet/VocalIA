@@ -1,7 +1,7 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-07 | **Session:** 250.136 (Dashboard ROI, doc consolidation, Playwright CI, responsive mobile)
-> **Score actuel:** 8.9/10 (CI: 16 gates, ESM, esbuild, tsc, c8, design tokens, i18n QA, Darija validator, Playwright E2E)
+> **Date:** 2026-02-07 | **Session:** 250.137 (App sidebar component, calls AI insights, integrations webhook health)
+> **Score actuel:** 9.0/10 (CI: 16 gates, ESM, esbuild, tsc, c8, design tokens, i18n QA, Darija validator, Playwright E2E)
 > **Méthodologie:** Chaque tâche est liée à un FAIT vérifié par commande. Zéro supposition.
 > **Source:** Audit croisé de 13 documents + **external audit** (250.129) + **forensic audit of ALL 73 test files** (250.114) + **test deep surgery** (250.115) + **design token forensic** (250.122) + **branding unification** (250.123) + **stale number eradication** (250.124) + **validator v2.2** (250.125) + **DEEP widget forensic audit** (250.127).
 
@@ -1259,6 +1259,11 @@ create_booking          get_recommendations    qualify_lead
 | **Client dashboard ROI**: 4-card Voice AI ROI section (automation ring, cost savings, response time, 24/7) | 250.136 | client.html |
 | **Client dashboard mobile**: Responsive sidebar with hamburger toggle, overlay, sparklines | 250.136 | client.html |
 | **ROI i18n**: 12 new dashboard.roi.* keys in all 5 locale files | 250.136 | 4,458 keys in sync |
+| **App sidebar component**: Extracted from 9 pages into reusable component (-585 lines) | 250.137 | app/components/sidebar.html |
+| **Mobile hamburger**: Added to all 9 app/client pages | 250.137 | Responsive on all pages |
+| **Calls AI insights**: Sentiment column, AI insights section, conversation timeline | 250.137 | calls.html |
+| **Integrations webhook health**: 4-card dashboard (uptime, delivered, failed, latency) | 250.137 | integrations.html |
+| **Integration test button**: One-click connectivity test per integration | 250.137 | Live status indicators |
 
 ---
 
@@ -1275,7 +1280,7 @@ create_booking          get_recommendations    qualify_lead
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 → cible: 9.5+ |
 
-**Current Score: 8.9/10** (250.136 — Dashboard ROI+mobile, doc consolidation, Playwright CI, 8 ROADMAP tasks resolved)
+**Current Score: 9.0/10** (250.137 — App sidebar component, calls AI insights, integrations webhook health, mobile all pages)
 
 **Remaining (code — OPTIONAL):**
 ```
@@ -1301,7 +1306,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis à jour le 2026-02-07 — Session 250.136*
+*Document mis à jour le 2026-02-07 — Session 250.137*
+*250.137: App sidebar component (9 pages, -585 lines). Calls page: sentiment column + AI insights + conversation timeline. Integrations: webhook health dashboard + live status + test button. Mobile hamburger on all 9 app pages.*
 *250.136: Dashboard ROI section (4 cards: automation ring, cost savings, response time, 24/7). Mobile responsive sidebar. Playwright E2E in CI. 16 audit docs archived. SESSION-HISTORY -67%. 8 ROADMAP tasks resolved. ROI i18n 12 keys × 5 langs.*
 *250.135: Counter-audit (14/14 corrections verified, 4 audit errors found). Widget .min.js switch (50 pages, -37/40%). Booking URL added. Stale "30"→"38" fixed in 3 files.*
 *250.134: Admin dashboard enhanced — health gauge (SVG ring), heatmap (7d×24h), responsive sidebar all 5 pages, i18n 10 new keys × 5 langs.*

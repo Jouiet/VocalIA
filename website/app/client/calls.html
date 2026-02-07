@@ -42,83 +42,23 @@
   </style>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
-  <div class="flex h-screen overflow-hidden">
-    <!-- Sidebar -->
-    <aside id="sidebar" class="w-64 bg-white dark:bg-white/[0.06] border-r border-zinc-200 dark:border-white/[0.08] flex flex-col">
-      <!-- Logo -->
-      <div class="p-4 border-b border-zinc-200 dark:border-white/[0.08]">
-        <a href="/app/client/" class="flex items-center gap-2">
-          <img src="/public/images/logo.webp" alt="VocalIA" class="w-8 h-8 rounded-lg object-contain">
-          <span class="text-xl font-bold text-zinc-900 dark:text-white">VocalIA</span>
-        </a>
-      </div>
+  <!-- Sidebar Component -->
+  <div data-app-component="sidebar"></div>
 
-      <!-- Navigation -->
-      <nav class="flex-1 p-4 space-y-1">
-        <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-          <span>Tableau de bord</span>
-        </a>
-        <a href="calls.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
-          <i data-lucide="phone" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.calls">Appels</span>
-        </a>
-        <a href="agents.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="bot" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.agents">Agents IA</span>
-        </a>
-        <a href="catalog.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="package" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.catalog">Catalogue</span>
-        </a>
-        <a href="knowledge-base.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="book-open" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.knowledge_base">Base de Connaissances</span>
-        </a>
-        <a href="integrations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="plug" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.integrations">Intégrations</span>
-        </a>
-        <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.analytics">Analytics</span>
-        </a>
-        <a href="billing.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="credit-card" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.billing">Facturation</span>
-        </a>
-        <a href="settings.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-          <i data-lucide="settings" class="w-5 h-5"></i>
-          <span data-i18n="dashboard.nav.settings">Paramètres</span>
-        </a>
-      </nav>
-
-      <!-- User Menu -->
-      <div class="p-4 border-t border-zinc-200 dark:border-white/[0.08]">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
-            <span id="user-initials" class="text-indigo-600 dark:text-indigo-400 font-medium">--</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <p id="user-name" class="text-sm font-medium text-zinc-900 dark:text-white truncate">Chargement...</p>
-            <p id="user-email" class="text-xs text-zinc-500 truncate"></p>
-          </div>
-          <button id="logout-btn" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
-            <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
-          </button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 overflow-auto">
+  <!-- Main Content -->
+  <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen overflow-auto">
       <!-- Header -->
       <header class="sticky top-0 z-10 bg-white/80 dark:bg-white/[0.06]/80 backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-6 py-4">
         <div class="flex items-center justify-between">
-          <div>
+          <div class="flex items-center">
+            <button id="menu-toggle" class="lg:hidden p-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded-lg mr-2">
+              <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+            <div>
             <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Historique des appels</h1>
             <p class="text-zinc-600 dark:text-zinc-400">Consultez et analysez vos appels</p>
           </div>
+            </div>
           <div class="flex items-center gap-3">
             <!-- Export Dropdown -->
             <div class="relative">
@@ -218,7 +158,6 @@
         </div>
       </div>
     </main>
-  </div>
 
   <!-- Call Detail Modal -->
   <div id="call-detail-modal" class="hidden fixed inset-0 z-50">
@@ -236,6 +175,7 @@
     </div>
   </div>
 
+  <script src="/app/components/app-components.js" defer></script>
   <script type="module">
     import auth from '/src/lib/auth-client.js';
     import api from '/src/lib/api-client.js';
@@ -296,6 +236,18 @@
             'transferred': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
             'missed': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
             'in_progress': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300'
+          }
+        },
+        { key: 'sentiment', label: 'Sentiment',
+          render: (val) => {
+            const s = val || 'neutral';
+            const map = {
+              positive: { icon: '😊', bg: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' },
+              neutral: { icon: '😐', bg: 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300' },
+              negative: { icon: '😞', bg: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' }
+            };
+            const cfg = map[s] || map.neutral;
+            return `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${cfg.bg}">${cfg.icon} ${s}</span>`;
           }
         },
         { key: 'lead_score', label: 'Score',
@@ -372,6 +324,32 @@
       return bars;
     }
 
+    // Format transcript as conversation timeline
+    function formatTranscript(text) {
+      if (!text) return '';
+      // Split by common transcript patterns: "Agent:", "Client:", "AI:", "User:", timestamps
+      const lines = text.split(/\n/).filter(l => l.trim());
+      return lines.map(line => {
+        const isAgent = /^(agent|ai|vocalia|bot)\s*:/i.test(line);
+        const isUser = /^(client|user|caller|utilisateur)\s*:/i.test(line);
+        const cleanLine = line.replace(/^(agent|ai|vocalia|bot|client|user|caller|utilisateur)\s*:\s*/i, '');
+
+        if (isAgent) {
+          return '<div class="flex gap-2"><div class="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div><div class="flex-1"><p class="text-xs text-indigo-500 font-medium">Agent IA</p><p class="text-sm text-zinc-700 dark:text-zinc-300">' + escapeHtml(cleanLine) + '</p></div></div>';
+        } else if (isUser) {
+          return '<div class="flex gap-2"><div class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center flex-shrink-0"><svg class="w-3 h-3 text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></div><div class="flex-1"><p class="text-xs text-emerald-500 font-medium">Client</p><p class="text-sm text-zinc-700 dark:text-zinc-300">' + escapeHtml(cleanLine) + '</p></div></div>';
+        } else {
+          return '<p class="text-sm text-zinc-600 dark:text-zinc-400 pl-8">' + escapeHtml(line) + '</p>';
+        }
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     // Show call detail
     window.showCallDetail = async (id) => {
       const modal = document.getElementById('call-detail-modal');
@@ -431,11 +409,33 @@
               </div>
             </div>
 
+            <!-- AI Insights -->
+            <div>
+              <p class="text-sm text-zinc-500 mb-2 flex items-center gap-2">
+                <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                AI Insights
+              </p>
+              <div class="grid grid-cols-3 gap-2">
+                <div class="text-center p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg">
+                  <p class="text-lg">${call.sentiment === 'positive' ? '😊' : call.sentiment === 'negative' ? '😞' : '😐'}</p>
+                  <p class="text-xs text-zinc-500 mt-1">Sentiment</p>
+                </div>
+                <div class="text-center p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg">
+                  <p class="text-sm font-bold text-indigo-600 dark:text-indigo-400">${call.intent || 'info'}</p>
+                  <p class="text-xs text-zinc-500 mt-1">Intent</p>
+                </div>
+                <div class="text-center p-3 bg-zinc-50 dark:bg-[#050505] rounded-lg">
+                  <p class="text-sm font-bold ${(call.confidence || 0) >= 80 ? 'text-green-600' : 'text-amber-600'}">${call.confidence || '--'}%</p>
+                  <p class="text-xs text-zinc-500 mt-1">Confiance</p>
+                </div>
+              </div>
+            </div>
+
             ${call.transcript ? `
               <div>
                 <p class="text-sm text-zinc-500 mb-2">Transcription</p>
-                <div class="bg-zinc-50 dark:bg-[#050505] rounded-lg p-4 max-h-64 overflow-y-auto">
-                  <pre class="text-sm text-zinc-700 dark:text-zinc-300 whitespace-pre-wrap">${call.transcript}</pre>
+                <div class="bg-zinc-50 dark:bg-[#050505] rounded-lg p-4 max-h-64 overflow-y-auto space-y-3">
+                  ${formatTranscript(call.transcript)}
                 </div>
               </div>
             ` : ''}
