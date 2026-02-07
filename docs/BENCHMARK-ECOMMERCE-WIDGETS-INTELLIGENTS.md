@@ -1342,7 +1342,7 @@ Sweet spot: 20-30% au-dessus de l'AOV
 | 5 | Voice Abandoned Cart Recovery | 1,416 | ✅ |
 | 6 | Free Shipping Progress Bar | 650 | ✅ |
 | 7 | Spin Wheel Gamification | 950 | ✅ |
-| **TOTAL** | **8 Widgets** | **~7,000** | ✅ |
+| **TOTAL** | **7 Widgets** | **~9,671** | ✅ |
 
 ### Ressources Cles Identifiees
 

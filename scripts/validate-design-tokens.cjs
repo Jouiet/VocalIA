@@ -121,7 +121,7 @@ const PLATFORM_NUMBERS = {
   functionTools: 25,
   mcpTools: 203,
   languages: 5,
-  widgets: 8,
+  widgets: 7,
 };
 
 // Stale number patterns (detect old counts across ALL file types)

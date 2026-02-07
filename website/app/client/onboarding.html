@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
   <title>Bienvenue - VocalIA</title>
   <meta name="description" content="Configuration initiale de votre compte VocalIA">
-  <link rel="icon" href="/assets/favicon.ico">
-  <link rel="stylesheet" href="/src/styles/main.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="/public/css/style.css" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+  <script src="/src/lib/i18n.js"></script>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
   <!-- Header -->
@@ -65,7 +70,7 @@
         <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08]">
           <i data-lucide="brain" class="w-8 h-8 text-purple-600 dark:text-purple-400 mb-3"></i>
           <h3 class="font-semibold text-zinc-900 dark:text-white mb-1" data-i18n="onboarding.feature3_title">38 Personas</h3>
-          <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.feature3_desc">Choisissez parmi 40 personnalités spécialisées</p>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400" data-i18n="onboarding.feature3_desc">Choisissez parmi 38 personnalités spécialisées</p>
         </div>
       </div>
 
@@ -245,7 +250,6 @@
     </section>
   </main>
 
-  <script src="/src/lib/i18n.js"></script>
   <script>
     // Auth check - Session 250.65bis
     const token = localStorage.getItem('vocalia_token');

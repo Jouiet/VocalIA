@@ -2758,6 +2758,73 @@ function startServer(port = 3004) {
       return;
     }
 
+    // Session 250.130: A2UI Action endpoint — receives widget interactions
+    if (req.url === '/a2ui/action' && req.method === 'POST') {
+      let body = '';
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > MAX_BODY_SIZE) {
+          req.destroy();
+          res.writeHead(413, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Request body too large' }));
+          return;
+        }
+        body += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const bodyParsed = safeJsonParse(body, '/a2ui/action request body');
+          if (!bodyParsed.success) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Invalid JSON: ${bodyParsed.error}` }));
+            return;
+          }
+
+          const { action, data = {}, sessionId, tenant_id, widget_type } = bodyParsed.data;
+
+          if (!action) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'action is required' }));
+            return;
+          }
+
+          // Publish A2A event for the action
+          const tenantId = tenant_id || 'default';
+          eventBus.publish(`a2ui.${action}`, {
+            sessionId: sessionId || 'unknown',
+            tenantId,
+            widgetType: widget_type || 'unknown',
+            action,
+            data,
+            timestamp: new Date().toISOString()
+          });
+
+          console.log(`[A2UI] Action received: ${action} (tenant=${tenantId}, session=${sessionId})`);
+
+          // Process specific actions
+          let responsePayload = { success: true, action };
+
+          if (action === 'confirm_booking' && data.slot) {
+            responsePayload.message = 'Booking confirmed';
+            responsePayload.booking = { slot: data.slot, status: 'confirmed' };
+          } else if (action === 'submit_lead' && data) {
+            responsePayload.message = 'Lead captured';
+          } else if (action === 'checkout') {
+            responsePayload.message = 'Checkout initiated';
+          }
+
+          res.writeHead(200, corsHeaders(req, { 'Content-Type': 'application/json' }));
+          res.end(JSON.stringify(responsePayload));
+        } catch (err) {
+          console.error('[A2UI] Action error:', err.message);
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
+    }
+
     // A2UI Health endpoint
     if (req.url === '/a2ui/health' && req.method === 'GET') {
       await A2UIService.initialize();

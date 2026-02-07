@@ -13,7 +13,7 @@
 > **Protocol Status:**
 >
 > - **A2A (Event Bus)**: ✅ Widget events via voice-api-resilient.cjs → AgencyEventBus
-> - **AG-UI (Dynamic UI)**: ✅ Widget Orchestrator (8 widgets)
+> - **AG-UI (Dynamic UI)**: ✅ Widget Orchestrator (7 widgets)
 > - **UCP (ContextBox)**: ✅ ACTIVE - LTV tiers (bronze→diamond)
 > - **MCP (Tools)**: ✅ 203 tools verified
 > **iPaaS:** Zapier ✅ | Make ✅ | n8n ✅ → **+7000 apps connectables**

@@ -7,13 +7,13 @@ on:
     branches: [main]
 
 env:
-  NODE_VERSION: '20.x'
+  NODE_VERSION: '22.x'
 
 jobs:
   ci:
     name: Build & Test
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout
@@ -40,13 +40,25 @@ jobs:
           done
         timeout-minutes: 1
 
-      - name: Run Unit Tests
-        run: npm test
+      - name: Run Unit Tests with Coverage (ESM)
+        run: c8 --check-coverage --lines 45 --statements 45 --branches 30 node --test 'test/**/*.test.mjs'
         timeout-minutes: 5
 
       - name: Run Exhaustive Multi-Tenant Tests
         run: node --test test/exhaustive-multi-tenant-test.cjs
         timeout-minutes: 3
+
+      - name: Verify esbuild Production Bundles
+        run: node esbuild.config.mjs
+        timeout-minutes: 2
+
+      - name: TypeScript Check (MCP Server)
+        run: cd mcp-server && npm ci && npx tsc --noEmit
+        timeout-minutes: 3
+
+      - name: Validate Design Tokens
+        run: node scripts/validate-design-tokens.cjs
+        timeout-minutes: 1
 
       - name: Validate i18n Locales (FR as source of truth)
         run: python3 scripts/sync-locales.py --check
@@ -73,7 +85,7 @@ jobs:
       - name: Build Summary
         run: |
           echo "## VocalIA Build Summary" >> $GITHUB_STEP_SUMMARY
-          echo "✅ CI Passed — Unit + Exhaustive + i18n validated" >> $GITHUB_STEP_SUMMARY
+          echo "✅ CI Passed — Unit (ESM) + Coverage + Exhaustive + esbuild + TypeScript + Design Tokens + i18n" >> $GITHUB_STEP_SUMMARY
 
   staging:
     name: Deploy to Staging

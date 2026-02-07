@@ -4674,6 +4674,16 @@ async function main() {
 
   process.on('SIGINT', shutdown);
   process.on('SIGTERM', shutdown);
+
+  process.on('uncaughtException', (err) => {
+    console.error('❌ [Telephony] Uncaught exception:', err.message);
+    console.error(err.stack);
+    shutdown();
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    console.error('❌ [Telephony] Unhandled rejection:', reason);
+  });
 }
 
 // Only start server when run directly (not when require()'d)

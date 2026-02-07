@@ -20,17 +20,11 @@
  * Version: 1.0.0 | Session 250.79 | 03/02/2026
  */
 
-(function(global) {
-  'use strict';
+(function (global) {
+    'use strict';
 
-  // SECURITY: HTML escape for dynamic content (XSS prevention)
-  function escapeHTML(str) {
-    if (typeof str !== 'string') return '';
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
-
-  // CSS for the quiz widget
-  const QUIZ_CSS = `
+    // CSS for the quiz widget
+    const QUIZ_CSS = `
     .va-quiz-overlay {
       position: fixed;
       inset: 0;
@@ -386,315 +380,315 @@
     }
   `;
 
-  /**
-   * Default quiz templates for common industries
-   */
-  const QUIZ_TEMPLATES = {
-    skincare: {
-      title: { fr: 'Trouvez votre routine parfaite', en: 'Find Your Perfect Routine', es: 'Encuentra tu rutina perfecta', ar: 'اعثر على روتينك المثالي', ary: 'لقى روتينك لي يناسبك' },
-      questions: [
-        {
-          id: 'skin_type',
-          question: { fr: 'Quel est votre type de peau ?', en: 'What is your skin type?', es: '¿Cuál es tu tipo de piel?', ar: 'ما هو نوع بشرتك؟', ary: 'شنو نوع جلدك?' },
-          options: [
-            { value: 'dry', label: { fr: 'Sèche', en: 'Dry', es: 'Seca', ar: 'جافة', ary: 'ناشف' } },
-            { value: 'oily', label: { fr: 'Grasse', en: 'Oily', es: 'Grasa', ar: 'دهنية', ary: 'دهني' } },
-            { value: 'combination', label: { fr: 'Mixte', en: 'Combination', es: 'Mixta', ar: 'مختلطة', ary: 'مخلوط' } },
-            { value: 'sensitive', label: { fr: 'Sensible', en: 'Sensitive', es: 'Sensible', ar: 'حساسة', ary: 'حساس' } }
-          ],
-          tags: { dry: ['hydrating', 'moisturizing'], oily: ['mattifying', 'oil-control'], combination: ['balancing'], sensitive: ['gentle', 'calming'] }
+    /**
+     * Default quiz templates for common industries
+     */
+    const QUIZ_TEMPLATES = {
+        skincare: {
+            title: { fr: 'Trouvez votre routine parfaite', en: 'Find Your Perfect Routine', es: 'Encuentra tu rutina perfecta', ar: 'اعثر على روتينك المثالي', ary: 'لقى روتينك لي يناسبك' },
+            questions: [
+                {
+                    id: 'skin_type',
+                    question: { fr: 'Quel est votre type de peau ?', en: 'What is your skin type?', es: '¿Cuál es tu tipo de piel?', ar: 'ما هو نوع بشرتك؟', ary: 'شنو نوع جلدك?' },
+                    options: [
+                        { value: 'dry', label: { fr: 'Sèche', en: 'Dry', es: 'Seca', ar: 'جافة', ary: 'ناشف' } },
+                        { value: 'oily', label: { fr: 'Grasse', en: 'Oily', es: 'Grasa', ar: 'دهنية', ary: 'دهني' } },
+                        { value: 'combination', label: { fr: 'Mixte', en: 'Combination', es: 'Mixta', ar: 'مختلطة', ary: 'مخلوط' } },
+                        { value: 'sensitive', label: { fr: 'Sensible', en: 'Sensitive', es: 'Sensible', ar: 'حساسة', ary: 'حساس' } }
+                    ],
+                    tags: { dry: ['hydrating', 'moisturizing'], oily: ['mattifying', 'oil-control'], combination: ['balancing'], sensitive: ['gentle', 'calming'] }
+                },
+                {
+                    id: 'concern',
+                    question: { fr: 'Quelle est votre préoccupation principale ?', en: 'What is your main concern?', es: '¿Cuál es tu principal preocupación?', ar: 'ما هو قلقك الرئيسي؟', ary: 'شنو لي كيهمك بزاف?' },
+                    options: [
+                        { value: 'acne', label: { fr: 'Acné', en: 'Acne', es: 'Acné', ar: 'حب الشباب', ary: 'الحبوب' } },
+                        { value: 'aging', label: { fr: 'Anti-âge', en: 'Anti-aging', es: 'Anti-edad', ar: 'مكافحة الشيخوخة', ary: 'ضد الشيخوخة' } },
+                        { value: 'hydration', label: { fr: 'Hydratation', en: 'Hydration', es: 'Hidratación', ar: 'ترطيب', ary: 'الترطيب' } },
+                        { value: 'brightening', label: { fr: 'Éclat', en: 'Brightening', es: 'Luminosidad', ar: 'إشراق', ary: 'البريق' } }
+                    ],
+                    tags: { acne: ['salicylic', 'anti-acne'], aging: ['retinol', 'anti-wrinkle'], hydration: ['hyaluronic', 'moisturizing'], brightening: ['vitamin-c', 'brightening'] }
+                },
+                {
+                    id: 'budget',
+                    question: { fr: 'Quel est votre budget ?', en: 'What is your budget?', es: '¿Cuál es tu presupuesto?', ar: 'ما هي ميزانيتك؟', ary: 'شحال معاك تصرف?' },
+                    options: [
+                        { value: 'budget', label: { fr: 'Économique (< 50€)', en: 'Budget (< $50)', es: 'Económico (< 50€)', ar: 'اقتصادي (< 50$)', ary: 'رخيص (< 500 DH)' } },
+                        { value: 'mid', label: { fr: 'Moyen (50-100€)', en: 'Mid-range ($50-100)', es: 'Medio (50-100€)', ar: 'متوسط (50-100$)', ary: 'معتدل (500-1000 DH)' } },
+                        { value: 'premium', label: { fr: 'Premium (100€+)', en: 'Premium ($100+)', es: 'Premium (100€+)', ar: 'ممتاز (100$+)', ary: 'غالي (+1000 DH)' } }
+                    ],
+                    priceRanges: { budget: { max: 50 }, mid: { min: 50, max: 100 }, premium: { min: 100 } }
+                }
+            ]
         },
-        {
-          id: 'concern',
-          question: { fr: 'Quelle est votre préoccupation principale ?', en: 'What is your main concern?', es: '¿Cuál es tu principal preocupación?', ar: 'ما هو قلقك الرئيسي؟', ary: 'شنو لي كيهمك بزاف?' },
-          options: [
-            { value: 'acne', label: { fr: 'Acné', en: 'Acne', es: 'Acné', ar: 'حب الشباب', ary: 'الحبوب' } },
-            { value: 'aging', label: { fr: 'Anti-âge', en: 'Anti-aging', es: 'Anti-edad', ar: 'مكافحة الشيخوخة', ary: 'ضد الشيخوخة' } },
-            { value: 'hydration', label: { fr: 'Hydratation', en: 'Hydration', es: 'Hidratación', ar: 'ترطيب', ary: 'الترطيب' } },
-            { value: 'brightening', label: { fr: 'Éclat', en: 'Brightening', es: 'Luminosidad', ar: 'إشراق', ary: 'البريق' } }
-          ],
-          tags: { acne: ['salicylic', 'anti-acne'], aging: ['retinol', 'anti-wrinkle'], hydration: ['hyaluronic', 'moisturizing'], brightening: ['vitamin-c', 'brightening'] }
+        electronics: {
+            title: { fr: 'Trouvez l\'appareil idéal', en: 'Find Your Ideal Device', es: 'Encuentra tu dispositivo ideal', ar: 'اعثر على جهازك المثالي', ary: 'لقى الجهاز لي يناسبك' },
+            questions: [
+                {
+                    id: 'usage',
+                    question: { fr: 'Quelle sera l\'utilisation principale ?', en: 'What will be the main use?', es: '¿Cuál será el uso principal?', ar: 'ما هو الاستخدام الرئيسي؟', ary: 'شنو غادي دير بيه؟' },
+                    options: [
+                        { value: 'work', label: { fr: 'Travail', en: 'Work', es: 'Trabajo', ar: 'عمل', ary: 'خدمة' } },
+                        { value: 'gaming', label: { fr: 'Gaming', en: 'Gaming', es: 'Gaming', ar: 'ألعاب', ary: 'العاب' } },
+                        { value: 'casual', label: { fr: 'Usage quotidien', en: 'Daily use', es: 'Uso diario', ar: 'استخدام يومي', ary: 'كل يوم' } },
+                        { value: 'creative', label: { fr: 'Création', en: 'Creative work', es: 'Creación', ar: 'إبداعي', ary: 'إبداع' } }
+                    ],
+                    tags: { work: ['professional', 'productivity'], gaming: ['gaming', 'high-performance'], casual: ['everyday', 'budget-friendly'], creative: ['creative', 'high-specs'] }
+                },
+                {
+                    id: 'priority',
+                    question: { fr: 'Quelle est votre priorité ?', en: 'What is your priority?', es: '¿Cuál es tu prioridad?', ar: 'ما هي أولويتك؟', ary: 'شنو لي مهم عندك بزاف؟' },
+                    options: [
+                        { value: 'performance', label: { fr: 'Performance', en: 'Performance', es: 'Rendimiento', ar: 'أداء', ary: 'القوة' } },
+                        { value: 'battery', label: { fr: 'Autonomie', en: 'Battery life', es: 'Batería', ar: 'عمر البطارية', ary: 'البطارية' } },
+                        { value: 'portability', label: { fr: 'Portabilité', en: 'Portability', es: 'Portabilidad', ar: 'قابلية النقل', ary: 'خفيف' } },
+                        { value: 'price', label: { fr: 'Prix', en: 'Price', es: 'Precio', ar: 'السعر', ary: 'الثمن' } }
+                    ]
+                }
+            ]
         },
-        {
-          id: 'budget',
-          question: { fr: 'Quel est votre budget ?', en: 'What is your budget?', es: '¿Cuál es tu presupuesto?', ar: 'ما هي ميزانيتك؟', ary: 'شحال معاك تصرف?' },
-          options: [
-            { value: 'budget', label: { fr: 'Économique (< 50€)', en: 'Budget (< $50)', es: 'Económico (< 50€)', ar: 'اقتصادي (< 50$)', ary: 'رخيص (< 500 DH)' } },
-            { value: 'mid', label: { fr: 'Moyen (50-100€)', en: 'Mid-range ($50-100)', es: 'Medio (50-100€)', ar: 'متوسط (50-100$)', ary: 'معتدل (500-1000 DH)' } },
-            { value: 'premium', label: { fr: 'Premium (100€+)', en: 'Premium ($100+)', es: 'Premium (100€+)', ar: 'ممتاز (100$+)', ary: 'غالي (+1000 DH)' } }
-          ],
-          priceRanges: { budget: { max: 50 }, mid: { min: 50, max: 100 }, premium: { min: 100 } }
+        generic: {
+            title: { fr: 'Trouvez votre produit idéal', en: 'Find Your Ideal Product', es: 'Encuentra tu producto ideal', ar: 'اعثر على منتجك المثالي', ary: 'لقى المنتوج لي يناسبك' },
+            questions: [
+                {
+                    id: 'need',
+                    question: { fr: 'Qu\'est-ce que vous recherchez ?', en: 'What are you looking for?', es: '¿Qué estás buscando?', ar: 'ما الذي تبحث عنه؟', ary: 'شنو كتقلب عليه؟' },
+                    voiceKeywords: { fr: ['cherche', 'besoin', 'voudrais'], en: ['looking', 'need', 'want'], es: ['busco', 'necesito', 'quiero'], ar: ['أبحث', 'أريد'], ary: ['كنقلب', 'بغيت'] }
+                },
+                {
+                    id: 'budget',
+                    question: { fr: 'Quel est votre budget ?', en: 'What is your budget?', es: '¿Cuál es tu presupuesto?', ar: 'ما هي ميزانيتك؟', ary: 'شحال معاك؟' },
+                    options: [
+                        { value: 'low', label: { fr: '< 50€', en: '< $50', es: '< 50€', ar: '< 50$', ary: '< 500 DH' } },
+                        { value: 'mid', label: { fr: '50-150€', en: '$50-150', es: '50-150€', ar: '50-150$', ary: '500-1500 DH' } },
+                        { value: 'high', label: { fr: '> 150€', en: '> $150', es: '> 150€', ar: '> 150$', ary: '> 1500 DH' } }
+                    ]
+                }
+            ]
         }
-      ]
-    },
-    electronics: {
-      title: { fr: 'Trouvez l\'appareil idéal', en: 'Find Your Ideal Device', es: 'Encuentra tu dispositivo ideal', ar: 'اعثر على جهازك المثالي', ary: 'لقى الجهاز لي يناسبك' },
-      questions: [
-        {
-          id: 'usage',
-          question: { fr: 'Quelle sera l\'utilisation principale ?', en: 'What will be the main use?', es: '¿Cuál será el uso principal?', ar: 'ما هو الاستخدام الرئيسي؟', ary: 'شنو غادي دير بيه؟' },
-          options: [
-            { value: 'work', label: { fr: 'Travail', en: 'Work', es: 'Trabajo', ar: 'عمل', ary: 'خدمة' } },
-            { value: 'gaming', label: { fr: 'Gaming', en: 'Gaming', es: 'Gaming', ar: 'ألعاب', ary: 'العاب' } },
-            { value: 'casual', label: { fr: 'Usage quotidien', en: 'Daily use', es: 'Uso diario', ar: 'استخدام يومي', ary: 'كل يوم' } },
-            { value: 'creative', label: { fr: 'Création', en: 'Creative work', es: 'Creación', ar: 'إبداعي', ary: 'إبداع' } }
-          ],
-          tags: { work: ['professional', 'productivity'], gaming: ['gaming', 'high-performance'], casual: ['everyday', 'budget-friendly'], creative: ['creative', 'high-specs'] }
-        },
-        {
-          id: 'priority',
-          question: { fr: 'Quelle est votre priorité ?', en: 'What is your priority?', es: '¿Cuál es tu prioridad?', ar: 'ما هي أولويتك؟', ary: 'شنو لي مهم عندك بزاف؟' },
-          options: [
-            { value: 'performance', label: { fr: 'Performance', en: 'Performance', es: 'Rendimiento', ar: 'أداء', ary: 'القوة' } },
-            { value: 'battery', label: { fr: 'Autonomie', en: 'Battery life', es: 'Batería', ar: 'عمر البطارية', ary: 'البطارية' } },
-            { value: 'portability', label: { fr: 'Portabilité', en: 'Portability', es: 'Portabilidad', ar: 'قابلية النقل', ary: 'خفيف' } },
-            { value: 'price', label: { fr: 'Prix', en: 'Price', es: 'Precio', ar: 'السعر', ary: 'الثمن' } }
-          ]
+    };
+
+    /**
+     * Voice Quiz Class
+     */
+    class VoiceQuiz {
+        constructor(options = {}) {
+            this.options = {
+                tenantId: null,
+                template: 'generic',
+                customQuestions: null,
+                lang: 'fr',
+                voiceEnabled: true,
+                onComplete: null,
+                onLeadCapture: null,
+                apiBaseUrl: 'https://api.vocalia.ma',
+                ...options
+            };
+
+            this.container = null;
+            this.isVisible = false;
+            this.currentStep = 0;
+            this.answers = {};
+            this.questions = [];
+            this.isListening = false;
+            this.recognition = null;
+
+            this._injectStyles();
+            this._initQuestions();
+            this._initVoiceRecognition();
         }
-      ]
-    },
-    generic: {
-      title: { fr: 'Trouvez votre produit idéal', en: 'Find Your Ideal Product', es: 'Encuentra tu producto ideal', ar: 'اعثر على منتجك المثالي', ary: 'لقى المنتوج لي يناسبك' },
-      questions: [
-        {
-          id: 'need',
-          question: { fr: 'Qu\'est-ce que vous recherchez ?', en: 'What are you looking for?', es: '¿Qué estás buscando?', ar: 'ما الذي تبحث عنه؟', ary: 'شنو كتقلب عليه؟' },
-          voiceKeywords: { fr: ['cherche', 'besoin', 'voudrais'], en: ['looking', 'need', 'want'], es: ['busco', 'necesito', 'quiero'], ar: ['أبحث', 'أريد'], ary: ['كنقلب', 'بغيت'] }
-        },
-        {
-          id: 'budget',
-          question: { fr: 'Quel est votre budget ?', en: 'What is your budget?', es: '¿Cuál es tu presupuesto?', ar: 'ما هي ميزانيتك؟', ary: 'شحال معاك؟' },
-          options: [
-            { value: 'low', label: { fr: '< 50€', en: '< $50', es: '< 50€', ar: '< 50$', ary: '< 500 DH' } },
-            { value: 'mid', label: { fr: '50-150€', en: '$50-150', es: '50-150€', ar: '50-150$', ary: '500-1500 DH' } },
-            { value: 'high', label: { fr: '> 150€', en: '> $150', es: '> 150€', ar: '> 150$', ary: '> 1500 DH' } }
-          ]
+
+        /**
+         * Inject CSS styles
+         */
+        _injectStyles() {
+            if (document.getElementById('va-quiz-styles')) return;
+
+            const style = document.createElement('style');
+            style.id = 'va-quiz-styles';
+            style.textContent = QUIZ_CSS;
+            document.head.appendChild(style);
         }
-      ]
-    }
-  };
 
-  /**
-   * Voice Quiz Class
-   */
-  class VoiceQuiz {
-    constructor(options = {}) {
-      this.options = {
-        tenantId: null,
-        template: 'generic',
-        customQuestions: null,
-        lang: 'fr',
-        voiceEnabled: true,
-        onComplete: null,
-        onLeadCapture: null,
-        apiBaseUrl: 'https://api.vocalia.ma',
-        ...options
-      };
-
-      this.container = null;
-      this.isVisible = false;
-      this.currentStep = 0;
-      this.answers = {};
-      this.questions = [];
-      this.isListening = false;
-      this.recognition = null;
-
-      this._injectStyles();
-      this._initQuestions();
-      this._initVoiceRecognition();
-    }
-
-    /**
-     * Inject CSS styles
-     */
-    _injectStyles() {
-      if (document.getElementById('va-quiz-styles')) return;
-
-      const style = document.createElement('style');
-      style.id = 'va-quiz-styles';
-      style.textContent = QUIZ_CSS;
-      document.head.appendChild(style);
-    }
-
-    /**
-     * Initialize questions from template or custom
-     */
-    _initQuestions() {
-      if (this.options.customQuestions) {
-        this.questions = this.options.customQuestions;
-      } else {
-        const template = QUIZ_TEMPLATES[this.options.template] || QUIZ_TEMPLATES.generic;
-        this.questions = template.questions;
-        this.title = template.title;
-      }
-    }
-
-    /**
-     * Initialize voice recognition
-     */
-    _initVoiceRecognition() {
-      if (!this.options.voiceEnabled) return;
-
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        console.warn('[VoiceQuiz] Speech Recognition not supported');
-        return;
-      }
-
-      this.recognition = new SpeechRecognition();
-      this.recognition.continuous = false;
-      this.recognition.interimResults = false;
-      this.recognition.lang = this._getSpeechLang();
-
-      this.recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        this._processVoiceAnswer(transcript);
-      };
-
-      this.recognition.onend = () => {
-        this.isListening = false;
-        this._updateVoiceButton();
-      };
-
-      this.recognition.onerror = (event) => {
-        console.error('[VoiceQuiz] Speech error:', event.error);
-        this.isListening = false;
-        this._updateVoiceButton();
-      };
-    }
-
-    /**
-     * Get speech recognition language code
-     */
-    _getSpeechLang() {
-      const langMap = {
-        fr: 'fr-FR',
-        en: 'en-US',
-        es: 'es-ES',
-        ar: 'ar-SA',
-        ary: 'ar-MA'
-      };
-      return langMap[this.options.lang] || 'fr-FR';
-    }
-
-    /**
-     * Get localized text
-     */
-    _t(textObj) {
-      if (typeof textObj === 'string') return textObj;
-      return textObj[this.options.lang] || textObj.fr || textObj.en || Object.values(textObj)[0];
-    }
-
-    /**
-     * Get labels
-     */
-    _getLabels() {
-      const labels = {
-        fr: {
-          back: 'Retour',
-          next: 'Suivant',
-          finish: 'Voir mes recommandations',
-          voiceHint: 'Ou répondez par la voix',
-          listening: 'Je vous écoute...',
-          speak: 'Parler',
-          stepOf: 'Question {current} sur {total}',
-          resultsTitle: 'Vos recommandations sont prêtes !',
-          resultsSubtitle: 'Entrez vos coordonnées pour recevoir votre sélection personnalisée',
-          namePlaceholder: 'Votre nom',
-          emailPlaceholder: 'Votre email',
-          phonePlaceholder: 'Votre téléphone (optionnel)',
-          getResults: 'Recevoir mes recommandations',
-          skip: 'Voir sans email'
-        },
-        en: {
-          back: 'Back',
-          next: 'Next',
-          finish: 'See my recommendations',
-          voiceHint: 'Or answer by voice',
-          listening: 'I\'m listening...',
-          speak: 'Speak',
-          stepOf: 'Question {current} of {total}',
-          resultsTitle: 'Your recommendations are ready!',
-          resultsSubtitle: 'Enter your details to receive your personalized selection',
-          namePlaceholder: 'Your name',
-          emailPlaceholder: 'Your email',
-          phonePlaceholder: 'Your phone (optional)',
-          getResults: 'Get my recommendations',
-          skip: 'View without email'
-        },
-        es: {
-          back: 'Atrás',
-          next: 'Siguiente',
-          finish: 'Ver mis recomendaciones',
-          voiceHint: 'O responde por voz',
-          listening: 'Te escucho...',
-          speak: 'Hablar',
-          stepOf: 'Pregunta {current} de {total}',
-          resultsTitle: '¡Tus recomendaciones están listas!',
-          resultsSubtitle: 'Ingresa tus datos para recibir tu selección personalizada',
-          namePlaceholder: 'Tu nombre',
-          emailPlaceholder: 'Tu email',
-          phonePlaceholder: 'Tu teléfono (opcional)',
-          getResults: 'Recibir mis recomendaciones',
-          skip: 'Ver sin email'
-        },
-        ar: {
-          back: 'رجوع',
-          next: 'التالي',
-          finish: 'عرض توصياتي',
-          voiceHint: 'أو أجب بالصوت',
-          listening: 'أستمع...',
-          speak: 'تكلم',
-          stepOf: 'السؤال {current} من {total}',
-          resultsTitle: 'توصياتك جاهزة!',
-          resultsSubtitle: 'أدخل بياناتك لتلقي اختيارك المخصص',
-          namePlaceholder: 'اسمك',
-          emailPlaceholder: 'بريدك الإلكتروني',
-          phonePlaceholder: 'هاتفك (اختياري)',
-          getResults: 'استلم توصياتي',
-          skip: 'عرض بدون بريد'
-        },
-        ary: {
-          back: 'رجع',
-          next: 'كمل',
-          finish: 'شوف شنو يناسبني',
-          voiceHint: 'ولا جاوب بالصوت',
-          listening: 'كنسمعك...',
-          speak: 'هضر',
-          stepOf: 'سؤال {current} من {total}',
-          resultsTitle: 'التوصيات ديالك جاهزين!',
-          resultsSubtitle: 'دخل معلوماتك باش توصلك لائحة خاصة بيك',
-          namePlaceholder: 'سميتك',
-          emailPlaceholder: 'الإيميل ديالك',
-          phonePlaceholder: 'التيليفون (اختياري)',
-          getResults: 'توصلني التوصيات',
-          skip: 'شوف بلا إيميل'
+        /**
+         * Initialize questions from template or custom
+         */
+        _initQuestions() {
+            if (this.options.customQuestions) {
+                this.questions = this.options.customQuestions;
+            } else {
+                const template = QUIZ_TEMPLATES[this.options.template] || QUIZ_TEMPLATES.generic;
+                this.questions = template.questions;
+                this.title = template.title;
+            }
         }
-      };
 
-      return labels[this.options.lang] || labels.fr;
-    }
+        /**
+         * Initialize voice recognition
+         */
+        _initVoiceRecognition() {
+            if (!this.options.voiceEnabled) return;
 
-    /**
-     * Create quiz DOM
-     */
-    _createQuizDOM() {
-      const L = this._getLabels();
-      const isRTL = this.options.lang === 'ar' || this.options.lang === 'ary';
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                console.warn('[VoiceQuiz] Speech Recognition not supported');
+                return;
+            }
 
-      const overlay = document.createElement('div');
-      overlay.className = 'va-quiz-overlay';
-      overlay.id = 'va-quiz-overlay';
-      if (isRTL) overlay.setAttribute('dir', 'rtl');
+            this.recognition = new SpeechRecognition();
+            this.recognition.continuous = false;
+            this.recognition.interimResults = false;
+            this.recognition.lang = this._getSpeechLang();
 
-      overlay.innerHTML = `
+            this.recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.toLowerCase();
+                this._processVoiceAnswer(transcript);
+            };
+
+            this.recognition.onend = () => {
+                this.isListening = false;
+                this._updateVoiceButton();
+            };
+
+            this.recognition.onerror = (event) => {
+                console.error('[VoiceQuiz] Speech error:', event.error);
+                this.isListening = false;
+                this._updateVoiceButton();
+            };
+        }
+
+        /**
+         * Get speech recognition language code
+         */
+        _getSpeechLang() {
+            const langMap = {
+                fr: 'fr-FR',
+                en: 'en-US',
+                es: 'es-ES',
+                ar: 'ar-SA',
+                ary: 'ar-MA'
+            };
+            return langMap[this.options.lang] || 'fr-FR';
+        }
+
+        /**
+         * Get localized text
+         */
+        _t(textObj) {
+            if (typeof textObj === 'string') return textObj;
+            return textObj[this.options.lang] || textObj.fr || textObj.en || Object.values(textObj)[0];
+        }
+
+        /**
+         * Get labels
+         */
+        _getLabels() {
+            const labels = {
+                fr: {
+                    back: 'Retour',
+                    next: 'Suivant',
+                    finish: 'Voir mes recommandations',
+                    voiceHint: 'Ou répondez par la voix',
+                    listening: 'Je vous écoute...',
+                    speak: 'Parler',
+                    stepOf: 'Question {current} sur {total}',
+                    resultsTitle: 'Vos recommandations sont prêtes !',
+                    resultsSubtitle: 'Entrez vos coordonnées pour recevoir votre sélection personnalisée',
+                    namePlaceholder: 'Votre nom',
+                    emailPlaceholder: 'Votre email',
+                    phonePlaceholder: 'Votre téléphone (optionnel)',
+                    getResults: 'Recevoir mes recommandations',
+                    skip: 'Voir sans email'
+                },
+                en: {
+                    back: 'Back',
+                    next: 'Next',
+                    finish: 'See my recommendations',
+                    voiceHint: 'Or answer by voice',
+                    listening: 'I\'m listening...',
+                    speak: 'Speak',
+                    stepOf: 'Question {current} of {total}',
+                    resultsTitle: 'Your recommendations are ready!',
+                    resultsSubtitle: 'Enter your details to receive your personalized selection',
+                    namePlaceholder: 'Your name',
+                    emailPlaceholder: 'Your email',
+                    phonePlaceholder: 'Your phone (optional)',
+                    getResults: 'Get my recommendations',
+                    skip: 'View without email'
+                },
+                es: {
+                    back: 'Atrás',
+                    next: 'Siguiente',
+                    finish: 'Ver mis recomendaciones',
+                    voiceHint: 'O responde por voz',
+                    listening: 'Te escucho...',
+                    speak: 'Hablar',
+                    stepOf: 'Pregunta {current} de {total}',
+                    resultsTitle: '¡Tus recomendaciones están listas!',
+                    resultsSubtitle: 'Ingresa tus datos para recibir tu selección personalizada',
+                    namePlaceholder: 'Tu nombre',
+                    emailPlaceholder: 'Tu email',
+                    phonePlaceholder: 'Tu teléfono (opcional)',
+                    getResults: 'Recibir mis recomendaciones',
+                    skip: 'Ver sin email'
+                },
+                ar: {
+                    back: 'رجوع',
+                    next: 'التالي',
+                    finish: 'عرض توصياتي',
+                    voiceHint: 'أو أجب بالصوت',
+                    listening: 'أستمع...',
+                    speak: 'تكلم',
+                    stepOf: 'السؤال {current} من {total}',
+                    resultsTitle: 'توصياتك جاهزة!',
+                    resultsSubtitle: 'أدخل بياناتك لتلقي اختيارك المخصص',
+                    namePlaceholder: 'اسمك',
+                    emailPlaceholder: 'بريدك الإلكتروني',
+                    phonePlaceholder: 'هاتفك (اختياري)',
+                    getResults: 'استلم توصياتي',
+                    skip: 'عرض بدون بريد'
+                },
+                ary: {
+                    back: 'رجع',
+                    next: 'كمل',
+                    finish: 'شوف شنو يناسبني',
+                    voiceHint: 'ولا جاوب بالصوت',
+                    listening: 'كنسمعك...',
+                    speak: 'هضر',
+                    stepOf: 'سؤال {current} من {total}',
+                    resultsTitle: 'التوصيات ديالك جاهزين!',
+                    resultsSubtitle: 'دخل معلوماتك باش توصلك لائحة خاصة بيك',
+                    namePlaceholder: 'سميتك',
+                    emailPlaceholder: 'الإيميل ديالك',
+                    phonePlaceholder: 'التيليفون (اختياري)',
+                    getResults: 'توصلني التوصيات',
+                    skip: 'شوف بلا إيميل'
+                }
+            };
+
+            return labels[this.options.lang] || labels.fr;
+        }
+
+        /**
+         * Create quiz DOM
+         */
+        _createQuizDOM() {
+            const L = this._getLabels();
+            const isRTL = this.options.lang === 'ar' || this.options.lang === 'ary';
+
+            const overlay = document.createElement('div');
+            overlay.className = 'va-quiz-overlay';
+            overlay.id = 'va-quiz-overlay';
+            if (isRTL) overlay.setAttribute('dir', 'rtl');
+
+            overlay.innerHTML = `
         <div class="va-quiz-container">
           <div class="va-quiz-header">
             <div class="va-quiz-title">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>${escapeHTML(this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' }))}</span>
+              <span>${this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' })}</span>
             </div>
             <button class="va-quiz-close" aria-label="Close">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -717,57 +711,57 @@
         </div>
       `;
 
-      // Event listeners
-      overlay.querySelector('.va-quiz-close').addEventListener('click', () => this.hide());
-      overlay.querySelector('.va-quiz-btn-back').addEventListener('click', () => this._prevStep());
-      overlay.querySelector('.va-quiz-btn-next').addEventListener('click', () => this._nextStep());
+            // Event listeners
+            overlay.querySelector('.va-quiz-close').addEventListener('click', () => this.hide());
+            overlay.querySelector('.va-quiz-btn-back').addEventListener('click', () => this._prevStep());
+            overlay.querySelector('.va-quiz-btn-next').addEventListener('click', () => this._nextStep());
 
-      // Close on overlay click
-      overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) this.hide();
-      });
+            // Close on overlay click
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) this.hide();
+            });
 
-      return overlay;
-    }
+            return overlay;
+        }
 
-    /**
-     * Render current question
-     */
-    _renderQuestion() {
-      const L = this._getLabels();
-      const question = this.questions[this.currentStep];
-      const content = this.container.querySelector('.va-quiz-content');
-      const progress = this.container.querySelector('.va-quiz-progress-fill');
-      const progressText = this.container.querySelector('.va-quiz-progress-text');
-      const backBtn = this.container.querySelector('.va-quiz-btn-back');
-      const nextBtn = this.container.querySelector('.va-quiz-btn-next');
+        /**
+         * Render current question
+         */
+        _renderQuestion() {
+            const L = this._getLabels();
+            const question = this.questions[this.currentStep];
+            const content = this.container.querySelector('.va-quiz-content');
+            const progress = this.container.querySelector('.va-quiz-progress-fill');
+            const progressText = this.container.querySelector('.va-quiz-progress-text');
+            const backBtn = this.container.querySelector('.va-quiz-btn-back');
+            const nextBtn = this.container.querySelector('.va-quiz-btn-next');
 
-      // Update progress
-      const progressPct = ((this.currentStep + 1) / this.questions.length) * 100;
-      progress.style.width = `${progressPct}%`;
-      progressText.textContent = L.stepOf
-        .replace('{current}', this.currentStep + 1)
-        .replace('{total}', this.questions.length);
+            // Update progress
+            const progressPct = ((this.currentStep + 1) / this.questions.length) * 100;
+            progress.style.width = `${progressPct}%`;
+            progressText.textContent = L.stepOf
+                .replace('{current}', this.currentStep + 1)
+                .replace('{total}', this.questions.length);
 
-      // Show/hide back button
-      backBtn.style.display = this.currentStep > 0 ? 'block' : 'none';
+            // Show/hide back button
+            backBtn.style.display = this.currentStep > 0 ? 'block' : 'none';
 
-      // Update next button text
-      nextBtn.textContent = this.currentStep === this.questions.length - 1 ? L.finish : L.next;
-      nextBtn.disabled = !this.answers[question.id];
+            // Update next button text
+            nextBtn.textContent = this.currentStep === this.questions.length - 1 ? L.finish : L.next;
+            nextBtn.disabled = !this.answers[question.id];
 
-      // Render question content
-      content.innerHTML = `
-        <div class="va-quiz-question">${escapeHTML(this._t(question.question))}</div>
+            // Render question content
+            content.innerHTML = `
+        <div class="va-quiz-question">${this._t(question.question)}</div>
         <div class="va-quiz-options">
           ${(question.options || []).map(opt => `
-            <button class="va-quiz-option ${this.answers[question.id] === opt.value ? 'va-quiz-selected' : ''}" data-value="${escapeHTML(String(opt.value))}">
+            <button class="va-quiz-option ${this.answers[question.id] === opt.value ? 'va-quiz-selected' : ''}" data-value="${opt.value}">
               <span class="va-quiz-option-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </span>
-              <span>${escapeHTML(this._t(opt.label))}</span>
+              <span>${this._t(opt.label)}</span>
             </button>
           `).join('')}
         </div>
@@ -787,130 +781,130 @@
         ` : ''}
       `;
 
-      // Add option click handlers
-      content.querySelectorAll('.va-quiz-option').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const value = btn.dataset.value;
-          this._selectOption(question.id, value);
-        });
-      });
+            // Add option click handlers
+            content.querySelectorAll('.va-quiz-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const value = btn.dataset.value;
+                    this._selectOption(question.id, value);
+                });
+            });
 
-      // Add voice button handler
-      const voiceBtn = content.querySelector('#va-quiz-voice-btn');
-      if (voiceBtn) {
-        voiceBtn.addEventListener('click', () => this._toggleVoice());
-      }
-    }
-
-    /**
-     * Select an option
-     */
-    _selectOption(questionId, value) {
-      this.answers[questionId] = value;
-      this._renderQuestion();
-      this._trackAnswer(questionId, value);
-    }
-
-    /**
-     * Toggle voice recognition
-     */
-    _toggleVoice() {
-      if (!this.recognition) return;
-
-      if (this.isListening) {
-        this.recognition.stop();
-      } else {
-        this.isListening = true;
-        this._updateVoiceButton();
-        this.recognition.start();
-      }
-    }
-
-    /**
-     * Update voice button state
-     */
-    _updateVoiceButton() {
-      const L = this._getLabels();
-      const btn = this.container?.querySelector('#va-quiz-voice-btn');
-      if (!btn) return;
-
-      if (this.isListening) {
-        btn.classList.add('va-quiz-listening');
-        btn.querySelector('span').textContent = L.listening;
-      } else {
-        btn.classList.remove('va-quiz-listening');
-        btn.querySelector('span').textContent = L.speak;
-      }
-    }
-
-    /**
-     * Process voice answer
-     */
-    _processVoiceAnswer(transcript) {
-      const question = this.questions[this.currentStep];
-      if (!question.options) return;
-
-      // Try to match transcript to option
-      for (const opt of question.options) {
-        const label = this._t(opt.label).toLowerCase();
-        if (transcript.includes(label) || label.includes(transcript)) {
-          this._selectOption(question.id, opt.value);
-          // Auto-advance after voice selection
-          setTimeout(() => this._nextStep(), 800);
-          return;
+            // Add voice button handler
+            const voiceBtn = content.querySelector('#va-quiz-voice-btn');
+            if (voiceBtn) {
+                voiceBtn.addEventListener('click', () => this._toggleVoice());
+            }
         }
-      }
 
-      // Check voice keywords if defined
-      if (question.voiceKeywords) {
-        const keywords = question.voiceKeywords[this.options.lang] || [];
-        for (const keyword of keywords) {
-          if (transcript.includes(keyword)) {
-            // For free-form questions, store transcript
-            this.answers[question.id] = transcript;
+        /**
+         * Select an option
+         */
+        _selectOption(questionId, value) {
+            this.answers[questionId] = value;
             this._renderQuestion();
-            setTimeout(() => this._nextStep(), 800);
-            return;
-          }
+            this._trackAnswer(questionId, value);
         }
-      }
-    }
 
-    /**
-     * Go to previous step
-     */
-    _prevStep() {
-      if (this.currentStep > 0) {
-        this.currentStep--;
-        this._renderQuestion();
-      }
-    }
+        /**
+         * Toggle voice recognition
+         */
+        _toggleVoice() {
+            if (!this.recognition) return;
 
-    /**
-     * Go to next step or show results
-     */
-    _nextStep() {
-      if (this.currentStep < this.questions.length - 1) {
-        this.currentStep++;
-        this._renderQuestion();
-      } else {
-        this._showResults();
-      }
-    }
+            if (this.isListening) {
+                this.recognition.stop();
+            } else {
+                this.isListening = true;
+                this._updateVoiceButton();
+                this.recognition.start();
+            }
+        }
 
-    /**
-     * Show results/lead capture screen
-     */
-    _showResults() {
-      const L = this._getLabels();
-      const content = this.container.querySelector('.va-quiz-content');
-      const footer = this.container.querySelector('.va-quiz-footer');
+        /**
+         * Update voice button state
+         */
+        _updateVoiceButton() {
+            const L = this._getLabels();
+            const btn = this.container?.querySelector('#va-quiz-voice-btn');
+            if (!btn) return;
 
-      // Update progress to 100%
-      this.container.querySelector('.va-quiz-progress-fill').style.width = '100%';
-      this.container.querySelector('.va-quiz-progress-text').textContent = '';
+            if (this.isListening) {
+                btn.classList.add('va-quiz-listening');
+                btn.querySelector('span').textContent = L.listening;
+            } else {
+                btn.classList.remove('va-quiz-listening');
+                btn.querySelector('span').textContent = L.speak;
+            }
+        }
 
-      content.innerHTML = `
+        /**
+         * Process voice answer
+         */
+        _processVoiceAnswer(transcript) {
+            const question = this.questions[this.currentStep];
+            if (!question.options) return;
+
+            // Try to match transcript to option
+            for (const opt of question.options) {
+                const label = this._t(opt.label).toLowerCase();
+                if (transcript.includes(label) || label.includes(transcript)) {
+                    this._selectOption(question.id, opt.value);
+                    // Auto-advance after voice selection
+                    setTimeout(() => this._nextStep(), 800);
+                    return;
+                }
+            }
+
+            // Check voice keywords if defined
+            if (question.voiceKeywords) {
+                const keywords = question.voiceKeywords[this.options.lang] || [];
+                for (const keyword of keywords) {
+                    if (transcript.includes(keyword)) {
+                        // For free-form questions, store transcript
+                        this.answers[question.id] = transcript;
+                        this._renderQuestion();
+                        setTimeout(() => this._nextStep(), 800);
+                        return;
+                    }
+                }
+            }
+        }
+
+        /**
+         * Go to previous step
+         */
+        _prevStep() {
+            if (this.currentStep > 0) {
+                this.currentStep--;
+                this._renderQuestion();
+            }
+        }
+
+        /**
+         * Go to next step or show results
+         */
+        _nextStep() {
+            if (this.currentStep < this.questions.length - 1) {
+                this.currentStep++;
+                this._renderQuestion();
+            } else {
+                this._showResults();
+            }
+        }
+
+        /**
+         * Show results/lead capture screen
+         */
+        _showResults() {
+            const L = this._getLabels();
+            const content = this.container.querySelector('.va-quiz-content');
+            const footer = this.container.querySelector('.va-quiz-footer');
+
+            // Update progress to 100%
+            this.container.querySelector('.va-quiz-progress-fill').style.width = '100%';
+            this.container.querySelector('.va-quiz-progress-text').textContent = '';
+
+            content.innerHTML = `
         <div class="va-quiz-results">
           <div class="va-quiz-results-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -927,207 +921,207 @@
         </div>
       `;
 
-      footer.innerHTML = `
+            footer.innerHTML = `
         <button class="va-quiz-btn va-quiz-btn-back">${L.skip}</button>
         <button class="va-quiz-btn va-quiz-btn-next">${L.getResults}</button>
       `;
 
-      footer.querySelector('.va-quiz-btn-back').addEventListener('click', () => {
-        this._completeQuiz(false);
-      });
+            footer.querySelector('.va-quiz-btn-back').addEventListener('click', () => {
+                this._completeQuiz(false);
+            });
 
-      footer.querySelector('.va-quiz-btn-next').addEventListener('click', () => {
-        const name = this.container.querySelector('#va-quiz-name').value.trim();
-        const email = this.container.querySelector('#va-quiz-email').value.trim();
-        const phone = this.container.querySelector('#va-quiz-phone').value.trim();
+            footer.querySelector('.va-quiz-btn-next').addEventListener('click', () => {
+                const name = this.container.querySelector('#va-quiz-name').value.trim();
+                const email = this.container.querySelector('#va-quiz-email').value.trim();
+                const phone = this.container.querySelector('#va-quiz-phone').value.trim();
 
-        if (name && email) {
-          this._captureLead({ name, email, phone });
-          this._completeQuiz(true);
+                if (name && email) {
+                    this._captureLead({ name, email, phone });
+                    this._completeQuiz(true);
+                }
+            });
         }
-      });
-    }
 
-    /**
-     * Capture lead data
-     */
-    async _captureLead(lead) {
-      if (this.options.onLeadCapture) {
-        this.options.onLeadCapture({ ...lead, answers: this.answers });
-      }
+        /**
+         * Capture lead data
+         */
+        async _captureLead(lead) {
+            if (this.options.onLeadCapture) {
+                this.options.onLeadCapture({ ...lead, answers: this.answers });
+            }
 
-      // Track lead capture
-      this._track('quiz_lead_captured', { ...lead, answers_count: Object.keys(this.answers).length });
+            // Track lead capture
+            this._track('quiz_lead_captured', { ...lead, answers_count: Object.keys(this.answers).length });
 
-      // Send to backend if tenant configured
-      if (this.options.tenantId) {
-        try {
-          await fetch(`${this.options.apiBaseUrl}/api/leads`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              tenant_id: this.options.tenantId,
-              source: 'voice_quiz',
-              ...lead,
-              quiz_answers: this.answers
-            })
-          });
-        } catch (e) {
-          console.error('[VoiceQuiz] Lead capture error:', e);
+            // Send to backend if tenant configured
+            if (this.options.tenantId) {
+                try {
+                    await fetch(`${this.options.apiBaseUrl}/api/leads`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            tenant_id: this.options.tenantId,
+                            source: 'voice_quiz',
+                            ...lead,
+                            quiz_answers: this.answers
+                        })
+                    });
+                } catch (e) {
+                    console.error('[VoiceQuiz] Lead capture error:', e);
+                }
+            }
         }
-      }
-    }
 
-    /**
-     * Complete quiz and get recommendations
-     */
-    async _completeQuiz(withLead) {
-      // Collect tags from answers
-      const tags = [];
-      for (const question of this.questions) {
-        const answer = this.answers[question.id];
-        if (answer && question.tags?.[answer]) {
-          tags.push(...question.tags[answer]);
+        /**
+         * Complete quiz and get recommendations
+         */
+        async _completeQuiz(withLead) {
+            // Collect tags from answers
+            const tags = [];
+            for (const question of this.questions) {
+                const answer = this.answers[question.id];
+                if (answer && question.tags?.[answer]) {
+                    tags.push(...question.tags[answer]);
+                }
+            }
+
+            // Track completion
+            this._track('quiz_completed', {
+                with_lead: withLead,
+                answers: this.answers,
+                tags: tags
+            });
+
+            // Callback with results
+            if (this.options.onComplete) {
+                this.options.onComplete({
+                    answers: this.answers,
+                    tags: tags,
+                    withLead: withLead
+                });
+            }
+
+            // Show recommendations if VocalIA widget available
+            if (window.VocalIA?.getAIRecommendations) {
+                // Close quiz
+                this.hide();
+
+                // Get personalized recommendations based on quiz
+                await window.VocalIA.getAIRecommendations(null, [], 'personalized');
+            } else {
+                this.hide();
+            }
         }
-      }
 
-      // Track completion
-      this._track('quiz_completed', {
-        with_lead: withLead,
-        answers: this.answers,
-        tags: tags
-      });
+        /**
+         * Track analytics event
+         */
+        _track(event, data = {}) {
+            if (typeof gtag === 'function') {
+                gtag('event', event, {
+                    event_category: 'voice_quiz',
+                    ...data
+                });
+            }
+        }
 
-      // Callback with results
-      if (this.options.onComplete) {
-        this.options.onComplete({
-          answers: this.answers,
-          tags: tags,
-          withLead: withLead
-        });
-      }
+        /**
+         * Track answer
+         */
+        _trackAnswer(questionId, value) {
+            this._track('quiz_answer', {
+                question_id: questionId,
+                answer: value,
+                step: this.currentStep + 1
+            });
+        }
 
-      // Show recommendations if VocalIA widget available
-      if (window.VocalIA?.getAIRecommendations) {
-        // Close quiz
-        this.hide();
+        /**
+         * Show quiz
+         */
+        show() {
+            if (this.isVisible) return this;
 
-        // Get personalized recommendations based on quiz
-        await window.VocalIA.getAIRecommendations(null, [], 'personalized');
-      } else {
-        this.hide();
-      }
+            // Track quiz start
+            this._track('quiz_started', { template: this.options.template });
+
+            // Create and append
+            this.container = this._createQuizDOM();
+            document.body.appendChild(this.container);
+
+            // Render first question
+            this._renderQuestion();
+
+            // Animate in
+            requestAnimationFrame(() => {
+                this.container.classList.add('va-quiz-visible');
+            });
+
+            this.isVisible = true;
+            return this;
+        }
+
+        /**
+         * Hide quiz
+         */
+        hide() {
+            if (!this.isVisible) return this;
+
+            // Stop listening if active
+            if (this.isListening && this.recognition) {
+                this.recognition.stop();
+            }
+
+            // Track if abandoned
+            if (this.currentStep < this.questions.length) {
+                this._track('quiz_abandoned', {
+                    step: this.currentStep + 1,
+                    total: this.questions.length
+                });
+            }
+
+            this.container?.classList.remove('va-quiz-visible');
+            setTimeout(() => {
+                this.container?.remove();
+                this.container = null;
+            }, 300);
+
+            this.isVisible = false;
+            return this;
+        }
+
+        /**
+         * Reset quiz
+         */
+        reset() {
+            this.currentStep = 0;
+            this.answers = {};
+            if (this.isVisible) {
+                this._renderQuestion();
+            }
+            return this;
+        }
+
+        /**
+         * Set language
+         */
+        setLanguage(lang) {
+            this.options.lang = lang;
+            if (this.recognition) {
+                this.recognition.lang = this._getSpeechLang();
+            }
+            return this;
+        }
     }
 
-    /**
-     * Track analytics event
-     */
-    _track(event, data = {}) {
-      if (typeof gtag === 'function') {
-        gtag('event', event, {
-          event_category: 'voice_quiz',
-          ...data
-        });
-      }
+    // Export
+    global.VocalIAQuiz = VoiceQuiz;
+    global.QUIZ_TEMPLATES = QUIZ_TEMPLATES;
+
+    // Auto-register with VocalIA if available
+    if (global.VocalIA) {
+        global.VocalIA.Quiz = VoiceQuiz;
+        global.VocalIA.QuizTemplates = QUIZ_TEMPLATES;
     }
-
-    /**
-     * Track answer
-     */
-    _trackAnswer(questionId, value) {
-      this._track('quiz_answer', {
-        question_id: questionId,
-        answer: value,
-        step: this.currentStep + 1
-      });
-    }
-
-    /**
-     * Show quiz
-     */
-    show() {
-      if (this.isVisible) return this;
-
-      // Track quiz start
-      this._track('quiz_started', { template: this.options.template });
-
-      // Create and append
-      this.container = this._createQuizDOM();
-      document.body.appendChild(this.container);
-
-      // Render first question
-      this._renderQuestion();
-
-      // Animate in
-      requestAnimationFrame(() => {
-        this.container.classList.add('va-quiz-visible');
-      });
-
-      this.isVisible = true;
-      return this;
-    }
-
-    /**
-     * Hide quiz
-     */
-    hide() {
-      if (!this.isVisible) return this;
-
-      // Stop listening if active
-      if (this.isListening && this.recognition) {
-        this.recognition.stop();
-      }
-
-      // Track if abandoned
-      if (this.currentStep < this.questions.length) {
-        this._track('quiz_abandoned', {
-          step: this.currentStep + 1,
-          total: this.questions.length
-        });
-      }
-
-      this.container?.classList.remove('va-quiz-visible');
-      setTimeout(() => {
-        this.container?.remove();
-        this.container = null;
-      }, 300);
-
-      this.isVisible = false;
-      return this;
-    }
-
-    /**
-     * Reset quiz
-     */
-    reset() {
-      this.currentStep = 0;
-      this.answers = {};
-      if (this.isVisible) {
-        this._renderQuestion();
-      }
-      return this;
-    }
-
-    /**
-     * Set language
-     */
-    setLanguage(lang) {
-      this.options.lang = lang;
-      if (this.recognition) {
-        this.recognition.lang = this._getSpeechLang();
-      }
-      return this;
-    }
-  }
-
-  // Export
-  global.VocalIAQuiz = VoiceQuiz;
-  global.QUIZ_TEMPLATES = QUIZ_TEMPLATES;
-
-  // Auto-register with VocalIA if available
-  if (global.VocalIA) {
-    global.VocalIA.Quiz = VoiceQuiz;
-    global.VocalIA.QuizTemplates = QUIZ_TEMPLATES;
-  }
 
 })(typeof window !== 'undefined' ? window : this);

@@ -96,7 +96,7 @@
     // SECURITY UTILITIES
     // ============================================================
 
-    function escapeHtml(text) {
+    function escapeHTML(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
@@ -120,6 +120,7 @@
         langData: null,
         sessionId: `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         tenantId: null, // Set via data attribute or URL
+        tenantConfig: null, // Loaded from /config endpoint
         availableSlotsCache: { slots: [], timestamp: 0 },
         catalogCache: { products: [], timestamp: 0 },
         conversationContext: {
@@ -171,6 +172,48 @@
     const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const needsTextFallback = !hasSpeechRecognition || isFirefox || isSafari;
+
+    // ============================================================
+    // SHADOW DOM - Scoped DOM queries
+    // ============================================================
+
+    let shadowRoot = null;
+
+    function $id(id) { return shadowRoot ? shadowRoot.getElementById(id) : document.getElementById(id); }
+    function $q(sel) { return shadowRoot ? shadowRoot.querySelector(sel) : document.querySelector(sel); }
+    function $qa(sel) { return shadowRoot ? shadowRoot.querySelectorAll(sel) : document.querySelectorAll(sel); }
+
+    // ============================================================
+    // TENANT CONFIGURATION
+    // ============================================================
+
+    async function loadTenantConfig() {
+        if (!state.tenantId) return null;
+
+        const url = `${CONFIG.VOICE_API_URL.replace('/respond', '/config')}?tenantId=${encodeURIComponent(state.tenantId)}`;
+
+        try {
+            const response = await fetch(url, { signal: AbortSignal.timeout(CONFIG.API_TIMEOUT) });
+            if (!response.ok) throw new Error('Config fetch failed');
+
+            const data = await response.json();
+            if (data.success) {
+                if (data.branding && data.branding.primaryColor) {
+                    CONFIG.primaryColor = data.branding.primaryColor;
+                    const root = document.getElementById('voice-assistant-widget');
+                    if (root) {
+                        root.style.setProperty('--va-primary', CONFIG.primaryColor);
+                    }
+                }
+                state.tenantConfig = data;
+                trackEvent('tenant_config_loaded', { tenantId: state.tenantId });
+                return data;
+            }
+        } catch (error) {
+            console.warn('[VocalIA ECOM] Config fetch failed, using static defaults:', error.message);
+        }
+        return null;
+    }
 
     // ============================================================
     // LANGUAGE DETECTION & LOADING
@@ -281,12 +324,13 @@
         const isRTL = L.meta.rtl;
         const position = isRTL ? 'left' : 'right';
 
-        const widget = document.createElement('div');
-        widget.id = 'voice-assistant-widget';
-        widget.style.cssText = `position:fixed;bottom:30px;${position}:25px;z-index:99999;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;${isRTL ? 'direction:rtl;' : ''}`;
+        const host = document.createElement('div');
+        host.id = 'voice-assistant-widget';
+        host.style.cssText = `position:fixed;bottom:30px;${position}:25px;z-index:99999;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;${isRTL ? 'direction:rtl;' : ''}`;
+        document.body.appendChild(host);
 
-        widget.innerHTML = generateWidgetHTML(L, isRTL, position);
-        document.body.appendChild(widget);
+        shadowRoot = host.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = generateWidgetHTML(L, isRTL, position);
 
         initEventListeners();
 
@@ -666,7 +710,7 @@
         const isRTL = L.meta.rtl;
         const position = isRTL ? 'left' : 'right';
 
-        const trigger = document.getElementById('va-trigger');
+        const trigger = $id('va-trigger');
         const bubble = document.createElement('div');
         bubble.className = 'va-notification';
         bubble.innerHTML = `
@@ -726,10 +770,10 @@
     // ============================================================
 
     function addMessage(text, type = 'assistant') {
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const messageDiv = document.createElement('div');
         messageDiv.className = `va-message ${type}`;
-        messageDiv.innerHTML = `<div class="va-message-content">${escapeHtml(text)}</div>`;
+        messageDiv.innerHTML = `<div class="va-message-content">${escapeHTML(text)}</div>`;
         messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
@@ -744,7 +788,7 @@
     }
 
     function showTyping() {
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const typingDiv = document.createElement('div');
         typingDiv.className = 'va-message assistant';
         typingDiv.id = 'va-typing';
@@ -754,7 +798,7 @@
     }
 
     function hideTyping() {
-        const typing = document.getElementById('va-typing');
+        const typing = $id('va-typing');
         if (typing) typing.remove();
     }
 
@@ -867,7 +911,7 @@
     function addProductCard(product, context = 'detail') {
         if (!product) return;
 
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const productDiv = document.createElement('div');
         productDiv.className = 'va-message assistant';
 
@@ -875,8 +919,8 @@
         const inStock = product.available !== false && product.in_stock !== false;
 
         const safeId = escapeAttr(product.id);
-        const safeName = escapeHtml(product.name || '');
-        const safeDesc = product.description ? escapeHtml(product.description) : '';
+        const safeName = escapeHTML(product.name || '');
+        const safeDesc = product.description ? escapeHTML(product.description) : '';
         const safeImage = escapeAttr(product.image || product.images?.[0] || '');
         const safeUrl = product.url ? escapeAttr(product.url) : '';
 
@@ -934,7 +978,7 @@
 
         const L = state.langData;
         const isRTL = L?.meta?.rtl;
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const carouselDiv = document.createElement('div');
         carouselDiv.className = 'va-message assistant';
 
@@ -959,10 +1003,10 @@
             ${displayTitle}
           </span>
           <div class="va-carousel-nav">
-            <button onclick="document.getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">
               <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
             </button>
-            <button onclick="document.getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="Next">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="Next">
               <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
             </button>
           </div>
@@ -1142,7 +1186,7 @@
 
         try {
             const response = await fetch(
-                `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items/${productId}`,
+                `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/detail/${encodeURIComponent(productId)}`,
                 { signal: AbortSignal.timeout(CONFIG.API_TIMEOUT) }
             );
 
@@ -1603,6 +1647,35 @@
 
     // Wire up existing widgets to orchestrator
     WidgetOrchestrator.on('widget:activated', ({ widget }) => {
+        if (widget === 'spinWheel' && window.VocaliaSpinWheel) {
+            window.VocaliaSpinWheel.show({
+                tenantId: state.tenantId,
+                lang: state.currentLang
+            });
+        }
+        if (widget === 'shippingBar' && window.VocaliaShippingBar) {
+            window.VocaliaShippingBar.init({
+                tenantId: state.tenantId,
+                lang: state.currentLang
+            });
+        }
+        if (widget === 'recommendations' && window.VocalIARecommendations) {
+            const carousel = new window.VocalIARecommendations({
+                tenantId: state.tenantId,
+                lang: state.currentLang,
+                apiBase: CONFIG.API_BASE_URL
+            });
+            carousel.render();
+        }
+    });
+
+    WidgetOrchestrator.on('widget:deactivated', ({ widget }) => {
+        if (widget === 'spinWheel' && window.VocaliaSpinWheel?.getInstance()) {
+            window.VocaliaSpinWheel.getInstance().destroy();
+        }
+        if (widget === 'shippingBar' && window.VocaliaShippingBar?.getInstance()) {
+            window.VocaliaShippingBar.getInstance().destroy();
+        }
     });
 
     // ============================================================
@@ -1967,7 +2040,7 @@
 
         state.recognition.onresult = (event) => {
             const transcript = event.results[0][0].transcript;
-            document.getElementById('va-input').value = transcript;
+            $id('va-input').value = transcript;
             sendMessage(transcript, 'voice'); // Track as voice input
 
             // Log detected language for analytics
@@ -1981,14 +2054,14 @@
 
         state.recognition.onend = () => {
             state.isListening = false;
-            document.getElementById('va-mic')?.classList.remove('listening');
-            document.getElementById('va-trigger').classList.remove('listening');
+            $id('va-mic')?.classList.remove('listening');
+            $id('va-trigger').classList.remove('listening');
             hideVisualizer();
         };
 
         state.recognition.onerror = (event) => {
             state.isListening = false;
-            document.getElementById('va-mic')?.classList.remove('listening');
+            $id('va-mic')?.classList.remove('listening');
             hideVisualizer();
             trackEvent('voice_recognition_error', { error: event.error });
         };
@@ -2003,8 +2076,8 @@
         } else {
             state.recognition.start();
             state.isListening = true;
-            document.getElementById('va-mic').classList.add('listening');
-            document.getElementById('va-trigger').classList.add('listening');
+            $id('va-mic').classList.add('listening');
+            $id('va-trigger').classList.add('listening');
             showVisualizer('listening');
             trackEvent('voice_mic_activated');
         }
@@ -2019,9 +2092,9 @@
      * @param {string} mode - 'listening' | 'speaking' | 'processing'
      */
     function showVisualizer(mode = 'listening') {
-        const visualizer = document.getElementById('va-visualizer');
-        const bars = document.getElementById('va-visualizer-bars');
-        const label = document.getElementById('va-visualizer-label');
+        const visualizer = $id('va-visualizer');
+        const bars = $id('va-visualizer-bars');
+        const label = $id('va-visualizer-label');
         const L = state.langData;
 
         if (!visualizer) return;
@@ -2049,8 +2122,8 @@
      * Hide the voice visualizer
      */
     function hideVisualizer() {
-        const visualizer = document.getElementById('va-visualizer');
-        const bars = document.getElementById('va-visualizer-bars');
+        const visualizer = $id('va-visualizer');
+        const bars = $id('va-visualizer-bars');
 
         if (visualizer) {
             visualizer.classList.remove('active');
@@ -2063,7 +2136,7 @@
     let barAnimationId = null;
 
     function startBarAnimation() {
-        const bars = document.querySelectorAll('.va-visualizer-bar');
+        const bars = $qa('.va-visualizer-bar');
         if (!bars.length) return;
 
         function animateBars() {
@@ -2084,7 +2157,7 @@
             cancelAnimationFrame(barAnimationId);
             barAnimationId = null;
         }
-        const bars = document.querySelectorAll('.va-visualizer-bar');
+        const bars = $qa('.va-visualizer-bar');
         bars.forEach(bar => {
             bar.style.height = '4px';
             bar.style.opacity = '0.5';
@@ -2292,16 +2365,16 @@
       </div>
     `;
 
-        document.body.appendChild(overlay);
+        (shadowRoot || document.body).appendChild(overlay);
 
         // Event listeners
-        document.getElementById('va-exit-close').addEventListener('click', dismissExitIntent);
-        document.getElementById('va-exit-chat').addEventListener('click', () => {
+        $id('va-exit-close').addEventListener('click', dismissExitIntent);
+        $id('va-exit-chat').addEventListener('click', () => {
             dismissExitIntent();
             openWidget();
             trackEvent('exit_intent_chat_clicked');
         });
-        document.getElementById('va-exit-demo').addEventListener('click', () => {
+        $id('va-exit-demo').addEventListener('click', () => {
             dismissExitIntent();
             window.location.href = '/booking';
             trackEvent('exit_intent_demo_clicked');
@@ -2318,7 +2391,7 @@
 
     function dismissExitIntent() {
         state.exitIntent.dismissed = true;
-        const overlay = document.getElementById('va-exit-overlay');
+        const overlay = $id('va-exit-overlay');
         if (overlay) {
             overlay.style.animation = 'fadeOut 0.2s ease';
             setTimeout(() => overlay.remove(), 200);
@@ -2327,11 +2400,11 @@
     }
 
     function openWidget() {
-        const panel = document.getElementById('va-panel');
+        const panel = $id('va-panel');
         if (panel) {
             panel.classList.add('open');
             state.isOpen = true;
-            const input = document.getElementById('va-input');
+            const input = $id('va-input');
             if (input) input.focus();
         }
     }
@@ -2446,7 +2519,7 @@
       </div>
     `;
 
-        document.body.appendChild(notification);
+        (shadowRoot || document.body).appendChild(notification);
 
         // Close button
         notification.querySelector('.va-sp-close').addEventListener('click', () => {
@@ -2455,7 +2528,7 @@
 
         // Auto-remove after duration
         setTimeout(() => {
-            if (document.getElementById(notification.id)) {
+            if ($id(notification.id)) {
                 notification.remove();
             }
         }, CONFIG.SOCIAL_PROOF_DURATION);
@@ -2737,6 +2810,96 @@
         return null;
     }
 
+    // ============================================================
+    // A2UI RENDERER — Agent-to-UI dynamic components
+    // ============================================================
+
+    function renderA2UIComponent(a2ui) {
+        if (!a2ui || !a2ui.html) return;
+        const container = $id('va-messages');
+        if (!container) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'va-message assistant va-a2ui-wrapper';
+
+        if (a2ui.css) {
+            const style = document.createElement('style');
+            style.textContent = a2ui.css;
+            wrapper.appendChild(style);
+        }
+
+        const content = document.createElement('div');
+        content.className = 'va-message-content';
+        content.innerHTML = a2ui.html;
+        wrapper.appendChild(content);
+
+        container.appendChild(wrapper);
+        container.scrollTop = container.scrollHeight;
+
+        wrapper.querySelectorAll('[data-a2ui-action]').forEach(el => {
+            el.addEventListener('click', () => {
+                handleA2UIAction(el.dataset.a2uiAction, {
+                    type: a2ui.type,
+                    value: el.dataset.slot || el.dataset.productId || null,
+                    element: el,
+                    wrapper
+                });
+            });
+        });
+
+        trackEvent('a2ui_rendered', { type: a2ui.type });
+    }
+
+    async function handleA2UIAction(action, ctx) {
+        trackEvent('a2ui_action', { action, type: ctx.type });
+
+        if (action === 'select_slot') {
+            const comp = ctx.element.closest('[data-a2ui-component]');
+            if (comp) {
+                comp.querySelectorAll('.va-a2ui-slot').forEach(s => s.classList.remove('selected'));
+                ctx.element.classList.add('selected');
+                const btn = comp.querySelector('[data-a2ui-action="confirm_booking"]');
+                if (btn) btn.disabled = false;
+            }
+            return;
+        }
+
+        if (action === 'close') {
+            ctx.wrapper.remove();
+            return;
+        }
+
+        const payload = {};
+        const comp = ctx.element.closest('[data-a2ui-component]');
+        if (action === 'confirm_booking' && comp) {
+            const selected = comp.querySelector('.va-a2ui-slot.selected');
+            payload.slot = selected?.dataset.slot;
+        } else if (action === 'submit_lead' && comp) {
+            const form = comp.querySelector('form');
+            if (form) new FormData(form).forEach((v, k) => { payload[k] = v; });
+        }
+
+        try {
+            const resp = await fetch(CONFIG.VOICE_API_URL.replace('/respond', '/a2ui/action'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action,
+                    data: payload,
+                    sessionId: state.sessionId,
+                    tenant_id: state.tenantId,
+                    widget_type: 'ECOM'
+                })
+            });
+            const result = await resp.json();
+            if (result.message) {
+                addMessage(result.message, 'assistant');
+            }
+        } catch (e) {
+            console.warn('[VocalIA ECOM] A2UI action failed:', e.message);
+        }
+    }
+
     /**
      * Call Voice API with persona-powered AI response
      * Falls back to pattern matching if API fails or AI_MODE is disabled
@@ -2775,6 +2938,14 @@
             const data = await response.json();
             if (data.response) {
                 trackEvent('voice_api_response', { language: state.currentLang, latency: data.latencyMs });
+                // Render A2UI component if backend sent one
+                if (data.a2ui) {
+                    renderA2UIComponent(data.a2ui);
+                }
+                // Render product catalog cards if backend returned them
+                if (data.catalog && data.catalog.items && data.catalog.items.length > 0) {
+                    addProductCarousel(data.catalog.items, data.catalog.title, 'api_response');
+                }
                 return data.response;
             }
             return null;
@@ -2906,7 +3077,7 @@
         trackInputMethod(inputMethod);
 
         addMessage(text, 'user');
-        document.getElementById('va-input').value = '';
+        $id('va-input').value = '';
         showTyping();
 
         try {
@@ -2988,7 +3159,7 @@
 
     function togglePanel() {
         state.isOpen = !state.isOpen;
-        const panel = document.getElementById('va-panel');
+        const panel = $id('va-panel');
 
         if (state.isOpen) {
             panel.classList.add('open');
@@ -2999,7 +3170,7 @@
                 const welcomeMsg = needsTextFallback ? L.ui.welcomeMessageTextOnly : L.ui.welcomeMessage;
                 addMessage(welcomeMsg, 'assistant');
             }
-            document.getElementById('va-input').focus();
+            $id('va-input').focus();
         } else {
             panel.classList.remove('open');
             if (state.synthesis) state.synthesis.cancel();
@@ -3012,20 +3183,20 @@
     // ============================================================
 
     function initEventListeners() {
-        document.getElementById('va-trigger').addEventListener('click', togglePanel);
-        document.getElementById('va-close').addEventListener('click', togglePanel);
+        $id('va-trigger').addEventListener('click', togglePanel);
+        $id('va-close').addEventListener('click', togglePanel);
 
-        document.getElementById('va-send').addEventListener('click', () => {
-            sendMessage(document.getElementById('va-input').value, 'text');
+        $id('va-send').addEventListener('click', () => {
+            sendMessage($id('va-input').value, 'text');
         });
 
-        document.getElementById('va-input').addEventListener('keypress', (e) => {
+        $id('va-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage(e.target.value, 'text');
         });
 
         if (hasSpeechRecognition) {
             initSpeechRecognition();
-            const micBtn = document.getElementById('va-mic');
+            const micBtn = $id('va-mic');
             if (micBtn) {
                 micBtn.addEventListener('click', toggleListening);
             }
@@ -3036,12 +3207,12 @@
             if (!state.isOpen) return;
             if (e.key === 'Escape') {
                 togglePanel();
-                const trigger = document.getElementById('va-trigger');
+                const trigger = $id('va-trigger');
                 if (trigger) trigger.focus();
                 return;
             }
             if (e.key === 'Tab') {
-                const panel = document.getElementById('va-panel');
+                const panel = $id('va-panel');
                 if (!panel) return;
                 const focusable = panel.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
                 if (focusable.length === 0) return;
@@ -3056,6 +3227,56 @@
                 }
             }
         });
+    }
+
+    // ============================================================
+    // SUB-WIDGET AUTO-INITIALIZATION
+    // ============================================================
+
+    function initSubWidgets() {
+        if (!CONFIG.ECOMMERCE_MODE || !state.tenantId) return;
+
+        // Free Shipping Bar: auto-init if widget loaded (always-on for ECOM)
+        if (window.VocaliaShippingBar) {
+            try {
+                window.VocaliaShippingBar.init({
+                    tenantId: state.tenantId,
+                    lang: state.currentLang,
+                    voiceEnabled: true
+                });
+                WidgetOrchestrator.activate('shippingBar');
+            } catch (e) {
+                console.warn('[VocalIA] ShippingBar init failed:', e.message);
+            }
+        }
+
+        // Spin Wheel: auto-show after delay if available (1x per 24h)
+        if (window.VocaliaSpinWheel && window.VocalIA.isSpinWheelAvailable()) {
+            setTimeout(() => {
+                if (!state.isOpen && WidgetOrchestrator.canShow('spinWheel')) {
+                    try {
+                        window.VocaliaSpinWheel.show({
+                            tenantId: state.tenantId,
+                            lang: state.currentLang,
+                            voiceEnabled: true
+                        });
+                        WidgetOrchestrator.activate('spinWheel');
+                    } catch (e) {
+                        console.warn('[VocalIA] SpinWheel init failed:', e.message);
+                    }
+                }
+            }, 15000); // 15s delay — after social proof, before exit intent
+        }
+
+        // Recommendation Carousel: auto-init if widget loaded
+        if (window.VocalIARecommendations) {
+            try {
+                window.VocalIA.RecommendationCarousel = window.VocalIARecommendations;
+                WidgetOrchestrator.activate('recommendations');
+            } catch (e) {
+                console.warn('[VocalIA] RecommendationCarousel init failed:', e.message);
+            }
+        }
     }
 
     // ============================================================
@@ -3077,14 +3298,18 @@
 
             // Detect tenant ID for e-commerce features
             detectTenantId();
-            if (state.tenantId && CONFIG.ECOMMERCE_MODE) {
-                UCP.syncPreference().catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
+            if (state.tenantId) {
+                await loadTenantConfig();
+                if (CONFIG.ECOMMERCE_MODE) {
+                    UCP.syncPreference().catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
+                }
             }
 
             captureAttribution();
             createWidget();
             initExitIntent();
             initSocialProof();
+            initSubWidgets();
 
             trackEvent('voice_widget_loaded', {
                 language: state.currentLang,
@@ -5692,5 +5917,2633 @@
         global.VocalIA.Quiz = VoiceQuiz;
         global.VocalIA.QuizTemplates = QUIZ_TEMPLATES;
     }
+
+})(typeof window !== 'undefined' ? window : this);
+/**
+ * VocalIA - Spin Wheel Gamification Widget
+ * Version: 1.0.0 | Session 250.83
+ *
+ * E-commerce gamification widget with voice feedback
+ * Benchmark Impact: +10-15% conversion, +45% email list growth, -20% cart abandonment
+ *
+ * Features:
+ * - Animated prize wheel with CSS3 transforms
+ * - Configurable prizes with weighted probabilities
+ * - Voice announcements for spin results
+ * - Email capture for lead generation
+ * - 5 languages: FR, EN, ES, AR, Darija (ary)
+ * - RTL support for Arabic/Darija
+ * - GA4 event tracking
+ * - Discount code generation
+ */
+
+(function() {
+  'use strict';
+
+  // ============================================================
+  // TRANSLATIONS (5 LANGUAGES)
+  // ============================================================
+
+  const TRANSLATIONS = {
+    fr: {
+      title: 'Tentez votre chance !',
+      subtitle: 'Tournez la roue pour gagner une surprise',
+      spinButton: 'TOURNER',
+      spinning: 'En cours...',
+      emailPlaceholder: 'Votre email pour recevoir le code',
+      emailLabel: 'Entrez votre email pour jouer',
+      submitEmail: 'Jouer maintenant',
+      congratulations: 'Felicitations !',
+      youWon: 'Vous avez gagne',
+      discountCode: 'Votre code promo',
+      copyCode: 'Copier le code',
+      copied: 'Copie !',
+      useNow: 'Utiliser maintenant',
+      tryAgain: 'Peut-etre la prochaine fois !',
+      noLuck: 'Pas de chance cette fois',
+      alreadyPlayed: 'Vous avez deja joue aujourd\'hui',
+      comeBackTomorrow: 'Revenez demain pour une nouvelle chance !',
+      voiceIntro: 'Bienvenue ! Tournez la roue pour gagner des reductions exclusives.',
+      voiceSpinning: 'La roue tourne...',
+      voiceWin: 'Felicitations ! Vous avez gagne {{prize}} !',
+      voiceLose: 'Pas de chance cette fois. Revenez demain !',
+      prizes: {
+        discount5: '5% de reduction',
+        discount10: '10% de reduction',
+        discount15: '15% de reduction',
+        discount20: '20% de reduction',
+        discount30: '30% de reduction',
+        freeShipping: 'Livraison gratuite',
+        tryAgain: 'Reessayez'
+      }
+    },
+    en: {
+      title: 'Try Your Luck!',
+      subtitle: 'Spin the wheel to win a surprise',
+      spinButton: 'SPIN',
+      spinning: 'Spinning...',
+      emailPlaceholder: 'Your email to receive the code',
+      emailLabel: 'Enter your email to play',
+      submitEmail: 'Play now',
+      congratulations: 'Congratulations!',
+      youWon: 'You won',
+      discountCode: 'Your promo code',
+      copyCode: 'Copy code',
+      copied: 'Copied!',
+      useNow: 'Use now',
+      tryAgain: 'Maybe next time!',
+      noLuck: 'No luck this time',
+      alreadyPlayed: 'You already played today',
+      comeBackTomorrow: 'Come back tomorrow for another chance!',
+      voiceIntro: 'Welcome! Spin the wheel to win exclusive discounts.',
+      voiceSpinning: 'The wheel is spinning...',
+      voiceWin: 'Congratulations! You won {{prize}}!',
+      voiceLose: 'No luck this time. Come back tomorrow!',
+      prizes: {
+        discount5: '5% off',
+        discount10: '10% off',
+        discount15: '15% off',
+        discount20: '20% off',
+        discount30: '30% off',
+        freeShipping: 'Free shipping',
+        tryAgain: 'Try again'
+      }
+    },
+    es: {
+      title: 'Prueba tu suerte!',
+      subtitle: 'Gira la rueda para ganar una sorpresa',
+      spinButton: 'GIRAR',
+      spinning: 'Girando...',
+      emailPlaceholder: 'Tu email para recibir el codigo',
+      emailLabel: 'Ingresa tu email para jugar',
+      submitEmail: 'Jugar ahora',
+      congratulations: 'Felicidades!',
+      youWon: 'Ganaste',
+      discountCode: 'Tu codigo promocional',
+      copyCode: 'Copiar codigo',
+      copied: 'Copiado!',
+      useNow: 'Usar ahora',
+      tryAgain: 'Quizas la proxima!',
+      noLuck: 'Sin suerte esta vez',
+      alreadyPlayed: 'Ya jugaste hoy',
+      comeBackTomorrow: 'Vuelve manana para otra oportunidad!',
+      voiceIntro: 'Bienvenido! Gira la rueda para ganar descuentos exclusivos.',
+      voiceSpinning: 'La rueda esta girando...',
+      voiceWin: 'Felicidades! Ganaste {{prize}}!',
+      voiceLose: 'Sin suerte esta vez. Vuelve manana!',
+      prizes: {
+        discount5: '5% de descuento',
+        discount10: '10% de descuento',
+        discount15: '15% de descuento',
+        discount20: '20% de descuento',
+        discount30: '30% de descuento',
+        freeShipping: 'Envio gratis',
+        tryAgain: 'Intenta de nuevo'
+      }
+    },
+    ar: {
+      title: 'جرب حظك!',
+      subtitle: 'ادر العجلة لتربح مفاجأة',
+      spinButton: 'ادر',
+      spinning: 'جاري الدوران...',
+      emailPlaceholder: 'بريدك لاستلام الكود',
+      emailLabel: 'ادخل بريدك للعب',
+      submitEmail: 'العب الآن',
+      congratulations: 'مبروك!',
+      youWon: 'ربحت',
+      discountCode: 'كود الخصم',
+      copyCode: 'نسخ الكود',
+      copied: 'تم النسخ!',
+      useNow: 'استخدم الآن',
+      tryAgain: 'ربما المرة القادمة!',
+      noLuck: 'لا حظ هذه المرة',
+      alreadyPlayed: 'لقد لعبت اليوم',
+      comeBackTomorrow: 'عد غداً لفرصة جديدة!',
+      voiceIntro: 'مرحبا! ادر العجلة لتربح خصومات حصرية.',
+      voiceSpinning: 'العجلة تدور...',
+      voiceWin: 'مبروك! ربحت {{prize}}!',
+      voiceLose: 'لا حظ هذه المرة. عد غداً!',
+      prizes: {
+        discount5: 'خصم 5%',
+        discount10: 'خصم 10%',
+        discount15: 'خصم 15%',
+        discount20: 'خصم 20%',
+        discount30: 'خصم 30%',
+        freeShipping: 'شحن مجاني',
+        tryAgain: 'حاول مرة أخرى'
+      }
+    },
+    ary: {
+      title: 'جرب الزهر ديالك!',
+      subtitle: 'دور الروضة باش تربح كادو',
+      spinButton: 'دور',
+      spinning: 'كتدور...',
+      emailPlaceholder: 'الإيميل ديالك باش تاخد الكود',
+      emailLabel: 'دخل الإيميل باش تلعب',
+      submitEmail: 'لعب دابا',
+      congratulations: 'مبروك عليك!',
+      youWon: 'ربحتي',
+      discountCode: 'الكود ديال التخفيض',
+      copyCode: 'كوبي الكود',
+      copied: 'تكوبيا!',
+      useNow: 'استعملو دابا',
+      tryAgain: 'يمكن المرة الجاية!',
+      noLuck: 'ما كانش الزهر هاد المرة',
+      alreadyPlayed: 'لعبتي هاد النهار',
+      comeBackTomorrow: 'رجع غدا باش تلعب!',
+      voiceIntro: 'مرحبا! دور الروضة باش تربح تخفيضات خاصة.',
+      voiceSpinning: 'الروضة كتدور...',
+      voiceWin: 'مبروك! ربحتي {{prize}}!',
+      voiceLose: 'ما كانش الزهر. رجع غدا!',
+      prizes: {
+        discount5: 'تخفيض 5%',
+        discount10: 'تخفيض 10%',
+        discount15: 'تخفيض 15%',
+        discount20: 'تخفيض 20%',
+        discount30: 'تخفيض 30%',
+        freeShipping: 'التوصيل بلاش',
+        tryAgain: 'عاود'
+      }
+    }
+  };
+
+  // ============================================================
+  // DEFAULT PRIZES CONFIGURATION
+  // ============================================================
+
+  const DEFAULT_PRIZES = [
+    { id: 'discount5', probability: 30, color: '#5E6AD2', code: 'SPIN5' },
+    { id: 'discount10', probability: 25, color: '#10B981', code: 'SPIN10' },
+    { id: 'discount15', probability: 15, color: '#F59E0B', code: 'SPIN15' },
+    { id: 'discount20', probability: 10, color: '#8B5CF6', code: 'SPIN20' },
+    { id: 'discount30', probability: 5, color: '#EF4444', code: 'SPIN30' },
+    { id: 'freeShipping', probability: 5, color: '#EC4899', code: 'FREESHIP' },
+    { id: 'tryAgain', probability: 10, color: '#6B7280', code: null }
+  ];
+
+  // ============================================================
+  // STYLES
+  // ============================================================
+
+  const STYLES = `
+    .va-spin-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 10002;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .va-spin-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .va-spin-modal {
+      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      border: 2px solid rgba(94, 106, 210, 0.3);
+      border-radius: 24px;
+      max-width: 440px;
+      width: 95%;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(94, 106, 210, 0.2);
+      animation: vaSpinModalIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .va-spin-modal[dir="rtl"] {
+      text-align: right;
+    }
+
+    @keyframes vaSpinModalIn {
+      from { transform: scale(0.8) rotate(-10deg); opacity: 0; }
+      to { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .va-spin-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      z-index: 10;
+    }
+
+    .va-spin-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .va-spin-close svg {
+      width: 16px;
+      height: 16px;
+      fill: white;
+    }
+
+    [dir="rtl"] .va-spin-close {
+      right: auto;
+      left: 16px;
+    }
+
+    .va-spin-title {
+      color: #FFFFFF;
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .va-spin-subtitle {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 16px;
+      margin: 0 0 24px;
+    }
+
+    .va-spin-wheel-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 24px;
+    }
+
+    .va-spin-wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+      box-shadow: 0 0 0 8px rgba(94, 106, 210, 0.3), 0 0 0 12px rgba(94, 106, 210, 0.15);
+    }
+
+    .va-spin-wheel.spinning {
+      animation: none;
+    }
+
+    .va-spin-segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      left: 50%;
+      top: 0;
+      transform-origin: 0% 100%;
+      overflow: hidden;
+    }
+
+    .va-spin-segment-inner {
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      left: -100%;
+      transform-origin: 50% 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 20px;
+      box-sizing: border-box;
+    }
+
+    .va-spin-segment-text {
+      transform: rotate(90deg);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      max-width: 70px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .va-spin-pointer {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 30px solid #F59E0B;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      z-index: 10;
+    }
+
+    .va-spin-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      border: 4px solid #5E6AD2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .va-spin-center svg {
+      width: 24px;
+      height: 24px;
+      fill: #5E6AD2;
+    }
+
+    .va-spin-email-form {
+      margin-bottom: 20px;
+    }
+
+    .va-spin-email-label {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .va-spin-email-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      color: #FFFFFF;
+      font-size: 16px;
+      margin-bottom: 12px;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease;
+    }
+
+    .va-spin-email-input:focus {
+      border-color: #5E6AD2;
+    }
+
+    .va-spin-email-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .va-spin-btn {
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .va-spin-btn.primary {
+      background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+      color: white;
+      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+    }
+
+    .va-spin-btn.primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(245, 158, 11, 0.5);
+    }
+
+    .va-spin-btn.primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .va-spin-btn.secondary {
+      background: rgba(94, 106, 210, 0.1);
+      color: #5E6AD2;
+      border: 1px solid rgba(94, 106, 210, 0.3);
+    }
+
+    .va-spin-btn.secondary:hover {
+      background: rgba(94, 106, 210, 0.2);
+    }
+
+    /* Result state */
+    .va-spin-result {
+      display: none;
+    }
+
+    .va-spin-result.active {
+      display: block;
+      animation: vaFadeIn 0.5s ease;
+    }
+
+    @keyframes vaFadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .va-spin-result-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .va-spin-result-icon.win {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+      animation: vaPulse 1s infinite;
+    }
+
+    .va-spin-result-icon.lose {
+      background: rgba(107, 114, 128, 0.3);
+    }
+
+    @keyframes vaPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .va-spin-result-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: white;
+    }
+
+    .va-spin-result-title {
+      color: #FFFFFF;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .va-spin-result-prize {
+      color: #10B981;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .va-spin-code-container {
+      background: rgba(94, 106, 210, 0.1);
+      border: 1px dashed #5E6AD2;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .va-spin-code-label {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .va-spin-code {
+      color: #5E6AD2;
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 3px;
+    }
+
+    .va-spin-copy-btn {
+      margin-top: 12px;
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid rgba(94, 106, 210, 0.5);
+      border-radius: 8px;
+      color: #5E6AD2;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .va-spin-copy-btn:hover {
+      background: rgba(94, 106, 210, 0.1);
+    }
+
+    .va-spin-copy-btn.copied {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10B981;
+      color: #10B981;
+    }
+
+    /* Confetti */
+    .va-confetti {
+      position: fixed;
+      pointer-events: none;
+      z-index: 10003;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 480px) {
+      .va-spin-modal {
+        padding: 24px 20px;
+        border-radius: 20px 20px 0 0;
+        position: fixed;
+        bottom: 0;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .va-spin-title {
+        font-size: 24px;
+      }
+
+      .va-spin-wheel-container {
+        width: 240px;
+        height: 240px;
+      }
+
+      .va-spin-btn {
+        font-size: 16px;
+        padding: 14px 20px;
+      }
+    }
+  `;
+
+  // ============================================================
+  // SPIN WHEEL CLASS
+  // ============================================================
+
+  class SpinWheel {
+    constructor(options = {}) {
+      this.config = {
+        tenantId: options.tenantId || this.detectTenantId(),
+        lang: options.lang || this.detectLanguage(),
+        prizes: options.prizes || DEFAULT_PRIZES,
+        voiceEnabled: options.voiceEnabled !== false,
+        requireEmail: options.requireEmail !== false,
+        cooldownHours: options.cooldownHours || 24,
+        spinDuration: options.spinDuration || 5000,
+        onSpin: options.onSpin || null,
+        onWin: options.onWin || null,
+        onLose: options.onLose || null,
+        onEmailCapture: options.onEmailCapture || null
+      };
+
+      this.state = {
+        isVisible: false,
+        isSpinning: false,
+        hasPlayed: false,
+        selectedPrize: null,
+        email: null,
+        currentRotation: 0
+      };
+
+      this.elements = {};
+      this.translations = TRANSLATIONS[this.config.lang] || TRANSLATIONS.fr;
+      this.isRTL = ['ar', 'ary'].includes(this.config.lang);
+
+      this.init();
+    }
+
+    detectTenantId() {
+      const widget = document.querySelector('[data-vocalia-tenant]');
+      return widget?.dataset.vocaliaTenant || 'default';
+    }
+
+    detectLanguage() {
+      const widget = document.querySelector('[data-vocalia-lang]');
+      if (widget) return widget.dataset.vocaliaLang;
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('lang')) return urlParams.get('lang');
+      const browserLang = navigator.language?.split('-')[0];
+      return ['fr', 'en', 'es', 'ar', 'ary'].includes(browserLang) ? browserLang : 'fr';
+    }
+
+    init() {
+      // Inject styles
+      if (!document.querySelector('#va-spin-wheel-styles')) {
+        const styleEl = document.createElement('style');
+        styleEl.id = 'va-spin-wheel-styles';
+        styleEl.textContent = STYLES;
+        document.head.appendChild(styleEl);
+      }
+
+      // Check cooldown
+      this.checkCooldown();
+
+      console.log('[SpinWheel] Initialized', {
+        tenant: this.config.tenantId,
+        lang: this.config.lang,
+        hasPlayed: this.state.hasPlayed
+      });
+    }
+
+    checkCooldown() {
+      const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+      if (lastPlayed) {
+        const elapsed = Date.now() - parseInt(lastPlayed, 10);
+        const cooldownMs = this.config.cooldownHours * 60 * 60 * 1000;
+        if (elapsed < cooldownMs) {
+          this.state.hasPlayed = true;
+        }
+      }
+    }
+
+    createModal() {
+      const overlay = document.createElement('div');
+      overlay.className = 'va-spin-overlay';
+      overlay.id = 'va-spin-overlay';
+
+      overlay.innerHTML = `
+        <div class="va-spin-modal" dir="${this.isRTL ? 'rtl' : 'ltr'}" role="dialog" aria-modal="true">
+          <button class="va-spin-close" aria-label="Close">
+            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+          </button>
+
+          <div class="va-spin-game">
+            <h2 class="va-spin-title">${this.translations.title}</h2>
+            <p class="va-spin-subtitle">${this.translations.subtitle}</p>
+
+            <div class="va-spin-wheel-container">
+              <div class="va-spin-pointer"></div>
+              <div class="va-spin-wheel" id="va-spin-wheel">
+                ${this.generateWheelSegments()}
+              </div>
+              <div class="va-spin-center">
+                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              </div>
+            </div>
+
+            ${this.config.requireEmail ? `
+              <div class="va-spin-email-form">
+                <label class="va-spin-email-label">${this.translations.emailLabel}</label>
+                <input type="email" class="va-spin-email-input" placeholder="${this.translations.emailPlaceholder}" id="va-spin-email">
+                <button class="va-spin-btn primary" id="va-spin-submit">${this.translations.submitEmail}</button>
+              </div>
+            ` : `
+              <button class="va-spin-btn primary" id="va-spin-btn">${this.translations.spinButton}</button>
+            `}
+          </div>
+
+          <div class="va-spin-result" id="va-spin-result">
+            <div class="va-spin-result-icon win" id="va-spin-result-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            </div>
+            <h3 class="va-spin-result-title" id="va-spin-result-title">${this.translations.congratulations}</h3>
+            <p class="va-spin-result-prize" id="va-spin-result-prize"></p>
+
+            <div class="va-spin-code-container" id="va-spin-code-container">
+              <div class="va-spin-code-label">${this.translations.discountCode}</div>
+              <div class="va-spin-code" id="va-spin-code"></div>
+              <button class="va-spin-copy-btn" id="va-spin-copy">${this.translations.copyCode}</button>
+            </div>
+
+            <button class="va-spin-btn primary" id="va-spin-use">${this.translations.useNow}</button>
+          </div>
+
+          <div class="va-spin-already-played" id="va-spin-already-played" style="display: none;">
+            <h3 class="va-spin-result-title">${this.translations.alreadyPlayed}</h3>
+            <p class="va-spin-subtitle">${this.translations.comeBackTomorrow}</p>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+      this.elements.overlay = overlay;
+      this.elements.wheel = overlay.querySelector('#va-spin-wheel');
+      this.elements.spinBtn = overlay.querySelector('#va-spin-btn') || overlay.querySelector('#va-spin-submit');
+      this.elements.emailInput = overlay.querySelector('#va-spin-email');
+      this.elements.closeBtn = overlay.querySelector('.va-spin-close');
+      this.elements.result = overlay.querySelector('#va-spin-result');
+      this.elements.resultIcon = overlay.querySelector('#va-spin-result-icon');
+      this.elements.resultTitle = overlay.querySelector('#va-spin-result-title');
+      this.elements.resultPrize = overlay.querySelector('#va-spin-result-prize');
+      this.elements.codeContainer = overlay.querySelector('#va-spin-code-container');
+      this.elements.code = overlay.querySelector('#va-spin-code');
+      this.elements.copyBtn = overlay.querySelector('#va-spin-copy');
+      this.elements.useBtn = overlay.querySelector('#va-spin-use');
+      this.elements.alreadyPlayed = overlay.querySelector('#va-spin-already-played');
+      this.elements.game = overlay.querySelector('.va-spin-game');
+
+      // Event listeners
+      this.elements.closeBtn.addEventListener('click', () => this.hide());
+      this.elements.overlay.addEventListener('click', (e) => {
+        if (e.target === this.elements.overlay) this.hide();
+      });
+
+      if (this.elements.spinBtn) {
+        this.elements.spinBtn.addEventListener('click', () => this.handleSpinClick());
+      }
+
+      if (this.elements.copyBtn) {
+        this.elements.copyBtn.addEventListener('click', () => this.copyCode());
+      }
+
+      if (this.elements.useBtn) {
+        this.elements.useBtn.addEventListener('click', () => this.useCode());
+      }
+    }
+
+    generateWheelSegments() {
+      const prizes = this.config.prizes;
+      const segmentAngle = 360 / prizes.length;
+      let html = '';
+
+      prizes.forEach((prize, index) => {
+        const rotation = index * segmentAngle;
+        const skew = 90 - segmentAngle;
+        const prizeText = this.translations.prizes[prize.id] || prize.id;
+
+        html += `
+          <div class="va-spin-segment" style="transform: rotate(${rotation}deg) skewY(${skew}deg);">
+            <div class="va-spin-segment-inner" style="background: ${prize.color}; transform: skewY(${-skew}deg);">
+              <span class="va-spin-segment-text">${prizeText}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      return html;
+    }
+
+    show() {
+      if (!this.elements.overlay) {
+        this.createModal();
+      }
+
+      if (this.state.hasPlayed) {
+        this.elements.game.style.display = 'none';
+        this.elements.alreadyPlayed.style.display = 'block';
+      } else {
+        this.elements.game.style.display = 'block';
+        this.elements.alreadyPlayed.style.display = 'none';
+      }
+
+      this.state.isVisible = true;
+      this.elements.overlay.classList.add('active');
+
+      // Voice intro
+      if (this.config.voiceEnabled && !this.state.hasPlayed) {
+        setTimeout(() => this.speak(this.translations.voiceIntro), 500);
+      }
+
+      // Track event
+      this.trackEvent('spin_wheel_shown', {
+        has_played: this.state.hasPlayed
+      });
+    }
+
+    hide() {
+      this.state.isVisible = false;
+      this.elements.overlay?.classList.remove('active');
+    }
+
+    handleSpinClick() {
+      if (this.state.isSpinning) return;
+
+      // Check email if required
+      if (this.config.requireEmail && this.elements.emailInput) {
+        const email = this.elements.emailInput.value.trim();
+        if (!email || !this.validateEmail(email)) {
+          this.elements.emailInput.style.borderColor = '#EF4444';
+          return;
+        }
+        this.state.email = email;
+        this.elements.emailInput.style.borderColor = '';
+
+        // Callback
+        if (this.config.onEmailCapture) {
+          this.config.onEmailCapture({ email });
+        }
+
+        // Track email capture
+        this.trackEvent('spin_wheel_email_captured', { email });
+      }
+
+      this.spin();
+    }
+
+    validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    spin() {
+      if (this.state.isSpinning || this.state.hasPlayed) return;
+
+      this.state.isSpinning = true;
+      this.elements.spinBtn.disabled = true;
+      this.elements.spinBtn.textContent = this.translations.spinning;
+
+      // Voice feedback
+      if (this.config.voiceEnabled) {
+        this.speak(this.translations.voiceSpinning);
+      }
+
+      // Select prize based on probability
+      const prize = this.selectPrize();
+      this.state.selectedPrize = prize;
+
+      // Calculate rotation
+      const prizes = this.config.prizes;
+      const prizeIndex = prizes.findIndex(p => p.id === prize.id);
+      const segmentAngle = 360 / prizes.length;
+      const prizeAngle = prizeIndex * segmentAngle + segmentAngle / 2;
+      const extraSpins = 5; // Full rotations
+      const finalRotation = 360 * extraSpins + (360 - prizeAngle);
+
+      this.state.currentRotation = finalRotation;
+      this.elements.wheel.style.transform = `rotate(${finalRotation}deg)`;
+
+      // Callback
+      if (this.config.onSpin) {
+        this.config.onSpin({ prize });
+      }
+
+      // Track event
+      this.trackEvent('spin_wheel_spun', {
+        prize_id: prize.id,
+        prize_code: prize.code,
+        email: this.state.email
+      });
+
+      // Show result after spin
+      setTimeout(() => {
+        this.showResult(prize);
+      }, this.config.spinDuration + 500);
+    }
+
+    selectPrize() {
+      const prizes = this.config.prizes;
+      const totalProbability = prizes.reduce((sum, p) => sum + p.probability, 0);
+      let random = Math.random() * totalProbability;
+
+      for (const prize of prizes) {
+        random -= prize.probability;
+        if (random <= 0) {
+          return prize;
+        }
+      }
+
+      return prizes[prizes.length - 1];
+    }
+
+    showResult(prize) {
+      const isWin = prize.code !== null;
+
+      // Hide game, show result
+      this.elements.game.style.display = 'none';
+      this.elements.result.classList.add('active');
+
+      if (isWin) {
+        // Win state
+        this.elements.resultIcon.className = 'va-spin-result-icon win';
+        this.elements.resultIcon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
+        this.elements.resultTitle.textContent = this.translations.congratulations;
+        this.elements.resultPrize.textContent = `${this.translations.youWon} ${this.translations.prizes[prize.id]}`;
+        this.elements.code.textContent = prize.code;
+        this.elements.codeContainer.style.display = 'block';
+        this.elements.useBtn.style.display = 'block';
+
+        // Confetti
+        this.showConfetti();
+
+        // Voice feedback
+        if (this.config.voiceEnabled) {
+          const message = this.translations.voiceWin.replace('{{prize}}', this.translations.prizes[prize.id]);
+          this.speak(message);
+        }
+
+        // Callback
+        if (this.config.onWin) {
+          this.config.onWin({ prize, email: this.state.email });
+        }
+
+        // Track event
+        this.trackEvent('spin_wheel_won', {
+          prize_id: prize.id,
+          prize_code: prize.code,
+          email: this.state.email
+        });
+      } else {
+        // Lose state
+        this.elements.resultIcon.className = 'va-spin-result-icon lose';
+        this.elements.resultIcon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>';
+        this.elements.resultTitle.textContent = this.translations.tryAgain;
+        this.elements.resultPrize.textContent = this.translations.noLuck;
+        this.elements.codeContainer.style.display = 'none';
+        this.elements.useBtn.style.display = 'none';
+
+        // Voice feedback
+        if (this.config.voiceEnabled) {
+          this.speak(this.translations.voiceLose);
+        }
+
+        // Callback
+        if (this.config.onLose) {
+          this.config.onLose({ email: this.state.email });
+        }
+
+        // Track event
+        this.trackEvent('spin_wheel_lost', {
+          email: this.state.email
+        });
+      }
+
+      // Set cooldown
+      this.state.hasPlayed = true;
+      localStorage.setItem('va_spin_wheel_last_played', Date.now().toString());
+    }
+
+    showConfetti() {
+      const colors = ['#5E6AD2', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'];
+      const confettiCount = 50;
+
+      for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'va-confetti';
+        confetti.style.cssText = `
+          position: fixed;
+          width: ${Math.random() * 10 + 5}px;
+          height: ${Math.random() * 10 + 5}px;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          left: ${Math.random() * 100}vw;
+          top: -20px;
+          border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+          animation: confettiFall ${Math.random() * 3 + 2}s linear forwards;
+          z-index: 10003;
+        `;
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 5000);
+      }
+
+      // Add confetti animation
+      if (!document.querySelector('#va-confetti-style')) {
+        const style = document.createElement('style');
+        style.id = 'va-confetti-style';
+        style.textContent = `
+          @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+
+    copyCode() {
+      const code = this.state.selectedPrize?.code;
+      if (!code) return;
+
+      navigator.clipboard.writeText(code).then(() => {
+        this.elements.copyBtn.textContent = this.translations.copied;
+        this.elements.copyBtn.classList.add('copied');
+
+        setTimeout(() => {
+          this.elements.copyBtn.textContent = this.translations.copyCode;
+          this.elements.copyBtn.classList.remove('copied');
+        }, 2000);
+
+        this.trackEvent('spin_wheel_code_copied', { code });
+      });
+    }
+
+    useCode() {
+      const code = this.state.selectedPrize?.code;
+      if (!code) return;
+
+      // Copy code and redirect to checkout
+      navigator.clipboard.writeText(code);
+
+      // Track event
+      this.trackEvent('spin_wheel_code_used', { code });
+
+      // Redirect to checkout with discount
+      const checkoutUrl = new URL('/checkout', window.location.origin);
+      checkoutUrl.searchParams.set('discount', code);
+      window.location.href = checkoutUrl.toString();
+    }
+
+    speak(text) {
+      if (!window.speechSynthesis) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      const langMap = {
+        'fr': 'fr-FR',
+        'en': 'en-US',
+        'es': 'es-ES',
+        'ar': 'ar-SA',
+        'ary': 'ar-MA'
+      };
+      utterance.lang = langMap[this.config.lang] || 'fr-FR';
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    trackEvent(eventName, params = {}) {
+      if (window.gtag) {
+        window.gtag('event', eventName, {
+          event_category: 'gamification',
+          tenant_id: this.config.tenantId,
+          ...params
+        });
+      }
+
+      if (window.plausible) {
+        window.plausible(eventName, { props: params });
+      }
+
+      if (window.VocalIA?.trackEvent) {
+        window.VocalIA.trackEvent(eventName, params);
+      }
+    }
+
+    // Public API
+    reset() {
+      this.state.hasPlayed = false;
+      this.state.isSpinning = false;
+      this.state.selectedPrize = null;
+      localStorage.removeItem('va_spin_wheel_last_played');
+
+      if (this.elements.wheel) {
+        this.elements.wheel.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    destroy() {
+      this.hide();
+      this.elements.overlay?.remove();
+    }
+  }
+
+  // ============================================================
+  // EXPORT
+  // ============================================================
+
+  let spinWheelInstance = null;
+
+  function initSpinWheel(options = {}) {
+    if (spinWheelInstance) {
+      spinWheelInstance.destroy();
+    }
+    spinWheelInstance = new SpinWheel(options);
+    return spinWheelInstance;
+  }
+
+  function showSpinWheel(options = {}) {
+    if (!spinWheelInstance) {
+      spinWheelInstance = new SpinWheel(options);
+    }
+    spinWheelInstance.show();
+    return spinWheelInstance;
+  }
+
+  // Expose to window
+  window.VocaliaSpinWheel = {
+    init: initSpinWheel,
+    show: showSpinWheel,
+    getInstance: () => spinWheelInstance,
+    SpinWheel
+  };
+
+  // Integrate with VocalIA namespace
+  if (typeof window.VocalIA !== 'undefined') {
+    window.VocalIA.SpinWheel = window.VocaliaSpinWheel;
+
+    window.VocalIA.showSpinWheel = function(options = {}) {
+      return showSpinWheel(options);
+    };
+
+    window.VocalIA.isSpinWheelAvailable = function() {
+      const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+      if (!lastPlayed) return true;
+      const elapsed = Date.now() - parseInt(lastPlayed, 10);
+      return elapsed >= 24 * 60 * 60 * 1000;
+    };
+  }
+
+  // Auto-init if data attribute present
+  document.addEventListener('DOMContentLoaded', () => {
+    const widget = document.querySelector('[data-vocalia-spin-wheel]');
+    if (widget) {
+      initSpinWheel({
+        tenantId: widget.dataset.vocaliaTenant,
+        lang: widget.dataset.vocaliaLang,
+        voiceEnabled: widget.dataset.voice !== 'false',
+        requireEmail: widget.dataset.requireEmail !== 'false'
+      });
+
+      // Auto-show based on trigger
+      const trigger = widget.dataset.trigger || 'manual';
+      if (trigger === 'auto') {
+        setTimeout(() => showSpinWheel(), parseInt(widget.dataset.delay) || 5000);
+      }
+    }
+  });
+
+})();
+/**
+ * VocalIA - Free Shipping Progress Bar Widget
+ * Version: 1.0.0 | Session 250.83
+ *
+ * E-commerce conversion widget with voice feedback
+ * Benchmark Impact: +15-20% AOV, -10-18% cart abandonment
+ *
+ * Features:
+ * - Dynamic progress bar toward free shipping threshold
+ * - Real-time cart value tracking
+ * - Voice encouragement at milestones (25%, 50%, 75%, 100%)
+ * - 5 languages: FR, EN, ES, AR, Darija (ary)
+ * - RTL support for Arabic/Darija
+ * - GA4 event tracking
+ * - Customizable threshold per tenant
+ */
+
+(function() {
+  'use strict';
+
+  // ============================================================
+  // TRANSLATIONS (5 LANGUAGES)
+  // ============================================================
+
+  const TRANSLATIONS = {
+    fr: {
+      freeShipping: 'Livraison GRATUITE',
+      addMore: 'Plus que {{amount}} pour la livraison gratuite !',
+      almostThere: 'Presque ! {{amount}} de plus et c\'est gratuit !',
+      unlocked: 'Livraison gratuite debloquee !',
+      voiceMilestone25: 'Vous avez deja un quart du chemin pour la livraison gratuite.',
+      voiceMilestone50: 'A mi-chemin ! Continuez pour debloquer la livraison gratuite.',
+      voiceMilestone75: 'Presque la livraison gratuite ! Plus que quelques articles.',
+      voiceMilestone100: 'Felicitations ! Vous avez debloque la livraison gratuite !',
+      threshold: 'Seuil livraison gratuite',
+      currentCart: 'Panier actuel',
+      remaining: 'Restant',
+      currency: {
+        MAD: 'DH',
+        EUR: '€',
+        USD: '$'
+      }
+    },
+    en: {
+      freeShipping: 'FREE Shipping',
+      addMore: 'Add {{amount}} more for free shipping!',
+      almostThere: 'Almost there! {{amount}} more for free shipping!',
+      unlocked: 'Free shipping unlocked!',
+      voiceMilestone25: 'You\'re a quarter of the way to free shipping.',
+      voiceMilestone50: 'Halfway there! Keep going to unlock free shipping.',
+      voiceMilestone75: 'Almost at free shipping! Just a few more items.',
+      voiceMilestone100: 'Congratulations! You\'ve unlocked free shipping!',
+      threshold: 'Free shipping threshold',
+      currentCart: 'Current cart',
+      remaining: 'Remaining',
+      currency: {
+        MAD: 'MAD',
+        EUR: '€',
+        USD: '$'
+      }
+    },
+    es: {
+      freeShipping: 'Envio GRATIS',
+      addMore: 'Anade {{amount}} mas para envio gratis!',
+      almostThere: 'Casi ahi! {{amount}} mas para envio gratis!',
+      unlocked: 'Envio gratis desbloqueado!',
+      voiceMilestone25: 'Llevas un cuarto del camino para envio gratis.',
+      voiceMilestone50: 'A mitad de camino! Sigue para desbloquear envio gratis.',
+      voiceMilestone75: 'Casi envio gratis! Solo unos articulos mas.',
+      voiceMilestone100: 'Felicidades! Has desbloqueado el envio gratis!',
+      threshold: 'Umbral envio gratis',
+      currentCart: 'Carrito actual',
+      remaining: 'Restante',
+      currency: {
+        MAD: 'MAD',
+        EUR: '€',
+        USD: '$'
+      }
+    },
+    ar: {
+      freeShipping: 'شحن مجاني',
+      addMore: 'اضف {{amount}} للحصول على شحن مجاني!',
+      almostThere: 'قريب جدا! {{amount}} فقط للشحن المجاني!',
+      unlocked: 'تم فتح الشحن المجاني!',
+      voiceMilestone25: 'انت في ربع الطريق للشحن المجاني.',
+      voiceMilestone50: 'في منتصف الطريق! استمر للحصول على الشحن المجاني.',
+      voiceMilestone75: 'قريب جدا من الشحن المجاني! فقط بعض المنتجات.',
+      voiceMilestone100: 'مبروك! لقد حصلت على الشحن المجاني!',
+      threshold: 'حد الشحن المجاني',
+      currentCart: 'السلة الحالية',
+      remaining: 'المتبقي',
+      currency: {
+        MAD: 'درهم',
+        EUR: '€',
+        USD: '$'
+      }
+    },
+    ary: {
+      freeShipping: 'التوصيل بلاش',
+      addMore: 'زيد {{amount}} باش يوصلك بلاش!',
+      almostThere: 'قريب! غير {{amount}} و يوصلك مجانا!',
+      unlocked: 'مبروك! التوصيل بلاش!',
+      voiceMilestone25: 'وصلتي الربع باش يجيك التوصيل بلاش.',
+      voiceMilestone50: 'فالنص! كمل باش تحصل على التوصيل المجاني.',
+      voiceMilestone75: 'قريب بزاف من التوصيل بلاش! غير شوية.',
+      voiceMilestone100: 'مبروك! دابا التوصيل بلاش!',
+      threshold: 'الحد ديال التوصيل بلاش',
+      currentCart: 'الباني دابا',
+      remaining: 'اللي باقي',
+      currency: {
+        MAD: 'درهم',
+        EUR: '€',
+        USD: '$'
+      }
+    }
+  };
+
+  // ============================================================
+  // STYLES
+  // ============================================================
+
+  const STYLES = `
+    .va-shipping-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      border-bottom: 1px solid rgba(94, 106, 210, 0.3);
+      padding: 12px 20px;
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .va-shipping-bar-container.visible {
+      transform: translateY(0);
+    }
+
+    .va-shipping-bar-container.unlocked {
+      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    }
+
+    .va-shipping-bar-container[dir="rtl"] {
+      text-align: right;
+    }
+
+    .va-shipping-bar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .va-shipping-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: vaShippingPulse 2s infinite;
+    }
+
+    @keyframes vaShippingPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .va-shipping-icon svg {
+      width: 20px;
+      height: 20px;
+      fill: white;
+    }
+
+    .va-shipping-content {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .va-shipping-text {
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .va-shipping-message {
+      flex: 1;
+    }
+
+    .va-shipping-amount {
+      color: #5E6AD2;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .va-shipping-bar-container.unlocked .va-shipping-amount {
+      color: #FFFFFF;
+    }
+
+    .va-shipping-progress-wrapper {
+      position: relative;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .va-shipping-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #5E6AD2 0%, #10B981 100%);
+      border-radius: 4px;
+      transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    .va-shipping-progress::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+      );
+      animation: vaShimmer 2s infinite;
+    }
+
+    @keyframes vaShimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .va-shipping-bar-container.unlocked .va-shipping-progress {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .va-shipping-milestones {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .va-shipping-milestone {
+      position: relative;
+    }
+
+    .va-shipping-milestone.reached {
+      color: #10B981;
+    }
+
+    .va-shipping-close {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .va-shipping-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .va-shipping-close svg {
+      width: 14px;
+      height: 14px;
+      fill: white;
+    }
+
+    /* Confetti animation when unlocked */
+    .va-shipping-confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+    }
+
+    .va-shipping-bar-container.unlocked .va-shipping-confetti {
+      animation: vaConfetti 1s ease-out forwards;
+    }
+
+    @keyframes vaConfetti {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(-50px) rotate(720deg); }
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 640px) {
+      .va-shipping-bar-container {
+        padding: 10px 16px;
+      }
+
+      .va-shipping-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .va-shipping-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      .va-shipping-text {
+        font-size: 12px;
+      }
+
+      .va-shipping-amount {
+        font-size: 14px;
+      }
+
+      .va-shipping-milestones {
+        display: none;
+      }
+    }
+  `;
+
+  // ============================================================
+  // FREE SHIPPING BAR CLASS
+  // ============================================================
+
+  class FreeShippingBar {
+    constructor(options = {}) {
+      this.config = {
+        tenantId: options.tenantId || this.detectTenantId(),
+        lang: options.lang || this.detectLanguage(),
+        threshold: options.threshold || 500, // Default 500 MAD
+        currency: options.currency || 'MAD',
+        position: options.position || 'top', // top, bottom
+        voiceEnabled: options.voiceEnabled !== false,
+        showMilestones: options.showMilestones !== false,
+        autoHide: options.autoHide !== false, // Hide when unlocked after 5s
+        autoHideDelay: options.autoHideDelay || 5000,
+        dismissible: options.dismissible !== false,
+        onUnlock: options.onUnlock || null,
+        onMilestone: options.onMilestone || null
+      };
+
+      this.state = {
+        isVisible: false,
+        currentValue: 0,
+        percentage: 0,
+        isUnlocked: false,
+        lastMilestone: 0,
+        dismissed: false,
+        announcedMilestones: new Set()
+      };
+
+      this.elements = {};
+      this.translations = TRANSLATIONS[this.config.lang] || TRANSLATIONS.fr;
+      this.isRTL = ['ar', 'ary'].includes(this.config.lang);
+
+      this.init();
+    }
+
+    detectTenantId() {
+      const widget = document.querySelector('[data-vocalia-tenant]');
+      if (widget) return widget.dataset.vocaliaTenant;
+      return 'default';
+    }
+
+    detectLanguage() {
+      const widget = document.querySelector('[data-vocalia-lang]');
+      if (widget) return widget.dataset.vocaliaLang;
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('lang')) return urlParams.get('lang');
+      const browserLang = navigator.language?.split('-')[0];
+      return ['fr', 'en', 'es', 'ar', 'ary'].includes(browserLang) ? browserLang : 'fr';
+    }
+
+    init() {
+      // Inject styles
+      if (!document.querySelector('#va-shipping-bar-styles')) {
+        const styleEl = document.createElement('style');
+        styleEl.id = 'va-shipping-bar-styles';
+        styleEl.textContent = STYLES;
+        document.head.appendChild(styleEl);
+      }
+
+      // Create bar element
+      this.createBar();
+
+      // Check for stored cart value
+      this.loadCartValue();
+
+      // Listen for cart updates
+      this.setupCartListeners();
+
+      console.log('[FreeShippingBar] Initialized', {
+        tenant: this.config.tenantId,
+        threshold: this.config.threshold,
+        currency: this.config.currency
+      });
+    }
+
+    createBar() {
+      const container = document.createElement('div');
+      container.className = 'va-shipping-bar-container';
+      container.id = 'va-shipping-bar';
+      container.setAttribute('dir', this.isRTL ? 'rtl' : 'ltr');
+      container.setAttribute('role', 'status');
+      container.setAttribute('aria-live', 'polite');
+
+      if (this.config.position === 'bottom') {
+        container.style.top = 'auto';
+        container.style.bottom = '0';
+        container.style.borderBottom = 'none';
+        container.style.borderTop = '1px solid rgba(94, 106, 210, 0.3)';
+      }
+
+      container.innerHTML = this.getBarHTML();
+      document.body.appendChild(container);
+
+      this.elements.container = container;
+      this.elements.progress = container.querySelector('.va-shipping-progress');
+      this.elements.message = container.querySelector('.va-shipping-message');
+      this.elements.amount = container.querySelector('.va-shipping-amount');
+      this.elements.closeBtn = container.querySelector('.va-shipping-close');
+
+      // Close button event
+      if (this.elements.closeBtn) {
+        this.elements.closeBtn.addEventListener('click', () => this.dismiss());
+      }
+    }
+
+    getBarHTML() {
+      const t = this.translations;
+      const currencySymbol = t.currency[this.config.currency] || this.config.currency;
+
+      return `
+        <div class="va-shipping-bar-inner">
+          <div class="va-shipping-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+            </svg>
+          </div>
+
+          <div class="va-shipping-content">
+            <div class="va-shipping-text">
+              <span class="va-shipping-message">${t.addMore.replace('{{amount}}', `<strong>${this.config.threshold} ${currencySymbol}</strong>`)}</span>
+              <span class="va-shipping-amount">0 / ${this.config.threshold} ${currencySymbol}</span>
+            </div>
+
+            <div class="va-shipping-progress-wrapper">
+              <div class="va-shipping-progress" style="width: 0%"></div>
+            </div>
+
+            ${this.config.showMilestones ? `
+              <div class="va-shipping-milestones">
+                <span class="va-shipping-milestone" data-milestone="0">0</span>
+                <span class="va-shipping-milestone" data-milestone="25">25%</span>
+                <span class="va-shipping-milestone" data-milestone="50">50%</span>
+                <span class="va-shipping-milestone" data-milestone="75">75%</span>
+                <span class="va-shipping-milestone" data-milestone="100">${t.freeShipping}</span>
+              </div>
+            ` : ''}
+          </div>
+
+          ${this.config.dismissible ? `
+            <button class="va-shipping-close" aria-label="Close">
+              <svg viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    setupCartListeners() {
+      // Listen for VocalIA cart updates
+      if (window.VocalIA) {
+        const originalSetCartData = window.VocalIA.setCartData;
+        window.VocalIA.setCartData = (cartData) => {
+          if (originalSetCartData) originalSetCartData.call(window.VocalIA, cartData);
+          this.updateCartValue(cartData?.total || 0);
+        };
+      }
+
+      // Listen for custom cart events
+      window.addEventListener('va:cart:updated', (e) => {
+        this.updateCartValue(e.detail?.total || 0);
+      });
+
+      // Shopify integration
+      if (window.Shopify) {
+        document.addEventListener('cart:updated', (e) => {
+          const total = e.detail?.total || window.Shopify?.checkout?.total_price / 100;
+          if (total) this.updateCartValue(total);
+        });
+      }
+
+      // WooCommerce integration
+      if (window.jQuery) {
+        window.jQuery(document.body).on('added_to_cart removed_from_cart', () => {
+          const cartTotal = document.querySelector('.cart-contents-count, .woocommerce-Price-amount');
+          if (cartTotal) {
+            const value = parseFloat(cartTotal.textContent.replace(/[^\d.]/g, ''));
+            if (!isNaN(value)) this.updateCartValue(value);
+          }
+        });
+      }
+    }
+
+    loadCartValue() {
+      // Try to get cart value from various sources
+      const stored = localStorage.getItem('va_cart_total');
+      if (stored) {
+        this.updateCartValue(parseFloat(stored));
+        return;
+      }
+
+      // Check VocalIA cart
+      if (window.VocalIA?.cart?.total) {
+        this.updateCartValue(window.VocalIA.cart.total);
+        return;
+      }
+
+      // Check Shopify
+      if (window.Shopify?.checkout?.total_price) {
+        this.updateCartValue(window.Shopify.checkout.total_price / 100);
+        return;
+      }
+    }
+
+    updateCartValue(value) {
+      this.state.currentValue = value;
+      this.state.percentage = Math.min((value / this.config.threshold) * 100, 100);
+      this.state.isUnlocked = value >= this.config.threshold;
+
+      // Store for persistence
+      localStorage.setItem('va_cart_total', value.toString());
+
+      // Update UI
+      this.updateUI();
+
+      // Check milestones
+      this.checkMilestones();
+
+      // Show bar if not dismissed
+      if (!this.state.dismissed && value > 0) {
+        this.show();
+      }
+
+      // Track event
+      this.trackEvent('shipping_bar_updated', {
+        cart_value: value,
+        threshold: this.config.threshold,
+        percentage: this.state.percentage,
+        unlocked: this.state.isUnlocked
+      });
+    }
+
+    updateUI() {
+      const t = this.translations;
+      const currencySymbol = t.currency[this.config.currency] || this.config.currency;
+      const remaining = Math.max(this.config.threshold - this.state.currentValue, 0);
+
+      // Update progress bar
+      this.elements.progress.style.width = `${this.state.percentage}%`;
+
+      // Update amount display
+      this.elements.amount.textContent = `${this.state.currentValue.toFixed(0)} / ${this.config.threshold} ${currencySymbol}`;
+
+      // Update message
+      if (this.state.isUnlocked) {
+        this.elements.message.innerHTML = `<strong>${t.unlocked}</strong>`;
+        this.elements.container.classList.add('unlocked');
+        this.elements.container.classList.add('va-celebrate');
+
+        // Auto-hide after unlock
+        if (this.config.autoHide) {
+          setTimeout(() => this.hide(), this.config.autoHideDelay);
+        }
+
+        // Callback
+        if (this.config.onUnlock) {
+          this.config.onUnlock({ value: this.state.currentValue, threshold: this.config.threshold });
+        }
+      } else if (this.state.percentage >= 75) {
+        this.elements.message.innerHTML = t.almostThere.replace('{{amount}}', `<strong>${remaining.toFixed(0)} ${currencySymbol}</strong>`);
+        this.elements.container.classList.remove('unlocked');
+      } else {
+        this.elements.message.innerHTML = t.addMore.replace('{{amount}}', `<strong>${remaining.toFixed(0)} ${currencySymbol}</strong>`);
+        this.elements.container.classList.remove('unlocked');
+      }
+
+      // Update milestones
+      if (this.config.showMilestones) {
+        this.elements.container.querySelectorAll('.va-shipping-milestone').forEach(el => {
+          const milestone = parseInt(el.dataset.milestone);
+          if (this.state.percentage >= milestone) {
+            el.classList.add('reached');
+          } else {
+            el.classList.remove('reached');
+          }
+        });
+      }
+    }
+
+    checkMilestones() {
+      const milestones = [25, 50, 75, 100];
+
+      for (const milestone of milestones) {
+        if (this.state.percentage >= milestone && !this.state.announcedMilestones.has(milestone)) {
+          this.state.announcedMilestones.add(milestone);
+          this.announceMilestone(milestone);
+
+          // Callback
+          if (this.config.onMilestone) {
+            this.config.onMilestone({ milestone, percentage: this.state.percentage, value: this.state.currentValue });
+          }
+        }
+      }
+    }
+
+    announceMilestone(milestone) {
+      if (!this.config.voiceEnabled) return;
+
+      const t = this.translations;
+      const messages = {
+        25: t.voiceMilestone25,
+        50: t.voiceMilestone50,
+        75: t.voiceMilestone75,
+        100: t.voiceMilestone100
+      };
+
+      const message = messages[milestone];
+      if (message) {
+        this.speak(message);
+      }
+
+      // Track event
+      this.trackEvent('shipping_milestone_reached', {
+        milestone,
+        cart_value: this.state.currentValue,
+        threshold: this.config.threshold
+      });
+    }
+
+    speak(text) {
+      if (!window.speechSynthesis) return;
+
+      const utterance = new SpeechSynthesisUtterance(text);
+      const langMap = {
+        'fr': 'fr-FR',
+        'en': 'en-US',
+        'es': 'es-ES',
+        'ar': 'ar-SA',
+        'ary': 'ar-MA'
+      };
+      utterance.lang = langMap[this.config.lang] || 'fr-FR';
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    show() {
+      if (this.state.isVisible || this.state.dismissed) return;
+
+      this.state.isVisible = true;
+      this.elements.container.classList.add('visible');
+
+      // Adjust body padding
+      if (this.config.position === 'top') {
+        document.body.style.paddingTop = '60px';
+      }
+
+      this.trackEvent('shipping_bar_shown', {
+        cart_value: this.state.currentValue,
+        threshold: this.config.threshold
+      });
+    }
+
+    hide() {
+      this.state.isVisible = false;
+      this.elements.container.classList.remove('visible');
+
+      // Reset body padding
+      if (this.config.position === 'top') {
+        document.body.style.paddingTop = '';
+      }
+    }
+
+    dismiss() {
+      this.state.dismissed = true;
+      this.hide();
+      localStorage.setItem('va_shipping_bar_dismissed', 'true');
+
+      this.trackEvent('shipping_bar_dismissed', {
+        cart_value: this.state.currentValue,
+        percentage: this.state.percentage
+      });
+    }
+
+    trackEvent(eventName, params = {}) {
+      if (window.gtag) {
+        window.gtag('event', eventName, {
+          event_category: 'free_shipping',
+          tenant_id: this.config.tenantId,
+          ...params
+        });
+      }
+
+      if (window.plausible) {
+        window.plausible(eventName, { props: params });
+      }
+
+      if (window.VocalIA?.trackEvent) {
+        window.VocalIA.trackEvent(eventName, params);
+      }
+    }
+
+    // Public API
+    setThreshold(threshold) {
+      this.config.threshold = threshold;
+      this.updateCartValue(this.state.currentValue);
+    }
+
+    setCurrency(currency) {
+      this.config.currency = currency;
+      // Re-render
+      this.elements.container.innerHTML = this.getBarHTML();
+      this.elements.progress = this.elements.container.querySelector('.va-shipping-progress');
+      this.elements.message = this.elements.container.querySelector('.va-shipping-message');
+      this.elements.amount = this.elements.container.querySelector('.va-shipping-amount');
+      this.updateUI();
+    }
+
+    reset() {
+      this.state.dismissed = false;
+      this.state.announcedMilestones.clear();
+      localStorage.removeItem('va_shipping_bar_dismissed');
+      this.updateCartValue(0);
+    }
+
+    destroy() {
+      this.hide();
+      this.elements.container?.remove();
+      document.body.style.paddingTop = '';
+    }
+  }
+
+  // ============================================================
+  // EXPORT
+  // ============================================================
+
+  let shippingBarInstance = null;
+
+  function initFreeShippingBar(options = {}) {
+    // Check if dismissed
+    if (localStorage.getItem('va_shipping_bar_dismissed') === 'true' && options.respectDismissal !== false) {
+      console.log('[FreeShippingBar] Previously dismissed, not showing');
+      return null;
+    }
+
+    if (shippingBarInstance) {
+      shippingBarInstance.destroy();
+    }
+    shippingBarInstance = new FreeShippingBar(options);
+    return shippingBarInstance;
+  }
+
+  // Expose to window
+  window.VocaliaShippingBar = {
+    init: initFreeShippingBar,
+    getInstance: () => shippingBarInstance,
+    FreeShippingBar
+  };
+
+  // Integrate with VocalIA namespace
+  if (typeof window.VocalIA !== 'undefined') {
+    window.VocalIA.ShippingBar = window.VocaliaShippingBar;
+
+    window.VocalIA.initShippingBar = function(options = {}) {
+      return initFreeShippingBar(options);
+    };
+
+    window.VocalIA.updateShippingProgress = function(cartValue) {
+      if (!shippingBarInstance) {
+        shippingBarInstance = initFreeShippingBar();
+      }
+      if (shippingBarInstance) {
+        shippingBarInstance.updateCartValue(cartValue);
+      }
+    };
+  }
+
+  // Auto-init if data attribute present
+  document.addEventListener('DOMContentLoaded', () => {
+    const widget = document.querySelector('[data-vocalia-shipping-bar]');
+    if (widget) {
+      initFreeShippingBar({
+        tenantId: widget.dataset.vocaliaTenant,
+        lang: widget.dataset.vocaliaLang,
+        threshold: parseInt(widget.dataset.threshold) || 500,
+        currency: widget.dataset.currency || 'MAD',
+        voiceEnabled: widget.dataset.voice !== 'false'
+      });
+    }
+  });
+
+})();
+/**
+ * VocalIA - Recommendation Carousel Widget
+ *
+ * Voice-activated product recommendation carousel integrated with
+ * the VocalIA Voice Widget. Shows AI-powered recommendations:
+ * - Similar products
+ * - Frequently bought together
+ * - Personalized recommendations
+ *
+ * Version: 1.0.0 | Session 250.79 | 03/02/2026
+ */
+
+(function(global) {
+  'use strict';
+
+  // SECURITY: HTML escape for dynamic content (XSS prevention)
+  function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // CSS for the carousel
+  const CAROUSEL_CSS = `
+    .va-reco-overlay {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 380px;
+      max-height: 320px;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
+      border-radius: 16px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.1);
+      backdrop-filter: blur(20px);
+      z-index: 10002;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .va-reco-overlay.va-reco-visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .va-reco-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: linear-gradient(90deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.15));
+      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    }
+
+    .va-reco-title {
+      color: #e2e8f0;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .va-reco-title svg {
+      width: 18px;
+      height: 18px;
+      color: #8b5cf6;
+    }
+
+    .va-reco-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .va-reco-close:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+    }
+
+    .va-reco-content {
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .va-reco-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    .va-reco-card {
+      flex: 0 0 140px;
+      scroll-snap-align: start;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .va-reco-card:hover {
+      border-color: rgba(139, 92, 246, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .va-reco-image {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      background: linear-gradient(145deg, #1e293b, #334155);
+    }
+
+    .va-reco-image-placeholder {
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(145deg, #1e293b, #334155);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+    }
+
+    .va-reco-image-placeholder svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .va-reco-info {
+      padding: 10px;
+    }
+
+    .va-reco-name {
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .va-reco-price {
+      color: #8b5cf6;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .va-reco-reason {
+      font-size: 10px;
+      color: #64748b;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .va-reco-badge {
+      display: inline-block;
+      padding: 2px 6px;
+      background: rgba(139, 92, 246, 0.2);
+      color: #a78bfa;
+      font-size: 10px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    .va-reco-cta {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .va-reco-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .va-reco-btn-primary {
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      color: white;
+    }
+
+    .va-reco-btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+    }
+
+    .va-reco-btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+    }
+
+    .va-reco-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+    }
+
+    /* RTL Support */
+    [dir="rtl"] .va-reco-overlay {
+      right: auto;
+      left: 20px;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 480px) {
+      .va-reco-overlay {
+        width: calc(100vw - 40px);
+        right: 20px;
+        bottom: 90px;
+      }
+
+      .va-reco-card {
+        flex: 0 0 120px;
+      }
+
+      .va-reco-image,
+      .va-reco-image-placeholder {
+        height: 80px;
+      }
+    }
+  `;
+
+  /**
+   * Recommendation Carousel Class
+   */
+  class RecommendationCarousel {
+    constructor(options = {}) {
+      this.options = {
+        containerId: 'va-reco-carousel',
+        maxItems: 5,
+        autoClose: 30000, // Auto-close after 30s
+        onItemClick: null,
+        onClose: null,
+        lang: 'fr',
+        ...options
+      };
+
+      this.container = null;
+      this.isVisible = false;
+      this.autoCloseTimer = null;
+      this.items = [];
+
+      this._injectStyles();
+    }
+
+    /**
+     * Inject CSS styles
+     */
+    _injectStyles() {
+      if (document.getElementById('va-reco-styles')) return;
+
+      const style = document.createElement('style');
+      style.id = 'va-reco-styles';
+      style.textContent = CAROUSEL_CSS;
+      document.head.appendChild(style);
+    }
+
+    /**
+     * Create carousel DOM
+     */
+    _createCarouselDOM(items, title) {
+      const L = this._getLabels();
+
+      const container = document.createElement('div');
+      container.id = this.options.containerId;
+      container.className = 'va-reco-overlay';
+      container.setAttribute('role', 'dialog');
+      container.setAttribute('aria-label', title);
+
+      // Check RTL
+      if (this.options.lang === 'ar' || this.options.lang === 'ary') {
+        container.setAttribute('dir', 'rtl');
+      }
+
+      container.innerHTML = `
+        <div class="va-reco-header">
+          <div class="va-reco-title">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span>${escapeHTML(title)}</span>
+          </div>
+          <button class="va-reco-close" aria-label="${L.close}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="va-reco-content">
+          ${items.map((item, index) => this._renderCard(item, index)).join('')}
+        </div>
+        <div class="va-reco-cta">
+          <button class="va-reco-btn va-reco-btn-secondary" data-action="voice">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            ${L.askVoice}
+          </button>
+          <button class="va-reco-btn va-reco-btn-primary" data-action="viewAll">
+            ${L.viewAll}
+          </button>
+        </div>
+      `;
+
+      // Event listeners
+      container.querySelector('.va-reco-close').addEventListener('click', () => this.hide());
+
+      container.querySelectorAll('.va-reco-card').forEach((card, index) => {
+        card.addEventListener('click', () => {
+          if (this.options.onItemClick) {
+            this.options.onItemClick(items[index], index);
+          }
+          this._trackClick(items[index], index);
+        });
+      });
+
+      container.querySelector('[data-action="voice"]').addEventListener('click', () => {
+        this.hide();
+        // Trigger voice widget if available
+        if (window.VocalIA?.openVoiceWidget) {
+          window.VocalIA.openVoiceWidget();
+        }
+      });
+
+      container.querySelector('[data-action="viewAll"]').addEventListener('click', () => {
+        this._trackViewAll();
+        // Navigate to catalog or trigger custom action
+        if (this.options.onViewAll) {
+          this.options.onViewAll();
+        }
+      });
+
+      return container;
+    }
+
+    /**
+     * Render individual product card
+     */
+    _renderCard(item, index) {
+      const L = this._getLabels();
+      const name = item.title || item.name || `Product ${index + 1}`;
+      const price = item.price ? this._formatPrice(item.price) : '';
+      const image = item.image || item.images?.[0]?.src;
+      const reason = this._getReasonLabel(item.reason);
+
+      const safeId = escapeHTML(String(item.id || item.productId || ''));
+      const safeName = escapeHTML(name);
+      const safeImage = image ? escapeHTML(image) : '';
+      const safeReason = reason ? escapeHTML(reason) : '';
+
+      return `
+        <div class="va-reco-card" data-product-id="${safeId}" tabindex="0">
+          ${safeImage
+            ? `<img class="va-reco-image" src="${safeImage}" alt="${safeName}" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="va-reco-image-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>`
+          }
+          <div class="va-reco-info">
+            <div class="va-reco-name">${safeName}</div>
+            ${price ? `<div class="va-reco-price">${price}</div>` : ''}
+            ${safeReason ? `<div class="va-reco-reason">${safeReason}</div>` : ''}
+            ${item.similarity ? `<span class="va-reco-badge">${parseInt(item.similarity) || 0}% ${escapeHTML(L.match)}</span>` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    /**
+     * Format price with currency
+     */
+    _formatPrice(price) {
+      const num = parseFloat(price);
+      if (isNaN(num)) return price;
+
+      // Use MAD for Moroccan locale, EUR for European, USD otherwise
+      const lang = this.options.lang;
+      if (lang === 'ar' || lang === 'ary') {
+        return `${num.toFixed(0)} DH`;
+      } else if (lang === 'fr' || lang === 'es') {
+        return `${num.toFixed(2)} €`;
+      }
+      return `$${num.toFixed(2)}`;
+    }
+
+    /**
+     * Get reason label
+     */
+    _getReasonLabel(reason) {
+      const L = this._getLabels();
+      const reasonLabels = {
+        similar_product: L.similarProduct,
+        frequently_bought_together: L.boughtTogether,
+        based_on_viewed: L.basedOnViewed,
+        based_on_purchases: L.basedOnPurchases,
+        personalized: L.personalized
+      };
+      return reasonLabels[reason] || '';
+    }
+
+    /**
+     * Get localized labels
+     */
+    _getLabels() {
+      const labels = {
+        fr: {
+          close: 'Fermer',
+          askVoice: 'Demander',
+          viewAll: 'Voir tout',
+          match: 'match',
+          similarProduct: 'Similaire',
+          boughtTogether: 'Souvent acheté avec',
+          basedOnViewed: 'Vu récemment',
+          basedOnPurchases: 'Pour vous',
+          personalized: 'Recommandé'
+        },
+        en: {
+          close: 'Close',
+          askVoice: 'Ask',
+          viewAll: 'View All',
+          match: 'match',
+          similarProduct: 'Similar',
+          boughtTogether: 'Often bought together',
+          basedOnViewed: 'Recently viewed',
+          basedOnPurchases: 'For you',
+          personalized: 'Recommended'
+        },
+        es: {
+          close: 'Cerrar',
+          askVoice: 'Preguntar',
+          viewAll: 'Ver todo',
+          match: 'coincide',
+          similarProduct: 'Similar',
+          boughtTogether: 'Comprado junto',
+          basedOnViewed: 'Visto reciente',
+          basedOnPurchases: 'Para ti',
+          personalized: 'Recomendado'
+        },
+        ar: {
+          close: 'إغلاق',
+          askVoice: 'اسأل',
+          viewAll: 'عرض الكل',
+          match: 'تطابق',
+          similarProduct: 'مشابه',
+          boughtTogether: 'يشترى معًا',
+          basedOnViewed: 'شوهد مؤخرًا',
+          basedOnPurchases: 'لك',
+          personalized: 'موصى به'
+        },
+        ary: {
+          close: 'سد',
+          askVoice: 'سول',
+          viewAll: 'شوف كلشي',
+          match: 'تطابق',
+          similarProduct: 'بحال هادا',
+          boughtTogether: 'كيتشرا مع',
+          basedOnViewed: 'شفتي مؤخراً',
+          basedOnPurchases: 'ليك',
+          personalized: 'منصوح بيه'
+        }
+      };
+
+      return labels[this.options.lang] || labels.fr;
+    }
+
+    /**
+     * Show carousel with recommendations
+     */
+    show(items, options = {}) {
+      const { title, type = 'similar' } = options;
+      const L = this._getLabels();
+
+      // Default titles by type
+      const defaultTitles = {
+        similar: { fr: 'Produits similaires', en: 'Similar Products', es: 'Productos similares', ar: 'منتجات مشابهة', ary: 'منتوجات بحال هادو' },
+        bought_together: { fr: 'Souvent achetés ensemble', en: 'Frequently Bought Together', es: 'Comprados juntos', ar: 'يُشترى معًا', ary: 'كيتشرا مع بعض' },
+        personalized: { fr: 'Recommandé pour vous', en: 'Recommended for You', es: 'Recomendado para ti', ar: 'موصى به لك', ary: 'منصوح بيه ليك' }
+      };
+
+      const displayTitle = title || (defaultTitles[type]?.[this.options.lang] || defaultTitles[type]?.fr || 'Recommendations');
+
+      // Limit items
+      this.items = items.slice(0, this.options.maxItems);
+
+      // Remove existing
+      this.hide();
+
+      // Create and append
+      this.container = this._createCarouselDOM(this.items, displayTitle);
+      document.body.appendChild(this.container);
+
+      // Animate in
+      requestAnimationFrame(() => {
+        this.container.classList.add('va-reco-visible');
+      });
+
+      this.isVisible = true;
+
+      // Track impression
+      this._trackImpression(type, this.items.length);
+
+      // Auto-close timer
+      if (this.options.autoClose) {
+        this.autoCloseTimer = setTimeout(() => this.hide(), this.options.autoClose);
+      }
+
+      return this;
+    }
+
+    /**
+     * Hide carousel
+     */
+    hide() {
+      if (this.autoCloseTimer) {
+        clearTimeout(this.autoCloseTimer);
+        this.autoCloseTimer = null;
+      }
+
+      if (this.container) {
+        this.container.classList.remove('va-reco-visible');
+        setTimeout(() => {
+          this.container?.remove();
+          this.container = null;
+        }, 300);
+      }
+
+      this.isVisible = false;
+
+      if (this.options.onClose) {
+        this.options.onClose();
+      }
+
+      return this;
+    }
+
+    /**
+     * Track impression for analytics
+     */
+    _trackImpression(type, count) {
+      if (typeof gtag === 'function') {
+        gtag('event', 'reco_carousel_impression', {
+          event_category: 'recommendations',
+          recommendation_type: type,
+          items_shown: count
+        });
+      }
+    }
+
+    /**
+     * Track click on item
+     */
+    _trackClick(item, index) {
+      if (typeof gtag === 'function') {
+        gtag('event', 'reco_carousel_click', {
+          event_category: 'recommendations',
+          product_id: item.id || item.productId,
+          position: index + 1,
+          reason: item.reason
+        });
+      }
+    }
+
+    /**
+     * Track view all click
+     */
+    _trackViewAll() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'reco_carousel_view_all', {
+          event_category: 'recommendations',
+          items_shown: this.items.length
+        });
+      }
+    }
+
+    /**
+     * Set language
+     */
+    setLanguage(lang) {
+      this.options.lang = lang;
+      return this;
+    }
+  }
+
+  // Export
+  global.VocalIARecommendations = RecommendationCarousel;
+
+  // Auto-initialize if VocalIA widget exists
+  if (global.VocalIA) {
+    global.VocalIA.RecommendationCarousel = RecommendationCarousel;
+  }
 
 })(typeof window !== 'undefined' ? window : this);

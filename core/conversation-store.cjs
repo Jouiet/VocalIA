@@ -313,7 +313,7 @@ class ConversationStore {
     }
 
     const files = fs.readdirSync(tenantDir).filter(f => f.endsWith('.json'));
-    const conversations = [];
+    let conversations = [];
 
     for (const file of files) {
       try {

@@ -64,3 +64,16 @@ clients/
 
 # Plan files (session-specific)
 .claude/plans/
+
+# Screenshots (debug/verification)
+*.png
+
+# Coverage reports
+coverage/
+
+# Test event data (runtime-generated)
+data/events/
+data/ab-analytics/
+
+# Widget archive (dead code)
+widget/archive/

@@ -37,10 +37,17 @@
             : 'https://api.vocalia.ma/social-proof',
 
         // Feature Flags - B2B Preset
-        ECOMMERCE_MODE: false, // HARDCODED FALSE
+        ECOMMERCE_MODE: false, // HARDCODED FALSE - no cart/checkout
+        CATALOG_MODE: true,    // Show service/product cards from tenant catalog
         EXIT_INTENT_ENABLED: true,
         SOCIAL_PROOF_ENABLED: true,
         AI_MODE: true,
+
+        // Catalog API for service/product display
+        CATALOG_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3013/api/tenants'
+            : 'https://api.vocalia.ma/api/tenants',
+        MAX_CATALOG_ITEMS: 4,
 
         // Social Proof Timing
         SOCIAL_PROOF_DELAY: 10000,
@@ -195,8 +202,14 @@
     }
 
     // ============================================================
-    // WIDGET UI - VocalIA Branding
+    // WIDGET UI - Shadow DOM Encapsulated
     // ============================================================
+
+    // Shadow root reference for scoped DOM queries
+    let shadowRoot = null;
+
+    function $id(id) { return shadowRoot ? shadowRoot.getElementById(id) : document.getElementById(id); }
+    function $q(sel) { return shadowRoot ? shadowRoot.querySelector(sel) : document.querySelector(sel); }
 
     function createWidget() {
         if (document.getElementById('vocalia-widget')) return;
@@ -205,11 +218,13 @@
         const isRTL = L.meta.rtl;
         const position = isRTL ? 'left' : 'right';
 
-        const widget = document.createElement('div');
-        widget.id = 'vocalia-widget';
-        widget.style.cssText = `position:fixed;bottom:30px;${position}:25px;z-index:99999;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;${isRTL ? 'direction:rtl;' : ''}`;
-        widget.innerHTML = generateWidgetHTML(L, isRTL, position);
-        document.body.appendChild(widget);
+        const host = document.createElement('div');
+        host.id = 'vocalia-widget';
+        host.style.cssText = `position:fixed;bottom:30px;${position}:25px;z-index:99999;${isRTL ? 'direction:rtl;' : ''}`;
+        document.body.appendChild(host);
+
+        shadowRoot = host.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = generateWidgetHTML(L, isRTL, position);
 
         initEventListeners();
         setTimeout(() => { if (!state.isOpen) showNotificationBubble(); }, 3000);
@@ -297,6 +312,23 @@
         .va-notif-bubble-content { padding: 12px 16px; background: white; color: #0F172A; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); font-size: 14px; font-weight: 500; border-left: 4px solid var(--va-primary); }
         @keyframes vaFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* Service/Product Cards for Catalog Mode */
+        .va-service-cards { display: flex; overflow-x: auto; gap: 10px; padding: 8px 0; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .va-service-cards::-webkit-scrollbar { height: 3px; }
+        .va-service-cards::-webkit-scrollbar-thumb { background: var(--va-primary); border-radius: 3px; }
+        .va-service-card { min-width: 200px; max-width: 220px; background: rgba(94, 106, 210, 0.08); border: 1px solid rgba(94, 106, 210, 0.2); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.2s; scroll-snap-align: start; flex-shrink: 0; }
+        .va-service-card:hover { border-color: var(--va-primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(94, 106, 210, 0.2); }
+        .va-service-card-img { width: 100%; height: 110px; object-fit: cover; background: rgba(94, 106, 210, 0.05); }
+        .va-service-card-img-placeholder { width: 100%; height: 110px; display: flex; align-items: center; justify-content: center; font-size: 28px; background: rgba(94, 106, 210, 0.05); }
+        .va-service-card-body { padding: 10px 12px; }
+        .va-service-card-title { font-size: 13px; font-weight: 600; color: #e5e5e5; margin: 0 0 4px; line-height: 1.3; }
+        .va-service-card-desc { font-size: 11px; color: rgba(255,255,255,0.6); margin: 0 0 8px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .va-service-card-price { font-size: 13px; font-weight: 700; color: var(--va-accent); }
+        .va-service-card-cta { display: block; width: 100%; margin-top: 8px; padding: 6px; background: var(--va-primary); color: white; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; text-align: center; transition: background 0.2s; }
+        .va-service-card-cta:hover { background: var(--va-primary-dark); }
+        .va-catalog-header { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; color: #e5e5e5; font-size: 13px; font-weight: 600; }
+        .va-catalog-header svg { width: 14px; height: 14px; fill: var(--va-primary); }
+
         @media (max-width: 480px) {
           .va-panel { width: calc(100vw - 40px); ${position}: -5px; }
         }
@@ -340,7 +372,7 @@
 
     function showNotificationBubble() {
         const L = state.langData;
-        const trigger = document.getElementById('va-trigger');
+        const trigger = $id('va-trigger');
         if (!trigger) return;
 
         const bubble = document.createElement('div');
@@ -358,11 +390,11 @@
     // ============================================================
 
     function initEventListeners() {
-        const trigger = document.getElementById('va-trigger');
-        const closeBtn = document.getElementById('va-close');
-        const sendBtn = document.getElementById('va-send');
-        const input = document.getElementById('va-input');
-        const micBtn = document.getElementById('va-mic');
+        const trigger = $id('va-trigger');
+        const closeBtn = $id('va-close');
+        const sendBtn = $id('va-send');
+        const input = $id('va-input');
+        const micBtn = $id('va-mic');
 
         if (trigger) trigger.addEventListener('click', togglePanel);
         if (closeBtn) closeBtn.addEventListener('click', togglePanel);
@@ -393,12 +425,12 @@
             if (!state.isOpen) return;
             if (e.key === 'Escape') {
                 togglePanel();
-                const trigger = document.getElementById('va-trigger');
+                const trigger = $id('va-trigger');
                 if (trigger) trigger.focus();
                 return;
             }
             if (e.key === 'Tab') {
-                const panel = document.getElementById('va-panel');
+                const panel = $id('va-panel');
                 if (!panel) return;
                 const focusable = panel.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
                 if (focusable.length === 0) return;
@@ -419,7 +451,7 @@
 
     function togglePanel() {
         state.isOpen = !state.isOpen;
-        const panel = document.getElementById('va-panel');
+        const panel = $id('va-panel');
         if (panel) {
             panel.classList.toggle('open', state.isOpen);
         }
@@ -428,7 +460,7 @@
             trackEvent('widget_opened');
             // Focus input when opened
             setTimeout(() => {
-                const input = document.getElementById('va-input');
+                const input = $id('va-input');
                 if (input) input.focus();
             }, 100);
 
@@ -448,7 +480,7 @@
     // ============================================================
 
     function addMessage(text, type = 'assistant') {
-        const container = document.getElementById('va-messages');
+        const container = $id('va-messages');
         if (!container) return;
 
         const div = document.createElement('div');
@@ -470,17 +502,82 @@
         return div.innerHTML;
     }
 
+    // ============================================================
+    // CATALOG/SERVICE CARD DISPLAY
+    // ============================================================
+
+    function renderServiceCards(items, title) {
+        if (!CONFIG.CATALOG_MODE || !items || items.length === 0) return;
+
+        const container = $id('va-messages');
+        if (!container) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'va-message assistant';
+
+        const safeTitle = title ? escapeHtml(title) : '';
+        let html = `<div class="va-message-content" style="max-width:100%;padding:10px 12px;">`;
+        if (safeTitle) {
+            html += `<div class="va-catalog-header"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/><path d="M7 12h2v5H7zm4-3h2v8h-2zm4-3h2v11h-2z"/></svg>${safeTitle}</div>`;
+        }
+        html += `<div class="va-service-cards">`;
+
+        const limit = Math.min(items.length, CONFIG.MAX_CATALOG_ITEMS);
+        for (let i = 0; i < limit; i++) {
+            const item = items[i];
+            const safeName = escapeHtml(item.name || item.title || '');
+            const safeDesc = escapeHtml(item.description || item.subtitle || '');
+            const safePrice = escapeHtml(item.price || item.pricing || '');
+            const hasImage = item.image || item.images?.[0] || item.thumbnail;
+            const imageUrl = hasImage || '';
+
+            html += `<div class="va-service-card" data-item-id="${escapeHtml(item.id || '')}" data-index="${i}">`;
+            if (imageUrl) {
+                html += `<img class="va-service-card-img" src="${escapeHtml(imageUrl)}" alt="${safeName}" loading="lazy" onerror="this.outerHTML='<div class=\\'va-service-card-img-placeholder\\'>📋</div>'"/>`;
+            } else {
+                html += `<div class="va-service-card-img-placeholder">${item.icon || '📋'}</div>`;
+            }
+            html += `<div class="va-service-card-body">`;
+            html += `<div class="va-service-card-title">${safeName}</div>`;
+            if (safeDesc) html += `<div class="va-service-card-desc">${safeDesc}</div>`;
+            if (safePrice) html += `<div class="va-service-card-price">${safePrice}</div>`;
+            html += `<button class="va-service-card-cta">${escapeHtml(item.cta || 'En savoir plus')}</button>`;
+            html += `</div></div>`;
+        }
+
+        html += `</div></div>`;
+        wrapper.innerHTML = html;
+        container.appendChild(wrapper);
+        container.scrollTop = container.scrollHeight;
+
+        // Click handlers for service cards
+        wrapper.querySelectorAll('.va-service-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const itemId = card.dataset.itemId;
+                const itemIndex = parseInt(card.dataset.index);
+                const item = items[itemIndex];
+                if (item) {
+                    trackEvent('service_card_click', { item_id: itemId, item_name: item.name || item.title });
+                    // Send a follow-up message about the clicked service
+                    sendMessage(item.name || item.title, 'text');
+                }
+            });
+        });
+
+        trackEvent('service_cards_displayed', { count: limit, title: title || 'catalog' });
+    }
+
     function speak(text) {
         if (!hasSpeechSynthesis) return;
         state.synthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = state.langData?.meta?.speechSynthesis || 'fr-FR';
         utterance.onstart = () => {
-            const viz = document.getElementById('va-visualizer');
+            const viz = $id('va-visualizer');
             if (viz) viz.classList.add('active');
         };
         utterance.onend = () => {
-            const viz = document.getElementById('va-visualizer');
+            const viz = $id('va-visualizer');
             if (viz) viz.classList.remove('active');
         };
         state.synthesis.speak(utterance);
@@ -497,15 +594,15 @@
 
         state.recognition.onresult = (e) => {
             const transcript = e.results[0][0].transcript;
-            const input = document.getElementById('va-input');
+            const input = $id('va-input');
             if (input) input.value = transcript;
             sendMessage(transcript, 'voice');
         };
 
         state.recognition.onend = () => {
             state.isListening = false;
-            const micBtn = document.getElementById('va-mic');
-            const viz = document.getElementById('va-visualizer');
+            const micBtn = $id('va-mic');
+            const viz = $id('va-visualizer');
             if (micBtn) micBtn.classList.remove('listening');
             if (viz) viz.classList.remove('active');
         };
@@ -513,7 +610,7 @@
         state.recognition.onerror = (e) => {
             console.warn('[VocalIA] Speech recognition error:', e.error);
             state.isListening = false;
-            const micBtn = document.getElementById('va-mic');
+            const micBtn = $id('va-mic');
             if (micBtn) micBtn.classList.remove('listening');
         };
     }
@@ -526,11 +623,105 @@
         } else {
             state.recognition.start();
             state.isListening = true;
-            const micBtn = document.getElementById('va-mic');
-            const viz = document.getElementById('va-visualizer');
+            const micBtn = $id('va-mic');
+            const viz = $id('va-visualizer');
             if (micBtn) micBtn.classList.add('listening');
             if (viz) viz.classList.add('active');
             trackEvent('voice_input_started');
+        }
+    }
+
+    // ============================================================
+    // A2UI RENDERER — Agent-to-UI dynamic components
+    // ============================================================
+
+    function renderA2UIComponent(a2ui) {
+        if (!a2ui || !a2ui.html) return;
+        const container = $id('va-messages');
+        if (!container) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'va-message assistant va-a2ui-wrapper';
+
+        if (a2ui.css) {
+            const style = document.createElement('style');
+            style.textContent = a2ui.css;
+            wrapper.appendChild(style);
+        }
+
+        const content = document.createElement('div');
+        content.className = 'va-message-content';
+        content.innerHTML = a2ui.html;
+        wrapper.appendChild(content);
+
+        container.appendChild(wrapper);
+        container.scrollTop = container.scrollHeight;
+
+        // Attach action listeners for A2UI interactive elements
+        wrapper.querySelectorAll('[data-a2ui-action]').forEach(el => {
+            el.addEventListener('click', () => {
+                handleA2UIAction(el.dataset.a2uiAction, {
+                    type: a2ui.type,
+                    value: el.dataset.slot || el.dataset.productId || null,
+                    element: el,
+                    wrapper
+                });
+            });
+        });
+
+        trackEvent('a2ui_rendered', { type: a2ui.type });
+    }
+
+    async function handleA2UIAction(action, ctx) {
+        trackEvent('a2ui_action', { action, type: ctx.type });
+
+        // Slot selection — toggle selected class + enable confirm button
+        if (action === 'select_slot') {
+            const comp = ctx.element.closest('[data-a2ui-component]');
+            if (comp) {
+                comp.querySelectorAll('.va-a2ui-slot').forEach(s => s.classList.remove('selected'));
+                ctx.element.classList.add('selected');
+                const btn = comp.querySelector('[data-a2ui-action="confirm_booking"]');
+                if (btn) btn.disabled = false;
+            }
+            return;
+        }
+
+        // Close action — remove component
+        if (action === 'close') {
+            ctx.wrapper.remove();
+            return;
+        }
+
+        // Actions that send to backend: confirm_booking, submit_lead, checkout
+        const payload = {};
+        const comp = ctx.element.closest('[data-a2ui-component]');
+        if (action === 'confirm_booking' && comp) {
+            const selected = comp.querySelector('.va-a2ui-slot.selected');
+            payload.slot = selected?.dataset.slot;
+        } else if (action === 'submit_lead' && comp) {
+            const form = comp.querySelector('form');
+            if (form) new FormData(form).forEach((v, k) => { payload[k] = v; });
+        }
+
+        try {
+            const resp = await fetch(CONFIG.VOICE_API_URL.replace('/respond', '/a2ui/action'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action,
+                    data: payload,
+                    sessionId: state.sessionId,
+                    tenant_id: state.tenantId,
+                    widget_type: 'B2B'
+                })
+            });
+            const result = await resp.json();
+            if (result.message) {
+                addMessage(result.message, 'assistant');
+            }
+        } catch (e) {
+            console.warn('[VocalIA B2B] A2UI action failed:', e.message);
         }
     }
 
@@ -542,7 +733,7 @@
         if (!text?.trim()) return;
 
         addMessage(text, 'user');
-        const input = document.getElementById('va-input');
+        const input = $id('va-input');
         if (input) input.value = '';
 
         trackEvent('message_sent', { input_method: inputMethod, length: text.length });
@@ -574,6 +765,14 @@
             const data = await response.json();
             if (data.response) {
                 addMessage(data.response, 'assistant');
+                // Render A2UI component if backend sent one (booking, lead_form, etc.)
+                if (data.a2ui) {
+                    renderA2UIComponent(data.a2ui);
+                }
+                // Render catalog/service cards if backend returned them
+                if (data.catalog && data.catalog.items && data.catalog.items.length > 0) {
+                    renderServiceCards(data.catalog.items, data.catalog.title);
+                }
                 // Check if user had booking intent and show CTA
                 if (state.bookingConfig.enabled && isBookingIntent(text)) {
                     showBookingCTA();
@@ -593,7 +792,7 @@
     }
 
     function showTypingIndicator() {
-        const container = document.getElementById('va-messages');
+        const container = $id('va-messages');
         if (!container) return null;
 
         const id = `typing-${Date.now()}`;
@@ -613,7 +812,7 @@
 
     function removeTypingIndicator(id) {
         if (!id) return;
-        const el = document.getElementById(id);
+        const el = $id(id);
         if (el) el.remove();
     }
 
@@ -780,10 +979,10 @@
 
         notification.appendChild(closeBtn);
         notification.appendChild(content);
-        document.body.appendChild(notification);
+        (shadowRoot || document.body).appendChild(notification);
 
         setTimeout(() => {
-            const el = document.getElementById(notifId);
+            const el = $id(notifId);
             if (el) el.remove();
         }, CONFIG.SOCIAL_PROOF_DURATION);
 
@@ -812,7 +1011,7 @@
     function showBookingCTA() {
         if (!state.bookingConfig.enabled) return;
 
-        const container = document.getElementById('va-messages');
+        const container = $id('va-messages');
         if (!container) return;
 
         const ctaDiv = document.createElement('div');

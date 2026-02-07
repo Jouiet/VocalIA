@@ -8,7 +8,7 @@
 
 VocalIA is a comprehensive Voice AI SaaS platform combining:
 
-- **Voice Widget** - Browser-based (Web Speech API, $0 cost) - 8 widgets, 9,107 lines
+- **Voice Widget** - Browser-based (Web Speech API, $0 cost) - 7 widgets, 9,671 lines
 - **Voice Telephony AI** - PSTN integration (Twilio + Grok WebSocket) - 4,709 lines, 25 function tools
 - **SaaS Webapp** - Multi-tenant dashboards (Auth, HITL, Analytics) - 76 pages
 
@@ -103,16 +103,15 @@ VocalIA/                          # ~140,000 lignes total
 
 ## Features
 
-### Voice Widget (Browser) - 8 widgets, 9,107 lines
+### Voice Widget (Browser) - 7 widgets, 9,671 lines
 
-- voice-widget-v3.js (3,135) - E-commerce Core
+- voice-widget-v3.js (3,384) - E-commerce Core + Widget Orchestrator
 - abandoned-cart-recovery.js (1,416) - +25% cart recovery
-- spin-wheel.js (1,176) - Gamification +15% conversion
+- spin-wheel.js (1,177) - Gamification +15% conversion
 - voice-quiz.js (1,127) - +65% completion vs text
-- free-shipping-bar.js (826) - +20% AOV
-- voice-widget-b2b.js (659) - B2B Lead Widget
-- recommendation-carousel.js (615) - AI Product Carousel
-- intelligent-fallback.js (153) - Graceful Degradation
+- free-shipping-bar.js (827) - +20% AOV
+- voice-widget-b2b.js (1,113) - B2B Lead Widget + Catalog Mode
+- recommendation-carousel.js (627) - AI Product Carousel
 
 ### Voice Telephony AI (PSTN) - 4,709 lines, 25 function tools
 

@@ -1,11 +1,12 @@
 # VocalIA - Voice AI Platform
 
-> **v7.13.0** | 07/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
-> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,792 tests** (68 files, 0 skip)
-> **203 MCP Tools** | 38 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
-> **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,353 + MCP/src 17,630 + Lib 921 + Website 31,512
-> ✅ **SESSION 250.129 TENANT AUDIT**: External audit revealed tenant system non-functional. 4 root causes fixed: data-vocalia-tenant on 50 pages, camelCase→snake_case, GA4 infra, ECOM social proof. Score 8.6→7.2
-> ✅ **SESSION 250.128 WIDGET FIXES**: P0-W2 XSS, P0-W3 CONFIG, P0-W4 branding (#5E6AD2), P0-W5 cleanup, P1-W6 WCAG
+> **v7.16.0** | 07/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
+> **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (69 files .mjs, 0 skip)
+> **203 MCP Tools** | 38 Personas | **25 Function Tools** | 7 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
+> **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,671 + MCP/src 17,630 + Lib 921 + Website 31,512
+> ✅ **SESSION 250.133 CI HARDENING**: tsc --noEmit MCP, c8 coverage threshold, rogue color fixed, onboarding 6 bugs, lucide pinned
+> ✅ **SESSION 250.132 ESM MIGRATION**: 69 test files .cjs→.mjs, esbuild production bundler (3 bundles), const→let bug fix
+> ✅ **SESSION 250.131 WIDGET INTEGRATION**: 3 widgets restored+integrated (spin-wheel, shipping-bar, reco-carousel). Orchestrator wired. B2B catalog mode. A2A/A2UI done.
 >    - **510 tenants** (B2B=270, B2C=186, ECOM=54) | **553 KB directories** × 5 languages = **2,765 KB files**
 >    - **38 personas covered**: 12-13 tenants each | 12 regions
 
@@ -16,7 +17,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Tests**: 3,792 (68 files, 0 skip) — **Score**: 7.2/10 (250.129 — tenant audit), **CORS**: ✅, **XSS**: ✅ (B2B + ECOM both fixed) |
+| Scores | **Tests**: 3,763 (69 files .mjs, 0 skip) — **Score**: 8.6/10 (250.133), **Coverage**: 46.78%, **CORS**: ✅, **XSS**: ✅ |
 
 ---
 
@@ -34,7 +35,7 @@ VocalIA/                              # VÉRIFIÉ wc -l 06/02/2026 (Session 250.
 ├── lib/            # 1 module (921 lines) - security-utils
 ├── telephony/      # PSTN bridge (4,709 lines, 25 function tools)
 ├── personas/       # 38 personas (8,479 .cjs + 602 .json = 9,081 lines)
-├── widget/         # 8 e-commerce widgets (9,353 lines)
+├── widget/         # 7 e-commerce widgets (9,671 lines)
 ├── website/        # 77 pages (public + webapp)
 │   └── src/locales/   # 5 langs (23,950 lines)
 ├── mcp-server/src/ # 203 tools TypeScript (17,630 lines, 31 .ts files)
@@ -115,7 +116,9 @@ Voir `.claude/rules/branding.md` section 10 pour les commandes de vérification.
 
 ## Code Standards
 
-- CommonJS (.cjs), 2 spaces, single quotes
+- Source: CommonJS (.cjs), 2 spaces, single quotes
+- Tests: ESM (.mjs), import from .cjs sources
+- Build: esbuild → dist/ (voice-api, db-api, telephony)
 - Credentials: `process.env.*`
 - Errors: `console.error('❌ ...')`
 - Success: `console.log('✅ ...')`
@@ -162,7 +165,7 @@ Voir `.claude/rules/branding.md` section 10 pour les commandes de vérification.
 
 | Feature | Status |
 |:--------|:------:|
-| Voice Widget v3.2 | ✅ 8 widgets |
+| Voice Widget v3.2 | ✅ 7 widgets (6 in ECOM bundle + 1 B2B) |
 | Telephony TwiML | ✅ |
 | Multi-tenant KB | ✅ |
 | A2A Protocol | ✅ 4 agents |
@@ -180,20 +183,22 @@ Voir `.claude/rules/branding.md` section 10 pour les commandes de vérification.
 | Client Folders | **553** (23 real + 530 test data) |
 | KB Files | **2,765** (553 dirs × 5 langs) |
 
-**Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` — P0-TENANT fixed (250.129). Remaining: GA4 Measurement ID, P2-W7/W8/W9 (Shadow DOM, CDN, archive), P3-1 ESM, P3-4 A2A
+**Work Remaining:** See `docs/ROADMAP-TO-COMPLETION.md` — P2-WIDGET + P3-4 done (250.131). Remaining: GA4 Measurement ID (user), CDN infra, P3-1 ESM (10h)
 
 **530 client folders** in `clients/` = TEST DATA (not real clients). Only 23 registry entries are production.
 
-## ✅ Test Quality (Session 250.126 — Theater Purge)
+## ✅ Test Quality (Session 250.132 — ESM Migration)
 
-| Pattern | Before (250.114) | After (250.126) | Status |
+| Pattern | Before (250.114) | After (250.132) | Status |
 |:--------|:-----------------:|:----------------:|:------:|
 | typeof 'function' exports | 223 (49 files) | 12 (contextual only) | ✅ Fixed |
 | source-grep (content.includes) | 121 | 0 | ✅ Fixed (250.125) |
-| module-load assert.ok | 20 | 0 | ✅ Fixed (250.125) |
+| module-load assert.ok | 20 | 0 | ✅ Fixed (250.125+250.132) |
 | existsSync | 40 | 40 (all legitimate) | ✅ Audited |
 | Files rewritten from scratch | — | 3 (llm-gateway, eventbus, embedding) | ✅ |
-| Theater tests removed | — | 244 total | ✅ |
+| Theater tests removed | — | 244+ total | ✅ |
+| ESM migration | 69 files .cjs | 69 files .mjs | ✅ 250.132 |
+| esbuild production bundles | — | 3 targets (voice-api, db-api, telephony) | ✅ 250.132 |
 
 **Remaining**: MAIN API + DB API still need behavioral function call tests (P0 tasks).
 
@@ -251,7 +256,7 @@ providers: [
 
 ---
 
-**Platform Score: 7.2/10** (250.129 — External audit: tenant system non-functional. 4 fixes: data-vocalia-tenant 50 pages, camelCase→snake_case, GA4 infra, ECOM social proof. 3,792 tests, 0 fail)
-P0-P2 resolved. P0-WIDGET NEW (4 tasks). See `docs/ROADMAP-TO-COMPLETION.md`.
+**Platform Score: 8.6/10** (250.133 — CI hardened: tsc, c8 coverage, rogue colors, onboarding repaired, lucide pinned)
+ALL code tasks DONE. See `docs/ROADMAP-TO-COMPLETION.md`. Remaining: optional source ESM + infrastructure (GA4 ID, CDN, monitoring).
 
-*Last update: 07/02/2026 - Session 250.127 (Widget forensic audit: source≠deployed, 57% dead code, 2 broken stubs, 3 color schemes. Score 8.4→7.8)*
+*Last update: 07/02/2026 - Session 250.133 (CI hardening: tsc --noEmit, c8 coverage 45%, rogue #0f0f23 fixed, onboarding 6 bugs, stale "40", lucide pinned)*

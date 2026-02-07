@@ -16,156 +16,156 @@
  * - Orchestrator integration
  */
 
-(function() {
-  'use strict';
+(function () {
+    'use strict';
 
-  // ============================================================
-  // TRANSLATIONS (5 LANGUAGES)
-  // ============================================================
+    // ============================================================
+    // TRANSLATIONS (5 LANGUAGES)
+    // ============================================================
 
-  const TRANSLATIONS = {
-    fr: {
-      title: 'Votre panier vous attend !',
-      subtitle: 'Vous avez {{count}} article(s) dans votre panier',
-      subtitleSingular: 'Vous avez 1 article dans votre panier',
-      voiceReminder: 'Attendez ! Ne partez pas les mains vides...',
-      valueLabel: 'Valeur totale :',
-      offerLabel: 'Offre exclusive :',
-      offerText: '{{discount}}% de reduction si vous finalisez maintenant',
-      callbackTitle: 'Rappel vocal gratuit',
-      callbackDesc: 'Recevez un rappel vocal personnalise',
-      smsTitle: 'Rappel par SMS',
-      smsDesc: 'Lien direct vers votre panier',
-      emailTitle: 'Rappel par email',
-      emailDesc: 'Recapitulatif de votre panier',
-      phonePlaceholder: '+212 6XX XXX XXX',
-      emailPlaceholder: 'votre@email.com',
-      sendBtn: 'Recevoir le rappel',
-      checkoutBtn: 'Finaliser ma commande',
-      continueBrowsing: 'Continuer mes achats',
-      successCallback: 'Parfait ! Vous recevrez un appel dans quelques minutes.',
-      successSms: 'SMS envoye ! Verifiez votre telephone.',
-      successEmail: 'Email envoye ! Verifiez votre boite de reception.',
-      errorInvalid: 'Veuillez entrer un numero ou email valide',
-      errorSend: 'Erreur lors de l\'envoi. Reessayez.',
-      cartItemsLabel: 'Articles :',
-      expiresIn: 'Offre valable encore {{minutes}} min'
-    },
-    en: {
-      title: 'Your cart is waiting!',
-      subtitle: 'You have {{count}} item(s) in your cart',
-      subtitleSingular: 'You have 1 item in your cart',
-      voiceReminder: 'Wait! Don\'t leave empty-handed...',
-      valueLabel: 'Total value:',
-      offerLabel: 'Exclusive offer:',
-      offerText: '{{discount}}% off if you complete now',
-      callbackTitle: 'Free voice callback',
-      callbackDesc: 'Get a personalized voice reminder',
-      smsTitle: 'SMS reminder',
-      smsDesc: 'Direct link to your cart',
-      emailTitle: 'Email reminder',
-      emailDesc: 'Summary of your cart',
-      phonePlaceholder: '+1 XXX XXX XXXX',
-      emailPlaceholder: 'your@email.com',
-      sendBtn: 'Get reminder',
-      checkoutBtn: 'Complete my order',
-      continueBrowsing: 'Continue shopping',
-      successCallback: 'Perfect! You\'ll receive a call shortly.',
-      successSms: 'SMS sent! Check your phone.',
-      successEmail: 'Email sent! Check your inbox.',
-      errorInvalid: 'Please enter a valid phone or email',
-      errorSend: 'Error sending. Please retry.',
-      cartItemsLabel: 'Items:',
-      expiresIn: 'Offer valid for {{minutes}} more min'
-    },
-    es: {
-      title: 'Tu carrito te espera!',
-      subtitle: 'Tienes {{count}} articulo(s) en tu carrito',
-      subtitleSingular: 'Tienes 1 articulo en tu carrito',
-      voiceReminder: 'Espera! No te vayas con las manos vacias...',
-      valueLabel: 'Valor total:',
-      offerLabel: 'Oferta exclusiva:',
-      offerText: '{{discount}}% de descuento si finalizas ahora',
-      callbackTitle: 'Llamada de recordatorio gratis',
-      callbackDesc: 'Recibe un recordatorio de voz personalizado',
-      smsTitle: 'Recordatorio por SMS',
-      smsDesc: 'Enlace directo a tu carrito',
-      emailTitle: 'Recordatorio por email',
-      emailDesc: 'Resumen de tu carrito',
-      phonePlaceholder: '+34 XXX XXX XXX',
-      emailPlaceholder: 'tu@email.com',
-      sendBtn: 'Recibir recordatorio',
-      checkoutBtn: 'Finalizar mi pedido',
-      continueBrowsing: 'Seguir comprando',
-      successCallback: 'Perfecto! Recibiras una llamada en breve.',
-      successSms: 'SMS enviado! Revisa tu telefono.',
-      successEmail: 'Email enviado! Revisa tu bandeja.',
-      errorInvalid: 'Por favor ingresa un numero o email valido',
-      errorSend: 'Error al enviar. Reintenta.',
-      cartItemsLabel: 'Articulos:',
-      expiresIn: 'Oferta valida por {{minutes}} min mas'
-    },
-    ar: {
-      title: 'سلتك بانتظارك!',
-      subtitle: 'لديك {{count}} منتج(ات) في سلتك',
-      subtitleSingular: 'لديك منتج واحد في سلتك',
-      voiceReminder: 'انتظر! لا تغادر بيدين فارغتين...',
-      valueLabel: 'القيمة الإجمالية:',
-      offerLabel: 'عرض حصري:',
-      offerText: '{{discount}}% خصم إذا أتممت الآن',
-      callbackTitle: 'مكالمة تذكير مجانية',
-      callbackDesc: 'احصل على تذكير صوتي مخصص',
-      smsTitle: 'تذكير عبر SMS',
-      smsDesc: 'رابط مباشر لسلتك',
-      emailTitle: 'تذكير عبر البريد',
-      emailDesc: 'ملخص سلتك',
-      phonePlaceholder: '+212 6XX XXX XXX',
-      emailPlaceholder: 'بريدك@مثال.com',
-      sendBtn: 'استلم التذكير',
-      checkoutBtn: 'إتمام طلبي',
-      continueBrowsing: 'متابعة التسوق',
-      successCallback: 'ممتاز! ستتلقى مكالمة قريبًا.',
-      successSms: 'تم إرسال SMS! تحقق من هاتفك.',
-      successEmail: 'تم إرسال البريد! تحقق من صندوقك.',
-      errorInvalid: 'يرجى إدخال رقم أو بريد صحيح',
-      errorSend: 'خطأ في الإرسال. حاول مجددًا.',
-      cartItemsLabel: 'المنتجات:',
-      expiresIn: 'العرض صالح لمدة {{minutes}} دقيقة'
-    },
-    ary: {
-      title: 'الباني ديالك كيتسناك!',
-      subtitle: 'عندك {{count}} منتوج(ات) فالباني',
-      subtitleSingular: 'عندك منتوج واحد فالباني',
-      voiceReminder: 'تسنا! ما تمشيش بيديك خاويين...',
-      valueLabel: 'المجموع:',
-      offerLabel: 'عرض خاص:',
-      offerText: '{{discount}}% تخفيض إلا كملتي دابا',
-      callbackTitle: 'تيليفون مجاني',
-      callbackDesc: 'غادي نعيطو ليك باش نفكروك',
-      smsTitle: 'SMS للتذكير',
-      smsDesc: 'لينك مباشر للباني',
-      emailTitle: 'إيميل للتذكير',
-      emailDesc: 'ملخص الباني ديالك',
-      phonePlaceholder: '+212 6XX XXX XXX',
-      emailPlaceholder: 'الإيميل ديالك',
-      sendBtn: 'بغيت التذكير',
-      checkoutBtn: 'نكمل الطلب',
-      continueBrowsing: 'نكمل التسوق',
-      successCallback: 'مزيان! غادي نعيطو ليك دابا.',
-      successSms: 'SMS مشى! شوف التيليفون.',
-      successEmail: 'الإيميل مشى! شوف البوات.',
-      errorInvalid: 'دخل رقم ولا إيميل صحيح',
-      errorSend: 'كاين مشكل. عاود.',
-      cartItemsLabel: 'المنتوجات:',
-      expiresIn: 'العرض صالح {{minutes}} دقيقة'
-    }
-  };
+    const TRANSLATIONS = {
+        fr: {
+            title: 'Votre panier vous attend !',
+            subtitle: 'Vous avez {{count}} article(s) dans votre panier',
+            subtitleSingular: 'Vous avez 1 article dans votre panier',
+            voiceReminder: 'Attendez ! Ne partez pas les mains vides...',
+            valueLabel: 'Valeur totale :',
+            offerLabel: 'Offre exclusive :',
+            offerText: '{{discount}}% de reduction si vous finalisez maintenant',
+            callbackTitle: 'Rappel vocal gratuit',
+            callbackDesc: 'Recevez un rappel vocal personnalise',
+            smsTitle: 'Rappel par SMS',
+            smsDesc: 'Lien direct vers votre panier',
+            emailTitle: 'Rappel par email',
+            emailDesc: 'Recapitulatif de votre panier',
+            phonePlaceholder: '+212 6XX XXX XXX',
+            emailPlaceholder: 'votre@email.com',
+            sendBtn: 'Recevoir le rappel',
+            checkoutBtn: 'Finaliser ma commande',
+            continueBrowsing: 'Continuer mes achats',
+            successCallback: 'Parfait ! Vous recevrez un appel dans quelques minutes.',
+            successSms: 'SMS envoye ! Verifiez votre telephone.',
+            successEmail: 'Email envoye ! Verifiez votre boite de reception.',
+            errorInvalid: 'Veuillez entrer un numero ou email valide',
+            errorSend: 'Erreur lors de l\'envoi. Reessayez.',
+            cartItemsLabel: 'Articles :',
+            expiresIn: 'Offre valable encore {{minutes}} min'
+        },
+        en: {
+            title: 'Your cart is waiting!',
+            subtitle: 'You have {{count}} item(s) in your cart',
+            subtitleSingular: 'You have 1 item in your cart',
+            voiceReminder: 'Wait! Don\'t leave empty-handed...',
+            valueLabel: 'Total value:',
+            offerLabel: 'Exclusive offer:',
+            offerText: '{{discount}}% off if you complete now',
+            callbackTitle: 'Free voice callback',
+            callbackDesc: 'Get a personalized voice reminder',
+            smsTitle: 'SMS reminder',
+            smsDesc: 'Direct link to your cart',
+            emailTitle: 'Email reminder',
+            emailDesc: 'Summary of your cart',
+            phonePlaceholder: '+1 XXX XXX XXXX',
+            emailPlaceholder: 'your@email.com',
+            sendBtn: 'Get reminder',
+            checkoutBtn: 'Complete my order',
+            continueBrowsing: 'Continue shopping',
+            successCallback: 'Perfect! You\'ll receive a call shortly.',
+            successSms: 'SMS sent! Check your phone.',
+            successEmail: 'Email sent! Check your inbox.',
+            errorInvalid: 'Please enter a valid phone or email',
+            errorSend: 'Error sending. Please retry.',
+            cartItemsLabel: 'Items:',
+            expiresIn: 'Offer valid for {{minutes}} more min'
+        },
+        es: {
+            title: 'Tu carrito te espera!',
+            subtitle: 'Tienes {{count}} articulo(s) en tu carrito',
+            subtitleSingular: 'Tienes 1 articulo en tu carrito',
+            voiceReminder: 'Espera! No te vayas con las manos vacias...',
+            valueLabel: 'Valor total:',
+            offerLabel: 'Oferta exclusiva:',
+            offerText: '{{discount}}% de descuento si finalizas ahora',
+            callbackTitle: 'Llamada de recordatorio gratis',
+            callbackDesc: 'Recibe un recordatorio de voz personalizado',
+            smsTitle: 'Recordatorio por SMS',
+            smsDesc: 'Enlace directo a tu carrito',
+            emailTitle: 'Recordatorio por email',
+            emailDesc: 'Resumen de tu carrito',
+            phonePlaceholder: '+34 XXX XXX XXX',
+            emailPlaceholder: 'tu@email.com',
+            sendBtn: 'Recibir recordatorio',
+            checkoutBtn: 'Finalizar mi pedido',
+            continueBrowsing: 'Seguir comprando',
+            successCallback: 'Perfecto! Recibiras una llamada en breve.',
+            successSms: 'SMS enviado! Revisa tu telefono.',
+            successEmail: 'Email enviado! Revisa tu bandeja.',
+            errorInvalid: 'Por favor ingresa un numero o email valido',
+            errorSend: 'Error al enviar. Reintenta.',
+            cartItemsLabel: 'Articulos:',
+            expiresIn: 'Oferta valida por {{minutes}} min mas'
+        },
+        ar: {
+            title: 'سلتك بانتظارك!',
+            subtitle: 'لديك {{count}} منتج(ات) في سلتك',
+            subtitleSingular: 'لديك منتج واحد في سلتك',
+            voiceReminder: 'انتظر! لا تغادر بيدين فارغتين...',
+            valueLabel: 'القيمة الإجمالية:',
+            offerLabel: 'عرض حصري:',
+            offerText: '{{discount}}% خصم إذا أتممت الآن',
+            callbackTitle: 'مكالمة تذكير مجانية',
+            callbackDesc: 'احصل على تذكير صوتي مخصص',
+            smsTitle: 'تذكير عبر SMS',
+            smsDesc: 'رابط مباشر لسلتك',
+            emailTitle: 'تذكير عبر البريد',
+            emailDesc: 'ملخص سلتك',
+            phonePlaceholder: '+212 6XX XXX XXX',
+            emailPlaceholder: 'بريدك@مثال.com',
+            sendBtn: 'استلم التذكير',
+            checkoutBtn: 'إتمام طلبي',
+            continueBrowsing: 'متابعة التسوق',
+            successCallback: 'ممتاز! ستتلقى مكالمة قريبًا.',
+            successSms: 'تم إرسال SMS! تحقق من هاتفك.',
+            successEmail: 'تم إرسال البريد! تحقق من صندوقك.',
+            errorInvalid: 'يرجى إدخال رقم أو بريد صحيح',
+            errorSend: 'خطأ في الإرسال. حاول مجددًا.',
+            cartItemsLabel: 'المنتجات:',
+            expiresIn: 'العرض صالح لمدة {{minutes}} دقيقة'
+        },
+        ary: {
+            title: 'الباني ديالك كيتسناك!',
+            subtitle: 'عندك {{count}} منتوج(ات) فالباني',
+            subtitleSingular: 'عندك منتوج واحد فالباني',
+            voiceReminder: 'تسنا! ما تمشيش بيديك خاويين...',
+            valueLabel: 'المجموع:',
+            offerLabel: 'عرض خاص:',
+            offerText: '{{discount}}% تخفيض إلا كملتي دابا',
+            callbackTitle: 'تيليفون مجاني',
+            callbackDesc: 'غادي نعيطو ليك باش نفكروك',
+            smsTitle: 'SMS للتذكير',
+            smsDesc: 'لينك مباشر للباني',
+            emailTitle: 'إيميل للتذكير',
+            emailDesc: 'ملخص الباني ديالك',
+            phonePlaceholder: '+212 6XX XXX XXX',
+            emailPlaceholder: 'الإيميل ديالك',
+            sendBtn: 'بغيت التذكير',
+            checkoutBtn: 'نكمل الطلب',
+            continueBrowsing: 'نكمل التسوق',
+            successCallback: 'مزيان! غادي نعيطو ليك دابا.',
+            successSms: 'SMS مشى! شوف التيليفون.',
+            successEmail: 'الإيميل مشى! شوف البوات.',
+            errorInvalid: 'دخل رقم ولا إيميل صحيح',
+            errorSend: 'كاين مشكل. عاود.',
+            cartItemsLabel: 'المنتوجات:',
+            expiresIn: 'العرض صالح {{minutes}} دقيقة'
+        }
+    };
 
-  // ============================================================
-  // STYLES
-  // ============================================================
+    // ============================================================
+    // STYLES
+    // ============================================================
 
-  const STYLES = `
+    const STYLES = `
     .va-abandoned-cart-overlay {
       position: fixed;
       top: 0;
@@ -189,7 +189,7 @@
     }
 
     .va-abandoned-cart-modal {
-      background: linear-gradient(135deg, #0f172a 0%, #0F1225 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #0c1220 100%);
       border: 1px solid rgba(94, 106, 210, 0.3);
       border-radius: 24px;
       max-width: 480px;
@@ -611,148 +611,143 @@
     }
   `;
 
-  // ============================================================
-  // ABANDONED CART RECOVERY CLASS
-  // ============================================================
+    // ============================================================
+    // ABANDONED CART RECOVERY CLASS
+    // ============================================================
 
-  class AbandonedCartRecovery {
-    constructor(options = {}) {
-      this.config = {
-        tenantId: options.tenantId || this.detectTenantId(),
-        lang: options.lang || this.detectLanguage(),
-        apiUrl: options.apiUrl || this.detectApiUrl(),
-        discountPercent: options.discountPercent || 10,
-        offerDurationMinutes: options.offerDurationMinutes || 15,
-        inactivityTimeout: options.inactivityTimeout || 180000, // 3 minutes
-        tabBlurTimeout: options.tabBlurTimeout || 60000, // 1 minute
-        minCartValue: options.minCartValue || 0,
-        cooldownPeriod: options.cooldownPeriod || 86400000, // 24 hours
-        voiceEnabled: options.voiceEnabled !== false,
-        checkoutUrl: options.checkoutUrl || '/checkout',
-        cartSelector: options.cartSelector || null, // Custom cart data selector
-        onShow: options.onShow || null,
-        onHide: options.onHide || null,
-        onRecovery: options.onRecovery || null
-      };
+    class AbandonedCartRecovery {
+        constructor(options = {}) {
+            this.config = {
+                tenantId: options.tenantId || this.detectTenantId(),
+                lang: options.lang || this.detectLanguage(),
+                apiUrl: options.apiUrl || this.detectApiUrl(),
+                discountPercent: options.discountPercent || 10,
+                offerDurationMinutes: options.offerDurationMinutes || 15,
+                inactivityTimeout: options.inactivityTimeout || 180000, // 3 minutes
+                tabBlurTimeout: options.tabBlurTimeout || 60000, // 1 minute
+                minCartValue: options.minCartValue || 0,
+                cooldownPeriod: options.cooldownPeriod || 86400000, // 24 hours
+                voiceEnabled: options.voiceEnabled !== false,
+                checkoutUrl: options.checkoutUrl || '/checkout',
+                cartSelector: options.cartSelector || null, // Custom cart data selector
+                onShow: options.onShow || null,
+                onHide: options.onHide || null,
+                onRecovery: options.onRecovery || null
+            };
 
-      this.state = {
-        isVisible: false,
-        isSpeaking: false,
-        selectedChannel: 'voice', // voice, sms, email
-        cartData: null,
-        timerInterval: null,
-        remainingMinutes: this.config.offerDurationMinutes,
-        inactivityTimer: null,
-        tabBlurTimer: null,
-        messageType: null,
-        messageText: null
-      };
+            this.state = {
+                isVisible: false,
+                isSpeaking: false,
+                selectedChannel: 'voice', // voice, sms, email
+                cartData: null,
+                timerInterval: null,
+                remainingMinutes: this.config.offerDurationMinutes,
+                inactivityTimer: null,
+                tabBlurTimer: null,
+                messageType: null,
+                messageText: null
+            };
 
-      this.elements = {};
-      this.translations = TRANSLATIONS[this.config.lang] || TRANSLATIONS.en;
-      this.isRTL = ['ar', 'ary'].includes(this.config.lang);
+            this.elements = {};
+            this.translations = TRANSLATIONS[this.config.lang] || TRANSLATIONS.en;
+            this.isRTL = ['ar', 'ary'].includes(this.config.lang);
 
-      this.init();
-    }
+            this.init();
+        }
 
-    detectTenantId() {
-      const widget = document.querySelector('[data-vocalia-tenant]');
-      if (widget) return widget.dataset.vocaliaTenant;
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('tenant') || 'default';
-    }
+        detectTenantId() {
+            const widget = document.querySelector('[data-vocalia-tenant]');
+            if (widget) return widget.dataset.vocaliaTenant;
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('tenant') || 'default';
+        }
 
-    detectLanguage() {
-      const widget = document.querySelector('[data-vocalia-lang]');
-      if (widget) return widget.dataset.vocaliaLang;
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('lang')) return urlParams.get('lang');
-      const browserLang = navigator.language?.split('-')[0];
-      return ['fr', 'en', 'es', 'ar', 'ary'].includes(browserLang) ? browserLang : 'fr';
-    }
+        detectLanguage() {
+            const widget = document.querySelector('[data-vocalia-lang]');
+            if (widget) return widget.dataset.vocaliaLang;
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('lang')) return urlParams.get('lang');
+            const browserLang = navigator.language?.split('-')[0];
+            return ['fr', 'en', 'es', 'ar', 'ary'].includes(browserLang) ? browserLang : 'fr';
+        }
 
-    detectApiUrl() {
-      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      return isLocal ? 'http://localhost:3013/api' : 'https://api.vocalia.ma/api';
-    }
+        detectApiUrl() {
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            return isLocal ? 'http://localhost:3013/api' : 'https://api.vocalia.ma/api';
+        }
 
-    init() {
-      // Inject styles
-      if (!document.querySelector('#va-abandoned-cart-styles')) {
-        const styleEl = document.createElement('style');
-        styleEl.id = 'va-abandoned-cart-styles';
-        styleEl.textContent = STYLES;
-        document.head.appendChild(styleEl);
-      }
+        init() {
+            // Inject styles
+            if (!document.querySelector('#va-abandoned-cart-styles')) {
+                const styleEl = document.createElement('style');
+                styleEl.id = 'va-abandoned-cart-styles';
+                styleEl.textContent = STYLES;
+                document.head.appendChild(styleEl);
+            }
 
-      // Create modal structure
-      this.createModal();
+            // Create modal structure
+            this.createModal();
 
-      // Setup detection triggers
-      this.setupDetection();
+            // Setup detection triggers
+            this.setupDetection();
 
-      // Check cooldown
-      this.checkCooldown();
+            // Check cooldown
+            this.checkCooldown();
 
-      // Listen for orchestrator events
-      this.setupOrchestratorIntegration();
+            // Listen for orchestrator events
+            this.setupOrchestratorIntegration();
+        }
 
-      console.log('[AbandonedCartRecovery] Initialized', {
-        tenant: this.config.tenantId,
-        lang: this.config.lang
-      });
-    }
+        createModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'va-abandoned-cart-overlay';
+            overlay.id = 'va-abandoned-cart-overlay';
+            overlay.innerHTML = this.getModalHTML();
+            document.body.appendChild(overlay);
 
-    createModal() {
-      const overlay = document.createElement('div');
-      overlay.className = 'va-abandoned-cart-overlay';
-      overlay.id = 'va-abandoned-cart-overlay';
-      overlay.innerHTML = this.getModalHTML();
-      document.body.appendChild(overlay);
+            this.elements.overlay = overlay;
+            this.elements.modal = overlay.querySelector('.va-abandoned-cart-modal');
+            this.elements.closeBtn = overlay.querySelector('.va-cart-close');
+            this.elements.input = overlay.querySelector('.va-cart-input');
+            this.elements.sendBtn = overlay.querySelector('.va-cart-send-btn');
+            this.elements.checkoutBtn = overlay.querySelector('.va-cart-checkout-btn');
+            this.elements.continueBtn = overlay.querySelector('.va-cart-continue-btn');
+            this.elements.message = overlay.querySelector('.va-cart-message');
+            this.elements.timer = overlay.querySelector('.va-cart-timer');
+            this.elements.subtitle = overlay.querySelector('.va-cart-subtitle');
+            this.elements.valueAmount = overlay.querySelector('.va-cart-value-amount');
+            this.elements.itemsRow = overlay.querySelector('.va-cart-items-row');
+            this.elements.offerText = overlay.querySelector('.va-cart-offer-text');
 
-      this.elements.overlay = overlay;
-      this.elements.modal = overlay.querySelector('.va-abandoned-cart-modal');
-      this.elements.closeBtn = overlay.querySelector('.va-cart-close');
-      this.elements.input = overlay.querySelector('.va-cart-input');
-      this.elements.sendBtn = overlay.querySelector('.va-cart-send-btn');
-      this.elements.checkoutBtn = overlay.querySelector('.va-cart-checkout-btn');
-      this.elements.continueBtn = overlay.querySelector('.va-cart-continue-btn');
-      this.elements.message = overlay.querySelector('.va-cart-message');
-      this.elements.timer = overlay.querySelector('.va-cart-timer');
-      this.elements.subtitle = overlay.querySelector('.va-cart-subtitle');
-      this.elements.valueAmount = overlay.querySelector('.va-cart-value-amount');
-      this.elements.itemsRow = overlay.querySelector('.va-cart-items-row');
-      this.elements.offerText = overlay.querySelector('.va-cart-offer-text');
+            // Event listeners
+            this.elements.closeBtn.addEventListener('click', () => this.hide());
+            this.elements.overlay.addEventListener('click', (e) => {
+                if (e.target === this.elements.overlay) this.hide();
+            });
 
-      // Event listeners
-      this.elements.closeBtn.addEventListener('click', () => this.hide());
-      this.elements.overlay.addEventListener('click', (e) => {
-        if (e.target === this.elements.overlay) this.hide();
-      });
+            // Recovery options
+            overlay.querySelectorAll('.va-recovery-option').forEach(opt => {
+                opt.addEventListener('click', () => this.selectChannel(opt.dataset.channel));
+            });
 
-      // Recovery options
-      overlay.querySelectorAll('.va-recovery-option').forEach(opt => {
-        opt.addEventListener('click', () => this.selectChannel(opt.dataset.channel));
-      });
+            // Send reminder
+            this.elements.sendBtn.addEventListener('click', () => this.sendReminder());
 
-      // Send reminder
-      this.elements.sendBtn.addEventListener('click', () => this.sendReminder());
+            // Checkout
+            this.elements.checkoutBtn.addEventListener('click', () => this.goToCheckout());
 
-      // Checkout
-      this.elements.checkoutBtn.addEventListener('click', () => this.goToCheckout());
+            // Continue browsing
+            this.elements.continueBtn.addEventListener('click', () => this.hide());
 
-      // Continue browsing
-      this.elements.continueBtn.addEventListener('click', () => this.hide());
+            // Input placeholder update
+            this.elements.input.addEventListener('focus', () => this.updateInputPlaceholder());
+        }
 
-      // Input placeholder update
-      this.elements.input.addEventListener('focus', () => this.updateInputPlaceholder());
-    }
+        getModalHTML() {
+            const t = this.translations;
+            const dir = this.isRTL ? 'rtl' : 'ltr';
 
-    getModalHTML() {
-      const t = this.translations;
-      const dir = this.isRTL ? 'rtl' : 'ltr';
-
-      return `
+            return `
         <div class="va-abandoned-cart-modal" dir="${dir}" role="dialog" aria-modal="true" aria-labelledby="va-cart-title">
           <button class="va-cart-close" aria-label="Close">
             <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
@@ -837,580 +832,580 @@
           </div>
         </div>
       `;
-    }
-
-    setupDetection() {
-      // Exit intent detection (desktop)
-      document.addEventListener('mouseout', (e) => {
-        if (e.clientY < 10 && !this.state.isVisible) {
-          this.checkAndShow('exit_intent');
         }
-      });
 
-      // Tab visibility change
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          this.startTabBlurTimer();
-        } else {
-          this.clearTabBlurTimer();
+        setupDetection() {
+            // Exit intent detection (desktop)
+            document.addEventListener('mouseout', (e) => {
+                if (e.clientY < 10 && !this.state.isVisible) {
+                    this.checkAndShow('exit_intent');
+                }
+            });
+
+            // Tab visibility change
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    this.startTabBlurTimer();
+                } else {
+                    this.clearTabBlurTimer();
+                }
+            });
+
+            // Inactivity detection
+            this.resetInactivityTimer();
+            ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+                document.addEventListener(event, () => this.resetInactivityTimer(), { passive: true });
+            });
+
+            // Before unload (for analytics)
+            window.addEventListener('beforeunload', () => {
+                if (this.hasCartItems()) {
+                    this.trackEvent('cart_abandoned_page_exit');
+                }
+            });
         }
-      });
 
-      // Inactivity detection
-      this.resetInactivityTimer();
-      ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
-        document.addEventListener(event, () => this.resetInactivityTimer(), { passive: true });
-      });
+        setupOrchestratorIntegration() {
+            // Integrate with Widget Orchestrator if available
+            if (window.VocalIA?.Orchestrator) {
+                window.VocalIA.Orchestrator.on('widgetActivated', (data) => {
+                    // Pause abandoned cart detection when other widgets are active
+                    if (data.widgetName !== 'abandonedCart' && this.state.isVisible) {
+                        this.hide();
+                    }
+                });
 
-      // Before unload (for analytics)
-      window.addEventListener('beforeunload', () => {
-        if (this.hasCartItems()) {
-          this.trackEvent('cart_abandoned_page_exit');
+                // Register with orchestrator
+                window.VocalIA.Orchestrator.widgets.abandonedCart = {
+                    priority: 6, // Lower priority than quiz (3) but shows for cart
+                    isActive: false,
+                    element: null,
+                    triggers: ['cart_abandon', 'exit_with_cart']
+                };
+            }
         }
-      });
-    }
 
-    setupOrchestratorIntegration() {
-      // Integrate with Widget Orchestrator if available
-      if (window.VocalIA?.Orchestrator) {
-        window.VocalIA.Orchestrator.on('widgetActivated', (data) => {
-          // Pause abandoned cart detection when other widgets are active
-          if (data.widgetName !== 'abandonedCart' && this.state.isVisible) {
+        checkCooldown() {
+            const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
+            if (lastShown) {
+                const elapsed = Date.now() - parseInt(lastShown, 10);
+                if (elapsed < this.config.cooldownPeriod) {
+                    this.cooldownActive = true;
+                    return;
+                }
+            }
+            this.cooldownActive = false;
+        }
+
+        startInactivityTimer() {
+            this.state.inactivityTimer = setTimeout(() => {
+                this.checkAndShow('inactivity');
+            }, this.config.inactivityTimeout);
+        }
+
+        resetInactivityTimer() {
+            if (this.state.inactivityTimer) {
+                clearTimeout(this.state.inactivityTimer);
+            }
+            this.startInactivityTimer();
+        }
+
+        startTabBlurTimer() {
+            this.state.tabBlurTimer = setTimeout(() => {
+                this.checkAndShow('tab_blur');
+            }, this.config.tabBlurTimeout);
+        }
+
+        clearTabBlurTimer() {
+            if (this.state.tabBlurTimer) {
+                clearTimeout(this.state.tabBlurTimer);
+                this.state.tabBlurTimer = null;
+            }
+        }
+
+        hasCartItems() {
+            const cart = this.getCartData();
+            return cart && cart.items && cart.items.length > 0;
+        }
+
+        getCartData() {
+            // Try multiple sources for cart data
+
+            // 1. Custom selector
+            if (this.config.cartSelector) {
+                const el = document.querySelector(this.config.cartSelector);
+                if (el) {
+                    try {
+                        return JSON.parse(el.textContent || el.dataset.cart);
+                    } catch (e) { }
+                }
+            }
+
+            // 2. VocalIA cart state
+            if (window.VocalIA?.cart) {
+                return window.VocalIA.cart;
+            }
+
+            // 3. Common e-commerce platforms
+            // Shopify
+            if (window.Shopify?.checkout?.line_items) {
+                return {
+                    items: window.Shopify.checkout.line_items.map(item => ({
+                        id: item.variant_id,
+                        name: item.title,
+                        price: item.price,
+                        quantity: item.quantity,
+                        image: item.image
+                    })),
+                    total: window.Shopify.checkout.total_price / 100,
+                    currency: window.Shopify.checkout.currency || 'MAD'
+                };
+            }
+
+            // WooCommerce
+            if (window.wc_cart_fragments_params) {
+                const cartHash = document.querySelector('.cart-contents-count');
+                if (cartHash && parseInt(cartHash.textContent) > 0) {
+                    return { items: [{}], total: 0, currency: 'MAD' };
+                }
+            }
+
+            // 4. LocalStorage cart
+            const storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart');
+            if (storedCart) {
+                try {
+                    return JSON.parse(storedCart);
+                } catch (e) { }
+            }
+
+            // 5. Demo cart for testing
+            if (window.location.search.includes('demo_cart=1')) {
+                return {
+                    items: [
+                        { id: '1', name: 'Produit Demo 1', price: 299, quantity: 1, image: 'https://placehold.co/100x100/191E35/4FBAF1?text=P1' },
+                        { id: '2', name: 'Produit Demo 2', price: 199, quantity: 2, image: 'https://placehold.co/100x100/191E35/10B981?text=P2' }
+                    ],
+                    total: 697,
+                    currency: 'MAD'
+                };
+            }
+
+            return null;
+        }
+
+        checkAndShow(trigger) {
+            // Check if we should show
+            if (this.state.isVisible) return;
+            if (this.cooldownActive) return;
+            if (!this.hasCartItems()) return;
+
+            // Check orchestrator permission
+            if (window.VocalIA?.Orchestrator && !window.VocalIA.Orchestrator.canShow('abandonedCart')) {
+                return;
+            }
+
+            // Get cart data
+            this.state.cartData = this.getCartData();
+
+            // Check minimum cart value
+            if (this.state.cartData.total < this.config.minCartValue) return;
+
+            // Show the modal
+            this.show(trigger);
+        }
+
+        show(trigger = 'manual') {
+            if (this.state.isVisible) return;
+
+            this.state.isVisible = true;
+            this.updateCartDisplay();
+            this.elements.overlay.classList.add('active');
+
+            // Start countdown timer
+            this.startCountdown();
+
+            // Speak voice reminder
+            if (this.config.voiceEnabled) {
+                setTimeout(() => this.speak(this.translations.voiceReminder), 500);
+            }
+
+            // Set cooldown
+            localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString());
+            this.cooldownActive = true;
+
+            // Notify orchestrator
+            if (window.VocalIA?.Orchestrator) {
+                window.VocalIA.Orchestrator.activate('abandonedCart');
+            }
+
+            // Track event
+            this.trackEvent('cart_recovery_shown', {
+                trigger,
+                cart_value: this.state.cartData?.total || 0,
+                items_count: this.state.cartData?.items?.length || 0
+            });
+
+            // Callback
+            if (this.config.onShow) {
+                this.config.onShow({ trigger, cartData: this.state.cartData });
+            }
+        }
+
+        hide() {
+            this.state.isVisible = false;
+            this.elements.overlay.classList.remove('active');
+            this.stopCountdown();
+            this.stopSpeaking();
+
+            // Notify orchestrator
+            if (window.VocalIA?.Orchestrator) {
+                window.VocalIA.Orchestrator.deactivate('abandonedCart');
+            }
+
+            // Track event
+            this.trackEvent('cart_recovery_closed');
+
+            // Callback
+            if (this.config.onHide) {
+                this.config.onHide();
+            }
+        }
+
+        updateCartDisplay() {
+            const cart = this.state.cartData;
+            if (!cart) return;
+
+            // Update subtitle with item count
+            const count = cart.items?.length || 0;
+            this.elements.subtitle.textContent = count === 1
+                ? this.translations.subtitleSingular
+                : this.translations.subtitle.replace('{{count}}', count);
+
+            // Update total value
+            const currency = cart.currency || 'MAD';
+            const total = cart.total || 0;
+            this.elements.valueAmount.textContent = `${total.toLocaleString()} ${currency}`;
+
+            // Update items preview
+            this.elements.itemsRow.innerHTML = '';
+            if (cart.items) {
+                cart.items.slice(0, 5).forEach(item => {
+                    if (item.image) {
+                        const img = document.createElement('img');
+                        img.className = 'va-cart-item-thumb';
+                        img.src = item.image;
+                        img.alt = item.name || 'Product';
+                        this.elements.itemsRow.appendChild(img);
+                    }
+                });
+            }
+        }
+
+        startCountdown() {
+            this.state.remainingMinutes = this.config.offerDurationMinutes;
+            this.updateTimerDisplay();
+
+            this.state.timerInterval = setInterval(() => {
+                this.state.remainingMinutes -= 1;
+                this.updateTimerDisplay();
+
+                if (this.state.remainingMinutes <= 0) {
+                    this.stopCountdown();
+                    this.hide();
+                }
+            }, 60000); // Update every minute
+        }
+
+        stopCountdown() {
+            if (this.state.timerInterval) {
+                clearInterval(this.state.timerInterval);
+                this.state.timerInterval = null;
+            }
+        }
+
+        updateTimerDisplay() {
+            this.elements.timer.textContent = this.translations.expiresIn.replace(
+                '{{minutes}}',
+                this.state.remainingMinutes
+            );
+        }
+
+        selectChannel(channel) {
+            this.state.selectedChannel = channel;
+
+            // Update UI
+            this.elements.overlay.querySelectorAll('.va-recovery-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.channel === channel);
+            });
+
+            // Update input placeholder
+            this.updateInputPlaceholder();
+
+            // Track event
+            this.trackEvent('cart_recovery_channel_selected', { channel });
+        }
+
+        updateInputPlaceholder() {
+            const t = this.translations;
+            switch (this.state.selectedChannel) {
+                case 'voice':
+                case 'sms':
+                    this.elements.input.placeholder = t.phonePlaceholder;
+                    this.elements.input.type = 'tel';
+                    break;
+                case 'email':
+                    this.elements.input.placeholder = t.emailPlaceholder;
+                    this.elements.input.type = 'email';
+                    break;
+            }
+        }
+
+        async sendReminder() {
+            const value = this.elements.input.value.trim();
+            const channel = this.state.selectedChannel;
+
+            // Validate input
+            if (!this.validateInput(value, channel)) {
+                this.showMessage('error', this.translations.errorInvalid);
+                return;
+            }
+
+            // Disable button
+            this.elements.sendBtn.disabled = true;
+
+            try {
+                // Send to API
+                const response = await fetch(`${this.config.apiUrl}/cart-recovery`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        tenant_id: this.config.tenantId,
+                        channel,
+                        contact: value,
+                        cart: this.state.cartData,
+                        discount_percent: this.config.discountPercent,
+                        language: this.config.lang,
+                        checkout_url: window.location.origin + this.config.checkoutUrl
+                    })
+                });
+
+                if (!response.ok) throw new Error('API error');
+
+                // Show success message
+                const successMessages = {
+                    voice: this.translations.successCallback,
+                    sms: this.translations.successSms,
+                    email: this.translations.successEmail
+                };
+                this.showMessage('success', successMessages[channel]);
+
+                // Speak confirmation
+                if (this.config.voiceEnabled) {
+                    this.speak(successMessages[channel]);
+                }
+
+                // Track event
+                this.trackEvent('cart_recovery_reminder_sent', {
+                    channel,
+                    cart_value: this.state.cartData?.total || 0
+                });
+
+                // Callback
+                if (this.config.onRecovery) {
+                    this.config.onRecovery({ channel, contact: value, cartData: this.state.cartData });
+                }
+
+                // Close after delay
+                setTimeout(() => this.hide(), 3000);
+
+            } catch (error) {
+                console.error('[AbandonedCartRecovery] Send error:', error);
+                this.showMessage('error', this.translations.errorSend);
+            } finally {
+                this.elements.sendBtn.disabled = false;
+            }
+        }
+
+        validateInput(value, channel) {
+            if (!value) return false;
+
+            switch (channel) {
+                case 'voice':
+                case 'sms':
+                    // Phone validation (international format)
+                    return /^\+?[0-9]{8,15}$/.test(value.replace(/[\s-]/g, ''));
+                case 'email':
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                default:
+                    return false;
+            }
+        }
+
+        showMessage(type, text) {
+            this.elements.message.className = `va-cart-message ${type}`;
+            this.elements.message.textContent = text;
+            this.elements.message.style.display = 'block';
+
+            setTimeout(() => {
+                this.elements.message.style.display = 'none';
+            }, 5000);
+        }
+
+        goToCheckout() {
+            // Track event
+            this.trackEvent('cart_recovery_checkout_clicked', {
+                cart_value: this.state.cartData?.total || 0,
+                discount_applied: this.config.discountPercent
+            });
+
+            // Apply discount code if possible
+            const discountCode = `COMEBACK${this.config.discountPercent}`;
+            const checkoutUrl = new URL(this.config.checkoutUrl, window.location.origin);
+            checkoutUrl.searchParams.set('discount', discountCode);
+
+            // Redirect
+            window.location.href = checkoutUrl.toString();
+        }
+
+        speak(text) {
+            if (!window.speechSynthesis) return;
+
+            this.stopSpeaking();
+            this.state.isSpeaking = true;
+            this.elements.modal.classList.add('va-cart-speaking');
+
+            const utterance = new SpeechSynthesisUtterance(text);
+
+            // Language mapping
+            const langMap = {
+                'fr': 'fr-FR',
+                'en': 'en-US',
+                'es': 'es-ES',
+                'ar': 'ar-SA',
+                'ary': 'ar-MA'
+            };
+            utterance.lang = langMap[this.config.lang] || 'fr-FR';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+
+            utterance.onend = () => {
+                this.state.isSpeaking = false;
+                this.elements.modal.classList.remove('va-cart-speaking');
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        stopSpeaking() {
+            if (window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            this.state.isSpeaking = false;
+            this.elements.modal?.classList.remove('va-cart-speaking');
+        }
+
+        trackEvent(eventName, params = {}) {
+            // GA4
+            if (window.gtag) {
+                window.gtag('event', eventName, {
+                    event_category: 'cart_recovery',
+                    tenant_id: this.config.tenantId,
+                    language: this.config.lang,
+                    ...params
+                });
+            }
+
+            // Plausible
+            if (window.plausible) {
+                window.plausible(eventName, { props: params });
+            }
+
+            // VocalIA Analytics
+            if (window.VocalIA?.trackEvent) {
+                window.VocalIA.trackEvent(eventName, params);
+            }
+        }
+
+        // Public API
+        trigger(reason = 'manual') {
+            this.checkAndShow(reason);
+        }
+
+        setCartData(cartData) {
+            this.state.cartData = cartData;
+            if (this.state.isVisible) {
+                this.updateCartDisplay();
+            }
+        }
+
+        setDiscount(percent) {
+            this.config.discountPercent = percent;
+            if (this.elements.offerText) {
+                this.elements.offerText.textContent = this.translations.offerText.replace('{{discount}}', percent);
+            }
+        }
+
+        destroy() {
             this.hide();
-          }
-        });
-
-        // Register with orchestrator
-        window.VocalIA.Orchestrator.widgets.abandonedCart = {
-          priority: 6, // Lower priority than quiz (3) but shows for cart
-          isActive: false,
-          element: null,
-          triggers: ['cart_abandon', 'exit_with_cart']
-        };
-      }
-    }
-
-    checkCooldown() {
-      const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
-      if (lastShown) {
-        const elapsed = Date.now() - parseInt(lastShown, 10);
-        if (elapsed < this.config.cooldownPeriod) {
-          this.cooldownActive = true;
-          return;
+            this.elements.overlay?.remove();
+            if (this.state.inactivityTimer) clearTimeout(this.state.inactivityTimer);
+            if (this.state.tabBlurTimer) clearTimeout(this.state.tabBlurTimer);
         }
-      }
-      this.cooldownActive = false;
     }
 
-    startInactivityTimer() {
-      this.state.inactivityTimer = setTimeout(() => {
-        this.checkAndShow('inactivity');
-      }, this.config.inactivityTimeout);
-    }
+    // ============================================================
+    // EXPORT
+    // ============================================================
 
-    resetInactivityTimer() {
-      if (this.state.inactivityTimer) {
-        clearTimeout(this.state.inactivityTimer);
-      }
-      this.startInactivityTimer();
-    }
+    // Auto-initialize
+    let cartRecoveryInstance = null;
 
-    startTabBlurTimer() {
-      this.state.tabBlurTimer = setTimeout(() => {
-        this.checkAndShow('tab_blur');
-      }, this.config.tabBlurTimeout);
-    }
-
-    clearTabBlurTimer() {
-      if (this.state.tabBlurTimer) {
-        clearTimeout(this.state.tabBlurTimer);
-        this.state.tabBlurTimer = null;
-      }
-    }
-
-    hasCartItems() {
-      const cart = this.getCartData();
-      return cart && cart.items && cart.items.length > 0;
-    }
-
-    getCartData() {
-      // Try multiple sources for cart data
-
-      // 1. Custom selector
-      if (this.config.cartSelector) {
-        const el = document.querySelector(this.config.cartSelector);
-        if (el) {
-          try {
-            return JSON.parse(el.textContent || el.dataset.cart);
-          } catch (e) {}
+    function initAbandonedCartRecovery(options = {}) {
+        if (cartRecoveryInstance) {
+            cartRecoveryInstance.destroy();
         }
-      }
-
-      // 2. VocalIA cart state
-      if (window.VocalIA?.cart) {
-        return window.VocalIA.cart;
-      }
-
-      // 3. Common e-commerce platforms
-      // Shopify
-      if (window.Shopify?.checkout?.line_items) {
-        return {
-          items: window.Shopify.checkout.line_items.map(item => ({
-            id: item.variant_id,
-            name: item.title,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image
-          })),
-          total: window.Shopify.checkout.total_price / 100,
-          currency: window.Shopify.checkout.currency || 'MAD'
-        };
-      }
-
-      // WooCommerce
-      if (window.wc_cart_fragments_params) {
-        const cartHash = document.querySelector('.cart-contents-count');
-        if (cartHash && parseInt(cartHash.textContent) > 0) {
-          return { items: [{}], total: 0, currency: 'MAD' };
-        }
-      }
-
-      // 4. LocalStorage cart
-      const storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart');
-      if (storedCart) {
-        try {
-          return JSON.parse(storedCart);
-        } catch (e) {}
-      }
-
-      // 5. Demo cart for testing
-      if (window.location.search.includes('demo_cart=1')) {
-        return {
-          items: [
-            { id: '1', name: 'Produit Demo 1', price: 299, quantity: 1, image: 'https://placehold.co/100x100/191E35/4FBAF1?text=P1' },
-            { id: '2', name: 'Produit Demo 2', price: 199, quantity: 2, image: 'https://placehold.co/100x100/191E35/10B981?text=P2' }
-          ],
-          total: 697,
-          currency: 'MAD'
-        };
-      }
-
-      return null;
+        cartRecoveryInstance = new AbandonedCartRecovery(options);
+        return cartRecoveryInstance;
     }
 
-    checkAndShow(trigger) {
-      // Check if we should show
-      if (this.state.isVisible) return;
-      if (this.cooldownActive) return;
-      if (!this.hasCartItems()) return;
-
-      // Check orchestrator permission
-      if (window.VocalIA?.Orchestrator && !window.VocalIA.Orchestrator.canShow('abandonedCart')) {
-        return;
-      }
-
-      // Get cart data
-      this.state.cartData = this.getCartData();
-
-      // Check minimum cart value
-      if (this.state.cartData.total < this.config.minCartValue) return;
-
-      // Show the modal
-      this.show(trigger);
-    }
-
-    show(trigger = 'manual') {
-      if (this.state.isVisible) return;
-
-      this.state.isVisible = true;
-      this.updateCartDisplay();
-      this.elements.overlay.classList.add('active');
-
-      // Start countdown timer
-      this.startCountdown();
-
-      // Speak voice reminder
-      if (this.config.voiceEnabled) {
-        setTimeout(() => this.speak(this.translations.voiceReminder), 500);
-      }
-
-      // Set cooldown
-      localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString());
-      this.cooldownActive = true;
-
-      // Notify orchestrator
-      if (window.VocalIA?.Orchestrator) {
-        window.VocalIA.Orchestrator.activate('abandonedCart');
-      }
-
-      // Track event
-      this.trackEvent('cart_recovery_shown', {
-        trigger,
-        cart_value: this.state.cartData?.total || 0,
-        items_count: this.state.cartData?.items?.length || 0
-      });
-
-      // Callback
-      if (this.config.onShow) {
-        this.config.onShow({ trigger, cartData: this.state.cartData });
-      }
-    }
-
-    hide() {
-      this.state.isVisible = false;
-      this.elements.overlay.classList.remove('active');
-      this.stopCountdown();
-      this.stopSpeaking();
-
-      // Notify orchestrator
-      if (window.VocalIA?.Orchestrator) {
-        window.VocalIA.Orchestrator.deactivate('abandonedCart');
-      }
-
-      // Track event
-      this.trackEvent('cart_recovery_closed');
-
-      // Callback
-      if (this.config.onHide) {
-        this.config.onHide();
-      }
-    }
-
-    updateCartDisplay() {
-      const cart = this.state.cartData;
-      if (!cart) return;
-
-      // Update subtitle with item count
-      const count = cart.items?.length || 0;
-      this.elements.subtitle.textContent = count === 1
-        ? this.translations.subtitleSingular
-        : this.translations.subtitle.replace('{{count}}', count);
-
-      // Update total value
-      const currency = cart.currency || 'MAD';
-      const total = cart.total || 0;
-      this.elements.valueAmount.textContent = `${total.toLocaleString()} ${currency}`;
-
-      // Update items preview
-      this.elements.itemsRow.innerHTML = '';
-      if (cart.items) {
-        cart.items.slice(0, 5).forEach(item => {
-          if (item.image) {
-            const img = document.createElement('img');
-            img.className = 'va-cart-item-thumb';
-            img.src = item.image;
-            img.alt = item.name || 'Product';
-            this.elements.itemsRow.appendChild(img);
-          }
-        });
-      }
-    }
-
-    startCountdown() {
-      this.state.remainingMinutes = this.config.offerDurationMinutes;
-      this.updateTimerDisplay();
-
-      this.state.timerInterval = setInterval(() => {
-        this.state.remainingMinutes -= 1;
-        this.updateTimerDisplay();
-
-        if (this.state.remainingMinutes <= 0) {
-          this.stopCountdown();
-          this.hide();
-        }
-      }, 60000); // Update every minute
-    }
-
-    stopCountdown() {
-      if (this.state.timerInterval) {
-        clearInterval(this.state.timerInterval);
-        this.state.timerInterval = null;
-      }
-    }
-
-    updateTimerDisplay() {
-      this.elements.timer.textContent = this.translations.expiresIn.replace(
-        '{{minutes}}',
-        this.state.remainingMinutes
-      );
-    }
-
-    selectChannel(channel) {
-      this.state.selectedChannel = channel;
-
-      // Update UI
-      this.elements.overlay.querySelectorAll('.va-recovery-option').forEach(opt => {
-        opt.classList.toggle('selected', opt.dataset.channel === channel);
-      });
-
-      // Update input placeholder
-      this.updateInputPlaceholder();
-
-      // Track event
-      this.trackEvent('cart_recovery_channel_selected', { channel });
-    }
-
-    updateInputPlaceholder() {
-      const t = this.translations;
-      switch (this.state.selectedChannel) {
-        case 'voice':
-        case 'sms':
-          this.elements.input.placeholder = t.phonePlaceholder;
-          this.elements.input.type = 'tel';
-          break;
-        case 'email':
-          this.elements.input.placeholder = t.emailPlaceholder;
-          this.elements.input.type = 'email';
-          break;
-      }
-    }
-
-    async sendReminder() {
-      const value = this.elements.input.value.trim();
-      const channel = this.state.selectedChannel;
-
-      // Validate input
-      if (!this.validateInput(value, channel)) {
-        this.showMessage('error', this.translations.errorInvalid);
-        return;
-      }
-
-      // Disable button
-      this.elements.sendBtn.disabled = true;
-
-      try {
-        // Send to API
-        const response = await fetch(`${this.config.apiUrl}/cart-recovery`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tenant_id: this.config.tenantId,
-            channel,
-            contact: value,
-            cart: this.state.cartData,
-            discount_percent: this.config.discountPercent,
-            language: this.config.lang,
-            checkout_url: window.location.origin + this.config.checkoutUrl
-          })
-        });
-
-        if (!response.ok) throw new Error('API error');
-
-        // Show success message
-        const successMessages = {
-          voice: this.translations.successCallback,
-          sms: this.translations.successSms,
-          email: this.translations.successEmail
-        };
-        this.showMessage('success', successMessages[channel]);
-
-        // Speak confirmation
-        if (this.config.voiceEnabled) {
-          this.speak(successMessages[channel]);
-        }
-
-        // Track event
-        this.trackEvent('cart_recovery_reminder_sent', {
-          channel,
-          cart_value: this.state.cartData?.total || 0
-        });
-
-        // Callback
-        if (this.config.onRecovery) {
-          this.config.onRecovery({ channel, contact: value, cartData: this.state.cartData });
-        }
-
-        // Close after delay
-        setTimeout(() => this.hide(), 3000);
-
-      } catch (error) {
-        console.error('[AbandonedCartRecovery] Send error:', error);
-        this.showMessage('error', this.translations.errorSend);
-      } finally {
-        this.elements.sendBtn.disabled = false;
-      }
-    }
-
-    validateInput(value, channel) {
-      if (!value) return false;
-
-      switch (channel) {
-        case 'voice':
-        case 'sms':
-          // Phone validation (international format)
-          return /^\+?[0-9]{8,15}$/.test(value.replace(/[\s-]/g, ''));
-        case 'email':
-          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        default:
-          return false;
-      }
-    }
-
-    showMessage(type, text) {
-      this.elements.message.className = `va-cart-message ${type}`;
-      this.elements.message.textContent = text;
-      this.elements.message.style.display = 'block';
-
-      setTimeout(() => {
-        this.elements.message.style.display = 'none';
-      }, 5000);
-    }
-
-    goToCheckout() {
-      // Track event
-      this.trackEvent('cart_recovery_checkout_clicked', {
-        cart_value: this.state.cartData?.total || 0,
-        discount_applied: this.config.discountPercent
-      });
-
-      // Apply discount code if possible
-      const discountCode = `COMEBACK${this.config.discountPercent}`;
-      const checkoutUrl = new URL(this.config.checkoutUrl, window.location.origin);
-      checkoutUrl.searchParams.set('discount', discountCode);
-
-      // Redirect
-      window.location.href = checkoutUrl.toString();
-    }
-
-    speak(text) {
-      if (!window.speechSynthesis) return;
-
-      this.stopSpeaking();
-      this.state.isSpeaking = true;
-      this.elements.modal.classList.add('va-cart-speaking');
-
-      const utterance = new SpeechSynthesisUtterance(text);
-
-      // Language mapping
-      const langMap = {
-        'fr': 'fr-FR',
-        'en': 'en-US',
-        'es': 'es-ES',
-        'ar': 'ar-SA',
-        'ary': 'ar-MA'
-      };
-      utterance.lang = langMap[this.config.lang] || 'fr-FR';
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-
-      utterance.onend = () => {
-        this.state.isSpeaking = false;
-        this.elements.modal.classList.remove('va-cart-speaking');
-      };
-
-      window.speechSynthesis.speak(utterance);
-    }
-
-    stopSpeaking() {
-      if (window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-      }
-      this.state.isSpeaking = false;
-      this.elements.modal?.classList.remove('va-cart-speaking');
-    }
-
-    trackEvent(eventName, params = {}) {
-      // GA4
-      if (window.gtag) {
-        window.gtag('event', eventName, {
-          event_category: 'cart_recovery',
-          tenant_id: this.config.tenantId,
-          language: this.config.lang,
-          ...params
-        });
-      }
-
-      // Plausible
-      if (window.plausible) {
-        window.plausible(eventName, { props: params });
-      }
-
-      // VocalIA Analytics
-      if (window.VocalIA?.trackEvent) {
-        window.VocalIA.trackEvent(eventName, params);
-      }
-    }
-
-    // Public API
-    trigger(reason = 'manual') {
-      this.checkAndShow(reason);
-    }
-
-    setCartData(cartData) {
-      this.state.cartData = cartData;
-      if (this.state.isVisible) {
-        this.updateCartDisplay();
-      }
-    }
-
-    setDiscount(percent) {
-      this.config.discountPercent = percent;
-      if (this.elements.offerText) {
-        this.elements.offerText.textContent = this.translations.offerText.replace('{{discount}}', percent);
-      }
-    }
-
-    destroy() {
-      this.hide();
-      this.elements.overlay?.remove();
-      if (this.state.inactivityTimer) clearTimeout(this.state.inactivityTimer);
-      if (this.state.tabBlurTimer) clearTimeout(this.state.tabBlurTimer);
-    }
-  }
-
-  // ============================================================
-  // EXPORT
-  // ============================================================
-
-  // Auto-initialize
-  let cartRecoveryInstance = null;
-
-  function initAbandonedCartRecovery(options = {}) {
-    if (cartRecoveryInstance) {
-      cartRecoveryInstance.destroy();
-    }
-    cartRecoveryInstance = new AbandonedCartRecovery(options);
-    return cartRecoveryInstance;
-  }
-
-  // Expose to window
-  window.VocaliaAbandonedCart = {
-    init: initAbandonedCartRecovery,
-    getInstance: () => cartRecoveryInstance,
-    AbandonedCartRecovery
-  };
-
-  // Integrate with VocalIA namespace
-  if (typeof window.VocalIA !== 'undefined') {
-    window.VocalIA.AbandonedCart = window.VocaliaAbandonedCart;
-
-    // Add convenience methods
-    window.VocalIA.triggerCartRecovery = function(reason = 'manual') {
-      if (!cartRecoveryInstance) {
-        cartRecoveryInstance = initAbandonedCartRecovery();
-      }
-      cartRecoveryInstance.trigger(reason);
+    // Expose to window
+    window.VocaliaAbandonedCart = {
+        init: initAbandonedCartRecovery,
+        getInstance: () => cartRecoveryInstance,
+        AbandonedCartRecovery
     };
 
-    window.VocalIA.setCartData = function(cartData) {
-      if (!cartRecoveryInstance) {
-        cartRecoveryInstance = initAbandonedCartRecovery();
-      }
-      cartRecoveryInstance.setCartData(cartData);
-    };
-  }
+    // Integrate with VocalIA namespace
+    if (typeof window.VocalIA !== 'undefined') {
+        window.VocalIA.AbandonedCart = window.VocaliaAbandonedCart;
 
-  // Auto-init if data attribute present
-  document.addEventListener('DOMContentLoaded', () => {
-    const widget = document.querySelector('[data-vocalia-cart-recovery]');
-    if (widget) {
-      initAbandonedCartRecovery({
-        tenantId: widget.dataset.vocaliaTenant,
-        lang: widget.dataset.vocaliaLang,
-        discountPercent: parseInt(widget.dataset.discount) || 10,
-        voiceEnabled: widget.dataset.voice !== 'false'
-      });
+        // Add convenience methods
+        window.VocalIA.triggerCartRecovery = function (reason = 'manual') {
+            if (!cartRecoveryInstance) {
+                cartRecoveryInstance = initAbandonedCartRecovery();
+            }
+            cartRecoveryInstance.trigger(reason);
+        };
+
+        window.VocalIA.setCartData = function (cartData) {
+            if (!cartRecoveryInstance) {
+                cartRecoveryInstance = initAbandonedCartRecovery();
+            }
+            cartRecoveryInstance.setCartData(cartData);
+        };
     }
-  });
+
+    // Auto-init if data attribute present
+    document.addEventListener('DOMContentLoaded', () => {
+        const widget = document.querySelector('[data-vocalia-cart-recovery]');
+        if (widget) {
+            initAbandonedCartRecovery({
+                tenantId: widget.dataset.vocaliaTenant,
+                lang: widget.dataset.vocaliaLang,
+                discountPercent: parseInt(widget.dataset.discount) || 10,
+                voiceEnabled: widget.dataset.voice !== 'false'
+            });
+        }
+    });
 
 })();

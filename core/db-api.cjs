@@ -2811,6 +2811,32 @@ async function startServer() {
 `);
   });
 
+  const gracefulShutdown = (signal) => {
+    console.log(`\n[DB-API] ${signal} received. Shutting down...`);
+    server.close(() => {
+      wss.close();
+      console.log('[DB-API] Graceful shutdown complete.');
+      process.exit(0);
+    });
+    setTimeout(() => {
+      console.error('[DB-API] Forcing shutdown after 10s.');
+      process.exit(1);
+    }, 10000);
+  };
+
+  process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+  process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+
+  process.on('uncaughtException', (err) => {
+    console.error('❌ [DB-API] Uncaught exception:', err.message);
+    console.error(err.stack);
+    gracefulShutdown('uncaughtException');
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    console.error('❌ [DB-API] Unhandled rejection:', reason);
+  });
+
   return { server, wss };
 }
 

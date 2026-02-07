@@ -8,7 +8,7 @@ VocalIA fournit des agents vocaux IA professionnels pour automatiser les appels 
 
 - [Voice Widget B2B](https://vocalia.ma/products/voice-widget-b2b): Widget vocal browser-based pour qualification leads B2B.
 - [Voice Widget B2C](https://vocalia.ma/products/voice-widget-ecommerce): Widget vocal e-commerce pour support client B2C.
-- [Widget E-commerce](https://vocalia.ma/products/widget-ecommerce): 8 widgets e-commerce (Shopify, WooCommerce, Magento, PrestaShop, BigCommerce, Wix, Squarespace, custom).
+- [Widget E-commerce](https://vocalia.ma/products/widget-ecommerce): 7 widgets e-commerce (Shopify, WooCommerce, Magento, PrestaShop, BigCommerce, Wix, Squarespace, custom).
 - [Voice Telephony AI](https://vocalia.ma/products/voice-telephony): Bridge PSTN-AI pour telephonie professionnelle. Twilio, TwiML, SMS fallback.
 
 ## Fonctionnalites
