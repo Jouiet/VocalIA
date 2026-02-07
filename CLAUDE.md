@@ -1,9 +1,10 @@
 # VocalIA - Voice AI Platform
 
-> **v7.19.0** | 07/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
+> **v7.20.0** | 07/02/2026 | Health: Voice API UP (3004) | Production: https://vocalia.ma
 > **77 pages** | 24,010 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (69 files .mjs, 0 skip)
 > **203 MCP Tools** | 38 Personas | **25 Function Tools** | 8 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,671 + MCP/src 17,630 + Lib 921 + Website 31,512
+> ✅ **SESSION 250.138 WIDGET TREE-SHAKING**: Build pipeline v2.0 (esbuild DCE→terser 3-pass→brotli). ECOM: 37.1 KB transfer. B2B: 8.3 KB transfer. Pre-compressed .gz/.br. Widget v2.5.0.
 > ✅ **SESSION 250.137 APP COMPONENTIZATION**: Sidebar component (9 pages, -585 lines), calls AI insights, integrations webhook health, mobile all pages
 > ✅ **SESSION 250.136 DASHBOARD+DOCS**: Client ROI section (4 cards), mobile responsive, Playwright CI, 16 audit docs archived, SESSION-HISTORY -67%, 8 ROADMAP tasks
 > ✅ **SESSION 250.132 ESM MIGRATION**: 69 test files .cjs→.mjs, esbuild production bundler (3 bundles), const→let bug fix
@@ -257,7 +258,7 @@ providers: [
 
 ---
 
-**Platform Score: 9.0/10** (250.137 — App sidebar component, calls AI insights, integrations webhook health, mobile all pages)
+**Platform Score: 9.0/10** (250.138 — Widget tree-shaking pipeline v2.0, pre-compression .gz/.br, widget v2.5.0)
 ALL code tasks DONE. See `docs/ROADMAP-TO-COMPLETION.md`. Remaining: optional source ESM + infrastructure (GA4 ID, CDN, monitoring).
 
 *Last update: 07/02/2026 - Session 250.133 (CI hardening: tsc --noEmit, c8 coverage 45%, rogue #0f0f23 fixed, onboarding 6 bugs, stale "40", lucide pinned)*

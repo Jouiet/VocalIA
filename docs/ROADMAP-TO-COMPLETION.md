@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-07 | **Session:** 250.137 (App sidebar component, calls AI insights, integrations webhook health)
+> **Date:** 2026-02-07 | **Session:** 250.138 (Widget tree-shaking pipeline v2.0, pre-compression, version 2.5.0)
 > **Score actuel:** 9.0/10 (CI: 16 gates, ESM, esbuild, tsc, c8, design tokens, i18n QA, Darija validator, Playwright E2E)
 > **Méthodologie:** Chaque tâche est liée à un FAIT vérifié par commande. Zéro supposition.
 > **Source:** Audit croisé de 13 documents + **external audit** (250.129) + **forensic audit of ALL 73 test files** (250.114) + **test deep surgery** (250.115) + **design token forensic** (250.122) + **branding unification** (250.123) + **stale number eradication** (250.124) + **validator v2.2** (250.125) + **DEEP widget forensic audit** (250.127).
@@ -899,7 +899,7 @@ B2B source synced to deployed (pulse animation added + WCAG).
 - [x] **P3-1e.** Tree-shaking analysis: persona-injector = 480 KB (28% of voice-api bundle). Optimization target for future.
 - [x] **P3-1f.** **TEST FILES CONVERTED** — 69 files .cjs → .mjs via `scripts/convert-tests-esm.cjs`. Fixed: multi-line requires (14), `__dirname` → `import.meta.dirname` (11), `createRequire` for env-dependent loads (2), shebang removal, `require.main` removal. 3,763 tests pass, 0 fail.
 - [ ] **P3-1g.** Source module ESM migration (core/*.cjs → .mjs) — optional, source stays CJS for now.
-- [ ] **P3-1h.** Widget tree-shaking (already minified via terser, esbuild could further optimize).
+- [x] **P3-1h.** **WIDGET TREE-SHAKING DONE** — Build pipeline v2.0: esbuild DCE → terser 3-pass → pre-compression. ECOM: 296.8→186.9 KB min (37.1 KB brotli). B2B: 50.5→30.2 KB min (8.3 KB brotli). Pre-compressed .gz/.br files for static serving. `--production` flag strips console.log. Version 2.4.0→2.5.0.
 
 **Effort:** ~10h total (~7h done) | **Impact:** Architecture 8→9
 
@@ -1285,7 +1285,7 @@ create_booking          get_recommendations    qualify_lead
 **Remaining (code — OPTIONAL):**
 ```
 → P3-1g: Source module ESM migration (core/*.cjs → .mjs) — OPTIONAL, source stays CJS
-→ P3-1h: Widget tree-shaking via esbuild — OPTIONAL
+→ P3-1h: Widget tree-shaking — DONE (250.138)
 ```
 
 **Remaining (infrastructure — NOT code):**
@@ -1306,7 +1306,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis à jour le 2026-02-07 — Session 250.137*
+*Document mis à jour le 2026-02-07 — Session 250.138*
+*250.138: Widget tree-shaking pipeline v2.0 — esbuild DCE → terser 3-pass → pre-compression (.gz/.br). ECOM: 296.8→186.9 KB min (37.1 KB brotli). B2B: 50.5→30.2 KB min (8.3 KB brotli). --production flag. Widget v2.4.0→2.5.0.*
 *250.137: App sidebar component (9 pages, -585 lines). Calls page: sentiment column + AI insights + conversation timeline. Integrations: webhook health dashboard + live status + test button. Mobile hamburger on all 9 app pages.*
 *250.136: Dashboard ROI section (4 cards: automation ring, cost savings, response time, 24/7). Mobile responsive sidebar. Playwright E2E in CI. 16 audit docs archived. SESSION-HISTORY -67%. 8 ROADMAP tasks resolved. ROI i18n 12 keys × 5 langs.*
 *250.135: Counter-audit (14/14 corrections verified, 4 audit errors found). Widget .min.js switch (50 pages, -37/40%). Booking URL added. Stale "30"→"38" fixed in 3 files.*

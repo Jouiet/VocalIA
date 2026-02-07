@@ -2,17 +2,19 @@
 'use strict';
 
 /**
- * VocalIA Widget Build Script
- * Concatenates source widget IIFEs into deployed bundles + minification + checksums.
+ * VocalIA Widget Build Script v2.0
+ * Two-pass pipeline: esbuild DCE → terser 3-pass minification + pre-compression.
  *
- * Usage: node scripts/build-widgets.cjs [--check] [--no-minify]
- *   --check:     Verify deployed matches source (no write)
- *   --no-minify: Skip minification step
+ * Usage: node scripts/build-widgets.cjs [--check] [--no-minify] [--production]
+ *   --check:       Verify deployed matches source (no write)
+ *   --no-minify:   Skip minification step
+ *   --production:  Strip console.log (keep warn/error)
  */
 
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const zlib = require('zlib');
 
 const ROOT = path.resolve(__dirname, '..');
 const WIDGET_SRC = path.join(ROOT, 'widget');
@@ -38,25 +40,73 @@ const SINGLE_FILE_WIDGETS = [
   { src: 'voice-widget-b2b.js', dest: 'voice-widget-b2b.js' }
 ];
 
+// Reserved identifiers that must never be mangled
+const MANGLE_RESERVED = ['VocalIA', 'VOCALIA_CONFIG', 'VOCALIA_CONFIG_INJECTED'];
+
 function md5(content) {
   return crypto.createHash('md5').update(content).digest('hex');
 }
 
-async function minifyCode(code, filename) {
+function gzipSize(str) {
+  return zlib.gzipSync(Buffer.from(str), { level: 9 }).length;
+}
+
+function brotliSize(str) {
+  return zlib.brotliCompressSync(Buffer.from(str)).length;
+}
+
+function fmtKb(bytes) {
+  return (bytes / 1024).toFixed(1);
+}
+
+/**
+ * Pass 1: esbuild — syntax simplification + dead code elimination.
+ * Simplifies ternaries, removes debugger, eliminates unreachable branches.
+ */
+function esbuildDCE(code, isProduction) {
+  try {
+    const { transformSync } = require('esbuild');
+    const drop = ['debugger'];
+    if (isProduction) drop.push('console');
+    const result = transformSync(code, {
+      treeShaking: true,
+      minifySyntax: true,
+      minifyWhitespace: false,
+      minifyIdentifiers: false,
+      target: 'es2020',
+      drop,
+      legalComments: 'none',
+    });
+    return result.code;
+  } catch (e) {
+    // Fallback: skip DCE pass if esbuild not available
+    return code;
+  }
+}
+
+/**
+ * Pass 2: terser — aggressive 3-pass minification + mangle.
+ */
+async function terserMinify(code, filename, isProduction) {
   try {
     const { minify } = require('terser');
     const result = await minify(code, {
       compress: {
         dead_code: true,
-        drop_console: false, // Keep console.warn/error for debugging
-        passes: 2
+        drop_console: isProduction,
+        drop_debugger: true,
+        passes: 3,
+        collapse_vars: true,
+        reduce_vars: true,
+        pure_getters: true,
+        toplevel: false
       },
       mangle: {
-        reserved: ['VocalIA', 'VOCALIA_CONFIG', 'VOCALIA_CONFIG_INJECTED']
+        reserved: MANGLE_RESERVED
       },
       format: {
-        comments: /^!/,  // Keep /*! banner comments
-        preamble: `/* VocalIA Widget - Minified ${new Date().toISOString().split('T')[0]} */`
+        comments: false,
+        preamble: `/* VocalIA Widget v2.5.0 - ${new Date().toISOString().split('T')[0]} */`
       }
     });
     return result.code;
@@ -66,15 +116,39 @@ async function minifyCode(code, filename) {
   }
 }
 
+/**
+ * Full pipeline: esbuild DCE → terser minification → pre-compression.
+ * Returns { minified, gzipped, brotli } buffers.
+ */
+async function optimizeCode(code, filename, isProduction) {
+  // Pass 1: esbuild DCE
+  const dced = esbuildDCE(code, isProduction);
+
+  // Pass 2: terser minification
+  const minified = await terserMinify(dced, filename, isProduction);
+  if (!minified) return null;
+
+  // Pass 3: pre-compression
+  const minBuf = Buffer.from(minified);
+  const gzipped = zlib.gzipSync(minBuf, { level: 9 });
+  const brotli = zlib.brotliCompressSync(minBuf, {
+    params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11 }
+  });
+
+  return { minified, gzipped, brotli };
+}
+
 async function main() {
   const checkOnly = process.argv.includes('--check');
   const skipMinify = process.argv.includes('--no-minify');
+  const isProduction = process.argv.includes('--production');
   let errors = 0;
+  const summary = [];
 
-  console.log('╔══════════════════════════════════════════╗');
-  console.log('║     VocalIA Widget Build Script          ║');
-  console.log(`║     Mode: ${checkOnly ? 'CHECK' : 'BUILD'}${skipMinify ? ' (no-minify)' : ''}                          ║`);
-  console.log('╚══════════════════════════════════════════╝\n');
+  console.log('╔══════════════════════════════════════════════════════════╗');
+  console.log('║     VocalIA Widget Build v2.0 (tree-shaking pipeline)   ║');
+  console.log(`║     Mode: ${checkOnly ? 'CHECK' : 'BUILD'}${skipMinify ? ' (no-minify)' : ''}${isProduction ? ' [PRODUCTION]' : ''}                          ║`);
+  console.log('╚══════════════════════════════════════════════════════════╝\n');
 
   // ── Build bundles ──
   for (const [outputFile, config] of Object.entries(BUNDLES)) {
@@ -125,19 +199,31 @@ async function main() {
       }
     } else {
       fs.writeFileSync(destPath, bundled, 'utf-8');
-      const lines = bundled.split('\n').length;
-      const sizeKb = (Buffer.byteLength(bundled) / 1024).toFixed(1);
-      console.log(`  → Written: ${lines} lines (${sizeKb} KB), MD5: ${bundleMd5}`);
+      const rawSize = Buffer.byteLength(bundled);
+      console.log(`  → Written: ${bundled.split('\n').length} lines (${fmtKb(rawSize)} KB), MD5: ${bundleMd5}`);
 
-      // Minify
+      // Optimize
       if (!skipMinify) {
-        const minified = await minifyCode(bundled, outputFile);
-        if (minified) {
+        const result = await optimizeCode(bundled, outputFile, isProduction);
+        if (result) {
           const minPath = destPath.replace('.js', '.min.js');
-          fs.writeFileSync(minPath, minified, 'utf-8');
-          const minSizeKb = (Buffer.byteLength(minified) / 1024).toFixed(1);
-          const savings = ((1 - Buffer.byteLength(minified) / Buffer.byteLength(bundled)) * 100).toFixed(0);
-          console.log(`  → Minified: ${minSizeKb} KB (-${savings}%), MD5: ${md5(minified)}`);
+          fs.writeFileSync(minPath, result.minified, 'utf-8');
+          fs.writeFileSync(minPath + '.gz', result.gzipped);
+          fs.writeFileSync(minPath + '.br', result.brotli);
+
+          const minSize = Buffer.byteLength(result.minified);
+          const gzSize = result.gzipped.length;
+          const brSize = result.brotli.length;
+          const savings = ((1 - minSize / rawSize) * 100).toFixed(0);
+
+          console.log(`  → Minified:   ${fmtKb(minSize)} KB (-${savings}%)`);
+          console.log(`  → Gzip:       ${fmtKb(gzSize)} KB (transfer size)`);
+          console.log(`  → Brotli:     ${fmtKb(brSize)} KB (optimal transfer)`);
+
+          summary.push({
+            name: outputFile.replace('.js', ''),
+            raw: rawSize, min: minSize, gz: gzSize, br: brSize
+          });
         }
       }
     }
@@ -175,24 +261,53 @@ async function main() {
       }
     } else {
       fs.copyFileSync(srcPath, destPath);
-      const sizeKb = (Buffer.byteLength(srcContent) / 1024).toFixed(1);
-      console.log(`  → ${dest}: copied (${sizeKb} KB, ${srcMd5})`);
+      const rawSize = Buffer.byteLength(srcContent);
+      console.log(`  → ${dest}: copied (${fmtKb(rawSize)} KB, ${srcMd5})`);
 
-      // Minify
+      // Optimize
       if (!skipMinify) {
-        const minified = await minifyCode(srcContent, dest);
-        if (minified) {
+        const result = await optimizeCode(srcContent, dest, isProduction);
+        if (result) {
           const minPath = destPath.replace('.js', '.min.js');
-          fs.writeFileSync(minPath, minified, 'utf-8');
-          const minSizeKb = (Buffer.byteLength(minified) / 1024).toFixed(1);
-          const savings = ((1 - Buffer.byteLength(minified) / Buffer.byteLength(srcContent)) * 100).toFixed(0);
-          console.log(`  → ${dest.replace('.js', '.min.js')}: ${minSizeKb} KB (-${savings}%)`)
+          fs.writeFileSync(minPath, result.minified, 'utf-8');
+          fs.writeFileSync(minPath + '.gz', result.gzipped);
+          fs.writeFileSync(minPath + '.br', result.brotli);
+
+          const minSize = Buffer.byteLength(result.minified);
+          const gzSize = result.gzipped.length;
+          const brSize = result.brotli.length;
+          const savings = ((1 - minSize / rawSize) * 100).toFixed(0);
+
+          console.log(`  → ${dest.replace('.js', '.min.js')}: ${fmtKb(minSize)} KB (-${savings}%)`);
+          console.log(`  → Gzip:   ${fmtKb(gzSize)} KB  |  Brotli: ${fmtKb(brSize)} KB`);
+
+          summary.push({
+            name: dest.replace('.js', ''),
+            raw: rawSize, min: minSize, gz: gzSize, br: brSize
+          });
         }
       }
     }
   }
 
   console.log();
+
+  // ── Transfer size summary table ──
+  if (summary.length > 0 && !checkOnly) {
+    console.log('┌──────────────────────────────────┬──────────┬──────────┬──────────┬──────────┐');
+    console.log('│ Widget                           │ Raw      │ Min      │ Gzip     │ Brotli   │');
+    console.log('├──────────────────────────────────┼──────────┼──────────┼──────────┼──────────┤');
+    for (const s of summary) {
+      const name = s.name.padEnd(32);
+      const raw = (fmtKb(s.raw) + ' KB').padStart(8);
+      const min = (fmtKb(s.min) + ' KB').padStart(8);
+      const gz = (fmtKb(s.gz) + ' KB').padStart(8);
+      const br = (fmtKb(s.br) + ' KB').padStart(8);
+      console.log(`│ ${name} │ ${raw} │ ${min} │ ${gz} │ ${br} │`);
+    }
+    console.log('└──────────────────────────────────┴──────────┴──────────┴──────────┴──────────┘');
+    console.log();
+  }
 
   // ── Summary ──
   if (errors > 0) {
