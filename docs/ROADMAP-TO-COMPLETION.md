@@ -1245,6 +1245,9 @@ create_booking          get_recommendations    qualify_lead
 | **Onboarding**: 6 bugs fixed (favicon, CSS path, lucide@latest, noindex, fonts, stale 40) | 250.133 | client/onboarding.html |
 | **Stale "40"**: fr.json onboarding feature3_desc "40 personnalités" → "38" | 250.133 | website/src/locales/fr.json |
 | **Lucide pinned**: `lucide@latest` → `lucide@0.469.0` in voice-widget-b2c.html | 250.133 | Reproducible builds |
+| **Admin dashboard**: Enhanced to match client sophistication (639→1031 lines) | 250.134 | Health gauge, heatmap, trends |
+| **Admin sub-pages**: Responsive sidebar + mobile toggle on all 4 pages | 250.134 | tenants, users, logs, hitl |
+| **Admin i18n**: 10 new keys (health.*, heatmap.*) in all 5 locale files | 250.134 | FR, EN, ES, AR, ARY |
 
 ---
 
@@ -1261,7 +1264,7 @@ create_booking          get_recommendations    qualify_lead
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 → cible: 9.5+ |
 
-**Current Score: 8.6/10** (250.133 — CI hardened: tsc --noEmit, c8 coverage threshold, rogue colors fixed, onboarding repaired)
+**Current Score: 8.8/10** (250.134 — Admin dashboard enhanced: health gauge, heatmap, responsive sidebar, i18n)
 
 **Remaining (code — OPTIONAL):**
 ```
@@ -1288,7 +1291,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis à jour le 2026-02-07 — Session 250.133*
+*Document mis à jour le 2026-02-07 — Session 250.134*
+*250.134: Admin dashboard enhanced — health gauge (SVG ring), heatmap (7d×24h), responsive sidebar all 5 pages, i18n 10 new keys × 5 langs.*
 *250.133: CI hardened — tsc --noEmit MCP server, c8 coverage threshold (45%), rogue #0f0f23 fixed, onboarding 6 bugs fixed, stale "40" in fr.json, lucide pinned.*
 *250.132: ESM migration — 69 test files .cjs→.mjs, esbuild production bundler (3 bundles), const→let bug fix. 3,763 tests pass.*
 *250.131: 3 widgets RESTORED + INTEGRATED into ECOM bundle (6 IIFEs). Orchestrator wired. B2B catalog mode. A2A/A2UI done.*

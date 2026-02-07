@@ -3151,6 +3151,20 @@
     },
     "logs": {
       "auth": "التوثيق"
+    },
+    "health": {
+      "title": "صحة المنصة",
+      "realtime": "الوقت الحقيقي",
+      "score": "نقاط الصحة",
+      "api_response": "استجابة API",
+      "uptime": "وقت التشغيل",
+      "error_rate": "معدل الخطأ",
+      "throughput": "معدل النقل"
+    },
+    "heatmap": {
+      "title": "النشاط ديال 7 يام",
+      "low": "قليل",
+      "high": "بزاف"
     }
   },
   "analytics": {

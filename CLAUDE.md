@@ -4,6 +4,7 @@
 > **77 pages** | 23,950 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (69 files .mjs, 0 skip)
 > **203 MCP Tools** | 38 Personas | **25 Function Tools** | 7 E-commerce Widgets | 31 Integrations | Stripe 19 | HubSpot 7 | Twilio 5
 > **~82k lines source** | Core 33,920 (53 files) + Telephony 4,709 + Personas 9,081 + Widget 9,671 + MCP/src 17,630 + Lib 921 + Website 31,512
+> ✅ **SESSION 250.134 ADMIN DASHBOARD**: Enhanced to match client sophistication — health gauge, heatmap, responsive sidebar, i18n
 > ✅ **SESSION 250.133 CI HARDENING**: tsc --noEmit MCP, c8 coverage threshold, rogue color fixed, onboarding 6 bugs, lucide pinned
 > ✅ **SESSION 250.132 ESM MIGRATION**: 69 test files .cjs→.mjs, esbuild production bundler (3 bundles), const→let bug fix
 > ✅ **SESSION 250.131 WIDGET INTEGRATION**: 3 widgets restored+integrated (spin-wheel, shipping-bar, reco-carousel). Orchestrator wired. B2B catalog mode. A2A/A2UI done.
@@ -17,7 +18,7 @@
 | Type | Voice AI SaaS Platform |
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
-| Scores | **Tests**: 3,763 (69 files .mjs, 0 skip) — **Score**: 8.6/10 (250.133), **Coverage**: 46.78%, **CORS**: ✅, **XSS**: ✅ |
+| Scores | **Tests**: 3,763 (69 files .mjs, 0 skip) — **Score**: 8.8/10 (250.134), **Coverage**: 46.78%, **CORS**: ✅, **XSS**: ✅ |
 
 ---
 
@@ -256,7 +257,7 @@ providers: [
 
 ---
 
-**Platform Score: 8.6/10** (250.133 — CI hardened: tsc, c8 coverage, rogue colors, onboarding repaired, lucide pinned)
+**Platform Score: 8.8/10** (250.134 — Admin dashboard enhanced: health gauge, heatmap, responsive sidebar, i18n)
 ALL code tasks DONE. See `docs/ROADMAP-TO-COMPLETION.md`. Remaining: optional source ESM + infrastructure (GA4 ID, CDN, monitoring).
 
 *Last update: 07/02/2026 - Session 250.133 (CI hardening: tsc --noEmit, c8 coverage 45%, rogue #0f0f23 fixed, onboarding 6 bugs, stale "40", lucide pinned)*

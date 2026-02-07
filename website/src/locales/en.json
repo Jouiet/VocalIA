@@ -3151,6 +3151,20 @@
     },
     "logs": {
       "auth": "Authentication"
+    },
+    "health": {
+      "title": "Platform Health",
+      "realtime": "Real-time",
+      "score": "Health Score",
+      "api_response": "API Response",
+      "uptime": "Uptime",
+      "error_rate": "Error Rate",
+      "throughput": "Throughput"
+    },
+    "heatmap": {
+      "title": "Global Activity (7 days)",
+      "low": "Low",
+      "high": "High"
     }
   },
   "analytics": {

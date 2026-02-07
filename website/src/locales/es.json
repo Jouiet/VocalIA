@@ -3151,6 +3151,20 @@
     },
     "logs": {
       "auth": "Autenticación"
+    },
+    "health": {
+      "title": "Salud de la Plataforma",
+      "realtime": "Tiempo real",
+      "score": "Puntuación de Salud",
+      "api_response": "Respuesta API",
+      "uptime": "Tiempo activo",
+      "error_rate": "Tasa de error",
+      "throughput": "Rendimiento"
+    },
+    "heatmap": {
+      "title": "Actividad global (7 días)",
+      "low": "Bajo",
+      "high": "Alto"
     }
   },
   "analytics": {

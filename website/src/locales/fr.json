@@ -3151,6 +3151,20 @@
     },
     "logs": {
       "auth": "Authentification"
+    },
+    "health": {
+      "title": "Santé Plateforme",
+      "realtime": "Temps réel",
+      "score": "Score Santé",
+      "api_response": "Réponse API",
+      "uptime": "Uptime",
+      "error_rate": "Taux d'erreur",
+      "throughput": "Débit"
+    },
+    "heatmap": {
+      "title": "Activité globale (7 jours)",
+      "low": "Faible",
+      "high": "Fort"
     }
   },
   "analytics": {
