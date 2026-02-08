@@ -351,7 +351,7 @@ create_booking          get_recommendations    qualify_lead
 
 **Remaining (infrastructure/decisions — NOT code):**
 ```
-→ GA4: Replace G-XXXXXXXXXX with actual Measurement ID
+→ GA4: ✅ DONE — G-KL1QZYZRE8 (Stream ID 13579681217)
 → Darija pricing: ✅ DONE — $0.25/min inbound, implemented in code + website
 → VPS: ✅ DONE — 4 containers healthy, ALL routed via api.vocalia.ma (path-based, no extra DNS)
 → Telnyx: Evaluate for Moroccan numbers
