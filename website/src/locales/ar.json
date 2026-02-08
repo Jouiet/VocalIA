@@ -33,6 +33,7 @@
     },
     "header": {
       "welcome": "مرحباً {{name}}. إليك نشاط وكلائك.",
+      "subtitle": "إليك نظرة عامة على نشاطك في Voice AI",
       "status": "النظام يعمل بكفاءة",
       "status_admin": "جميع الأنظمة تعمل",
       "refresh": "تحديث البيانات"
@@ -127,6 +128,38 @@
       "restart": "إعادة تشغيل الخدمات",
       "logs": "تصدير السجلات",
       "config": "التكوين"
+    },
+    "title": "لوحة التحكم",
+    "loading": "جاري التحميل...",
+    "insights": {
+      "peak_hour": "ساعة الذروة",
+      "peak_desc": "أكثر المكالمات استقبالاً",
+      "engagement": "التفاعل",
+      "engagement_desc": "جلسات > دقيقتين",
+      "languages_used": "اللغات النشطة",
+      "langs_desc": "اللغات المستخدمة هذا الشهر"
+    },
+    "ai_performance": {
+      "title": "أداء الذكاء الاصطناعي الصوتي",
+      "period": "هذا الشهر",
+      "score": "نتيجة الذكاء الاصطناعي",
+      "response_time": "وقت الاستجابة",
+      "resolution": "معدل الحل",
+      "satisfaction": "الرضا",
+      "funnel_title": "قمع التحويل",
+      "qualified": "مؤهلون",
+      "converted": "محوّلون"
+    },
+    "heatmap": {
+      "title": "النشاط الصوتي (7 أيام)",
+      "low": "منخفض",
+      "high": "مرتفع"
+    },
+    "roi": {
+      "cost": "التكلفة الشهرية",
+      "leads": "العملاء المحتملون",
+      "cost_per_lead": "تكلفة لكل عميل",
+      "estimated_value": "القيمة المقدرة"
     },
     "sauvegarder_0": "حفظ",
     "annuler_1": "إلغاء",
@@ -402,9 +435,87 @@
       "ary": "الدارجة المغربية"
     }
   },
+  "calls": {
+    "title": "سجل المكالمات",
+    "subtitle": "استعرض وحلل مكالماتك",
+    "detail_title": "تفاصيل المكالمة",
+    "export": "تصدير"
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "subtitle": "إدارة حسابك وتفضيلاتك",
+    "profile": {
+      "title": "الملف الشخصي",
+      "full_name": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف",
+      "job_title": "المنصب",
+      "change_photo": "تغيير الصورة",
+      "save": "حفظ"
+    },
+    "password": {
+      "title": "كلمة المرور",
+      "current": "كلمة المرور الحالية",
+      "new": "كلمة مرور جديدة",
+      "confirm": "تأكيد",
+      "change": "تغيير كلمة المرور"
+    },
+    "preferences": {
+      "title": "التفضيلات",
+      "language": "اللغة",
+      "language_desc": "لغة الواجهة",
+      "theme": "المظهر",
+      "theme_desc": "مظهر الواجهة",
+      "theme_light": "فاتح",
+      "theme_dark": "داكن",
+      "theme_system": "النظام",
+      "timezone": "المنطقة الزمنية",
+      "timezone_desc": "للتقارير والإحصائيات"
+    },
+    "widget_features": {
+      "title": "ميزات الويدجت",
+      "social_proof": "الدليل الاجتماعي",
+      "social_proof_desc": "إشعارات الدليل الاجتماعي (بيانات حقيقية)",
+      "booking": "الحجز / المواعيد",
+      "booking_desc": "زر الحجز في الويدجت",
+      "exit_intent": "نية الخروج",
+      "exit_intent_desc": "رسالة تلقائية عند مغادرة الزائر",
+      "save": "حفظ"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "new_calls": "مكالمات جديدة",
+      "new_calls_desc": "إشعار في الوقت الفعلي",
+      "qualified_leads": "عملاء مؤهلون",
+      "qualified_leads_desc": "عندما يصل العميل إلى 70%+",
+      "weekly_report": "التقرير الأسبوعي",
+      "weekly_report_desc": "ملخص كل يوم اثنين",
+      "system_alerts": "تنبيهات النظام",
+      "system_alerts_desc": "الانقطاعات والصيانة"
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "url": "رابط الـ webhook",
+      "secret": "المفتاح السري (HMAC-SHA256)",
+      "generate": "توليد",
+      "events": "الأحداث",
+      "save": "حفظ الـ webhook"
+    },
+    "api_keys": {
+      "title": "مفاتيح API",
+      "new_key": "مفتاح جديد",
+      "loading": "جاري التحميل..."
+    },
+    "danger_zone": {
+      "title": "منطقة خطرة",
+      "delete_account": "حذف الحساب",
+      "delete_desc": "إجراء لا رجعة فيه. سيتم حذف جميع بياناتك.",
+      "delete": "حذف"
+    }
+  },
   "integrations": {
-    "title": "تكاملات أصلية",
-    "subtitle": "+31 تكاملاً أصلياً",
+    "title": "التكاملات",
+    "subtitle": "اربط أدواتك وخدماتك",
     "platform_power": "نظام التكاملات",
     "platform_desc": "اربط مساعدك الصوتي بأدوات عملك",
     "mcp_tools_label": "أدوات MCP",

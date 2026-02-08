@@ -33,6 +33,7 @@
     },
     "header": {
       "welcome": "Welcome, {{name}}. Here is your agent activity.",
+      "subtitle": "Here is an overview of your Voice AI activity",
       "status": "System Operational",
       "status_admin": "All Systems Go",
       "refresh": "Refresh"
@@ -127,6 +128,38 @@
       "restart": "Restart Services",
       "logs": "Export Logs",
       "config": "Configuration"
+    },
+    "title": "Dashboard",
+    "loading": "Loading...",
+    "insights": {
+      "peak_hour": "Peak Hour",
+      "peak_desc": "Most calls received",
+      "engagement": "Engagement",
+      "engagement_desc": "Sessions > 2 min",
+      "languages_used": "Active Languages",
+      "langs_desc": "Languages used this month"
+    },
+    "ai_performance": {
+      "title": "Voice AI Performance",
+      "period": "This month",
+      "score": "AI Score",
+      "response_time": "Response Time",
+      "resolution": "Resolution Rate",
+      "satisfaction": "Satisfaction",
+      "funnel_title": "Conversion Funnel",
+      "qualified": "Qualified",
+      "converted": "Converted"
+    },
+    "heatmap": {
+      "title": "Voice Activity (7 days)",
+      "low": "Low",
+      "high": "High"
+    },
+    "roi": {
+      "cost": "Monthly Cost",
+      "leads": "Leads Generated",
+      "cost_per_lead": "Cost per Lead",
+      "estimated_value": "Estimated Value"
     },
     "sauvegarder_0": "Save",
     "annuler_1": "Cancel",
@@ -402,9 +435,87 @@
       "ary": "Moroccan Darija"
     }
   },
+  "calls": {
+    "title": "Call History",
+    "subtitle": "View and analyze your calls",
+    "detail_title": "Call Details",
+    "export": "Export"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and preferences",
+    "profile": {
+      "title": "Profile",
+      "full_name": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "job_title": "Job Title",
+      "change_photo": "Change Photo",
+      "save": "Save"
+    },
+    "password": {
+      "title": "Password",
+      "current": "Current Password",
+      "new": "New Password",
+      "confirm": "Confirm",
+      "change": "Change Password"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "language_desc": "Interface language",
+      "theme": "Theme",
+      "theme_desc": "Interface appearance",
+      "theme_light": "Light",
+      "theme_dark": "Dark",
+      "theme_system": "System",
+      "timezone": "Timezone",
+      "timezone_desc": "For reports and statistics"
+    },
+    "widget_features": {
+      "title": "Widget Features",
+      "social_proof": "Social Proof",
+      "social_proof_desc": "Social proof notifications (real data)",
+      "booking": "Booking / Appointments",
+      "booking_desc": "Booking CTA in the widget",
+      "exit_intent": "Exit Intent",
+      "exit_intent_desc": "Automatic message when visitor leaves",
+      "save": "Save"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "new_calls": "New Calls",
+      "new_calls_desc": "Real-time notification",
+      "qualified_leads": "Qualified Leads",
+      "qualified_leads_desc": "When a lead reaches 70%+",
+      "weekly_report": "Weekly Report",
+      "weekly_report_desc": "Summary every Monday",
+      "system_alerts": "System Alerts",
+      "system_alerts_desc": "Outages and maintenance"
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "url": "Webhook URL",
+      "secret": "Secret (HMAC-SHA256)",
+      "generate": "Generate",
+      "events": "Events",
+      "save": "Save Webhook"
+    },
+    "api_keys": {
+      "title": "API Keys",
+      "new_key": "New Key",
+      "loading": "Loading..."
+    },
+    "danger_zone": {
+      "title": "Danger Zone",
+      "delete_account": "Delete Account",
+      "delete_desc": "Irreversible action. All your data will be deleted.",
+      "delete": "Delete"
+    }
+  },
   "integrations": {
-    "title": "Native Integrations",
-    "subtitle": "31+ native integrations",
+    "title": "Integrations",
+    "subtitle": "Connect your tools and services",
     "platform_power": "Integration Ecosystem",
     "platform_desc": "Connect your voice assistant to your business tools",
     "mcp_tools_label": "MCP Tools",

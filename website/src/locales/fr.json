@@ -33,6 +33,7 @@
     },
     "header": {
       "welcome": "Bienvenue, {{name}}. Voici l'activité de vos agents.",
+      "subtitle": "Voici un aperçu de votre activité Voice AI",
       "status": "Système opérationnel",
       "status_admin": "Tous systèmes OK",
       "refresh": "Actualiser"
@@ -127,6 +128,38 @@
       "restart": "Restart Services",
       "logs": "Export Logs",
       "config": "Configuration"
+    },
+    "title": "Tableau de bord",
+    "loading": "Chargement...",
+    "insights": {
+      "peak_hour": "Heure de pointe",
+      "peak_desc": "Plus d'appels reçus",
+      "engagement": "Engagement",
+      "engagement_desc": "Sessions > 2 min",
+      "languages_used": "Langues actives",
+      "langs_desc": "Langues utilisées ce mois"
+    },
+    "ai_performance": {
+      "title": "Performance IA Vocale",
+      "period": "Ce mois",
+      "score": "Score IA",
+      "response_time": "Temps de réponse",
+      "resolution": "Taux de résolution",
+      "satisfaction": "Satisfaction",
+      "funnel_title": "Entonnoir de Conversion",
+      "qualified": "Qualifiés",
+      "converted": "Convertis"
+    },
+    "heatmap": {
+      "title": "Activité vocale (7 jours)",
+      "low": "Faible",
+      "high": "Fort"
+    },
+    "roi": {
+      "cost": "Coût mensuel",
+      "leads": "Leads générés",
+      "cost_per_lead": "Coût par lead",
+      "estimated_value": "Valeur estimée"
     },
     "sauvegarder_0": "Sauvegarder",
     "annuler_1": "Annuler",
@@ -402,9 +435,87 @@
       "ary": "Darija Marocain"
     }
   },
+  "calls": {
+    "title": "Historique des appels",
+    "subtitle": "Consultez et analysez vos appels",
+    "detail_title": "Détails de l'appel",
+    "export": "Exporter"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subtitle": "Gérez votre compte et préférences",
+    "profile": {
+      "title": "Profil",
+      "full_name": "Nom complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "job_title": "Poste",
+      "change_photo": "Changer la photo",
+      "save": "Enregistrer"
+    },
+    "password": {
+      "title": "Mot de passe",
+      "current": "Mot de passe actuel",
+      "new": "Nouveau mot de passe",
+      "confirm": "Confirmer",
+      "change": "Changer le mot de passe"
+    },
+    "preferences": {
+      "title": "Préférences",
+      "language": "Langue",
+      "language_desc": "Langue de l'interface",
+      "theme": "Thème",
+      "theme_desc": "Apparence de l'interface",
+      "theme_light": "Clair",
+      "theme_dark": "Sombre",
+      "theme_system": "Système",
+      "timezone": "Fuseau horaire",
+      "timezone_desc": "Pour les rapports et statistiques"
+    },
+    "widget_features": {
+      "title": "Fonctionnalités Widget",
+      "social_proof": "Social Proof",
+      "social_proof_desc": "Notifications de preuve sociale (données réelles)",
+      "booking": "Booking / Rendez-vous",
+      "booking_desc": "CTA de réservation dans le widget",
+      "exit_intent": "Exit Intent",
+      "exit_intent_desc": "Message automatique quand le visiteur quitte",
+      "save": "Enregistrer"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "new_calls": "Nouveaux appels",
+      "new_calls_desc": "Notification en temps réel",
+      "qualified_leads": "Leads qualifiés",
+      "qualified_leads_desc": "Quand un lead atteint 70%+",
+      "weekly_report": "Rapport hebdomadaire",
+      "weekly_report_desc": "Résumé chaque lundi",
+      "system_alerts": "Alertes système",
+      "system_alerts_desc": "Interruptions et maintenance"
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "url": "URL du webhook",
+      "secret": "Secret (HMAC-SHA256)",
+      "generate": "Générer",
+      "events": "Événements",
+      "save": "Enregistrer le webhook"
+    },
+    "api_keys": {
+      "title": "Clés API",
+      "new_key": "Nouvelle clé",
+      "loading": "Chargement..."
+    },
+    "danger_zone": {
+      "title": "Zone dangereuse",
+      "delete_account": "Supprimer le compte",
+      "delete_desc": "Action irréversible. Toutes vos données seront supprimées.",
+      "delete": "Supprimer"
+    }
+  },
   "integrations": {
-    "title": "Intégrations Natives",
-    "subtitle": "31+ intégrations natives",
+    "title": "Intégrations",
+    "subtitle": "Connectez vos outils et services",
     "platform_power": "Écosystème d'Intégrations",
     "platform_desc": "Connectez votre assistant vocal à vos outils métier",
     "mcp_tools_label": "MCP Tools",

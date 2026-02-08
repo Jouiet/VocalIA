@@ -29,8 +29,8 @@
               <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
             <div>
-            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Paramètres</h1>
-            <p class="text-zinc-600 dark:text-zinc-400">Gérez votre compte et préférences</p>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="settings.title">Paramètres</h1>
+            <p class="text-zinc-600 dark:text-zinc-400" data-i18n="settings.subtitle">Gérez votre compte et préférences</p>
           </div>
             </div>
         </div>
@@ -39,39 +39,39 @@
       <div class="px-6 py-6 max-w-3xl space-y-6">
         <!-- Profile -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Profil</h3>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.profile.title">Profil</h3>
           <form id="profile-form" class="space-y-4">
             <div class="flex items-center gap-4 mb-6">
               <div class="w-20 h-20 rounded-full bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center">
                 <span class="text-2xl text-indigo-600 dark:text-indigo-400 font-bold" id="profile-initials">--</span>
               </div>
               <button type="button" class="px-4 py-2 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-700 dark:text-zinc-200 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.06]">
-                Changer la photo
+                <span data-i18n="settings.profile.change_photo">Changer la photo</span>
               </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nom complet</label>
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.profile.full_name">Nom complet</label>
                 <input type="text" id="profile-name" required minlength="2" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Email</label>
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.profile.email">Email</label>
                 <input type="email" id="profile-email" required class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Téléphone</label>
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.profile.phone">Téléphone</label>
                 <input type="tel" id="profile-phone" placeholder="+212 6XX XXX XXX" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Poste</label>
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.profile.job_title">Poste</label>
                 <input type="text" id="profile-title" placeholder="Ex: Directeur Commercial" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
             </div>
 
             <div class="pt-4">
               <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
-                Enregistrer
+                <span data-i18n="settings.profile.save">Enregistrer</span>
               </button>
             </div>
           </form>
@@ -79,25 +79,25 @@
 
         <!-- Password -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Mot de passe</h3>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.password.title">Mot de passe</h3>
           <form id="password-form" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Mot de passe actuel</label>
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.password.current">Mot de passe actuel</label>
               <input type="password" id="current-password" required class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Nouveau mot de passe</label>
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.password.new">Nouveau mot de passe</label>
                 <input type="password" id="new-password" required minlength="8" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
               <div>
-                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Confirmer</label>
+                <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.password.confirm">Confirmer</label>
                 <input type="password" id="confirm-password" required minlength="8" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
               </div>
             </div>
             <div class="pt-4">
               <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
-                Changer le mot de passe
+                <span data-i18n="settings.password.change">Changer le mot de passe</span>
               </button>
             </div>
           </form>
@@ -105,12 +105,12 @@
 
         <!-- Preferences -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Préférences</h3>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.preferences.title">Préférences</h3>
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Langue</p>
-                <p class="text-sm text-zinc-500">Langue de l'interface</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.preferences.language">Langue</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.preferences.language_desc">Langue de l'interface</p>
               </div>
               <select id="pref-language" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="fr">Français</option>
@@ -123,20 +123,20 @@
 
             <div class="flex items-center justify-between">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Thème</p>
-                <p class="text-sm text-zinc-500">Apparence de l'interface</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.preferences.theme">Thème</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.preferences.theme_desc">Apparence de l'interface</p>
               </div>
               <select id="pref-theme" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
-                <option value="light">Clair</option>
-                <option value="dark">Sombre</option>
-                <option value="system">Système</option>
+                <option value="light" data-i18n="settings.preferences.theme_light">Clair</option>
+                <option value="dark" data-i18n="settings.preferences.theme_dark">Sombre</option>
+                <option value="system" data-i18n="settings.preferences.theme_system">Système</option>
               </select>
             </div>
 
             <div class="flex items-center justify-between">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Fuseau horaire</p>
-                <p class="text-sm text-zinc-500">Pour les rapports et statistiques</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.preferences.timezone">Fuseau horaire</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.preferences.timezone_desc">Pour les rapports et statistiques</p>
               </div>
               <select id="pref-timezone" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
                 <option value="Africa/Casablanca">Casablanca (GMT+1)</option>
@@ -149,35 +149,35 @@
 
         <!-- Widget Features -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Fonctionnalités Widget</h3>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.widget_features.title">Fonctionnalités Widget</h3>
           <div class="space-y-4">
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Social Proof</p>
-                <p class="text-sm text-zinc-500">Notifications de preuve sociale (données réelles)</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.widget_features.social_proof">Social Proof</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.widget_features.social_proof_desc">Notifications de preuve sociale (données réelles)</p>
               </div>
               <input type="checkbox" id="feat-social-proof" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Booking / Rendez-vous</p>
-                <p class="text-sm text-zinc-500">CTA de réservation dans le widget</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.widget_features.booking">Booking / Rendez-vous</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.widget_features.booking_desc">CTA de réservation dans le widget</p>
               </div>
               <input type="checkbox" id="feat-booking" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Exit Intent</p>
-                <p class="text-sm text-zinc-500">Message automatique quand le visiteur quitte</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.widget_features.exit_intent">Exit Intent</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.widget_features.exit_intent_desc">Message automatique quand le visiteur quitte</p>
               </div>
               <input type="checkbox" id="feat-exit-intent" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <div class="pt-4">
               <button type="button" id="save-widget-features-btn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
-                Enregistrer
+                <span data-i18n="settings.widget_features.save">Enregistrer</span>
               </button>
             </div>
           </div>
@@ -185,36 +185,36 @@
 
         <!-- Notifications -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Notifications</h3>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.notifications.title">Notifications</h3>
           <div class="space-y-4">
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Nouveaux appels</p>
-                <p class="text-sm text-zinc-500">Notification en temps réel</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.notifications.new_calls">Nouveaux appels</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.notifications.new_calls_desc">Notification en temps réel</p>
               </div>
               <input type="checkbox" id="notif-calls" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Leads qualifiés</p>
-                <p class="text-sm text-zinc-500">Quand un lead atteint 70%+</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.notifications.qualified_leads">Leads qualifiés</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.notifications.qualified_leads_desc">Quand un lead atteint 70%+</p>
               </div>
               <input type="checkbox" id="notif-leads" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Rapport hebdomadaire</p>
-                <p class="text-sm text-zinc-500">Résumé chaque lundi</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.notifications.weekly_report">Rapport hebdomadaire</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.notifications.weekly_report_desc">Résumé chaque lundi</p>
               </div>
               <input type="checkbox" id="notif-weekly" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
 
             <label class="flex items-center justify-between cursor-pointer">
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">Alertes système</p>
-                <p class="text-sm text-zinc-500">Interruptions et maintenance</p>
+                <p class="font-medium text-zinc-900 dark:text-white" data-i18n="settings.notifications.system_alerts">Alertes système</p>
+                <p class="text-sm text-zinc-500" data-i18n="settings.notifications.system_alerts_desc">Interruptions et maintenance</p>
               </div>
               <input type="checkbox" id="notif-system" checked class="w-5 h-5 text-indigo-600 border-zinc-300 dark:border-white/[0.08] rounded focus:ring-indigo-500">
             </label>
@@ -223,23 +223,23 @@
 
         <!-- Webhooks -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
-          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4">Webhooks</h3>
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4" data-i18n="settings.webhooks.title">Webhooks</h3>
           <form id="webhook-form" class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">URL du webhook</label>
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.webhooks.url">URL du webhook</label>
               <input type="url" id="webhook-url" placeholder="https://votre-serveur.com/webhook" class="w-full px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">Secret (HMAC-SHA256)</label>
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1" data-i18n="settings.webhooks.secret">Secret (HMAC-SHA256)</label>
               <div class="flex gap-2">
                 <input type="text" id="webhook-secret" readonly class="flex-1 px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-zinc-50 dark:bg-white/[0.06] text-zinc-900 dark:text-white font-mono text-sm">
                 <button type="button" id="generate-secret-btn" class="px-3 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.06] text-sm">
-                  Générer
+                  <span data-i18n="settings.webhooks.generate">Générer</span>
                 </button>
               </div>
             </div>
             <div>
-              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Événements</label>
+              <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2" data-i18n="settings.webhooks.events">Événements</label>
               <div class="grid grid-cols-2 gap-2">
                 <label class="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
                   <input type="checkbox" name="webhook_events" value="call.started" class="w-4 h-4 text-indigo-600 rounded">
@@ -261,7 +261,7 @@
             </div>
             <div class="pt-4">
               <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
-                Enregistrer le webhook
+                <span data-i18n="settings.webhooks.save">Enregistrer le webhook</span>
               </button>
             </div>
           </form>
@@ -270,26 +270,26 @@
         <!-- API Keys -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-semibold text-zinc-900 dark:text-white">Clés API</h3>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="settings.api_keys.title">Clés API</h3>
             <button id="new-key-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">
-              Nouvelle clé
+              <span data-i18n="settings.api_keys.new_key">Nouvelle clé</span>
             </button>
           </div>
           <div id="api-keys-list" class="space-y-3">
-            <p class="text-zinc-500 text-sm">Chargement...</p>
+            <p class="text-zinc-500 text-sm" data-i18n="settings.api_keys.loading">Chargement...</p>
           </div>
         </div>
 
         <!-- Danger Zone -->
         <div class="bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-200 dark:border-red-800 p-6">
-          <h3 class="font-semibold text-red-800 dark:text-red-300 mb-4">Zone dangereuse</h3>
+          <h3 class="font-semibold text-red-800 dark:text-red-300 mb-4" data-i18n="settings.danger_zone.title">Zone dangereuse</h3>
           <div class="flex items-center justify-between">
             <div>
-              <p class="font-medium text-red-800 dark:text-red-300">Supprimer le compte</p>
-              <p class="text-sm text-red-600 dark:text-red-400">Action irréversible. Toutes vos données seront supprimées.</p>
+              <p class="font-medium text-red-800 dark:text-red-300" data-i18n="settings.danger_zone.delete_account">Supprimer le compte</p>
+              <p class="text-sm text-red-600 dark:text-red-400" data-i18n="settings.danger_zone.delete_desc">Action irréversible. Toutes vos données seront supprimées.</p>
             </div>
             <button id="delete-account-btn" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
-              Supprimer
+              <span data-i18n="settings.danger_zone.delete">Supprimer</span>
             </button>
           </div>
         </div>

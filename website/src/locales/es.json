@@ -33,6 +33,7 @@
     },
     "header": {
       "welcome": "Bienvenido, {{name}}. Aquí está la actividad de sus agentes.",
+      "subtitle": "Resumen de su actividad Voice AI",
       "status": "Sistema operativo",
       "status_admin": "Todos los sistemas OK",
       "refresh": "Actualizar"
@@ -127,6 +128,38 @@
       "restart": "Reiniciar Servicios",
       "logs": "Exportar Logs",
       "config": "Configuración"
+    },
+    "title": "Panel de control",
+    "loading": "Cargando...",
+    "insights": {
+      "peak_hour": "Hora punta",
+      "peak_desc": "Más llamadas recibidas",
+      "engagement": "Engagement",
+      "engagement_desc": "Sesiones > 2 min",
+      "languages_used": "Idiomas activos",
+      "langs_desc": "Idiomas usados este mes"
+    },
+    "ai_performance": {
+      "title": "Rendimiento IA Vocal",
+      "period": "Este mes",
+      "score": "Puntuación IA",
+      "response_time": "Tiempo de respuesta",
+      "resolution": "Tasa de resolución",
+      "satisfaction": "Satisfacción",
+      "funnel_title": "Embudo de Conversión",
+      "qualified": "Cualificados",
+      "converted": "Convertidos"
+    },
+    "heatmap": {
+      "title": "Actividad vocal (7 días)",
+      "low": "Bajo",
+      "high": "Alto"
+    },
+    "roi": {
+      "cost": "Coste mensual",
+      "leads": "Leads generados",
+      "cost_per_lead": "Coste por lead",
+      "estimated_value": "Valor estimado"
     },
     "sauvegarder_0": "Guardar",
     "annuler_1": "Cancelar",
@@ -402,9 +435,87 @@
       "ary": "Darija Marroquí"
     }
   },
+  "calls": {
+    "title": "Historial de llamadas",
+    "subtitle": "Consulte y analice sus llamadas",
+    "detail_title": "Detalles de la llamada",
+    "export": "Exportar"
+  },
+  "settings": {
+    "title": "Configuración",
+    "subtitle": "Gestione su cuenta y preferencias",
+    "profile": {
+      "title": "Perfil",
+      "full_name": "Nombre completo",
+      "email": "Email",
+      "phone": "Teléfono",
+      "job_title": "Puesto",
+      "change_photo": "Cambiar foto",
+      "save": "Guardar"
+    },
+    "password": {
+      "title": "Contraseña",
+      "current": "Contraseña actual",
+      "new": "Nueva contraseña",
+      "confirm": "Confirmar",
+      "change": "Cambiar contraseña"
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "language": "Idioma",
+      "language_desc": "Idioma de la interfaz",
+      "theme": "Tema",
+      "theme_desc": "Apariencia de la interfaz",
+      "theme_light": "Claro",
+      "theme_dark": "Oscuro",
+      "theme_system": "Sistema",
+      "timezone": "Zona horaria",
+      "timezone_desc": "Para informes y estadísticas"
+    },
+    "widget_features": {
+      "title": "Funciones del Widget",
+      "social_proof": "Social Proof",
+      "social_proof_desc": "Notificaciones de prueba social (datos reales)",
+      "booking": "Reservas / Citas",
+      "booking_desc": "CTA de reserva en el widget",
+      "exit_intent": "Exit Intent",
+      "exit_intent_desc": "Mensaje automático cuando el visitante se va",
+      "save": "Guardar"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "new_calls": "Nuevas llamadas",
+      "new_calls_desc": "Notificación en tiempo real",
+      "qualified_leads": "Leads cualificados",
+      "qualified_leads_desc": "Cuando un lead alcanza 70%+",
+      "weekly_report": "Informe semanal",
+      "weekly_report_desc": "Resumen cada lunes",
+      "system_alerts": "Alertas del sistema",
+      "system_alerts_desc": "Interrupciones y mantenimiento"
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "url": "URL del webhook",
+      "secret": "Secret (HMAC-SHA256)",
+      "generate": "Generar",
+      "events": "Eventos",
+      "save": "Guardar webhook"
+    },
+    "api_keys": {
+      "title": "Claves API",
+      "new_key": "Nueva clave",
+      "loading": "Cargando..."
+    },
+    "danger_zone": {
+      "title": "Zona peligrosa",
+      "delete_account": "Eliminar cuenta",
+      "delete_desc": "Acción irreversible. Todos sus datos serán eliminados.",
+      "delete": "Eliminar"
+    }
+  },
   "integrations": {
-    "title": "Integraciones Nativas",
-    "subtitle": "31+ integraciones nativas",
+    "title": "Integraciones",
+    "subtitle": "Conecte sus herramientas y servicios",
     "platform_power": "Ecosistema de Integraciones",
     "platform_desc": "Conecta tu asistente vocal a tus herramientas de negocio",
     "mcp_tools_label": "MCP Tools",

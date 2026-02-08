@@ -104,11 +104,11 @@
         <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h2 class="text-2xl font-bold" id="welcome-message">Bienvenue !</h2>
-            <p class="mt-1 opacity-80" data-i18n="dashboard.welcome_subtitle">Voici un aperçu de votre activité Voice AI</p>
+            <p class="mt-1 opacity-80" data-i18n="dashboard.header.subtitle">Voici un aperçu de votre activité Voice AI</p>
           </div>
           <div class="flex items-center gap-3">
             <div class="live-dot"></div>
-            <span class="text-sm font-medium opacity-90" data-i18n="dashboard.system_active">Système actif</span>
+            <span class="text-sm font-medium opacity-90" data-i18n="dashboard.header.status">Système opérationnel</span>
           </div>
         </div>
       </div>
@@ -359,8 +359,8 @@
       <!-- Recent Calls -->
       <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
         <div class="p-5 border-b border-zinc-200 dark:border-white/[0.08] flex items-center justify-between">
-          <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.recent_calls">Appels récents</h3>
-          <a href="calls.html" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline" data-i18n="dashboard.view_all">Voir tout</a>
+          <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.calls.recent">Appels récents</h3>
+          <a href="calls.html" class="text-sm text-indigo-600 dark:text-indigo-400 hover:underline" data-i18n="dashboard.calls.view_all">Voir tout →</a>
         </div>
         <div id="recent-calls" class="divide-y divide-zinc-200 dark:divide-white/[0.08]">
           <div class="p-5 text-center text-zinc-500">
@@ -440,7 +440,9 @@
       userAvatar.textContent = (user.name || user.email).charAt(0).toUpperCase();
       userName.textContent = user.name || user.email.split('@')[0];
       userEmail.textContent = user.email;
-      welcomeMessage.textContent = `Bienvenue, ${user.name || user.email.split('@')[0]} !`;
+      const t = window.VocaliaI18n?.t || ((k, fb) => fb);
+      const name = user.name || user.email.split('@')[0];
+      welcomeMessage.textContent = t('dashboard.header.welcome', `Bienvenue, ${name}.`).replace('{{name}}', name);
     }
 
     // Animated stat counter (Phase 2.1 - Data Showcase)
