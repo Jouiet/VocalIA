@@ -7,14 +7,17 @@
 # - grok-realtime (3007): WebSocket Voice Streaming
 # - telephony (3009): Twilio PSTN Bridge
 #
-# Routes:
-# - api.vocalia.ma/api/auth/* → db-api
+# Routes (all via api.vocalia.ma — no extra DNS needed):
+# - api.vocalia.ma/api/auth/* → db-api (priority 100)
 # - api.vocalia.ma/api/hitl/* → db-api
 # - api.vocalia.ma/api/kb/* → db-api
 # - api.vocalia.ma/api/tenants/* → db-api
 # - api.vocalia.ma/api/logs → db-api
 # - api.vocalia.ma/api/catalog/* → db-api
-# - api.vocalia.ma/* → voice-api
+# - api.vocalia.ma/realtime/* → grok-realtime (priority 90)
+# - api.vocalia.ma/telephony/* → telephony (priority 80)
+# - api.vocalia.ma/* → voice-api (priority 50)
+# Subdomain aliases (optional, need DNS A records at NindoHost):
 # - ws.vocalia.ma → grok-realtime
 # - tel.vocalia.ma → telephony
 #
@@ -116,7 +119,7 @@ services:
 
   # ═══════════════════════════════════════════════════════════════
   # GROK REALTIME - WebSocket Voice Streaming
-  # Routes: ws.vocalia.ma
+  # Routes: api.vocalia.ma/realtime/* (primary) + ws.vocalia.ma (alias, needs DNS)
   # ═══════════════════════════════════════════════════════════════
   vocalia-realtime:
     image: node:20-alpine
@@ -140,6 +143,15 @@ services:
       - "3007:3007"
     labels:
       - "traefik.enable=true"
+      # Path-based routing via api.vocalia.ma (no extra DNS needed)
+      - "traefik.http.routers.vocalia-realtime.rule=Host(`api.vocalia.ma`) && PathPrefix(`/realtime`)"
+      - "traefik.http.routers.vocalia-realtime.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-realtime.tls=true"
+      - "traefik.http.routers.vocalia-realtime.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-realtime.priority=90"
+      - "traefik.http.routers.vocalia-realtime.middlewares=strip-realtime"
+      - "traefik.http.middlewares.strip-realtime.stripprefix.prefixes=/realtime"
+      # Subdomain alias (works if ws.vocalia.ma DNS is configured)
       - "traefik.http.routers.vocalia-ws.rule=Host(`ws.vocalia.ma`)"
       - "traefik.http.routers.vocalia-ws.entrypoints=websecure"
       - "traefik.http.routers.vocalia-ws.tls=true"
@@ -152,7 +164,7 @@ services:
 
   # ═══════════════════════════════════════════════════════════════
   # TELEPHONY - Twilio PSTN Bridge
-  # Routes: tel.vocalia.ma
+  # Routes: api.vocalia.ma/telephony/* (primary) + tel.vocalia.ma (alias, needs DNS)
   # ═══════════════════════════════════════════════════════════════
   vocalia-telephony:
     image: node:20-alpine
@@ -182,6 +194,15 @@ services:
       - "3009:3009"
     labels:
       - "traefik.enable=true"
+      # Path-based routing via api.vocalia.ma (no extra DNS needed)
+      - "traefik.http.routers.vocalia-telephony.rule=Host(`api.vocalia.ma`) && PathPrefix(`/telephony`)"
+      - "traefik.http.routers.vocalia-telephony.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-telephony.tls=true"
+      - "traefik.http.routers.vocalia-telephony.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-telephony.priority=80"
+      - "traefik.http.routers.vocalia-telephony.middlewares=strip-telephony"
+      - "traefik.http.middlewares.strip-telephony.stripprefix.prefixes=/telephony"
+      # Subdomain alias (works if tel.vocalia.ma DNS is configured)
       - "traefik.http.routers.vocalia-tel.rule=Host(`tel.vocalia.ma`)"
       - "traefik.http.routers.vocalia-tel.entrypoints=websecure"
       - "traefik.http.routers.vocalia-tel.tls=true"
