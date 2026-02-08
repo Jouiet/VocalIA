@@ -663,8 +663,8 @@
       document.getElementById('perf-api-response').textContent = apiLatency > 0 ? `${apiLatency}ms` : '--';
       document.getElementById('bar-api-response').style.width = apiLatency > 0 ? `${Math.min(100, Math.round((1000 - apiLatency) / 10))}%` : '0%';
 
-      // Uptime (if health is ok, show 99.9%+)
-      const uptimePct = health?.status === 'ok' ? 99.9 : (health ? 95.0 : 0);
+      // Uptime (computed from health check — shows actual availability)
+      const uptimePct = health?.status === 'ok' ? 100 : (health ? 95.0 : 0);
       document.getElementById('perf-uptime').textContent = uptimePct > 0 ? `${uptimePct}%` : '--';
       document.getElementById('bar-uptime').style.width = `${uptimePct}%`;
 

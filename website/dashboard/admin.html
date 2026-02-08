@@ -1431,7 +1431,7 @@
             mrr: totalMRR,
             mrrGrowth: 0, // Would need historical data
             avgLatency: 87, // Would need real metrics
-            uptime: 99.97
+            uptime: 0
           },
           health: {
             database: 'operational',
@@ -1517,7 +1517,7 @@
 
       // Update uptime
       const uptimeEl = document.getElementById('stat-uptime');
-      if (uptimeEl) uptimeEl.textContent = (stats.uptime || 99.97).toFixed(2) + '%';
+      if (uptimeEl) uptimeEl.textContent = (stats.uptime || 0).toFixed(2) + '%';
 
       const uptimePeriodEl = document.getElementById('stat-uptime-period');
       if (uptimePeriodEl) uptimePeriodEl.textContent = '30 jours';

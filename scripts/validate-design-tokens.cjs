@@ -1,17 +1,18 @@
 'use strict';
 
 /**
- * VocalIA Design Token Validator v2.3
- * Ultra-rigorous branding compliance checker.
+ * VocalIA Design Token Validator v3.0
+ * Ultra-rigorous branding + business factual compliance checker.
  * Validates ALL sections of .claude/rules/branding.md
  * + Full codebase stale number detection (personas, MCP tools)
+ * + Business/factual compliance (eliminated products, pricing, claims)
  * + Component system coverage on ALL public pages
  * + Header/footer structural integrity (nav links, i18n, lang switcher)
  *
  * Scans: HTML, JS (widgets + core), CSS, JSON (locales + data)
  * Run: node scripts/validate-design-tokens.cjs
  *
- * Session 250.125 | 07/02/2026
+ * Session 250.160 | 08/02/2026
  */
 
 const fs = require('fs');
@@ -138,6 +139,34 @@ const STALE_NUMBER_PATTERNS = [
   { regex: /\b182\s+(?:MCP\s+)?tools?\b/gi, reason: 'Stale "182 tools" → should be 203' },
   { regex: /\b182\s+integration/gi, reason: 'Stale "182 integration" → should be 203' },
   { regex: /MCP[^)]*182/gi, reason: 'Stale "MCP...182" → should be 203' },
+];
+
+// ═══════════════════════════════════════════════════════
+// SECTION 8: Business/Factual Compliance
+// Source of truth: docs/BUSINESS-INTELLIGENCE.md
+// ═══════════════════════════════════════════════════════
+
+const BUSINESS_PATTERNS = [
+  // 18. Eliminated B2C product (merged into Pro 99€ — BI.md L70)
+  { regex: /Voice Widget B2C/gi, rule: 'ELIMINATED_PRODUCT', reason: 'B2C product ELIMINATED → merged into Pro (99€)' },
+
+  // 19. Old pricing (non-viable telephony margin — BI.md L71, L77)
+  { regex: /\$0\.06/g, rule: 'OLD_PRICING', reason: '$0.06 is OLD telephony cost (8% margin) → now $0.10-0.11/min' },
+  { regex: /\b0[.,]06\s*€/g, rule: 'OLD_PRICING', reason: '0.06€ is OLD telephony price (8% margin) → now 0.10€/min' },
+  { regex: /\b79\s*€/g, rule: 'OLD_PRICING', reason: '79€ was B2C tier — ELIMINATED. Use Pro 99€/mo' },
+
+  // 20. Unverifiable uptime claim (API not deployed — production readiness 3.5/10)
+  { regex: /99[.,]9\s*%/g, rule: 'UPTIME_CLAIM', reason: '99.9% claim unverifiable — API backend NOT deployed' },
+
+  // 21. Unverified metrics (0 paying customers)
+  { regex: /[Rr]ésultat mesuré/g, rule: 'UNVERIFIED_METRIC', reason: '"Résultat mesuré" — 0 customers, nothing measured' },
+  { regex: /[Mm]easured result/g, rule: 'UNVERIFIED_METRIC', reason: '"Measured result" — 0 customers, nothing measured' },
+  { regex: /[Rr]esultado medido/g, rule: 'UNVERIFIED_METRIC', reason: '"Resultado medido" — 0 customers, nothing measured' },
+  { regex: /نتيجة مُقاسة/g, rule: 'UNVERIFIED_METRIC', reason: 'AR "measured result" — 0 customers, nothing measured' },
+  { regex: /نتيجة مقاسة/g, rule: 'UNVERIFIED_METRIC', reason: 'AR "measured result" — 0 customers, nothing measured' },
+
+  // 22. Unqualified competitive claims (TRUE for FR/EU, FALSE for Morocco — BI.md L105)
+  { regex: /60\s*%\s*(?:moins cher|cheaper|más barato|أرخص|ارخص)/gi, rule: 'COMPETITIVE_CLAIM', reason: '"60% cheaper" TRUE for FR/EU, FALSE for Morocco ($0.83/min Twilio) — needs qualification' },
 ];
 
 // ═══════════════════════════════════════════════════════
@@ -555,16 +584,64 @@ function validate() {
     }
   }
 
+  // ── CHECK 18-22: Business/factual patterns (HTML + locale files) ──
+  const businessFiles = [
+    ...htmlFiles,
+    ...findFiles(path.join(WEBSITE_DIR, 'src', 'locales'), ['.json']),
+  ];
+
+  for (const file of businessFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+
+    for (const { regex, rule, reason } of BUSINESS_PATTERNS) {
+      const globalRegex = new RegExp(regex.source, regex.flags);
+      let match;
+      while ((match = globalRegex.exec(content)) !== null) {
+        const lineNum = content.substring(0, match.index).split('\n').length;
+        const line = (content.split('\n')[lineNum - 1] || '').trim();
+
+        // Context-aware exceptions:
+        // B2C as widget mode label (e.g., "B2C : Prise de RDV") — acceptable
+        if (rule === 'ELIMINATED_PRODUCT' && /B2C\s*:/.test(line)) continue;
+        // B2C redirect page (meta refresh IS the fix)
+        if (rule === 'ELIMINATED_PRODUCT' && line.includes('http-equiv')) continue;
+        // 99.9% inside HTML comments
+        if (rule === 'UPTIME_CLAIM' && line.includes('<!--')) continue;
+        // "60% moins cher" qualified with EU/européen/Europe/Vapi/Retell = acceptable
+        if (rule === 'COMPETITIVE_CLAIM' && /europ|EU[\s"'.,)}<]|Vapi|Retell/i.test(line)) continue;
+
+        const target = rule === 'COMPETITIVE_CLAIM' ? warnings : errors;
+        target.push({ file: rel, line: lineNum, rule, msg: `"${match[0]}" — ${reason}` });
+      }
+    }
+  }
+
+  // ── CHECK 23: Telephony per-minute price without base fee ──
+  for (const file of htmlFiles) {
+    const content = fs.readFileSync(file, 'utf-8');
+    const rel = relPath(file);
+
+    const hasTelephonyPerMin = /0[.,]10\s*€\s*\/?\s*min/i.test(content);
+    const hasBaseFee = /199\s*€/.test(content);
+
+    if (hasTelephonyPerMin && !hasBaseFee) {
+      const match = content.match(/0[.,]10\s*€\s*\/?\s*min/i);
+      const lineNum = match ? content.substring(0, match.index).split('\n').length : 0;
+      warnings.push({ file: rel, line: lineNum, rule: 'TELEPHONY_BASE_MISSING', msg: 'Shows 0.10€/min without 199€/month base fee — incomplete pricing' });
+    }
+  }
+
   // ═══════════════════════════════════════════════════════
   // Report
   // ═══════════════════════════════════════════════════════
 
   const totalFiles = allFiles.length;
-  const totalChecks = 17;
+  const totalChecks = 23;
 
   console.log('╔══════════════════════════════════════════════════════════════╗');
-  console.log('║        VocalIA Design Token Validator v2.3                  ║');
-  console.log('║  Full codebase branding compliance (17 checks)            ║');
+  console.log('║        VocalIA Design Token Validator v3.0                  ║');
+  console.log('║  Branding + Business factual compliance (23 checks)       ║');
   console.log('╚══════════════════════════════════════════════════════════════╝');
   console.log(`\nScanned: ${totalFiles} files (${htmlFiles.length} HTML + ${jsFiles.length} JS + ${cssFiles.length} CSS)`);
   console.log(`Checks: ${totalChecks} rules enforced\n`);
@@ -629,6 +706,12 @@ function validate() {
     ['15. Component coverage', 'COMPONENT_COVERAGE'],
     ['16. Header structure', 'HEADER_STRUCTURE'],
     ['17. Footer structure', 'FOOTER_STRUCTURE'],
+    ['18. Eliminated products', 'ELIMINATED_PRODUCT'],
+    ['19. Old pricing', 'OLD_PRICING'],
+    ['20. Uptime claims', 'UPTIME_CLAIM'],
+    ['21. Unverified metrics', 'UNVERIFIED_METRIC'],
+    ['22. Competitive claims', 'COMPETITIVE_CLAIM'],
+    ['23. Telephony base fee', 'TELEPHONY_BASE_MISSING'],
   ];
 
   for (const [name, rule] of checks) {

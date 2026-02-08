@@ -70,7 +70,7 @@
                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                 <p class="text-xs text-zinc-500 uppercase tracking-wider">Uptime</p>
               </div>
-              <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="webhook-uptime">99.9%</p>
+              <p class="text-2xl font-bold text-zinc-900 dark:text-white" id="webhook-uptime">--</p>
               <p class="text-xs text-green-500 mt-1">30 derniers jours</p>
             </div>
             <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-4">
@@ -446,7 +446,7 @@
         if (!tenantId) return;
         const stats = await api.request(`/tenants/${tenantId}/webhooks/health`).catch(() => null);
         if (stats) {
-          document.getElementById('webhook-uptime').textContent = (stats.uptime_pct || 99.9).toFixed(1) + '%';
+          document.getElementById('webhook-uptime').textContent = (stats.uptime_pct || 0).toFixed(1) + '%';
           document.getElementById('webhook-delivered').textContent = (stats.delivered || 0).toLocaleString();
           document.getElementById('webhook-failed').textContent = (stats.failed || 0).toLocaleString();
           document.getElementById('webhook-latency').textContent = (stats.avg_latency_ms || 0).toFixed(0);
