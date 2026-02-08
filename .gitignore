@@ -74,6 +74,9 @@ coverage/
 # Test event data (runtime-generated)
 data/events/
 data/ab-analytics/
+data/remotion-hitl/audit-log.jsonl
+data/remotion-hitl/pending-queue.json
+data/recommendations/test_*.json
 
 # Widget archive (dead code)
 widget/archive/
