@@ -1461,7 +1461,7 @@ async function handleRequest(req, res) {
         name: body.name,
         category: body.category || 'default',
         price: body.price || 0,
-        currency: body.currency || 'MAD',
+        currency: body.currency || 'EUR',
         stock: body.stock ?? null,
         available: body.available !== false,
         description: body.description || '',

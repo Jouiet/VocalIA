@@ -280,7 +280,7 @@ class TenantCatalogStore {
           id: item.id,
           name: item.name,
           price: item.price,
-          currency: item.currency || 'MAD',
+          currency: item.currency || 'EUR',
           available: item.in_stock || item.available,
           voiceDescription: item.voice_description
         })),
@@ -322,7 +322,7 @@ class TenantCatalogStore {
           id: item.id,
           name: item.name,
           price: item.price,
-          currency: item.currency || 'MAD',
+          currency: item.currency || 'EUR',
           description: item.description,
           category: item.category,
           available: item.in_stock || item.available,
@@ -512,7 +512,7 @@ class TenantCatalogStore {
           id: s.id,
           name: s.name,
           price: s.price,
-          currency: s.currency || 'MAD',
+          currency: s.currency || 'EUR',
           duration: s.duration_minutes,
           description: s.description,
           voiceDescription: s.voice_description

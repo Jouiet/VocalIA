@@ -737,9 +737,9 @@ describe('ShopifyCatalogConnector constructor', () => {
     assert.strictEqual(conn.currency, 'EUR');
   });
 
-  test('defaults currency to MAD', () => {
+  test('defaults currency to EUR', () => {
     const conn = new ShopifyCatalogConnector('t1', { shop: 's', accessToken: 't' });
-    assert.strictEqual(conn.currency, 'MAD');
+    assert.strictEqual(conn.currency, 'EUR');
   });
 
   test('has rate limit tracking', () => {

@@ -446,7 +446,7 @@ class ShopifyCatalogConnector extends CatalogConnector {
     this.apiVersion = config.apiVersion || '2026-01';
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
-    this.currency = config.currency || 'MAD';
+    this.currency = config.currency || 'EUR';
     // Rate limit tracking
     this.availablePoints = 1000;
     this.restoreRate = 50;
@@ -801,7 +801,7 @@ class WooCommerceCatalogConnector extends CatalogConnector {
     this.consumerSecret = config.consumerSecret;
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
-    this.currency = config.currency || 'MAD';
+    this.currency = config.currency || 'EUR';
   }
 
   async connect() {
@@ -1072,7 +1072,7 @@ class SquareCatalogConnector extends CatalogConnector {
     this.environment = config.environment || 'production'; // 'sandbox' or 'production'
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
-    this.currency = config.currency || 'MAD';
+    this.currency = config.currency || 'EUR';
     this.apiVersion = '2026-01-22'; // Per official Square docs
   }
 
@@ -1469,7 +1469,7 @@ class LightspeedCatalogConnector extends CatalogConnector {
     this.environment = config.environment || 'production'; // 'trial' or 'production'
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
-    this.currency = config.currency || 'MAD';
+    this.currency = config.currency || 'EUR';
   }
 
   get _baseUrl() {
@@ -1824,7 +1824,7 @@ class MagentoCatalogConnector extends CatalogConnector {
     this.accessToken = config.accessToken;
     this.catalog = null;
     this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
-    this.currency = config.currency || 'MAD';
+    this.currency = config.currency || 'EUR';
   }
 
   async connect() {
