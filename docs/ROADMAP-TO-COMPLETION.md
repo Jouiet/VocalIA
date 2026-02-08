@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.158 (i18n 100% complete, stale numbers corrected, documentation accuracy)
+> **Date:** 2026-02-08 | **Session:** 250.158 (i18n 100%, OpenAPI revalidated, nginx routing fix, ESM audit → DEFERRED)
 > **Code Completeness:** 9.6/10 | **Production Readiness:** 3.0/10 (website deployed, CORS unblocked, multi-tenant security hardened, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144)
@@ -621,12 +621,13 @@ Le CI actuel ne fait que:
 
 ### P2-1. ✅ DONE (250.106) — OpenAPI spec exhaustive
 
-**Fait vérifié:** `docs/openapi.yaml` existe (24,361 bytes), validé contre 23 routes réelles (250.106).
+**Fait vérifié:** `docs/openapi.yaml` existe (26,446 bytes), validé contre 29 routes réelles (250.158).
 
 - [x] **P2-1a.** Cross-referenced openapi.yaml vs 27 actual routes in voice-api-resilient.cjs
 - [x] **P2-1b.** Added 17 missing paths: /config, /social-proof, /tts, /api/contact, /api/trigger-call, /api/health/grok, /api/health/telephony, /api/fallback/{provider}, /admin/metrics, /admin/tenants (GET+POST), /admin/refresh, /admin/logs, /admin/logs/export, /admin/health, /a2ui/generate, /a2ui/health, /metrics
 - [x] **P2-1c.** Total paths: 6 → **23** (4 excluded: static assets + voice-assistant + lang files)
 - [x] **P2-1d.** Added tags: Widget, Admin, Integrations. Marked /trigger-call as deprecated (use /api/trigger-call)
+- [x] **P2-1e.** (250.158) Revalidated: added POST /stt + POST /a2ui/action, removed deprecated POST /trigger-call. Total: **25 methods across 24 paths**.
 
 **Effort:** ~1h | **Impact:** Intégrations 6→7, Documentation 7→8
 
@@ -903,7 +904,7 @@ B2B source synced to deployed (pulse animation added + WCAG).
 - [x] **P3-1d.** ESM migration script created (`scripts/esm-migrate.cjs`) for batch conversion.
 - [x] **P3-1e.** Tree-shaking analysis: persona-injector = 480 KB (28% of voice-api bundle). Optimization target for future.
 - [x] **P3-1f.** **TEST FILES CONVERTED** — 69 files .cjs → .mjs via `scripts/convert-tests-esm.cjs`. Fixed: multi-line requires (14), `__dirname` → `import.meta.dirname` (11), `createRequire` for env-dependent loads (2), shebang removal, `require.main` removal. 3,763 tests pass, 0 fail.
-- [ ] **P3-1g.** Source module ESM migration (core/*.cjs → .mjs) — optional, source stays CJS for now.
+- [ ] **P3-1g.** Source module ESM migration (core/*.cjs → .mjs) — DEFERRED. Audit (250.158): 70 .cjs files, 330 require(), 89 module.exports, 78 conditional/lazy requires. Regex-based `esm-migrate.cjs` script exists but too risky for 78 conditional requires (need AST-based approach). Source stays CJS.
 - [x] **P3-1h.** **WIDGET TREE-SHAKING DONE** — Build pipeline v2.0: esbuild DCE → terser 3-pass → pre-compression. ECOM: 296.8→186.9 KB min (37.1 KB brotli). B2B: 50.5→30.2 KB min (8.3 KB brotli). Pre-compressed .gz/.br files for static serving. `--production` flag strips console.log. Version 2.4.0→2.5.0.
 
 **Effort:** ~10h total (~7h done) | **Impact:** Architecture 8→9
@@ -1100,7 +1101,7 @@ B2B source synced to deployed (pulse animation added + WCAG).
 | CI/CD | ✅ Tests | Unit + Exhaustive + i18n regression in CI (250.105) |
 | .env.example | ✅ Existe | 7,794 bytes |
 | README.md | ✅ Existe | 206 lignes |
-| openapi.yaml | ✅ Validé | 24,361 bytes (23 paths, 250.106) |
+| openapi.yaml | ✅ Validé | 26,446 bytes (24 paths / 25 methods, 250.158) |
 | .eslintrc.json | ✅ Existe | Config ESLint présente |
 | Prettier config | ✅ Existe | `.prettierrc` (was already present, ROADMAP was wrong) |
 | LICENSE | ✅ Existe | PROPRIETARY (created 250.105) |
@@ -1441,6 +1442,9 @@ create_booking          get_recommendations    qualify_lead
 | **Cart recovery GET persistence**: Admin GET endpoint now loads from disk | 250.157 | db-api.cjs L2193 lazy disk load |
 | **i18n 100% complete**: 313 missing keys added to all 5 locales (4,545→4,858 keys) | 250.158 | 0 missing data-i18n keys, auth/booking/catalog/billing/analytics/dashboard namespaces |
 | **Stale numbers corrected**: Line counts, openapi.yaml status, score summary updated | 250.158 | factuality.md, ROADMAP, CLAUDE.md all verified |
+| **OpenAPI revalidated**: Added POST /stt + POST /a2ui/action, removed deprecated /trigger-call | 250.158 | 25 methods across 24 paths, YAML valid (26,446 bytes) |
+| **Nginx routing fix**: Rewrote nginx config with proper multi-service routing | 250.158 | db-api explicit paths, voice-api catch-all, 2 rate zones |
+| **ESM audit**: 70 .cjs, 330 require(), 78 conditional — DEFERRED (too risky for regex-based migration) | 250.158 | esm-migrate.cjs dry-run completed, source stays CJS |
 
 ---
 
@@ -1703,9 +1707,8 @@ function isOriginAllowed(origin) {
 | Endpoint | Limit | Source |
 |:---------|:------|:-------|
 | `/respond` | 60 req/min per IP | L1817 `RateLimiter({ maxRequests: 60, windowMs: 60000 })` |
-| Nginx `/voice/` | 30r/s burst 50 | deploy/nginx-vocalia-voice.conf |
-| Nginx `/respond` | 30r/s burst 20 | deploy/nginx-vocalia-voice.conf |
-| Nginx `/api/` | 30r/s burst 100 | deploy/nginx-vocalia-voice.conf |
+| Nginx `voice_limit` | 30r/s burst 50 | deploy/nginx-vocalia-voice.conf (telephony + catch-all) |
+| Nginx `api_limit` | 60r/s burst 20-30 | deploy/nginx-vocalia-voice.conf (db-api endpoints) |
 
 #### Security Headers
 
@@ -1777,8 +1780,7 @@ function isOriginAllowed(origin) {
 
 **Remaining (code — OPTIONAL):**
 ```
-→ P3-1g: Source module ESM migration (core/*.cjs → .mjs) — OPTIONAL, source stays CJS
-→ Shadow DOM for 5 sub-widgets (cart-recovery, spin-wheel, quiz, free-shipping, recommendation) — OPTIONAL, P3
+→ P3-1g: Source module ESM migration (core/*.cjs → .mjs) — DEFERRED (78 conditional requires, needs AST-based tool)
 ```
 
 **ALL BIZ code tasks DONE**: BIZ-4 ✅ BIZ-7 ✅ BIZ-8 ✅

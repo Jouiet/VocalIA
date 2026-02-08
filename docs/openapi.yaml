@@ -129,36 +129,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/RateLimitResponse'
 
-  /trigger-call:
-    post:
-      summary: Zapier Call Trigger (Legacy)
-      description: |
-        Legacy alias for /api/trigger-call. Use /api/trigger-call instead.
-      operationId: triggerCallLegacy
-      deprecated: true
-      tags:
-        - Voice
-        - Integrations
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - phone
-                - tenantId
-              properties:
-                phone:
-                  type: string
-                tenantId:
-                  type: string
-      responses:
-        '200':
-          description: Call initiated
-        '502':
-          description: Telephony Bridge unavailable
-
   /qualify:
     post:
       summary: Explicit Lead Qualification
@@ -374,6 +344,56 @@ paths:
                 format: binary
         '400':
           description: Missing text parameter
+
+  /stt:
+    post:
+      summary: Speech-to-Text
+      description: |
+        Transcribes audio to text. Supports WebM, WAV, MP3 formats.
+        Fallback chain: Grok (Whisper) → Gemini → error.
+        Max audio size: 5MB.
+      operationId: postSTT
+      tags:
+        - Voice
+      parameters:
+        - in: header
+          name: X-Language
+          schema:
+            type: string
+            enum: [fr, en, es, ar, ary]
+            default: fr
+          description: Target language for transcription
+      requestBody:
+        required: true
+        content:
+          audio/webm:
+            schema:
+              type: string
+              format: binary
+          audio/wav:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: Transcription result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                    description: Transcribed text
+                  provider:
+                    type: string
+                    description: STT provider used (grok, gemini)
+        '400':
+          description: Audio data too small
+        '413':
+          description: Audio too large (max 5MB)
+        '500':
+          description: All STT providers failed
 
   /api/contact:
     post:
@@ -595,6 +615,54 @@ paths:
       responses:
         '200':
           description: Generated UI
+
+  /a2ui/action:
+    post:
+      summary: A2UI Action Handler
+      description: |
+        Processes user actions from A2UI-generated components (booking confirmations,
+        lead submissions, checkout triggers). Publishes events via internal event bus.
+      operationId: a2uiAction
+      tags:
+        - Widget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - action
+              properties:
+                action:
+                  type: string
+                  description: Action type (confirm_booking, submit_lead, checkout)
+                  enum: [confirm_booking, submit_lead, checkout]
+                data:
+                  type: object
+                  description: Action-specific data payload
+                sessionId:
+                  type: string
+                tenant_id:
+                  type: string
+                widget_type:
+                  type: string
+      responses:
+        '200':
+          description: Action processed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  action:
+                    type: string
+                  message:
+                    type: string
+        '400':
+          description: Missing action field
 
   /a2ui/health:
     get:

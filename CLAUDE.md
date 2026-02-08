@@ -83,4 +83,4 @@ Contact: +1 762 422 4223 | contact@vocalia.ma
 - **Next**: VPS deployment → first paying customer → GA4 activation
 - **Weighted score**: 8.4/10
 
-*Last update: 08/02/2026 - Session 250.158 (i18n 100% complete, stale numbers corrected, documentation accuracy)*
+*Last update: 08/02/2026 - Session 250.158 (i18n 100%, OpenAPI revalidated 25 methods, nginx routing fix, ESM audit → DEFERRED)*
