@@ -2399,14 +2399,14 @@ function startServer(port = 3004) {
             products: {
               triggers: ['produit', 'product', 'vendez', 'offre', '3andkom'],
               response: lang === 'ary'
-                ? 'VocalIA 3andha 4 dial offres: Starter (49€/شهر), Pro (99€/شهر), E-commerce (99€/شهر), و Telephony (199€/شهر + 0.10€/دقيقة)'
-                : 'VocalIA propose 4 offres: Starter (49€/mois), Pro (99€/mois), E-commerce (99€/mois) et Telephony (199€/mois + 0.10€/min)'
+                ? 'VocalIA 3andha 4 dial offres: Starter (49€/شهر), Pro (99€/شهر), E-commerce (99€/شهر), و Telephony (199€/شهر + $0.25/دقيقة للدارجة)'
+                : 'VocalIA propose 4 offres: Starter (49€/mois), Pro (99€/mois), E-commerce (99€/mois) et Telephony (199€/mois + 0.10€/min, Darija: $0.25/min)'
             },
             pricing: {
               triggers: ['prix', 'price', 'tarif', 'combien', 'chhal'],
               response: lang === 'ary'
-                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + 0.10€/دقيقة.'
-                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.10€/min.'
+                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + $0.25/دقيقة للدارجة.'
+                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.10€/min (Darija: $0.25/min).'
             }
           };
         }
