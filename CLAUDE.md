@@ -8,7 +8,7 @@
 
 core/ (55 modules, 35.4k) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (10.6k, 7 files)
 mcp-server/src/ (19.2k, 32 .ts) | lib/ (923) | sensors/ (822) | integrations/ (2.2k)
-clients/ = 553 dirs (ALL test data) | website/ = 79 pages + locales (26.2k)
+clients/ = 553 dirs (ALL test data) | website/ = 80 pages + locales (26.2k)
 
 ## Services
 

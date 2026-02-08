@@ -2,7 +2,7 @@
 
 > **Version**: 6.0.0 | **Date**: 08/02/2026 | **Session**: 250.139
 > **Production**: https://vocalia.ma
-> **Verified:** ~81k lines source | 78 pages | 203 MCP tools (0 connected) | 38 Personas | 25 Function Tools | 7 Widgets
+> **Verified:** ~83k lines source | 80 pages | 203 MCP tools (0 connected) | 38 Personas | 25 Function Tools | 7 Widgets
 
 ---
 
