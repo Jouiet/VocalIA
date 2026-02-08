@@ -254,7 +254,7 @@
                       <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode"><span data-i18n="docs_index.copier_15"><span data-i18n="docs_index.copier_29"><span data-i18n="docs_index.copier_71"><span data-i18n="docs_index.copier_80"><span data-i18n="docs_index.copier_82">Copier</span></span></span></span></span></button>
                     </div>
                     <div class="code-content">
-                      <code class="text-emerald-400">&lt;script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js?v=2.7.0"
+                      <code class="text-emerald-400">&lt;script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.js?v=2.7.0"
   data-vocalia-tenant="VOTRE_TENANT_ID" defer&gt;&lt;/script&gt;</code>
                     </div>
                   </div>
@@ -522,7 +522,7 @@
   <span class="text-amber-400"><span data-i18n="docs_index.useeffect_25">useEffect</span></span>(() => {
     <span class="text-vocalia-500">// Charger le script VocalIA</span>
     <span class="text-rose-400"><span data-i18n="docs_index.const_11"><span data-i18n="docs_index.const_24">const</span></span></span> script = document.<span class="text-emerald-400"><span data-i18n="docs_index.createelement_10"><span data-i18n="docs_index.createelement_23">createElement</span></span></span>(<span class="text-emerald-400">'script'</span>);
-    script.src = <span class="text-emerald-400">'https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js'</span>;
+    script.src = <span class="text-emerald-400">'https://vocalia.ma/voice-assistant/voice-widget-b2b.js'</span>;
     script.dataset.vocaliaTenant = <span class="text-emerald-400">'votre-tenant-id'</span>;
     document.body.<span class="text-emerald-400"><span data-i18n="docs_index.appendchild_8"><span data-i18n="docs_index.appendchild_21">appendChild</span></span></span>(script);
 
@@ -548,7 +548,7 @@
 
 <span class="text-amber-400"><span data-i18n="docs_index.onmounted_12">onMounted</span></span>(() => {
   <span class="text-rose-400">const</span> script = document.<span class="text-emerald-400">createElement</span>(<span class="text-emerald-400">'script'</span>);
-  script.src = <span class="text-emerald-400">'https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js'</span>;
+  script.src = <span class="text-emerald-400">'https://vocalia.ma/voice-assistant/voice-widget-b2b.js'</span>;
   script.dataset.vocaliaTenant = <span class="text-emerald-400">'votre-tenant-id'</span>;
   document.body.<span class="text-emerald-400">appendChild</span>(script);
 });
@@ -749,7 +749,7 @@
   <script src="/src/lib/i18n.js?v=240"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>
     <!-- Voice Widget -->
-  <script src="/voice-assistant/voice-widget-b2b.min.js?v=2.7.0" data-vocalia-tenant="agency_internal" defer></script>
+  <script src="/voice-assistant/voice-widget-b2b.js?v=2.7.0" data-vocalia-tenant="agency_internal" defer></script>
   <script src="/src/lib/components.js" defer></script>
 </body>
 </html>

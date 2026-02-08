@@ -243,7 +243,8 @@ function validate() {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       // Only count lines that are actual <script src="..."> tags
-      if (/<script\s[^>]*src=/.test(line)) {
+      // Skip lines with escaped tags (<\/script>) — those are inside JS string literals
+      if (/<script\s[^>]*src=/.test(line) && !line.includes('<\\/')) {
         if (line.includes('voice-widget-b2b.js')) b2bCount++;
         else if (line.includes('voice-widget-ecommerce.js')) ecomCount++;
         else if (/voice-widget\.js/.test(line) && !line.includes('voice-widget-b2b') && !line.includes('voice-widget-ecommerce')) stdCount++;
