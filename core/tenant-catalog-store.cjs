@@ -668,7 +668,9 @@ class TenantCatalogStore {
   _generateItemVoiceDescription(item) {
     let desc = item.name;
     if (item.price) {
-      desc += ` à ${item.price} ${item.currency || 'dirhams'}`;
+      const cur = item.currency || 'EUR';
+      const symbol = { 'MAD': 'DH', 'EUR': '€', 'USD': '$', 'GBP': '£' }[cur] || cur;
+      desc += ` à ${item.price} ${symbol}`;
     }
     if (item.in_stock === false || item.stock === 0) {
       desc += ', actuellement indisponible';
@@ -709,7 +711,9 @@ class TenantCatalogStore {
 
     if (results.length === 1) {
       const item = results[0];
-      return item.voiceDescription || `J'ai trouvé ${item.name} à ${item.price} dirhams.`;
+      const cur = item.currency || 'EUR';
+      const sym = { 'MAD': 'DH', 'EUR': '€', 'USD': '$', 'GBP': '£' }[cur] || cur;
+      return item.voiceDescription || `J'ai trouvé ${item.name} à ${item.price} ${sym}.`;
     }
 
     const names = results.slice(0, 3).map(r => r.name).join(', ');

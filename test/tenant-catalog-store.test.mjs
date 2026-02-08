@@ -269,7 +269,7 @@ describe('TenantCatalogStore voice generators', () => {
 
   test('item voice description: with currency', () => {
     const result = store._generateItemVoiceDescription({ name: 'Widget', price: 49, currency: 'EUR' });
-    assert.ok(result.includes('EUR'));
+    assert.ok(result.includes('€'), 'EUR currency should display as € symbol');
   });
 
   test('item voice description: out of stock', () => {
@@ -462,9 +462,9 @@ describe('TenantCatalogStore voice generators edge cases', () => {
     assert.ok(result.includes('indisponible'));
   });
 
-  test('item voice description: default currency dirhams', () => {
+  test('item voice description: default currency EUR', () => {
     const result = store._generateItemVoiceDescription({ name: 'Item', price: 100 });
-    assert.ok(result.includes('dirhams'));
+    assert.ok(result.includes('€'), 'Default currency should be EUR (€ symbol)');
   });
 
   test('availability: no itemName uses default text', () => {

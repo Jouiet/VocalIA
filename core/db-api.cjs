@@ -646,9 +646,9 @@ async function handleTelephonyRequest(req, res, path, method, query) {
         failed: Math.round((statusCounts.failed / (statusCounts.total || 1)) * 100)
       };
 
-      // ROI Calculation (Hardened: Moroccan SME context)
-      // Human cost: ~2.5 DH/min. AI cost: ~0.5 DH/min. Savings: 2.0 DH/min.
-      const savings = Math.round(totalDuration * (2.0 / 60));
+      // ROI Calculation (multi-market: EU baseline)
+      // Human cost: ~0.50€/min. AI cost: ~0.10€/min. Savings: 0.40€/min.
+      const savings = Math.round(totalDuration * (0.40 / 60));
 
       sendJson(res, 200, {
         success: true,
