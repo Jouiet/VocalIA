@@ -117,22 +117,10 @@
 
     if (!modal) return;
 
-    // YT Embed or Self-hosted
-    const VIDEO_ID = 'dQw4w9WgXcQ'; // Placeholder for now, user to update or proper demo ID
-    // ideally use a data-video-id attribute on the trigger button if multiple videos
-
-    window.openDemoModal = function (videoId) {
+    window.openDemoModal = function () {
       modal.classList.remove('hidden');
 
-      // Inject Video
       if (container) {
-        // Using a high-quality placeholder or specific demo video. 
-        // For now, using a sovereign solid background with "Coming Soon" if no video, 
-        // OR if we have a real video URL, use that.
-        // Since we want "Zero Fake", if we don't have a video, we shouldn't show a "Loading" fake.
-        // I will assume we want to show the 'vocalia-demo-fr.mp4' from the features section or similar.
-        // Let's use the local video if available, else standard embed structure.
-
         container.innerHTML = `
             <video 
                 src="/public/videos/vocalia-demo-fr.mp4" 

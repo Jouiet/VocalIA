@@ -374,7 +374,7 @@ Bonjour {customer_name}, votre commande {order_number} est actuellement {order_s
   <script>
   (function() {
     'use strict';
-    // Plausible stub
+    // Plausible analytics queue (buffers events before script loads)
     window.plausible = window.plausible || function() {
       (window.plausible.q = window.plausible.q || []).push(arguments);
     };

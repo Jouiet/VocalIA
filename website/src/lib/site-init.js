@@ -3,7 +3,7 @@
  * Session 250.44 - Replaces ALL inline scripts
  *
  * This file MUST be loaded synchronously (no defer) to ensure:
- * 1. Plausible stub is available immediately
+ * 1. Plausible analytics queue is available immediately
  * 2. Mobile menu works on page load
  * 3. Lucide icons are initialized
  */

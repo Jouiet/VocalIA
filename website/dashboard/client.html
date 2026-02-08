@@ -1452,18 +1452,13 @@
             if (barEl) barEl.style.width = pct + '%';
           });
         } else {
-          // Fallback: show placeholder for demo
-          const defaultChunks = { fr: 342, en: 285, es: 128, ar: 96, ary: 74 };
+          // API unavailable — show empty state
           langs.forEach(lang => {
-            const chunks = defaultChunks[lang];
-            totalChunks += chunks;
-            const pct = Math.round((chunks / 500) * 100);
             const statusEl = document.getElementById(`kb-status-${lang}`);
             const barEl = document.getElementById(`kb-bar-${lang}`);
-            if (statusEl) statusEl.textContent = `${chunks} chunks`;
-            if (barEl) barEl.style.width = pct + '%';
+            if (statusEl) statusEl.textContent = '—';
+            if (barEl) barEl.style.width = '0%';
           });
-          lastUpdate = new Date();
         }
 
         const totalEl = document.getElementById('kb-total-chunks');
@@ -1593,7 +1588,7 @@
       document.querySelectorAll('.fixed.inset-0.bg-black\\/50').forEach(el => el.remove());
     }
 
-    function newAgentPlaceholder() {
+    function navigateToAgentSetup() {
       closeModal();
       const settingsSection = document.getElementById('settings');
       if (settingsSection) settingsSection.scrollIntoView({ behavior: 'smooth' });
@@ -1669,7 +1664,7 @@
           </div>
           <div class="flex gap-3">
             <button data-action="closeModal" class="flex-1 px-4 py-2 rounded-lg bg-white/[0.06] hover:bg-white/[0.1] transition">Fermer</button>
-            <button data-action="newAgentPlaceholder" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">+ Nouveau</button>
+            <button data-action="navigateToAgentSetup" class="flex-1 px-4 py-2 rounded-lg bg-vocalia-500 hover:bg-vocalia-400 transition">+ Nouveau</button>
           </div>
         </div>
       `;
@@ -1779,7 +1774,7 @@
   <script>
     (function () {
       'use strict';
-      // Plausible stub
+      // Plausible analytics queue (buffers events before script loads)
       window.plausible = window.plausible || function () {
         (window.plausible.q = window.plausible.q || []).push(arguments);
       };
