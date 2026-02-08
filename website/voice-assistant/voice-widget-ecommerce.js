@@ -1645,6 +1645,53 @@
     // Export orchestrator
     window.VocalIA.Orchestrator = WidgetOrchestrator;
 
+    // ============================================================
+    // DYNAMIC CHUNK LOADER (Code-split support — BIZ-7)
+    // ============================================================
+    // In monolith mode: sub-widgets are already loaded, loadChunk() is a no-op.
+    // In code-split mode: sub-widgets lazy-load from separate .min.js files.
+
+    const WIDGET_CHUNKS = {
+        shippingBar:    { file: 'voice-widget-ecommerce-shipping.min.js', global: 'VocaliaShippingBar' },
+        abandonedCart:  { file: 'voice-widget-ecommerce-cart.min.js',     global: 'VocaliaAbandonedCart' },
+        quiz:           { file: 'voice-widget-ecommerce-quiz.min.js',     global: 'VocalIAQuiz' },
+        spinWheel:      { file: 'voice-widget-ecommerce-spin.min.js',     global: 'VocaliaSpinWheel' },
+        recommendations:{ file: 'voice-widget-ecommerce-carousel.min.js', global: 'VocalIARecommendations' }
+    };
+
+    const chunkPromises = {};
+
+    function getWidgetBaseUrl() {
+        const scripts = document.querySelectorAll('script[src*="voice-widget-ecommerce"]');
+        if (scripts.length > 0) {
+            const src = scripts[scripts.length - 1].src;
+            return src.substring(0, src.lastIndexOf('/') + 1);
+        }
+        return '/voice-assistant/';
+    }
+
+    function loadChunk(name) {
+        const chunk = WIDGET_CHUNKS[name];
+        if (!chunk) return Promise.reject(new Error('Unknown chunk: ' + name));
+        if (window[chunk.global]) return Promise.resolve(true); // Already loaded (monolith)
+        if (chunkPromises[name]) return chunkPromises[name];
+
+        chunkPromises[name] = new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = getWidgetBaseUrl() + chunk.file;
+            script.onload = () => resolve(true);
+            script.onerror = () => {
+                delete chunkPromises[name];
+                reject(new Error('Chunk unavailable: ' + chunk.file));
+            };
+            document.head.appendChild(script);
+        });
+        return chunkPromises[name];
+    }
+
+    // Expose for external access
+    window.VocalIA.loadChunk = loadChunk;
+
     // Wire up existing widgets to orchestrator
     WidgetOrchestrator.on('widget:activated', ({ widget }) => {
         if (widget === 'spinWheel' && window.VocaliaSpinWheel) {
@@ -3313,8 +3360,9 @@
     function initSubWidgets() {
         if (!CONFIG.ECOMMERCE_MODE || !state.tenantId) return;
 
-        // Free Shipping Bar: auto-init if widget loaded (always-on for ECOM)
-        if (window.VocaliaShippingBar) {
+        // Helper: init shipping bar once loaded
+        const activateShipping = () => {
+            if (!window.VocaliaShippingBar) return;
             try {
                 window.VocaliaShippingBar.init({
                     tenantId: state.tenantId,
@@ -3325,10 +3373,11 @@
             } catch (e) {
                 console.warn('[VocalIA] ShippingBar init failed:', e.message);
             }
-        }
+        };
 
-        // Spin Wheel: auto-show after delay if available (1x per 24h)
-        if (window.VocaliaSpinWheel && window.VocalIA.isSpinWheelAvailable()) {
+        // Helper: init spin wheel once loaded (15s delay, 24h cooldown)
+        const activateSpin = () => {
+            if (!window.VocaliaSpinWheel || !window.VocalIA.isSpinWheelAvailable()) return;
             setTimeout(() => {
                 if (!state.isOpen && WidgetOrchestrator.canShow('spinWheel')) {
                     try {
@@ -3342,18 +3391,46 @@
                         console.warn('[VocalIA] SpinWheel init failed:', e.message);
                     }
                 }
-            }, 15000); // 15s delay — after social proof, before exit intent
-        }
+            }, 15000);
+        };
 
-        // Recommendation Carousel: auto-init if widget loaded
-        if (window.VocalIARecommendations) {
+        // Helper: init recommendations once loaded
+        const activateCarousel = () => {
+            if (!window.VocalIARecommendations) return;
             try {
                 window.VocalIA.RecommendationCarousel = window.VocalIARecommendations;
                 WidgetOrchestrator.activate('recommendations');
             } catch (e) {
                 console.warn('[VocalIA] RecommendationCarousel init failed:', e.message);
             }
+        };
+
+        // Free Shipping Bar: immediate (always-on for ECOM)
+        if (window.VocaliaShippingBar) {
+            activateShipping();
+        } else {
+            loadChunk('shippingBar').then(activateShipping).catch(() => {});
         }
+
+        // Spin Wheel: auto-show after delay if available (1x per 24h)
+        if (window.VocaliaSpinWheel) {
+            activateSpin();
+        } else {
+            loadChunk('spinWheel').then(activateSpin).catch(() => {});
+        }
+
+        // Recommendation Carousel: auto-init
+        if (window.VocalIARecommendations) {
+            activateCarousel();
+        } else {
+            loadChunk('recommendations').then(activateCarousel).catch(() => {});
+        }
+
+        // Cart recovery + Quiz: preload after 5s (triggered by user action / exit intent)
+        setTimeout(() => {
+            loadChunk('abandonedCart').catch(() => {});
+            loadChunk('quiz').catch(() => {});
+        }, 5000);
     }
 
     // ============================================================

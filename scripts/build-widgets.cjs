@@ -22,6 +22,7 @@ const DEPLOYED = path.join(ROOT, 'website', 'voice-assistant');
 
 // ── Bundle definitions ──
 const BUNDLES = {
+  // Full monolith (backwards compatible for WordPress/Shopify/Wix distributions)
   'voice-widget-ecommerce.js': {
     sources: [
       'voice-widget-v3.js',
@@ -31,7 +32,33 @@ const BUNDLES = {
       'free-shipping-bar.js',
       'recommendation-carousel.js'
     ],
-    description: 'E-commerce widget (core + cart recovery + quiz + gamification + shipping bar + recommendations)'
+    description: 'E-commerce FULL monolith (all-in-one)'
+  },
+  // Code-split: core only (lazy-loads sub-widgets via loadChunk)
+  'voice-widget-ecommerce-core.js': {
+    sources: ['voice-widget-v3.js'],
+    description: 'E-commerce CORE (code-split entry point)'
+  },
+  // Code-split: individual chunks
+  'voice-widget-ecommerce-cart.js': {
+    sources: ['abandoned-cart-recovery.js'],
+    description: 'Chunk: cart recovery'
+  },
+  'voice-widget-ecommerce-quiz.js': {
+    sources: ['voice-quiz.js'],
+    description: 'Chunk: product quiz'
+  },
+  'voice-widget-ecommerce-spin.js': {
+    sources: ['spin-wheel.js'],
+    description: 'Chunk: spin wheel gamification'
+  },
+  'voice-widget-ecommerce-shipping.js': {
+    sources: ['free-shipping-bar.js'],
+    description: 'Chunk: free shipping bar'
+  },
+  'voice-widget-ecommerce-carousel.js': {
+    sources: ['recommendation-carousel.js'],
+    description: 'Chunk: recommendation carousel'
   }
 };
 
@@ -106,7 +133,7 @@ async function terserMinify(code, filename, isProduction) {
       },
       format: {
         comments: false,
-        preamble: `/* VocalIA Widget v2.5.0 - ${new Date().toISOString().split('T')[0]} */`
+        preamble: `/* VocalIA Widget v2.7.0 - ${new Date().toISOString().split('T')[0]} */`
       }
     });
     return result.code;

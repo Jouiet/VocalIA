@@ -81,7 +81,7 @@ const FORBIDDEN_HEX = {
 // SECTION 2: Widget Rules
 // ═══════════════════════════════════════════════════════
 
-const WIDGET_EXPECTED_VERSION = '2.5.0';
+const WIDGET_EXPECTED_VERSION = '2.7.0';
 
 // Pages that use voice-widget.js (NOT voice-widget-b2b.js)
 // NOTE: voice-widget.js is DEAD (0 pages). docs + signup use B2B widget.
@@ -262,7 +262,7 @@ function validate() {
     const rel = relPath(file);
 
     // Check all widget script tags for version
-    const widgetRefs = content.matchAll(/voice-widget(?:-b2b|-ecommerce)?(?:\.min)?\.js\?v=([0-9.]+)/g);
+    const widgetRefs = content.matchAll(/voice-widget(?:-b2b|-ecommerce(?:-core)?)?(?:\.min)?\.js\?v=([0-9.]+)/g);
     for (const match of widgetRefs) {
       if (match[1] !== WIDGET_EXPECTED_VERSION) {
         const lineNum = content.substring(0, match.index).split('\n').length;
@@ -271,7 +271,7 @@ function validate() {
     }
 
     // Check widget scripts WITHOUT version param
-    const noVersion = content.matchAll(/voice-widget(?:-b2b|-ecommerce)?\.js(?:"|'|\s)/g);
+    const noVersion = content.matchAll(/voice-widget(?:-b2b|-ecommerce(?:-core)?)?\.js(?:"|'|\s)/g);
     for (const match of noVersion) {
       const matchText = match[0].trim();
       if (!matchText.includes('?v=')) {

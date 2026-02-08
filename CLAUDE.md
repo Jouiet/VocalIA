@@ -1,12 +1,13 @@
 # VocalIA - Voice AI Platform
 
-> **v7.22.0** | 08/02/2026 | Production: https://vocalia.ma
+> **v7.23.0** | 08/02/2026 | Production: https://vocalia.ma
 > **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
-> **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,118 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
-> ✅ **SESSION 250.140**: BIZ-4 Booking inline B2B (full flow). BIZ-8 STT fallback Firefox/Safari (MediaRecorder→/stt). Widget v2.6.0.
-> ✅ **SESSION 250.139 DOC OVERHAUL + BUSINESS AUDIT**: All docs audited. Production readiness matrix. Business intelligence. Phone: +1 762 422 4223 (Twilio official).
-> ✅ **SESSION 250.138 WIDGET TREE-SHAKING**: Build pipeline v2.0 (esbuild DCE→terser 3-pass→brotli). ECOM: 37.0 KB. B2B: 9.9 KB.
+> **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,196 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
+> ✅ **SESSION 250.141**: BIZ-7 Code-split ECOM widget — core 16.7 KB brotli (-55%). 5 lazy chunks. Build pipeline v2.1. Widget v2.7.0.
+> ✅ **SESSION 250.140**: BIZ-4 Booking inline B2B. BIZ-8 STT fallback Firefox/Safari. /stt endpoint. Widget v2.6.0.
+> ✅ **SESSION 250.139 DOC OVERHAUL + BUSINESS AUDIT**: All docs audited. Production readiness matrix. Business intelligence.
+> ✅ **SESSION 250.138 WIDGET TREE-SHAKING**: Build pipeline v2.0. ECOM: 37.0 KB. B2B: 9.9 KB.
 
 ## Quick Reference
 
@@ -284,4 +285,4 @@ providers: [
 **Production Readiness: 3.0/10** — Website deployed. Zero paying customers. Zero live integrations. Zero real voice calls.
 **Next milestone**: First paying customer, first connected external API.
 
-*Last update: 08/02/2026 - Session 250.140 (BIZ-4 booking inline B2B, BIZ-8 STT fallback Firefox/Safari, /stt endpoint, widget v2.6.0)*
+*Last update: 08/02/2026 - Session 250.141 (BIZ-7 code-split ECOM widget — core 16.7 KB + 5 lazy chunks, build pipeline v2.1, widget v2.7.0)*

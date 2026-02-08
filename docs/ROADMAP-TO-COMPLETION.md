@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.140 (BIZ-4 booking inline B2B + BIZ-8 STT fallback Firefox/Safari)
+> **Date:** 2026-02-08 | **Session:** 250.141 (BIZ-7 code-split ECOM widget — core + 5 lazy chunks)
 > **Code Completeness:** 8.5/10 | **Production Readiness:** 3.0/10 (0 paying customers, 0 live integrations)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.138) + doc overhaul (250.139)
@@ -1156,7 +1156,7 @@ create_booking          get_recommendations    qualify_lead
 | 4 | **Booking inline B2B** (copy pattern from ECOM) | 3h | Conversion booking +30-40% (est.) | ✅ **250.140** — Full booking flow (name→email→slot→confirm→submit) |
 | 5 | **Evaluate Telnyx** for Moroccan numbers | 4h | Unblock Morocco, potentially -50% PSTN | ❌ Research |
 | 6 | **Darija differentiated pricing** 0.15-0.20€/min | Decision | Eliminate loss per Darija call | ❌ Decision needed |
-| 7 | **Code-split ECOM widget** (lazy-load IIFEs) | 4h | Mobile performance -60% (est.) | ❌ Code task |
+| 7 | **Code-split ECOM widget** (lazy-load IIFEs) | 4h | Initial load -55% (37→16.7 KB brotli) | ✅ **250.141** — Core + 5 lazy chunks, dynamic loader, build pipeline v2.1 |
 | 8 | **Fallback STT Firefox/Safari** | 6h | +11% visitors with voice | ✅ **250.140** — MediaRecorder→/stt backend (Grok Whisper + Gemini fallback) |
 | 9 | **Test Qwen3-TTS for Darija** | 8h | Darija TTS cost -93% ($0.10→~$0.005/min) | ❌ Research |
 
@@ -1323,6 +1323,7 @@ create_booking          get_recommendations    qualify_lead
 | **ROI i18n**: 12 new dashboard.roi.* keys in all 5 locale files | 250.136 | 4,458 keys in sync |
 | **BIZ-4 Booking inline B2B**: Full conversational booking flow (name→email→slots→confirm→submit) | 250.140 | voice-widget-b2b.js v2.3.0 (1,122→1,492 lines) |
 | **BIZ-8 STT fallback Firefox/Safari**: MediaRecorder→backend /stt (Grok Whisper + Gemini) | 250.140 | B2B+ECOM widgets + voice-api-resilient.cjs /stt endpoint |
+| **BIZ-7 Code-split ECOM widget**: Core (16.7 KB brotli) + 5 lazy-loaded chunks (44.5 KB total) | 250.141 | voice-widget-v3.js (loadChunk), build-widgets.cjs v2.1, 7 bundles |
 | **Backend /stt endpoint**: Audio transcription via Grok Whisper + Gemini fallback | 250.140 | core/voice-api-resilient.cjs (3,086→3,398 lines) |
 | **Dead file cleanup**: voice-widget.js.bak deleted from distribution/ | 250.140 | 0 rogue #4FBAF1 in codebase |
 | **Widget v2.6.0**: 49 pages bumped from v2.5.0 | 250.140 | All pages load voice-widget-b2b.min.js?v=2.6.0 |
@@ -1347,15 +1348,16 @@ create_booking          get_recommendations    qualify_lead
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 → cible: 9.5+ |
 
-**Code Completeness: 8.5/10** | **Production Readiness: 3.0/10** (250.139 — documentation overhaul, business audit Nr 2)
+**Code Completeness: 8.8/10** | **Production Readiness: 3.0/10** (250.141 — ALL code tasks DONE, remaining = infra/decisions)
 
 **Remaining (code — OPTIONAL):**
 ```
 → P3-1g: Source module ESM migration (core/*.cjs → .mjs) — OPTIONAL, source stays CJS
-→ BIZ-7: Code-split ECOM widget (lazy-load IIFEs) — 4h estimated
 ```
 
-**Remaining (infrastructure — NOT code):**
+**ALL BIZ code tasks DONE**: BIZ-4 ✅ BIZ-7 ✅ BIZ-8 ✅
+
+**Remaining (infrastructure/decisions — NOT code):**
 ```
 → P0-T3b: Replace GA4 placeholder G-XXXXXXXXXX with actual Measurement ID
 → BIZ-2: Increase telephony pricing 0.06→0.10-0.12€/min (decision)
@@ -1376,7 +1378,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis a jour le 2026-02-08 — Session 250.139*
+*Document mis a jour le 2026-02-08 — Session 250.141*
+*250.141: BIZ-7 Code-split ECOM widget — core 16.7 KB brotli (-55% vs monolith 37.3 KB) + 5 lazy chunks. Dynamic loadChunk() in voice-widget-v3.js. Build pipeline v2.1 (7 bundles). Widget v2.7.0 (50 pages). Validator v2.4 (code-split regex). Tests: 3,763 pass, 0 fail.*
 *250.140: BIZ-4 Booking inline B2B (full flow), BIZ-8 STT fallback Firefox/Safari (MediaRecorder→/stt backend), /stt endpoint (Grok Whisper+Gemini), widget v2.6.0 (49 pages), dead .bak cleanup. Tests: 3,763 pass, 0 fail.*
 *250.139: DOCUMENTATION OVERHAUL + BUSINESS AUDIT Nr 2 — All metrics verified (wc -l, grep -c, ls). Production readiness matrix added. Vanity metrics eliminated. Business priorities from external audit: cost structure, pricing analysis, competitive positioning. Score split: Code 8.5/10, Production 3.0/10.*
 *250.138: Widget tree-shaking pipeline v2.0 — esbuild DCE → terser 3-pass → pre-compression (.gz/.br). ECOM: 296.8→186.9 KB min (37.1 KB brotli). B2B: 50.5→30.2 KB min (8.3 KB brotli). --production flag. Widget v2.4.0→2.5.0.*
