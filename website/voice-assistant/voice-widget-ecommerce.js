@@ -3019,6 +3019,36 @@
     // A2UI RENDERER — Agent-to-UI dynamic components
     // ============================================================
 
+    // Sanitize A2UI HTML — whitelist-based to prevent XSS from backend
+    function sanitizeA2UIHtml(html) {
+        const allowed = /^(div|span|button|p|h[1-6]|ul|ol|li|img|svg|path|line|circle|label|input|select|option|strong|em|br|a)$/i;
+        const allowedAttrs = /^(class|id|style|data-[a-z-]+|aria-[a-z]+|role|type|placeholder|value|src|alt|href|viewBox|d|fill|stroke|stroke-width|stroke-linecap|stroke-linejoin|xmlns|width|height|x1|y1|x2|y2|cx|cy|r|loading|dir|disabled)$/i;
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const walk = (node) => {
+            const children = Array.from(node.childNodes);
+            for (const child of children) {
+                if (child.nodeType === 3) continue; // text node OK
+                if (child.nodeType !== 1) { child.remove(); continue; }
+                if (!allowed.test(child.tagName)) { child.remove(); continue; }
+                // Remove disallowed attributes
+                for (const attr of Array.from(child.attributes)) {
+                    if (!allowedAttrs.test(attr.name)) child.removeAttribute(attr.name);
+                }
+                // Remove event handler attributes (on*)
+                for (const attr of Array.from(child.attributes)) {
+                    if (attr.name.startsWith('on')) child.removeAttribute(attr.name);
+                }
+                // Strip javascript: from href/src
+                if (child.hasAttribute('href') && /^\s*javascript:/i.test(child.getAttribute('href'))) child.removeAttribute('href');
+                if (child.hasAttribute('src') && /^\s*javascript:/i.test(child.getAttribute('src'))) child.removeAttribute('src');
+                walk(child);
+            }
+        };
+        walk(temp);
+        return temp.innerHTML;
+    }
+
     function renderA2UIComponent(a2ui) {
         if (!a2ui || !a2ui.html) return;
         const container = $id('va-messages');
@@ -3035,7 +3065,7 @@
 
         const content = document.createElement('div');
         content.className = 'va-message-content';
-        content.innerHTML = a2ui.html;
+        content.innerHTML = sanitizeA2UIHtml(a2ui.html);
         wrapper.appendChild(content);
 
         container.appendChild(wrapper);
@@ -4330,15 +4360,7 @@
         }
 
         init() {
-            // Inject styles
-            if (!document.querySelector('#va-abandoned-cart-styles')) {
-                const styleEl = document.createElement('style');
-                styleEl.id = 'va-abandoned-cart-styles';
-                styleEl.textContent = STYLES;
-                document.head.appendChild(styleEl);
-            }
-
-            // Create modal structure
+            // Create modal structure (with Shadow DOM)
             this.createModal();
 
             // Setup detection triggers
@@ -4356,7 +4378,22 @@
             overlay.className = 'va-abandoned-cart-overlay';
             overlay.id = 'va-abandoned-cart-overlay';
             overlay.innerHTML = this.getModalHTML();
-            document.body.appendChild(overlay);
+
+            // Shadow DOM host
+            this.host = document.createElement('div');
+            this.host.id = 'va-cart-recovery-host';
+            this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+            document.body.appendChild(this.host);
+            this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+
+            // Inject styles into shadow root
+            const styleEl = document.createElement('style');
+            styleEl.id = 'va-abandoned-cart-styles';
+            styleEl.textContent = STYLES;
+            this._shadowRoot.appendChild(styleEl);
+
+            overlay.style.pointerEvents = 'auto';
+            this._shadowRoot.appendChild(overlay);
 
             this.elements.overlay = overlay;
             this.elements.modal = overlay.querySelector('.va-abandoned-cart-modal');
@@ -5016,7 +5053,10 @@
 
         destroy() {
             this.hide();
-            this.elements.overlay?.remove();
+            this.host?.remove();
+            this.host = null;
+            this._shadowRoot = null;
+            this.elements.overlay = null;
             if (this.state.inactivityTimer) clearTimeout(this.state.inactivityTimer);
             if (this.state.tabBlurTimer) clearTimeout(this.state.tabBlurTimer);
         }
@@ -5601,13 +5641,13 @@
         /**
          * Inject CSS styles
          */
-        _injectStyles() {
-            if (document.getElementById('va-quiz-styles')) return;
+        _injectStyles(root) {
+            if (root.querySelector('#va-quiz-styles')) return;
 
             const style = document.createElement('style');
             style.id = 'va-quiz-styles';
             style.textContent = QUIZ_CSS;
-            document.head.appendChild(style);
+            root.appendChild(style);
         }
 
         /**
@@ -6149,9 +6189,18 @@
             // Track quiz start
             this._track('quiz_started', { template: this.options.template });
 
-            // Create and append
+            // Create Shadow DOM host
+            this.host = document.createElement('div');
+            this.host.id = 'va-quiz-host';
+            this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+            document.body.appendChild(this.host);
+            this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+            this._injectStyles(this._shadowRoot);
+
+            // Create and append inside shadow root
             this.container = this._createQuizDOM();
-            document.body.appendChild(this.container);
+            this.container.style.pointerEvents = 'auto';
+            this._shadowRoot.appendChild(this.container);
 
             // Render first question
             this._renderQuestion();
@@ -6186,7 +6235,9 @@
 
             this.container?.classList.remove('va-quiz-visible');
             setTimeout(() => {
-                this.container?.remove();
+                this.host?.remove();
+                this.host = null;
+                this._shadowRoot = null;
                 this.container = null;
             }, 300);
 
@@ -6894,14 +6945,6 @@
     }
 
     init() {
-      // Inject styles
-      if (!document.querySelector('#va-spin-wheel-styles')) {
-        const styleEl = document.createElement('style');
-        styleEl.id = 'va-spin-wheel-styles';
-        styleEl.textContent = STYLES;
-        document.head.appendChild(styleEl);
-      }
-
       // Check cooldown
       this.checkCooldown();
 
@@ -6982,7 +7025,21 @@
         </div>
       `;
 
-      document.body.appendChild(overlay);
+      // Shadow DOM host
+      this.host = document.createElement('div');
+      this.host.id = 'va-spin-host';
+      this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+      document.body.appendChild(this.host);
+      this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+
+      // Inject styles into shadow root
+      const styleEl = document.createElement('style');
+      styleEl.id = 'va-spin-wheel-styles';
+      styleEl.textContent = STYLES;
+      this._shadowRoot.appendChild(styleEl);
+
+      overlay.style.pointerEvents = 'auto';
+      this._shadowRoot.appendChild(overlay);
       this.elements.overlay = overlay;
       this.elements.wheel = overlay.querySelector('#va-spin-wheel');
       this.elements.spinBtn = overlay.querySelector('#va-spin-btn') || overlay.querySelector('#va-spin-submit');
@@ -7397,7 +7454,10 @@
 
     destroy() {
       this.hide();
-      this.elements.overlay?.remove();
+      this.host?.remove();
+      this.host = null;
+      this._shadowRoot = null;
+      this.elements.overlay = null;
     }
   }
 
@@ -7867,15 +7927,7 @@
     }
 
     init() {
-      // Inject styles
-      if (!document.querySelector('#va-shipping-bar-styles')) {
-        const styleEl = document.createElement('style');
-        styleEl.id = 'va-shipping-bar-styles';
-        styleEl.textContent = STYLES;
-        document.head.appendChild(styleEl);
-      }
-
-      // Create bar element
+      // Create bar element (with Shadow DOM)
       this.createBar();
 
       // Check for stored cart value
@@ -7907,7 +7959,21 @@
       }
 
       container.innerHTML = this.getBarHTML();
-      document.body.appendChild(container);
+
+      // Shadow DOM host
+      this.host = document.createElement('div');
+      this.host.id = 'va-shipping-host';
+      const pos = this.config.position === 'bottom' ? 'bottom:0;' : 'top:0;';
+      this.host.style.cssText = `position:fixed;left:0;right:0;${pos}z-index:10002;`;
+      document.body.appendChild(this.host);
+      this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+
+      // Inject styles into shadow root
+      const styleEl = document.createElement('style');
+      styleEl.id = 'va-shipping-bar-styles';
+      styleEl.textContent = STYLES;
+      this._shadowRoot.appendChild(styleEl);
+      this._shadowRoot.appendChild(container);
 
       this.elements.container = container;
       this.elements.progress = container.querySelector('.va-shipping-progress');
@@ -8239,7 +8305,10 @@
 
     destroy() {
       this.hide();
-      this.elements.container?.remove();
+      this.host?.remove();
+      this.host = null;
+      this._shadowRoot = null;
+      this.elements.container = null;
       document.body.style.paddingTop = '';
     }
   }
@@ -8594,13 +8663,13 @@
     /**
      * Inject CSS styles
      */
-    _injectStyles() {
-      if (document.getElementById('va-reco-styles')) return;
+    _injectStyles(root) {
+      if (root.querySelector('#va-reco-styles')) return;
 
       const style = document.createElement('style');
       style.id = 'va-reco-styles';
       style.textContent = CAROUSEL_CSS;
-      document.head.appendChild(style);
+      root.appendChild(style);
     }
 
     /**
@@ -8837,9 +8906,18 @@
       // Remove existing
       this.hide();
 
-      // Create and append
+      // Create Shadow DOM host
+      this.host = document.createElement('div');
+      this.host.id = 'va-reco-host';
+      this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+      document.body.appendChild(this.host);
+      this.shadowRoot = this.host.attachShadow({ mode: 'open' });
+      this._injectStyles(this.shadowRoot);
+
+      // Create and append inside shadow root
       this.container = this._createCarouselDOM(this.items, displayTitle);
-      document.body.appendChild(this.container);
+      this.container.style.pointerEvents = 'auto';
+      this.shadowRoot.appendChild(this.container);
 
       // Animate in
       requestAnimationFrame(() => {
@@ -8871,7 +8949,9 @@
       if (this.container) {
         this.container.classList.remove('va-reco-visible');
         setTimeout(() => {
-          this.container?.remove();
+          this.host?.remove();
+          this.host = null;
+          this.shadowRoot = null;
           this.container = null;
         }, 300);
       }

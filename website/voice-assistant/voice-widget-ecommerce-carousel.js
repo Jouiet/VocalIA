@@ -288,13 +288,13 @@
     /**
      * Inject CSS styles
      */
-    _injectStyles() {
-      if (document.getElementById('va-reco-styles')) return;
+    _injectStyles(root) {
+      if (root.querySelector('#va-reco-styles')) return;
 
       const style = document.createElement('style');
       style.id = 'va-reco-styles';
       style.textContent = CAROUSEL_CSS;
-      document.head.appendChild(style);
+      root.appendChild(style);
     }
 
     /**
@@ -531,9 +531,18 @@
       // Remove existing
       this.hide();
 
-      // Create and append
+      // Create Shadow DOM host
+      this.host = document.createElement('div');
+      this.host.id = 'va-reco-host';
+      this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+      document.body.appendChild(this.host);
+      this.shadowRoot = this.host.attachShadow({ mode: 'open' });
+      this._injectStyles(this.shadowRoot);
+
+      // Create and append inside shadow root
       this.container = this._createCarouselDOM(this.items, displayTitle);
-      document.body.appendChild(this.container);
+      this.container.style.pointerEvents = 'auto';
+      this.shadowRoot.appendChild(this.container);
 
       // Animate in
       requestAnimationFrame(() => {
@@ -565,7 +574,9 @@
       if (this.container) {
         this.container.classList.remove('va-reco-visible');
         setTimeout(() => {
-          this.container?.remove();
+          this.host?.remove();
+          this.host = null;
+          this.shadowRoot = null;
           this.container = null;
         }, 300);
       }

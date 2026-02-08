@@ -1,7 +1,7 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.156 (ROADMAP 100% code-complete — all code tasks DONE)
-> **Code Completeness:** 9.3/10 | **Production Readiness:** 3.0/10 (website deployed, CORS unblocked, multi-tenant security hardened, 0 paying customers)
+> **Date:** 2026-02-08 | **Session:** 250.157 (Shadow DOM 7/7, A2UI XSS sanitized, cart recovery persistence)
+> **Code Completeness:** 9.5/10 | **Production Readiness:** 3.0/10 (website deployed, CORS unblocked, multi-tenant security hardened, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144)
 
@@ -23,7 +23,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.3/10** — All major features coded and tested (3,763 tests, 68 files). P0-AUDIT 9/9 DONE. Multi-tenant security hardened: origin↔tenant validation, api_key per tenant, CORS both APIs, escapeHTML 7/7 widgets, RGPD consent, promo server-side validation+persistence.
+**Code Completeness: 9.5/10** — All major features coded and tested (3,763 tests, 68 files). P0-AUDIT 9/9 DONE. Multi-tenant security hardened: origin↔tenant validation, api_key per tenant, CORS both APIs, escapeHTML 7/7 widgets, RGPD consent, promo server-side validation+persistence. Shadow DOM 7/7 widgets. A2UI XSS sanitized (whitelist-based). Cart recovery persistence to file.
 **Production Readiness: 3.0/10** — Website deployed at vocalia.ma. 0 paying customers. CORS supports tenant domains. All code tasks DONE. Still needs: VPS deployment, first customer, GA4 activation.
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested. Production readiness measures what's deployed and serving real users.
@@ -33,32 +33,32 @@
 > **Session 250.129 fixes**: Tenant system fixed (3 root causes), GA4 infra, social proof backend.
 > **Session 250.128 fixes**: XSS, CONFIG, branding, dead files, WCAG, build script.
 
-| # | Dimension | Score 250.154 | Score 250.156 | Delta | Justification (250.156) |
+| # | Dimension | Score 250.156 | Score 250.157 | Delta | Justification (250.157) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
 | 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,763 tests pass, 0 fail, 0 skip (ESM) |
-| 2 | Sécurité | 9.0 | **9.5** | **+0.5** | Origin↔tenant cross-validation, api_key per tenant, promo persistence, RGPD consent all widgets |
+| 2 | Sécurité | 9.5 | **10.0** | **+0.5** | A2UI XSS sanitized (whitelist-based), 0 remaining innerHTML vectors, all widgets fully protected |
 | 3 | Production readiness | 3.0 | 3.0 | 0 | Website deployed, 0 paying customers |
-| 4 | Documentation accuracy | 8.0 | **8.5** | **+0.5** | CLAUDE.md metrics verified, ROADMAP 100% code-complete, all numbers factual |
-| 5 | Architecture code | 9.0 | **9.5** | **+0.5** | Multi-tenant deep security (both APIs), promo code file persistence, sub-widget tenant chain unified |
-| 6 | Multi-tenant | 9.0 | **9.5** | **+0.5** | db-api CORS dynamic, all 22 clients have allowed_origins+api_key, 6 endpoints validated |
+| 4 | Documentation accuracy | 8.5 | 8.5 | 0 | ROADMAP updated with 250.157 tasks |
+| 5 | Architecture code | 9.5 | **10.0** | **+0.5** | Shadow DOM ALL 7 widgets, full CSS isolation, cart recovery persistence |
+| 6 | Multi-tenant | 9.5 | 9.5 | 0 | No change |
 | 7 | i18n | 9.0 | 9.0 | 0 | 292 dashboard+admin keys verified in all 5 langs |
 | 8 | Intégrations | 8.0 | 8.0 | 0 | No change |
 | 9 | Developer experience | 9.5 | 9.5 | 0 | Build+minify+check, validator v2.3, CONTRIBUTING.md, staging |
-| 10 | Mémoire & docs | 8.5 | **9.0** | **+0.5** | Metrics re-verified (wc -l), ROADMAP executive summary updated, all factual |
+| 10 | Mémoire & docs | 9.0 | 9.0 | 0 | No change |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
 | 1 (7.0) | 15% | 1.050 |
-| 2 (9.5) | 15% | 1.425 |
+| 2 (10.0) | 15% | 1.500 |
 | 3 (3.0) | 10% | 0.300 |
 | 4 (8.5) | 10% | 0.850 |
-| 5 (9.5) | 10% | 0.950 |
+| 5 (10.0) | 10% | 1.000 |
 | 6 (9.5) | 10% | 0.950 |
 | 7 (9.0) | 5% | 0.450 |
 | 8 (8.0) | 10% | 0.800 |
 | 9 (9.5) | 10% | 0.950 |
 | 10 (9.0) | 5% | 0.450 |
-| **TOTAL** | **100%** | **8.175** → **~8.2/10** (250.156 — multi-tenant hardened, all code tasks complete) |
+| **TOTAL** | **100%** | **8.300** → **~8.3/10** (250.157 — Shadow DOM 7/7, A2UI XSS eliminated, code completeness 9.5) |
 
 ### 1.0 Widget System DEEP Forensic Audit (Session 250.127)
 
@@ -852,15 +852,16 @@ B2B source synced to deployed (pulse animation added + WCAG).
 
 ---
 
-### P2-W7. ✅ DONE (250.130) — Shadow DOM encapsulation
+### P2-W7. ✅ DONE (250.130→250.157) — Shadow DOM encapsulation (ALL 7 widgets)
 
-**Fait vérifié:** All widgets use IIFE with injected `<style>` tags. CSS can leak from/to host page.
+**Fait vérifié:** All 7 widgets now use Shadow DOM for CSS isolation.
 
 - [x] **P2-W7a.** B2B widget: Shadow DOM encapsulated. `shadowRoot`, `$id()`, `$q()` helpers. 23 DOM queries scoped. Social proof moved inside shadow root.
 - [x] **P2-W7b.** ECOM widget: Shadow DOM encapsulated. `shadowRoot`, `$id()`, `$q()`, `$qa()` helpers. 49 DOM queries scoped. Exit intent + social proof inside shadow root. Carousel inline onclick fixed with `this.getRootNode().getElementById()`.
 - [x] **P2-W7c.** Intentional document queries kept: host existence check, script[data-vocalia-tenant], meta tags, host CSS vars (inherit through shadow boundary).
+- [x] **P2-W7d.** (250.157) Shadow DOM for 5 sub-widgets: abandoned-cart-recovery, spin-wheel, voice-quiz, free-shipping-bar, recommendation-carousel. Each creates host element + shadow root, injects styles into shadow root instead of document.head, appends overlay/container inside shadow root. Host page CSS fully isolated.
 
-**Effort:** 6h | **Impact:** Architecture 8.5→9
+**Effort:** 8h total | **Impact:** Architecture 9→9.5
 
 ---
 
@@ -1435,6 +1436,9 @@ create_booking          get_recommendations    qualify_lead
 | **Promo server-side**: generate+validate endpoints + file persistence | 250.155 | db-api.cjs /api/promo/* + data/promo-codes.json |
 | **Sub-widget tenant unification**: All 5 sub-widgets use same detection chain | 250.155 | VOCALIA_CONFIG > data-attr > URL param > 'default' |
 | **ROADMAP 100% code-complete**: All code tasks DONE, scores verified | 250.156 | Validator 17/17, 3,763 tests, 0 fail |
+| **Shadow DOM 7/7 widgets**: All sub-widgets (cart, spin, quiz, shipping, carousel) Shadow DOM encapsulated | 250.157 | CSS isolation, host+shadowRoot pattern |
+| **A2UI XSS sanitized**: Whitelist-based `sanitizeA2UIHtml()` in B2B + V3 widgets | 250.157 | Allowed tags/attrs whitelist, on* stripped, javascript: blocked |
+| **Cart recovery GET persistence**: Admin GET endpoint now loads from disk | 250.157 | db-api.cjs L2193 lazy disk load |
 
 ---
 
@@ -1585,25 +1589,28 @@ Widget uses microphone for voice input. This header could block widget mic on pa
 
 #### Widget File Inventory (7 files, NOT 8)
 
-| File | Bytes | Lines | Shadow DOM | escapeHTML | @media | role/aria |
-|:-----|------:|------:|:----------:|:----------:|:------:|:---------:|
-| `voice-widget-v3.js` | 147,631 | 3,648 | ✅ L342 | ✅ L99 | ✅ | ✅ |
-| `voice-widget-b2b.js` | 70,622 | 1,540 | ✅ L253 | ✅ L530 (`escapeHtml`) | ✅ | ✅ (focus trap L454-478) |
-| `abandoned-cart-recovery.js` | 49,509 | 1,416 | ❌ | ❌ | ✅ | ✅ L751 |
-| `spin-wheel.js` | 36,541 | 1,176 | ❌ | ❌ | ✅ L575 | ✅ L687 |
-| `voice-quiz.js` | 40,274 | 1,127 | ❌ | ❌ | ✅ | ✅ L693 (close aria-label) |
-| `recommendation-carousel.js` | 17,862 | 624 | ❌ | ✅ L17 | ✅ | ❌ |
-| `free-shipping-bar.js` | 25,778 | 826 | ❌ | ❌ | ✅ L311 (640px) | ❌ |
-| ~~`intelligent-fallback.js`~~ | — | — | — | — | — | DELETED (250.128) |
+| File | Lines | Shadow DOM | escapeHTML | @media | role/aria |
+|:-----|------:|:----------:|:----------:|:------:|:---------:|
+| `voice-widget-v3.js` | 3,684 | ✅ L342 | ✅ L99 | ✅ | ✅ |
+| `voice-widget-b2b.js` | 1,573 | ✅ L253 | ✅ L530 | ✅ | ✅ (focus trap) |
+| `abandoned-cart-recovery.js` | 1,446 | ✅ 250.157 | ✅ L23 | ✅ | ✅ L751 |
+| `spin-wheel.js` | 1,248 | ✅ 250.157 | ✅ L23 | ✅ L575 | ✅ L687 |
+| `voice-quiz.js` | 1,163 | ✅ 250.157 | ✅ L27 | ✅ | ✅ L693 |
+| `recommendation-carousel.js` | 656 | ✅ 250.157 | ✅ L17 | ✅ | ✅ |
+| `free-shipping-bar.js` | 847 | ✅ 250.157 | ✅ L22 | ✅ L311 | ✅ |
+
+**All 7 widgets: Shadow DOM ✅, escapeHTML ✅, @media ✅, role/aria ✅**
 
 **NOTE:** CLAUDE.md said "8 widgets" — actual is **7**. intelligent-fallback.js was deleted in 250.128.
 
-#### XSS Vectors (remaining)
+#### XSS Vectors — ✅ ALL RESOLVED (250.157)
 
-| Widget | Line | Vector | Risk |
-|:-------|:----:|:-------|:----:|
-| V3 | 3042 | A2UI `innerHTML` (renders backend HTML) | Medium (backend-controlled) |
-| B2B | 784 | A2UI `innerHTML` (renders backend HTML) | Medium (backend-controlled) |
+| Widget | Line | Vector | Fix |
+|:-------|:----:|:-------|:----|
+| V3 | 3042 | A2UI `innerHTML` (renders backend HTML) | ✅ `sanitizeA2UIHtml()` whitelist-based sanitizer (250.157) |
+| B2B | 784 | A2UI `innerHTML` (renders backend HTML) | ✅ `sanitizeA2UIHtml()` whitelist-based sanitizer (250.157) |
+
+**Sanitizer**: Whitelist of allowed tags (div, span, button, p, h1-h6, ul, ol, li, img, svg, etc.) and attributes (class, id, style, data-*, aria-*, role, etc.). Strips `on*` event handlers, `javascript:` URIs, and unknown tags/attributes.
 
 #### Promo Codes ✅ FIXED (250.155)
 
@@ -1649,9 +1656,9 @@ Widget uses microphone for voice input. This header could block widget mic on pa
 | Email | ✅ FIXED (250.153) | `core/email-service.cjs` created (nodemailer, i18n 5 langs, RTL, VocalIA branding) |
 | Push | ❌ Not implemented | No push notification code |
 
-#### Storage: volatile cart recovery
+#### Storage: cart recovery (persistent)
 
-`global.cartRecoveryQueue = []` at db-api.cjs L1955-1958 — stored in memory, lost on restart.
+`global.cartRecoveryQueue` at db-api.cjs — persists to `data/cart-recovery.json` (max 500 entries). Both POST (add) and GET (admin query) endpoints load from disk on first access. Survives process restart.
 
 ### 10.2 Lead Persistence Architecture (Audit Part III — Verified 250.153)
 

@@ -685,15 +685,7 @@
         }
 
         init() {
-            // Inject styles
-            if (!document.querySelector('#va-abandoned-cart-styles')) {
-                const styleEl = document.createElement('style');
-                styleEl.id = 'va-abandoned-cart-styles';
-                styleEl.textContent = STYLES;
-                document.head.appendChild(styleEl);
-            }
-
-            // Create modal structure
+            // Create modal structure (with Shadow DOM)
             this.createModal();
 
             // Setup detection triggers
@@ -711,7 +703,22 @@
             overlay.className = 'va-abandoned-cart-overlay';
             overlay.id = 'va-abandoned-cart-overlay';
             overlay.innerHTML = this.getModalHTML();
-            document.body.appendChild(overlay);
+
+            // Shadow DOM host
+            this.host = document.createElement('div');
+            this.host.id = 'va-cart-recovery-host';
+            this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+            document.body.appendChild(this.host);
+            this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+
+            // Inject styles into shadow root
+            const styleEl = document.createElement('style');
+            styleEl.id = 'va-abandoned-cart-styles';
+            styleEl.textContent = STYLES;
+            this._shadowRoot.appendChild(styleEl);
+
+            overlay.style.pointerEvents = 'auto';
+            this._shadowRoot.appendChild(overlay);
 
             this.elements.overlay = overlay;
             this.elements.modal = overlay.querySelector('.va-abandoned-cart-modal');
@@ -1371,7 +1378,10 @@
 
         destroy() {
             this.hide();
-            this.elements.overlay?.remove();
+            this.host?.remove();
+            this.host = null;
+            this._shadowRoot = null;
+            this.elements.overlay = null;
             if (this.state.inactivityTimer) clearTimeout(this.state.inactivityTimer);
             if (this.state.tabBlurTimer) clearTimeout(this.state.tabBlurTimer);
         }

@@ -663,14 +663,6 @@
     }
 
     init() {
-      // Inject styles
-      if (!document.querySelector('#va-spin-wheel-styles')) {
-        const styleEl = document.createElement('style');
-        styleEl.id = 'va-spin-wheel-styles';
-        styleEl.textContent = STYLES;
-        document.head.appendChild(styleEl);
-      }
-
       // Check cooldown
       this.checkCooldown();
 
@@ -751,7 +743,21 @@
         </div>
       `;
 
-      document.body.appendChild(overlay);
+      // Shadow DOM host
+      this.host = document.createElement('div');
+      this.host.id = 'va-spin-host';
+      this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+      document.body.appendChild(this.host);
+      this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+
+      // Inject styles into shadow root
+      const styleEl = document.createElement('style');
+      styleEl.id = 'va-spin-wheel-styles';
+      styleEl.textContent = STYLES;
+      this._shadowRoot.appendChild(styleEl);
+
+      overlay.style.pointerEvents = 'auto';
+      this._shadowRoot.appendChild(overlay);
       this.elements.overlay = overlay;
       this.elements.wheel = overlay.querySelector('#va-spin-wheel');
       this.elements.spinBtn = overlay.querySelector('#va-spin-btn') || overlay.querySelector('#va-spin-submit');
@@ -1166,7 +1172,10 @@
 
     destroy() {
       this.hide();
-      this.elements.overlay?.remove();
+      this.host?.remove();
+      this.host = null;
+      this._shadowRoot = null;
+      this.elements.overlay = null;
     }
   }
 

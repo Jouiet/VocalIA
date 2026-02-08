@@ -521,13 +521,13 @@
         /**
          * Inject CSS styles
          */
-        _injectStyles() {
-            if (document.getElementById('va-quiz-styles')) return;
+        _injectStyles(root) {
+            if (root.querySelector('#va-quiz-styles')) return;
 
             const style = document.createElement('style');
             style.id = 'va-quiz-styles';
             style.textContent = QUIZ_CSS;
-            document.head.appendChild(style);
+            root.appendChild(style);
         }
 
         /**
@@ -1069,9 +1069,18 @@
             // Track quiz start
             this._track('quiz_started', { template: this.options.template });
 
-            // Create and append
+            // Create Shadow DOM host
+            this.host = document.createElement('div');
+            this.host.id = 'va-quiz-host';
+            this.host.style.cssText = 'position:fixed;inset:0;z-index:10003;pointer-events:none;';
+            document.body.appendChild(this.host);
+            this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+            this._injectStyles(this._shadowRoot);
+
+            // Create and append inside shadow root
             this.container = this._createQuizDOM();
-            document.body.appendChild(this.container);
+            this.container.style.pointerEvents = 'auto';
+            this._shadowRoot.appendChild(this.container);
 
             // Render first question
             this._renderQuestion();
@@ -1106,7 +1115,9 @@
 
             this.container?.classList.remove('va-quiz-visible');
             setTimeout(() => {
-                this.container?.remove();
+                this.host?.remove();
+                this.host = null;
+                this._shadowRoot = null;
                 this.container = null;
             }, 300);
 

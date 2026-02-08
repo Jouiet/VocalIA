@@ -3019,6 +3019,36 @@
     // A2UI RENDERER — Agent-to-UI dynamic components
     // ============================================================
 
+    // Sanitize A2UI HTML — whitelist-based to prevent XSS from backend
+    function sanitizeA2UIHtml(html) {
+        const allowed = /^(div|span|button|p|h[1-6]|ul|ol|li|img|svg|path|line|circle|label|input|select|option|strong|em|br|a)$/i;
+        const allowedAttrs = /^(class|id|style|data-[a-z-]+|aria-[a-z]+|role|type|placeholder|value|src|alt|href|viewBox|d|fill|stroke|stroke-width|stroke-linecap|stroke-linejoin|xmlns|width|height|x1|y1|x2|y2|cx|cy|r|loading|dir|disabled)$/i;
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const walk = (node) => {
+            const children = Array.from(node.childNodes);
+            for (const child of children) {
+                if (child.nodeType === 3) continue; // text node OK
+                if (child.nodeType !== 1) { child.remove(); continue; }
+                if (!allowed.test(child.tagName)) { child.remove(); continue; }
+                // Remove disallowed attributes
+                for (const attr of Array.from(child.attributes)) {
+                    if (!allowedAttrs.test(attr.name)) child.removeAttribute(attr.name);
+                }
+                // Remove event handler attributes (on*)
+                for (const attr of Array.from(child.attributes)) {
+                    if (attr.name.startsWith('on')) child.removeAttribute(attr.name);
+                }
+                // Strip javascript: from href/src
+                if (child.hasAttribute('href') && /^\s*javascript:/i.test(child.getAttribute('href'))) child.removeAttribute('href');
+                if (child.hasAttribute('src') && /^\s*javascript:/i.test(child.getAttribute('src'))) child.removeAttribute('src');
+                walk(child);
+            }
+        };
+        walk(temp);
+        return temp.innerHTML;
+    }
+
     function renderA2UIComponent(a2ui) {
         if (!a2ui || !a2ui.html) return;
         const container = $id('va-messages');
@@ -3035,7 +3065,7 @@
 
         const content = document.createElement('div');
         content.className = 'va-message-content';
-        content.innerHTML = a2ui.html;
+        content.innerHTML = sanitizeA2UIHtml(a2ui.html);
         wrapper.appendChild(content);
 
         container.appendChild(wrapper);

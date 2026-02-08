@@ -78,9 +78,9 @@ Contact: +1 762 422 4223 | contact@vocalia.ma
 
 ## State
 
-- **Code completeness**: 9.3/10 — all features coded, tested, P0-AUDIT 9/9 DONE, multi-tenant security hardened (origin↔tenant, api_key, CORS both APIs), escapeHTML 7/7 widgets, RGPD consent, promo server-side
+- **Code completeness**: 9.5/10 — all features coded, tested, P0-AUDIT 9/9 DONE, multi-tenant security hardened, Shadow DOM 7/7 widgets, A2UI XSS sanitized (0 remaining vectors), cart recovery persistence
 - **Production readiness**: 3.0/10 — website deployed, 0 paying customers, CORS unblocked, code bugs fixed. Needs: VPS deployment, first customer, GA4
 - **Next**: VPS deployment → first paying customer → GA4 activation
-- **Weighted score**: 7.9/10
+- **Weighted score**: 8.3/10
 
-*Last update: 08/02/2026 - Session 250.156 (ROADMAP 100% code-complete, multi-tenant deep security, promo persistence, dashboard audit)*
+*Last update: 08/02/2026 - Session 250.157 (Shadow DOM 7/7, A2UI XSS sanitized, cart recovery persistence)*

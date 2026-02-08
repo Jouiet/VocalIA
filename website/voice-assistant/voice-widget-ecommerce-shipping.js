@@ -398,15 +398,7 @@
     }
 
     init() {
-      // Inject styles
-      if (!document.querySelector('#va-shipping-bar-styles')) {
-        const styleEl = document.createElement('style');
-        styleEl.id = 'va-shipping-bar-styles';
-        styleEl.textContent = STYLES;
-        document.head.appendChild(styleEl);
-      }
-
-      // Create bar element
+      // Create bar element (with Shadow DOM)
       this.createBar();
 
       // Check for stored cart value
@@ -438,7 +430,21 @@
       }
 
       container.innerHTML = this.getBarHTML();
-      document.body.appendChild(container);
+
+      // Shadow DOM host
+      this.host = document.createElement('div');
+      this.host.id = 'va-shipping-host';
+      const pos = this.config.position === 'bottom' ? 'bottom:0;' : 'top:0;';
+      this.host.style.cssText = `position:fixed;left:0;right:0;${pos}z-index:10002;`;
+      document.body.appendChild(this.host);
+      this._shadowRoot = this.host.attachShadow({ mode: 'open' });
+
+      // Inject styles into shadow root
+      const styleEl = document.createElement('style');
+      styleEl.id = 'va-shipping-bar-styles';
+      styleEl.textContent = STYLES;
+      this._shadowRoot.appendChild(styleEl);
+      this._shadowRoot.appendChild(container);
 
       this.elements.container = container;
       this.elements.progress = container.querySelector('.va-shipping-progress');
@@ -770,7 +776,10 @@
 
     destroy() {
       this.hide();
-      this.elements.container?.remove();
+      this.host?.remove();
+      this.host = null;
+      this._shadowRoot = null;
+      this.elements.container = null;
       document.body.style.paddingTop = '';
     }
   }

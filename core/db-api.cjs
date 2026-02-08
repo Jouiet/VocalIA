@@ -2190,7 +2190,17 @@ async function handleRequest(req, res) {
     const user = await checkAdmin(req, res);
     if (!user) return;
 
-    const queue = global.cartRecoveryQueue || [];
+    // Load from disk if not in memory
+    if (!global.cartRecoveryQueue) {
+      global.cartRecoveryQueue = [];
+      try {
+        const recoveryPath = path.join(__dirname, '..', 'data', 'cart-recovery.json');
+        if (fs.existsSync(recoveryPath)) {
+          global.cartRecoveryQueue = JSON.parse(fs.readFileSync(recoveryPath, 'utf8'));
+        }
+      } catch {}
+    }
+    const queue = global.cartRecoveryQueue;
     const tenantFilter = query.tenant_id;
 
     const filtered = tenantFilter
