@@ -1,11 +1,11 @@
 # VocalIA - Voice AI Platform
 
-> **v7.32.0** | 08/02/2026 | Session 250.150: Quality sweep — stubs eliminated, broken assets fixed, test artifacts gitignored | Production: https://vocalia.ma
-> **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
+> **v7.33.0** | 08/02/2026 | Session 250.151: Complete webapp i18n — all client+admin pages fully translatable | Production: https://vocalia.ma
+> **78 pages** | 24,870 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,764 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
 > **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,196 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
+> ✅ **SESSION 250.151**: WEBAPP i18n COMPLETE — Dashboard (30+ keys: insights, AI perf, heatmap, ROI), Settings (50+ keys: profile/password/prefs/widgets/notifs/webhooks/API/danger), Calls, Analytics, Agents, Billing, Integrations, Admin pages (HITL/Logs/Users/Tenants) — all 5 languages.
 > ✅ **SESSION 250.150**: QUALITY SWEEP — "Plausible stub" comment purge (48 pages), broken favicon (20 pages), demo KB data removal, dead video code cleanup, test artifact gitignore, placeholder.svg created, auth pages ARY+i18n (from 250.149).
-> ✅ **SESSION 250.149**: DEEP DH PURGE — telephony bridge currency-aware (5 function tools), persona injector MAD→EUR, catalog-connector/tenant-catalog-store/db-api all EUR defaults.
 > ✅ **SESSION 250.146**: WIDGET PLAN GATING — /config returns plan_features, B2B+ECOM widgets consume for init+per-request gating.
 > ✅ **SESSION 250.145**: STALE PRICING PURGE — Billing page 4-tier fix, admin MRR DH→€, voice-agent-b2b 4 plans, KB chunks updated.
 > ✅ **SESSION 250.144**: FEATURE GATING + FUNNEL — checkFeature() + PLAN_FEATURES, export restriction, lead persistence, newsletter/booking POST.
