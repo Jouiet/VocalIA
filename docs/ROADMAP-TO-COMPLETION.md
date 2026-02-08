@@ -1,7 +1,7 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.162 (P0-COMPONENTS: dashboard→app migration, validator full coverage 80 pages)
-> **Code Completeness:** 9.8/10 | **Production Readiness:** 3.5/10 (website deployed, widget VISIBLE on live site, CORS unblocked, multi-tenant security hardened, 0 paying customers, API backend NOT deployed on VPS)
+> **Date:** 2026-02-08 | **Session:** 250.163 (VPS deployment verified + updated — all 4 services LIVE)
+> **Code Completeness:** 9.9/10 | **Production Readiness:** 5.5/10 (website deployed, API backend LIVE on VPS, 4 services healthy, widget can chat, CORS unblocked, multi-tenant security hardened, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160)
 
@@ -29,7 +29,7 @@
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
 | 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,764 tests pass, 0 fail, 0 skip (ESM) |
 | 2 | Sécurité | 10.0 | 10.0 | 0 | A2UI XSS sanitized, Shadow DOM 7/7, escapeHTML 7/7 |
-| 3 | Production readiness | 3.0 | 3.0 | 0 | Website deployed, 0 paying customers |
+| 3 | Production readiness | 3.0 | **5.5** | **+2.5** | Website deployed, API backend LIVE on VPS (4 containers healthy), widget can chat, 0 paying customers |
 | 4 | Documentation accuracy | 9.0 | **10.0** | **+1.0** | Technical docs accurate. 64→0 business/factual errors on website (validator v3.0 23/23 ✅). Darija $0.25/min documented. |
 | 5 | Architecture code | 10.0 | 10.0 | 0 | Shadow DOM ALL 7 widgets, full CSS isolation |
 | 6 | Multi-tenant | 9.5 | 9.5 | 0 | No change |
@@ -42,7 +42,7 @@
 |:-|:-----:|:------------:|
 | 1 (7.0) | 15% | 1.050 |
 | 2 (10.0) | 15% | 1.500 |
-| 3 (3.0) | 10% | 0.300 |
+| 3 (5.5) | 10% | 0.550 |
 | 4 (10.0) | 10% | 1.000 |
 | 5 (10.0) | 10% | 1.000 |
 | 6 (9.5) | 10% | 0.950 |
@@ -50,7 +50,7 @@
 | 8 (8.0) | 10% | 0.800 |
 | 9 (10.0) | 10% | 1.000 |
 | 10 (9.0) | 5% | 0.450 |
-| **TOTAL** | **100%** | **8.550** → **~8.6/10** (250.161 — P0-WEBSITE DONE, Darija $0.25/min) |
+| **TOTAL** | **100%** | **8.800** → **~8.8/10** (250.163 — VPS deployment LIVE, Production +2.5) |
 
 ---
 
@@ -140,8 +140,14 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Component | Status |
 |:----------|:------:|
 | vocalia.ma | ✅ UP |
-| api.vocalia.ma/health | ✅ UP |
-| Dockerfile + docker-compose (prod+staging) | ✅ Exist |
+| api.vocalia.ma/health | ✅ UP (4 AI providers configured) |
+| api.vocalia.ma/api/db/health | ✅ UP (Google Sheets connected, 7 tables) |
+| VPS Hostinger (KVM 2) | ✅ Running (2 CPU, 8 GB, 148.230.113.163) |
+| Docker containers (4) | ✅ All healthy (vocalia-api, db-api, realtime, telephony) |
+| Traefik reverse proxy | ✅ SSL/TLS auto (Let's Encrypt) |
+| ws.vocalia.ma | ❌ DNS not configured (NindoHost) |
+| tel.vocalia.ma | ❌ DNS not configured (NindoHost) |
+| Dockerfile + docker-compose (prod+staging) | ✅ Deployed |
 | CI/CD (unit + exhaustive + i18n + coverage + tsc + Playwright) | ✅ Active |
 | OpenAPI spec | ✅ 25 methods / 24 paths (validated 250.158) |
 | Security headers (CSP, HSTS, X-Frame, Referrer, Permissions) | ✅ All set |
@@ -331,7 +337,7 @@ create_booking          get_recommendations    qualify_lead
 | **P0-WEBSITE (250.161)** | ✅ **DONE** | 64→0 errors, 44→2 warnings | 23/23 ✅ |
 | **P0-COMPONENTS (250.162)** | ✅ **DONE** | Dashboard→app redirect, validator full coverage | 23/23 ✅ (0 warnings) |
 
-**Code Completeness: 9.9/10** | **Production Readiness: 3.5/10** | **Weighted: 8.8/10**
+**Code Completeness: 9.9/10** | **Production Readiness: 5.5/10** | **Weighted: 8.8/10**
 
 **Remaining (code — REQUIRED):**
 ```
@@ -347,7 +353,8 @@ create_booking          get_recommendations    qualify_lead
 ```
 → GA4: Replace G-XXXXXXXXXX with actual Measurement ID
 → Darija pricing: ✅ DONE — $0.25/min inbound, implemented in code + website
-→ VPS: Deploy API backend (voice-api + db-api) — widget shows but can't chat
+→ VPS: ✅ DONE — 4 containers healthy on Hostinger KVM 2 (148.230.113.163)
+→ DNS: Configure ws.vocalia.ma + tel.vocalia.ma A records at NindoHost → 148.230.113.163
 → Telnyx: Evaluate for Moroccan numbers
 ```
 
@@ -361,7 +368,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis a jour le 2026-02-08 — Session 250.162*
+*Document mis a jour le 2026-02-08 — Session 250.163*
+*250.163: VPS deployment verified + updated. All 4 Docker containers healthy on Hostinger KVM 2 (148.230.113.163). api.vocalia.ma/health returns 200 OK with 4 AI providers. db-api connected to Google Sheets (7 tables). Code updated to latest GitHub commit. Production readiness 3.5→5.5/10. DNS for ws/tel subdomains pending (NindoHost).*
 *250.162: P0-COMPONENTS — Dashboard→app redirect (5 pages eliminated duplication), telephony page created in app/client/, sidebar component updated with telephony link, onboarding migrated to sidebar component, validator now covers ALL 80 pages (was 46). 23/23 ✅ 0 errors 0 warnings.*
 *250.161: P0-WEBSITE COMPLETE — 64→0 errors, 44→2 warnings (23/23 ✅). Darija $0.25/min (inbound) implemented across codebase. Phase 4 manual audit fixes (math, stale 40→38, Tier 1 5→4, unverified claims).*
 *250.160: Validator v3.0 (17→23 checks: +6 business/factual). 64 errors + 44 warnings detected. White line cleanup (31 files). academie-business deep audit (20 problems).*

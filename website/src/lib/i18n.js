@@ -118,13 +118,37 @@ function getLocale() {
 /**
  * Geo-IP Mapping configuration
  */
+// 6-market geo routing: MA→FR/MAD, EU→FR/EUR, ES→ES/EUR, MENA→AR/USD, LATAM→ES/USD, ROW→EN/USD
 const GEO_MAPPING = {
+  // 1. Maroc
   'MA': { lang: 'fr', currency: 'MAD', symbol: 'DH' },
+  // 2. Europe + Maghreb (FR + EUR)
   'FR': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'DZ': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'TN': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'BE': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'CH': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'DE': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'IT': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'PT': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'NL': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  'GB': { lang: 'fr', currency: 'EUR', symbol: '€' },
+  // 3. Espagne (ES + EUR)
   'ES': { lang: 'es', currency: 'EUR', symbol: '€' },
-  'SA': { lang: 'en', currency: 'USD', symbol: '$' },
-  'AE': { lang: 'en', currency: 'USD', symbol: '$' },
-  'QA': { lang: 'en', currency: 'USD', symbol: '$' },
+  // 4. MENA/Gulf (AR + USD)
+  'SA': { lang: 'ar', currency: 'USD', symbol: '$' },
+  'AE': { lang: 'ar', currency: 'USD', symbol: '$' },
+  'QA': { lang: 'ar', currency: 'USD', symbol: '$' },
+  'KW': { lang: 'ar', currency: 'USD', symbol: '$' },
+  'EG': { lang: 'ar', currency: 'USD', symbol: '$' },
+  'JO': { lang: 'ar', currency: 'USD', symbol: '$' },
+  // 5. Hispanique LATAM (ES + USD)
+  'MX': { lang: 'es', currency: 'USD', symbol: '$' },
+  'CO': { lang: 'es', currency: 'USD', symbol: '$' },
+  'AR': { lang: 'es', currency: 'USD', symbol: '$' },
+  'CL': { lang: 'es', currency: 'USD', symbol: '$' },
+  'PE': { lang: 'es', currency: 'USD', symbol: '$' },
+  // 6. International (EN + USD)
   'US': { lang: 'en', currency: 'USD', symbol: '$' }
 };
 

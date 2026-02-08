@@ -1,10 +1,12 @@
 /**
  * VocalIA - Global Localization Engine (Strict Market Rules)
- * Enforces the 4-Region Strategy:
+ * Enforces the 6-Region Strategy:
  * 1. Maroc -> FR + MAD
- * 2. Europe/Maghreb -> FR + EUR
- * 3. MENA (Gulf) -> EN + USD
- * 4. International -> EN + USD
+ * 2. Europe (hors ES) + Maghreb -> FR + EUR
+ * 3. Espagne -> ES + EUR
+ * 4. MENA (Gulf) -> AR + USD
+ * 5. Amérique Latine / Hispanique -> ES + USD
+ * 6. International -> EN + USD
  */
 
 const MARKET_RULES = {
@@ -17,7 +19,7 @@ const MARKET_RULES = {
         label: 'Maroc'
     },
 
-    // 2. EUROPE & MAGHREB (neighbors)
+    // 2. EUROPE & MAGHREB (hors Espagne)
     // Strict Rule: Français + EUR
     DZ: { id: 'maghreb', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Maghreb' },
     TN: { id: 'maghreb', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Maghreb' },
@@ -27,24 +29,73 @@ const MARKET_RULES = {
     LU: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
     DE: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
     IT: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-    ES: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
     PT: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
     NL: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    AT: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    GR: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    FI: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    SE: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    DK: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    PL: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    CZ: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    HU: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    RO: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    BG: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    HR: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    SI: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    SK: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    EE: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    LV: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    LT: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    CY: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    MT: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    IE: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    IS: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    NO: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    GB: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
+    MC: { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
 
-    // 3. MENA (Gulf)
-    // Strict Rule: English + USD
-    AE: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    SA: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    QA: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    KW: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    BH: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    OM: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    EG: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    JO: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    LB: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
-    IQ: { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
+    // 3. ESPAGNE -> Espagnol + EUR (marché hispanique en Europe)
+    ES: { id: 'hispanic_eu', lang: 'es', currency: 'EUR', symbol: '€', label: 'Espagne' },
 
-    // Defaults
+    // 4. MENA (Gulf) -> Arabe + USD
+    SA: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    AE: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    QA: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    KW: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    BH: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    OM: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    EG: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    JO: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    LB: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    IQ: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    LY: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    SD: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    SY: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+    YE: { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' },
+
+    // 5. AMÉRIQUE LATINE / HISPANIQUE -> Espagnol + USD
+    MX: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    CO: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    AR: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    CL: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    PE: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    VE: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    EC: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    GT: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    CU: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    DO: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    HN: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    SV: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    NI: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    CR: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    PA: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    UY: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    PY: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    BO: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+    GQ: { id: 'hispanic', lang: 'es', currency: 'USD', symbol: '$', label: 'Hispanique' },
+
+    // 6. Defaults (International)
     DEFAULT_INTL: { id: 'intl', lang: 'en', currency: 'USD', symbol: '$', label: 'International' }
 };
 

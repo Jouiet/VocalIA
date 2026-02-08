@@ -45,7 +45,8 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 ## State
 
 - **Code completeness**: 9.9/10 — all features coded, tested, P0-WEBSITE 23/23 ✅, P0-COMPONENTS 0 warnings, validator covers ALL 80 pages
-- **Production readiness**: 3.5/10 — website deployed, widget visible (v2.7.0), API backend NOT on VPS, 0 customers
-- **Next**: VPS deployment → first paying customer → GA4
+- **Production readiness**: 5.5/10 — website deployed, API backend LIVE on VPS (4 containers healthy), widget can chat, 0 paying customers
+- **VPS**: Hostinger KVM 2 (148.230.113.163) — vocalia-api, db-api, realtime, telephony. Traefik SSL.
+- **Next**: DNS ws/tel subdomains → first paying customer → GA4
 
-*Last update: 08/02/2026 - Session 250.162*
+*Last update: 08/02/2026 - Session 250.163*

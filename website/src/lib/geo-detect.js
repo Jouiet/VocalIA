@@ -3,10 +3,13 @@
  * Version: 2.0.0 (SOTA)
  * 
  * "Ne pas parler chinois à un espagnol"
- * Strict routing logic:
+ * Strict routing logic (6 markets):
  * 1. Maroc (MA) -> Lang: FR, Curr: MAD
- * 2. Maghreb (DZ, TN) + Europe (EU) -> Lang: FR, Curr: EUR
- * 3. Rest of World (ROW) -> Lang: EN, Curr: USD
+ * 2. Maghreb (DZ, TN) + Europe (hors ES) -> Lang: FR, Curr: EUR
+ * 3. Espagne (ES) -> Lang: ES, Curr: EUR
+ * 4. MENA/Gulf -> Lang: AR, Curr: USD
+ * 5. Amérique Latine / Hispanique -> Lang: ES, Curr: USD
+ * 6. International (ROW) -> Lang: EN, Curr: USD
  */
 
 const VocaliaGeo = (function () {
@@ -25,13 +28,25 @@ const VocaliaGeo = (function () {
     };
 
     // EU Countries (Broad definition for "Europe -> FR/EUR" rule)
-    // using ISO Alpha-2 codes
+    // NOTE: Spain (ES) excluded — routed to ES+EUR as Hispanic market
     const EU_BLOC = [
         'FR', 'BE', 'LU', 'MC', 'CH', // Francophone-ish
-        'DE', 'IT', 'ES', 'PT', 'NL', 'AT', 'GR', 'FI', 'SE', 'DK', 'PL', 'CZ', 'HU', 'RO', 'BG', 'HR', 'SI', 'SK', 'EE', 'LV', 'LT', 'CY', 'MT', 'IE', 'IS', 'NO', 'GB'
+        'DE', 'IT', 'PT', 'NL', 'AT', 'GR', 'FI', 'SE', 'DK', 'PL', 'CZ', 'HU', 'RO', 'BG', 'HR', 'SI', 'SK', 'EE', 'LV', 'LT', 'CY', 'MT', 'IE', 'IS', 'NO', 'GB'
     ];
 
     const MAGHREB_EUR = ['DZ', 'TN'];
+
+    // MENA/Gulf countries -> AR + USD
+    const MENA_GULF = [
+        'SA', 'AE', 'QA', 'KW', 'BH', 'OM', // Gulf
+        'EG', 'JO', 'LB', 'IQ', 'LY', 'SD', 'SY', 'YE' // Other MENA
+    ];
+
+    // Hispanic countries -> ES + USD (except Spain -> ES + EUR)
+    const HISPANIC_LATAM = [
+        'MX', 'CO', 'AR', 'CL', 'PE', 'VE', 'EC', 'GT', 'CU',
+        'DO', 'HN', 'SV', 'NI', 'CR', 'PA', 'UY', 'PY', 'BO', 'GQ'
+    ];
 
     /**
      * Determine Sovereign Config from Country Code
@@ -50,7 +65,7 @@ const VocaliaGeo = (function () {
             };
         }
 
-        // 2. ALGÉRIE, TUNISIE, EUROPE
+        // 2. ALGÉRIE, TUNISIE, EUROPE (hors Espagne)
         if (MAGHREB_EUR.includes(code) || EU_BLOC.includes(code)) {
             return {
                 country: code,
@@ -61,7 +76,40 @@ const VocaliaGeo = (function () {
             };
         }
 
-        // 3. REST OF WORLD (MENA, US, ASIA, etc.)
+        // 3. ESPAGNE → Espagnol + EUR (marché hispanique en Europe)
+        if (code === 'ES') {
+            return {
+                country: 'ES',
+                lang: 'es',
+                currency: 'EUR',
+                symbol: '€',
+                region: 'HISPANIC_EU'
+            };
+        }
+
+        // 4. MENA/GULF → Arabe + USD
+        if (MENA_GULF.includes(code)) {
+            return {
+                country: code,
+                lang: 'ar',
+                currency: 'USD',
+                symbol: '$',
+                region: 'MENA'
+            };
+        }
+
+        // 5. AMÉRIQUE LATINE / Hispanique → Espagnol + USD
+        if (HISPANIC_LATAM.includes(code)) {
+            return {
+                country: code,
+                lang: 'es',
+                currency: 'USD',
+                symbol: '$',
+                region: 'HISPANIC'
+            };
+        }
+
+        // 6. REST OF WORLD (US, ASIA, etc.)
         return {
             country: code,
             lang: 'en',
