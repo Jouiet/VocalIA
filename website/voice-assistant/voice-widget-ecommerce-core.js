@@ -1,6 +1,6 @@
 /**
  * VocalIA - Voice Assistant Widget Core
- * Version: 3.0.0
+ * Version: 3.1.0
  *
  * Unified widget that loads language-specific translations
  * Supports: FR, EN, ES, AR, Darija (ary)
@@ -121,6 +121,7 @@
         sessionId: `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         tenantId: null, // Set via data attribute or URL
         tenantConfig: null, // Loaded from /config endpoint
+        planFeatures: null, // Session 250.146: Plan-based feature gating
         availableSlotsCache: { slots: [], timestamp: 0 },
         catalogCache: { products: [], timestamp: 0 },
         conversationContext: {
@@ -206,7 +207,11 @@
                     }
                 }
                 state.tenantConfig = data;
-                trackEvent('tenant_config_loaded', { tenantId: state.tenantId });
+                // Session 250.146: Store plan features for sub-widget gating
+                if (data.plan_features) {
+                    state.planFeatures = data.plan_features;
+                }
+                trackEvent('tenant_config_loaded', { tenantId: state.tenantId, plan: data.plan });
                 return data;
             }
         } catch (error) {
@@ -1327,6 +1332,11 @@
      * @param {object} options - Custom options
      */
     window.VocalIA.startQuiz = function (template = 'generic', options = {}) {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_quiz === false) {
+            console.warn('[VocalIA] Quiz not available on current plan');
+            return null;
+        }
         // Lazy load quiz if not already loaded
         if (!window.VocalIAQuiz) {
             console.warn('[VocalIA] Voice Quiz not loaded. Include voice-quiz.js');
@@ -1397,6 +1407,11 @@
      * @param {Object} options - Configuration options
      */
     window.VocalIA.initCartRecovery = function (options = {}) {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_cart_recovery === false) {
+            console.warn('[VocalIA] Cart recovery not available on current plan');
+            return null;
+        }
         if (window.VocaliaAbandonedCart) {
             return window.VocaliaAbandonedCart.init({
                 tenantId: state.tenantId || options.tenantId,
@@ -1413,6 +1428,8 @@
      * @param {string} reason - Reason for triggering (manual, exit, inactivity)
      */
     window.VocalIA.triggerCartRecovery = function (reason = 'manual') {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_cart_recovery === false) return;
         if (window.VocaliaAbandonedCart?.getInstance()) {
             window.VocaliaAbandonedCart.getInstance().trigger(reason);
         } else {
@@ -1506,6 +1523,11 @@
      * @param {Object} options - Configuration options
      */
     window.VocalIA.showSpinWheel = function (options = {}) {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_gamification === false) {
+            console.warn('[VocalIA] Spin wheel not available on current plan');
+            return null;
+        }
         if (window.VocaliaSpinWheel) {
             return window.VocaliaSpinWheel.show({
                 tenantId: state.tenantId || options.tenantId,
@@ -2382,7 +2404,18 @@
         // Track event
         trackEvent('exit_intent_triggered', { trigger, page: window.location.pathname });
 
-        // Show exit-intent overlay
+        // Session 250.146: Cart recovery coordination — if cart has items and plan allows,
+        // trigger cart recovery popup instead of generic exit overlay (higher conversion)
+        const cart = window.VocalIA?.cart;
+        const hasCartItems = cart && cart.items && cart.items.length > 0;
+        const planAllowsCartRecovery = !state.planFeatures || state.planFeatures.ecom_cart_recovery !== false;
+        if (CONFIG.ECOMMERCE_MODE && hasCartItems && planAllowsCartRecovery) {
+            trackEvent('exit_intent_cart_recovery', { cart_value: cart.total, items: cart.items.length });
+            window.VocalIA.triggerCartRecovery('exit_intent');
+            return;
+        }
+
+        // Show generic exit-intent overlay
         showExitIntentOverlay();
     }
 
@@ -3061,6 +3094,10 @@
 
             const data = await response.json();
             if (data.response) {
+                // Session 250.146: Update plan features from /respond (authoritative per-request)
+                if (data.features) {
+                    state.planFeatures = data.features;
+                }
                 trackEvent('voice_api_response', { language: state.currentLang, latency: data.latencyMs });
                 // Render A2UI component if backend sent one
                 if (data.a2ui) {
@@ -3169,8 +3206,9 @@
             if (bookingResponse) return bookingResponse;
         }
 
-        // 2. Check for booking intent (always local)
-        if (isBookingIntent(lower)) {
+        // 2. Check for booking intent (gated by plan — Session 250.146)
+        const planAllowsBooking = !state.planFeatures || state.planFeatures.booking !== false;
+        if (planAllowsBooking && isBookingIntent(lower)) {
             ctx.bookingFlow.active = true;
             ctx.bookingFlow.step = 'name';
             ctx.bookingFlow.data.service = L.booking.service;
@@ -3360,7 +3398,11 @@
     function initSubWidgets() {
         if (!CONFIG.ECOMMERCE_MODE || !state.tenantId) return;
 
-        // Helper: init shipping bar once loaded
+        // Session 250.146: Check plan features before activating sub-widgets
+        const pf = state.planFeatures || {};
+        const isFeatureAllowed = (key) => pf[key] !== false; // Default true if no plan_features loaded
+
+        // Helper: init shipping bar once loaded (always-on for ECOM plans)
         const activateShipping = () => {
             if (!window.VocaliaShippingBar) return;
             try {
@@ -3405,31 +3447,41 @@
             }
         };
 
-        // Free Shipping Bar: immediate (always-on for ECOM)
+        // Free Shipping Bar: immediate (always-on for ECOM — no plan gating needed)
         if (window.VocaliaShippingBar) {
             activateShipping();
         } else {
             loadChunk('shippingBar').then(activateShipping).catch(() => {});
         }
 
-        // Spin Wheel: auto-show after delay if available (1x per 24h)
-        if (window.VocaliaSpinWheel) {
-            activateSpin();
-        } else {
-            loadChunk('spinWheel').then(activateSpin).catch(() => {});
+        // Spin Wheel: gated by ecom_gamification plan feature
+        if (isFeatureAllowed('ecom_gamification')) {
+            if (window.VocaliaSpinWheel) {
+                activateSpin();
+            } else {
+                loadChunk('spinWheel').then(activateSpin).catch(() => {});
+            }
         }
 
-        // Recommendation Carousel: auto-init
-        if (window.VocalIARecommendations) {
-            activateCarousel();
-        } else {
-            loadChunk('recommendations').then(activateCarousel).catch(() => {});
+        // Recommendation Carousel: gated by ecom_recommendations plan feature
+        if (isFeatureAllowed('ecom_recommendations')) {
+            if (window.VocalIARecommendations) {
+                activateCarousel();
+            } else {
+                loadChunk('recommendations').then(activateCarousel).catch(() => {});
+            }
         }
 
-        // Cart recovery + Quiz: preload after 5s (triggered by user action / exit intent)
+        // Cart recovery: gated by ecom_cart_recovery plan feature
+        // Quiz: gated by ecom_quiz plan feature
+        // Both preload after 5s (triggered by user action / exit intent)
         setTimeout(() => {
-            loadChunk('abandonedCart').catch(() => {});
-            loadChunk('quiz').catch(() => {});
+            if (isFeatureAllowed('ecom_cart_recovery')) {
+                loadChunk('abandonedCart').catch(() => {});
+            }
+            if (isFeatureAllowed('ecom_quiz')) {
+                loadChunk('quiz').catch(() => {});
+            }
         }, 5000);
     }
 

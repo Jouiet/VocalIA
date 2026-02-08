@@ -1,6 +1,6 @@
 /**
  * VocalIA - Voice Assistant Widget Core
- * Version: 3.0.0
+ * Version: 3.1.0
  *
  * Unified widget that loads language-specific translations
  * Supports: FR, EN, ES, AR, Darija (ary)
@@ -2404,7 +2404,18 @@
         // Track event
         trackEvent('exit_intent_triggered', { trigger, page: window.location.pathname });
 
-        // Show exit-intent overlay
+        // Session 250.146: Cart recovery coordination — if cart has items and plan allows,
+        // trigger cart recovery popup instead of generic exit overlay (higher conversion)
+        const cart = window.VocalIA?.cart;
+        const hasCartItems = cart && cart.items && cart.items.length > 0;
+        const planAllowsCartRecovery = !state.planFeatures || state.planFeatures.ecom_cart_recovery !== false;
+        if (CONFIG.ECOMMERCE_MODE && hasCartItems && planAllowsCartRecovery) {
+            trackEvent('exit_intent_cart_recovery', { cart_value: cart.total, items: cart.items.length });
+            window.VocalIA.triggerCartRecovery('exit_intent');
+            return;
+        }
+
+        // Show generic exit-intent overlay
         showExitIntentOverlay();
     }
 
@@ -3195,8 +3206,9 @@
             if (bookingResponse) return bookingResponse;
         }
 
-        // 2. Check for booking intent (always local)
-        if (isBookingIntent(lower)) {
+        // 2. Check for booking intent (gated by plan — Session 250.146)
+        const planAllowsBooking = !state.planFeatures || state.planFeatures.booking !== false;
+        if (planAllowsBooking && isBookingIntent(lower)) {
             ctx.bookingFlow.active = true;
             ctx.bookingFlow.step = 'name';
             ctx.bookingFlow.data.service = L.booking.service;
