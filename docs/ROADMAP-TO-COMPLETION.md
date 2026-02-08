@@ -145,8 +145,8 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | VPS Hostinger (KVM 2) | ✅ Running (2 CPU, 8 GB, 148.230.113.163) |
 | Docker containers (4) | ✅ All healthy (vocalia-api, db-api, realtime, telephony) |
 | Traefik reverse proxy | ✅ SSL/TLS auto (Let's Encrypt) |
-| ws.vocalia.ma | ❌ DNS not configured (NindoHost) |
-| tel.vocalia.ma | ❌ DNS not configured (NindoHost) |
+| api.vocalia.ma/realtime/health | ✅ UP (7 voices, grok-realtime) |
+| api.vocalia.ma/telephony/health | ✅ UP (Twilio configured) |
 | Dockerfile + docker-compose (prod+staging) | ✅ Deployed |
 | CI/CD (unit + exhaustive + i18n + coverage + tsc + Playwright) | ✅ Active |
 | OpenAPI spec | ✅ 25 methods / 24 paths (validated 250.158) |
@@ -353,8 +353,7 @@ create_booking          get_recommendations    qualify_lead
 ```
 → GA4: Replace G-XXXXXXXXXX with actual Measurement ID
 → Darija pricing: ✅ DONE — $0.25/min inbound, implemented in code + website
-→ VPS: ✅ DONE — 4 containers healthy on Hostinger KVM 2 (148.230.113.163)
-→ DNS: Configure ws.vocalia.ma + tel.vocalia.ma A records at NindoHost → 148.230.113.163
+→ VPS: ✅ DONE — 4 containers healthy, ALL routed via api.vocalia.ma (path-based, no extra DNS)
 → Telnyx: Evaluate for Moroccan numbers
 ```
 
