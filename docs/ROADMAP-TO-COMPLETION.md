@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.150 (Quality sweep: stubs purged, broken assets fixed, test artifacts gitignored)
+> **Date:** 2026-02-08 | **Session:** 250.152 (Admin sidebar component, nginx brotli, GitHub repo rename, Google Sheets DB verified)
 > **Code Completeness:** 9.0/10 | **Production Readiness:** 3.5/10 (0 paying customers, funnel CONNECTED, feature gating IMPLEMENTED)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142) + pricing restructure (250.143) + implementation (250.144)
@@ -1152,7 +1152,7 @@ create_booking          get_recommendations    qualify_lead
 |:-:|:-------|:-------|:-------|:------:|
 | 1 | **Activate GA4** — replace `G-XXXXXXXXXX` in `website/components/header.html` | 5min | 52 events collecting data | ❌ Blocked (needs analytics.google.com account) |
 | 2 | **Increase telephony price** 0.06→0.10€/min | Decision | Margin 8%→38% | ✅ **250.143** — 0.10€/min in ALL files (22 files updated, 0 stale refs) |
-| 3 | **Serve brotli** via nginx config on VPS | 30min | Transfer -84% B2B, -88% ECOM | ❌ Infrastructure |
+| 3 | **Serve brotli** via nginx config on VPS | 30min | Transfer -84% B2B, -88% ECOM | ✅ **250.152** — nginx configs with brotli+gzip (deploy/nginx-vocalia-*.conf) |
 | 4 | **Booking inline B2B** (copy pattern from ECOM) | 3h | Conversion booking +30-40% (est.) | ✅ **250.140** — Full booking flow (name→email→slot→confirm→submit) |
 | 5 | **Evaluate Telnyx** for Moroccan numbers | 4h | Unblock Morocco, potentially -50% PSTN | ❌ Research |
 | 6 | **Darija differentiated pricing** 0.15-0.20€/min | Decision | Eliminate loss per Darija call | ⚠️ Included in 0.10€ base — Darija still at loss with ElevenLabs TTS ($0.10/min + PSTN) |
@@ -1227,8 +1227,8 @@ create_booking          get_recommendations    qualify_lead
 | 3 | Activate GA4 | 5min | Analytics | ❌ Blocked (need GA property) |
 | 4 | Replace fictitious social proof | 2h | Credibility | ✅ **250.144** — honest tech metrics |
 | 5 | Decide B2C product fate | Decision | Pricing clarity | ✅ **250.143** — B2C eliminated, merged into Pro 99€ |
-| 6 | Configure Google Sheets DB (.env) | 30min | Contact persistence | ❌ (infrastructure) |
-| 7 | Fix GitHub repo typo (VoicalAI) | 5min | Brand | ❌ |
+| 6 | Configure Google Sheets DB (.env) | 30min | Contact persistence | ✅ **250.152** — Already configured (service account + OAuth + spreadsheetId in data/) |
+| 7 | Fix GitHub repo typo (VoicalAI) | 5min | Brand | ✅ **250.152** — gh repo rename VocalIA, remote updated |
 
 **Full audit details**: `docs/BUSINESS-INTELLIGENCE.md` sections 9-10
 
@@ -1459,7 +1459,7 @@ create_booking          get_recommendations    qualify_lead
 ✅ FUNNEL-1: Newsletter — async POST to /api/contact (event-delegation.js)
 ✅ FUNNEL-2: Booking form — async POST to /api/contact (booking.html)
 ✅ FUNNEL-3: Social proof — replaced with honest tech metrics (38 personas, 203 MCP, 25 tools)
-→ FUNNEL-4: Configure Google Sheets DB credentials in .env (30min — infrastructure)
+✅ FUNNEL-4: Google Sheets DB — already configured (service account + OAuth + spreadsheetId in data/)
 ```
 
 **Remaining (infrastructure/decisions — NOT code):**
@@ -1468,7 +1468,7 @@ create_booking          get_recommendations    qualify_lead
 → BIZ-2: ✅ DONE (250.143) — Telephony repriced 0.06→0.10€/min (margin 8%→38%)
 → BIZ-5: ✅ DONE (250.143) — B2C eliminated, merged into Pro 99€. B2C page→redirect.
 → BIZ-6: Darija differentiated pricing 0.15-0.20€/min (decision)
-→ BIZ-3: Serve brotli via nginx config (30min infra)
+✅ BIZ-3: Serve brotli — nginx configs created (deploy/nginx-vocalia-*.conf) with brotli+gzip
 → P2-W8b: CDN (cdn.vocalia.ma) — DNS + CDN config
 → P2-5c: Grafana Cloud / Uptime Robot
 → P3-3c: Load test baseline against production
@@ -1484,7 +1484,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis a jour le 2026-02-08 — Session 250.142*
+*Document mis a jour le 2026-02-08 — Session 250.152*
+*250.152: Admin sidebar component (5 pages → 1 component), nginx brotli configs (API + website), GitHub repo rename VoicalAI→VocalIA, Google Sheets DB verified configured, doc optimization (-53% context). Tests: 3,764 pass, 0 fail.*
 *250.142: External audit Nr 3 — marketing funnel verified BROKEN (newsletter=UI only, booking=alert(), contact=no DB, GA4=placeholder). Social proof FICTITIOUS (500+/2M+/98%/testimonials). B2C product PHANTOM (no widget, loads B2B, priced at 79€). Case studies honestly labeled "fictifs". Production readiness: 3.0→2.5/10.*
 *250.141: BIZ-7 Code-split ECOM widget — core 16.7 KB brotli (-55% vs monolith 37.3 KB) + 5 lazy chunks. Dynamic loadChunk() in voice-widget-v3.js. Build pipeline v2.1 (7 bundles). Widget v2.7.0 (50 pages). Validator v2.4 (code-split regex). Tests: 3,763 pass, 0 fail.*
 *250.140: BIZ-4 Booking inline B2B (full flow), BIZ-8 STT fallback Firefox/Safari (MediaRecorder→/stt backend), /stt endpoint (Grok Whisper+Gemini), widget v2.6.0 (49 pages), dead .bak cleanup. Tests: 3,763 pass, 0 fail.*

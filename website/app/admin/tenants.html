@@ -15,6 +15,7 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
+  <script src="/app/components/app-components.js" defer></script>
   <style>
     .sidebar { width: 260px; }
     @media (max-width: 1024px) {
@@ -25,59 +26,8 @@
 </head>
 <body class="min-h-screen bg-zinc-50 dark:bg-[#050505]">
 
-  <aside id="sidebar" class="sidebar fixed top-0 left-0 rtl:left-auto rtl:right-0 h-full bg-[#050505] text-white flex flex-col transition-transform duration-300">
-    <div class="p-4 border-b border-white/[0.08]">
-      <div class="flex items-center gap-2">
-        <img src="/public/images/logo.webp" alt="VocalIA" class="w-9 h-9 rounded-lg object-contain">
-        <span class="text-xl font-bold">VocalIA</span>
-        <span class="text-xs px-1.5 py-0.5 bg-amber-500 text-amber-900 rounded font-medium">Admin</span>
-      </div>
-    </div>
-    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-      <a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white transition-colors">
-        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-        <span data-i18n="admin.nav.dashboard">Dashboard</span>
-      </a>
-      <a href="tenants.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/[0.08] text-white font-medium">
-        <i data-lucide="building-2" class="w-5 h-5"></i>
-        <span data-i18n="admin.nav.tenants">Tenants</span>
-      </a>
-      <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white transition-colors">
-        <i data-lucide="users" class="w-5 h-5"></i>
-        <span data-i18n="admin.nav.users">Utilisateurs</span>
-      </a>
-      <a href="logs.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white transition-colors">
-        <i data-lucide="scroll-text" class="w-5 h-5"></i>
-        <span data-i18n="admin.nav.logs">Logs</span>
-      </a>
-      <a href="hitl.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white transition-colors">
-        <i data-lucide="check-circle" class="w-5 h-5"></i>
-        <span data-i18n="admin.nav.hitl">HITL</span>
-      </a>
-      <div class="pt-4 mt-4 border-t border-white/[0.08]">
-        <a href="/app/client/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white transition-colors">
-          <i data-lucide="arrow-left" class="w-5 h-5"></i>
-          <span data-i18n="admin.nav.back_client">Retour client</span>
-        </a>
-      </div>
-    </nav>
-    <div class="p-4 border-t border-white/[0.08]">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center">
-          <span id="admin-initials" class="font-medium">--</span>
-        </div>
-        <div class="flex-1 min-w-0">
-          <p id="admin-name" class="text-sm font-medium truncate">Admin</p>
-          <p id="admin-email" class="text-xs text-zinc-400 truncate"></p>
-        </div>
-        <button id="logout-btn" class="p-2 rounded-lg hover:bg-white/[0.06] transition-colors">
-          <i data-lucide="log-out" class="w-5 h-5 text-zinc-400"></i>
-        </button>
-      </div>
-    </div>
-  </aside>
-
-  <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+  <!-- Admin Sidebar (component) -->
+  <div data-app-component="admin-sidebar"></div>
 
   <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen">
     <header class="sticky top-0 z-20 bg-white/80 dark:bg-white/[0.06] backdrop-blur-sm border-b border-zinc-200 dark:border-white/[0.08] px-4 lg:px-6 py-4">
@@ -156,18 +106,6 @@
     }
 
     lucide.createIcons();
-
-    // Mobile sidebar
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebar-overlay');
-    document.getElementById('menu-toggle')?.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      sidebarOverlay.classList.toggle('hidden');
-    });
-    sidebarOverlay?.addEventListener('click', () => {
-      sidebar.classList.remove('open');
-      sidebarOverlay.classList.add('hidden');
-    });
 
     // Theme toggle
     if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {

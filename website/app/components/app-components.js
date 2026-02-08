@@ -11,7 +11,8 @@
   'use strict';
 
   var COMPONENTS = {
-    'sidebar': '/app/components/sidebar.html'
+    'sidebar': '/app/components/sidebar.html',
+    'admin-sidebar': '/app/components/admin-sidebar.html'
   };
 
   var cache = {};
