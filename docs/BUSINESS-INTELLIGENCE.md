@@ -58,13 +58,17 @@
 
 ## 2. Pricing Analysis
 
-### 2A. Current Pricing vs Margins
+### 2A. Pricing Structure (Restructured Session 250.143)
 
-| Product | Price | Cost | Margin | Verdict |
-|:--------|:------|:-----|:-------|:--------|
-| Widget B2B | 49€/month (~$53) | ~$8-20/month | **62-85%** | Excellent |
-| Telephony FR | 0.06€/min (~$0.065) | $0.06/min | **~8%** | **NON VIABLE** |
-| Telephony Darija | 0.06€/min | $0.15/min | **-$0.085 (LOSS)** | **PERTE** |
+| Tier | Price | Cost | Margin | Verdict |
+|:-----|:------|:-----|:-------|:--------|
+| **Starter** | 49€/month | ~$3-5/month | **~90-93%** | Voice AI assistant, 500 conv/mois |
+| **Pro** | 99€/month | ~$8-20/month | **80-92%** | Lead gen + booking + CRM sync |
+| **E-commerce** | 99€/month | ~$8-20/month | **80-92%** | Cart recovery + quiz + gamification |
+| **Telephony** | 199€/mo + 0.10€/min | $0.06/min | **~38%** | PSTN line, 100 min included |
+
+> **B2C product (79€) ELIMINATED** — merged into Pro (99€). B2C page redirects to /pricing.
+> **Telephony REPRICED** from 0.06€/min to 0.10€/min (margin 8%→38%).
 
 ### 2B. Telephony Repricing Options
 
@@ -91,7 +95,7 @@
 
 | Platform | Cost/min (FR inbound) | What's included |
 |:---------|:---------------------|:---------------|
-| **VocalIA** | **~$0.06/min** | Grok LLM+STT+TTS + Twilio + 25 function tools + persona + RAG |
+| **VocalIA** | **~0.10€/min (~$0.11)** | Grok LLM+STT+TTS + Twilio + 25 function tools + persona + RAG |
 | Vapi | $0.15-0.25/min | Platform only, add LLM + STT + TTS + telecom |
 | Retell | $0.12-0.20/min | STT included, add LLM + TTS + telecom |
 | Bland | $0.15-0.25/min | Self-hosted possible |
@@ -146,7 +150,7 @@
 | Segment | TAM | Pricing | Competitive Advantage |
 |:--------|:----|:--------|:---------------------|
 | PME francaises (widget) | ~500K with websites | 49€/month | Voice + 5 langs + price |
-| E-commerce FR (ECOM widget) | ~200K sites | 49€/month + usage | Cart recovery + voice shopping |
+| E-commerce FR (ECOM widget) | ~200K sites | 99€/month | Cart recovery + voice shopping |
 | Marketing agencies FR | ~15K agencies | White-label reseller | Multi-tenant, 38 personas |
 | Call centers FR/MA | ~2K centers | 0.10-0.12€/min | Darija + cost 2x lower |
 
@@ -245,17 +249,12 @@
 
 **Note**: Both case studies honestly label themselves as fictional with industry-benchmark-based numbers. This is acceptable practice for pre-launch marketing, but should be replaced with real case studies as soon as first clients onboard.
 
-### 9D. Product B2C — PHANTOM PRODUCT
+### 9D. Product B2C — RESOLVED (Session 250.143)
 
-| Fact | Evidence |
-|:-----|:---------|
-| No `voice-widget-b2c.js` exists | `ls widget/` — 7 files, none named b2c |
-| B2C page loads B2B widget | `voice-widget-b2c.html:519` → `voice-widget-b2b.min.js?v=2.7.0` |
-| B2C pricing card at 79€ | `pricing.html:283-321` — "Widget B2C" at 79€/month |
-| 14 B2C entries in client_registry | `grep -c '"widget_type": "B2C"' client_registry.json` = 14 |
-| Differentiation = persona only | Same JS code, different `sector` in backend → different persona loaded |
-
-**Recommendation**: Either (a) remove B2C as separate product and absorb into B2B at 49€, or (b) create actual B2C-specific features to justify the 79€ price difference.
+> **RESOLVED**: B2C product (79€) eliminated. Merged into Pro (99€) with actual differentiating features:
+> lead qualification (BANT), conversational booking, CRM sync (HubSpot), unlimited conversations.
+> B2C page (`voice-widget-b2c.html`) now redirects to `/pricing`.
+> Old B2C pricing card replaced with Pro card on pricing page.
 
 ### 9E. Social Media & Links
 
@@ -274,7 +273,7 @@ AWARENESS (Plausible?):  Unknown visitors → vocalia.ma
     ↓
 INTEREST (Homepage):     Fictitious social proof (500+, 2M+, 98%)
     ↓
-CONSIDERATION (Pricing): 3 products (B2B 49€, B2C 79€ phantom, ECOM 149€, Telephony 0.06€)
+CONSIDERATION (Pricing): 4 tiers (Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.10€/min)
     ↓
 INTENT (Booking/Contact): Booking = alert(), Contact = log-only, Newsletter = button change
     ↓
@@ -293,8 +292,8 @@ CONVERSION:              0 — NO functional acquisition mechanism
 | 2 | **Fix booking form** — POST to /api/contact or Calendly | 1h | Demo requests flow | ❌ |
 | 3 | **Activate GA4** — replace G-XXXXXXXXXX | 5min | 52 events collecting data | ❌ Blocked (needs account) |
 | 4 | **Replace fictitious social proof** — honest "launching" messaging | 2h | Legal/credibility risk eliminated | ❌ |
-| 5 | **Decide B2C product** — merge into B2B or create real features | Decision | Pricing clarity | ❌ Decision needed |
-| 6 | **Increase telephony price** 0.06→0.10-0.12€/min | Decision | Margin 8%→38-50% | ❌ Decision needed |
+| 5 | ~~Decide B2C product~~ — merged into Pro 99€ | ✅ Done | Pricing clarity | ✅ Session 250.143 |
+| 6 | ~~Increase telephony price~~ — 0.06→0.10€/min | ✅ Done | Margin 8%→38% | ✅ Session 250.143 |
 | 7 | **Serve brotli** via nginx config on VPS | 30min | Transfer -55% | ❌ Infrastructure |
 | 8 | **Fix GitHub typo** — VoicalAI → VocalIA (or rename repo) | 5min | Brand consistency | ❌ |
 | 9 | **Configure Google Sheets DB** — GOOGLE_SHEETS_ID in .env | 30min | Contact form actually persists | ❌ |
@@ -302,6 +301,6 @@ CONVERSION:              0 — NO functional acquisition mechanism
 ---
 
 *Created: 08/02/2026 - Session 250.139 (External Business Audit Nr 2)*
-*Updated: 08/02/2026 - Session 250.142 (External Business Audit Nr 3 — marketing funnel, social proof, B2C phantom product)*
+*Updated: 08/02/2026 - Session 250.143 (Pricing restructure: B2C eliminated, telephony 0.10€/min, Starter margin corrected, competitive pricing updated)*
 *All costs verified against provider pricing pages as of February 2026*
 *All funnel claims verified against codebase with grep/read on 08/02/2026*

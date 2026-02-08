@@ -1,7 +1,7 @@
 # VocalIA - Analyse Stratégique des Use Cases
 
 > **Version**: 2.2.0 | **Date**: 31/01/2026 | **Session**: 250
-> **MCP Server**: v0.7.0 | **182 tools** | **28 Intégrations** | **4 Sensors** | **3 Agents** | **31 Personas**
+> **MCP Server**: v0.7.0 | **203 tools** | **28 Intégrations** | **4 Sensors** | **3 Agents** | **38 Personas**
 > **Statut**: VÉRIFIÉ EMPIRIQUEMENT (audit codebase 31/01/2026)
 > **Session 249.21**: Stripe (19 tools) + E-commerce FULL CRUD (7 plateformes)
 
@@ -19,10 +19,10 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 
 | Dimension | VocalIA | Vapi | Retell | Bland |
 |:----------|:--------|:-----|:-------|:------|
-| **Pricing** | ~$0.06/min | $0.05-0.33/min | $0.07/min | $0.09/min |
+| **Pricing** | ~0.10€/min (~$0.11) | $0.05-0.33/min | $0.07/min | $0.09/min |
 | **Widget + Telephony** | ✅ Les deux | API only | API only | API only |
 | **Langues** | 5 (dont Darija) | ~20+ | 31+ | ~10 |
-| **Personas préconfigurés** | 30 | 0 | 0 | 0 |
+| **Personas préconfigurés** | 38 | 0 | 0 | 0 |
 | **iPaaS natif** | 3 (Zapier/Make/n8n) | Via API | Via API | Enterprise |
 | **Open Source** | Non | Oui (SDK) | Non | Non |
 | **Darija (Marocain)** | ✅ Atlas-Chat | ❌ | ❌ | ❌ |
@@ -36,9 +36,9 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | Produit | Technologie | Coût | Use Case Principal |
 |:--------|:------------|:-----|:-------------------|
 | **Voice Widget** | Web Speech API | $0 | Website visitors, lead capture |
-| **Voice Telephony** | Twilio PSTN + Grok | ~$0.06/min | Inbound/outbound calls |
+| **Voice Telephony** | Twilio PSTN + Grok | ~0.10€/min (coût ~$0.06) | Inbound/outbound calls |
 
-### 2.2 Intégrations MCP (28 + 3 iPaaS = 182 tools)
+### 2.2 Intégrations MCP (28 + 3 iPaaS = 203 tools)
 
 | Catégorie | Intégrations | Tools | Status |
 |:----------|:-------------|:-----:|:------:|
@@ -52,7 +52,7 @@ Ce document analyse exhaustivement les use cases possibles de VocalIA dans l'éc
 | **Export** | CSV, XLSX, PDF | 5 | ✅ |
 | **iPaaS** | Zapier, Make, n8n | 13 | ✅ +7000 apps |
 
-**Total vérifié**: 182 tools (server.tool calls dans index.ts) - Session 250
+**Total vérifié**: 203 tools (server.tool calls dans index.ts) - Session 250
 
 ### 2.3 Function Tools Telephony (11 FONCTIONNELS)
 
@@ -397,11 +397,11 @@ Maroc-first                   →      Afrique francophone
 | Force | Preuve | Impact |
 |:------|:-------|:-------|
 | **Darija unique** | Atlas-Chat-9B implémenté (voice-api-resilient.cjs:109-119) | Monopole Maroc 45M personnes |
-| **Pricing compétitif** | $0.06/min vs $0.07-0.33 concurrents | Acquisition PME |
-| **40 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
+| **Pricing compétitif** | 0.10€/min vs $0.07-0.33 concurrents | Acquisition PME |
+| **38 Personas** | voice-persona-injector.cjs (lignes 50-300) | Time-to-value 5 min |
 | **Widget + Telephony** | Seul à offrir les 2 nativement | Omnichannel complet |
 | **iPaaS triple** | Zapier + Make + n8n (3 modules MCP) | 7000+ apps accessibles |
-| **11 Function Tools** | voice-telephony-bridge.cjs (lignes 1090-1135) | Automatisation avancée |
+| **25 Function Tools** | voice-telephony-bridge.cjs | Automatisation avancée |
 | **HubSpot Full CRUD** | hubspot-b2b-crm.cjs (25+ méthodes) | CRM enterprise ready |
 
 ### Faiblesses (Weaknesses) ❌ - RÉDUITES Session 249.21

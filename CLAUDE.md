@@ -1,12 +1,13 @@
 # VocalIA - Voice AI Platform
 
-> **v7.24.0** | 08/02/2026 | Production: https://vocalia.ma
-> **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
+> **v7.26.0** | 08/02/2026 | Production: https://vocalia.ma
+> **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,762 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
 > **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,196 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
-> ✅ **SESSION 250.142**: External audit Nr 3 — FUNNEL BROKEN (newsletter/booking/GA4=dead, social proof=fictitious, B2C=phantom). Prod readiness 3.0→2.5/10.
-> ✅ **SESSION 250.141**: BIZ-7 Code-split ECOM widget — core 16.7 KB brotli (-55%). 5 lazy chunks. Build pipeline v2.1. Widget v2.7.0.
-> ✅ **SESSION 250.140**: BIZ-4 Booking inline B2B. BIZ-8 STT fallback Firefox/Safari. /stt endpoint. Widget v2.6.0.
+> ✅ **SESSION 250.144**: FEATURE GATING + FUNNEL — checkFeature() + PLAN_FEATURES (14 features × 4 plans), export restriction (403 Starter), lead persistence (ContextBox), newsletter/booking POST, social proof honest.
+> ✅ **SESSION 250.143**: PRICING RESTRUCTURE — B2C eliminated, 4 tiers: Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.10€/min.
+> ✅ **SESSION 250.142**: External audit Nr 3 — FUNNEL BROKEN (newsletter/booking/GA4=dead, social proof=fictitious, B2C=phantom).
+> ✅ **SESSION 250.141**: BIZ-7 Code-split ECOM widget — core 16.7 KB brotli (-55%). 5 lazy chunks. Build pipeline v2.1.
 > ✅ **SESSION 250.139 DOC OVERHAUL + BUSINESS AUDIT**: All docs audited. Production readiness matrix. Business intelligence.
 
 ## Quick Reference
@@ -17,7 +18,7 @@
 | Domain | www.vocalia.ma |
 | Location | `~/Desktop/VocalIA/` |
 | Tests | 3,763 (68 files .mjs, 0 skip), Coverage: 46.78% |
-| Code Completeness | **8.5/10** — all major features coded and tested |
+| Code Completeness | **9.0/10** — all major features coded, tested, feature-gated |
 | Production Readiness | **2.5/10** — website deployed, 0 paying customers, 0 functional acquisition funnel |
 
 ---
@@ -241,18 +242,21 @@ Verified: `grep -c "server.tool(" mcp-server/src/index.ts` = 203
 
 ---
 
-## Products & Economics (Audits Nr 2+3 — 08/02/2026)
+## Products & Pricing (Session 250.143 — Restructured 08/02/2026)
 
-| Product | Pricing | Cost | Margin | Status |
-|:--------|:--------|:-----|:-------|:-------|
-| Voice Widget B2B | 49€/month | ~$8-20/mo | **62-85%** | Code complete, 0 subscribers |
-| Voice Widget B2C | 79€/month | same as B2B | same | **PHANTOM** — no B2C widget, loads B2B code |
-| Voice Telephony FR | 0.06€/min | $0.06/min | **~8%** | ❌ Non viable — reprice to 0.10-0.12€ |
-| Voice Telephony Darija | 0.06€/min | $0.15/min | **LOSS** | ❌ Losing money — reprice to 0.15-0.20€ |
+| Tier | Pricing | Cost | Margin | Status |
+|:-----|:--------|:-----|:-------|:-------|
+| **Starter** | 49€/month | ~€3.50/mo | **93%** | Voice AI assistant, 500 conv/mois, KB custom, dashboard (read-only) |
+| **Pro** | 99€/month | ~€5/mo | **95%** | Lead gen + booking + CRM sync + export + 2,000 conv |
+| **E-commerce** | 99€/month | ~€6.50/mo | **93%** | Cart recovery + quiz + gamification + catalog sync + 2,000 conv |
+| **Telephony** | 199€/month + 0.10€/min | ~€20 fixe + $0.06/min | **38% overage** | PSTN line + 25 outils + 100 min incluses |
 
-**Policy:** No Free Tier - 14-day trial only
-**Twilio Morocco**: NO Moroccan numbers. Outbound mobile $0.83/min (14x France). Use FR/US numbers.
-**Acquisition Funnel**: BROKEN — newsletter=UI only, booking=alert(), GA4=placeholder, social proof=fictitious
+**Policy:** No Free Tier — 14-day trial only
+**B2C product eliminated** (250.143) — merged into Pro. B2C page redirects to /pricing.
+**Feature gating**: ✅ IMPLEMENTED (250.144) — `checkFeature()` + `PLAN_FEATURES` in voice-api-resilient.cjs. 14 features × 4 plans.
+**Export gating**: ✅ IMPLEMENTED (250.144) — db-api.cjs returns 403 for Starter plan exports
+**Lead persistence**: ✅ IMPLEMENTED (250.144) — ContextBox sync after each /respond
+**Acquisition Funnel**: Newsletter ✅ + Booking ✅ + Social proof ✅ (250.144). GA4 still placeholder.
 **Full analysis**: `docs/BUSINESS-INTELLIGENCE.md`
 
 ---
@@ -283,8 +287,8 @@ providers: [
 
 ---
 
-**Code Completeness: 8.8/10** — All major features coded, tested (3,763 tests), build pipeline optimized.
-**Production Readiness: 2.5/10** — Website deployed. Zero paying customers. Zero functional acquisition funnel (newsletter/booking/GA4 broken). Social proof fictitious.
-**Next milestone**: Fix acquisition funnel (newsletter + booking + GA4), then first paying customer.
+**Code Completeness: 9.0/10** — All major features coded and tested (3,762 tests). Feature gating + export restriction + lead persistence implemented.
+**Production Readiness: 3.5/10** — Website deployed. Acquisition funnel connected (newsletter + booking POST). Feature gating implemented. Social proof honest. GA4 still placeholder. Zero paying customers.
+**Next milestone**: Configure Google Sheets DB → activate GA4 → first paying customer.
 
-*Last update: 08/02/2026 - Session 250.142 (External audit Nr 3 — funnel broken, social proof fictitious, B2C phantom product. Production readiness 3.0→2.5/10)*
+*Last update: 08/02/2026 - Session 250.144 (Feature gating: checkFeature() + PLAN_FEATURES 14×4 matrix. Export restriction 403/Starter. Lead persistence ContextBox. FUNNEL-1/2/3 fixed. Stale pricing eradicated across 7+ files.)*

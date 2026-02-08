@@ -2147,6 +2147,22 @@ async function handleRequest(req, res) {
     if (!user) return;
     const tenantId = convExportMatch[1];
 
+    // Session 250.143: Feature gating — export restricted to Pro/ECOM/Telephony plans
+    try {
+      const tenantConfig = getDB().getTenantConfig(tenantId);
+      const plan = tenantConfig?.plan || 'starter';
+      const exportAllowed = tenantConfig?.features?.export !== undefined
+        ? !!tenantConfig.features.export
+        : ['pro', 'ecommerce', 'telephony'].includes(plan);
+      if (!exportAllowed) {
+        sendError(res, 403, 'Export not available on Starter plan. Upgrade to Pro or higher.');
+        return;
+      }
+    } catch (planErr) {
+      console.warn('[DB-API] Plan check warning:', planErr.message);
+      // Allow on error (fail open for export) — quota still applies
+    }
+
     try {
       const format = (query.format || 'csv').toLowerCase();
       const options = {};

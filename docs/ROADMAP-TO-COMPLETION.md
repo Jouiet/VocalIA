@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.142 (External audit Nr 3 — marketing funnel, B2C phantom, social proof)
-> **Code Completeness:** 8.8/10 | **Production Readiness:** 2.5/10 (0 paying customers, 0 functional acquisition funnel)
+> **Date:** 2026-02-08 | **Session:** 250.144 (Feature gating + funnel fixes + stale price eradication)
+> **Code Completeness:** 9.0/10 | **Production Readiness:** 3.5/10 (0 paying customers, funnel CONNECTED, feature gating IMPLEMENTED)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142) + doc overhaul (250.139)
+> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142) + pricing restructure (250.143) + implementation (250.144)
 
 ---
 
@@ -24,7 +24,7 @@
 ## 1. Score Actuel
 
 **Code Completeness: 8.8/10** — All major features coded and tested (3,763 tests, 68 files). All BIZ code tasks done.
-**Production Readiness: 2.5/10** — Website deployed at vocalia.ma. 0 paying customers. 0 functional acquisition funnel (newsletter/booking/GA4 all broken). Social proof fictitious.
+**Production Readiness: 3.5/10** — Website deployed at vocalia.ma. 0 paying customers. Newsletter + booking connected to /api/contact (250.144). Feature gating implemented (250.144). Social proof honest (250.144). GA4 still placeholder.
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested. Production readiness measures what's deployed and serving real users.
 
@@ -1151,22 +1151,27 @@ create_booking          get_recommendations    qualify_lead
 | # | Action | Effort | Impact | Status |
 |:-:|:-------|:-------|:-------|:------:|
 | 1 | **Activate GA4** — replace `G-XXXXXXXXXX` in `website/components/header.html` | 5min | 52 events collecting data | ❌ Blocked (needs analytics.google.com account) |
-| 2 | **Increase telephony price** 0.06→0.10-0.12€/min | Decision | Margin 8%→38-50% | ❌ Decision needed |
+| 2 | **Increase telephony price** 0.06→0.10€/min | Decision | Margin 8%→38% | ✅ **250.143** — 0.10€/min in ALL files (22 files updated, 0 stale refs) |
 | 3 | **Serve brotli** via nginx config on VPS | 30min | Transfer -84% B2B, -88% ECOM | ❌ Infrastructure |
 | 4 | **Booking inline B2B** (copy pattern from ECOM) | 3h | Conversion booking +30-40% (est.) | ✅ **250.140** — Full booking flow (name→email→slot→confirm→submit) |
 | 5 | **Evaluate Telnyx** for Moroccan numbers | 4h | Unblock Morocco, potentially -50% PSTN | ❌ Research |
-| 6 | **Darija differentiated pricing** 0.15-0.20€/min | Decision | Eliminate loss per Darija call | ❌ Decision needed |
+| 6 | **Darija differentiated pricing** 0.15-0.20€/min | Decision | Eliminate loss per Darija call | ⚠️ Included in 0.10€ base — Darija still at loss with ElevenLabs TTS ($0.10/min + PSTN) |
 | 7 | **Code-split ECOM widget** (lazy-load IIFEs) | 4h | Initial load -55% (37→16.7 KB brotli) | ✅ **250.141** — Core + 5 lazy chunks, dynamic loader, build pipeline v2.1 |
 | 8 | **Fallback STT Firefox/Safari** | 6h | +11% visitors with voice | ✅ **250.140** — MediaRecorder→/stt backend (Grok Whisper + Gemini fallback) |
 | 9 | **Test Qwen3-TTS for Darija** | 8h | Darija TTS cost -93% ($0.10→~$0.005/min) | ❌ Research |
 
-### 8.2 Cost Reality (Verified Feb 2026)
+### 8.2 Cost Reality (Updated 250.143 — New Pricing)
 
-| Product | Price | Cost | Margin | Viable? |
-|:--------|:------|:-----|:-------|:-------:|
-| Widget B2B | 49€/month | ~$8-20/month | **62-85%** | ✅ Excellent |
-| Telephony FR | 0.06€/min | $0.06/min | **~8%** | ❌ Non viable |
-| Telephony Darija | 0.06€/min | $0.15/min | **-$0.085 LOSS** | ❌ Perte sèche |
+| Product | Price | Cost/mo | Margin | Viable? |
+|:--------|:------|:--------|:-------|:-------:|
+| Starter | 49€/month | ~€3.50 | **93%** | ✅ IF churn <5% (LTV:CAC fragile @5% churn → 2.18:1) |
+| Pro | 99€/month | ~€5 | **95%** | ✅ Excellent (LTV:CAC 4.4:1 @5% churn) |
+| E-commerce | 99€/month | ~€6.50 | **93%** | ✅ Excellent (LTV:CAC 4.4:1 @5% churn) |
+| Telephony | 199€/month + 0.10€/min | ~€20 fixe | **38% overage** | ✅ Viable (was 8% at 0.06€) |
+| Telephony Darija | 0.10€/min | $0.15/min | **-$0.05 LOSS** | ❌ Still at loss (ElevenLabs TTS) |
+
+**Note**: LTV:CAC based on €450 CAC blendé (estimation, 0 real data). Churn assumptions are inventé — 0 clients to measure.
+**Starter viability depends on lock-in** — without data accumulation + export restriction, switching cost ≈ 0.
 
 ### 8.3 Twilio Morocco Blocker
 
@@ -1181,16 +1186,16 @@ create_booking          get_recommendations    qualify_lead
 |:-------|:-------|
 | Lower widget price (<49€) | Margin already excellent, below Crisp/Intercom |
 | Compete with Intercom frontally | Missing 8+ features, 12+ months of dev |
-| Keep telephony at 0.06€/min | 8% margin = non viable |
+| ~~Keep telephony at 0.06€/min~~ | ~~8% margin = non viable~~ ✅ Fixed 250.143 → 0.10€/min (38%) |
 | Push Morocco telephony via Twilio | $0.83/min = economically impossible |
 | Migrate to LiveKit/Voximplant | Bridge works, migration = risk for 25 function tools |
 | CDN (cdn.vocalia.ma) | VPS + nginx + brotli sufficient at current volume |
 
 ### 8.5 Competitive Position (Factual)
 
-**Widget**: Only voice-native widget with Darija + 5 languages. 49€/month vs Intercom $39-139/seat. Different product (voice-first sales vs support platform).
+**Widget**: Only voice-native widget with Darija + 5 languages. Starter 49€, Pro/ECOM 99€ vs Intercom $39-139/seat. Different product (voice-first sales vs support platform). At parity with Crisp (95€).
 
-**Telephony**: ~$0.06/min (Grok native) vs Vapi $0.15-0.25/min. Structural advantage: Grok bundles LLM+STT+TTS at $0.05/min.
+**Telephony**: 0.10€/min vs Vapi 0.15-0.33€/min. Structural advantage: Grok bundles LLM+STT+TTS at ~$0.05/min → 38% margin at 0.10€.
 
 **Feature gaps vs Intercom/Crisp**: No help center, shared inbox, ticketing, email channel, file upload, WhatsApp. VocalIA = voice-first sales/booking assistant ≠ support platform.
 
@@ -1198,33 +1203,82 @@ create_booking          get_recommendations    qualify_lead
 
 > **Source**: External audit Nr 3 — every claim verified with grep/read against codebase
 
-**CRITICAL FINDING**: Acquisition funnel is **completely broken**. 0 functional lead capture mechanisms.
+**ORIGINAL FINDING (250.142)**: Acquisition funnel was completely broken. 0 functional lead capture.
+**UPDATE (250.144)**: Newsletter + booking form connected. Social proof replaced. Feature gating implemented.
 
 | Element | Status | Evidence |
 |:--------|:------:|:---------|
-| Newsletter | **DEAD** | `event-delegation.js:120-126` — UI-only, no POST |
-| Booking form | **DEAD** | `booking.html:435` — `alert()` only, comment "in real app, send to API" |
+| Newsletter | ✅ **FIXED 250.144** | `event-delegation.js` — async POST to /api/contact |
+| Booking form | ✅ **FIXED 250.144** | `booking.html` — async POST to /api/contact |
 | Contact form | **PARTIAL** | Backend exists (`/api/contact`), Google Sheets DB not configured |
 | GA4 | **DEAD** | `G-XXXXXXXXXX` placeholder since 250.129 |
-| Social proof | **FICTITIOUS** | "500+", "2M+", "98%" — 0 real clients/calls |
+| Social proof | ✅ **FIXED 250.144** | Honest tech metrics: 38 personas, 203 MCP tools, 25 function tools, 5 langs |
 | Case studies | **FICTIONAL** (labeled) | Both articles include honest "fictifs" disclaimer |
-| B2C product | **PHANTOM** | No B2C widget, loads B2B, priced at 79€ |
+| B2C product | ✅ **RESOLVED 250.143** | Eliminated → redirects to /pricing, merged into Pro 99€ |
 
-**Production Readiness score adjusted**: 3.0 → **2.5/10** (funnel broken = cannot acquire customers even if product works)
+**Production Readiness score adjusted**: 2.5 → **3.5/10** (funnel connected, feature gating done, GA4 still placeholder)
 
 ### 8.7 Updated Priority (Post-Audit Nr 3)
 
 | # | Action | Effort | Impact | Status |
 |:-:|:-------|:-------|:-------|:------:|
-| 1 | Fix newsletter (Mailchimp/Brevo webhook) | 1h | Email capture | ❌ |
-| 2 | Fix booking form (POST to /api/contact or Calendly) | 1h | Demo requests | ❌ |
-| 3 | Activate GA4 | 5min | Analytics | ❌ Blocked |
-| 4 | Replace fictitious social proof | 2h | Credibility | ❌ |
-| 5 | Decide B2C product fate | Decision | Pricing clarity | ❌ |
-| 6 | Configure Google Sheets DB (.env) | 30min | Contact persistence | ❌ |
+| 1 | Fix newsletter | 1h | Email capture | ✅ **250.144** — POST to /api/contact |
+| 2 | Fix booking form | 1h | Demo requests | ✅ **250.144** — POST to /api/contact |
+| 3 | Activate GA4 | 5min | Analytics | ❌ Blocked (need GA property) |
+| 4 | Replace fictitious social proof | 2h | Credibility | ✅ **250.144** — honest tech metrics |
+| 5 | Decide B2C product fate | Decision | Pricing clarity | ✅ **250.143** — B2C eliminated, merged into Pro 99€ |
+| 6 | Configure Google Sheets DB (.env) | 30min | Contact persistence | ❌ (infrastructure) |
 | 7 | Fix GitHub repo typo (VoicalAI) | 5min | Brand | ❌ |
 
 **Full audit details**: `docs/BUSINESS-INTELLIGENCE.md` sections 9-10
+
+### 8.8 Pricing Restructure (250.143)
+
+> **Source**: Financial analysis with unit economics, LTV:CAC modeling, competitive benchmarking
+> **Validation**: Pricing updated in 22 files, 0 stale 0.06€ refs remaining
+
+**New Structure**: Starter 49€ / Pro 99€ / ECOM 99€ / Telephony 199€+0.10€/min
+**B2C eliminated**: Phantom product (no B2C widget JS, loaded B2B widget at 79€) merged into Pro
+**Plans object updated**: `voice-api-resilient.cjs:418` → `{ starter: 49, pro: 99, ecommerce: 99, telephony: 199 }`
+**Persona pricing updated**: 5 langs in `voice-persona-injector.cjs` (FR/EN/ES/AR/ARY)
+**Voice assistant updated**: `voice-fr.json` — products, pricing, telephony, competitors responses
+
+### 8.9 Feature Gating (250.143→250.144) — ✅ IMPLEMENTED
+
+> **Source**: Code audit (250.143) → Implementation (250.144)
+> **Status**: ALL 3 items implemented and tested (3,762 tests pass, 0 fail)
+
+**What was IMPLEMENTED (Session 250.144):**
+
+| # | Item | File | Status |
+|:-:|:-----|:-----|:-------|
+| 1 | **Feature gating by plan** | `voice-api-resilient.cjs` — `checkFeature()` + `PLAN_FEATURES` + prompt restriction injection | ✅ Done |
+| 2 | **Export restriction by plan** | `db-api.cjs:2155` — 403 for Starter plan on CSV/XLSX/PDF export | ✅ Done |
+| 3 | **Lead session persistence** | `voice-api-resilient.cjs` — ContextBox sync after each /respond | ✅ Done |
+
+**Plan→Feature matrix (PLAN_FEATURES):**
+
+| Feature | Starter | Pro | E-commerce | Telephony |
+|:--------|:-------:|:---:|:----------:|:---------:|
+| voice_widget | ✅ | ✅ | ✅ | ✅ |
+| booking | ❌ | ✅ | ✅ | ✅ |
+| bant_crm_push | ❌ | ✅ | ✅ | ✅ |
+| crm_sync | ❌ | ✅ | ✅ | ✅ |
+| calendar_sync | ❌ | ✅ | ❌ | ✅ |
+| voice_telephony | ❌ | ❌ | ❌ | ✅ |
+| ecom_* (4 features) | ❌ | ❌ | ✅ | ✅ |
+| export | ❌ | ✅ | ✅ | ✅ |
+| webhooks | ❌ | ✅ | ✅ | ✅ |
+| api_access | ❌ | ✅ | ✅ | ✅ |
+| custom_branding | ❌ | ✅ | ✅ | ✅ |
+
+**How it works:**
+1. `checkFeature(tenantId, feature)` reads tenant config.features (override) or derives from plan
+2. `/respond` handler: computes tenant features → injects restrictions into system prompt → AI won't offer blocked features
+3. `/respond` response: includes `features` object for client-side widget gating
+4. HubSpot sync: gated by `bant_crm_push` — Starter leads qualify but don't sync to CRM
+5. Export endpoint: returns 403 for Starter plan
+6. Lead sessions: synced to ContextBox after each /respond (survives restart)
 
 ---
 
@@ -1392,19 +1446,19 @@ create_booking          get_recommendations    qualify_lead
 
 **ALL BIZ code tasks DONE**: BIZ-4 ✅ BIZ-7 ✅ BIZ-8 ✅
 
-**Remaining (code — QUICK FIXES):**
+**FUNNEL fixes (250.144):**
 ```
-→ FUNNEL-1: Fix newsletter — connect to Mailchimp/Brevo webhook (1h)
-→ FUNNEL-2: Fix booking form — POST to /api/contact or Calendly link (1h)
-→ FUNNEL-3: Replace fictitious social proof with honest messaging (2h)
-→ FUNNEL-4: Configure Google Sheets DB credentials in .env (30min)
+✅ FUNNEL-1: Newsletter — async POST to /api/contact (event-delegation.js)
+✅ FUNNEL-2: Booking form — async POST to /api/contact (booking.html)
+✅ FUNNEL-3: Social proof — replaced with honest tech metrics (38 personas, 203 MCP, 25 tools)
+→ FUNNEL-4: Configure Google Sheets DB credentials in .env (30min — infrastructure)
 ```
 
 **Remaining (infrastructure/decisions — NOT code):**
 ```
 → P0-T3b: Replace GA4 placeholder G-XXXXXXXXXX with actual Measurement ID
-→ BIZ-2: Increase telephony pricing 0.06→0.10-0.12€/min (decision)
-→ BIZ-5: Decide B2C product fate — merge into B2B or create real features (decision)
+→ BIZ-2: ✅ DONE (250.143) — Telephony repriced 0.06→0.10€/min (margin 8%→38%)
+→ BIZ-5: ✅ DONE (250.143) — B2C eliminated, merged into Pro 99€. B2C page→redirect.
 → BIZ-6: Darija differentiated pricing 0.15-0.20€/min (decision)
 → BIZ-3: Serve brotli via nginx config (30min infra)
 → P2-W8b: CDN (cdn.vocalia.ma) — DNS + CDN config

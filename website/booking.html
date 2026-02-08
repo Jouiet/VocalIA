@@ -419,22 +419,62 @@
       localStorage.setItem('vocalia_lang', lang);
     };
 
-    // Form submission
+    // Form submission — POST to /api/contact
     function initForms() {
       var form = document.getElementById('demo-form');
       if (!form) return;
 
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
         var formData = new FormData(form);
         var data = Object.fromEntries(formData.entries());
+        var btn = form.querySelector('button[type="submit"]');
+        var originalText = btn ? btn.textContent : '';
+
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Envoi en cours...';
+        }
 
         // Track event
-        plausible('Demo Request', { props: { interest: data.interest, company: data.company } });
+        if (typeof plausible !== 'undefined') {
+          plausible('Demo Request', { props: { interest: data.interest, company: data.company } });
+        }
 
-        // Show success (in real app, send to API)
-        alert('Merci ! Nous vous recontacterons sous 24h pour planifier votre démo.');
-        form.reset();
+        try {
+          var apiBase = window.location.hostname === 'localhost'
+            ? 'http://localhost:3004'
+            : 'https://api.vocalia.ma';
+
+          var response = await fetch(apiBase + '/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: (data.firstName || '') + ' ' + (data.lastName || ''),
+              email: data.email || '',
+              subject: 'Demo Request — ' + (data.interest || 'General'),
+              message: 'Company: ' + (data.company || 'N/A') + '\nPhone: ' + (data.phone || 'N/A') + '\nInterest: ' + (data.interest || 'N/A') + '\nMessage: ' + (data.message || ''),
+              source: 'booking_form'
+            })
+          });
+
+          if (response.ok) {
+            form.innerHTML = '<div class="text-center py-12"><div class="w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mx-auto mb-4"><svg class="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div><h3 class="text-xl font-semibold text-white mb-2">Demande envoyée !</h3><p class="text-zinc-400">Nous vous recontacterons sous 24h pour planifier votre démo.</p></div>';
+          } else {
+            if (btn) {
+              btn.textContent = 'Erreur — Réessayer';
+              btn.disabled = false;
+              setTimeout(function() { btn.textContent = originalText; }, 3000);
+            }
+          }
+        } catch (err) {
+          console.error('[Booking]', err.message);
+          if (btn) {
+            btn.textContent = 'Erreur réseau — Réessayer';
+            btn.disabled = false;
+            setTimeout(function() { btn.textContent = originalText; }, 3000);
+          }
+        }
       });
     }
 

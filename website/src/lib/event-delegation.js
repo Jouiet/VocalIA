@@ -116,12 +116,57 @@
       }
     },
 
-    // Newsletter form
-    submitNewsletter: function (formEl) {
+    // Newsletter form — POST to /api/contact
+    submitNewsletter: async function (formEl) {
+      const emailInput = formEl.querySelector('input[type="email"]');
       const btn = formEl.querySelector('button');
+      const email = emailInput ? emailInput.value.trim() : '';
+
+      if (!email) return;
+
+      const originalText = btn ? btn.textContent : '';
       if (btn) {
-        btn.textContent = '✓ Inscrit!';
         btn.disabled = true;
+        btn.textContent = '...';
+      }
+
+      try {
+        const apiBase = window.location.hostname === 'localhost'
+          ? 'http://localhost:3004'
+          : 'https://api.vocalia.ma';
+
+        const response = await fetch(apiBase + '/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            name: '',
+            subject: 'Newsletter Subscription',
+            message: 'Newsletter signup from ' + window.location.pathname,
+            source: 'newsletter'
+          })
+        });
+
+        if (response.ok) {
+          if (btn) btn.textContent = '✓ Inscrit!';
+          if (emailInput) emailInput.value = '';
+          if (typeof plausible !== 'undefined') {
+            plausible('Newsletter Signup', { props: { page: window.location.pathname } });
+          }
+        } else {
+          if (btn) {
+            btn.textContent = '✗ Erreur';
+            btn.disabled = false;
+            setTimeout(function() { btn.textContent = originalText; }, 3000);
+          }
+        }
+      } catch (err) {
+        console.error('[Newsletter]', err.message);
+        if (btn) {
+          btn.textContent = '✗ Erreur réseau';
+          btn.disabled = false;
+          setTimeout(function() { btn.textContent = originalText; }, 3000);
+        }
       }
     },
 

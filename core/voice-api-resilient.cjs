@@ -411,11 +411,74 @@ function getAdminMetrics() {
   };
 }
 
+// Session 250.143: Plan pricing + feature gating
+const PLAN_PRICES = { starter: 49, pro: 99, ecommerce: 99, telephony: 199 };
+const PLAN_FEATURES = {
+  starter: {
+    voice_widget: true, booking: false, bant_crm_push: false,
+    crm_sync: false, calendar_sync: false, voice_telephony: false,
+    ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
+    ecom_recommendations: false, export: false, webhooks: false,
+    api_access: false, custom_branding: false
+  },
+  pro: {
+    voice_widget: true, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: true, voice_telephony: false,
+    ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
+    ecom_recommendations: false, export: true, webhooks: true,
+    api_access: true, custom_branding: true
+  },
+  ecommerce: {
+    voice_widget: true, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: false, voice_telephony: false,
+    ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
+    ecom_recommendations: true, export: true, webhooks: true,
+    api_access: true, custom_branding: true
+  },
+  telephony: {
+    voice_widget: true, booking: true, bant_crm_push: true,
+    crm_sync: true, calendar_sync: true, voice_telephony: true,
+    ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
+    ecom_recommendations: true, export: true, webhooks: true,
+    api_access: true, custom_branding: true
+  }
+};
+
+/**
+ * Session 250.143: Check if tenant plan allows a feature
+ * @param {string} tenantId - Tenant identifier
+ * @param {string} feature - Feature key from PLAN_FEATURES
+ * @returns {{ allowed: boolean, plan: string, upgrade_to: string|null }}
+ */
+function checkFeature(tenantId, feature) {
+  const db = getDB();
+  const config = db.getTenantConfig(tenantId);
+  const plan = config?.plan || 'starter';
+
+  // Explicit feature override in tenant config takes priority
+  if (config?.features?.[feature] !== undefined) {
+    return { allowed: !!config.features[feature], plan, upgrade_to: null };
+  }
+
+  // Derive from plan
+  const planFeatures = PLAN_FEATURES[plan] || PLAN_FEATURES.starter;
+  const allowed = !!planFeatures[feature];
+
+  if (!allowed) {
+    // Suggest cheapest plan that has this feature
+    const upgradeOrder = ['starter', 'pro', 'ecommerce', 'telephony'];
+    const upgrade_to = upgradeOrder.find(p => PLAN_FEATURES[p]?.[feature]) || 'pro';
+    return { allowed: false, plan, upgrade_to };
+  }
+
+  return { allowed: true, plan, upgrade_to: null };
+}
+
 // Register a tenant (called via API)
 // Session 250.51: Register tenant in Google Sheets DB
 async function registerTenant(tenantId, name, plan = 'starter', email = '') {
   // Session 250.90: Strict Price Policy - Minimum 49$ (No more Free Tier)
-  const plans = { starter: 49, growth: 99, pro: 199, enterprise: 499 };
+  const plans = PLAN_PRICES;
   const mrr = plans[plan] || 49;
 
   // Write to Google Sheets DB
@@ -2274,14 +2337,14 @@ function startServer(port = 3004) {
             products: {
               triggers: ['produit', 'product', 'vendez', 'offre', '3andkom'],
               response: lang === 'ary'
-                ? 'VocalIA 3andha 4 dial produits: Voice Widget B2B, Voice Widget B2C, Widget E-commerce (8 intégrations), و Voice Telephony AI (0.06€/دقيقة)'
-                : 'VocalIA propose 4 produits: Voice Widget B2B, Voice Widget B2C, Widget E-commerce (8 intégrations) et Voice Telephony AI (0.06€/min)'
+                ? 'VocalIA 3andha 4 dial offres: Starter (49€/شهر), Pro (99€/شهر), E-commerce (99€/شهر), و Telephony (199€/شهر + 0.10€/دقيقة)'
+                : 'VocalIA propose 4 offres: Starter (49€/mois), Pro (99€/mois), E-commerce (99€/mois) et Telephony (199€/mois + 0.10€/min)'
             },
             pricing: {
               triggers: ['prix', 'price', 'tarif', 'combien', 'chhal'],
               response: lang === 'ary'
-                ? 'Voice Widget: من 99€/شهر. Voice Telephony: 0.06€/دقيقة.'
-                : 'Voice Widget: à partir de 99€/mois. Voice Telephony: 0.06€/min.'
+                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + 0.10€/دقيقة.'
+                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.10€/min.'
             }
           };
         }
@@ -2457,6 +2520,13 @@ function startServer(port = 3004) {
             return;
           }
 
+          // Session 250.143: Feature gating — compute allowed features for this tenant
+          const tenantFeatures = {};
+          const featureKeys = Object.keys(PLAN_FEATURES.starter);
+          for (const fk of featureKeys) {
+            tenantFeatures[fk] = checkFeature(tenantId, fk);
+          }
+
           // Lead qualification processing
           const leadSessionId = sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           const session = getOrCreateLeadSession(leadSessionId);
@@ -2475,14 +2545,44 @@ function startServer(port = 3004) {
           const baseConfig = { session: { metadata: {} } };
           const injectedConfig = VoicePersonaInjector.inject(baseConfig, persona);
 
+          // Session 250.143: Build feature restriction prompt suffix
+          const blockedFeatures = featureKeys.filter(fk => !tenantFeatures[fk].allowed);
+          let featureRestriction = '';
+          if (blockedFeatures.length > 0) {
+            const restrictionMap = {
+              booking: 'Do NOT offer to book appointments or schedule calls.',
+              bant_crm_push: 'Do NOT promise to sync lead data to CRM.',
+              crm_sync: 'Do NOT mention CRM integration capabilities.',
+              calendar_sync: 'Do NOT offer calendar booking features.',
+              voice_telephony: 'Do NOT offer phone call or PSTN features.',
+              ecom_cart_recovery: 'Do NOT offer cart recovery features.',
+              ecom_quiz: 'Do NOT offer product quiz features.',
+              ecom_gamification: 'Do NOT offer spin wheel or gamification.',
+              ecom_recommendations: 'Do NOT offer AI product recommendations.',
+              export: 'Do NOT mention data export capabilities.',
+              webhooks: 'Do NOT mention webhook integration.',
+              api_access: 'Do NOT mention API access.',
+              custom_branding: 'Do NOT mention custom branding options.'
+            };
+            const restrictions = blockedFeatures
+              .map(f => restrictionMap[f])
+              .filter(Boolean);
+            if (restrictions.length > 0) {
+              featureRestriction = '\n\n[PLAN RESTRICTIONS - DO NOT OFFER THESE FEATURES]:\n' + restrictions.join('\n');
+            }
+          }
+
           // Extract the injected systemPrompt from the config
+          const baseSystemPrompt = injectedConfig.session?.instructions || injectedConfig.instructions;
           const injectedMetadata = {
             ...persona,
-            systemPrompt: injectedConfig.session?.instructions || injectedConfig.instructions,
+            systemPrompt: baseSystemPrompt + featureRestriction,
             persona_id: persona.id,
             persona_name: persona.name,
             // CRITICAL: Map tenant_id to knowledge_base_id for RAG context
-            knowledge_base_id: tenantId === 'default' ? tenantId : tenantId
+            knowledge_base_id: tenantId === 'default' ? tenantId : tenantId,
+            // Session 250.143: Include feature flags in metadata for client-side gating
+            features: Object.fromEntries(featureKeys.map(fk => [fk, tenantFeatures[fk].allowed]))
           };
 
           const result = await getResilisentResponse(message, history, { ...session, metadata: injectedMetadata }, language, { forceFailProviders: bodyParsed.data.forceFailProviders });
@@ -2504,9 +2604,9 @@ function startServer(port = 3004) {
             console.warn('[ConversationStore] Save warning:', convErr.message);
           }
 
-          // Sync to HubSpot if lead has email and is qualified
+          // Sync to HubSpot if lead has email and is qualified (gated by plan)
           let hubspotSync = null;
-          if (session.qualificationComplete && session.status === 'hot') {
+          if (session.qualificationComplete && session.status === 'hot' && tenantFeatures.bant_crm_push?.allowed) {
             hubspotSync = await syncLeadToHubSpot(session);
             // Session 250.87bis: A2A Event - Lead Qualified (Hot)
             eventBus.publish('lead.qualified', {
@@ -2558,8 +2658,33 @@ function startServer(port = 3004) {
               extractedData: session.extractedData,
               qualificationComplete: session.qualificationComplete,
               hubspotSync: hubspotSync ? 'synced' : null
-            }
+            },
+            // Session 250.143: Feature flags for client-side widget gating
+            features: injectedMetadata.features
           }));
+
+          // Session 250.143: Persist lead session to ContextBox (survives restart)
+          try {
+            ContextBox.set(`voice-${leadSessionId}`, {
+              pillars: {
+                qualification: {
+                  voiceSession: true,
+                  score: session.score,
+                  complete: session.qualificationComplete,
+                  status: session.status,
+                  ...session.extractedData
+                },
+                history: session.messages.slice(-20).map(m => ({
+                  agent: 'VoiceAI',
+                  role: m.role,
+                  content: m.content,
+                  timestamp: m.timestamp
+                }))
+              }
+            });
+          } catch (ctxErr) {
+            console.warn('[ContextBox] Lead persist warning:', ctxErr.message);
+          }
         } catch (err) {
           console.error('[Voice API] Error:', err.message);
           res.writeHead(500, { 'Content-Type': 'application/json' });
@@ -3387,7 +3512,10 @@ module.exports = {
   extractEmail,
   extractPhone,
   extractName,
-  QUALIFICATION
+  QUALIFICATION,
+  checkFeature,
+  PLAN_FEATURES,
+  PLAN_PRICES
 };
 
 if (require.main === module) {
