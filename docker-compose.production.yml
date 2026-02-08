@@ -89,6 +89,8 @@ services:
       - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
+      - GA4_API_SECRET=${GA4_API_SECRET}
     command: >
       sh -c "
         apk add --no-cache git curl &&
@@ -183,6 +185,8 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}
+      - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
+      - GA4_API_SECRET=${GA4_API_SECRET}
     command: >
       sh -c "
         apk add --no-cache git curl &&

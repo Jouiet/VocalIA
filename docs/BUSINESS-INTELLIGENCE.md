@@ -156,17 +156,17 @@
 
 ---
 
-## 5. GA4 Analytics (Code Ready, Data Inactive)
+## 5. GA4 Analytics (ACTIVE — Session 250.163)
 
 | Widget | Unique Events | Total Call Sites | Status |
 |:-------|:------------:|:----------------:|:------:|
-| B2B | 12 | 14 | ✅ coded, ❌ G-XXXXXXXXXX |
-| ECOM (all 6 IIFEs) | 44 | ~70 | ✅ coded, ❌ G-XXXXXXXXXX |
-| **Total unique** | **52** | **~84** | **All going to void** |
+| B2B | 12 | 14 | ✅ coded, ✅ configured |
+| ECOM (all 6 IIFEs) | 44 | ~70 | ✅ coded, ✅ configured |
+| **Total unique** | **52** | **~84** | **✅ All collecting data** |
 
-**Action**: Replace `G-XXXXXXXXXX` in `website/components/header.html` (2 occurrences, lines 2 and 7).
-**Effort**: 5 minutes on analytics.google.com.
-**Impact**: Unlocks all data-driven decisions.
+**Activated**: Session 250.163 — configured (Stream ID: 13579681217)
+**Coverage**: 80/80 pages (header.html 46 + sidebar.html 11 + admin-sidebar.html 5 + 5 auth inline + 13 dashboard→app redirect)
+**Server-side**: marketing-science-core.cjs Measurement Protocol (needs GA4_API_SECRET env var)
 
 ---
 
@@ -174,7 +174,7 @@
 
 | # | Action | Effort | Impact | ROI |
 |:-:|:-------|:-------|:-------|:---:|
-| 1 | Activate GA4 (replace G-XXXXXXXXXX) | 5min | 52 events collecting data | ★★★★★ |
+| 1 | ~~Activate GA4~~ | ~~5min~~ | 52 events collecting data | ✅ DONE 250.163 |
 | 2 | Increase telephony price 0.06→0.10-0.12€ | 0h (decision) | Margin 8%→38-50% | ★★★★★ |
 | 3 | Serve brotli via nginx config | 30min | Transfer -84% B2B, -88% ECOM | ★★★★★ |
 | 4 | Booking inline B2B (copy from ECOM) | 3h | Conversion booking +30-40% | ★★★★★ |
@@ -225,7 +225,7 @@
 | **Newsletter** | **DEAD** | `event-delegation.js:120-126` — changes button text to "✓ Inscrit!", NO fetch/POST, NO webhook | 0% email capture rate |
 | **Booking form** | **DEAD** | `booking.html:435-436` — `alert('Merci!')`, comment says "in real app, send to API" | 0% demo conversion |
 | **Contact form** | **PARTIAL** | `voice-api-resilient.cjs:3052` — `/api/contact` endpoint exists, saves to Google Sheets DB | DB not configured (no GOOGLE_SHEETS_ID in .env), data goes to console log only |
-| **GA4 Analytics** | **DEAD** | `header.html:2,7` — `G-XXXXXXXXXX` placeholder | 52 events coded, 0 data collected |
+| **GA4 Analytics** | **✅ ACTIVE** | `header.html:2,7` — `configured` (250.163) | 52 events collecting data on 80/80 pages |
 | **Plausible Analytics** | **INSTALLED** | `site-init.js` + 5+ pages with `data-domain="vocalia.ma"` script | Account existence not verified |
 
 ### 9B. Social Proof — FICTITIOUS DATA
@@ -290,7 +290,7 @@ CONVERSION:              0 — NO functional acquisition mechanism
 |:-:|:-------|:-------|:-------|:------:|
 | 1 | **Fix newsletter** — connect to Mailchimp/Brevo webhook | 1h | Email capture begins | ❌ |
 | 2 | **Fix booking form** — POST to /api/contact or Calendly | 1h | Demo requests flow | ❌ |
-| 3 | **Activate GA4** — replace G-XXXXXXXXXX | 5min | 52 events collecting data | ❌ Blocked (needs account) |
+| 3 | ~~Activate GA4~~ | ~~5min~~ | 52 events collecting data | ✅ DONE 250.163 |
 | 4 | **Replace fictitious social proof** — honest "launching" messaging | 2h | Legal/credibility risk eliminated | ❌ |
 | 5 | ~~Decide B2C product~~ — merged into Pro 99€ | ✅ Done | Pricing clarity | ✅ Session 250.143 |
 | 6 | ~~Increase telephony price~~ — 0.06→0.10€/min | ✅ Done | Margin 8%→38% | ✅ Session 250.143 |

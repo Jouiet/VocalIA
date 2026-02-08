@@ -210,7 +210,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 | # | Action | Effort | Impact | Status |
 |:-:|:-------|:-------|:-------|:------:|
-| 1 | Activate GA4 (replace G-XXXXXXXXXX) | 5min | 52 events collecting data | ❌ Blocked |
+| 1 | ~~Activate GA4~~ | ~~5min~~ | 52 events collecting data | ✅ 250.163 |
 | 2 | Increase telephony price 0.06→0.10€ | Decision | Margin 8%→38% | ✅ 250.143 |
 | 3 | Serve brotli via nginx | 30min | Transfer -84% B2B, -88% ECOM | ✅ 250.152 |
 | 4 | Booking inline B2B | 3h | Conversion +30-40% (est.) | ✅ 250.140 |
@@ -247,7 +247,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Newsletter | ✅ 250.144 — POST to /api/contact |
 | Booking form | ✅ 250.144 — POST to /api/contact |
 | Contact form | ✅ Backend + Google Sheets configured |
-| GA4 | ❌ G-XXXXXXXXXX placeholder |
+| GA4 | ✅ configured activated (250.163) — 80/80 pages |
 | Social proof | ✅ 250.144 — honest tech metrics |
 | Case studies | ⚠️ Fictional (labeled honestly) |
 
@@ -351,7 +351,7 @@ create_booking          get_recommendations    qualify_lead
 
 **Remaining (infrastructure/decisions — NOT code):**
 ```
-→ GA4: ✅ DONE — G-KL1QZYZRE8 (Stream ID 13579681217)
+→ GA4: ✅ DONE — configured (Stream ID 13579681217)
 → Darija pricing: ✅ DONE — $0.25/min inbound, implemented in code + website
 → VPS: ✅ DONE — 4 containers healthy, ALL routed via api.vocalia.ma (path-based, no extra DNS)
 → Telnyx: Evaluate for Moroccan numbers
