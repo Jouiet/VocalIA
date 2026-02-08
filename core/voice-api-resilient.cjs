@@ -864,6 +864,7 @@ function detectArabicVariant(message) {
     /\b(dyal|dyali|dyalk|dyalkom|mashi|mazal|bezaf|zwin|khoya)\b/i,
     /\b(salam|labas|hamdullah|inchallah|machakil|mzyan|hadi)\b/i,
     /\b(bach|bghit|kan|kayn|ma.?kayn|ghadi|gha|rah)\b/i,
+    /\b[nkty][39578][a-z]{2,}/i, // Conjugated Darija verbs: n9der, k3raf, t7eb, y3awn
   ];
   let arabiziScore = 0;
   for (const p of arabiziPatterns) {
