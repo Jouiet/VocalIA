@@ -855,9 +855,9 @@ sdks/
 
 ```javascript
 // website/src/lib/geo-detect.js
-MA (Maroc) → FR + MAD (990 DH)
-EU (Europe) → FR + EUR (99€)
-US/Other → EN + USD ($99)
+MA (Maroc) → FR + MAD (Starter 490 MAD, Pro 990 MAD)
+EU (Europe) → FR + EUR (Starter 49€, Pro 99€)
+US/Other → EN + USD (Starter $49, Pro $99)
 ```
 
 ---

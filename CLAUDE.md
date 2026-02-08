@@ -1,9 +1,10 @@
 # VocalIA - Voice AI Platform
 
-> **v7.26.0** | 08/02/2026 | Production: https://vocalia.ma
-> **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,762 tests** (68 files .mjs, 0 skip)
+> **v7.27.0** | 08/02/2026 | Production: https://vocalia.ma
+> **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
 > **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,196 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
+> ✅ **SESSION 250.145**: STALE PRICING PURGE — Billing page 4-tier fix, dashboard costPerMin 0.06→0.10, admin MRR DH→€, voice-agent-b2b 4 plans, KB chunks updated, plan features UI.
 > ✅ **SESSION 250.144**: FEATURE GATING + FUNNEL — checkFeature() + PLAN_FEATURES (14 features × 4 plans), export restriction (403 Starter), lead persistence (ContextBox), newsletter/booking POST, social proof honest.
 > ✅ **SESSION 250.143**: PRICING RESTRUCTURE — B2C eliminated, 4 tiers: Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.10€/min.
 > ✅ **SESSION 250.142**: External audit Nr 3 — FUNNEL BROKEN (newsletter/booking/GA4=dead, social proof=fictitious, B2C=phantom).
@@ -287,7 +288,7 @@ providers: [
 
 ---
 
-**Code Completeness: 9.0/10** — All major features coded and tested (3,762 tests). Feature gating + export restriction + lead persistence implemented.
+**Code Completeness: 9.0/10** — All major features coded and tested (3,763 tests). Feature gating + export restriction + lead persistence implemented.
 **Production Readiness: 3.5/10** — Website deployed. Acquisition funnel connected (newsletter + booking POST). Feature gating implemented. Social proof honest. GA4 still placeholder. Zero paying customers.
 **Next milestone**: Configure Google Sheets DB → activate GA4 → first paying customer.
 

@@ -23,8 +23,8 @@ import { VoiceAgentB2B, RAGRetrieval, SERVICE_PACKS } from '../core/voice-agent-
 // ─── SERVICE_PACKS ──────────────────────────────────────────────────
 
 describe('VoiceAgentB2B SERVICE_PACKS', () => {
-  test('has 3 plans', () => {
-    assert.strictEqual(Object.keys(SERVICE_PACKS).length, 3);
+  test('has 4 plans', () => {
+    assert.strictEqual(Object.keys(SERVICE_PACKS).length, 4);
   });
 
   test('has starter plan', () => {
@@ -37,9 +37,14 @@ describe('VoiceAgentB2B SERVICE_PACKS', () => {
     assert.strictEqual(SERVICE_PACKS.pro.name, 'Pro');
   });
 
-  test('has enterprise plan', () => {
-    assert.ok(SERVICE_PACKS.enterprise);
-    assert.strictEqual(SERVICE_PACKS.enterprise.name, 'Enterprise');
+  test('has ecommerce plan', () => {
+    assert.ok(SERVICE_PACKS.ecommerce);
+    assert.strictEqual(SERVICE_PACKS.ecommerce.name, 'E-commerce');
+  });
+
+  test('has telephony plan', () => {
+    assert.ok(SERVICE_PACKS.telephony);
+    assert.strictEqual(SERVICE_PACKS.telephony.name, 'Telephony');
   });
 
   test('each plan has bilingual names', () => {
@@ -64,9 +69,10 @@ describe('VoiceAgentB2B SERVICE_PACKS', () => {
     }
   });
 
-  test('pro has multi-currency pricing', () => {
-    assert.ok(SERVICE_PACKS.pro.price_eur);
-    assert.ok(SERVICE_PACKS.pro.price_usd);
+  test('all plans have EUR pricing', () => {
+    for (const [key, pack] of Object.entries(SERVICE_PACKS)) {
+      assert.ok(pack.price.includes('€'), `${key} price should be in EUR: ${pack.price}`);
+    }
   });
 });
 
@@ -226,7 +232,7 @@ describe('VoiceAgentB2B session lifecycle', () => {
     assert.strictEqual(typeof status.rag_initialized, 'boolean');
     assert.strictEqual(typeof status.api_key_configured, 'boolean');
     assert.ok(Array.isArray(status.service_packs));
-    assert.strictEqual(status.service_packs.length, 3);
+    assert.strictEqual(status.service_packs.length, 4);
   });
 
   test('getStatus shows active session when started', () => {

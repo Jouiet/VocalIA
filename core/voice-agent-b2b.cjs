@@ -125,33 +125,39 @@ const GROK_MODEL = 'grok-4-1-fast-non-reasoning';
 const BASE_DIR = path.join(__dirname, '../../..');
 const CONVERSATION_LOG_DIR = path.join(BASE_DIR, 'logs/voice_conversations');
 
-// VocalIA Pricing Plans (Voice AI Platform)
+// VocalIA Pricing Plans (Voice AI Platform) — 4 tiers, updated 250.145
 const SERVICE_PACKS = {
   starter: {
     name: 'Starter',
     name_fr: 'Starter',
-    price: '99 DH/mois',
+    price: '49€/mois',
     description: 'Voice Widget with included quota',
     description_fr: 'Widget Voice avec quota inclus',
-    includes: ['Voice Widget', '1000 interactions/mois', '3 personas']
+    includes: ['Voice Widget', '500 interactions/mois', '3 personas']
   },
   pro: {
     name: 'Pro',
     name_fr: 'Pro',
-    price: '990 DH/mois',
-    price_eur: '99€/mois',
-    price_usd: '$99/mois',
-    description: 'Full Voice Widget + Telephony minutes included',
-    description_fr: 'Widget Voice complet + minutes Téléphonie incluses',
-    includes: ['Voice Widget illimité', 'Telephony 100 min/mois', '20 personas', 'MCP Server access']
+    price: '99€/mois',
+    description: 'Full Voice Widget + CRM + Calendar + Export',
+    description_fr: 'Widget Voice complet + CRM + Calendrier + Export',
+    includes: ['Voice Widget illimité', 'CRM sync (HubSpot/Pipedrive)', 'Calendrier', 'Export', 'Webhooks', 'API']
   },
-  enterprise: {
-    name: 'Enterprise',
-    name_fr: 'Enterprise',
-    price: 'Sur devis',
-    description: 'Unlimited Voice AI with dedicated support',
-    description_fr: 'Voice AI illimité avec support dédié',
-    includes: ['Telephony illimité', '38 personas', 'Multi-tenant', 'SLA dédié', 'Intégrations custom']
+  ecommerce: {
+    name: 'E-commerce',
+    name_fr: 'E-commerce',
+    price: '99€/mois',
+    description: 'Full e-commerce suite with cart recovery and AI recommendations',
+    description_fr: 'Suite e-commerce complète avec récupération panier et recommandations IA',
+    includes: ['Voice Widget illimité', 'Récupération panier', 'Quiz produit', 'Gamification', 'Recommandations IA', 'CRM']
+  },
+  telephony: {
+    name: 'Telephony',
+    name_fr: 'Telephony',
+    price: '199€/mois + 0.10€/min',
+    description: 'All features + PSTN telephony',
+    description_fr: 'Toutes fonctionnalités + téléphonie PSTN',
+    includes: ['Toutes fonctionnalités', 'Téléphonie PSTN (Twilio)', '38 personas', 'Multi-tenant', 'SLA dédié']
   }
 };
 
@@ -259,7 +265,7 @@ PRODUCT 1: VOICE WIDGET (Browser-based)
 - Deployment: JavaScript embed on any website
 - Use cases: 24/7 customer support, FAQ, appointment booking
 - Languages: 5 languages with real-time switching
-- Cost: Free tier available, Pro from 990 DH/month
+- Cost: Starter from 49€/month, Pro from 99€/month
 
 PRODUCT 2: VOICE TELEPHONY (PSTN AI Bridge)
 - Technology: Twilio integration for real phone calls
@@ -299,9 +305,10 @@ TECHNICAL CAPABILITIES
 ═══════════════════════════════════════════════════════════════════
 PRICING
 ═══════════════════════════════════════════════════════════════════
-- Free: Voice Widget basic, 1000 interactions/month
-- Pro: 990 DH/99€/$99 - Full widget + 100 telephony minutes
-- Enterprise: Custom - Unlimited, dedicated support, SLA
+- Starter: 49€/month - Voice Widget, 500 interactions/month
+- Pro: 99€/month - Full widget + CRM + Calendar + Export + API
+- E-commerce: 99€/month - Full e-commerce suite (cart recovery, quiz, recommendations)
+- Telephony: 199€/month + 0.10€/min - All features + PSTN telephony
 
 ═══════════════════════════════════════════════════════════════════
 VOICE RESPONSE GUIDELINES
@@ -484,7 +491,7 @@ IMPORTANT RULES
 
     // PRICING / PACKS
     if (input.includes('price') || input.includes('cost') || input.includes('pricing') || input.includes('pack') || input.includes('tarif')) {
-      return "We have three plans: Free for basic Voice Widget, Pro at 990 DH per month for full widget plus 100 telephony minutes, and Enterprise with custom pricing for unlimited usage. Which fits your needs?";
+      return "We have four plans: Starter at 49 euros per month for Voice Widget, Pro at 99 euros for full widget with CRM and calendar, E-commerce at 99 euros for the full e-commerce suite, and Telephony at 199 euros plus 10 cents per minute for PSTN calls. Which fits your needs?";
     }
 
     // BOOKING

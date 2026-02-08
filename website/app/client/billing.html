@@ -95,6 +95,17 @@
           </div>
         </div>
 
+        <!-- Plan Features -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-zinc-900 dark:text-white">Fonctionnalités incluses</h3>
+            <span id="plan-badge" class="text-xs px-2.5 py-1 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 font-medium">--</span>
+          </div>
+          <div id="features-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <p class="text-zinc-400 text-sm col-span-2">Chargement...</p>
+          </div>
+        </div>
+
         <!-- Payment Method -->
         <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5 hover:shadow-lg transition-all duration-200">
           <div class="flex items-center justify-between mb-4">
@@ -220,8 +231,8 @@
 
         // Plan info
         const plan = tenant?.plan || 'starter';
-        const planNames = { free: 'Essai Gratuit', starter: 'Starter', business: 'Business Pro', enterprise: 'Enterprise' };
-        const planPrices = { free: '0 DH', starter: '490 DH', business: '990 DH', enterprise: 'Sur devis' };
+        const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', telephony: 'Telephony' };
+        const planPrices = { starter: '49€', pro: '99€', ecommerce: '99€', telephony: '199€' };
 
         document.getElementById('plan-name').textContent = planNames[plan] || plan;
         document.getElementById('plan-price').textContent = planPrices[plan] || '--';
@@ -255,11 +266,14 @@
         }
 
         document.getElementById('usage-calls').textContent = thisMonth.length.toLocaleString();
-        document.getElementById('usage-calls-sub').textContent = plan === 'free' ? `Limité à 100/mois` : 'Illimité sur votre plan';
+        document.getElementById('usage-calls-sub').textContent = plan === 'starter' ? `Limité à 500/mois` : 'Illimité sur votre plan';
 
         // Integrations count from tenant config
         const integrations = tenant?.integrations || [];
         document.getElementById('usage-integrations').textContent = integrations.length.toString();
+
+        // Plan features (mirrors PLAN_FEATURES from voice-api-resilient.cjs)
+        renderPlanFeatures(plan, tenant?.features);
 
         // Billing info from tenant
         billingData = tenant?.billing || {};
@@ -322,6 +336,79 @@
           </td>
         </tr>
       `).join('');
+    }
+
+    // Plan features matrix (mirrors PLAN_FEATURES from voice-api-resilient.cjs)
+    const PLAN_FEATURES = {
+      starter: {
+        voice_widget: true, booking: false, bant_crm_push: false,
+        crm_sync: false, calendar_sync: false, voice_telephony: false,
+        ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
+        ecom_recommendations: false, export: false, webhooks: false,
+        api_access: false, custom_branding: false
+      },
+      pro: {
+        voice_widget: true, booking: true, bant_crm_push: true,
+        crm_sync: true, calendar_sync: true, voice_telephony: false,
+        ecom_cart_recovery: false, ecom_quiz: false, ecom_gamification: false,
+        ecom_recommendations: false, export: true, webhooks: true,
+        api_access: true, custom_branding: true
+      },
+      ecommerce: {
+        voice_widget: true, booking: true, bant_crm_push: true,
+        crm_sync: true, calendar_sync: false, voice_telephony: false,
+        ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
+        ecom_recommendations: true, export: true, webhooks: true,
+        api_access: true, custom_branding: true
+      },
+      telephony: {
+        voice_widget: true, booking: true, bant_crm_push: true,
+        crm_sync: true, calendar_sync: true, voice_telephony: true,
+        ecom_cart_recovery: true, ecom_quiz: true, ecom_gamification: true,
+        ecom_recommendations: true, export: true, webhooks: true,
+        api_access: true, custom_branding: true
+      }
+    };
+
+    const FEATURE_LABELS = {
+      voice_widget: 'Widget vocal',
+      booking: 'Réservation en ligne',
+      bant_crm_push: 'Push CRM (BANT)',
+      crm_sync: 'Synchronisation CRM',
+      calendar_sync: 'Sync calendrier',
+      voice_telephony: 'Téléphonie PSTN',
+      ecom_cart_recovery: 'Récupération panier',
+      ecom_quiz: 'Quiz produit',
+      ecom_gamification: 'Gamification',
+      ecom_recommendations: 'Recommandations IA',
+      export: 'Export données',
+      webhooks: 'Webhooks',
+      api_access: 'Accès API',
+      custom_branding: 'Branding personnalisé'
+    };
+
+    function renderPlanFeatures(plan, overrides) {
+      const features = PLAN_FEATURES[plan] || PLAN_FEATURES.starter;
+      const badge = document.getElementById('plan-badge');
+      if (badge) badge.textContent = (planNames[plan] || plan).toUpperCase();
+
+      const grid = document.getElementById('features-grid');
+      if (!grid) return;
+
+      grid.innerHTML = Object.entries(FEATURE_LABELS).map(([key, label]) => {
+        const enabled = overrides?.[key] !== undefined ? !!overrides[key] : !!features[key];
+        return `
+          <div class="flex items-center gap-2.5 py-1.5">
+            ${enabled
+              ? '<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0"></i>'
+              : '<i data-lucide="lock" class="w-4 h-4 text-zinc-400 flex-shrink-0"></i>'
+            }
+            <span class="${enabled ? 'text-zinc-900 dark:text-white' : 'text-zinc-400'} text-sm">${label}</span>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
     }
 
     // Initialize

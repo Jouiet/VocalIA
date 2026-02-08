@@ -574,9 +574,9 @@
           return d.getMonth() === prevMonth && d.getFullYear() === prevYear;
         });
 
-        // MRR (990 DH/tenant default)
-        const mrr = tenantsData.reduce((sum, t) => sum + (t.mrr || 990), 0);
-        animateStatCounter('stat-mrr', mrr, ' DH');
+        // MRR (99€/tenant default — Pro plan)
+        const mrr = tenantsData.reduce((sum, t) => sum + (t.mrr || 99), 0);
+        animateStatCounter('stat-mrr', mrr, '€');
 
         // Tenants
         animateStatCounter('stat-tenants', tenantsData.length);
@@ -589,7 +589,7 @@
         animateStatCounter('stat-calls', thisMonthSessions.length);
 
         // Trends
-        updateTrend('trend-mrr', mrr, tenantsData.length * 990);
+        updateTrend('trend-mrr', mrr, tenantsData.length * 99);
         updateTrend('trend-tenants', tenantsData.length, Math.max(0, tenantsData.length - 2));
         updateTrend('trend-calls', thisMonthSessions.length, lastMonthSessions.length);
 

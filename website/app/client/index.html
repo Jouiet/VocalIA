@@ -916,8 +916,10 @@
     // ROI Summary calculation
     function renderROISummary(sessions) {
       const totalMinutes = sessions.reduce((s, x) => s + (parseInt(x.duration_sec) || 0), 0) / 60;
-      const costPerMin = 0.06; // EUR per minute (telephony rate)
-      const monthlyCost = 49 + (totalMinutes * costPerMin); // base plan + usage
+      const costPerMin = 0.10; // EUR per minute (telephony rate)
+      const planPrices = { starter: 49, pro: 99, ecommerce: 99, telephony: 199 };
+      const tenantPlan = user?.plan || 'starter';
+      const monthlyCost = (planPrices[tenantPlan] || 49) + (totalMinutes * costPerMin);
 
       const leads = sessions.filter(s => (parseInt(s.duration_sec) || 0) > 60 || s.lead_score > 50).length;
       const costPerLead = leads > 0 ? monthlyCost / leads : 0;
