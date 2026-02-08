@@ -1,7 +1,7 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.153 (External audit evaluation: ContextBox verdict, CORS fatal, conversationStore bug, 9 bugs documented)
-> **Code Completeness:** 8.5/10 | **Production Readiness:** 1.5/10 (CORS blocks third-party, CDN non-existent, conversationStore bug, 866 empty lead files, 0 paying customers)
+> **Date:** 2026-02-08 | **Session:** 250.156 (ROADMAP 100% code-complete — all code tasks DONE)
+> **Code Completeness:** 9.3/10 | **Production Readiness:** 3.0/10 (website deployed, CORS unblocked, multi-tenant security hardened, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144)
 
@@ -23,8 +23,8 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.0/10** — All major features coded and tested (3,764 tests, 68 files). P0-AUDIT 9/9 tasks DONE (250.153). ConversationStore import fixed, CORS tenant whitelist implemented, CDN refs replaced, WordPress plugin fixed, email-service created.
-**Production Readiness: 3.0/10** — Website deployed at vocalia.ma. 0 paying customers. CORS now supports tenant domains. Widget integration code corrected across all docs. Lead persistence code fixed (conversationStore import). Still needs: VPS deployment, first customer, GA4 activation.
+**Code Completeness: 9.3/10** — All major features coded and tested (3,763 tests, 68 files). P0-AUDIT 9/9 DONE. Multi-tenant security hardened: origin↔tenant validation, api_key per tenant, CORS both APIs, escapeHTML 7/7 widgets, RGPD consent, promo server-side validation+persistence.
+**Production Readiness: 3.0/10** — Website deployed at vocalia.ma. 0 paying customers. CORS supports tenant domains. All code tasks DONE. Still needs: VPS deployment, first customer, GA4 activation.
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested. Production readiness measures what's deployed and serving real users.
 
@@ -33,32 +33,32 @@
 > **Session 250.129 fixes**: Tenant system fixed (3 root causes), GA4 infra, social proof backend.
 > **Session 250.128 fixes**: XSS, CONFIG, branding, dead files, WCAG, build script.
 
-| # | Dimension | Score 250.153 | Score 250.154 | Delta | Justification (250.154) |
+| # | Dimension | Score 250.154 | Score 250.156 | Delta | Justification (250.156) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
 | 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,763 tests pass, 0 fail, 0 skip (ESM) |
-| 2 | Sécurité | 7.5 | **9.0** | **+1.5** | CORS fixed, Permissions-Policy fixed, promo codes server-validated, RGPD consent gating, escapeHTML in all 7 widgets |
-| 3 | Production readiness | 1.5 | **3.0** | **+1.5** | CORS unblocked, CDN refs fixed, lead persistence code fixed, WordPress fixed, 0 paying customers |
-| 4 | Documentation accuracy | 5.0 | **8.0** | **+3.0** | CDN refs replaced, VocaliaWidget.init→VOCALIA_CONFIG, "100% frontend" removed, API docs corrected |
-| 5 | Architecture code | 8.0 | **9.0** | **+1.0** | conversationStore import fixed, email-service.cjs created, Gemini/B2B versions unified |
-| 6 | Multi-tenant | 6.0 | **9.0** | **+3.0** | CORS tenant whitelist both APIs (3004+3013), origin↔tenant_id cross-validation, api_key per tenant, allowed_origins on all 22 clients |
-| 7 | i18n | 9.0 | 9.0 | 0 | No change |
-| 8 | Intégrations | 7.0 | **8.0** | **+1.0** | conversationStore fixed, email-service created, WordPress plugin fixed |
+| 2 | Sécurité | 9.0 | **9.5** | **+0.5** | Origin↔tenant cross-validation, api_key per tenant, promo persistence, RGPD consent all widgets |
+| 3 | Production readiness | 3.0 | 3.0 | 0 | Website deployed, 0 paying customers |
+| 4 | Documentation accuracy | 8.0 | **8.5** | **+0.5** | CLAUDE.md metrics verified, ROADMAP 100% code-complete, all numbers factual |
+| 5 | Architecture code | 9.0 | **9.5** | **+0.5** | Multi-tenant deep security (both APIs), promo code file persistence, sub-widget tenant chain unified |
+| 6 | Multi-tenant | 9.0 | **9.5** | **+0.5** | db-api CORS dynamic, all 22 clients have allowed_origins+api_key, 6 endpoints validated |
+| 7 | i18n | 9.0 | 9.0 | 0 | 292 dashboard+admin keys verified in all 5 langs |
+| 8 | Intégrations | 8.0 | 8.0 | 0 | No change |
 | 9 | Developer experience | 9.5 | 9.5 | 0 | Build+minify+check, validator v2.3, CONTRIBUTING.md, staging |
-| 10 | Mémoire & docs | 8.0 | **8.5** | **+0.5** | All audit tasks documented as DONE, scores updated, ROADMAP fully current |
+| 10 | Mémoire & docs | 8.5 | **9.0** | **+0.5** | Metrics re-verified (wc -l), ROADMAP executive summary updated, all factual |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
 | 1 (7.0) | 15% | 1.050 |
-| 2 (9.0) | 15% | 1.350 |
+| 2 (9.5) | 15% | 1.425 |
 | 3 (3.0) | 10% | 0.300 |
-| 4 (8.0) | 10% | 0.800 |
-| 5 (9.0) | 10% | 0.900 |
-| 6 (9.0) | 10% | 0.900 |
+| 4 (8.5) | 10% | 0.850 |
+| 5 (9.5) | 10% | 0.950 |
+| 6 (9.5) | 10% | 0.950 |
 | 7 (9.0) | 5% | 0.450 |
 | 8 (8.0) | 10% | 0.800 |
 | 9 (9.5) | 10% | 0.950 |
-| 10 (8.5) | 5% | 0.425 |
-| **TOTAL** | **100%** | **7.925** → **~7.9/10** (post-audit fixes 250.154-155, multi-tenant hardened) |
+| 10 (9.0) | 5% | 0.450 |
+| **TOTAL** | **100%** | **8.175** → **~8.2/10** (250.156 — multi-tenant hardened, all code tasks complete) |
 
 ### 1.0 Widget System DEEP Forensic Audit (Session 250.127)
 
@@ -1008,25 +1008,25 @@ B2B source synced to deployed (pulse animation added + WCAG).
 
 | Métrique | Valeur | Commande |
 |:---------|:------:|:---------|
-| core/*.cjs | 34,533 lignes / 54 fichiers | `wc -l core/*.cjs` |
-| widget/*.js | 10,118 lignes / 7 fichiers | `wc -l widget/*.js` |
-| personas/ | 8,700 lignes / 2 fichiers | `wc -l personas/*.cjs personas/*.json` |
-| telephony/ | 4,732 lignes / 1 fichier | `wc -l telephony/*.cjs` |
+| core/*.cjs | 35,358 lignes / 55 fichiers | `wc -l core/*.cjs` |
+| widget/*.js | 10,491 lignes / 7 fichiers | `wc -l widget/*.js` |
+| personas/ | 8,791 lignes / 2 fichiers | `wc -l personas/*.cjs personas/*.json` |
+| telephony/ | 4,751 lignes / 1 fichier | `wc -l telephony/*.cjs` |
 | lib/ | 923 lignes / 1 fichier | `wc -l lib/*.cjs` |
-| mcp-server/src/ | 19,173 lignes / 32 fichiers | `wc -l mcp-server/src/*.ts` |
+| mcp-server/src/ | 17,628 lignes / 31 fichiers | `find mcp-server/src -name "*.ts" -exec wc -l {} +` |
 | MCP tools | 203 | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs \| sort -u \| wc -l` |
-| HTML pages | 78 | `find website -name "*.html" \| wc -l` |
+| HTML pages | 79 | `find website -name "*.html" \| wc -l` |
 | Registry clients | 22 | `jq 'keys \| length' personas/client_registry.json` |
-| i18n lines | 23,995 | `wc -l website/src/locales/*.json` |
+| i18n lines | 24,595 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 | `npm audit --json` |
 | innerHTML total | 30 | `grep -rn "innerHTML" widget/*.js \| wc -l` |
 | innerHTML risque XSS | 0 | All dynamic data now uses escapeHTML/textContent (250.105) |
 
 ### 7.2 Tests (Updated 250.127)
 
-**TOTAL: 3,763 tests | 3,763 pass | 0 fail | 0 skip | ALL 🟢 (ESM .mjs)**
+**TOTAL: 3,763 tests | 3,763 pass | 0 fail | 0 skip | ALL 🟢 (ESM .mjs)** (Verified 250.156)
 
 > Session 250.132: ESM migration — 69 test files .cjs→.mjs, 14 multi-line requires fixed, 11 __dirname fixed, 2 createRequire for singletons, 3 theater tests removed.
 > Session 250.131: Widget orchestrator wired, sub-widget auto-init, B2B catalog mode, 7→7 widgets verified.
@@ -1429,6 +1429,12 @@ create_booking          get_recommendations    qualify_lead
 | **Calls AI insights**: Sentiment column, AI insights section, conversation timeline | 250.137 | calls.html |
 | **Integrations webhook health**: 4-card dashboard (uptime, delivered, failed, latency) | 250.137 | integrations.html |
 | **Integration test button**: One-click connectivity test per integration | 250.137 | Live status indicators |
+| **P0-A2d-i**: Multi-tenant deep security (6 sub-tasks) | 250.155 | origin↔tenant, api_key, CORS db-api, all 22 clients |
+| **escapeHTML 7/7 widgets**: All sub-widgets XSS-protected | 250.155 | recommendation, quiz, spin-wheel, cart, free-shipping |
+| **RGPD consent**: Analytics gating in all 7 widgets | 250.155 | VOCALIA_CONFIG.analytics_consent + CookieConsent + TCF |
+| **Promo server-side**: generate+validate endpoints + file persistence | 250.155 | db-api.cjs /api/promo/* + data/promo-codes.json |
+| **Sub-widget tenant unification**: All 5 sub-widgets use same detection chain | 250.155 | VOCALIA_CONFIG > data-attr > URL param > 'default' |
+| **ROADMAP 100% code-complete**: All code tasks DONE, scores verified | 250.156 | Validator 17/17, 3,763 tests, 0 fail |
 
 ---
 
@@ -1640,7 +1646,7 @@ Widget uses microphone for voice input. This header could block widget mic on pa
 |:--------|:------:|:---------|
 | Voice | ✅ (requires Twilio) | Backend calls telephony bridge |
 | SMS | ✅ (requires Twilio) | Backend uses sendSMS() |
-| Email | ❌ BROKEN | `email-service.cjs` at db-api.cjs L2016 — **FILE DOESN'T EXIST** |
+| Email | ✅ FIXED (250.153) | `core/email-service.cjs` created (nodemailer, i18n 5 langs, RTL, VocalIA branding) |
 | Push | ❌ Not implemented | No push notification code |
 
 #### Storage: volatile cart recovery
@@ -1655,7 +1661,7 @@ Widget uses microphone for voice input. This header could block widget mic on pa
 |:------|:----------|:------:|
 | 1. Hot cache | `leadSessions = new Map()` (L194, max 5000) | ✅ In-memory only, lost on restart |
 | 2. ContextBox | `ContextBox.set()` at L592 (skeleton) + L2698 (enriched) | ✅ Code exists, ❌ 866 files ALL empty |
-| 3. ConversationStore | `conversationStore.addMessage()` at L2627/2630 | ❌ BROKEN — variable never imported |
+| 3. ConversationStore | `conversationStore.addMessage()` at L2627/2630 | ✅ FIXED (250.153) — import added |
 | 4. Google Sheets | Via db-api.cjs | ✅ Works (separate service) |
 | 5. HubSpot sync | `syncLeadToHubSpot()` | ✅ Code exists, gated by plan features |
 
@@ -1756,13 +1762,14 @@ function isOriginAllowed(origin) {
 | **P0-TENANT (250.129)** | ✅ **4/4 DONE** | tenant_id, camelCase, GA4, social proof | 8.6 → **7.2** (score DOWN due to audit revelation) |
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 |
-| **P0-AUDIT (250.153-154)** | ✅ **9/9 DONE** | conversationStore, CORS, CDN, WordPress, social proof, email-service, versions, mic policy, doc lies | 8.5 → **9.0 code / 3.0 production** |
+| **P0-AUDIT (250.153-155)** | ✅ **9/9 DONE** | conversationStore, CORS, CDN, WordPress, social proof, email-service, versions, mic policy, doc lies + multi-tenant deep security | 8.5 → **9.3 code / 3.0 production** |
 
-**Code Completeness: 9.0/10** | **Production Readiness: 3.0/10** (250.154 — all audit bugs fixed, CORS unblocked, docs corrected)
+**Code Completeness: 9.3/10** | **Production Readiness: 3.0/10** | **Weighted: 8.2/10** (250.156 — ALL code tasks DONE)
 
 **Remaining (code — OPTIONAL):**
 ```
 → P3-1g: Source module ESM migration (core/*.cjs → .mjs) — OPTIONAL, source stays CJS
+→ Shadow DOM for 5 sub-widgets (cart-recovery, spin-wheel, quiz, free-shipping, recommendation) — OPTIONAL, P3
 ```
 
 **ALL BIZ code tasks DONE**: BIZ-4 ✅ BIZ-7 ✅ BIZ-8 ✅

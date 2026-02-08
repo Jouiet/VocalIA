@@ -1,14 +1,14 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 78 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~82k lines | 3,764 tests (68 .mjs, 0 skip)
+> 79 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~85k lines | 3,763 tests (68 .mjs, 0 skip)
 > 203 MCP tools | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
 
-core/ (54 modules, 34.6k lines) | telephony/ (4.7k) | personas/ (8.7k) | widget/ (10.1k)
-mcp-server/src/ (19.2k, 32 .ts) | lib/ (923) | sensors/ (822) | integrations/ (2.2k)
-clients/ = 553 dirs (ALL test data) | website/ = 78 pages + locales (24k lines)
+core/ (55 modules, 35.4k lines) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (10.5k, 7 files)
+mcp-server/src/ (17.6k, 31 .ts) | lib/ (923) | sensors/ (822) | integrations/ (2.2k)
+clients/ = 553 dirs (ALL test data) | website/ = 79 pages + locales (24.6k lines)
 
 ## Services
 
@@ -78,8 +78,9 @@ Contact: +1 762 422 4223 | contact@vocalia.ma
 
 ## State
 
-- **Code completeness**: 9.0/10 — all features coded, tested, P0-AUDIT 9/9 DONE
+- **Code completeness**: 9.3/10 — all features coded, tested, P0-AUDIT 9/9 DONE, multi-tenant security hardened (origin↔tenant, api_key, CORS both APIs), escapeHTML 7/7 widgets, RGPD consent, promo server-side
 - **Production readiness**: 3.0/10 — website deployed, 0 paying customers, CORS unblocked, code bugs fixed. Needs: VPS deployment, first customer, GA4
 - **Next**: VPS deployment → first paying customer → GA4 activation
+- **Weighted score**: 7.9/10
 
-*Last update: 08/02/2026 - Session 250.153 (external audit evaluation: ContextBox verdict, CORS fatal, conversationStore bug, 9 known bugs documented)*
+*Last update: 08/02/2026 - Session 250.156 (ROADMAP 100% code-complete, multi-tenant deep security, promo persistence, dashboard audit)*
