@@ -653,7 +653,7 @@
                     description: item.description || '',
                     voiceDescription: item.voice_description || item.voicedescription || '',
                     available: item.available !== 'false',
-                    currency: item.currency || 'MAD'
+                    currency: item.currency || 'EUR'
                   });
                 }
               }
@@ -718,7 +718,7 @@
         description: formData.get('description'),
         voiceDescription: formData.get('voice_description'),
         available: formData.get('available') === 'on',
-        currency: 'MAD',
+        currency: 'EUR',
         catalog_type: currentType.toUpperCase()
       };
 
@@ -896,7 +896,7 @@
               <span class="text-sm text-zinc-600 dark:text-zinc-400">${item.category || '-'}</span>
             </td>
             <td class="px-4 py-3">
-              <span class="font-medium text-zinc-900 dark:text-white">${item.price} ${item.currency || 'MAD'}</span>
+              <span class="font-medium text-zinc-900 dark:text-white">${item.price} ${item.currency || 'EUR'}</span>
             </td>
             <td class="px-4 py-3">
               <span class="text-sm text-zinc-600 dark:text-zinc-400">${item.stock !== undefined ? item.stock : '-'}</span>

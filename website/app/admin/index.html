@@ -940,16 +940,17 @@
       const last6Months = [];
       const mrrByMonth = [];
 
+      const perTenantMRR = tenants.reduce((sum, t) => sum + (t.mrr || 99), 0) / Math.max(tenants.length, 1);
       for (let i = 5; i >= 0; i--) {
         const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
         last6Months.push(months[d.getMonth()]);
-        mrrByMonth.push(tenants.length * 990);
+        mrrByMonth.push(Math.round(tenants.length * perTenantMRR));
       }
 
       createLineChart('#revenue-chart', {
         labels: last6Months,
         datasets: [
-          { label: 'MRR (DH)', data: mrrByMonth, color: COLORS.success }
+          { label: 'MRR (€)', data: mrrByMonth, color: COLORS.success }
         ]
       });
 

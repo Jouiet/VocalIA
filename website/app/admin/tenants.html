@@ -254,10 +254,10 @@
         document.getElementById('stat-trial').textContent = data.filter(t => t.status === 'trial').length;
 
         const mrr = data.reduce((sum, t) => {
-          const prices = { enterprise: 2990, business: 990, starter: 490, trial: 0 };
-          return sum + (prices[t.plan] || 0);
+          const prices = { starter: 49, pro: 99, ecommerce: 99, telephony: 199, trial: 0 };
+          return sum + (prices[t.plan] || 99);
         }, 0);
-        document.getElementById('stat-mrr').textContent = mrr.toLocaleString() + ' DH';
+        document.getElementById('stat-mrr').textContent = mrr.toLocaleString() + '€';
 
       } catch (error) {
         console.error('Failed to load tenants:', error);

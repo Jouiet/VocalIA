@@ -758,10 +758,13 @@
     function renderAIPerformance(sessions) {
       if (sessions.length === 0) return;
 
-      // Response time: derive from duration distribution (shorter avg = faster response)
+      // Response time: derive from session latency data or avg duration proxy
       const avgDurSec = sessions.reduce((s, x) => s + (parseInt(x.duration_sec) || 0), 0) / sessions.length;
       const responseScore = Math.min(100, Math.round(Math.max(0, 100 - (avgDurSec / 5)))); // shorter = better
-      const responseTimeMs = Math.round(800 + Math.random() * 400); // estimated from session patterns
+      const latencies = sessions.filter(s => s.latency_ms).map(s => parseInt(s.latency_ms));
+      const responseTimeMs = latencies.length > 0
+        ? Math.round(latencies.reduce((a, b) => a + b, 0) / latencies.length)
+        : Math.round(Math.min(2000, Math.max(400, avgDurSec * 15))); // proxy: shorter sessions = faster API
 
       // Resolution rate: sessions that lasted > 30s are considered "resolved"
       const resolved = sessions.filter(s => (parseInt(s.duration_sec) || 0) > 30).length;
