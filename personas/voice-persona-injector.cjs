@@ -7857,9 +7857,9 @@ class VoicePersonaInjector {
             persona_id: persona.id,
             persona_name: persona.name,
             sensitivity_level: persona.sensitivity,
-            currency: persona.payment_config?.currency || 'MAD',
+            currency: persona.payment_config?.currency || 'EUR',
             language: persona.language,
-            payment_config: persona.payment_config || { currency: 'MAD' },
+            payment_config: persona.payment_config || { currency: 'EUR' },
             knowledge_base_id: persona.knowledge_base_id
         };
 

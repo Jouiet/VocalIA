@@ -1906,6 +1906,20 @@ function getCatalogStore() {
 }
 
 /**
+ * Get currency symbol for a tenant from registry
+ */
+function getTenantCurrencySymbol(tenantId) {
+  const CURRENCY_SYMBOLS = { 'MAD': 'DH', 'EUR': '€', 'USD': '$', 'GBP': '£' };
+  try {
+    const client = ClientRegistry.getClient(tenantId);
+    const cur = client?.currency || 'EUR';
+    return CURRENCY_SYMBOLS[cur] || cur;
+  } catch {
+    return '€';
+  }
+}
+
+/**
  * Browse catalog by category
  */
 async function handleBrowseCatalog(session, args) {
@@ -2205,8 +2219,9 @@ async function handleGetPackages(session, args) {
     // Generate voice response
     let voiceResponse;
     if (packages.length === 0) {
+      const sym = getTenantCurrencySymbol(tenantId);
       voiceResponse = args.max_price
-        ? `Aucun forfait disponible dans votre budget de ${args.max_price} dirhams.`
+        ? `Aucun forfait disponible dans votre budget de ${args.max_price} ${sym}.`
         : "Aucun forfait disponible actuellement.";
     } else {
       const names = packages.slice(0, 3).map(p => p.name).join(', ');
@@ -2268,8 +2283,9 @@ async function handleGetVehicles(session, args) {
     if (vehicles.length === 0) {
       voiceResponse = "Aucun véhicule disponible avec ces critères. Voulez-vous élargir votre recherche?";
     } else {
+      const sym = getTenantCurrencySymbol(tenantId);
       const vehList = vehicles.slice(0, 3).map(v =>
-        `${v.name} à ${v.price || v.price_per_day} dirhams par jour`
+        `${v.name} à ${v.price || v.price_per_day} ${sym} par jour`
       ).join(', ');
       voiceResponse = `Véhicules disponibles: ${vehList}. Lequel vous intéresse?`;
     }
@@ -2333,7 +2349,8 @@ async function handleGetTrips(session, args) {
       const tripList = trips.slice(0, 3).map(t => {
         const price = t.price || t.price_from;
         const dest = t.destination || t.name;
-        return `${dest} à partir de ${price} dirhams`;
+        const sym = getTenantCurrencySymbol(tenantId);
+        return `${dest} à partir de ${price} ${sym}`;
       }).join(', ');
       voiceResponse = `Voyages disponibles: ${tripList}. Lequel vous intéresse?`;
     }
@@ -2388,7 +2405,8 @@ async function handleGetRecommendations(session, args) {
             const item = itemResult.item;
             const name = item.title || item.name;
             const price = item.price;
-            productNames.push(price ? `${name} à ${price} dirhams` : name);
+            const sym = getTenantCurrencySymbol(tenantId);
+            productNames.push(price ? `${name} à ${price} ${sym}` : name);
           } else {
             productNames.push(`Produit ${rec.productId}`);
           }
@@ -3424,9 +3442,10 @@ async function queueCartRecoveryCallback(options) {
   const callbackId = `cart_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
   // Cart recovery messages by language
+  const sym = getTenantCurrencySymbol(tenantId);
   const messages = {
     fr: {
-      greeting: `Bonjour ! C'est l'assistant VocalIA. Vous avez laissé des articles dans votre panier d'une valeur de ${cart?.total || 0} dirhams.`,
+      greeting: `Bonjour ! C'est l'assistant VocalIA. Vous avez laissé des articles dans votre panier d'une valeur de ${cart?.total || 0} ${sym}.`,
       offer: `J'ai une offre exclusive pour vous : ${discount}% de réduction si vous finalisez votre commande maintenant.`,
       action: `Voulez-vous que je vous envoie le lien par SMS pour finaliser votre achat ?`,
       confirm: `Parfait ! Je vous envoie le lien tout de suite. À très bientôt !`
