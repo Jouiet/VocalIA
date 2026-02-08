@@ -24,7 +24,7 @@
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { GoogleSheetsDB, getDB, SCHEMAS } from '../core/GoogleSheetsDB.cjs';
+import { GoogleSheetsDB, getDB, SCHEMAS, columnLetter, sheetRange } from '../core/GoogleSheetsDB.cjs';
 
 // ─── SCHEMAS ────────────────────────────────────────────────────
 
@@ -570,18 +570,20 @@ describe('GoogleSheetsDB withRetry', () => {
 // ─── checkQuota (pure logic, no FS) ─────────────────────────────
 
 describe('GoogleSheetsDB checkQuota (no config)', () => {
-  test('returns allowed=true when no config found', () => {
+  test('denies unknown tenants (C10 security fix)', () => {
     const db = new GoogleSheetsDB();
     const result = db.checkQuota('nonexistent_tenant', 'calls');
-    assert.strictEqual(result.allowed, true);
-    assert.strictEqual(result.limit, Infinity);
+    // C10 fix: Unknown tenants MUST be denied, not allowed with infinite quota
+    assert.strictEqual(result.allowed, false);
+    assert.strictEqual(result.limit, 0);
     assert.ok(result.error);
   });
 
-  test('returns allowed=true for invalid quota type', () => {
+  test('denies unknown tenant even for invalid quota type', () => {
     const db = new GoogleSheetsDB();
     const result = db.checkQuota('nonexistent_tenant', 'invalid_type');
-    assert.strictEqual(result.allowed, true);
+    // Unknown tenant is denied before quota type validation
+    assert.strictEqual(result.allowed, false);
   });
 });
 
@@ -626,8 +628,9 @@ describe('GoogleSheetsDB resetUsage (no config)', () => {
 // ─── Schema column counts ───────────────────────────────────────
 
 describe('GoogleSheetsDB schema column counts', () => {
-  test('tenants has 26 columns', () => {
-    assert.strictEqual(SCHEMAS.tenants.columns.length, 26);
+  test('tenants has 27 columns (C8: +stripe_customer_id)', () => {
+    assert.strictEqual(SCHEMAS.tenants.columns.length, 27);
+    assert.ok(SCHEMAS.tenants.columns.includes('stripe_customer_id'));
   });
 
   test('sessions has 8 columns', () => {
@@ -655,5 +658,50 @@ describe('GoogleSheetsDB schema column counts', () => {
   });
 });
 
+// ─── columnLetter / sheetRange (H7 fix) ──────────────────────────
+
+describe('columnLetter (H7 fix: >26 column support)', () => {
+  test('converts 1 to A', () => {
+    assert.strictEqual(columnLetter(1), 'A');
+  });
+
+  test('converts 26 to Z', () => {
+    assert.strictEqual(columnLetter(26), 'Z');
+  });
+
+  test('converts 27 to AA', () => {
+    assert.strictEqual(columnLetter(27), 'AA');
+  });
+
+  test('converts 28 to AB', () => {
+    assert.strictEqual(columnLetter(28), 'AB');
+  });
+
+  test('converts 52 to AZ', () => {
+    assert.strictEqual(columnLetter(52), 'AZ');
+  });
+
+  test('converts 53 to BA', () => {
+    assert.strictEqual(columnLetter(53), 'BA');
+  });
+});
+
+describe('sheetRange', () => {
+  test('tenants range covers 27 columns (A:AA)', () => {
+    const range = sheetRange('tenants');
+    assert.strictEqual(range, 'tenants!A:AA');
+  });
+
+  test('sessions range covers 8 columns (A:H)', () => {
+    const range = sheetRange('sessions');
+    assert.strictEqual(range, 'sessions!A:H');
+  });
+
+  test('unknown sheet falls back to A:Z', () => {
+    const range = sheetRange('nonexistent');
+    assert.strictEqual(range, 'nonexistent!A:Z');
+  });
+});
+
 // NOTE: Exports are proven by behavioral tests above (GoogleSheetsDB, getDB, SCHEMAS,
-// generateId, timestamp, cacheKey, validate, applyDefaults, acquireLock, checkQuota, etc.)
+// generateId, timestamp, cacheKey, validate, applyDefaults, acquireLock, checkQuota, columnLetter, sheetRange)

@@ -263,10 +263,10 @@
   <script src="/app/components/app-components.js" defer></script>
 
   <script>
-    // Auth check - Session 250.65bis
-    const token = localStorage.getItem('vocalia_token');
+    // Auth check — Session 250.167: Fixed to use correct storage key
+    const token = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token');
     if (!token) {
-      window.location.href = '/app/auth/login.html';
+      window.location.href = '/app/auth/login.html?return=' + encodeURIComponent(window.location.pathname);
     }
 
     let currentStep = 1;

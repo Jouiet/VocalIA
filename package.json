@@ -41,6 +41,7 @@
     "google-auth-library": "^10.5.0",
     "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^6.10.1",
     "papaparse": "^5.5.3",
     "pdfkit": "^0.17.2",
     "twilio": "^4.19.0",

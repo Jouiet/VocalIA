@@ -268,12 +268,23 @@ function filterUserRecords(records) {
 }
 
 /**
- * Parse JSON body
+ * Parse JSON body (with 1MB size limit to prevent DoS)
  */
+const MAX_BODY_SIZE = 1 * 1024 * 1024; // 1MB
+
 async function parseBody(req) {
   return new Promise((resolve, reject) => {
     let body = '';
-    req.on('data', chunk => body += chunk);
+    let size = 0;
+    req.on('data', chunk => {
+      size += chunk.length;
+      if (size > MAX_BODY_SIZE) {
+        req.destroy();
+        reject(new Error('Request body too large (max 1MB)'));
+        return;
+      }
+      body += chunk;
+    });
     req.on('end', () => {
       try {
         resolve(body ? JSON.parse(body) : {});
@@ -438,6 +449,22 @@ async function handleAuthRequest(req, res, path, method) {
       }
 
       const result = await authService.verifyEmail(token);
+      sendJson(res, 200, result);
+      return true;
+    }
+
+    // POST /api/auth/resend-verification (F4 fix)
+    if (path === '/api/auth/resend-verification' && method === 'POST') {
+      const rateLimited = await applyRateLimit(req, res, loginLimiter);
+      if (rateLimited) return true;
+
+      const { email } = body;
+      if (!email) {
+        sendError(res, 400, 'Email required');
+        return true;
+      }
+
+      const result = await authService.resendVerificationEmail(email);
       sendJson(res, 200, result);
       return true;
     }
@@ -904,6 +931,12 @@ async function handleRequest(req, res) {
     if (!user) return;
     const tenantId = kbListMatch[1];
 
+    // Session 250.167: Tenant isolation — user must belong to tenant or be admin
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
     try {
       const { getInstance } = require('./tenant-kb-loader.cjs');
       const loader = getInstance();
@@ -932,6 +965,13 @@ async function handleRequest(req, res) {
   if (kbListMatch && method === 'POST') {
     const user = await checkAuth(req, res);
     if (!user) return;
+    const kbTenantId = kbListMatch[1];
+
+    // Session 250.167: Tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== kbTenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
     const tenantId = kbListMatch[1];
 
     try {
@@ -1243,6 +1283,12 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = catalogListMatch[1];
+
+    // Session 250.167: Tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const catalogStore = getCatalogStore();
@@ -2364,6 +2410,12 @@ async function handleRequest(req, res) {
     if (!user) return;
     const tenantId = convListMatch[1];
 
+    // Session 250.167: Tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
     try {
       const options = {};
       if (query.source) options.source = query.source;
@@ -2395,6 +2447,12 @@ async function handleRequest(req, res) {
     if (!user) return;
     const [, tenantId, sessionId] = convDetailMatch;
 
+    // Session 250.167: Tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
+
     try {
       const conversation = conversationStore.load(tenantId, sessionId);
       if (!conversation) {
@@ -2414,6 +2472,12 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = convExportMatch[1];
+
+    // Session 250.167: Tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     // Session 250.143: Feature gating — export restricted to Pro/ECOM/Telephony plans
     try {
@@ -2961,10 +3025,10 @@ function handleWebSocketConnection(ws, req) {
     ws.isAlive = true;
   });
 
-  // Send welcome message
+  // Send welcome message — Session 250.167: removed email (info leak)
   ws.send(JSON.stringify({
     type: 'connected',
-    user: { id: user.sub, email: user.email, role: user.role },
+    user: { id: user.sub, role: user.role },
     timestamp: new Date().toISOString()
   }));
 

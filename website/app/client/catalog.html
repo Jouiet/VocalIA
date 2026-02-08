@@ -510,6 +510,15 @@
   <script src="/src/lib/api-client.js"></script>
   <script src="/app/components/app-components.js" defer></script>
   <script>
+    // Session 250.167: Auth guard
+    (function() {
+      const token = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token');
+      if (!token) {
+        window.location.href = '/app/auth/login.html?return=' + encodeURIComponent(window.location.pathname);
+        return;
+      }
+    })();
+
     // Initialize Lucide icons
     lucide.createIcons();
 
@@ -536,26 +545,27 @@
     const addModal = document.getElementById('add-modal');
     const voicePreview = document.getElementById('voice-preview');
 
-    // Auth check - Session 250.65bis
-    const auth = JSON.parse(localStorage.getItem('vocalia_auth') || '{}');
-    if (!auth.token) {
-      window.location.href = '/app/auth/login.html';
-    }
-    if (!auth.user?.tenant_id) {
+    // Auth check — Session 250.167: Fixed to use correct storage keys (was vocalia_auth)
+    const authUser = JSON.parse(localStorage.getItem('vocalia_user') || sessionStorage.getItem('vocalia_user') || '{}');
+    if (!authUser?.tenant_id) {
       window.location.href = '/app/client/onboarding.html';
     }
-    const tenantId = auth.user.tenant_id;
+    const tenantId = authUser.tenant_id;
 
     // User info
-    if (auth.user) {
-      document.getElementById('user-name').textContent = auth.user.company_name || auth.user.email;
-      document.getElementById('user-email').textContent = auth.user.email;
-      document.getElementById('user-initials').textContent = (auth.user.company_name || auth.user.email).substring(0, 2).toUpperCase();
+    const authToken = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token');
+    if (authUser) {
+      document.getElementById('user-name').textContent = authUser.company_name || authUser.email || '';
+      document.getElementById('user-email').textContent = authUser.email || '';
+      document.getElementById('user-initials').textContent = (authUser.company_name || authUser.email || '').substring(0, 2).toUpperCase();
     }
 
     // Logout
     document.getElementById('logout-btn').addEventListener('click', () => {
-      localStorage.removeItem('vocalia_auth');
+      localStorage.removeItem('vocalia_access_token');
+      localStorage.removeItem('vocalia_user');
+      sessionStorage.removeItem('vocalia_access_token');
+      sessionStorage.removeItem('vocalia_user');
       window.location.href = '/app/auth/login.html';
     });
 
@@ -667,7 +677,7 @@
             const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/import`, {
               method: 'POST',
               headers: {
-                'Authorization': `Bearer ${auth.token}`,
+                'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({
@@ -732,7 +742,7 @@
         const response = await fetch(url, {
           method: isEditing ? 'PUT' : 'POST',
           headers: {
-            'Authorization': `Bearer ${auth.token}`,
+            'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(item)
@@ -783,7 +793,7 @@
 
         // Fetch catalog from API
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog?type=${currentType.toUpperCase()}`, {
-          headers: { 'Authorization': `Bearer ${auth.token}` }
+          headers: { 'Authorization': `Bearer ${authToken}` }
         }).catch(() => null);
 
         if (response?.ok) {
@@ -990,7 +1000,7 @@
       try {
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/${id}?type=${currentType.toUpperCase()}`, {
           method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${auth.token}` }
+          headers: { 'Authorization': `Bearer ${authToken}` }
         });
 
         if (response.ok) {
@@ -1209,7 +1219,7 @@
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/connector`, {
           method: 'PUT',
           headers: {
-            'Authorization': `Bearer ${auth.token}`,
+            'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(config)
@@ -1248,7 +1258,7 @@
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/sync`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${auth.token}`,
+            'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({ type: currentType.toUpperCase(), force: true })

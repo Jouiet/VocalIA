@@ -1,7 +1,7 @@
 /**
  * VocalIA Voice API Utils Tests
  *
- * Tests 18 pure functions extracted from voice-api-resilient.cjs:
+ * Tests 19 pure functions extracted from voice-api-resilient.cjs:
  * - isOriginAllowed (CORS validation)
  * - QUALIFICATION config structure
  * - calculateNPS / estimateNPS
@@ -20,7 +20,7 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
 import mod from '../core/voice-api-utils.cjs';
-import { isOriginAllowed, QUALIFICATION, calculateNPS, estimateNPS, safeJsonParse, sanitizeInput, extractBudget, extractTimeline, extractDecisionMaker, extractIndustryFit, extractEmail, extractPhone, extractName, calculateLeadScore, getLeadStatus, SYSTEM_PROMPT, getSystemPromptForLanguage, generateSocialProofMessages } from '../core/voice-api-utils.cjs';
+import { isOriginAllowed, QUALIFICATION, calculateNPS, estimateNPS, safeJsonParse, sanitizeInput, extractBudget, extractTimeline, extractDecisionMaker, extractIndustryFit, extractEmail, extractPhone, extractName, calculateLeadScore, getLeadStatus, SYSTEM_PROMPT, getSystemPromptForLanguage, generateSocialProofMessages, sanitizeTenantId } from '../core/voice-api-utils.cjs';
 
 
 // ─── isOriginAllowed ────────────────────────────────────────────────────────
@@ -729,8 +729,8 @@ describe('SYSTEM_PROMPT', () => {
 // ─── Exports ────────────────────────────────────────────────────────────────
 
 describe('voice-api-utils exports', () => {
-  test('exports 18 items', () => {
-    assert.strictEqual(Object.keys(mod).length, 18);
+  test('exports 19 items', () => {
+    assert.strictEqual(Object.keys(mod).length, 19);
   });
 
   test('all exports are defined', () => {
@@ -752,5 +752,6 @@ describe('voice-api-utils exports', () => {
     assert.ok(SYSTEM_PROMPT);
     assert.ok(getSystemPromptForLanguage);
     assert.ok(generateSocialProofMessages);
+    assert.ok(sanitizeTenantId);
   });
 });

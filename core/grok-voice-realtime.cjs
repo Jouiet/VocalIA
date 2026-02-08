@@ -20,6 +20,8 @@ require('dotenv').config();
 const WebSocket = require('ws');
 const http = require('http');
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path');
 const { EventEmitter } = require('events');
 
 // Import security utilities
@@ -34,6 +36,43 @@ const MAX_BODY_SIZE = 1024 * 1024; // 1MB
 const REQUEST_TIMEOUT_MS = 30000;
 const MAX_SESSIONS = 100; // Bounded session pool
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000; // 30 minute session timeout
+
+// Session 250.167: Tenant registry for WebSocket origin validation
+let _tenantRegistry = null;
+let _registryLoadedAt = 0;
+const REGISTRY_TTL = 5 * 60 * 1000; // 5 min cache
+
+function loadTenantRegistry() {
+  if (_tenantRegistry && Date.now() - _registryLoadedAt < REGISTRY_TTL) return _tenantRegistry;
+  try {
+    const regPath = path.join(__dirname, '../personas/client_registry.json');
+    _tenantRegistry = JSON.parse(fs.readFileSync(regPath, 'utf8')).clients || {};
+    _registryLoadedAt = Date.now();
+  } catch (e) {
+    console.error('[Realtime] Failed to load tenant registry:', e.message);
+    _tenantRegistry = {};
+  }
+  return _tenantRegistry;
+}
+
+function validateWebSocketOrigin(origin, tenantId) {
+  if (!origin) return { valid: false, reason: 'Missing origin header' };
+  if (!tenantId) return { valid: false, reason: 'Missing tenant_id' };
+
+  const registry = loadTenantRegistry();
+  const tenant = registry[tenantId];
+  if (!tenant) return { valid: false, reason: 'Unknown tenant' };
+
+  const originHost = origin.replace(/^https?:\/\//, '').replace(/:\d+$/, '');
+  const allowed = tenant.allowed_origins || [];
+  const isAllowed = allowed.some(ao => {
+    const aoHost = ao.replace(/^https?:\/\//, '').replace(/:\d+$/, '');
+    return originHost === aoHost;
+  });
+
+  if (!isAllowed) return { valid: false, reason: 'Origin not allowed for tenant' };
+  return { valid: true };
+}
 
 // ============================================================================
 // CONFIGURATION - Verified December 2025
@@ -80,7 +119,9 @@ const CONFIG = {
 };
 
 // ============================================================================
-// GEMINI TTS FALLBACK CONFIGURATION - Verified December 2025
+// GEMINI TTS FALLBACK CONFIGURATION
+// ⚠️ gemini-2.5-flash-preview-tts is still PREVIEW (no stable version exists as of Feb 2026)
+// Monitor: https://ai.google.dev/gemini-api/docs/models for stable promotion
 // ============================================================================
 
 const GEMINI_CONFIG = {
@@ -692,7 +733,21 @@ class GrokRealtimeProxy {
     this.wss = new WebSocket.Server({ server: this.server });
 
     this.wss.on('connection', (clientWs, req) => {
-      console.log('[Proxy] Browser client connected');
+      // Parse query params for configuration
+      const url = new URL(req.url, `http://localhost:${this.port}`);
+      const voice = url.searchParams.get('voice') || 'ara';
+      const tenantId = url.searchParams.get('tenant_id');
+      const origin = req.headers.origin;
+
+      // Session 250.167: Validate origin + tenant before accepting connection
+      const validation = validateWebSocketOrigin(origin, tenantId);
+      if (!validation.valid) {
+        console.log(`[Proxy] WebSocket rejected: ${validation.reason} (origin=${origin}, tenant=${tenantId})`);
+        clientWs.close(4003, validation.reason);
+        return;
+      }
+
+      console.log(`[Proxy] Browser client connected (tenant=${tenantId})`);
 
       // P1 FIX: Check session limit
       if (this.sessions.size >= MAX_SESSIONS) {
@@ -701,10 +756,10 @@ class GrokRealtimeProxy {
         return;
       }
 
-      // Parse query params for configuration
-      const url = new URL(req.url, `http://localhost:${this.port}`);
-      const voice = url.searchParams.get('voice') || 'ara';
-      const instructions = url.searchParams.get('instructions') || undefined;
+      // Instructions from tenant config only — not from query params (injection prevention)
+      const registry = loadTenantRegistry();
+      const tenantConfig = registry[tenantId];
+      const instructions = tenantConfig?.realtime_instructions || undefined;
 
       // Create Grok session
       const session = new GrokRealtimeSession({ voice, instructions });

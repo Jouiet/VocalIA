@@ -237,15 +237,24 @@ async function register({ email, password, name, tenantId = null, role = 'user' 
     updated_at: now
   });
 
-  // Return user without sensitive fields
+  // Send verification email (token stays server-side)
+  try {
+    const emailService = require('./email-service.cjs');
+    if (emailService && emailService.sendVerificationEmail) {
+      await emailService.sendVerificationEmail(email, verifyToken, name);
+    }
+  } catch (e) {
+    console.error('❌ [Auth] Failed to send verification email:', e.message);
+  }
+
+  // Return user WITHOUT sensitive tokens
   return {
     id: user.id,
     email: user.email,
     name: user.name,
     role: user.role,
     tenant_id: user.tenant_id,
-    email_verified: false,
-    verify_token: verifyToken // For sending verification email
+    email_verified: false
   };
 }
 
@@ -295,6 +304,16 @@ async function login({ email, password, rememberMe = false }) {
 
     await db.update('users', user.id, updates);
     throw new AuthError('Invalid email or password', 'INVALID_CREDENTIALS', 401);
+  }
+
+  // Check email verification (C2 fix — unverified users cannot login)
+  const isVerified = user.email_verified === 'true' || user.email_verified === true;
+  if (!isVerified) {
+    throw new AuthError(
+      'Please verify your email before logging in. Check your inbox for the verification link.',
+      'EMAIL_NOT_VERIFIED',
+      403
+    );
   }
 
   // Generate tokens
@@ -451,10 +470,19 @@ async function requestPasswordReset(email) {
     password_reset_expires: resetExpires
   });
 
+  // Send reset email (token stays server-side)
+  try {
+    const emailService = require('./email-service.cjs');
+    if (emailService && emailService.sendPasswordResetEmail) {
+      await emailService.sendPasswordResetEmail(user.email, resetToken, user.name);
+    }
+  } catch (e) {
+    console.error('❌ [Auth] Failed to send reset email:', e.message);
+  }
+
   return {
     success: true,
-    message: 'If an account exists, a reset email will be sent',
-    reset_token: resetToken // For sending email (don't expose in production API)
+    message: 'If an account exists, a reset email will be sent'
   };
 }
 
@@ -560,6 +588,47 @@ async function verifyEmail(token) {
 }
 
 /**
+ * Resend verification email
+ */
+async function resendVerificationEmail(email) {
+  const users = await db.query('users', { email: email.toLowerCase() });
+
+  // Always return success to prevent email enumeration
+  if (users.length === 0) {
+    return { success: true, message: 'If an account exists, a verification email will be sent' };
+  }
+
+  const user = users[0];
+
+  // Already verified
+  if (user.email_verified === 'true' || user.email_verified === true) {
+    return { success: true, message: 'Email already verified' };
+  }
+
+  // Generate new token
+  const verifyToken = generateToken(32);
+  const verifyExpires = new Date(Date.now() + CONFIG.security.verifyTokenExpiry).toISOString();
+
+  await db.update('users', user.id, {
+    email_verify_token: verifyToken,
+    email_verify_expires: verifyExpires,
+    updated_at: new Date().toISOString()
+  });
+
+  // Send verification email (token stays server-side)
+  try {
+    const emailService = require('./email-service.cjs');
+    if (emailService && emailService.sendVerificationEmail) {
+      await emailService.sendVerificationEmail(user.email, verifyToken, user.name);
+    }
+  } catch (e) {
+    console.error('❌ [Auth] Failed to resend verification email:', e.message);
+  }
+
+  return { success: true, message: 'If an account exists, a verification email will be sent' };
+}
+
+/**
  * Get current user
  */
 async function getCurrentUser(userId) {
@@ -633,6 +702,7 @@ module.exports = {
   resetPassword,
   changePassword,
   verifyEmail,
+  resendVerificationEmail,
   getCurrentUser,
   updateProfile,
   hasPermission,

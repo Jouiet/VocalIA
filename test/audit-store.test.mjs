@@ -88,14 +88,17 @@ describe('AuditStore Logging', () => {
     assert.strictEqual(entry.details.method, 'password');
   });
 
-  test('log generates integrity hash', () => {
+  test('log generates integrity hash with chain', () => {
     const entry = store.log(TENANT, {
       action: 'data.read',
       actor: 'user_002'
     });
     assert.ok(entry.hash);
     assert.strictEqual(typeof entry.hash, 'string');
-    assert.strictEqual(entry.hash.length, 16);
+    assert.strictEqual(entry.hash.length, 32);
+    // Chain hash: previous_hash links to prior entry
+    assert.ok(entry.previous_hash);
+    assert.strictEqual(typeof entry.previous_hash, 'string');
   });
 
   test('log defaults actor to system', () => {

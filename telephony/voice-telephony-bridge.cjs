@@ -55,9 +55,12 @@ const ContextBox = require('../core/ContextBox.cjs');
 const BillingAgent = require('../core/BillingAgent.cjs');
 
 // Session 250.44ter: ElevenLabs TTS for Darija (Ghizlane, Jawad, Ali)
-const { ElevenLabsClient, VOICE_IDS } = require('../core/elevenlabs-client.cjs');
+// M11 fix: require inside try/catch to prevent process crash if module missing
+let ElevenLabsClient = null;
+let VOICE_IDS = {};
 let elevenLabsClient = null;
 try {
+  ({ ElevenLabsClient, VOICE_IDS } = require('../core/elevenlabs-client.cjs'));
   elevenLabsClient = new ElevenLabsClient();
   if (elevenLabsClient.isConfigured()) {
     console.log('✅ ElevenLabs client initialized for Darija TTS');

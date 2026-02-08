@@ -332,7 +332,8 @@ describe('AuthService with mock DB', () => {
     assert.strictEqual(result.name, 'Test User');
     assert.strictEqual(result.role, 'user');
     assert.strictEqual(result.email_verified, false);
-    assert.ok(result.verify_token);
+    // F2 security fix: verify_token is NO LONGER exposed in API response
+    assert.strictEqual(result.verify_token, undefined);
   });
 
   test('register rejects duplicate email', async () => {
@@ -379,7 +380,26 @@ describe('AuthService with mock DB', () => {
     );
   });
 
-  test('login returns tokens for valid credentials', async () => {
+  test('login rejects unverified email (C2 security fix)', async () => {
+    // User registered but NOT verified — login MUST fail
+    await assert.rejects(
+      () => authService.login({
+        email: 'new@vocalia.ma',
+        password: 'StrongPass1'
+      }),
+      (err) => err instanceof AuthError && err.code === 'EMAIL_NOT_VERIFIED'
+    );
+  });
+
+  test('login returns tokens for verified credentials', async () => {
+    // Simulate email verification
+    const userEntries = [...users.values()];
+    const user = userEntries.find(u => u.email === 'new@vocalia.ma');
+    if (user) {
+      user.email_verified = true;
+      users.set(user.id, user);
+    }
+
     const result = await authService.login({
       email: 'new@vocalia.ma',
       password: 'StrongPass1'
@@ -390,6 +410,7 @@ describe('AuthService with mock DB', () => {
     assert.strictEqual(result.token_type, 'Bearer');
     assert.strictEqual(result.expires_in, 86400);
     assert.strictEqual(result.user.email, 'new@vocalia.ma');
+    assert.strictEqual(result.user.email_verified, true);
   });
 
   test('login rejects wrong password', async () => {
@@ -413,6 +434,7 @@ describe('AuthService with mock DB', () => {
   });
 
   test('logout succeeds', async () => {
+    // User must be verified to login (already verified in previous test)
     const loginResult = await authService.login({
       email: 'new@vocalia.ma',
       password: 'StrongPass1'

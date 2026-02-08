@@ -10,7 +10,7 @@
 
 const DB_API_URL = window.location.hostname === 'localhost'
   ? 'http://localhost:3013/api/db'
-  : 'https://api.vocalia.ma/db';
+  : 'https://api.vocalia.ma/api/db';
 
 class DBClient {
   constructor(baseUrl = DB_API_URL) {
@@ -21,10 +21,12 @@ class DBClient {
    * Make API request
    */
   async request(method, path, data = null) {
+    const token = localStorage.getItem('vocalia_access_token');
     const options = {
       method,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
       }
     };
 

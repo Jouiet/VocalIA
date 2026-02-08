@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | CommonJS (.cjs), 2 spaces, single quotes
-> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~83k lines | 3,764 tests (68 .mjs)
+> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~83k lines | 3,773 tests (68 .mjs)
 > 203 MCP tools | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -44,10 +44,10 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 9.9/10 — all features coded, tested, P0-WEBSITE 23/23 ✅, P0-MARKET complete, validator covers ALL 80 pages
-- **Production readiness**: 5.5/10 — website deployed, API backend LIVE on VPS (4 containers healthy), widget can chat, 0 paying customers
+- **Code completeness**: 8.4/10 — 250.168: 20 bugs fixed (auth tokens no longer leaked, email_verified enforced, nodemailer wired, StripeService customer_id saved, SecretVault random salt, >26 cols, body limit, quota bypass denied). Auth near-functional in code (needs SMTP on VPS). 54 total bugs (35 fixed, 19 remain)
+- **Production readiness**: 2.5/10 — Website deployed, API on VPS BUT: Docker data ephemeral, 7 missing VPS env vars, SMTP not configured. 0 paying customers
 - **Market strategy**: 1. Europe → 2. MENA → 3. International → 4. Morocco. USP = price (60% cheaper EU) + widget+telephony unified. Darija = 1 of 5 languages.
-- **VPS**: Hostinger KVM 2 (148.230.113.163) — vocalia-api, db-api, realtime, telephony. Traefik SSL.
-- **Next**: First paying customer → first connected external API
+- **VPS**: Hostinger KVM 2 (148.230.113.163) — vocalia-api, db-api, realtime, telephony. Traefik SSL. MISSING: Docker volumes, JWT_SECRET, VOCALIA_VAULT_KEY, STRIPE_SECRET_KEY, SMTP_*
+- **Next**: VPS infra fixes (Docker volumes, env vars, SMTP) → First paying customer
 
-*Last update: 08/02/2026 - Session 250.165 (Deep surgery ar/ary locales, SEO/AEO overhaul: llms.txt, sitemap hreflang, Schema.org areaServed+KSA)*
+*Last update: 09/02/2026 - Session 250.168 (Phase 4: 20 bugs fixed, 19 remain. Code 7.8→8.4, Weighted 6.8→7.3)*

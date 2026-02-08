@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Export dependencies (lazy loaded)
 let ExcelJS = null;
@@ -148,7 +149,7 @@ class ConversationStore {
    * Get tenant directory (creates if not exists)
    */
   getTenantDir(tenantId) {
-    const dir = path.join(this.baseDir, tenantId);
+    const dir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -159,14 +160,15 @@ class ConversationStore {
    * Get file path for a conversation
    */
   getFilePath(tenantId, sessionId) {
-    return path.join(this.getTenantDir(tenantId), `${sessionId}.json`);
+    const safeSession = sanitizeTenantId(sessionId);
+    return path.join(this.getTenantDir(tenantId), `${safeSession}.json`);
   }
 
   /**
    * Get retention days from tenant config
    */
   getRetentionDays(tenantId) {
-    const configPath = path.join(CLIENTS_DIR, tenantId, 'config.json');
+    const configPath = path.join(CLIENTS_DIR, sanitizeTenantId(tenantId), 'config.json');
     if (fs.existsSync(configPath)) {
       try {
         const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
@@ -879,10 +881,27 @@ class ConversationStore {
 
 // Singleton
 let instance = null;
+let purgeInterval = null;
 
 function getInstance(options = {}) {
   if (!instance) {
     instance = new ConversationStore(options);
+
+    // Session 250.167: Auto-schedule monthly purge (check every 12h if 1st of month)
+    if (!purgeInterval) {
+      purgeInterval = setInterval(() => {
+        const now = new Date();
+        if (now.getDate() === 1 && now.getHours() < 12) {
+          console.log('[ConversationStore] Auto-triggering monthly purge (1st of month)');
+          try {
+            instance.monthlyPurge();
+          } catch (e) {
+            console.error('[ConversationStore] Monthly purge error:', e.message);
+          }
+        }
+      }, 12 * 60 * 60 * 1000); // 12 hours
+      purgeInterval.unref();
+    }
   }
   return instance;
 }

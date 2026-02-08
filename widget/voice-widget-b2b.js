@@ -66,9 +66,13 @@
         EXIT_INTENT_DELAY: 5000,
         EXIT_INTENT_COOLDOWN: 24 * 60 * 60 * 1000,
 
-        // Paths - FIXED Session 250.90: Correct path to language files
-        LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
-        LOGO_PATH: '/public/images/logo.webp',
+        // Paths - H9 fix: Absolute URL for B2B embedding on third-party sites
+        LANG_PATH: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/voice-assistant/lang/voice-{lang}.json'
+            : 'https://vocalia.ma/voice-assistant/lang/voice-{lang}.json',
+        LOGO_PATH: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/public/images/logo.webp'
+            : 'https://vocalia.ma/public/images/logo.webp',
 
         // Auto-detection
         AUTO_DETECT_LANGUAGES: {

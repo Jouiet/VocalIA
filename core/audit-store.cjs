@@ -24,6 +24,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Paths
 const AUDIT_DIR = path.join(__dirname, '../data/audit');
@@ -91,7 +92,7 @@ class AuditStore {
    * Get tenant audit directory (creates if not exists)
    */
   getTenantDir(tenantId) {
-    const dir = path.join(this.baseDir, tenantId);
+    const dir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -152,14 +153,26 @@ class AuditStore {
       hash: null
     };
 
-    // Calculate integrity hash (SHA-256 of entry without hash field)
-    const entryForHash = { ...auditEntry };
+    // Session 250.167: Chain hash with previous entry for tamper detection
+    let previousHash = '0000000000000000';
+    try {
+      if (fs.existsSync(auditPath)) {
+        const lines = fs.readFileSync(auditPath, 'utf8').trim().split('\n');
+        if (lines.length > 0 && lines[lines.length - 1]) {
+          const lastEntry = JSON.parse(lines[lines.length - 1]);
+          previousHash = lastEntry.hash || previousHash;
+        }
+      }
+    } catch { /* first entry or corrupt — use zero hash */ }
+
+    const entryForHash = { ...auditEntry, previous_hash: previousHash };
     delete entryForHash.hash;
+    auditEntry.previous_hash = previousHash;
     auditEntry.hash = crypto
       .createHash('sha256')
       .update(JSON.stringify(entryForHash))
       .digest('hex')
-      .substring(0, 16);
+      .substring(0, 32);
 
     // Append to JSONL file
     fs.appendFileSync(auditPath, JSON.stringify(auditEntry) + '\n');
@@ -379,7 +392,7 @@ class AuditStore {
         .createHash('sha256')
         .update(JSON.stringify(entryForHash))
         .digest('hex')
-        .substring(0, 16);
+        .substring(0, 32);
 
       if (calculatedHash === entry.hash) {
         results.valid++;

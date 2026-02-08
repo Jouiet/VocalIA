@@ -202,6 +202,7 @@ function requireVerifiedEmail(req, res, next) {
  * Rate limit state (in-memory, use Redis for production scale)
  */
 const rateLimitState = new Map();
+const RATE_LIMIT_MAX_ENTRIES = 10000; // Session 250.167: Cap to prevent memory DoS
 
 /**
  * Rate limiting middleware
@@ -228,6 +229,10 @@ function rateLimit({ windowMs = 60000, max = 100, keyGenerator = null } = {}) {
     }
 
     entry.count++;
+    // Session 250.167: Enforce maxSize to prevent memory DoS from distributed IPs
+    if (rateLimitState.size >= RATE_LIMIT_MAX_ENTRIES && !rateLimitState.has(key)) {
+      return sendError(res, 429, 'Too many requests', 'RATE_LIMITED');
+    }
     rateLimitState.set(key, entry);
 
     // Check limit

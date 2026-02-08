@@ -2451,14 +2451,14 @@ function startServer(port = 3004) {
             products: {
               triggers: ['produit', 'product', 'vendez', 'offre', '3andkom'],
               response: lang === 'ary'
-                ? 'VocalIA 3andha 4 dial offres: Starter (49€/شهر), Pro (99€/شهر), E-commerce (99€/شهر), و Telephony (199€/شهر + $0.25/دقيقة للدارجة)'
-                : 'VocalIA propose 4 offres: Starter (49€/mois), Pro (99€/mois), E-commerce (99€/mois) et Telephony (199€/mois + 0.10€/min, Darija: $0.25/min)'
+                ? 'VocalIA 3andها 3 dial offres: Starter (49€/شهر), Pro/E-commerce (99€/شهر), و Telephony (199€/شهر + 0.10€/دقيقة)'
+                : 'VocalIA propose 3 offres: Starter (49€/mois), Pro/E-commerce (99€/mois) et Telephony (199€/mois + 0.10€/min)'
             },
             pricing: {
               triggers: ['prix', 'price', 'tarif', 'combien', 'chhal'],
               response: lang === 'ary'
-                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + $0.25/دقيقة للدارجة.'
-                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.10€/min (Darija: $0.25/min).'
+                ? 'Starter: 49€/شهر. Pro/E-commerce: 99€/شهر. Telephony: 199€/شهر + 0.10€/دقيقة.'
+                : 'Starter: 49€/mois. Pro/E-commerce: 99€/mois. Telephony: 199€/mois + 0.10€/min.'
             }
           };
         }
@@ -2627,7 +2627,7 @@ function startServer(port = 3004) {
             return;
           }
           const { message, history = [], sessionId, language: reqLanguage, widget_type: reqWidgetType } = bodyParsed.data;
-          let language = reqLanguage || VOICE_CONFIG?.defaultLanguage || 'fr';
+          let language = reqLanguage || 'fr';
 
           if (!message) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -2645,7 +2645,9 @@ function startServer(port = 3004) {
           console.log(`[Voice API] Processing (${language}): "${message.substring(0, 50)}..."`);
 
           // Session 250.57: Check quota before processing
-          const tenantId = bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default';
+          // Session 250.167: Sanitize tenantId to prevent path traversal
+          const rawTenantId = bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default';
+          const tenantId = rawTenantId.replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
 
           // Session 250.155: Origin↔tenant cross-validation + API key
           const tenantCheck = validateOriginTenant(req.headers.origin, tenantId);
@@ -2764,7 +2766,6 @@ function startServer(port = 3004) {
           // Session 250.57: Persist conversation (multi-tenant)
           // ⛔ RULE: This is for CLIENT CONSULTATION ONLY - NEVER for KB/RAG
           try {
-            const tenantId = bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default';
             conversationStore.addMessage(tenantId, leadSessionId, 'user', message, {
               language, source: 'widget', persona: persona?.id
             });
@@ -3451,10 +3452,10 @@ function startServer(port = 3004) {
       const { VoicePersonaInjector, PERSONAS } = require('../personas/voice-persona-injector.cjs');
       const personaCount = Object.keys(PERSONAS).length;
       const testPersona = VoicePersonaInjector.getPersona(null, null, 'agency_internal', 'B2B');
-      if (testPersona && personaCount >= 40) {
+      if (testPersona && personaCount >= 38) {
         checks.push({ name: 'Persona Injector', status: 'OK', message: `${personaCount} personas loaded` });
       } else {
-        checks.push({ name: 'Persona Injector', status: 'WARN', message: `Only ${personaCount} personas` });
+        checks.push({ name: 'Persona Injector', status: 'WARN', message: `Only ${personaCount} personas (expected ≥38)` });
       }
     } catch (e) {
       checks.push({ name: 'Persona Injector', status: 'FAIL', message: e.message });

@@ -40,11 +40,12 @@ class StripeService {
             metadata: { tenantId: tenant.id }
         });
 
-        // 4. Save ID back to DB
-        // Note: We need to implement update in standard DB flow
-        // For now we assume the caller handles DB updates or we use a dedicated update method
-        // In a real system, we'd update the tenant record here.
-        // await this.db.update('tenants', tenantId, { stripe_customer_id: newCustomer.id });
+        // 4. Save Stripe customer ID back to DB (C7 fix)
+        try {
+          await this.db.update('tenants', tenantId, { stripe_customer_id: newCustomer.id });
+        } catch (e) {
+          console.error(`❌ [StripeService] Failed to save stripe_customer_id for ${tenantId}:`, e.message);
+        }
 
         return newCustomer;
     }

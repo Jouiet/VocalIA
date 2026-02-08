@@ -234,6 +234,15 @@
   <script src="/app/components/app-components.js" defer></script>
 
   <script>
+    // Session 250.167: Auth guard
+    (function() {
+      const token = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token');
+      if (!token) {
+        window.location.href = '/app/auth/login.html?return=' + encodeURIComponent(window.location.pathname);
+        return;
+      }
+    })();
+
     // Init icons
     if (window.lucide) lucide.createIcons();
 

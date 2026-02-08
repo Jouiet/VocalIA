@@ -165,8 +165,8 @@
         </div>
       </div>
 
-      <!-- OAuth Buttons -->
-      <div class="space-y-3">
+      <!-- OAuth Buttons (hidden until OAuthGateway is reachable) -->
+      <div class="space-y-3 hidden" id="oauth-section">
         <button
           type="button"
           id="google-login"
@@ -325,23 +325,30 @@
       }
     });
 
-    // Google OAuth
-    googleLoginBtn.addEventListener('click', () => {
-      const oauthUrl = window.location.hostname === 'localhost'
-        ? 'http://localhost:3010/oauth/start/google'
-        : 'https://api.vocalia.ma/oauth/start/google';
+    // Google OAuth — only show button if OAuthGateway is reachable
+    const oauthBaseUrl = window.location.hostname === 'localhost'
+      ? 'http://localhost:3010'
+      : 'https://api.vocalia.ma';
 
-      window.location.href = oauthUrl;
+    fetch(`${oauthBaseUrl}/oauth/health`, { method: 'GET', signal: AbortSignal.timeout(2000) })
+      .then(r => { if (r.ok) document.getElementById('oauth-section').classList.remove('hidden'); })
+      .catch(() => { /* OAuthGateway not deployed — keep hidden */ });
+
+    googleLoginBtn.addEventListener('click', () => {
+      window.location.href = `${oauthBaseUrl}/oauth/start/google`;
     });
 
-    // Language switcher
+    // Language switcher (M1 fix: actually reload translations)
     document.querySelectorAll('[data-action="switchLang"]').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         const lang = btn.getAttribute('data-params');
         localStorage.setItem('vocalia_lang', lang);
         document.documentElement.lang = lang;
         document.documentElement.dir = ['ar', 'ary'].includes(lang) ? 'rtl' : 'ltr';
-        // Would trigger i18n.translatePage() here
+        if (window.VocaliaI18n) {
+          await VocaliaI18n.initI18n(lang);
+          VocaliaI18n.translatePage();
+        }
       });
     });
 

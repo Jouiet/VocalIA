@@ -53,7 +53,9 @@ class SecretVault {
     if (!ENCRYPTION_KEY) {
       throw new Error('SecretVault encryption key not configured (VOCALIA_VAULT_KEY)');
     }
-    const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
+    // H13 fix: Random salt per operation (32 bytes) instead of static 'salt'
+    const salt = crypto.randomBytes(32);
+    const key = crypto.scryptSync(ENCRYPTION_KEY, salt, 32);
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
 
@@ -61,7 +63,9 @@ class SecretVault {
     encrypted += cipher.final('hex');
     const authTag = cipher.getAuthTag();
 
-    return Buffer.concat([iv, authTag, Buffer.from(encrypted, 'hex')]).toString('base64');
+    // Format v2: version(1) + salt(32) + iv(16) + authTag(16) + ciphertext
+    const version = Buffer.from([0x02]);
+    return Buffer.concat([version, salt, iv, authTag, Buffer.from(encrypted, 'hex')]).toString('base64');
   }
 
   /**
@@ -74,19 +78,34 @@ class SecretVault {
       throw new Error('SecretVault encryption key not configured (VOCALIA_VAULT_KEY)');
     }
     try {
-      const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
       const buffer = Buffer.from(encryptedValue, 'base64');
 
+      // Detect format version
+      if (buffer[0] === 0x02) {
+        // v2 format: version(1) + salt(32) + iv(16) + authTag(16) + ciphertext
+        const salt = buffer.slice(1, 33);
+        const iv = buffer.slice(33, 49);
+        const authTag = buffer.slice(49, 65);
+        const encrypted = buffer.slice(65);
+        const key = crypto.scryptSync(ENCRYPTION_KEY, salt, 32);
+
+        const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
+        decipher.setAuthTag(authTag);
+        let decrypted = decipher.update(encrypted, undefined, 'utf8');
+        decrypted += decipher.final('utf8');
+        return decrypted;
+      }
+
+      // v1 format (legacy): iv(16) + authTag(16) + ciphertext — static salt
+      const key = crypto.scryptSync(ENCRYPTION_KEY, 'salt', 32);
       const iv = buffer.slice(0, 16);
       const authTag = buffer.slice(16, 32);
       const encrypted = buffer.slice(32);
 
       const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
       decipher.setAuthTag(authTag);
-
       let decrypted = decipher.update(encrypted, undefined, 'utf8');
       decrypted += decipher.final('utf8');
-
       return decrypted;
     } catch (error) {
       console.error(`[SecretVault] Decryption failed: ${error.message}`);

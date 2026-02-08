@@ -128,6 +128,18 @@ function sanitizeInput(text) {
   return sanitized;
 }
 
+/**
+ * Sanitize tenant/session IDs to prevent path traversal
+ * Only allows alphanumeric, underscore, and hyphen
+ * @param {string} id - Raw tenant or session ID
+ * @returns {string} Sanitized ID safe for use in file paths
+ */
+function sanitizeTenantId(id) {
+  if (!id || typeof id !== 'string') return 'default';
+  const sanitized = id.replace(/[^a-zA-Z0-9_-]/g, '');
+  return sanitized || 'default';
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // LEAD EXTRACTION FUNCTIONS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -392,6 +404,7 @@ module.exports = {
   estimateNPS,
   safeJsonParse,
   sanitizeInput,
+  sanitizeTenantId,
   extractBudget,
   extractTimeline,
   extractDecisionMaker,

@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.165 (Deep surgery: ar/ary locale complete repositioning + SEO/AEO/llms.txt/sitemap/Schema.org)
-> **Code Completeness:** 9.9/10 | **Production Readiness:** 5.5/10 (website deployed, API backend LIVE on VPS, 4 services healthy, widget can chat, CORS unblocked, multi-tenant security hardened, 0 paying customers)
+> **Date:** 2026-02-09 | **Session:** 250.168 (18 bugs fixed — auth security, quota security, billing, >26 col, nodemailer, SecretVault salt, i18n auth)
+> **Code Completeness:** 8.4/10 | **Production Readiness:** 2.5/10 (website deployed, API on VPS but ephemeral data, auth near-functional, billing wired, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160) + market repositioning (250.164)
+> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160) + market repositioning (250.164) + **DEEP AUDIT 250.166** (39 bugs after counter-audit) + **PHASE 3 INTERNAL AUDIT 250.167** (+15 bugs found, 15 fixed) + **PHASE 4 FIXES 250.168** (18 bugs fixed)
 
 ---
 
@@ -20,37 +20,37 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.9/10** — All features coded and tested (3,763 tests, 68 files). P0-AUDIT 9/9, P0-WEBSITE 23/23 ✅. Darija $0.25/min implemented. Zero business/factual errors on website. Multi-tenant security hardened. Shadow DOM 7/7 widgets. Market repositioning complete: Europe-first, Darija normalized as 1-of-5 languages.
-**Production Readiness: 5.5/10** — Website deployed at vocalia.ma. API backend LIVE on VPS (4 containers). 0 paying customers. CORS supports tenant domains. All code tasks DONE.
+**Code Completeness: 8.4/10** — Features coded and tested (3,773 tests, 68 files). 250.168: 18 bugs fixed (auth token leak F2/F7, email verified check C2, quota bypass C10, nodemailer F3/C11, body size H1, SecretVault salt H13, StripeService C7/C8, >26 col H7, persona threshold H12, db-client path H4, OAuth button C1, resend-verification F4, cache stale H6, B2B lang path H9, ElevenLabs require M11, auth page i18n M1). Auth system near-functional (tokens no longer leaked, email verification enforced, emails wired). Billing wired (StripeService saves customer_id). Docker still ephemeral.
+**Production Readiness: 2.5/10** — Website deployed at vocalia.ma. API on VPS but: Docker data ephemeral, 7 missing VPS env vars, SMTP not configured. 0 paying customers.
 
-> **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested. Production readiness measures what's deployed and serving real users.
+> **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
 
-| # | Dimension | Score 250.158 | Score 250.160 | Delta | Justification (250.160) |
+| # | Dimension | Score 250.160 | Score 250.166 | Delta | Justification (250.166 Deep Audit) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,764 tests pass, 0 fail, 0 skip (ESM) |
-| 2 | Sécurité | 10.0 | 10.0 | 0 | A2UI XSS sanitized, Shadow DOM 7/7, escapeHTML 7/7 |
-| 3 | Production readiness | 3.0 | **5.5** | **+2.5** | Website deployed, API backend LIVE on VPS (4 containers healthy), widget can chat, 0 paying customers |
-| 4 | Documentation accuracy | 9.0 | **10.0** | **+1.0** | Technical docs accurate. 64→0 business/factual errors on website (validator v3.0 23/23 ✅). Darija $0.25/min documented. |
-| 5 | Architecture code | 10.0 | 10.0 | 0 | Shadow DOM ALL 7 widgets, full CSS isolation |
-| 6 | Multi-tenant | 9.5 | 9.5 | 0 | No change |
-| 7 | i18n | 10.0 | 10.0 | 0 | 4,858 keys × 5 langs, 170+ broken translations fixed (250.159) |
-| 8 | Intégrations | 8.0 | 8.0 | 0 | No change |
-| 9 | Developer experience | 9.5 | **10.0** | **+0.5** | Validator v3.0: 23 checks (17 CSS + 6 business/factual). Catches eliminated products, old pricing, uptime claims, unverified metrics, competitive claims, telephony base fee |
-| 10 | Mémoire & docs | 9.0 | 9.0 | 0 | No change |
+| 1 | Tests unitaires | 7.0 | **7.5** | +0.5 | 3,773 tests pass, 0 fail. Added auth security tests (C2 email_verified, F2 token exposure), quota tests (C10), columnLetter/sheetRange tests (H7) |
+| 2 | Sécurité | 10.0 | **7.5** | **-2.5** | 250.168: +1.5 — Fixed F2/F7 tokens no longer exposed, C2 email_verified enforced, C10 unknown tenant denied, H1 body limit 1MB, H13 random salt per op. STILL: F1 JWT_SECRET random, H5 WS token in query, H8 widget config injection |
+| 3 | Production readiness | 5.5 | **2.5** | **-3.0** | Docker NO volumes (data ephemeral), 7 missing env vars (JWT_SECRET, VAULT_KEY, STRIPE, SMTP). Auth near-functional in code (needs SMTP) |
+| 4 | Documentation accuracy | 10.0 | **8.0** | **-2.0** | Website content accurate. BUT: ROADMAP scores were inflated (9.9 code was false), admin dashboard shows hardcoded mrrGrowth:18 |
+| 5 | Architecture code | 10.0 | **8.0** | **-2.0** | Shadow DOM 7/7 good. BUT: 2 sources of vérité (Sheets vs JSON), quota resets on restart, GoogleSheetsDB 26-col limit, stale cache in update() |
+| 6 | Multi-tenant | 9.5 | **7.5** | **-2.0** | CORS + origin↔tenant good. BUT: VOCALIA_VAULT_KEY missing (SecretVault broken), quota ephemeral, tenant config JSON not synced with Sheets |
+| 7 | i18n | 10.0 | 10.0 | 0 | 4,858 keys × 5 langs verified |
+| 8 | Intégrations | 8.0 | **5.5** | **-2.5** | 250.168: +1.5 — Stripe: customer_id save wired (C7). nodemailer installed + email functions added (F3/C11). STILL: Payzone dead code, HubSpot key not in VPS, OAuthGateway not deployed |
+| 9 | Developer experience | 10.0 | **9.5** | **-0.5** | 250.168: +0.5 — Persona threshold fixed (40→38), columnLetter/sheetRange beyond 26 col (H7). express used by OAuthGateway+WebhookRouter (not unused) |
+| 10 | Mémoire & docs | 9.0 | **8.5** | **-0.5** | Scores were inflated pre-audit. Now corrected with factual deep audit data |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
-| 1 (7.0) | 15% | 1.050 |
-| 2 (10.0) | 15% | 1.500 |
-| 3 (5.5) | 10% | 0.550 |
-| 4 (10.0) | 10% | 1.000 |
-| 5 (10.0) | 10% | 1.000 |
-| 6 (9.5) | 10% | 0.950 |
+| 1 (7.5) | 15% | 1.125 |
+| 2 (7.5) | 15% | 1.125 |
+| 3 (2.5) | 10% | 0.250 |
+| 4 (8.0) | 10% | 0.800 |
+| 5 (8.0) | 10% | 0.800 |
+| 6 (7.5) | 10% | 0.750 |
 | 7 (10.0) | 5% | 0.500 |
-| 8 (8.0) | 10% | 0.800 |
-| 9 (10.0) | 10% | 1.000 |
-| 10 (9.0) | 5% | 0.450 |
-| **TOTAL** | **100%** | **8.800** → **~8.8/10** (250.163 — VPS deployment LIVE, Production +2.5) |
+| 8 (5.5) | 10% | 0.550 |
+| 9 (9.5) | 10% | 0.950 |
+| 10 (8.5) | 5% | 0.425 |
+| **TOTAL** | **100%** | **7.275** → **~7.3/10** (250.168 — 18 bugs fixed: auth/quota/billing/i18n) |
 
 ---
 
@@ -289,7 +289,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 3,764 tests | 3,763 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.156)
+**TOTAL: 3,773 tests | 3,773 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.168)
 
 Top test suites (by count):
 
@@ -323,7 +323,160 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-## 6. Résumé Exécutif — Plan d'Action
+## 6. P0-DEEPAUDIT — 51 Bugs (39 Phase 2 + 12 Phase 3) | 12 Fixed (250.167)
+
+> **Phase 2 (250.166)**: Line-by-line code review of all critical modules. 39 bugs after counter-audit.
+> **Phase 3 (250.167)**: Internal audit — 14 bugs found, counter-audit reduced to 12 (C14 doublon of C2, H13 admin pages have auth).
+> **Fixes (250.167)**: 12 bugs fixed (F8, C3, C4, C12, C13, H15, H16, H17, M12, M13, M14, M15). 39 remain.
+> **Counter-audit accuracy**: Phase 2: 77% exact, 0% false. Phase 3: 86% exact (12/14), 14% false/doublon.
+
+### 6.1 FATAL (6)
+
+| # | Bug | File:Line | Impact |
+|:-:|:----|:----------|:-------|
+| F1 | JWT_SECRET not in VPS env vars — random on each restart | auth-service.cjs:23 | All user sessions invalidated on restart |
+| F2 | ~~Password reset token returned in API response~~ | auth-service.cjs:457 | ✅ **FIXED 250.168** — Token removed from response, sent via email |
+| F3 | ~~Emails never sent — nodemailer NOT in package.json~~ | package.json, email-service.cjs:18 | ✅ **FIXED 250.168** — nodemailer ^6.10.1 + sendVerificationEmail + sendPasswordResetEmail |
+| F4 | ~~/api/auth/resend-verification endpoint doesn't exist~~ | db-api.cjs (missing) | ✅ **FIXED 250.168** — Endpoint + resendVerificationEmail function added |
+| F6 | VOCALIA_VAULT_KEY absent from VPS env | docker-compose.production.yml | All SecretVault encrypt/decrypt throws error |
+| F7 | ~~register() returns verify_token in response~~ | auth-service.cjs:248 | ✅ **FIXED 250.168** — Token removed from response (see F2 fix) |
+
+### 6.2 CRITICAL (10)
+
+| # | Bug | File:Line | Impact |
+|:-:|:----|:----------|:-------|
+| C1 | ~~Google OAuth button → OAuthGateway (port 3010) not deployed~~ | login.html:330 | ✅ **FIXED 250.168** — Button hidden by default, shown only if /oauth/health reachable |
+| C2 | ~~Login doesn't check email_verified~~ | auth-service.cjs:255 | ✅ **FIXED 250.168** — EMAIL_NOT_VERIFIED error with 403 |
+| C3 | ~~4 app pages without auth guards~~ | knowledge-base, telephony, onboarding, catalog | ✅ **FIXED 250.167** — Auth guards added to all 4 pages |
+| C4 | ~~catalog.html uses `vocalia_auth` (incompatible)~~ | catalog.html | ✅ **FIXED 250.167** — Fixed to `vocalia_access_token` + `vocalia_user` |
+| C5 | ~~knowledge-base.html wrong auth storage key~~ | knowledge-base.html | ✅ **FIXED 250.168** — `vocalia_token`→`vocalia_access_token` (3 occurrences + logout). No ESM issue found. |
+| C6 | Docker containers NO volumes — quota/data resets on restart | docker-compose.production.yml | Quotas, HITL, conversations ALL lost |
+| C7 | ~~StripeService customer_id save COMMENTED OUT~~ | StripeService.cjs:47 | ✅ **FIXED 250.168** — Uncommented, saves after customer creation |
+| C8 | ~~stripe_customer_id NOT in GoogleSheetsDB schema~~ | GoogleSheetsDB.cjs:38-62 | ✅ **FIXED 250.168** — Added as 27th column in tenants schema |
+| C10 | ~~Quota bypass: unknown tenant → getTenantConfig() returns null → checkQuota allows~~ | GoogleSheetsDB.cjs:721,776 | ✅ **FIXED 250.168** — Returns allowed:false for unknown tenants |
+| C11 | ~~nodemailer not in package.json dependencies~~ | package.json:34-48 | ✅ **FIXED 250.168** — nodemailer ^6.10.1 added (see F3) |
+
+### 6.3 HIGH (13)
+
+| # | Bug | File:Line | Impact |
+|:-:|:----|:----------|:-------|
+| H1 | ~~db-api.cjs parseBody() NO body size limit~~ | db-api.cjs:273-286 | ✅ **FIXED 250.168** — MAX_BODY_SIZE = 1MB, req.destroy() on overflow |
+| H2 | STRIPE_SECRET_KEY absent from VPS | docker-compose.production.yml | BillingAgent/StripeService throw on every call |
+| H3 | SMTP not configured on VPS | docker-compose.production.yml | Email service always null transporter |
+| H4 | ~~db-client.js wrong API path (/db vs /api/db)~~ | db-client.js:13 | ✅ **FIXED 250.168** — /db→/api/db + Authorization header added |
+| H5 | WebSocket token passed in query string | db-api.cjs:2936 | Token visible in server/proxy logs |
+| H6 | ~~GoogleSheetsDB update() reads STALE cache inside lock~~ | GoogleSheetsDB.cjs:432 | ✅ **FIXED 250.168** — invalidateCache() before findById inside lock |
+| H7 | ~~GoogleSheetsDB at 26/26 columns (A:Z limit)~~ | GoogleSheetsDB.cjs:326,441 | ✅ **FIXED 250.168** — columnLetter() + sheetRange() support >26 columns |
+| H8 | Widget config injection via Object.assign(CONFIG, window.VOCALIA_CONFIG) | voice-widget-v3.js:3584 | Any host page script can override API URL |
+| H9 | ~~Widget B2B LANG_PATH resolves on HOST domain~~ | voice-widget-b2b.js:70 | ✅ **FIXED 250.168** — Absolute URL to vocalia.ma for third-party sites |
+| H10 | Telephony HITL pending data lost on restart | voice-telephony-bridge.cjs:388 | Pending approval actions silently deleted |
+| H12 | ~~Startup health check persona threshold stale (>=40 vs 38 actual)~~ | voice-api-resilient.cjs:3454 | ✅ **FIXED 250.168** — Threshold corrected to >= 38 |
+| H13 (ex-F5) | ~~SecretVault static salt `'salt'` for scrypt~~ | SecretVault.cjs:56 | ✅ **FIXED 250.168** — Random 32-byte salt per op (v2 format + v1 backward compat) |
+| H14 (ex-C9) | Admin dashboard mrrGrowth hardcoded 18% | voice-api-resilient.cjs:464 | Internal dashboard — false metric but not user-facing |
+
+### 6.4 MEDIUM (10)
+
+| # | Bug | File:Line | Impact |
+|:-:|:----|:----------|:-------|
+| M1 | ~~Language switcher doesn't reload translations on auth pages~~ | verify-email.html:280 | ✅ **FIXED 250.168** — initI18n(lang) + translatePage() on all 5 auth pages |
+| M2 | signup says "check email" but no email ever sent | signup.html, auth-service.cjs | Dead-end user experience |
+| M3 | forgot-password always shows success (dead-end) | forgot-password.html:238 | User waits for email that never comes |
+| M5 | Google Sheets as auth database (100 req/100s limit) | GoogleSheetsDB.cjs:16 | Scalability ceiling for user auth |
+| M6 | Dashboard metrics in-memory only — lost on restart | voice-api-resilient.cjs:268 | Admin dashboard always empty after restart |
+| M8 | GoogleSheetsDB ID: 8-char truncated UUID | GoogleSheetsDB.cjs:177 | Higher collision probability at scale |
+| M9 | Quota config (JSON) vs tenant data (Sheets) never synced | GoogleSheetsDB.cjs:721 | Two sources of truth |
+| M10 | Payzone gateway dead code (credentials never configured) | payzone-global-gateway.cjs | Unused instantiation in BillingAgent |
+| M11 | ~~ElevenLabs require() OUTSIDE try/catch — missing module crashes process~~ | voice-telephony-bridge.cjs:58 | ✅ **FIXED 250.168** — Wrapped in try/catch, graceful null fallback |
+| M12 (ex-H11) | ~~express in package.json but unused by deployed services~~ | package.json:42 | ❌ **NOT A BUG** — express IS used by OAuthGateway.cjs + WebhookRouter.cjs |
+
+### 6.5 Systemic Patterns (Top 5)
+
+1. **Docker Ephemerality** — No volumes. Quotas, HITL, conversations, ContextBox, metrics all lost on restart. Affects 6+ subsystems.
+2. **Auth Non-Functional** — JWT random + tokens leaked + no emails = complete auth system exists in code but doesn't work.
+3. **Two Sources of Truth** — Google Sheets (tenants/users) vs local JSON (quotas/config) vs in-memory (metrics/sessions). Never synchronized.
+4. **VPS Env Vars Incomplete** — Missing: JWT_SECRET, VOCALIA_VAULT_KEY, STRIPE_SECRET_KEY, SMTP_HOST/USER/PASS, PAYZONE_*, HUBSPOT_*.
+5. **Code Exists ≠ Feature Deployed** — StripeService, BillingAgent, Payzone, OAuthGateway, WebhookRouter, EmailService = sophisticated code, zero functional in production.
+
+### 6.6 Phase 3 Internal Audit (250.167) — 12 Bugs (+1F, +2C, +4H, +5M)
+
+> Counter-audit: 14 found → 12 confirmed. C14 (login email_verified) = doublon of C2. H13 (admin pages no auth) = FALSE (all 5 admin pages use `requireRole('admin')`).
+
+#### FATAL (1) — ALL FIXED
+
+| # | Bug | File:Line | Status |
+|:-:|:----|:----------|:-------|
+| F8 | Path traversal via tenantId in path.join() | conversation-store, audit-store, GoogleSheetsDB | ✅ **FIXED** — `sanitizeTenantId()` in voice-api-utils.cjs, imported in all 4 modules |
+
+#### CRITICAL (2) — ALL FIXED
+
+| # | Bug | File:Line | Status |
+|:-:|:----|:----------|:-------|
+| C12 | Tenant isolation absent on KB/Catalog/Conversations (6 endpoints) | db-api.cjs | ✅ **FIXED** — `user.tenant_id !== tenantId` check on all 6 endpoints |
+| C13 | WebSocket grok-realtime zero auth — anyone can connect + inject instructions | grok-voice-realtime.cjs | ✅ **FIXED** — Origin+tenant validation, instruction injection removed from query params |
+
+#### HIGH (4) — 2 FIXED, 1 MONITORING, 1 NON-FIXABLE
+
+| # | Bug | File:Line | Status |
+|:-:|:----|:----------|:-------|
+| H15 | Rule-based fallback: "$0.25/min Darija" hardcoded + "4 offres" (should be 3) | voice-api-resilient.cjs | ✅ **FIXED** — Removed Darija price, changed to "0.10€/min", "3 offres" |
+| H16 | ~~(merged into H15)~~ | — | ✅ **FIXED** |
+| H17 | Monthly conversation purge never auto-executed | conversation-store.cjs | ✅ **FIXED** — Auto-schedule: check every 12h, purge on 1st of month |
+| H14 | Gemini TTS model is `preview` (gemini-2.5-flash-preview-tts) | grok-voice-realtime.cjs | ⚠️ **MONITORING** — No stable version exists (verified Feb 2026) |
+
+#### MEDIUM (5) — 4 FIXED, 1 NON-FIXABLE
+
+| # | Bug | File:Line | Status |
+|:-:|:----|:----------|:-------|
+| M12 | Rate limiter Map no maxSize — unbounded memory from distributed IPs | auth-middleware.cjs | ✅ **FIXED** — RATE_LIMIT_MAX_ENTRIES = 10000 cap |
+| M13 | WebSocket welcome message exposes user email | db-api.cjs | ✅ **FIXED** — Email removed from welcome payload |
+| M14 | Inconsistent sanitization: ContextBox sanitizes, others don't | conversation-store, audit-store, GoogleSheetsDB | ✅ **FIXED** — All use shared `sanitizeTenantId()` (by F8 fix) |
+| M15 | Audit hash truncated to 16 chars (low collision resistance) | audit-store.cjs | ✅ **FIXED** — 32 chars + chain hash (previous_hash field) |
+| M16 | Gemini API key passed in URL query string (visible in logs) | grok-voice-realtime.cjs | ❌ **NON-FIXABLE** — Google standard pattern for Gemini API |
+
+### 6.7 Phase 3b — Prompt Quality + Runtime Bugs (250.167)
+
+| # | Bug | File:Line | Status |
+|:-:|:----|:----------|:-------|
+| H18 | AGENCY prompt hyper-restrictif ("15 mots max", "5 lignes max", tunnel vidéo) → réponses mécaniques | voice-persona-injector.cjs:79-262 | ✅ **FIXED** — Prompts réécrits 5 langs: naturels, connaissance sectorielle, multi-CTA |
+| H19 | "4 offres" stale dans 5 prompts (devrait être 3 gammes de prix) | voice-persona-injector.cjs:98,135,172,209,246 | ✅ **FIXED** — "3 gammes: Starter, Pro/E-commerce, Telephony" |
+| C14 | `VOICE_CONFIG` ReferenceError — variable non déclarée dans /respond handler | voice-api-resilient.cjs:2630 | ✅ **FIXED** — Removed, fallback direct à 'fr' |
+
+### 6.9 Phase 4 Fixes (250.168) — 18 Bugs Fixed
+
+| # | Bug | Fix |
+|:-:|:----|:----|
+| F2 | verify_token in register() response | Removed — token sent via email server-side |
+| F3 | nodemailer NOT in package.json | Added nodemailer ^6.10.1 + sendVerificationEmail + sendPasswordResetEmail |
+| F4 | /api/auth/resend-verification missing | Added endpoint in db-api.cjs + resendVerificationEmail in auth-service.cjs |
+| F7 | reset_token in requestPasswordReset() | Removed — token sent via email server-side |
+| C1 | Google OAuth → non-deployed OAuthGateway | Button hidden by default, shown only if /oauth/health reachable |
+| C2 | Login skips email_verified | Added check: EMAIL_NOT_VERIFIED error with 403 |
+| C7 | StripeService customer_id save COMMENTED OUT | Uncommented — now saves after customer creation |
+| C8 | stripe_customer_id NOT in schema | Added to tenants.columns (27th column) |
+| C10 | Quota bypass for unknown tenants | Returns allowed: false (was true with Infinity) |
+| H1 | db-api parseBody() no body limit | Added MAX_BODY_SIZE = 1MB, req.destroy() on overflow |
+| H4 | db-client.js wrong path + no auth | Fixed /db→/api/db + added Authorization header |
+| H6 | GoogleSheetsDB update() stale cache | invalidateCache() before findById inside lock |
+| H7 | GoogleSheetsDB A:Z limit (26 cols) | columnLetter() + sheetRange() support >26 columns |
+| H9 | Widget B2B LANG_PATH host domain | Absolute URL to vocalia.ma for third-party sites |
+| H12 | Persona health check 40→38 | Fixed threshold |
+| H13 | SecretVault static salt | Random 32-byte salt per encryption (v2 format + v1 backward compat) |
+| M1 | Language switcher no reload on auth | Added translatePage() call on 5 auth pages |
+| M11 | ElevenLabs require outside try/catch | Wrapped in try/catch |
+
+### 6.10 Cumulative Bug Summary
+
+| Phase | Total | Fixed | Remaining |
+|:------|:-----:|:-----:|:---------:|
+| Phase 2 (250.166) | 39 (6F+10C+13H+10M) | 2 (C3, C4) | 37 |
+| Phase 3 (250.167) | 12 (1F+2C+4H+5M) | 10 | 2 (H14 monitoring, M16 non-fixable) |
+| Phase 3b (250.167) | 3 (1C+2H) | 3 | 0 |
+| Phase 4 (250.168) | 0 (fixes only) | 20 | 0 |
+| **CUMULATIVE** | **54** | **35** | **19** (+ 2 non-fixable/monitoring + 2 resolved-not-bugs) |
+
+---
+
+## 7. Résumé Exécutif — Plan d'Action
 
 | Phase | Status | Tâches | Score |
 |:------|:------:|:------:|:-----:|
@@ -339,25 +492,49 @@ create_booking          get_recommendations    qualify_lead
 | **P0-WEBSITE (250.161)** | ✅ **DONE** | 64→0 errors, 44→2 warnings | 23/23 ✅ |
 | **P0-COMPONENTS (250.162)** | ✅ **DONE** | Dashboard→app redirect, validator full coverage | 23/23 ✅ (0 warnings) |
 | **P0-MARKET (250.164)** | ✅ **DONE** | Europe-first repositioning, Darija normalized, geo-detection 6 markets | 23/23 ✅ (0 warnings) |
+| **P0-DEEPAUDIT (250.166)** | ✅ **AUDIT DONE** | 39 bugs (6F/10C/13H/10M) — counter-audit applied | 8.8 → **6.6** |
+| **P0-DEEPAUDIT-FIX (250.167)** | ✅ **15 FIXED** | Phase 3+3b: +15 bugs found, 15 fixed. Prompt quality rebuilt (5 langs), VOICE_CONFIG crash fixed. | 6.6 → **6.8** |
+| **P0-DEEPAUDIT-FIX2 (250.168)** | ✅ **20 FIXED** | Auth security (F2/F7 tokens, C2 email verify, F4 resend endpoint), quota security (C10), billing wired (C7/C8), >26 col (H7), nodemailer (F3), SecretVault salt (H13), db-client (H4), B2B lang (H9), ElevenLabs (M11), auth i18n (M1), C5 auth key, C1 OAuth hidden. M12 resolved (not a bug). 19 remain. | 6.8 → **7.3** |
 
-**Code Completeness: 9.9/10** | **Production Readiness: 5.5/10** | **Weighted: 8.8/10**
+**Code Completeness: 8.4/10** | **Production Readiness: 2.5/10** | **Weighted: 7.3/10**
 
-**Remaining (code — REQUIRED):**
+**Remaining (19 bugs — from Deep Audit 250.166 + Phase 3 250.167, after 35 fixed):**
 ```
-→ (none — all code tasks complete)
+P0 (MUST FIX — Infrastructure):
+  1. Docker volumes for persistent data (quotas, HITL, conversations, ContextBox) [C6]
+  2. JWT_SECRET fixed value in VPS env vars [F1]
+  3. VOCALIA_VAULT_KEY + STRIPE_SECRET_KEY + SMTP configured in VPS env [F6, H2, H3]
+
+P1 (SHOULD FIX — Code Quality):
+  4. Fix WebSocket token in query string → use headers [H5]
+  5. Widget config injection protection via Object.freeze [H8]
+  6. HITL pending data persistence to file [H10]
+  7. Admin dashboard mrrGrowth hardcoded 18% [H14]
+
+P2 (NICE TO HAVE):
+  8. Persist dashboard metrics to Google Sheets [M6]
+  9. Signup "check email" dead-end UX when SMTP not configured [M2, M3]
+  10. GoogleSheetsDB truncated UUID (8-char) [M8]
+  11. Quota config (JSON) vs tenant data (Sheets) sync [M9]
+  12. Payzone dead code cleanup [M10]
+  13. GoogleSheetsDB auth scalability ceiling [M5]
+  14. Evaluate Telnyx for Moroccan telephony
+
+NON-FIXABLE / MONITORING:
+  - H14: Gemini TTS preview model (no stable version exists)
+  - M16: Gemini API key in URL (Google standard pattern)
+
+RESOLVED (not bugs):
+  - C5: Actual bug was wrong storage key (fixed 250.168), no ESM issue
+  - M12/ex-H11: express IS used by OAuthGateway + WebhookRouter (not dead weight)
 ```
 
-**Remaining (code — OPTIONAL):**
+**Remaining (infrastructure — NOT code):**
 ```
-→ P3-1g: Source module ESM migration (core/*.cjs → .mjs) — DEFERRED (78 conditional requires)
-```
-
-**Remaining (infrastructure/decisions — NOT code):**
-```
-→ GA4: ✅ DONE — configured (Stream ID 13579681217)
-→ Darija pricing: ✅ DONE — $0.25/min inbound, implemented in code + website
-→ VPS: ✅ DONE — 4 containers healthy, ALL routed via api.vocalia.ma (path-based, no extra DNS)
-→ Telnyx: Evaluate for Moroccan numbers
+→ GA4: ✅ DONE — configured + server-side Measurement Protocol
+→ Darija pricing: ✅ DONE — $0.25/min inbound
+→ VPS: ✅ UP — but needs Docker volumes + 7 missing env vars
+→ SMTP: Configure Brevo/Resend/SES for auth emails
 ```
 
 **Methodology:**
@@ -370,7 +547,10 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis a jour le 2026-02-08 — Session 250.163*
+*Document mis a jour le 2026-02-09 — Session 250.168*
+*250.168: PHASE 4 — 20 BUGS FIXED. Auth: F2/F7 token exposure removed (emails sent server-side), C2 email_verified enforced on login, F4 resend-verification endpoint, F3/C11 nodemailer installed, C5 wrong auth storage key. Security: C10 unknown tenant quota denied, H1 body limit 1MB, H13 SecretVault random salt (v2+v1 compat). Billing: C7/C8 StripeService wired + schema field. Infra: H7 columnLetter >26 cols, H12 persona 40→38, H4 db-client path+auth, H9 B2B absolute lang URL, C1 OAuth button hidden if OAuthGateway down, H6 cache invalidation in update(). UX: M1 auth page i18n, M11 ElevenLabs try/catch. Resolved: M12 express IS used (not dead). Tests: 3763→3773 (+10 new security/behavior tests). Cumulative: 54 bugs found, 35 fixed, 19 remain (+ 2 non-fixable + 2 resolved). Code 7.8→8.4, Weighted 6.8→7.3.*
+*250.167: PHASE 3 INTERNAL AUDIT + FIXES — 15 bugs found (12 Phase 3 + 3 Phase 3b), 15 FIXED. Phase 3: F8 path traversal, C3+C4 auth guards, C12 tenant isolation, C13 WebSocket auth, H15+H16 fallback pricing, H17 auto-purge, M12 rate limiter, M13 WS email, M14 sanitization, M15 hash chain. Phase 3b: H18+H19 AGENCY prompt rebuilt (5 langs — removed "15 mots/5 lignes" constraints, added sector knowledge, multi-CTA), C14 VOICE_CONFIG ReferenceError fixed. Cumulative: 54 bugs found, 15 fixed, 39 remain. Code 7.5→7.8.*
+*250.166: DEEP AUDIT — Line-by-line review of all critical modules. 39 bugs after counter-audit (6 FATAL, 10 CRITICAL, 13 HIGH, 10 MEDIUM). Counter-audit accuracy: 77% exact, 0% false. 3 severities corrected, 2 doublons removed. Scores corrected: Code 9.9→7.5/10, Prod 5.5→2.5/10, Weighted 8.8→6.6/10. Top 5 systemic: Docker ephemerality, Auth non-functional, 2 sources of truth, VPS env incomplete, Code≠Deployed. Full bug table in §6.*
 *250.163: VPS deployment verified + updated. All 4 Docker containers healthy on Hostinger KVM 2 (148.230.113.163). api.vocalia.ma/health returns 200 OK with 4 AI providers. db-api connected to Google Sheets (7 tables). Code updated to latest GitHub commit. Production readiness 3.5→5.5/10. DNS for ws/tel subdomains pending (NindoHost).*
 *250.162: P0-COMPONENTS — Dashboard→app redirect (5 pages eliminated duplication), telephony page created in app/client/, sidebar component updated with telephony link, onboarding migrated to sidebar component, validator now covers ALL 80 pages (was 46). 23/23 ✅ 0 errors 0 warnings.*
 *250.161: P0-WEBSITE COMPLETE — 64→0 errors, 44→2 warnings (23/23 ✅). Darija $0.25/min (inbound) implemented across codebase. Phase 4 manual audit fixes (math, stale 40→38, Tier 1 5→4, unverified claims).*

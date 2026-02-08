@@ -27,6 +27,7 @@ const { google } = require('googleapis');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Configuration paths
 const CONFIG_PATH = path.join(__dirname, '../data/google-sheets-config.json');
@@ -57,6 +58,8 @@ const SCHEMAS = {
       'knowledge_base_id',  // tenant_xxx or null
       'payment_method',     // CARD, BANK, CASH
       'payment_details',    // Payment instructions
+      // Billing (C8 fix)
+      'stripe_customer_id', // Stripe customer ID for billing
       // Timestamps
       'created_at', 'updated_at'
     ],
@@ -105,6 +108,30 @@ const SCHEMAS = {
     defaults: {}
   }
 };
+
+/**
+ * Convert column number (1-based) to letter(s): 1→A, 26→Z, 27→AA, 28→AB
+ * H7 fix: Supports >26 columns (beyond A:Z limit)
+ */
+function columnLetter(n) {
+  let result = '';
+  while (n > 0) {
+    n--;
+    result = String.fromCharCode(65 + (n % 26)) + result;
+    n = Math.floor(n / 26);
+  }
+  return result;
+}
+
+/**
+ * Get sheet range string covering all columns for a given schema
+ */
+function sheetRange(sheet) {
+  const schema = SCHEMAS[sheet];
+  if (!schema) return `${sheet}!A:Z`;
+  const lastCol = columnLetter(schema.columns.length);
+  return `${sheet}!A:${lastCol}`;
+}
 
 class GoogleSheetsDB {
   constructor(options = {}) {
@@ -323,7 +350,7 @@ class GoogleSheetsDB {
     await this.withRetry(async () => {
       await this.sheets.spreadsheets.values.append({
         spreadsheetId: this.config.spreadsheetId,
-        range: `${sheet}!A:Z`,
+        range: sheetRange(sheet),
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         requestBody: { values: [row] }
@@ -350,7 +377,7 @@ class GoogleSheetsDB {
     const response = await this.withRetry(async () => {
       return await this.sheets.spreadsheets.values.get({
         spreadsheetId: this.config.spreadsheetId,
-        range: `${sheet}!A:Z`
+        range: sheetRange(sheet)
       });
     });
 
@@ -427,8 +454,8 @@ class GoogleSheetsDB {
         throw new Error(`Record not found: ${sheet}:${id}`);
       }
 
-      // Get current record and merge
-      // Use noCache to ensure we get the latest data if multiple processes were locked
+      // H6 fix: Invalidate cache before reading to prevent stale merges under lock
+      this.invalidateCache(sheet);
       const current = await this.findById(sheet, id);
       const updated = {
         ...current,
@@ -438,7 +465,7 @@ class GoogleSheetsDB {
       };
 
       const row = this.objectToRow(sheet, updated);
-      const range = `${sheet}!A${rowIndex + 1}:${String.fromCharCode(64 + row.length)}${rowIndex + 1}`;
+      const range = `${sheet}!A${rowIndex + 1}:${columnLetter(row.length)}${rowIndex + 1}`;
 
       await this.withRetry(async () => {
         await this.sheets.spreadsheets.values.update({
@@ -530,7 +557,7 @@ class GoogleSheetsDB {
     await this.withRetry(async () => {
       await this.sheets.spreadsheets.values.append({
         spreadsheetId: this.config.spreadsheetId,
-        range: `${sheet}!A:Z`,
+        range: sheetRange(sheet),
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
         requestBody: { values: rows }
@@ -720,8 +747,9 @@ class GoogleSheetsDB {
    */
   getTenantConfig(tenantId) {
     // Session 250.82: Check client config first, then fallback to data/quotas
-    const configPath = path.join(__dirname, '../clients', tenantId, 'config.json');
-    const quotaFallbackPath = path.join(__dirname, '../data/quotas', `${tenantId}.json`);
+    const safeTenantId = sanitizeTenantId(tenantId);
+    const configPath = path.join(__dirname, '../clients', safeTenantId, 'config.json');
+    const quotaFallbackPath = path.join(__dirname, '../data/quotas', `${safeTenantId}.json`);
 
     let loadPath = null;
     if (fs.existsSync(configPath)) {
@@ -750,7 +778,7 @@ class GoogleSheetsDB {
    * @param {Object} usage - Usage updates
    */
   updateTenantUsage(tenantId, usage) {
-    const configPath = path.join(__dirname, '../clients', tenantId, 'config.json');
+    const configPath = path.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'config.json');
     try {
       const config = this.getTenantConfig(tenantId);
       if (!config) return false;
@@ -773,7 +801,9 @@ class GoogleSheetsDB {
   checkQuota(tenantId, quotaType) {
     const config = this.getTenantConfig(tenantId);
     if (!config) {
-      return { allowed: true, current: 0, limit: Infinity, remaining: Infinity, error: 'Config not found' };
+      // C10 fix: Unknown tenants are DENIED, not allowed with infinite quota
+      console.warn(`[Quotas] Denying unknown tenant: ${tenantId}`);
+      return { allowed: false, current: 0, limit: 0, remaining: 0, error: 'Unknown tenant — no quota config found' };
     }
 
     const quotaMap = {
@@ -993,4 +1023,4 @@ Programmatic:
   })().catch(e => console.error('❌', e.message));
 }
 
-module.exports = { GoogleSheetsDB, getDB, SCHEMAS };
+module.exports = { GoogleSheetsDB, getDB, SCHEMAS, columnLetter, sheetRange };

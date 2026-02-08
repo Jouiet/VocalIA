@@ -276,13 +276,17 @@
       }
     });
 
-    // Language switcher
+    // Language switcher (M1 fix: reload translations)
     document.querySelectorAll('[data-action="switchLang"]').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         const lang = btn.getAttribute('data-params');
         localStorage.setItem('vocalia_lang', lang);
         document.documentElement.lang = lang;
         document.documentElement.dir = ['ar', 'ary'].includes(lang) ? 'rtl' : 'ltr';
+        if (window.VocaliaI18n) {
+          await VocaliaI18n.initI18n(lang);
+          VocaliaI18n.translatePage();
+        }
       });
     });
 
