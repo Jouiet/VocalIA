@@ -382,6 +382,7 @@
     }
 
     detectTenantId() {
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
       const widget = document.querySelector('[data-vocalia-tenant]');
       if (widget) return widget.dataset.vocaliaTenant;
       return 'default';

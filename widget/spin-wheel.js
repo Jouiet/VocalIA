@@ -613,6 +613,7 @@
       this.config = {
         tenantId: options.tenantId || this.detectTenantId(),
         lang: options.lang || this.detectLanguage(),
+        apiUrl: options.apiUrl || this.detectApiUrl(),
         prizes: options.prizes || DEFAULT_PRIZES,
         voiceEnabled: options.voiceEnabled !== false,
         requireEmail: options.requireEmail !== false,
@@ -641,6 +642,7 @@
     }
 
     detectTenantId() {
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
       const widget = document.querySelector('[data-vocalia-tenant]');
       return widget?.dataset.vocaliaTenant || 'default';
     }
@@ -652,6 +654,12 @@
       if (urlParams.get('lang')) return urlParams.get('lang');
       const browserLang = navigator.language?.split('-')[0];
       return ['fr', 'en', 'es', 'ar', 'ary'].includes(browserLang) ? browserLang : 'fr';
+    }
+
+    detectApiUrl() {
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) return window.VOCALIA_CONFIG.api_url;
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      return isLocal ? 'http://localhost:3013' : 'https://api.vocalia.ma';
     }
 
     init() {
@@ -936,13 +944,13 @@
         const discountPercent = discountMap[prize.id] || 10;
 
         try {
-          const apiUrl = (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) || '';
+          const apiUrl = this.config.apiUrl;
           if (apiUrl) {
             const resp = await fetch(`${apiUrl}/api/promo/generate`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                tenant_id: (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) || 'unknown',
+                tenant_id: this.config.tenantId,
                 prize_id: prize.id,
                 discount_percent: discountPercent,
                 email: this.state.email || null

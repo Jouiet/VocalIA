@@ -484,14 +484,16 @@
     class VoiceQuiz {
         constructor(options = {}) {
             this.options = {
-                tenantId: null,
+                tenantId: options.tenantId || this._detectTenantId(),
                 template: 'generic',
                 customQuestions: null,
                 lang: 'fr',
                 voiceEnabled: true,
                 onComplete: null,
                 onLeadCapture: null,
-                apiBaseUrl: 'https://api.vocalia.ma',
+                apiBaseUrl: (typeof window !== 'undefined' && window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url)
+                  || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                    ? 'http://localhost:3013' : 'https://api.vocalia.ma'),
                 ...options
             };
 
@@ -506,6 +508,14 @@
             this._injectStyles();
             this._initQuestions();
             this._initVoiceRecognition();
+        }
+
+        _detectTenantId() {
+            if (typeof window !== 'undefined' && window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) {
+                return window.VOCALIA_CONFIG.tenant_id;
+            }
+            const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
+            return widget ? widget.dataset.vocaliaTenant : null;
         }
 
         /**

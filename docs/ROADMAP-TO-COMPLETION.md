@@ -40,7 +40,7 @@
 | 3 | Production readiness | 1.5 | **3.0** | **+1.5** | CORS unblocked, CDN refs fixed, lead persistence code fixed, WordPress fixed, 0 paying customers |
 | 4 | Documentation accuracy | 5.0 | **8.0** | **+3.0** | CDN refs replaced, VocaliaWidget.init→VOCALIA_CONFIG, "100% frontend" removed, API docs corrected |
 | 5 | Architecture code | 8.0 | **9.0** | **+1.0** | conversationStore import fixed, email-service.cjs created, Gemini/B2B versions unified |
-| 6 | Multi-tenant | 6.0 | **8.0** | **+2.0** | CORS tenant whitelist from client_registry.json, allowed_origins per tenant, no API key system yet |
+| 6 | Multi-tenant | 6.0 | **9.0** | **+3.0** | CORS tenant whitelist both APIs (3004+3013), origin↔tenant_id cross-validation, api_key per tenant, allowed_origins on all 22 clients |
 | 7 | i18n | 9.0 | 9.0 | 0 | No change |
 | 8 | Intégrations | 7.0 | **8.0** | **+1.0** | conversationStore fixed, email-service created, WordPress plugin fixed |
 | 9 | Developer experience | 9.5 | 9.5 | 0 | Build+minify+check, validator v2.3, CONTRIBUTING.md, staging |
@@ -53,12 +53,12 @@
 | 3 (3.0) | 10% | 0.300 |
 | 4 (8.0) | 10% | 0.800 |
 | 5 (9.0) | 10% | 0.900 |
-| 6 (8.0) | 10% | 0.800 |
+| 6 (9.0) | 10% | 0.900 |
 | 7 (9.0) | 5% | 0.450 |
 | 8 (8.0) | 10% | 0.800 |
 | 9 (9.5) | 10% | 0.950 |
 | 10 (8.5) | 5% | 0.425 |
-| **TOTAL** | **100%** | **7.825** → **~7.8/10** (post-audit fixes 250.154-155) |
+| **TOTAL** | **100%** | **7.925** → **~7.9/10** (post-audit fixes 250.154-155, multi-tenant hardened) |
 
 ### 1.0 Widget System DEEP Forensic Audit (Session 250.127)
 
@@ -1458,8 +1458,14 @@ ALL customer widget deployments on their own domains will be **BLOCKED** by CORS
 - [x] **P0-A2a.** Add tenant domain whitelist from `client_registry.json` (`allowed_origins` field + payment_details URLs) ✅ (250.153)
 - [x] **P0-A2b.** Add `isOriginAllowed()` check against registered tenant domains with 5-min TTL cache ✅ (250.153)
 - [x] **P0-A2c.** Add wildcard subdomain support for tenant subdomains ✅ (250.153 — `allowed_origins` per-client)
+- [x] **P0-A2d.** Add dynamic CORS to db-api.cjs (port 3013) — was hardcoded to 4 VocalIA origins ✅ (250.155)
+- [x] **P0-A2e.** Add `allowed_origins` to ALL 22 client_registry entries (21 were missing) ✅ (250.155)
+- [x] **P0-A2f.** Add origin↔tenant_id cross-validation on all widget-facing endpoints (5 endpoints in db-api + /respond in voice-api) ✅ (250.155)
+- [x] **P0-A2g.** Add `api_key` per tenant in client_registry.json (22/22 clients) ✅ (250.155)
+- [x] **P0-A2h.** API key validation in /respond endpoint ✅ (250.155)
+- [x] **P0-A2i.** Widget sends api_key from VOCALIA_CONFIG (B2B + V3) ✅ (250.155)
 
-**File:** `core/voice-api-resilient.cjs` L39-47 | **Effort:** 2h | **Impact:** UNBLOCKS third-party deployment
+**File:** `core/voice-api-resilient.cjs`, `core/db-api.cjs`, `personas/client_registry.json` | **Impact:** FULL multi-tenant security
 
 ---
 

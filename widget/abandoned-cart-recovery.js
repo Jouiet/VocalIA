@@ -662,6 +662,7 @@
         }
 
         detectTenantId() {
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
             const widget = document.querySelector('[data-vocalia-tenant]');
             if (widget) return widget.dataset.vocaliaTenant;
             const urlParams = new URLSearchParams(window.location.search);
@@ -678,8 +679,9 @@
         }
 
         detectApiUrl() {
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) return window.VOCALIA_CONFIG.api_url;
             const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            return isLocal ? 'http://localhost:3013/api' : 'https://api.vocalia.ma/api';
+            return isLocal ? 'http://localhost:3013' : 'https://api.vocalia.ma';
         }
 
         init() {
@@ -1186,7 +1188,7 @@
 
             try {
                 // Send to API
-                const response = await fetch(`${this.config.apiUrl}/cart-recovery`, {
+                const response = await fetch(`${this.config.apiUrl}/api/cart-recovery`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

@@ -41,23 +41,19 @@ let _tenantOrigins = new Set();
 let _tenantOriginsLastLoad = 0;
 const TENANT_ORIGINS_TTL = 300000; // 5 minutes
 
+let _tenantRegistry = null;
+
 function loadTenantOrigins() {
   try {
     const registryPath = path.join(__dirname, '..', 'personas', 'client_registry.json');
     const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    _tenantRegistry = registry.clients || {};
     const origins = new Set();
-    for (const [, client] of Object.entries(registry.clients || {})) {
+    for (const [, client] of Object.entries(_tenantRegistry)) {
       if (client.allowed_origins) {
         for (const o of client.allowed_origins) {
-          origins.add(o.replace(/\/$/, '')); // Normalize: strip trailing slash
+          origins.add(o.replace(/\/$/, ''));
         }
-      }
-      // Also derive from payment_details URL domain if it's a customer site
-      if (client.payment_details && client.payment_details.startsWith('https://')) {
-        try {
-          const u = new URL(client.payment_details);
-          origins.add(`https://${u.hostname}`);
-        } catch { /* skip invalid URLs */ }
       }
     }
     _tenantOrigins = origins;
@@ -86,6 +82,28 @@ function isOriginAllowed(origin) {
   // Tenant registered origins
   if (_tenantOrigins.has(origin)) return true;
   return false;
+}
+
+/**
+ * Session 250.155: Validate origin matches tenant_id's allowed_origins.
+ * Prevents tenant A from sending requests with tenant B's tenant_id.
+ */
+function validateOriginTenant(origin, tenantId) {
+  if (!tenantId || tenantId === 'default') return { valid: true };
+  if (!origin) return { valid: true }; // Server-to-server
+  if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1')) return { valid: true };
+  if (origin.endsWith('.vocalia.ma') || origin === 'https://vocalia.ma') return { valid: true };
+
+  if (Date.now() - _tenantOriginsLastLoad > TENANT_ORIGINS_TTL) {
+    loadTenantOrigins();
+  }
+  if (!_tenantRegistry) return { valid: true };
+  const client = _tenantRegistry[tenantId];
+  if (!client) return { valid: false, reason: 'unknown_tenant' };
+  if (!client.allowed_origins || client.allowed_origins.length === 0) return { valid: true };
+  const normalizedOrigin = origin.replace(/\/$/, '');
+  if (client.allowed_origins.some(o => o.replace(/\/$/, '') === normalizedOrigin)) return { valid: true };
+  return { valid: false, reason: 'origin_mismatch' };
 }
 
 // Session 250.xx: Multi-tenant Secret Vault
@@ -2569,6 +2587,26 @@ function startServer(port = 3004) {
 
           // Session 250.57: Check quota before processing
           const tenantId = bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default';
+
+          // Session 250.155: Origin↔tenant cross-validation + API key
+          const tenantCheck = validateOriginTenant(req.headers.origin, tenantId);
+          if (!tenantCheck.valid) {
+            res.writeHead(403, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: `Tenant validation failed: ${tenantCheck.reason}` }));
+            return;
+          }
+
+          // API key validation (if provided)
+          const apiKey = bodyParsed.data.api_key;
+          if (apiKey && _tenantRegistry) {
+            const client = _tenantRegistry[tenantId];
+            if (client && client.api_key && client.api_key !== apiKey) {
+              res.writeHead(403, { 'Content-Type': 'application/json' });
+              res.end(JSON.stringify({ error: 'Invalid API key' }));
+              return;
+            }
+          }
+
           const db = getDB();
           const quotaCheck = db.checkQuota(tenantId, 'sessions');
           if (!quotaCheck.allowed) {

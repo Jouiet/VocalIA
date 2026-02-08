@@ -3121,6 +3121,7 @@
                 language: state.currentLang,
                 sessionId: state.sessionId || `widget_${Date.now()}`,
                 tenant_id: state.tenantId,
+                api_key: CONFIG.api_key || undefined,
                 widget_type: 'ECOM', // Enforce E-commerce Persona
                 history: state.conversationHistory.slice(-10).map(m => ({
                     role: m.role,
@@ -4306,6 +4307,7 @@
         }
 
         detectTenantId() {
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
             const widget = document.querySelector('[data-vocalia-tenant]');
             if (widget) return widget.dataset.vocaliaTenant;
             const urlParams = new URLSearchParams(window.location.search);
@@ -4322,8 +4324,9 @@
         }
 
         detectApiUrl() {
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) return window.VOCALIA_CONFIG.api_url;
             const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            return isLocal ? 'http://localhost:3013/api' : 'https://api.vocalia.ma/api';
+            return isLocal ? 'http://localhost:3013' : 'https://api.vocalia.ma';
         }
 
         init() {
@@ -4830,7 +4833,7 @@
 
             try {
                 // Send to API
-                const response = await fetch(`${this.config.apiUrl}/cart-recovery`, {
+                const response = await fetch(`${this.config.apiUrl}/api/cart-recovery`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -5561,14 +5564,16 @@
     class VoiceQuiz {
         constructor(options = {}) {
             this.options = {
-                tenantId: null,
+                tenantId: options.tenantId || this._detectTenantId(),
                 template: 'generic',
                 customQuestions: null,
                 lang: 'fr',
                 voiceEnabled: true,
                 onComplete: null,
                 onLeadCapture: null,
-                apiBaseUrl: 'https://api.vocalia.ma',
+                apiBaseUrl: (typeof window !== 'undefined' && window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url)
+                  || (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                    ? 'http://localhost:3013' : 'https://api.vocalia.ma'),
                 ...options
             };
 
@@ -5583,6 +5588,14 @@
             this._injectStyles();
             this._initQuestions();
             this._initVoiceRecognition();
+        }
+
+        _detectTenantId() {
+            if (typeof window !== 'undefined' && window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) {
+                return window.VOCALIA_CONFIG.tenant_id;
+            }
+            const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
+            return widget ? widget.dataset.vocaliaTenant : null;
         }
 
         /**
@@ -6831,6 +6844,7 @@
       this.config = {
         tenantId: options.tenantId || this.detectTenantId(),
         lang: options.lang || this.detectLanguage(),
+        apiUrl: options.apiUrl || this.detectApiUrl(),
         prizes: options.prizes || DEFAULT_PRIZES,
         voiceEnabled: options.voiceEnabled !== false,
         requireEmail: options.requireEmail !== false,
@@ -6859,6 +6873,7 @@
     }
 
     detectTenantId() {
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
       const widget = document.querySelector('[data-vocalia-tenant]');
       return widget?.dataset.vocaliaTenant || 'default';
     }
@@ -6870,6 +6885,12 @@
       if (urlParams.get('lang')) return urlParams.get('lang');
       const browserLang = navigator.language?.split('-')[0];
       return ['fr', 'en', 'es', 'ar', 'ary'].includes(browserLang) ? browserLang : 'fr';
+    }
+
+    detectApiUrl() {
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) return window.VOCALIA_CONFIG.api_url;
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      return isLocal ? 'http://localhost:3013' : 'https://api.vocalia.ma';
     }
 
     init() {
@@ -7154,13 +7175,13 @@
         const discountPercent = discountMap[prize.id] || 10;
 
         try {
-          const apiUrl = (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) || '';
+          const apiUrl = this.config.apiUrl;
           if (apiUrl) {
             const resp = await fetch(`${apiUrl}/api/promo/generate`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                tenant_id: (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) || 'unknown',
+                tenant_id: this.config.tenantId,
                 prize_id: prize.id,
                 discount_percent: discountPercent,
                 email: this.state.email || null
@@ -7830,6 +7851,7 @@
     }
 
     detectTenantId() {
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) return window.VOCALIA_CONFIG.tenant_id;
       const widget = document.querySelector('[data-vocalia-tenant]');
       if (widget) return widget.dataset.vocaliaTenant;
       return 'default';
@@ -8551,6 +8573,7 @@
         onItemClick: null,
         onClose: null,
         lang: 'fr',
+        tenantId: options.tenantId || this._detectTenantId(),
         ...options
       };
 
@@ -8560,6 +8583,12 @@
       this.items = [];
 
       this._injectStyles();
+    }
+
+    _detectTenantId() {
+      if (global.VOCALIA_CONFIG && global.VOCALIA_CONFIG.tenant_id) return global.VOCALIA_CONFIG.tenant_id;
+      const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
+      return widget ? widget.dataset.vocaliaTenant : 'default';
     }
 
     /**
@@ -8865,7 +8894,8 @@
         gtag('event', 'reco_carousel_impression', {
           event_category: 'recommendations',
           recommendation_type: type,
-          items_shown: count
+          items_shown: count,
+          tenant_id: this.options.tenantId
         });
       }
     }
@@ -8880,7 +8910,8 @@
           event_category: 'recommendations',
           product_id: item.id || item.productId,
           position: index + 1,
-          reason: item.reason
+          reason: item.reason,
+          tenant_id: this.options.tenantId
         });
       }
     }
@@ -8893,7 +8924,8 @@
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_view_all', {
           event_category: 'recommendations',
-          items_shown: this.items.length
+          items_shown: this.items.length,
+          tenant_id: this.options.tenantId
         });
       }
     }

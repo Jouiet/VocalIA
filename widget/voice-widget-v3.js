@@ -3121,6 +3121,7 @@
                 language: state.currentLang,
                 sessionId: state.sessionId || `widget_${Date.now()}`,
                 tenant_id: state.tenantId,
+                api_key: CONFIG.api_key || undefined,
                 widget_type: 'ECOM', // Enforce E-commerce Persona
                 history: state.conversationHistory.slice(-10).map(m => ({
                     role: m.role,

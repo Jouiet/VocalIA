@@ -104,7 +104,7 @@ const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5 }); // 5 per 1
 const registerLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 3 }); // 3 per hour
 const apiLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minute
 
-// CORS whitelist (fixes HIGH: wildcard origin)
+// CORS whitelist — VocalIA domains + tenant domains from client_registry.json
 const CORS_ALLOWED_ORIGINS = [
   'https://vocalia.ma',
   'https://www.vocalia.ma',
@@ -112,10 +112,99 @@ const CORS_ALLOWED_ORIGINS = [
   'https://app.vocalia.ma'
 ];
 
+// Session 250.155: Dynamic tenant CORS + origin↔tenant validation + API key auth
+let _dbTenantRegistry = null;
+let _dbTenantOrigins = new Set();
+let _dbTenantOriginsLastLoad = 0;
+const DB_TENANT_ORIGINS_TTL = 300000; // 5 minutes
+
+function _loadDbTenantOrigins() {
+  try {
+    const pathModule = require('path');
+    const fsModule = require('fs');
+    const registryPath = pathModule.join(__dirname, '..', 'personas', 'client_registry.json');
+    const registry = JSON.parse(fsModule.readFileSync(registryPath, 'utf8'));
+    _dbTenantRegistry = registry.clients || {};
+    const origins = new Set();
+    for (const [, client] of Object.entries(_dbTenantRegistry)) {
+      if (client.allowed_origins) {
+        for (const o of client.allowed_origins) {
+          origins.add(o.replace(/\/$/, ''));
+        }
+      }
+    }
+    _dbTenantOrigins = origins;
+    _dbTenantOriginsLastLoad = Date.now();
+    if (origins.size > 0) {
+      console.log(`✅ [DB-API CORS] Loaded ${origins.size} tenant origins from registry`);
+    }
+  } catch (err) {
+    console.warn('[DB-API CORS] Could not load tenant origins:', err.message);
+  }
+}
+
+_loadDbTenantOrigins();
+
+/**
+ * Validate that request origin matches the tenant_id's allowed_origins.
+ * Prevents tenant A from spoofing tenant B's tenant_id.
+ * @param {string} origin - Request origin header
+ * @param {string} tenantId - tenant_id from request body
+ * @returns {{ valid: boolean, reason?: string }}
+ */
+function validateOriginTenant(origin, tenantId) {
+  if (!tenantId || tenantId === 'default') return { valid: true }; // No tenant = demo mode
+  if (!origin) return { valid: true }; // Server-to-server (no browser origin)
+  // Local dev bypasses
+  if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) return { valid: true };
+  // VocalIA internal origins always valid
+  if (CORS_ALLOWED_ORIGINS.includes(origin)) return { valid: true };
+
+  // Refresh if stale
+  if (Date.now() - _dbTenantOriginsLastLoad > DB_TENANT_ORIGINS_TTL) {
+    _loadDbTenantOrigins();
+  }
+
+  if (!_dbTenantRegistry) return { valid: true }; // Registry not loaded, fail open
+  const client = _dbTenantRegistry[tenantId];
+  if (!client) return { valid: false, reason: 'unknown_tenant' };
+  if (!client.allowed_origins || client.allowed_origins.length === 0) return { valid: true }; // No restrictions configured
+  const normalizedOrigin = origin.replace(/\/$/, '');
+  if (client.allowed_origins.some(o => o.replace(/\/$/, '') === normalizedOrigin)) return { valid: true };
+  return { valid: false, reason: 'origin_mismatch' };
+}
+
+/**
+ * Validate API key for a tenant.
+ * @param {string} apiKey - API key from request
+ * @param {string} tenantId - tenant_id from request
+ * @returns {{ valid: boolean, reason?: string }}
+ */
+function validateApiKey(apiKey, tenantId) {
+  if (!apiKey) return { valid: true }; // API key optional (backward compat)
+  if (!tenantId || tenantId === 'default') return { valid: true };
+
+  if (Date.now() - _dbTenantOriginsLastLoad > DB_TENANT_ORIGINS_TTL) {
+    _loadDbTenantOrigins();
+  }
+  if (!_dbTenantRegistry) return { valid: true };
+  const client = _dbTenantRegistry[tenantId];
+  if (!client) return { valid: false, reason: 'unknown_tenant' };
+  if (!client.api_key) return { valid: true }; // No key configured
+  if (client.api_key === apiKey) return { valid: true };
+  return { valid: false, reason: 'invalid_api_key' };
+}
+
 function getCorsHeaders(req) {
   const origin = req?.headers?.origin || '';
   const isLocalDev = origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1');
-  const isAllowed = CORS_ALLOWED_ORIGINS.includes(origin) || isLocalDev;
+  const isVocaliaOrigin = CORS_ALLOWED_ORIGINS.includes(origin);
+  // Refresh tenant origins if stale
+  if (Date.now() - _dbTenantOriginsLastLoad > DB_TENANT_ORIGINS_TTL) {
+    _loadDbTenantOrigins();
+  }
+  const isTenantOrigin = _dbTenantOrigins.has(origin);
+  const isAllowed = isVocaliaOrigin || isLocalDev || isTenantOrigin;
   return {
     'Access-Control-Allow-Origin': isAllowed ? origin : CORS_ALLOWED_ORIGINS[0],
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -1705,6 +1794,12 @@ async function handleRequest(req, res) {
         return sendError(res, 400, 'tenant_id is required');
       }
 
+      // Session 250.155: Origin↔tenant cross-validation
+      const originCheck = validateOriginTenant(req.headers.origin, tenantId);
+      if (!originCheck.valid) {
+        return sendError(res, 403, `Tenant validation failed: ${originCheck.reason}`);
+      }
+
       const recommendationService = require('./recommendation-service.cjs');
       let result;
 
@@ -1871,6 +1966,12 @@ async function handleRequest(req, res) {
         return sendError(res, 400, 'tenant_id is required');
       }
 
+      // Session 250.155: Origin↔tenant cross-validation
+      const originCheck = validateOriginTenant(req.headers.origin, tenant_id);
+      if (!originCheck.valid) {
+        return sendError(res, 403, `Tenant validation failed: ${originCheck.reason}`);
+      }
+
       const leadId = `lead_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const lead = {
         id: leadId,
@@ -1925,6 +2026,12 @@ async function handleRequest(req, res) {
         return sendError(res, 400, 'tenant_id, channel, and contact are required');
       }
 
+      // Session 250.155: Origin↔tenant cross-validation
+      const originCheck = validateOriginTenant(req.headers.origin, tenant_id);
+      if (!originCheck.valid) {
+        return sendError(res, 403, `Tenant validation failed: ${originCheck.reason}`);
+      }
+
       if (!['voice', 'sms', 'email'].includes(channel)) {
         return sendError(res, 400, 'channel must be voice, sms, or email');
       }
@@ -1951,11 +2058,25 @@ async function handleRequest(req, res) {
         created_at: new Date().toISOString()
       };
 
-      // Store in memory (for now - could persist to GoogleSheetsDB)
+      // Store in memory + persist to file
       if (!global.cartRecoveryQueue) {
         global.cartRecoveryQueue = [];
+        // Load existing from disk
+        try {
+          const recoveryPath = path.join(__dirname, '..', 'data', 'cart-recovery.json');
+          if (fs.existsSync(recoveryPath)) {
+            global.cartRecoveryQueue = JSON.parse(fs.readFileSync(recoveryPath, 'utf8'));
+          }
+        } catch {}
       }
       global.cartRecoveryQueue.push(recoveryRequest);
+      // Persist to disk (async, non-blocking)
+      try {
+        const recoveryPath = path.join(__dirname, '..', 'data', 'cart-recovery.json');
+        fs.writeFileSync(recoveryPath, JSON.stringify(global.cartRecoveryQueue.slice(-500), null, 2));
+      } catch (e) {
+        console.warn('[Cart Recovery] File persist failed:', e.message);
+      }
 
       // Process based on channel
       let result = { success: false };
@@ -2088,9 +2209,26 @@ async function handleRequest(req, res) {
   // Session 250.154: PROMO CODE SERVER-SIDE VALIDATION
   // ═══════════════════════════════════════════════════════════════
 
-  // In-memory promo code store (per-tenant, time-limited)
+  // Promo code store (persisted to file)
   if (!global.promoCodes) {
     global.promoCodes = new Map();
+    try {
+      const promoPath = path.join(__dirname, '..', 'data', 'promo-codes.json');
+      if (fs.existsSync(promoPath)) {
+        const entries = JSON.parse(fs.readFileSync(promoPath, 'utf8'));
+        for (const [k, v] of entries) { global.promoCodes.set(k, v); }
+      }
+    } catch {}
+  }
+
+  function _persistPromoCodes() {
+    try {
+      const promoPath = path.join(__dirname, '..', 'data', 'promo-codes.json');
+      const entries = [...global.promoCodes.entries()].slice(-1000);
+      fs.writeFileSync(promoPath, JSON.stringify(entries, null, 2));
+    } catch (e) {
+      console.warn('[Promo] File persist failed:', e.message);
+    }
   }
 
   // POST /api/promo/generate — Generate a unique, time-limited promo code
@@ -2101,6 +2239,12 @@ async function handleRequest(req, res) {
 
       if (!tenant_id || !prize_id) {
         return sendError(res, 400, 'tenant_id and prize_id are required');
+      }
+
+      // Session 250.155: Origin↔tenant cross-validation
+      const originCheck = validateOriginTenant(req.headers.origin, tenant_id);
+      if (!originCheck.valid) {
+        return sendError(res, 403, `Tenant validation failed: ${originCheck.reason}`);
       }
 
       const discount = parseInt(discount_percent, 10) || 10;
@@ -2126,6 +2270,7 @@ async function handleRequest(req, res) {
       };
 
       global.promoCodes.set(code, promoEntry);
+      _persistPromoCodes();
       console.log(`✅ [Promo] Generated ${code} for tenant ${tenant_id} (${discount}% off)`);
 
       sendJson(res, 200, {
@@ -2151,6 +2296,12 @@ async function handleRequest(req, res) {
         return sendError(res, 400, 'code and tenant_id are required');
       }
 
+      // Session 250.155: Origin↔tenant cross-validation
+      const originCheck = validateOriginTenant(req.headers.origin, tenant_id);
+      if (!originCheck.valid) {
+        return sendError(res, 403, `Tenant validation failed: ${originCheck.reason}`);
+      }
+
       const entry = global.promoCodes.get(code);
 
       if (!entry) {
@@ -2173,6 +2324,7 @@ async function handleRequest(req, res) {
       if (redeem) {
         entry.used = true;
         entry.used_at = new Date().toISOString();
+        _persistPromoCodes();
         console.log(`✅ [Promo] Redeemed ${code} for tenant ${tenant_id}`);
       }
 

@@ -12,7 +12,11 @@
             "booking_url": "https://vocalia.ma/booking",
             "address": "VocalIA — Voice AI Platform",
             "widget_type": "B2B",
-            "allowed_origins": ["https://vocalia.ma", "https://www.vocalia.ma"]
+            "allowed_origins": [
+                "https://vocalia.ma",
+                "https://www.vocalia.ma"
+            ],
+            "api_key": "vk_4524d08eb9e705714188f4f352eb6669d5f1b5a8dc2ce15a"
         },
         "client_dental_01": {
             "name": "Cabinet Dentaire Lumière",
@@ -25,7 +29,11 @@
             "phone": "+33198765432",
             "address": "45 Rue de la Santé, Lyon",
             "widget_type": "B2B",
-            "booking_url": null
+            "booking_url": null,
+            "api_key": "vk_3bfded9d6714bfdab9ad8293e7cb369a608f040948e6c4a5",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "ecom_nike_01": {
             "name": "Nike Reseller Paris",
@@ -37,7 +45,12 @@
             "payment_details": "https://nike-reseller-paris.com/checkout",
             "phone": "+33700000001",
             "address": "Champs Elysées, Paris",
-            "widget_type": "ECOM"
+            "widget_type": "ECOM",
+            "api_key": "vk_251d8d2853fb7d1a12fba7f076f4c31172d5fc232c2b8127",
+            "allowed_origins": [
+                "https://nike-reseller-paris.com",
+                "https://vocalia.ma"
+            ]
         },
         "sme_baker_02": {
             "name": "Boulangerie Patissier",
@@ -49,7 +62,11 @@
             "payment_details": "Paiement à la livraison ou en boutique",
             "phone": "+212600000000",
             "address": "Quartier Agdal, Rabat",
-            "widget_type": "B2C"
+            "widget_type": "B2C",
+            "api_key": "vk_93cc9f082f035e5926616a9475e9a5a26da16e0ff1e29355",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "ecom_darija_01": {
             "name": "متجر درب غلف",
@@ -61,7 +78,11 @@
             "payment_details": "الدفع عند التسليم / Cash on Delivery",
             "phone": "+212661234567",
             "address": "درب غلف، الدار البيضاء",
-            "widget_type": "ECOM"
+            "widget_type": "ECOM",
+            "api_key": "vk_317f17fbc9767e91836b809e77684d3bd4d1b3a827e6dd57",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "medecin_general_01": {
             "name": "Cabinet Dr. Bennani",
@@ -81,7 +102,11 @@
                 "ordonnance",
                 "suivi_chronique"
             ],
-            "horaires": "Lun-Ven 9h-18h, Sam 9h-13h"
+            "horaires": "Lun-Ven 9h-18h, Sam 9h-13h",
+            "api_key": "vk_b0fca49a1e158b4e4d4ad097bbda49e15e8cd8ee034490d4",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "medecin_specialiste_01": {
             "name": "Dr. El Amrani - Cardiologue",
@@ -102,7 +127,11 @@
                 "echo_cardiaque",
                 "holter"
             ],
-            "horaires": "Lun-Ven 9h-17h sur RDV"
+            "horaires": "Lun-Ven 9h-17h sur RDV",
+            "api_key": "vk_02e4fee6a2f2e0ed84f2a19c4ef58afb67e78657eb9521ad",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "dentiste_casa_01": {
             "name": "Centre Dentaire Smile",
@@ -123,7 +152,11 @@
                 "orthodontie",
                 "blanchiment"
             ],
-            "horaires": "Lun-Sam 9h-19h"
+            "horaires": "Lun-Sam 9h-19h",
+            "api_key": "vk_9bb16dcf60aa53af40da0c1e10eb80b331740f8c3c1bc10a",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "agence_voyage_01": {
             "name": "Atlas Voyages",
@@ -149,6 +182,10 @@
                 "egypte",
                 "dubai",
                 "asie"
+            ],
+            "api_key": "vk_61e9ff28a052c0258f55a02bbec8a583bdcb8a8366119794",
+            "allowed_origins": [
+                "https://vocalia.ma"
             ]
         },
         "location_voiture_01": {
@@ -175,6 +212,10 @@
                 "suv",
                 "utilitaire",
                 "luxe"
+            ],
+            "api_key": "vk_b744fd2f84c338facd9fc3aded5cffdc9b8bda8dc0883b6c",
+            "allowed_origins": [
+                "https://vocalia.ma"
             ]
         },
         "notaire_rabat_01": {
@@ -196,7 +237,11 @@
                 "societe",
                 "hypotheque"
             ],
-            "horaires": "Lun-Ven 9h-17h sur RDV"
+            "horaires": "Lun-Ven 9h-17h sur RDV",
+            "api_key": "vk_3ff02d83aa6f5808ffdd06ece3fb7320ffea2841c72f1618",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "agence_immo_01": {
             "name": "Immobilier Casa Pro",
@@ -221,6 +266,10 @@
                 "mohammedia",
                 "bouskoura",
                 "dar_bouazza"
+            ],
+            "api_key": "vk_d43b39d83042b42892bc2df111e55e2e6a0ddec0dc4ff5c5",
+            "allowed_origins": [
+                "https://vocalia.ma"
             ]
         },
         "agence_event_01": {
@@ -241,7 +290,11 @@
                 "gala",
                 "team_building"
             ],
-            "capacite": "10 à 2000 personnes"
+            "capacite": "10 à 2000 personnes",
+            "api_key": "vk_2914781142baa2c3628a58f2e4f87b58903a136ba469d6a7",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "agence_commerciale_01": {
             "name": "Force Vente Maroc",
@@ -266,6 +319,10 @@
                 "cosmetique",
                 "electronique",
                 "b2b"
+            ],
+            "api_key": "vk_5e0a6b157b1b2cf516e167e89969db30227bb3ca9d0c213e",
+            "allowed_origins": [
+                "https://vocalia.ma"
             ]
         },
         "concessionnaire_auto_01": {
@@ -292,6 +349,10 @@
                 "dacia",
                 "renault",
                 "peugeot"
+            ],
+            "api_key": "vk_451ec7204ab103e1218a8bfc99328add627fd2456952a017",
+            "allowed_origins": [
+                "https://vocalia.ma"
             ]
         },
         "assurance_01": {
@@ -318,6 +379,10 @@
                 "axa",
                 "saham",
                 "atlanta"
+            ],
+            "api_key": "vk_df7f0666f4d2269c05b0fc2d2e452160c5c33df164efe225",
+            "allowed_origins": [
+                "https://vocalia.ma"
             ]
         },
         "hotel_marrakech_01": {
@@ -341,7 +406,11 @@
                 "transfert_aeroport"
             ],
             "chambres": 12,
-            "etoiles": 4
+            "etoiles": 4,
+            "api_key": "vk_3c2c5c2e01b42d83cb8c8d7867d5c83a23adad789fea9fa5",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "hotel_agadir_01": {
             "name": "Atlantic Beach Resort",
@@ -363,7 +432,11 @@
                 "animation"
             ],
             "chambres": 150,
-            "etoiles": 5
+            "etoiles": 5,
+            "api_key": "vk_6fed80d5fb5d179ed34642c6253eefbfd740eb2710dc1f07",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "salon_coiffure_casa_01": {
             "name": "Coiffure Prestige Casa",
@@ -384,7 +457,11 @@
                 "soins_cheveux",
                 "barbe"
             ],
-            "horaires": "Mar-Sam 9h-20h"
+            "horaires": "Mar-Sam 9h-20h",
+            "api_key": "vk_9c89714e81e7354199f27536b83969b86212ac45ce54d299",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "beauty_salon_rabat_01": {
             "name": "Institut Beauté Royale",
@@ -405,7 +482,11 @@
                 "pedicure",
                 "maquillage"
             ],
-            "horaires": "Lun-Sam 10h-19h"
+            "horaires": "Lun-Sam 10h-19h",
+            "api_key": "vk_18152afb852464de26b24e598daf313cc76d2957a4df6981",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "spa_marrakech_01": {
             "name": "Hammam & Spa Palmeraie",
@@ -426,7 +507,11 @@
                 "soins_corps",
                 "yoga"
             ],
-            "horaires": "Tous les jours 10h-21h"
+            "horaires": "Tous les jours 10h-21h",
+            "api_key": "vk_1a3d6e31a01d9cfaf41c2abd27a567bb92d085b23b01522b",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         },
         "fitness_casa_01": {
             "name": "City Gym Casablanca",
@@ -446,7 +531,11 @@
                 "personal_training",
                 "sauna"
             ],
-            "horaires": "Lun-Sam 6h-23h, Dim 8h-20h"
+            "horaires": "Lun-Sam 6h-23h, Dim 8h-20h",
+            "api_key": "vk_d9dc143a3b6610ad57adf85978b8c7f6337e6cc25546aad0",
+            "allowed_origins": [
+                "https://vocalia.ma"
+            ]
         }
     },
     "sectors": {

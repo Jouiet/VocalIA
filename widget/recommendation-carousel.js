@@ -267,6 +267,7 @@
         onItemClick: null,
         onClose: null,
         lang: 'fr',
+        tenantId: options.tenantId || this._detectTenantId(),
         ...options
       };
 
@@ -276,6 +277,12 @@
       this.items = [];
 
       this._injectStyles();
+    }
+
+    _detectTenantId() {
+      if (global.VOCALIA_CONFIG && global.VOCALIA_CONFIG.tenant_id) return global.VOCALIA_CONFIG.tenant_id;
+      const widget = typeof document !== 'undefined' && document.querySelector('[data-vocalia-tenant]');
+      return widget ? widget.dataset.vocaliaTenant : 'default';
     }
 
     /**
@@ -581,7 +588,8 @@
         gtag('event', 'reco_carousel_impression', {
           event_category: 'recommendations',
           recommendation_type: type,
-          items_shown: count
+          items_shown: count,
+          tenant_id: this.options.tenantId
         });
       }
     }
@@ -596,7 +604,8 @@
           event_category: 'recommendations',
           product_id: item.id || item.productId,
           position: index + 1,
-          reason: item.reason
+          reason: item.reason,
+          tenant_id: this.options.tenantId
         });
       }
     }
@@ -609,7 +618,8 @@
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_view_all', {
           event_category: 'recommendations',
-          items_shown: this.items.length
+          items_shown: this.items.length,
+          tenant_id: this.options.tenantId
         });
       }
     }

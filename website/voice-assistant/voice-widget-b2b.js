@@ -905,6 +905,7 @@
                 language: state.currentLang,
                 sessionId: state.sessionId,
                 tenant_id: state.tenantId,
+                api_key: CONFIG.api_key || undefined,
                 widget_type: 'B2B',
                 history: state.conversationHistory.slice(-6)
             };
