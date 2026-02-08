@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tarifs - VocalIA | Agents Vocaux IA</title>
   <meta name="description"
-    content="Plans tarifaires VocalIA: Starter à 49€/mois, Pro à 299€/mois, Enterprise sur mesure. Téléphonie à 0.06€/min.">
+    content="Plans tarifaires VocalIA: Starter 49€/mois, Pro 99€/mois, E-commerce 99€/mois, Telephony 199€+0.10€/min.">
   <link rel="canonical" href="https://vocalia.ma/pricing" />
 
   <!-- Hreflang for i18n SEO (5 languages) -->
@@ -22,7 +22,7 @@
   <meta property="og:url" content="https://vocalia.ma/pricing" />
   <meta property="og:title" content="Tarifs - VocalIA | Agents Vocaux IA" />
   <meta property="og:description"
-    content="Plans tarifaires VocalIA: Widget Starter, Pro à 299€/mois, Enterprise sur mesure." />
+    content="Plans tarifaires VocalIA: Starter 49€, Pro 99€, E-commerce 99€, Telephony 199€+0.10€/min." />
   <meta property="og:image" content="https://vocalia.ma/public/images/og-pricing.webp" />
 
 
@@ -71,7 +71,7 @@
           "name": "Comment fonctionne la facturation téléphonie?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Vous payez un forfait mensuel (Starter: 100 min, Pro: 500 min). Les minutes supplémentaires sont facturées à 0.06€/min. La facturation est mensuelle avec reporting détaillé."
+            "text": "Le plan Telephony inclut 100 minutes. Les minutes supplémentaires sont facturées à 0.10€/min. La facturation est mensuelle avec reporting détaillé."
           }
         },
         {
@@ -240,121 +240,133 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        <!-- Voice Widget B2B -->
+        <!-- Starter -->
         <div class="pricing-card p-6 relative glass">
           <div class="mb-6">
-            <h3 class="text-lg font-semibold text-vocalia-200 mb-2">Widget B2B</h3>
+            <h3 class="text-lg font-semibold text-vocalia-200 mb-2" data-i18n="pricing_page.starter_title">Starter</h3>
             <div class="flex items-baseline gap-1">
-              <span class="text-4xl font-bold font-mono" id="b2bPrice">49</span>
-              <span class="text-zinc-400 font-mono" data-currency-symbol>$</span>
+              <span class="text-4xl font-bold font-mono" id="starterPrice">49</span>
+              <span class="text-zinc-400 font-mono" data-currency-symbol>€</span>
             </div>
-            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ Month</p>
+            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span></p>
           </div>
 
-          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.b2b_desc">Lead Generation & Sales Assistant
-            optimized for Agencies.</p>
+          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.starter_desc">Assistant vocal IA pour votre site.</p>
 
           <ul class="space-y-3 mb-8 text-sm">
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2b_f1">Qualification de Leads</span>
+              <span data-i18n="pricing_page.starter_f1">Chat vocal + texte</span>
             </li>
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2b_f2">Sync CRM (HubSpot, Salesforce)</span>
+              <span data-i18n="pricing_page.starter_f2">5 langues + Darija</span>
             </li>
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2b_f3">Prise de RDV (Calendly)</span>
+              <span data-i18n="pricing_page.starter_f3">Réponses IA 24/7</span>
             </li>
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-indigo-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2b_f4">Zero-Credit Onboarding</span>
+              <span data-i18n="pricing_page.starter_f4">500 conversations/mois</span>
             </li>
           </ul>
 
-          <a href="/login?plan=b2b"
+          <a href="/signup?plan=starter"
             class="block w-full py-3 px-6 rounded-xl border border-white/[0.08] text-center font-semibold transition hover:bg-white/[0.08] hover:border-white/[0.12]"
-            data-i18n="pricing_page.b2b_cta">
-            Démarrer B2B
+            data-i18n="pricing_page.starter_cta">
+            Commencer
           </a>
         </div>
 
-        <!-- Voice Widget B2C -->
-        <div class="pricing-card p-6 relative glass">
-          <div class="mb-6">
-            <h3 class="text-lg font-semibold text-vocalia-200 mb-2">Widget B2C</h3>
-            <div class="flex items-baseline gap-1">
-              <span class="text-4xl font-bold font-mono" id="b2cPrice">79</span>
-              <span class="text-zinc-400 font-mono" data-currency-symbol>$</span>
-            </div>
-            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ Month</p>
-          </div>
-
-          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.b2c_desc">Local Service Receptionist with Visual
-            Menu interaction.</p>
-
-          <ul class="space-y-3 mb-8 text-sm">
-            <li class="flex items-start gap-2 text-zinc-300">
-              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2c_f1">Menus de Services Visuels</span>
-            </li>
-            <li class="flex items-start gap-2 text-zinc-300">
-              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2c_f2">Réceptionniste 24/7</span>
-            </li>
-            <li class="flex items-start gap-2 text-zinc-300">
-              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2c_f3">Réservation Instantanée</span>
-            </li>
-            <li class="flex items-start gap-2 text-zinc-300">
-              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.b2c_f4">Support Multi-Point de Vente</span>
-            </li>
-          </ul>
-
-          <a href="/login?plan=b2c"
-            class="block w-full py-3 px-6 rounded-xl border border-white/[0.08] text-center font-semibold transition hover:bg-white/[0.08] hover:border-white/[0.12]"
-            data-i18n="pricing_page.b2c_cta">
-            Démarrer B2C
-          </a>
-        </div>
-
-        <!-- Voice Widget E-commerce -->
+        <!-- Pro (Services & Lead Gen) -->
         <div class="pricing-card featured p-6 relative glass border-vocalia-500/50">
           <div class="absolute -top-3 left-1/2 -translate-x-1/2">
             <span class="px-4 py-1 rounded-full bg-vocalia-500 text-white text-xs font-bold uppercase tracking-widest"
-              data-i18n="pricing_page.ecom_badge">Power ROI</span>
+              data-i18n="pricing_page.pro_badge">Populaire</span>
           </div>
 
           <div class="mb-6 mt-2">
-            <h3 class="text-lg font-semibold text-white mb-2">Widget E-commerce</h3>
+            <h3 class="text-lg font-semibold text-white mb-2" data-i18n="pricing_page.pro_title">Pro</h3>
             <div class="flex items-baseline gap-1">
-              <span class="text-4xl font-bold font-mono gradient-text" id="ecomPrice">149</span>
-              <span class="text-zinc-400 font-mono" data-currency-symbol>$</span>
+              <span class="text-4xl font-bold font-mono gradient-text" id="proPrice">99</span>
+              <span class="text-zinc-400 font-mono" data-currency-symbol>€</span>
             </div>
-            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ Month</p>
+            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span></p>
+            <p class="text-xs text-vocalia-400 mt-1" data-i18n="pricing_page.pro_subtitle">Services & Lead Gen</p>
           </div>
 
-          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.ecom_desc">Revenue Maximization Suite for
-            Shopify & WooCommerce.</p>
+          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.pro_desc">Convertissez vos visiteurs en clients.</p>
 
           <ul class="space-y-3 mb-8 text-sm">
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.ecom_f1">7 Widgets IA de Conversion</span>
+              <span data-i18n="pricing_page.pro_f1">Tout Starter +</span>
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.ecom_f2">Récupération Panier Vocal</span>
+              <span data-i18n="pricing_page.pro_f2">Qualification leads BANT</span>
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.ecom_f3">Sync Catalogue Temps Réel</span>
+              <span data-i18n="pricing_page.pro_f3">Booking conversationnel</span>
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.ecom_f4">Exit-Intent Vocal Unique</span>
+              <span data-i18n="pricing_page.pro_f4">Sync CRM (HubSpot)</span>
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span data-i18n="pricing_page.pro_f5">Conversations illimitées</span>
+            </li>
+          </ul>
+
+          <a href="/signup?plan=pro"
+            class="block w-full py-3 px-6 rounded-xl bg-vocalia-500 hover:bg-vocalia-400 text-center font-semibold transition shadow-lg shadow-vocalia-500/20"
+            data-i18n="pricing_page.pro_cta">
+            Choisir Pro
+          </a>
+        </div>
+
+        <!-- E-commerce (Shopify & WooCommerce) -->
+        <div class="pricing-card featured p-6 relative glass border-emerald-500/50">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+            <span class="px-4 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold uppercase tracking-widest"
+              data-i18n="pricing_page.ecom_badge">E-commerce</span>
+          </div>
+
+          <div class="mb-6 mt-2">
+            <h3 class="text-lg font-semibold text-white mb-2" data-i18n="pricing_page.ecom_title">E-commerce</h3>
+            <div class="flex items-baseline gap-1">
+              <span class="text-4xl font-bold font-mono gradient-text" id="ecomPrice">99</span>
+              <span class="text-zinc-400 font-mono" data-currency-symbol>€</span>
+            </div>
+            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span></p>
+            <p class="text-xs text-emerald-400 mt-1" data-i18n="pricing_page.ecom_subtitle">Shopify & WooCommerce</p>
+          </div>
+
+          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.ecom_desc">Récupérez vos paniers et boostez vos ventes.</p>
+
+          <ul class="space-y-3 mb-8 text-sm">
+            <li class="flex items-start gap-2 text-white">
+              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span data-i18n="pricing_page.ecom_f1">Tout Starter +</span>
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span data-i18n="pricing_page.ecom_f2">Récupération panier vocal</span>
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span data-i18n="pricing_page.ecom_f3">Product Quiz IA + Carousel</span>
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span data-i18n="pricing_page.ecom_f4">Spin Wheel + Shipping Bar</span>
+            </li>
+            <li class="flex items-start gap-2 text-white">
+              <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
+              <span data-i18n="pricing_page.ecom_f5">Sync catalogue temps réel</span>
             </li>
           </ul>
 
@@ -368,33 +380,32 @@
         <!-- Voice Telephony AI -->
         <div class="pricing-card p-6 relative glass">
           <div class="mb-6">
-            <h3 class="text-lg font-semibold text-vocalia-200 mb-2">Voice Telephony AI</h3>
+            <h3 class="text-lg font-semibold text-vocalia-200 mb-2" data-i18n="pricing_page.telephony_title">Telephony</h3>
             <div class="flex items-baseline gap-1">
               <span class="text-4xl font-bold font-mono text-white" id="telephonyPrice">199</span>
-              <span class="text-zinc-400 font-mono" data-currency-symbol>$</span>
+              <span class="text-zinc-400 font-mono" data-currency-symbol>€</span>
             </div>
-            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ Month (Starter)</p>
+            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span> + 0.10€/min</p>
           </div>
 
-          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.telephony_desc">High-performance PSTN agents for
-            large scale voice operations.</p>
+          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.telephony_desc">Réceptionniste IA 24/7 sur ligne PSTN.</p>
 
           <ul class="space-y-3 mb-8 text-sm">
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-violet-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.telephony_f1">Lignes PSTN Dédiées</span>
+              <span data-i18n="pricing_page.telephony_f1">Ligne PSTN dédiée (FR)</span>
             </li>
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-violet-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.telephony_f2">Infrastructure Low-Latency</span>
+              <span data-i18n="pricing_page.telephony_f2">25 outils métier</span>
             </li>
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-violet-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.telephony_f3">0.06€/min (Sortie)</span>
+              <span data-i18n="pricing_page.telephony_f3">100 minutes incluses</span>
             </li>
             <li class="flex items-start gap-2 text-zinc-300">
               <i data-lucide="check" class="w-5 h-5 text-violet-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.telephony_f4">Arch. Temps Réel Hub</span>
+              <span data-i18n="pricing_page.telephony_f4">Transfert humain intelligent</span>
             </li>
           </ul>
 
@@ -411,7 +422,7 @@
         <div class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08]">
           <i data-lucide="info" class="w-5 h-5 text-vocalia-400"></i>
           <span class="text-zinc-300" data-i18n="pricing_page.overage_note">Minutes supplémentaires téléphonie: <strong
-              class="text-white">0.06€/min</strong></span>
+              class="text-white">0.10€/min</strong></span>
         </div>
       </div>
 
@@ -435,7 +446,7 @@
               <div class="text-2xl font-bold text-white mb-1">1,000+</div>
               <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
               <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount1">-10%</div>
-              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate1">0.054€/min</div>
+              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate1">0.09€/min</div>
             </div>
 
             <!-- Tier 2 -->
@@ -447,7 +458,7 @@
               <div class="text-2xl font-bold text-white mb-1">5,000+</div>
               <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
               <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount2">-20%</div>
-              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate2">0.048€/min</div>
+              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate2">0.08€/min</div>
             </div>
 
             <!-- Tier 3 -->
@@ -455,7 +466,7 @@
               <div class="text-2xl font-bold text-white mb-1">10,000+</div>
               <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
               <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount3">-30%</div>
-              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate3">0.042€/min</div>
+              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate3">0.07€/min</div>
             </div>
           </div>
 
@@ -482,47 +493,47 @@
           <thead>
             <tr class="border-b border-white/[0.08]">
               <th class="text-left py-4 px-4 font-semibold" data-i18n="pricing_page.table_feature">Fonctionnalité</th>
-              <th class="text-center py-4 px-4 font-semibold" data-i18n="pricing_page.table_b2b">Widget B2B</th>
-              <th class="text-center py-4 px-4 font-semibold" data-i18n="pricing_page.table_b2c">Widget B2C</th>
+              <th class="text-center py-4 px-4 font-semibold" data-i18n="pricing_page.table_starter">Starter</th>
+              <th class="text-center py-4 px-4 font-semibold text-vocalia-400" data-i18n="pricing_page.table_pro">Pro</th>
               <th class="text-center py-4 px-4 font-semibold text-emerald-400" data-i18n="pricing_page.table_ecom">
-                Widget Ecom</th>
+                E-commerce</th>
               <th class="text-center py-4 px-4 font-semibold text-violet-400" data-i18n="pricing_page.table_telephony">
-                Telephony AI</th>
+                Telephony</th>
             </tr>
           </thead>
           <tbody>
             <tr class="border-b border-white/[0.06]">
               <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_focus">Cible / Focus</td>
-              <td class="text-center py-4 px-4">Lead Gen / Saas</td>
-              <td class="text-center py-4 px-4">Services Locaux</td>
-              <td class="text-center py-4 px-4">Revenue Ops</td>
+              <td class="text-center py-4 px-4">Sites web / PME</td>
+              <td class="text-center py-4 px-4">Services / Lead Gen</td>
+              <td class="text-center py-4 px-4">Boutiques en ligne</td>
               <td class="text-center py-4 px-4">Enterprise PSTN</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
               <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_ux">Interface UX</td>
-              <td class="text-center py-4 px-4">Voice-only Hub</td>
-              <td class="text-center py-4 px-4">Visual Menus</td>
+              <td class="text-center py-4 px-4">Voice + Text Chat</td>
+              <td class="text-center py-4 px-4">Chat + Booking UI</td>
               <td class="text-center py-4 px-4">8 Conversion Tools</td>
               <td class="text-center py-4 px-4">Phone Line</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
               <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_integrations">Intégrations</td>
-              <td class="text-center py-4 px-4">CRM (HubSpot)</td>
-              <td class="text-center py-4 px-4">Booking (Calendly)</td>
+              <td class="text-center py-4 px-4">-</td>
+              <td class="text-center py-4 px-4">CRM + Booking</td>
               <td class="text-center py-4 px-4">Shopify / Woo</td>
               <td class="text-center py-4 px-4">PSTN / PBX</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
-              <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_minutes">Minutes Incluses</td>
-              <td class="text-center py-4 px-4">Unlimited Web</td>
-              <td class="text-center py-4 px-4">Unlimited Web</td>
-              <td class="text-center py-4 px-4">Unlimited Web</td>
-              <td class="text-center py-4 px-4">100 min (Starter)</td>
+              <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_minutes">Conversations</td>
+              <td class="text-center py-4 px-4">500/mois</td>
+              <td class="text-center py-4 px-4">Illimité</td>
+              <td class="text-center py-4 px-4">Illimité</td>
+              <td class="text-center py-4 px-4">100 min PSTN</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
               <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_support">Support</td>
               <td class="text-center py-4 px-4">Email</td>
-              <td class="text-center py-4 px-4">Standard</td>
+              <td class="text-center py-4 px-4">Prioritaire</td>
               <td class="text-center py-4 px-4">Prioritaire</td>
               <td class="text-center py-4 px-4">Dédié 24/7</td>
             </tr>
@@ -546,8 +557,8 @@
             <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform"></i>
           </summary>
           <div class="px-6 pb-6 text-zinc-400" data-i18n="pricing_page.faq1_a">
-            Chaque plan inclut un certain nombre de minutes téléphonie. Au-delà, les minutes supplémentaires sont
-            facturées à 0.06€/min. Ce tarif inclut l'infrastructure télécom et le traitement IA.
+            Le plan Telephony inclut 100 minutes. Au-delà, les minutes supplémentaires sont
+            facturées à 0.10€/min. Ce tarif inclut l'infrastructure télécom et le traitement IA.
           </div>
         </details>
 
@@ -566,14 +577,12 @@
         <!-- FAQ Item 3 -->
         <details class="group glass rounded-xl">
           <summary class="flex items-center justify-between p-6 cursor-pointer">
-            <span class="font-semibold" data-i18n="pricing_page.faq3_q">Comment fonctionne le pricing du Voice
-              Widget?</span>
+            <span class="font-semibold" data-i18n="pricing_page.faq3_q">Quelle est la différence entre Pro et E-commerce?</span>
             <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform"></i>
           </summary>
           <div class="px-6 pb-6 text-zinc-400" data-i18n="pricing_page.faq3_a">
-            Le Widget utilise la Web Speech API du navigateur pour la reconnaissance vocale. Les réponses IA
-            utilisent notre moteur Multi-AI avec 5 niveaux de redondance. Le plan Starter inclut un quota mensuel. Le Darija utilise
-            une voix premium native.
+            Pro est conçu pour les services (médecins, agences, consultants) avec qualification leads et booking.
+            E-commerce est optimisé pour les boutiques en ligne avec récupération de paniers, quiz produit et gamification.
           </div>
         </details>
 
@@ -592,13 +601,12 @@
         <!-- FAQ Item 5 -->
         <details class="group glass rounded-xl">
           <summary class="flex items-center justify-between p-6 cursor-pointer">
-            <span class="font-semibold" data-i18n="pricing_page.faq5_q">Comment fonctionne l'option self-hosted?</span>
+            <span class="font-semibold" data-i18n="pricing_page.faq5_q">Comment fonctionne l'essai gratuit?</span>
             <i data-lucide="chevron-down" class="w-5 h-5 text-zinc-400 group-open:rotate-180 transition-transform"></i>
           </summary>
           <div class="px-6 pb-6 text-zinc-400" data-i18n="pricing_page.faq5_a">
-            Pour les clients Enterprise, nous fournissons les containers Docker et scripts de déploiement pour installer
-            VocalIA sur votre propre infrastructure (VPS, cloud privé, on-premise). Vous gardez le contrôle total de vos
-            données.
+            Tous les plans incluent un essai gratuit de 14 jours. Aucune carte bancaire requise.
+            Vous pouvez tester toutes les fonctionnalités avant de vous engager.
           </div>
         </details>
 
@@ -703,8 +711,8 @@
     (function () {
       let currentCurrency = 'EUR';
       let currentSymbol = '€';
-      // Synchronized with new 4-product strategy
-      let currentPricing = { b2b: 49, b2c: 79, ecom: 149, telephony: 199, overage: 0.06 };
+      // Synchronized with Starter/Pro/ECOM/Telephony pricing (250.142)
+      let currentPricing = { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 };
       let isAnnual = false;
 
       // Annual discount: 20%
@@ -716,7 +724,7 @@
       }
 
       function updatePriceDisplay() {
-        const tiers = ['b2b', 'b2c', 'ecom', 'telephony'];
+        const tiers = ['starter', 'pro', 'ecom', 'telephony'];
 
         tiers.forEach(tier => {
           const monthlyPrice = currentPricing[tier];

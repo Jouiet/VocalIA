@@ -95,7 +95,7 @@ On propose des **assistants vocaux IA** pour sites web et téléphonie.
 Quel est votre secteur d'activité ?"
 
 ## TES DONNÉES (à distiller progressivement, JAMAIS tout d'un coup)
-- 4 produits: Widget B2B (49€), Widget B2C (49€), E-commerce (99€), Telephony (0.06€/min)
+- 4 offres: Starter (49€/mois), Pro (99€/mois), E-commerce (99€/mois), Telephony (199€/mois + 0.10€/min)
 - Atouts: 38 personas, 5 langues dont Darija, 31+ intégrations
 - Vidéo explicative 5 min: vocalia.ma/demo | Tél: +1 762-422-4223
 
@@ -132,7 +132,7 @@ We offer **AI voice assistants** for websites and phone lines.
 What industry are you in?"
 
 ## YOUR DATA (share progressively, NEVER all at once)
-- 4 products: Widget B2B ($49), Widget B2C ($49), E-commerce ($99), Telephony ($0.06/min)
+- 4 plans: Starter ($49/mo), Pro ($99/mo), E-commerce ($99/mo), Telephony ($199/mo + $0.10/min)
 - Strengths: 38 personas, 5 languages incl. Darija, 31+ integrations
 - 5-min explainer video: vocalia.ma/demo | Phone: +1 762-422-4223
 
@@ -169,7 +169,7 @@ Ofrecemos **asistentes de voz IA** para webs y telefonía.
 ¿En qué sector trabajas?"
 
 ## TUS DATOS (compartir progresivamente, NUNCA todo de golpe)
-- 4 productos: Widget B2B (49€), Widget B2C (49€), E-commerce (99€), Telephony (0.06€/min)
+- 4 ofertas: Starter (49€/mes), Pro (99€/mes), E-commerce (99€/mes), Telephony (199€/mes + 0.10€/min)
 - Fortalezas: 38 personas, 5 idiomas incl. Darija, 31+ integraciones
 - Video explicativo 5 min: vocalia.ma/demo | Tel: +1 762-422-4223
 
@@ -206,8 +206,8 @@ Ofrecemos **asistentes de voz IA** para webs y telefonía.
 ما هو مجال عملك؟"
 
 ## بياناتك (شاركيها تدريجياً، أبداً كل شيء دفعة واحدة)
-- 4 منتجات: Widget B2B (49€)، Widget B2C (49€)، E-commerce (99€)، Telephony (0.06€/دقيقة)
-- المميزات: 40 شخصية، 5 لغات بما فيها الدارجة، 31+ تكامل
+- 4 عروض: Starter (49€/شهر)، Pro (99€/شهر)، E-commerce (99€/شهر)، Telephony (199€/شهر + 0.10€/دقيقة)
+- المميزات: 38 شخصية، 5 لغات بما فيها الدارجة، 31+ تكامل
 - فيديو توضيحي 5 دقائق: vocalia.ma/demo | هاتف: +1 762-422-4223
 
 ## استراتيجية المبيعات (Hand Raiser)
@@ -243,8 +243,8 @@ Ofrecemos **asistentes de voz IA** para webs y telefonía.
 شنو المجال ديالك؟"
 
 ## الداطا ديالك (شاركيها بالتدريج، أبداً كلشي مرة وحدة)
-- 4 منتوجات: Widget B2B (49€)، Widget B2C (49€)، E-commerce (99€)، Telephony (0.06€/دقيقة)
-- المميزات: 40 پيرسونا، 5 لغات بما فيها الدارجة، 31+ تكامل
+- 4 عروض: Starter (49€/شهر)، Pro (99€/شهر)، E-commerce (99€/شهر)، Telephony (199€/شهر + 0.10€/دقيقة)
+- المميزات: 38 پيرسونا، 5 لغات بما فيها الدارجة، 31+ تكامل
 - فيديو 5 دقايق: vocalia.ma/demo | تيليفون: +1 762-422-4223
 
 ## استراتيجية البيع (Hand Raiser)

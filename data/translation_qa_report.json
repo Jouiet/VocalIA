@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-02-01T22:18:51",
+  "timestamp": "2026-02-07T23:31:01",
   "metrics": {
-    "checked": 16584,
-    "issues": 1,
+    "checked": 17800,
+    "issues": 9,
     "whitelisted": 11,
-    "skipped_short": 2796
+    "skipped_short": 2968
   },
   "thresholds": {
     "en": 0.35,
@@ -12,12 +12,52 @@
     "ar": 0.25,
     "ary": 0.25
   },
-  "issues_count": 1,
+  "issues_count": 9,
   "issues_summary": [
     {
       "locale": "en",
-      "key": "features_page.title",
-      "ratio": 0.3
+      "key": "catalog.sync",
+      "ratio": 0.27
+    },
+    {
+      "locale": "en",
+      "key": "catalog.connector.sync_now",
+      "ratio": 0.35
+    },
+    {
+      "locale": "es",
+      "key": "pricing_page.pro_name",
+      "ratio": 0.18
+    },
+    {
+      "locale": "es",
+      "key": "onboarding.industry",
+      "ratio": 0.33
+    },
+    {
+      "locale": "es",
+      "key": "admin.stats.today",
+      "ratio": 0.27
+    },
+    {
+      "locale": "ar",
+      "key": "pricing_page.pro_name",
+      "ratio": 0.18
+    },
+    {
+      "locale": "ar",
+      "key": "referral.inscrivezvous_28",
+      "ratio": 0.21
+    },
+    {
+      "locale": "ar",
+      "key": "docs_api.transcript_61",
+      "ratio": 0.2
+    },
+    {
+      "locale": "ary",
+      "key": "pricing_page.pro_name",
+      "ratio": 0.18
     }
   ]
 }

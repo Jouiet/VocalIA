@@ -1391,9 +1391,9 @@
       const pctEl = document.getElementById('roi-automation-pct');
       if (pctEl) pctEl.textContent = automationPct + '%';
 
-      // Cost savings: industry avg = 0.50€/min human agent, VocalIA = 0.06€/min
+      // Cost savings: industry avg = 0.50€/min human agent, VocalIA = 0.10€/min
       const humanCostPerMin = 0.50;
-      const aiCostPerMin = 0.06;
+      const aiCostPerMin = 0.10;
       const totalMinutes = stats?.minutesUsed || 0;
       const savings = Math.round(totalMinutes * (humanCostPerMin - aiCostPerMin));
       const savingsPct = Math.round(((humanCostPerMin - aiCostPerMin) / humanCostPerMin) * 100);

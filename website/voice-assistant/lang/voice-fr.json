@@ -80,7 +80,7 @@
         "what do you sell",
         "shnou 3andkom"
       ],
-      "response": "VocalIA propose 4 produits Voice AI :\n\n1. **Voice Widget B2B** - Qualification leads B2B\n2. **Voice Widget B2C** - Support client e-commerce\n3. **Widget E-commerce** - 8 intégrations (Shopify, WooCommerce, Magento...)\n4. **Voice Telephony** (0.06€/min) - Ligne téléphonique IA\n\nNos atouts : 38 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quel produit vous intéresse ?"
+      "response": "VocalIA propose 4 offres Voice AI :\n\n1. **Starter** (49€/mois) - Assistant vocal IA pour sites web\n2. **Pro** (99€/mois) - Qualification leads & services B2B\n3. **E-commerce** (99€/mois) - Shopify, WooCommerce, Magento...\n4. **Telephony** (199€/mois + 0.10€/min) - Ligne téléphonique IA\n\nNos atouts : 38 personas sectoriels, 5 langues dont Darija, 31+ intégrations. Quelle offre vous intéresse ?"
     },
     "pricing": {
       "keywords": [
@@ -92,7 +92,7 @@
         "budget",
         "devis"
       ],
-      "response": "Nos solutions VocalIA démarrent à 99€/mois pour le Voice Widget et 0,06€/minute pour la téléphonie AI. Nous proposons aussi des packages personnalisés selon vos volumes. Voulez-vous un devis adapté à votre usage ?"
+      "response": "Nos solutions VocalIA démarrent à 49€/mois (Starter) et montent à 99€/mois (Pro/E-commerce) ou 199€/mois + 0,10€/min (Telephony). Nous proposons aussi des packages personnalisés selon vos volumes. Voulez-vous un devis adapté à votre usage ?"
     },
     "demo": {
       "keywords": [
@@ -124,7 +124,7 @@
         "ivr",
         "svi"
       ],
-      "response": "Notre téléphonie AI VocalIA automatise vos appels entrants 24/7 à seulement 0,06€/minute (60% moins cher que Vapi). Elle qualifie les leads, prend des rendez-vous et transfère les appels urgents. Intéressé par une démo ?"
+      "response": "Notre téléphonie AI VocalIA automatise vos appels entrants 24/7 à seulement 0,10€/minute (jusqu'à 60% moins cher que Vapi). Elle qualifie les leads, prend des rendez-vous et transfère les appels urgents. Intéressé par une démo ?"
     },
     "integration": {
       "keywords": [
@@ -158,7 +158,7 @@
         "alternative",
         "comparaison"
       ],
-      "response": "Par rapport à Vapi (0,15-0,33€/min) ou Retell (0,13-0,31€/min), VocalIA coûte seulement 0,06€/min - soit 60% d'économie. En plus, nous offrons Widget + Téléphonie en une seule plateforme et le support Darija exclusif."
+      "response": "Par rapport à Vapi (0,15-0,33€/min) ou Retell (0,13-0,31€/min), VocalIA coûte seulement 0,10€/min - soit jusqu'à 60% d'économie. En plus, nous offrons Widget + Téléphonie en une seule plateforme et le support Darija exclusif."
     },
     "leads": {
       "keywords": [

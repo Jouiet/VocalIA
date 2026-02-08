@@ -37,7 +37,7 @@
         value: {
           text: 'Économisez 80% sur vos Appels',
           textEn: 'Save 80% on Calls',
-          subtext: '~0.06€/min vs 0.30€ moyenne'
+          subtext: '~0.10€/min vs 0.30€ moyenne'
         },
         social: {
           text: 'Rejoignez 200+ Entreprises',
