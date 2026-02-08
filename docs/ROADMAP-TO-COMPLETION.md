@@ -33,32 +33,32 @@
 > **Session 250.129 fixes**: Tenant system fixed (3 root causes), GA4 infra, social proof backend.
 > **Session 250.128 fixes**: XSS, CONFIG, branding, dead files, WCAG, build script.
 
-| # | Dimension | Score 250.131 | Score 250.153 | Delta | Justification |
+| # | Dimension | Score 250.153 | Score 250.154 | Delta | Justification (250.154) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,764 tests pass, 0 fail, 0 skip (ESM) |
-| 2 | Sécurité | 9.0 | **7.5** | **-1.5** | CORS blocks third-party (FATAL), Permissions-Policy mic conflict, promo codes plaintext, no RGPD consent |
-| 3 | Production readiness | 3.0 | **1.5** | **-1.5** | CORS blocker, CDN non-existent, lead persistence 0% functional, WordPress broken, 0 paying customers |
-| 4 | Documentation accuracy | 8.5 | **5.0** | **-3.5** | docs/index.html lies ("100% frontend", VocaliaWidget.init), CDN refs broken, WordPress stale |
-| 5 | Architecture code | 8.5 | **8.0** | **-0.5** | conversationStore import bug, email-service.cjs missing, cart recovery volatile |
-| 6 | Multi-tenant | 8.0 | **6.0** | **-2.0** | CORS blocks ALL tenant domains, no API key system, tenant widget deployment impossible |
+| 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,763 tests pass, 0 fail, 0 skip (ESM) |
+| 2 | Sécurité | 7.5 | **8.5** | **+1.0** | CORS fixed (tenant whitelist), Permissions-Policy fixed, promo codes still plaintext, no RGPD consent |
+| 3 | Production readiness | 1.5 | **3.0** | **+1.5** | CORS unblocked, CDN refs fixed, lead persistence code fixed, WordPress fixed, 0 paying customers |
+| 4 | Documentation accuracy | 5.0 | **8.0** | **+3.0** | CDN refs replaced, VocaliaWidget.init→VOCALIA_CONFIG, "100% frontend" removed, API docs corrected |
+| 5 | Architecture code | 8.0 | **9.0** | **+1.0** | conversationStore import fixed, email-service.cjs created, Gemini/B2B versions unified |
+| 6 | Multi-tenant | 6.0 | **8.0** | **+2.0** | CORS tenant whitelist from client_registry.json, allowed_origins per tenant, no API key system yet |
 | 7 | i18n | 9.0 | 9.0 | 0 | No change |
-| 8 | Intégrations | 8.0 | **7.0** | **-1.0** | conversationStore broken, email-service missing, HubSpot gated but untested with real data |
+| 8 | Intégrations | 7.0 | **8.0** | **+1.0** | conversationStore fixed, email-service created, WordPress plugin fixed |
 | 9 | Developer experience | 9.5 | 9.5 | 0 | Build+minify+check, validator v2.3, CONTRIBUTING.md, staging |
-| 10 | Mémoire & docs | 7.0 | **8.0** | **+1.0** | Audit findings documented, bugs cataloged, ROADMAP updated |
+| 10 | Mémoire & docs | 8.0 | **8.5** | **+0.5** | All audit tasks documented as DONE, scores updated, ROADMAP fully current |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
 | 1 (7.0) | 15% | 1.050 |
-| 2 (7.5) | 15% | 1.125 |
-| 3 (1.5) | 10% | 0.150 |
-| 4 (5.0) | 10% | 0.500 |
-| 5 (8.0) | 10% | 0.800 |
-| 6 (6.0) | 10% | 0.600 |
+| 2 (8.5) | 15% | 1.275 |
+| 3 (3.0) | 10% | 0.300 |
+| 4 (8.0) | 10% | 0.800 |
+| 5 (9.0) | 10% | 0.900 |
+| 6 (8.0) | 10% | 0.800 |
 | 7 (9.0) | 5% | 0.450 |
-| 8 (7.0) | 10% | 0.700 |
+| 8 (8.0) | 10% | 0.800 |
 | 9 (9.5) | 10% | 0.950 |
-| 10 (8.0) | 5% | 0.400 |
-| **TOTAL** | **100%** | **6.725** → **~6.7/10** (post-audit correction 250.153) |
+| 10 (8.5) | 5% | 0.425 |
+| **TOTAL** | **100%** | **7.75** → **~7.8/10** (post-audit fixes 250.154) |
 
 ### 1.0 Widget System DEEP Forensic Audit (Session 250.127)
 
@@ -867,7 +867,7 @@ B2B source synced to deployed (pulse animation added + WCAG).
 ### P2-W8. ✅ PARTIAL (250.130) — Minification + CDN
 
 - [x] **P2-W8a.** Terser added to `scripts/build-widgets.cjs`. Generates `.min.js` alongside `.js`. ECOM: 212→126 KB (-41%), B2B: 41→25 KB (-40%).
-- [ ] **P2-W8b.** DEFERRED: cdn.vocalia.ma requires DNS + CDN infrastructure (Cloudflare/CloudFront) — not a code task.
+- [x] **P2-W8b.** RESOLVED (250.154): CDN not needed — all refs replaced with direct vocalia.ma URLs. VPS nginx + brotli pre-compression sufficient at current volume.
 
 **Effort:** 5h (1h code done, 4h infra deferred) | **Impact:** Production readiness 8→8.5
 
@@ -1606,7 +1606,7 @@ Widget uses microphone for voice input. This header could block widget mic on pa
 | Widget | Behavior | Evidence |
 |:-------|:---------|:---------|
 | B2B (`voice-widget-b2b.js`) | **HONEST** — returns nothing if no real data | L1054-1060: `if (!messages.length) return;` |
-| V3 (`voice-widget-v3.js`) | **FAKE FALLBACK** — hardcoded testimonials | L2757-2764: "Sophie de Paris", "Ahmed", "500 appels" |
+| V3 (`voice-widget-v3.js`) | ✅ **FIXED (250.153)** — fake fallback REMOVED | `getDefaultSocialProofMessages()` deleted, mirrors B2B behavior |
 
 #### Build Pipeline (`scripts/build-widgets.cjs`)
 
@@ -1692,7 +1692,7 @@ function isOriginAllowed(origin) {
 | CSP | `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'` | security-utils.cjs |
 | X-Frame-Options | DENY | security-utils.cjs |
 | HSTS | max-age=31536000; includeSubDomains; preload | security-utils.cjs |
-| Permissions-Policy | `microphone=()` | security-utils.cjs — **MAY CONFLICT with widget mic** |
+| Permissions-Policy | `microphone=(self)` | security-utils.cjs — ✅ FIXED (250.153) |
 
 #### RGPD / localStorage Keys (8+)
 
@@ -1749,9 +1749,9 @@ function isOriginAllowed(origin) {
 | **P0-TENANT (250.129)** | ✅ **4/4 DONE** | tenant_id, camelCase, GA4, social proof | 8.6 → **7.2** (score DOWN due to audit revelation) |
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 |
-| **P0-AUDIT (250.153)** | ❌ **0/9 DONE** | conversationStore bug, CORS fatal, CDN, WordPress, fake social proof, email-service, versions, mic policy, doc lies | 8.4 → **Score DOWN to 8.5 code / 1.5 production** |
+| **P0-AUDIT (250.153-154)** | ✅ **9/9 DONE** | conversationStore, CORS, CDN, WordPress, social proof, email-service, versions, mic policy, doc lies | 8.5 → **9.0 code / 3.0 production** |
 
-**Code Completeness: 8.8/10** | **Production Readiness: 2.5/10** (250.142 — code done, funnel broken, 0 acquisition mechanisms)
+**Code Completeness: 9.0/10** | **Production Readiness: 3.0/10** (250.154 — all audit bugs fixed, CORS unblocked, docs corrected)
 
 **Remaining (code — OPTIONAL):**
 ```
