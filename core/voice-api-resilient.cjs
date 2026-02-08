@@ -2423,9 +2423,21 @@ function startServer(port = 3004) {
         const bookingUrl = client.booking_url || tenantConfig.booking_url || null;
         const bookingPhone = client.phone || tenantConfig.booking_phone || null;
 
+        // Session 250.146: Derive plan-based features for client-side widget gating
+        const tenantPlan = tenantConfig.plan || client.plan || 'starter';
+        const planFeatureSet = PLAN_FEATURES[tenantPlan] || PLAN_FEATURES.starter;
+        // Apply explicit overrides from tenant config
+        const resolvedPlanFeatures = { ...planFeatureSet };
+        if (tenantConfig.features) {
+          for (const [k, v] of Object.entries(tenantConfig.features)) {
+            if (resolvedPlanFeatures.hasOwnProperty(k)) resolvedPlanFeatures[k] = !!v;
+          }
+        }
+
         const config = {
           success: true,
           tenantId: tId,
+          plan: tenantPlan,
           branding: {
             primaryColor: client.primary_color || persona.primaryColor || '#5E6AD2',
             botName: persona.name || 'VocalIA',
@@ -2439,6 +2451,7 @@ function startServer(port = 3004) {
             booking_enabled: widgetFeatures.booking_enabled !== false && !!(bookingUrl || bookingPhone),
             exit_intent_enabled: widgetFeatures.exit_intent_enabled !== false
           },
+          plan_features: resolvedPlanFeatures,
           booking: {
             url: bookingUrl,
             phone: bookingPhone

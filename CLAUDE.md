@@ -1,9 +1,10 @@
 # VocalIA - Voice AI Platform
 
-> **v7.27.0** | 08/02/2026 | Production: https://vocalia.ma
+> **v7.28.0** | 08/02/2026 | Production: https://vocalia.ma
 > **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
 > **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,196 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
+> ✅ **SESSION 250.146**: WIDGET PLAN GATING — /config returns plan_features, B2B widget consumes features from /respond, ECOM sub-widgets (cart/quiz/spin/recommendations) gated by plan.
 > ✅ **SESSION 250.145**: STALE PRICING PURGE — Billing page 4-tier fix, dashboard costPerMin 0.06→0.10, admin MRR DH→€, voice-agent-b2b 4 plans, KB chunks updated, plan features UI.
 > ✅ **SESSION 250.144**: FEATURE GATING + FUNNEL — checkFeature() + PLAN_FEATURES (14 features × 4 plans), export restriction (403 Starter), lead persistence (ContextBox), newsletter/booking POST, social proof honest.
 > ✅ **SESSION 250.143**: PRICING RESTRUCTURE — B2C eliminated, 4 tiers: Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.10€/min.

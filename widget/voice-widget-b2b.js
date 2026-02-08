@@ -132,7 +132,9 @@
             phone: null,
             enabled: false
         },
-        availableSlotsCache: { slots: [], timestamp: 0 }
+        availableSlotsCache: { slots: [], timestamp: 0 },
+        // Session 250.146: Plan-based feature gating (from /config + /respond)
+        planFeatures: null
     };
 
     // Browser capabilities
@@ -859,8 +861,9 @@
             return;
         }
 
-        // Detect booking intent and start inline flow (if booking is enabled)
-        if (state.bookingConfig.enabled && isBookingIntent(text)) {
+        // Detect booking intent and start inline flow (if booking is enabled AND plan allows it)
+        const planAllowsBooking = !state.planFeatures || state.planFeatures.booking !== false;
+        if (state.bookingConfig.enabled && planAllowsBooking && isBookingIntent(text)) {
             showBookingCTA();
             // Still send to API for contextual response
         }
@@ -891,6 +894,10 @@
 
             const data = await response.json();
             if (data.response) {
+                // Session 250.146: Update plan features from /respond (authoritative per-request)
+                if (data.features) {
+                    state.planFeatures = data.features;
+                }
                 addMessage(data.response, 'assistant');
                 // Render A2UI component if backend sent one (booking, lead_form, etc.)
                 if (data.a2ui) {
@@ -1457,16 +1464,21 @@
                     const configResp = await fetch(`${CONFIG.CONFIG_API_URL}?tenantId=${encodeURIComponent(state.tenantId)}`, { signal: AbortSignal.timeout(5000) });
                     const configData = await configResp.json();
                     if (configData.success) {
-                        // Apply server feature flags
+                        // Session 250.146: Store plan-based features for client-side gating
+                        if (configData.plan_features) {
+                            state.planFeatures = configData.plan_features;
+                        }
+                        // Apply server feature flags (gate by plan)
                         if (configData.features) {
                             CONFIG.SOCIAL_PROOF_ENABLED = configData.features.social_proof_enabled !== false;
                             CONFIG.EXIT_INTENT_ENABLED = configData.features.exit_intent_enabled !== false;
                         }
-                        // Store booking config
+                        // Gate booking by plan: booking requires plan_features.booking
                         if (configData.booking) {
                             state.bookingConfig.url = configData.booking.url || null;
                             state.bookingConfig.phone = configData.booking.phone || null;
-                            state.bookingConfig.enabled = configData.features?.booking_enabled && !!(configData.booking.url || configData.booking.phone);
+                            const planAllowsBooking = state.planFeatures ? state.planFeatures.booking !== false : true;
+                            state.bookingConfig.enabled = planAllowsBooking && configData.features?.booking_enabled && !!(configData.booking.url || configData.booking.phone);
                         }
                     }
                 } catch (e) {
