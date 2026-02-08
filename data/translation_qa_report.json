@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-02-07T23:31:01",
+  "timestamp": "2026-02-08T17:03:31",
   "metrics": {
-    "checked": 17800,
-    "issues": 9,
+    "checked": 19296,
+    "issues": 6,
     "whitelisted": 11,
-    "skipped_short": 2968
+    "skipped_short": 3152
   },
   "thresholds": {
     "en": 0.35,
@@ -12,7 +12,7 @@
     "ar": 0.25,
     "ary": 0.25
   },
-  "issues_count": 9,
+  "issues_count": 6,
   "issues_summary": [
     {
       "locale": "en",
@@ -26,11 +26,6 @@
     },
     {
       "locale": "es",
-      "key": "pricing_page.pro_name",
-      "ratio": 0.18
-    },
-    {
-      "locale": "es",
       "key": "onboarding.industry",
       "ratio": 0.33
     },
@@ -41,11 +36,6 @@
     },
     {
       "locale": "ar",
-      "key": "pricing_page.pro_name",
-      "ratio": 0.18
-    },
-    {
-      "locale": "ar",
       "key": "referral.inscrivezvous_28",
       "ratio": 0.21
     },
@@ -53,11 +43,6 @@
       "locale": "ar",
       "key": "docs_api.transcript_61",
       "ratio": 0.2
-    },
-    {
-      "locale": "ary",
-      "key": "pricing_page.pro_name",
-      "ratio": 0.18
     }
   ]
 }
