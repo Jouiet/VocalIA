@@ -2935,6 +2935,119 @@ function startServer(port = 3004) {
       return;
     }
 
+    // STT endpoint for browser fallback (Firefox/Safari)
+    // Receives audio blob, transcribes via Grok Whisper-compatible API
+    if (req.url === '/stt' && req.method === 'POST') {
+      const chunks = [];
+      let bodySize = 0;
+      req.on('data', chunk => {
+        bodySize += chunk.length;
+        if (bodySize > 5 * 1024 * 1024) { // 5MB max audio
+          req.destroy();
+          res.writeHead(413, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Audio too large (max 5MB)' }));
+          return;
+        }
+        chunks.push(chunk);
+      });
+      req.on('end', async () => {
+        try {
+          const audioBuffer = Buffer.concat(chunks);
+          if (audioBuffer.length < 100) {
+            res.writeHead(400, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Audio data too small' }));
+            return;
+          }
+
+          const language = req.headers['x-language'] || 'fr';
+
+          // Try Grok Whisper-compatible endpoint first
+          const xaiKey = process.env.XAI_API_KEY;
+          const geminiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
+          let transcript = null;
+
+          if (xaiKey) {
+            try {
+              const FormData = (await import('node:buffer')).Buffer;
+              const boundary = '----VocalIASTT' + Date.now();
+              const parts = [];
+
+              // Build multipart/form-data manually
+              parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="audio.webm"\r\nContent-Type: audio/webm\r\n\r\n`));
+              parts.push(audioBuffer);
+              parts.push(Buffer.from(`\r\n--${boundary}\r\nContent-Disposition: form-data; name="model"\r\n\r\nwhisper-large-v3\r\n`));
+              parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="language"\r\n\r\n${language === 'ary' ? 'ar' : language}\r\n`));
+              parts.push(Buffer.from(`--${boundary}--\r\n`));
+
+              const multipartBody = Buffer.concat(parts);
+
+              const sttResp = await fetch('https://api.x.ai/v1/audio/transcriptions', {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${xaiKey}`,
+                  'Content-Type': `multipart/form-data; boundary=${boundary}`
+                },
+                body: multipartBody,
+                signal: AbortSignal.timeout(15000)
+              });
+
+              if (sttResp.ok) {
+                const sttResult = await sttResp.json();
+                transcript = sttResult.text;
+              }
+            } catch (e) {
+              console.warn('[STT] Grok Whisper failed:', e.message);
+            }
+          }
+
+          // Fallback to Gemini audio transcription
+          if (!transcript && geminiKey) {
+            try {
+              const audioBase64 = audioBuffer.toString('base64');
+              const geminiResp = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    contents: [{
+                      parts: [
+                        { inline_data: { mime_type: 'audio/webm', data: audioBase64 } },
+                        { text: `Transcribe this audio exactly. Language: ${language}. Return ONLY the transcription, nothing else.` }
+                      ]
+                    }]
+                  }),
+                  signal: AbortSignal.timeout(15000)
+                }
+              );
+
+              if (geminiResp.ok) {
+                const geminiResult = await geminiResp.json();
+                transcript = geminiResult.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+              }
+            } catch (e) {
+              console.warn('[STT] Gemini fallback failed:', e.message);
+            }
+          }
+
+          if (transcript) {
+            console.log(`✅ [STT] Transcribed (${language}): "${transcript.substring(0, 50)}..."`);
+            res.writeHead(200, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, text: transcript, language }));
+          } else {
+            res.writeHead(503, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Transcription failed — no STT provider available' }));
+          }
+        } catch (err) {
+          console.error('[STT] Error:', err.message);
+          res.writeHead(500, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: err.message }));
+        }
+      });
+      return;
+    }
+
     // Contact Form Endpoint (Real Implementation)
     if (req.url === '/api/contact' && req.method === 'POST') {
       let body = '';

@@ -358,7 +358,7 @@
 
         <div class="va-input-area">
           <input type="text" class="va-input" id="va-input" placeholder="${L.ui.placeholder || 'Posez votre question...'}" autocomplete="off">
-          ${hasSpeechRecognition ? `
+          ${(hasSpeechRecognition || (typeof MediaRecorder !== 'undefined')) ? `
           <button class="va-btn" id="va-mic" aria-label="Activer le microphone">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
           </button>` : ''}
@@ -415,9 +415,13 @@
             });
         }
 
-        if (hasSpeechRecognition && micBtn) {
+        if (micBtn) {
             initSpeechRecognition();
-            micBtn.addEventListener('click', toggleListening);
+            if (state.sttMode !== 'none') {
+                micBtn.addEventListener('click', toggleListening);
+            } else {
+                micBtn.style.display = 'none';
+            }
         }
 
         // Keyboard: Escape to close, Tab focus trap
@@ -585,49 +589,148 @@
 
     function initSpeechRecognition() {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return;
 
-        state.recognition = new SpeechRecognition();
-        state.recognition.lang = state.langData?.meta?.speechRecognition || 'fr-FR';
-        state.recognition.continuous = false;
-        state.recognition.interimResults = false;
+        if (SpeechRecognition) {
+            // Native Web Speech API (Chrome, Edge)
+            state.recognition = new SpeechRecognition();
+            state.recognition.lang = state.langData?.meta?.speechRecognition || 'fr-FR';
+            state.recognition.continuous = false;
+            state.recognition.interimResults = false;
 
-        state.recognition.onresult = (e) => {
-            const transcript = e.results[0][0].transcript;
-            const input = $id('va-input');
-            if (input) input.value = transcript;
-            sendMessage(transcript, 'voice');
-        };
+            state.recognition.onresult = (e) => {
+                const transcript = e.results[0][0].transcript;
+                const input = $id('va-input');
+                if (input) input.value = transcript;
+                sendMessage(transcript, 'voice');
+            };
 
-        state.recognition.onend = () => {
+            state.recognition.onend = () => {
+                state.isListening = false;
+                const micBtn = $id('va-mic');
+                const viz = $id('va-visualizer');
+                if (micBtn) micBtn.classList.remove('listening');
+                if (viz) viz.classList.remove('active');
+            };
+
+            state.recognition.onerror = (e) => {
+                console.warn('[VocalIA] Speech recognition error:', e.error);
+                state.isListening = false;
+                const micBtn = $id('va-mic');
+                if (micBtn) micBtn.classList.remove('listening');
+            };
+
+            state.sttMode = 'native';
+        } else if (navigator.mediaDevices && typeof MediaRecorder !== 'undefined') {
+            // Fallback: MediaRecorder → backend /stt (Firefox, Safari)
+            state.sttMode = 'fallback';
+            console.log('[VocalIA B2B] Using MediaRecorder STT fallback');
+        } else {
+            state.sttMode = 'none';
+        }
+    }
+
+    async function startFallbackRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            state.mediaRecorder = new MediaRecorder(stream, {
+                mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/ogg'
+            });
+            state.audioChunks = [];
+
+            state.mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) state.audioChunks.push(e.data);
+            };
+
+            state.mediaRecorder.onstop = async () => {
+                stream.getTracks().forEach(t => t.stop());
+                const audioBlob = new Blob(state.audioChunks, { type: state.mediaRecorder.mimeType });
+
+                if (audioBlob.size < 1000) {
+                    console.warn('[VocalIA] Audio too short');
+                    return;
+                }
+
+                // Send to backend /stt
+                const sttUrl = CONFIG.VOICE_API_URL.replace('/respond', '/stt');
+                try {
+                    const resp = await fetch(sttUrl, {
+                        method: 'POST',
+                        headers: { 'X-Language': state.currentLang },
+                        body: audioBlob,
+                        signal: AbortSignal.timeout(15000)
+                    });
+                    const result = await resp.json();
+                    if (result.success && result.text) {
+                        const input = $id('va-input');
+                        if (input) input.value = result.text;
+                        sendMessage(result.text, 'voice');
+                    } else {
+                        console.warn('[VocalIA] STT failed:', result.error);
+                    }
+                } catch (err) {
+                    console.error('[VocalIA] STT request failed:', err.message);
+                }
+            };
+
+            state.mediaRecorder.start();
+            state.isListening = true;
+
+            // Auto-stop after 10 seconds
+            state.recordingTimeout = setTimeout(() => {
+                if (state.mediaRecorder?.state === 'recording') {
+                    state.mediaRecorder.stop();
+                    state.isListening = false;
+                    const micBtn = $id('va-mic');
+                    const viz = $id('va-visualizer');
+                    if (micBtn) micBtn.classList.remove('listening');
+                    if (viz) viz.classList.remove('active');
+                }
+            }, 10000);
+
+        } catch (err) {
+            console.error('[VocalIA] Microphone access denied:', err.message);
             state.isListening = false;
             const micBtn = $id('va-mic');
-            const viz = $id('va-visualizer');
             if (micBtn) micBtn.classList.remove('listening');
-            if (viz) viz.classList.remove('active');
-        };
+        }
+    }
 
-        state.recognition.onerror = (e) => {
-            console.warn('[VocalIA] Speech recognition error:', e.error);
-            state.isListening = false;
-            const micBtn = $id('va-mic');
-            if (micBtn) micBtn.classList.remove('listening');
-        };
+    function stopFallbackRecording() {
+        if (state.recordingTimeout) clearTimeout(state.recordingTimeout);
+        if (state.mediaRecorder?.state === 'recording') {
+            state.mediaRecorder.stop();
+        }
+        state.isListening = false;
     }
 
     function toggleListening() {
-        if (!state.recognition) return;
-
-        if (state.isListening) {
-            state.recognition.stop();
-        } else {
-            state.recognition.start();
-            state.isListening = true;
-            const micBtn = $id('va-mic');
-            const viz = $id('va-visualizer');
-            if (micBtn) micBtn.classList.add('listening');
-            if (viz) viz.classList.add('active');
-            trackEvent('voice_input_started');
+        if (state.sttMode === 'native' && state.recognition) {
+            if (state.isListening) {
+                state.recognition.stop();
+            } else {
+                state.recognition.start();
+                state.isListening = true;
+                const micBtn = $id('va-mic');
+                const viz = $id('va-visualizer');
+                if (micBtn) micBtn.classList.add('listening');
+                if (viz) viz.classList.add('active');
+                trackEvent('voice_input_started', { mode: 'native' });
+            }
+        } else if (state.sttMode === 'fallback') {
+            if (state.isListening) {
+                stopFallbackRecording();
+                const micBtn = $id('va-mic');
+                const viz = $id('va-visualizer');
+                if (micBtn) micBtn.classList.remove('listening');
+                if (viz) viz.classList.remove('active');
+            } else {
+                startFallbackRecording();
+                const micBtn = $id('va-mic');
+                const viz = $id('va-visualizer');
+                if (micBtn) micBtn.classList.add('listening');
+                if (viz) viz.classList.add('active');
+                trackEvent('voice_input_started', { mode: 'fallback' });
+            }
         }
     }
 
@@ -738,6 +841,30 @@
 
         trackEvent('message_sent', { input_method: inputMethod, length: text.length });
 
+        // BOOKING FLOW INTERCEPT — handle inline booking before API call
+        const booking = state.conversationContext.bookingFlow;
+        if (booking.active) {
+            const typingId = showTypingIndicator();
+            const bookingResponse = await handleBookingFlow(text);
+            removeTypingIndicator(typingId);
+
+            if (booking.step === 'submitting') {
+                const submitTypingId = showTypingIndicator();
+                const confirmResult = await processBookingConfirmation();
+                removeTypingIndicator(submitTypingId);
+                if (confirmResult) addMessage(confirmResult, 'assistant');
+            } else if (bookingResponse) {
+                addMessage(bookingResponse, 'assistant');
+            }
+            return;
+        }
+
+        // Detect booking intent and start inline flow (if booking is enabled)
+        if (state.bookingConfig.enabled && isBookingIntent(text)) {
+            showBookingCTA();
+            // Still send to API for contextual response
+        }
+
         // Show typing indicator
         const typingId = showTypingIndicator();
 
@@ -772,10 +899,6 @@
                 // Render catalog/service cards if backend returned them
                 if (data.catalog && data.catalog.items && data.catalog.items.length > 0) {
                     renderServiceCards(data.catalog.items, data.catalog.title);
-                }
-                // Check if user had booking intent and show CTA
-                if (state.bookingConfig.enabled && isBookingIntent(text)) {
-                    showBookingCTA();
                 }
             } else {
                 addMessage(state.langData?.ui?.errorMessage || 'Désolé, une erreur s\'est produite.', 'assistant');
@@ -992,11 +1115,14 @@
     }
 
     // ============================================================
-    // BOOKING REDIRECT (Real booking URL from backend config)
+    // BOOKING INLINE SYSTEM (Inline calendar + conversational flow)
     // ============================================================
 
     function isBookingIntent(text) {
-        const lower = text.toLowerCase();
+        const L = state.langData;
+        if (L?.booking?.keywords) {
+            return L.booking.keywords.some(kw => text.toLowerCase().includes(kw));
+        }
         const keywords = {
             fr: ['rendez-vous', 'rdv', 'réserver', 'booking', 'prendre rdv', 'disponibilité', 'créneau', 'réservation'],
             en: ['appointment', 'book', 'booking', 'schedule', 'reserve', 'availability', 'slot'],
@@ -1005,7 +1131,231 @@
             ary: ['موعد', 'حجز', 'نحجز', 'وقت', 'كريني', 'ردفو']
         };
         const langKeywords = keywords[state.currentLang] || keywords.fr;
-        return langKeywords.some(kw => lower.includes(kw));
+        return langKeywords.some(kw => text.toLowerCase().includes(kw));
+    }
+
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function getStaticSlots() {
+        const now = new Date();
+        const isArabic = state.currentLang === 'ar' || state.currentLang === 'ary';
+        const locale = state.langData?.meta?.speechSynthesis || 'fr-FR';
+        const slots = [];
+
+        for (let d = 1; d <= 7; d++) {
+            const date = new Date(now);
+            date.setDate(now.getDate() + d);
+            const day = date.getDay();
+            const validDays = isArabic ? [0, 1, 2, 3, 4] : [1, 2, 3, 4, 5];
+
+            if (validDays.includes(day)) {
+                date.setHours(10, 0, 0, 0);
+                slots.push({
+                    date: date.toLocaleDateString(locale, { weekday: 'long', month: 'long', day: 'numeric' }),
+                    time: '10:00',
+                    iso: date.toISOString()
+                });
+                if (slots.length >= 3) break;
+            }
+        }
+        return slots;
+    }
+
+    async function fetchAvailableSlots() {
+        const now = Date.now();
+        if (state.availableSlotsCache.slots.length > 0 &&
+            (now - state.availableSlotsCache.timestamp) < 300000) {
+            return state.availableSlotsCache.slots;
+        }
+
+        // B2B uses booking URL API if available, otherwise static slots
+        if (state.bookingConfig.url) {
+            try {
+                const response = await fetch(state.bookingConfig.url + (state.bookingConfig.url.includes('?') ? '&' : '?') + 'action=availability', {
+                    method: 'GET',
+                    mode: 'cors',
+                    signal: AbortSignal.timeout(5000)
+                });
+                const result = await response.json();
+                if (result.success && result.data?.slots) {
+                    const locale = state.langData?.meta?.speechSynthesis || 'fr-FR';
+                    const formattedSlots = result.data.slots.slice(0, 6).map(slot => {
+                        const date = new Date(slot.start);
+                        return {
+                            date: date.toLocaleDateString(locale, { weekday: 'long', month: 'long', day: 'numeric' }),
+                            time: date.toLocaleTimeString(locale, { hour: 'numeric', minute: '2-digit' }),
+                            iso: slot.start
+                        };
+                    });
+                    state.availableSlotsCache = { slots: formattedSlots, timestamp: now };
+                    return formattedSlots;
+                }
+            } catch (error) {
+                console.warn('[VocalIA B2B] Slots fetch error, using static:', error.message);
+            }
+        }
+
+        const slots = getStaticSlots();
+        state.availableSlotsCache = { slots, timestamp: now };
+        return slots;
+    }
+
+    function getClientTimezone() {
+        try {
+            const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            return { iana: tz, offset: new Date().getTimezoneOffset() };
+        } catch (e) {
+            return { iana: null, offset: new Date().getTimezoneOffset() };
+        }
+    }
+
+    async function submitBooking(data) {
+        // Submit via voice API /respond with structured booking message
+        try {
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
+
+            const response = await fetch(CONFIG.VOICE_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                signal: controller.signal,
+                body: JSON.stringify({
+                    message: `[BOOKING] ${JSON.stringify(data)}`,
+                    language: state.currentLang,
+                    sessionId: state.sessionId,
+                    tenant_id: state.tenantId,
+                    widget_type: 'B2B',
+                    booking_data: data,
+                    history: state.conversationHistory.slice(-6)
+                })
+            });
+
+            clearTimeout(timeout);
+            const result = await response.json();
+            return { success: !!result.response, message: result.response || 'Booking submitted' };
+        } catch (error) {
+            console.error('[VocalIA B2B] Booking submit error:', error);
+            return { success: false, message: error.message };
+        }
+    }
+
+    async function handleBookingFlow(userMessage) {
+        const L = state.langData;
+        if (!L?.booking) return null;
+
+        const lower = userMessage.toLowerCase();
+        const booking = state.conversationContext.bookingFlow;
+
+        // Check for cancellation
+        if (L.booking.cancelKeywords && L.booking.cancelKeywords.some(kw => lower.includes(kw))) {
+            trackEvent('booking_cancelled', { step: booking.step });
+            booking.active = false;
+            booking.step = null;
+            booking.data = { name: null, email: null, datetime: null, service: L.booking.service };
+            return L.booking.messages.cancelled;
+        }
+
+        // Step: Name
+        if (booking.step === 'name') {
+            const name = userMessage.trim();
+            if (name.length < 2) return L.booking.messages.askName;
+            booking.data.name = name;
+            booking.step = 'email';
+            return L.booking.messages.askEmail.replace('{name}', name);
+        }
+
+        // Step: Email
+        if (booking.step === 'email') {
+            const email = userMessage.trim().toLowerCase();
+            if (!isValidEmail(email)) return L.booking.messages.invalidEmail;
+            booking.data.email = email;
+            booking.step = 'datetime';
+
+            const slots = await fetchAvailableSlots();
+            if (slots.length === 0) return L.booking.messages.noSlots;
+
+            let response = L.booking.messages.slotsIntro;
+            slots.slice(0, 3).forEach((s, i) => {
+                response += L.booking.messages.slotFormat
+                    .replace('{index}', i + 1)
+                    .replace('{date}', s.date)
+                    .replace('{time}', s.time) + '\n';
+            });
+            response += L.booking.messages.slotsOutro;
+            return response;
+        }
+
+        // Step: DateTime selection
+        if (booking.step === 'datetime') {
+            const slots = state.availableSlotsCache.slots.length > 0
+                ? state.availableSlotsCache.slots.slice(0, 3)
+                : getStaticSlots();
+
+            let selectedSlot = null;
+            if (L.booking.slotKeywords) {
+                for (const [num, keywords] of Object.entries(L.booking.slotKeywords)) {
+                    if (keywords.some(kw => lower.includes(kw))) {
+                        selectedSlot = slots[parseInt(num) - 1];
+                        break;
+                    }
+                }
+            }
+
+            if (selectedSlot) {
+                booking.data.datetime = selectedSlot.iso;
+                booking.step = 'confirm';
+                trackEvent('booking_slot_selected', { slot_date: selectedSlot.date, slot_time: selectedSlot.time });
+
+                return L.booking.messages.confirmIntro +
+                    L.booking.messages.confirmName.replace('{name}', booking.data.name) + '\n' +
+                    L.booking.messages.confirmEmail.replace('{email}', booking.data.email) + '\n' +
+                    L.booking.messages.confirmDate.replace('{date}', selectedSlot.date).replace('{time}', selectedSlot.time) +
+                    L.booking.messages.confirmOutro;
+            }
+
+            return L.booking.messages.slotNotUnderstood;
+        }
+
+        // Step: Confirmation
+        if (booking.step === 'confirm') {
+            if (L.booking.confirmKeywords && L.booking.confirmKeywords.some(kw => lower.includes(kw))) {
+                booking.step = 'submitting';
+                return null; // Triggers processBookingConfirmation
+            }
+            return L.booking.messages.confirmPrompt;
+        }
+
+        return null;
+    }
+
+    async function processBookingConfirmation() {
+        const L = state.langData;
+        const booking = state.conversationContext.bookingFlow;
+        const clientTz = getClientTimezone();
+
+        const result = await submitBooking({
+            name: booking.data.name,
+            email: booking.data.email,
+            datetime: booking.data.datetime,
+            service: booking.data.service || L.booking?.service || 'Consultation',
+            notes: `Booking via B2B voice widget (${state.currentLang.toUpperCase()})`,
+            timezone: clientTz.iana || `UTC${clientTz.offset > 0 ? '-' : '+'}${Math.abs(clientTz.offset / 60)}`
+        });
+
+        booking.active = false;
+        booking.step = null;
+
+        if (result.success) {
+            trackEvent('booking_completed', { service: booking.data.service, datetime: booking.data.datetime });
+            return L.booking?.messages?.success?.replace('{email}', booking.data.email) ||
+                `Booking confirmed! Confirmation sent to ${booking.data.email}.`;
+        } else {
+            trackEvent('booking_failed', { error: result.message });
+            return L.booking?.messages?.failure?.replace('{message}', result.message) ||
+                'Sorry, the booking failed. Please try again.';
+        }
     }
 
     function showBookingCTA() {
@@ -1021,22 +1371,32 @@
         content.style.cssText = 'padding:12px 16px;';
 
         const labels = {
-            fr: { online: 'Réserver en ligne', call: 'Appeler pour réserver' },
-            en: { online: 'Book online', call: 'Call to book' },
-            es: { online: 'Reservar en línea', call: 'Llamar para reservar' },
-            ar: { online: 'احجز عبر الإنترنت', call: 'اتصل للحجز' },
-            ary: { online: 'احجز أونلاين', call: 'عيط باش تحجز' }
+            fr: { inline: 'Réserver maintenant', online: 'Réserver en ligne', call: 'Appeler pour réserver' },
+            en: { inline: 'Book now', online: 'Book online', call: 'Call to book' },
+            es: { inline: 'Reservar ahora', online: 'Reservar en línea', call: 'Llamar para reservar' },
+            ar: { inline: 'احجز الآن', online: 'احجز عبر الإنترنت', call: 'اتصل للحجز' },
+            ary: { inline: 'احجز دابا', online: 'احجز أونلاين', call: 'عيط باش تحجز' }
         };
         const l = labels[state.currentLang] || labels.fr;
 
-        const btnStyle = 'display:inline-block;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;margin:4px 4px 4px 0;transition:opacity 0.2s;';
+        const btnStyle = 'display:inline-block;padding:8px 16px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;margin:4px 4px 4px 0;transition:opacity 0.2s;cursor:pointer;';
+
+        // Inline booking button (activates conversational booking flow)
+        const inlineBtn = document.createElement('button');
+        inlineBtn.type = 'button';
+        inlineBtn.style.cssText = btnStyle + 'background:#5E6AD2;color:white;border:none;';
+        inlineBtn.textContent = l.inline;
+        inlineBtn.addEventListener('click', () => {
+            startBookingFlow();
+        });
+        content.appendChild(inlineBtn);
 
         if (state.bookingConfig.url) {
             const bookLink = document.createElement('a');
             bookLink.href = state.bookingConfig.url;
             bookLink.target = '_blank';
             bookLink.rel = 'noopener noreferrer';
-            bookLink.style.cssText = btnStyle + 'background:#5E6AD2;color:white;';
+            bookLink.style.cssText = btnStyle + 'background:rgba(94,106,210,0.15);color:#818cf8;border:1px solid rgba(94,106,210,0.3);';
             bookLink.textContent = l.online;
             content.appendChild(bookLink);
         }
@@ -1044,7 +1404,7 @@
         if (state.bookingConfig.phone) {
             const phoneLink = document.createElement('a');
             phoneLink.href = `tel:${state.bookingConfig.phone}`;
-            phoneLink.style.cssText = btnStyle + 'background:rgba(94,106,210,0.15);color:#818cf8;border:1px solid rgba(94,106,210,0.3);';
+            phoneLink.style.cssText = btnStyle + 'background:rgba(94,106,210,0.08);color:#a5b4fc;border:1px solid rgba(94,106,210,0.2);';
             phoneLink.textContent = l.call;
             content.appendChild(phoneLink);
         }
@@ -1053,6 +1413,16 @@
         container.appendChild(ctaDiv);
         container.scrollTop = container.scrollHeight;
         trackEvent('booking_cta_shown');
+    }
+
+    function startBookingFlow() {
+        const L = state.langData;
+        const booking = state.conversationContext.bookingFlow;
+        booking.active = true;
+        booking.step = 'name';
+        booking.data = { name: null, email: null, datetime: null, service: L?.booking?.service || 'Consultation' };
+        addMessage(L?.booking?.messages?.start || 'Let\'s book an appointment. What is your name?', 'assistant');
+        trackEvent('booking_flow_started');
     }
 
     // ============================================================
@@ -1106,7 +1476,7 @@
 
             initSocialProof();
 
-            console.log(`[VocalIA B2B] Widget v2.2.0 initialized | Lang: ${state.currentLang} | Booking: ${state.bookingConfig.enabled}`);
+            console.log(`[VocalIA B2B] Widget v2.3.0 initialized | Lang: ${state.currentLang} | Booking: ${state.bookingConfig.enabled} (inline)`);
         } catch (error) {
             console.error('[VocalIA B2B] Init error:', error);
         }

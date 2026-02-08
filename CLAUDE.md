@@ -1,11 +1,12 @@
 # VocalIA - Voice AI Platform
 
-> **v7.21.0** | 08/02/2026 | Production: https://vocalia.ma
+> **v7.22.0** | 08/02/2026 | Production: https://vocalia.ma
 > **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
-> **~81k lines source** | Core 34,533 (54) + Telephony 4,732 + Personas 8,700 + Widget 9,671 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
-> ✅ **SESSION 250.139 DOC OVERHAUL + BUSINESS AUDIT**: All docs audited. Production readiness matrix. Business intelligence (costs, margins, competitive positioning). Phone: +1 762 422 4223 (Twilio official).
-> ✅ **SESSION 250.138 WIDGET TREE-SHAKING**: Build pipeline v2.0 (esbuild DCE→terser 3-pass→brotli). ECOM: 37.1 KB transfer. B2B: 8.3 KB transfer.
+> **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,118 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
+> ✅ **SESSION 250.140**: BIZ-4 Booking inline B2B (full flow). BIZ-8 STT fallback Firefox/Safari (MediaRecorder→/stt). Widget v2.6.0.
+> ✅ **SESSION 250.139 DOC OVERHAUL + BUSINESS AUDIT**: All docs audited. Production readiness matrix. Business intelligence. Phone: +1 762 422 4223 (Twilio official).
+> ✅ **SESSION 250.138 WIDGET TREE-SHAKING**: Build pipeline v2.0 (esbuild DCE→terser 3-pass→brotli). ECOM: 37.0 KB. B2B: 9.9 KB.
 
 ## Quick Reference
 
@@ -41,7 +42,7 @@
 
 ```
 VocalIA/                              # VERIFIED wc -l 08/02/2026 (Session 250.139)
-├── core/           # 54 modules (34,533 lines)
+├── core/           # 54 modules (34,646 lines)
 │   ├── voice-api-resilient.cjs   # Multi-AI fallback (port 3004)
 │   ├── grok-voice-realtime.cjs   # WebSocket audio (port 3007)
 │   ├── db-api.cjs                # REST API + Auth (port 3013)
@@ -51,7 +52,7 @@ VocalIA/                              # VERIFIED wc -l 08/02/2026 (Session 250.1
 ├── lib/            # 1 module (923 lines) - security-utils
 ├── telephony/      # PSTN bridge (4,732 lines, 25 function tools)
 ├── personas/       # 38 personas (8,700 lines: 8,055 .cjs + 61 .cjs + 584 .json)
-├── widget/         # 7 widgets (9,671 lines: 6 ECOM IIFEs + 1 B2B)
+├── widget/         # 7 widgets (10,118 lines: 6 ECOM IIFEs + 1 B2B)
 ├── website/        # 78 pages (public + webapp)
 │   └── src/locales/   # 5 langs (23,995 lines)
 ├── mcp-server/src/ # 203 tools TypeScript (19,173 lines, 32 .ts files)
@@ -189,8 +190,8 @@ Verified: `grep -c "server.tool(" mcp-server/src/index.ts` = 203
 
 | Feature | Code Status | Deployment Status |
 |:--------|:----------:|:-----------------:|
-| Voice Widget B2B (1,122 LOC) | ✅ coded + tested | ✅ deployed on website, ❌ no real users |
-| Voice Widget ECOM (6 IIFEs, 8,549 LOC bundle) | ✅ coded + tested | ✅ 1 demo page, ❌ no catalog |
+| Voice Widget B2B (1,492 LOC) + inline booking | ✅ coded + tested | ✅ deployed on website, ❌ no real users |
+| Voice Widget ECOM (6 IIFEs, 8,626 LOC bundle) | ✅ coded + tested | ✅ 1 demo page, ❌ no catalog |
 | Telephony TwiML (4,732 LOC) | ✅ coded + tested | ❌ no Twilio credentials |
 | Multi-tenant KB | ✅ coded + tested | ❌ test data only |
 | A2A Protocol (4 agents) | ✅ coded | ❌ not connected |
@@ -283,4 +284,4 @@ providers: [
 **Production Readiness: 3.0/10** — Website deployed. Zero paying customers. Zero live integrations. Zero real voice calls.
 **Next milestone**: First paying customer, first connected external API.
 
-*Last update: 08/02/2026 - Session 250.139 (Documentation overhaul + Business Audit Nr 2: costs, margins, competitive analysis, pricing recommendations)*
+*Last update: 08/02/2026 - Session 250.140 (BIZ-4 booking inline B2B, BIZ-8 STT fallback Firefox/Safari, /stt endpoint, widget v2.6.0)*

@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.139 (Documentation overhaul — all metrics verified, vanity eliminated)
+> **Date:** 2026-02-08 | **Session:** 250.140 (BIZ-4 booking inline B2B + BIZ-8 STT fallback Firefox/Safari)
 > **Code Completeness:** 8.5/10 | **Production Readiness:** 3.0/10 (0 paying customers, 0 live integrations)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.138) + doc overhaul (250.139)
@@ -98,7 +98,7 @@
 | Endpoint | Method | Widget | Backend | Line | Status |
 |:---------|:-------|:-------|:--------|:-----|:-------|
 | `/respond` | POST | B2B+ECOM | voice-api-resilient.cjs | 2414 | ✅ |
-| `/config` | GET | B2B | voice-api-resilient.cjs | 2333 | ✅ (but fallback color #4FBAF1 wrong) |
+| `/config` | GET | B2B | voice-api-resilient.cjs | 2333 | ✅ (fallback color fixed to #5E6AD2 — 250.128) |
 | `/social-proof` | GET | B2B | voice-api-resilient.cjs | 2321 | ✅ |
 | `/tts` | POST | ECOM | voice-api-resilient.cjs | 2772 | ✅ (ElevenLabs, 5 langs) |
 | `/api/tenants/:id/catalog/browse` | POST | ECOM MCP | db-api.cjs | 1585 | ✅ |
@@ -1009,7 +1009,7 @@ B2B source synced to deployed (pulse animation added + WCAG).
 | Métrique | Valeur | Commande |
 |:---------|:------:|:---------|
 | core/*.cjs | 34,533 lignes / 54 fichiers | `wc -l core/*.cjs` |
-| widget/*.js | 9,671 lignes / 7 fichiers | `wc -l widget/*.js` |
+| widget/*.js | 10,118 lignes / 7 fichiers | `wc -l widget/*.js` |
 | personas/ | 8,700 lignes / 2 fichiers | `wc -l personas/*.cjs personas/*.json` |
 | telephony/ | 4,732 lignes / 1 fichier | `wc -l telephony/*.cjs` |
 | lib/ | 923 lignes / 1 fichier | `wc -l lib/*.cjs` |
@@ -1153,11 +1153,11 @@ create_booking          get_recommendations    qualify_lead
 | 1 | **Activate GA4** — replace `G-XXXXXXXXXX` in `website/components/header.html` | 5min | 52 events collecting data | ❌ Blocked (needs analytics.google.com account) |
 | 2 | **Increase telephony price** 0.06→0.10-0.12€/min | Decision | Margin 8%→38-50% | ❌ Decision needed |
 | 3 | **Serve brotli** via nginx config on VPS | 30min | Transfer -84% B2B, -88% ECOM | ❌ Infrastructure |
-| 4 | **Booking inline B2B** (copy pattern from ECOM) | 3h | Conversion booking +30-40% (est.) | ❌ Code task |
+| 4 | **Booking inline B2B** (copy pattern from ECOM) | 3h | Conversion booking +30-40% (est.) | ✅ **250.140** — Full booking flow (name→email→slot→confirm→submit) |
 | 5 | **Evaluate Telnyx** for Moroccan numbers | 4h | Unblock Morocco, potentially -50% PSTN | ❌ Research |
 | 6 | **Darija differentiated pricing** 0.15-0.20€/min | Decision | Eliminate loss per Darija call | ❌ Decision needed |
 | 7 | **Code-split ECOM widget** (lazy-load IIFEs) | 4h | Mobile performance -60% (est.) | ❌ Code task |
-| 8 | **Fallback STT Firefox/Safari** | 6h | +11% visitors with voice | ❌ Code task |
+| 8 | **Fallback STT Firefox/Safari** | 6h | +11% visitors with voice | ✅ **250.140** — MediaRecorder→/stt backend (Grok Whisper + Gemini fallback) |
 | 9 | **Test Qwen3-TTS for Darija** | 8h | Darija TTS cost -93% ($0.10→~$0.005/min) | ❌ Research |
 
 ### 8.2 Cost Reality (Verified Feb 2026)
@@ -1321,6 +1321,11 @@ create_booking          get_recommendations    qualify_lead
 | **Client dashboard ROI**: 4-card Voice AI ROI section (automation ring, cost savings, response time, 24/7) | 250.136 | client.html |
 | **Client dashboard mobile**: Responsive sidebar with hamburger toggle, overlay, sparklines | 250.136 | client.html |
 | **ROI i18n**: 12 new dashboard.roi.* keys in all 5 locale files | 250.136 | 4,458 keys in sync |
+| **BIZ-4 Booking inline B2B**: Full conversational booking flow (name→email→slots→confirm→submit) | 250.140 | voice-widget-b2b.js v2.3.0 (1,122→1,492 lines) |
+| **BIZ-8 STT fallback Firefox/Safari**: MediaRecorder→backend /stt (Grok Whisper + Gemini) | 250.140 | B2B+ECOM widgets + voice-api-resilient.cjs /stt endpoint |
+| **Backend /stt endpoint**: Audio transcription via Grok Whisper + Gemini fallback | 250.140 | core/voice-api-resilient.cjs (3,086→3,398 lines) |
+| **Dead file cleanup**: voice-widget.js.bak deleted from distribution/ | 250.140 | 0 rogue #4FBAF1 in codebase |
+| **Widget v2.6.0**: 49 pages bumped from v2.5.0 | 250.140 | All pages load voice-widget-b2b.min.js?v=2.6.0 |
 | **App sidebar component**: Extracted from 9 pages into reusable component (-585 lines) | 250.137 | app/components/sidebar.html |
 | **Mobile hamburger**: Added to all 9 app/client pages | 250.137 | Responsive on all pages |
 | **Calls AI insights**: Sentiment column, AI insights section, conversation timeline | 250.137 | calls.html |
@@ -1347,12 +1352,15 @@ create_booking          get_recommendations    qualify_lead
 **Remaining (code — OPTIONAL):**
 ```
 → P3-1g: Source module ESM migration (core/*.cjs → .mjs) — OPTIONAL, source stays CJS
-→ P3-1h: Widget tree-shaking — DONE (250.138)
+→ BIZ-7: Code-split ECOM widget (lazy-load IIFEs) — 4h estimated
 ```
 
 **Remaining (infrastructure — NOT code):**
 ```
 → P0-T3b: Replace GA4 placeholder G-XXXXXXXXXX with actual Measurement ID
+→ BIZ-2: Increase telephony pricing 0.06→0.10-0.12€/min (decision)
+→ BIZ-6: Darija differentiated pricing 0.15-0.20€/min (decision)
+→ BIZ-3: Serve brotli via nginx config (30min infra)
 → P2-W8b: CDN (cdn.vocalia.ma) — DNS + CDN config
 → P2-5c: Grafana Cloud / Uptime Robot
 → P3-3c: Load test baseline against production
@@ -1369,6 +1377,7 @@ create_booking          get_recommendations    qualify_lead
 ---
 
 *Document mis a jour le 2026-02-08 — Session 250.139*
+*250.140: BIZ-4 Booking inline B2B (full flow), BIZ-8 STT fallback Firefox/Safari (MediaRecorder→/stt backend), /stt endpoint (Grok Whisper+Gemini), widget v2.6.0 (49 pages), dead .bak cleanup. Tests: 3,763 pass, 0 fail.*
 *250.139: DOCUMENTATION OVERHAUL + BUSINESS AUDIT Nr 2 — All metrics verified (wc -l, grep -c, ls). Production readiness matrix added. Vanity metrics eliminated. Business priorities from external audit: cost structure, pricing analysis, competitive positioning. Score split: Code 8.5/10, Production 3.0/10.*
 *250.138: Widget tree-shaking pipeline v2.0 — esbuild DCE → terser 3-pass → pre-compression (.gz/.br). ECOM: 296.8→186.9 KB min (37.1 KB brotli). B2B: 50.5→30.2 KB min (8.3 KB brotli). --production flag. Widget v2.4.0→2.5.0.*
 *250.137: App sidebar component (9 pages, -585 lines). Calls page: sentiment column + AI insights + conversation timeline. Integrations: webhook health dashboard + live status + test button. Mobile hamburger on all 9 app pages.*

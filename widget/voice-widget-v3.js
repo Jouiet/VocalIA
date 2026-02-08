@@ -446,8 +446,8 @@
         .va-input:focus { border-color: var(--va-primary); }
         .va-mic-btn {
           width: 40px; height: 40px; border-radius: 50%;
-          background: ${hasSpeechRecognition ? 'var(--va-primary)' : 'rgba(255,255,255,0.1)'};
-          border: none; cursor: ${hasSpeechRecognition ? 'pointer' : 'not-allowed'};
+          background: ${(hasSpeechRecognition || typeof MediaRecorder !== 'undefined') ? 'var(--va-primary)' : 'rgba(255,255,255,0.1)'};
+          border: none; cursor: ${(hasSpeechRecognition || typeof MediaRecorder !== 'undefined') ? 'pointer' : 'not-allowed'};
           display: flex; align-items: center; justify-content: center; transition: all 0.2s;
         }
         .va-mic-btn.listening { background: #ef4444; animation: pulse 1s infinite; }
@@ -688,8 +688,8 @@
 
         <div class="va-input-area">
           <input type="text" class="va-input" id="va-input" placeholder="${L.ui.placeholder}">
-          ${!needsTextFallback && hasSpeechRecognition ? `
-          <button class="va-mic-btn" id="va-mic" aria-label="${L.ui.ariaMic}">
+          ${(hasSpeechRecognition || typeof MediaRecorder !== 'undefined') ? `
+          <button class="va-mic-btn" id="va-mic" aria-label="${L.ui.ariaMic || 'Microphone'}">
             <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1 1.93c-3.94-.49-7-3.85-7-7.93h2c0 3.31 2.69 6 6 6s6-2.69 6-6h2c0 4.08-3.06 7.44-7 7.93V20h4v2H8v-2h4v-4.07z"/></svg>
           </button>
           ` : ''}
@@ -2028,58 +2028,135 @@
     }
 
     function initSpeechRecognition() {
-        if (!hasSpeechRecognition) return;
+        if (hasSpeechRecognition) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            state.recognition = new SpeechRecognition();
+            state.recognition.lang = state.langData.meta.speechRecognition;
+            state.recognition.continuous = false;
+            state.recognition.interimResults = false;
 
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        state.recognition = new SpeechRecognition();
+            state.recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                $id('va-input').value = transcript;
+                sendMessage(transcript, 'voice');
 
-        // Start with page language, but allow auto-detection
-        state.recognition.lang = state.langData.meta.speechRecognition;
-        state.recognition.continuous = false;
-        state.recognition.interimResults = false;
+                if (event.results[0][0].confidence) {
+                    trackEvent('voice_recognition_result', {
+                        confidence: event.results[0][0].confidence,
+                        detected_lang: state.recognition.lang
+                    });
+                }
+            };
 
-        state.recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            $id('va-input').value = transcript;
-            sendMessage(transcript, 'voice'); // Track as voice input
+            state.recognition.onend = () => {
+                state.isListening = false;
+                $id('va-mic')?.classList.remove('listening');
+                $id('va-trigger')?.classList.remove('listening');
+                hideVisualizer();
+            };
 
-            // Log detected language for analytics
-            if (event.results[0][0].confidence) {
-                trackEvent('voice_recognition_result', {
-                    confidence: event.results[0][0].confidence,
-                    detected_lang: state.recognition.lang
-                });
-            }
-        };
+            state.recognition.onerror = (event) => {
+                state.isListening = false;
+                $id('va-mic')?.classList.remove('listening');
+                hideVisualizer();
+                trackEvent('voice_recognition_error', { error: event.error });
+            };
 
-        state.recognition.onend = () => {
+            state.sttMode = 'native';
+        } else if (navigator.mediaDevices && typeof MediaRecorder !== 'undefined') {
+            state.sttMode = 'fallback';
+            console.log('[VocalIA ECOM] Using MediaRecorder STT fallback');
+        } else {
+            state.sttMode = 'none';
+        }
+    }
+
+    async function startFallbackRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            state.mediaRecorder = new MediaRecorder(stream, {
+                mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/ogg'
+            });
+            state.audioChunks = [];
+
+            state.mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) state.audioChunks.push(e.data);
+            };
+
+            state.mediaRecorder.onstop = async () => {
+                stream.getTracks().forEach(t => t.stop());
+                const audioBlob = new Blob(state.audioChunks, { type: state.mediaRecorder.mimeType });
+                if (audioBlob.size < 1000) return;
+
+                const sttUrl = CONFIG.API_BASE_URL + '/stt';
+                try {
+                    const resp = await fetch(sttUrl, {
+                        method: 'POST',
+                        headers: { 'X-Language': state.currentLang },
+                        body: audioBlob,
+                        signal: AbortSignal.timeout(15000)
+                    });
+                    const result = await resp.json();
+                    if (result.success && result.text) {
+                        $id('va-input').value = result.text;
+                        sendMessage(result.text, 'voice');
+                    }
+                } catch (err) {
+                    console.error('[VocalIA ECOM] STT request failed:', err.message);
+                }
+            };
+
+            state.mediaRecorder.start();
+            state.isListening = true;
+
+            state.recordingTimeout = setTimeout(() => {
+                if (state.mediaRecorder?.state === 'recording') {
+                    state.mediaRecorder.stop();
+                    state.isListening = false;
+                    $id('va-mic')?.classList.remove('listening');
+                    $id('va-trigger')?.classList.remove('listening');
+                    hideVisualizer();
+                }
+            }, 10000);
+        } catch (err) {
+            console.error('[VocalIA ECOM] Microphone access denied:', err.message);
             state.isListening = false;
             $id('va-mic')?.classList.remove('listening');
-            $id('va-trigger').classList.remove('listening');
-            hideVisualizer();
-        };
+        }
+    }
 
-        state.recognition.onerror = (event) => {
-            state.isListening = false;
-            $id('va-mic')?.classList.remove('listening');
-            hideVisualizer();
-            trackEvent('voice_recognition_error', { error: event.error });
-        };
+    function stopFallbackRecording() {
+        if (state.recordingTimeout) clearTimeout(state.recordingTimeout);
+        if (state.mediaRecorder?.state === 'recording') state.mediaRecorder.stop();
+        state.isListening = false;
     }
 
     function toggleListening() {
-        if (!state.recognition) return;
-
-        if (state.isListening) {
-            state.recognition.stop();
-            hideVisualizer();
-        } else {
-            state.recognition.start();
-            state.isListening = true;
-            $id('va-mic').classList.add('listening');
-            $id('va-trigger').classList.add('listening');
-            showVisualizer('listening');
-            trackEvent('voice_mic_activated');
+        if (state.sttMode === 'native' && state.recognition) {
+            if (state.isListening) {
+                state.recognition.stop();
+                hideVisualizer();
+            } else {
+                state.recognition.start();
+                state.isListening = true;
+                $id('va-mic')?.classList.add('listening');
+                $id('va-trigger')?.classList.add('listening');
+                showVisualizer('listening');
+                trackEvent('voice_mic_activated', { mode: 'native' });
+            }
+        } else if (state.sttMode === 'fallback') {
+            if (state.isListening) {
+                stopFallbackRecording();
+                $id('va-mic')?.classList.remove('listening');
+                $id('va-trigger')?.classList.remove('listening');
+                hideVisualizer();
+            } else {
+                startFallbackRecording();
+                $id('va-mic')?.classList.add('listening');
+                $id('va-trigger')?.classList.add('listening');
+                showVisualizer('listening');
+                trackEvent('voice_mic_activated', { mode: 'fallback' });
+            }
         }
     }
 
@@ -3194,12 +3271,12 @@
             if (e.key === 'Enter') sendMessage(e.target.value, 'text');
         });
 
-        if (hasSpeechRecognition) {
-            initSpeechRecognition();
-            const micBtn = $id('va-mic');
-            if (micBtn) {
-                micBtn.addEventListener('click', toggleListening);
-            }
+        initSpeechRecognition();
+        const micBtn = $id('va-mic');
+        if (micBtn && state.sttMode !== 'none') {
+            micBtn.addEventListener('click', toggleListening);
+        } else if (micBtn && state.sttMode === 'none') {
+            micBtn.style.display = 'none';
         }
 
         // Keyboard: Escape to close, Tab focus trap
