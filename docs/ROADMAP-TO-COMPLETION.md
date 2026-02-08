@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.163 (VPS deployment verified + updated — all 4 services LIVE)
+> **Date:** 2026-02-08 | **Session:** 250.164 (Market repositioning: Europe-first, Darija de-emphasized as USP)
 > **Code Completeness:** 9.9/10 | **Production Readiness:** 5.5/10 (website deployed, API backend LIVE on VPS, 4 services healthy, widget can chat, CORS unblocked, multi-tenant security hardened, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160)
+> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160) + market repositioning (250.164)
 
 ---
 
@@ -20,8 +20,8 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.8/10** — All features coded and tested (3,764 tests, 68 files). P0-AUDIT 9/9, P0-WEBSITE 23/23 ✅. Darija $0.25/min implemented. Zero business/factual errors on website. Multi-tenant security hardened. Shadow DOM 7/7 widgets.
-**Production Readiness: 3.5/10** — Website deployed at vocalia.ma. 0 paying customers. CORS supports tenant domains. All code tasks DONE. Still needs: VPS deployment, first customer, GA4 activation.
+**Code Completeness: 9.9/10** — All features coded and tested (3,763 tests, 68 files). P0-AUDIT 9/9, P0-WEBSITE 23/23 ✅. Darija $0.25/min implemented. Zero business/factual errors on website. Multi-tenant security hardened. Shadow DOM 7/7 widgets. Market repositioning complete: Europe-first, Darija normalized as 1-of-5 languages.
+**Production Readiness: 5.5/10** — Website deployed at vocalia.ma. API backend LIVE on VPS (4 containers). 0 paying customers. CORS supports tenant domains. All code tasks DONE.
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested. Production readiness measures what's deployed and serving real users.
 
@@ -75,6 +75,7 @@
 | **BIZ** | 250.140-147 | 8/8 | Booking inline B2B, code-split ECOM (-55%), STT fallback, feature gating (14×4 matrix), pricing restructure, plan gating widgets, currency geo-awareness, i18n error messages | N/A |
 | **FUNNEL** | 250.144 | 4/4 | Newsletter POST, booking form POST, honest social proof, Google Sheets DB configured | Prod 2.5→3.5 |
 | **P0-COMPONENTS** | 250.162 | 4/4 | Dashboard→app redirect, telephony page, sidebar component updated, validator full 80-page coverage | 23/23 ✅ 0 warnings |
+| **P0-MARKET** | 250.164 | 8/8 | Market repositioning: Europe-first strategy. Darija de-emphasized from USP #1 to 1-of-5 languages. Geo-detection expanded 3→6 markets. ~100 HTML + locale changes across 20+ files + 5 locales | 23/23 ✅ 0 warnings |
 
 ### Key Technical Decisions (Reference)
 
@@ -336,6 +337,7 @@ create_booking          get_recommendations    qualify_lead
 | **P0-AUDIT (250.153-155)** | ✅ **9/9 DONE** | All audit bugs + multi-tenant | 9.3 code / 3.0 prod |
 | **P0-WEBSITE (250.161)** | ✅ **DONE** | 64→0 errors, 44→2 warnings | 23/23 ✅ |
 | **P0-COMPONENTS (250.162)** | ✅ **DONE** | Dashboard→app redirect, validator full coverage | 23/23 ✅ (0 warnings) |
+| **P0-MARKET (250.164)** | ✅ **DONE** | Europe-first repositioning, Darija normalized, geo-detection 6 markets | 23/23 ✅ (0 warnings) |
 
 **Code Completeness: 9.9/10** | **Production Readiness: 5.5/10** | **Weighted: 8.8/10**
 
