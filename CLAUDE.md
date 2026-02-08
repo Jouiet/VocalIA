@@ -1,16 +1,15 @@
 # VocalIA - Voice AI Platform
 
-> **v7.31.0** | 08/02/2026 | Session 250.149: Deep stale DH purge — telephony bridge + persona injector currency-aware | Production: https://vocalia.ma
+> **v7.32.0** | 08/02/2026 | Session 250.150: Quality sweep — stubs eliminated, broken assets fixed, test artifacts gitignored | Production: https://vocalia.ma
 > **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
 > **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,196 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234
-> ✅ **SESSION 250.146**: WIDGET PLAN GATING — /config returns plan_features, B2B widget consumes features from /respond, ECOM sub-widgets (cart/quiz/spin/recommendations) gated by plan.
-> ✅ **SESSION 250.145**: STALE PRICING PURGE — Billing page 4-tier fix, dashboard costPerMin 0.06→0.10, admin MRR DH→€, voice-agent-b2b 4 plans, KB chunks updated, plan features UI.
-> ✅ **SESSION 250.144**: FEATURE GATING + FUNNEL — checkFeature() + PLAN_FEATURES (14 features × 4 plans), export restriction (403 Starter), lead persistence (ContextBox), newsletter/booking POST, social proof honest.
+> ✅ **SESSION 250.150**: QUALITY SWEEP — "Plausible stub" comment purge (48 pages), broken favicon (20 pages), demo KB data removal, dead video code cleanup, test artifact gitignore, placeholder.svg created, auth pages ARY+i18n (from 250.149).
+> ✅ **SESSION 250.149**: DEEP DH PURGE — telephony bridge currency-aware (5 function tools), persona injector MAD→EUR, catalog-connector/tenant-catalog-store/db-api all EUR defaults.
+> ✅ **SESSION 250.146**: WIDGET PLAN GATING — /config returns plan_features, B2B+ECOM widgets consume for init+per-request gating.
+> ✅ **SESSION 250.145**: STALE PRICING PURGE — Billing page 4-tier fix, admin MRR DH→€, voice-agent-b2b 4 plans, KB chunks updated.
+> ✅ **SESSION 250.144**: FEATURE GATING + FUNNEL — checkFeature() + PLAN_FEATURES, export restriction, lead persistence, newsletter/booking POST.
 > ✅ **SESSION 250.143**: PRICING RESTRUCTURE — B2C eliminated, 4 tiers: Starter 49€, Pro 99€, ECOM 99€, Telephony 199€+0.10€/min.
-> ✅ **SESSION 250.142**: External audit Nr 3 — FUNNEL BROKEN (newsletter/booking/GA4=dead, social proof=fictitious, B2C=phantom).
-> ✅ **SESSION 250.141**: BIZ-7 Code-split ECOM widget — core 16.7 KB brotli (-55%). 5 lazy chunks. Build pipeline v2.1.
-> ✅ **SESSION 250.139 DOC OVERHAUL + BUSINESS AUDIT**: All docs audited. Production readiness matrix. Business intelligence.
 
 ## Quick Reference
 
