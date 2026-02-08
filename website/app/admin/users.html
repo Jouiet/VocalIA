@@ -263,7 +263,15 @@
       );
 
       if (confirmed) {
-        toast.success('Email de réinitialisation envoyé');
+        try {
+          const user = users.find(u => u.id === id);
+          if (user?.email) {
+            await api.users.resetPassword(id, { email: user.email });
+          }
+          toast.success('Email de réinitialisation envoyé');
+        } catch (error) {
+          toast.error('Erreur lors de l\'envoi');
+        }
       }
     };
 

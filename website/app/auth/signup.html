@@ -232,6 +232,8 @@
       <button data-action="switchLang" data-params="es" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">ES</button>
       <span class="text-zinc-300">|</span>
       <button data-action="switchLang" data-params="ar" dir="rtl" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">عربي</button>
+      <span class="text-zinc-300">|</span>
+      <button data-action="switchLang" data-params="ary" class="text-sm text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300">دارجة</button>
     </div>
   </div>
 
@@ -282,20 +284,21 @@
 
     // Password strength checker
     function checkPasswordStrength(password) {
+      const t = window.VocaliaI18n?.t || ((k, fb) => fb);
       let strength = 0;
       let hints = [];
 
       if (password.length >= 8) strength += 25;
-      else hints.push('8+ caractères');
+      else hints.push(t('signup.password_hint_length', '8+ caractères'));
 
       if (/[a-z]/.test(password)) strength += 25;
-      else hints.push('minuscule');
+      else hints.push(t('signup.password_hint_lower', 'minuscule'));
 
       if (/[A-Z]/.test(password)) strength += 25;
-      else hints.push('majuscule');
+      else hints.push(t('signup.password_hint_upper', 'majuscule'));
 
       if (/[0-9]/.test(password)) strength += 25;
-      else hints.push('chiffre');
+      else hints.push(t('signup.password_hint_digit', 'chiffre'));
 
       return { strength, hints };
     }
@@ -306,29 +309,31 @@
 
       passwordStrengthBar.style.width = `${strength}%`;
 
+      const t = window.VocaliaI18n?.t || ((k, fb) => fb);
       if (strength === 0) {
         passwordStrengthBar.className = 'password-strength rounded-full bg-zinc-400';
         passwordLevel.textContent = '';
         passwordHint.textContent = '';
       } else if (strength <= 25) {
         passwordStrengthBar.className = 'password-strength rounded-full bg-red-500';
-        passwordLevel.textContent = 'Faible';
+        passwordLevel.textContent = t('signup.password_weak', 'Faible');
         passwordLevel.className = 'text-xs font-medium text-red-500';
       } else if (strength <= 50) {
         passwordStrengthBar.className = 'password-strength rounded-full bg-orange-500';
-        passwordLevel.textContent = 'Moyen';
+        passwordLevel.textContent = t('signup.password_medium', 'Moyen');
         passwordLevel.className = 'text-xs font-medium text-orange-500';
       } else if (strength <= 75) {
         passwordStrengthBar.className = 'password-strength rounded-full bg-yellow-500';
-        passwordLevel.textContent = 'Bon';
+        passwordLevel.textContent = t('signup.password_strong', 'Fort');
         passwordLevel.className = 'text-xs font-medium text-yellow-500';
       } else {
         passwordStrengthBar.className = 'password-strength rounded-full bg-green-500';
-        passwordLevel.textContent = 'Fort';
+        passwordLevel.textContent = t('signup.password_very_strong', 'Très fort');
         passwordLevel.className = 'text-xs font-medium text-green-500';
       }
 
-      passwordHint.textContent = hints.length > 0 ? `Manque: ${hints.join(', ')}` : '';
+      const tMissing = window.VocaliaI18n?.t || ((k, fb) => fb);
+      passwordHint.textContent = hints.length > 0 ? `${tMissing('signup.password_missing', 'Manque')}: ${hints.join(', ')}` : '';
     }
 
     passwordInput.addEventListener('input', updatePasswordStrength);

@@ -310,10 +310,19 @@
     function filterLogs() {
       const level = document.getElementById('filter-level').value;
       const service = document.getElementById('filter-service').value;
+      const period = document.getElementById('filter-period').value;
       const search = document.getElementById('filter-search').value.toLowerCase();
 
       let filtered = allLogs;
 
+      if (period) {
+        const now = Date.now();
+        const ms = { '1h': 3600000, '24h': 86400000, '7d': 604800000, '30d': 2592000000 }[period] || 86400000;
+        filtered = filtered.filter(l => {
+          const t = new Date(l.timestamp || l.created_at || l.date).getTime();
+          return t > now - ms;
+        });
+      }
       if (level) {
         filtered = filtered.filter(l => l.level === level);
       }

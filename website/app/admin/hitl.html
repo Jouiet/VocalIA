@@ -51,7 +51,7 @@
       <a href="hitl.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/[0.08] text-white font-medium">
         <i data-lucide="check-circle" class="w-5 h-5"></i>
         <span data-i18n="admin.nav.hitl">HITL</span>
-        <span id="pending-badge" class="ml-auto text-xs px-1.5 py-0.5 bg-red-500 text-white rounded-full">3</span>
+        <span id="pending-badge" class="ml-auto text-xs px-1.5 py-0.5 bg-red-500 text-white rounded-full hidden">0</span>
       </a>
       <div class="pt-4 mt-4 border-t border-white/[0.08]">
         <a href="/app/client/" class="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-400 hover:bg-white/[0.06] hover:text-white transition-colors">
@@ -111,7 +111,7 @@
                 <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-amber-600" id="stat-pending">3</p>
+                <p class="text-2xl font-bold text-amber-600" id="stat-pending">--</p>
                 <p class="text-sm text-amber-700 dark:text-amber-300">En attente</p>
               </div>
             </div>
@@ -122,7 +122,7 @@
                 <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-green-600" id="stat-approved">127</p>
+                <p class="text-2xl font-bold text-green-600" id="stat-approved">--</p>
                 <p class="text-sm text-zinc-500">Approuvées</p>
               </div>
             </div>
@@ -133,7 +133,7 @@
                 <i data-lucide="x" class="w-5 h-5 text-red-600"></i>
               </div>
               <div>
-                <p class="text-2xl font-bold text-red-600" id="stat-rejected">12</p>
+                <p class="text-2xl font-bold text-red-600" id="stat-rejected">--</p>
                 <p class="text-sm text-zinc-500">Rejetées</p>
               </div>
             </div>
