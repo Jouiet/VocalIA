@@ -79,8 +79,8 @@ Contact: +1 762 422 4223 | contact@vocalia.ma
 ## State
 
 - **Code completeness**: 9.6/10 — all features coded, tested, P0-AUDIT 9/9 DONE, multi-tenant security hardened, Shadow DOM 7/7 widgets, A2UI XSS sanitized, i18n 100% (4,858 keys × 5 langs, 0 missing)
-- **Production readiness**: 3.0/10 — website deployed, 0 paying customers, CORS unblocked, code bugs fixed. Needs: VPS deployment, first customer, GA4
-- **Next**: VPS deployment → first paying customer → GA4 activation
+- **Production readiness**: 3.5/10 — website deployed, widget VISIBLE on live site (v2.7.0), 0 paying customers, API backend NOT deployed on VPS. Needs: VPS deployment, first customer, GA4
+- **Next**: VPS deployment (API backend) → first paying customer → GA4 activation
 - **Weighted score**: 8.4/10
 
-*Last update: 08/02/2026 - Session 250.158 (i18n 100%, OpenAPI revalidated 25 methods, nginx routing fix, ESM audit → DEFERRED)*
+*Last update: 08/02/2026 - Session 250.159 (WAF .min.js fix, 170+ i18n broken translations, live widget verified, forensic audit)*

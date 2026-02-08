@@ -1,7 +1,7 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.158 (i18n 100%, OpenAPI revalidated, nginx routing fix, ESM audit → DEFERRED)
-> **Code Completeness:** 9.6/10 | **Production Readiness:** 3.0/10 (website deployed, CORS unblocked, multi-tenant security hardened, 0 paying customers)
+> **Date:** 2026-02-08 | **Session:** 250.159 (WAF .min.js fix, 170+ i18n broken translations fixed, live widget verified)
+> **Code Completeness:** 9.6/10 | **Production Readiness:** 3.5/10 (website deployed, widget VISIBLE on live site, CORS unblocked, multi-tenant security hardened, 0 paying customers, API backend NOT deployed on VPS)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144)
 
@@ -41,7 +41,7 @@
 | 4 | Documentation accuracy | 8.5 | **9.0** | **+0.5** | Stale numbers corrected (line counts, openapi status, score summary), all verified by command |
 | 5 | Architecture code | 10.0 | 10.0 | 0 | Shadow DOM ALL 7 widgets, full CSS isolation |
 | 6 | Multi-tenant | 9.5 | 9.5 | 0 | No change |
-| 7 | i18n | 9.0 | **10.0** | **+1.0** | 313 missing keys added, 0 missing data-i18n, 4,858 keys × 5 langs, 0 empty |
+| 7 | i18n | 9.0 | **10.0** | **+1.0** | 313 missing keys added, 170+ broken translations fixed (brand name, hybrid plurals), 0 missing data-i18n, 4,858 keys × 5 langs |
 | 8 | Intégrations | 8.0 | 8.0 | 0 | No change |
 | 9 | Developer experience | 9.5 | 9.5 | 0 | Build+minify+check, validator v2.3, CONTRIBUTING.md, staging |
 | 10 | Mémoire & docs | 9.0 | 9.0 | 0 | No change |
@@ -1445,6 +1445,10 @@ create_booking          get_recommendations    qualify_lead
 | **OpenAPI revalidated**: Added POST /stt + POST /a2ui/action, removed deprecated /trigger-call | 250.158 | 25 methods across 24 paths, YAML valid (26,446 bytes) |
 | **Nginx routing fix**: Rewrote nginx config with proper multi-service routing | 250.158 | db-api explicit paths, voice-api catch-all, 2 rate zones |
 | **ESM audit**: 70 .cjs, 330 require(), 78 conditional — DEFERRED (too risky for regex-based migration) | 250.158 | esm-migrate.cjs dry-run completed, source stays CJS |
+| **Widget .min.js→.js WAF fix**: NindoHost ModSecurity blocks ALL .min.js (403). Replaced 55 refs in 49 pages | 250.159 | `curl -s -o /dev/null -w "%{http_code}" vocalia.ma/voice-assistant/voice-widget-b2b.js` = 200 |
+| **170+ broken translations fixed**: Brand name (صوتيIA/VoiceIA→VocalIA), hybrid plurals (وكيلs→وكلاء), French fragments in AR/ARY/EN | 250.159 | `grep "صوتيIA\|VoiceIA\|وكيلs\|الوكيلs" website/src/locales/{ar,ary,en}.json` = 0 |
+| **Validator fix**: WIDGET_DUPLICATE skip escaped `<script` tags in JS template literals | 250.159 | `node scripts/validate-design-tokens.cjs` = 17/17, 0 errors |
+| **Live widget verified**: Playwright confirms trigger button visible on vocalia.ma, v2.7.0 init OK | 250.159 | Console: `[VocalIA B2B] Widget v2.7.0 initialized` |
 
 ---
 
@@ -1776,7 +1780,7 @@ function isOriginAllowed(origin) {
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 |
 | **P0-AUDIT (250.153-155)** | ✅ **9/9 DONE** | conversationStore, CORS, CDN, WordPress, social proof, email-service, versions, mic policy, doc lies + multi-tenant deep security | 8.5 → **9.3 code / 3.0 production** |
 
-**Code Completeness: 9.6/10** | **Production Readiness: 3.0/10** | **Weighted: 8.4/10** (250.158 — i18n 100%, docs accuracy corrected, ALL code tasks DONE)
+**Code Completeness: 9.6/10** | **Production Readiness: 3.5/10** | **Weighted: 8.4/10** (250.159 — widget visible on live site, 170+ i18n fixes, NindoHost WAF bypass, forensic audit complete)
 
 **Remaining (code — OPTIONAL):**
 ```
