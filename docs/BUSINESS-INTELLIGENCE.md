@@ -1,7 +1,7 @@
 # VocalIA — Business Intelligence
 
-> **Version**: 1.0.0 | **Date**: 08/02/2026 | **Session**: 250.139
-> **Source**: External business audit (verified against code + provider pricing Feb 2026)
+> **Version**: 2.0.0 | **Date**: 08/02/2026 | **Session**: 250.142
+> **Source**: External business audits Nr 2 (250.139) + Nr 3 (250.142) — verified against code + provider pricing Feb 2026
 > **Contact**: contact@vocalia.ma | +1 762 422 4223 (Twilio official number)
 
 ---
@@ -210,5 +210,98 @@
 
 ---
 
+## 9. Marketing Funnel Audit (Session 250.142 — VERIFIED)
+
+> **Source**: External audit Nr 3 — every claim verified against codebase with grep/read
+
+### 9A. Broken Funnel Elements
+
+| Element | Status | Evidence | Impact |
+|:--------|:------:|:---------|:-------|
+| **Newsletter** | **DEAD** | `event-delegation.js:120-126` — changes button text to "✓ Inscrit!", NO fetch/POST, NO webhook | 0% email capture rate |
+| **Booking form** | **DEAD** | `booking.html:435-436` — `alert('Merci!')`, comment says "in real app, send to API" | 0% demo conversion |
+| **Contact form** | **PARTIAL** | `voice-api-resilient.cjs:3052` — `/api/contact` endpoint exists, saves to Google Sheets DB | DB not configured (no GOOGLE_SHEETS_ID in .env), data goes to console log only |
+| **GA4 Analytics** | **DEAD** | `header.html:2,7` — `G-XXXXXXXXXX` placeholder | 52 events coded, 0 data collected |
+| **Plausible Analytics** | **INSTALLED** | `site-init.js` + 5+ pages with `data-domain="vocalia.ma"` script | Account existence not verified |
+
+### 9B. Social Proof — FICTITIOUS DATA
+
+| Element | Location | Content | Status |
+|:--------|:---------|:--------|:------:|
+| "500+ Entreprises Actives" | `index.html:964` | 0 paying customers | **FICTITIOUS** |
+| "2M+ Appels Traités" | `index.html:968` | 0 real voice calls | **FICTITIOUS** |
+| "98% Satisfaction" | `index.html:972` | No measurement, no clients | **FICTITIOUS** |
+| "5 Langues" | `index.html:976` | Factually true (code exists) | **TRUE** |
+| Testimonial "Karim M." | `index.html:899` | No real client | **FICTITIOUS** |
+| Testimonial "Dr. Sara B." | `index.html:926` | No real client | **FICTITIOUS** |
+| Testimonial "Youssef E." | `index.html:953` | No real client | **FICTITIOUS** |
+
+### 9C. Case Studies — LABELED AS FICTIONAL
+
+| Article | Disclaimer | Location |
+|:--------|:-----------|:---------|
+| Clinique Amal (-60% no-shows) | "Les noms et chiffres spécifiques sont fictifs à des fins démonstratives" | `clinique-amal-rappels-vocaux.html:152` |
+| Agence Immo (+conversion) | "Les noms et chiffres spécifiques sont fictifs à des fins démonstratives" | `agence-immo-plus-conversion.html:135` |
+
+**Note**: Both case studies honestly label themselves as fictional with industry-benchmark-based numbers. This is acceptable practice for pre-launch marketing, but should be replaced with real case studies as soon as first clients onboard.
+
+### 9D. Product B2C — PHANTOM PRODUCT
+
+| Fact | Evidence |
+|:-----|:---------|
+| No `voice-widget-b2c.js` exists | `ls widget/` — 7 files, none named b2c |
+| B2C page loads B2B widget | `voice-widget-b2c.html:519` → `voice-widget-b2b.min.js?v=2.7.0` |
+| B2C pricing card at 79€ | `pricing.html:283-321` — "Widget B2C" at 79€/month |
+| 14 B2C entries in client_registry | `grep -c '"widget_type": "B2C"' client_registry.json` = 14 |
+| Differentiation = persona only | Same JS code, different `sector` in backend → different persona loaded |
+
+**Recommendation**: Either (a) remove B2C as separate product and absorb into B2B at 49€, or (b) create actual B2C-specific features to justify the 79€ price difference.
+
+### 9E. Social Media & Links
+
+| Platform | URL | Status |
+|:---------|:----|:------:|
+| LinkedIn | `linkedin.com/company/vocalia` | Link exists, profile not verified |
+| GitHub | `github.com/Jouiet/VoicalAI` | **TYPO**: "VoicalAI" not "VocalIA" |
+| Twitter/X | — | **NOT PRESENT** in footer |
+| Facebook | — | **NOT PRESENT** in footer |
+| Instagram | — | **NOT PRESENT** in footer |
+
+### 9F. Acquisition Funnel Reality (0 paying customers)
+
+```
+AWARENESS (Plausible?):  Unknown visitors → vocalia.ma
+    ↓
+INTEREST (Homepage):     Fictitious social proof (500+, 2M+, 98%)
+    ↓
+CONSIDERATION (Pricing): 3 products (B2B 49€, B2C 79€ phantom, ECOM 149€, Telephony 0.06€)
+    ↓
+INTENT (Booking/Contact): Booking = alert(), Contact = log-only, Newsletter = button change
+    ↓
+CONVERSION:              0 — NO functional acquisition mechanism
+```
+
+**Critical path to first customer**: Fix newsletter webhook → Fix booking form → Fix GA4 → Replace fictitious social proof with honest messaging ("beta" or "launching soon").
+
+---
+
+## 10. Updated Priority Matrix (Post-Audit Nr 3)
+
+| # | Action | Effort | Impact | Status |
+|:-:|:-------|:-------|:-------|:------:|
+| 1 | **Fix newsletter** — connect to Mailchimp/Brevo webhook | 1h | Email capture begins | ❌ |
+| 2 | **Fix booking form** — POST to /api/contact or Calendly | 1h | Demo requests flow | ❌ |
+| 3 | **Activate GA4** — replace G-XXXXXXXXXX | 5min | 52 events collecting data | ❌ Blocked (needs account) |
+| 4 | **Replace fictitious social proof** — honest "launching" messaging | 2h | Legal/credibility risk eliminated | ❌ |
+| 5 | **Decide B2C product** — merge into B2B or create real features | Decision | Pricing clarity | ❌ Decision needed |
+| 6 | **Increase telephony price** 0.06→0.10-0.12€/min | Decision | Margin 8%→38-50% | ❌ Decision needed |
+| 7 | **Serve brotli** via nginx config on VPS | 30min | Transfer -55% | ❌ Infrastructure |
+| 8 | **Fix GitHub typo** — VoicalAI → VocalIA (or rename repo) | 5min | Brand consistency | ❌ |
+| 9 | **Configure Google Sheets DB** — GOOGLE_SHEETS_ID in .env | 30min | Contact form actually persists | ❌ |
+
+---
+
 *Created: 08/02/2026 - Session 250.139 (External Business Audit Nr 2)*
+*Updated: 08/02/2026 - Session 250.142 (External Business Audit Nr 3 — marketing funnel, social proof, B2C phantom product)*
 *All costs verified against provider pricing pages as of February 2026*
+*All funnel claims verified against codebase with grep/read on 08/02/2026*

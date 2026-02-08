@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.141 (BIZ-7 code-split ECOM widget — core + 5 lazy chunks)
-> **Code Completeness:** 8.5/10 | **Production Readiness:** 3.0/10 (0 paying customers, 0 live integrations)
+> **Date:** 2026-02-08 | **Session:** 250.142 (External audit Nr 3 — marketing funnel, B2C phantom, social proof)
+> **Code Completeness:** 8.8/10 | **Production Readiness:** 2.5/10 (0 paying customers, 0 functional acquisition funnel)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits (250.129, 250.138) + doc overhaul (250.139)
+> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142) + doc overhaul (250.139)
 
 ---
 
@@ -23,8 +23,8 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 8.5/10** — All major features coded and tested (3,763 tests, 68 files).
-**Production Readiness: 3.0/10** — Website deployed at vocalia.ma. 0 paying customers. 0 live integrations. 0 real voice calls.
+**Code Completeness: 8.8/10** — All major features coded and tested (3,763 tests, 68 files). All BIZ code tasks done.
+**Production Readiness: 2.5/10** — Website deployed at vocalia.ma. 0 paying customers. 0 functional acquisition funnel (newsletter/booking/GA4 all broken). Social proof fictitious.
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested. Production readiness measures what's deployed and serving real users.
 
@@ -1194,6 +1194,38 @@ create_booking          get_recommendations    qualify_lead
 
 **Feature gaps vs Intercom/Crisp**: No help center, shared inbox, ticketing, email channel, file upload, WhatsApp. VocalIA = voice-first sales/booking assistant ≠ support platform.
 
+### 8.6 Marketing Funnel Audit (250.142)
+
+> **Source**: External audit Nr 3 — every claim verified with grep/read against codebase
+
+**CRITICAL FINDING**: Acquisition funnel is **completely broken**. 0 functional lead capture mechanisms.
+
+| Element | Status | Evidence |
+|:--------|:------:|:---------|
+| Newsletter | **DEAD** | `event-delegation.js:120-126` — UI-only, no POST |
+| Booking form | **DEAD** | `booking.html:435` — `alert()` only, comment "in real app, send to API" |
+| Contact form | **PARTIAL** | Backend exists (`/api/contact`), Google Sheets DB not configured |
+| GA4 | **DEAD** | `G-XXXXXXXXXX` placeholder since 250.129 |
+| Social proof | **FICTITIOUS** | "500+", "2M+", "98%" — 0 real clients/calls |
+| Case studies | **FICTIONAL** (labeled) | Both articles include honest "fictifs" disclaimer |
+| B2C product | **PHANTOM** | No B2C widget, loads B2B, priced at 79€ |
+
+**Production Readiness score adjusted**: 3.0 → **2.5/10** (funnel broken = cannot acquire customers even if product works)
+
+### 8.7 Updated Priority (Post-Audit Nr 3)
+
+| # | Action | Effort | Impact | Status |
+|:-:|:-------|:-------|:-------|:------:|
+| 1 | Fix newsletter (Mailchimp/Brevo webhook) | 1h | Email capture | ❌ |
+| 2 | Fix booking form (POST to /api/contact or Calendly) | 1h | Demo requests | ❌ |
+| 3 | Activate GA4 | 5min | Analytics | ❌ Blocked |
+| 4 | Replace fictitious social proof | 2h | Credibility | ❌ |
+| 5 | Decide B2C product fate | Decision | Pricing clarity | ❌ |
+| 6 | Configure Google Sheets DB (.env) | 30min | Contact persistence | ❌ |
+| 7 | Fix GitHub repo typo (VoicalAI) | 5min | Brand | ❌ |
+
+**Full audit details**: `docs/BUSINESS-INTELLIGENCE.md` sections 9-10
+
 ---
 
 ## 9. Tâches Résolues (historique)
@@ -1326,6 +1358,9 @@ create_booking          get_recommendations    qualify_lead
 | **BIZ-7 Code-split ECOM widget**: Core (16.7 KB brotli) + 5 lazy-loaded chunks (44.5 KB total) | 250.141 | voice-widget-v3.js (loadChunk), build-widgets.cjs v2.1, 7 bundles |
 | **Backend /stt endpoint**: Audio transcription via Grok Whisper + Gemini fallback | 250.140 | core/voice-api-resilient.cjs (3,086→3,398 lines) |
 | **Dead file cleanup**: voice-widget.js.bak deleted from distribution/ | 250.140 | 0 rogue #4FBAF1 in codebase |
+| **External audit Nr 3**: Marketing funnel verified broken (newsletter/booking/GA4/social proof) | 250.142 | Every claim grep-verified |
+| **B2C phantom product documented**: No B2C widget exists, loads B2B, priced at 79€ | 250.142 | `ls widget/` + `grep voice-widget-b2c` |
+| **BUSINESS-INTELLIGENCE v2.0**: Sections 9-10 added (funnel, social proof, B2C, priorities) | 250.142 | docs/BUSINESS-INTELLIGENCE.md |
 | **Widget v2.6.0**: 49 pages bumped from v2.5.0 | 250.140 | All pages load voice-widget-b2b.min.js?v=2.6.0 |
 | **App sidebar component**: Extracted from 9 pages into reusable component (-585 lines) | 250.137 | app/components/sidebar.html |
 | **Mobile hamburger**: Added to all 9 app/client pages | 250.137 | Responsive on all pages |
@@ -1348,7 +1383,7 @@ create_booking          get_recommendations    qualify_lead
 | **P2-WIDGET (250.130-131)** | ✅ **3/3 DONE** | Shadow DOM, minification, widget integration | 7.2 → 8.0 |
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 → cible: 9.5+ |
 
-**Code Completeness: 8.8/10** | **Production Readiness: 3.0/10** (250.141 — ALL code tasks DONE, remaining = infra/decisions)
+**Code Completeness: 8.8/10** | **Production Readiness: 2.5/10** (250.142 — code done, funnel broken, 0 acquisition mechanisms)
 
 **Remaining (code — OPTIONAL):**
 ```
@@ -1357,10 +1392,19 @@ create_booking          get_recommendations    qualify_lead
 
 **ALL BIZ code tasks DONE**: BIZ-4 ✅ BIZ-7 ✅ BIZ-8 ✅
 
+**Remaining (code — QUICK FIXES):**
+```
+→ FUNNEL-1: Fix newsletter — connect to Mailchimp/Brevo webhook (1h)
+→ FUNNEL-2: Fix booking form — POST to /api/contact or Calendly link (1h)
+→ FUNNEL-3: Replace fictitious social proof with honest messaging (2h)
+→ FUNNEL-4: Configure Google Sheets DB credentials in .env (30min)
+```
+
 **Remaining (infrastructure/decisions — NOT code):**
 ```
 → P0-T3b: Replace GA4 placeholder G-XXXXXXXXXX with actual Measurement ID
 → BIZ-2: Increase telephony pricing 0.06→0.10-0.12€/min (decision)
+→ BIZ-5: Decide B2C product fate — merge into B2B or create real features (decision)
 → BIZ-6: Darija differentiated pricing 0.15-0.20€/min (decision)
 → BIZ-3: Serve brotli via nginx config (30min infra)
 → P2-W8b: CDN (cdn.vocalia.ma) — DNS + CDN config
@@ -1378,7 +1422,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis a jour le 2026-02-08 — Session 250.141*
+*Document mis a jour le 2026-02-08 — Session 250.142*
+*250.142: External audit Nr 3 — marketing funnel verified BROKEN (newsletter=UI only, booking=alert(), contact=no DB, GA4=placeholder). Social proof FICTITIOUS (500+/2M+/98%/testimonials). B2C product PHANTOM (no widget, loads B2B, priced at 79€). Case studies honestly labeled "fictifs". Production readiness: 3.0→2.5/10.*
 *250.141: BIZ-7 Code-split ECOM widget — core 16.7 KB brotli (-55% vs monolith 37.3 KB) + 5 lazy chunks. Dynamic loadChunk() in voice-widget-v3.js. Build pipeline v2.1 (7 bundles). Widget v2.7.0 (50 pages). Validator v2.4 (code-split regex). Tests: 3,763 pass, 0 fail.*
 *250.140: BIZ-4 Booking inline B2B (full flow), BIZ-8 STT fallback Firefox/Safari (MediaRecorder→/stt backend), /stt endpoint (Grok Whisper+Gemini), widget v2.6.0 (49 pages), dead .bak cleanup. Tests: 3,763 pass, 0 fail.*
 *250.139: DOCUMENTATION OVERHAUL + BUSINESS AUDIT Nr 2 — All metrics verified (wc -l, grep -c, ls). Production readiness matrix added. Vanity metrics eliminated. Business priorities from external audit: cost structure, pricing analysis, competitive positioning. Score split: Code 8.5/10, Production 3.0/10.*
