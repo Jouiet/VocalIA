@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.144 (Feature gating + funnel fixes + stale price eradication)
+> **Date:** 2026-02-08 | **Session:** 250.147 (Currency geo-awareness + page-context greeting + i18n errors)
 > **Code Completeness:** 9.0/10 | **Production Readiness:** 3.5/10 (0 paying customers, funnel CONNECTED, feature gating IMPLEMENTED)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142) + pricing restructure (250.143) + implementation (250.144)
@@ -1276,9 +1276,17 @@ create_booking          get_recommendations    qualify_lead
 1. `checkFeature(tenantId, feature)` reads tenant config.features (override) or derives from plan
 2. `/respond` handler: computes tenant features → injects restrictions into system prompt → AI won't offer blocked features
 3. `/respond` response: includes `features` object for client-side widget gating
-4. HubSpot sync: gated by `bant_crm_push` — Starter leads qualify but don't sync to CRM
-5. Export endpoint: returns 403 for Starter plan
-6. Lead sessions: synced to ContextBox after each /respond (survives restart)
+4. `/config` response: includes `plan_features` + `plan` for widget init-time gating (Session 250.146)
+5. **B2B widget**: consumes `plan_features` from /config, updates from /respond, gates booking CTA + exit intent
+6. **ECOM widget**: consumes `plan_features` from /config, updates from /respond, gates sub-widgets (cart/quiz/spin/recommendations)
+7. **Exit intent coordination**: B2B→booking CTA, ECOM→cart recovery (when cart has items)
+8. HubSpot sync: gated by `bant_crm_push` — Starter leads qualify but don't sync to CRM
+9. Export endpoint: returns 403 for Starter plan
+10. Lead sessions: synced to ContextBox after each /respond (survives restart)
+11. `/config` response: includes `currency` from client registry for geo-aware pricing (Session 250.147)
+12. **Currency geo-awareness**: All widgets consume tenant currency; `formatPrice()` defaults to EUR; sub-widgets inherit currency
+13. **Page-context greeting**: Widgets extract page metadata (path, pageType, title, product schema) → send as `page_context` → backend injects `[PAGE CONTEXT]` into system prompt → contextual AI responses
+14. **i18n error messages**: B2B + ECOM error messages localized (5 langs: timeoutMessage + connectionError)
 
 ---
 

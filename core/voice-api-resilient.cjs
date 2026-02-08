@@ -2434,10 +2434,14 @@ function startServer(port = 3004) {
           }
         }
 
+        // Derive currency from client registry or tenant config
+        const tenantCurrency = client.currency || tenantConfig.default_currency || 'EUR';
+
         const config = {
           success: true,
           tenantId: tId,
           plan: tenantPlan,
+          currency: tenantCurrency,
           branding: {
             primaryColor: client.primary_color || persona.primaryColor || '#5E6AD2',
             botName: persona.name || 'VocalIA',
@@ -2585,11 +2589,24 @@ function startServer(port = 3004) {
             }
           }
 
+          // Session 250.147: Page context for proactive contextual greeting
+          let pageContextHint = '';
+          if (bodyParsed.data.page_context) {
+            const pc = bodyParsed.data.page_context;
+            const parts = [`The user is on the ${pc.pageType || 'general'} page`];
+            if (pc.title) parts.push(`titled "${pc.title}"`);
+            if (pc.product) {
+              parts.push(`viewing product: ${pc.product.name}`);
+              if (pc.product.price) parts.push(`(${pc.product.currency || '€'}${pc.product.price})`);
+            }
+            pageContextHint = '\n\n[PAGE CONTEXT - Adapt your response to be relevant to what the user is browsing]:\n' + parts.join(', ') + '.';
+          }
+
           // Extract the injected systemPrompt from the config
           const baseSystemPrompt = injectedConfig.session?.instructions || injectedConfig.instructions;
           const injectedMetadata = {
             ...persona,
-            systemPrompt: baseSystemPrompt + featureRestriction,
+            systemPrompt: baseSystemPrompt + featureRestriction + pageContextHint,
             persona_id: persona.id,
             persona_name: persona.name,
             // CRITICAL: Map tenant_id to knowledge_base_id for RAG context

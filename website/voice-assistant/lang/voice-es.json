@@ -15,6 +15,8 @@
     "welcomeMessage": "Hola! Soy el asistente VocalIA. Como puedo ayudarte con tu proyecto de IA de voz?",
     "welcomeMessageTextOnly": "Hola! Soy el asistente VocalIA. Preguntame lo que quieras sobre nuestras soluciones de IA de voz.",
     "errorMessage": "Lo siento, ha ocurrido un error. Por favor, intentalo de nuevo.",
+    "timeoutMessage": "La solicitud tardo demasiado. Intentalo de nuevo.",
+    "connectionError": "Lo siento, tengo un problema de conexion.",
     "ariaOpenAssistant": "Abrir asistente de voz VocalIA",
     "ariaClose": "Cerrar",
     "ariaMic": "Activar microfono",

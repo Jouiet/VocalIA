@@ -1,6 +1,6 @@
 /**
  * VocalIA - Voice Assistant Widget Core
- * Version: 3.1.0
+ * Version: 3.2.0
  *
  * Unified widget that loads language-specific translations
  * Supports: FR, EN, ES, AR, Darija (ary)
@@ -122,6 +122,7 @@
         tenantId: null, // Set via data attribute or URL
         tenantConfig: null, // Loaded from /config endpoint
         planFeatures: null, // Session 250.146: Plan-based feature gating
+        currency: null, // Session 250.147: Tenant currency from /config (MAD/EUR/USD)
         availableSlotsCache: { slots: [], timestamp: 0 },
         catalogCache: { products: [], timestamp: 0 },
         conversationContext: {
@@ -210,6 +211,10 @@
                 // Session 250.146: Store plan features for sub-widget gating
                 if (data.plan_features) {
                     state.planFeatures = data.plan_features;
+                }
+                // Session 250.147: Store tenant currency for geo-aware pricing
+                if (data.currency) {
+                    state.currency = data.currency;
                 }
                 trackEvent('tenant_config_loaded', { tenantId: state.tenantId, plan: data.plan });
                 return data;
@@ -811,6 +816,52 @@
     // E-COMMERCE PRODUCT DISPLAY (Phase 1)
     // ============================================================
 
+    // ============================================================
+    // PAGE CONTEXT (Session 250.147: Proactive contextual greeting)
+    // ============================================================
+
+    function getPageContext() {
+        const path = window.location.pathname;
+        const title = document.title || '';
+        const ogTitle = document.querySelector('meta[property="og:title"]')?.content || '';
+        const description = document.querySelector('meta[name="description"]')?.content || '';
+        const h1 = document.querySelector('h1')?.textContent?.trim() || '';
+
+        // Detect page type from path and meta
+        let pageType = 'general';
+        if (/\/(product|produit)/i.test(path)) pageType = 'product';
+        else if (/\/(collection|category|categorie)/i.test(path)) pageType = 'category';
+        else if (/\/(cart|panier)/i.test(path)) pageType = 'cart';
+        else if (/\/(checkout|commande)/i.test(path)) pageType = 'checkout';
+        else if (/\/(pricing|tarifs|prix)/i.test(path)) pageType = 'pricing';
+        else if (/\/(booking|rendez-vous|demo)/i.test(path)) pageType = 'booking';
+        else if (path === '/' || path === '/index.html') pageType = 'homepage';
+
+        // E-commerce product data from schema.org or Open Graph
+        const productSchema = document.querySelector('script[type="application/ld+json"]');
+        let productData = null;
+        if (productSchema) {
+            try {
+                const schema = JSON.parse(productSchema.textContent);
+                if (schema['@type'] === 'Product') {
+                    productData = { name: schema.name, price: schema.offers?.price, currency: schema.offers?.priceCurrency };
+                }
+            } catch (e) { /* ignore */ }
+        }
+        if (!productData) {
+            const ogProduct = document.querySelector('meta[property="og:type"][content="product"]');
+            if (ogProduct) {
+                productData = {
+                    name: ogTitle || h1,
+                    price: document.querySelector('meta[property="product:price:amount"]')?.content,
+                    currency: document.querySelector('meta[property="product:price:currency"]')?.content
+                };
+            }
+        }
+
+        return { path, pageType, title: ogTitle || h1 || title, description: description.slice(0, 200), product: productData };
+    }
+
     /**
      * Track input method (voice vs text)
      * @param {string} method - 'voice' or 'text'
@@ -836,7 +887,8 @@
      * @param {string} currency - Currency code (default: MAD)
      * @returns {string} Formatted price
      */
-    function formatPrice(price, currency = 'MAD') {
+    function formatPrice(price, currency) {
+        currency = currency || state.currency || 'EUR';
         const currencySymbols = {
             'MAD': 'DH',
             'EUR': '€',
@@ -1460,7 +1512,7 @@
                 event_category: 'ecommerce',
                 cart_value: cartData.total,
                 items_count: cartData.items?.length || 0,
-                currency: cartData.currency || 'MAD'
+                currency: cartData.currency || state.currency || 'EUR'
             });
         }
     };
@@ -3068,20 +3120,25 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
 
+            const payload = {
+                message: userMessage,
+                language: state.currentLang,
+                sessionId: state.sessionId || `widget_${Date.now()}`,
+                tenant_id: state.tenantId,
+                widget_type: 'ECOM', // Enforce E-commerce Persona
+                history: state.conversationHistory.slice(-10).map(m => ({
+                    role: m.role,
+                    content: m.content
+                }))
+            };
+            // Session 250.147: Send page context on first messages for contextual responses
+            if (state.conversationHistory.length <= 2) {
+                payload.page_context = getPageContext();
+            }
             const response = await fetch(CONFIG.VOICE_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: userMessage,
-                    language: state.currentLang,
-                    sessionId: state.sessionId || `widget_${Date.now()}`,
-                    tenant_id: state.tenantId,
-                    widget_type: 'ECOM', // Enforce E-commerce Persona
-                    history: state.conversationHistory.slice(-10).map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }))
-                }),
+                body: JSON.stringify(payload),
                 signal: controller.signal
             });
 
@@ -3116,10 +3173,11 @@
             } else {
                 console.error('[VocalIA] API error:', err.message);
             }
-            // Use INTELLIGENT fallback instead of error message
-            // DIRECT ERROR RETURN - NO LOCAL FALLBACK
-            const L = state.langData;
-            return L?.ui?.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.";
+            const L = state.langData?.ui || {};
+            if (err.name === 'AbortError') {
+                return L.timeoutMessage || L.errorMessage || 'The request took too long. Please try again.';
+            }
+            return L.connectionError || L.errorMessage || 'Sorry, I\'m experiencing a connection issue.';
         }
     }
 
@@ -3409,6 +3467,7 @@
                 window.VocaliaShippingBar.init({
                     tenantId: state.tenantId,
                     lang: state.currentLang,
+                    currency: state.currency || 'EUR',
                     voiceEnabled: true
                 });
                 WidgetOrchestrator.activate('shippingBar');

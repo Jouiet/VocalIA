@@ -1,6 +1,6 @@
 /**
  * VocalIA - Voice Assistant Widget Core
- * Version: 3.1.0
+ * Version: 3.2.0
  *
  * Unified widget that loads language-specific translations
  * Supports: FR, EN, ES, AR, Darija (ary)
@@ -122,6 +122,7 @@
         tenantId: null, // Set via data attribute or URL
         tenantConfig: null, // Loaded from /config endpoint
         planFeatures: null, // Session 250.146: Plan-based feature gating
+        currency: null, // Session 250.147: Tenant currency from /config (MAD/EUR/USD)
         availableSlotsCache: { slots: [], timestamp: 0 },
         catalogCache: { products: [], timestamp: 0 },
         conversationContext: {
@@ -210,6 +211,10 @@
                 // Session 250.146: Store plan features for sub-widget gating
                 if (data.plan_features) {
                     state.planFeatures = data.plan_features;
+                }
+                // Session 250.147: Store tenant currency for geo-aware pricing
+                if (data.currency) {
+                    state.currency = data.currency;
                 }
                 trackEvent('tenant_config_loaded', { tenantId: state.tenantId, plan: data.plan });
                 return data;
@@ -811,6 +816,52 @@
     // E-COMMERCE PRODUCT DISPLAY (Phase 1)
     // ============================================================
 
+    // ============================================================
+    // PAGE CONTEXT (Session 250.147: Proactive contextual greeting)
+    // ============================================================
+
+    function getPageContext() {
+        const path = window.location.pathname;
+        const title = document.title || '';
+        const ogTitle = document.querySelector('meta[property="og:title"]')?.content || '';
+        const description = document.querySelector('meta[name="description"]')?.content || '';
+        const h1 = document.querySelector('h1')?.textContent?.trim() || '';
+
+        // Detect page type from path and meta
+        let pageType = 'general';
+        if (/\/(product|produit)/i.test(path)) pageType = 'product';
+        else if (/\/(collection|category|categorie)/i.test(path)) pageType = 'category';
+        else if (/\/(cart|panier)/i.test(path)) pageType = 'cart';
+        else if (/\/(checkout|commande)/i.test(path)) pageType = 'checkout';
+        else if (/\/(pricing|tarifs|prix)/i.test(path)) pageType = 'pricing';
+        else if (/\/(booking|rendez-vous|demo)/i.test(path)) pageType = 'booking';
+        else if (path === '/' || path === '/index.html') pageType = 'homepage';
+
+        // E-commerce product data from schema.org or Open Graph
+        const productSchema = document.querySelector('script[type="application/ld+json"]');
+        let productData = null;
+        if (productSchema) {
+            try {
+                const schema = JSON.parse(productSchema.textContent);
+                if (schema['@type'] === 'Product') {
+                    productData = { name: schema.name, price: schema.offers?.price, currency: schema.offers?.priceCurrency };
+                }
+            } catch (e) { /* ignore */ }
+        }
+        if (!productData) {
+            const ogProduct = document.querySelector('meta[property="og:type"][content="product"]');
+            if (ogProduct) {
+                productData = {
+                    name: ogTitle || h1,
+                    price: document.querySelector('meta[property="product:price:amount"]')?.content,
+                    currency: document.querySelector('meta[property="product:price:currency"]')?.content
+                };
+            }
+        }
+
+        return { path, pageType, title: ogTitle || h1 || title, description: description.slice(0, 200), product: productData };
+    }
+
     /**
      * Track input method (voice vs text)
      * @param {string} method - 'voice' or 'text'
@@ -836,7 +887,8 @@
      * @param {string} currency - Currency code (default: MAD)
      * @returns {string} Formatted price
      */
-    function formatPrice(price, currency = 'MAD') {
+    function formatPrice(price, currency) {
+        currency = currency || state.currency || 'EUR';
         const currencySymbols = {
             'MAD': 'DH',
             'EUR': '€',
@@ -1460,7 +1512,7 @@
                 event_category: 'ecommerce',
                 cart_value: cartData.total,
                 items_count: cartData.items?.length || 0,
-                currency: cartData.currency || 'MAD'
+                currency: cartData.currency || state.currency || 'EUR'
             });
         }
     };
@@ -3068,20 +3120,25 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
 
+            const payload = {
+                message: userMessage,
+                language: state.currentLang,
+                sessionId: state.sessionId || `widget_${Date.now()}`,
+                tenant_id: state.tenantId,
+                widget_type: 'ECOM', // Enforce E-commerce Persona
+                history: state.conversationHistory.slice(-10).map(m => ({
+                    role: m.role,
+                    content: m.content
+                }))
+            };
+            // Session 250.147: Send page context on first messages for contextual responses
+            if (state.conversationHistory.length <= 2) {
+                payload.page_context = getPageContext();
+            }
             const response = await fetch(CONFIG.VOICE_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: userMessage,
-                    language: state.currentLang,
-                    sessionId: state.sessionId || `widget_${Date.now()}`,
-                    tenant_id: state.tenantId,
-                    widget_type: 'ECOM', // Enforce E-commerce Persona
-                    history: state.conversationHistory.slice(-10).map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }))
-                }),
+                body: JSON.stringify(payload),
                 signal: controller.signal
             });
 
@@ -3116,10 +3173,11 @@
             } else {
                 console.error('[VocalIA] API error:', err.message);
             }
-            // Use INTELLIGENT fallback instead of error message
-            // DIRECT ERROR RETURN - NO LOCAL FALLBACK
-            const L = state.langData;
-            return L?.ui?.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.";
+            const L = state.langData?.ui || {};
+            if (err.name === 'AbortError') {
+                return L.timeoutMessage || L.errorMessage || 'The request took too long. Please try again.';
+            }
+            return L.connectionError || L.errorMessage || 'Sorry, I\'m experiencing a connection issue.';
         }
     }
 
@@ -3409,6 +3467,7 @@
                 window.VocaliaShippingBar.init({
                     tenantId: state.tenantId,
                     lang: state.currentLang,
+                    currency: state.currency || 'EUR',
                     voiceEnabled: true
                 });
                 WidgetOrchestrator.activate('shippingBar');
@@ -4547,15 +4606,17 @@
                         image: item.image
                     })),
                     total: window.Shopify.checkout.total_price / 100,
-                    currency: window.Shopify.checkout.currency || 'MAD'
+                    currency: window.Shopify.checkout.currency || window.VocalIA?.cart?.currency || 'EUR'
                 };
             }
 
-            // WooCommerce
+            // WooCommerce — extract cart data from DOM
             if (window.wc_cart_fragments_params) {
-                const cartHash = document.querySelector('.cart-contents-count');
-                if (cartHash && parseInt(cartHash.textContent) > 0) {
-                    return { items: [{}], total: 0, currency: 'MAD' };
+                const cartCountEl = document.querySelector('.cart-contents-count');
+                const cartCount = parseInt(cartCountEl?.textContent || '0');
+                if (cartCount > 0) {
+                    const cartTotal = parseFloat(document.querySelector('.cart-contents .amount, .woocommerce-Price-amount')?.textContent?.replace(/[^\d.]/g, '') || '0');
+                    return { items: Array(cartCount).fill({}), total: cartTotal, currency: window.VocalIA?.cart?.currency || 'EUR' };
                 }
             }
 
@@ -4571,11 +4632,11 @@
             if (window.location.search.includes('demo_cart=1')) {
                 return {
                     items: [
-                        { id: '1', name: 'Produit Demo 1', price: 299, quantity: 1, image: 'https://placehold.co/100x100/191E35/4FBAF1?text=P1' },
+                        { id: '1', name: 'Produit Demo 1', price: 299, quantity: 1, image: 'https://placehold.co/100x100/191E35/5E6AD2?text=P1' },
                         { id: '2', name: 'Produit Demo 2', price: 199, quantity: 2, image: 'https://placehold.co/100x100/191E35/10B981?text=P2' }
                     ],
                     total: 697,
-                    currency: 'MAD'
+                    currency: window.VocalIA?.cart?.currency || 'EUR'
                 };
             }
 
@@ -4671,9 +4732,12 @@
                 : this.translations.subtitle.replace('{{count}}', count);
 
             // Update total value
-            const currency = cart.currency || 'MAD';
+            const currency = cart.currency || window.VocalIA?.cart?.currency || 'EUR';
             const total = cart.total || 0;
-            this.elements.valueAmount.textContent = `${total.toLocaleString()} ${currency}`;
+            const currencySymbols = { 'MAD': 'DH', 'EUR': '€', 'USD': '$', 'GBP': '£' };
+            const symbol = currencySymbols[currency] || currency;
+            this.elements.valueAmount.textContent = (currency === 'EUR' || currency === 'USD' || currency === 'GBP')
+                ? `${symbol}${total.toLocaleString()}` : `${total.toLocaleString()} ${symbol}`;
 
             // Update items preview
             this.elements.itemsRow.innerHTML = '';
@@ -7649,8 +7713,8 @@
       this.config = {
         tenantId: options.tenantId || this.detectTenantId(),
         lang: options.lang || this.detectLanguage(),
-        threshold: options.threshold || 500, // Default 500 MAD
-        currency: options.currency || 'MAD',
+        threshold: options.threshold || 50, // Default 50 EUR
+        currency: options.currency || 'EUR',
         position: options.position || 'top', // top, bottom
         voiceEnabled: options.voiceEnabled !== false,
         showMilestones: options.showMilestones !== false,
@@ -8119,8 +8183,8 @@
       initFreeShippingBar({
         tenantId: widget.dataset.vocaliaTenant,
         lang: widget.dataset.vocaliaLang,
-        threshold: parseInt(widget.dataset.threshold) || 500,
-        currency: widget.dataset.currency || 'MAD',
+        threshold: parseInt(widget.dataset.threshold) || 50,
+        currency: widget.dataset.currency || 'EUR',
         voiceEnabled: widget.dataset.voice !== 'false'
       });
     }
@@ -8500,7 +8564,7 @@
     _renderCard(item, index) {
       const L = this._getLabels();
       const name = item.title || item.name || `Product ${index + 1}`;
-      const price = item.price ? this._formatPrice(item.price) : '';
+      const price = item.price ? this._formatPrice(item.price, item.currency) : '';
       const image = item.image || item.images?.[0]?.src;
       const reason = this._getReasonLabel(item.reason);
 
@@ -8532,18 +8596,16 @@
     /**
      * Format price with currency
      */
-    _formatPrice(price) {
+    _formatPrice(price, currency) {
       const num = parseFloat(price);
       if (isNaN(num)) return price;
 
-      // Use MAD for Moroccan locale, EUR for European, USD otherwise
-      const lang = this.options.lang;
-      if (lang === 'ar' || lang === 'ary') {
-        return `${num.toFixed(0)} DH`;
-      } else if (lang === 'fr' || lang === 'es') {
-        return `${num.toFixed(2)} €`;
-      }
-      return `$${num.toFixed(2)}`;
+      // Use product currency, then tenant currency from VocalIA state, then default EUR
+      const cur = currency || window.VocalIA?.cart?.currency || 'EUR';
+      const symbols = { 'MAD': 'DH', 'EUR': '€', 'USD': '$', 'GBP': '£' };
+      const symbol = symbols[cur] || cur;
+      const formatted = num.toFixed(cur === 'MAD' ? 0 : 2);
+      return (cur === 'EUR' || cur === 'USD' || cur === 'GBP') ? `${symbol}${formatted}` : `${formatted} ${symbol}`;
     }
 
     /**

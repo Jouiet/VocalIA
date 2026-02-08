@@ -1,6 +1,6 @@
 /**
  * VocalIA Voice Widget - B2B/Lead Gen Specialized Kernel
- * Version: 2.4.0 (B2B) | Session 250.146
+ * Version: 2.5.0 (B2B) | Session 250.147
  *
  * DESIGN: SOBER & PROFESSIONAL - VocalIA Deep Indigo (#5E6AD2)
  * FEATURES: Voice Chat, Lead Qualification, Booking, FAQ, Exit Intent (Lead Magnet)
@@ -191,6 +191,31 @@
         attr.utm_source = urlParams.get('utm_source') || attr.utm_source;
         attr.utm_medium = urlParams.get('utm_medium') || attr.utm_medium;
         attr.utm_campaign = urlParams.get('utm_campaign') || attr.utm_campaign;
+    }
+
+    // ============================================================
+    // PAGE CONTEXT (Session 250.147: Proactive contextual greeting)
+    // ============================================================
+
+    function getPageContext() {
+        const path = window.location.pathname;
+        const title = document.title || '';
+        const ogTitle = document.querySelector('meta[property="og:title"]')?.content || '';
+        const description = document.querySelector('meta[name="description"]')?.content || '';
+        const h1 = document.querySelector('h1')?.textContent?.trim() || '';
+
+        // Detect page type from path
+        let pageType = 'general';
+        if (/\/(pricing|tarifs|prix)/i.test(path)) pageType = 'pricing';
+        else if (/\/(booking|rendez-vous|demo|reservation)/i.test(path)) pageType = 'booking';
+        else if (/\/(contact|nous-contacter)/i.test(path)) pageType = 'contact';
+        else if (/\/(features|fonctionnalites|produits)/i.test(path)) pageType = 'features';
+        else if (/\/(use-cases|cas-usage)/i.test(path)) pageType = 'use_cases';
+        else if (/\/(about|a-propos)/i.test(path)) pageType = 'about';
+        else if (/\/(blog|article)/i.test(path)) pageType = 'blog';
+        else if (path === '/' || path === '/index.html') pageType = 'homepage';
+
+        return { path, pageType, title: ogTitle || h1 || title, description: description.slice(0, 200) };
     }
 
     // ============================================================
@@ -875,18 +900,23 @@
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
 
+            const payload = {
+                message: text,
+                language: state.currentLang,
+                sessionId: state.sessionId,
+                tenant_id: state.tenantId,
+                widget_type: 'B2B',
+                history: state.conversationHistory.slice(-6)
+            };
+            // Session 250.147: Send page context on first message for contextual responses
+            if (state.conversationHistory.length <= 2) {
+                payload.page_context = getPageContext();
+            }
             const response = await fetch(CONFIG.VOICE_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 signal: controller.signal,
-                body: JSON.stringify({
-                    message: text,
-                    language: state.currentLang,
-                    sessionId: state.sessionId,
-                    tenant_id: state.tenantId,
-                    widget_type: 'B2B',
-                    history: state.conversationHistory.slice(-6)
-                })
+                body: JSON.stringify(payload)
             });
 
             clearTimeout(timeout);
@@ -912,10 +942,11 @@
             }
         } catch (e) {
             removeTypingIndicator(typingId);
+            const L = state.langData?.ui || {};
             if (e.name === 'AbortError') {
-                addMessage('La requête a pris trop de temps. Veuillez réessayer.', 'assistant');
+                addMessage(L.timeoutMessage || 'The request took too long. Please try again.', 'assistant');
             } else {
-                addMessage('Désolé, je rencontre un problème de connexion.', 'assistant');
+                addMessage(L.connectionError || L.errorMessage || 'Sorry, I\'m experiencing a connection issue.', 'assistant');
             }
             console.error('[VocalIA] API error:', e);
         }

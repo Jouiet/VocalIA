@@ -371,7 +371,7 @@
     _renderCard(item, index) {
       const L = this._getLabels();
       const name = item.title || item.name || `Product ${index + 1}`;
-      const price = item.price ? this._formatPrice(item.price) : '';
+      const price = item.price ? this._formatPrice(item.price, item.currency) : '';
       const image = item.image || item.images?.[0]?.src;
       const reason = this._getReasonLabel(item.reason);
 
@@ -403,18 +403,16 @@
     /**
      * Format price with currency
      */
-    _formatPrice(price) {
+    _formatPrice(price, currency) {
       const num = parseFloat(price);
       if (isNaN(num)) return price;
 
-      // Use MAD for Moroccan locale, EUR for European, USD otherwise
-      const lang = this.options.lang;
-      if (lang === 'ar' || lang === 'ary') {
-        return `${num.toFixed(0)} DH`;
-      } else if (lang === 'fr' || lang === 'es') {
-        return `${num.toFixed(2)} €`;
-      }
-      return `$${num.toFixed(2)}`;
+      // Use product currency, then tenant currency from VocalIA state, then default EUR
+      const cur = currency || window.VocalIA?.cart?.currency || 'EUR';
+      const symbols = { 'MAD': 'DH', 'EUR': '€', 'USD': '$', 'GBP': '£' };
+      const symbol = symbols[cur] || cur;
+      const formatted = num.toFixed(cur === 'MAD' ? 0 : 2);
+      return (cur === 'EUR' || cur === 'USD' || cur === 'GBP') ? `${symbol}${formatted}` : `${formatted} ${symbol}`;
     }
 
     /**

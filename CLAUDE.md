@@ -1,6 +1,6 @@
 # VocalIA - Voice AI Platform
 
-> **v7.28.0** | 08/02/2026 | Production: https://vocalia.ma
+> **v7.29.0** | 08/02/2026 | Session 250.147: Currency geo-awareness + page-context greeting + i18n errors | Production: https://vocalia.ma
 > **78 pages** | 23,995 i18n lines | 5 langs (FR/EN/ES/AR/ARY) | RTL | **3,763 tests** (68 files .mjs, 0 skip)
 > **203 MCP Tools** (0 connected) | 38 Personas | **25 Function Tools** | 7 Widgets | 22 Registered Clients (0 paying)
 > **~82k lines source** | Core 34,646 (54) + Telephony 4,732 + Personas 8,700 + Widget 10,196 + MCP/src 19,173 (32) + Lib 923 + Sensors 822 + Integrations 2,234

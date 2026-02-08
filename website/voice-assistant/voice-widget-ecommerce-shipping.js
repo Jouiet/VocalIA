@@ -346,8 +346,8 @@
       this.config = {
         tenantId: options.tenantId || this.detectTenantId(),
         lang: options.lang || this.detectLanguage(),
-        threshold: options.threshold || 500, // Default 500 MAD
-        currency: options.currency || 'MAD',
+        threshold: options.threshold || 50, // Default 50 EUR
+        currency: options.currency || 'EUR',
         position: options.position || 'top', // top, bottom
         voiceEnabled: options.voiceEnabled !== false,
         showMilestones: options.showMilestones !== false,
@@ -816,8 +816,8 @@
       initFreeShippingBar({
         tenantId: widget.dataset.vocaliaTenant,
         lang: widget.dataset.vocaliaLang,
-        threshold: parseInt(widget.dataset.threshold) || 500,
-        currency: widget.dataset.currency || 'MAD',
+        threshold: parseInt(widget.dataset.threshold) || 50,
+        currency: widget.dataset.currency || 'EUR',
         voiceEnabled: widget.dataset.voice !== 'false'
       });
     }

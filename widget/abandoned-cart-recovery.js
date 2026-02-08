@@ -958,15 +958,17 @@
                         image: item.image
                     })),
                     total: window.Shopify.checkout.total_price / 100,
-                    currency: window.Shopify.checkout.currency || 'MAD'
+                    currency: window.Shopify.checkout.currency || window.VocalIA?.cart?.currency || 'EUR'
                 };
             }
 
-            // WooCommerce
+            // WooCommerce — extract cart data from DOM
             if (window.wc_cart_fragments_params) {
-                const cartHash = document.querySelector('.cart-contents-count');
-                if (cartHash && parseInt(cartHash.textContent) > 0) {
-                    return { items: [{}], total: 0, currency: 'MAD' };
+                const cartCountEl = document.querySelector('.cart-contents-count');
+                const cartCount = parseInt(cartCountEl?.textContent || '0');
+                if (cartCount > 0) {
+                    const cartTotal = parseFloat(document.querySelector('.cart-contents .amount, .woocommerce-Price-amount')?.textContent?.replace(/[^\d.]/g, '') || '0');
+                    return { items: Array(cartCount).fill({}), total: cartTotal, currency: window.VocalIA?.cart?.currency || 'EUR' };
                 }
             }
 
@@ -982,11 +984,11 @@
             if (window.location.search.includes('demo_cart=1')) {
                 return {
                     items: [
-                        { id: '1', name: 'Produit Demo 1', price: 299, quantity: 1, image: 'https://placehold.co/100x100/191E35/4FBAF1?text=P1' },
+                        { id: '1', name: 'Produit Demo 1', price: 299, quantity: 1, image: 'https://placehold.co/100x100/191E35/5E6AD2?text=P1' },
                         { id: '2', name: 'Produit Demo 2', price: 199, quantity: 2, image: 'https://placehold.co/100x100/191E35/10B981?text=P2' }
                     ],
                     total: 697,
-                    currency: 'MAD'
+                    currency: window.VocalIA?.cart?.currency || 'EUR'
                 };
             }
 
@@ -1082,9 +1084,12 @@
                 : this.translations.subtitle.replace('{{count}}', count);
 
             // Update total value
-            const currency = cart.currency || 'MAD';
+            const currency = cart.currency || window.VocalIA?.cart?.currency || 'EUR';
             const total = cart.total || 0;
-            this.elements.valueAmount.textContent = `${total.toLocaleString()} ${currency}`;
+            const currencySymbols = { 'MAD': 'DH', 'EUR': '€', 'USD': '$', 'GBP': '£' };
+            const symbol = currencySymbols[currency] || currency;
+            this.elements.valueAmount.textContent = (currency === 'EUR' || currency === 'USD' || currency === 'GBP')
+                ? `${symbol}${total.toLocaleString()}` : `${total.toLocaleString()} ${symbol}`;
 
             // Update items preview
             this.elements.itemsRow.innerHTML = '';

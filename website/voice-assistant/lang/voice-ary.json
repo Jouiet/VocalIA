@@ -15,6 +15,8 @@
     "welcomeMessage": "أهلاً! أنا المساعد ديال VocalIA. كيفاش نقدر نعاونك فالمشروع ديالك ديال الصوت الذكي؟",
     "welcomeMessageTextOnly": "أهلاً! أنا المساعد ديال VocalIA. سولني على الحلول ديالنا ديال الصوت الذكي.",
     "errorMessage": "سمحلي، وقع شي مشكل. عاود جرب.",
+    "timeoutMessage": "الطلب خدا بزاف ديال الوقت. عاود جرب.",
+    "connectionError": "سمحلي، كاين مشكل فالاتصال.",
     "ariaOpenAssistant": "حل المساعد الصوتي VocalIA",
     "ariaClose": "سد",
     "ariaMic": "شعّل الميكرو",
