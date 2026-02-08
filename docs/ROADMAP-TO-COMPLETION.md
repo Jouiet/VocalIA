@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.161 (P0-WEBSITE 64→0 errors, Darija $0.25/min implemented)
+> **Date:** 2026-02-08 | **Session:** 250.162 (P0-COMPONENTS: dashboard→app migration, validator full coverage 80 pages)
 > **Code Completeness:** 9.8/10 | **Production Readiness:** 3.5/10 (website deployed, widget VISIBLE on live site, CORS unblocked, multi-tenant security hardened, 0 paying customers, API backend NOT deployed on VPS)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160)
@@ -74,6 +74,7 @@
 | **P0-AUDIT** | 250.153-155 | 9/9 | conversationStore import, CORS tenant whitelist, CDN removed, WordPress 3 bugs, V3 fake social proof, email-service.cjs, Gemini unified, mic policy, doc lies. Multi-tenant deep: origin↔tenant, api_key 22/22 | 8.5 → 9.3 code |
 | **BIZ** | 250.140-147 | 8/8 | Booking inline B2B, code-split ECOM (-55%), STT fallback, feature gating (14×4 matrix), pricing restructure, plan gating widgets, currency geo-awareness, i18n error messages | N/A |
 | **FUNNEL** | 250.144 | 4/4 | Newsletter POST, booking form POST, honest social proof, Google Sheets DB configured | Prod 2.5→3.5 |
+| **P0-COMPONENTS** | 250.162 | 4/4 | Dashboard→app redirect, telephony page, sidebar component updated, validator full 80-page coverage | 23/23 ✅ 0 warnings |
 
 ### Key Technical Decisions (Reference)
 
@@ -272,7 +273,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | MCP tools | 203 | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
-| HTML pages | 79 | `find website -name "*.html" | wc -l` |
+| HTML pages | 80 | `find website -name "*.html" | wc -l` |
 | Registry clients | 22 | `jq 'keys | length' personas/client_registry.json` |
 | i18n lines | 26,175 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 | `npm audit --json` |
@@ -328,8 +329,9 @@ create_booking          get_recommendations    qualify_lead
 | **P3** | ✅ **5/5 DONE** | ESM, staging, k6, A2A, personas | 8.4 |
 | **P0-AUDIT (250.153-155)** | ✅ **9/9 DONE** | All audit bugs + multi-tenant | 9.3 code / 3.0 prod |
 | **P0-WEBSITE (250.161)** | ✅ **DONE** | 64→0 errors, 44→2 warnings | 23/23 ✅ |
+| **P0-COMPONENTS (250.162)** | ✅ **DONE** | Dashboard→app redirect, validator full coverage | 23/23 ✅ (0 warnings) |
 
-**Code Completeness: 9.8/10** | **Production Readiness: 3.5/10** | **Weighted: 8.7/10**
+**Code Completeness: 9.9/10** | **Production Readiness: 3.5/10** | **Weighted: 8.8/10**
 
 **Remaining (code — REQUIRED):**
 ```
@@ -359,7 +361,8 @@ create_booking          get_recommendations    qualify_lead
 
 ---
 
-*Document mis a jour le 2026-02-08 — Session 250.161*
+*Document mis a jour le 2026-02-08 — Session 250.162*
+*250.162: P0-COMPONENTS — Dashboard→app redirect (5 pages eliminated duplication), telephony page created in app/client/, sidebar component updated with telephony link, onboarding migrated to sidebar component, validator now covers ALL 80 pages (was 46). 23/23 ✅ 0 errors 0 warnings.*
 *250.161: P0-WEBSITE COMPLETE — 64→0 errors, 44→2 warnings (23/23 ✅). Darija $0.25/min (inbound) implemented across codebase. Phase 4 manual audit fixes (math, stale 40→38, Tier 1 5→4, unverified claims).*
 *250.160: Validator v3.0 (17→23 checks: +6 business/factual). 64 errors + 44 warnings detected. White line cleanup (31 files). academie-business deep audit (20 problems).*
 *250.159: WAF .min.js→.js fix (55 refs in 49 pages). 170+ broken i18n translations. Live widget verified via Playwright.*

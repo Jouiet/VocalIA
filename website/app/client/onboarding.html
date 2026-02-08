@@ -15,28 +15,34 @@
   <link href="/public/css/style.css" rel="stylesheet">
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
   <script src="/src/lib/i18n.js"></script>
+  <style>
+    .sidebar { width: 260px; }
+    @media (max-width: 1024px) {
+      .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
+      .sidebar.open { transform: translateX(0); }
+    }
+  </style>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
-  <!-- Header -->
-  <header class="bg-white dark:bg-white/[0.06] border-b border-zinc-200 dark:border-white/[0.08] py-4">
-    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-2">
-        <img src="/public/images/logo.webp" alt="VocalIA" class="h-8">
-        <span class="font-bold text-xl text-zinc-900 dark:text-white">VocalIA</span>
-      </a>
-      <div class="flex items-center gap-4">
-        <select id="language-selector" class="text-sm border border-zinc-300 dark:border-white/[0.08] rounded-lg px-2 py-1 bg-white dark:bg-white/[0.06] text-zinc-700 dark:text-zinc-200">
-          <option value="fr">Français</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="ar">العربية</option>
-          <option value="ary">الدارجة</option>
-        </select>
-      </div>
-    </div>
-  </header>
 
-  <main class="max-w-4xl mx-auto px-4 py-8">
+  <!-- Sidebar Component -->
+  <div data-app-component="sidebar"></div>
+
+  <!-- Main Content -->
+  <main class="lg:ml-[260px] rtl:lg:ml-0 rtl:lg:mr-[260px] min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 bg-white/80 dark:bg-white/[0.06] backdrop-blur border-b border-zinc-200 dark:border-white/[0.08]">
+      <div class="flex items-center justify-between px-4 lg:px-8 py-4">
+        <div class="flex items-center gap-3">
+          <button type="button" id="menu-toggle" class="lg:hidden p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.06] transition" aria-label="Menu">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <h1 class="text-xl font-bold text-zinc-900 dark:text-white" data-i18n="onboarding.page_title">Configuration initiale</h1>
+        </div>
+      </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4 py-8">
     <!-- Progress Bar -->
     <div class="mb-8">
       <div class="flex items-center justify-between mb-2">
@@ -250,7 +256,11 @@
 
       <a href="/app/client/index.html" class="block w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition-colors text-center" data-i18n="onboarding.go_dashboard">Accéder au tableau de bord</a>
     </section>
+    </div>
   </main>
+
+  <!-- App Component Loader -->
+  <script src="/app/components/app-components.js" defer></script>
 
   <script>
     // Auth check - Session 250.65bis

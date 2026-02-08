@@ -480,33 +480,62 @@ function validate() {
     }
   }
 
-  // ── CHECK 15: Component system coverage (ALL public pages) ──
-  // Public pages = everything EXCEPT app/, dashboard/, components/
-  // Redirect pages (meta http-equiv="refresh") are warnings, not errors
-  const EXCLUDED_DIRS = ['app', 'dashboard', 'components'];
+  // ── CHECK 15: Component system coverage (ALL pages) ──
+  // Three component systems:
+  //   1. Public pages: data-component="header" + components.js + event-delegation.js + i18n.js
+  //   2. App pages (app/client/, app/admin/): data-app-component + app-components.js + i18n.js
+  //   3. Auth pages (app/auth/): standalone with i18n.js (no sidebar by design)
+  // Redirect pages (meta http-equiv="refresh") and component templates are acceptable exceptions
+  const COMPONENT_TEMPLATE_DIRS = ['components'];
   for (const file of htmlFiles) {
     const relToWebsite = path.relative(WEBSITE_DIR, file);
     const topDir = relToWebsite.split(path.sep)[0];
+    const parts = relToWebsite.split(path.sep);
 
-    // Skip non-public pages
-    if (EXCLUDED_DIRS.includes(topDir)) continue;
+    // Skip component template files (they ARE the components)
+    if (COMPONENT_TEMPLATE_DIRS.includes(topDir)) continue;
+    // Skip app/components/ (sidebar templates)
+    if (parts[0] === 'app' && parts[1] === 'components') continue;
 
     const content = fs.readFileSync(file, 'utf-8');
     const rel = relPath(file);
     const isRedirect = /meta\s+http-equiv=["']refresh["']/i.test(content);
-
-    const hasComponents = content.includes('components.js');
-    const hasHeader = content.includes('data-component="header"') || content.includes("data-component='header'");
-    const hasFooter = content.includes('data-component="footer"') || content.includes("data-component='footer'");
-    const hasEventDelegation = content.includes('event-delegation.js');
-    const hasI18n = content.includes('i18n.js');
+    const isAppPage = parts[0] === 'app' && (parts[1] === 'client' || parts[1] === 'admin');
+    const isAuthPage = parts[0] === 'app' && parts[1] === 'auth';
+    const isDashboardRedirect = topDir === 'dashboard';
 
     const missing = [];
-    if (!hasComponents) missing.push('components.js');
-    if (!hasHeader) missing.push('data-component="header"');
-    if (!hasFooter) missing.push('data-component="footer"');
-    if (!hasEventDelegation) missing.push('event-delegation.js');
-    if (!hasI18n) missing.push('i18n.js');
+
+    if (isRedirect || isDashboardRedirect) {
+      // Redirect pages — acceptable, just check they have the redirect meta
+      if (!isRedirect && isDashboardRedirect) {
+        missing.push('meta http-equiv="refresh"');
+      }
+    } else if (isAppPage) {
+      // App pages need: data-app-component + app-components.js + i18n.js
+      const hasAppComponent = content.includes('data-app-component=');
+      const hasAppComponentsJs = content.includes('app-components.js');
+      const hasI18n = content.includes('i18n.js');
+      if (!hasAppComponent) missing.push('data-app-component');
+      if (!hasAppComponentsJs) missing.push('app-components.js');
+      if (!hasI18n) missing.push('i18n.js');
+    } else if (isAuthPage) {
+      // Auth pages are standalone — just need i18n.js
+      const hasI18n = content.includes('i18n.js');
+      if (!hasI18n) missing.push('i18n.js');
+    } else {
+      // Public website pages — need full component system
+      const hasComponents = content.includes('components.js');
+      const hasHeader = content.includes('data-component="header"') || content.includes("data-component='header'");
+      const hasFooter = content.includes('data-component="footer"') || content.includes("data-component='footer'");
+      const hasEventDelegation = content.includes('event-delegation.js');
+      const hasI18n = content.includes('i18n.js');
+      if (!hasComponents) missing.push('components.js');
+      if (!hasHeader) missing.push('data-component="header"');
+      if (!hasFooter) missing.push('data-component="footer"');
+      if (!hasEventDelegation) missing.push('event-delegation.js');
+      if (!hasI18n) missing.push('i18n.js');
+    }
 
     if (missing.length > 0) {
       const msg = `Missing: ${missing.join(', ')}`;

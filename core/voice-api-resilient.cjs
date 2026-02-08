@@ -832,8 +832,59 @@ RESPONSE PROTOCOL:
 
 GUIDELINES:
 - Language: Follow the user's language (FR/EN/ES/AR/Darija).
-- Qualify leads with BANT methodology.
+- Internally assess if the prospect has budget, authority, need, and timeline. NEVER mention "BANT" or any qualification framework name to the user.
 - For integration questions, reference MCP Server capabilities.`;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DYNAMIC LANGUAGE DETECTION (Session 250.162 — Fix mid-conversation switching)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Detect if user message is in Darija (Moroccan Arabic) or Arabic MSA.
+ * Returns 'ary' for Darija, 'ar' for Arabic MSA, or null if not detected.
+ * Uses: Arabizi patterns, Darija-specific words, Arabic script analysis.
+ */
+function detectArabicVariant(message) {
+  if (!message || message.length < 3) return null;
+
+  const lower = message.toLowerCase();
+
+  // 1. Explicit language switch requests
+  if (/\b(bdarija|b darija|jawbni?\s+b|tkellm?\s+b|gol\s+li\s+b)\s*(darija|ddarija|lmaghribiya)/i.test(lower)) {
+    return 'ary';
+  }
+  if (/\b(parle|repond|parler)\s*(en\s+)?(arabe|arabic)\b/i.test(lower)) {
+    return 'ar';
+  }
+
+  // 2. Arabizi (Latin-script Darija) — digits as Arabic letters (3=ع, 7=ح, 9=ق, 5=خ, 8=غ)
+  const arabiziPatterns = [
+    /\b(3lik|3awn|3afak|3lach|7aja|7ta|9der|9olo|5oya|8ali)\b/i,
+    /\b(wakha|wach|chno|chkoun|kifach|fin|fach|mnin|3lach|bzzaf)\b/i,
+    /\b(dyal|dyali|dyalk|dyalkom|mashi|mazal|bezaf|zwin|khoya)\b/i,
+    /\b(salam|labas|hamdullah|inchallah|machakil|mzyan|hadi)\b/i,
+    /\b(bach|bghit|kan|kayn|ma.?kayn|ghadi|gha|rah)\b/i,
+  ];
+  let arabiziScore = 0;
+  for (const p of arabiziPatterns) {
+    if (p.test(lower)) arabiziScore++;
+  }
+  if (arabiziScore >= 2) return 'ary';
+
+  // 3. Arabic script detection
+  const arabicChars = (message.match(/[\u0600-\u06FF]/g) || []).length;
+  if (arabicChars < 3) return null;
+
+  // 4. Darija-specific Arabic words (not found in standard MSA)
+  const darijaArabic = /(?:كيفاش|واش|شنو|فين|علاش|ديال|ديالي|ديالك|بزاف|مزيان|خويا|لابأس|واخا|غادي|بغيت|كاين|ماكاين|هادي|هادا)/;
+  if (darijaArabic.test(message)) return 'ary';
+
+  // 5. If Arabic script but not Darija → MSA
+  const arabicRatio = arabicChars / message.replace(/\s/g, '').length;
+  if (arabicRatio > 0.4) return 'ar';
+
+  return null;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // SAFE JSON PARSING (P2 FIX - Session 117)
@@ -2575,12 +2626,19 @@ function startServer(port = 3004) {
             return;
           }
           const { message, history = [], sessionId, language: reqLanguage, widget_type: reqWidgetType } = bodyParsed.data;
-          const language = reqLanguage || VOICE_CONFIG?.defaultLanguage || 'fr';
+          let language = reqLanguage || VOICE_CONFIG?.defaultLanguage || 'fr';
 
           if (!message) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Message is required' }));
             return;
+          }
+
+          // Session 250.162: Dynamic language detection — override when user switches mid-conversation
+          const detectedVariant = detectArabicVariant(message);
+          if (detectedVariant && detectedVariant !== language) {
+            console.log(`[Voice API] Language switch detected: ${language} → ${detectedVariant} (from user message)`);
+            language = detectedVariant;
           }
 
           console.log(`[Voice API] Processing (${language}): "${message.substring(0, 50)}..."`);

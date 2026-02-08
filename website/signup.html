@@ -437,7 +437,7 @@
         window.location.href = `/api/checkout?plan=${data.plan}&email=${encodeURIComponent(data.email)}`;
       } else {
         // Free plan - direct signup
-        window.location.href = `/dashboard/client?welcome=true`;
+        window.location.href = `/app/client/?welcome=true`;
       }
     });
 

@@ -52,14 +52,14 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "Accéder au tableau de bord",
-      "url": "/dashboard/client?source=pwa",
+      "url": "/app/client/?source=pwa",
       "icons": [{ "src": "/public/images/icons/dashboard-96.png", "sizes": "96x96" }]
     },
     {
       "name": "Nouveau Lead",
       "short_name": "Lead",
       "description": "Créer un nouveau lead",
-      "url": "/dashboard/client?action=new-lead&source=pwa",
+      "url": "/app/client/?action=new-lead&source=pwa",
       "icons": [{ "src": "/public/images/icons/lead-96.png", "sizes": "96x96" }]
     }
   ],

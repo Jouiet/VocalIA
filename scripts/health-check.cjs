@@ -113,8 +113,8 @@ console.log('');
 console.log(`${COLORS.cyan}Website:${COLORS.reset}`);
 const websiteFiles = [
   'website/index.html',
-  'website/dashboard/client.html',
-  'website/dashboard/admin.html',
+  'website/app/client/index.html',
+  'website/app/admin/index.html',
   'website/src/lib/geo-detect.js',
   'website/src/lib/i18n.js',
   'website/src/locales/fr.json',
