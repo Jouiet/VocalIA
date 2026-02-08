@@ -513,6 +513,31 @@
       "delete": "حذف"
     }
   },
+  "analytics": {
+    "title": "التحليلات",
+    "subtitle": "حلل الأداء ديالك",
+    "export": "تصدير",
+    "last_7d": "آخر 7 يام",
+    "last_30d": "آخر 30 يوم",
+    "last_90d": "آخر 90 يوم",
+    "call_volume": "حجم المكالمات",
+    "conversion_rate": "نسبة التحويل",
+    "by_language": "حسب اللغة",
+    "by_persona": "حسب الشخصية",
+    "by_hour": "حسب الساعة"
+  },
+  "agents": {
+    "title": "وكلاء الذكاء الاصطناعي",
+    "subtitle": "دير الشخصيات الصوتية ديالك",
+    "new_persona": "شخصية جديدة",
+    "active_persona": "الشخصية النشيطة",
+    "available_personas": "الشخصيات المتوفرة"
+  },
+  "billing": {
+    "title": "الفوترة",
+    "subtitle": "دير الاشتراك والفواتير ديالك",
+    "included_features": "الميزات المتضمنة"
+  },
   "integrations": {
     "title": "التكاملات",
     "subtitle": "ربط الأدوات والخدمات ديالك",
@@ -3121,6 +3146,24 @@
     "aller_au_contenu_194": "الذهاب إلى المحتوى الرئيسي"
   },
   "admin": {
+    "hitl": {
+      "title": "Human-in-the-Loop",
+      "subtitle": "الموافقات والقرارات اليدوية",
+      "pending": "كيتسنا الموافقة",
+      "recent_actions": "الإجراءات الأخيرة"
+    },
+    "logs": {
+      "title": "سجلات السيستم",
+      "subtitle": "النشاط والأحداث ف الوقت الحقيقي"
+    },
+    "users": {
+      "title": "إدارة المستخدمين",
+      "subtitle": "كاع المستخدمين ديال المنصة"
+    },
+    "tenants": {
+      "title": "إدارة الكليانات",
+      "subtitle": "دير الكليانات والاشتراكات ديالهم"
+    },
     "darija_0": "الدارجة",
     "espaol_1": "Español",
     "english_2": "English",

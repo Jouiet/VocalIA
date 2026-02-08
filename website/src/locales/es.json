@@ -513,6 +513,31 @@
       "delete": "Eliminar"
     }
   },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Analice su rendimiento",
+    "export": "Exportar",
+    "last_7d": "Últimos 7 días",
+    "last_30d": "Últimos 30 días",
+    "last_90d": "Últimos 90 días",
+    "call_volume": "Volumen de llamadas",
+    "conversion_rate": "Tasa de conversión",
+    "by_language": "Por idioma",
+    "by_persona": "Por persona",
+    "by_hour": "Por hora"
+  },
+  "agents": {
+    "title": "Agentes IA",
+    "subtitle": "Gestione sus personas vocales",
+    "new_persona": "Nueva persona",
+    "active_persona": "Persona activa",
+    "available_personas": "Personas disponibles"
+  },
+  "billing": {
+    "title": "Facturación",
+    "subtitle": "Gestione su suscripción y facturas",
+    "included_features": "Funciones incluidas"
+  },
   "integrations": {
     "title": "Integraciones",
     "subtitle": "Conecte sus herramientas y servicios",
@@ -3121,6 +3146,24 @@
     "aller_au_contenu_194": "Ir al contenido principal"
   },
   "admin": {
+    "hitl": {
+      "title": "Human-in-the-Loop",
+      "subtitle": "Aprobaciones y decisiones manuales",
+      "pending": "Pendiente de aprobación",
+      "recent_actions": "Acciones recientes"
+    },
+    "logs": {
+      "title": "Logs del Sistema",
+      "subtitle": "Actividad y eventos en tiempo real"
+    },
+    "users": {
+      "title": "Gestión de Usuarios",
+      "subtitle": "Todos los usuarios de la plataforma"
+    },
+    "tenants": {
+      "title": "Gestión de Tenants",
+      "subtitle": "Gestione los clientes y sus suscripciones"
+    },
     "darija_0": "Darija",
     "espaol_1": "Español",
     "english_2": "Inglés",

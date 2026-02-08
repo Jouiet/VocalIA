@@ -513,6 +513,31 @@
       "delete": "Delete"
     }
   },
+  "analytics": {
+    "title": "Analytics",
+    "subtitle": "Analyze your performance",
+    "export": "Export",
+    "last_7d": "Last 7 days",
+    "last_30d": "Last 30 days",
+    "last_90d": "Last 90 days",
+    "call_volume": "Call Volume",
+    "conversion_rate": "Conversion Rate",
+    "by_language": "By Language",
+    "by_persona": "By Persona",
+    "by_hour": "By Hour"
+  },
+  "agents": {
+    "title": "AI Agents",
+    "subtitle": "Manage your voice personas",
+    "new_persona": "New Persona",
+    "active_persona": "Active Persona",
+    "available_personas": "Available Personas"
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Manage your subscription and invoices",
+    "included_features": "Included Features"
+  },
   "integrations": {
     "title": "Integrations",
     "subtitle": "Connect your tools and services",
@@ -3121,6 +3146,24 @@
     "aller_au_contenu_194": "Go to main content"
   },
   "admin": {
+    "hitl": {
+      "title": "Human-in-the-Loop",
+      "subtitle": "Approvals and manual decisions",
+      "pending": "Pending Approval",
+      "recent_actions": "Recent Actions"
+    },
+    "logs": {
+      "title": "System Logs",
+      "subtitle": "Activity and events in real time"
+    },
+    "users": {
+      "title": "User Management",
+      "subtitle": "All platform users"
+    },
+    "tenants": {
+      "title": "Tenant Management",
+      "subtitle": "Manage clients and their subscriptions"
+    },
     "darija_0": "Darija",
     "espaol_1": "Español",
     "english_2": "English",

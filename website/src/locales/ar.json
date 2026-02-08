@@ -513,6 +513,31 @@
       "delete": "حذف"
     }
   },
+  "analytics": {
+    "title": "التحليلات",
+    "subtitle": "حلل أداءك",
+    "export": "تصدير",
+    "last_7d": "آخر 7 أيام",
+    "last_30d": "آخر 30 يوم",
+    "last_90d": "آخر 90 يوم",
+    "call_volume": "حجم المكالمات",
+    "conversion_rate": "معدل التحويل",
+    "by_language": "حسب اللغة",
+    "by_persona": "حسب الشخصية",
+    "by_hour": "حسب الساعة"
+  },
+  "agents": {
+    "title": "وكلاء الذكاء الاصطناعي",
+    "subtitle": "إدارة شخصياتك الصوتية",
+    "new_persona": "شخصية جديدة",
+    "active_persona": "الشخصية النشطة",
+    "available_personas": "الشخصيات المتاحة"
+  },
+  "billing": {
+    "title": "الفوترة",
+    "subtitle": "إدارة اشتراكك وفواتيرك",
+    "included_features": "الميزات المتضمنة"
+  },
   "integrations": {
     "title": "التكاملات",
     "subtitle": "اربط أدواتك وخدماتك",
@@ -3121,6 +3146,24 @@
     "aller_au_contenu_194": "الذهاب إلى المحتوى الرئيسي"
   },
   "admin": {
+    "hitl": {
+      "title": "Human-in-the-Loop",
+      "subtitle": "الموافقات والقرارات اليدوية",
+      "pending": "في انتظار الموافقة",
+      "recent_actions": "الإجراءات الأخيرة"
+    },
+    "logs": {
+      "title": "سجلات النظام",
+      "subtitle": "النشاط والأحداث في الوقت الفعلي"
+    },
+    "users": {
+      "title": "إدارة المستخدمين",
+      "subtitle": "جميع مستخدمي المنصة"
+    },
+    "tenants": {
+      "title": "إدارة المستأجرين",
+      "subtitle": "إدارة العملاء واشتراكاتهم"
+    },
     "darija_0": "الدارجة",
     "espaol_1": "Español",
     "english_2": "English",

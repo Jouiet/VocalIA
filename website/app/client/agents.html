@@ -30,13 +30,13 @@
               <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
             <div>
-            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white">Agents IA</h1>
-            <p class="text-zinc-600 dark:text-zinc-400">Gérez vos personas vocaux</p>
+            <h1 class="text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="agents.title">Agents IA</h1>
+            <p class="text-zinc-600 dark:text-zinc-400" data-i18n="agents.subtitle">Gérez vos personas vocaux</p>
           </div>
             </div>
           <button id="new-agent-btn" class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors">
             <i data-lucide="plus" class="w-5 h-5"></i>
-            Nouveau persona
+            <span data-i18n="agents.new_persona">Nouveau persona</span>
           </button>
         </div>
       </header>
@@ -76,7 +76,7 @@
 
         <!-- Active Persona -->
         <div class="mb-6">
-          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Persona actif</h2>
+          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3" data-i18n="agents.active_persona">Persona actif</h2>
           <div id="active-persona" class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
             <div class="flex items-start justify-between">
               <div>
@@ -215,7 +215,7 @@
 
         <!-- Available Personas -->
         <div>
-          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3">Personas disponibles</h2>
+          <h2 class="text-sm font-medium text-zinc-500 uppercase tracking-wider mb-3" data-i18n="agents.available_personas">Personas disponibles</h2>
           <div id="personas-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <!-- Loading skeleton -->
             <div class="animate-pulse bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-5">
