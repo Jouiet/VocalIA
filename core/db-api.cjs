@@ -2085,6 +2085,112 @@ async function handleRequest(req, res) {
   }
 
   // ═══════════════════════════════════════════════════════════════
+  // Session 250.154: PROMO CODE SERVER-SIDE VALIDATION
+  // ═══════════════════════════════════════════════════════════════
+
+  // In-memory promo code store (per-tenant, time-limited)
+  if (!global.promoCodes) {
+    global.promoCodes = new Map();
+  }
+
+  // POST /api/promo/generate — Generate a unique, time-limited promo code
+  if (path === '/api/promo/generate' && method === 'POST') {
+    try {
+      const body = await readBody(req);
+      const { tenant_id, prize_id, discount_percent, email } = body;
+
+      if (!tenant_id || !prize_id) {
+        return sendError(res, 400, 'tenant_id and prize_id are required');
+      }
+
+      const discount = parseInt(discount_percent, 10) || 10;
+      if (discount < 1 || discount > 50) {
+        return sendError(res, 400, 'discount_percent must be between 1 and 50');
+      }
+
+      // Generate unique code: PREFIX + random + timestamp suffix
+      const prefix = prize_id === 'freeShipping' ? 'SHIP' : `SAVE${discount}`;
+      const unique = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const code = `${prefix}-${unique}`;
+
+      const promoEntry = {
+        code,
+        tenant_id,
+        prize_id,
+        discount_percent: discount,
+        email: email || null,
+        created_at: new Date().toISOString(),
+        expires_at: new Date(Date.now() + 72 * 3600000).toISOString(), // 72h expiry
+        used: false,
+        used_at: null
+      };
+
+      global.promoCodes.set(code, promoEntry);
+      console.log(`✅ [Promo] Generated ${code} for tenant ${tenant_id} (${discount}% off)`);
+
+      sendJson(res, 200, {
+        success: true,
+        code,
+        discount_percent: discount,
+        expires_at: promoEntry.expires_at
+      });
+    } catch (e) {
+      console.error('❌ [Promo] Generate error:', e.message);
+      sendError(res, 500, `Promo generation error: ${e.message}`);
+    }
+    return;
+  }
+
+  // POST /api/promo/validate — Validate and optionally redeem a promo code
+  if (path === '/api/promo/validate' && method === 'POST') {
+    try {
+      const body = await readBody(req);
+      const { code, tenant_id, redeem } = body;
+
+      if (!code || !tenant_id) {
+        return sendError(res, 400, 'code and tenant_id are required');
+      }
+
+      const entry = global.promoCodes.get(code);
+
+      if (!entry) {
+        return sendJson(res, 200, { valid: false, reason: 'invalid_code' });
+      }
+
+      if (entry.tenant_id !== tenant_id) {
+        return sendJson(res, 200, { valid: false, reason: 'wrong_tenant' });
+      }
+
+      if (entry.used) {
+        return sendJson(res, 200, { valid: false, reason: 'already_used', used_at: entry.used_at });
+      }
+
+      if (new Date(entry.expires_at) < new Date()) {
+        return sendJson(res, 200, { valid: false, reason: 'expired', expires_at: entry.expires_at });
+      }
+
+      // Valid code
+      if (redeem) {
+        entry.used = true;
+        entry.used_at = new Date().toISOString();
+        console.log(`✅ [Promo] Redeemed ${code} for tenant ${tenant_id}`);
+      }
+
+      sendJson(res, 200, {
+        valid: true,
+        discount_percent: entry.discount_percent,
+        prize_id: entry.prize_id,
+        expires_at: entry.expires_at,
+        redeemed: !!redeem
+      });
+    } catch (e) {
+      console.error('❌ [Promo] Validate error:', e.message);
+      sendError(res, 500, `Promo validation error: ${e.message}`);
+    }
+    return;
+  }
+
+  // ═══════════════════════════════════════════════════════════════
   // Session 250.57: CONVERSATION HISTORY & EXPORT ENDPOINTS
   // ⚠️ TELEPHONY RETENTION: 60 days maximum (auto-purge 1st of month)
   // ═══════════════════════════════════════════════════════════════

@@ -19,6 +19,13 @@
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  // RGPD: Check analytics consent before tracking
+  function hasAnalyticsConsent() {
+    if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return false;
+    try { if (localStorage.getItem('va_consent') === 'denied') return false; } catch {}
+    return true;
+  }
+
   // CSS for the carousel
   const CAROUSEL_CSS = `
     .va-reco-overlay {
@@ -569,6 +576,7 @@
      * Track impression for analytics
      */
     _trackImpression(type, count) {
+      if (!hasAnalyticsConsent()) return;
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_impression', {
           event_category: 'recommendations',
@@ -582,6 +590,7 @@
      * Track click on item
      */
     _trackClick(item, index) {
+      if (!hasAnalyticsConsent()) return;
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_click', {
           event_category: 'recommendations',
@@ -596,6 +605,7 @@
      * Track view all click
      */
     _trackViewAll() {
+      if (!hasAnalyticsConsent()) return;
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_view_all', {
           event_category: 'recommendations',

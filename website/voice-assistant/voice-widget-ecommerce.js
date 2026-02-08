@@ -3663,6 +3663,12 @@
 (function () {
     'use strict';
 
+    // XSS protection
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     // ============================================================
     // TRANSLATIONS (5 LANGUAGES)
     // ============================================================
@@ -4954,6 +4960,9 @@
         }
 
         trackEvent(eventName, params = {}) {
+            // RGPD: Only track if user has consented to analytics
+            if (!VocalIACartRecovery._hasAnalyticsConsent()) return;
+
             // GA4
             if (window.gtag) {
                 window.gtag('event', eventName, {
@@ -4973,6 +4982,14 @@
             if (window.VocalIA?.trackEvent) {
                 window.VocalIA.trackEvent(eventName, params);
             }
+        }
+
+        static _hasAnalyticsConsent() {
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return false;
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === true) return true;
+            try { if (localStorage.getItem('va_consent') === 'denied') return false; } catch {}
+            if (typeof window.CookieConsent !== 'undefined' && !window.CookieConsent.allowedCategory?.('analytics')) return false;
+            return true;
         }
 
         // Public API
@@ -5082,6 +5099,16 @@
 
 (function (global) {
     'use strict';
+
+    // XSS protection — escapes tenant-provided content before innerHTML
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+    function escapeAttr(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
 
     // CSS for the quiz widget
     const QUIZ_CSS = `
@@ -5748,7 +5775,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>${this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' })}</span>
+              <span>${escapeHTML(this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' }))}</span>
             </div>
             <button class="va-quiz-close" aria-label="Close">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -5812,16 +5839,16 @@
 
             // Render question content
             content.innerHTML = `
-        <div class="va-quiz-question">${this._t(question.question)}</div>
+        <div class="va-quiz-question">${escapeHTML(this._t(question.question))}</div>
         <div class="va-quiz-options">
           ${(question.options || []).map(opt => `
-            <button class="va-quiz-option ${this.answers[question.id] === opt.value ? 'va-quiz-selected' : ''}" data-value="${opt.value}">
+            <button class="va-quiz-option ${this.answers[question.id] === opt.value ? 'va-quiz-selected' : ''}" data-value="${escapeAttr(opt.value)}">
               <span class="va-quiz-option-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </span>
-              <span>${this._t(opt.label)}</span>
+              <span>${escapeHTML(this._t(opt.label))}</span>
             </button>
           `).join('')}
         </div>
@@ -6077,6 +6104,10 @@
          * Track analytics event
          */
         _track(event, data = {}) {
+            // RGPD: Only track if analytics consent given
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return;
+            try { if (localStorage.getItem('va_consent') === 'denied') return; } catch {}
+
             if (typeof gtag === 'function') {
                 gtag('event', event, {
                     event_category: 'voice_quiz',
@@ -6205,6 +6236,12 @@
 
 (function() {
   'use strict';
+
+  // XSS protection
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
 
   // ============================================================
   // TRANSLATIONS (5 LANGUAGES)
@@ -6972,8 +7009,8 @@
 
         html += `
           <div class="va-spin-segment" style="transform: rotate(${rotation}deg) skewY(${skew}deg);">
-            <div class="va-spin-segment-inner" style="background: ${prize.color}; transform: skewY(${-skew}deg);">
-              <span class="va-spin-segment-text">${prizeText}</span>
+            <div class="va-spin-segment-inner" style="background: ${escapeHTML(prize.color)}; transform: skewY(${-skew}deg);">
+              <span class="va-spin-segment-text">${escapeHTML(prizeText)}</span>
             </div>
           </div>
         `;
@@ -7103,7 +7140,7 @@
       return prizes[prizes.length - 1];
     }
 
-    showResult(prize) {
+    async showResult(prize) {
       const isWin = prize.code !== null;
 
       // Hide game, show result
@@ -7111,12 +7148,42 @@
       this.elements.result.classList.add('active');
 
       if (isWin) {
+        // Request server-generated promo code (unique, time-limited)
+        let serverCode = prize.code; // fallback to static code if API fails
+        const discountMap = { discount5: 5, discount10: 10, discount15: 15, discount20: 20, discount30: 30, freeShipping: 0 };
+        const discountPercent = discountMap[prize.id] || 10;
+
+        try {
+          const apiUrl = (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) || '';
+          if (apiUrl) {
+            const resp = await fetch(`${apiUrl}/api/promo/generate`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                tenant_id: (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) || 'unknown',
+                prize_id: prize.id,
+                discount_percent: discountPercent,
+                email: this.state.email || null
+              })
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data.success && data.code) {
+                serverCode = data.code;
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('[SpinWheel] Promo API unavailable, using fallback code');
+        }
+
         // Win state
         this.elements.resultIcon.className = 'va-spin-result-icon win';
         this.elements.resultIcon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
         this.elements.resultTitle.textContent = this.translations.congratulations;
         this.elements.resultPrize.textContent = `${this.translations.youWon} ${this.translations.prizes[prize.id]}`;
-        this.elements.code.textContent = prize.code;
+        this.elements.code.textContent = serverCode;
+        this.state.activeCode = serverCode; // Store for useCode()
         this.elements.codeContainer.style.display = 'block';
         this.elements.useBtn.style.display = 'block';
 
@@ -7131,13 +7198,13 @@
 
         // Callback
         if (this.config.onWin) {
-          this.config.onWin({ prize, email: this.state.email });
+          this.config.onWin({ prize, code: serverCode, email: this.state.email });
         }
 
         // Track event
         this.trackEvent('spin_wheel_won', {
           prize_id: prize.id,
-          prize_code: prize.code,
+          prize_code: serverCode,
           email: this.state.email
         });
       } else {
@@ -7226,11 +7293,13 @@
     }
 
     useCode() {
-      const code = this.state.selectedPrize?.code;
+      const code = this.state.activeCode || this.state.selectedPrize?.code;
       if (!code) return;
 
-      // Copy code and redirect to checkout
-      navigator.clipboard.writeText(code);
+      // Copy code
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code);
+      }
 
       // Track event
       this.trackEvent('spin_wheel_code_used', { code });
@@ -7260,6 +7329,9 @@
     }
 
     trackEvent(eventName, params = {}) {
+      // RGPD: Only track if user has consented to analytics
+      if (!SpinWheel.hasAnalyticsConsent()) return;
+
       if (window.gtag) {
         window.gtag('event', eventName, {
           event_category: 'gamification',
@@ -7275,6 +7347,19 @@
       if (window.VocalIA?.trackEvent) {
         window.VocalIA.trackEvent(eventName, params);
       }
+    }
+
+    static hasAnalyticsConsent() {
+      // 1. Explicit config
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return false;
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === true) return true;
+      // 2. VocalIA consent store
+      try { if (localStorage.getItem('va_consent') === 'denied') return false; } catch {}
+      // 3. Common third-party consent APIs
+      if (typeof window.CookieConsent !== 'undefined' && !window.CookieConsent.allowedCategory?.('analytics')) return false;
+      if (typeof window.__tcfapi !== 'undefined') return true; // TCF present, assume managed externally
+      // 4. Default: allow (tenant's responsibility to configure consent)
+      return true;
     }
 
     // Public API
@@ -7380,6 +7465,12 @@
 
 (function() {
   'use strict';
+
+  // XSS protection
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
 
   // ============================================================
   // TRANSLATIONS (5 LANGUAGES)
@@ -7963,10 +8054,10 @@
           this.config.onUnlock({ value: this.state.currentValue, threshold: this.config.threshold });
         }
       } else if (this.state.percentage >= 75) {
-        this.elements.message.innerHTML = t.almostThere.replace('{{amount}}', `<strong>${remaining.toFixed(0)} ${currencySymbol}</strong>`);
+        this.elements.message.innerHTML = t.almostThere.replace('{{amount}}', `<strong>${escapeHTML(remaining.toFixed(0))} ${escapeHTML(currencySymbol)}</strong>`);
         this.elements.container.classList.remove('unlocked');
       } else {
-        this.elements.message.innerHTML = t.addMore.replace('{{amount}}', `<strong>${remaining.toFixed(0)} ${currencySymbol}</strong>`);
+        this.elements.message.innerHTML = t.addMore.replace('{{amount}}', `<strong>${escapeHTML(remaining.toFixed(0))} ${escapeHTML(currencySymbol)}</strong>`);
         this.elements.container.classList.remove('unlocked');
       }
 
@@ -8080,6 +8171,10 @@
     }
 
     trackEvent(eventName, params = {}) {
+      // RGPD: Only track if analytics consent given
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return;
+      try { if (localStorage.getItem('va_consent') === 'denied') return; } catch {}
+
       if (window.gtag) {
         window.gtag('event', eventName, {
           event_category: 'free_shipping',
@@ -8206,6 +8301,13 @@
   function escapeHTML(str) {
     if (typeof str !== 'string') return '';
     return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // RGPD: Check analytics consent before tracking
+  function hasAnalyticsConsent() {
+    if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return false;
+    try { if (localStorage.getItem('va_consent') === 'denied') return false; } catch {}
+    return true;
   }
 
   // CSS for the carousel
@@ -8758,6 +8860,7 @@
      * Track impression for analytics
      */
     _trackImpression(type, count) {
+      if (!hasAnalyticsConsent()) return;
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_impression', {
           event_category: 'recommendations',
@@ -8771,6 +8874,7 @@
      * Track click on item
      */
     _trackClick(item, index) {
+      if (!hasAnalyticsConsent()) return;
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_click', {
           event_category: 'recommendations',
@@ -8785,6 +8889,7 @@
      * Track view all click
      */
     _trackViewAll() {
+      if (!hasAnalyticsConsent()) return;
       if (typeof gtag === 'function') {
         gtag('event', 'reco_carousel_view_all', {
           event_category: 'recommendations',

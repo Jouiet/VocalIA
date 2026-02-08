@@ -19,6 +19,12 @@
 (function() {
   'use strict';
 
+  // XSS protection
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
   // ============================================================
   // TRANSLATIONS (5 LANGUAGES)
   // ============================================================
@@ -785,8 +791,8 @@
 
         html += `
           <div class="va-spin-segment" style="transform: rotate(${rotation}deg) skewY(${skew}deg);">
-            <div class="va-spin-segment-inner" style="background: ${prize.color}; transform: skewY(${-skew}deg);">
-              <span class="va-spin-segment-text">${prizeText}</span>
+            <div class="va-spin-segment-inner" style="background: ${escapeHTML(prize.color)}; transform: skewY(${-skew}deg);">
+              <span class="va-spin-segment-text">${escapeHTML(prizeText)}</span>
             </div>
           </div>
         `;
@@ -916,7 +922,7 @@
       return prizes[prizes.length - 1];
     }
 
-    showResult(prize) {
+    async showResult(prize) {
       const isWin = prize.code !== null;
 
       // Hide game, show result
@@ -924,12 +930,42 @@
       this.elements.result.classList.add('active');
 
       if (isWin) {
+        // Request server-generated promo code (unique, time-limited)
+        let serverCode = prize.code; // fallback to static code if API fails
+        const discountMap = { discount5: 5, discount10: 10, discount15: 15, discount20: 20, discount30: 30, freeShipping: 0 };
+        const discountPercent = discountMap[prize.id] || 10;
+
+        try {
+          const apiUrl = (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.api_url) || '';
+          if (apiUrl) {
+            const resp = await fetch(`${apiUrl}/api/promo/generate`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                tenant_id: (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.tenant_id) || 'unknown',
+                prize_id: prize.id,
+                discount_percent: discountPercent,
+                email: this.state.email || null
+              })
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data.success && data.code) {
+                serverCode = data.code;
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('[SpinWheel] Promo API unavailable, using fallback code');
+        }
+
         // Win state
         this.elements.resultIcon.className = 'va-spin-result-icon win';
         this.elements.resultIcon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>';
         this.elements.resultTitle.textContent = this.translations.congratulations;
         this.elements.resultPrize.textContent = `${this.translations.youWon} ${this.translations.prizes[prize.id]}`;
-        this.elements.code.textContent = prize.code;
+        this.elements.code.textContent = serverCode;
+        this.state.activeCode = serverCode; // Store for useCode()
         this.elements.codeContainer.style.display = 'block';
         this.elements.useBtn.style.display = 'block';
 
@@ -944,13 +980,13 @@
 
         // Callback
         if (this.config.onWin) {
-          this.config.onWin({ prize, email: this.state.email });
+          this.config.onWin({ prize, code: serverCode, email: this.state.email });
         }
 
         // Track event
         this.trackEvent('spin_wheel_won', {
           prize_id: prize.id,
-          prize_code: prize.code,
+          prize_code: serverCode,
           email: this.state.email
         });
       } else {
@@ -1039,11 +1075,13 @@
     }
 
     useCode() {
-      const code = this.state.selectedPrize?.code;
+      const code = this.state.activeCode || this.state.selectedPrize?.code;
       if (!code) return;
 
-      // Copy code and redirect to checkout
-      navigator.clipboard.writeText(code);
+      // Copy code
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code);
+      }
 
       // Track event
       this.trackEvent('spin_wheel_code_used', { code });
@@ -1073,6 +1111,9 @@
     }
 
     trackEvent(eventName, params = {}) {
+      // RGPD: Only track if user has consented to analytics
+      if (!SpinWheel.hasAnalyticsConsent()) return;
+
       if (window.gtag) {
         window.gtag('event', eventName, {
           event_category: 'gamification',
@@ -1088,6 +1129,19 @@
       if (window.VocalIA?.trackEvent) {
         window.VocalIA.trackEvent(eventName, params);
       }
+    }
+
+    static hasAnalyticsConsent() {
+      // 1. Explicit config
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return false;
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === true) return true;
+      // 2. VocalIA consent store
+      try { if (localStorage.getItem('va_consent') === 'denied') return false; } catch {}
+      // 3. Common third-party consent APIs
+      if (typeof window.CookieConsent !== 'undefined' && !window.CookieConsent.allowedCategory?.('analytics')) return false;
+      if (typeof window.__tcfapi !== 'undefined') return true; // TCF present, assume managed externally
+      // 4. Default: allow (tenant's responsibility to configure consent)
+      return true;
     }
 
     // Public API

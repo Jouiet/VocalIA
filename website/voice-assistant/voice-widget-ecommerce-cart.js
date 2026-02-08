@@ -19,6 +19,12 @@
 (function () {
     'use strict';
 
+    // XSS protection
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     // ============================================================
     // TRANSLATIONS (5 LANGUAGES)
     // ============================================================
@@ -1310,6 +1316,9 @@
         }
 
         trackEvent(eventName, params = {}) {
+            // RGPD: Only track if user has consented to analytics
+            if (!VocalIACartRecovery._hasAnalyticsConsent()) return;
+
             // GA4
             if (window.gtag) {
                 window.gtag('event', eventName, {
@@ -1329,6 +1338,14 @@
             if (window.VocalIA?.trackEvent) {
                 window.VocalIA.trackEvent(eventName, params);
             }
+        }
+
+        static _hasAnalyticsConsent() {
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return false;
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === true) return true;
+            try { if (localStorage.getItem('va_consent') === 'denied') return false; } catch {}
+            if (typeof window.CookieConsent !== 'undefined' && !window.CookieConsent.allowedCategory?.('analytics')) return false;
+            return true;
         }
 
         // Public API

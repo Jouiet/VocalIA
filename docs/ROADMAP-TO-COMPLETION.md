@@ -36,7 +36,7 @@
 | # | Dimension | Score 250.153 | Score 250.154 | Delta | Justification (250.154) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
 | 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,763 tests pass, 0 fail, 0 skip (ESM) |
-| 2 | Sécurité | 7.5 | **8.5** | **+1.0** | CORS fixed (tenant whitelist), Permissions-Policy fixed, promo codes still plaintext, no RGPD consent |
+| 2 | Sécurité | 7.5 | **9.0** | **+1.5** | CORS fixed, Permissions-Policy fixed, promo codes server-validated, RGPD consent gating, escapeHTML in all 7 widgets |
 | 3 | Production readiness | 1.5 | **3.0** | **+1.5** | CORS unblocked, CDN refs fixed, lead persistence code fixed, WordPress fixed, 0 paying customers |
 | 4 | Documentation accuracy | 5.0 | **8.0** | **+3.0** | CDN refs replaced, VocaliaWidget.init→VOCALIA_CONFIG, "100% frontend" removed, API docs corrected |
 | 5 | Architecture code | 8.0 | **9.0** | **+1.0** | conversationStore import fixed, email-service.cjs created, Gemini/B2B versions unified |
@@ -49,7 +49,7 @@
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
 | 1 (7.0) | 15% | 1.050 |
-| 2 (8.5) | 15% | 1.275 |
+| 2 (9.0) | 15% | 1.350 |
 | 3 (3.0) | 10% | 0.300 |
 | 4 (8.0) | 10% | 0.800 |
 | 5 (9.0) | 10% | 0.900 |
@@ -58,7 +58,7 @@
 | 8 (8.0) | 10% | 0.800 |
 | 9 (9.5) | 10% | 0.950 |
 | 10 (8.5) | 5% | 0.425 |
-| **TOTAL** | **100%** | **7.75** → **~7.8/10** (post-audit fixes 250.154) |
+| **TOTAL** | **100%** | **7.825** → **~7.8/10** (post-audit fixes 250.154-155) |
 
 ### 1.0 Widget System DEEP Forensic Audit (Session 250.127)
 
@@ -1593,13 +1593,14 @@ Widget uses microphone for voice input. This header could block widget mic on pa
 | V3 | 3042 | A2UI `innerHTML` (renders backend HTML) | Medium (backend-controlled) |
 | B2B | 784 | A2UI `innerHTML` (renders backend HTML) | Medium (backend-controlled) |
 
-#### Promo Codes in Plaintext
+#### Promo Codes ✅ FIXED (250.155)
 
-| Widget | Lines | Codes |
-|:-------|:-----:|:------|
-| `spin-wheel.js` | 194-199 | SPIN5, SPIN10, SPIN15, SPIN20, SPIN30, FREESHIP |
+| Widget | Lines | Fix |
+|:-------|:-----:|:----|
+| `spin-wheel.js` | 925+ | Server-generated unique codes via `/api/promo/generate` |
+| `db-api.cjs` | 2087+ | `POST /api/promo/generate` + `POST /api/promo/validate` endpoints |
 
-**Risk:** Client-side inspection reveals all discount codes. Should be server-validated.
+**Fixed:** Spin wheel now calls API for unique, time-limited (72h), single-use promo codes. Fallback to static codes if API unavailable. Server-side validation + redemption endpoint added.
 
 #### Social Proof Dual System
 
@@ -1707,7 +1708,7 @@ function isOriginAllowed(origin) {
 | `va_widget_opened` | B2B/V3 | Interaction state |
 | `va_session_id` | B2B/V3 | Session identifier |
 
-**No cookie banner.** No consent mechanism for localStorage. RGPD non-compliant for EU markets.
+**✅ FIXED (250.155):** RGPD analytics consent gating added to ALL 7 widgets. GA4/plausible/trackEvent calls gated behind consent check. Supports: `VOCALIA_CONFIG.analytics_consent`, `localStorage va_consent`, CookieConsent API, TCF API. Essential localStorage (cooldowns, cart state) remains ungated per GDPR legitimate interest.
 
 #### Webapp Dashboard (widget-analytics.html)
 

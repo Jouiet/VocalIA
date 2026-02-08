@@ -18,6 +18,12 @@
 (function() {
   'use strict';
 
+  // XSS protection
+  function escapeHTML(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
   // ============================================================
   // TRANSLATIONS (5 LANGUAGES)
   // ============================================================
@@ -600,10 +606,10 @@
           this.config.onUnlock({ value: this.state.currentValue, threshold: this.config.threshold });
         }
       } else if (this.state.percentage >= 75) {
-        this.elements.message.innerHTML = t.almostThere.replace('{{amount}}', `<strong>${remaining.toFixed(0)} ${currencySymbol}</strong>`);
+        this.elements.message.innerHTML = t.almostThere.replace('{{amount}}', `<strong>${escapeHTML(remaining.toFixed(0))} ${escapeHTML(currencySymbol)}</strong>`);
         this.elements.container.classList.remove('unlocked');
       } else {
-        this.elements.message.innerHTML = t.addMore.replace('{{amount}}', `<strong>${remaining.toFixed(0)} ${currencySymbol}</strong>`);
+        this.elements.message.innerHTML = t.addMore.replace('{{amount}}', `<strong>${escapeHTML(remaining.toFixed(0))} ${escapeHTML(currencySymbol)}</strong>`);
         this.elements.container.classList.remove('unlocked');
       }
 
@@ -717,6 +723,10 @@
     }
 
     trackEvent(eventName, params = {}) {
+      // RGPD: Only track if analytics consent given
+      if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return;
+      try { if (localStorage.getItem('va_consent') === 'denied') return; } catch {}
+
       if (window.gtag) {
         window.gtag('event', eventName, {
           event_category: 'free_shipping',

@@ -23,6 +23,16 @@
 (function (global) {
     'use strict';
 
+    // XSS protection — escapes tenant-provided content before innerHTML
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+    function escapeAttr(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
     // CSS for the quiz widget
     const QUIZ_CSS = `
     .va-quiz-overlay {
@@ -688,7 +698,7 @@
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>${this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' })}</span>
+              <span>${escapeHTML(this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' }))}</span>
             </div>
             <button class="va-quiz-close" aria-label="Close">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -752,16 +762,16 @@
 
             // Render question content
             content.innerHTML = `
-        <div class="va-quiz-question">${this._t(question.question)}</div>
+        <div class="va-quiz-question">${escapeHTML(this._t(question.question))}</div>
         <div class="va-quiz-options">
           ${(question.options || []).map(opt => `
-            <button class="va-quiz-option ${this.answers[question.id] === opt.value ? 'va-quiz-selected' : ''}" data-value="${opt.value}">
+            <button class="va-quiz-option ${this.answers[question.id] === opt.value ? 'va-quiz-selected' : ''}" data-value="${escapeAttr(opt.value)}">
               <span class="va-quiz-option-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
               </span>
-              <span>${this._t(opt.label)}</span>
+              <span>${escapeHTML(this._t(opt.label))}</span>
             </button>
           `).join('')}
         </div>
@@ -1017,6 +1027,10 @@
          * Track analytics event
          */
         _track(event, data = {}) {
+            // RGPD: Only track if analytics consent given
+            if (window.VOCALIA_CONFIG && window.VOCALIA_CONFIG.analytics_consent === false) return;
+            try { if (localStorage.getItem('va_consent') === 'denied') return; } catch {}
+
             if (typeof gtag === 'function') {
                 gtag('event', event, {
                     event_category: 'voice_quiz',
