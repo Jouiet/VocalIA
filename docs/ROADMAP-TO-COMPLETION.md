@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.164 (Market repositioning: Europe-first, Darija de-emphasized as USP)
+> **Date:** 2026-02-08 | **Session:** 250.165 (Deep surgery: ar/ary locale complete repositioning + SEO/AEO/llms.txt/sitemap/Schema.org)
 > **Code Completeness:** 9.9/10 | **Production Readiness:** 5.5/10 (website deployed, API backend LIVE on VPS, 4 services healthy, widget can chat, CORS unblocked, multi-tenant security hardened, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160) + market repositioning (250.164)
@@ -75,7 +75,7 @@
 | **BIZ** | 250.140-147 | 8/8 | Booking inline B2B, code-split ECOM (-55%), STT fallback, feature gating (14×4 matrix), pricing restructure, plan gating widgets, currency geo-awareness, i18n error messages | N/A |
 | **FUNNEL** | 250.144 | 4/4 | Newsletter POST, booking form POST, honest social proof, Google Sheets DB configured | Prod 2.5→3.5 |
 | **P0-COMPONENTS** | 250.162 | 4/4 | Dashboard→app redirect, telephony page, sidebar component updated, validator full 80-page coverage | 23/23 ✅ 0 warnings |
-| **P0-MARKET** | 250.164 | 8/8 | Market repositioning: Europe-first strategy. Darija de-emphasized from USP #1 to 1-of-5 languages. Geo-detection expanded 3→6 markets. ~100 HTML + locale changes across 20+ files + 5 locales | 23/23 ✅ 0 warnings |
+| **P0-MARKET** | 250.164-165 | 8/8 | Market repositioning: Europe-first strategy. Darija de-emphasized from USP #1 to 1-of-5 languages. Geo-detection expanded 3→6 markets. ~100 HTML + locale changes across 20+ files + 5 locales. Session 165: deep surgery on ar/ary (50+ fixes), SEO/AEO overhaul (llms.txt, sitemap hreflang, Schema.org areaServed+KSA) | 23/23 ✅ 0 warnings |
 
 ### Key Technical Decisions (Reference)
 
@@ -237,8 +237,9 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 4.3 Competitive Position
 
-**Widget**: Only voice-native widget with Darija + 5 languages. 49€ vs Intercom $39-139/seat. Different product (voice-first sales vs support platform).
-**Telephony**: 0.10€/min vs Vapi 0.15-0.33€/min. Structural advantage: Grok bundles LLM+STT+TTS at ~$0.05/min.
+**Widget**: Voice-native widget with 5 languages. 49€ vs Intercom $39-139/seat. Different product (voice-first sales vs support platform).
+**Telephony**: 0.10€/min vs Vapi 0.15-0.33€/min (up to 60% cheaper for EU market). Structural advantage: Grok bundles LLM+STT+TTS at ~$0.05/min.
+**Market strategy (250.164)**: 1. Europe (FR+EUR) → 2. MENA (AR+USD) → 3. International (EN+USD) → 4. Morocco (FR+MAD). USP = price + widget+telephony unified, NOT Darija.
 **Feature gaps vs Intercom/Crisp**: No help center, shared inbox, ticketing, email channel, file upload, WhatsApp. VocalIA ≠ support platform.
 
 ### 4.4 Funnel Status

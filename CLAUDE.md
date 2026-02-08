@@ -44,9 +44,10 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 9.9/10 — all features coded, tested, P0-WEBSITE 23/23 ✅, P0-COMPONENTS 0 warnings, validator covers ALL 80 pages
+- **Code completeness**: 9.9/10 — all features coded, tested, P0-WEBSITE 23/23 ✅, P0-MARKET complete, validator covers ALL 80 pages
 - **Production readiness**: 5.5/10 — website deployed, API backend LIVE on VPS (4 containers healthy), widget can chat, 0 paying customers
+- **Market strategy**: 1. Europe → 2. MENA → 3. International → 4. Morocco. USP = price (60% cheaper EU) + widget+telephony unified. Darija = 1 of 5 languages.
 - **VPS**: Hostinger KVM 2 (148.230.113.163) — vocalia-api, db-api, realtime, telephony. Traefik SSL.
-- **Next**: DNS ws/tel subdomains → first paying customer → GA4
+- **Next**: First paying customer → first connected external API
 
-*Last update: 08/02/2026 - Session 250.163*
+*Last update: 08/02/2026 - Session 250.165 (Deep surgery ar/ary locales, SEO/AEO overhaul: llms.txt, sitemap hreflang, Schema.org areaServed+KSA)*
