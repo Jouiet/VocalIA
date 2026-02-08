@@ -1,14 +1,14 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 79 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~85k lines | 3,763 tests (68 .mjs, 0 skip)
+> 79 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~83k lines | 3,763 tests (68 .mjs, 0 skip)
 > 203 MCP tools | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
 
-core/ (55 modules, 35.4k lines) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (10.5k, 7 files)
-mcp-server/src/ (17.6k, 31 .ts) | lib/ (923) | sensors/ (822) | integrations/ (2.2k)
-clients/ = 553 dirs (ALL test data) | website/ = 79 pages + locales (24.6k lines)
+core/ (55 modules, 35.4k lines) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (10.6k, 7 files)
+mcp-server/src/ (19.2k, 32 .ts) | lib/ (923) | sensors/ (822) | integrations/ (2.2k)
+clients/ = 553 dirs (ALL test data) | website/ = 79 pages + locales (26.2k lines)
 
 ## Services
 
@@ -78,9 +78,9 @@ Contact: +1 762 422 4223 | contact@vocalia.ma
 
 ## State
 
-- **Code completeness**: 9.5/10 — all features coded, tested, P0-AUDIT 9/9 DONE, multi-tenant security hardened, Shadow DOM 7/7 widgets, A2UI XSS sanitized (0 remaining vectors), cart recovery persistence
+- **Code completeness**: 9.6/10 — all features coded, tested, P0-AUDIT 9/9 DONE, multi-tenant security hardened, Shadow DOM 7/7 widgets, A2UI XSS sanitized, i18n 100% (4,858 keys × 5 langs, 0 missing)
 - **Production readiness**: 3.0/10 — website deployed, 0 paying customers, CORS unblocked, code bugs fixed. Needs: VPS deployment, first customer, GA4
 - **Next**: VPS deployment → first paying customer → GA4 activation
-- **Weighted score**: 8.3/10
+- **Weighted score**: 8.4/10
 
-*Last update: 08/02/2026 - Session 250.157 (Shadow DOM 7/7, A2UI XSS sanitized, cart recovery persistence)*
+*Last update: 08/02/2026 - Session 250.158 (i18n 100% complete, stale numbers corrected, documentation accuracy)*

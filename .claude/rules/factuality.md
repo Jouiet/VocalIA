@@ -25,12 +25,12 @@
 
 ### Line Counts (verified 08/02/2026)
 ```bash
-wc -l core/*.cjs                    # 34,533 (54 files)
-wc -l telephony/*.cjs               # 4,732 (1 file)
-wc -l personas/*.cjs personas/*.json # 8,700 (3 files)
-wc -l widget/*.js                   # 9,671 (7 files)
+wc -l core/*.cjs                    # 35,368 (55 files)
+wc -l telephony/*.cjs               # 4,751 (1 file)
+wc -l personas/*.cjs personas/*.json # 8,791 (3 files)
+wc -l widget/*.js                   # 10,598 (7 files)
 wc -l mcp-server/src/**/*.ts        # 19,173 (32 files)
-wc -l website/src/locales/*.json    # 23,995 (5 files)
+wc -l website/src/locales/*.json    # 26,175 (5 files)
 ```
 
 ## INTERDIT

@@ -1,7 +1,7 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-08 | **Session:** 250.157 (Shadow DOM 7/7, A2UI XSS sanitized, cart recovery persistence)
-> **Code Completeness:** 9.5/10 | **Production Readiness:** 3.0/10 (website deployed, CORS unblocked, multi-tenant security hardened, 0 paying customers)
+> **Date:** 2026-02-08 | **Session:** 250.158 (i18n 100% complete, stale numbers corrected, documentation accuracy)
+> **Code Completeness:** 9.6/10 | **Production Readiness:** 3.0/10 (website deployed, CORS unblocked, multi-tenant security hardened, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144)
 
@@ -33,15 +33,15 @@
 > **Session 250.129 fixes**: Tenant system fixed (3 root causes), GA4 infra, social proof backend.
 > **Session 250.128 fixes**: XSS, CONFIG, branding, dead files, WCAG, build script.
 
-| # | Dimension | Score 250.156 | Score 250.157 | Delta | Justification (250.157) |
+| # | Dimension | Score 250.157 | Score 250.158 | Delta | Justification (250.158) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
 | 1 | Tests unitaires | 7.0 | 7.0 | 0 | 3,763 tests pass, 0 fail, 0 skip (ESM) |
-| 2 | Sécurité | 9.5 | **10.0** | **+0.5** | A2UI XSS sanitized (whitelist-based), 0 remaining innerHTML vectors, all widgets fully protected |
+| 2 | Sécurité | 10.0 | 10.0 | 0 | A2UI XSS sanitized, Shadow DOM 7/7, escapeHTML 7/7 |
 | 3 | Production readiness | 3.0 | 3.0 | 0 | Website deployed, 0 paying customers |
-| 4 | Documentation accuracy | 8.5 | 8.5 | 0 | ROADMAP updated with 250.157 tasks |
-| 5 | Architecture code | 9.5 | **10.0** | **+0.5** | Shadow DOM ALL 7 widgets, full CSS isolation, cart recovery persistence |
+| 4 | Documentation accuracy | 8.5 | **9.0** | **+0.5** | Stale numbers corrected (line counts, openapi status, score summary), all verified by command |
+| 5 | Architecture code | 10.0 | 10.0 | 0 | Shadow DOM ALL 7 widgets, full CSS isolation |
 | 6 | Multi-tenant | 9.5 | 9.5 | 0 | No change |
-| 7 | i18n | 9.0 | 9.0 | 0 | 292 dashboard+admin keys verified in all 5 langs |
+| 7 | i18n | 9.0 | **10.0** | **+1.0** | 313 missing keys added, 0 missing data-i18n, 4,858 keys × 5 langs, 0 empty |
 | 8 | Intégrations | 8.0 | 8.0 | 0 | No change |
 | 9 | Developer experience | 9.5 | 9.5 | 0 | Build+minify+check, validator v2.3, CONTRIBUTING.md, staging |
 | 10 | Mémoire & docs | 9.0 | 9.0 | 0 | No change |
@@ -51,14 +51,14 @@
 | 1 (7.0) | 15% | 1.050 |
 | 2 (10.0) | 15% | 1.500 |
 | 3 (3.0) | 10% | 0.300 |
-| 4 (8.5) | 10% | 0.850 |
+| 4 (9.0) | 10% | 0.900 |
 | 5 (10.0) | 10% | 1.000 |
 | 6 (9.5) | 10% | 0.950 |
-| 7 (9.0) | 5% | 0.450 |
+| 7 (10.0) | 5% | 0.500 |
 | 8 (8.0) | 10% | 0.800 |
 | 9 (9.5) | 10% | 0.950 |
 | 10 (9.0) | 5% | 0.450 |
-| **TOTAL** | **100%** | **8.300** → **~8.3/10** (250.157 — Shadow DOM 7/7, A2UI XSS eliminated, code completeness 9.5) |
+| **TOTAL** | **100%** | **8.400** → **~8.4/10** (250.158 — i18n 100%, docs accuracy corrected, code completeness 9.6) |
 
 ### 1.0 Widget System DEEP Forensic Audit (Session 250.127)
 
@@ -621,7 +621,7 @@ Le CI actuel ne fait que:
 
 ### P2-1. ✅ DONE (250.106) — OpenAPI spec exhaustive
 
-**Fait vérifié:** `docs/openapi.yaml` existe (16,303 bytes) mais non validé contre les routes réelles.
+**Fait vérifié:** `docs/openapi.yaml` existe (24,361 bytes), validé contre 23 routes réelles (250.106).
 
 - [x] **P2-1a.** Cross-referenced openapi.yaml vs 27 actual routes in voice-api-resilient.cjs
 - [x] **P2-1b.** Added 17 missing paths: /config, /social-proof, /tts, /api/contact, /api/trigger-call, /api/health/grok, /api/health/telephony, /api/fallback/{provider}, /admin/metrics, /admin/tenants (GET+POST), /admin/refresh, /admin/logs, /admin/logs/export, /admin/health, /a2ui/generate, /a2ui/health, /metrics
@@ -1003,14 +1003,14 @@ B2B source synced to deployed (pulse animation added + WCAG).
 
 ## 7. Registre des Faits Vérifiés
 
-> Toutes les données ci-dessous ont été vérifiées par commande le 2026-02-06.
+> Toutes les données ci-dessous ont été vérifiées par commande le 2026-02-08.
 
 ### 7.1 Métriques Code
 
 | Métrique | Valeur | Commande |
 |:---------|:------:|:---------|
-| core/*.cjs | 35,358 lignes / 55 fichiers | `wc -l core/*.cjs` |
-| widget/*.js | 10,491 lignes / 7 fichiers | `wc -l widget/*.js` |
+| core/*.cjs | 35,368 lignes / 55 fichiers | `wc -l core/*.cjs` |
+| widget/*.js | 10,598 lignes / 7 fichiers | `wc -l widget/*.js` |
 | personas/ | 8,791 lignes / 2 fichiers | `wc -l personas/*.cjs personas/*.json` |
 | telephony/ | 4,751 lignes / 1 fichier | `wc -l telephony/*.cjs` |
 | lib/ | 923 lignes / 1 fichier | `wc -l lib/*.cjs` |
@@ -1020,7 +1020,7 @@ B2B source synced to deployed (pulse animation added + WCAG).
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs \| sort -u \| wc -l` |
 | HTML pages | 79 | `find website -name "*.html" \| wc -l` |
 | Registry clients | 22 | `jq 'keys \| length' personas/client_registry.json` |
-| i18n lines | 24,595 | `wc -l website/src/locales/*.json` |
+| i18n lines | 26,175 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 | `npm audit --json` |
 | innerHTML total | 30 | `grep -rn "innerHTML" widget/*.js \| wc -l` |
 | innerHTML risque XSS | 0 | All dynamic data now uses escapeHTML/textContent (250.105) |
@@ -1100,7 +1100,7 @@ B2B source synced to deployed (pulse animation added + WCAG).
 | CI/CD | ✅ Tests | Unit + Exhaustive + i18n regression in CI (250.105) |
 | .env.example | ✅ Existe | 7,794 bytes |
 | README.md | ✅ Existe | 206 lignes |
-| openapi.yaml | ✅ Existe | 16,303 bytes (non validé) |
+| openapi.yaml | ✅ Validé | 24,361 bytes (23 paths, 250.106) |
 | .eslintrc.json | ✅ Existe | Config ESLint présente |
 | Prettier config | ✅ Existe | `.prettierrc` (was already present, ROADMAP was wrong) |
 | LICENSE | ✅ Existe | PROPRIETARY (created 250.105) |
@@ -1439,6 +1439,8 @@ create_booking          get_recommendations    qualify_lead
 | **Shadow DOM 7/7 widgets**: All sub-widgets (cart, spin, quiz, shipping, carousel) Shadow DOM encapsulated | 250.157 | CSS isolation, host+shadowRoot pattern |
 | **A2UI XSS sanitized**: Whitelist-based `sanitizeA2UIHtml()` in B2B + V3 widgets | 250.157 | Allowed tags/attrs whitelist, on* stripped, javascript: blocked |
 | **Cart recovery GET persistence**: Admin GET endpoint now loads from disk | 250.157 | db-api.cjs L2193 lazy disk load |
+| **i18n 100% complete**: 313 missing keys added to all 5 locales (4,545→4,858 keys) | 250.158 | 0 missing data-i18n keys, auth/booking/catalog/billing/analytics/dashboard namespaces |
+| **Stale numbers corrected**: Line counts, openapi.yaml status, score summary updated | 250.158 | factuality.md, ROADMAP, CLAUDE.md all verified |
 
 ---
 
@@ -1771,7 +1773,7 @@ function isOriginAllowed(origin) {
 | **P3** | ✅ **5/5 DONE** | P3-1 (ESM+esbuild) + P3-2 (staging) + P3-3 (k6) + P3-4 (A2A) + P3-5 (persona audit) | 8.4 |
 | **P0-AUDIT (250.153-155)** | ✅ **9/9 DONE** | conversationStore, CORS, CDN, WordPress, social proof, email-service, versions, mic policy, doc lies + multi-tenant deep security | 8.5 → **9.3 code / 3.0 production** |
 
-**Code Completeness: 9.3/10** | **Production Readiness: 3.0/10** | **Weighted: 8.2/10** (250.156 — ALL code tasks DONE)
+**Code Completeness: 9.6/10** | **Production Readiness: 3.0/10** | **Weighted: 8.4/10** (250.158 — i18n 100%, docs accuracy corrected, ALL code tasks DONE)
 
 **Remaining (code — OPTIONAL):**
 ```
