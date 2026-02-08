@@ -2663,9 +2663,12 @@
 
         const L = state.langData || {};
         const isRTL = L?.meta?.rtl || false;
+        // Session 250.153: Only show REAL social proof data from backend — no fake fallback
         const proofs = state.socialProof.messages.length > 0
             ? state.socialProof.messages
-            : (L?.socialProof?.messages || getDefaultSocialProofMessages());
+            : (L?.socialProof?.messages || []);
+        // If no real social proof data, don't show anything
+        if (proofs.length === 0) return;
 
         // Pick a random proof message
         const proof = proofs[Math.floor(Math.random() * proofs.length)];
@@ -2754,15 +2757,8 @@
         return times[Math.floor(Math.random() * times.length)];
     }
 
-    function getDefaultSocialProofMessages() {
-        return [
-            { text: 'Sophie de Paris vient de demander une démo', icon: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>' },
-            { text: 'Une entreprise a automatisé 500 appels ce mois', icon: '<path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>' },
-            { text: 'Nouveau client: Cabinet dentaire à Casablanca', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>' },
-            { text: 'Ahmed a réservé un rendez-vous via l\'assistant', icon: '<path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-7-9c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>' },
-            { text: '12 leads qualifiés générés aujourd\'hui', icon: '<path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>' }
-        ];
-    }
+    // Session 250.153: getDefaultSocialProofMessages() REMOVED — was returning fake testimonials
+    // ("Sophie de Paris", "Ahmed", "500 appels"). Now mirrors B2B behavior: no data = no display.
 
     // ============================================================
     // BOOKING SYSTEM

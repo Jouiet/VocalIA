@@ -361,16 +361,15 @@
           </button>
         </div>
         <div class="code-block p-6">
-          <pre class="text-zinc-300"><code><span class="comment">&lt;!-- VocalIA Voice Widget --&gt;</span>
-<span class="keyword">&lt;script</span> <span class="attr">src</span>=<span class="string">"https://cdn.vocalia.ma/widget.js"</span><span class="keyword">&gt;&lt;/script&gt;</span>
+          <pre class="text-zinc-300"><code><span class="comment">&lt;!-- VocalIA Voice Widget E-commerce --&gt;</span>
 <span class="keyword">&lt;script&gt;</span>
-  VocalIA.init({
-    <span class="attr"><span data-i18n="widget.apikey_7">apiKey</span></span>: <span class="string">'votre-api-key'</span>,
-    <span class="attr"><span data-i18n="widget.persona_6">persona</span></span>: <span class="string">'customer-support'</span>,
-    <span class="attr"><span data-i18n="widget.language_5">language</span></span>: <span class="string">'fr'</span>,
-    <span class="attr"><span data-i18n="widget.theme_4">theme</span></span>: <span class="string">'dark'</span>
-  });
-<span class="keyword">&lt;/script&gt;</span></code></pre>
+  window.VOCALIA_CONFIG = {
+    <span class="attr">tenant_id</span>: <span class="string">'votre-tenant-id'</span>,
+    <span class="attr">api_url</span>: <span class="string">'https://api.vocalia.ma'</span>,
+    <span class="attr"><span data-i18n="widget.language_5">language</span></span>: <span class="string">'fr'</span>
+  };
+<span class="keyword">&lt;/script&gt;</span>
+<span class="keyword">&lt;script</span> <span class="attr">src</span>=<span class="string">"https://vocalia.ma/voice-assistant/voice-widget-v3.min.js"</span> <span class="attr">async</span><span class="keyword">&gt;&lt;/script&gt;</span></code></pre>
         </div>
       </div>
     </div>
@@ -622,15 +621,14 @@
 
   <script>
     function copyCode() {
-      const code = `<script src="https://cdn.vocalia.ma/widget.js"><\/script>
-<script>
-  VocalIA.init({
-    apiKey: 'votre-api-key',
-    persona: 'customer-support',
-    language: 'fr',
-    theme: 'dark'
-  });
-<\/script>`;
+      const code = `<script>
+  window.VOCALIA_CONFIG = {
+    tenant_id: 'votre-tenant-id',
+    api_url: 'https://api.vocalia.ma',
+    language: 'fr'
+  };
+<\/script>
+<script src="https://vocalia.ma/voice-assistant/voice-widget-v3.min.js" async><\/script>`;
       navigator.clipboard.writeText(code);
       alert('Code copié!');
     }

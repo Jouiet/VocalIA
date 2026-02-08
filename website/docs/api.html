@@ -323,15 +323,15 @@
             </div>
             <div class="code-content">
               <pre><span class="token-comment">&lt;!-- VocalIA Voice Widget --&gt;</span>
-<span class="token-key">&lt;script</span> <span class="token-string">src</span>=<span class="token-string">"https://cdn.vocalia.ma/widget/v1.js"</span><span class="token-key">&gt;&lt;/script&gt;</span>
 <span class="token-key">&lt;script&gt;</span>
-  VocalIA.init({
-    <span class="token-key"><span data-i18n="docs_api.apikey_138"><span data-i18n="docs_api.apikey_145">apiKey</span></span></span>: <span class="token-string">'voc_pk_live_xxxx'</span>,
-    <span class="token-key"><span data-i18n="docs_api.agentid_68"><span data-i18n="docs_api.agentid_108"><span data-i18n="docs_api.agentid_135"><span data-i18n="docs_api.agentid_144">agentId</span></span></span></span></span>: <span class="token-string">'agent_xxxx'</span>,
+  window.VOCALIA_CONFIG = {
+    <span class="token-key">tenant_id</span>: <span class="token-string">'votre-tenant-id'</span>,
+    <span class="token-key">api_url</span>: <span class="token-string">'https://api.vocalia.ma'</span>,
     <span class="token-key"><span data-i18n="docs_api.language_67"><span data-i18n="docs_api.language_131"><span data-i18n="docs_api.language_143">language</span></span></span></span>: <span class="token-string">'fr'</span>,
     <span class="token-key"><span data-i18n="docs_api.position_128"><span data-i18n="docs_api.position_142">position</span></span></span>: <span class="token-string">'bottom-right'</span>
-  });
-<span class="token-key">&lt;/script&gt;</span></pre>
+  };
+<span class="token-key">&lt;/script&gt;</span>
+<span class="token-key">&lt;script</span> <span class="token-string">src</span>=<span class="token-string">"https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js"</span> <span class="token-string">async</span><span class="token-key">&gt;&lt;/script&gt;</span></pre>
             </div>
           </div>
         </section>

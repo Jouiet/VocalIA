@@ -35,20 +35,64 @@ const {
   setSecurityHeaders
 } = require('../lib/security-utils.cjs');
 
-// Session 250.85: Dynamic CORS Check
+// Session 250.153: Dynamic CORS — loads tenant domains from client_registry.json
+// Tenant allowed origins cache (refreshed every 5 min)
+let _tenantOrigins = new Set();
+let _tenantOriginsLastLoad = 0;
+const TENANT_ORIGINS_TTL = 300000; // 5 minutes
+
+function loadTenantOrigins() {
+  try {
+    const registryPath = path.join(__dirname, '..', 'personas', 'client_registry.json');
+    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    const origins = new Set();
+    for (const [, client] of Object.entries(registry.clients || {})) {
+      if (client.allowed_origins) {
+        for (const o of client.allowed_origins) {
+          origins.add(o.replace(/\/$/, '')); // Normalize: strip trailing slash
+        }
+      }
+      // Also derive from payment_details URL domain if it's a customer site
+      if (client.payment_details && client.payment_details.startsWith('https://')) {
+        try {
+          const u = new URL(client.payment_details);
+          origins.add(`https://${u.hostname}`);
+        } catch { /* skip invalid URLs */ }
+      }
+    }
+    _tenantOrigins = origins;
+    _tenantOriginsLastLoad = Date.now();
+    if (origins.size > 0) {
+      console.log(`✅ [CORS] Loaded ${origins.size} tenant origins from registry`);
+    }
+  } catch (err) {
+    console.warn('[CORS] Could not load tenant origins:', err.message);
+  }
+}
+
+// Load on startup
+loadTenantOrigins();
+
 function isOriginAllowed(origin) {
   if (!origin) return false;
-  // Internal dashboard subdomains
+  // Internal: VocalIA domains
   if (origin.endsWith('.vocalia.ma') || origin === 'https://vocalia.ma') return true;
   // Local development
   if (origin.startsWith('http://localhost:')) return true;
-  // Future: Add client domains from DB
+  // Refresh tenant origins if stale
+  if (Date.now() - _tenantOriginsLastLoad > TENANT_ORIGINS_TTL) {
+    loadTenantOrigins();
+  }
+  // Tenant registered origins
+  if (_tenantOrigins.has(origin)) return true;
   return false;
 }
 
 // Session 250.xx: Multi-tenant Secret Vault
 const SecretVault = require('./SecretVault.cjs');
 const ContextBox = require('./ContextBox.cjs'); // Missing import fixed
+const { getInstance: getConversationStore } = require('./conversation-store.cjs'); // Session 250.153: Was MISSING — caused silent TypeError at L2627
+const conversationStore = getConversationStore();
 const { getDB } = require('./GoogleSheetsDB.cjs'); // Session 250.89: DB for quota check
 
 
@@ -79,7 +123,7 @@ const PROVIDERS = {
   },
   gemini: {
     name: 'Gemini 3 Flash (SOTA 2026)',
-    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent',
+    url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent',
     apiKey: ENV.GEMINI_API_KEY,
     enabled: !!ENV.GEMINI_API_KEY,
   },
@@ -3161,7 +3205,7 @@ function startServer(port = 3004) {
             try {
               const audioBase64 = audioBuffer.toString('base64');
               const geminiResp = await fetch(
-                `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${geminiKey}`,
                 {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },

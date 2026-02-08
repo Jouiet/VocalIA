@@ -11,7 +11,8 @@
             "email": "contact@vocalia.ma",
             "booking_url": "https://vocalia.ma/booking",
             "address": "VocalIA — Voice AI Platform",
-            "widget_type": "B2B"
+            "widget_type": "B2B",
+            "allowed_origins": ["https://vocalia.ma", "https://www.vocalia.ma"]
         },
         "client_dental_01": {
             "name": "Cabinet Dentaire Lumière",

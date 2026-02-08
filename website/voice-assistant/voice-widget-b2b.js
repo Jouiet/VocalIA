@@ -1,6 +1,6 @@
 /**
  * VocalIA Voice Widget - B2B/Lead Gen Specialized Kernel
- * Version: 2.5.0 (B2B) | Session 250.147
+ * Version: 2.7.0 (B2B) | Session 250.153
  *
  * DESIGN: SOBER & PROFESSIONAL - VocalIA Deep Indigo (#5E6AD2)
  * FEATURES: Voice Chat, Lead Qualification, Booking, FAQ, Exit Intent (Lead Magnet)
@@ -1524,7 +1524,7 @@
 
             initSocialProof();
 
-            console.log(`[VocalIA B2B] Widget v2.4.0 initialized | Lang: ${state.currentLang} | Booking: ${state.bookingConfig.enabled} | PlanGating: ${!!state.planFeatures}`);
+            console.log(`[VocalIA B2B] Widget v2.7.0 initialized | Lang: ${state.currentLang} | Booking: ${state.bookingConfig.enabled} | PlanGating: ${!!state.planFeatures}`);
         } catch (error) {
             console.error('[VocalIA B2B] Init error:', error);
         }

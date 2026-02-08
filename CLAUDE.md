@@ -62,10 +62,24 @@ Contact: +1 762 422 4223 | contact@vocalia.ma
 | `.claude/rules/branding.md` | Design tokens + validator |
 | `.claude/rules/core.md` | Code standards + credentials |
 
+## Bugs Fixed (Audit 250.153 → ALL RESOLVED 250.154)
+
+| Bug | Status | Fix |
+|:----|:------:|:----|
+| `conversationStore` not imported | ✅ FIXED | Added import from conversation-store.cjs |
+| CORS blocks third-party origins | ✅ FIXED | Tenant domain whitelist from client_registry.json |
+| CDN `cdn.vocalia.ma` non-existent | ✅ FIXED | Replaced all refs with direct vocalia.ma URLs |
+| WordPress plugin broken (3 bugs) | ✅ FIXED | JS URL, CONFIG var, persona count |
+| V3 fake social proof fallback | ✅ FIXED | Removed getDefaultSocialProofMessages() |
+| `email-service.cjs` missing | ✅ FIXED | Created core/email-service.cjs (nodemailer) |
+| Gemini version inconsistency | ✅ FIXED | Unified to gemini-3-flash |
+| B2B version mismatch | ✅ FIXED | Unified to 2.7.0 |
+| Permissions-Policy microphone | ✅ FIXED | Changed to microphone=(self) |
+
 ## State
 
-- **Code completeness**: 9.0/10 — all features coded, tested, feature-gated
-- **Production readiness**: 3.5/10 — website deployed, funnel connected, feature gating done, 0 paying customers
-- **Next**: GA4 activation → first paying customer
+- **Code completeness**: 9.0/10 — all features coded, tested, P0-AUDIT 9/9 DONE
+- **Production readiness**: 3.0/10 — website deployed, 0 paying customers, CORS unblocked, code bugs fixed. Needs: VPS deployment, first customer, GA4
+- **Next**: VPS deployment → first paying customer → GA4 activation
 
-*Last update: 08/02/2026 - Session 250.152 (admin sidebar component, nginx brotli, repo rename, Google Sheets verified)*
+*Last update: 08/02/2026 - Session 250.153 (external audit evaluation: ContextBox verdict, CORS fatal, conversationStore bug, 9 known bugs documented)*

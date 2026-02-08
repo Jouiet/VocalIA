@@ -254,7 +254,8 @@
                       <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode"><span data-i18n="docs_index.copier_15"><span data-i18n="docs_index.copier_29"><span data-i18n="docs_index.copier_71"><span data-i18n="docs_index.copier_80"><span data-i18n="docs_index.copier_82">Copier</span></span></span></span></span></button>
                     </div>
                     <div class="code-content">
-                      <code class="text-emerald-400">&lt;script src="https://cdn.vocalia.ma/widget/v1/voice-widget.js?v=2.7.0"&gt;&lt;/script&gt;</code>
+                      <code class="text-emerald-400">&lt;script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js?v=2.7.0"
+  data-vocalia-tenant="VOTRE_TENANT_ID" defer&gt;&lt;/script&gt;</code>
                     </div>
                   </div>
                 </div>
@@ -270,13 +271,14 @@
                       <button type="button" class="text-vocalia-400 hover:text-white text-sm" data-action="copyCode">Copier</button>
                     </div>
                     <div class="code-content">
-<pre><code class="text-vocalia-300"><span class="text-vocalia-500">// Initialisation basique</span>
-<span class="text-amber-400"><span data-i18n="docs_index.vocaliawidget_9"><span data-i18n="docs_index.vocaliawidget_22"><span data-i18n="docs_index.vocaliawidget_70"><span data-i18n="docs_index.vocaliawidget_79">VocaliaWidget</span></span></span></span></span>.<span class="text-emerald-400">init</span>({
-  <span class="text-rose-400"><span data-i18n="docs_index.apikey_69"><span data-i18n="docs_index.apikey_78">apiKey</span></span></span>: <span class="text-emerald-400">'votre-api-key'</span>,
-  <span class="text-rose-400"><span data-i18n="docs_index.language_67"><span data-i18n="docs_index.language_77">language</span></span></span>: <span class="text-emerald-400">'fr'</span>,
-  <span class="text-rose-400"><span data-i18n="docs_index.persona_65"><span data-i18n="docs_index.persona_76">persona</span></span></span>: <span class="text-emerald-400">'assistant'</span>,
-  <span class="text-rose-400"><span data-i18n="docs_index.position_62"><span data-i18n="docs_index.position_75">position</span></span></span>: <span class="text-emerald-400">'bottom-right'</span>
-});</code></pre>
+<pre><code class="text-vocalia-300"><span class="text-vocalia-500">// Configuration du widget (optionnel)</span>
+<span class="text-amber-400">window</span>.<span class="text-emerald-400">VOCALIA_CONFIG</span> = {
+  <span class="text-rose-400">tenant_id</span>: <span class="text-emerald-400">'votre-tenant-id'</span>,
+  <span class="text-rose-400">language</span>: <span class="text-emerald-400">'fr'</span>,
+  <span class="text-rose-400">persona</span>: <span class="text-emerald-400">'AGENCY'</span>,
+  <span class="text-rose-400">position</span>: <span class="text-emerald-400">'bottom-right'</span>,
+  <span class="text-rose-400">primaryColor</span>: <span class="text-emerald-400">'#5E6AD2'</span>
+};</code></pre>
                     </div>
                   </div>
                 </div>
@@ -297,8 +299,8 @@
             <section id="widget">
               <h2 class="text-3xl font-bold mb-6">Voice Widget</h2>
               <p class="text-vocalia-300 mb-8">
-                Le Voice Widget est une solution 100% frontend basée sur le Web Speech API.
-                Gratuit et sans limites d'utilisation.
+                Le Voice Widget se connecte à l'API VocalIA pour offrir un assistant vocal intelligent.
+                STT natif (Web Speech API) + backend AI (Grok/Gemini). Inclus dans votre abonnement.
               </p>
 
               <h3 class="text-xl font-semibold mb-4"><span data-i18n="docs_index.configuration_avance_73">Configuration Avancée</span></h3>
@@ -520,13 +522,8 @@
   <span class="text-amber-400"><span data-i18n="docs_index.useeffect_25">useEffect</span></span>(() => {
     <span class="text-vocalia-500">// Charger le script VocalIA</span>
     <span class="text-rose-400"><span data-i18n="docs_index.const_11"><span data-i18n="docs_index.const_24">const</span></span></span> script = document.<span class="text-emerald-400"><span data-i18n="docs_index.createelement_10"><span data-i18n="docs_index.createelement_23">createElement</span></span></span>(<span class="text-emerald-400">'script'</span>);
-    script.src = <span class="text-emerald-400">'https://cdn.vocalia.ma/widget/v1/voice-widget.js'</span>;
-    script.onload = () => {
-      window.<span class="text-amber-400">VocaliaWidget</span>.<span class="text-emerald-400">init</span>({
-        apiKey: process.env.REACT_APP_VOCALIA_KEY,
-        language: <span class="text-emerald-400">'fr'</span>
-      });
-    };
+    script.src = <span class="text-emerald-400">'https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js'</span>;
+    script.dataset.vocaliaTenant = <span class="text-emerald-400">'votre-tenant-id'</span>;
     document.body.<span class="text-emerald-400"><span data-i18n="docs_index.appendchild_8"><span data-i18n="docs_index.appendchild_21">appendChild</span></span></span>(script);
 
     <span class="text-rose-400"><span data-i18n="docs_index.return_20">return</span></span> () => document.body.<span class="text-emerald-400"><span data-i18n="docs_index.removechild_19">removeChild</span></span>(script);
@@ -551,10 +548,8 @@
 
 <span class="text-amber-400"><span data-i18n="docs_index.onmounted_12">onMounted</span></span>(() => {
   <span class="text-rose-400">const</span> script = document.<span class="text-emerald-400">createElement</span>(<span class="text-emerald-400">'script'</span>);
-  script.src = <span class="text-emerald-400">'https://cdn.vocalia.ma/widget/v1/voice-widget.js'</span>;
-  script.onload = () => {
-    window.<span class="text-amber-400">VocaliaWidget</span>.<span class="text-emerald-400">init</span>({ apiKey: <span class="text-emerald-400">'votre-api-key'</span> });
-  };
+  script.src = <span class="text-emerald-400">'https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js'</span>;
+  script.dataset.vocaliaTenant = <span class="text-emerald-400">'votre-tenant-id'</span>;
   document.body.<span class="text-emerald-400">appendChild</span>(script);
 });
 &lt;/<span class="text-rose-400">script</span>&gt;</code></pre>

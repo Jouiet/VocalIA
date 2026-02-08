@@ -643,12 +643,12 @@ window.VocalIAConfig = {
 ```html
 <!-- VocalIA Voice Widget -->
 <script>
-  window.VocalIAConfig = {
-    tenantId: 'CLIENT_TENANT_ID',
-    apiUrl: 'https://voice-api.vocalia.ma'
+  window.VOCALIA_CONFIG = {
+    tenant_id: 'CLIENT_TENANT_ID',
+    api_url: 'https://api.vocalia.ma'
   };
 </script>
-<script src="https://cdn.vocalia.ma/voice-widget.min.js" async></script>
+<script src="https://vocalia.ma/voice-assistant/voice-widget-b2b.min.js" async></script>
 ```
 
 **Dynamic CORS:**
