@@ -7,7 +7,9 @@
 |:-------|:--------|:---------|
 | Personas | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs \| sort -u \| wc -l` | 38 |
 | Function Tools | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` | 25 |
-| MCP Tools | `grep -c "server.tool(" mcp-server/src/index.ts` | 203 |
+| MCP Tools | validated by `node --test test/mcp-server.test.mjs` (22 inline + 181 external) | 203 |
+| MCP Resources | `grep -c "server.registerResource(" mcp-server/src/index.ts` | 6 |
+| MCP Prompts | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` | 8 |
 | Widgets | `ls widget/*.js \| wc -l` | 7 |
 | Languages | `ls website/src/locales/*.json \| wc -l` | 5 |
 | Tests | `ls test/*.mjs \| wc -l` | 68 |

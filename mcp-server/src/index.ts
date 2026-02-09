@@ -4,6 +4,7 @@
  * Model Context Protocol server exposing VocalIA Voice AI Platform capabilities.
  *
  * Session 250.171c - v1.0.0 - SOTA: registerTool() + descriptions + annotations on ALL 203 tools
+ * + 6 Resources (registerResource) + 8 Prompts (registerPrompt)
  *
  * TOOL CATEGORIES (203 tools - 23 inline, 180 external modules):
  *
@@ -54,7 +55,7 @@
  * All logging must use console.error.
  */
 
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
@@ -136,18 +137,32 @@ function inferAnnotations(name: string): ToolAnnotations {
 }
 
 /**
- * Register a module tool with description and inferred annotations.
- * This replaces the deprecated server.tool(name, params, handler) pattern.
+ * Register a module tool with description, inferred annotations, and automatic logging.
+ * Wraps the handler with sendLoggingMessage for observability.
  */
 function registerModuleTool(
   toolDef: { name: string; description?: string; parameters: any; handler: any },
   annotationsOverride?: ToolAnnotations
 ) {
+  const originalHandler = toolDef.handler;
+  const wrappedHandler = async (...args: any[]) => {
+    const start = Date.now();
+    try {
+      server.sendLoggingMessage({ level: "info", data: `[tool:${toolDef.name}] started` });
+      const result = await originalHandler(...args);
+      server.sendLoggingMessage({ level: "info", data: `[tool:${toolDef.name}] completed in ${Date.now() - start}ms` });
+      return result;
+    } catch (error) {
+      server.sendLoggingMessage({ level: "error", data: `[tool:${toolDef.name}] failed after ${Date.now() - start}ms: ${(error as Error).message}` });
+      throw error;
+    }
+  };
+
   server.registerTool(toolDef.name, {
     description: toolDef.description || `VocalIA tool: ${toolDef.name}`,
     inputSchema: toolDef.parameters,
     annotations: annotationsOverride || inferAnnotations(toolDef.name),
-  }, toolDef.handler);
+  }, wrappedHandler);
 }
 
 // Session 245: A2A Protocol Integration
@@ -1667,6 +1682,599 @@ registerModuleTool(twilioTools.list_calls);
 registerModuleTool(twilioTools.send_whatsapp);
 
 // =============================================================================
+// RESOURCES (6) — MCP Phase 2: Contextual data for LLM consumption
+// =============================================================================
+
+// Resource 1: vocalia://personas — Full persona catalog
+server.registerResource(
+  "personas",
+  "vocalia://personas",
+  {
+    description: "Complete catalog of 38 VocalIA industry personas with metadata, voice config, and tier classification.",
+    mimeType: "application/json",
+  },
+  async (uri) => {
+    const allPersonas = Object.entries(PERSONAS_DATA).flatMap(([tier, personas]) =>
+      personas.map((p: any) => ({ ...p, tier }))
+    );
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "application/json",
+        text: JSON.stringify({
+          total: allPersonas.length,
+          tiers: {
+            core: PERSONAS_DATA.core.length,
+            expansion: PERSONAS_DATA.expansion.length,
+            extended: PERSONAS_DATA.extended.length,
+            pme: PERSONAS_DATA.pme.length,
+          },
+          personas: allPersonas,
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// Resource 2: vocalia://personas/{key} — Single persona detail (template)
+server.registerResource(
+  "persona-detail",
+  new ResourceTemplate("vocalia://personas/{key}", {
+    list: async () => {
+      const allKeys = Object.values(PERSONAS_DATA).flat().map((p: any) => p.key);
+      return {
+        resources: allKeys.map(key => ({
+          uri: `vocalia://personas/${key}`,
+          name: `Persona: ${key}`,
+          description: `Detailed persona configuration for ${key}`,
+          mimeType: "application/json",
+        })),
+      };
+    },
+    complete: {
+      key: async (value) => {
+        const allKeys = Object.values(PERSONAS_DATA).flat().map((p: any) => p.key as string);
+        return allKeys.filter(k => k.toLowerCase().startsWith(value.toLowerCase()));
+      },
+    },
+  }),
+  {
+    description: "Detailed persona configuration including system prompts in all available languages.",
+    mimeType: "application/json",
+  },
+  async (uri, variables) => {
+    const key = String(variables.key).toUpperCase();
+    const persona = Object.values(PERSONAS_DATA).flat().find((p: any) => p.key === key);
+
+    if (!persona) {
+      return {
+        contents: [{
+          uri: uri.href,
+          mimeType: "application/json",
+          text: JSON.stringify({ error: `Persona '${key}' not found`, available_keys: Object.values(PERSONAS_DATA).flat().map((p: any) => p.key) }),
+        }],
+      };
+    }
+
+    // Get system prompts from injector (dynamic) or fallback (inline)
+    const prompts = INJECTOR_SYSTEM_PROMPTS[key] || SYSTEM_PROMPTS[key] || {};
+    const injectorData = INJECTOR_PERSONAS[key] || {};
+
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "application/json",
+        text: JSON.stringify({
+          ...persona,
+          system_prompts: prompts,
+          available_languages: Object.keys(prompts),
+          injector_metadata: {
+            systemPrompt: injectorData.systemPrompt ? "(available)" : "(not set)",
+            tone: injectorData.tone,
+            examples: injectorData.examples ? injectorData.examples.length : 0,
+          },
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// Resource 3: vocalia://knowledge-base — Knowledge base status and summary
+server.registerResource(
+  "knowledge-base",
+  "vocalia://knowledge-base",
+  {
+    description: "Knowledge base status including chunk count, categories, search modes, and data location.",
+    mimeType: "application/json",
+  },
+  async (uri) => {
+    let status: any = { available: false };
+    const statusPath = path.join(process.cwd(), "data", "knowledge-base", "status.json");
+    try {
+      if (fs.existsSync(statusPath)) {
+        status = JSON.parse(fs.readFileSync(statusPath, "utf-8"));
+        status.available = true;
+      }
+    } catch { /* status remains unavailable */ }
+
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "application/json",
+        text: JSON.stringify({
+          knowledge_base: status,
+          search_modes: {
+            sparse: "TF-IDF keyword matching",
+            hybrid: "TF-IDF + semantic embeddings",
+            graph: "Knowledge graph traversal (2-hop)",
+          },
+          location: "data/knowledge-base/",
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// Resource 4: vocalia://market-rules — Geo-market routing rules
+server.registerResource(
+  "market-rules",
+  "vocalia://market-rules",
+  {
+    description: "Market routing rules mapping countries to language, currency, and pricing region. Used for geo-detection and i18n.",
+    mimeType: "application/json",
+  },
+  async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "application/json",
+        text: JSON.stringify({
+          strategy: "1.Europe(FR+EUR) → 2.MENA(AR+USD) → 3.International(EN+USD) → 4.Morocco(FR+MAD)",
+          markets: {
+            MA: { id: "maroc", lang: "fr", currency: "MAD", symbol: "DH", label: "Maroc" },
+            DZ: { id: "maghreb", lang: "fr", currency: "EUR", symbol: "€", label: "Maghreb" },
+            TN: { id: "maghreb", lang: "fr", currency: "EUR", symbol: "€", label: "Maghreb" },
+            FR: { id: "europe", lang: "fr", currency: "EUR", symbol: "€", label: "Europe" },
+            BE: { id: "europe", lang: "fr", currency: "EUR", symbol: "€", label: "Europe" },
+            CH: { id: "europe", lang: "fr", currency: "EUR", symbol: "€", label: "Europe" },
+            ES: { id: "europe", lang: "es", currency: "EUR", symbol: "€", label: "Europe" },
+            AE: { id: "mena", lang: "ar", currency: "USD", symbol: "$", label: "MENA" },
+            SA: { id: "mena", lang: "ar", currency: "USD", symbol: "$", label: "MENA" },
+            US: { id: "intl", lang: "en", currency: "USD", symbol: "$", label: "International" },
+            GB: { id: "intl", lang: "en", currency: "USD", symbol: "$", label: "International" },
+          },
+          default: { id: "intl", lang: "en", currency: "USD", symbol: "$", label: "International" },
+          supported_languages: ["fr", "en", "es", "ar", "ary"],
+          supported_currencies: ["EUR", "USD", "MAD"],
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// Resource 5: vocalia://pricing — Plans and pricing
+server.registerResource(
+  "pricing",
+  "vocalia://pricing",
+  {
+    description: "VocalIA pricing plans with features, costs, and margin analysis. Source of truth for commercial offers.",
+    mimeType: "application/json",
+  },
+  async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "application/json",
+        text: JSON.stringify({
+          currency: "EUR",
+          trial: "14-day free trial (no free tier)",
+          plans: [
+            {
+              name: "Starter",
+              price: 49,
+              period: "month",
+              target: "Small businesses",
+              features: ["Voice AI assistant", "500 conversations/month", "1 persona", "1 language", "Email support"],
+              margin: "~90-93%",
+            },
+            {
+              name: "Pro",
+              price: 99,
+              period: "month",
+              target: "Growing businesses",
+              features: ["Lead generation + booking", "CRM sync", "5 personas", "5 languages", "Priority support"],
+              margin: "~80-92%",
+            },
+            {
+              name: "E-commerce",
+              price: 99,
+              period: "month",
+              target: "Online stores",
+              features: ["Cart recovery", "Product quiz", "Gamification", "7 platform integrations", "Priority support"],
+              margin: "~80-92%",
+            },
+            {
+              name: "Telephony",
+              price: 199,
+              period: "month",
+              usage: "0.10€/min",
+              target: "Call centers & enterprises",
+              features: ["AI phone line", "38 personas", "5 languages", "Twilio PSTN", "25 function tools", "Dedicated support"],
+              margin: "~38% on usage",
+            },
+          ],
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// Resource 6: vocalia://languages — Supported languages and voice configurations
+server.registerResource(
+  "languages",
+  "vocalia://languages",
+  {
+    description: "Complete language support matrix with voice provider mappings, RTL flags, and geo-detection rules.",
+    mimeType: "application/json",
+  },
+  async (uri) => {
+    return {
+      contents: [{
+        uri: uri.href,
+        mimeType: "application/json",
+        text: JSON.stringify({
+          total: 5,
+          languages: [
+            { code: "fr", name: "Français", native: "Français", rtl: false, voice_providers: ["grok", "gemini", "elevenlabs"], geo_countries: ["FR", "BE", "CH", "MA", "DZ", "TN"] },
+            { code: "en", name: "English", native: "English", rtl: false, voice_providers: ["grok", "gemini", "elevenlabs"], geo_countries: ["US", "GB", "AE"] },
+            { code: "es", name: "Spanish", native: "Español", rtl: false, voice_providers: ["grok", "gemini", "elevenlabs"], geo_countries: ["ES"] },
+            { code: "ar", name: "Arabic (MSA)", native: "العربية", rtl: true, voice_providers: ["grok", "gemini", "elevenlabs"], geo_countries: ["AE", "SA"] },
+            { code: "ary", name: "Darija (Moroccan Arabic)", native: "الدارجة", rtl: true, voice_providers: ["grok", "gemini"], geo_countries: ["MA"] },
+          ],
+          fallback_chain: "grok → gemini → anthropic → atlas → local (rule-based)",
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// =============================================================================
+// PROMPTS (8) — MCP Phase 2: Pre-built conversation templates
+// =============================================================================
+
+// Prompt 1: voice-response — Generate AI voice response
+server.registerPrompt(
+  "voice-response",
+  {
+    title: "Voice Response",
+    description: "Generate an AI voice response using a VocalIA persona. Returns a system+user message pair ready for voice synthesis.",
+    argsSchema: {
+      message: z.string().describe("The user message to respond to"),
+      language: z.enum(["fr", "en", "es", "ar", "ary"]).default("fr").describe("Response language"),
+      personaKey: z.string().default("AGENCY").describe("Persona key (e.g. AGENCY, DENTAL, PROPERTY)"),
+    },
+  },
+  async ({ message, language, personaKey }) => {
+    const key = personaKey.toUpperCase();
+    const systemPrompt = INJECTOR_SYSTEM_PROMPTS[key]?.[language]
+      || SYSTEM_PROMPTS[key]?.[language]
+      || SYSTEM_PROMPTS["AGENCY"]?.[language]
+      || "You are VocalIA, a voice AI assistant.";
+
+    return {
+      messages: [
+        { role: "user" as const, content: { type: "text" as const, text: `[System Persona: ${key} | Language: ${language}]\n\n${systemPrompt}` } },
+        { role: "user" as const, content: { type: "text" as const, text: message } },
+      ],
+    };
+  }
+);
+
+// Prompt 2: qualify-lead — BANT lead qualification
+server.registerPrompt(
+  "qualify-lead",
+  {
+    title: "Lead Qualification (BANT)",
+    description: "Qualify a sales lead using the BANT framework (Budget, Authority, Need, Timeline). Returns a structured qualification analysis.",
+    argsSchema: {
+      budget: z.string().describe("Prospect's budget range or willingness to invest"),
+      authority: z.string().describe("Decision-making authority level"),
+      need: z.string().describe("Business need or pain point"),
+      timeline: z.string().describe("Expected timeline for decision/implementation"),
+    },
+  },
+  async ({ budget, authority, need, timeline }) => {
+    return {
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: `You are VocalIA's lead qualification expert. Analyze this prospect using the BANT framework and provide a qualification score (0-100), recommended next action, and suggested VocalIA plan.
+
+**Budget:** ${budget}
+**Authority:** ${authority}
+**Need:** ${need}
+**Timeline:** ${timeline}
+
+VocalIA Plans: Starter (49€/mo), Pro (99€/mo), E-commerce (99€/mo), Telephony (199€/mo + 0.10€/min).
+
+Respond with:
+1. BANT Score (0-100) with breakdown per dimension
+2. Qualification status: HOT / WARM / COLD
+3. Recommended VocalIA plan
+4. Suggested next action (demo, trial, call, nurture)
+5. Key objection risks`,
+          },
+        },
+      ],
+    };
+  }
+);
+
+// Prompt 3: book-appointment — Booking workflow
+server.registerPrompt(
+  "book-appointment",
+  {
+    title: "Book Discovery Call",
+    description: "Create a booking request for a VocalIA discovery call. Generates the structured booking data.",
+    argsSchema: {
+      email: z.string().describe("Prospect's email address"),
+      preferredTime: z.string().describe("Preferred date/time (ISO 8601 or natural language)"),
+      notes: z.string().optional().describe("Additional notes or context about the prospect"),
+    },
+  },
+  async ({ email, preferredTime, notes }) => {
+    return {
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: `You are VocalIA's booking assistant. A prospect wants to schedule a discovery call.
+
+**Email:** ${email}
+**Preferred Time:** ${preferredTime}
+${notes ? `**Notes:** ${notes}` : ""}
+
+Use the booking_create tool to register this appointment. Then confirm the booking with a professional response including:
+1. Confirmation of the time slot
+2. What to expect during the 20-min discovery call
+3. A link to vocalia.ma/booking for rescheduling`,
+          },
+        },
+      ],
+    };
+  }
+);
+
+// Prompt 4: check-order — Multi-platform order status
+server.registerPrompt(
+  "check-order",
+  {
+    title: "Check Order Status",
+    description: "Check order status across supported e-commerce platforms (Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop).",
+    argsSchema: {
+      orderId: z.string().describe("Order ID or reference number"),
+      platform: z.enum(["shopify", "woocommerce", "magento", "wix", "squarespace", "bigcommerce", "prestashop"]).describe("E-commerce platform"),
+    },
+  },
+  async ({ orderId, platform }) => {
+    const toolMap: Record<string, string> = {
+      shopify: "shopify_get_order",
+      woocommerce: "woocommerce_get_order",
+      magento: "magento_get_order",
+      wix: "wix_get_order",
+      squarespace: "squarespace_get_order",
+      bigcommerce: "bigcommerce_get_order",
+      prestashop: "prestashop_get_order",
+    };
+
+    return {
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: `You are VocalIA's e-commerce assistant. A customer wants to check their order status.
+
+**Order ID:** ${orderId}
+**Platform:** ${platform}
+
+Use the ${toolMap[platform]} tool to retrieve the order details. Then provide:
+1. Current order status (processing, shipped, delivered, etc.)
+2. Tracking information if available
+3. Estimated delivery date
+4. Any action items needed`,
+          },
+        },
+      ],
+    };
+  }
+);
+
+// Prompt 5: create-invoice — Stripe invoice workflow
+server.registerPrompt(
+  "create-invoice",
+  {
+    title: "Create Invoice",
+    description: "Create and send a Stripe invoice. Guides through customer lookup/creation, invoice line items, and sending.",
+    argsSchema: {
+      customerEmail: z.string().describe("Customer email address"),
+      amount: z.string().describe("Invoice amount (e.g. '99.00')"),
+      currency: z.enum(["eur", "usd", "mad"]).default("eur").describe("Invoice currency"),
+    },
+  },
+  async ({ customerEmail, amount, currency }) => {
+    return {
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: `You are VocalIA's billing assistant. Create and send a Stripe invoice.
+
+**Customer Email:** ${customerEmail}
+**Amount:** ${amount} ${currency.toUpperCase()}
+**Currency:** ${currency}
+
+Follow these steps using the available Stripe tools:
+1. Search for existing customer with stripe_list_customers (filter by email)
+2. If not found, create with stripe_create_customer
+3. Add invoice item with stripe_add_invoice_item
+4. Create invoice with stripe_create_invoice
+5. Finalize with stripe_finalize_invoice
+6. Send with stripe_send_invoice
+
+Report the invoice URL and status when complete.`,
+          },
+        },
+      ],
+    };
+  }
+);
+
+// Prompt 6: export-report — Generate data export
+server.registerPrompt(
+  "export-report",
+  {
+    title: "Export Report",
+    description: "Generate a data export in CSV, XLSX, or PDF format using VocalIA's export tools.",
+    argsSchema: {
+      data: z.string().describe("JSON string of data to export, or description of what to export"),
+      format: z.enum(["csv", "xlsx", "pdf"]).describe("Export format"),
+      title: z.string().describe("Report title"),
+    },
+  },
+  async ({ data, format, title }) => {
+    const toolMap: Record<string, string> = {
+      csv: "export_generate_csv",
+      xlsx: "export_generate_xlsx",
+      pdf: "export_generate_pdf",
+    };
+
+    return {
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: `You are VocalIA's reporting assistant. Generate a ${format.toUpperCase()} report.
+
+**Title:** ${title}
+**Format:** ${format}
+**Data:** ${data}
+
+Use the ${toolMap[format]} tool to generate the export. If the data is a description rather than JSON, first gather the data using appropriate tools (sheets, CRM, etc.), then generate the export.
+
+Return the file path and size when complete.`,
+          },
+        },
+      ],
+    };
+  }
+);
+
+// Prompt 7: onboard-tenant — New client onboarding
+server.registerPrompt(
+  "onboard-tenant",
+  {
+    title: "Onboard New Tenant",
+    description: "Guide through the complete onboarding workflow for a new VocalIA client including persona selection, integration setup, and configuration.",
+    argsSchema: {
+      tenantId: z.string().describe("Unique tenant identifier (lowercase, alphanumeric + underscores)"),
+      industry: z.string().describe("Client's industry (e.g. dental, real-estate, e-commerce, restaurant)"),
+    },
+  },
+  async ({ tenantId, industry }) => {
+    // Find matching personas for this industry
+    const matchingPersonas = Object.values(PERSONAS_DATA).flat()
+      .filter((p: any) => p.industries.some((i: string) =>
+        i.toLowerCase().includes(industry.toLowerCase()) ||
+        industry.toLowerCase().includes(i.toLowerCase())
+      ))
+      .map((p: any) => p.key);
+
+    return {
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: `You are VocalIA's onboarding specialist. Set up a new client.
+
+**Tenant ID:** ${tenantId}
+**Industry:** ${industry}
+**Matching Personas:** ${matchingPersonas.length > 0 ? matchingPersonas.join(", ") : "UNIVERSAL_SME (no exact match)"}
+
+Onboarding checklist:
+1. Verify tenant ID is unique and follows naming convention
+2. Select primary persona from matches above (use personas_get for details)
+3. Recommend VocalIA plan based on industry:
+   - Service businesses → Pro (99€/mo)
+   - E-commerce → E-commerce (99€/mo)
+   - High-volume calls → Telephony (199€/mo)
+   - Starting out → Starter (49€/mo)
+4. Configure integrations (CRM, e-commerce platform, calendar)
+5. Set market rules (language, currency based on client location)
+6. Generate API key and widget embed code
+7. Schedule training discovery call using booking_create
+
+Provide a complete configuration summary when done.`,
+          },
+        },
+      ],
+    };
+  }
+);
+
+// Prompt 8: troubleshoot — System diagnostics
+server.registerPrompt(
+  "troubleshoot",
+  {
+    title: "Troubleshoot System",
+    description: "Diagnose VocalIA system issues using available status and monitoring tools.",
+    argsSchema: {
+      symptom: z.string().describe("Description of the problem or error message"),
+    },
+  },
+  async ({ symptom }) => {
+    return {
+      messages: [
+        {
+          role: "user" as const,
+          content: {
+            type: "text" as const,
+            text: `You are VocalIA's system diagnostic assistant. Investigate and resolve this issue.
+
+**Symptom:** ${symptom}
+
+Diagnostic procedure:
+1. Run api_status to check overall system health
+2. Run voice_providers_status to check AI provider connectivity
+3. Run knowledge_base_status to check retrieval system
+4. Check relevant service logs
+
+Common issues:
+- "No response" → Voice API not running (port 3004) or provider API key missing
+- "Wrong language" → Check persona language config with personas_get
+- "Widget not loading" → Check allowed_origins in tenant config
+- "Call failed" → Check Twilio credentials and telephony bridge (port 3009)
+- "Slow responses" → Check fallback chain activation, may indicate primary provider down
+
+Provide:
+1. Root cause identification
+2. Severity level (CRITICAL / HIGH / MEDIUM / LOW)
+3. Step-by-step fix instructions
+4. Prevention recommendations`,
+          },
+        },
+      ],
+    };
+  }
+);
+
+// =============================================================================
 // SERVER STARTUP
 // =============================================================================
 
@@ -1677,6 +2285,8 @@ async function main() {
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
   console.error("Tools: 203 (11 always available, 192 require external services)");
+  console.error("Resources: 6 (personas, persona-detail, knowledge-base, market-rules, pricing, languages)");
+  console.error("Prompts: 8 (voice-response, qualify-lead, book-appointment, check-order, create-invoice, export-report, onboard-tenant, troubleshoot)");
   console.error("E-commerce: Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop (~64% market)");
   console.error("CRM: HubSpot (7 tools - CTI, Contacts, Deals, Pipelines)");
   console.error("Marketing: Klaviyo (5 tools - Profiles, Events, Segments)");

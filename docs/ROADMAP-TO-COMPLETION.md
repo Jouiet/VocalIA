@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.171c (MCP-SOTA Phase 0+1 DONE — 203 tools migrated to modern API with descriptions+annotations)
-> **Code Completeness:** 9.4/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
+> **Date:** 2026-02-09 | **Session:** 250.171c (MCP-SOTA Phase 0+1+2 DONE — 203 tools + 6 resources + 8 prompts, all 3 MCP primitives)
+> **Code Completeness:** 9.5/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed, 2 false alarm, 2 already fixed) + **MCP-SOTA 250.171c** (Phase 0+1 complete)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed, 2 false alarm, 2 already fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.4/10** — Features coded and tested (3,776 tests, 68 files). 79 total bugs found, 74 fixed, 5 remain (M5 arch + non-fixable). MCP-SOTA Phase 0+1 complete: ALL 203 tools use modern registerTool() API with descriptions, annotations (readOnly/destructive/idempotent), and isError flags. Version unified to 1.0.0. MCP score 2.5→5.5/10.
+**Code Completeness: 9.5/10** — Features coded and tested (3,799 tests, 68 files). 79 total bugs found, 74 fixed, 5 remain (M5 arch + non-fixable). MCP-SOTA Phase 0+1+2 complete: ALL 203 tools use modern registerTool() API with descriptions+annotations+isError. 6 resources (5 static + 1 template with list+autocomplete). 8 prompts with title+description+argsSchema. All 3 MCP primitives implemented. Version 1.0.0. MCP score 2.5→7.5/10.
 **Production Readiness: 4.0/10** — VERIFIED 250.171 via curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (Grok/Gemini/Claude/Atlas all configured:true)
@@ -286,7 +286,9 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | personas/ | 8,776 lines / 2 files | `wc -l personas/*.cjs personas/*.json` |
 | telephony/ | 4,754 lines / 1 file | `wc -l telephony/*.cjs` |
 | mcp-server/src/ | 17,628 lines / 31 files | `find mcp-server/src -name "*.ts"` |
-| MCP tools | 203 | `grep -c "registerTool\|registerModuleTool" mcp-server/src/index.ts` |
+| MCP tools | 203 (22 inline + 181 external) | `node --test test/mcp-server.test.mjs` |
+| MCP resources | 6 (5 static + 1 template) | `grep -c "server.registerResource(" mcp-server/src/index.ts` |
+| MCP prompts | 8 | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
 | HTML pages | 80 | `find website -name "*.html" | wc -l` |
@@ -297,7 +299,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 3,774 tests | 3,774 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.171)
+**TOTAL: 3,799 tests | 3,799 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.171c)
 
 Top test suites (by count):
 
@@ -307,7 +309,7 @@ Top test suites (by count):
 | voice-api | 105 | Rebuilt 250.115 |
 | db-api | 94 | Rebuilt 250.115 |
 | widget | 92 | 3 bugs fixed 250.127 |
-| mcp-server | 80 | Rebuilt 250.115 |
+| mcp-server | 105 | Rebuilt 250.171c (tools+resources+prompts) |
 | telephony-pure | 76 | Real functions |
 | persona-audit | 711 | 38 × 5 langs |
 

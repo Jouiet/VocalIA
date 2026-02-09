@@ -6,6 +6,7 @@
  * Tests real structure — not source-grep theater.
  *
  * Session 250.171c: Updated to match server.registerTool() + registerModuleTool() patterns
+ * + Resources (registerResource) + Prompts (registerPrompt) validation
  *
  * Run: node --test test/mcp-server.test.mjs
  */
@@ -323,5 +324,122 @@ describe('MCP critical inline tools', () => {
 
   test('has telephony_initiate_call', () => {
     assert.ok(inlineTools.includes('telephony_initiate_call'));
+  });
+});
+
+// ─── Resource Registrations ────────────────────────────────────────────────
+
+describe('MCP resources', () => {
+  // Static resources: server.registerResource(\n  "name",\n  "vocalia://..."
+  const staticResourceRegex = /server\.registerResource\(\s*\n\s*"([^"]+)",\s*\n\s*"(vocalia:\/\/[^"]+)"/g;
+  const staticResources = [];
+  let rm;
+  while ((rm = staticResourceRegex.exec(indexContent)) !== null) {
+    staticResources.push({ name: rm[1], uri: rm[2] });
+  }
+
+  // Template resources: server.registerResource(\n  "name",\n  new ResourceTemplate(
+  const templateResourceRegex = /server\.registerResource\(\s*\n\s*"([^"]+)",\s*\n\s*new ResourceTemplate\("(vocalia:\/\/[^"]+)"/g;
+  const templateResources = [];
+  while ((rm = templateResourceRegex.exec(indexContent)) !== null) {
+    templateResources.push({ name: rm[1], uri: rm[2] });
+  }
+
+  test('5 static resources registered', () => {
+    assert.strictEqual(staticResources.length, 5,
+      `Expected 5 static resources, found ${staticResources.length}: ${staticResources.map(r => r.name).join(', ')}`);
+  });
+
+  test('1 template resource registered', () => {
+    assert.strictEqual(templateResources.length, 1,
+      `Expected 1 template resource, found ${templateResources.length}: ${templateResources.map(r => r.name).join(', ')}`);
+  });
+
+  test('6 total resources', () => {
+    const total = staticResources.length + templateResources.length;
+    assert.strictEqual(total, 6, `Expected 6 total resources, found ${total}`);
+  });
+
+  const expectedResources = [
+    { name: 'personas', uri: 'vocalia://personas' },
+    { name: 'knowledge-base', uri: 'vocalia://knowledge-base' },
+    { name: 'market-rules', uri: 'vocalia://market-rules' },
+    { name: 'pricing', uri: 'vocalia://pricing' },
+    { name: 'languages', uri: 'vocalia://languages' },
+  ];
+
+  for (const { name, uri } of expectedResources) {
+    test(`has static resource '${name}' at ${uri}`, () => {
+      const found = staticResources.find(r => r.name === name && r.uri === uri);
+      assert.ok(found, `Missing resource: ${name} (${uri})`);
+    });
+  }
+
+  test('has template resource persona-detail', () => {
+    const found = templateResources.find(r => r.name === 'persona-detail');
+    assert.ok(found, 'Missing template resource: persona-detail');
+  });
+
+  test('all resources have description', () => {
+    const resourceBlocks = indexContent.match(/server\.registerResource\(\s*\n\s*"[^"]+",[\s\S]*?description:/g) || [];
+    assert.strictEqual(resourceBlocks.length, 6,
+      `Expected 6 resources with description, found ${resourceBlocks.length}`);
+  });
+});
+
+// ─── Prompt Registrations ──────────────────────────────────────────────────
+
+describe('MCP prompts', () => {
+  // Pattern: server.registerPrompt(\n  "prompt-name"
+  const promptRegex = /server\.registerPrompt\(\s*\n\s*"([^"]+)"/g;
+  const prompts = [];
+  let pm;
+  while ((pm = promptRegex.exec(indexContent)) !== null) {
+    prompts.push(pm[1]);
+  }
+
+  test('8 prompts registered', () => {
+    assert.strictEqual(prompts.length, 8,
+      `Expected 8 prompts, found ${prompts.length}: ${prompts.join(', ')}`);
+  });
+
+  const expectedPrompts = [
+    'voice-response', 'qualify-lead', 'book-appointment', 'check-order',
+    'create-invoice', 'export-report', 'onboard-tenant', 'troubleshoot'
+  ];
+
+  for (const name of expectedPrompts) {
+    test(`has prompt '${name}'`, () => {
+      assert.ok(prompts.includes(name), `Missing prompt: ${name}`);
+    });
+  }
+
+  test('all prompts use kebab-case', () => {
+    const bad = prompts.filter(p => p !== p.toLowerCase() || p.includes('_'));
+    assert.strictEqual(bad.length, 0, `Non-kebab-case prompts: ${bad.join(', ')}`);
+  });
+
+  test('all prompts have description', () => {
+    const promptBlocks = indexContent.match(/server\.registerPrompt\(\s*\n\s*"[^"]+",\s*\n\s*\{[\s\S]*?description:/g) || [];
+    assert.strictEqual(promptBlocks.length, 8,
+      `Expected 8 prompts with description, found ${promptBlocks.length}`);
+  });
+
+  test('zero deprecated server.prompt() calls', () => {
+    const lines = indexContent.split('\n');
+    const deprecated = lines.filter(line => {
+      const trimmed = line.trim();
+      return !trimmed.startsWith('//') && !trimmed.startsWith('*') && trimmed.includes('server.prompt(');
+    }).length;
+    assert.strictEqual(deprecated, 0, `Found ${deprecated} deprecated server.prompt() calls — should be 0`);
+  });
+
+  test('zero deprecated server.resource() calls', () => {
+    const lines = indexContent.split('\n');
+    const deprecated = lines.filter(line => {
+      const trimmed = line.trim();
+      return !trimmed.startsWith('//') && !trimmed.startsWith('*') && trimmed.includes('server.resource(');
+    }).length;
+    assert.strictEqual(deprecated, 0, `Found ${deprecated} deprecated server.resource() calls — should be 0`);
   });
 });

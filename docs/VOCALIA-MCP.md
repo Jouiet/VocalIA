@@ -3,15 +3,17 @@
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
 > Version: 1.0.0 | 09/02/2026 | Session 250.171c | **203 tools** (22 inline + 181 modules) | **32 .ts files** | **19,173 lines**
 >
-> **MCP Compliance Score: 5.5/10** — Phase 0+1 DONE (250.171c): version unified, API migrated, descriptions+annotations on ALL 203 tools
+> **MCP Compliance Score: 7.5/10** — Phase 0+1+2 DONE (250.171c): 203 tools + 6 resources + 8 prompts, all 3 MCP primitives
 >
 > **Status**: Code exists. **0 tools connected to real external APIs.** All tools require per-tenant API key configuration.
 > **Transport**: stdio uniquement (local) — **PAS de transport remote (HTTP/SSE)** → incompatible ChatGPT/Gemini SDK/remote
-> **SDK**: `@modelcontextprotocol/sdk@1.25.3` — utilise `server.registerTool()` (modern API) + `registerModuleTool()` helper
-> **Primitives MCP utilisées**: 1/3 (Tools only — **ZERO Resources, ZERO Prompts**)
+> **SDK**: `@modelcontextprotocol/sdk@1.25.3` — utilise `server.registerTool()` + `registerResource()` + `registerPrompt()` (all modern API)
+> **Primitives MCP utilisées**: 3/3 (Tools ✅ + Resources ✅ + Prompts ✅)
 >
 > **Protocol Status:**
 > - **MCP (Tools)**: ✅ 203 tools registered — ALL via modern `registerTool()` API, descriptions on ALL, annotations (readOnly/destructive/idempotent) on ALL, isError flags on error returns
+> - **MCP (Resources)**: ✅ 6 resources (5 static + 1 template with list+autocomplete)
+> - **MCP (Prompts)**: ✅ 8 prompts with title+description+argsSchema, kebab-case naming
 > - **A2A (Event Bus)**: ✅ coded (widget events → AgencyEventBus) — not connected to real traffic
 > - **AG-UI (Dynamic UI)**: ✅ coded (Widget Orchestrator, 7 widgets) — 0 real users
 > - **UCP (ContextBox)**: ✅ coded (LTV tiers bronze→diamond) — 0 real profiles
@@ -39,14 +41,14 @@ MCP définit **3 primitives serveur** (spec 2025-11-25) :
 
 ## MCP Compliance Audit — 250.171b (18 bugs)
 
-### Score: 5.5/10 (was 2.5 — Phase 0+1 completed 250.171c)
+### Score: 7.5/10 (was 2.5→5.5→7.5 — Phase 0+1+2 completed 250.171c)
 
 | Catégorie | Score | Détail |
 |:----------|:-----:|:-------|
 | Tools (quantité) | 10/10 | 203 tools — massif, bien structuré |
 | Tools (qualité) | 7/10 | ✅ Modern API (registerTool), ✅ descriptions on ALL 203, ✅ annotations on ALL, ⬚ outputSchema (Phase 1.3) |
-| Resources | 0/10 | ZERO implémenté (Phase 2) |
-| Prompts | 0/10 | ZERO implémenté (Phase 2) |
+| Resources | 9/10 | ✅ 6 resources (5 static + 1 template with list+autocomplete), descriptions on ALL |
+| Prompts | 9/10 | ✅ 8 prompts with title+description+argsSchema, kebab-case, covers all key workflows |
 | Transport | 2/10 | stdio only — pas de remote (SSE/HTTP) (Phase 4) |
 | Error handling | 5/10 | ✅ isError flags on inline tool errors, ⬚ module tools (delegated to module handler) |
 | Logging | 0/10 | 0 sendLoggingMessage() (Phase 3) |
@@ -62,8 +64,8 @@ MCP définit **3 primitives serveur** (spec 2025-11-25) :
 |:--:|:----|:--------|:-----:|
 | C1 | **203 tools sans description** — `server.tool(name, schema, handler)` ne passe JAMAIS le `description` field malgré que les modules l'exportent | `index.ts` | 1195-1520 |
 | C2 | **API deprecated** — `server.tool()` marqué `@deprecated` dans SDK 1.25.3, remplacé par `server.registerTool()` avec support `title`, `description`, `annotations`, `outputSchema` | `index.ts` | ALL |
-| C3 | **ZERO Resources** — Pas de `server.registerResource()` malgré données riches (personas, KB 119 services, market rules, client registry) | `index.ts` | N/A |
-| C4 | **ZERO Prompts** — Pas de `server.registerPrompt()` malgré 190 system prompts multilingues existants | `index.ts` | N/A |
+| C3 | ~~**ZERO Resources**~~ ✅ FIXED — 6 resources: personas, persona-detail (template), knowledge-base, market-rules, pricing, languages | `index.ts` | 1670-1836 |
+| C4 | ~~**ZERO Prompts**~~ ✅ FIXED — 8 prompts: voice-response, qualify-lead, book-appointment, check-order, create-invoice, export-report, onboard-tenant, troubleshoot | `index.ts` | 1838-2058 |
 | C5 | **Transport stdio only** — Incompatible avec ChatGPT (requiert SSE/Streamable HTTP + OAuth 2.1), Gemini SDK (expérimental SSE), et tout accès remote | `index.ts` | 1526-1545 |
 
 #### HIGH (5)
@@ -144,25 +146,25 @@ server.sendPromptListChanged()
 | Export/Generate | ✅ | ❌ | ✅ | export_*, voice_generate_response (~8) |
 | System | ✅ | ❌ | ✅ | api_status, system_languages (~5) |
 
-### Phase 2 — Resources & Prompts (~6h)
+### Phase 2 — Resources & Prompts ✅ DONE (250.171c)
 
-| # | Tâche | Priorité | Effort |
-|:-:|:------|:--------:|:------:|
-| 2.1 | **Ajouter Resources** (6 resources) | P1 | 3h |
-| 2.2 | **Ajouter Prompts** (8 prompts) | P1 | 3h |
+| # | Tâche | Status | Notes |
+|:-:|:------|:------:|:------|
+| 2.1 | **Ajouter Resources** (6 resources) | ✅ | 5 static + 1 template (persona-detail with list+complete) |
+| 2.2 | **Ajouter Prompts** (8 prompts) | ✅ | All with title+description+argsSchema, kebab-case naming |
 
-**Resources à implémenter :**
+**Resources implémentées :**
 
 | Resource URI | Description | Source |
 |:-------------|:------------|:-------|
-| `vocalia://personas` | Liste 38 personas avec metadata | `voice-persona-injector.cjs` |
-| `vocalia://personas/{key}` | Template — détails persona par clé | `voice-persona-injector.cjs` |
-| `vocalia://knowledge-base` | 119 services indexés | `data/vocalia-knowledge-base.json` |
-| `vocalia://market-rules` | Règles marché (MA→FR/MAD, EU→FR/EUR, etc.) | `client-registry.cjs` |
-| `vocalia://pricing` | Plans et tarifs (Starter 49€, Pro 99€, etc.) | `core/pricing-engine.cjs` |
-| `vocalia://languages` | 5 langues + voix supportées | statique |
+| `vocalia://personas` | Liste 38 personas avec metadata | `PERSONAS_DATA` (dynamic) |
+| `vocalia://personas/{key}` | Template — détails persona + system prompts | `PERSONAS_DATA` + `INJECTOR_*` |
+| `vocalia://knowledge-base` | Status KB (chunks, categories, search modes) | `data/knowledge-base/status.json` |
+| `vocalia://market-rules` | Règles marché (MA→FR/MAD, EU→FR/EUR, etc.) | statique (mirrors client-registry) |
+| `vocalia://pricing` | Plans et tarifs (Starter 49€, Pro 99€, etc.) | statique (mirrors BUSINESS-INTELLIGENCE.md) |
+| `vocalia://languages` | 5 langues + voix + RTL flags + geo | statique |
 
-**Prompts à implémenter :**
+**Prompts implémentés :**
 
 | Prompt | Args | Description |
 |:-------|:-----|:------------|
@@ -924,14 +926,14 @@ Le serveur MCP résout le client selon la priorité suivante :
 
 ### Versions prévues
 
-| Version | Contenu | Score prévu |
-|:--------|:--------|:----------:|
-| 0.8.0 | État actuel | 2.5/10 |
-| 0.9.0 | Phase 0+1 (descriptions, annotations, modern API) | 5.5/10 |
-| 0.10.0 | Phase 2 (Resources + Prompts) | 7.0/10 |
-| 0.11.0 | Phase 3 (Logging + Progress) | 7.5/10 |
-| 1.0.0-rc | Phase 4 (HTTP transport + OAuth) | 9.0/10 |
-| **1.0.0** | Phase 5 (Published: npm + Registry + Docker) | **9.5/10** |
+| Version | Contenu | Score |
+|:--------|:--------|:-----:|
+| 0.8.0 | Initial audit | 2.5/10 |
+| 1.0.0-alpha | Phase 0+1 (descriptions, annotations, modern API) | 5.5/10 |
+| **1.0.0-beta** | **Phase 0+1+2 (+ Resources + Prompts) — CURRENT** | **7.5/10** |
+| 1.0.0-rc | Phase 3 (Logging + Progress) | 8.0/10 |
+| 1.0.0 | Phase 4 (HTTP transport + OAuth) | 9.0/10 |
+| **1.1.0** | Phase 5 (Published: npm + Registry + Docker) | **9.5/10** |
 
 ---
 
