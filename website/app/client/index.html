@@ -333,6 +333,79 @@
         <div id="activity-heatmap" class="overflow-x-auto"></div>
       </div>
 
+      <!-- Quota Usage -->
+      <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-2">
+            <i data-lucide="pie-chart" class="w-5 h-5 text-indigo-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.quota.title">Utilisation du forfait</h3>
+          </div>
+          <span id="quota-plan-badge" class="text-xs px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full">--</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <!-- Sessions quota -->
+          <div class="flex flex-col items-center">
+            <div class="relative w-24 h-24">
+              <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6" class="text-zinc-200 dark:text-white/[0.08]" />
+                <circle id="quota-sessions-ring" cx="50" cy="50" r="40" fill="none" stroke="url(#quotaSessionGrad)" stroke-width="6" stroke-linecap="round" stroke-dasharray="251.33" stroke-dashoffset="251.33" />
+                <defs>
+                  <linearGradient id="quotaSessionGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#6366f1" />
+                    <stop offset="100%" stop-color="#818cf8" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="quota-sessions-pct" class="text-lg font-bold text-zinc-900 dark:text-white">--%</span>
+              </div>
+            </div>
+            <p class="mt-2 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="dashboard.quota.sessions">Sessions</p>
+            <p id="quota-sessions-detail" class="text-xs text-zinc-500 mt-0.5">-- / --</p>
+          </div>
+          <!-- Calls quota -->
+          <div class="flex flex-col items-center">
+            <div class="relative w-24 h-24">
+              <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6" class="text-zinc-200 dark:text-white/[0.08]" />
+                <circle id="quota-calls-ring" cx="50" cy="50" r="40" fill="none" stroke="url(#quotaCallGrad)" stroke-width="6" stroke-linecap="round" stroke-dasharray="251.33" stroke-dashoffset="251.33" />
+                <defs>
+                  <linearGradient id="quotaCallGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#8b5cf6" />
+                    <stop offset="100%" stop-color="#a78bfa" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="quota-calls-pct" class="text-lg font-bold text-zinc-900 dark:text-white">--%</span>
+              </div>
+            </div>
+            <p class="mt-2 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="dashboard.quota.calls">Appels</p>
+            <p id="quota-calls-detail" class="text-xs text-zinc-500 mt-0.5">-- / --</p>
+          </div>
+          <!-- KB Entries quota -->
+          <div class="flex flex-col items-center">
+            <div class="relative w-24 h-24">
+              <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6" class="text-zinc-200 dark:text-white/[0.08]" />
+                <circle id="quota-kb-ring" cx="50" cy="50" r="40" fill="none" stroke="url(#quotaKbGrad)" stroke-width="6" stroke-linecap="round" stroke-dasharray="251.33" stroke-dashoffset="251.33" />
+                <defs>
+                  <linearGradient id="quotaKbGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#10b981" />
+                    <stop offset="100%" stop-color="#34d399" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span id="quota-kb-pct" class="text-lg font-bold text-zinc-900 dark:text-white">--%</span>
+              </div>
+            </div>
+            <p class="mt-2 text-sm font-medium text-zinc-600 dark:text-zinc-400" data-i18n="dashboard.quota.kb_entries">Base de connaissances</p>
+            <p id="quota-kb-detail" class="text-xs text-zinc-500 mt-0.5">-- / --</p>
+          </div>
+        </div>
+      </div>
+
       <!-- ROI Summary -->
       <div class="bg-gradient-to-r from-[#050505] to-[#050505] rounded-xl p-6 text-white relative overflow-hidden">
         <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.15),transparent_60%)]"></div>
@@ -541,6 +614,9 @@
 
         // ROI summary
         renderROISummary(thisMonth);
+
+        // Quota usage
+        renderQuotaUsage(tenantId);
 
       } catch (error) {
         console.error('Dashboard load error:', error);
@@ -938,6 +1014,49 @@
       document.getElementById('roi-leads').textContent = leads.toString();
       document.getElementById('roi-cpl').textContent = leads > 0 ? `${Math.round(costPerLead)}${currency}` : '--';
       document.getElementById('roi-value').textContent = `${estimatedValue.toLocaleString()}${currency}`;
+    }
+
+    // Quota usage — fetch tenant quota from API
+    async function renderQuotaUsage(tenantId) {
+      try {
+        const tenant = await api.tenants.get(tenantId);
+        if (!tenant) return;
+
+        const planNames = { starter: 'Starter', pro: 'Pro', ecommerce: 'E-commerce', telephony: 'Telephony' };
+        const planBadge = document.getElementById('quota-plan-badge');
+        if (planBadge) planBadge.textContent = planNames[tenant.plan] || tenant.plan || 'Starter';
+
+        const quotaItems = [
+          { ringId: 'quota-sessions-ring', pctId: 'quota-sessions-pct', detailId: 'quota-sessions-detail', current: tenant.sessions_current || 0, limit: tenant.sessions_limit || 500 },
+          { ringId: 'quota-calls-ring', pctId: 'quota-calls-pct', detailId: 'quota-calls-detail', current: tenant.calls_current || 0, limit: tenant.calls_limit || 200 },
+          { ringId: 'quota-kb-ring', pctId: 'quota-kb-pct', detailId: 'quota-kb-detail', current: tenant.kb_entries_current || 0, limit: tenant.kb_entries_limit || 100 }
+        ];
+
+        const circumference = 251.33;
+        quotaItems.forEach(q => {
+          const pct = q.limit > 0 ? Math.min(100, Math.round((q.current / q.limit) * 100)) : 0;
+          const offset = circumference - (circumference * pct / 100);
+
+          const ring = document.getElementById(q.ringId);
+          if (ring) {
+            ring.style.strokeDashoffset = offset;
+            ring.style.transition = 'stroke-dashoffset 1.2s ease-out';
+          }
+
+          const pctEl = document.getElementById(q.pctId);
+          if (pctEl) pctEl.textContent = `${pct}%`;
+
+          const detailEl = document.getElementById(q.detailId);
+          if (detailEl) detailEl.textContent = `${q.current.toLocaleString()} / ${q.limit.toLocaleString()}`;
+
+          // Color warning if > 80%
+          if (pct > 80 && ring) {
+            ring.style.stroke = pct > 95 ? '#ef4444' : '#f59e0b';
+          }
+        });
+      } catch (e) {
+        console.error('Quota load error:', e);
+      }
     }
 
     // Load data
