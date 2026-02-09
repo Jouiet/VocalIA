@@ -35,6 +35,31 @@ const {
   setSecurityHeaders
 } = require('../lib/security-utils.cjs');
 
+// Session 250.171: JWT for admin endpoint auth (C2-AUDIT)
+const jwt = require('jsonwebtoken');
+function checkAdminAuth(req, res) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Authorization required' }));
+    return false;
+  }
+  try {
+    const token = authHeader.slice(7);
+    const decoded = jwt.verify(token, ENV.JWT_SECRET);
+    if (decoded.role !== 'admin') {
+      res.writeHead(403, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Admin access required' }));
+      return false;
+    }
+    return decoded;
+  } catch (e) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Invalid or expired token' }));
+    return false;
+  }
+}
+
 // Session 250.153: Dynamic CORS — loads tenant domains from client_registry.json
 // Tenant allowed origins cache (refreshed every 5 min)
 let _tenantOrigins = new Set();
@@ -419,6 +444,9 @@ function addSystemLog(level, message, details = {}) {
 
 // Initialize with startup log (port logged at server start)
 addSystemLog('INFO', 'Voice API Resilient module loaded');
+
+// Session 250.171: Module-level sheetsDB (M1-AUDIT — was implicit global)
+let sheetsDB = null;
 
 // Session 250.51: Load tenants from Google Sheets Database
 async function loadTenantsFromDB() {
@@ -1780,7 +1808,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 
   // Session 250.xx: Load per-tenant credentials for integrations
   const tenantSecrets = await SecretVault.getAllSecrets(tenantId);
-  const geminiKey = tenantSecrets.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+  const geminiKey = tenantSecrets.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
   const grokKey = tenantSecrets.XAI_API_KEY || process.env.XAI_API_KEY;
   const anthropicKey = tenantSecrets.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY;
   const atlasKey = tenantSecrets.HUGGINGFACE_API_KEY || process.env.HUGGINGFACE_API_KEY; // For Darija
@@ -2199,7 +2227,9 @@ function startServer(port = 3004) {
     }
 
     // Session 250.44: Admin dashboard metrics endpoint
+    // Session 250.171: C2-AUDIT — Admin auth guard on ALL /admin/* endpoints
     if (req.url === '/admin/metrics' && req.method === 'GET') {
+      if (!checkAdminAuth(req, res)) return;
       const metrics = getAdminMetrics();
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(metrics, null, 2));
@@ -2208,6 +2238,7 @@ function startServer(port = 3004) {
 
     // Session 250.51: GET /admin/tenants - List all tenants from DB
     if (req.url === '/admin/tenants' && req.method === 'GET') {
+      if (!checkAdminAuth(req, res)) return;
       try {
         if (sheetsDB) {
           const tenants = await sheetsDB.findAll('tenants');
@@ -2227,6 +2258,7 @@ function startServer(port = 3004) {
 
     // Session 250.51: POST /admin/refresh - Reload data from Google Sheets
     if (req.url === '/admin/refresh' && req.method === 'POST') {
+      if (!checkAdminAuth(req, res)) return;
       try {
         await loadTenantsFromDB();
         res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -2244,6 +2276,7 @@ function startServer(port = 3004) {
 
     // Session 250.44: Admin logs endpoint
     if (req.url === '/admin/logs' && req.method === 'GET') {
+      if (!checkAdminAuth(req, res)) return;
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ logs: systemLogs }, null, 2));
       return;
@@ -2251,6 +2284,7 @@ function startServer(port = 3004) {
 
     // Session 250.44: Admin logs export endpoint
     if (req.url.startsWith('/admin/logs/export') && req.method === 'GET') {
+      if (!checkAdminAuth(req, res)) return;
       const params = new URLSearchParams(req.url.split('?')[1] || '');
       const format = params.get('format') || 'json';
       const period = params.get('period') || '24h';
@@ -2284,6 +2318,7 @@ function startServer(port = 3004) {
     // Session 250.44: Register tenant endpoint
     // Session 250.51: Register tenant in Google Sheets DB
     if (req.url === '/admin/tenants' && req.method === 'POST') {
+      if (!checkAdminAuth(req, res)) return;
       let body = '';
       req.on('data', chunk => body += chunk);
       req.on('end', async () => {
@@ -2302,6 +2337,7 @@ function startServer(port = 3004) {
 
     // Session 250.44: Health check endpoint for admin
     if (req.url === '/admin/health' && req.method === 'GET') {
+      if (!checkAdminAuth(req, res)) return;
       const health = {
         status: 'healthy',
         uptime: Math.floor((Date.now() - adminMetrics.startTime) / 1000),
@@ -3313,7 +3349,7 @@ function startServer(port = 3004) {
 
           // Try Grok Whisper-compatible endpoint first
           const xaiKey = process.env.XAI_API_KEY;
-          const geminiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+          const geminiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
 
           let transcript = null;
 

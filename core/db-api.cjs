@@ -1028,6 +1028,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = kbDeleteMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
     const key = kbDeleteMatch[2];
 
     try {
@@ -1068,6 +1073,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = kbSearchMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const q = query.q || query.query;
@@ -1094,8 +1104,14 @@ async function handleRequest(req, res) {
     return;
   }
 
-  // KB Stats - GET /api/kb/stats
+  // KB Stats - GET /api/kb/stats (admin-only: exposes cross-tenant data)
   if (path === '/api/kb/stats' && method === 'GET') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    if (user.role !== 'admin') {
+      sendError(res, 403, 'Admin access required');
+      return;
+    }
     try {
       const { getInstance } = require('./tenant-kb-loader.cjs');
       const loader = getInstance();
@@ -1112,6 +1128,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = kbQuotaMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const { getInstance } = require('./kb-quotas.cjs');
@@ -1129,6 +1150,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = kbImportMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const body = await parseBody(req);
@@ -1178,6 +1204,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = kbRebuildMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const body = await parseBody(req);
@@ -1199,6 +1230,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = kbCrawlMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const body = await parseBody(req);
@@ -1342,9 +1378,14 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = catalogImportMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       if (!body.data || !Array.isArray(body.data)) {
         sendError(res, 400, 'data array required');
         return;
@@ -1393,9 +1434,14 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = catalogSyncMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const catalogStore = getCatalogStore();
       const catalogType = body.type || 'PRODUCTS';
 
@@ -1450,6 +1496,11 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = connectorGetMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
       const catalogStore = getCatalogStore();
@@ -1487,9 +1538,14 @@ async function handleRequest(req, res) {
     const user = await checkAuth(req, res);
     if (!user) return;
     const tenantId = connectorGetMatch[1];
+    // Session 250.171: C3-AUDIT — tenant isolation
+    if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+      sendError(res, 403, 'Forbidden');
+      return;
+    }
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const { CatalogConnectorFactory } = require('./catalog-connector.cjs');
 
       // Validate connector type
@@ -1571,7 +1627,7 @@ async function handleRequest(req, res) {
     const tenantId = catalogListMatch[1];
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       if (!body.name) {
         sendError(res, 400, 'name required');
         return;
@@ -1626,7 +1682,7 @@ async function handleRequest(req, res) {
     const [, tenantId, itemId] = catalogItemMatch;
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const catalogStore = getCatalogStore();
       const catalogType = body.catalog_type || query.type || 'PRODUCTS';
 
@@ -1724,7 +1780,7 @@ async function handleRequest(req, res) {
     // No auth required for public widget access
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const catalogStore = getCatalogStore();
       const catalogType = body.catalog_type || 'PRODUCTS';
 
@@ -1773,7 +1829,7 @@ async function handleRequest(req, res) {
     // No auth required for public widget access
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const query = (body.q || body.query || '').toLowerCase().trim();
 
       if (!query) {
@@ -1832,7 +1888,7 @@ async function handleRequest(req, res) {
   // Uses AI-powered recommendation service: similar, bought_together, personalized
   if (path === '/api/recommendations' && method === 'POST') {
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const tenantId = body.tenant_id;
       const type = body.recommendation_type || 'similar';
 
@@ -1930,7 +1986,7 @@ async function handleRequest(req, res) {
     // No auth required for public widget access
 
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const catalogStore = getCatalogStore();
       const catalogType = body.catalog_type || 'PRODUCTS';
       let items = catalogStore.getItems(tenantId, catalogType) || [];
@@ -2005,7 +2061,7 @@ async function handleRequest(req, res) {
   // Create Lead - POST /api/leads
   if (path === '/api/leads' && method === 'POST') {
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const { tenant_id, source, name, email, phone, quiz_answers } = body;
 
       if (!tenant_id) {
@@ -2065,7 +2121,7 @@ async function handleRequest(req, res) {
   // Triggers voice callback, SMS, or email reminder for abandoned carts
   if (path === '/api/cart-recovery' && method === 'POST') {
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const { tenant_id, channel, contact, cart, discount_percent, language, checkout_url } = body;
 
       if (!tenant_id || !channel || !contact) {
@@ -2290,7 +2346,7 @@ async function handleRequest(req, res) {
   // POST /api/promo/generate — Generate a unique, time-limited promo code
   if (path === '/api/promo/generate' && method === 'POST') {
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const { tenant_id, prize_id, discount_percent, email } = body;
 
       if (!tenant_id || !prize_id) {
@@ -2345,7 +2401,7 @@ async function handleRequest(req, res) {
   // POST /api/promo/validate — Validate and optionally redeem a promo code
   if (path === '/api/promo/validate' && method === 'POST') {
     try {
-      const body = await readBody(req);
+      const body = await parseBody(req);
       const { code, tenant_id, redeem } = body;
 
       if (!code || !tenant_id) {
@@ -2627,7 +2683,7 @@ async function handleRequest(req, res) {
     // No auth required for widget access
     try {
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
-      const body = await readBody(req);
+      const body = await parseBody(req);
 
       if (!body.tenantId) {
         sendError(res, 400, 'tenantId required');
@@ -2684,7 +2740,7 @@ async function handleRequest(req, res) {
   if (path === '/api/ucp/interaction' && method === 'POST') {
     try {
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
-      const body = await readBody(req);
+      const body = await parseBody(req);
 
       if (!body.tenantId || !body.userId) {
         sendError(res, 400, 'tenantId and userId required');
@@ -2714,7 +2770,7 @@ async function handleRequest(req, res) {
   if (path === '/api/ucp/event' && method === 'POST') {
     try {
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
-      const body = await readBody(req);
+      const body = await parseBody(req);
 
       if (!body.tenantId || !body.userId || !body.event) {
         sendError(res, 400, 'tenantId, userId, and event required');

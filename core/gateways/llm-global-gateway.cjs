@@ -26,8 +26,8 @@ class LLMGateway {
 
         if (this.geminiKey) {
             this.genAI = new GoogleGenerativeAI(this.geminiKey);
-            // gemini-3.0-flash is the verified 2026 frontier
-            this.geminiModel = this.genAI.getGenerativeModel({ model: "gemini-3.0-flash" });
+            // Session 250.171: H3-AUDIT — harmonize to gemini-3-flash (matches REST API)
+            this.geminiModel = this.genAI.getGenerativeModel({ model: "gemini-3-flash" });
         }
     }
 
@@ -77,7 +77,7 @@ class LLMGateway {
     /**
      * FRONTIER FALDOWN PROTOCOL (Resilient Chain) - Updated 26/01/2026
      * Models: Claude Opus 4.5 -> GPT-5.2 -> Grok 4.1 -> Gemini 3 Flash
-     * IDs: claude-opus-4-5-20251101, gpt-5.2, grok-4-1-fast-reasoning, gemini-3-flash-preview
+     * IDs: claude-opus-4-5-20251101, gpt-5.2, grok-4-1-fast-reasoning, gemini-3-flash
      * Fallbacks: Claude Opus 4.5 -> Claude 3.5 Sonnet (within Claude chain)
      */
     async generateWithFallback(prompt) {
