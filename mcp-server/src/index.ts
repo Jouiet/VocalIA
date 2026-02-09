@@ -57,6 +57,11 @@
 
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { createMcpExpressApp } from "@modelcontextprotocol/sdk/server/express.js";
+import { mcpAuthRouter } from "@modelcontextprotocol/sdk/server/auth/router.js";
+import { requireBearerAuth } from "@modelcontextprotocol/sdk/server/auth/middleware/bearerAuth.js";
+import { isInitializeRequest } from "@modelcontextprotocol/sdk/types.js";
 import type { ToolAnnotations } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 import * as fs from "fs";
@@ -64,6 +69,8 @@ import * as path from "path";
 import { exec } from "child_process";
 import { promisify } from "util";
 import { createRequire } from "module";
+import { randomUUID } from "crypto";
+import { VocaliaOAuthProvider } from "./auth-provider.js";
 import { calendarTools } from "./tools/calendar.js";
 import { slackTools } from "./tools/slack.js";
 import { ucpTools } from "./tools/ucp.js";
@@ -101,6 +108,7 @@ const require = createRequire(import.meta.url);
 // DYNAMIC DATA LOADING — Single source of truth from voice-persona-injector.cjs
 // =============================================================================
 
+// Loaded once at module level (Node.js caches requires)
 let INJECTOR_PERSONAS: Record<string, any> = {};
 let INJECTOR_SYSTEM_PROMPTS: Record<string, Record<string, string>> = {};
 
@@ -113,6 +121,13 @@ try {
 } catch (e) {
   console.error('⚠️ Could not load voice-persona-injector.cjs — using inline fallback data');
 }
+
+// =============================================================================
+// SERVER FACTORY — Creates a fully configured VocalIA McpServer instance
+// Each call creates an independent server (required for multi-session HTTP transport)
+// =============================================================================
+
+export function createVocaliaServer(): McpServer {
 
 // =============================================================================
 // TOOL ANNOTATION PRESETS
@@ -2299,29 +2314,245 @@ Provide:
   }
 );
 
+return server;
+} // end createVocaliaServer()
+
 // =============================================================================
-// SERVER STARTUP
+// SERVER STARTUP — Dual Transport: stdio (default) or Streamable HTTP
 // =============================================================================
 
-async function main() {
+const MCP_TRANSPORT = process.env.MCP_TRANSPORT || "stdio";
+const MCP_PORT = parseInt(process.env.MCP_PORT || "3015", 10);
+
+function logStartup(server: McpServer, transport: string) {
+  try {
+    server.sendLoggingMessage({
+      level: "info",
+      logger: "startup",
+      data: {
+        event: "server_started",
+        version: "1.0.0",
+        transport,
+        capabilities: { tools: 203, resources: 6, prompts: 8 },
+        languages: 5,
+      },
+    });
+  } catch {
+    // Silently ignore if not connected
+  }
+}
+
+async function startStdio() {
+  const server = createVocaliaServer();
   const transport = new StdioServerTransport();
   await server.connect(transport);
   console.error("VocalIA MCP Server v1.0.0 running on stdio");
-  console.error(`Voice API URL: ${VOCALIA_API_URL}`);
-  console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
+  console.error(`Voice API URL: ${process.env.VOCALIA_API_URL || "http://localhost:3004"}`);
+  console.error(`Telephony URL: ${process.env.VOCALIA_TELEPHONY_URL || "http://localhost:3009"}`);
   console.error("Tools: 203 | Resources: 6 | Prompts: 8");
-  console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
+  logStartup(server, "stdio");
+}
 
-  // MCP protocol logging — visible to connected clients
-  log("info", {
-    event: "server_started",
-    version: "1.0.0",
-    capabilities: { tools: 203, resources: 6, prompts: 8 },
-    voice_api: VOCALIA_API_URL,
-    telephony: VOCALIA_TELEPHONY_URL,
-    personas: Object.values(PERSONAS_DATA).flat().length,
-    languages: 5,
-  }, "startup");
+async function startHttp() {
+  const useOAuth = process.env.MCP_OAUTH === "true" || process.argv.includes("--oauth");
+  const mcpServerUrl = new URL(`http://localhost:${MCP_PORT}/mcp`);
+
+  // Express app with DNS rebinding protection
+  const app = createMcpExpressApp({ host: "0.0.0.0" });
+
+  // --- CORS ---
+  app.use((_req, res, next) => {
+    const allowedOrigins = (process.env.MCP_CORS_ORIGINS || "*").split(",");
+    const origin = _req.headers.origin || "";
+    if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin || "*");
+    }
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Mcp-Session-Id, MCP-Protocol-Version, Authorization, Last-Event-ID");
+    res.setHeader("Access-Control-Expose-Headers", "Mcp-Session-Id");
+    if (_req.method === "OPTIONS") { res.status(204).end(); return; }
+    next();
+  });
+
+  // Body parsing
+  app.use("/mcp", (await import("express")).default.json());
+
+  // --- OAuth 2.1 (optional, enabled with MCP_OAUTH=true or --oauth) ---
+  let authMiddleware: ReturnType<typeof requireBearerAuth> | null = null;
+
+  if (useOAuth) {
+    const oauthProvider = new VocaliaOAuthProvider();
+    const issuerUrl = new URL(process.env.MCP_OAUTH_ISSUER || `http://localhost:${MCP_PORT}`);
+
+    // OAuth endpoints: /authorize, /token, /register, /revoke, /.well-known/oauth-authorization-server
+    app.use(mcpAuthRouter({
+      provider: oauthProvider,
+      issuerUrl,
+      baseUrl: issuerUrl,
+      scopesSupported: ["mcp:tools", "mcp:resources", "mcp:prompts"],
+      resourceName: "VocalIA MCP Server",
+      resourceServerUrl: mcpServerUrl,
+    }));
+
+    // Bearer token validation middleware
+    authMiddleware = requireBearerAuth({
+      verifier: oauthProvider,
+      requiredScopes: [],
+    });
+
+    console.error("✅ OAuth 2.1 enabled — endpoints: /authorize, /token, /register, /revoke");
+  }
+
+  // --- Health endpoint ---
+  app.get("/health", (_req, res) => {
+    res.json({
+      status: "ok",
+      version: "1.0.0",
+      transport: "streamable-http",
+      oauth: useOAuth,
+      tools: 203,
+      resources: 6,
+      prompts: 8,
+    });
+  });
+
+  // --- Rate limiting ---
+  let requestCount = 0;
+  const RATE_LIMIT = parseInt(process.env.MCP_RATE_LIMIT || "100", 10); // per minute
+  const rateLimitWindow: number[] = [];
+
+  app.use("/mcp", (_req, res, next) => {
+    const now = Date.now();
+    while (rateLimitWindow.length > 0 && rateLimitWindow[0]! < now - 60000) {
+      rateLimitWindow.shift();
+    }
+    if (rateLimitWindow.length >= RATE_LIMIT) {
+      res.status(429).json({ error: "Too many requests", retry_after: 60 });
+      return;
+    }
+    rateLimitWindow.push(now);
+    requestCount++;
+    next();
+  });
+
+  // --- Session map ---
+  const transports: Record<string, { transport: StreamableHTTPServerTransport; server: McpServer }> = {};
+
+  // --- MCP POST handler ---
+  const mcpPostHandler = async (req: any, res: any) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+
+    try {
+      // Existing session
+      if (sessionId && transports[sessionId]) {
+        await transports[sessionId].transport.handleRequest(req, res, req.body);
+        return;
+      }
+
+      // New initialization request
+      if (!sessionId && isInitializeRequest(req.body)) {
+        const mcpServer = createVocaliaServer();
+        const transport = new StreamableHTTPServerTransport({
+          sessionIdGenerator: () => randomUUID(),
+          onsessioninitialized: (sid) => {
+            transports[sid] = { transport, server: mcpServer };
+            console.error(`✅ HTTP session initialized: ${sid}`);
+          },
+        });
+
+        transport.onclose = () => {
+          const sid = transport.sessionId;
+          if (sid && transports[sid]) {
+            delete transports[sid];
+            console.error(`🔒 HTTP session closed: ${sid}`);
+          }
+        };
+
+        await mcpServer.connect(transport);
+        await transport.handleRequest(req, res, req.body);
+        return;
+      }
+
+      // Invalid request
+      res.status(400).json({
+        jsonrpc: "2.0",
+        error: { code: -32000, message: "Bad Request: No valid session ID provided" },
+        id: null,
+      });
+    } catch (error) {
+      console.error("Error handling MCP request:", error);
+      if (!res.headersSent) {
+        res.status(500).json({
+          jsonrpc: "2.0",
+          error: { code: -32603, message: "Internal server error" },
+          id: null,
+        });
+      }
+    }
+  };
+
+  // --- MCP GET handler (SSE streams) ---
+  const mcpGetHandler = async (req: any, res: any) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+    if (!sessionId || !transports[sessionId]) {
+      res.status(400).send("Invalid or missing session ID");
+      return;
+    }
+    await transports[sessionId].transport.handleRequest(req, res);
+  };
+
+  // --- MCP DELETE handler (session termination) ---
+  const mcpDeleteHandler = async (req: any, res: any) => {
+    const sessionId = req.headers["mcp-session-id"] as string | undefined;
+    if (!sessionId || !transports[sessionId]) {
+      res.status(400).send("Invalid or missing session ID");
+      return;
+    }
+    await transports[sessionId].transport.handleRequest(req, res);
+  };
+
+  // --- Route registration with conditional auth ---
+  if (useOAuth && authMiddleware) {
+    app.post("/mcp", authMiddleware, mcpPostHandler);
+    app.get("/mcp", authMiddleware, mcpGetHandler);
+    app.delete("/mcp", authMiddleware, mcpDeleteHandler);
+  } else {
+    app.post("/mcp", mcpPostHandler);
+    app.get("/mcp", mcpGetHandler);
+    app.delete("/mcp", mcpDeleteHandler);
+  }
+
+  // --- Start server ---
+  const server = app.listen(MCP_PORT, "0.0.0.0", () => {
+    console.error(`VocalIA MCP Server v1.0.0 running on Streamable HTTP`);
+    console.error(`Endpoint: http://0.0.0.0:${MCP_PORT}/mcp`);
+    console.error(`Health: http://0.0.0.0:${MCP_PORT}/health`);
+    console.error(`OAuth: ${useOAuth ? "enabled" : "disabled (use MCP_OAUTH=true to enable)"}`);
+    console.error("Tools: 203 | Resources: 6 | Prompts: 8");
+  });
+
+  // Graceful shutdown
+  process.on("SIGINT", async () => {
+    console.error("Shutting down HTTP server...");
+    for (const sid of Object.keys(transports)) {
+      try {
+        await transports[sid].transport.close();
+        delete transports[sid];
+      } catch {
+        // ignore close errors
+      }
+    }
+    server.close();
+    process.exit(0);
+  });
+}
+
+async function main() {
+  if (MCP_TRANSPORT === "http" || process.argv.includes("--http")) {
+    await startHttp();
+  } else {
+    await startStdio();
+  }
 }
 
 main().catch((error) => {

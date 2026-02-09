@@ -309,7 +309,7 @@ class ConversationStore {
    * List all conversations for a tenant
    */
   listByTenant(tenantId, options = {}) {
-    const tenantDir = path.join(this.baseDir, tenantId);
+    const tenantDir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (!fs.existsSync(tenantDir)) {
       return [];
     }
@@ -359,7 +359,7 @@ class ConversationStore {
    * Count conversations for a tenant
    */
   countByTenant(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
+    const tenantDir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (!fs.existsSync(tenantDir)) {
       return 0;
     }
@@ -372,7 +372,7 @@ class ConversationStore {
    * Cleanup old conversations based on retention policy
    */
   cleanup(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
+    const tenantDir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (!fs.existsSync(tenantDir)) {
       return { deleted: 0 };
     }
@@ -430,7 +430,7 @@ class ConversationStore {
    * Purge all conversations for a tenant (RGPD)
    */
   purgeTenant(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
+    const tenantDir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (fs.existsSync(tenantDir)) {
       fs.rmSync(tenantDir, { recursive: true, force: true });
       return true;

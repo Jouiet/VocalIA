@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Paths
 const CLIENTS_DIR = path.join(__dirname, '../clients');
@@ -349,7 +350,8 @@ function provisionKB(tenant, options = {}) {
   const languages = options.languages || SUPPORTED_LANGUAGES;
   const overwrite = options.overwrite === true;
 
-  const kbDir = path.join(CLIENTS_DIR, tenantId, 'knowledge_base');
+  const safeTenantId = sanitizeTenantId(tenantId);
+  const kbDir = path.join(CLIENTS_DIR, safeTenantId, 'knowledge_base');
   const result = {
     success: true,
     tenant_id: tenantId,
@@ -360,8 +362,8 @@ function provisionKB(tenant, options = {}) {
 
   // Create directory structure
   try {
-    if (!fs.existsSync(path.join(CLIENTS_DIR, tenantId))) {
-      fs.mkdirSync(path.join(CLIENTS_DIR, tenantId), { recursive: true });
+    if (!fs.existsSync(path.join(CLIENTS_DIR, safeTenantId))) {
+      fs.mkdirSync(path.join(CLIENTS_DIR, safeTenantId), { recursive: true });
       console.log(`[KBProvisioner] Created client directory: ${tenantId}`);
     }
     if (!fs.existsSync(kbDir)) {
@@ -375,7 +377,7 @@ function provisionKB(tenant, options = {}) {
   }
 
   // Create config.json if not exists
-  const configPath = path.join(CLIENTS_DIR, tenantId, 'config.json');
+  const configPath = path.join(CLIENTS_DIR, safeTenantId, 'config.json');
   if (!fs.existsSync(configPath)) {
     const hasBooking = !!(tenant.booking_url || tenant.phone);
     if (!tenant.booking_url && !tenant.phone) {

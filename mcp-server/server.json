@@ -15,11 +15,30 @@
   },
   "license": "MIT",
   "runtime": "node",
-  "transport": ["stdio"],
+  "transport": ["stdio", "streamable-http"],
   "commands": {
     "stdio": {
       "command": "npx",
       "args": ["-y", "@vocalia/mcp-server"]
+    },
+    "http": {
+      "command": "npx",
+      "args": ["-y", "@vocalia/mcp-server", "--http"],
+      "env": {
+        "MCP_TRANSPORT": "http",
+        "MCP_PORT": "3015"
+      }
+    }
+  },
+  "auth": {
+    "type": "oauth2.1",
+    "scopes": ["mcp:tools", "mcp:resources", "mcp:prompts"],
+    "endpoints": {
+      "authorization": "/authorize",
+      "token": "/token",
+      "registration": "/register",
+      "revocation": "/revoke",
+      "metadata": "/.well-known/oauth-authorization-server"
     }
   },
   "capabilities": {

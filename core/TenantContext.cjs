@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const TenantLogger = require('./TenantLogger.cjs');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 class TenantContext {
   /**
@@ -30,7 +31,8 @@ class TenantContext {
     this.params = options.params || {};
 
     // Paths
-    this.clientDir = path.join(process.cwd(), '..', 'clients', tenantId);
+    const safeTenantId = sanitizeTenantId(tenantId);
+    this.clientDir = path.join(__dirname, '..', 'clients', safeTenantId);
     this.configPath = path.join(this.clientDir, 'config.json');
     this.credentialsPath = path.join(this.clientDir, 'credentials.json');
 
@@ -183,7 +185,7 @@ class TenantContext {
     return {
       store: this.secrets.SHOPIFY_STORE || this.integrations.shopify.shop_domain,
       accessToken: this.secrets.SHOPIFY_ACCESS_TOKEN,
-      apiVersion: this.secrets.SHOPIFY_API_VERSION || '2024-01',
+      apiVersion: this.secrets.SHOPIFY_API_VERSION || '2026-01',
     };
   }
 
@@ -229,7 +231,7 @@ class TenantContext {
    * List all available tenants
    */
   static listTenants() {
-    const clientsDir = path.join(process.cwd(), '..', 'clients');
+    const clientsDir = path.join(__dirname, '..', 'clients');
 
     if (!fs.existsSync(clientsDir)) {
       return [];

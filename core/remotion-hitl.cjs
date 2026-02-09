@@ -329,10 +329,18 @@ function getStats() {
 /**
  * Parse JSON body from request
  */
-async function parseBody(req) {
+async function parseBody(req, maxBytes = 1048576) {
   return new Promise((resolve, reject) => {
     let body = '';
-    req.on('data', chunk => body += chunk);
+    let bytes = 0;
+    req.on('data', chunk => {
+      bytes += chunk.length;
+      if (bytes > maxBytes) {
+        req.destroy();
+        return reject(new Error(`Body exceeds ${maxBytes} bytes limit`));
+      }
+      body += chunk;
+    });
     req.on('end', () => {
       try {
         resolve(body ? JSON.parse(body) : {});

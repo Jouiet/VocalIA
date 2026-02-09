@@ -34,7 +34,7 @@ const CONTEXT_CONFIG = {
 
 class ContextBox {
     constructor(options = {}) {
-        this.storageDir = options.storageDir || path.join(process.cwd(), 'data', 'contexts');
+        this.storageDir = options.storageDir || path.join(__dirname, '..', 'data', 'contexts');
         this.config = { ...CONTEXT_CONFIG, ...options.config };
 
         if (!fs.existsSync(this.storageDir)) {

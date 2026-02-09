@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Quota limits per plan (industry-aligned)
 // Optimal balance: enough for useful KB, not excessive to overload system
@@ -87,7 +88,7 @@ class KBQuotaManager {
    * Get tenant's current plan (with alias resolution)
    */
   getTenantPlan(tenantId) {
-    const configPath = path.join(__dirname, '../clients', tenantId, 'config.json');
+    const configPath = path.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'config.json');
     if (fs.existsSync(configPath)) {
       try {
         const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
@@ -116,7 +117,7 @@ class KBQuotaManager {
    * Get current usage for a tenant
    */
   getUsage(tenantId) {
-    const usagePath = path.join(USAGE_DIR, `${tenantId}.json`);
+    const usagePath = path.join(USAGE_DIR, `${sanitizeTenantId(tenantId)}.json`);
 
     if (fs.existsSync(usagePath)) {
       try {
@@ -171,7 +172,7 @@ class KBQuotaManager {
    */
   saveUsage(tenantId, usage) {
     usage.last_updated = new Date().toISOString();
-    const usagePath = path.join(USAGE_DIR, `${tenantId}.json`);
+    const usagePath = path.join(USAGE_DIR, `${sanitizeTenantId(tenantId)}.json`);
     fs.writeFileSync(usagePath, JSON.stringify(usage, null, 2));
   }
 
@@ -179,7 +180,7 @@ class KBQuotaManager {
    * Calculate actual KB storage and entries
    */
   calculateKBUsage(tenantId) {
-    const kbDir = path.join(__dirname, '../clients', tenantId, 'knowledge_base');
+    const kbDir = path.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'knowledge_base');
     let totalBytes = 0;
     let totalEntries = 0;
     const languagesUsed = new Set();

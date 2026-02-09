@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 const productEmbeddingService = require('./product-embedding-service.cjs');
 const vectorStore = require('./vector-store.cjs');
 
@@ -90,7 +91,7 @@ class AssociationRulesEngine {
   _loadRules(tenantId) {
     if (this.rules[tenantId]) return this.rules[tenantId];
 
-    const rulesPath = path.join(RULES_DIR, `${tenantId}_association_rules.json`);
+    const rulesPath = path.join(RULES_DIR, `${sanitizeTenantId(tenantId)}_association_rules.json`);
     if (fs.existsSync(rulesPath)) {
       try {
         this.rules[tenantId] = JSON.parse(fs.readFileSync(rulesPath, 'utf8'));
@@ -111,7 +112,7 @@ class AssociationRulesEngine {
     if (!fs.existsSync(RULES_DIR)) {
       fs.mkdirSync(RULES_DIR, { recursive: true });
     }
-    const rulesPath = path.join(RULES_DIR, `${tenantId}_association_rules.json`);
+    const rulesPath = path.join(RULES_DIR, `${sanitizeTenantId(tenantId)}_association_rules.json`);
     fs.writeFileSync(rulesPath, JSON.stringify(this.rules[tenantId], null, 2));
   }
 
@@ -719,7 +720,7 @@ class RecommendationService {
 
     // 2. Format with persona-specific terminology
     if (recommendations && recommendations.length > 0) {
-      return this.getVoiceRecommendations(tenantId, personaKey, lang, { recommendations }, 'personalized');
+      return this.getVoiceRecommendations(tenantId, { recommendations, type: 'personalized', persona: personaKey }, lang);
     }
 
     return this._getNoRecommendationsResponse(lang);

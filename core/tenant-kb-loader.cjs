@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Paths
 const CLIENTS_DIR = path.join(__dirname, '../clients');
@@ -154,7 +155,7 @@ class TenantKBLoader {
    * Load KB with priority fallback chain
    */
   async loadWithFallback(tenantId, language) {
-    const clientDir = path.join(CLIENTS_DIR, tenantId, 'knowledge_base');
+    const clientDir = path.join(CLIENTS_DIR, sanitizeTenantId(tenantId), 'knowledge_base');
     const defaultLang = await this.getClientDefaultLanguage(tenantId);
 
     const loadPaths = [
@@ -197,7 +198,7 @@ class TenantKBLoader {
    * Get client's default language from config
    */
   async getClientDefaultLanguage(tenantId) {
-    const configPath = path.join(CLIENTS_DIR, tenantId, 'config.json');
+    const configPath = path.join(CLIENTS_DIR, sanitizeTenantId(tenantId), 'config.json');
 
     if (fs.existsSync(configPath)) {
       try {
@@ -283,7 +284,7 @@ class TenantKBLoader {
    * Watch a client KB directory for changes (hot-reload)
    */
   watchClient(tenantId) {
-    const clientDir = path.join(CLIENTS_DIR, tenantId, 'knowledge_base');
+    const clientDir = path.join(CLIENTS_DIR, sanitizeTenantId(tenantId), 'knowledge_base');
 
     if (!fs.existsSync(clientDir)) {
       console.warn(`[TenantKB] Cannot watch: ${clientDir} does not exist`);
@@ -382,7 +383,7 @@ class TenantKBLoader {
    * @returns {object} Import result with counts
    */
   async importBulk(tenantId, language, data, options = {}) {
-    const kbDir = path.join(CLIENTS_DIR, tenantId, 'knowledge_base');
+    const kbDir = path.join(CLIENTS_DIR, sanitizeTenantId(tenantId), 'knowledge_base');
     const kbPath = path.join(kbDir, `kb_${language}.json`);
 
     // Ensure directory exists
@@ -500,7 +501,7 @@ class TenantKBLoader {
    * @returns {object} Rebuild result
    */
   async rebuildIndex(tenantId, language = null) {
-    const indexDir = path.join(DATA_DIR, tenantId);
+    const indexDir = path.join(DATA_DIR, sanitizeTenantId(tenantId));
 
     // Ensure directory exists
     if (!fs.existsSync(indexDir)) {

@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Log levels
 const LOG_LEVELS = {
@@ -39,11 +40,11 @@ class TenantLogger {
 
     // Log directory
     this.logDir = path.join(
-      process.cwd(),
+      __dirname,
       '..',
       'logs',
       'tenants',
-      tenantId
+      sanitizeTenantId(tenantId)
     );
 
     // Ensure log directory exists
@@ -196,7 +197,7 @@ class TenantLogger {
    */
   static getRecentLogs(tenantId, options = {}) {
     const { lines = 100, level = null, script = null } = options;
-    const logDir = path.join(process.cwd(), '..', 'logs', 'tenants', tenantId);
+    const logDir = path.join(__dirname, '..', 'logs', 'tenants', sanitizeTenantId(tenantId));
 
     if (!fs.existsSync(logDir)) {
       return [];
@@ -245,7 +246,7 @@ class TenantLogger {
    * Clean old logs (older than N days)
    */
   static cleanOldLogs(tenantId, daysToKeep = 30) {
-    const logDir = path.join(process.cwd(), '..', 'logs', 'tenants', tenantId);
+    const logDir = path.join(__dirname, '..', 'logs', 'tenants', sanitizeTenantId(tenantId));
 
     if (!fs.existsSync(logDir)) {
       return 0;

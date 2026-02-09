@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Catalog types aligned with 38 personas
 const CATALOG_TYPES = {
@@ -121,7 +122,7 @@ class CustomCatalogConnector extends CatalogConnector {
   constructor(tenantId, config = {}) {
     super(tenantId, config);
     this.catalogType = config.catalogType || CATALOG_TYPES.PRODUCTS;
-    this.dataPath = config.dataPath || path.join(__dirname, '../data/catalogs', tenantId);
+    this.dataPath = config.dataPath || path.join(__dirname, '../data/catalogs', sanitizeTenantId(tenantId));
     this.catalog = null;
     // Check if dataPath is a file or directory
     this.isFilePath = config.dataPath && config.dataPath.endsWith('.json');
@@ -445,7 +446,7 @@ class ShopifyCatalogConnector extends CatalogConnector {
     this.accessToken = config.accessToken;
     this.apiVersion = config.apiVersion || '2026-01';
     this.catalog = null;
-    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.dataPath = path.join(__dirname, '../data/catalogs', sanitizeTenantId(tenantId));
     this.currency = config.currency || 'EUR';
     // Rate limit tracking
     this.availablePoints = 1000;
@@ -800,7 +801,7 @@ class WooCommerceCatalogConnector extends CatalogConnector {
     this.consumerKey = config.consumerKey;
     this.consumerSecret = config.consumerSecret;
     this.catalog = null;
-    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.dataPath = path.join(__dirname, '../data/catalogs', sanitizeTenantId(tenantId));
     this.currency = config.currency || 'EUR';
   }
 
@@ -1071,7 +1072,7 @@ class SquareCatalogConnector extends CatalogConnector {
     this.locationId = config.locationId; // Required for inventory counts
     this.environment = config.environment || 'production'; // 'sandbox' or 'production'
     this.catalog = null;
-    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.dataPath = path.join(__dirname, '../data/catalogs', sanitizeTenantId(tenantId));
     this.currency = config.currency || 'EUR';
     this.apiVersion = '2026-01-22'; // Per official Square docs
   }
@@ -1468,7 +1469,7 @@ class LightspeedCatalogConnector extends CatalogConnector {
     this.businessLocationId = config.businessLocationId; // Required for K-Series (not businessId!)
     this.environment = config.environment || 'production'; // 'trial' or 'production'
     this.catalog = null;
-    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.dataPath = path.join(__dirname, '../data/catalogs', sanitizeTenantId(tenantId));
     this.currency = config.currency || 'EUR';
   }
 
@@ -1823,7 +1824,7 @@ class MagentoCatalogConnector extends CatalogConnector {
     this.baseUrl = config.baseUrl || config.url;
     this.accessToken = config.accessToken;
     this.catalog = null;
-    this.dataPath = path.join(__dirname, '../data/catalogs', tenantId);
+    this.dataPath = path.join(__dirname, '../data/catalogs', sanitizeTenantId(tenantId));
     this.currency = config.currency || 'EUR';
   }
 

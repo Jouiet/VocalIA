@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const EventEmitter = require('events');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // SOTA Configuration
 const BUS_CONFIG = {
@@ -69,7 +70,7 @@ class AgencyEventBus extends EventEmitter {
         this.setMaxListeners(100); // Support many subscribers
 
         this.config = { ...BUS_CONFIG, ...options.config };
-        this.storageDir = options.storageDir || path.join(process.cwd(), 'data', 'events');
+        this.storageDir = options.storageDir || path.join(__dirname, '..', 'data', 'events');
         this.dlqDir = path.join(this.storageDir, 'dlq'); // Dead Letter Queue
 
         // In-memory state
@@ -158,7 +159,7 @@ class AgencyEventBus extends EventEmitter {
      */
     _persistEvent(event) {
         const dateKey = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-        const tenantDir = path.join(this.storageDir, event.tenantId || 'default');
+        const tenantDir = path.join(this.storageDir, sanitizeTenantId(event.tenantId || 'default'));
 
         if (!fs.existsSync(tenantDir)) {
             fs.mkdirSync(tenantDir, { recursive: true });
@@ -182,7 +183,7 @@ class AgencyEventBus extends EventEmitter {
             }
         };
 
-        const filePath = path.join(this.dlqDir, `${event.tenantId || 'default'}_dlq.jsonl`);
+        const filePath = path.join(this.dlqDir, `${sanitizeTenantId(event.tenantId || 'default')}_dlq.jsonl`);
         fs.appendFileSync(filePath, JSON.stringify(dlqEvent) + '\n');
 
         console.error(`[EventBus] Event ${event.id} moved to DLQ: ${error.message}`);
@@ -339,7 +340,7 @@ class AgencyEventBus extends EventEmitter {
      * @param {object} options - { since, until, eventTypes }
      */
     async replay(tenantId, options = {}) {
-        const tenantDir = path.join(this.storageDir, tenantId);
+        const tenantDir = path.join(this.storageDir, sanitizeTenantId(tenantId));
         if (!fs.existsSync(tenantDir)) {
             console.log(`[EventBus] No events to replay for tenant: ${tenantId}`);
             return { replayed: 0 };

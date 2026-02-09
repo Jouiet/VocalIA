@@ -22,9 +22,26 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
+
 const CACHE_DIR = path.join(__dirname, '../data/embeddings');
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY);
-const embeddingModel = genAI.getGenerativeModel({ model: 'text-embedding-004' });
+
+// Lazy init — avoids process crash at require-time if API key missing
+let _genAI = null;
+let _embeddingModel = null;
+
+function getEmbeddingModel() {
+  if (!_embeddingModel) {
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    if (!apiKey) {
+      console.error('❌ GEMINI_API_KEY / GOOGLE_GENERATIVE_AI_API_KEY not set — embeddings unavailable');
+      return null;
+    }
+    _genAI = new GoogleGenerativeAI(apiKey);
+    _embeddingModel = _genAI.getGenerativeModel({ model: 'text-embedding-004' });
+  }
+  return _embeddingModel;
+}
 
 // Marqo Configuration
 const MARQO_URL = process.env.MARQO_URL || 'http://localhost:8882';
@@ -40,6 +57,7 @@ const EMBEDDING_DIM = 768;
 class ProductEmbeddingService {
   constructor() {
     this.caches = {}; // Per-tenant caches
+    this.maxTenantCaches = 50; // Evict oldest tenant cache when exceeded
     this.stats = {
       hits: 0,
       misses: 0,
@@ -51,7 +69,7 @@ class ProductEmbeddingService {
    * Get cache file path for tenant
    */
   _getCachePath(tenantId) {
-    return path.join(CACHE_DIR, `${tenantId}_product_embeddings.json`);
+    return path.join(CACHE_DIR, `${sanitizeTenantId(tenantId)}_product_embeddings.json`);
   }
 
   /**
@@ -59,6 +77,12 @@ class ProductEmbeddingService {
    */
   _loadCache(tenantId) {
     if (this.caches[tenantId]) return this.caches[tenantId];
+
+    // Evict oldest tenant cache if at capacity
+    const tenantKeys = Object.keys(this.caches);
+    if (tenantKeys.length >= this.maxTenantCaches) {
+      delete this.caches[tenantKeys[0]];
+    }
 
     const cachePath = this._getCachePath(tenantId);
     if (fs.existsSync(cachePath)) {
@@ -164,7 +188,9 @@ class ProductEmbeddingService {
 
     // Fallback: Gemini text-embedding-004
     try {
-      const result = await embeddingModel.embedContent(text);
+      const model = getEmbeddingModel();
+      if (!model) return null;
+      const result = await model.embedContent(text);
       return result.embedding.values;
     } catch (e) {
       console.error('[ProductEmbedding] Gemini embedding failed:', e.message);

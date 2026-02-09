@@ -197,7 +197,7 @@ function transformTenantToClientConfig(tenant) {
         payment_details: tenant.payment_details || '',
 
         // Widget config
-        widget_type: tenant.widget_type || 'B2C',
+        widget_type: tenant.widget_type || 'B2B',
 
         // Metadata
         _source: 'database',

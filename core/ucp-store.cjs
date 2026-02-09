@@ -25,6 +25,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Paths
 const UCP_DIR = path.join(__dirname, '../data/ucp');
@@ -64,7 +65,7 @@ class UCPStore {
    * Get tenant directory path
    */
   getTenantDir(tenantId) {
-    const dir = path.join(this.baseDir, tenantId);
+    const dir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -417,7 +418,7 @@ class UCPStore {
    * Delete all data for a tenant (RGPD full purge)
    */
   purgeTenant(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
+    const tenantDir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (fs.existsSync(tenantDir)) {
       fs.rmSync(tenantDir, { recursive: true, force: true });
       return true;

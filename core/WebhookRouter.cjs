@@ -17,7 +17,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Event log directory
-const EVENTS_DIR = path.join(process.cwd(), 'data', 'events', 'webhooks');
+const EVENTS_DIR = path.join(__dirname, '..', 'data', 'events', 'webhooks');
 
 // Webhook Provider Configurations
 const WEBHOOK_PROVIDERS = {

@@ -11,7 +11,9 @@
 const fs = require('fs');
 const path = require('path');
 
-const CLIENTS_DIR = path.join(process.cwd(), 'clients');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
+
+const CLIENTS_DIR = path.join(__dirname, '..', 'clients');
 
 // Fallback hardcoded configs (backward compatibility)
 const FALLBACK_CLIENTS = {
@@ -55,7 +57,7 @@ const configCache = new Map();
  * @returns {Object|null}
  */
 function loadConfigFromFile(tenantId) {
-    const configPath = path.join(CLIENTS_DIR, tenantId, 'config.json');
+    const configPath = path.join(CLIENTS_DIR, sanitizeTenantId(tenantId), 'config.json');
 
     if (!fs.existsSync(configPath)) {
         return null;

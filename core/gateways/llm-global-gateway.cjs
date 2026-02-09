@@ -1,24 +1,22 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const complianceGuardian = require('../compliance-guardian.cjs');
 
+// Load .env once at module level (not per-instance)
+const fs = require('fs');
+const path = require('path');
+const envPaths = [
+    path.join(__dirname, '..', '..', '.env'),
+    path.join(__dirname, '.env')
+];
+for (const envPath of envPaths) {
+    if (fs.existsSync(envPath)) {
+        require('dotenv').config({ path: envPath });
+        break;
+    }
+}
+
 class LLMGateway {
     constructor() {
-        // Load env systematically
-        const fs = require('fs');
-        const path = require('path');
-        const envPaths = [
-            path.join(__dirname, '.env'),
-            path.join(__dirname, '../../../../.env'),
-            path.join(__dirname, '../../../../../.env'),
-            path.join(process.cwd(), '.env')
-        ];
-        for (const envPath of envPaths) {
-            if (fs.existsSync(envPath)) {
-                require('dotenv').config({ path: envPath });
-                break;
-            }
-        }
-
         this.geminiKey = process.env.GEMINI_API_KEY;
         this.anthropicKey = process.env.ANTHROPIC_API_KEY;
         this.xaiKey = process.env.XAI_API_KEY; // Grok

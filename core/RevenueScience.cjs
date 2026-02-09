@@ -55,6 +55,9 @@ class RevenueScience {
             SEO_AUTOMATION: 0.30,
             CONTENT_FACTORY: 0.25
         };
+
+        // v3.0: Pricing history for analytics
+        this.pricingHistory = [];
     }
 
     /**
@@ -211,15 +214,21 @@ class RevenueScience {
      * SOTA: Get pricing recommendation with full context
      */
     getPricingRecommendation(qualification = {}, sector = 'VOICE_AI') {
-        const priceResult = this.calculateOptimalPrice(qualification, sector);
-        const marginCheck = this.isMarginSafe(priceResult, sector);
+        const priceInCents = this.calculateOptimalPrice(qualification, sector);
+        const marginCheck = this.isMarginSafe(priceInCents, sector);
+
+        // calculateOptimalPrice returns a number (cents) for backward compat
+        const score = qualification.score || 0;
+        let confidence = 0.5;
+        if (score > 0) confidence += 0.2;
+        if (qualification.entity_type) confidence += 0.15;
+        confidence += 0.15; // demand data applied by default
 
         const recommendation = {
-            recommendedPrice: priceResult / 100,
-            priceInCents: priceResult,
-            confidence: priceResult.confidence || 0.5,
+            recommendedPrice: priceInCents / 100,
+            priceInCents,
+            confidence,
             marginSafe: typeof marginCheck === 'boolean' ? marginCheck : marginCheck.safe,
-            factors: priceResult.factors,
             sector,
             timestamp: new Date().toISOString()
         };

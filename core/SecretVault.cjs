@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Configuration
 const CLIENTS_DIR = path.join(__dirname, '../clients');
@@ -41,7 +42,7 @@ class SecretVault {
    * @returns {string}
    */
   getCredentialsPath(tenantId) {
-    return path.join(CLIENTS_DIR, tenantId, 'credentials.json');
+    return path.join(CLIENTS_DIR, sanitizeTenantId(tenantId), 'credentials.json');
   }
 
   /**
@@ -213,7 +214,7 @@ class SecretVault {
    * @param {boolean} encrypt - Whether to encrypt
    */
   async saveCredentials(tenantId, credentials, encrypt = true) {
-    const clientDir = path.join(CLIENTS_DIR, tenantId);
+    const clientDir = path.join(CLIENTS_DIR, sanitizeTenantId(tenantId));
 
     // Ensure directory exists
     if (!fs.existsSync(clientDir)) {

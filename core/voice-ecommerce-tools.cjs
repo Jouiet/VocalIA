@@ -42,7 +42,7 @@ async function shopifyGraphQL(store, token, query, variables = {}) {
     const options = {
       hostname: `${store}.myshopify.com`,
       port: 443,
-      path: '/admin/api/2024-01/graphql.json',
+      path: '/admin/api/2026-01/graphql.json',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

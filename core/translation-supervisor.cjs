@@ -260,12 +260,12 @@ class TranslationSupervisor {
         // Simple replacements (Simulating A2A logic)
         // In a real expanded systems, this would call `fix-darija-authenticity.py` logic
         const replacements = [
-            { from: /bonjour/gi, to: "Salam" },
-            { from: /au revoir/gi, to: "Beslama" },
-            { from: /s'il vous plaît/gi, to: "3afak" },
-            { from: /merci/gi, to: "Choukran" },
-            { from: /oui/gi, to: "Ah" },
-            { from: /non/gi, to: "Lla" }
+            { from: /\bbonjour\b/gi, to: "Salam" },
+            { from: /\bau revoir\b/gi, to: "Beslama" },
+            { from: /\bs'il vous plaît\b/gi, to: "3afak" },
+            { from: /\bmerci\b/gi, to: "Choukran" },
+            { from: /\boui\b/gi, to: "Ah" },
+            { from: /\bnon\b/gi, to: "Lla" }
         ];
 
         replacements.forEach(rep => {

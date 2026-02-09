@@ -68,7 +68,7 @@ const SCHEMAS = {
       plan: 'trial', mrr: 0, status: 'active',
       nps_score: 0, conversion_rate: 0, qualified_leads: 0,
       voice_language: 'fr', voice_gender: 'female', active_persona: null,
-      widget_type: 'B2C', currency: 'EUR', sector: 'UNIVERSAL_SME'
+      widget_type: 'B2B', currency: 'EUR', sector: 'UNIVERSAL_SME'
     }
   },
   sessions: {

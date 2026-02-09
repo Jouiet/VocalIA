@@ -19,7 +19,7 @@ class ComplianceGuardian {
             { id: 'STRIPE_KEY', pattern: /sk_(live|test)_[0-9a-zA-Z]{24}/, severity: 'CRITICAL', description: 'Hardcoded Stripe Secret Key detected' },
             { id: 'TOKEN_LIMIT', check: (text) => text.length < 32000, severity: 'MEDIUM', description: 'Context window overflow risk' }
         ];
-        this.logPath = path.join(process.cwd(), 'data', 'compliance_audit.log');
+        this.logPath = path.join(__dirname, '..', 'data', 'compliance_audit.log');
         this._ensureLogDir();
     }
 
@@ -57,7 +57,7 @@ class ComplianceGuardian {
             }
         }
 
-        const valid = violations.filter(v => v.severity === 'HIGH').length === 0;
+        const valid = violations.filter(v => v.severity === 'HIGH' || v.severity === 'CRITICAL').length === 0;
         this._log(type, valid, violations);
 
         return { valid, violations };

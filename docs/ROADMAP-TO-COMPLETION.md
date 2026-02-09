@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.171c (MCP-SOTA Phase 0+1+2 DONE — 203 tools + 6 resources + 8 prompts, all 3 MCP primitives)
-> **Code Completeness:** 9.5/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
+> **Date:** 2026-02-09 | **Session:** 250.172 (DEEP CODE AUDIT — 69 NEW bugs found across ALL 55 core modules)
+> **Code Completeness:** 7.5/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed, 2 false alarm, 2 already fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited line-by-line, 69 new bugs: 3C/9H/52M/5L)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (3,799 tests, 68 files). 79 total bugs found, 74 fixed, 5 remain (M5 arch + non-fixable). MCP-SOTA Phase 0+1+2 complete: ALL 203 tools use modern registerTool() API with descriptions+annotations+isError. 6 resources (5 static + 1 template with list+autocomplete). 8 prompts with title+description+argsSchema. All 3 MCP primitives implemented. Version 1.0.0. MCP score 2.5→7.5/10.
+**Code Completeness: 7.5/10** — Features coded and tested (3,804 tests, 68 files). **148 total bugs found, 74 fixed, 74 unfixed** (69 NEW from 250.172 deep audit: 3C/9H/52M/5L + 5 old remaining). MCP-SOTA Phase 0+1+2+3 complete (203 tools, 6 resources, 8 prompts). Key systemic issues: sanitizeTenantId missing in 15+ modules, process.cwd() in 8 modules, module-level crashes in 2 services.
 **Production Readiness: 4.0/10** — VERIFIED 250.171 via curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (Grok/Gemini/Claude/Atlas all configured:true)
@@ -33,32 +33,32 @@
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
 
-| # | Dimension | Score 250.160 | Score 250.166 | Delta | Justification (250.166 Deep Audit) |
+| # | Dimension | Score 250.171b | Score 250.172 | Delta | Justification (250.172 Deep Code Audit) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 7.0 | **7.5** | +0.5 | 3,774 tests pass, 0 fail. Auth security, quota, columnLetter/sheetRange tests included |
-| 2 | Sécurité | 10.0 | **9.0** | **-1.0** | 250.171b: +0.5 — admin auth on 7 endpoints, tenant isolation on 10 more endpoints, readBody crash fixed. .env: 6 keys missing. |
-| 3 | Production readiness | 5.5 | **4.0** | **-1.5** | 250.171: +0.5 — VPS confirmed running (health OK, db connected, auth works). /respond BROKEN (old code). Needs: redeploy + 6 env vars. |
-| 4 | Documentation accuracy | 10.0 | **8.5** | **-1.5** | Website factual (23/23 validator). Benchmark SWOT updated. mrrGrowth fixed. |
-| 5 | Architecture code | 10.0 | **9.5** | **-0.5** | 250.171b: +0.5 — sheetsDB explicit declaration, Gemini env var fallback chain, model name harmonized. Only M5 (Sheets scalability) remains. |
-| 6 | Multi-tenant | 9.5 | **9.0** | **-0.5** | 250.171b: +1.0 — 10 more endpoints hardened with tenant_id check. KB stats admin-only. All endpoints now have tenant isolation. |
-| 7 | i18n | 10.0 | 10.0 | 0 | 4,858 keys × 5 langs verified |
-| 8 | Intégrations | 8.0 | **5.5** | **-2.5** | 250.168: +1.5 — Stripe: customer_id save wired (C7). nodemailer installed + email functions added (F3/C11). STILL: Payzone dead code, HubSpot key not in VPS, OAuthGateway not deployed |
-| 9 | Developer experience | 10.0 | **9.5** | **-0.5** | 250.169: mrrGrowth real data (H14), M10 Payzone not dead code confirmed. Persona threshold, columnLetter/sheetRange all working. |
-| 10 | Mémoire & docs | 9.0 | **8.5** | **-0.5** | Scores were inflated pre-audit. Now corrected with factual deep audit data |
+| 1 | Tests unitaires | 7.5 | **7.0** | **-0.5** | 3,804 tests pass, 0 fail. BUT manual audit found 69 bugs tests missed (wrong paths, regex corruption, argument order, module crashes). |
+| 2 | Sécurité | 9.0 | **6.5** | **-2.5** | sanitizeTenantId missing in 15+ modules (30+ path.join sites = path traversal). SecretVault + catalog-connector unsanitized. compliance-guardian bypasses CRITICAL. |
+| 3 | Production readiness | 4.0 | **4.0** | 0 | No change — audit-only session, no deployment. /respond still BROKEN on VPS. |
+| 4 | Documentation accuracy | 8.5 | **8.5** | 0 | No documentation changes this session. |
+| 5 | Architecture code | 9.5 | **7.0** | **-2.5** | process.cwd() in 8 modules (13 sites). Module-level crashes in 2 embedding services. Wrong path depths ../../.. in 2 modules. RevenueScience wrong return types. |
+| 6 | Multi-tenant | 9.0 | **6.0** | **-3.0** | Only 3/55 modules use sanitizeTenantId(). 30+ path.join(tenantId) without sanitization. catalog-connector 6 classes, conversation-store 4 methods miss it. |
+| 7 | i18n | 10.0 | 10.0 | 0 | 4,858 keys × 5 langs verified. No i18n issues found. |
+| 8 | Intégrations | 5.5 | **5.0** | **-0.5** | Embedding services crash on missing API key (module-level init). stitch-api hardcoded local paths. |
+| 9 | Developer experience | 9.5 | **8.0** | **-1.5** | Wrong paths, unbounded caches, process.cwd ambiguity, inconsistent sanitization patterns across modules. |
+| 10 | Mémoire & docs | 8.5 | **8.0** | **-0.5** | Scores were still inflated pre-deep-audit. 250.172 audit reveals true state. |
 
 | | Poids | Contribution |
 |:-|:-----:|:------------:|
-| 1 (7.5) | 15% | 1.125 |
-| 2 (9.0) | 15% | 1.350 |
+| 1 (7.0) | 15% | 1.050 |
+| 2 (6.5) | 15% | 0.975 |
 | 3 (4.0) | 10% | 0.400 |
 | 4 (8.5) | 10% | 0.850 |
-| 5 (9.5) | 10% | 0.950 |
-| 6 (9.0) | 10% | 0.900 |
+| 5 (7.0) | 10% | 0.700 |
+| 6 (6.0) | 10% | 0.600 |
 | 7 (10.0) | 5% | 0.500 |
-| 8 (5.5) | 10% | 0.550 |
-| 9 (9.5) | 10% | 0.950 |
-| 10 (8.5) | 5% | 0.425 |
-| **TOTAL** | **100%** | **8.500** → **~8.5/10** (250.171b — external audit: 7 bugs fixed, security+tenant isolation hardened) |
+| 8 (5.0) | 10% | 0.500 |
+| 9 (8.0) | 10% | 0.800 |
+| 10 (8.0) | 5% | 0.400 |
+| **TOTAL** | **100%** | **6.775** → **~6.8/10** (250.172 — 69 new bugs found across 40+ modules, 0 fixed yet) |
 
 ---
 
@@ -502,7 +502,8 @@ create_booking          get_recommendations    qualify_lead
 | Phase 6 (250.170) | 0 (fixes only) | 6 | 0 |
 | Phase 6b (250.170b) | 0 (fixes only) | 16 | 0 |
 | Phase 7 EXTERNAL (250.171b) | 11 (3C+3H+3M+2L) | 7 | 0 (2 false alarm, 2 already fixed) |
-| **CUMULATIVE** | **65** | **56** | **5** (+ 2 non-fixable/monitoring + 3 resolved-not-bugs + 4 false/dup) |
+| **Phase 8 DEEP CODE (250.172)** | **69 (3C+9H+52M+5L)** | **0** | **69** |
+| **CUMULATIVE** | **134** | **56** | **74** (+ 2 non-fixable/monitoring + 3 resolved-not-bugs + 4 false/dup) |
 
 ---
 
@@ -529,28 +530,40 @@ create_booking          get_recommendations    qualify_lead
 | **P0-INFRA (250.170)** | ✅ **6 FIXED** | C6 Docker volumes (named volume vocalia-data + symlinks), F1 JWT_SECRET in docker-compose, F6 VOCALIA_VAULT_KEY, H2 STRIPE_SECRET_KEY, H3 SMTP vars. M9 quota sync (Sheets→local every 10min). Admin dashboard: AI Fallback Chain visualization. 5 remain. | 7.6 → **8.0** |
 | **P0-LIVE-AUDIT (250.171)** | ✅ **AUDIT** | Live deployment verified via curl: website 200, voice API health OK, db-api connected (Google Sheets 7 tables), auth works, /respond BROKEN (old code). Client dashboard: quota usage radials. Benchmark SWOT updated. Qwen3-TTS closed. | 8.0 → **8.1** |
 | **P0-EXTERNAL-AUDIT (250.171b)** | ✅ **7 FIXED** | External audit: 11 bugs reported, 7 confirmed+fixed, 2 false alarm, 2 already fixed. C1 readBody crash (16 endpoints), C2 admin auth (7 endpoints), C3 tenant isolation (10 endpoints), H2 Gemini env fallback, H3 model name harmonized, M1 sheetsDB declared. | 8.1 → **8.5** |
+| **P0-DEEPCODE (250.172)** | ⚠️ **AUDIT DONE** | Line-by-line audit ALL 55 core modules. 69 NEW bugs (3C/9H/52M/5L). 10 systemic fix categories. sanitizeTenantId missing 15+ modules, process.cwd 8 modules, module-level crashes 2 services. | 8.5 → **6.8** |
 
-**Code Completeness: 9.4/10** | **Production Readiness: 4.0/10** | **Weighted: 8.6/10** | **MCP: 5.5/10** (was 2.5)
+**Code Completeness: 7.5/10** | **Production Readiness: 4.0/10** | **Weighted: 6.8/10** | **MCP: 8.0/10**
 
-**Remaining (5 bugs — from Deep Audit 250.166 + Phase 3 250.167, after 74 fixed):**
+**Remaining (74 unfixed bugs — 69 new from 250.172 + 5 old):**
 ```
-P1 (SHOULD FIX — Architectural):
-  1. GoogleSheetsDB auth scalability ceiling [M5]
+P0 (MUST FIX — Security/Crash — ~4h):
+  1. sanitizeTenantId → 15+ modules, 30+ path.join sites [systemic]
+  2. process.cwd() → __dirname in 8 modules, 13 sites [systemic]
+  3. Module-level init → lazy init (2 embedding services crash at require-time) [C1-P8, C2-P8]
+  4. Compliance severity: === 'HIGH' must include CRITICAL [C3-P8]
+  5. Wrong path depths ../../.. (2 modules) [H5-P8, H6-P8]
+  6. Regex word boundaries \b (translation-supervisor) [H9-P8]
+  7. conversation-store: sanitize 4 remaining methods [systemic]
+
+P0 (MUST FIX — Logic/Data — ~2h):
+  8. RevenueScience: push to undefined + wrong return type [H2-P8, H3-P8]
+  9. recommendation-service: wrong argument order [H4-P8]
+  10. catalog-connector: 6 classes no sanitization [H7-P8]
+  11. SecretVault: 2 path ops no sanitization [H8-P8]
+  12. TenantContext: wrong path + no sanitization [H1-P8]
+
+P1 (SHOULD FIX — Robustness — ~2h):
+  13. Unbounded caches → TTL + maxSize (~8 modules)
+  14. parseBody body size limit (remotion-hitl.cjs)
+  15. Hardcoded paths → config (stitch-api.cjs)
+  16. GoogleSheetsDB auth scalability ceiling [M5]
 
 P2 (NICE TO HAVE — Research):
-  2. Evaluate Telnyx for Moroccan telephony
-
-CLOSED:
-  - Qwen3-TTS for Darija: mediocre results, research abandoned
+  17. Evaluate Telnyx for Moroccan telephony
 
 NON-FIXABLE / MONITORING:
   - H14b: Gemini TTS preview model (no stable version exists)
   - M16: Gemini API key in URL (Google standard pattern)
-
-RESOLVED (not bugs):
-  - C5: Actual bug was wrong storage key (fixed 250.168), no ESM issue
-  - M12/ex-H11: express IS used by OAuthGateway + WebhookRouter (not dead weight)
-  - M10: Payzone is NOT dead code — BillingAgent uses it for MAD currency routing
 ```
 
 **Live Deployment Status (VERIFIED 250.171 via curl):**
@@ -566,15 +579,18 @@ RESOLVED (not bugs):
 .env MISSING: JWT_SECRET, SMTP_HOST/USER/PASS, STRIPE_SECRET_KEY, VOCALIA_VAULT_KEY
 ```
 
-**Remaining (operations — NOT code):**
+**Next Actions (Priority Order):**
 ```
-→ GA4: ✅ DONE — configured + server-side Measurement Protocol
-→ Darija pricing: ✅ DONE — $0.25/min inbound
-→ Docker volumes: ✅ DONE — docker-compose.production.yml rewritten
-→ VPS env vars: ✅ DONE in docker-compose — needs .env on VPS with real values
-→ VPS REDEPLOY: ⚠️ CRITICAL — /respond broken on production, local code has fix
-→ SMTP: Needs provider credentials (Brevo/Resend/SES)
-→ Qwen3-TTS: ✅ CLOSED — mediocre results
+CODE FIXES (~6h total):
+  → P0 systemic: sanitizeTenantId + process.cwd + lazy init + compliance + paths + regex (~4h)
+  → P0 logic: RevenueScience + recommendation + catalog + SecretVault + TenantContext (~2h)
+  → P1 robustness: caches + parseBody + stitch paths (~1h)
+
+OPERATIONS (NOT code):
+  → VPS REDEPLOY: ⚠️ CRITICAL — /respond broken on production, local code has fix
+  → SMTP: Needs provider credentials (Brevo/Resend/SES)
+  → VPS env vars: needs .env on VPS with real values
+  → First paying customer → first real traffic
 ```
 
 ### 6.13 Phase 6 Fixes (250.170) — 6 Bugs Fixed + Dashboard Enhancement
@@ -612,7 +628,80 @@ RESOLVED (not bugs):
 | B15 | LOW | Dead .min.js files in voice-assistant/ | Build artifact — WAF blocks, non-functional. Noted only. |
 | B16 | LOW | pricing.html `geo.pricing` undefined | Added inline pricingMap lookup from currency |
 
-### 6.15 Phase 7 — External Audit (250.171b) — 11 Bugs Reported, 7 Confirmed + Fixed
+### 6.15 Phase 8 — Deep Code Audit (250.172) — 69 Bugs Found, 0 Fixed
+
+> **Source**: Line-by-line audit of ALL 55 core modules + telephony + lib/security-utils.
+> **Method**: Read every module, cross-reference systemic patterns (grep sanitizeTenantId, process.cwd, path.join.*tenantId).
+> **Result**: 69 bugs (3C/9H/52M/5L). 10 systemic fix categories identified.
+
+#### CRITICAL (3)
+
+| # | Bug | File:Line | Impact |
+|:-:|:----|:----------|:-------|
+| C1-P8 | Module-level `new GoogleGenerativeAI()` crashes process if API key missing | product-embedding-service.cjs:26-27 | Process crash at require-time — not catchable |
+| C2-P8 | Same module-level crash pattern | knowledge-embedding-service.cjs:18-19 | Same — entire process unrecoverable |
+| C3-P8 | Compliance severity check `=== 'HIGH'` skips CRITICAL violations | compliance-guardian.cjs:60 | CRITICAL compliance violations pass validation |
+
+#### HIGH (9)
+
+| # | Bug | File:Line | Impact |
+|:-:|:----|:----------|:-------|
+| H1-P8 | Wrong path + no tenantId sanitization | TenantContext.cjs:33 | Path traversal + wrong file resolution |
+| H2-P8 | Push to undefined `pricingHistory` array | RevenueScience.cjs:250 | Runtime TypeError crash |
+| H3-P8 | Wrong return type (object vs expected format) | RevenueScience.cjs:220-222 | Downstream consumers get wrong data |
+| H4-P8 | Wrong argument order in function call | recommendation-service.cjs:722 | Silently produces wrong results |
+| H5-P8 | Wrong path depth `../../..` from core/ resolves to ~/Desktop/ | voice-agent-b2b.cjs:125 | File not found or reads wrong directory |
+| H6-P8 | Same wrong path depth pattern | marketing-science-core.cjs:216 | Same — wrong directory resolution |
+| H7-P8 | 6 catalog classes: no tenantId sanitization on path.join | catalog-connector.cjs (6 classes) | Path traversal in all e-commerce catalog operations |
+| H8-P8 | No tenantId sanitization on 2 path operations | SecretVault.cjs:44,216 | Path traversal in secret storage — HIGH impact |
+| H9-P8 | Regex `/non/gi` replaces substrings within words | translation-supervisor.cjs:268 | "fonction"→"fonctiLla", "non-stop"→"Lla-stop" — corrupts translations |
+
+#### MEDIUM (52) — Systemic Patterns
+
+| Category | Count | Modules Affected | Description |
+|:---------|:-----:|:-----------------|:------------|
+| sanitizeTenantId missing | ~20 | catalog-connector(6), SecretVault(2), TenantContext, TenantLogger(2), TenantOnboardingAgent, ucp-store, vector-store, product-embedding, recommendation-service(2), client-registry, kb-quotas(2), conversation-store(4) | Raw tenantId in path.join() = path traversal |
+| process.cwd() | 13 | WebhookRouter, compliance-guardian, TenantOnboardingAgent, AgencyEventBus, TenantContext(2), client-registry, voice-agent-b2b, TenantLogger(3), BillingAgent, ContextBox | Breaks when script CWD ≠ project root |
+| Unbounded caches | ~8 | client-registry (no TTL), multiple Map caches without maxSize | Memory leak under sustained load |
+| parseBody no body limit | 1 | remotion-hitl.cjs | DoS via large POST body |
+| Hardcoded local paths | 2 | stitch-api.cjs (/Users/mac/.stitch-mcp/, gcloud path) | Won't work on VPS |
+| conversation-store partial | 4 | listByTenant, countByTenant, cleanup, purgeTenant | 4 methods skip sanitizeTenantId despite other methods using it |
+| Various logic bugs | ~4 | Multiple modules | Minor business logic issues |
+
+#### LOW (5)
+
+Minor issues including stale comments, unused variables, and non-critical code style inconsistencies.
+
+#### 10 Systemic Fix Categories (Actionable Plan)
+
+| # | Category | Scope | Effort | Priority |
+|:-:|:---------|:------|:-------|:--------:|
+| 1 | **Import sanitizeTenantId in all path.join modules** | 15+ modules, 30+ sites | 2h | **P0** |
+| 2 | **Replace process.cwd() with __dirname** | 8 modules, 13 sites | 1h | **P0** |
+| 3 | **Module-level init → lazy init with null check** | 2 embedding services | 30min | **P0** |
+| 4 | **Compliance severity hierarchy** (includes CRITICAL) | 1 module | 15min | **P0** |
+| 5 | **Fix wrong path depths ../../..** | 2 modules | 15min | **P0** |
+| 6 | **Add TTL + maxSize to all caches** | ~8 modules | 1h | **P1** |
+| 7 | **parseBody body size limit** | remotion-hitl.cjs | 15min | **P1** |
+| 8 | **Hardcoded paths → config-based** | stitch-api.cjs | 30min | **P1** |
+| 9 | **Regex word boundaries `\b`** | translation-supervisor.cjs | 15min | **P0** |
+| 10 | **conversation-store: sanitize all 4 remaining methods** | conversation-store.cjs | 15min | **P0** |
+| | **TOTAL ESTIMATED** | **40+ modules** | **~6h** | |
+
+#### Modules Audited (55 core + telephony + lib)
+
+**Clean modules** (no significant bugs):
+grok-voice-realtime.cjs, remotion-service.cjs, stitch-to-vocalia-css.cjs, lib/security-utils.cjs
+
+**Partially clean** (1-2 minor issues):
+GoogleSheetsDB.cjs (uses sanitizeTenantId properly), remotion-hitl.cjs (parseBody no limit), client-registry.cjs (process.cwd + no sanitization)
+
+**Systemic issues** (affected by pattern #1 or #2):
+All modules listed in MEDIUM category above.
+
+---
+
+### 6.16 Phase 7 — External Audit (250.171b) — 11 Bugs Reported, 7 Confirmed + Fixed
 
 > **Source**: External audit report "AUDIT PROFOND 250.171b"
 > **Counter-audit accuracy**: 64% confirmed (7/11), 18% false alarm (2/11), 18% already fixed (2/11)
@@ -649,5 +738,5 @@ RESOLVED (not bugs):
 
 ---
 
-*Document mis a jour le 2026-02-09 — Session 250.171b*
-*Changelog: sessions 250.153→171b (16 sessions, 79 bugs found, 74 fixed). Details: `memory/session-history.md`*
+*Document mis a jour le 2026-02-09 — Session 250.172*
+*Changelog: sessions 250.153→172 (17 sessions, 148 bugs found, 74 fixed, 74 unfixed). Details: `memory/session-history.md`*

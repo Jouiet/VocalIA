@@ -461,7 +461,7 @@ async function loadTenantsFromDB() {
       adminMetrics.tenants.set(t.id, {
         id: t.id,
         name: t.name,
-        plan: t.plan || 'free',
+        plan: t.plan || 'starter',
         mrr: parseFloat(t.mrr) || 0,
         callsToday: parseInt(t.calls_today) || 0,
         status: t.status || 'active',
@@ -2784,7 +2784,7 @@ function startServer(port = 3004) {
           // Get Persona with full injection (Session 250.54: Fixed Widget persona injection)
           // Session 177.5: Persona-Widget Segmentation validation
           const { VoicePersonaInjector } = require('../personas/voice-persona-injector.cjs');
-          const widgetType = reqWidgetType || 'B2C'; // Default to B2C for widget calls
+          const widgetType = reqWidgetType || 'B2B'; // Default to B2B for widget calls
           const persona = VoicePersonaInjector.getPersona(null, null, tenantId, widgetType);
 
           // Set persona language to request language for proper SYSTEM_PROMPTS lookup

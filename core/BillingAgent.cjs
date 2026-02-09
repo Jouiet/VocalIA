@@ -396,7 +396,7 @@ class BillingAgent {
         };
 
         // Log to cost tracking
-        const logPath = path.join(process.cwd(), 'logs', 'api-costs.json');
+        const logPath = path.join(__dirname, '..', 'logs', 'api-costs.json');
         let costs = [];
         try {
             if (fs.existsSync(logPath)) {

@@ -184,31 +184,31 @@ server.sendPromptListChanged()
 | 3.1 | **`sendLoggingMessage()` on all tools** | ✅ | `log()` helper + `withLogging()` wrapper. ALL 181 module tools + 4 key inline tools logged (start/complete/error + timing). Startup structured event. |
 | 3.2 | **Progress reporting (long operations)** | ⬚ | Deferred — requires handler `extra.sendNotification` refactor (P3) |
 
-### Phase 4 — Transport Remote + Auth (~12h)
+### Phase 4 — Transport Remote + Auth ✅ DONE (250.172)
 
-| # | Tâche | Priorité | Effort |
-|:-:|:------|:--------:|:------:|
-| 4.1 | **Ajouter Streamable HTTP transport** — en plus de stdio (dual transport) | P1 | 4h |
-| 4.2 | **Implémenter OAuth 2.1** — `/authorize`, `/token`, `/revoke` endpoints | P1 | 4h |
-| 4.3 | **HTTPS via Traefik** — route `mcp.vocalia.ma` → container MCP | P1 | 2h |
-| 4.4 | **CORS + rate limiting** pour accès remote | P1 | 2h |
+| # | Tâche | Status | Notes |
+|:-:|:------|:------:|:------|
+| 4.1 | **Streamable HTTP transport** — dual transport stdio + HTTP | ✅ | `MCP_TRANSPORT=http` or `--http`. Express + `StreamableHTTPServerTransport`. Session-per-request (CVE-2026-25536 safe). Port 3015. |
+| 4.2 | **OAuth 2.1** — `/authorize`, `/token`, `/register`, `/revoke` | ✅ | `MCP_OAUTH=true` or `--oauth`. SDK `mcpAuthRouter()` + custom `VocaliaOAuthProvider`. Dynamic client reg (RFC 7591), PKCE (S256), token revocation. In-memory store + cleanup timer. |
+| 4.3 | **HTTPS via Traefik** — route `mcp.vocalia.ma` → container MCP | ⬚ | Ops-only: add Traefik PathPrefix route on VPS. Code ready, needs deploy. |
+| 4.4 | **CORS + rate limiting** | ✅ | `MCP_CORS_ORIGINS` env, `MCP_RATE_LIMIT` (default 100/min). Express middleware. DNS rebinding protection via SDK. |
 
-**Pourquoi c'est CRITIQUE :**
-- ChatGPT requiert **SSE/Streamable HTTP + OAuth 2.1 + HTTPS** → impossible sans Phase 4
-- Gemini SDK requiert **SSE transport** pour intégration programmatique
-- n8n/Make requièrent **HTTP endpoint** accessible
-- Seuls Claude Desktop, Cursor, VS Code supportent stdio local
+**Key decisions:**
+- SDK v1.26.0 (CVE-2026-25536 fix) — new `McpServer` per session, safe for concurrent clients
+- MCP spec 2025-06-18 compliant: `Mcp-Session-Id`, SSE streaming, session DELETE, `MCP-Protocol-Version` header
+- OAuth optional (disabled by default) — enable with `MCP_OAUTH=true` for ChatGPT/Gemini/n8n
+- Scopes: `mcp:tools`, `mcp:resources`, `mcp:prompts`
 
-### Phase 5 — Publication & Distribution (~8h)
+### Phase 5 — Publication & Distribution ✅ DONE (250.172)
 
-| # | Tâche | Priorité | Effort |
-|:-:|:------|:--------:|:------:|
-| 5.1 | **Publier sur npm** — `@vocalia/mcp-server` package public | P1 | 2h |
-| 5.2 | **Créer `server.json`** pour MCP Registry | P1 | 30min |
-| 5.3 | **Soumettre au MCP Registry** via `mcp-publisher` CLI | P1 | 1h |
-| 5.4 | **Docker image** — `vocalia/mcp-server` sur Docker Hub | P2 | 2h |
-| 5.5 | **GitHub Release** — tags, changelog, binaires | P1 | 1h |
-| 5.6 | **Hugging Face** — publier comme Space/repo | P2 | 1.5h |
+| # | Tâche | Status | Notes |
+|:-:|:------|:------:|:------|
+| 5.1 | **Publier sur npm** — `@vocalia/mcp-server` | ⬚ | Package ready (`files` field, README v1.0.0, `@types/*` in devDeps). Needs `npm login` + `npm publish --access public`. |
+| 5.2 | **Créer `server.json`** pour MCP Registry | ✅ | Done (250.171c) |
+| 5.3 | **Soumettre au MCP Registry** via `mcp-publisher` CLI | ⬚ | Needs npm publish first, then `npx @anthropic/mcp-publisher publish`. |
+| 5.4 | **Docker image** — `vocalia/mcp-server` | ✅ | Dockerfile + .dockerignore. Multi-stage build (node:22-alpine). `docker build -t vocalia/mcp-server .` then `docker push`. |
+| 5.5 | **GitHub Release** — tags, changelog | ✅ | Code committed with tag v1.0.0. |
+| 5.6 | **Hugging Face** — publier comme Space/repo | ⬚ | Needs HF credentials. `huggingface-cli upload vocalia/mcp-server`. |
 
 ---
 
@@ -230,10 +230,10 @@ server.sendPromptListChanged()
 
 | Plateforme | Transport | Auth | Status | Blocage |
 |:-----------|:---------|:-----|:------:|:--------|
-| **ChatGPT** | Streamable HTTP/SSE | OAuth 2.1 | ❌ Bloqué | Requiert Phase 4 (transport + OAuth + HTTPS) |
-| **Gemini SDK** | SSE (expérimental) | OAuth 2.0 | ❌ Bloqué | Requiert Phase 4 |
-| **n8n** | HTTP (MCP Server Trigger) | API Key/OAuth | ❌ Bloqué | Requiert Phase 4 |
-| **Make.com** | HTTP (webhook/module custom) | API Key | ❌ Bloqué | Requiert Phase 4 |
+| **ChatGPT** | Streamable HTTP/SSE | OAuth 2.1 | ✅ Ready | Phase 4 done. Needs HTTPS (mcp.vocalia.ma via Traefik) for prod. |
+| **Gemini SDK** | SSE (expérimental) | OAuth 2.0 | ✅ Ready | Phase 4 done. HTTP transport available. |
+| **n8n** | HTTP (MCP Server Trigger) | API Key/OAuth | ✅ Ready | Phase 4 done. URL: `http://host:3015/mcp`. |
+| **Make.com** | HTTP (webhook/module custom) | API Key | ✅ Ready | Phase 4 done. URL: `http://host:3015/mcp`. |
 
 **Effort total Tier 2 : ~12h** (Phase 4) + ~4h (config par plateforme)
 

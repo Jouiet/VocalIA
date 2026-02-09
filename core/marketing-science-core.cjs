@@ -213,7 +213,7 @@ Output JSON: { "score": <0-10>, "feedback": "concise critique", "issues": ["list
         try {
             const fs = require('fs');
             const path = require('path');
-            const logDir = process.env.ANALYTICS_LOG_DIR || path.join(__dirname, '../../../data/analytics');
+            const logDir = process.env.ANALYTICS_LOG_DIR || path.join(__dirname, '..', 'data', 'analytics');
             if (!fs.existsSync(logDir)) fs.mkdirSync(logDir, { recursive: true });
 
             const logFile = path.join(logDir, 'marketing_events.jsonl');

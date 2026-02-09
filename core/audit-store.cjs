@@ -365,7 +365,7 @@ class AuditStore {
    * Delete all audit data for a tenant (RGPD full purge)
    */
   purgeTenant(tenantId) {
-    const tenantDir = path.join(this.baseDir, tenantId);
+    const tenantDir = path.join(this.baseDir, sanitizeTenantId(tenantId));
     if (fs.existsSync(tenantDir)) {
       fs.rmSync(tenantDir, { recursive: true, force: true });
       return true;

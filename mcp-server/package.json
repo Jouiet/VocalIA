@@ -11,6 +11,8 @@
     "build": "tsc",
     "dev": "tsc --watch",
     "start": "node dist/index.js",
+    "start:http": "MCP_TRANSPORT=http node dist/index.js",
+    "start:http:oauth": "MCP_TRANSPORT=http MCP_OAUTH=true node dist/index.js",
     "inspector": "npx @modelcontextprotocol/inspector dist/index.js"
   },
   "keywords": [
@@ -34,10 +36,14 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "server.json"
+  ],
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.0.0",
-    "@types/nodemailer": "^7.0.9",
-    "@types/papaparse": "^5.5.2",
+    "@modelcontextprotocol/sdk": "^1.26.0",
     "exceljs": "^4.4.0",
     "google-auth-library": "^10.5.0",
     "googleapis": "^171.0.0",
@@ -47,7 +53,10 @@
     "zod": "^3.23.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^20.0.0",
+    "@types/nodemailer": "^7.0.9",
+    "@types/papaparse": "^5.5.2",
     "@types/pdfkit": "^0.17.4",
     "typescript": "^5.0.0"
   }

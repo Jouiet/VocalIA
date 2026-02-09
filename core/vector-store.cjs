@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 const STORE_DIR = path.join(__dirname, '../data/vector-store');
 
@@ -241,7 +242,7 @@ class VectorStore {
    * Get store file path for tenant
    */
   _getStorePath(tenantId) {
-    return path.join(STORE_DIR, `${tenantId}_vectors.json`);
+    return path.join(STORE_DIR, `${sanitizeTenantId(tenantId)}_vectors.json`);
   }
 
   /**

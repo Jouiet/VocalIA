@@ -268,6 +268,7 @@ class A2UIService {
     this.stitchEnabled = false;
     this.projectId = null;
     this.cache = new Map(); // Cache generated UIs
+    this.maxCacheSize = 200;
   }
 
   /**
@@ -316,7 +317,11 @@ class A2UIService {
     // Sanitize HTML
     result.html = this.sanitizeHTML(result.html);
 
-    // Cache result
+    // Cache result (bounded)
+    if (this.cache.size >= this.maxCacheSize) {
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
     this.cache.set(cacheKey, result);
 
     return {

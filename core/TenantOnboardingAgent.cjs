@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 const AgencyEventBus = require('./AgencyEventBus.cjs');
 const HubSpotB2BCRM = require('../integrations/hubspot-b2b-crm.cjs');
 
@@ -72,7 +73,7 @@ const TASK_STATES = {
 
 class TenantOnboardingAgent {
     constructor() {
-        this.baseClientsDir = path.join(process.cwd(), '..', 'clients');
+        this.baseClientsDir = path.join(__dirname, '..', 'clients');
         this.taskHistory = new Map();
         console.log(`[TenantOnboardingAgent] A2A Agent Active - ${AGENT_CARD.name} v${AGENT_CARD.version}`);
     }
@@ -202,7 +203,7 @@ class TenantOnboardingAgent {
     }
 
     _createClientDirectory(tenantId) {
-        const tenantDir = path.join(this.baseClientsDir, tenantId);
+        const tenantDir = path.join(this.baseClientsDir, sanitizeTenantId(tenantId));
         if (!fs.existsSync(tenantDir)) {
             fs.mkdirSync(tenantDir, { recursive: true });
             console.log(`[Onboarding] Created directory: ${tenantDir}`);

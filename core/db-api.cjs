@@ -36,6 +36,8 @@ const { getDB } = require('./GoogleSheetsDB.cjs');
 const authService = require('./auth-service.cjs');
 const { requireAuth, requireAdmin, rateLimit, extractToken } = require('./auth-middleware.cjs');
 
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
+
 // Session 250.57: Audit trail for compliance
 const { getInstance: getAuditStore, ACTION_CATEGORIES } = require('./audit-store.cjs');
 const auditStore = getAuditStore();
@@ -986,7 +988,7 @@ async function handleRequest(req, res) {
       // Load current KB, add entry, save
       const fs = require('fs');
       const path = require('path');
-      const kbDir = path.join(__dirname, '../clients', tenantId, 'knowledge_base');
+      const kbDir = path.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'knowledge_base');
       const kbFile = path.join(kbDir, `kb_${language}.json`);
 
       // Ensure directory exists

@@ -7,7 +7,7 @@
  * 2. CUSTOMER SUPPORT - Integration help, persona guidance, troubleshooting
  *
  * VocalIA Platform (2 Products):
- * - Voice Widget: Browser-based voice assistant (Web Speech API, free tier)
+ * - Voice Widget: Browser-based voice assistant (Web Speech API, from 49€/mo)
  * - Voice Telephony: PSTN AI Bridge (Twilio, per-minute pricing)
  *
  * Technology Stack:
@@ -93,9 +93,8 @@ const https = require('https');
 
 // Load environment variables
 const envPaths = [
-  path.join(__dirname, '../../../.env'),
-  path.join(__dirname, '../../../.env.admin'),
-  path.join(process.cwd(), '.env')
+  path.join(__dirname, '..', '.env'),
+  path.join(__dirname, '..', '.env.admin')
 ];
 
 // Session 250.81: Protocol Integrity (A2A Event Bus)
@@ -122,7 +121,7 @@ const GROK_TEXT_ENDPOINT = 'https://api.x.ai/v1/chat/completions';
 const GROK_MODEL = 'grok-4-1-fast-non-reasoning';
 
 // Paths
-const BASE_DIR = path.join(__dirname, '../../..');
+const BASE_DIR = path.join(__dirname, '..');
 const CONVERSATION_LOG_DIR = path.join(BASE_DIR, 'logs/voice_conversations');
 
 // VocalIA Pricing Plans (Voice AI Platform) — 4 tiers, updated 250.145
@@ -501,7 +500,7 @@ IMPORTANT RULES
 
     // VOICE WIDGET
     if (input.includes('widget') || input.includes('website') || input.includes('embed')) {
-      return "Our Voice Widget is a JavaScript embed that adds 24/7 voice AI to your website. It supports 5 languages including Darija, handles FAQs, and can book appointments. Free tier available.";
+      return "Our Voice Widget is a JavaScript embed that adds 24/7 voice AI to your website. It supports 5 languages including Darija, handles FAQs, and can book appointments. Plans start at 49€/month with a 14-day free trial.";
     }
 
     // TELEPHONY

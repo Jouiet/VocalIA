@@ -6,8 +6,23 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const CACHE_FILE = path.join(__dirname, '../data/knowledge-base/embeddings_cache.json');
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "text-embedding-004" });
+
+// Lazy init — avoids process crash at require-time if API key missing
+let _genAI = null;
+let _model = null;
+
+function getModel() {
+  if (!_model) {
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    if (!apiKey) {
+      console.error('❌ GEMINI_API_KEY / GOOGLE_GENERATIVE_AI_API_KEY not set — embeddings unavailable');
+      return null;
+    }
+    _genAI = new GoogleGenerativeAI(apiKey);
+    _model = _genAI.getGenerativeModel({ model: 'text-embedding-004' });
+  }
+  return _model;
+}
 
 /**
  * Knowledge Embedding Service
@@ -50,7 +65,7 @@ class KnowledgeEmbeddingService {
 
         try {
             console.log(`[Embedding] Generating for chunk: ${id}...`);
-            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : model;
+            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : getModel();
             const result = await targetModel.embedContent(text);
             const embedding = result.embedding.values;
 
@@ -84,7 +99,7 @@ class KnowledgeEmbeddingService {
      */
     async getQueryEmbedding(query, apiKey = null) {
         try {
-            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : model;
+            const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : getModel();
             const result = await targetModel.embedContent(query);
             return result.embedding.values;
         } catch (e) {
