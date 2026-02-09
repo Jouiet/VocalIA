@@ -390,10 +390,10 @@
         <div class="va-input-area">
           <input type="text" class="va-input" id="va-input" placeholder="${L.ui.placeholder || 'Posez votre question...'}" autocomplete="off">
           ${(hasSpeechRecognition || (typeof MediaRecorder !== 'undefined')) ? `
-          <button class="va-btn" id="va-mic" aria-label="Activer le microphone">
+          <button class="va-btn" id="va-mic" aria-label="${L.ui.ariaMic || 'Microphone'}">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="white"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
           </button>` : ''}
-          <button class="va-btn va-btn-send" id="va-send" aria-label="Envoyer">
+          <button class="va-btn va-btn-send" id="va-send" aria-label="${L.ui.ariaSend || 'Envoyer'}">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
           </button>
         </div>
@@ -1018,7 +1018,8 @@
         if (!CONFIG.EXIT_INTENT_ENABLED) return;
 
         // Check cooldown
-        const lastShown = localStorage.getItem('vocalia_exit_intent');
+        let lastShown = null;
+        try { lastShown = localStorage.getItem('vocalia_exit_intent'); } catch {}
         if (lastShown && Date.now() - parseInt(lastShown) < CONFIG.EXIT_INTENT_COOLDOWN) return;
 
         // Desktop: mouse leave detection
@@ -1050,7 +1051,7 @@
 
     function triggerExitIntent() {
         state.exitIntent.triggered = true;
-        localStorage.setItem('vocalia_exit_intent', Date.now().toString());
+        try { localStorage.setItem('vocalia_exit_intent', Date.now().toString()); } catch {}
 
         // Open widget with special message
         if (!state.isOpen) {
@@ -1172,7 +1173,7 @@
         // Close button
         const closeBtn = document.createElement('button');
         closeBtn.style.cssText = 'position:absolute;top:6px;' + (isRTL ? 'left' : 'right') + ':6px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.4);padding:2px;';
-        closeBtn.setAttribute('aria-label', 'Close');
+        closeBtn.setAttribute('aria-label', state.langData?.ui?.ariaClose || 'Close');
         closeBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>';
         closeBtn.addEventListener('click', () => notification.remove());
 

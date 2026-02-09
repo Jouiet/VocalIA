@@ -176,7 +176,7 @@ class HybridRAG {
             const chunks = engine.bm25.documents;
             for (const chunk of chunks) {
                 // Use KnowledgeEmbeddingService which has global cache/disk storage
-                const chunkVector = await EmbeddingService.getEmbedding(chunk.id, chunk.text, geminiKey);
+                const chunkVector = await EmbeddingService.getEmbedding(chunk.id, chunk.text, geminiKey, tenantId);
                 if (chunkVector) {
                     const similarity = EmbeddingService.cosineSimilarity(queryVector, chunkVector);
                     denseResults.push({ ...chunk, denseScore: similarity });

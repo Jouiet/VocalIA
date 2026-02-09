@@ -28,6 +28,8 @@ function getModel() {
  * Knowledge Embedding Service
  * Architecture: Dense Vectors (Gemini) + Local Caching
  */
+const MAX_CACHE_ENTRIES = 5000;
+
 class KnowledgeEmbeddingService {
     constructor() {
         this.cache = this._loadCache();
@@ -60,16 +62,23 @@ class KnowledgeEmbeddingService {
     /**
      * Generate embedding for a single text chunk
      */
-    async getEmbedding(id, text, apiKey = null) {
-        if (this.cache[id]) return this.cache[id];
+    async getEmbedding(id, text, apiKey = null, tenantId = null) {
+        const cacheKey = tenantId ? `${tenantId}:${id}` : id;
+        if (this.cache[cacheKey]) return this.cache[cacheKey];
 
         try {
-            console.log(`[Embedding] Generating for chunk: ${id}...`);
+            console.log(`[Embedding] Generating for chunk: ${cacheKey}...`);
             const targetModel = apiKey ? new GoogleGenerativeAI(apiKey).getGenerativeModel({ model: "text-embedding-004" }) : getModel();
             const result = await targetModel.embedContent(text);
             const embedding = result.embedding.values;
 
-            this.cache[id] = embedding;
+            // Evict oldest entries if cache is full
+            const keys = Object.keys(this.cache);
+            if (keys.length >= MAX_CACHE_ENTRIES) {
+                const toRemove = keys.slice(0, keys.length - MAX_CACHE_ENTRIES + 1);
+                for (const k of toRemove) delete this.cache[k];
+            }
+            this.cache[cacheKey] = embedding;
             return embedding;
         } catch (e) {
             console.error(`[Embedding] Failed for ${id}:`, e.message);
@@ -112,6 +121,7 @@ class KnowledgeEmbeddingService {
      * Calculate Cosine Similarity
      */
     cosineSimilarity(vecA, vecB) {
+        if (!vecA || !vecB || vecA.length !== vecB.length) return 0;
         let dotProduct = 0;
         let normA = 0;
         let normB = 0;
@@ -120,7 +130,8 @@ class KnowledgeEmbeddingService {
             normA += vecA[i] * vecA[i];
             normB += vecB[i] * vecB[i];
         }
-        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        const denom = Math.sqrt(normA) * Math.sqrt(normB);
+        return denom === 0 ? 0 : dotProduct / denom;
     }
 }
 

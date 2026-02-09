@@ -222,6 +222,8 @@ class VectorIndex {
 /**
  * Multi-tenant Vector Store
  */
+const MAX_VECTOR_TENANTS = 50;
+
 class VectorStore {
   constructor() {
     this.indices = {}; // tenantId -> VectorIndex
@@ -232,6 +234,11 @@ class VectorStore {
    */
   _getIndex(tenantId) {
     if (!this.indices[tenantId]) {
+      // LRU eviction
+      const keys = Object.keys(this.indices);
+      if (keys.length >= MAX_VECTOR_TENANTS) {
+        delete this.indices[keys[0]];
+      }
       this.indices[tenantId] = new VectorIndex();
       this._loadIndex(tenantId);
     }

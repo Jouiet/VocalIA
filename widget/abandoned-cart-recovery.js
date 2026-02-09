@@ -900,14 +900,16 @@
         }
 
         checkCooldown() {
-            const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
-            if (lastShown) {
-                const elapsed = Date.now() - parseInt(lastShown, 10);
-                if (elapsed < this.config.cooldownPeriod) {
-                    this.cooldownActive = true;
-                    return;
+            try {
+                const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
+                if (lastShown) {
+                    const elapsed = Date.now() - parseInt(lastShown, 10);
+                    if (elapsed < this.config.cooldownPeriod) {
+                        this.cooldownActive = true;
+                        return;
+                    }
                 }
-            }
+            } catch {}
             this.cooldownActive = false;
         }
 
@@ -987,7 +989,8 @@
             }
 
             // 4. LocalStorage cart
-            const storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart');
+            let storedCart = null;
+            try { storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart'); } catch {}
             if (storedCart) {
                 try {
                     return JSON.parse(storedCart);
@@ -1046,7 +1049,7 @@
             }
 
             // Set cooldown
-            localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString());
+            try { localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString()); } catch {}
             this.cooldownActive = true;
 
             // Notify orchestrator

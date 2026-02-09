@@ -33,6 +33,7 @@
     fr: {
       title: 'Tentez votre chance !',
       subtitle: 'Tournez la roue pour gagner une surprise',
+      ariaClose: 'Fermer',
       spinButton: 'TOURNER',
       spinning: 'En cours...',
       emailPlaceholder: 'Votre email pour recevoir le code',
@@ -65,6 +66,7 @@
     en: {
       title: 'Try Your Luck!',
       subtitle: 'Spin the wheel to win a surprise',
+      ariaClose: 'Close',
       spinButton: 'SPIN',
       spinning: 'Spinning...',
       emailPlaceholder: 'Your email to receive the code',
@@ -97,6 +99,7 @@
     es: {
       title: 'Prueba tu suerte!',
       subtitle: 'Gira la rueda para ganar una sorpresa',
+      ariaClose: 'Cerrar',
       spinButton: 'GIRAR',
       spinning: 'Girando...',
       emailPlaceholder: 'Tu email para recibir el codigo',
@@ -129,6 +132,7 @@
     ar: {
       title: 'جرب حظك!',
       subtitle: 'ادر العجلة لتربح مفاجأة',
+      ariaClose: 'إغلاق',
       spinButton: 'ادر',
       spinning: 'جاري الدوران...',
       emailPlaceholder: 'بريدك لاستلام الكود',
@@ -161,6 +165,7 @@
     ary: {
       title: 'جرب الزهر ديالك!',
       subtitle: 'دور الروضة باش تربح كادو',
+      ariaClose: 'سد',
       spinButton: 'دور',
       spinning: 'كتدور...',
       emailPlaceholder: 'الإيميل ديالك باش تاخد الكود',
@@ -674,14 +679,16 @@
     }
 
     checkCooldown() {
-      const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-      if (lastPlayed) {
-        const elapsed = Date.now() - parseInt(lastPlayed, 10);
-        const cooldownMs = this.config.cooldownHours * 60 * 60 * 1000;
-        if (elapsed < cooldownMs) {
-          this.state.hasPlayed = true;
+      try {
+        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+        if (lastPlayed) {
+          const elapsed = Date.now() - parseInt(lastPlayed, 10);
+          const cooldownMs = this.config.cooldownHours * 60 * 60 * 1000;
+          if (elapsed < cooldownMs) {
+            this.state.hasPlayed = true;
+          }
         }
-      }
+      } catch {}
     }
 
     createModal() {
@@ -691,7 +698,7 @@
 
       overlay.innerHTML = `
         <div class="va-spin-modal" dir="${this.isRTL ? 'rtl' : 'ltr'}" role="dialog" aria-modal="true">
-          <button class="va-spin-close" aria-label="Close">
+          <button class="va-spin-close" aria-label="${this.translations.ariaClose || 'Close'}">
             <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
 
@@ -1030,7 +1037,7 @@
 
       // Set cooldown
       this.state.hasPlayed = true;
-      localStorage.setItem('va_spin_wheel_last_played', Date.now().toString());
+      try { localStorage.setItem('va_spin_wheel_last_played', Date.now().toString()); } catch {}
     }
 
     showConfetti() {
@@ -1163,7 +1170,7 @@
       this.state.hasPlayed = false;
       this.state.isSpinning = false;
       this.state.selectedPrize = null;
-      localStorage.removeItem('va_spin_wheel_last_played');
+      try { localStorage.removeItem('va_spin_wheel_last_played'); } catch {}
 
       if (this.elements.wheel) {
         this.elements.wheel.style.transform = 'rotate(0deg)';
@@ -1218,10 +1225,12 @@
     };
 
     window.VocalIA.isSpinWheelAvailable = function() {
-      const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-      if (!lastPlayed) return true;
-      const elapsed = Date.now() - parseInt(lastPlayed, 10);
-      return elapsed >= 24 * 60 * 60 * 1000;
+      try {
+        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+        if (!lastPlayed) return true;
+        const elapsed = Date.now() - parseInt(lastPlayed, 10);
+        return elapsed >= 24 * 60 * 60 * 1000;
+      } catch { return true; }
     };
   }
 

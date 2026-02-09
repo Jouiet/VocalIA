@@ -1062,10 +1062,10 @@
             ${displayTitle}
           </span>
           <div class="va-carousel-nav">
-            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaPrev || 'Previous'}">
               <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
             </button>
-            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="Next">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaNext || 'Next'}">
               <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
             </button>
           </div>
@@ -1593,10 +1593,12 @@
      * Check if spin wheel is available (cooldown check)
      */
     window.VocalIA.isSpinWheelAvailable = function () {
-        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-        if (!lastPlayed) return true;
-        const elapsed = Date.now() - parseInt(lastPlayed, 10);
-        return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        try {
+            const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+            if (!lastPlayed) return true;
+            const elapsed = Date.now() - parseInt(lastPlayed, 10);
+            return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        } catch { return true; }
     };
 
     /**
@@ -2373,7 +2375,8 @@
         if (!CONFIG.EXIT_INTENT_ENABLED) return;
 
         // Check cooldown (once per 24h per user)
-        const lastShown = localStorage.getItem('vocalia_exit_intent_shown');
+        let lastShown = null;
+        try { lastShown = localStorage.getItem('vocalia_exit_intent_shown'); } catch {}
         if (lastShown && Date.now() - parseInt(lastShown) < CONFIG.EXIT_INTENT_COOLDOWN) {
             return;
         }
@@ -2449,7 +2452,7 @@
         state.exitIntent.shown = true;
 
         // Save to localStorage for cooldown
-        localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString());
+        try { localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString()); } catch {}
 
         // Track event
         trackEvent('exit_intent_triggered', { trigger, page: window.location.pathname });
@@ -2545,7 +2548,7 @@
       </style>
 
       <div class="va-exit-popup">
-        <button class="va-exit-close" id="va-exit-close" aria-label="Fermer">
+        <button class="va-exit-close" id="va-exit-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
           <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
 
@@ -2712,7 +2715,7 @@
         .va-sp-close:hover { color: rgba(255,255,255,0.7); }
       </style>
 
-      <button class="va-sp-close" aria-label="Fermer">
+      <button class="va-sp-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>

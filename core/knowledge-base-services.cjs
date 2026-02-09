@@ -656,7 +656,7 @@ class ServiceKnowledgeBase {
     if (queryVector) {
       for (const chunk of tenantChunks) {
         // Retrieve or generate embedding for chunk
-        const chunkVector = await EmbeddingService.getEmbedding(chunk.text);
+        const chunkVector = await EmbeddingService.getEmbedding(chunk.id, chunk.text, null, tenantId);
         if (chunkVector) {
           const similarity = EmbeddingService.cosineSimilarity(queryVector, chunkVector);
           // Threshold for semantic relevance (Session 250.81)

@@ -244,8 +244,7 @@ async function getClientConfig(clientId) {
 
     // 3. Fallback to static demos
     if (!config && CLIENT_REGISTRY?.clients?.[clientId]) {
-        config = CLIENT_REGISTRY.clients[clientId];
-        config._source = 'static_demo';
+        config = { ...CLIENT_REGISTRY.clients[clientId], _source: 'static_demo' };
         console.log(`[TenantBridge] 📦 Loaded tenant "${clientId}" from static demos`);
     }
 

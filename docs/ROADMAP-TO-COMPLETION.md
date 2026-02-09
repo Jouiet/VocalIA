@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.179 (Intelligence Layer + Widget Runtime dual audit: 33 bugs found, 33 fixed)
+> **Date:** 2026-02-09 | **Session:** 250.179b (Complementary audit: 10 bugs I17-I23+W25+S1+S2, all fixed)
 > **Code Completeness:** 8.7/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain) + **DEEP SYSTEM AUDIT 250.175** (21 reported, ~62% accurate, 7 confirmed+fixed) + **ULTRA-DEEP AUDIT 250.176** (9 bugs found+fixed: telephony, OAuthGateway, auth-service, remotion-hitl) + **DEEP MCP AUDIT 250.177b** (6 bugs D10-D15: param swaps, email security, Klaviyo API) + **WEBSITE AUDIT 250.178** (homepage stale $0.06→$0.10, geo-aware data-price-key, pricing.html dynamic overage) + **INTELLIGENCE+WIDGET AUDIT 250.179** (33 bugs: 16 Intelligence Layer + 17 Widget Runtime, ALL fixed)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain) + **DEEP SYSTEM AUDIT 250.175** (21 reported, ~62% accurate, 7 confirmed+fixed) + **ULTRA-DEEP AUDIT 250.176** (9 bugs found+fixed: telephony, OAuthGateway, auth-service, remotion-hitl) + **DEEP MCP AUDIT 250.177b** (6 bugs D10-D15: param swaps, email security, Klaviyo API) + **WEBSITE AUDIT 250.178** (homepage stale $0.06→$0.10, geo-aware data-price-key, pricing.html dynamic overage) + **INTELLIGENCE+WIDGET AUDIT 250.179** (33 bugs: 16 Intelligence Layer + 17 Widget Runtime, ALL fixed) + **COMPLEMENT AUDIT 250.179b** (10 bugs: 7 core + 1 widget + 2 systemic, ALL fixed)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 8.7/10** — Features coded and tested (3,804 tests, 68 files). **218 bugs reported across 14 audit phases — ALL actionable bugs fixed, 0 remaining.** Session 250.179: Intelligence Layer + Widget Runtime dual audit — 33 new bugs (6 HIGH, 18 MEDIUM, 9 LOW), ALL fixed. Reclassified: 2 external dependencies (Gemini TTS preview, Gemini API key in URL), 2 non-bugs (NL2 verified correct, M5 architecture), 2 false alarms, ~5 cosmetic (stale comments/code style).
+**Code Completeness: 8.8/10** — Features coded and tested (3,803 tests, 68 files). **228 bugs reported across 15 audit phases — ALL actionable bugs fixed, 0 remaining.** Session 250.179b: Complementary audit — 10 new bugs (3 HIGH, 5 MEDIUM, 2 systemic), ALL fixed. Tenant cache isolation, cosine similarity safety, object mutation, dead code path, unbounded Maps, monkey-patch cleanup, localStorage hardening, aria-label i18n. Reclassified: 2 external dependencies (Gemini TTS preview, Gemini API key in URL), 2 non-bugs (NL2 verified correct, M5 architecture), 2 false alarms, ~5 cosmetic (stale comments/code style).
 **Production Readiness: 4.0/10** — VERIFIED 250.171 via curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (Grok/Gemini/Claude/Atlas all configured:true)
@@ -301,7 +301,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 3,804 tests | 3,804 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.179)
+**TOTAL: 3,803 tests | 3,803 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.179b)
 
 Top test suites (by count):
 
@@ -510,7 +510,8 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 11 ULTRA-DEEP (250.176)** | **9 (1H+5M+2H+1M)** | **9** | **0** |
 | **Phase 12 DEEP MCP (250.177b)** | **6 (3H+2M+1L)** | **6** | **0** |
 | **Phase 13 INTEL+WIDGET (250.179)** | **33 (6H+18M+9L)** | **33** | **0** |
-| **CUMULATIVE** | **218** | **218** | **0 actionable** (inc. 2 external, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified) |
+| **Phase 14 COMPLEMENT (250.179b)** | **10 (3H+5M+2S)** | **10** | **0** |
+| **CUMULATIVE** | **228** | **228** | **0 actionable** (inc. 2 external, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified) |
 
 ---
 
@@ -546,10 +547,11 @@ create_booking          get_recommendations    qualify_lead
 | **P0-WEBSITE-PRICING (250.178)** | ✅ **DONE** | Homepage stale $0.06→$0.10 (not caught by validator — split across elements). Geo-aware `data-price-key` pattern on homepage (MAD/EUR/USD). `updateCurrencyUI()` enhanced to update prices+symbols. Confusing "5 Disponibilité"→"5 Niveaux IA" (5 AI fallback levels). Pricing.html telephony overage text now dynamic. i18n `stats.ai_levels` added to all 5 locales. | **8.5** |
 | **P0-INFRA-PROFILES (250.178)** | ✅ **DONE** | Docker Compose profiles for 3 non-deployed servers: OAuth Gateway + Webhook Router (`--profile integrations`), MCP Server (`--profile mcp`). Remotion HITL excluded (library mode works inside voice-api). Traefik routing: /oauth (95), /webhook (93), /mcp (85). Deploy: `docker-compose up -d` (core 4) or `--profile integrations --profile mcp` (all 7). | **8.5** |
 | **P0-INTEL-WIDGET (250.179)** | ✅ **33/33 FIXED** | Dual audit: Intelligence Layer (16 bugs) + Widget Runtime (17 bugs). HIGH: W1/W2 _injectStyles crash, W7 wrong class name, W8 LANG_PATH relative, I2 order enumeration, I3 Shopify infinite recursion. MEDIUM: GPM path (I1), sync/async parity (I4-I7), watcher leak (I9), redirect bomb (I10), JSONL crash (I11), regex injection (I12), unbounded Map (I13), Shadow DOM focus (W12), XSS (W9-W10), aria i18n (W4/W13), event listener leak (W14). LOW: GPM async parity (I8), errorBuffer (I14), ContextBox race (I15), eventId idempotency (I16), logo URL (W15), UCP args (W16), social proof log (W17). | **8.7** |
+| **P0-COMPLEMENT (250.179b)** | ✅ **10/10 FIXED** | Complementary audit: I17 embedding cache tenant isolation (global→per-tenant key), I18 cosineSimilarity NaN on mismatched vectors (length check), I19 embedding cache unbounded (MAX 5000 + eviction), I20 tenant-persona-bridge async path mutates registry (spread copy), I21 getRecommendationAction dead code path (recommendations never destructured), I22 AssociationRulesEngine unbounded rules (MAX 50 + eviction), I23 VectorStore unbounded indices (MAX 50 + eviction), W25 monkey-patched setCartData not restored in destroy(), S1 15 unprotected localStorage sites across 5 widgets (try/catch), S2 9 hardcoded aria-labels across 4 widgets (i18n). Also fixed: knowledge-base-services.cjs getEmbedding() wrong params (1 arg instead of 4). | **8.8** |
 
-**Code Completeness: 8.7/10** | **Production Readiness: 4.0/10** | **Weighted: 8.5/10** | **MCP: 9.0/10**
+**Code Completeness: 8.8/10** | **Production Readiness: 4.0/10** | **Weighted: 8.5/10** | **MCP: 9.0/10**
 
-**Remaining actionable bugs: 0** (verified 250.179)
+**Remaining actionable bugs: 0** (verified 250.179b)
 
 The previous "12 remaining" was a stale number propagated across sessions without verification.
 Rigorous per-item audit reveals all 218 reported issues are resolved:

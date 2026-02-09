@@ -80,6 +80,8 @@ const PERSONA_CONFIG = {
  * Association Rules Engine
  * Implements simplified Apriori for "Frequently Bought Together"
  */
+const MAX_RULES_TENANTS = 50;
+
 class AssociationRulesEngine {
   constructor() {
     this.rules = {}; // tenantId -> { productId: [associatedProducts] }
@@ -90,6 +92,12 @@ class AssociationRulesEngine {
    */
   _loadRules(tenantId) {
     if (this.rules[tenantId]) return this.rules[tenantId];
+
+    // LRU eviction
+    const keys = Object.keys(this.rules);
+    if (keys.length >= MAX_RULES_TENANTS) {
+      delete this.rules[keys[0]];
+    }
 
     const rulesPath = path.join(RULES_DIR, `${sanitizeTenantId(tenantId)}_association_rules.json`);
     if (fs.existsSync(rulesPath)) {
@@ -720,7 +728,7 @@ class RecommendationService {
 
     // 2. Format with persona-specific terminology
     if (recommendations && recommendations.length > 0) {
-      return this.getVoiceRecommendations(tenantId, { recommendations, type: 'personalized', persona: personaKey }, lang);
+      return this.getVoiceRecommendations(tenantId, { productIds: recommendations.map(r => r.productId || r.id), type: 'bought_together', persona: personaKey }, lang);
     }
 
     return this._getNoRecommendationsResponse(lang);

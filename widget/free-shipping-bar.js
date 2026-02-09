@@ -510,9 +510,9 @@
     setupCartListeners() {
       // Listen for VocalIA cart updates
       if (window.VocalIA) {
-        const originalSetCartData = window.VocalIA.setCartData;
+        this._originalSetCartData = window.VocalIA.setCartData || null;
         window.VocalIA.setCartData = (cartData) => {
-          if (originalSetCartData) originalSetCartData.call(window.VocalIA, cartData);
+          if (this._originalSetCartData) this._originalSetCartData.call(window.VocalIA, cartData);
           this.updateCartValue(cartData?.total || 0);
         };
       }
@@ -728,7 +728,7 @@
     dismiss() {
       this.state.dismissed = true;
       this.hide();
-      localStorage.setItem('va_shipping_bar_dismissed', 'true');
+      try { localStorage.setItem('va_shipping_bar_dismissed', 'true'); } catch {}
 
       this.trackEvent('shipping_bar_dismissed', {
         cart_value: this.state.currentValue,
@@ -782,12 +782,16 @@
     reset() {
       this.state.dismissed = false;
       this.state.announcedMilestones.clear();
-      localStorage.removeItem('va_shipping_bar_dismissed');
+      try { localStorage.removeItem('va_shipping_bar_dismissed'); } catch {}
       this.updateCartValue(0);
     }
 
     destroy() {
       this.hide();
+      // Restore monkey-patched setCartData
+      if (window.VocalIA && this._originalSetCartData !== undefined) {
+        window.VocalIA.setCartData = this._originalSetCartData;
+      }
       this.host?.remove();
       this.host = null;
       this._shadowRoot = null;
@@ -804,7 +808,7 @@
 
   function initFreeShippingBar(options = {}) {
     // Check if dismissed
-    if (localStorage.getItem('va_shipping_bar_dismissed') === 'true' && options.respectDismissal !== false) {
+    if ((() => { try { return localStorage.getItem('va_shipping_bar_dismissed'); } catch { return null; } })() === 'true' && options.respectDismissal !== false) {
       console.log('[FreeShippingBar] Previously dismissed, not showing');
       return null;
     }
