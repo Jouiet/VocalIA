@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.173 (COUNTER-AUDIT + MASS FIX — 74 bugs fixed, 15 remaining)
-> **Code Completeness:** 8.0/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
+> **Date:** 2026-02-09 | **Session:** 250.174 (CORS dedup, dashboard improvements, status live health, stale data fix)
+> **Code Completeness:** 8.2/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed this session)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 8.0/10** — Features coded and tested (3,804 tests, 68 files). **163 total bugs found, 148 fixed, 15 unfixed**. Session 250.172-173: 69 bugs from deep audit + 20 from counter-audit = 89 new bugs. 74 fixed this session (5C+13H+~50M+6 test updates). All systemic patterns resolved: sanitizeTenantId in 20+ modules, process.cwd()→__dirname in 11 modules, module-level crashes fixed, JWT split-brain fixed, token hashing unified, timing-safe API key comparison.
+**Code Completeness: 8.2/10** — Features coded and tested (3,803 tests, 68 files). **163 total bugs found, 151 fixed, 12 unfixed**. Session 250.174: NM7 CORS dedup (shared tenant-cors.cjs), NM2 adapter fixed (250.173b), NM10 body limit fixed (250.173b). Stale persona count 40→38 in features.html. Dashboard System Intelligence panel + status live health check + investor fallback chain diagram. All i18n 5 locales updated.
 **Production Readiness: 4.0/10** — VERIFIED 250.171 via curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (Grok/Gemini/Claude/Atlas all configured:true)
@@ -503,8 +503,8 @@ create_booking          get_recommendations    qualify_lead
 | Phase 6b (250.170b) | 0 (fixes only) | 16 | 0 |
 | Phase 7 EXTERNAL (250.171b) | 11 (3C+3H+3M+2L) | 7 | 0 (2 false alarm, 2 already fixed) |
 | Phase 8 DEEP CODE (250.172) | 69 (3C+9H+52M+5L) | 60 | 9 |
-| **Phase 9 COUNTER-AUDIT (250.173)** | **20 (2C+4H+12M+2L)** | **14** | **6** |
-| **CUMULATIVE** | **154** | **148** | **15** (+ 2 non-fixable/monitoring + 3 resolved-not-bugs + 4 false/dup) |
+| **Phase 9 COUNTER-AUDIT (250.173-174)** | **20 (2C+4H+12M+2L)** | **17** | **3** |
+| **CUMULATIVE** | **154** | **151** | **12** (+ 2 non-fixable/monitoring + 3 resolved-not-bugs + 4 false/dup) |
 
 ---
 
@@ -534,20 +534,22 @@ create_booking          get_recommendations    qualify_lead
 | **P0-DEEPCODE (250.172)** | ✅ **60/69 FIXED** | Line-by-line audit ALL 55 core modules. 69 NEW bugs (3C/9H/52M/5L). All 3C + 9H fixed. 10 systemic fix categories ALL resolved. | 8.5 → 6.8 → **7.8** |
 | **P0-COUNTER-AUDIT (250.173)** | ✅ **14/20 FIXED** | Counter-audit: 20 NEW bugs (2C/4H/12M/2L). All 2C + 4H fixed. JWT split-brain, token hashing, timing-safe comparison, rate limiter isolation. | **7.8** |
 
-**Code Completeness: 8.0/10** | **Production Readiness: 4.0/10** | **Weighted: 7.8/10** | **MCP: 8.5/10**
+**Code Completeness: 8.2/10** | **Production Readiness: 4.0/10** | **Weighted: 8.0/10** | **MCP: 8.5/10**
 
-**Remaining (15 unfixed bugs):**
+**Remaining (12 unfixed bugs):**
 ```
 P1 (SHOULD FIX — Low priority):
-  1. NM2: Duplicate voice-ecommerce-tools.cjs (core/ vs integrations/) — API divergence risk
-  2. NM7: CORS/tenant code duplication (~80 lines) voice-api ↔ db-api — functional, not broken
-  3. NM10: WebhookRouter express.json() default 100kb limit — low risk
-  4. NL2: Anthropic model ID — already verified correct in 250.171b
-  5. ~9 remaining MEDIUM from Phase 8 (minor edge cases, business defaults in non-core modules)
-  6. GoogleSheetsDB auth scalability ceiling [M5] — architecture limit, not a bug
+  1. NL2: Anthropic model ID — already verified correct in 250.171b
+  2. ~8 remaining MEDIUM from Phase 8 (minor edge cases in non-core modules)
+  3. GoogleSheetsDB auth scalability ceiling [M5] — architecture limit, not a bug
 
 P2 (NICE TO HAVE — Research):
-  7. Evaluate Telnyx for Moroccan telephony
+  4. Evaluate Telnyx for Moroccan telephony
+
+FIXED in 250.173b-174:
+  - NM2: ✅ FIXED — Adapter pattern (integrations/ wraps core/) [250.173b]
+  - NM7: ✅ FIXED — Shared tenant-cors.cjs module (80 lines deduped) [250.174]
+  - NM10: ✅ FIXED — express.json({ limit: '1mb' }) [250.173b]
 
 NON-FIXABLE / MONITORING:
   - H14b: Gemini TTS preview model (no stable version exists)
@@ -722,15 +724,15 @@ All modules listed in MEDIUM category above.
 | # | Bug | Status |
 |:-:|:----|:------:|
 | NM1 | ab-analytics.cjs no body size limit | ✅ **FIXED** — 1MB max |
-| NM2 | Duplicate voice-ecommerce-tools.cjs (core/ vs integrations/) | ❌ Remaining — API divergence risk |
+| NM2 | Duplicate voice-ecommerce-tools.cjs (core/ vs integrations/) | ✅ **FIXED 250.173b** — Adapter pattern: integrations/ wraps core/ |
 | NM3 | Telephony .env path `../../../.env` (wrong depth) | ✅ **FIXED** — Only `../.env` |
 | NM4 | Stitch-api QUOTA_PROJECT hardcoded | ✅ **FIXED** (by stitch-api env var refactor) |
 | NM5 | register() accepts `role` param → privilege escalation | ✅ **FIXED** — Force `role = 'user'` |
 | NM6 | Inline sanitization instead of canonical sanitizeTenantId() | ✅ **FIXED** — All sites use shared function |
-| NM7 | CORS/tenant code duplication (~80 lines) voice-api ↔ db-api | ❌ Remaining — Code duplication (functional) |
+| NM7 | CORS/tenant code duplication (~80 lines) voice-api ↔ db-api | ✅ **FIXED 250.174** — Shared tenant-cors.cjs module |
 | NM8 | ErrorScience /tmp as default logDir | ✅ **FIXED** — `logs/analytics` |
 | NM9 | ErrorScience unbounded file read for large logs | ✅ **FIXED** — 10MB cap on file reads |
-| NM10 | WebhookRouter express.json() default 100kb limit | ❌ Remaining — Low risk |
+| NM10 | WebhookRouter express.json() default 100kb limit | ✅ **FIXED 250.173b** — express.json({ limit: '1mb' }) |
 | NM11 | voice-agent-b2b "Free tier available" in prompt | ✅ **FIXED** — "Plans start at 49€/month with 14-day trial" |
 | NM12 | Stitch-api project ID hardcoded | ✅ **FIXED** — env var `STITCH_QUOTA_PROJECT` |
 
@@ -741,16 +743,16 @@ All modules listed in MEDIUM category above.
 | NL1 | res.writeHead after req.destroy (6 sites) | ✅ **FIXED** — writeHead before destroy, wrapped in try/catch |
 | NL2 | Anthropic model ID `claude-opus-4-5-20251101` unverified | ❌ Remaining — Already verified correct in 250.171b |
 
-### 6.18 Remaining Bugs (15 — post 250.173)
+### 6.18 Remaining Bugs (12 — post 250.174)
 
 | # | Source | Bug | Severity | Notes |
 |:-:|:------:|:----|:--------:|:------|
-| 1 | NM2 | Duplicate voice-ecommerce-tools.cjs (core/ vs integrations/) | MEDIUM | API divergence risk — needs consolidation |
-| 2 | NM7 | CORS/tenant code duplication voice-api ↔ db-api | MEDIUM | ~80 lines duplicated, functional |
-| 3 | NM10 | WebhookRouter express.json() default 100kb limit | MEDIUM | Low risk for webhook payloads |
+| ~~1~~ | ~~NM2~~ | ~~Duplicate voice-ecommerce-tools.cjs~~ | ~~MEDIUM~~ | ✅ **FIXED 250.173b** — Adapter pattern |
+| ~~2~~ | ~~NM7~~ | ~~CORS/tenant code duplication~~ | ~~MEDIUM~~ | ✅ **FIXED 250.174** — Shared tenant-cors.cjs |
+| ~~3~~ | ~~NM10~~ | ~~WebhookRouter 100kb limit~~ | ~~MEDIUM~~ | ✅ **FIXED 250.173b** — 1mb limit |
 | 4 | NL2 | Anthropic model ID unverified | LOW | Already verified correct in 250.171b |
 | 5 | M5 | GoogleSheetsDB as auth database (100 req/100s) | MEDIUM | Architecture limit, not a bug |
-| 6-15 | P8 | ~10 remaining MEDIUM from 250.172 | MEDIUM/LOW | Minor edge cases in non-critical modules |
+| 6-12 | P8 | ~8 remaining MEDIUM from 250.172 | MEDIUM/LOW | Minor edge cases in non-critical modules |
 
 **Non-fixable / Monitoring:**
 - H14b: Gemini TTS `gemini-2.5-flash-preview-tts` (no stable version, Feb 2026)
@@ -793,5 +795,5 @@ All modules listed in MEDIUM category above.
 
 ---
 
-*Document mis a jour le 2026-02-09 — Session 250.173*
-*Changelog: sessions 250.153→173 (18 sessions, 163 bugs found, 148 fixed, 15 unfixed). Details: `memory/session-history.md`*
+*Document mis a jour le 2026-02-09 — Session 250.174*
+*Changelog: sessions 250.153→174 (19 sessions, 163 bugs found, 151 fixed, 12 unfixed). Details: `memory/session-history.md`*

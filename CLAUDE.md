@@ -45,10 +45,10 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 8.5/10 — **177 bugs found, 162 fixed, 15 unfixed**. Session 250.174: MCP Phase 6 complete (14 security bugs fixed).
+- **Code completeness**: 8.2/10 — **163 bugs found, 151 fixed, 12 unfixed**. Session 250.174b: NM7 CORS dedup (tenant-cors.cjs), dashboard System Intelligence, status live health, investor fallback chain, stale persona 40→38.
 - **Production readiness**: 4.0/10 — Website live, /respond BROKEN on VPS. 0 paying customers.
-- **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. All 14 contre-audit bugs fixed. paths.ts (35→0 cwd), sanitize, session TTL, OAuth scopes.
+- **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. All 14 contre-audit bugs fixed.
 - **Next**: VPS redeploy (critical) → .env setup → SMTP provider → First paying customer
 - **Weighted score**: 8.0/10
 
-*Last update: 09/02/2026 - Session 250.174 (MCP Phase 6: 14 security bugs fixed — path traversal, OAuth scopes, session TTL, paths.ts, Stripe API update)*
+*Last update: 09/02/2026 - Session 250.174b (CORS dedup, dashboard improvements, status live health, investor fallback chain, 3 bugs fixed)*

@@ -334,7 +334,7 @@
           Architecture cloud-native avec Multi-AI fallback 5 niveaux pour une haute disponibilité.
         </p>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div class="bg-white/[0.04] rounded-xl p-6 border border-white/[0.08] text-center">
             <div class="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-600/10 flex items-center justify-center mx-auto mb-4">
               <i data-lucide="brain" class="w-7 h-7 text-blue-400"></i>
@@ -363,6 +363,42 @@
             <h3 class="font-semibold text-white mb-2" data-i18n="investor.tech_mcp">MCP Server</h3>
             <p class="text-xs text-zinc-400" data-i18n="investor.tech_mcp_desc">203 tools, Claude + GPT</p>
           </div>
+        </div>
+
+        <!-- AI Fallback Chain Diagram -->
+        <div class="bg-white/[0.03] rounded-xl border border-white/[0.06] p-6">
+          <h3 class="font-semibold text-white mb-4 text-center" data-i18n="investor.fallback_title">AI Fallback Chain</h3>
+          <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-indigo-500/15 border border-indigo-500/30">
+              <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+              <span class="text-sm text-indigo-300 font-medium">Grok 4.1</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-600 hidden sm:block"></i>
+            <span class="text-zinc-600 sm:hidden">&rarr;</span>
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-500/15 border border-blue-500/30">
+              <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+              <span class="text-sm text-blue-300 font-medium">Gemini 3</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-600 hidden sm:block"></i>
+            <span class="text-zinc-600 sm:hidden">&rarr;</span>
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-500/15 border border-amber-500/30">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span class="text-sm text-amber-300 font-medium">Claude</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-600 hidden sm:block"></i>
+            <span class="text-zinc-600 sm:hidden">&rarr;</span>
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-purple-500/15 border border-purple-500/30">
+              <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+              <span class="text-sm text-purple-300 font-medium">Atlas</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-600 hidden sm:block"></i>
+            <span class="text-zinc-600 sm:hidden">&rarr;</span>
+            <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-zinc-500/15 border border-zinc-500/30">
+              <span class="w-2 h-2 rounded-full bg-zinc-400"></span>
+              <span class="text-sm text-zinc-300 font-medium" data-i18n="investor.fallback_local">Local</span>
+            </div>
+          </div>
+          <p class="text-xs text-zinc-500 text-center mt-3" data-i18n="investor.fallback_desc">Basculement automatique en cas de défaillance — latence cible &lt;200ms</p>
         </div>
       </div>
     </section>

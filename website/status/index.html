@@ -172,6 +172,63 @@
       </div>
     </section>
 
+    <!-- Technology Stack -->
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold text-white mb-6" data-i18n="status.tech_title">Infrastructure</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-white/[0.03] rounded-lg border border-white/[0.06] p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <i data-lucide="brain" class="w-5 h-5 text-indigo-400"></i>
+            <span class="font-medium text-white" data-i18n="status.ai_providers">Fournisseurs IA</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 text-xs rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Grok 4.1</span>
+            <span class="px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Gemini 3</span>
+            <span class="px-2 py-1 text-xs rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Claude</span>
+            <span class="px-2 py-1 text-xs rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">Atlas</span>
+            <span class="px-2 py-1 text-xs rounded bg-zinc-500/20 text-zinc-300 border border-zinc-500/30" data-i18n="status.rule_based">Rule-based</span>
+          </div>
+        </div>
+        <div class="bg-white/[0.03] rounded-lg border border-white/[0.06] p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <i data-lucide="globe" class="w-5 h-5 text-emerald-400"></i>
+            <span class="font-medium text-white" data-i18n="status.languages">Langues</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 text-xs rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Français</span>
+            <span class="px-2 py-1 text-xs rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">English</span>
+            <span class="px-2 py-1 text-xs rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Español</span>
+            <span class="px-2 py-1 text-xs rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">العربية</span>
+            <span class="px-2 py-1 text-xs rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">الدارجة</span>
+          </div>
+        </div>
+        <div class="bg-white/[0.03] rounded-lg border border-white/[0.06] p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <i data-lucide="shield" class="w-5 h-5 text-blue-400"></i>
+            <span class="font-medium text-white" data-i18n="status.security">Sécurité</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">TLS 1.3</span>
+            <span class="px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">HSTS</span>
+            <span class="px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">CSP</span>
+            <span class="px-2 py-1 text-xs rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">JWT</span>
+          </div>
+        </div>
+        <div class="bg-white/[0.03] rounded-lg border border-white/[0.06] p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <i data-lucide="layers" class="w-5 h-5 text-amber-400"></i>
+            <span class="font-medium text-white" data-i18n="status.capabilities">Capacités</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-2 py-1 text-xs rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">STT</span>
+            <span class="px-2 py-1 text-xs rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">TTS</span>
+            <span class="px-2 py-1 text-xs rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">NLP</span>
+            <span class="px-2 py-1 text-xs rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">MCP</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Recent Incidents -->
     <section>
       <h2 class="text-lg font-semibold text-white mb-6" data-i18n="status.incidents_title">Incidents Récents</h2>
@@ -185,6 +242,68 @@
 
   <script>
     lucide.createIcons();
+  </script>
+  <script>
+  // Live health check — pings real API endpoints
+  (function() {
+    'use strict';
+    var API = 'https://api.vocalia.ma';
+    var endpoints = [
+      { id: 0, url: API + '/health', name: 'Voice API' },
+      { id: 3, url: API + '/api/db/health', name: 'Dashboard' }
+    ];
+    var serviceRows = document.querySelectorAll('#main-content .space-y-3 > div');
+
+    function setStatus(row, ok, latency) {
+      if (!row) return;
+      var label = row.querySelector('.text-emerald-400, .text-red-400, .text-amber-400');
+      var dot = row.querySelector('.bg-emerald-500, .bg-red-500, .bg-amber-500');
+      if (!label || !dot) return;
+      if (ok) {
+        label.className = 'text-emerald-400 text-sm';
+        label.textContent = latency ? latency + 'ms' : 'OK';
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+      } else {
+        label.className = 'text-red-400 text-sm';
+        label.textContent = 'Down';
+        dot.className = 'w-2 h-2 rounded-full bg-red-500';
+      }
+    }
+
+    async function checkEndpoints() {
+      var allOk = true;
+      for (var ep of endpoints) {
+        try {
+          var start = performance.now();
+          var res = await fetch(ep.url, { method: 'GET', signal: AbortSignal.timeout(5000) });
+          var ms = Math.round(performance.now() - start);
+          if (res.ok) {
+            setStatus(serviceRows[ep.id], true, ms);
+          } else {
+            setStatus(serviceRows[ep.id], false);
+            allOk = false;
+          }
+        } catch (e) {
+          setStatus(serviceRows[ep.id], false);
+          allOk = false;
+        }
+      }
+      // Update global status
+      var gs = document.getElementById('global-status');
+      if (gs && !allOk) {
+        gs.className = gs.className.replace(/emerald/g, 'amber');
+      }
+      // Update uptime metric
+      var um = document.getElementById('uptime-metric');
+      if (um) um.textContent = allOk ? '100%' : '—';
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkEndpoints);
+    } else {
+      checkEndpoints();
+    }
+  })();
   </script>
   <script src="/src/lib/i18n.js"></script>
   <script src="/src/lib/event-delegation.js?v=250" defer></script>

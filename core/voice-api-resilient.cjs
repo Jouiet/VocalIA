@@ -64,79 +64,11 @@ function checkAdminAuth(req, res) {
   }
 }
 
-// Session 250.153: Dynamic CORS — loads tenant domains from client_registry.json
-// Tenant allowed origins cache (refreshed every 5 min)
-let _tenantOrigins = new Set();
-let _tenantOriginsLastLoad = 0;
-const TENANT_ORIGINS_TTL = 300000; // 5 minutes
+// Session 250.174: Shared tenant CORS module (was duplicated with db-api.cjs — NM7 fix)
+const tenantCors = require('./tenant-cors.cjs');
+const { isOriginAllowed, validateOriginTenant, validateApiKey: _validateApiKeyCors, getRegistry: _getRegistry } = tenantCors;
 
-let _tenantRegistry = null;
-
-function loadTenantOrigins() {
-  try {
-    const registryPath = path.join(__dirname, '..', 'personas', 'client_registry.json');
-    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
-    _tenantRegistry = registry.clients || {};
-    const origins = new Set();
-    for (const [, client] of Object.entries(_tenantRegistry)) {
-      if (client.allowed_origins) {
-        for (const o of client.allowed_origins) {
-          origins.add(o.replace(/\/$/, ''));
-        }
-      }
-    }
-    _tenantOrigins = origins;
-    _tenantOriginsLastLoad = Date.now();
-    if (origins.size > 0) {
-      console.log(`✅ [CORS] Loaded ${origins.size} tenant origins from registry`);
-    }
-  } catch (err) {
-    console.warn('[CORS] Could not load tenant origins:', err.message);
-  }
-}
-
-// Load on startup
-loadTenantOrigins();
-
-function isOriginAllowed(origin) {
-  if (!origin) return false;
-  // Internal: VocalIA domains
-  if (origin.endsWith('.vocalia.ma') || origin === 'https://vocalia.ma') return true;
-  // Local development
-  if (origin.startsWith('http://localhost:')) return true;
-  // Refresh tenant origins if stale
-  if (Date.now() - _tenantOriginsLastLoad > TENANT_ORIGINS_TTL) {
-    loadTenantOrigins();
-  }
-  // Tenant registered origins
-  if (_tenantOrigins.has(origin)) return true;
-  return false;
-}
-
-/**
- * Session 250.155: Validate origin matches tenant_id's allowed_origins.
- * Prevents tenant A from sending requests with tenant B's tenant_id.
- */
-function validateOriginTenant(origin, tenantId) {
-  if (!tenantId || tenantId === 'default') return { valid: true };
-  if (!origin) return { valid: true }; // Server-to-server
-  if (origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1')) return { valid: true };
-  if (origin.endsWith('.vocalia.ma') || origin === 'https://vocalia.ma') return { valid: true };
-
-  if (Date.now() - _tenantOriginsLastLoad > TENANT_ORIGINS_TTL) {
-    loadTenantOrigins();
-  }
-  if (!_tenantRegistry) {
-    console.warn('⚠️ [Security] Tenant registry not loaded — origin validation skipped');
-    return { valid: true };
-  }
-  const client = _tenantRegistry[tenantId];
-  if (!client) return { valid: false, reason: 'unknown_tenant' };
-  if (!client.allowed_origins || client.allowed_origins.length === 0) return { valid: true };
-  const normalizedOrigin = origin.replace(/\/$/, '');
-  if (client.allowed_origins.some(o => o.replace(/\/$/, '') === normalizedOrigin)) return { valid: true };
-  return { valid: false, reason: 'origin_mismatch' };
-}
+// loadTenantOrigins, isOriginAllowed, validateOriginTenant → moved to tenant-cors.cjs (250.174)
 
 // Session 250.xx: Multi-tenant Secret Vault
 const SecretVault = require('./SecretVault.cjs');
@@ -2752,15 +2684,13 @@ function startServer(port = 3004) {
             return;
           }
 
-          // API key validation (if provided)
+          // API key validation (if provided) — uses shared tenant-cors.cjs
           const apiKey = bodyParsed.data.api_key;
-          if (apiKey && _tenantRegistry) {
-            const client = _tenantRegistry[tenantId];
-            if (client && client.api_key && (client.api_key.length !== apiKey.length || !crypto.timingSafeEqual(Buffer.from(client.api_key), Buffer.from(apiKey)))) {
-              res.writeHead(403, { 'Content-Type': 'application/json' });
-              res.end(JSON.stringify({ error: 'Invalid API key' }));
-              return;
-            }
+          const apiKeyCheck = _validateApiKeyCors(apiKey, tenantId);
+          if (!apiKeyCheck.valid) {
+            res.writeHead(403, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Invalid API key' }));
+            return;
           }
 
           const db = getDB();
