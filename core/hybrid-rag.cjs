@@ -101,6 +101,8 @@ class BM25Engine {
 /**
  * HybridRAG - Orchestrates Sparse and Dense search
  */
+const MAX_TENANT_ENGINES = 50;
+
 class HybridRAG {
     constructor() {
         this.tenantEngines = new Map();
@@ -119,6 +121,12 @@ class HybridRAG {
     async _getEngine(tenantId, lang) {
         const key = `${tenantId}:${lang}`;
         if (this.tenantEngines.has(key)) return this.tenantEngines.get(key);
+
+        // Evict oldest entry if at capacity
+        if (this.tenantEngines.size >= MAX_TENANT_ENGINES) {
+            const oldest = this.tenantEngines.keys().next().value;
+            this.tenantEngines.delete(oldest);
+        }
 
         const engine = {
             bm25: new BM25Engine(),

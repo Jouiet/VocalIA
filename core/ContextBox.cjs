@@ -445,10 +445,10 @@ class ContextBox {
 // Singleton instance for the system
 const instance = new ContextBox();
 
-// Initialize event subscriptions (non-blocking)
-setTimeout(() => {
+// Initialize event subscriptions (non-blocking, next tick to avoid circular require)
+process.nextTick(() => {
     ContextBox.initEventSubscriptions();
-}, 100);
+});
 
 module.exports = instance;
 module.exports.ContextBox = ContextBox; // Export class for custom instances

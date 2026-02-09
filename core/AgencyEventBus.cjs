@@ -106,7 +106,7 @@ class AgencyEventBus extends EventEmitter {
             .update(`${tenantId}:${eventType}:${JSON.stringify(payload)}`)
             .digest('hex')
             .substring(0, 16);
-        return `evt_${Date.now()}_${hash}`;
+        return `evt_${hash}`;
     }
 
     /**
@@ -355,7 +355,12 @@ class AgencyEventBus extends EventEmitter {
             if (options.until && dateStr > options.until) continue;
 
             const content = fs.readFileSync(path.join(tenantDir, file), 'utf8');
-            const events = content.trim().split('\n').filter(Boolean).map(JSON.parse);
+            const events = content.trim().split('\n').filter(Boolean).map(line => {
+                try { return JSON.parse(line); } catch (e) {
+                    console.warn(`[EventBus] Corrupted JSONL line in ${file}: ${e.message}`);
+                    return null;
+                }
+            }).filter(Boolean);
 
             for (const event of events) {
                 if (options.eventTypes && !options.eventTypes.includes(event.type)) continue;
@@ -383,7 +388,12 @@ class AgencyEventBus extends EventEmitter {
 
             const filePath = path.join(this.dlqDir, file);
             const content = fs.readFileSync(filePath, 'utf8');
-            const events = content.trim().split('\n').filter(Boolean).map(JSON.parse);
+            const events = content.trim().split('\n').filter(Boolean).map(line => {
+                try { return JSON.parse(line); } catch (e) {
+                    console.warn(`[EventBus] Corrupted DLQ line in ${file}: ${e.message}`);
+                    return null;
+                }
+            }).filter(Boolean);
 
             const remaining = [];
             for (const event of events) {

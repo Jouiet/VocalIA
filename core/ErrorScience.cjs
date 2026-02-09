@@ -510,9 +510,6 @@ class ErrorScience {
 
 const instance = new ErrorScience();
 
-// Initialize error buffer
-instance.errorBuffer = [];
-
 // CLI
 if (require.main === module) {
     const args = process.argv.slice(2);

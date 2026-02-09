@@ -74,8 +74,10 @@
         accentColor: '#10B981',
         darkBg: '#0f172a',
 
-        // Paths - FIXED Session 250.90: Correct path to language files
-        LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
+        // Paths - FIXED Session 250.179: Absolute URL for third-party embedding (like B2B)
+        LANG_PATH: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/voice-assistant/lang/voice-{lang}.json'
+            : 'https://vocalia.ma/voice-assistant/lang/voice-{lang}.json',
 
         // Cache
         SLOT_CACHE_TTL: 5 * 60 * 1000,
@@ -669,13 +671,13 @@
       </style>
 
       <button class="va-trigger" id="va-trigger" aria-label="${L.ui.ariaOpenAssistant}">
-        <img src="/logo.png" alt="VocalIA" />
+        <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
       </button>
 
       <div class="va-panel" id="va-panel" role="dialog" aria-label="${L.ui.headerTitle}" aria-modal="true">
         <div class="va-header">
           <div class="va-header-icon">
-            <img src="/logo.png" alt="VocalIA" />
+            <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
           </div>
           <div class="va-header-text">
             <h3>${L.ui.headerTitle}</h3>
@@ -942,14 +944,14 @@
         }
 
         return `
-      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${product.id}" style="position: relative;">
+      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${escapeAttr(String(product.id))}" style="position: relative;">
         ${badgeHTML}
         ${hasImage
-                ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
+                ? `<img class="va-product-img" src="${escapeAttr(product.image || product.images[0])}" alt="${escapeAttr(product.name)}" loading="lazy" />`
                 : `<div class="va-product-img-placeholder">📦</div>`
             }
         <div class="va-product-info">
-          <p class="va-product-name">${product.name}</p>
+          <p class="va-product-name">${escapeHTML(product.name)}</p>
           <div class="va-product-price">
             ${formatPrice(product.price, product.currency)}
             ${isOnSale ? `<span class="va-product-price-old">${formatPrice(product.compare_at_price, product.currency)}</span>` : ''}
@@ -1428,11 +1430,7 @@
 
                 // Sync with UCP
                 if (UCP.syncPreference) {
-                    UCP.recordInteraction({
-                        type: 'quiz_completed',
-                        product_id: null,
-                        metadata: { template, answers: lead.answers }
-                    });
+                    UCP.recordInteraction('quiz_completed', { template, answers: lead.answers });
                 }
             },
             ...options
@@ -2638,7 +2636,7 @@
                 state.socialProof.messages = data.messages;
             }
         } catch (e) {
-            console.warn('[VocalIA ECOM] Social proof fetch failed, using fallback:', e.message);
+            console.warn('[VocalIA ECOM] Social proof API unavailable, using lang data:', e.message);
         }
 
         // Initial delay before starting notifications
@@ -2722,11 +2720,11 @@
 
       <div class="va-sp-content">
         <div class="va-sp-icon">
-          <svg viewBox="0 0 24 24">${proof.icon || '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
+          <svg viewBox="0 0 24 24">${(proof.icon && /^<(?:path|circle|rect|line|polyline|polygon|ellipse|g)\s/.test(proof.icon.trim())) ? proof.icon : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
         </div>
         <div>
-          <div class="va-sp-text">${proof.text}</div>
-          <div class="va-sp-time">${proof.time || getRandomTimeAgo(L)}</div>
+          <div class="va-sp-text">${escapeHTML(proof.text || '')}</div>
+          <div class="va-sp-time">${escapeHTML(proof.time || getRandomTimeAgo(L))}</div>
         </div>
       </div>
     `;
@@ -2766,6 +2764,7 @@
 
     function isBookingIntent(text) {
         const L = state.langData;
+        if (!L?.booking?.keywords) return false;
         const lower = text.toLowerCase();
         return L.booking.keywords.some(kw => lower.includes(kw));
     }
@@ -3465,10 +3464,11 @@
                 if (focusable.length === 0) return;
                 const first = focusable[0];
                 const last = focusable[focusable.length - 1];
-                if (e.shiftKey && document.activeElement === first) {
+                const active = (shadowRoot || document).activeElement;
+                if (e.shiftKey && active === first) {
                     e.preventDefault();
                     last.focus();
-                } else if (!e.shiftKey && document.activeElement === last) {
+                } else if (!e.shiftKey && active === last) {
                     e.preventDefault();
                     first.focus();
                 }

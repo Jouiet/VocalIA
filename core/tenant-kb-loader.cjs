@@ -291,6 +291,12 @@ class TenantKBLoader {
       return;
     }
 
+    // Close existing watcher before creating a new one (prevent leak)
+    const existing = this.watchedFiles.get(tenantId);
+    if (existing) {
+      existing.close();
+    }
+
     const watcher = fs.watch(clientDir, (eventType, filename) => {
       if (filename && filename.endsWith('.json')) {
         console.log(`[TenantKB] File changed: ${tenantId}/${filename}, invalidating cache...`);
@@ -364,7 +370,8 @@ class TenantKBLoader {
     let score = 0;
 
     for (const word of words) {
-      const regex = new RegExp(word, 'gi');
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(escaped, 'gi');
       const matches = text.match(regex);
       if (matches) {
         score += matches.length;

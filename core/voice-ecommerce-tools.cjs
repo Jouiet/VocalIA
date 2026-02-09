@@ -216,8 +216,11 @@ module.exports = {
           if (orderEdge) {
             const order = orderEdge.node;
 
-            // Verify email matches (security)
-            if (email && order.email && order.email.toLowerCase() !== email.toLowerCase()) {
+            // Verify email matches (security) — email REQUIRED to prevent order enumeration
+            if (!email) {
+              return { found: false, message: 'Veuillez fournir votre email pour vérifier la commande.' };
+            }
+            if (order.email && order.email.toLowerCase() !== email.toLowerCase()) {
               console.warn(`[VoiceEcom] Email mismatch for order ${orderId}`);
               return { found: false, message: 'Cette commande ne correspond pas à votre email.' };
             }

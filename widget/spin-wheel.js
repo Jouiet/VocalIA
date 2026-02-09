@@ -1072,7 +1072,7 @@
     }
 
     copyCode() {
-      const code = this.state.selectedPrize?.code;
+      const code = this.state.activeCode || this.state.selectedPrize?.code;
       if (!code) return;
 
       navigator.clipboard.writeText(code).then(() => {

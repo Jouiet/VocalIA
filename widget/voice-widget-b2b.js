@@ -471,10 +471,11 @@
                 if (focusable.length === 0) return;
                 const first = focusable[0];
                 const last = focusable[focusable.length - 1];
-                if (e.shiftKey && document.activeElement === first) {
+                const active = (shadowRoot || document).activeElement;
+                if (e.shiftKey && active === first) {
                     e.preventDefault();
                     last.focus();
-                } else if (!e.shiftKey && document.activeElement === last) {
+                } else if (!e.shiftKey && active === last) {
                     e.preventDefault();
                     first.focus();
                 }

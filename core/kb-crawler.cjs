@@ -251,8 +251,10 @@ class KBCrawler {
       const req = protocol.request(options, (res) => {
         // Handle redirects
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+          const depth = (options?._redirectCount || 0) + 1;
+          if (depth > 5) return reject(new Error(`Max redirects (5) exceeded for ${url}`));
           const redirectUrl = new URL(res.headers.location, url).href;
-          return resolve(this.fetchPage(redirectUrl));
+          return resolve(this.fetchPage(redirectUrl, { _redirectCount: depth }));
         }
 
         if (res.statusCode !== 200) {

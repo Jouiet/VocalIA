@@ -7580,7 +7580,7 @@ class VoicePersonaInjector {
         // 0. Situational Awareness Override (GPM Logic)
         let matrix = null;
         try {
-            const matrixPath = path.join(__dirname, '../../../landing-page-hostinger/data/pressure-matrix.json');
+            const matrixPath = path.join(__dirname, '..', 'data', 'pressure-matrix.json');
             if (fs.existsSync(matrixPath)) {
                 matrix = JSON.parse(fs.readFileSync(matrixPath, 'utf8'));
             }
@@ -7719,8 +7719,10 @@ class VoicePersonaInjector {
             'Atlas Voyages', 'Consulting Pro', 'TechSupport MSP', 'Atelier Artisan', 'Cabinet Médical',
             'Étude Notariale', 'Boulangerie Pâtissier', 'Salon de Coiffure', 'Service Livraison Courses',
             'Institut Beauté', 'City Gym', 'Riad Jardin', 'Agence Immobilière', 'Auto Galaxy',
-            'Assurances Pro', 'Maroc Cars', 'Force Vente', 'Marrakech Events'
-            // NOTE: 'VocalIA' removed - was corrupting vocalia.ma URLs
+            'Assurances Pro', 'Maroc Cars', 'Force Vente', 'Marrakech Events',
+            'Centre de Santé Intégral', 'Fitness Plus', 'Le Grand Hôtel', 'Garage Atlas Mécanique',
+            'Cabinet d\'Avocats Lumière', 'FlashLivraison', 'Événements Étoile',
+            'Assurance Atlas Protect', 'Apex Toiture & Solaire'
         ];
         // Skip replacement for AGENCY/internal tenant (VocalIA's own widget)
         const isInternalTenant = persona.archetypeKey === 'AGENCY' && (!persona.id || persona.id === 'default' || persona.id === 'agency_internal');
@@ -7747,22 +7749,20 @@ class VoicePersonaInjector {
         };
 
         Object.entries(templateVars).forEach(([placeholder, value]) => {
-            if (value) {
-                finalInstructions = finalInstructions.replace(new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'), value);
-            }
+            finalInstructions = finalInstructions.replace(new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'), value || '');
         });
 
         // 3.1 SOTA: Colloquial A2A Post-Filtering (Darija nuances)
         if (persona.language === 'ary') {
             const colloquialMappings = [
                 { pattern: /est-ce que/gi, replacement: 'wash' },
-                { pattern: /comment/gi, replacement: 'kifash' },
-                { pattern: /maintenant/gi, replacement: 'daba' },
-                { pattern: /bien sûr/gi, replacement: 'wakha' },
-                { pattern: /merci/gi, replacement: 'chokran' },
-                { pattern: /au revoir/gi, replacement: 'beslama' },
-                { pattern: /peut-être/gi, replacement: 'ymken' },
-                { pattern: /tout de suite/gi, replacement: 'daba nite' }
+                { pattern: /\bcomment\b/gi, replacement: 'kifash' },
+                { pattern: /\bmaintenant\b/gi, replacement: 'daba' },
+                { pattern: /\bbien sûr\b/gi, replacement: 'wakha' },
+                { pattern: /\bmerci\b/gi, replacement: 'chokran' },
+                { pattern: /\bau revoir\b/gi, replacement: 'beslama' },
+                { pattern: /\bpeut-être\b/gi, replacement: 'ymken' },
+                { pattern: /\btout de suite\b/gi, replacement: 'daba nite' }
             ];
 
             colloquialMappings.forEach(m => {
@@ -7894,6 +7894,17 @@ class VoicePersonaInjector {
      * @returns {Promise<Object>} Persona Configuration
      */
     static async getPersonaAsync(callerId, calledNumber, clientId, widgetType = 'B2C') {
+        // 0. Situational Awareness Override (GPM Logic — parity with sync path)
+        let matrix = null;
+        try {
+            const matrixPath = path.join(__dirname, '..', 'data', 'pressure-matrix.json');
+            if (fs.existsSync(matrixPath)) {
+                matrix = JSON.parse(fs.readFileSync(matrixPath, 'utf8'));
+            }
+        } catch (e) {
+            console.warn('[Director:Async] GPM Sensory context unavailable');
+        }
+
         // 0. WIDGET-TYPE ISOLATION
         const WIDGET_DEFAULT_ARCHETYPE = {
             'ECOM': 'UNIVERSAL_ECOMMERCE',
@@ -7918,6 +7929,13 @@ class VoicePersonaInjector {
                 else if (clientId.startsWith('b2c_')) archetypeKey = 'UNIVERSAL_SME';
                 console.log(`[Director:Async] No config for "${clientId}", using widget-safe fallback: ${archetypeKey}`);
             }
+        }
+
+        // Situational Trigger: Churn Rescue Mode (GPM Hardening — parity with sync path)
+        const retentionPressure = matrix?.sectors?.retention?.pressure || 0;
+        if (retentionPressure > 70) {
+            console.log(`[Director:Async] HIGH CHURN RISK DETECTED (${retentionPressure}). Switching to SURVIVAL/RESCUE persona.`);
+            archetypeKey = 'COLLECTOR';
         }
 
         // 2. Retrieve Archetype with isolated fallback
@@ -8000,7 +8018,7 @@ class VoicePersonaInjector {
             voice: archetype.voice,
             sensitivity: archetype.sensitivity,
             systemPrompt: processedPrompt, // PROCESSED prompt with templates replaced
-            knowledge_base_id: clientConfig?.knowledge_base_id || null,
+            knowledge_base_id: clientConfig?.knowledge_base_id || clientId || null,
             payment_config: {
                 currency: clientConfig?.currency || 'EUR',
                 method: clientConfig?.payment_method || 'BANK_TRANSFER',

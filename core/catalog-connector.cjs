@@ -511,13 +511,14 @@ class ShopifyCatalogConnector extends CatalogConnector {
       body: JSON.stringify({ query, variables })
     });
 
-    // Handle rate limiting with exponential backoff
+    // Handle rate limiting with exponential backoff (max 3 retries)
     if (response.status === 429) {
+      const retryCount = (debugCost?._retryCount || 0) + 1;
+      if (retryCount > 3) throw new Error('Shopify rate limit: max retries (3) exceeded');
       const retryAfter = parseInt(response.headers.get('Retry-After') || '2', 10);
-      console.log(`[ShopifyConnector] Rate limited. Waiting ${retryAfter}s...`);
+      console.log(`[ShopifyConnector] Rate limited (${retryCount}/3). Waiting ${retryAfter}s...`);
       await new Promise(resolve => setTimeout(resolve, retryAfter * 1000));
-      // Retry once
-      return this._graphqlRequest(query, variables, debugCost);
+      return this._graphqlRequest(query, variables, { ...debugCost, _retryCount: retryCount });
     }
 
     if (!response.ok) {
@@ -545,9 +546,11 @@ class ShopifyCatalogConnector extends CatalogConnector {
       // Check for THROTTLED error
       const throttled = result.errors.find(e => e.extensions?.code === 'THROTTLED');
       if (throttled) {
-        console.log('[ShopifyConnector] Throttled, waiting 1s...');
+        const retryCount = (debugCost?._retryCount || 0) + 1;
+        if (retryCount > 3) throw new Error('Shopify THROTTLED: max retries (3) exceeded');
+        console.log(`[ShopifyConnector] Throttled (${retryCount}/3), waiting 1s...`);
         await new Promise(resolve => setTimeout(resolve, 1000));
-        return this._graphqlRequest(query, variables, debugCost);
+        return this._graphqlRequest(query, variables, { ...debugCost, _retryCount: retryCount });
       }
       throw new Error(`GraphQL errors: ${result.errors.map(e => e.message).join(', ')}`);
     }

@@ -505,7 +505,6 @@
             this.isListening = false;
             this.recognition = null;
 
-            this._injectStyles();
             this._initQuestions();
             this._initVoiceRecognition();
         }

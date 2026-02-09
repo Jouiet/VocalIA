@@ -199,13 +199,11 @@ describe('AgencyEventBus _generateEventId', () => {
     cleanup(bus, tmpDir);
   });
 
-  test('includes timestamp', () => {
+  test('is content-deterministic (same input = same ID)', () => {
     const { bus, tmpDir } = createTestBus();
-    const before = Date.now();
-    const id = bus._generateEventId('t1', 'test', {});
-    const parts = id.split('_');
-    const ts = parseInt(parts[1]);
-    assert.ok(ts >= before);
+    const id1 = bus._generateEventId('t1', 'test', { x: 1 });
+    const id2 = bus._generateEventId('t1', 'test', { x: 1 });
+    assert.strictEqual(id1, id2);
     cleanup(bus, tmpDir);
   });
 
