@@ -1,25 +1,26 @@
 # VocalIA MCP Server
 
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
-> Version: 1.0.0 | 09/02/2026 | Session 250.171c | **203 tools** (22 inline + 181 modules) | **32 .ts files** | **19,173 lines**
+> Version: 1.0.0 | 09/02/2026 | **203 tools** (22 inline + 181 modules) | **6 resource types (43 URIs)** | **8 prompts** | **32 .ts files** | **~19.5K lines**
 >
-> **MCP Compliance Score: 8.0/10** — Phase 0+1+2+3 DONE (250.171c): 203 tools + 6 resources + 8 prompts, all 3 MCP primitives + auto-logging
+> **MCP Score: 7.0/10** — Phase 0-5 DONE. 14 bugs confirmés par contre-audit 250.173b (2C/4H/6M/2L).
 >
-> **Status**: Code exists. **0 tools connected to real external APIs.** All tools require per-tenant API key configuration.
-> **Transport**: stdio uniquement (local) — **PAS de transport remote (HTTP/SSE)** → incompatible ChatGPT/Gemini SDK/remote
-> **SDK**: `@modelcontextprotocol/sdk@1.25.3` — utilise `server.registerTool()` + `registerResource()` + `registerPrompt()` (all modern API)
-> **Primitives MCP utilisées**: 3/3 (Tools ✅ + Resources ✅ + Prompts ✅)
+> **Status**: Code complet. **0 tools connectés à de vraies APIs externes.** Tous les tools nécessitent une configuration API key par tenant.
+> **Transport**: stdio (default) + Streamable HTTP (`MCP_TRANSPORT=http`) + OAuth 2.1 (`MCP_OAUTH=true`)
+> **SDK**: `@modelcontextprotocol/sdk@1.26.0` — CVE-2026-25536 safe (session-per-request)
+> **Primitives MCP**: 3/3 (Tools + Resources + Prompts)
 >
 > **Protocol Status:**
-> - **MCP (Tools)**: ✅ 203 tools registered — ALL via modern `registerTool()` API, descriptions on ALL, annotations (readOnly/destructive/idempotent) on ALL, isError flags on error returns
-> - **MCP (Resources)**: ✅ 6 resources (5 static + 1 template with list+autocomplete)
-> - **MCP (Prompts)**: ✅ 8 prompts with title+description+argsSchema, kebab-case naming
-> - **A2A (Event Bus)**: ✅ coded (widget events → AgencyEventBus) — not connected to real traffic
-> - **AG-UI (Dynamic UI)**: ✅ coded (Widget Orchestrator, 7 widgets) — 0 real users
-> - **UCP (ContextBox)**: ✅ coded (LTV tiers bronze→diamond) — 0 real profiles
+> - **MCP (Tools)**: 203 tools — ALL `registerTool()`, descriptions + annotations on ALL, isError flags
+> - **MCP (Resources)**: 6 types (5 static + 1 template → 43 URIs runtime), descriptions on ALL
+> - **MCP (Prompts)**: 8 prompts with title+description+argsSchema, kebab-case
+> - **MCP (Transport)**: stdio + Streamable HTTP (spec 2025-06-18), session management, SSE
+> - **MCP (Auth)**: OAuth 2.1 optional — PKCE S256, dynamic client reg (RFC 7591), token revocation
 >
-> **iPaaS:** Zapier, Make, n8n — code exists, 0 webhooks configured
-> **Payments:** Stripe 19 tools — code exists, 0 Stripe keys configured
+> **Known Security Issues (contre-audit 250.173b):**
+> - **MC1 CRITICAL**: Path traversal in 4 export tools (filename not sanitized)
+> - **MC2 CRITICAL**: OAuth auto-approve — no login page, open registration, requiredScopes=[]
+> - See §Contre-Audit for full list (14 confirmed bugs)
 
 ---
 
@@ -27,94 +28,106 @@
 
 **Model Context Protocol** est un protocole ouvert créé par Anthropic pour l'intégration AI-to-tool, donné à la Linux Foundation's Agentic AI Foundation.
 
-MCP définit **3 primitives serveur** (spec 2025-11-25) :
+MCP définit **3 primitives serveur** (spec 2025-06-18) :
 
 | Primitive | Contrôle | Description | VocalIA |
 |:----------|:---------|:------------|:-------:|
-| **Tools** | Model-controlled | Fonctions que le LLM peut invoquer | ✅ 203 (modern registerTool, descriptions+annotations on ALL) |
-| **Resources** | Application-controlled | Données contextuelles (fichiers, configs) | ✅ 6 (5 static + 1 template) |
-| **Prompts** | User-controlled | Templates de prompts réutilisables | ✅ 8 (with argsSchema) |
+| **Tools** | Model-controlled | Fonctions que le LLM peut invoquer | 203 (modern registerTool, descriptions+annotations) |
+| **Resources** | Application-controlled | Données contextuelles (fichiers, configs) | 6 types (43 URIs via template expansion) |
+| **Prompts** | User-controlled | Templates de prompts réutilisables | 8 (with argsSchema) |
 
 **Sources:** [MCP Spec](https://modelcontextprotocol.io/docs/learn/server-concepts) | [Anthropic Announcement](https://www.anthropic.com/news/model-context-protocol)
 
 ---
 
-## MCP Compliance Audit — 250.171b (18 bugs)
+## MCP Score History
 
-### Score: 8.0/10 (was 2.5→5.5→7.5→8.0 — Phase 0+1+2+3 completed 250.171c)
+| Session | Score | Delta | Key Changes |
+|:--------|:-----:|:------|:------------|
+| 250.171b | 2.5/10 | — | Initial audit: 0 descriptions, 0 resources, 0 prompts, deprecated API |
+| 250.171c | 8.0/10 | +5.5 | Phase 0+1+2+3: registerTool() migration, resources, prompts, logging |
+| 250.172b | 8.5/10 | +0.5 | Phase 4+5: HTTP transport, OAuth 2.1, Dockerfile, README v1.0.0 |
+| **250.173b** | **7.0/10** | **-1.5** | **Contre-audit: 14 bugs confirmed (2C/4H/6M/2L). Honest reassessment.** |
+
+### Score Breakdown (250.173b)
 
 | Catégorie | Score | Détail |
 |:----------|:-----:|:-------|
 | Tools (quantité) | 10/10 | 203 tools — massif, bien structuré |
-| Tools (qualité) | 7/10 | ✅ Modern API (registerTool), ✅ descriptions on ALL 203, ✅ annotations on ALL, ⬚ outputSchema (Phase 1.3) |
-| Resources | 9/10 | ✅ 6 resources (5 static + 1 template with list+autocomplete), descriptions on ALL |
-| Prompts | 9/10 | ✅ 8 prompts with title+description+argsSchema, kebab-case, covers all key workflows |
-| Transport | 2/10 | stdio only — pas de remote (SSE/HTTP) (Phase 4) |
-| Error handling | 5/10 | ✅ isError flags on inline tool errors, ⬚ module tools (delegated to module handler) |
-| Logging | 8/10 | ✅ `log()` helper + `withLogging()` on ALL 181 module tools + 4 key inline tools. Structured startup event. |
-| Progress | 0/10 | ⬚ Deferred — requires handler extra.sendNotification refactor |
-| Metadata | 10/10 | ✅ Version unified 1.0.0 (package.json, api_status, startup log, server constructor) |
-| Distribution | 3/10 | ✅ server.json exists. ⬚ Not published to npm/registry (Phase 5) |
-
-### Bugs Détaillés
-
-#### CRITICAL (5)
-
-| ID | Bug | Fichier | Ligne |
-|:--:|:----|:--------|:-----:|
-| C1 | **203 tools sans description** — `server.tool(name, schema, handler)` ne passe JAMAIS le `description` field malgré que les modules l'exportent | `index.ts` | 1195-1520 |
-| C2 | **API deprecated** — `server.tool()` marqué `@deprecated` dans SDK 1.25.3, remplacé par `server.registerTool()` avec support `title`, `description`, `annotations`, `outputSchema` | `index.ts` | ALL |
-| C3 | ~~**ZERO Resources**~~ ✅ FIXED — 6 resources: personas, persona-detail (template), knowledge-base, market-rules, pricing, languages | `index.ts` | 1670-1836 |
-| C4 | ~~**ZERO Prompts**~~ ✅ FIXED — 8 prompts: voice-response, qualify-lead, book-appointment, check-order, create-invoice, export-report, onboard-tenant, troubleshoot | `index.ts` | 1838-2058 |
-| C5 | **Transport stdio only** — Incompatible avec ChatGPT (requiert SSE/Streamable HTTP + OAuth 2.1), Gemini SDK (expérimental SSE), et tout accès remote | `index.ts` | 1526-1545 |
-
-#### HIGH (5)
-
-| ID | Bug | Fichier | Ligne |
-|:--:|:----|:--------|:-----:|
-| H1 | **ZERO tool annotations** — `readOnlyHint`, `destructiveHint`, `idempotentHint` non utilisés. Le LLM ne sait pas quels tools sont safe vs destructifs | `index.ts` | ALL |
-| H2 | **ZERO outputSchema** — Aucun tool ne déclare sa structure de réponse. Le LLM doit deviner le format | `index.ts` | ALL |
-| H3 | **ZERO isError flags** — Les erreurs retournent du texte normal, pas `isError: true`. Le LLM ne distingue pas succès/échec | `index.ts` | ALL |
-| H4 | ~~**ZERO logging**~~ ✅ FIXED — `log()` helper + `withLogging()` wrapper on ALL 181 module tools + 4 key inline tools + structured startup event | `index.ts` | 117-155 |
-| H5 | **ZERO progress reporting** — Les opérations longues (export PDF, API calls) ne reportent pas leur progression | `index.ts` | N/A |
-
-#### MEDIUM (5)
-
-| ID | Bug | Fichier | Ligne |
-|:--:|:----|:--------|:-----:|
-| M1 | **Version chaos** — `package.json` = "0.8.0", `api_status` tool = "0.5.0", startup log = "v0.9.0" | multiple | — |
-| M2 | **`api_status` reports `tools_count: 75`** — Devrait être 203 | `index.ts` | 1106 |
-| M3 | **`personas_list` hardcodes `total: 30`** — Devrait être 38 | `index.ts` | 434 |
-| M4 | **PERSONAS_DATA incomplet** — 30 entrées au lieu de 38. 8 personas manquants dans le MCP | `index.ts` | 186-233 |
-| M5 | **SYSTEM_PROMPTS incomplet** — Seulement 3 personas (AGENCY, DENTAL, UNIVERSAL_ECOMMERCE) au lieu de 38 | `index.ts` | 236-281 |
-
-#### LOW (3)
-
-| ID | Bug | Fichier | Ligne |
-|:--:|:----|:--------|:-----:|
-| L1 | **`translation_qa_check` executes Python** via `execAsync` — risque injection commande | `index.ts` | 288-310 |
-| L2 | **Pas de `sendToolListChanged()`** — Si tools changent dynamiquement, les clients ne sont pas notifiés | `index.ts` | N/A |
-| L3 | **Pas de `_meta` support** — Aucun outil ne retourne/consomme `_meta` pour metadata additionnelle | `index.ts` | N/A |
-
-### Preuve SDK — Capacités Disponibles mais Non Utilisées
-
-Vérifié dans `mcp-server/node_modules/@modelcontextprotocol/sdk/dist/esm/server/mcp.d.ts` (v1.25.3) :
-
-```typescript
-// DISPONIBLE — NON UTILISÉ par VocalIA
-server.registerTool(name, { title?, description?, inputSchema?, outputSchema?, annotations? }, handler)
-server.registerResource(name, uriOrTemplate, config, readCallback)
-server.registerPrompt(name, { title?, description?, argsSchema? }, handler)
-server.sendLoggingMessage(params, sessionId?)
-server.sendToolListChanged()
-server.sendResourceListChanged()
-server.sendPromptListChanged()
-// ToolAnnotations: { readOnlyHint?, destructiveHint?, idempotentHint?, openWorldHint? }
-```
+| Tools (qualité) | 6/10 | descriptions+annotations on ALL, BUT path traversal in exports (MC1), phantom tools in api_status (MH1), no sanitization (MM4) |
+| Resources | 9/10 | 6 types (43 URIs), descriptions on ALL, template with list+autocomplete |
+| Prompts | 9/10 | 8 prompts with title+description+argsSchema, kebab-case |
+| Transport | 8/10 | stdio + Streamable HTTP (spec 2025-06-18). Session-per-request. BUT session map unbounded (MH4) |
+| Auth | 3/10 | OAuth 2.1 code exists BUT auto-approve sans login (MC2), requiredScopes=[], unbounded maps (MH3) |
+| Error handling | 5/10 | isError flags on inline, module tools delegated. No input sanitization. |
+| Logging | 7/10 | withLogging on 185/203 tools (181 module + 4 inline). 18 inline tools without. |
+| Security | 3/10 | Path traversal (MC1), no filename sanitize, no tenantId sanitize, CORS wildcard default |
+| Distribution | 5/10 | server.json, Dockerfile, README v1.0.0. NOT published (npm/registry/Docker Hub). |
 
 ---
 
-## Plan Actionnable SOTA — VocalIA-MCP 1.0.0
+## Contre-Audit 250.173b — 18 Findings (14 Confirmed)
+
+### CRITICAL (2) — Both Confirmed
+
+| ID | Bug | Fichier | Verdict |
+|:--:|:----|:--------|:-------:|
+| MC1 | **Path traversal export** — `filename` param = `z.string()` sans sanitize. `path.join(EXPORT_DIR, \`${filename}.csv\`)` → directory traversal. **4 tools vulnérables** (CSV, XLSX, PDF, PDF table). | `tools/export.ts:68,167,220,367` | **CONFIRMÉ** |
+| MC2 | **OAuth auto-approve** — `authorize()` génère code + redirect sans page login. `/register` ouvert. `requiredScopes: []`. Tout client obtient accès total aux 203 tools. OAuth = théâtre de sécurité. | `auth-provider.ts:117-141`, `index.ts:2400` | **CONFIRMÉ** |
+
+### HIGH (5) — 4 Confirmed, 1 False
+
+| ID | Bug | Fichier | Verdict |
+|:--:|:----|:--------|:-------:|
+| MH1 | **Phantom tools** — `ecommerce_order_status`, `ecommerce_product_stock` référencés dans api_status response mais jamais enregistrés. Calling → "tool not found". | `index.ts:1340` | **CONFIRMÉ** |
+| MH2 | **Tool count faux (205 ≠ 203)** | `index.ts` | **FAUX** — grep de l'audit erroné. 22 inline + 181 module = 203. Confirmé par runtime `tools/list`. |
+| MH3 | **revokedTokens + clients Maps unbounded** — cleanup timer nettoie authCodes/accessTokens/refreshTokens mais PAS revokedTokens (Set) ni clients (Map). | `auth-provider.ts:53,57,303-320` | **CONFIRMÉ** |
+| MH4 | **Session HTTP map illimitée** — `transports` grandit sans limite. Cleanup uniquement sur client close ou SIGINT. Pas de TTL, pas de max sessions. | `index.ts:2439` | **CONFIRMÉ** |
+| MH5 | **process.cwd() — 35 sites / 30 fichiers** — paths cassés si lancé depuis un autre répertoire. | `tout mcp-server/src/` | **CONFIRMÉ** |
+
+### MEDIUM (8) — All Confirmed
+
+| ID | Bug | Fichier | Verdict |
+|:--:|:----|:--------|:-------:|
+| MM1 | **Booking queue race condition** — read-modify-write sans lock. | `index.ts:234-258` | **CONFIRMÉ** |
+| MM2 | **UCP profileKey collision** — `${tenantId}:${userId}` ambigu si `:` dans les IDs. | `tools/ucp.ts:87` | **CONFIRMÉ** |
+| MM3 | **tenant.ts fail-open** — fallback `agency_internal` si registry échoue. | `middleware/tenant.ts:13` | **CONFIRMÉ** |
+| MM4 | **No sanitizeTenantId in MCP** — tenantId passe raw dans path.join(). | `middleware/tenant.ts:36-39` | **CONFIRMÉ** |
+| MM5 | **CORS wildcard default** — `MCP_CORS_ORIGINS || "*"`. | `index.ts:2365` | **CONFIRMÉ** |
+| MM6 | **exec sans timeout** — `execAsync(python3 ...)` sans timeout. | `index.ts:410` | **CONFIRMÉ** |
+| MM7 | **console.error at module level** — RecommendationService load error noise. | `tools/recommendations.ts:13` | **CONFIRMÉ** |
+| MM8 | **Stripe API version stale** — `2024-12-18.acacia` (14 months old). | `tools/stripe.ts:55` | **CONFIRMÉ** |
+
+### LOW (3) — 2 Confirmed, 1 Misleading
+
+| ID | Bug | Fichier | Verdict |
+|:--:|:----|:--------|:-------:|
+| ML1 | **PersonaKeyEnum tiers ≠ PERSONAS_DATA** — enum comments don't match data structure. | `index.ts` | **PLAUSIBLE** (non vérifié en détail) |
+| ML2 | **withLogging 5/22 inline** — claim que seulement 5 tools ont le logging. | `index.ts` | **TROMPEUR** — 4 inline + ALL 181 module tools via registerModuleTool = 185/203 tools logged |
+| ML3 | **server.json repo URL typo** — `VoicalAI` au lieu de `VocalIA`. | `server.json:8`, `package.json:33` | **CONFIRMÉ** |
+
+### Patterns Systémiques
+
+1. **process.cwd() partout** (35 sites / 30 fichiers) — devrait être `import.meta.dirname`
+2. **Aucune sanitization d'input** — filename, tenantId, userId passent directement dans path.join() / fs.writeFile()
+3. **OAuth = théâtre** — registration ouverte + auto-approve + requiredScopes vide
+4. **Unbounded in-memory stores** — revokedTokens, clients, transports grandissent sans limite
+5. **Documentation stale** dans api_status (phantom tools, header comment incomplet)
+
+### Fiabilité de l'Audit
+
+| Métrique | Résultat |
+|:---------|:---------|
+| Findings totaux | 18 |
+| Confirmés | 14 |
+| Faux | 2 (MH2 tool count, ML2 logging) |
+| Non vérifié | 1 (ML1) |
+| Trompeur | 1 (ML2) |
+| **Taux de fiabilité** | **~82%** |
+
+---
+
+## Plan Actionnable — Historique + Status
 
 ### Phase 0 — Fondations ✅ DONE (250.171c)
 
@@ -122,9 +135,9 @@ server.sendPromptListChanged()
 |:-:|:------|:------:|:------|
 | 0.1 | **Unifier version** → `1.0.0` | ✅ | package.json, api_status, startup log, server constructor |
 | 0.2 | **Corriger `api_status`** → `tools_count: 203` | ✅ | Was 75 |
-| 0.3 | **Corriger `personas_list`** → `total: 38` | ✅ | Already computed dynamically (4+8+12+14=38) |
-| 0.4 | **Compléter SYSTEM_PROMPTS** → 38 personas | ✅ | Dynamic loading from voice-persona-injector.cjs already exists (L100-114). 3 inline = fallback only |
-| 0.5 | **Sécuriser `translation_qa_check`** | ✅ | FALSE ALARM: tool takes `{}` (no params), no user input reaches execAsync |
+| 0.3 | **Corriger `personas_list`** → `total: 38` | ✅ | Dynamic (4+8+12+14=38) |
+| 0.4 | **Compléter SYSTEM_PROMPTS** → 38 personas | ✅ | Dynamic loading from voice-persona-injector.cjs |
+| 0.5 | **Sécuriser `translation_qa_check`** | ✅ | FALSE ALARM: takes `{}`, no user input |
 
 ### Phase 1 — Migration API Moderne ✅ DONE (250.171c)
 
@@ -132,36 +145,25 @@ server.sendPromptListChanged()
 |:-:|:------|:------:|:------|
 | 1.1 | **Migrer 22 inline tools** → `server.registerTool()` | ✅ | All 22 with description + annotations |
 | 1.2 | **Migrer 181 module tools** → `registerModuleTool()` | ✅ | Helper infers annotations from name pattern |
-| 1.3 | **Ajouter `outputSchema`** aux 15 tools "always available" | ⬚ | P1 — deferred to next session |
-| 1.4 | **Ajouter `isError: true`** à tous les catch blocks (inline) | ✅ | 6 error returns flagged |
-
-**Classification des annotations par catégorie :**
-
-| Catégorie | readOnly | destructive | idempotent | Tools |
-|:----------|:--------:|:-----------:|:----------:|:------|
-| GET/List/Search | ✅ | ❌ | ✅ | personas_list, *_list_*, *_get_*, *_search_* (~120) |
-| Create | ❌ | ❌ | ❌ | *_create_*, booking_create (~30) |
-| Update | ❌ | ❌ | ✅ | *_update_*, *_reply_* (~25) |
-| Delete/Cancel | ❌ | ✅ | ✅ | *_cancel_*, *_delete_*, *_deactivate_* (~15) |
-| Export/Generate | ✅ | ❌ | ✅ | export_*, voice_generate_response (~8) |
-| System | ✅ | ❌ | ✅ | api_status, system_languages (~5) |
+| 1.3 | **`outputSchema`** aux tools "always available" | ⬚ | Deferred |
+| 1.4 | **`isError: true`** à tous les catch blocks | ✅ | 6 error returns flagged |
 
 ### Phase 2 — Resources & Prompts ✅ DONE (250.171c)
 
 | # | Tâche | Status | Notes |
 |:-:|:------|:------:|:------|
-| 2.1 | **Ajouter Resources** (6 resources) | ✅ | 5 static + 1 template (persona-detail with list+complete) |
-| 2.2 | **Ajouter Prompts** (8 prompts) | ✅ | All with title+description+argsSchema, kebab-case naming |
+| 2.1 | **6 Resources** | ✅ | 5 static + 1 template (persona-detail → 38 URIs with list+complete) |
+| 2.2 | **8 Prompts** | ✅ | All with title+description+argsSchema, kebab-case |
 
 **Resources implémentées :**
 
 | Resource URI | Description | Source |
 |:-------------|:------------|:-------|
 | `vocalia://personas` | Liste 38 personas avec metadata | `PERSONAS_DATA` (dynamic) |
-| `vocalia://personas/{key}` | Template — détails persona + system prompts | `PERSONAS_DATA` + `INJECTOR_*` |
+| `vocalia://personas/{key}` | Template — détails persona + system prompts (38 URIs) | `PERSONAS_DATA` + `INJECTOR_*` |
 | `vocalia://knowledge-base` | Status KB (chunks, categories, search modes) | `data/knowledge-base/status.json` |
-| `vocalia://market-rules` | Règles marché (MA→FR/MAD, EU→FR/EUR, etc.) | statique (mirrors client-registry) |
-| `vocalia://pricing` | Plans et tarifs (Starter 49€, Pro 99€, etc.) | statique (mirrors BUSINESS-INTELLIGENCE.md) |
+| `vocalia://market-rules` | Règles marché (MA→FR/MAD, EU→FR/EUR, etc.) | statique |
+| `vocalia://pricing` | Plans et tarifs (Starter 49€, Pro 99€, etc.) | statique |
 | `vocalia://languages` | 5 langues + voix + RTL flags + geo | statique |
 
 **Prompts implémentés :**
@@ -181,78 +183,83 @@ server.sendPromptListChanged()
 
 | # | Tâche | Status | Notes |
 |:-:|:------|:------:|:------|
-| 3.1 | **`sendLoggingMessage()` on all tools** | ✅ | `log()` helper + `withLogging()` wrapper. ALL 181 module tools + 4 key inline tools logged (start/complete/error + timing). Startup structured event. |
-| 3.2 | **Progress reporting (long operations)** | ⬚ | Deferred — requires handler `extra.sendNotification` refactor (P3) |
+| 3.1 | **`sendLoggingMessage()` on tools** | ✅ | `withLogging()` on ALL 181 module tools + 4 inline tools (185/203). 18 inline sans. |
+| 3.2 | **Progress reporting** | ⬚ | Deferred — requires handler `extra.sendNotification` refactor |
 
-### Phase 4 — Transport Remote + Auth ✅ DONE (250.172)
+### Phase 4 — Transport Remote + Auth ✅ DONE (250.172b)
 
 | # | Tâche | Status | Notes |
 |:-:|:------|:------:|:------|
-| 4.1 | **Streamable HTTP transport** — dual transport stdio + HTTP | ✅ | `MCP_TRANSPORT=http` or `--http`. Express + `StreamableHTTPServerTransport`. Session-per-request (CVE-2026-25536 safe). Port 3015. |
-| 4.2 | **OAuth 2.1** — `/authorize`, `/token`, `/register`, `/revoke` | ✅ | `MCP_OAUTH=true` or `--oauth`. SDK `mcpAuthRouter()` + custom `VocaliaOAuthProvider`. Dynamic client reg (RFC 7591), PKCE (S256), token revocation. In-memory store + cleanup timer. |
-| 4.3 | **HTTPS via Traefik** — route `mcp.vocalia.ma` → container MCP | ⬚ | Ops-only: add Traefik PathPrefix route on VPS. Code ready, needs deploy. |
-| 4.4 | **CORS + rate limiting** | ✅ | `MCP_CORS_ORIGINS` env, `MCP_RATE_LIMIT` (default 100/min). Express middleware. DNS rebinding protection via SDK. |
+| 4.1 | **Streamable HTTP** | ✅ | `MCP_TRANSPORT=http`. Express + `StreamableHTTPServerTransport`. Session-per-request. Port 3015. |
+| 4.2 | **OAuth 2.1** | ⚠️ | Code exists BUT auto-approve sans login (MC2). `requiredScopes: []`. Théâtre de sécurité. |
+| 4.3 | **HTTPS via Traefik** | ⬚ | Ops-only: Traefik PathPrefix on VPS |
+| 4.4 | **CORS + rate limiting** | ✅ | `MCP_CORS_ORIGINS` env (default `*` — MM5), `MCP_RATE_LIMIT` (100/min) |
 
 **Key decisions:**
-- SDK v1.26.0 (CVE-2026-25536 fix) — new `McpServer` per session, safe for concurrent clients
-- MCP spec 2025-06-18 compliant: `Mcp-Session-Id`, SSE streaming, session DELETE, `MCP-Protocol-Version` header
-- OAuth optional (disabled by default) — enable with `MCP_OAUTH=true` for ChatGPT/Gemini/n8n
-- Scopes: `mcp:tools`, `mcp:resources`, `mcp:prompts`
+- SDK v1.26.0 (CVE-2026-25536 fix) — new `McpServer` per session
+- MCP spec 2025-06-18 compliant: `Mcp-Session-Id`, SSE streaming, session DELETE
+- OAuth optional (disabled by default) — **WARNING: auto-approve, not production-safe (MC2)**
+- Session map unbounded — no TTL, no max sessions (MH4)
 
-### Phase 5 — Publication & Distribution ✅ DONE (250.172)
+### Phase 5 — Publication & Distribution ✅ DONE (250.172b)
 
 | # | Tâche | Status | Notes |
 |:-:|:------|:------:|:------|
-| 5.1 | **Publier sur npm** — `@vocalia/mcp-server` | ⬚ | Package ready (`files` field, README v1.0.0, `@types/*` in devDeps). Needs `npm login` + `npm publish --access public`. |
-| 5.2 | **Créer `server.json`** pour MCP Registry | ✅ | Done (250.171c) |
-| 5.3 | **Soumettre au MCP Registry** via `mcp-publisher` CLI | ⬚ | Needs npm publish first, then `npx @anthropic/mcp-publisher publish`. |
-| 5.4 | **Docker image** — `vocalia/mcp-server` | ✅ | Dockerfile + .dockerignore. Multi-stage build (node:22-alpine). `docker build -t vocalia/mcp-server .` then `docker push`. |
-| 5.5 | **GitHub Release** — tags, changelog | ✅ | Code committed with tag v1.0.0. |
-| 5.6 | **Hugging Face** — publier comme Space/repo | ⬚ | Needs HF credentials. `huggingface-cli upload vocalia/mcp-server`. |
+| 5.1 | **npm publish** | ⬚ | Package ready. Needs `npm login` + `npm publish --access public`. |
+| 5.2 | **server.json** | ✅ | Done (250.171c). **WARNING: repo URL typo `VoicalAI` (ML3)** |
+| 5.3 | **MCP Registry** | ⬚ | Needs npm publish first |
+| 5.4 | **Docker image** | ✅ | Dockerfile + .dockerignore. Multi-stage node:22-alpine. Not tested. |
+| 5.5 | **GitHub Release** | ✅ | Code committed. |
+| 5.6 | **Hugging Face** | ⬚ | Needs HF credentials. |
+
+### Phase 6 — Security Hardening (TODO — from contre-audit)
+
+| # | Tâche | Sévérité | Status |
+|:-:|:------|:--------:|:------:|
+| 6.1 | **Sanitize filename** in 4 export tools (MC1) | CRITICAL | ⬚ |
+| 6.2 | **OAuth real auth** — login page or API key verification (MC2) | CRITICAL | ⬚ |
+| 6.3 | **Remove phantom tools** from api_status (MH1) | HIGH | ⬚ |
+| 6.4 | **Cleanup revokedTokens + clients** maps (MH3) | HIGH | ⬚ |
+| 6.5 | **Session TTL + max sessions** (MH4) | HIGH | ⬚ |
+| 6.6 | **process.cwd() → import.meta.dirname** (MH5, 35 sites) | HIGH | ⬚ |
+| 6.7 | **sanitizeTenantId()** in tenant middleware (MM4) | MEDIUM | ⬚ |
+| 6.8 | **Booking queue file lock** (MM1) | MEDIUM | ⬚ |
+| 6.9 | **UCP profileKey safe separator** (MM2) | MEDIUM | ⬚ |
+| 6.10 | **exec timeout** for translation QA (MM6) | MEDIUM | ⬚ |
+| 6.11 | **CORS restrict default** (MM5) | MEDIUM | ⬚ |
+| 6.12 | **Fix repo URL typo** VoicalAI → VocalIA (ML3) | LOW | ⬚ |
 
 ---
 
 ## Stratégie de Distribution — 14 Plateformes
 
-### Tier 1 — Natif stdio (local, déjà compatible)
+### Tier 1 — Natif stdio (local, compatible)
 
 | Plateforme | Transport | Config | Status | Action |
 |:-----------|:---------|:-------|:------:|:-------|
-| **Claude Desktop** | stdio | `claude_desktop_config.json` | ✅ Compatible | Documenter install via npx |
-| **Claude Code** | stdio | `.claude/settings.json` | ✅ Compatible | Documenter config |
-| **VS Code (Copilot)** | stdio | `.vscode/mcp.json` ou settings | ✅ Compatible (v1.102+) | Installer depuis MCP Registry |
-| **Cursor** | stdio | `.cursor/mcp.json` | ✅ Compatible | Documenter config |
-| **Gemini CLI** | stdio | `~/.gemini/settings.json` | ✅ Compatible | Documenter config |
+| **Claude Desktop** | stdio | `claude_desktop_config.json` | ✅ | `npx @vocalia/mcp-server` |
+| **Claude Code** | stdio | `.claude/settings.json` | ✅ | `claude mcp add vocalia` |
+| **VS Code (Copilot)** | stdio | `.vscode/mcp.json` | ✅ | Installer depuis MCP Registry |
+| **Cursor** | stdio | `.cursor/mcp.json` | ✅ | Documenter config |
+| **Gemini CLI** | stdio | `~/.gemini/settings.json` | ✅ | Documenter config |
 
-**Effort total Tier 1 : ~2h** (documentation + tests)
+### Tier 2 — HTTP transport (Phase 4 done)
 
-### Tier 2 — Natif avec HTTP transport requis (Phase 4 obligatoire)
-
-| Plateforme | Transport | Auth | Status | Blocage |
-|:-----------|:---------|:-----|:------:|:--------|
-| **ChatGPT** | Streamable HTTP/SSE | OAuth 2.1 | ✅ Ready | Phase 4 done. Needs HTTPS (mcp.vocalia.ma via Traefik) for prod. |
-| **Gemini SDK** | SSE (expérimental) | OAuth 2.0 | ✅ Ready | Phase 4 done. HTTP transport available. |
-| **n8n** | HTTP (MCP Server Trigger) | API Key/OAuth | ✅ Ready | Phase 4 done. URL: `http://host:3015/mcp`. |
-| **Make.com** | HTTP (webhook/module custom) | API Key | ✅ Ready | Phase 4 done. URL: `http://host:3015/mcp`. |
-
-**Effort total Tier 2 : ~12h** (Phase 4) + ~4h (config par plateforme)
+| Plateforme | Transport | Auth | Status | Notes |
+|:-----------|:---------|:-----|:------:|:------|
+| **ChatGPT** | Streamable HTTP/SSE | OAuth 2.1 | ✅ Ready | Needs HTTPS (mcp.vocalia.ma via Traefik) + real OAuth (MC2) |
+| **Gemini SDK** | SSE (expérimental) | OAuth 2.0 | ✅ Ready | HTTP transport available |
+| **n8n** | HTTP (MCP Server Trigger) | API Key/OAuth | ✅ Ready | URL: `http://host:3015/mcp` |
+| **Make.com** | HTTP (webhook/module custom) | API Key | ✅ Ready | URL: `http://host:3015/mcp` |
 
 **Détail ChatGPT :**
 - Settings → Connectors → Advanced → Developer Mode → Create
 - URL: `https://mcp.vocalia.ma` (via Traefik)
-- Auth: OAuth 2.1 flow — ChatGPT échange auth code → access token
-- Disponible: Pro, Plus, Business, Enterprise, Education plans
+- Auth: OAuth 2.1 flow — **WARNING: requires real auth implementation (MC2)**
 
-**Sources:** [OpenAI MCP Docs](https://platform.openai.com/docs/guides/tools-connectors-mcp) | [ChatGPT Developer Mode](https://help.openai.com/en/articles/12584461-developer-mode-apps-and-full-mcp-connectors-in-chatgpt-beta)
+**Sources:** [OpenAI MCP Docs](https://platform.openai.com/docs/guides/tools-connectors-mcp) | [n8n MCP Docs](https://docs.n8n.io/advanced-ai/accessing-n8n-mcp-server/)
 
-**Détail n8n :**
-- MCP Server Trigger node expose workflows comme tools
-- MCP Client Tool node permet à n8n d'appeler VocalIA-MCP
-- Requiert URL HTTP publique accessible
-
-**Sources:** [n8n MCP Docs](https://docs.n8n.io/advanced-ai/accessing-n8n-mcp-server/)
-
-### Tier 3 — Via MCP SuperAssistant (workaround, pas natif)
+### Tier 3 — Via MCP SuperAssistant (workaround)
 
 | Plateforme | Méthode | Status |
 |:-----------|:--------|:------:|
@@ -262,75 +269,91 @@ server.sendPromptListChanged()
 
 **Source:** [MCP SuperAssistant](https://github.com/srbhptl39/MCP-SuperAssistant)
 
-### Tier 4 — App builders (config file)
+### Tier 4 — App builders
 
 | Plateforme | Transport | Config | Status |
 |:-----------|:---------|:-------|:------:|
-| **Lovable** | stdio/HTTP | Settings → MCP servers | ✅ Compatible (stdio) / Requiert Phase 4 (remote) |
-| **Bolt.new** | stdio/HTTP | MCP config | ✅ Compatible (stdio) / Requiert Phase 4 (remote) |
-
-**Sources:** [Lovable MCP Docs](https://docs.lovable.dev/integrations/mcp-servers) | [Bolt MCP Guide](https://mcp.harishgarg.com/use/mcp-so/mcp-server/with/bolt-new)
+| **Lovable** | stdio/HTTP | Settings → MCP servers | ✅ Compatible |
+| **Bolt.new** | stdio/HTTP | MCP config | ✅ Compatible |
 
 ### Tier 5 — Registries & Marketplaces
 
-| Plateforme | Type | Prérequis | Action |
-|:-----------|:-----|:----------|:-------|
-| **MCP Registry** | Registry officiel | npm package + server.json + `mcp-publisher` CLI | Phase 5.1-5.3 |
-| **npm** | Package registry | `@vocalia/mcp-server` package publique | Phase 5.1 |
-| **GitHub** | Source + Releases | Repo public + tags + changelog | Phase 5.5 |
-| **Hugging Face** | Model/Space hub | Repo ou Space + README MCP | Phase 5.6 |
-| **Docker Hub** | Container registry | `vocalia/mcp-server` image | Phase 5.4 |
-| **Smithery** | MCP marketplace | Listing + config | À évaluer |
-| **PulseMCP** | MCP directory | Listing | À évaluer |
-| **Glama** | MCP directory | Listing | À évaluer |
-
-**MCP Registry — Prérequis concrets :**
-
-```json
-// server.json (à créer)
-{
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.jouiet/vocalia",
-  "description": "Voice AI SaaS platform with 203 tools — CRM, e-commerce, telephony, personas, lead qualification, 38 industry personas in 5 languages",
-  "repository": {
-    "url": "https://github.com/Jouiet/VocalIA",
-    "source": "github"
-  },
-  "version": "1.0.0",
-  "packages": [
-    {
-      "registryType": "npm",
-      "identifier": "@vocalia/mcp-server",
-      "version": "1.0.0",
-      "transport": { "type": "stdio" }
-    }
-  ]
-}
-```
-
-```json
-// package.json additions
-{
-  "name": "@vocalia/mcp-server",
-  "version": "1.0.0",
-  "mcpName": "io.github.jouiet/vocalia",
-  "bin": { "vocalia-mcp": "./dist/index.js" }
-}
-```
-
-```bash
-# Publishing workflow
-npm publish --access public
-mcp-publisher login github  # → io.github.jouiet/* namespace
-mcp-publisher init           # → génère server.json
-mcp-publisher publish        # → soumet au registry
-```
-
-**Sources:** [MCP Registry](https://github.com/modelcontextprotocol/registry) | [Publishing Guide](https://github.com/modelcontextprotocol/registry/blob/main/docs/modelcontextprotocol-io/quickstart.mdx) | [Registry API](https://registry.modelcontextprotocol.io/docs)
+| Plateforme | Type | Status | Action |
+|:-----------|:-----|:------:|:-------|
+| **npm** | Package registry | ⬚ | `npm publish --access public` |
+| **MCP Registry** | Registry officiel | ⬚ | Needs npm publish first |
+| **GitHub** | Source + Releases | ✅ | Code committed |
+| **Docker Hub** | Container registry | ⬚ | `docker build && docker push` |
+| **Hugging Face** | Model/Space hub | ⬚ | Needs HF credentials |
 
 ---
 
-## Status des Tools (Session 250.171b — VÉRIFIÉ)
+## Architecture Technique
+
+```
+┌─────────────────┐     JSON-RPC/stdio     ┌─────────────────┐
+│  Claude Desktop │ ◄───────────────────► │  VocalIA MCP    │
+│  Claude Code    │                        │  Server v1.0.0  │
+│  VS Code        │                        │  203 tools      │
+│  Cursor         │                        │  @sdk 1.26.0    │
+│  Gemini CLI     │                        │                 │
+└─────────────────┘                        │                 │
+                                           │                 │
+┌─────────────────┐  Streamable HTTP/SSE   │                 │
+│  ChatGPT        │ ◄── HTTPS + OAuth ──► │                 │
+│  Gemini SDK     │     :3015/mcp          │                 │
+│  n8n / Make     │                        └────────┬────────┘
+│  Remote clients │                                 │
+└─────────────────┘              ┌──────────────────┼──────────────────┐
+                                 │         │        │        │         │
+                                 ▼         ▼        ▼        ▼         ▼
+                         ┌──────────┐ ┌────────┐ ┌──────┐ ┌──────┐ ┌──────┐
+                         │Voice API │ │Telephony│ │  DB  │ │ 29   │ │Local │
+                         │  :3004   │ │  :3009  │ │:3013 │ │tools/│ │data/ │
+                         │Grok/Gem  │ │ Twilio  │ │Sheets│ │(.ts) │ │export│
+                         └──────────┘ └────────┘ └──────┘ └──────┘ └──────┘
+```
+
+### Stack Technique
+
+| Composant | Technologie |
+|:----------|:------------|
+| Runtime | Node.js 18+ (ESM) |
+| Langage | TypeScript |
+| MCP SDK | @modelcontextprotocol/sdk@1.26.0 (CVE-2026-25536 safe) |
+| Validation | Zod |
+| Transport | StdioServerTransport + StreamableHTTPServerTransport |
+| Auth | OAuth 2.1 optional (PKCE S256, RFC 7591, RFC 7009) |
+| HTTP | Express (via SDK `createMcpExpressApp`) |
+
+### Fichiers
+
+```
+mcp-server/
+├── src/
+│   ├── index.ts              # Serveur MCP (2,561 lignes, 22 inline tools + factory)
+│   ├── auth-provider.ts      # OAuth 2.1 provider (323 lignes)
+│   ├── middleware/
+│   │   └── tenant.ts         # Multi-tenant resolution (53 lignes)
+│   └── tools/                # 29 tool modules (~16K lignes)
+│       ├── shopify.ts        # 8 tools, GraphQL Admin API 2026-01
+│       ├── stripe.ts         # 19 tools, API 2024-12-18.acacia (MM8: stale)
+│       ├── hubspot.ts        # 7 tools, REST v3
+│       ├── export.ts         # 5 tools (MC1: path traversal!)
+│       ├── ucp.ts            # 8 tools (MM2: profileKey collision)
+│       └── ... (24 more)
+├── dist/                     # Build compilé
+├── Dockerfile                # Multi-stage node:22-alpine
+├── .dockerignore
+├── package.json              # v1.0.0, @vocalia/mcp-server
+├── server.json               # MCP Registry metadata (ML3: repo URL typo)
+├── README.md                 # v1.0.0 with install guides
+└── tsconfig.json
+```
+
+---
+
+## Status des Tools (203 — vérifié par runtime `tools/list`)
 
 ### Vue d'ensemble
 
@@ -343,12 +366,12 @@ mcp-publisher publish        # → soumet au registry
 | Telephony | 3 | 0 | 3 |
 | Messaging | 1 | 0 | 1 |
 | CRM (inline) | 2 | 0 | 2 |
-| E-commerce (inline) | 3 | 0 | 3 |
+| E-commerce (inline) | 1 | 0 | 1 |
 | Booking | 2 | **2** | 0 |
 | System | 3 | **3** | 0 |
 | Calendar | 2 | 0 | 2 |
 | Slack | 1 | 0 | 1 |
-| UCP/CDP | 7 | 0 | 7 |
+| UCP/CDP | 8 | 0 | 8 |
 | Translation QA | 1 | **1** | 0 |
 | Sheets | 5 | 0 | 5 |
 | Drive | 6 | 0 | 6 |
@@ -371,7 +394,7 @@ mcp-publisher publish        # → soumet au registry
 | Make | 5 | 0 | 5 |
 | n8n | 5 | 0 | 5 |
 | Stripe | 19 | 0 | 19 |
-| Recommendations | 3 | 0 | 3 |
+| Recommendations | 4 | 0 | 4 |
 | HubSpot | 7 | 0 | 7 |
 | Klaviyo | 5 | 0 | 5 |
 | Twilio | 5 | 0 | 5 |
@@ -392,552 +415,19 @@ mcp-publisher publish        # → soumet au registry
 
 ---
 
-## Analyse Concurrentielle (FAITS VÉRIFIÉS)
-
-| Plateforme | MCP Server | Tools | MCP Compliance | Source |
-|:-----------|:-----------|:------|:---------------|:-------|
-| **Vapi** | ✅ Officiel | 8 | Non évalué | [github.com/VapiAI/mcp-server-vapi](https://github.com/VapiAI/mcp-server-vapi) |
-| **Twilio** | ✅ Community | 5 | Non évalué | [github.com/twilio-labs/mcp-twilio](https://github.com/twilio-labs/mcp-twilio) |
-| **Vonage** | ✅ Officiel | 2 | Non évalué | [github.com/Vonage-Community/telephony-mcp-server](https://github.com/Vonage-Community/telephony-mcp-server) |
-| **Retell** | ❌ | N/A | N/A | Pas de MCP server trouvé |
-| **VocalIA** | ⚠️ | **203** | **2.5/10** | `mcp-server/` |
-
-**Avantage quantitatif VocalIA :**
-- **203 tools** — 25x plus que Vapi (8 tools)
-- 38 personas × 5 langues
-- 7 plateformes e-commerce, 3 CRM, 2 support
-- iPaaS complet (Zapier, Make, n8n)
-- Google Workspace (Sheets, Drive, Docs, Gmail, Calendar)
-
-**Handicap qualitatif VocalIA :**
-- 0/203 tools avec description (le LLM ne sait pas ce que font les tools)
-- 0 Resources, 0 Prompts (utilise 1/3 des primitives MCP)
-- API deprecated, pas de transport remote
-- Pas publié (npm, registry, GitHub releases)
-
----
-
-## Architecture Technique
-
-```
-┌─────────────────┐     JSON-RPC/stdio     ┌─────────────────┐
-│  Claude Desktop │ ◄───────────────────► │  VocalIA MCP    │
-│  Cursor         │                        │  Server v0.8.0  │
-│  VS Code        │                        │  203 tools      │
-│  Gemini CLI     │                        │  @sdk 1.25.3    │
-└─────────────────┘                        └────────┬────────┘
-                                                    │
-                          ┌─────────────────────────┼─────────────────────────┐
-                          │              │          │          │              │
-                          ▼              ▼          ▼          ▼              ▼
-                  ┌──────────────┐ ┌──────────┐ ┌──────┐ ┌──────────┐ ┌──────────┐
-                  │  Voice API   │ │Telephony │ │  DB  │ │ 29 tool  │ │ Local    │
-                  │  :3004       │ │  :3009   │ │:3013 │ │ modules  │ │ data/    │
-                  │  Grok/Gemini │ │  Twilio  │ │Sheets│ │ (181 ts) │ │ exports  │
-                  └──────────────┘ └──────────┘ └──────┘ └──────────┘ └──────────┘
-```
-
-**FUTUR (après Phase 4) :**
-
-```
-┌─────────────────┐                        ┌─────────────────┐
-│  ChatGPT        │  Streamable HTTP/SSE   │  VocalIA MCP    │
-│  Gemini SDK     │ ◄──── HTTPS ────────► │  Server v1.0.0  │
-│  n8n / Make     │   + OAuth 2.1          │  203 tools      │
-│  Remote clients │                        │  + Resources    │
-└─────────────────┘                        │  + Prompts      │
-                                           └────────┬────────┘
-                                                    │
-                                           mcp.vocalia.ma
-                                           (Traefik → container)
-```
-
-### Stack Technique
-
-| Composant | Technologie |
-|:----------|:------------|
-| Runtime | Node.js 18+ |
-| Langage | TypeScript (ESM) |
-| MCP SDK | @modelcontextprotocol/sdk@1.25.3 |
-| Validation | Zod |
-| Transport | StdioServerTransport (actuel) → + StreamableHTTPTransport (Phase 4) |
-| Auth | Aucun (actuel) → OAuth 2.1 (Phase 4) |
-
-### Fichiers
-
-```
-mcp-server/
-├── src/
-│   ├── index.ts              # Serveur MCP principal (1,545 lignes, 203 tools)
-│   ├── middleware/
-│   │   └── tenant.ts         # Multi-tenant resolution (54 lignes)
-│   └── tools/                # 29 tool modules (16,030 lignes)
-│       ├── shopify.ts        # 8 tools, GraphQL Admin API
-│       ├── stripe.ts         # 19 tools, API 2024-12-18.acacia
-│       ├── hubspot.ts        # 7 tools, REST v3
-│       ├── woocommerce.ts    # 7 tools, REST v3
-│       ├── magento.ts        # 10 tools, REST v1
-│       ├── calendly.ts       # 6 tools, REST v2
-│       ├── freshdesk.ts      # 6 tools, REST v2
-│       ├── zendesk.ts        # 6 tools, REST v2
-│       ├── pipedrive.ts      # 7 tools, REST v1
-│       ├── zoho.ts           # 6 tools, REST v2
-│       ├── sheets.ts         # 5 tools, Google Sheets API v4
-│       ├── drive.ts          # 6 tools, Google Drive API v3
-│       ├── docs.ts           # 4 tools, Google Docs API v1
-│       ├── gmail.ts          # 7 tools, Gmail API v1
-│       ├── calendar.ts       # 2 tools, Google Calendar API v3
-│       ├── slack.ts          # 1 tool, Slack Web API
-│       ├── ucp.ts            # 7 tools, file-based CDP
-│       ├── email.ts          # 3 tools, SMTP
-│       ├── export.ts         # 5 tools, CSV/XLSX/PDF
-│       ├── zapier.ts         # 3 tools, webhooks
-│       ├── make.ts           # 5 tools, API
-│       ├── n8n.ts            # 5 tools, API
-│       ├── recommendations.ts # 3 tools, ML
-│       ├── klaviyo.ts        # 5 tools, REST v3
-│       ├── twilio.ts         # 5 tools, REST
-│       ├── wix.ts            # 6 tools, REST
-│       ├── squarespace.ts    # 7 tools, REST v1/v2
-│       ├── bigcommerce.ts    # 9 tools, REST v2/v3
-│       └── prestashop.ts     # 10 tools, Webservice
-├── dist/                     # Build compilé
-├── package.json              # v0.8.0 → à migrer v1.0.0
-├── tsconfig.json
-└── server.json               # À CRÉER (Phase 5.2)
-```
-
----
-
-## Installation
-
-### Prérequis
-
-- Node.js >= 18.0.0
-- Un client MCP compatible (Claude Desktop, Cursor, VS Code, Gemini CLI)
-
-### Build
-
-```bash
-cd mcp-server
-npm install
-npm run build
-```
-
-### Configuration par plateforme
-
-#### Claude Desktop
-
-Éditer `~/Library/Application Support/Claude/claude_desktop_config.json` :
-
-```json
-{
-  "mcpServers": {
-    "vocalia": {
-      "command": "node",
-      "args": ["/chemin/vers/VocalIA/mcp-server/dist/index.js"],
-      "env": {
-        "VOCALIA_API_URL": "http://localhost:3004",
-        "VOCALIA_TELEPHONY_URL": "http://localhost:3009"
-      }
-    }
-  }
-}
-```
-
-#### VS Code (GitHub Copilot)
-
-Éditer `.vscode/mcp.json` :
-
-```json
-{
-  "servers": {
-    "vocalia": {
-      "command": "node",
-      "args": ["/chemin/vers/VocalIA/mcp-server/dist/index.js"],
-      "env": {
-        "VOCALIA_API_URL": "http://localhost:3004"
-      }
-    }
-  }
-}
-```
-
-#### Cursor
-
-Éditer `.cursor/mcp.json` (même format que VS Code).
-
-#### Gemini CLI
-
-Éditer `~/.gemini/settings.json` :
-
-```json
-{
-  "mcpServers": {
-    "vocalia": {
-      "command": "node",
-      "args": ["/chemin/vers/VocalIA/mcp-server/dist/index.js"]
-    }
-  }
-}
-```
-
-#### Après npm publish (Phase 5.1)
-
-```bash
-# Installation globale
-npm install -g @vocalia/mcp-server
-
-# Ou via npx (sans installation)
-npx @vocalia/mcp-server
-```
-
-#### ChatGPT (après Phase 4)
-
-1. Settings → Connectors → Advanced → Developer Mode
-2. Create new connector
-3. URL: `https://mcp.vocalia.ma`
-4. Auth: OAuth 2.1 (auto-configuré)
-
-**Source:** [VS Code MCP](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) | [Gemini CLI MCP](https://geminicli.com/docs/tools/mcp-server/)
-
----
-
-## Documentation des Tools
-
-### Voice Tools (2)
-
-#### `voice_generate_response`
-
-Génère une réponse IA avec lead scoring intégré.
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `message` | string | ✅ | Message utilisateur |
-| `language` | enum | ❌ | fr, en, es, ar, ary (défaut: fr) |
-| `sessionId` | string | ❌ | ID session pour continuité |
-| `personaKey` | enum | ❌ | Persona à utiliser (défaut: AGENCY) |
-
-#### `voice_providers_status`
-
-Vérifie le status des providers AI (Grok, Gemini, Claude, Atlas-Chat).
-
----
-
-### Persona Tools (3)
-
-#### `personas_list`
-
-Liste les 38 personas par tier.
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `tier` | enum | ❌ | core, expansion, extended, all (défaut: all) |
-
-#### `personas_get`
-
-Détails d'un persona avec preview du system prompt.
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `personaKey` | enum | ✅ | AGENCY, DENTAL, PROPERTY, etc. |
-
-#### `personas_get_system_prompt`
-
-Obtenir le system prompt complet dans une langue.
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `personaKey` | enum | ✅ | Clé du persona |
-| `language` | enum | ❌ | Langue (défaut: fr) |
-
----
-
-### Lead Qualification Tools (2)
-
-#### `qualify_lead`
-
-Qualification BANT avec scoring avancé.
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `budget` | number | ✅ | Score 0-100 |
-| `authority` | number | ✅ | Score 0-100 |
-| `need` | number | ✅ | Score 0-100 |
-| `timeline` | number | ✅ | Score 0-100 |
-| `industry` | string | ❌ | Industrie (bonus +5 si high-value) |
-| `notes` | string | ❌ | Notes additionnelles |
-
-#### `lead_score_explain`
-
-Documentation complète de la méthodologie BANT.
-
----
-
-### Knowledge Base Tools (2)
-
-#### `knowledge_search`
-
-Recherche TF-IDF dans la base de connaissances (119+ services).
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `query` | string | ✅ | Requête de recherche |
-| `category` | string | ❌ | Catégorie (lead-gen, seo, email, etc.) |
-| `limit` | number | ❌ | Nombre de résultats (1-10, défaut: 5) |
-
-#### `knowledge_base_status`
-
-Information sur la KB: 119+ services, 15 catégories, métadonnées stratégiques.
-
----
-
-### Telephony Tools (3)
-
-#### `telephony_initiate_call`
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `to` | string | ✅ | Numéro E.164 (+33612345678) |
-| `personaKey` | enum | ❌ | Persona pour l'appel |
-| `language` | enum | ❌ | Langue (défaut: fr) |
-| `context` | string | ❌ | Contexte pour l'agent |
-
-**Prérequis:** `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`
-
-#### `telephony_get_status` / `telephony_transfer_call`
-
-Status système et transfert appel vers agent humain.
-
----
-
-### Booking Tools (2)
-
-#### `booking_schedule_callback`
-
-| Paramètre | Type | Requis | Description |
-|:----------|:-----|:------:|:------------|
-| `email` | string | ✅ | Email contact |
-| `phone` | string | ❌ | Téléphone |
-| `preferredTime` | string | ✅ | Créneau souhaité |
-| `notes` | string | ❌ | Notes contextuelles |
-
-#### `booking_create`
-
-Créer un RDV discovery call. Persistence: `data/booking-queue.json`.
-
----
-
-### UCP/CDP Tools (7)
-
-#### Core UCP (3): `ucp_sync_preference`, `ucp_get_profile`, `ucp_list_profiles`
-
-Synchronisation préférences avec Règles de Marché : MA→FR/MAD, EU→FR/EUR, US→EN/USD.
-
-#### CDP Enhanced (4): `ucp_record_interaction`, `ucp_track_event`, `ucp_get_insights`, `ucp_update_ltv`
-
-Interactions, événements comportementaux, scoring engagement, LTV tiers (bronze→diamond).
-
----
-
-### Stripe Tools (19) — Payment Processing
-
-> API Version: 2024-12-18.acacia | Rate Limits: 100 req/s
-
-| Tool | Description |
-|:-----|:------------|
-| `stripe_create_payment_link` | Create Payment Link (one-click checkout) |
-| `stripe_list_payment_links` | List payment links |
-| `stripe_deactivate_payment_link` | Deactivate a payment link |
-| `stripe_create_customer` | Create Stripe customer |
-| `stripe_get_customer` | Get customer by ID or email |
-| `stripe_list_customers` | List customers |
-| `stripe_create_product` | Create product in catalog |
-| `stripe_list_products` | List products |
-| `stripe_create_price` | Create price for product |
-| `stripe_create_checkout_session` | Hosted checkout session |
-| `stripe_get_checkout_session` | Get session status |
-| `stripe_create_invoice` | Create invoice for customer |
-| `stripe_add_invoice_item` | Add line item to invoice |
-| `stripe_finalize_invoice` | Finalize draft invoice |
-| `stripe_send_invoice` | Send invoice to customer |
-| `stripe_create_payment_intent` | Custom payment flow |
-| `stripe_get_payment_intent` | Get payment intent status |
-| `stripe_create_refund` | Create full/partial refund |
-| `stripe_get_balance` | Get account balance |
-
-**Prérequis:** `STRIPE_SECRET_KEY` (Multi-tenant: `STRIPE_SECRET_KEY_<TENANT>`)
-
----
-
-### Export Tools (5) — Document Generation
-
-| Tool | Output | Description |
-|:-----|:-------|:------------|
-| `export_generate_csv` | `data/exports/*.csv` | CSV depuis tableau d'objets |
-| `export_generate_xlsx` | `data/exports/*.xlsx` | Excel avec formatage VocalIA |
-| `export_generate_pdf` | `data/exports/*.pdf` | PDF avec branding |
-| `export_generate_pdf_table` | `data/exports/*.pdf` | PDF avec tableau formaté |
-| `export_list_files` | — | Liste exports disponibles |
-
----
-
-### Email Tools (3)
-
-| Tool | Prérequis | Description |
-|:-----|:----------|:------------|
-| `email_send` | SMTP_* | Email SMTP libre |
-| `email_send_template` | SMTP_* | Templates: lead_confirmation, booking_confirmation, follow_up, invoice |
-| `email_verify_smtp` | SMTP_* | Vérification connexion SMTP |
-
----
-
-### Module Tools (181) — 29 modules externes
-
-| Module | Tools | API | Prérequis |
-|:-------|:-----:|:----|:----------|
-| Shopify | 8 | GraphQL Admin 2026-01 | SHOPIFY_ACCESS_TOKEN |
-| WooCommerce | 7 | REST v3 | WOOCOMMERCE_* |
-| Magento | 10 | REST v1 | MAGENTO_* |
-| Wix | 6 | REST | WIX_* |
-| Squarespace | 7 | REST v1/v2 | SQUARESPACE_* |
-| BigCommerce | 9 | REST v2/v3 | BIGCOMMERCE_* |
-| PrestaShop | 10 | Webservice | PRESTASHOP_* |
-| HubSpot | 7 | REST v3 | HUBSPOT_* |
-| Pipedrive | 7 | REST v1 | PIPEDRIVE_* |
-| Zoho CRM | 6 | REST v2 | ZOHO_* |
-| Freshdesk | 6 | REST v2 | FRESHDESK_* |
-| Zendesk | 6 | REST v2 | ZENDESK_* |
-| Calendly | 6 | REST v2 | CALENDLY_* |
-| Sheets | 5 | Google Sheets v4 | GOOGLE_* |
-| Drive | 6 | Google Drive v3 | GOOGLE_* |
-| Docs | 4 | Google Docs v1 | GOOGLE_* |
-| Gmail | 7 | Gmail v1 | GOOGLE_* |
-| Calendar | 2 | Google Calendar v3 | GOOGLE_* |
-| Slack | 1 | Web API | SLACK_* |
-| Stripe | 19 | API 2024-12-18 | STRIPE_* |
-| Klaviyo | 5 | REST v3 | KLAVIYO_* |
-| Twilio | 5 | REST | TWILIO_* |
-| Zapier | 3 | Webhooks/NLA | ZAPIER_* |
-| Make | 5 | API | MAKE_* |
-| n8n | 5 | API | N8N_* |
-| Recommendations | 3 | Internal ML | — |
-| UCP | 7 | File-based | — |
-| Export | 5 | Local | — |
-| Email | 3 | SMTP | SMTP_* |
-
----
-
-## Architecture Multi-Client (SaaS)
-
-### Identification du Tenant
-
-Le serveur MCP résout le client selon la priorité suivante :
-
-1. `args._meta.tenantId` (Injection Zod)
-2. `request.params._meta.tenantId` (JSON-RPC Raw)
-3. `x-tenant-id` Header (Transport HTTP)
-4. **Fallback**: `agency_internal`
-
-### Client Registry (`core/client-registry.cjs`)
-
-22 clients enregistrés, 553 dossiers test data. Source de vérité pour les configurations tenant.
-
----
-
-## Langues Supportées
-
-| Code | Langue | Support | Modèle |
-|:-----|:-------|:--------|:-------|
-| `fr` | Français | ✅ Full (default) | Grok/Gemini/Claude |
-| `en` | English | ✅ Full | Grok/Gemini/Claude |
-| `es` | Español | ✅ Full | Grok/Gemini/Claude |
-| `ar` | العربية (MSA) | ✅ Full | Grok/Gemini/Claude |
-| `ary` | Darija (Marocain) | ✅ Full | Atlas-Chat-9B |
-
----
-
-## Protocol Ecosystem
-
-### MCP vs A2A vs AG-UI vs A2UI vs AP2
-
-| Protocol | Standard | VocalIA | Fonction |
-|:---------|:---------|:-------:|:---------|
-| **MCP** | Model Context Protocol | ⚠️ 203 tools (2.5/10 compliance) | AI Agent → Tools |
-| **A2A** | Agent-to-Agent | ✅ coded | Agent → Agent (Agent Card + Task Lifecycle) |
-| **AG-UI** | Agent-User Interaction | ✅ coded | Agent → Frontend (17 events, SSE) |
-| **A2UI** | Agent-to-UI | ✅ coded | Agent → Interface dynamique |
-| **AP2** | Agent Payments | ❌ | Agent → Paiement |
-
----
-
-## SOTA Comparison — Audit Honnête (250.171b)
-
-### vs MCP Spec 2025-11-25
-
-| Requirement | Spec | VocalIA | Status | Phase Fix |
-|:------------|:-----|:--------|:------:|:---------:|
-| **registerTool()** | Current API | `server.tool()` (deprecated) | ❌ | Phase 1 |
-| **Tool descriptions** | Required for LLM | 0/203 tools | ❌ | Phase 1 |
-| **Tool annotations** | readOnly/destructive hints | 0/203 tools | ❌ | Phase 1 |
-| **outputSchema** | Structured output | 0/203 tools | ❌ | Phase 1 |
-| **isError flag** | Error signaling | 0 usages | ❌ | Phase 1 |
-| **Resources** | Application data | 0 resources | ❌ | Phase 2 |
-| **Prompts** | User templates | 0 prompts | ❌ | Phase 2 |
-| **Logging** | sendLoggingMessage() | 0 usages | ❌ | Phase 3 |
-| **Progress** | Long operations | 0 usages | ❌ | Phase 3 |
-| **Remote transport** | SSE/Streamable HTTP | stdio only | ❌ | Phase 4 |
-| **OAuth 2.1** | Remote auth | None | ❌ | Phase 4 |
-| **Zod validation** | Input validation | ✅ All inputs | ✅ | — |
-| **Error handling** | try/catch | ✅ All tools | ✅ | — |
-| **Multi-tenant** | Tenant isolation | ✅ Via _meta | ✅ | — |
-| **Content type** | text/image/resource | text only | ⚠️ | P3 |
-
-**Score: 3/15 (20%)** — Seuls validation, error handling et multi-tenant sont conformes.
-
-### vs Best Practices 2026
-
-| Practice | Standard | VocalIA | Status |
-|:---------|:---------|:--------|:------:|
-| Single Responsibility | 1 domaine par server | ✅ Voice AI | ✅ |
-| Tool descriptions | Human + LLM readable | ❌ 0/203 | ❌ |
-| Bounded toolsets | < 50 tools ideally | ⚠️ 203 tools (risque confusion LLM) | ⚠️ |
-| Published on registry | npm + MCP Registry | ❌ Non publié | ❌ |
-| README + examples | Install + usage | ⚠️ Partiel | ⚠️ |
-| CI/CD | Automated build+publish | ❌ Manuel | ❌ |
-| Monitoring | Logging/metrics | ❌ Aucun | ❌ |
-| Versioned | SemVer | ⚠️ Chaos (3 versions) | ⚠️ |
-
-**Score: 2/8 (25%)**
-
----
-
-## Roadmap vers SOTA 1.0.0
-
-| Phase | Feature | Effort | Dépendances | Status |
-|:------|:--------|:------:|:------------|:------:|
-| **0** | Fondations (version, counts, data) | 4h | — | ❌ TODO |
-| **1** | Migration registerTool() + descriptions + annotations | 8h | Phase 0 | ❌ TODO |
-| **2** | Resources (6) + Prompts (8) | 6h | Phase 1 | ❌ TODO |
-| **3** | Logging + Progress reporting | 3h | Phase 1 | ❌ TODO |
-| **4** | Transport HTTP + OAuth 2.1 + HTTPS | 12h | Phase 1 | ❌ TODO |
-| **5** | Publication npm + Registry + Docker + GitHub + HF | 8h | Phase 1 | ❌ TODO |
-| — | **TOTAL** | **~41h** | — | — |
-
-### Versions prévues
-
-| Version | Contenu | Score |
-|:--------|:--------|:-----:|
-| 0.8.0 | Initial audit | 2.5/10 |
-| 1.0.0-alpha | Phase 0+1 (descriptions, annotations, modern API) | 5.5/10 |
-| **1.0.0-beta** | **Phase 0+1+2 (+ Resources + Prompts) — CURRENT** | **7.5/10** |
-| 1.0.0-rc | Phase 3 (Logging + Progress) | 8.0/10 |
-| 1.0.0 | Phase 4 (HTTP transport + OAuth) | 9.0/10 |
-| **1.1.0** | Phase 5 (Published: npm + Registry + Docker) | **9.5/10** |
-
----
-
 ## Variables d'Environnement
+
+### MCP Server
+
+| Variable | Default | Description |
+|:---------|:--------|:------------|
+| `MCP_TRANSPORT` | `stdio` | Transport: `stdio` or `http` |
+| `MCP_PORT` | `3015` | HTTP server port |
+| `MCP_OAUTH` | `false` | Enable OAuth 2.1 (**WARNING: MC2**) |
+| `MCP_CORS_ORIGINS` | `*` | Comma-separated origins (**WARNING: MM5**) |
+| `MCP_RATE_LIMIT` | `100` | Requests per minute |
+
+### Service Dependencies
 
 | Variable | Service | Requis |
 |:---------|:--------|:------:|
@@ -960,57 +450,47 @@ Le serveur MCP résout le client selon la priorité suivante :
 
 ---
 
+## Installation
+
+### Quick Start
+
+```bash
+npx @vocalia/mcp-server          # stdio (default)
+npx @vocalia/mcp-server --http   # HTTP on :3015
+```
+
+### Configuration par plateforme
+
+Voir [README.md](../mcp-server/README.md) pour les configs Claude Desktop, Claude Code, VS Code, Cursor, Gemini CLI.
+
+### Docker
+
+```bash
+cd mcp-server
+docker build -t vocalia/mcp-server .
+docker run -p 3015:3015 -e MCP_TRANSPORT=http vocalia/mcp-server
+```
+
+---
+
 ## Développement
 
-### Mode Watch
-
 ```bash
-cd mcp-server && npm run dev
+cd mcp-server
+npm run build       # Build TypeScript
+npm run dev         # Watch mode
+npm start           # Run stdio
+npm run start:http  # Run HTTP :3015
+npm run inspector   # MCP Inspector debug
 ```
 
-### MCP Inspector (Debug)
+### Règles Critiques
 
-```bash
-cd mcp-server && npm run inspector
-```
-
-### Build & Test
-
-```bash
-cd mcp-server && npm run build
-node dist/index.js  # Vérifier startup
-```
-
----
-
-## Règles Critiques MCP
-
-1. **JAMAIS utiliser `console.log`** — Corrompt le transport JSON-RPC stdio
-2. Utiliser `console.error` pour tout logging debug
-3. Toujours retourner `{ content: [{ type: "text", text: "..." }] }`
-4. Les tools doivent être idempotents quand possible
-5. **Après Phase 1** : Toujours passer `description` et `annotations` à `registerTool()`
-6. **Après Phase 1** : Retourner `isError: true` pour les erreurs
-
----
-
-## Dépendances API
-
-```bash
-# Démarrer Voice API
-node core/voice-api-resilient.cjs --server
-
-# Démarrer Telephony (optionnel)
-node telephony/voice-telephony-bridge.cjs
-
-# Démarrer DB API (optionnel)
-node core/db-api.cjs
-
-# Vérifier
-curl http://localhost:3004/health
-curl http://localhost:3009/health
-curl http://localhost:3013/api/db/health
-```
+1. **JAMAIS `console.log`** — corrompt JSON-RPC stdio. Utiliser `console.error`.
+2. Toujours retourner `{ content: [{ type: "text", text: "..." }] }`
+3. Passer `description` et `annotations` à `registerTool()`
+4. Retourner `isError: true` pour les erreurs
+5. **SANITIZE all user inputs** (filename, tenantId, userId) avant path.join()
 
 ---
 
@@ -1018,21 +498,19 @@ curl http://localhost:3013/api/db/health
 
 - [MCP Specification](https://modelcontextprotocol.io)
 - [MCP Registry](https://registry.modelcontextprotocol.io/)
-- [MCP Registry GitHub](https://github.com/modelcontextprotocol/registry)
-- [Anthropic MCP Docs](https://docs.anthropic.com/en/docs/agents-and-tools/mcp)
 - [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
 - [OpenAI MCP Connectors](https://platform.openai.com/docs/guides/tools-connectors-mcp)
 - [VS Code MCP](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
 - [Gemini CLI MCP](https://geminicli.com/docs/tools/mcp-server/)
 - [n8n MCP Docs](https://docs.n8n.io/advanced-ai/accessing-n8n-mcp-server/)
-- [Lovable MCP](https://docs.lovable.dev/integrations/mcp-servers)
 - [VocalIA GitHub](https://github.com/Jouiet/VocalIA)
 
 ---
 
 *Documentation créée: 29/01/2026 - Session 227*
-*Audit MCP complet: 09/02/2026 - Session 250.171b (18 bugs, score 2.5/10)*
-*Plan actionnable: 5 phases, ~41h, target 9.5/10*
-*Plateformes cibles: 14 (5 Tier 1 stdio + 4 Tier 2 HTTP + 3 Tier 3 proxy + 2 Tier 4 builders)*
+*Phase 0+1+2+3: 09/02/2026 - Session 250.171c (203 tools migrated, 6 resources, 8 prompts, logging)*
+*Phase 4+5: 09/02/2026 - Session 250.172b (HTTP transport, OAuth 2.1, Dockerfile)*
+*Contre-audit: 09/02/2026 - Session 250.173b (18 findings, 14 confirmed, score 8.5→7.0)*
+*Phase 6 (security hardening): TODO — 12 bugs to fix*
 
 *Maintenu par: VocalIA Engineering*
