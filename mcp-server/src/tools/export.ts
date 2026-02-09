@@ -112,8 +112,8 @@ export const exportTools = {
                             status: "success",
                             message: "CSV generated successfully",
                             file: {
-                                path: outputPath,
-                                filename: `${filename}.csv`,
+                                path: `data/exports/${safeFilename}.csv`,
+                                filename: `${safeFilename}.csv`,
                                 rows: data.length,
                                 columns: csvHeaders.length,
                                 size_bytes: fs.statSync(outputPath).size
@@ -195,10 +195,15 @@ export const exportTools = {
                     worksheet.addRow(row);
                 });
 
-                // Auto-filter
+                // Auto-filter (supports >26 columns: A..Z, AA..AZ, etc.)
+                function colLetter(n: number): string {
+                    let s = '';
+                    while (n > 0) { n--; s = String.fromCharCode(65 + (n % 26)) + s; n = Math.floor(n / 26); }
+                    return s;
+                }
                 worksheet.autoFilter = {
                     from: 'A1',
-                    to: `${String.fromCharCode(64 + xlsxHeaders.length)}1`
+                    to: `${colLetter(xlsxHeaders.length)}1`
                 };
 
                 const safeFilename = sanitizeFilename(filename);
@@ -213,8 +218,8 @@ export const exportTools = {
                             status: "success",
                             message: "Excel file generated successfully",
                             file: {
-                                path: outputPath,
-                                filename: `${filename}.xlsx`,
+                                path: `data/exports/${safeFilename}.xlsx`,
+                                filename: `${safeFilename}.xlsx`,
                                 rows: data.length,
                                 columns: xlsxHeaders.length,
                                 sheet: sheetName,
@@ -334,8 +339,8 @@ export const exportTools = {
                                     status: "success",
                                     message: "PDF generated successfully",
                                     file: {
-                                        path: outputPath,
-                                        filename: `${filename}.pdf`,
+                                        path: `data/exports/${safeFilename}.pdf`,
+                                        filename: `${safeFilename}.pdf`,
                                         title: title || '(untitled)',
                                         pages: pageCount,
                                         size_bytes: fs.statSync(outputPath).size
@@ -501,13 +506,25 @@ export const exportTools = {
                                     status: "success",
                                     message: "PDF table generated successfully",
                                     file: {
-                                        path: outputPath,
-                                        filename: `${filename}.pdf`,
+                                        path: `data/exports/${safeFilename}.pdf`,
+                                        filename: `${safeFilename}.pdf`,
                                         title,
                                         rows: data.length,
                                         columns: tableHeaders.length,
                                         size_bytes: fs.statSync(outputPath).size
                                     }
+                                }, null, 2)
+                            }]
+                        });
+                    });
+
+                    writeStream.on('error', (err) => {
+                        resolve({
+                            content: [{
+                                type: "text" as const,
+                                text: JSON.stringify({
+                                    status: "error",
+                                    message: err.message
                                 }, null, 2)
                             }]
                         });
@@ -536,16 +553,16 @@ export const exportTools = {
             try {
                 ensureExportDir();
 
-                const files = fs.readdirSync(EXPORT_DIR).map(filename => {
-                    const filePath = path.join(EXPORT_DIR, filename);
+                const files = fs.readdirSync(EXPORT_DIR).map(fname => {
+                    const filePath = path.join(EXPORT_DIR, fname);
                     const stats = fs.statSync(filePath);
                     return {
-                        filename,
-                        path: filePath,
+                        filename: fname,
+                        path: `data/exports/${fname}`,
                         size_bytes: stats.size,
                         created: stats.birthtime,
                         modified: stats.mtime,
-                        type: path.extname(filename).substring(1).toUpperCase()
+                        type: path.extname(fname).substring(1).toUpperCase()
                     };
                 });
 
@@ -554,7 +571,7 @@ export const exportTools = {
                         type: "text" as const,
                         text: JSON.stringify({
                             status: "success",
-                            export_directory: EXPORT_DIR,
+                            export_directory: "data/exports/",
                             file_count: files.length,
                             files
                         }, null, 2)

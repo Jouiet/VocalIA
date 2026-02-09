@@ -214,7 +214,7 @@ export const ucpTools = {
 
             // Filter profiles by tenant
             const tenantProfiles = Object.entries(storage.profiles)
-                .filter(([k]) => k.startsWith(`${tenant.id}:`))
+                .filter(([k]) => k.startsWith(`${tenant.id}::`))
                 .map(([, profile]) => profile);
 
             return {

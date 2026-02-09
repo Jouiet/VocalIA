@@ -946,7 +946,7 @@ server.registerTool(
           features: {
             inbound_calls: "Twilio webhook → Grok WebSocket",
             outbound_calls: "API trigger → PSTN call",
-            function_tools: 11,
+            function_tools: 25,
             languages: ["fr", "en", "es", "ar", "ary"],
           },
           requirements: ["TWILIO_ACCOUNT_SID", "TWILIO_AUTH_TOKEN", "XAI_API_KEY"],
@@ -1224,7 +1224,7 @@ server.registerTool(
         text: JSON.stringify({
           action: "schedule_callback",
           booking_id: bookingId,
-          saved_to: BOOKING_QUEUE_PATH,
+          saved_to: "data/booking-queue.json",
           data: {
             email,
             phone,
@@ -1275,7 +1275,7 @@ server.registerTool(
         text: JSON.stringify({
           action: "create_booking",
           booking_id: bookingId,
-          saved_to: BOOKING_QUEUE_PATH,
+          saved_to: "data/booking-queue.json",
           data: {
             name,
             email,
@@ -1384,6 +1384,62 @@ server.registerTool(
             requires_pipedrive: [
               "pipedrive_list_deals", "pipedrive_create_deal", "pipedrive_update_deal",
               "pipedrive_list_persons", "pipedrive_create_person", "pipedrive_search", "pipedrive_list_activities"
+            ],
+            requires_zendesk: [
+              "zendesk_list_tickets", "zendesk_get_ticket", "zendesk_create_ticket",
+              "zendesk_add_comment", "zendesk_update_ticket", "zendesk_search_users"
+            ],
+            requires_woocommerce: [
+              "woocommerce_list_orders", "woocommerce_get_order", "woocommerce_update_order",
+              "woocommerce_list_products", "woocommerce_get_product", "woocommerce_list_customers", "woocommerce_get_customer"
+            ],
+            requires_zoho: [
+              "zoho_list_leads", "zoho_get_lead", "zoho_create_lead",
+              "zoho_list_contacts", "zoho_list_deals", "zoho_search_records"
+            ],
+            requires_magento: [
+              "magento_list_orders", "magento_get_order", "magento_list_products", "magento_get_product",
+              "magento_get_stock", "magento_list_customers", "magento_cancel_order", "magento_create_refund",
+              "magento_hold_order", "magento_unhold_order"
+            ],
+            requires_wix: [
+              "wix_list_orders", "wix_get_order", "wix_list_products",
+              "wix_get_product", "wix_get_inventory", "wix_update_inventory"
+            ],
+            requires_squarespace: [
+              "squarespace_list_orders", "squarespace_get_order", "squarespace_fulfill_order",
+              "squarespace_list_products", "squarespace_get_product", "squarespace_list_inventory", "squarespace_update_inventory"
+            ],
+            requires_bigcommerce: [
+              "bigcommerce_list_orders", "bigcommerce_get_order", "bigcommerce_update_order_status",
+              "bigcommerce_list_products", "bigcommerce_get_product", "bigcommerce_list_customers",
+              "bigcommerce_get_customer", "bigcommerce_cancel_order", "bigcommerce_refund_order"
+            ],
+            requires_prestashop: [
+              "prestashop_list_orders", "prestashop_get_order", "prestashop_list_products", "prestashop_get_product",
+              "prestashop_get_stock", "prestashop_list_customers", "prestashop_get_customer",
+              "prestashop_update_order_status", "prestashop_cancel_order", "prestashop_refund_order"
+            ],
+            requires_stripe: [
+              "stripe_create_payment_link", "stripe_list_payment_links", "stripe_deactivate_payment_link",
+              "stripe_create_customer", "stripe_get_customer", "stripe_list_customers",
+              "stripe_create_product", "stripe_list_products", "stripe_create_price",
+              "stripe_create_checkout_session", "stripe_get_checkout_session",
+              "stripe_create_invoice", "stripe_add_invoice_item", "stripe_finalize_invoice", "stripe_send_invoice",
+              "stripe_create_payment_intent", "stripe_get_payment_intent", "stripe_create_refund", "stripe_get_balance"
+            ],
+            requires_smtp: ["email_send", "email_send_template", "email_verify_smtp"],
+            requires_gmail: [
+              "gmail_send", "gmail_list", "gmail_get", "gmail_search",
+              "gmail_draft", "gmail_labels", "gmail_modify_labels"
+            ],
+            requires_zapier: ["zapier_trigger_webhook", "zapier_trigger_nla", "zapier_list_actions"],
+            requires_make: ["make_trigger_webhook", "make_list_scenarios", "make_get_scenario", "make_run_scenario", "make_list_executions"],
+            requires_n8n: ["n8n_trigger_webhook", "n8n_list_workflows", "n8n_get_workflow", "n8n_activate_workflow", "n8n_list_executions"],
+            local: [
+              "export_generate_csv", "export_generate_xlsx", "export_generate_pdf", "export_generate_pdf_table", "export_list_files",
+              "recommendation_get_similar", "recommendation_get_frequently_bought_together", "recommendation_get_personalized", "recommendation_learn_from_orders",
+              "ucp_sync_preference", "ucp_get_profile", "ucp_list_profiles", "ucp_record_interaction", "ucp_track_event", "ucp_get_insights", "ucp_update_ltv"
             ],
           },
         }, null, 2),
@@ -2449,7 +2505,6 @@ async function startHttp() {
   });
 
   // --- Rate limiting ---
-  let requestCount = 0;
   const RATE_LIMIT = parseInt(process.env.MCP_RATE_LIMIT || "100", 10); // per minute
   const rateLimitWindow: number[] = [];
 
@@ -2463,7 +2518,6 @@ async function startHttp() {
       return;
     }
     rateLimitWindow.push(now);
-    requestCount++;
     next();
   });
 
@@ -2558,6 +2612,7 @@ async function startHttp() {
       res.status(400).send("Invalid or missing session ID");
       return;
     }
+    transports[sessionId].lastActivity = Date.now();
     await transports[sessionId].transport.handleRequest(req, res);
   };
 

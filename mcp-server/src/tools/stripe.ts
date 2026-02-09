@@ -9,7 +9,7 @@
  * - Checkout Sessions
  *
  * Rate Limits: 100 read/s, 100 write/s (standard)
- * API Version: 2024-12-18.acacia
+ * API Version: 2026-01-28.clover
  */
 
 import { z } from 'zod';

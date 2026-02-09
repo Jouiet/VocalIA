@@ -113,8 +113,12 @@ describe('WEBHOOK_PROVIDERS signature verification', () => {
     assert.strictEqual(WEBHOOK_PROVIDERS.stripe.verifySignature('payload', 'invalid', 'secret'), false);
   });
 
-  test('klaviyo verifySignature always returns true (simplified)', () => {
-    assert.strictEqual(WEBHOOK_PROVIDERS.klaviyo.verifySignature('any', 'any', 'any'), true);
+  test('klaviyo verifySignature validates HMAC-SHA256', () => {
+    const secret = 'test-secret';
+    const payload = '{"event":"test"}';
+    const validSig = crypto.createHmac('sha256', secret).update(payload, 'utf8').digest('base64');
+    assert.strictEqual(WEBHOOK_PROVIDERS.klaviyo.verifySignature(payload, validSig, secret), true);
+    assert.strictEqual(WEBHOOK_PROVIDERS.klaviyo.verifySignature(payload, 'wrong-sig', secret), false);
   });
 
   test('google verifySignature always returns true (simplified)', () => {

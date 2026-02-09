@@ -14,9 +14,16 @@ const https = require('https');
 
 // Cache connectors per tenant to avoid reconnection overhead
 const connectors = new Map();
+const MAX_CONNECTORS = 50;
 
 async function getConnector(tenantId) {
   if (connectors.has(tenantId)) return connectors.get(tenantId);
+
+  // Evict oldest if cache full
+  if (connectors.size >= MAX_CONNECTORS) {
+    const oldestKey = connectors.keys().next().value;
+    connectors.delete(oldestKey);
+  }
 
   try {
     const connector = CatalogConnectorFactory.create(tenantId, {

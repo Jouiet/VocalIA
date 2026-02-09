@@ -34,6 +34,7 @@ class ErrorScience {
         this.logFile = path.join(this.logDir, 'marketing_events.jsonl');
         this.learnedRulesFile = path.join(this.logDir, 'learned_rules.json');
         this.metricsFile = path.join(this.logDir, 'error_metrics.json');
+        this.errorBuffer = [];
     }
 
     /**

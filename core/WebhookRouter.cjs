@@ -26,31 +26,42 @@ const WEBHOOK_PROVIDERS = {
     signatureHeader: 'X-HubSpot-Signature',
     signatureVersion: 'v3',
     verifySignature: (payload, signature, secret) => {
-      // HubSpot v3 signature
+      // HubSpot v3 signature — timing-safe comparison
       const hash = crypto
         .createHmac('sha256', secret)
         .update(payload)
         .digest('hex');
-      return hash === signature;
+      try {
+        return crypto.timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(signature, 'hex'));
+      } catch { return false; }
     }
   },
   shopify: {
     name: 'Shopify',
     signatureHeader: 'X-Shopify-Hmac-Sha256',
     verifySignature: (payload, signature, secret) => {
+      // Shopify HMAC — timing-safe comparison
       const hash = crypto
         .createHmac('sha256', secret)
         .update(payload, 'utf8')
         .digest('base64');
-      return hash === signature;
+      try {
+        return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(signature));
+      } catch { return false; }
     }
   },
   klaviyo: {
     name: 'Klaviyo',
-    signatureHeader: 'X-Klaviyo-Signature',
+    signatureHeader: 'X-Klaviyo-Webhook-Signature',
     verifySignature: (payload, signature, secret) => {
-      // Klaviyo uses simple API key verification in headers
-      return true; // Simplified - implement actual verification
+      // Klaviyo HMAC-SHA256 webhook signature verification
+      const hash = crypto
+        .createHmac('sha256', secret)
+        .update(payload, 'utf8')
+        .digest('base64');
+      try {
+        return crypto.timingSafeEqual(Buffer.from(hash), Buffer.from(signature));
+      } catch { return false; }
     }
   },
   stripe: {
@@ -73,7 +84,9 @@ const WEBHOOK_PROVIDERS = {
         .update(signedPayload)
         .digest('hex');
 
-      return expectedSig === sig;
+      try {
+        return crypto.timingSafeEqual(Buffer.from(expectedSig, 'hex'), Buffer.from(sig, 'hex'));
+      } catch { return false; }
     }
   },
   google: {

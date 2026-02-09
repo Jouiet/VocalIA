@@ -217,7 +217,7 @@ class BillingAgent {
                 await eventBus.publish('payment.initiated', {
                     transactionId: invoice.id,
                     amount: price / 100,
-                    currency: this.currency,
+                    currency: currency,
                     customerId: customer.id,
                     email: identity.email,
                     state: BILLING_STATES.INVOICE_DRAFTED
@@ -306,7 +306,7 @@ class BillingAgent {
      */
     async handleInvoicePaidWebhook(rawBody, signature, attribution = {}) {
         // SOTA: Verify webhook signature first
-        const verification = this.gateway.verifyWebhookSignature(rawBody, signature);
+        const verification = this.stripe.verifyWebhookSignature(rawBody, signature);
         if (!verification.valid) {
             console.error(`[BillingAgent] ❌ Webhook signature invalid: ${verification.error}`);
             return { success: false, error: 'invalid_signature' };

@@ -484,31 +484,8 @@ const eventBus = new AgencyEventBus();
 
 // Pre-register standard Agent Ops integrations
 const registerAgentOpsIntegrations = () => {
-    // Integration with ContextBox (lazy load to avoid circular dependency)
-    try {
-        eventBus.subscribe('lead.qualified', async (event) => {
-            const ContextBox = require('./ContextBox.cjs');
-            ContextBox.set(event.payload.sessionId, {
-                pillars: {
-                    qualification: {
-                        score: event.payload.score,
-                        status: event.payload.status,
-                        qualifiedAt: event.metadata.timestamp
-                    }
-                }
-            });
-        }, { name: 'ContextBox.leadQualified' });
-
-        eventBus.subscribe('voice.session_end', async (event) => {
-            const ContextBox = require('./ContextBox.cjs');
-            ContextBox.logEvent(event.payload.sessionId, 'VoiceAI', 'session_end', {
-                duration: event.payload.duration,
-                outcome: event.payload.outcome
-            });
-        }, { name: 'ContextBox.voiceSessionEnd' });
-    } catch (e) {
-        console.log('[EventBus] ContextBox integration skipped:', e.message);
-    }
+    // NOTE: ContextBox owns its own lead.qualified + voice.session_end subscriptions
+    // via ContextBox.initEventSubscriptions() — no duplicate registration here.
 
     // Integration with BillingAgent (lazy load to avoid circular dependency)
     try {
