@@ -1,0 +1,71 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/model-context-protocol/refs/heads/main/schema/server.json",
+  "name": "vocalia",
+  "version": "1.0.0",
+  "description": "VocalIA Voice AI Platform — 203 tools, 6 resources, 8 prompts for voice assistants, lead qualification, multi-platform e-commerce, CRM, billing, and telephony.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jouiet/VoicalAI.git"
+  },
+  "homepage": "https://vocalia.ma",
+  "author": {
+    "name": "VocalIA",
+    "email": "dev@vocalia.ma",
+    "url": "https://vocalia.ma"
+  },
+  "license": "MIT",
+  "runtime": "node",
+  "transport": ["stdio"],
+  "commands": {
+    "stdio": {
+      "command": "npx",
+      "args": ["-y", "@vocalia/mcp-server"]
+    }
+  },
+  "capabilities": {
+    "tools": true,
+    "resources": true,
+    "prompts": true
+  },
+  "tools_count": 203,
+  "resources_count": 6,
+  "prompts_count": 8,
+  "categories": [
+    "voice-ai",
+    "telephony",
+    "e-commerce",
+    "crm",
+    "lead-qualification",
+    "booking",
+    "billing",
+    "export",
+    "email",
+    "ipaas"
+  ],
+  "platforms": {
+    "shopify": true,
+    "woocommerce": true,
+    "magento": true,
+    "wix": true,
+    "squarespace": true,
+    "bigcommerce": true,
+    "prestashop": true,
+    "hubspot": true,
+    "klaviyo": true,
+    "stripe": true,
+    "twilio": true,
+    "google_workspace": true,
+    "calendly": true,
+    "freshdesk": true,
+    "zendesk": true,
+    "pipedrive": true,
+    "zapier": true,
+    "make": true,
+    "n8n": true
+  },
+  "languages": ["fr", "en", "es", "ar", "ary"],
+  "personas": 38,
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -124,6 +124,43 @@ const UPDATE_OP: ToolAnnotations = { readOnlyHint: false, destructiveHint: false
 const DELETE_OP: ToolAnnotations = { readOnlyHint: false, destructiveHint: true, idempotentHint: true };
 const GENERATE_OP: ToolAnnotations = { readOnlyHint: false, destructiveHint: false, idempotentHint: true };
 
+// =============================================================================
+// LOGGING HELPERS — Phase 3: Structured logging via MCP protocol
+// =============================================================================
+
+type LogLevel = "debug" | "info" | "notice" | "warning" | "error" | "critical" | "alert" | "emergency";
+
+/**
+ * Send a structured log message to connected MCP clients.
+ * Safe to call even when no client is connected (silently ignored).
+ */
+function log(level: LogLevel, data: unknown, logger?: string) {
+  try {
+    server.sendLoggingMessage({ level, logger: logger || "vocalia", data });
+  } catch {
+    // Silently ignore if not connected — logging must never break the server
+  }
+}
+
+/**
+ * Wrap an inline tool handler with automatic logging (start/complete/error).
+ * Used for registerTool() handlers. registerModuleTool() has its own wrapper.
+ */
+function withLogging<T extends (...args: any[]) => any>(name: string, handler: T): T {
+  return (async (...args: any[]) => {
+    const start = Date.now();
+    log("info", `[tool:${name}] started`, "tools");
+    try {
+      const result = await handler(...args);
+      log("info", `[tool:${name}] completed in ${Date.now() - start}ms`, "tools");
+      return result;
+    } catch (error) {
+      log("error", `[tool:${name}] failed after ${Date.now() - start}ms: ${(error as Error).message}`, "tools");
+      throw error;
+    }
+  }) as unknown as T;
+}
+
 /**
  * Helper to infer annotations from tool name patterns.
  */
@@ -144,19 +181,7 @@ function registerModuleTool(
   toolDef: { name: string; description?: string; parameters: any; handler: any },
   annotationsOverride?: ToolAnnotations
 ) {
-  const originalHandler = toolDef.handler;
-  const wrappedHandler = async (...args: any[]) => {
-    const start = Date.now();
-    try {
-      server.sendLoggingMessage({ level: "info", data: `[tool:${toolDef.name}] started` });
-      const result = await originalHandler(...args);
-      server.sendLoggingMessage({ level: "info", data: `[tool:${toolDef.name}] completed in ${Date.now() - start}ms` });
-      return result;
-    } catch (error) {
-      server.sendLoggingMessage({ level: "error", data: `[tool:${toolDef.name}] failed after ${Date.now() - start}ms: ${(error as Error).message}` });
-      throw error;
-    }
-  };
+  const wrappedHandler = withLogging(toolDef.name, toolDef.handler);
 
   server.registerTool(toolDef.name, {
     description: toolDef.description || `VocalIA tool: ${toolDef.name}`,
@@ -364,7 +389,7 @@ server.registerTool(
     inputSchema: {},
     annotations: GENERATE_OP,
   },
-  async () => {
+  withLogging("translation_qa_check", async () => {
     try {
       const scriptPath = path.join(process.cwd(), "scripts", "translation-quality-check.py");
       const { stdout, stderr } = await execAsync(`python3 "${scriptPath}"`);
@@ -383,7 +408,7 @@ server.registerTool(
         isError: true,
       };
     }
-  }
+  })
 );
 
 
@@ -404,7 +429,7 @@ server.registerTool(
     },
     annotations: GENERATE_OP,
   },
-  async ({ message, language = "fr", sessionId, personaKey }) => {
+  withLogging("voice_generate_response", async ({ message, language = "fr", sessionId, personaKey }) => {
     try {
       const response = await fetch(`${VOCALIA_API_URL}/respond`, {
         method: "POST",
@@ -449,7 +474,7 @@ server.registerTool(
         isError: true,
       };
     }
-  }
+  })
 );
 
 // Tool 2: voice_providers_status - Check AI providers availability
@@ -821,7 +846,7 @@ server.registerTool(
     },
     annotations: CREATE_OP,
   },
-  async ({ to, personaKey, language = "fr", context }) => {
+  withLogging("telephony_initiate_call", async ({ to, personaKey, language = "fr", context }) => {
     try {
       const response = await fetch(`${VOCALIA_TELEPHONY_URL}/twilio/outbound-trigger`, {
         method: "POST",

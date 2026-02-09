@@ -3,7 +3,7 @@
 > Model Context Protocol (MCP) server exposant les capacités VocalIA Voice AI Platform.
 > Version: 1.0.0 | 09/02/2026 | Session 250.171c | **203 tools** (22 inline + 181 modules) | **32 .ts files** | **19,173 lines**
 >
-> **MCP Compliance Score: 7.5/10** — Phase 0+1+2 DONE (250.171c): 203 tools + 6 resources + 8 prompts, all 3 MCP primitives
+> **MCP Compliance Score: 8.0/10** — Phase 0+1+2+3 DONE (250.171c): 203 tools + 6 resources + 8 prompts, all 3 MCP primitives + auto-logging
 >
 > **Status**: Code exists. **0 tools connected to real external APIs.** All tools require per-tenant API key configuration.
 > **Transport**: stdio uniquement (local) — **PAS de transport remote (HTTP/SSE)** → incompatible ChatGPT/Gemini SDK/remote
@@ -31,9 +31,9 @@ MCP définit **3 primitives serveur** (spec 2025-11-25) :
 
 | Primitive | Contrôle | Description | VocalIA |
 |:----------|:---------|:------------|:-------:|
-| **Tools** | Model-controlled | Fonctions que le LLM peut invoquer | ⚠️ 203 (deprecated API, 0 descriptions) |
-| **Resources** | Application-controlled | Données contextuelles (fichiers, configs) | ❌ ZERO |
-| **Prompts** | User-controlled | Templates de prompts réutilisables | ❌ ZERO |
+| **Tools** | Model-controlled | Fonctions que le LLM peut invoquer | ✅ 203 (modern registerTool, descriptions+annotations on ALL) |
+| **Resources** | Application-controlled | Données contextuelles (fichiers, configs) | ✅ 6 (5 static + 1 template) |
+| **Prompts** | User-controlled | Templates de prompts réutilisables | ✅ 8 (with argsSchema) |
 
 **Sources:** [MCP Spec](https://modelcontextprotocol.io/docs/learn/server-concepts) | [Anthropic Announcement](https://www.anthropic.com/news/model-context-protocol)
 
@@ -41,7 +41,7 @@ MCP définit **3 primitives serveur** (spec 2025-11-25) :
 
 ## MCP Compliance Audit — 250.171b (18 bugs)
 
-### Score: 7.5/10 (was 2.5→5.5→7.5 — Phase 0+1+2 completed 250.171c)
+### Score: 8.0/10 (was 2.5→5.5→7.5→8.0 — Phase 0+1+2+3 completed 250.171c)
 
 | Catégorie | Score | Détail |
 |:----------|:-----:|:-------|
