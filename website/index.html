@@ -372,7 +372,7 @@
               <div class="text-4xl font-bold font-mono text-vocalia-400 mb-1">
                 <span data-counter="5" data-counter-suffix="" data-counter-decimals="0">5</span>
               </div>
-              <div class="text-xs uppercase tracking-widest text-zinc-500 font-mono" data-i18n="stats.uptime">Niveaux AI
+              <div class="text-xs uppercase tracking-widest text-zinc-500 font-mono" data-i18n="stats.ai_levels">Niveaux IA
               </div>
             </div>
           </div>
@@ -410,7 +410,7 @@
                 <i data-lucide="globe" class="w-6 h-6 text-indigo-400"></i>
               </div>
               <div class="flex items-baseline gap-1">
-                <span class="text-2xl font-bold font-mono text-white">49</span>
+                <span class="text-2xl font-bold font-mono text-white" data-price-key="starter">49</span>
                 <span class="text-zinc-400 text-sm" data-currency-symbol>$</span>
               </div>
             </div>
@@ -477,7 +477,7 @@
                 <i data-lucide="phone" class="w-6 h-6 text-indigo-300"></i>
               </div>
               <div class="flex items-baseline gap-1">
-                <span id="telephonyPrice" class="text-2xl font-bold font-mono text-white">0.06</span>
+                <span id="telephonyPrice" class="text-2xl font-bold font-mono text-white" data-price-key="overage">0.10</span>
                 <span class="text-zinc-400 text-sm" data-currency-symbol>$</span>
                 <span class="text-zinc-500 text-xs ml-1" data-i18n="per_min">/min</span>
               </div>
@@ -1123,12 +1123,20 @@
         }
       }
 
-      // Update symbols based on detected currency
+      // Update symbols and prices based on detected currency
       function updateCurrencyUI() {
         if (typeof VocaliaI18n === 'undefined') return;
         const info = VocaliaI18n.getCurrencyInfo();
+        // Update currency symbols
         document.querySelectorAll('[data-currency-symbol]').forEach(el => {
           el.textContent = info.symbol;
+        });
+        // Update price values from pricing table
+        var prices = { MAD: { starter: 490, pro: 990, ecom: 990, telephony: 1990, overage: 1.00 }, EUR: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 }, USD: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 } };
+        var currencyPrices = prices[info.currency] || prices.EUR;
+        document.querySelectorAll('[data-price-key]').forEach(el => {
+          var key = el.getAttribute('data-price-key');
+          if (currencyPrices[key] !== undefined) el.textContent = currencyPrices[key];
         });
       }
 
