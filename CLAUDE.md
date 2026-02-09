@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,804 tests (68 .mjs, 0 skip)
+> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,803 tests (68 .mjs, 0 skip)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -10,16 +10,24 @@ core/ (55 modules, 36.1k) | telephony/ (4.8k) | personas/ (8.8k) | widget/ (10.6
 mcp-server/src/ (19.5k, 32 .ts) | lib/ (923) | sensors/ (822) | integrations/ (2.2k)
 clients/ = 553 dirs (ALL test data) | website/ = 80 pages + locales (26.2k)
 
-## Services
+## Services (8 HTTP servers)
+
+**Deployed (4 Docker containers via Traefik):**
 
 | Service | Port | Script |
 |:--------|:----:|:-------|
 | Voice API | 3004 | `core/voice-api-resilient.cjs` |
 | Grok Realtime | 3007 | `core/grok-voice-realtime.cjs` |
 | Telephony | 3009 | `telephony/voice-telephony-bridge.cjs` |
+| DB API | 3013 | `core/db-api.cjs` |
+
+**Non-deployed (standalone, code exists):**
+
+| Service | Port | Script |
+|:--------|:----:|:-------|
 | OAuth Gateway | 3010 | `core/OAuthGateway.cjs` |
 | Webhook Router | 3011 | `core/WebhookRouter.cjs` |
-| DB API | 3013 | `core/db-api.cjs` |
+| Remotion HITL | 3012 | `core/remotion-hitl.cjs` (hybrid: library + optional server) |
 | MCP Server (HTTP) | 3015 | `mcp-server/dist/index.js --http` |
 
 ## Commands

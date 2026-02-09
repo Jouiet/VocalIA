@@ -1,16 +1,16 @@
 # VocalIA - Voice AI Platform
 
-> **Domain:** https://vocalia.ma | **Version:** 2.7.0 | **Session:** 250.170
+> **Domain:** https://vocalia.ma | **Version:** 2.7.0 | **Session:** 250.177
 > **🌐 PRODUCTION LIVE** | HTTP/2 ✅ | HSTS preload ✅ | Security 100/100 ✅
-> **MÉTRIQUES VÉRIFIÉ 09/02/2026:** ~83k lignes | 80 pages | 203 MCP tools | 38 Personas | 25 Function Tools
+> **MÉTRIQUES VÉRIFIÉ 09/02/2026:** ~84k lignes | 80 pages | 203 MCP tools | 38 Personas | 25 Function Tools | 7 Widgets
 
 ## Overview
 
 VocalIA is a comprehensive Voice AI SaaS platform combining:
 
-- **Voice Widget** - Browser-based (Web Speech API, $0 cost) - 7 widgets, 9,671 lines
-- **Voice Telephony AI** - PSTN integration (Twilio + Grok WebSocket) - 4,709 lines, 25 function tools
-- **SaaS Webapp** - Multi-tenant dashboards (Auth, HITL, Analytics) - 76 pages
+- **Voice Widget** - Browser-based (Web Speech API, $0 cost) - 7 widgets, 10,598 lines
+- **Voice Telephony AI** - PSTN integration (Twilio + Grok WebSocket) - ~4,800 lines, 25 function tools
+- **SaaS Webapp** - Multi-tenant dashboards (Auth, HITL, Analytics) - 80 pages
 
 ## Architecture
 
@@ -24,21 +24,21 @@ VocalIA is a comprehensive Voice AI SaaS platform combining:
 │  │   (Browser)         │    │   (PSTN)                    │    │
 │  │                     │    │                             │    │
 │  │  • Web Speech API   │    │  • Twilio Integration       │    │
-│  │  • 8 E-commerce     │    │  • Grok WebSocket           │    │
-│  │    widgets          │    │  • 25 Function Tools        │    │
-│  │  • 9,107 lines      │    │  • 4,709 lines             │    │
+│  │  • 7 widgets        │    │  • Grok WebSocket           │    │
+│  │    (Shadow DOM)     │    │  • 25 Function Tools        │    │
+│  │  • 10,598 lines     │    │  • ~4,800 lines            │    │
 │  └─────────────────────┘    └─────────────────────────────┘    │
 │                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │                   SHARED COMPONENTS                      │   │
 │  ├─────────────────────────────────────────────────────────┤   │
-│  │  • 40 Multi-Tenant Personas (5,995 lines)               │   │
+│  │  • 38 Multi-Tenant Personas (8,800 lines)               │   │
 │  │  • 5 Languages (FR, EN, ES, AR, ARY/Darija)            │   │
 │  │  • 27 ElevenLabs Voices (Males + Females)              │   │
 │  │  • Marketing Science (BANT, PAS, CIALDINI, AIDA)       │   │
 │  │  • 31 Native Integrations (CRM, E-commerce, Calendar)  │   │
 │  │  • Multi-AI Fallback (Grok→Gemini→Claude→Atlas)        │   │
-│  │  • 203 MCP Tools | 306 Unit Tests | 375 E2E Tests     │   │
+│  │  • 203 MCP Tools | 3,803 Tests | 68 Test Files        │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -75,43 +75,45 @@ node core/db-api.cjs
 node scripts/health-check.cjs
 ```
 
-## Directory Structure (VÉRIFIÉ wc -l 05/02/2026)
+## Directory Structure (VÉRIFIÉ 09/02/2026)
 
 ```
-VocalIA/                          # ~140,000 lignes total
-├── core/                    # 38 modules (32,727 lignes)
-│   ├── voice-api-resilient.cjs   (3,018)
-│   ├── db-api.cjs                (2,721)
-│   ├── catalog-connector.cjs     (2,287)
-│   ├── voice-crm-tools.cjs       (351) ← Session 250.94
-│   └── voice-ecommerce-tools.cjs (389) ← Session 250.94
-├── widget/                  # 8 fichiers (9,107 lignes)
-│   ├── voice-widget-v3.js        (3,135)
-│   ├── abandoned-cart-recovery.js (1,416)
-│   └── [+6 widgets]
-├── telephony/               # 1 fichier (4,709 lignes)
+VocalIA/                          # ~84,000 lignes source
+├── core/                    # 55 modules (~36,000 lignes)
+│   ├── voice-api-resilient.cjs   (~3,500)
+│   ├── db-api.cjs                (~3,100)
+│   ├── OAuthGateway.cjs          (~400)   ← port 3010
+│   ├── WebhookRouter.cjs         (~350)   ← port 3011
+│   ├── remotion-hitl.cjs         (645)    ← port 3012 (hybrid)
+│   └── [+50 modules]
+├── widget/                  # 7 fichiers (10,598 lignes)
+│   ├── voice-widget-b2b.js       (1,573)  ← 49 pages
+│   ├── voice-widget-v3.js        (3,684)  ← e-commerce.html
+│   └── [+5 ECOM sub-widgets]
+├── telephony/               # 1 fichier (~4,800 lignes)
 │   └── voice-telephony-bridge.cjs (25 function tools)
-├── personas/                # 2 fichiers (5,995 lignes)
-│   └── voice-persona-injector.cjs (38 personas)
+├── personas/                # 3 fichiers (8,800 lignes)
+│   └── voice-persona-injector.cjs (38 personas × 5 langs)
 ├── integrations/            # 7 fichiers (2,234 lignes)
 ├── sensors/                 # 4 fichiers (822 lignes)
-├── mcp-server/              # TypeScript (17,630 lignes, 203 tools)
-├── website/                 # 76 pages HTML
-│   └── src/locales/         # 5 langues (23,790 lignes)
+├── mcp-server/              # TypeScript (~19,500 lignes, 203 tools)
+├── distribution/            # 5 platforms (npm, shopify, wordpress, wix, zapier)
+├── website/                 # 80 pages HTML
+│   └── src/locales/         # 5 langues (~26,000 lignes)
 └── docs/                    # Documentation
 ```
 
 ## Features
 
-### Voice Widget (Browser) - 7 widgets, 9,671 lines
+### Voice Widget (Browser) - 7 widgets, 10,598 lines — ALL Shadow DOM
 
-- voice-widget-v3.js (3,384) - E-commerce Core + Widget Orchestrator
-- abandoned-cart-recovery.js (1,416) - +25% cart recovery
-- spin-wheel.js (1,177) - Gamification +15% conversion
-- voice-quiz.js (1,127) - +65% completion vs text
-- free-shipping-bar.js (827) - +20% AOV
-- voice-widget-b2b.js (1,113) - B2B Lead Widget + Catalog Mode
-- recommendation-carousel.js (627) - AI Product Carousel
+- voice-widget-b2b.js (1,573) - B2B Lead Widget + Catalog Mode (49 pages)
+- voice-widget-v3.js (3,684) - E-commerce Core + Widget Orchestrator
+- abandoned-cart-recovery.js (1,446) - Cart recovery
+- spin-wheel.js (1,248) - Gamification
+- voice-quiz.js (1,163) - Product quiz
+- free-shipping-bar.js (847) - Shipping progress
+- recommendation-carousel.js (656) - AI Product Carousel
 
 ### Voice Telephony AI (PSTN) - 4,709 lines, 25 function tools
 
@@ -168,32 +170,33 @@ SHOPIFY_STORE=
 
 | Feature | Vapi | Retell | VocalIA |
 |---------|------|--------|---------|
-| Pricing | $0.15-0.33/min | $0.13-0.31/min | **$0.06/min** |
+| Pricing | $0.15-0.33/min | $0.13-0.31/min | **$0.10/min** |
 | Widget + Telephony | ❌ | ❌ | ✅ |
-| Darija Support | ❌ | ❌ | ✅ |
-| Multi-Personas | ❌ | ❌ | ✅ (40) |
+| 5 Languages | ❌ | ❌ | ✅ (FR/EN/ES/AR/ARY) |
+| Multi-Personas | ❌ | ❌ | ✅ (38) |
 | MCP Server | ❌ | ❌ | ✅ (203 tools) |
 | WordPress/WooCommerce | ❌ | ❌ | ✅ (7 tools + plugin) |
 | Self-Hosted | ❌ | ❌ | ✅ |
-| E2E Tests | ❌ | ❌ | ✅ (375 tests) |
+| Tests | ❌ | ❌ | ✅ (3,803 tests) |
 
-## Platform Metrics (VÉRIFIÉ 05/02/2026)
+## Platform Metrics (VÉRIFIÉ 09/02/2026)
 
 | Metric | Value | Verification |
 |--------|-------|--------------|
-| Core Backend | 32,727 lines | `wc -l core/*.cjs` |
-| Telephony | 4,709 lines | `wc -l telephony/*.cjs` |
-| Personas | 5,995 lines | `wc -l personas/*.cjs` |
-| Widget | 9,107 lines | `wc -l widget/*.js` |
-| MCP Server | 17,630 lines | `wc -l mcp-server/src/**/*.ts` |
-| i18n Locales | 23,790 lines | `wc -l website/src/locales/*.json` |
-| HTML Pages | 76 | `find website -name "*.html" \| wc -l` |
-| MCP Tools | 203 | `grep -c "server.tool("` |
+| Core Backend | ~36,000 lines (55 files) | `wc -l core/*.cjs` |
+| Telephony | ~4,800 lines | `wc -l telephony/*.cjs` |
+| Personas | 8,800 lines (3 files) | `wc -l personas/*.cjs personas/*.json` |
+| Widget | 10,598 lines (7 files) | `wc -l widget/*.js` |
+| MCP Server | ~19,500 lines (32 files) | `wc -l mcp-server/src/**/*.ts` |
+| i18n Locales | ~26,000 lines | `wc -l website/src/locales/*.json` |
+| HTML Pages | 80 | `find website -name "*.html" \| wc -l` |
+| HTTP Services | 8 (4 deployed + 4 non-deployed) | docker-compose + standalone |
+| MCP Tools | 203 (0 connected) | `grep -c "server.tool("` |
 | Function Tools | 25 | `grep -c "name: '"` |
-| Personas | 40 | grep unique |
-| Unit Tests | 306 (100% pass) | `npm test` |
-| E2E Tests | 375 (99.5% pass) | Playwright |
-| Security Score | 100/100 | HTTPS, HSTS, CSP |
+| Personas | 38 | grep unique |
+| Tests | 3,803 (68 files, 0 fail) | `node --test test/*.mjs` |
+| Distribution | 5 platforms | npm, shopify, wordpress, wix, zapier |
+| Bugs Fixed | 167/179 | See ROADMAP-TO-COMPLETION.md |
 
 ## License
 

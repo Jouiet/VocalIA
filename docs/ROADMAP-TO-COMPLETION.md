@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.176 (Ultra-deep codebase audit: 9 bugs found+fixed — telephony function handlers, OAuthGateway XSS, JSON.parse safety)
+> **Date:** 2026-02-09 | **Session:** 250.177 (Architecture audit evaluation + documentation corrections: 8 HTTP servers, deployed/non-deployed split, 5 distribution platforms)
 > **Code Completeness:** 8.5/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain) + **DEEP SYSTEM AUDIT 250.175** (21 reported, ~62% accurate, 7 confirmed+fixed) + **ULTRA-DEEP AUDIT 250.176** (9 bugs found+fixed: telephony, OAuthGateway, auth-service, remotion-hitl)
@@ -35,7 +35,7 @@
 
 | # | Dimension | Score 250.172 | Score 250.173 | Delta | Justification (250.173 — 74 bugs fixed) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 7.0 | **7.5** | **+0.5** | 3,804 tests pass, 0 fail. 3 test assertions updated for business rule corrections (B2C→B2B, Shopify 2024→2026). |
+| 1 | Tests unitaires | 7.0 | **7.5** | **+0.5** | 3,803 tests pass, 0 fail. 3 test assertions updated for business rule corrections (B2C→B2B, Shopify 2024→2026). |
 | 2 | Sécurité | 6.5 | **8.5** | **+2.0** | sanitizeTenantId now in 20+ modules (30+ sites fixed). JWT split-brain fixed (shared CONFIG). Token hashing unified (SHA-256). Timing-safe API key comparison. Role injection prevented. |
 | 3 | Production readiness | 4.0 | **4.0** | 0 | No deployment — fix session only. /respond still BROKEN on VPS. |
 | 4 | Documentation accuracy | 8.5 | **8.5** | 0 | ROADMAP updated with session results. |
@@ -153,10 +153,12 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | api.vocalia.ma/api/db/health | ✅ UP (Google Sheets connected, 7 tables) |
 | VPS Hostinger (KVM 2) | ✅ Running (2 CPU, 8 GB, 148.230.113.163) |
 | Docker containers (4) | ✅ All healthy (vocalia-api, db-api, realtime, telephony) |
+| Non-deployed servers (4) | OAuth 3010, Webhook 3011, Remotion HITL 3012, MCP 3015 |
 | Traefik reverse proxy | ✅ SSL/TLS auto (Let's Encrypt) |
 | api.vocalia.ma/realtime/health | ✅ UP (7 voices, grok-realtime) |
 | api.vocalia.ma/telephony/health | ✅ UP (Twilio configured) |
 | Dockerfile + docker-compose (prod+staging) | ✅ Deployed (250.170: volumes + env vars added) |
+| Distribution platforms | 5 (npm, shopify, wordpress, wix, zapier) |
 | CI/CD (unit + exhaustive + i18n + coverage + tsc + Playwright) | ✅ Active |
 | OpenAPI spec | ✅ 25 methods / 24 paths (validated 250.158) |
 | Security headers (CSP, HSTS, X-Frame, Referrer, Permissions) | ✅ All set |
@@ -299,7 +301,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 3,804 tests | 3,804 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.171c)
+**TOTAL: 3,803 tests | 3,803 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.171c)
 
 Top test suites (by count):
 

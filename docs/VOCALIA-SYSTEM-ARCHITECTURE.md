@@ -1,6 +1,6 @@
 # VocalIA - Architecture Système Complète
 ## Document Consolidé de Référence
-### Version 2.1.0 | 08/02/2026 | Session 250.139 (Code Complete — 0 live customers)
+### Version 2.2.0 | 09/02/2026 | Session 250.177 (Architecture audit corrections — 8 HTTP servers, deployed/non-deployed split, 5 distribution platforms)
 
 > **DOCUMENT UNIQUE DE RÉFÉRENCE** - Remplace tous les documents d'architecture fragmentés
 > Généré par analyse bottom-up factuelle exhaustive du codebase
@@ -36,7 +36,7 @@
 | **Produits** | Voice Widget (Browser) + Voice Telephony (PSTN) |
 | **Langues** | 5 (FR, EN, ES, AR, ARY/Darija) |
 
-### 1.2 Metriques Globales (VERIFIE `wc -l` 08/02/2026 — Session 250.139)
+### 1.2 Metriques Globales (VERIFIE `wc -l` 09/02/2026 — Session 250.177)
 
 | Composant | Fichiers | Lignes | Verification |
 |:----------|:--------:|:------:|:-------------|
@@ -49,7 +49,7 @@
 | Lib | 1 | **923** | `wc -l lib/*.cjs` |
 | MCP Server (TS) | 32 | **19,173** | `wc -l mcp-server/src/**/*.ts` |
 | Website Libs (JS) | ~21 | **7,581** | `wc -l website/src/lib/*.js` |
-| Website HTML | **78** | ~28,000 | `find website -name "*.html"` |
+| Website HTML | **80** | ~28,000 | `find website -name "*.html"` |
 | Locales (JSON) | 5 | **23,995** | `wc -l website/src/locales/*.json` |
 | **TOTAL Backend** | **~77** | **~61,615** | (core+telephony+personas+widget+sensors+integrations+lib) |
 | **TOTAL avec MCP** | **~109** | **~80,788** | Backend + MCP |
@@ -86,7 +86,7 @@
 │                                                      │                       │
 │  ┌─────────────────┐  ┌─────────────────┐           │                       │
 │  │  Remotion HITL  │  │  MCP Server     │           │                       │
-│  │  Port 3012      │  │  (stdio)        │           │                       │
+│  │  Port 3012      │  │  Port 3015      │           │                       │
 │  └─────────────────┘  └─────────────────┘           │                       │
 │                                                      │                       │
 └──────────────────────────────────────────────────────┼───────────────────────┘
@@ -125,17 +125,25 @@
 
 ## 2. ARCHITECTURE DES SERVICES
 
-### 2.1 Services HTTP (7 total)
+### 2.1 Services HTTP (8 total — 4 deployed, 4 non-deployed)
+
+**Deployed (Docker containers via Traefik):**
 
 | Service | Port | Fichier | Lignes | Fonction |
 |:--------|:----:|:--------|:------:|:---------|
 | **Voice API** | 3004 | `core/voice-api-resilient.cjs` | **3,018** | API texte multi-AI |
 | **Grok Realtime** | 3007 | `core/grok-voice-realtime.cjs` | **1,109** | WebSocket audio |
 | **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` | **4,709** | PSTN ↔ AI + 25 Function Tools |
+| **DB API** | 3013 | `core/db-api.cjs` | **2,721** | REST API + Auth + WebSocket |
+
+**Non-deployed (standalone servers, code exists, NOT in Docker):**
+
+| Service | Port | Fichier | Lignes | Fonction |
+|:--------|:----:|:--------|:------:|:---------|
 | **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | ~400 | OAuth 2.0 flows |
 | **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ~350 | Inbound webhooks |
-| **Remotion HITL** | 3012 | `core/remotion-hitl.cjs` | **645** | Video HITL |
-| **DB API** | 3013 | `core/db-api.cjs` | **2,721** | REST API + Auth + WebSocket |
+| **Remotion HITL** | 3012 | `core/remotion-hitl.cjs` | **645** | Video HITL (hybrid: library + optional server) |
+| **MCP Server** | 3015 | `mcp-server/dist/index.js` | **19,500+** | 203 tools + 6 resources + 8 prompts (standalone, 0 imports from core) |
 
 ### 2.2 Commandes de Démarrage
 
