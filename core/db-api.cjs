@@ -31,6 +31,7 @@
 
 const http = require('http');
 const url = require('url');
+const crypto = require('crypto');
 const { WebSocketServer } = require('ws');
 const { getDB } = require('./GoogleSheetsDB.cjs');
 const authService = require('./auth-service.cjs');
@@ -167,7 +168,10 @@ function validateOriginTenant(origin, tenantId) {
     _loadDbTenantOrigins();
   }
 
-  if (!_dbTenantRegistry) return { valid: true }; // Registry not loaded, fail open
+  if (!_dbTenantRegistry) {
+    console.warn('⚠️ [Security] DB tenant registry not loaded — origin validation skipped');
+    return { valid: true };
+  }
   const client = _dbTenantRegistry[tenantId];
   if (!client) return { valid: false, reason: 'unknown_tenant' };
   if (!client.allowed_origins || client.allowed_origins.length === 0) return { valid: true }; // No restrictions configured
@@ -193,7 +197,7 @@ function validateApiKey(apiKey, tenantId) {
   const client = _dbTenantRegistry[tenantId];
   if (!client) return { valid: false, reason: 'unknown_tenant' };
   if (!client.api_key) return { valid: true }; // No key configured
-  if (client.api_key === apiKey) return { valid: true };
+  if (client.api_key.length === apiKey.length && crypto.timingSafeEqual(Buffer.from(client.api_key), Buffer.from(apiKey))) return { valid: true };
   return { valid: false, reason: 'invalid_api_key' };
 }
 
@@ -3162,7 +3166,7 @@ function handleWebSocketConnection(ws, req) {
           const channels = Array.isArray(msg.channels) ? msg.channels : [msg.channel];
           channels.forEach(ch => {
             // Admin-only channels
-            if (['hitl', 'users', 'auth_sessions'].includes(ch) && user.role !== 'admin') {
+            if (['hitl', 'users', 'auth_sessions'].includes(ch) && clientData.user?.role !== 'admin') {
               ws.send(JSON.stringify({ type: 'error', message: `Channel ${ch} requires admin role` }));
               return;
             }

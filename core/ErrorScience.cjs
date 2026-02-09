@@ -30,7 +30,7 @@ const CONFIDENCE_CONFIG = {
 
 class ErrorScience {
     constructor(options = {}) {
-        this.logDir = options.logDir || process.env.ANALYTICS_LOG_DIR || '/tmp';
+        this.logDir = options.logDir || process.env.ANALYTICS_LOG_DIR || path.join(__dirname, '..', 'logs', 'analytics');
         this.logFile = path.join(this.logDir, 'marketing_events.jsonl');
         this.learnedRulesFile = path.join(this.logDir, 'learned_rules.json');
         this.metricsFile = path.join(this.logDir, 'error_metrics.json');
@@ -44,7 +44,24 @@ class ErrorScience {
             return { success: false, error: 'No logs found' };
         }
 
-        const lines = fs.readFileSync(this.logFile, 'utf8').split('\n').filter(l => l.trim());
+        // Read with size limit to prevent OOM on large log files
+        const stats = fs.statSync(this.logFile);
+        const MAX_LOG_SIZE = 10 * 1024 * 1024; // 10MB
+        let content;
+        if (stats.size > MAX_LOG_SIZE) {
+          // Read only the last 10MB
+          const fd = fs.openSync(this.logFile, 'r');
+          const buf = Buffer.alloc(MAX_LOG_SIZE);
+          fs.readSync(fd, buf, 0, MAX_LOG_SIZE, stats.size - MAX_LOG_SIZE);
+          fs.closeSync(fd);
+          content = buf.toString('utf8');
+          // Skip first partial line
+          const firstNewline = content.indexOf('\n');
+          if (firstNewline > 0) content = content.slice(firstNewline + 1);
+        } else {
+          content = fs.readFileSync(this.logFile, 'utf8');
+        }
+        const lines = content.split('\n').filter(l => l.trim());
         const events = lines.map(line => {
             try { return JSON.parse(line); } catch (e) { return null; }
         }).filter(Boolean);

@@ -15,7 +15,7 @@ const os = require('os');
 
 const STITCH_CONFIG = process.env.STITCH_CONFIG || path.join(os.homedir(), '.stitch-mcp', 'config');
 const GCLOUD_PATH = process.env.GCLOUD_PATH || path.join(os.homedir(), '.stitch-mcp', 'google-cloud-sdk', 'bin', 'gcloud');
-const QUOTA_PROJECT = 'gen-lang-client-0843127575';
+const QUOTA_PROJECT = process.env.STITCH_QUOTA_PROJECT || 'gen-lang-client-0843127575';
 const BASE_URL = 'stitch.googleapis.com';
 const MCP_PATH = '/mcp';
 

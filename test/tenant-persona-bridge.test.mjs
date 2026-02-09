@@ -183,9 +183,9 @@ describe('TenantPersonaBridge transformTenantToClientConfig', () => {
     assert.strictEqual(config.widget_type, 'B2B');
   });
 
-  test('defaults widget_type to B2C', () => {
+  test('defaults widget_type to B2B', () => {
     const config = transformTenantToClientConfig({ id: 't1' });
-    assert.strictEqual(config.widget_type, 'B2C');
+    assert.strictEqual(config.widget_type, 'B2B');
   });
 });
 

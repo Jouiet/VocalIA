@@ -156,7 +156,13 @@ function createAnalyticsMiddleware() {
   return (req, res, next) => {
     if (req.method === 'POST' && req.url === '/api/analytics/ab') {
       let body = '';
-      req.on('data', chunk => body += chunk);
+      let bytes = 0;
+      const MAX_BODY = 1048576; // 1MB
+      req.on('data', chunk => {
+        bytes += chunk.length;
+        if (bytes > MAX_BODY) { req.destroy(); return; }
+        body += chunk;
+      });
       req.on('end', () => {
         try {
           const event = JSON.parse(body);

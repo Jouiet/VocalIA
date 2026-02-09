@@ -23,8 +23,7 @@ const path = require('path');
 // Portability Patch: Resilient .env loading
 const envPaths = [
   path.join(__dirname, '.env'),
-  path.join(__dirname, '../../../.env'),
-  path.join(process.cwd(), '.env')
+  path.join(__dirname, '..', '.env')
 ];
 let envFound = false;
 for (const envPath of envPaths) {

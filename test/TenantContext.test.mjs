@@ -247,12 +247,12 @@ describe('TenantContext getShopifyCredentials', () => {
     assert.strictEqual(creds.store, 'fallback-shop.myshopify.com');
   });
 
-  test('uses default API version 2024-01', () => {
+  test('uses default API version 2026-01', () => {
     const ctx = new TenantContext('t1');
     ctx.integrations = { shopify: { enabled: true } };
     ctx.secrets = {};
     const creds = ctx.getShopifyCredentials();
-    assert.strictEqual(creds.apiVersion, '2024-01');
+    assert.strictEqual(creds.apiVersion, '2026-01');
   });
 
   test('uses custom API version from secrets', () => {

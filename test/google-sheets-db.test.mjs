@@ -97,8 +97,8 @@ describe('GoogleSheetsDB schema details', () => {
     assert.strictEqual(SCHEMAS.tenants.defaults.status, 'active');
   });
 
-  test('tenants defaults include widget_type=B2C, currency=EUR', () => {
-    assert.strictEqual(SCHEMAS.tenants.defaults.widget_type, 'B2C');
+  test('tenants defaults include widget_type=B2B, currency=EUR', () => {
+    assert.strictEqual(SCHEMAS.tenants.defaults.widget_type, 'B2B');
     assert.strictEqual(SCHEMAS.tenants.defaults.currency, 'EUR');
   });
 

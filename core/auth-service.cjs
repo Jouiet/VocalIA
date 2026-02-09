@@ -191,7 +191,9 @@ class AuthError extends Error {
 /**
  * Register new user
  */
-async function register({ email, password, name, tenantId = null, role = 'user' }) {
+async function register({ email, password, name, tenantId = null, role: _role }) {
+  // Session 250.173: Force role to 'user' to prevent privilege escalation (NM5)
+  const role = 'user';
   // Validate email
   if (!validateEmail(email)) {
     throw new AuthError('Invalid email format', 'INVALID_EMAIL');
@@ -228,7 +230,7 @@ async function register({ email, password, name, tenantId = null, role = 'user' 
     role: role,
     tenant_id: tenantId,
     email_verified: false,
-    email_verify_token: verifyToken,
+    email_verify_token: crypto.createHash('sha256').update(verifyToken).digest('hex'),
     email_verify_expires: verifyExpires,
     login_count: 0,
     failed_login_count: 0,
@@ -465,8 +467,9 @@ async function requestPasswordReset(email) {
   const resetToken = generateToken(32);
   const resetExpires = new Date(Date.now() + CONFIG.security.resetTokenExpiry).toISOString();
 
+  const resetTokenHash = crypto.createHash('sha256').update(resetToken).digest('hex');
   await db.update('users', user.id, {
-    password_reset_token: resetToken,
+    password_reset_token: resetTokenHash,
     password_reset_expires: resetExpires
   });
 
@@ -496,8 +499,9 @@ async function resetPassword(token, newPassword) {
     throw new AuthError(passwordValidation.errors.join(', '), 'WEAK_PASSWORD');
   }
 
-  // Find user with this token
-  const users = await db.query('users', { password_reset_token: token });
+  // Find user with this token (compare hashed)
+  const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+  const users = await db.query('users', { password_reset_token: tokenHash });
   if (users.length === 0) {
     throw new AuthError('Invalid or expired reset token', 'INVALID_TOKEN');
   }
@@ -564,7 +568,8 @@ async function changePassword(userId, oldPassword, newPassword) {
  * Verify email with token
  */
 async function verifyEmail(token) {
-  const users = await db.query('users', { email_verify_token: token });
+  const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+  const users = await db.query('users', { email_verify_token: tokenHash });
   if (users.length === 0) {
     throw new AuthError('Invalid verification token', 'INVALID_TOKEN');
   }
@@ -609,8 +614,9 @@ async function resendVerificationEmail(email) {
   const verifyToken = generateToken(32);
   const verifyExpires = new Date(Date.now() + CONFIG.security.verifyTokenExpiry).toISOString();
 
+  const verifyTokenHash = crypto.createHash('sha256').update(verifyToken).digest('hex');
   await db.update('users', user.id, {
-    email_verify_token: verifyToken,
+    email_verify_token: verifyTokenHash,
     email_verify_expires: verifyExpires,
     updated_at: new Date().toISOString()
   });

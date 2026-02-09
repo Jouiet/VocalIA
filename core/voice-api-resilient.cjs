@@ -22,6 +22,7 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 require('dotenv').config(); // Load environment variables
 const ENV = process.env;    // Map process.env to ENV for legacy compatibility
 
@@ -34,9 +35,12 @@ const {
   RateLimiter,
   setSecurityHeaders
 } = require('../lib/security-utils.cjs');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Session 250.171: JWT for admin endpoint auth (C2-AUDIT)
+// Session 250.173: Use auth-service CONFIG.jwt.secret to avoid split-brain (NC1)
 const jwt = require('jsonwebtoken');
+const { CONFIG: AUTH_CONFIG } = require('./auth-service.cjs');
 function checkAdminAuth(req, res) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -46,7 +50,7 @@ function checkAdminAuth(req, res) {
   }
   try {
     const token = authHeader.slice(7);
-    const decoded = jwt.verify(token, ENV.JWT_SECRET);
+    const decoded = jwt.verify(token, AUTH_CONFIG.jwt.secret);
     if (decoded.role !== 'admin') {
       res.writeHead(403, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Admin access required' }));
@@ -122,7 +126,10 @@ function validateOriginTenant(origin, tenantId) {
   if (Date.now() - _tenantOriginsLastLoad > TENANT_ORIGINS_TTL) {
     loadTenantOrigins();
   }
-  if (!_tenantRegistry) return { valid: true };
+  if (!_tenantRegistry) {
+    console.warn('⚠️ [Security] Tenant registry not loaded — origin validation skipped');
+    return { valid: true };
+  }
   const client = _tenantRegistry[tenantId];
   if (!client) return { valid: false, reason: 'unknown_tenant' };
   if (!client.allowed_origins || client.allowed_origins.length === 0) return { valid: true };
@@ -2700,9 +2707,8 @@ function startServer(port = 3004) {
       req.on('data', chunk => {
         bodySize += chunk.length;
         if (bodySize > MAX_BODY_SIZE) {
+          try { res.writeHead(413, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'Request body too large. Max 1MB.' })); } catch (_) { /* connection may be closed */ }
           req.destroy();
-          res.writeHead(413, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Request body too large. Max 1MB.' }));
           return;
         }
         body += chunk;
@@ -2736,7 +2742,7 @@ function startServer(port = 3004) {
           // Session 250.57: Check quota before processing
           // Session 250.167: Sanitize tenantId to prevent path traversal
           const rawTenantId = bodyParsed.data.tenant_id || bodyParsed.data.tenantId || 'default';
-          const tenantId = rawTenantId.replace(/[^a-zA-Z0-9_-]/g, '') || 'default';
+          const tenantId = sanitizeTenantId(rawTenantId) || 'default';
 
           // Session 250.155: Origin↔tenant cross-validation + API key
           const tenantCheck = validateOriginTenant(req.headers.origin, tenantId);
@@ -2750,7 +2756,7 @@ function startServer(port = 3004) {
           const apiKey = bodyParsed.data.api_key;
           if (apiKey && _tenantRegistry) {
             const client = _tenantRegistry[tenantId];
-            if (client && client.api_key && client.api_key !== apiKey) {
+            if (client && client.api_key && (client.api_key.length !== apiKey.length || !crypto.timingSafeEqual(Buffer.from(client.api_key), Buffer.from(apiKey)))) {
               res.writeHead(403, { 'Content-Type': 'application/json' });
               res.end(JSON.stringify({ error: 'Invalid API key' }));
               return;
@@ -2962,9 +2968,8 @@ function startServer(port = 3004) {
       req.on('data', chunk => {
         bodySize += chunk.length;
         if (bodySize > MAX_BODY_SIZE) {
+          try { res.writeHead(413, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'Request body too large. Max 1MB.' })); } catch (_) { /* connection may be closed */ }
           req.destroy();
-          res.writeHead(413, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Request body too large. Max 1MB.' }));
           return;
         }
         body += chunk;

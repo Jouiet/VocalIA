@@ -199,13 +199,14 @@ function requireVerifiedEmail(req, res, next) {
 }
 
 /**
- * Rate limit state (in-memory, use Redis for production scale)
+ * Rate limit max entries per limiter (in-memory, use Redis for production scale)
  */
-const rateLimitState = new Map();
 const RATE_LIMIT_MAX_ENTRIES = 10000; // Session 250.167: Cap to prevent memory DoS
+const _allRateLimitStates = []; // Track all limiter states for cleanup
 
 /**
  * Rate limiting middleware
+ * Session 250.173: Each limiter gets its own state Map to prevent cross-contamination (NH2)
  *
  * @param {object} options - Rate limit options
  * @param {number} options.windowMs - Time window in milliseconds
@@ -213,6 +214,8 @@ const RATE_LIMIT_MAX_ENTRIES = 10000; // Session 250.167: Cap to prevent memory 
  * @param {string} [options.keyGenerator] - Function to generate rate limit key
  */
 function rateLimit({ windowMs = 60000, max = 100, keyGenerator = null } = {}) {
+  const state = new Map(); // Per-limiter isolated state
+  _allRateLimitStates.push(state);
   return (req, res, next) => {
     // Generate key based on IP + optional user ID
     const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress || 'unknown';
@@ -223,17 +226,17 @@ function rateLimit({ windowMs = 60000, max = 100, keyGenerator = null } = {}) {
     const windowStart = now - windowMs;
 
     // Get or create rate limit entry
-    let entry = rateLimitState.get(key);
+    let entry = state.get(key);
     if (!entry || entry.windowStart < windowStart) {
       entry = { windowStart: now, count: 0 };
     }
 
     entry.count++;
     // Session 250.167: Enforce maxSize to prevent memory DoS from distributed IPs
-    if (rateLimitState.size >= RATE_LIMIT_MAX_ENTRIES && !rateLimitState.has(key)) {
+    if (state.size >= RATE_LIMIT_MAX_ENTRIES && !state.has(key)) {
       return sendError(res, 429, 'Too many requests', 'RATE_LIMITED');
     }
-    rateLimitState.set(key, entry);
+    state.set(key, entry);
 
     // Check limit
     if (entry.count > max) {
@@ -258,9 +261,11 @@ function cleanupRateLimits() {
   const now = Date.now();
   const maxAge = 60 * 60 * 1000; // 1 hour
 
-  for (const [key, entry] of rateLimitState.entries()) {
-    if (now - entry.windowStart > maxAge) {
-      rateLimitState.delete(key);
+  for (const state of _allRateLimitStates) {
+    for (const [key, entry] of state.entries()) {
+      if (now - entry.windowStart > maxAge) {
+        state.delete(key);
+      }
     }
   }
 }
