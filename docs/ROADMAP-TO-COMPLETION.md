@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.175 (Deep system audit counter-audit: 21 bugs reported, 7 confirmed+fixed)
-> **Code Completeness:** 8.4/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
+> **Date:** 2026-02-09 | **Session:** 250.176 (Ultra-deep codebase audit: 9 bugs found+fixed — telephony function handlers, OAuthGateway XSS, JSON.parse safety)
+> **Code Completeness:** 8.5/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain) + **DEEP SYSTEM AUDIT 250.175** (21 reported, ~62% accurate, 7 confirmed+fixed)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain) + **DEEP SYSTEM AUDIT 250.175** (21 reported, ~62% accurate, 7 confirmed+fixed) + **ULTRA-DEEP AUDIT 250.176** (9 bugs found+fixed: telephony, OAuthGateway, auth-service, remotion-hitl)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 8.4/10** — Features coded and tested (3,803 tests, 68 files). **170 total bugs found, 158 fixed, 12 unfixed**. Session 250.175: Deep system audit counter-audit — 21 bugs reported (~62% accurate), 7 confirmed+fixed (BillingAgent this.gateway→this.stripe, ErrorScience errorBuffer constructor, WebhookRouter 3 timing-safe HMAC + Klaviyo verification, voice-ecommerce MAX_CONNECTORS bound, AgencyEventBus duplicate subscriptions removed). Stale data: features.html 40→38 personas + 8→7 widgets, voice-fr.json B2C→3 gammes.
+**Code Completeness: 8.5/10** — Features coded and tested (3,803 tests, 68 files). **179 total bugs found, 167 fixed, 12 unfixed**. Session 250.176: Ultra-deep codebase audit — 9 bugs found+fixed (D1: telephony DATA_DIR path outside project, D2-D5: 4 function tool handlers missing return statements, D6-D7: OAuthGateway XSS in success/error callbacks, D8: auth-service JSON.parse preferences crash, D9: remotion-hitl JSON.parse audit log crash). Stale data: features.html 40→38 personas + 8→7 widgets, voice-fr.json B2C→3 gammes.
 **Production Readiness: 4.0/10** — VERIFIED 250.171 via curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (Grok/Gemini/Claude/Atlas all configured:true)
@@ -505,7 +505,8 @@ create_booking          get_recommendations    qualify_lead
 | Phase 8 DEEP CODE (250.172) | 69 (3C+9H+52M+5L) | 60 | 9 |
 | **Phase 9 COUNTER-AUDIT (250.173-174)** | **20 (2C+4H+12M+2L)** | **17** | **3** |
 | **Phase 10 DEEP SYSTEM (250.175)** | **7 (1C+2H+4M)** | **7** | **0** |
-| **CUMULATIVE** | **170** | **158** | **12** (+ 2 non-fixable/monitoring + 3 resolved-not-bugs + 4 false/dup) |
+| **Phase 11 ULTRA-DEEP (250.176)** | **9 (1H+5M+2H+1M)** | **9** | **0** |
+| **CUMULATIVE** | **179** | **167** | **12** (+ 2 non-fixable/monitoring + 3 resolved-not-bugs + 4 false/dup) |
 
 ---
 
@@ -535,8 +536,9 @@ create_booking          get_recommendations    qualify_lead
 | **P0-DEEPCODE (250.172)** | ✅ **60/69 FIXED** | Line-by-line audit ALL 55 core modules. 69 NEW bugs (3C/9H/52M/5L). All 3C + 9H fixed. 10 systemic fix categories ALL resolved. | 8.5 → 6.8 → **7.8** |
 | **P0-COUNTER-AUDIT (250.173)** | ✅ **14/20 FIXED** | Counter-audit: 20 NEW bugs (2C/4H/12M/2L). All 2C + 4H fixed. JWT split-brain, token hashing, timing-safe comparison, rate limiter isolation. | **7.8** |
 | **P0-DEEP-SYSTEM (250.175)** | ✅ **7/7 FIXED** | Deep system audit: 21 reported (~62% accurate), 7 confirmed+fixed. BillingAgent crash (this.gateway), ErrorScience constructor, WebhookRouter HMAC timing-safe + Klaviyo, ecommerce cache bound, EventBus dedup. | **8.4** |
+| **P0-ULTRA-DEEP (250.176)** | ✅ **9/9 FIXED** | Ultra-deep codebase audit: telephony DATA_DIR path outside project (D1), 4 function tool handlers missing return → Grok gets undefined output (D2-D5), OAuthGateway XSS in success+error callbacks (D6-D7), auth-service JSON.parse preferences crash (D8), remotion-hitl JSON.parse audit log crash (D9). | **8.5** |
 
-**Code Completeness: 8.4/10** | **Production Readiness: 4.0/10** | **Weighted: 8.2/10** | **MCP: 9.0/10**
+**Code Completeness: 8.5/10** | **Production Readiness: 4.0/10** | **Weighted: 8.3/10** | **MCP: 9.0/10**
 
 **Remaining (12 unfixed bugs):**
 ```
@@ -559,6 +561,15 @@ FIXED in 250.173b-175:
   - N5: ✅ FIXED — BillingAgent currency variable scoping [250.175]
   - N6: ✅ FIXED — voice-ecommerce connectors MAX_CONNECTORS=50 [250.175]
   - N10: ✅ FIXED — AgencyEventBus duplicate ContextBox subscriptions removed [250.175]
+  - D1: ✅ FIXED — Telephony DATA_DIR path.join('../../../data') → path.join('..', 'data') [250.176]
+  - D2: ✅ FIXED — handleQualifyLead() missing return → Grok gets undefined output [250.176]
+  - D3: ✅ FIXED — handleScheduleCallback() missing return [250.176]
+  - D4: ✅ FIXED — handleTrackConversion() missing return [250.176]
+  - D5: ✅ FIXED — handleCreateBookingInternal() missing return [250.176]
+  - D6: ✅ FIXED — OAuthGateway XSS: tenantId unescaped in success HTML [250.176]
+  - D7: ✅ FIXED — OAuthGateway XSS: error.message unescaped in error HTML [250.176]
+  - D8: ✅ FIXED — auth-service JSON.parse(user.preferences) without try/catch [250.176]
+  - D9: ✅ FIXED — remotion-hitl JSON.parse(line) in .map() without try/catch [250.176]
 
 NON-FIXABLE / MONITORING:
   - H14b: Gemini TTS preview model (no stable version exists)
@@ -582,7 +593,7 @@ NON-FIXABLE / MONITORING:
 ```
 ⚠️ OPERATIONS — CRITICAL (NOT code):
   1. VPS REDEPLOY: /respond BROKEN on production — local code has ALL fixes since 250.167
-     → git pull + docker-compose up on VPS = instant fix for 74+ bugs
+     → git pull + docker-compose up on VPS = instant fix for 83+ bugs
   2. VPS .env: Create .env with JWT_SECRET, SMTP_HOST/USER/PASS, STRIPE_SECRET_KEY, VOCALIA_VAULT_KEY
   3. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
   4. First paying customer → first real traffic → validate entire stack

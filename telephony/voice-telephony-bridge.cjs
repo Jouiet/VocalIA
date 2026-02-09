@@ -386,7 +386,7 @@ function getMatchedFinancialKeywords(response) {
   return HITL_CONFIG.financialKeywords.filter(keyword => responseLower.includes(keyword));
 }
 
-const DATA_DIR = process.env.VOICE_DATA_DIR || path.join(__dirname, '../../../data/voice');
+const DATA_DIR = process.env.VOICE_DATA_DIR || path.join(__dirname, '..', 'data', 'voice');
 const HITL_PENDING_DIR = path.join(DATA_DIR, 'hitl-pending');
 const HITL_PENDING_FILE = path.join(HITL_PENDING_DIR, 'pending-actions.json');
 
@@ -2591,6 +2591,13 @@ async function handleQualifyLead(session, args) {
     label: session.bookingData.qualification_score,
     qualification: session.qualification
   });
+
+  return {
+    success: true,
+    score: session.qualification.score,
+    label: session.bookingData.qualification_score,
+    qualification: session.qualification
+  };
 }
 
 /**
@@ -2794,6 +2801,12 @@ async function handleScheduleCallback(session, args) {
 
   // Log for analytics
   logConversionEvent(session, 'callback_scheduled', session.callback);
+
+  return {
+    success: true,
+    status: 'callback_scheduled',
+    callback: session.callback
+  };
 }
 
 async function handleCreateBooking(session, args) {
@@ -2846,6 +2859,12 @@ async function handleCreateBookingInternal(session, args) {
     ...session.bookingData,
     qualification: session.qualification
   });
+
+  return {
+    success: true,
+    status: 'booking_created',
+    booking: session.bookingData
+  };
 }
 
 async function handleTrackConversion(session, args) {
@@ -2860,6 +2879,13 @@ async function handleTrackConversion(session, args) {
   session.analytics.funnel_stage = args.stage;
 
   console.log(`[Analytics] ${args.event} at ${args.stage} - ${args.outcome || 'pending'}`);
+
+  return {
+    success: true,
+    status: 'event_tracked',
+    event: args.event,
+    stage: args.stage
+  };
 }
 
 // RAG fallback messages - Multilingual (Session 166sexies)

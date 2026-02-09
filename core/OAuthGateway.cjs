@@ -292,10 +292,14 @@ class OAuthGateway {
 
       try {
         const result = await this.exchangeCode(provider, code, state);
+        // Sanitize tenantId to prevent XSS (user-controlled input)
+        const safeTenantId = String(result.tenantId).replace(/[<>&"']/g, c => ({
+          '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'
+        }[c]));
         res.send(`
           <html><body>
             <h1>✅ Connected Successfully!</h1>
-            <p>${OAUTH_PROVIDERS[provider].name} connected for tenant: ${result.tenantId}</p>
+            <p>${OAUTH_PROVIDERS[provider].name} connected for tenant: ${safeTenantId}</p>
             <p>You can close this window.</p>
             <script>
               setTimeout(() => window.close(), 3000);
@@ -303,10 +307,14 @@ class OAuthGateway {
           </body></html>
         `);
       } catch (error) {
+        // Sanitize error message to prevent XSS
+        const safeMsg = String(error.message).replace(/[<>&"']/g, c => ({
+          '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&#39;'
+        }[c]));
         res.status(400).send(`
           <html><body>
             <h1>❌ Connection Failed</h1>
-            <p>${error.message}</p>
+            <p>${safeMsg}</p>
           </body></html>
         `);
       }

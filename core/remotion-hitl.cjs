@@ -287,7 +287,7 @@ function getAuditLog(limit = 100) {
       .slice(-limit)
       .reverse();
 
-    return lines.map(line => JSON.parse(line));
+    return lines.map(line => { try { return JSON.parse(line); } catch { return null; } }).filter(Boolean);
   } catch (error) {
     console.error('[HITL] Error reading audit log:', error.message);
     return [];

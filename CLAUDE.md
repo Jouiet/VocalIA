@@ -45,10 +45,10 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 8.2/10 — **163 bugs found, 151 fixed, 12 unfixed**. Session 250.174b: NM7 CORS dedup (tenant-cors.cjs), dashboard System Intelligence, status live health, investor fallback chain, stale persona 40→38.
+- **Code completeness**: 8.5/10 — **179 bugs found, 167 fixed, 12 unfixed**. Session 250.176: Ultra-deep audit — 9 bugs found+fixed (telephony DATA_DIR + 4 missing returns + OAuthGateway XSS + JSON.parse safety).
 - **Production readiness**: 4.0/10 — Website live, /respond BROKEN on VPS. 0 paying customers.
 - **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. All 14 contre-audit bugs fixed.
 - **Next**: VPS redeploy (critical) → .env setup → SMTP provider → First paying customer
-- **Weighted score**: 8.0/10
+- **Weighted score**: 8.3/10
 
-*Last update: 09/02/2026 - Session 250.174b (CORS dedup, dashboard improvements, status live health, investor fallback chain, 3 bugs fixed)*
+*Last update: 09/02/2026 - Session 250.176 (Ultra-deep audit: telephony function handlers, OAuthGateway XSS, JSON.parse safety — 9 bugs fixed)*

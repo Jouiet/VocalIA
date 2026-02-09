@@ -360,7 +360,7 @@ async function login({ email, password, rememberMe = false }) {
       role: user.role,
       tenant_id: user.tenant_id,
       email_verified: user.email_verified === 'true' || user.email_verified === true,
-      preferences: user.preferences ? JSON.parse(user.preferences) : {}
+      preferences: (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })()
     }
   };
 }
@@ -652,7 +652,7 @@ async function getCurrentUser(userId) {
     email_verified: user.email_verified === 'true' || user.email_verified === true,
     phone: user.phone,
     avatar_url: user.avatar_url,
-    preferences: user.preferences ? JSON.parse(user.preferences) : {},
+    preferences: (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })(),
     created_at: user.created_at,
     last_login: user.last_login
   };
