@@ -45,10 +45,10 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 7.5/10 — **149 bugs found, 75 fixed, 74 unfixed** (69 from 250.172 deep audit: 3C/9H/52M/5L). MCP **9.0/10** (203 tools, 6 resources, 8 prompts, SDK v1.26.0, dual transport, OAuth 2.1, Dockerfile).
+- **Code completeness**: 8.0/10 — **163 bugs found, 148 fixed, 15 unfixed**. Session 250.172-173: 89 new bugs (69 deep audit + 20 counter-audit), 74 fixed. All CRITICAL+HIGH resolved. MCP **8.5/10** (203 tools, 6 resources, 8 prompts, SDK v1.26.0).
 - **Production readiness**: 4.0/10 — Website live, /respond BROKEN on VPS. 0 paying customers.
-- **MCP Server**: Phase 0-5 DONE. MCP **8.5/10**. stdio + Streamable HTTP + OAuth 2.1 + CORS + rate limiting. Dockerfile ready (untested). Needs: npm login + publish, Docker Hub push, MCP Registry submit. Known: 2 tool modules have process.cwd() path bug, OAuth store in-memory only.
-- **Next**: Fix 74 audit bugs → npm publish → VPS redeploy → First paying customer
-- **Weighted score**: 6.8/10
+- **MCP Server**: Phase 0-5 DONE. MCP **8.5/10**. stdio + Streamable HTTP + OAuth 2.1 + CORS + rate limiting. Dockerfile ready (untested).
+- **Next**: VPS redeploy (critical) → .env setup → SMTP provider → First paying customer
+- **Weighted score**: 7.8/10
 
-*Last update: 09/02/2026 - Session 250.172b (MCP Phase 4+5: HTTP transport, OAuth 2.1, Dockerfile, README v1.0.0, LLMGateway dotenv fix)*
+*Last update: 09/02/2026 - Session 250.173 (74 bugs fixed: JWT split-brain, token hashing, timing-safe comparison, sanitizeTenantId 20+ modules, process.cwd→__dirname 11 modules, lazy init, rate limiter isolation)*
