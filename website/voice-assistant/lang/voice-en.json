@@ -50,7 +50,7 @@
   "topics": {
     "pricing": {
       "keywords": ["price", "cost", "pricing", "how much", "budget", "quote", "fee"],
-      "response": "VocalIA offers competitive pricing starting at $99/month for the Voice Widget and pay-per-minute for AI telephony. We also offer custom packages based on your volume. Would you like a quote tailored to your usage?"
+      "response": "VocalIA offers competitive pricing starting at $49/month (Starter) and pay-per-minute for AI telephony. We also offer custom packages based on your volume. Would you like a quote tailored to your usage?"
     },
     "demo": {
       "keywords": ["demo", "demonstration", "try", "test", "see", "show"],
@@ -70,7 +70,7 @@
     },
     "languages": {
       "keywords": ["language", "languages", "multilingual", "arabic", "darija", "french", "spanish"],
-      "response": "VocalIA supports 5 languages: French, English, Spanish, Standard Arabic and Moroccan Darija. We're the #1 solution in Morocco with native Darija support."
+      "response": "VocalIA supports 5 languages: French, English, Spanish, Standard Arabic and Moroccan Darija. We offer multilingual Voice AI with native Darija support."
     },
     "competitors": {
       "keywords": ["vapi", "retell", "bland", "competitor", "alternative", "comparison", "versus"],

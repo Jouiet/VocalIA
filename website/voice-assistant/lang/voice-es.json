@@ -50,7 +50,7 @@
   "topics": {
     "pricing": {
       "keywords": ["precio", "coste", "cuanto", "presupuesto", "tarifa", "cotizacion"],
-      "response": "Las soluciones VocalIA empiezan en 99EUR/mes para el Voice Widget y 0,06EUR/minuto para la telefonia AI. Tambien ofrecemos paquetes personalizados segun tu volumen. Quieres un presupuesto adaptado a tu uso?"
+      "response": "Las soluciones VocalIA empiezan en 49EUR/mes (Starter) y 0,10EUR/minuto para la telefonia AI. Tambien ofrecemos paquetes personalizados segun tu volumen. Quieres un presupuesto adaptado a tu uso?"
     },
     "demo": {
       "keywords": ["demo", "demostracion", "probar", "ver", "mostrar"],
@@ -62,7 +62,7 @@
     },
     "telephony": {
       "keywords": ["telefono", "telefonia", "llamada", "llamadas", "pbx", "ivr", "centralita"],
-      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a solo 0,06EUR/minuto (60% mas barato que Vapi). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
+      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a solo 0,10EUR/minuto (hasta 60% mas barato que alternativas). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
     },
     "integration": {
       "keywords": ["integracion", "crm", "hubspot", "shopify", "api", "webhook"],
@@ -70,11 +70,11 @@
     },
     "languages": {
       "keywords": ["idioma", "idiomas", "multilingue", "arabe", "darija", "frances", "ingles"],
-      "response": "VocalIA soporta 5 idiomas: Frances, Ingles, Espanol, Arabe estandar y Darija marroqui. Somos la solucion n°1 en Marruecos con soporte nativo de Darija."
+      "response": "VocalIA soporta 5 idiomas: Frances, Ingles, Espanol, Arabe estandar y Darija marroqui. Ofrecemos Voice AI multilingue con soporte nativo de Darija."
     },
     "competitors": {
       "keywords": ["vapi", "retell", "bland", "competidor", "alternativa", "comparacion", "versus"],
-      "response": "Comparado con Vapi (0,15-0,33EUR/min) o Retell (0,13-0,31EUR/min), VocalIA cuesta solo 0,06EUR/min - eso es 60% de ahorro. Ademas, ofrecemos Widget + Telefonia en una sola plataforma y soporte exclusivo de Darija."
+      "response": "Comparado con Vapi (0,15-0,33EUR/min) o Retell (0,13-0,31EUR/min), VocalIA cuesta solo 0,10EUR/min - hasta 60% de ahorro. Ademas, ofrecemos Widget + Telefonia en una sola plataforma con soporte Darija para el mercado marroqui."
     },
     "leads": {
       "keywords": ["lead", "leads", "prospecto", "calificacion", "bant", "cualificar"],

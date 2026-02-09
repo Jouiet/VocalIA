@@ -69,7 +69,7 @@ const DEFAULT_PLANS: Record<Language, PricingPlan[]> = {
       name: 'Enterprise',
       price: 'Sur mesure',
       period: '',
-      features: ['Solution complète', 'Illimité', 'Support dédié', '40 personas', 'Intégrations custom', 'SLA 99.9%']
+      features: ['Solution complète', 'Illimité', 'Support dédié', '38 personas', 'Intégrations custom', 'SLA 99.9%']
     }
   ],
   en: [
@@ -91,7 +91,7 @@ const DEFAULT_PLANS: Record<Language, PricingPlan[]> = {
       name: 'Enterprise',
       price: 'Custom',
       period: '',
-      features: ['Full solution', 'Unlimited', 'Dedicated support', '40 personas', 'Custom integrations', '99.9% SLA']
+      features: ['Full solution', 'Unlimited', 'Dedicated support', '38 personas', 'Custom integrations', '99.9% SLA']
     }
   ],
   es: [
@@ -113,7 +113,7 @@ const DEFAULT_PLANS: Record<Language, PricingPlan[]> = {
       name: 'Enterprise',
       price: 'Personalizado',
       period: '',
-      features: ['Solución completa', 'Ilimitado', 'Soporte dedicado', '40 personas', 'Integraciones custom', 'SLA 99.9%']
+      features: ['Solución completa', 'Ilimitado', 'Soporte dedicado', '38 personas', 'Integraciones custom', 'SLA 99.9%']
     }
   ],
   ar: [

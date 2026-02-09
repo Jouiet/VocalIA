@@ -809,7 +809,12 @@
             const geo = await VocaliaGeo.getGeo();
             currentCurrency = geo.currency;
             currentSymbol = geo.symbol;
-            currentPricing = geo.pricing;
+            const pricingMap = {
+              MAD: { starter: 490, pro: 990, ecom: 990, telephony: 1990, overage: 1.00 },
+              EUR: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 },
+              USD: { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 }
+            };
+            currentPricing = pricingMap[geo.currency] || pricingMap.EUR;
           } else if (typeof window.VocaliaI18n !== 'undefined') {
             // Fallback to i18n symbol info
             const info = VocaliaI18n.getCurrencyInfo();

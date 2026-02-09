@@ -1,8 +1,8 @@
 # VocalIA - Voice AI Platform
 
-> **Domain:** https://vocalia.ma | **Version:** 7.2.0 | **Session:** 250.94
+> **Domain:** https://vocalia.ma | **Version:** 2.7.0 | **Session:** 250.170
 > **🌐 PRODUCTION LIVE** | HTTP/2 ✅ | HSTS preload ✅ | Security 100/100 ✅
-> **MÉTRIQUES VÉRIFIÉ 05/02/2026:** ~140k lignes | 76 pages | 203 MCP tools | 40 Personas | 25 Function Tools
+> **MÉTRIQUES VÉRIFIÉ 09/02/2026:** ~83k lignes | 80 pages | 203 MCP tools | 38 Personas | 25 Function Tools
 
 ## Overview
 

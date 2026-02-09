@@ -53,7 +53,7 @@ interface OnboardingProps {
 const DEFAULT_STEPS: Record<Language, OnboardingStep[]> = {
   fr: [
     { number: 1, title: 'Créer votre compte', description: 'Inscription en 2 minutes', icon: '👤', duration: '2 min' },
-    { number: 2, title: 'Configurer votre persona', description: 'Choisissez parmi 40 personas métier', icon: '🎭', duration: '5 min' },
+    { number: 2, title: 'Configurer votre persona', description: 'Choisissez parmi 38 personas métier', icon: '🎭', duration: '5 min' },
     { number: 3, title: 'Intégrer le widget', description: '2 lignes de code JavaScript', icon: '💻', duration: '3 min' },
     { number: 4, title: 'Tester votre agent', description: 'Conversation de test en direct', icon: '🎙️', duration: '5 min' },
     { number: 5, title: 'Lancer en production', description: 'Activez votre agent vocal', icon: '🚀', duration: '1 min' }
@@ -67,7 +67,7 @@ const DEFAULT_STEPS: Record<Language, OnboardingStep[]> = {
   ],
   es: [
     { number: 1, title: 'Crear tu cuenta', description: 'Registro en 2 minutos', icon: '👤', duration: '2 min' },
-    { number: 2, title: 'Configurar tu persona', description: 'Elige entre 40 personas de negocio', icon: '🎭', duration: '5 min' },
+    { number: 2, title: 'Configurar tu persona', description: 'Elige entre 38 personas de negocio', icon: '🎭', duration: '5 min' },
     { number: 3, title: 'Integrar el widget', description: '2 líneas de código JavaScript', icon: '💻', duration: '3 min' },
     { number: 4, title: 'Probar tu agente', description: 'Conversación de prueba en vivo', icon: '🎙️', duration: '5 min' },
     { number: 5, title: 'Lanzar en producción', description: 'Activa tu agente de voz', icon: '🚀', duration: '1 min' }

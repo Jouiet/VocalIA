@@ -21,7 +21,6 @@
 10. [Architecture i18n](#10-architecture-i18n)
 11. [Flux de Données](#11-flux-de-données)
 12. [Credentials et Configuration](#12-credentials-et-configuration)
-13. [Métriques du Codebase](#13-métriques-du-codebase)
 
 ---
 
@@ -866,123 +865,22 @@ US/Other → EN + USD (Starter $49, Pro $99)
 
 ### 11.1 Flux Auth
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      AUTH FLOW                                   │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  [1] REGISTER                                                    │
-│      POST /api/auth/register                                     │
-│      Body: {email, password, name}                               │
-│      → bcrypt hash password                                      │
-│      → Create user in Google Sheets                              │
-│      → Send verification email                                   │
-│      → Return {success: true}                                    │
-│                                                                  │
-│  [2] LOGIN                                                       │
-│      POST /api/auth/login                                        │
-│      Body: {email, password}                                     │
-│      → Verify password with bcrypt                               │
-│      → Generate access_token (24h)                               │
-│      → Generate refresh_token (30d)                              │
-│      → Store refresh_token_hash in auth_sessions                 │
-│      → Return {access_token, refresh_token, user}                │
-│                                                                  │
-│  [3] AUTHENTICATED REQUEST                                       │
-│      GET /api/db/sessions                                        │
-│      Header: Authorization: Bearer {access_token}                │
-│      → Verify JWT signature                                      │
-│      → Check expiration                                          │
-│      → Extract tenant_id                                         │
-│      → Apply RLS filter                                          │
-│      → Return data                                               │
-│                                                                  │
-│  [4] REFRESH                                                     │
-│      POST /api/auth/refresh                                      │
-│      Body: {refresh_token}                                       │
-│      → Verify refresh_token in auth_sessions                     │
-│      → Generate new access_token                                 │
-│      → Return {access_token}                                     │
-│                                                                  │
-│  [5] LOGOUT                                                      │
-│      POST /api/auth/logout                                       │
-│      → Delete refresh_token from auth_sessions                   │
-│      → Return {success: true}                                    │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
+1. **REGISTER**: POST /api/auth/register → bcrypt hash → Create user in Sheets → Send verification email
+2. **LOGIN**: POST /api/auth/login → Verify bcrypt → Generate access_token (24h) + refresh_token (30d) → Store hash in auth_sessions
+3. **AUTH REQUEST**: Header `Authorization: Bearer {token}` → Verify JWT → Check expiration → Extract tenant_id → Apply RLS filter
+4. **REFRESH**: POST /api/auth/refresh → Verify refresh_token → Generate new access_token
+5. **LOGOUT**: POST /api/auth/logout → Delete refresh_token from auth_sessions
 
 ### 11.2 Flux HITL
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                      HITL FLOW                                   │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  [1] CREATE PENDING ITEM                                         │
-│      (From voice-telephony-bridge.cjs)                          │
-│      → Score BANT < threshold                                    │
-│      → POST /api/db/hitl_pending                                 │
-│      → Notify admin via WebSocket/Slack                          │
-│                                                                  │
-│  [2] ADMIN REVIEW                                                │
-│      GET /api/hitl/pending                                       │
-│      → List all pending items                                    │
-│      → Show in admin/hitl.html                                   │
-│                                                                  │
-│  [3A] APPROVE                                                    │
-│      POST /api/hitl/approve/:id                                  │
-│      → Move to hitl_history with decision=approved               │
-│      → Delete from hitl_pending                                  │
-│      → Trigger follow-up action                                  │
-│                                                                  │
-│  [3B] REJECT                                                     │
-│      POST /api/hitl/reject/:id                                   │
-│      Body: {reason}                                              │
-│      → Move to hitl_history with decision=rejected               │
-│      → Delete from hitl_pending                                  │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
+1. **CREATE**: voice-telephony-bridge.cjs → BANT score < threshold → POST /api/db/hitl_pending → Notify admin (WS/Slack)
+2. **REVIEW**: GET /api/hitl/pending → Show in admin/hitl.html
+3. **DECIDE**: POST /api/hitl/approve/:id or /reject/:id → Move to hitl_history → Delete from hitl_pending
 
-### 11.3 Flux Dashboard → Data
+### 11.3 Flux Dashboard
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                  DASHBOARD DATA FLOW                             │
-├─────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  [Client Dashboard - website/app/client/index.html]             │
-│                                                                  │
-│      ┌─────────────────────────────────────────────────┐        │
-│      │  DOMContentLoaded                               │        │
-│      │  ↓                                              │        │
-│      │  auth.requireAuth() → Redirect if not logged in │        │
-│      │  ↓                                              │        │
-│      │  api.tenants.get(user.tenant_id)               │        │
-│      │  → GET /api/db/tenants/{id}                    │        │
-│      │  → Display: mrr, nps_score, conversion_rate    │        │
-│      │  ↓                                              │        │
-│      │  api.sessions.list({tenant_id})                │        │
-│      │  → GET /api/db/sessions?tenant_id=xxx          │        │
-│      │  → Calculate: total_calls, avg_duration        │        │
-│      │  → Render charts                               │        │
-│      └─────────────────────────────────────────────────┘        │
-│                                                                  │
-│  [Admin Dashboard - website/app/admin/index.html]               │
-│                                                                  │
-│      ┌─────────────────────────────────────────────────┐        │
-│      │  auth.requireAdmin() → Redirect if not admin   │        │
-│      │  ↓                                              │        │
-│      │  api.tenants.list()                            │        │
-│      │  api.hitl.stats()                              │        │
-│      │  api.logs.list({limit: 10})                    │        │
-│      │  ↓                                              │        │
-│      │  Display: tenant count, pending HITL, logs     │        │
-│      └─────────────────────────────────────────────────┘        │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
-```
+- **Client**: requireAuth() → GET /api/db/tenants/{id} (mrr, nps, conversion) → GET /api/db/sessions?tenant_id=xxx → Render charts
+- **Admin**: requireAdmin() → tenants.list() + hitl.stats() + logs.list({limit: 10})
 
 ---
 
@@ -1016,71 +914,6 @@ data/
 
 ---
 
-## 13. MÉTRIQUES DU CODEBASE
-
-### 13.1 Résumé Global - VÉRIFIÉ `wc -l` 05/02/2026
-
-| Composant | Fichiers | Lignes | Vérification |
-|:----------|:--------:|:------:|:-------------|
-| Core Backend (.cjs) | 38 | **32,727** | `wc -l core/*.cjs` |
-| Telephony | 1 | **4,709** | `wc -l telephony/*.cjs` |
-| Personas | 2 | **5,995** | `wc -l personas/*.cjs` |
-| Widget | 8 | **9,107** | `wc -l widget/*.js` |
-| Sensors | 4 | **822** | `wc -l sensors/*.cjs` |
-| Integrations | 7 | **2,234** | `wc -l integrations/*.cjs` |
-| MCP Server (TS) | 25 | **17,630** | `wc -l mcp-server/src/**/*.ts` |
-| Website Libs (JS) | 21 | **7,563** | `wc -l website/src/lib/*.js` |
-| Website HTML | 76 | ~28,000 | `find website -name "*.html"` |
-| Locales (JSON) | 5 | **23,790** | `wc -l website/src/locales/*.json` |
-| Scripts | 63 | ~8,000 | Utilities |
-| **TOTAL Backend** | **~85** | **~55,594** | core+telephony+personas+widget+sensors+integrations |
-| **TOTAL Platform** | **~253** | **~140,577** | Tous composants |
-
-### 13.2 Vérification (05/02/2026)
-
-```bash
-# Core backend
-wc -l core/*.cjs            # 32,727 ✅
-
-# Telephony
-wc -l telephony/*.cjs       # 4,709 ✅
-
-# Personas
-wc -l personas/*.cjs        # 5,995 ✅
-
-# Widget
-wc -l widget/*.js           # 9,107 ✅
-
-# Sensors
-wc -l sensors/*.cjs         # 822 ✅
-
-# Integrations
-wc -l integrations/*.cjs    # 2,234 ✅
-
-# MCP Server
-wc -l mcp-server/src/**/*.ts # 17,630 ✅
-
-# Website libs
-wc -l website/src/lib/*.js  # 7,563 ✅
-
-# HTML pages
-find website -name "*.html" | wc -l  # 76 ✅
-
-# Locales
-wc -l website/src/locales/*.json  # 23,790 ✅
-
-# MCP Tools
-grep -c "server.tool(" mcp-server/src/index.ts  # 203 ✅
-
-# Function Tools (Telephony)
-grep -c "name: '" telephony/voice-telephony-bridge.cjs  # 25 ✅
-
-# Personas
-grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l  # 40 ✅
-```
-
----
-
 ## ANNEXE A: AGENTS A2A (4)
 
 | Agent | Fichier | Fonction |
@@ -1090,20 +923,7 @@ grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc 
 | TenantOnboardingAgent | `core/TenantOnboardingAgent.cjs` | Client setup |
 | VoiceAgentB2B | `core/voice-agent-b2b.cjs` | B2B qualification |
 
----
-
-## ANNEXE B: PROBLÈMES CONNUS
-
-| # | Problème | Impact | Status |
-|:-:|:---------|:-------|:------:|
-| 1 | Twilio credentials manquants | Telephony non fonctionnel | ⚠️ Config |
-| 2 | Deprecation warning punycode | Console noise | 🟡 Mineur |
-| 3 | Production API keys manquants | Local fallback utilisé | ⚠️ Config |
 
 ---
 
-*Document généré: 02/02/2026*
-*Màj RIGOUREUSE: 05/02/2026 - Session 250.94*
-*Méthode: Analyse bottom-up factuelle exhaustive avec `wc -l` et `grep -c`*
-*Vérification: Toutes les métriques vérifiées par commandes bash le 05/02/2026*
-*Status: PRODUCTION READY - ALL SKELETONS ELIMINATED*
+*Métriques détaillées: voir §1.2. Commandes de vérification: voir .claude/rules/factuality.md*

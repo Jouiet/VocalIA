@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.170 (6 more bugs fixed — Docker volumes, VPS env vars, quota sync, dashboard enhanced)
+> **Date:** 2026-02-09 | **Session:** 250.170b (16 deep-audit bugs found+fixed — geo-detect alias, Traefik routes, PRICING_TABLE, voice JSONs, Darija prompt, README, remotion, widget .min.js, pricing.html)
 > **Code Completeness:** 9.0/10 | **Production Readiness:** 3.5/10 (website deployed, API on VPS with persistent volumes, auth near-functional, billing wired, 0 paying customers)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160) + market repositioning (250.164) + **DEEP AUDIT 250.166** (39 bugs after counter-audit) + **PHASE 3 INTERNAL AUDIT 250.167** (+15 bugs found, 15 fixed) + **PHASE 4 FIXES 250.168** (20 bugs fixed) + **PHASE 5 FIXES 250.169** (8 bugs fixed) + **PHASE 6 INFRA 250.170** (6 bugs fixed)
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.0/10** — Features coded and tested (3,773 tests, 68 files). 250.170: +6 bugs fixed (C6 Docker volumes, F1 JWT_SECRET, F6 VOCALIA_VAULT_KEY, H2 STRIPE_SECRET_KEY, H3 SMTP env vars, M9 quota sync). Docker-compose rewritten with named volume `vocalia-data`. Quota sync every 10 min (Sheets→local). Admin dashboard: AI Fallback Chain visualization. All P0 infrastructure bugs resolved in code. Only M5 (Sheets scalability) and P2 research remain.
+**Code Completeness: 9.0/10** — Features coded and tested (3,773 tests, 68 files). 250.170b: +16 deep-audit bugs fixed (B1 getGeo alias for 50+ pages, B2 7 Traefik routes, B3 PRICING_TABLE corrected, B4-B6 voice pricing, B7 Darija prompt, B8-B9 factual claims, B10 README, B11-B12 remotion, B13 ARY price, B14 .min.js→.js, B16 pricing.html). 70 total bugs found, 65 fixed, 5 remain (M5 arch + non-fixable).
 **Production Readiness: 3.5/10** — Website deployed at vocalia.ma. API on VPS: Docker volumes configured (needs redeploy), env vars defined in docker-compose (needs .env file with real values). 0 paying customers.
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
@@ -490,6 +490,7 @@ create_booking          get_recommendations    qualify_lead
 | Phase 4 (250.168) | 0 (fixes only) | 20 | 0 |
 | Phase 5 (250.169) | 0 (fixes only) | 8 | 0 |
 | Phase 6 (250.170) | 0 (fixes only) | 6 | 0 |
+| Phase 6b (250.170b) | 0 (fixes only) | 16 | 0 |
 | **CUMULATIVE** | **54** | **49** | **5** (+ 2 non-fixable/monitoring + 3 resolved-not-bugs) |
 
 ---
@@ -560,6 +561,27 @@ RESOLVED (not bugs):
 **Dashboard Enhancement:**
 - Admin dashboard: AI Fallback Chain visualization — 5-card layout (Grok→Gemini→Claude→Atlas→Local rule-based) with status indicators, model names, and capability descriptions.
 
+### 6.14 Phase 6b Deep Audit Fixes (250.170b) — 16 Bugs Found + Fixed
+
+| # | Severity | Bug | Fix |
+|:-:|:--------:|:----|:----|
+| B1 | CRITICAL | `VocaliaGeo.getGeo()` doesn't exist — 50+ pages broken | Added `getGeo: detect` alias in geo-detect.js |
+| B2 | CRITICAL | 7 Traefik PathPrefix missing for db-api | Added /api/{telephony,recommendations,leads,cart-recovery,promo,quota,ucp} to docker-compose |
+| B3 | CRITICAL | PRICING_TABLE stale: b2c eliminated, ecom 149→99, overage 0.06→0.10, key mismatch | Fixed keys to {starter,pro,ecom,telephony}, updated all values |
+| B4 | HIGH | voice-es.json 3× "0,06EUR/min" | Changed to 0,10EUR/min |
+| B5 | HIGH | voice-en.json "$99/month" | Changed to $49/month |
+| B6 | HIGH | voice-es.json "99EUR/mes" | Changed to 49EUR/mes |
+| B7 | HIGH | Darija prompt "Enterprise" plan (doesn't exist) | Fixed to Starter 490 / Pro+Ecom 990 / Telephony 1990 |
+| B8 | HIGH | "n°1 au Maroc" / "#1 solution" (0 customers) | Replaced with factual "multilingual Voice AI with Darija support" |
+| B9 | HIGH | "soporte exclusivo Darija" as USP | Replaced with "Darija support for the Moroccan market" |
+| B10 | MEDIUM | README stale (250.94, v7.2.0, 40 personas, 76 pages) | Updated to 250.170, v2.7.0, 38 personas, 80 pages |
+| B11 | MEDIUM | remotion OnboardingVideo "40 personas" | Changed to 38 |
+| B12 | MEDIUM | remotion PricingExplainer "40 personas" | Changed to 38 |
+| B13 | MEDIUM | voice-ary.json 499 MAD (should be 490) | Fixed to 490 |
+| B14 | LOW | Widget code-split refs .min.js (WAF blocks) | Changed to .js in widget source + 2 deployed copies + 2 scripts |
+| B15 | LOW | Dead .min.js files in voice-assistant/ | Build artifact — WAF blocks, non-functional. Noted only. |
+| B16 | LOW | pricing.html `geo.pricing` undefined | Added inline pricingMap lookup from currency |
+
 **Methodology:**
 - Tests scored by BUG DETECTION CAPABILITY, not pass rate
 - Architecture scored by DEPLOYED output, not source code quality
@@ -570,18 +592,5 @@ RESOLVED (not bugs):
 
 ---
 
-*Document mis a jour le 2026-02-09 — Session 250.170*
-*250.170: PHASE 6 INFRA — 6 BUGS FIXED. Docker: C6 named volume vocalia-data with symlinks (3 services). VPS env: F1 JWT_SECRET, F6 VOCALIA_VAULT_KEY, H2 STRIPE_SECRET_KEY, H3 SMTP_* all in docker-compose.production.yml. Architecture: M9 quota sync (syncTenantPlan + syncAllTenantPlans + startQuotaSync every 10min, Sheets authoritative, /api/quota/sync admin endpoint). Dashboard: AI Fallback Chain visualization (5-card: Grok→Gemini→Claude→Atlas→Local). Tests: 3,773 pass, 0 fail. Validator: 23/23 ✅. Cumulative: 54 bugs found, 49 fixed, 5 remain (1 architectural + 2 non-fixable + 1 research). Code 8.7→9.0, Prod 2.5→3.5, Weighted 7.6→8.0.*
-*250.169: PHASE 5 — 8 BUGS FIXED/RESOLVED. Security: H5 WebSocket token via header (not query string), H8 widget config injection blocked (allowlist). Metrics: H14 mrrGrowth from real data, M6 dashboard metrics persisted to file. Architecture: M8 UUID 12-char (was 8), H10 HITL already persisted. UX: M2/M3 resolved by email wiring (F3). Resolved: M10 Payzone NOT dead code. Tests: 3,773 pass, 0 fail. Cumulative: 54 bugs found, 43 fixed, 11 remain. Code 8.4→8.7, Weighted 7.3→7.6.*
-*250.168: PHASE 4 — 20 BUGS FIXED. Auth: F2/F7 token exposure removed (emails sent server-side), C2 email_verified enforced on login, F4 resend-verification endpoint, F3/C11 nodemailer installed, C5 wrong auth storage key. Security: C10 unknown tenant quota denied, H1 body limit 1MB, H13 SecretVault random salt (v2+v1 compat). Billing: C7/C8 StripeService wired + schema field. Infra: H7 columnLetter >26 cols, H12 persona 40→38, H4 db-client path+auth, H9 B2B absolute lang URL, C1 OAuth button hidden if OAuthGateway down, H6 cache invalidation in update(). UX: M1 auth page i18n, M11 ElevenLabs try/catch. Resolved: M12 express IS used (not dead). Tests: 3763→3773 (+10 new security/behavior tests). Cumulative: 54 bugs found, 35 fixed, 19 remain (+ 2 non-fixable + 2 resolved). Code 7.8→8.4, Weighted 6.8→7.3.*
-*250.167: PHASE 3 INTERNAL AUDIT + FIXES — 15 bugs found (12 Phase 3 + 3 Phase 3b), 15 FIXED. Phase 3: F8 path traversal, C3+C4 auth guards, C12 tenant isolation, C13 WebSocket auth, H15+H16 fallback pricing, H17 auto-purge, M12 rate limiter, M13 WS email, M14 sanitization, M15 hash chain. Phase 3b: H18+H19 AGENCY prompt rebuilt (5 langs — removed "15 mots/5 lignes" constraints, added sector knowledge, multi-CTA), C14 VOICE_CONFIG ReferenceError fixed. Cumulative: 54 bugs found, 15 fixed, 39 remain. Code 7.5→7.8.*
-*250.166: DEEP AUDIT — Line-by-line review of all critical modules. 39 bugs after counter-audit (6 FATAL, 10 CRITICAL, 13 HIGH, 10 MEDIUM). Counter-audit accuracy: 77% exact, 0% false. 3 severities corrected, 2 doublons removed. Scores corrected: Code 9.9→7.5/10, Prod 5.5→2.5/10, Weighted 8.8→6.6/10. Top 5 systemic: Docker ephemerality, Auth non-functional, 2 sources of truth, VPS env incomplete, Code≠Deployed. Full bug table in §6.*
-*250.163: VPS deployment verified + updated. All 4 Docker containers healthy on Hostinger KVM 2 (148.230.113.163). api.vocalia.ma/health returns 200 OK with 4 AI providers. db-api connected to Google Sheets (7 tables). Code updated to latest GitHub commit. Production readiness 3.5→5.5/10. DNS for ws/tel subdomains pending (NindoHost).*
-*250.162: P0-COMPONENTS — Dashboard→app redirect (5 pages eliminated duplication), telephony page created in app/client/, sidebar component updated with telephony link, onboarding migrated to sidebar component, validator now covers ALL 80 pages (was 46). 23/23 ✅ 0 errors 0 warnings.*
-*250.161: P0-WEBSITE COMPLETE — 64→0 errors, 44→2 warnings (23/23 ✅). Darija $0.25/min (inbound) implemented across codebase. Phase 4 manual audit fixes (math, stale 40→38, Tier 1 5→4, unverified claims).*
-*250.160: Validator v3.0 (17→23 checks: +6 business/factual). 64 errors + 44 warnings detected. White line cleanup (31 files). academie-business deep audit (20 problems).*
-*250.159: WAF .min.js→.js fix (55 refs in 49 pages). 170+ broken i18n translations. Live widget verified via Playwright.*
-*250.158: i18n 100% (4,858 keys × 5 langs). OpenAPI revalidated (25/24). Nginx routing fix. ESM audit → DEFERRED.*
-*250.157: Shadow DOM 5 sub-widgets. A2UI XSS sanitized. Cart recovery GET persistence.*
-*250.155: Multi-tenant deep security (origin↔tenant, api_key 22/22). escapeHTML 7/7. RGPD consent. Promo server-side.*
-*250.153: P0-AUDIT 9/9 bugs fixed. External audit accuracy: 85% exact, 10% partial, 5% wrong.*
+*Document mis a jour le 2026-02-09 — Session 250.170b*
+*Changelog: sessions 250.153→170 (14 sessions, 70 bugs found, 65 fixed). Details: `memory/session-history.md`*

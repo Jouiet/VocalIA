@@ -71,7 +71,7 @@ services:
     labels:
       - "traefik.enable=true"
       # Route all DB API paths to this service
-      - "traefik.http.routers.vocalia-db.rule=Host(`api.vocalia.ma`) && (PathPrefix(`/api/auth`) || PathPrefix(`/api/hitl`) || PathPrefix(`/api/kb`) || PathPrefix(`/api/tenants`) || PathPrefix(`/api/logs`) || PathPrefix(`/api/catalog`) || PathPrefix(`/api/db`))"
+      - "traefik.http.routers.vocalia-db.rule=Host(`api.vocalia.ma`) && (PathPrefix(`/api/auth`) || PathPrefix(`/api/hitl`) || PathPrefix(`/api/kb`) || PathPrefix(`/api/tenants`) || PathPrefix(`/api/logs`) || PathPrefix(`/api/catalog`) || PathPrefix(`/api/db`) || PathPrefix(`/api/telephony`) || PathPrefix(`/api/recommendations`) || PathPrefix(`/api/leads`) || PathPrefix(`/api/cart-recovery`) || PathPrefix(`/api/promo`) || PathPrefix(`/api/quota`) || PathPrefix(`/api/ucp`))"
       - "traefik.http.routers.vocalia-db.entrypoints=websecure"
       - "traefik.http.routers.vocalia-db.tls=true"
       - "traefik.http.routers.vocalia-db.tls.certresolver=mytlschallenge"

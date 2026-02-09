@@ -232,7 +232,7 @@ ${client.domain}/
 
 Dans le \`<head>\` ou avant \`</body>\`:
 \`\`\`html
-<script src="/voice-assistant/voice-widget.min.js" defer></script>
+<script src="/voice-assistant/voice-widget.js" defer></script>
 \`\`\`
 
 ### 3. Configurer le booking (si applicable)

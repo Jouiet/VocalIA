@@ -596,7 +596,7 @@ window.VOICE_WIDGET_CONFIG = ${JSON.stringify(config, null, 2)};
 
   // 3. Embed snippet for client
   const embedSnippet = `<!-- VocalIA Voice Widget - ${config.client.name} -->
-<script src="https://vocalia.ma/voice-assistant/voice-widget.min.js"></script>
+<script src="https://vocalia.ma/voice-assistant/voice-widget.js"></script>
 <script src="${config.client.domain}/voice-widget-config.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {

@@ -204,6 +204,7 @@ const VocaliaGeo = (function () {
 
     return {
         detect,
+        getGeo: detect,
         resolveConfig,
         getCurrencySymbol
     };

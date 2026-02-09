@@ -1726,11 +1726,11 @@
     // In code-split mode: sub-widgets lazy-load from separate .min.js files.
 
     const WIDGET_CHUNKS = {
-        shippingBar:    { file: 'voice-widget-ecommerce-shipping.min.js', global: 'VocaliaShippingBar' },
-        abandonedCart:  { file: 'voice-widget-ecommerce-cart.min.js',     global: 'VocaliaAbandonedCart' },
-        quiz:           { file: 'voice-widget-ecommerce-quiz.min.js',     global: 'VocalIAQuiz' },
-        spinWheel:      { file: 'voice-widget-ecommerce-spin.min.js',     global: 'VocaliaSpinWheel' },
-        recommendations:{ file: 'voice-widget-ecommerce-carousel.min.js', global: 'VocalIARecommendations' }
+        shippingBar:    { file: 'voice-widget-ecommerce-shipping.js', global: 'VocaliaShippingBar' },
+        abandonedCart:  { file: 'voice-widget-ecommerce-cart.js',     global: 'VocaliaAbandonedCart' },
+        quiz:           { file: 'voice-widget-ecommerce-quiz.js',     global: 'VocalIAQuiz' },
+        spinWheel:      { file: 'voice-widget-ecommerce-spin.js',     global: 'VocaliaSpinWheel' },
+        recommendations:{ file: 'voice-widget-ecommerce-carousel.js', global: 'VocalIARecommendations' }
     };
 
     const chunkPromises = {};
