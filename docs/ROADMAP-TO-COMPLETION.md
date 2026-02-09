@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.177b (Architecture audit + data-flow documentation + Deep MCP audit: 6 bugs D10-D15)
+> **Date:** 2026-02-09 | **Session:** 250.178 (Website factual audit: stale pricing, geo-aware dynamic prices, pricing.html overage)
 > **Code Completeness:** 8.5/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain) + **DEEP SYSTEM AUDIT 250.175** (21 reported, ~62% accurate, 7 confirmed+fixed) + **ULTRA-DEEP AUDIT 250.176** (9 bugs found+fixed: telephony, OAuthGateway, auth-service, remotion-hitl) + **DEEP MCP AUDIT 250.177b** (6 bugs D10-D15: param swaps, email security, Klaviyo API)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed) + **MCP-SOTA 250.171c** (Phase 0+1+2 complete) + **DEEP CODE AUDIT 250.172** (ALL 55 core modules audited, 69 new bugs) + **COUNTER-AUDIT 250.173** (20 NEW bugs found, 14 fixed) + **MASS FIX 250.172-173** (74 total bugs fixed) + **SESSION 250.174** (NM7 CORS dedup, dashboard System Intelligence, status live health, investor fallback chain) + **DEEP SYSTEM AUDIT 250.175** (21 reported, ~62% accurate, 7 confirmed+fixed) + **ULTRA-DEEP AUDIT 250.176** (9 bugs found+fixed: telephony, OAuthGateway, auth-service, remotion-hitl) + **DEEP MCP AUDIT 250.177b** (6 bugs D10-D15: param swaps, email security, Klaviyo API) + **WEBSITE AUDIT 250.178** (homepage stale $0.06→$0.10, geo-aware data-price-key, pricing.html dynamic overage)
 
 ---
 
@@ -542,10 +542,11 @@ create_booking          get_recommendations    qualify_lead
 | **P0-ULTRA-DEEP (250.176)** | ✅ **9/9 FIXED** | Ultra-deep codebase audit: telephony DATA_DIR path outside project (D1), 4 function tool handlers missing return → Grok gets undefined output (D2-D5), OAuthGateway XSS in success+error callbacks (D6-D7), auth-service JSON.parse preferences crash (D8), remotion-hitl JSON.parse audit log crash (D9). | **8.5** |
 | **P0-DEEP-MCP (250.177b)** | ✅ **6/6 FIXED** | Deep MCP tool audit (ALL 29 tool files): D10-D11 BigCommerce cancel_order+refund_order swapped params (accessToken↔storeHash), D12 PrestaShop update_order_status swapped params (apiKey↔url), D13 email attachment path traversal (validateAttachmentPath), D14 email template XSS (escapeHtml), D15 Klaviyo API revision 2024-02-15→2026-01-15. | **8.5** |
 | **P0-DX-DOCS (250.177)** | ✅ **DONE** | Architecture corrections (8 HTTP servers, deployed/non-deployed split), data-flow documentation (§11: widget critical path, realtime voice, telephony, e-commerce, inter-service map). | **8.5** |
+| **P0-WEBSITE-PRICING (250.178)** | ✅ **DONE** | Homepage stale $0.06→$0.10 (not caught by validator — split across elements). Geo-aware `data-price-key` pattern on homepage (MAD/EUR/USD). `updateCurrencyUI()` enhanced to update prices+symbols. Confusing "5 Disponibilité"→"5 Niveaux IA" (5 AI fallback levels). Pricing.html telephony overage text now dynamic. i18n `stats.ai_levels` added to all 5 locales. | **8.5** |
 
 **Code Completeness: 8.5/10** | **Production Readiness: 4.0/10** | **Weighted: 8.3/10** | **MCP: 9.0/10**
 
-**Remaining actionable bugs: 0** (verified 250.177b)
+**Remaining actionable bugs: 0** (verified 250.178)
 
 The previous "12 remaining" was a stale number propagated across sessions without verification.
 Rigorous per-item audit reveals all 185 reported issues are resolved:
@@ -812,5 +813,5 @@ The "12 remaining" count from 250.174 was a stale number. Per-item audit in 250.
 
 ---
 
-*Document mis a jour le 2026-02-09 — Session 250.177b*
-*Changelog: sessions 250.153→177b (22 sessions, 185 bugs reported, 185 resolved, 0 remaining). Details: `memory/session-history.md`*
+*Document mis a jour le 2026-02-09 — Session 250.178*
+*Changelog: sessions 250.153→178 (23 sessions, 185 bugs reported, 185 resolved, 0 remaining + 3 website fixes). Details: `memory/session-history.md`*
