@@ -153,7 +153,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | api.vocalia.ma/api/db/health | ✅ UP (Google Sheets connected, 7 tables) |
 | VPS Hostinger (KVM 2) | ✅ Running (2 CPU, 8 GB, 148.230.113.163) |
 | Docker containers (4) | ✅ All healthy (vocalia-api, db-api, realtime, telephony) |
-| Non-deployed servers (4) | OAuth 3010, Webhook 3011, Remotion HITL 3012, MCP 3015 |
+| Non-deployed servers (4→1) | ~~OAuth 3010, Webhook 3011, MCP 3015~~ → docker-compose profiles (250.178). Only Remotion HITL 3012 remains standalone (library mode via voice-api) |
 | Traefik reverse proxy | ✅ SSL/TLS auto (Let's Encrypt) |
 | api.vocalia.ma/realtime/health | ✅ UP (7 voices, grok-realtime) |
 | api.vocalia.ma/telephony/health | ✅ UP (Twilio configured) |
@@ -543,6 +543,7 @@ create_booking          get_recommendations    qualify_lead
 | **P0-DEEP-MCP (250.177b)** | ✅ **6/6 FIXED** | Deep MCP tool audit (ALL 29 tool files): D10-D11 BigCommerce cancel_order+refund_order swapped params (accessToken↔storeHash), D12 PrestaShop update_order_status swapped params (apiKey↔url), D13 email attachment path traversal (validateAttachmentPath), D14 email template XSS (escapeHtml), D15 Klaviyo API revision 2024-02-15→2026-01-15. | **8.5** |
 | **P0-DX-DOCS (250.177)** | ✅ **DONE** | Architecture corrections (8 HTTP servers, deployed/non-deployed split), data-flow documentation (§11: widget critical path, realtime voice, telephony, e-commerce, inter-service map). | **8.5** |
 | **P0-WEBSITE-PRICING (250.178)** | ✅ **DONE** | Homepage stale $0.06→$0.10 (not caught by validator — split across elements). Geo-aware `data-price-key` pattern on homepage (MAD/EUR/USD). `updateCurrencyUI()` enhanced to update prices+symbols. Confusing "5 Disponibilité"→"5 Niveaux IA" (5 AI fallback levels). Pricing.html telephony overage text now dynamic. i18n `stats.ai_levels` added to all 5 locales. | **8.5** |
+| **P0-INFRA-PROFILES (250.178)** | ✅ **DONE** | Docker Compose profiles for 3 non-deployed servers: OAuth Gateway + Webhook Router (`--profile integrations`), MCP Server (`--profile mcp`). Remotion HITL excluded (library mode works inside voice-api). Traefik routing: /oauth (95), /webhook (93), /mcp (85). Deploy: `docker-compose up -d` (core 4) or `--profile integrations --profile mcp` (all 7). | **8.5** |
 
 **Code Completeness: 8.5/10** | **Production Readiness: 4.0/10** | **Weighted: 8.3/10** | **MCP: 9.0/10**
 
@@ -590,6 +591,7 @@ RESEARCH (not a bug):
 ⚠️ OPERATIONS — CRITICAL (NOT code):
   1. VPS REDEPLOY: /respond BROKEN on production — local code has ALL fixes since 250.167
      → git pull + docker-compose up on VPS = instant deploy of ALL 185 bug fixes
+     → NEW: docker-compose now has 7 services (4 core + 3 optional via profiles)
   2. VPS .env: Create .env with JWT_SECRET, SMTP_HOST/USER/PASS, STRIPE_SECRET_KEY, VOCALIA_VAULT_KEY
   3. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
   4. First paying customer → first real traffic → validate entire stack
@@ -814,4 +816,4 @@ The "12 remaining" count from 250.174 was a stale number. Per-item audit in 250.
 ---
 
 *Document mis a jour le 2026-02-09 — Session 250.178*
-*Changelog: sessions 250.153→178 (23 sessions, 185 bugs reported, 185 resolved, 0 remaining + 3 website fixes). Details: `memory/session-history.md`*
+*Changelog: sessions 250.153→178 (23 sessions, 185 bugs reported, 185 resolved, 0 remaining + 3 website fixes + docker-compose profiles). Details: `memory/session-history.md`*
