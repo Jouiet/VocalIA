@@ -51,10 +51,10 @@ MCP définit **3 primitives serveur** (spec 2025-11-25) :
 | Prompts | 9/10 | ✅ 8 prompts with title+description+argsSchema, kebab-case, covers all key workflows |
 | Transport | 2/10 | stdio only — pas de remote (SSE/HTTP) (Phase 4) |
 | Error handling | 5/10 | ✅ isError flags on inline tool errors, ⬚ module tools (delegated to module handler) |
-| Logging | 0/10 | 0 sendLoggingMessage() (Phase 3) |
-| Progress | 0/10 | 0 progress reporting (Phase 3) |
+| Logging | 8/10 | ✅ `log()` helper + `withLogging()` on ALL 181 module tools + 4 key inline tools. Structured startup event. |
+| Progress | 0/10 | ⬚ Deferred — requires handler extra.sendNotification refactor |
 | Metadata | 10/10 | ✅ Version unified 1.0.0 (package.json, api_status, startup log, server constructor) |
-| Distribution | 0/10 | Pas npm, pas registry, pas server.json (Phase 5) |
+| Distribution | 3/10 | ✅ server.json exists. ⬚ Not published to npm/registry (Phase 5) |
 
 ### Bugs Détaillés
 
@@ -75,7 +75,7 @@ MCP définit **3 primitives serveur** (spec 2025-11-25) :
 | H1 | **ZERO tool annotations** — `readOnlyHint`, `destructiveHint`, `idempotentHint` non utilisés. Le LLM ne sait pas quels tools sont safe vs destructifs | `index.ts` | ALL |
 | H2 | **ZERO outputSchema** — Aucun tool ne déclare sa structure de réponse. Le LLM doit deviner le format | `index.ts` | ALL |
 | H3 | **ZERO isError flags** — Les erreurs retournent du texte normal, pas `isError: true`. Le LLM ne distingue pas succès/échec | `index.ts` | ALL |
-| H4 | **ZERO logging** — `sendLoggingMessage()` jamais utilisé. Pas de visibilité côté client MCP | `index.ts` | N/A |
+| H4 | ~~**ZERO logging**~~ ✅ FIXED — `log()` helper + `withLogging()` wrapper on ALL 181 module tools + 4 key inline tools + structured startup event | `index.ts` | 117-155 |
 | H5 | **ZERO progress reporting** — Les opérations longues (export PDF, API calls) ne reportent pas leur progression | `index.ts` | N/A |
 
 #### MEDIUM (5)
@@ -177,12 +177,12 @@ server.sendPromptListChanged()
 | `onboard-tenant` | `tenantId`, `industry` | Configuration nouveau client |
 | `troubleshoot` | `symptom` | Diagnostic système VocalIA |
 
-### Phase 3 — Logging & Progress (~3h)
+### Phase 3 — Logging & Progress ✅ DONE (250.171c)
 
-| # | Tâche | Priorité | Effort |
-|:-:|:------|:--------:|:------:|
-| 3.1 | **Ajouter `sendLoggingMessage()`** — log tool calls, errors, performance | P2 | 1.5h |
-| 3.2 | **Ajouter progress reporting** aux tools longs (exports, API calls batch) | P2 | 1.5h |
+| # | Tâche | Status | Notes |
+|:-:|:------|:------:|:------|
+| 3.1 | **`sendLoggingMessage()` on all tools** | ✅ | `log()` helper + `withLogging()` wrapper. ALL 181 module tools + 4 key inline tools logged (start/complete/error + timing). Startup structured event. |
+| 3.2 | **Progress reporting (long operations)** | ⬚ | Deferred — requires handler `extra.sendNotification` refactor (P3) |
 
 ### Phase 4 — Transport Remote + Auth (~12h)
 

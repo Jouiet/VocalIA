@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,799 tests (68 .mjs, 0 skip)
+> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,804 tests (68 .mjs, 0 skip)
 > 203 MCP tools + 6 resources + 8 prompts | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture

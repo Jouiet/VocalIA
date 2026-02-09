@@ -443,3 +443,35 @@ describe('MCP prompts', () => {
     assert.strictEqual(deprecated, 0, `Found ${deprecated} deprecated server.resource() calls — should be 0`);
   });
 });
+
+// ─── Logging Infrastructure ────────────────────────────────────────────────
+
+describe('MCP logging', () => {
+  test('log() helper function exists', () => {
+    assert.ok(indexContent.includes('function log(level:'),
+      'log() helper function should be defined');
+  });
+
+  test('withLogging() wrapper function exists', () => {
+    assert.ok(indexContent.includes('function withLogging'),
+      'withLogging() wrapper function should be defined');
+  });
+
+  test('registerModuleTool uses withLogging wrapper', () => {
+    assert.ok(indexContent.includes('withLogging(toolDef.name, toolDef.handler)'),
+      'registerModuleTool should wrap handler with withLogging');
+  });
+
+  test('key inline tools wrapped with withLogging', () => {
+    const wrapped = (indexContent.match(/withLogging\("[^"]+"/g) || []).map(m => m.match(/"([^"]+)"/)?.[1]);
+    const expected = ['translation_qa_check', 'voice_generate_response', 'telephony_initiate_call', 'booking_create'];
+    const missing = expected.filter(t => !wrapped.includes(t));
+    assert.strictEqual(missing.length, 0,
+      `Missing withLogging on: ${missing.join(', ')}`);
+  });
+
+  test('startup logging with structured data', () => {
+    assert.ok(indexContent.includes('"server_started"'),
+      'main() should log structured server_started event');
+  });
+});

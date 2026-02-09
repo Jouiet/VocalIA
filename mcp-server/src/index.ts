@@ -878,7 +878,7 @@ server.registerTool(
         isError: true,
       };
     }
-  }
+  })
 );
 
 // Tool 11: telephony_get_status - Get telephony system status
@@ -1220,7 +1220,7 @@ server.registerTool(
     },
     annotations: CREATE_OP,
   },
-  async ({ name, email, phone, slot, meetingType = "discovery_call", qualificationScore, notes }) => {
+  withLogging("booking_create", async ({ name, email, phone, slot, meetingType = "discovery_call", qualificationScore, notes }) => {
     // REAL: Save to persistent queue file
     const bookingId = saveToBookingQueue({
       type: "booking",
@@ -1254,7 +1254,7 @@ server.registerTool(
         }, null, 2),
       }],
     };
-  }
+  })
 );
 
 // =============================================================================
@@ -2309,16 +2309,19 @@ async function main() {
   console.error("VocalIA MCP Server v1.0.0 running on stdio");
   console.error(`Voice API URL: ${VOCALIA_API_URL}`);
   console.error(`Telephony URL: ${VOCALIA_TELEPHONY_URL}`);
-  console.error("Tools: 203 (11 always available, 192 require external services)");
-  console.error("Resources: 6 (personas, persona-detail, knowledge-base, market-rules, pricing, languages)");
-  console.error("Prompts: 8 (voice-response, qualify-lead, book-appointment, check-order, create-invoice, export-report, onboard-tenant, troubleshoot)");
-  console.error("E-commerce: Shopify, WooCommerce, Magento, Wix, Squarespace, BigCommerce, PrestaShop (~64% market)");
-  console.error("CRM: HubSpot (7 tools - CTI, Contacts, Deals, Pipelines)");
-  console.error("Marketing: Klaviyo (5 tools - Profiles, Events, Segments)");
-  console.error("Communications: Twilio (5 tools - SMS, Voice, WhatsApp)");
-  console.error("Payments: Stripe (19 tools - Payment Links, Checkout, Invoices, Refunds)");
-  console.error("Integrations: 28 native + iPaaS (Zapier/Make/n8n → +7000 apps)");
+  console.error("Tools: 203 | Resources: 6 | Prompts: 8");
   console.error(`Booking queue: ${BOOKING_QUEUE_PATH}`);
+
+  // MCP protocol logging — visible to connected clients
+  log("info", {
+    event: "server_started",
+    version: "1.0.0",
+    capabilities: { tools: 203, resources: 6, prompts: 8 },
+    voice_api: VOCALIA_API_URL,
+    telephony: VOCALIA_TELEPHONY_URL,
+    personas: Object.values(PERSONAS_DATA).flat().length,
+    languages: 5,
+  }, "startup");
 }
 
 main().catch((error) => {

@@ -299,7 +299,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 3,799 tests | 3,799 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.171c)
+**TOTAL: 3,804 tests | 3,804 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.171c)
 
 Top test suites (by count):
 
@@ -309,7 +309,7 @@ Top test suites (by count):
 | voice-api | 105 | Rebuilt 250.115 |
 | db-api | 94 | Rebuilt 250.115 |
 | widget | 92 | 3 bugs fixed 250.127 |
-| mcp-server | 105 | Rebuilt 250.171c (tools+resources+prompts) |
+| mcp-server | 110 | Rebuilt 250.171c (tools+resources+prompts+logging) |
 | telephony-pure | 76 | Real functions |
 | persona-audit | 711 | 38 × 5 langs |
 
