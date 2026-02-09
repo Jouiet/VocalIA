@@ -453,11 +453,13 @@ function createManager(path = '/ws', options = {}) {
     ? 'localhost:3013'
     : 'api.vocalia.ma';
 
-  // Add token to URL if provided
+  // H5 fix: Send token via Sec-WebSocket-Protocol header (not query string)
   const token = options.token || (typeof window !== 'undefined' && window.VocaliaAuth?.getAccessToken?.());
-  const tokenQuery = token ? `?token=${encodeURIComponent(token)}` : '';
+  if (token && !options.protocols) {
+    options.protocols = [token];
+  }
 
-  const url = `${protocol}//${host}${path}${tokenQuery}`;
+  const url = `${protocol}//${host}${path}`;
   return new WebSocketManager(url, options);
 }
 

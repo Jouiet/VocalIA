@@ -1,0 +1,20 @@
+{
+  "totalCalls": 0,
+  "totalMinutes": 0,
+  "hotLeads": 0,
+  "warmLeads": 0,
+  "coolLeads": 0,
+  "coldLeads": 0,
+  "totalLeadsQualified": 0,
+  "languageDistribution": {
+    "fr": 0,
+    "en": 0,
+    "es": 0,
+    "ar": 0,
+    "ary": 0
+  },
+  "dailyCalls": {},
+  "monthStartDate": "2026-02",
+  "npsResponses": [],
+  "lastUpdated": 1770593136639
+}

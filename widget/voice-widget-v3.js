@@ -3575,14 +3575,33 @@
     // INITIALIZATION
     // ============================================================
 
+    // H8 fix: Allowlist of safe config keys that host pages may override
+    const SAFE_CONFIG_KEYS = new Set([
+        'DEFAULT_LANG', 'ECOMMERCE_MODE', 'EXIT_INTENT_ENABLED',
+        'EXIT_INTENT_DELAY', 'EXIT_INTENT_SENSITIVITY', 'EXIT_INTENT_COOLDOWN',
+        'EXIT_INTENT_MOBILE_SCROLL_RATIO', 'EXIT_INTENT_PAGES',
+        'SOCIAL_PROOF_ENABLED', 'SOCIAL_PROOF_INTERVAL', 'SOCIAL_PROOF_DURATION',
+        'SOCIAL_PROOF_MAX_SHOWN', 'MAX_CAROUSEL_ITEMS', 'AI_MODE', 'API_TIMEOUT'
+    ]);
+
+    function safeConfigMerge(source) {
+        if (!source || typeof source !== 'object') return;
+        for (const key of Object.keys(source)) {
+            if (SAFE_CONFIG_KEYS.has(key)) {
+                CONFIG[key] = source[key];
+            }
+        }
+    }
+
     async function init() {
         try {
             // Priority 1: Pick up injected config from distributions (WordPress/Shopify/Wix)
+            // H8 fix: Only allow safe keys — API URLs, tenant_id etc. cannot be overridden
             if (window.VOCALIA_CONFIG_INJECTED) {
-                Object.assign(CONFIG, window.VOCALIA_CONFIG_INJECTED);
+                safeConfigMerge(window.VOCALIA_CONFIG_INJECTED);
             }
             if (window.VOCALIA_CONFIG) {
-                Object.assign(CONFIG, window.VOCALIA_CONFIG);
+                safeConfigMerge(window.VOCALIA_CONFIG);
             }
 
             const lang = detectLanguage();

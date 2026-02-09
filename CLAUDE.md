@@ -44,10 +44,10 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 8.4/10 — 250.168: 20 bugs fixed (auth tokens no longer leaked, email_verified enforced, nodemailer wired, StripeService customer_id saved, SecretVault random salt, >26 cols, body limit, quota bypass denied). Auth near-functional in code (needs SMTP on VPS). 54 total bugs (35 fixed, 19 remain)
+- **Code completeness**: 8.7/10 — 250.169: +8 bugs fixed (WebSocket auth via header, widget config injection blocked, mrrGrowth real data, dashboard metrics persisted, UUID 12-char, HITL already persisted, signup/forgot UX resolved). All P1 code bugs resolved. 54 total bugs (43 fixed, 11 remain — mostly VPS infra)
 - **Production readiness**: 2.5/10 — Website deployed, API on VPS BUT: Docker data ephemeral, 7 missing VPS env vars, SMTP not configured. 0 paying customers
 - **Market strategy**: 1. Europe → 2. MENA → 3. International → 4. Morocco. USP = price (60% cheaper EU) + widget+telephony unified. Darija = 1 of 5 languages.
 - **VPS**: Hostinger KVM 2 (148.230.113.163) — vocalia-api, db-api, realtime, telephony. Traefik SSL. MISSING: Docker volumes, JWT_SECRET, VOCALIA_VAULT_KEY, STRIPE_SECRET_KEY, SMTP_*
 - **Next**: VPS infra fixes (Docker volumes, env vars, SMTP) → First paying customer
 
-*Last update: 09/02/2026 - Session 250.168 (Phase 4: 20 bugs fixed, 19 remain. Code 7.8→8.4, Weighted 6.8→7.3)*
+*Last update: 09/02/2026 - Session 250.169 (Phase 5: 8 bugs fixed, 11 remain. Code 8.4→8.7, Weighted 7.3→7.6)*

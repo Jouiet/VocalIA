@@ -265,7 +265,36 @@ const latencyMetrics = {
 };
 
 // Session 250: Dashboard metrics tracking
-const dashboardMetrics = {
+// M6 fix: Persist dashboard metrics to file (survive restart)
+const METRICS_DIR = path.join(__dirname, '..', 'data', 'metrics');
+const METRICS_FILE = path.join(METRICS_DIR, 'dashboard-metrics.json');
+
+function loadPersistedMetrics() {
+  try {
+    if (fs.existsSync(METRICS_FILE)) {
+      return JSON.parse(fs.readFileSync(METRICS_FILE, 'utf8'));
+    }
+  } catch (e) {
+    console.warn(`⚠️ Could not load persisted metrics: ${e.message}`);
+  }
+  return null;
+}
+
+function persistMetrics() {
+  try {
+    if (!fs.existsSync(METRICS_DIR)) {
+      fs.mkdirSync(METRICS_DIR, { recursive: true });
+    }
+    const tempPath = `${METRICS_FILE}.tmp`;
+    fs.writeFileSync(tempPath, JSON.stringify(dashboardMetrics, null, 2));
+    fs.renameSync(tempPath, METRICS_FILE);
+  } catch (e) {
+    // Silent — metrics persistence is best-effort
+  }
+}
+
+const savedMetrics = loadPersistedMetrics();
+const dashboardMetrics = savedMetrics || {
   totalCalls: 0,
   totalMinutes: 0,
   hotLeads: 0,
@@ -280,6 +309,10 @@ const dashboardMetrics = {
   lastUpdated: Date.now()
 };
 
+// Persist metrics every 5 minutes (unref to not block process exit in tests)
+const _metricsTimer = setInterval(persistMetrics, 5 * 60 * 1000);
+if (_metricsTimer.unref) _metricsTimer.unref();
+
 // Session 250.44: Admin dashboard metrics tracking
 const adminMetrics = {
   startTime: Date.now(),
@@ -292,6 +325,7 @@ const adminMetrics = {
     mcp: 'operational'
   },
   totalMRR: 0,
+  previousMRR: 0, // H14: Previous month MRR for growth calculation
   apiUsage24h: { requests: 0, errors: 0, avgLatency: 87 },
   lastHealthCheck: Date.now()
 };
@@ -455,13 +489,17 @@ function getAdminMetrics() {
     totalCallsToday += tenant.callsToday || 0;
   }
 
+  // H14 fix: Calculate MRR growth from actual data instead of hardcoded 18%
+  const previousMRR = adminMetrics.previousMRR || 0;
+  const mrrGrowth = previousMRR > 0 ? Math.round(((totalMRR - previousMRR) / previousMRR) * 100) : 0;
+
   return {
     stats: {
       tenantsActive: totalTenants,
       callsToday: totalCallsToday || dashboardMetrics.totalCalls,
       activeCalls: dashboardMetrics.activeCalls || 0,
       mrr: totalMRR,
-      mrrGrowth: 18, // Month-over-month growth percentage
+      mrrGrowth,
       avgLatency: Math.round(adminMetrics.apiUsage24h.avgLatency) || 87,
       uptime: reportedUptime
     },
@@ -694,6 +732,13 @@ function updateDashboardMetrics(language, durationMs, session) {
 
   // Reset monthly stats if new month
   if (dashboardMetrics.monthStartDate !== currentMonth) {
+    // H14: Snapshot current MRR as previousMRR before reset
+    let currentMRR = 0;
+    for (const tenant of adminMetrics.tenants.values()) {
+      currentMRR += tenant.mrr || 0;
+    }
+    adminMetrics.previousMRR = currentMRR;
+
     dashboardMetrics.totalCalls = 0;
     dashboardMetrics.totalMinutes = 0;
     dashboardMetrics.hotLeads = 0;

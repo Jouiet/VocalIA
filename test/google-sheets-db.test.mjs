@@ -214,11 +214,11 @@ describe('GoogleSheetsDB generateId', () => {
     assert.ok(db.generateId().length > 0);
   });
 
-  test('returns 8-character hex string (UUID first segment)', () => {
+  test('returns 12-character hex string (M8 fix: reduced collision probability)', () => {
     const db = new GoogleSheetsDB();
     const id = db.generateId();
-    assert.strictEqual(id.length, 8);
-    assert.ok(/^[0-9a-f]{8}$/.test(id));
+    assert.strictEqual(id.length, 12);
+    assert.ok(/^[0-9a-f]{12}$/.test(id));
   });
 
   test('generates unique IDs', () => {
@@ -389,7 +389,7 @@ describe('GoogleSheetsDB applyDefaults', () => {
     const db = new GoogleSheetsDB();
     const result = db.applyDefaults('tenants', { name: 'Test', email: 'a@b.com' });
     assert.ok(result.id);
-    assert.strictEqual(result.id.length, 8);
+    assert.strictEqual(result.id.length, 12); // M8 fix: 12 hex chars
   });
 
   test('preserves provided ID', () => {

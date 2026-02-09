@@ -201,7 +201,8 @@ class GoogleSheetsDB {
    * Generate unique ID
    */
   generateId() {
-    return crypto.randomUUID().split('-')[0];
+    // M8 fix: 12 hex chars instead of 8 — collision probability ~1 in 281 trillion
+    return crypto.randomUUID().replace(/-/g, '').substring(0, 12);
   }
 
   /**

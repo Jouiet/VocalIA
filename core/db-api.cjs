@@ -2998,45 +2998,87 @@ async function handleRequest(req, res) {
  * Handle WebSocket connection
  */
 function handleWebSocketConnection(ws, req) {
-  // Extract token from query string
+  // H5 fix: Accept token from Sec-WebSocket-Protocol header OR first message (not query string)
+  // Browser WebSocket API can't set custom headers, so we use subprotocol for token transport
   const parsedUrl = url.parse(req.url, true);
-  const token = parsedUrl.query.token;
+  const headerToken = req.headers['sec-websocket-protocol'];
+  const queryToken = parsedUrl.query.token; // Backward compat (deprecated)
+  const token = headerToken || queryToken;
+
+  if (queryToken && !headerToken) {
+    console.warn('⚠️ [WS] Token in query string is deprecated — use Sec-WebSocket-Protocol header');
+  }
 
   if (!token) {
-    ws.close(4001, 'Authorization required');
-    return;
-  }
+    // Allow unauthenticated connection — must send auth message within 5s
+    ws.isAlive = true;
+    ws.authenticated = false;
+    wsClients.set(ws, { user: null, channels: new Set() });
 
-  let user;
-  try {
-    user = authService.verifyToken(token);
-  } catch (e) {
-    ws.close(4002, 'Invalid or expired token');
-    return;
-  }
+    const authTimeout = setTimeout(() => {
+      if (!ws.authenticated) {
+        ws.close(4001, 'Authentication timeout — send auth message within 5 seconds');
+      }
+    }, 5000);
+    ws._authTimeout = authTimeout;
+  } else {
+    let user;
+    try {
+      user = authService.verifyToken(token);
+    } catch (e) {
+      ws.close(4002, 'Invalid or expired token');
+      return;
+    }
 
-  // Initialize client data
-  ws.isAlive = true;
-  wsClients.set(ws, { user, channels: new Set() });
-  console.log(`✅ [WS] Client connected: ${user.email} (${user.role})`);
+    ws.isAlive = true;
+    ws.authenticated = true;
+    wsClients.set(ws, { user, channels: new Set() });
+    console.log(`✅ [WS] Client authenticated via ${headerToken ? 'header' : 'query'}: ${user.role}`);
+
+    ws.send(JSON.stringify({
+      type: 'connected',
+      user: { id: user.sub, role: user.role },
+      timestamp: new Date().toISOString()
+    }));
+  }
 
   // Handle pong for heartbeat
   ws.on('pong', () => {
     ws.isAlive = true;
   });
 
-  // Send welcome message — Session 250.167: removed email (info leak)
-  ws.send(JSON.stringify({
-    type: 'connected',
-    user: { id: user.sub, role: user.role },
-    timestamp: new Date().toISOString()
-  }));
-
   // Handle incoming messages
   ws.on('message', (raw) => {
     try {
       const msg = JSON.parse(raw.toString());
       const clientData = wsClients.get(ws);
+
+      // H5: Handle auth message for token-less connections
+      if (msg.type === 'auth') {
+        if (ws.authenticated) return; // Already authenticated
+        try {
+          const user = authService.verifyToken(msg.token);
+          ws.authenticated = true;
+          if (ws._authTimeout) clearTimeout(ws._authTimeout);
+          clientData.user = user;
+          wsClients.set(ws, clientData);
+          console.log(`✅ [WS] Client authenticated via message: ${user.role}`);
+          ws.send(JSON.stringify({
+            type: 'connected',
+            user: { id: user.sub, role: user.role },
+            timestamp: new Date().toISOString()
+          }));
+        } catch (e) {
+          ws.close(4002, 'Invalid or expired token');
+        }
+        return;
+      }
+
+      // Reject unauthenticated messages (except auth)
+      if (!ws.authenticated) {
+        ws.send(JSON.stringify({ type: 'error', message: 'Not authenticated' }));
+        return;
+      }
 
       switch (msg.type) {
         case 'subscribe':
