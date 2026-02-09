@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.171 (benchmark SWOT, client dashboard quota, live deployment audit, **EXTERNAL AUDIT 250.171b** — 9 bugs fixed)
-> **Code Completeness:** 9.3/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
+> **Date:** 2026-02-09 | **Session:** 250.171c (MCP-SOTA Phase 0+1 DONE — 203 tools migrated to modern API with descriptions+annotations)
+> **Code Completeness:** 9.4/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed, 2 false alarm, 2 already fixed)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified) + **EXTERNAL AUDIT 250.171b** (11 bugs reported, 7 confirmed+fixed, 2 false alarm, 2 already fixed) + **MCP-SOTA 250.171c** (Phase 0+1 complete)
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.3/10** — Features coded and tested (3,774 tests, 68 files). 79 total bugs found, 74 fixed, 5 remain (M5 arch + non-fixable). External audit 250.171b: 7 real bugs fixed (C1 readBody, C2 admin auth, C3 tenant isolation, H2/H3 Gemini env/model, M1 sheetsDB). Qwen3-TTS: closed (mediocre).
+**Code Completeness: 9.4/10** — Features coded and tested (3,776 tests, 68 files). 79 total bugs found, 74 fixed, 5 remain (M5 arch + non-fixable). MCP-SOTA Phase 0+1 complete: ALL 203 tools use modern registerTool() API with descriptions, annotations (readOnly/destructive/idempotent), and isError flags. Version unified to 1.0.0. MCP score 2.5→5.5/10.
 **Production Readiness: 4.0/10** — VERIFIED 250.171 via curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (Grok/Gemini/Claude/Atlas all configured:true)
@@ -286,7 +286,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | personas/ | 8,776 lines / 2 files | `wc -l personas/*.cjs personas/*.json` |
 | telephony/ | 4,754 lines / 1 file | `wc -l telephony/*.cjs` |
 | mcp-server/src/ | 17,628 lines / 31 files | `find mcp-server/src -name "*.ts"` |
-| MCP tools | 203 | `grep -c "server.tool(" mcp-server/src/index.ts` |
+| MCP tools | 203 | `grep -c "registerTool\|registerModuleTool" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
 | Personas | 38 | `grep -E "^\s+[A-Z_]+:\s*\{$" personas/voice-persona-injector.cjs | sort -u | wc -l` |
 | HTML pages | 80 | `find website -name "*.html" | wc -l` |
@@ -528,7 +528,7 @@ create_booking          get_recommendations    qualify_lead
 | **P0-LIVE-AUDIT (250.171)** | ✅ **AUDIT** | Live deployment verified via curl: website 200, voice API health OK, db-api connected (Google Sheets 7 tables), auth works, /respond BROKEN (old code). Client dashboard: quota usage radials. Benchmark SWOT updated. Qwen3-TTS closed. | 8.0 → **8.1** |
 | **P0-EXTERNAL-AUDIT (250.171b)** | ✅ **7 FIXED** | External audit: 11 bugs reported, 7 confirmed+fixed, 2 false alarm, 2 already fixed. C1 readBody crash (16 endpoints), C2 admin auth (7 endpoints), C3 tenant isolation (10 endpoints), H2 Gemini env fallback, H3 model name harmonized, M1 sheetsDB declared. | 8.1 → **8.5** |
 
-**Code Completeness: 9.3/10** | **Production Readiness: 4.0/10** | **Weighted: 8.5/10**
+**Code Completeness: 9.4/10** | **Production Readiness: 4.0/10** | **Weighted: 8.6/10** | **MCP: 5.5/10** (was 2.5)
 
 **Remaining (5 bugs — from Deep Audit 250.166 + Phase 3 250.167, after 74 fixed):**
 ```

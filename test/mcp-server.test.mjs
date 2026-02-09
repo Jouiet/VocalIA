@@ -5,6 +5,8 @@
  * the actual TypeScript source code and tool module files.
  * Tests real structure — not source-grep theater.
  *
+ * Session 250.171c: Updated to match server.registerTool() + registerModuleTool() patterns
+ *
  * Run: node --test test/mcp-server.test.mjs
  */
 
@@ -23,16 +25,16 @@ const MCP_DIST_DIR = path.join(import.meta.dirname, '../mcp-server/dist');
 function parseToolRegistrations() {
   const content = fs.readFileSync(MCP_INDEX_PATH, 'utf8');
 
-  // Pattern 1: Inline tools — server.tool(\n  "tool_name"
-  const inlineRegex = /server\.tool\(\s*\n\s*"([^"]+)"/g;
+  // Pattern 1: Inline tools — server.registerTool(\n  "tool_name"
+  const inlineRegex = /server\.registerTool\(\s*\n\s*"([^"]+)"/g;
   const inlineTools = [];
   let m;
   while ((m = inlineRegex.exec(content)) !== null) {
     inlineTools.push(m[1]);
   }
 
-  // Pattern 2: External tools — server.tool(xxxTools.yyy.name, xxxTools.yyy.parameters, xxxTools.yyy.handler)
-  const externalRegex = /server\.tool\((\w+)\.(\w+)\.name/g;
+  // Pattern 2: External tools — registerModuleTool(xxxTools.yyy)
+  const externalRegex = /registerModuleTool\((\w+)\.(\w+)\)/g;
   const externalTools = [];
   while ((m = externalRegex.exec(content)) !== null) {
     externalTools.push({ module: m[1], tool: m[2] });
@@ -217,16 +219,33 @@ describe('MCP external tool counts per module', () => {
 // ─── Tool Handler Structure ─────────────────────────────────────────────────
 
 describe('MCP tool handler structure', () => {
-  // Each external tool should have name, parameters, handler
-  test('all external tools use .name, .parameters, .handler pattern', () => {
-    const handlerRegex = /server\.tool\((\w+)\.(\w+)\.name,\s*\1\.\2\.parameters,\s*\1\.\2\.handler\)/g;
+  // All external tools should use registerModuleTool() helper
+  test('all external tools use registerModuleTool() pattern', () => {
+    const handlerRegex = /registerModuleTool\((\w+)\.(\w+)\)/g;
     const withHandler = [];
     let m;
     while ((m = handlerRegex.exec(indexContent)) !== null) {
       withHandler.push(`${m[1]}.${m[2]}`);
     }
     assert.strictEqual(withHandler.length, externalTools.length,
-      `Expected ${externalTools.length} tools with full .name/.parameters/.handler, found ${withHandler.length}`);
+      `Expected ${externalTools.length} tools with registerModuleTool(), found ${withHandler.length}`);
+  });
+
+  // All inline tools should use server.registerTool() with description + annotations
+  test('all inline tools have description', () => {
+    const registerBlocks = indexContent.match(/server\.registerTool\(\s*\n\s*"[^"]+",\s*\n\s*\{[\s\S]*?description:/g) || [];
+    assert.strictEqual(registerBlocks.length, inlineTools.length,
+      `Expected ${inlineTools.length} inline tools with description, found ${registerBlocks.length}`);
+  });
+
+  // No deprecated server.tool() calls should remain (exclude comments)
+  test('zero deprecated server.tool() calls', () => {
+    const lines = indexContent.split('\n');
+    const deprecated = lines.filter(line => {
+      const trimmed = line.trim();
+      return !trimmed.startsWith('//') && !trimmed.startsWith('*') && trimmed.includes('server.tool(');
+    }).length;
+    assert.strictEqual(deprecated, 0, `Found ${deprecated} deprecated server.tool() calls — should be 0`);
   });
 });
 

@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,774 tests (68 .mjs, 0 skip)
+> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,776 tests (68 .mjs, 0 skip)
 > 203 MCP tools | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -44,11 +44,11 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 9.3/10 — 79 bugs found, 74 fixed, 5 remain (arch/non-fixable). External audit 250.171b: 7 critical fixes (readBody crash, admin auth, tenant isolation, Gemini env/model).
+- **Code completeness**: 9.4/10 — 79 bugs found, 74 fixed, 5 remain (arch/non-fixable). MCP-SOTA Phase 0+1 complete: 203 tools migrated to modern registerTool() API with descriptions+annotations. MCP score 2.5→5.5/10.
 - **Production readiness**: 4.0/10 — VERIFIED via curl 250.171: website live, voice-api health OK, db-api connected (Google Sheets), auth works. BUT /respond BROKEN (old code on VPS — C14 VOICE_CONFIG not redeployed). Widget v2.7.0 live. 0 paying customers.
 - **Market strategy**: 1. Europe → 2. MENA → 3. International → 4. Morocco. USP = price (60% cheaper EU) + widget+telephony unified. Darija = 1 of 5 languages.
 - **VPS**: Hostinger KVM 2 (148.230.113.163) — 4 containers, Traefik SSL, vocalia-data named volume. API running but OLD code. NEEDS: redeploy with latest code + .env (6 missing keys)
-- **Next**: VPS redeploy (fix /respond) → 6 missing .env vars → First paying customer
-- **Weighted score**: 8.5/10
+- **Next**: MCP Phase 2 (Resources+Prompts) → VPS redeploy → First paying customer
+- **Weighted score**: 8.6/10
 
-*Last update: 09/02/2026 - Session 250.171b (External audit: 7 bugs fixed — readBody crash, admin auth, tenant isolation, Gemini env/model)*
+*Last update: 09/02/2026 - Session 250.171c (MCP-SOTA Phase 0+1: 203 tools migrated to registerTool(), descriptions+annotations on ALL, version 1.0.0)*
