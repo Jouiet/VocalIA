@@ -455,8 +455,16 @@ async function loadTenantsFromDB() {
   }
 }
 
-// Initialize DB connection (called at server start)
-loadTenantsFromDB().catch(err => {
+// Initialize DB connection + quota sync (called at server start)
+loadTenantsFromDB().then(() => {
+  // Session 250.170 (M9 fix): Start periodic quota sync — Sheets is authoritative for plan
+  try {
+    const db = getDB();
+    db.startQuotaSync();
+  } catch (e) {
+    console.warn('[QuotaSync] Failed to start periodic sync:', e.message);
+  }
+}).catch(err => {
   console.error('❌ [AdminMetrics] DB init failed:', err.message);
 });
 

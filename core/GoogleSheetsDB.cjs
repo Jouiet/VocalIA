@@ -918,6 +918,98 @@ class GoogleSheetsDB {
     });
   }
 
+  // ==================== QUOTA SYNC (Session 250.170 — M9 fix) ====================
+
+  /**
+   * Sync tenant plan from Google Sheets → local config
+   * Resolves the two-sources-of-truth problem: Sheets is authoritative for plan,
+   * local config is authoritative for usage counters.
+   * @param {string} tenantId - Tenant identifier
+   * @returns {Object} { synced: boolean, plan: string|null, changed: boolean }
+   */
+  async syncTenantPlan(tenantId) {
+    try {
+      const safeTenantId = sanitizeTenantId(tenantId);
+      const tenant = await this.findOne('tenants', { id: safeTenantId });
+      if (!tenant) {
+        return { synced: false, error: 'Tenant not found in Sheets' };
+      }
+
+      const sheetsPlan = (tenant.plan || 'starter').toLowerCase();
+      const config = this.getTenantConfig(safeTenantId);
+      if (!config) {
+        return { synced: false, error: 'No local config' };
+      }
+
+      const localPlan = (config.plan || 'starter').toLowerCase();
+      if (localPlan === sheetsPlan) {
+        return { synced: true, plan: sheetsPlan, changed: false };
+      }
+
+      // Plan differs — Sheets is authoritative
+      config.plan = sheetsPlan;
+      config.updated_at = new Date().toISOString();
+      const configPath = path.join(__dirname, '../clients', safeTenantId, 'config.json');
+      fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+      console.log(`[QuotaSync] Plan updated for ${safeTenantId}: ${localPlan} → ${sheetsPlan}`);
+      return { synced: true, plan: sheetsPlan, changed: true, previous: localPlan };
+    } catch (e) {
+      console.error(`[QuotaSync] Error syncing ${tenantId}:`, e.message);
+      return { synced: false, error: e.message };
+    }
+  }
+
+  /**
+   * Sync ALL tenants: plan from Sheets → local config
+   * Runs periodically to keep local quota configs in sync with Sheets authority.
+   * @returns {Object} { total: number, synced: number, changed: number, errors: number }
+   */
+  async syncAllTenantPlans() {
+    try {
+      const tenants = await this.findAll('tenants');
+      let synced = 0, changed = 0, errors = 0;
+
+      for (const tenant of tenants) {
+        if (!tenant.id) continue;
+        const result = await this.syncTenantPlan(tenant.id);
+        if (result.synced) {
+          synced++;
+          if (result.changed) changed++;
+        } else {
+          errors++;
+        }
+      }
+
+      const summary = { total: tenants.length, synced, changed, errors, timestamp: new Date().toISOString() };
+      if (changed > 0) {
+        console.log(`[QuotaSync] Batch sync complete: ${changed} plans updated out of ${tenants.length} tenants`);
+      }
+      return summary;
+    } catch (e) {
+      console.error('[QuotaSync] Batch sync failed:', e.message);
+      return { total: 0, synced: 0, changed: 0, errors: 1, error: e.message };
+    }
+  }
+
+  /**
+   * Start periodic quota sync (every 10 minutes)
+   * Call once during server startup. Uses unref() so it doesn't prevent process exit.
+   */
+  startQuotaSync() {
+    if (this._quotaSyncTimer) return;
+    const SYNC_INTERVAL = 10 * 60 * 1000; // 10 minutes
+    this._quotaSyncTimer = setInterval(async () => {
+      try {
+        await this.syncAllTenantPlans();
+      } catch (e) {
+        console.error('[QuotaSync] Periodic sync error:', e.message);
+      }
+    }, SYNC_INTERVAL);
+    this._quotaSyncTimer.unref();
+    console.log('[QuotaSync] Periodic sync started (every 10 min)');
+  }
+
   // ==================== UTILITY ====================
 
   /**

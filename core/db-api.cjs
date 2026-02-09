@@ -2600,6 +2600,24 @@ async function handleRequest(req, res) {
     return;
   }
 
+  // Session 250.170 (M9 fix): Force quota sync — admin only
+  if (path === '/api/quota/sync' && method === 'POST') {
+    const user = await checkAuth(req, res);
+    if (!user) return;
+    if (user.role !== 'admin') {
+      sendError(res, 403, 'Admin access required');
+      return;
+    }
+    try {
+      const db = getDB();
+      const result = await db.syncAllTenantPlans();
+      sendJson(res, 200, result);
+    } catch (e) {
+      sendError(res, 500, `Quota sync error: ${e.message}`);
+    }
+    return;
+  }
+
   // ═══════════════════════════════════════════════════════════════
   // Session 250.74: UCP ENDPOINTS FOR WIDGET INTEGRATION
   // ═══════════════════════════════════════════════════════════════
@@ -3199,6 +3217,13 @@ async function startServer() {
 ║  Sheets: tenants, sessions, logs, users           ║
 ╚═══════════════════════════════════════════════════╝
 `);
+    // Session 250.170 (M9 fix): Start periodic quota sync
+    try {
+      const db = getDB();
+      db.startQuotaSync();
+    } catch (e) {
+      console.warn('[QuotaSync] Failed to start periodic sync:', e.message);
+    }
   });
 
   const gracefulShutdown = (signal) => {

@@ -1,5 +1,5 @@
 # VocalIA Production Deployment - ALL SERVICES
-# Session 250.75 - Full Production Stack
+# Session 250.170 - Full Production Stack + Persistent Volumes
 #
 # Services:
 # - db-api (3013): Database API, Auth, Tenants, HITL
@@ -21,6 +21,8 @@
 # - ws.vocalia.ma → grok-realtime
 # - tel.vocalia.ma → telephony
 #
+# Volumes: vocalia-data persists quotas, HITL, conversations, metrics, audit logs, client credentials
+#
 # Deploy: docker-compose -f docker-compose.production.yml up -d
 
 services:
@@ -33,17 +35,31 @@ services:
     container_name: vocalia-db-api
     restart: unless-stopped
     working_dir: /app
+    volumes:
+      - vocalia-data:/vocalia-data
     environment:
       - NODE_ENV=production
       - PORT=3013
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}
+      - JWT_SECRET=${JWT_SECRET}
+      - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM:-noreply@vocalia.ma}
     command: >
       sh -c "
         apk add --no-cache git curl &&
+        mkdir -p /vocalia-data/metrics /vocalia-data/voice/hitl-pending /vocalia-data/audit /vocalia-data/clients &&
         git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
+        rm -rf data clients 2>/dev/null || true &&
+        ln -sf /vocalia-data data &&
+        ln -sf /vocalia-data/clients clients &&
         mkdir -p data &&
         echo '{\"spreadsheetId\":\"1USAmFgxpXh9yvtAFxvg0_CpmWVop1pOTmxALEE8M4PM\",\"sheets\":{\"tenants\":\"tenants\",\"sessions\":\"sessions\",\"logs\":\"logs\",\"users\":\"users\"}}' > data/google-sheets-config.json &&
         echo '{\"type\":\"authorized_user\",\"client_id\":\"'\"$$GOOGLE_CLIENT_ID\"'\",\"client_secret\":\"'\"$$GOOGLE_CLIENT_SECRET\"'\",\"refresh_token\":\"'\"$$GOOGLE_REFRESH_TOKEN\"'\"}' > data/google-oauth-tokens.json &&
@@ -81,6 +97,8 @@ services:
     container_name: vocalia-api
     restart: unless-stopped
     working_dir: /app
+    volumes:
+      - vocalia-data:/vocalia-data
     environment:
       - NODE_ENV=production
       - PORT=3004
@@ -91,11 +109,16 @@ services:
       - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
       - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
       - GA4_API_SECRET=${GA4_API_SECRET}
+      - JWT_SECRET=${JWT_SECRET}
     command: >
       sh -c "
         apk add --no-cache git curl &&
+        mkdir -p /vocalia-data/metrics /vocalia-data/voice /vocalia-data/clients &&
         git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
+        rm -rf data clients 2>/dev/null || true &&
+        ln -sf /vocalia-data data &&
+        ln -sf /vocalia-data/clients clients &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/voice-api-resilient.cjs --server --port=3004
       "
@@ -174,6 +197,8 @@ services:
     container_name: vocalia-telephony
     restart: unless-stopped
     working_dir: /app
+    volumes:
+      - vocalia-data:/vocalia-data
     environment:
       - NODE_ENV=production
       - PORT=3009
@@ -187,11 +212,15 @@ services:
       - GOOGLE_REFRESH_TOKEN=${GOOGLE_REFRESH_TOKEN}
       - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
       - GA4_API_SECRET=${GA4_API_SECRET}
+      - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
     command: >
       sh -c "
         apk add --no-cache git curl &&
+        mkdir -p /vocalia-data/voice/hitl-pending &&
         git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
+        rm -rf data 2>/dev/null || true &&
+        ln -sf /vocalia-data data &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node telephony/voice-telephony-bridge.cjs
       "
@@ -223,6 +252,11 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
+volumes:
+  vocalia-data:
+    name: vocalia-data
+    driver: local
 
 networks:
   traefik:

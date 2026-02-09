@@ -316,6 +316,86 @@
         </div>
       </div>
 
+      <!-- AI Fallback Chain — Core Architecture Showcase -->
+      <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08] p-6 hover:shadow-lg transition-all duration-200">
+        <div class="flex items-center justify-between mb-5">
+          <div class="flex items-center gap-2">
+            <i data-lucide="cpu" class="w-5 h-5 text-indigo-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="admin.fallback.title">Chaîne de Fallback IA</h3>
+          </div>
+          <span class="text-xs px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full">5 niveaux</span>
+        </div>
+        <div class="flex flex-col sm:flex-row items-stretch gap-3" id="fallback-chain">
+          <div class="flex-1 relative group" id="fc-grok">
+            <div class="p-4 border-2 border-indigo-500/40 dark:border-indigo-400/30 rounded-xl bg-indigo-50/50 dark:bg-indigo-900/10 transition-all group-hover:border-indigo-500 group-hover:shadow-md group-hover:shadow-indigo-500/10">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Primary</span>
+                <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" id="fc-grok-dot"></span>
+              </div>
+              <p class="font-bold text-zinc-900 dark:text-white text-lg">Voice-X</p>
+              <p class="text-xs text-zinc-500 mt-1" id="fc-grok-model">grok-4-1-fast-reasoning</p>
+              <p class="text-xs text-zinc-400 mt-0.5" id="fc-grok-latency">LLM + STT + TTS</p>
+            </div>
+            <div class="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-zinc-300 dark:text-zinc-600">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="flex-1 relative group" id="fc-gemini">
+            <div class="p-4 border border-zinc-200 dark:border-white/[0.08] rounded-xl bg-zinc-50/50 dark:bg-white/[0.02] transition-all group-hover:border-purple-400 group-hover:shadow-md group-hover:shadow-purple-500/10">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider">Fallback 1</span>
+                <span class="w-2.5 h-2.5 bg-green-500 rounded-full" id="fc-gemini-dot"></span>
+              </div>
+              <p class="font-bold text-zinc-900 dark:text-white text-lg">Gen-AI</p>
+              <p class="text-xs text-zinc-500 mt-1" id="fc-gemini-model">gemini-3-flash</p>
+              <p class="text-xs text-zinc-400 mt-0.5">LLM + TTS</p>
+            </div>
+            <div class="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-zinc-300 dark:text-zinc-600">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="flex-1 relative group" id="fc-claude">
+            <div class="p-4 border border-zinc-200 dark:border-white/[0.08] rounded-xl bg-zinc-50/50 dark:bg-white/[0.02] transition-all group-hover:border-emerald-400 group-hover:shadow-md group-hover:shadow-emerald-500/10">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Fallback 2</span>
+                <span class="w-2.5 h-2.5 bg-green-500 rounded-full" id="fc-claude-dot"></span>
+              </div>
+              <p class="font-bold text-zinc-900 dark:text-white text-lg">Anthro</p>
+              <p class="text-xs text-zinc-500 mt-1">claude-opus-4-5</p>
+              <p class="text-xs text-zinc-400 mt-0.5">LLM</p>
+            </div>
+            <div class="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-zinc-300 dark:text-zinc-600">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="flex-1 relative group" id="fc-atlas">
+            <div class="p-4 border border-zinc-200 dark:border-white/[0.08] rounded-xl bg-zinc-50/50 dark:bg-white/[0.02] transition-all group-hover:border-amber-400 group-hover:shadow-md group-hover:shadow-amber-500/10">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Fallback 3</span>
+                <span class="w-2.5 h-2.5 bg-green-500 rounded-full" id="fc-atlas-dot"></span>
+              </div>
+              <p class="font-bold text-zinc-900 dark:text-white text-lg">Atlas</p>
+              <p class="text-xs text-zinc-500 mt-1">Atlas-Chat-9B</p>
+              <p class="text-xs text-zinc-400 mt-0.5">Darija/AR</p>
+            </div>
+            <div class="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-zinc-300 dark:text-zinc-600">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </div>
+          </div>
+          <div class="flex-1 group" id="fc-local">
+            <div class="p-4 border border-dashed border-zinc-300 dark:border-white/[0.12] rounded-xl bg-zinc-50/30 dark:bg-white/[0.01] transition-all group-hover:border-zinc-400">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Safety Net</span>
+                <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
+              </div>
+              <p class="font-bold text-zinc-900 dark:text-white text-lg">Local</p>
+              <p class="text-xs text-zinc-500 mt-1">rule-based</p>
+              <p class="text-xs text-zinc-400 mt-0.5">0ms latency</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Platform Metrics -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl p-5 text-white">
