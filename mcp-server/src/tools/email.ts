@@ -26,6 +26,35 @@ try {
     // Fallback to env vars
 }
 
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+
+/**
+ * Validate attachment path stays within project root (prevent path traversal)
+ */
+function validateAttachmentPath(filePath: string): string {
+    const resolved = path.resolve(filePath);
+    if (!resolved.startsWith(PROJECT_ROOT + path.sep) && resolved !== PROJECT_ROOT) {
+        throw new Error(`Attachment path traversal blocked: path escapes project root`);
+    }
+    return resolved;
+}
+
+/**
+ * Escape HTML entities to prevent XSS in email templates
+ */
+function escapeHtml(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#x27;');
+}
+
 interface SMTPConfig {
     host: string;
     port: number;
@@ -152,12 +181,13 @@ export const emailTools = {
                 // Handle attachments
                 if (attachments && attachments.length > 0) {
                     mailOptions.attachments = attachments.map(filePath => {
-                        if (!fs.existsSync(filePath)) {
+                        const safePath = validateAttachmentPath(filePath);
+                        if (!fs.existsSync(safePath)) {
                             throw new Error(`Attachment not found: ${filePath}`);
                         }
                         return {
-                            filename: path.basename(filePath),
-                            path: filePath
+                            filename: path.basename(safePath),
+                            path: safePath
                         };
                     });
                 }
@@ -346,7 +376,7 @@ export const emailTools = {
                 const pattern = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
                 subject = subject.replace(pattern, value);
                 body = body.replace(pattern, value);
-                html = html.replace(pattern, value);
+                html = html.replace(pattern, escapeHtml(value));
             }
 
             try {
@@ -362,10 +392,13 @@ export const emailTools = {
                 };
 
                 if (attachments && attachments.length > 0) {
-                    mailOptions.attachments = attachments.map(filePath => ({
-                        filename: path.basename(filePath),
-                        path: filePath
-                    }));
+                    mailOptions.attachments = attachments.map(filePath => {
+                        const safePath = validateAttachmentPath(filePath);
+                        return {
+                            filename: path.basename(safePath),
+                            path: safePath
+                        };
+                    });
                 }
 
                 const info = await transporter.sendMail(mailOptions);

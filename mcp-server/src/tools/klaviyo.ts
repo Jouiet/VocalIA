@@ -30,7 +30,7 @@ try {
     // Fallback to env vars
 }
 
-const KLAVIYO_REVISION = '2024-02-15';
+const KLAVIYO_REVISION = '2026-01-15';
 
 /**
  * Get Klaviyo credentials for a tenant

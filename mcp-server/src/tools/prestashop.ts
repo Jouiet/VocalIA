@@ -783,7 +783,7 @@ export const prestashopTools = {
             try {
                 // PrestaShop requires XML for updates, but we can use JSON output_format
                 // First get the order to ensure it exists
-                const order = await prestashopRequest(creds.url, creds.apiKey, `/orders/${order_id}`);
+                const order = await prestashopRequest(creds.apiKey, creds.url, `/orders/${order_id}`);
 
                 if (!order?.order) {
                     throw new Error(`Order ${order_id} not found`);

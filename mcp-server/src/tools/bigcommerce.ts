@@ -765,8 +765,8 @@ export const bigcommerceTools = {
             try {
                 // Update order status to Cancelled (5)
                 await bigcommerceRequest(
-                    creds.storeHash,
                     creds.accessToken,
+                    creds.storeHash,
                     `/orders/${order_id}`,
                     {
                         method: 'PUT',
@@ -836,8 +836,8 @@ export const bigcommerceTools = {
             try {
                 // First get order to determine refund amount if not specified
                 const order = await bigcommerceRequest(
-                    creds.storeHash,
                     creds.accessToken,
+                    creds.storeHash,
                     `/orders/${order_id}`
                 );
 
@@ -891,8 +891,8 @@ export const bigcommerceTools = {
 
                 // Fallback: Update order status to Refunded (4)
                 await bigcommerceRequest(
-                    creds.storeHash,
                     creds.accessToken,
+                    creds.storeHash,
                     `/orders/${order_id}`,
                     {
                         method: 'PUT',
