@@ -232,9 +232,20 @@ class GoogleSheetsDB {
   }
 
   /**
-   * Set cache
+   * Set cache (D12 fix: evict stale entries when cache grows beyond limit)
    */
   setCache(key, data) {
+    if (this.cache.size >= 200) {
+      const now = Date.now();
+      for (const [k, v] of this.cache) {
+        if (now - v.time >= this.cacheTTL) this.cache.delete(k);
+      }
+      // If still over limit, delete oldest
+      if (this.cache.size >= 200) {
+        const oldest = this.cache.keys().next().value;
+        this.cache.delete(oldest);
+      }
+    }
     this.cache.set(key, { data, time: Date.now() });
   }
 
@@ -486,10 +497,12 @@ class GoogleSheetsDB {
   }
 
   /**
-   * DELETE - Remove record by ID
+   * DELETE - Remove record by ID (D6 fix: acquire lock like update())
    */
   async delete(sheet, id) {
     await this.init();
+    const release = await this.acquireLock(sheet);
+    try {
 
     // Find row index
     const response = await this.withRetry(async () => {
@@ -537,6 +550,9 @@ class GoogleSheetsDB {
     this.invalidateCache(sheet);
     console.log(`✅ [GoogleSheetsDB] Deleted ${sheet}:${id}`);
     return true;
+    } finally {
+      release();
+    }
   }
 
   // ==================== BATCH OPERATIONS ====================

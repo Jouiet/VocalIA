@@ -115,6 +115,8 @@ const { validateOriginTenant, validateApiKey, getCorsHeaders, VOCALIA_ORIGINS: C
 
 // Rate limiter for DB endpoints
 const dbLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minute
+// D8 fix: Rate limiter for public catalog/widget endpoints
+const publicLimiter = rateLimit({ windowMs: 60 * 1000, max: 30 }); // 30 per minute per IP
 
 const stripeService = require('./StripeService.cjs');
 
@@ -460,7 +462,7 @@ async function applyRateLimit(req, res, limiter) {
  * - POST /api/hitl/reject/:id  - Reject an item
  * - GET  /api/hitl/stats    - Get HITL statistics
  */
-async function handleHITLRequest(req, res, path, method) {
+async function handleHITLRequest(req, res, path, method, authUser = null) {
   try {
     const db = getDB();
 
@@ -517,7 +519,8 @@ async function handleHITLRequest(req, res, path, method) {
     if (approveMatch && method === 'POST') {
       const id = approveMatch[1];
       const body = await parseBody(req);
-      const admin = body.admin || 'Admin';
+      // D9 fix: use authenticated user identity, not spoofable body param
+      const admin = authUser?.email || authUser?.sub || 'Admin';
 
       // Find pending item
       let pending;
@@ -565,7 +568,8 @@ async function handleHITLRequest(req, res, path, method) {
     if (rejectMatch && method === 'POST') {
       const id = rejectMatch[1];
       const body = await parseBody(req);
-      const admin = body.admin || 'Admin';
+      // D9 fix: use authenticated user identity, not spoofable body param
+      const admin = authUser?.email || authUser?.sub || 'Admin';
       const reason = body.reason || '';
 
       // Find pending item
@@ -744,7 +748,8 @@ async function handleRequest(req, res) {
   if (path.startsWith('/api/hitl/')) {
     const admin = await checkAdmin(req, res);
     if (!admin) return; // Auth error already sent
-    const handled = await handleHITLRequest(req, res, path, method);
+    // D9 fix: pass authenticated admin to prevent spoofing
+    const handled = await handleHITLRequest(req, res, path, method, admin);
     if (handled) return;
   }
 
@@ -883,6 +888,13 @@ async function handleRequest(req, res) {
         return;
       }
 
+      // D4 fix: validate language
+      const ALLOWED_KB_LANGS = ['fr', 'en', 'es', 'ar', 'ary'];
+      if (!ALLOWED_KB_LANGS.includes(language)) {
+        sendError(res, 400, `Invalid language: ${language}`);
+        return;
+      }
+
       // Load current KB, add entry, save
       const fs = require('fs');
       const path = require('path');
@@ -939,7 +951,13 @@ async function handleRequest(req, res) {
       const fs = require('fs');
       const pathModule = require('path');
       const language = query.lang || 'fr';
-      const kbFile = pathModule.join(__dirname, '../clients', tenantId, 'knowledge_base', `kb_${language}.json`);
+      // D3+D4 fix: sanitize tenantId + validate language
+      const ALLOWED_KB_LANGS = ['fr', 'en', 'es', 'ar', 'ary'];
+      if (!ALLOWED_KB_LANGS.includes(language)) {
+        sendError(res, 400, `Invalid language: ${language}`);
+        return;
+      }
+      const kbFile = pathModule.join(__dirname, '../clients', sanitizeTenantId(tenantId), 'knowledge_base', `kb_${language}.json`);
 
       if (!fs.existsSync(kbFile)) {
         sendError(res, 404, 'KB file not found');
@@ -1653,6 +1671,9 @@ async function handleRequest(req, res) {
   // Catalog Item Detail (Public) - GET /api/tenants/:id/catalog/detail/:itemId
   const catalogDetailMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/detail\/([^/]+)$/);
   if (catalogDetailMatch && method === 'GET') {
+    // D8 fix: rate limit public endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     const [, tenantId, itemId] = catalogDetailMatch;
     // No auth required for public widget access
 
@@ -1676,6 +1697,9 @@ async function handleRequest(req, res) {
   // Catalog Browse - POST /api/tenants/:id/catalog/browse
   const catalogBrowseMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/browse$/);
   if (catalogBrowseMatch && method === 'POST') {
+    // D8 fix: rate limit public endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     const tenantId = catalogBrowseMatch[1];
     // No auth required for public widget access
 
@@ -1725,6 +1749,9 @@ async function handleRequest(req, res) {
   // Catalog Search - POST /api/tenants/:id/catalog/search
   const catalogSearchMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/search$/);
   if (catalogSearchMatch && method === 'POST') {
+    // D8 fix: rate limit public endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     const tenantId = catalogSearchMatch[1];
     // No auth required for public widget access
 
@@ -1882,6 +1909,9 @@ async function handleRequest(req, res) {
   // (Simple rule-based fallback for basic recommendations)
   const catalogRecoMatch = path.match(/^\/api\/tenants\/(\w+)\/catalog\/recommendations$/);
   if (catalogRecoMatch && method === 'POST') {
+    // D8 fix: rate limit public endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     const tenantId = catalogRecoMatch[1];
     // No auth required for public widget access
 
@@ -1987,16 +2017,20 @@ async function handleRequest(req, res) {
         status: 'new'
       };
 
-      // Store in memory
+      // Store in memory (D10 fix: cap at 1000 entries)
       if (!global.leadsQueue) {
         global.leadsQueue = [];
       }
       global.leadsQueue.push(lead);
+      if (global.leadsQueue.length > 1000) {
+        global.leadsQueue = global.leadsQueue.slice(-1000);
+      }
 
-      // Persist to Google Sheets if available
+      // D7 fix: sheetsDB was never defined — use getDB()
       try {
-        if (sheetsDB) {
-          await sheetsDB.append('leads', lead);
+        const db = getDB();
+        if (db) {
+          await db.create('leads', lead);
         }
       } catch (e) {
         console.warn('[Leads] Google Sheets persist failed:', e.message);
@@ -2072,10 +2106,14 @@ async function handleRequest(req, res) {
         } catch {}
       }
       global.cartRecoveryQueue.push(recoveryRequest);
-      // Persist to disk (async, non-blocking)
+      // D11 fix: trim in-memory queue (not just on disk)
+      if (global.cartRecoveryQueue.length > 500) {
+        global.cartRecoveryQueue = global.cartRecoveryQueue.slice(-500);
+      }
+      // Persist to disk
       try {
         const recoveryPath = path.join(__dirname, '..', 'data', 'cart-recovery.json');
-        fs.writeFileSync(recoveryPath, JSON.stringify(global.cartRecoveryQueue.slice(-500), null, 2));
+        fs.writeFileSync(recoveryPath, JSON.stringify(global.cartRecoveryQueue, null, 2));
       } catch (e) {
         console.warn('[Cart Recovery] File persist failed:', e.message);
       }
@@ -2447,8 +2485,10 @@ async function handleRequest(req, res) {
         return;
       }
     } catch (planErr) {
-      console.warn('[DB-API] Plan check warning:', planErr.message);
-      // Allow on error (fail open for export) — quota still applies
+      // D13 fix: fail closed — deny export if plan check fails
+      console.error('[DB-API] Plan check error:', planErr.message);
+      sendError(res, 503, 'Unable to verify plan — export temporarily unavailable');
+      return;
     }
 
     try {
@@ -2701,8 +2741,15 @@ async function handleRequest(req, res) {
   // Returns all widget interactions for analytics dashboard (Session 250.74)
   const widgetInteractionsMatch = path.match(/^\/api\/tenants\/([^\/]+)\/widget\/interactions$/);
   if (widgetInteractionsMatch && method === 'GET') {
+    // D2 fix: require auth + tenant isolation
+    const user = await checkAuth(req, res);
+    if (!user) return;
     try {
       const tenantId = widgetInteractionsMatch[1];
+      if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+        sendError(res, 403, 'Forbidden');
+        return;
+      }
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
       const ucpStore = getUCPStore();
 
@@ -2736,8 +2783,15 @@ async function handleRequest(req, res) {
   // Returns all UCP profiles for LTV distribution analytics (Session 250.74)
   const ucpProfilesMatch = path.match(/^\/api\/tenants\/([^\/]+)\/ucp\/profiles$/);
   if (ucpProfilesMatch && method === 'GET') {
+    // D2 fix: require auth + tenant isolation
+    const user = await checkAuth(req, res);
+    if (!user) return;
     try {
       const tenantId = ucpProfilesMatch[1];
+      if (user.role !== 'admin' && user.tenant_id !== tenantId) {
+        sendError(res, 403, 'Forbidden');
+        return;
+      }
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
       const ucpStore = getUCPStore();
 
@@ -3095,15 +3149,17 @@ function handleWebSocketConnection(ws, req) {
     }
   });
 
-  // Handle close
+  // Handle close (D1 fix: use wsClients instead of block-scoped user)
   ws.on('close', () => {
-    console.log(`🔌 [WS] Client disconnected: ${user.email}`);
+    const clientEmail = wsClients.get(ws)?.user?.email || 'anonymous';
+    console.log(`🔌 [WS] Client disconnected: ${clientEmail}`);
     wsClients.delete(ws);
   });
 
   // Handle errors
   ws.on('error', (err) => {
-    console.error(`❌ [WS] Error for ${user.email}:`, err.message);
+    const clientEmail = wsClients.get(ws)?.user?.email || 'anonymous';
+    console.error(`❌ [WS] Error for ${clientEmail}:`, err.message);
     wsClients.delete(ws);
   });
 }

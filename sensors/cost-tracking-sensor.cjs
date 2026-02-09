@@ -13,7 +13,7 @@ const path = require('path');
 const https = require('https');
 
 // Load environment variables
-const envPaths = [path.join(__dirname, '.env'), path.join(__dirname, '../../../.env'), path.join(process.cwd(), '.env')];
+const envPaths = [path.join(__dirname, '.env'), path.join(__dirname, '..', '.env'), path.join(process.cwd(), '.env')];
 for (const envPath of envPaths) {
     if (fs.existsSync(envPath)) {
         require('dotenv').config({ path: envPath });
@@ -21,8 +21,9 @@ for (const envPath of envPaths) {
     }
 }
 
-const GPM_PATH = path.join(__dirname, '../../../landing-page-hostinger/data/pressure-matrix.json');
-const COST_LOG_PATH = path.join(__dirname, '../../../logs/api-costs.json');
+// C7 fix: paths relative to project root
+const GPM_PATH = path.join(__dirname, '..', 'data', 'pressure-matrix.json');
+const COST_LOG_PATH = path.join(__dirname, '..', 'logs', 'api-costs.json');
 
 // Provider pricing (approximate per 1K tokens/units)
 const PRICING = {

@@ -9,9 +9,9 @@
 const fs = require('fs');
 const path = require('path');
 
-// Configuration
-const LEADS_PATH = path.join(__dirname, '../../../leads-scored.json');
-const GPM_PATH = path.join(__dirname, '../../../landing-page-hostinger/data/pressure-matrix.json');
+// Configuration (C7 fix: paths relative to project root, not 3 levels up)
+const LEADS_PATH = path.join(__dirname, '..', 'data', 'leads-scored.json');
+const GPM_PATH = path.join(__dirname, '..', 'data', 'pressure-matrix.json');
 
 function calculatePressure(leads) {
     if (!leads || leads.length === 0) return 90; // High pressure if no leads exist

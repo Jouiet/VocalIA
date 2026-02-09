@@ -561,6 +561,16 @@ async function changePassword(userId, oldPassword, newPassword) {
     updated_at: new Date().toISOString()
   });
 
+  // D5 fix: Invalidate all existing sessions (force re-login, same as resetPassword)
+  try {
+    const sessions = await db.query('auth_sessions', { user_id: user.id });
+    for (const session of sessions) {
+      await db.delete('auth_sessions', session.id);
+    }
+  } catch (e) {
+    console.warn('[Auth] Session invalidation after password change failed:', e.message);
+  }
+
   return { success: true, message: 'Password changed successfully' };
 }
 

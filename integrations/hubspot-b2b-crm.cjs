@@ -94,7 +94,8 @@ const HITL_CONFIG = {
   notifyOnPending: process.env.HITL_NOTIFY_ON_PENDING !== 'false'
 };
 
-const DATA_DIR = process.env.HUBSPOT_DATA_DIR || path.join(__dirname, '../../../data/hubspot');
+// C7 fix: path relative to project root
+const DATA_DIR = process.env.HUBSPOT_DATA_DIR || path.join(__dirname, '..', 'data', 'hubspot');
 const HITL_PENDING_DIR = path.join(DATA_DIR, 'hitl-pending');
 const HITL_PENDING_FILE = path.join(HITL_PENDING_DIR, 'pending-deals.json');
 

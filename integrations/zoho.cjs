@@ -16,7 +16,7 @@
  * @date 2026-02-05
  */
 
-const { SecretVault } = require('../core/secret-vault.cjs');
+const { SecretVault } = require('../core/SecretVault.cjs');
 
 class ZohoCRMIntegration {
     constructor(tenantId = 'agency_internal') {

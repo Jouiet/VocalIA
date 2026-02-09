@@ -252,14 +252,15 @@ class BillingAgent {
         }
     }
 
+    // C1+C2 fix: paths without /v1 prefix (gateway base already includes it)
+    // C2 fix: pass object, not URLSearchParams.toString() (gateway._buildFormData expects object)
     async _getOrCreateCustomer(identity, gateway) {
-        const payload = new URLSearchParams({
+        const payload = {
             email: identity.email || '',
             name: identity.name || 'AI Lead',
             phone: identity.phone || '',
-            'metadata[agent_ops]': 'true',
-            'metadata[source]': 'billing_agent_v2'
-        });
+            metadata: { agent_ops: 'true', source: 'billing_agent_v2' }
+        };
 
         // SOTA: Idempotency key based on email/phone (prevents duplicate customers)
         const idempotencyKey = gateway.generateIdempotencyKey(
@@ -267,34 +268,33 @@ class BillingAgent {
             identity.email || identity.phone
         );
 
-        return await gateway.request('/v1/customers', 'POST', payload.toString(), { idempotencyKey });
+        return await gateway.request('/customers', 'POST', payload, { idempotencyKey });
     }
 
     async _createDraftInvoice(customerId, amountInCents, description = '', sessionId = null, gateway = this.stripe, currency = 'eur') {
         // SOTA: Generate session-scoped idempotency key
         const sessionKey = sessionId || `${customerId}-${Date.now()}`;
 
-        // 1. Create Invoice Item
-        const itemPayload = new URLSearchParams({
+        // 1. Create Invoice Item (C1+C2 fix: no /v1 prefix, pass object not string)
+        const itemPayload = {
             customer: customerId,
             amount: amountInCents,
             currency: currency,
             description: `VocalIA Service: ${description || 'Essentials Pack'}`
-        });
+        };
         const itemIdempotencyKey = gateway.generateIdempotencyKey('invoice_item', sessionKey);
-        await gateway.request('/v1/invoice_items', 'POST', itemPayload.toString(), { idempotencyKey: itemIdempotencyKey });
+        await gateway.request('/invoice_items', 'POST', itemPayload, { idempotencyKey: itemIdempotencyKey });
 
         // 2. Create Invoice
-        const invoicePayload = new URLSearchParams({
+        const invoicePayload = {
             customer: customerId,
-            auto_advance: 'false', // Keep as draft for 80/20 human review
+            auto_advance: 'false',
             collection_method: 'send_invoice',
             days_until_due: '7',
-            'metadata[session_id]': sessionKey,
-            'metadata[created_by]': 'billing_agent_v2'
-        });
+            metadata: { session_id: sessionKey, created_by: 'billing_agent_v2' }
+        };
         const invoiceIdempotencyKey = gateway.generateIdempotencyKey('invoice', sessionKey);
-        return await gateway.request('/v1/invoices', 'POST', invoicePayload.toString(), { idempotencyKey: invoiceIdempotencyKey });
+        return await gateway.request('/invoices', 'POST', invoicePayload, { idempotencyKey: invoiceIdempotencyKey });
     }
 
     /**
