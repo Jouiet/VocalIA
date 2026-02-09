@@ -385,7 +385,7 @@
               <span class="text-4xl font-bold font-mono text-white" id="telephonyPrice">199</span>
               <span class="text-zinc-400 font-mono" data-currency-symbol>€</span>
             </div>
-            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span> + 0.10€/min</p>
+            <p class="text-xs text-zinc-500 mt-1 uppercase tracking-widest font-mono">/ <span data-i18n="pricing_page.per_month">mois</span> + <span id="telephonyOverageText">0.10€/min</span></p>
           </div>
 
           <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.telephony_desc">Réceptionniste IA 24/7 sur ligne PSTN.</p>
@@ -799,6 +799,13 @@
           strong.className = 'text-white';
           strong.textContent = overageValueStr;
           overageNote.appendChild(strong);
+        }
+
+        // Update telephony period overage text
+        const telephonyOverageText = document.getElementById('telephonyOverageText');
+        if (telephonyOverageText) {
+          const overageFormatted = formatPrice(currentPricing.overage.toFixed(2), currentSymbol, currentCurrency);
+          telephonyOverageText.textContent = overageFormatted + '/min';
         }
       }
 
