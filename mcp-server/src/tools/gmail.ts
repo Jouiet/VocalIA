@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import * as path from 'path';
 import { createRequire } from 'module';
 import { google, gmail_v1 } from 'googleapis';
 import { OAuth2Client } from 'google-auth-library';
@@ -17,12 +16,13 @@ import { OAuth2Client } from 'google-auth-library';
  * Requires: GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN
  */
 
+import { corePath } from '../paths.js';
+
 const require = createRequire(import.meta.url);
 let SecretVault: any = null;
 try {
-    const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
-    SecretVault = require(vaultPath);
-} catch (e) {
+    SecretVault = require(corePath('SecretVault.cjs'));
+} catch {
     // Fallback to env vars
 }
 

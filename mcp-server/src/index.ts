@@ -71,6 +71,7 @@ import { promisify } from "util";
 import { createRequire } from "module";
 import { randomUUID } from "crypto";
 import { VocaliaOAuthProvider } from "./auth-provider.js";
+import { dataPath, personasPath, scriptsPath } from "./paths.js";
 import { calendarTools } from "./tools/calendar.js";
 import { slackTools } from "./tools/slack.js";
 import { ucpTools } from "./tools/ucp.js";
@@ -113,7 +114,7 @@ let INJECTOR_PERSONAS: Record<string, any> = {};
 let INJECTOR_SYSTEM_PROMPTS: Record<string, Record<string, string>> = {};
 
 try {
-  const injectorPath = path.join(process.cwd(), '..', 'personas', 'voice-persona-injector.cjs');
+  const injectorPath = personasPath('voice-persona-injector.cjs');
   const injector = require(injectorPath);
   INJECTOR_PERSONAS = injector.PERSONAS || {};
   INJECTOR_SYSTEM_PROMPTS = injector.SYSTEM_PROMPTS || {};
@@ -207,7 +208,7 @@ function registerModuleTool(
 
 // Session 245: A2A Protocol Integration
 // Import AgencyEventBus (CommonJS require in TS)
-// const EVENT_BUS_PATH = path.join(process.cwd(), "..", "core", "AgencyEventBus.cjs");
+// const EVENT_BUS_PATH = corePath("AgencyEventBus.cjs");
 // let eventBus: any = null;
 
 // try {
@@ -220,7 +221,7 @@ function registerModuleTool(
 
 
 // Booking queue file path (real persistence)
-const BOOKING_QUEUE_PATH = path.join(process.cwd(), "data", "booking-queue.json");
+const BOOKING_QUEUE_PATH = dataPath("booking-queue.json");
 
 // Ensure data directory exists
 function ensureDataDir() {
@@ -242,20 +243,40 @@ function loadBookingQueue(): any[] {
   return [];
 }
 
+// Simple file lock for booking queue (MM1 fix — prevent race conditions)
+let bookingQueueLocked = false;
+
+async function withBookingLock<T>(fn: () => T): Promise<T> {
+  const maxWait = 5000;
+  const start = Date.now();
+  while (bookingQueueLocked) {
+    if (Date.now() - start > maxWait) throw new Error('Booking queue lock timeout');
+    await new Promise(r => setTimeout(r, 50));
+  }
+  bookingQueueLocked = true;
+  try {
+    return fn();
+  } finally {
+    bookingQueueLocked = false;
+  }
+}
+
 // Save booking to queue file (REAL persistence)
-function saveToBookingQueue(booking: any): string {
-  ensureDataDir();
-  const queue = loadBookingQueue();
-  const id = `BK-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
-  const entry = {
-    id,
-    ...booking,
-    created_at: new Date().toISOString(),
-    status: "pending",
-  };
-  queue.push(entry);
-  fs.writeFileSync(BOOKING_QUEUE_PATH, JSON.stringify(queue, null, 2));
-  return id;
+async function saveToBookingQueue(booking: any): Promise<string> {
+  return withBookingLock(() => {
+    ensureDataDir();
+    const queue = loadBookingQueue();
+    const id = `BK-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`;
+    const entry = {
+      id,
+      ...booking,
+      created_at: new Date().toISOString(),
+      status: "pending",
+    };
+    queue.push(entry);
+    fs.writeFileSync(BOOKING_QUEUE_PATH, JSON.stringify(queue, null, 2));
+    return id;
+  });
 }
 
 // Environment configuration
@@ -406,8 +427,8 @@ server.registerTool(
   },
   withLogging("translation_qa_check", async () => {
     try {
-      const scriptPath = path.join(process.cwd(), "scripts", "translation-quality-check.py");
-      const { stdout, stderr } = await execAsync(`python3 "${scriptPath}"`);
+      const scriptPath = scriptsPath("translation-quality-check.py");
+      const { stdout, stderr } = await execAsync(`python3 "${scriptPath}"`, { timeout: 30000 });
       return {
         content: [{
           type: "text" as const,
@@ -1187,8 +1208,8 @@ server.registerTool(
     annotations: CREATE_OP,
   },
   async ({ email, phone, preferredTime, notes, nextAction = "call_back" }) => {
-    // REAL: Save to persistent queue file
-    const bookingId = saveToBookingQueue({
+    // REAL: Save to persistent queue file (with lock — MM1 fix)
+    const bookingId = await saveToBookingQueue({
       type: "callback",
       email,
       phone,
@@ -1236,8 +1257,8 @@ server.registerTool(
     annotations: CREATE_OP,
   },
   withLogging("booking_create", async ({ name, email, phone, slot, meetingType = "discovery_call", qualificationScore, notes }) => {
-    // REAL: Save to persistent queue file
-    const bookingId = saveToBookingQueue({
+    // REAL: Save to persistent queue file (with lock — MM1 fix)
+    const bookingId = await saveToBookingQueue({
       type: "booking",
       name,
       email,
@@ -1337,8 +1358,15 @@ server.registerTool(
             requires_voice_api: ["voice_generate_response", "voice_providers_status", "knowledge_search"],
             requires_telephony: ["telephony_initiate_call", "telephony_get_status", "telephony_transfer_call"],
             requires_hubspot: ["crm_get_customer", "crm_create_contact"],
-            requires_shopify: ["ecommerce_order_status", "ecommerce_product_stock"],
-            requires_klaviyo: ["ecommerce_customer_profile"],
+            requires_shopify: [
+              "shopify_get_order", "shopify_list_orders", "shopify_get_product",
+              "shopify_cancel_order", "shopify_create_refund", "shopify_update_order",
+              "shopify_create_fulfillment", "shopify_search_customers"
+            ],
+            requires_klaviyo: [
+              "klaviyo_create_profile", "klaviyo_get_profile", "klaviyo_track_event",
+              "klaviyo_subscribe", "klaviyo_list_segments"
+            ],
             requires_google: [
               "calendar_check_availability", "calendar_create_event",
               "sheets_read_range", "sheets_write_range", "sheets_append_rows", "sheets_get_info", "sheets_create",
@@ -1829,7 +1857,7 @@ server.registerResource(
   },
   async (uri) => {
     let status: any = { available: false };
-    const statusPath = path.join(process.cwd(), "data", "knowledge-base", "status.json");
+    const statusPath = dataPath("knowledge-base", "status.json");
     try {
       if (fs.existsSync(statusPath)) {
         status = JSON.parse(fs.readFileSync(statusPath, "utf-8"));
@@ -2360,9 +2388,13 @@ async function startHttp() {
   // Express app with DNS rebinding protection
   const app = createMcpExpressApp({ host: "0.0.0.0" });
 
-  // --- CORS ---
+  // --- CORS (MM5: warn if wildcard in production) ---
+  const corsOrigins = process.env.MCP_CORS_ORIGINS || "*";
+  if (corsOrigins === "*") {
+    console.error("⚠️  CORS: wildcard origin (*) enabled. Set MCP_CORS_ORIGINS for production.");
+  }
   app.use((_req, res, next) => {
-    const allowedOrigins = (process.env.MCP_CORS_ORIGINS || "*").split(",");
+    const allowedOrigins = corsOrigins.split(",");
     const origin = _req.headers.origin || "";
     if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
       res.setHeader("Access-Control-Allow-Origin", origin || "*");
@@ -2394,10 +2426,10 @@ async function startHttp() {
       resourceServerUrl: mcpServerUrl,
     }));
 
-    // Bearer token validation middleware
+    // Bearer token validation middleware (MC2 fix: require scope)
     authMiddleware = requireBearerAuth({
       verifier: oauthProvider,
-      requiredScopes: [],
+      requiredScopes: ["mcp:tools"],
     });
 
     console.error("✅ OAuth 2.1 enabled — endpoints: /authorize, /token, /register, /revoke");
@@ -2435,28 +2467,56 @@ async function startHttp() {
     next();
   });
 
-  // --- Session map ---
-  const transports: Record<string, { transport: StreamableHTTPServerTransport; server: McpServer }> = {};
+  // --- Session map (MH4 fix: TTL + max sessions) ---
+  const MAX_SESSIONS = 100;
+  const SESSION_TTL = 30 * 60 * 1000; // 30 minutes
+  const transports: Record<string, { transport: StreamableHTTPServerTransport; server: McpServer; lastActivity: number }> = {};
+
+  // Cleanup stale sessions every 5 minutes
+  const sessionCleanup = setInterval(() => {
+    const now = Date.now();
+    let cleaned = 0;
+    for (const sid of Object.keys(transports)) {
+      if (now - transports[sid].lastActivity > SESSION_TTL) {
+        try { transports[sid].transport.close(); } catch {}
+        delete transports[sid];
+        cleaned++;
+      }
+    }
+    if (cleaned > 0) {
+      console.error(`🧹 Session cleanup: ${cleaned} stale sessions removed (active: ${Object.keys(transports).length})`);
+    }
+  }, 5 * 60 * 1000);
+  sessionCleanup.unref();
 
   // --- MCP POST handler ---
   const mcpPostHandler = async (req: any, res: any) => {
     const sessionId = req.headers["mcp-session-id"] as string | undefined;
 
     try {
-      // Existing session
+      // Existing session — update activity timestamp
       if (sessionId && transports[sessionId]) {
+        transports[sessionId].lastActivity = Date.now();
         await transports[sessionId].transport.handleRequest(req, res, req.body);
         return;
       }
 
-      // New initialization request
+      // New initialization request (MH4: enforce max sessions)
       if (!sessionId && isInitializeRequest(req.body)) {
+        if (Object.keys(transports).length >= MAX_SESSIONS) {
+          res.status(503).json({
+            jsonrpc: "2.0",
+            error: { code: -32000, message: "Maximum concurrent sessions reached" },
+            id: null,
+          });
+          return;
+        }
         const mcpServer = createVocaliaServer();
         const transport = new StreamableHTTPServerTransport({
           sessionIdGenerator: () => randomUUID(),
           onsessioninitialized: (sid) => {
-            transports[sid] = { transport, server: mcpServer };
-            console.error(`✅ HTTP session initialized: ${sid}`);
+            transports[sid] = { transport, server: mcpServer, lastActivity: Date.now() };
+            console.error(`✅ HTTP session initialized: ${sid} (active: ${Object.keys(transports).length})`);
           },
         });
 

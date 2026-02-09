@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import { tenantMiddleware } from '../middleware/tenant.js';
 import * as fs from 'fs';
-import * as path from 'path';
+import { dataPath } from '../paths.js';
 
 // File-based UCP Profile Storage
-const DATA_DIR = path.join(process.cwd(), '..', 'data');
-const UCP_PROFILES_FILE = path.join(DATA_DIR, 'ucp-profiles.json');
+const DATA_DIR = dataPath();
+const UCP_PROFILES_FILE = dataPath('ucp-profiles.json');
 
 interface UCPInteraction {
     type: 'voice_call' | 'widget_chat' | 'api_request' | 'booking' | 'purchase';
@@ -81,10 +81,11 @@ function saveProfiles(storage: UCPStorage): boolean {
 }
 
 /**
- * Generate profile key: tenantId:userId
+ * Generate profile key with unambiguous separator (MM2 fix).
+ * Uses '::' which is disallowed in tenant/user IDs by sanitization rules.
  */
 function profileKey(tenantId: string, userId: string): string {
-    return `${tenantId}:${userId}`;
+    return `${tenantId}::${userId}`;
 }
 
 export const ucpTools = {

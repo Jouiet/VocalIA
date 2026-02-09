@@ -4,6 +4,7 @@ import * as path from 'path';
 import ExcelJS from 'exceljs';
 import PDFDocument from 'pdfkit';
 import Papa from 'papaparse';
+import { dataPath } from '../paths.js';
 
 /**
  * Export MCP Tools - Session 249.6
@@ -17,7 +18,29 @@ import Papa from 'papaparse';
  * Output directory: data/exports/
  */
 
-const EXPORT_DIR = path.join(process.cwd(), '..', 'data', 'exports');
+const EXPORT_DIR = dataPath('exports');
+
+/**
+ * Sanitize filename to prevent path traversal (MC1 fix).
+ * Strips path separators, .., and null bytes. Allows only safe chars.
+ */
+function sanitizeFilename(raw: string): string {
+    // Remove null bytes, path separators, and parent directory references
+    let safe = raw.replace(/[\x00\/\\]/g, '').replace(/\.\./g, '');
+    // Strip leading dots (hidden files)
+    safe = safe.replace(/^\.+/, '');
+    // Allow only alphanumeric, dash, underscore, dot, space
+    safe = safe.replace(/[^a-zA-Z0-9\-_. ]/g, '_');
+    // Ensure non-empty
+    if (!safe || safe.trim().length === 0) {
+        safe = `export_${Date.now()}`;
+    }
+    // Limit length
+    if (safe.length > 200) {
+        safe = safe.substring(0, 200);
+    }
+    return safe;
+}
 
 // Ensure export directory exists
 function ensureExportDir() {
@@ -25,6 +48,18 @@ function ensureExportDir() {
         fs.mkdirSync(EXPORT_DIR, { recursive: true });
     }
     return EXPORT_DIR;
+}
+
+/**
+ * Validate that resolved path stays within EXPORT_DIR (defense-in-depth).
+ * Throws if path traversal detected after sanitization.
+ */
+function validateExportPath(outputPath: string): void {
+    const resolved = path.resolve(outputPath);
+    const exportDir = path.resolve(EXPORT_DIR);
+    if (!resolved.startsWith(exportDir + path.sep) && resolved !== exportDir) {
+        throw new Error('Path traversal detected: output path escapes export directory');
+    }
 }
 
 export const exportTools = {
@@ -65,7 +100,9 @@ export const exportTools = {
                     header: true
                 });
 
-                const outputPath = path.join(EXPORT_DIR, `${filename}.csv`);
+                const safeFilename = sanitizeFilename(filename);
+                const outputPath = path.join(EXPORT_DIR, `${safeFilename}.csv`);
+                validateExportPath(outputPath);
                 fs.writeFileSync(outputPath, csv, 'utf-8');
 
                 return {
@@ -164,7 +201,9 @@ export const exportTools = {
                     to: `${String.fromCharCode(64 + xlsxHeaders.length)}1`
                 };
 
-                const outputPath = path.join(EXPORT_DIR, `${filename}.xlsx`);
+                const safeFilename = sanitizeFilename(filename);
+                const outputPath = path.join(EXPORT_DIR, `${safeFilename}.xlsx`);
+                validateExportPath(outputPath);
                 await workbook.xlsx.writeFile(outputPath);
 
                 return {
@@ -216,8 +255,10 @@ export const exportTools = {
             return new Promise<{ content: { type: "text"; text: string }[] }>((resolve) => {
                 try {
                     ensureExportDir();
+                    const safeFilename = sanitizeFilename(filename);
 
-                    const outputPath = path.join(EXPORT_DIR, `${filename}.pdf`);
+                    const outputPath = path.join(EXPORT_DIR, `${safeFilename}.pdf`);
+                    validateExportPath(outputPath);
                     const doc = new PDFDocument({
                         size: 'A4',
                         margins: { top: 50, bottom: 50, left: 50, right: 50 }
@@ -364,7 +405,9 @@ export const exportTools = {
                     }
 
                     const tableHeaders = headers || Object.keys(data[0]);
-                    const outputPath = path.join(EXPORT_DIR, `${filename}.pdf`);
+                    const safeFilename = sanitizeFilename(filename);
+                    const outputPath = path.join(EXPORT_DIR, `${safeFilename}.pdf`);
+                    validateExportPath(outputPath);
                     const doc = new PDFDocument({
                         size: 'A4',
                         layout: tableHeaders.length > 4 ? 'landscape' : 'portrait',

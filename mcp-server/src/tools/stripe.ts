@@ -52,7 +52,7 @@ function getStripeCredentials(tenantId?: string): StripeCredentials {
 // ============================================================================
 
 const STRIPE_API_BASE = 'https://api.stripe.com/v1';
-const STRIPE_API_VERSION = '2024-12-18.acacia';
+const STRIPE_API_VERSION = '2026-01-28.clover';
 
 interface StripeResponse {
   id?: string;

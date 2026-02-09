@@ -48,8 +48,10 @@ const FALLBACK_CLIENTS = {
     }
 };
 
-// Cache loaded configs
+// Cache loaded configs (with TTL)
 const configCache = new Map();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+const MAX_CACHE_SIZE = 100;
 
 /**
  * Load client config from file
@@ -110,9 +112,10 @@ class ClientRegistry {
      * @returns {Object} Client Config
      */
     static getClient(tenantId) {
-        // Check cache first
-        if (configCache.has(tenantId)) {
-            return configCache.get(tenantId);
+        // Check cache first (with TTL)
+        const cached = configCache.get(tenantId);
+        if (cached && Date.now() - cached._cachedAt < CACHE_TTL) {
+            return cached.config;
         }
 
         // Try file-based config
@@ -120,11 +123,17 @@ class ClientRegistry {
 
         // Fallback to hardcoded
         if (!config) {
-            config = FALLBACK_CLIENTS[tenantId] || null; // No silent fallback to agency
+            config = FALLBACK_CLIENTS[tenantId] || null;
+        }
+
+        // Evict oldest if at capacity
+        if (configCache.size >= MAX_CACHE_SIZE && !configCache.has(tenantId)) {
+            const oldest = configCache.keys().next().value;
+            configCache.delete(oldest);
         }
 
         // Cache and return
-        configCache.set(tenantId, config);
+        configCache.set(tenantId, { config, _cachedAt: Date.now() });
         return config;
     }
 

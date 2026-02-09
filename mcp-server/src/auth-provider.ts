@@ -61,6 +61,11 @@ const revokedTokens = new Set<string>();
 // =============================================================================
 
 class VocaliaClientsStore implements OAuthRegisteredClientsStore {
+  // MC2 fix: registration rate limiting (max 10 clients per minute)
+  private _regTimestamps: number[] = [];
+  private static REG_RATE_LIMIT = 10;
+  private static REG_WINDOW = 60000; // 1 minute
+
   getClient(clientId: string): OAuthClientInformationFull | undefined {
     return clients.get(clientId);
   }
@@ -68,20 +73,33 @@ class VocaliaClientsStore implements OAuthRegisteredClientsStore {
   registerClient(
     client: Omit<OAuthClientInformationFull, "client_id" | "client_id_issued_at">
   ): OAuthClientInformationFull {
+    // MC2 fix: enforce max clients
+    if (clients.size >= MAX_CLIENTS) {
+      throw new Error("Maximum number of registered clients reached");
+    }
+
+    // MC2 fix: rate limit registration
+    const now = Date.now();
+    this._regTimestamps = this._regTimestamps.filter(t => t > now - VocaliaClientsStore.REG_WINDOW);
+    if (this._regTimestamps.length >= VocaliaClientsStore.REG_RATE_LIMIT) {
+      throw new Error("Registration rate limit exceeded. Try again later.");
+    }
+    this._regTimestamps.push(now);
+
     const clientId = `vocalia_${randomUUID().replace(/-/g, "").slice(0, 16)}`;
     const clientSecret = randomBytes(32).toString("hex");
-    const now = Math.floor(Date.now() / 1000);
+    const nowSec = Math.floor(now / 1000);
 
     const registered: OAuthClientInformationFull = {
       ...client,
       client_id: clientId,
       client_secret: clientSecret,
-      client_id_issued_at: now,
-      client_secret_expires_at: now + 365 * 24 * 3600, // 1 year
+      client_id_issued_at: nowSec,
+      client_secret_expires_at: nowSec + 365 * 24 * 3600, // 1 year
     };
 
     clients.set(clientId, registered);
-    console.error(`✅ OAuth client registered: ${clientId}`);
+    console.error(`✅ OAuth client registered: ${clientId} (total: ${clients.size})`);
     return registered;
   }
 }
@@ -300,6 +318,10 @@ export class VocaliaOAuthProvider implements OAuthServerProvider {
 
 const CLEANUP_INTERVAL = 15 * 60 * 1000; // 15 minutes
 
+const MAX_REVOKED_TOKENS = 10000;
+const MAX_CLIENTS = 1000;
+// CLIENT_INACTIVITY_TTL reserved for future per-client TTL enforcement
+
 const cleanupTimer = setInterval(() => {
   const now = Math.floor(Date.now() / 1000);
   let cleaned = 0;
@@ -314,8 +336,37 @@ const cleanupTimer = setInterval(() => {
     if (stored.expiresAt < now) { refreshTokens.delete(key); cleaned++; }
   }
 
+  // MH3 fix: prune revokedTokens if unbounded
+  if (revokedTokens.size > MAX_REVOKED_TOKENS) {
+    const excess = revokedTokens.size - MAX_REVOKED_TOKENS;
+    const iter = revokedTokens.values();
+    for (let i = 0; i < excess; i++) {
+      const val = iter.next().value;
+      if (val) revokedTokens.delete(val);
+      cleaned++;
+    }
+  }
+
+  // MH3 fix: prune stale clients (expired secret + no active tokens)
+  for (const [clientId, client] of clients) {
+    if (client.client_secret_expires_at && client.client_secret_expires_at < now) {
+      clients.delete(clientId);
+      cleaned++;
+    }
+  }
+  if (clients.size > MAX_CLIENTS) {
+    // Remove oldest clients if over limit
+    const entries = Array.from(clients.entries());
+    entries.sort((a, b) => (a[1].client_id_issued_at || 0) - (b[1].client_id_issued_at || 0));
+    const excess = clients.size - MAX_CLIENTS;
+    for (let i = 0; i < excess; i++) {
+      clients.delete(entries[i][0]);
+      cleaned++;
+    }
+  }
+
   if (cleaned > 0) {
-    console.error(`🧹 OAuth cleanup: ${cleaned} expired entries removed`);
+    console.error(`🧹 OAuth cleanup: ${cleaned} expired entries removed (clients: ${clients.size}, revoked: ${revokedTokens.size})`);
   }
 }, CLEANUP_INTERVAL);
 

@@ -1,16 +1,15 @@
 import { z } from 'zod';
-import * as path from 'path';
 import { createRequire } from 'module';
+import { corePath } from '../paths.js';
 
 // Import RecommendationService via createRequire (CommonJS module)
 const require = createRequire(import.meta.url);
 let RecommendationService: any = null;
 
 try {
-    const servicePath = path.join(process.cwd(), '..', 'core', 'recommendation-service.cjs');
-    RecommendationService = require(servicePath);
-} catch (e) {
-    console.error("Failed to load RecommendationService:", e);
+    RecommendationService = require(corePath('recommendation-service.cjs'));
+} catch {
+    // RecommendationService not available — tools will return appropriate errors
 }
 
 export const recommendationTools = {

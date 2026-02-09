@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import * as path from 'path';
 import { createRequire } from 'module';
 
 /**
@@ -21,12 +20,13 @@ import { createRequire } from 'module';
  * Rate Limits: 75 requests/second
  */
 
+import { corePath } from '../paths.js';
+
 const require = createRequire(import.meta.url);
 let SecretVault: any = null;
 try {
-    const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
-    SecretVault = require(vaultPath);
-} catch (e) {
+    SecretVault = require(corePath('SecretVault.cjs'));
+} catch {
     // Fallback to env vars
 }
 

@@ -1,9 +1,9 @@
 import { createRequire } from 'module';
-import path from 'path';
+import { corePath } from '../paths.js';
 
 // Use createRequire to load CommonJS module from TypeScript
 const require = createRequire(import.meta.url);
-const RegistryPath = path.join(process.cwd(), '..', 'core', 'client-registry.cjs');
+const RegistryPath = corePath('client-registry.cjs');
 
 let ClientRegistry: any;
 try {
@@ -20,23 +20,25 @@ export interface TenantContext {
 }
 
 /**
+ * Sanitize tenant ID to prevent path traversal and injection (MM4 fix).
+ * Allows only alphanumeric, dash, underscore.
+ */
+function sanitizeTenantId(raw: string): string {
+    const safe = raw.replace(/[^a-zA-Z0-9\-_]/g, '');
+    return safe || 'agency_internal';
+}
+
+/**
  * Tenant Middleware
  * Resolves properties based on x-tenant-id header or request meta.
  */
 export async function tenantMiddleware(request: any): Promise<TenantContext> {
-    // Extract tenantId
-    // In MCP stdio transport, headers might not be standard. 
-    // We look for _meta.tenantId commonly injected by clients.
-    // Default to 'agency_internal' if missing.
-
-    // 1. args._meta.tenantId (Zod schema injection)
-    // 2. request.params._meta.tenantId (Raw JSON-RPC)
-    // 3. headers (HTTP/Network)
-
-    const tenantId = request?._meta?.tenantId ||
+    const rawTenantId = request?._meta?.tenantId ||
         request?.params?._meta?.tenantId ||
         request?.headers?.['x-tenant-id'] ||
         'agency_internal';
+
+    const tenantId = sanitizeTenantId(String(rawTenantId));
 
     const config = ClientRegistry.getClient(tenantId);
 

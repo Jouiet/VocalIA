@@ -1,17 +1,15 @@
 import { google } from 'googleapis';
 import { z } from 'zod';
-import * as path from 'path';
 import { createRequire } from 'module';
-
 import * as fs from 'fs';
+import { corePath, dataPath } from '../paths.js';
 
 // Multi-tenant support via SecretVault (Session 249.2)
 const require = createRequire(import.meta.url);
 let SecretVault: any = null;
 try {
-    const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
-    SecretVault = require(vaultPath);
-} catch (e) {
+    SecretVault = require(corePath('SecretVault.cjs'));
+} catch {
     // Fallback to env vars or tokens file
 }
 
@@ -45,7 +43,7 @@ async function getGoogleCredentials(tenantId: string = 'agency_internal') {
     }
 
     // 3. Fallback to tokens file (data/google-oauth-tokens.json)
-    const tokensPath = path.join(process.cwd(), '..', 'data', 'google-oauth-tokens.json');
+    const tokensPath = dataPath('google-oauth-tokens.json');
     if (fs.existsSync(tokensPath)) {
         try {
             const tokens = JSON.parse(fs.readFileSync(tokensPath, 'utf8'));

@@ -3,14 +3,14 @@ import { z } from 'zod';
 import * as path from 'path';
 import * as fs from 'fs';
 import { createRequire } from 'module';
+import { corePath } from '../paths.js';
 
 // Multi-tenant support via SecretVault (Session 249.2)
 const require = createRequire(import.meta.url);
 let SecretVault: any = null;
 try {
-    const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
-    SecretVault = require(vaultPath);
-} catch (e) {
+    SecretVault = require(corePath('SecretVault.cjs'));
+} catch {
     // Fallback to env vars
 }
 

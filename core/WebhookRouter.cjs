@@ -193,8 +193,8 @@ class WebhookRouter {
     // Raw body for signature verification
     this.app.use('/webhook', express.raw({ type: '*/*' }));
 
-    // JSON for other routes
-    this.app.use(express.json());
+    // JSON for other routes (1MB limit for webhook payloads)
+    this.app.use(express.json({ limit: '1mb' }));
 
     // Health check
     this.app.get('/health', (req, res) => {

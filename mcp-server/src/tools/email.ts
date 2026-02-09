@@ -16,12 +16,13 @@ import type { Transporter } from 'nodemailer';
  * Supports: SMTP, Gmail, Outlook, SendGrid, Mailgun
  */
 
+import { corePath } from '../paths.js';
+
 const require = createRequire(import.meta.url);
 let SecretVault: any = null;
 try {
-    const vaultPath = path.join(process.cwd(), '..', 'core', 'SecretVault.cjs');
-    SecretVault = require(vaultPath);
-} catch (e) {
+    SecretVault = require(corePath('SecretVault.cjs'));
+} catch {
     // Fallback to env vars
 }
 
