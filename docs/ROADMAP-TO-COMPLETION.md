@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-09 | **Session:** 250.170b (16 deep-audit bugs found+fixed — geo-detect alias, Traefik routes, PRICING_TABLE, voice JSONs, Darija prompt, README, remotion, widget .min.js, pricing.html)
-> **Code Completeness:** 9.0/10 | **Production Readiness:** 3.5/10 (website deployed, API on VPS with persistent volumes, auth near-functional, billing wired, 0 paying customers)
+> **Date:** 2026-02-09 | **Session:** 250.171 (benchmark SWOT update, client dashboard quota usage, live deployment audit)
+> **Code Completeness:** 9.0/10 | **Production Readiness:** 4.0/10 (website deployed, API on VPS RESPONDING but running OLD code — /respond crashes C14 VOICE_CONFIG, db-api connected to Google Sheets, auth returns proper errors, widget v2.7.0 live)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** Audit croise de 13 documents + external audits (250.129, 250.139, 250.142, 250.153) + pricing restructure (250.143) + implementation (250.144) + website factual audit (250.160) + market repositioning (250.164) + **DEEP AUDIT 250.166** (39 bugs after counter-audit) + **PHASE 3 INTERNAL AUDIT 250.167** (+15 bugs found, 15 fixed) + **PHASE 4 FIXES 250.168** (20 bugs fixed) + **PHASE 5 FIXES 250.169** (8 bugs fixed) + **PHASE 6 INFRA 250.170** (6 bugs fixed)
+> **Source:** Audit croise de 13 documents + external audits + **DEEP AUDIT 250.166-170b** (70 bugs found, 65 fixed) + **LIVE DEPLOYMENT AUDIT 250.171** (curl-verified)
 
 ---
 
@@ -20,17 +20,25 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.0/10** — Features coded and tested (3,773 tests, 68 files). 250.170b: +16 deep-audit bugs fixed (B1 getGeo alias for 50+ pages, B2 7 Traefik routes, B3 PRICING_TABLE corrected, B4-B6 voice pricing, B7 Darija prompt, B8-B9 factual claims, B10 README, B11-B12 remotion, B13 ARY price, B14 .min.js→.js, B16 pricing.html). 70 total bugs found, 65 fixed, 5 remain (M5 arch + non-fixable).
-**Production Readiness: 3.5/10** — Website deployed at vocalia.ma. API on VPS: Docker volumes configured (needs redeploy), env vars defined in docker-compose (needs .env file with real values). 0 paying customers.
+**Code Completeness: 9.0/10** — Features coded and tested (3,774 tests, 68 files). 70 total bugs found, 65 fixed, 5 remain (M5 arch + non-fixable). Qwen3-TTS research: mediocre results (closed).
+**Production Readiness: 4.0/10** — VERIFIED 250.171 via curl:
+- `vocalia.ma` ✅ Website live (all 80 pages return 200)
+- `api.vocalia.ma/health` ✅ Voice API responds (Grok/Gemini/Claude/Atlas all configured:true)
+- `api.vocalia.ma/api/db/health` ✅ DB API connected (Google Sheets: 7 sheets, spreadsheetId confirmed)
+- `api.vocalia.ma/api/auth/login` ✅ Auth endpoint works (returns proper error for invalid creds)
+- `api.vocalia.ma/respond` ❌ **BROKEN** — returns `VOICE_CONFIG is not defined` (C14 bug, fixed in local code 250.167, NOT redeployed)
+- Widget v2.7.0 live on homepage (72KB loaded, b2b kernel)
+- .env: 12 API keys SET locally, 6 MISSING for docker-compose (JWT_SECRET, SMTP_*, STRIPE_SECRET_KEY, VOCALIA_VAULT_KEY)
+- 0 paying customers, 22 registered test tenants
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
 
 | # | Dimension | Score 250.160 | Score 250.166 | Delta | Justification (250.166 Deep Audit) |
 |:-:|:----------|:-----:|:-----:|:-----:|:------|
-| 1 | Tests unitaires | 7.0 | **7.5** | +0.5 | 3,773 tests pass, 0 fail. Added auth security tests (C2 email_verified, F2 token exposure), quota tests (C10), columnLetter/sheetRange tests (H7) |
-| 2 | Sécurité | 10.0 | **8.5** | **-1.5** | 250.170: +0.5 — F1 JWT_SECRET in docker-compose, F6 VOCALIA_VAULT_KEY in docker-compose. All security bugs fixed in code. Needs actual env values on VPS. |
-| 3 | Production readiness | 5.5 | **3.5** | **-2.0** | 250.170: +1.0 — Docker volumes configured (vocalia-data named volume), all env vars defined in docker-compose. Needs: redeploy with .env, SMTP credentials. |
-| 4 | Documentation accuracy | 10.0 | **8.0** | **-2.0** | Website content accurate. BUT: ROADMAP scores were inflated (9.9 code was false), admin dashboard shows hardcoded mrrGrowth:18 |
+| 1 | Tests unitaires | 7.0 | **7.5** | +0.5 | 3,774 tests pass, 0 fail. Auth security, quota, columnLetter/sheetRange tests included |
+| 2 | Sécurité | 10.0 | **8.5** | **-1.5** | All security bugs fixed in code. .env: 6 keys missing (JWT_SECRET, SMTP_*, STRIPE, VAULT) |
+| 3 | Production readiness | 5.5 | **4.0** | **-1.5** | 250.171: +0.5 — VPS confirmed running (health OK, db connected, auth works). /respond BROKEN (old code). Needs: redeploy + 6 env vars. |
+| 4 | Documentation accuracy | 10.0 | **8.5** | **-1.5** | Website factual (23/23 validator). Benchmark SWOT updated. mrrGrowth fixed. |
 | 5 | Architecture code | 10.0 | **9.0** | **-1.0** | 250.170: +0.5 — M9 quota sync (Sheets→local every 10min), Docker volumes for data persistence. Only M5 (Sheets scalability) remains. |
 | 6 | Multi-tenant | 9.5 | **8.0** | **-1.5** | 250.170: +0.5 — VOCALIA_VAULT_KEY in docker-compose, quota sync resolves 2-sources-of-truth. CORS + origin↔tenant + api_key all working. Needs actual env values. |
 | 7 | i18n | 10.0 | 10.0 | 0 | 4,858 keys × 5 langs verified |
@@ -42,15 +50,15 @@
 |:-|:-----:|:------------:|
 | 1 (7.5) | 15% | 1.125 |
 | 2 (8.5) | 15% | 1.275 |
-| 3 (3.5) | 10% | 0.350 |
-| 4 (8.0) | 10% | 0.800 |
+| 3 (4.0) | 10% | 0.400 |
+| 4 (8.5) | 10% | 0.850 |
 | 5 (9.0) | 10% | 0.900 |
 | 6 (8.0) | 10% | 0.800 |
 | 7 (10.0) | 5% | 0.500 |
 | 8 (5.5) | 10% | 0.550 |
 | 9 (9.5) | 10% | 0.950 |
 | 10 (8.5) | 5% | 0.425 |
-| **TOTAL** | **100%** | **8.000** → **~8.0/10** (250.170 — Docker volumes, VPS env vars, quota sync, dashboard) |
+| **TOTAL** | **100%** | **8.100** → **~8.1/10** (250.171 — live deployment audit confirmed, +0.5 prod, +0.5 docs) |
 
 ---
 
@@ -219,7 +227,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | 6 | Darija differentiated pricing $0.25/min | Decision | Eliminate Darija loss | ✅ 250.161 |
 | 7 | Code-split ECOM widget | 4h | -55% initial load | ✅ 250.141 |
 | 8 | STT fallback Firefox/Safari | 6h | +11% visitors | ✅ 250.140 |
-| 9 | Test Qwen3-TTS for Darija | 8h | TTS cost -93% | ❌ Research |
+| 9 | ~~Test Qwen3-TTS for Darija~~ | ~~8h~~ | ~~TTS cost -93%~~ | ✅ **CLOSED** — Mediocre results |
 
 ### 4.2 Cost Reality
 
@@ -273,10 +281,10 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 | Métrique | Valeur | Commande |
 |:---------|:------:|:---------|
-| core/*.cjs | 35,368 lines / 55 files | `wc -l core/*.cjs` |
-| widget/*.js | 10,598 lines / 7 files | `wc -l widget/*.js` |
-| personas/ | 8,791 lines / 2 files | `wc -l personas/*.cjs personas/*.json` |
-| telephony/ | 4,751 lines / 1 file | `wc -l telephony/*.cjs` |
+| core/*.cjs | 35,998 lines / 55 files | `wc -l core/*.cjs` |
+| widget/*.js | 10,621 lines / 7 files | `wc -l widget/*.js` |
+| personas/ | 8,776 lines / 2 files | `wc -l personas/*.cjs personas/*.json` |
+| telephony/ | 4,754 lines / 1 file | `wc -l telephony/*.cjs` |
 | mcp-server/src/ | 17,628 lines / 31 files | `find mcp-server/src -name "*.ts"` |
 | MCP tools | 203 | `grep -c "server.tool(" mcp-server/src/index.ts` |
 | Function tools | 25 | `grep -c "name: '" telephony/voice-telephony-bridge.cjs` |
@@ -289,7 +297,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 ### 5.2 Tests
 
-**TOTAL: 3,773 tests | 3,773 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.168)
+**TOTAL: 3,774 tests | 3,774 pass | 0 fail | 0 skip | ALL ESM (.mjs)** (Verified 250.171)
 
 Top test suites (by count):
 
@@ -516,16 +524,20 @@ create_booking          get_recommendations    qualify_lead
 | **P0-DEEPAUDIT-FIX2 (250.168)** | ✅ **20 FIXED** | Auth security (F2/F7 tokens, C2 email verify, F4 resend endpoint), quota security (C10), billing wired (C7/C8), >26 col (H7), nodemailer (F3), SecretVault salt (H13), db-client (H4), B2B lang (H9), ElevenLabs (M11), auth i18n (M1), C5 auth key, C1 OAuth hidden. M12 resolved (not a bug). 19 remain. | 6.8 → **7.3** |
 | **P0-DEEPAUDIT-FIX3 (250.169)** | ✅ **8 FIXED** | H5 WebSocket token via header (not query string), H8 widget config injection allowlist, H14 mrrGrowth from real data, H10 HITL already persisted, M6 dashboard metrics persistence, M8 UUID 8→12 chars, M2/M3 resolved by F3 email wiring, M10 not dead code. 11 remain. | 7.3 → **7.6** |
 | **P0-INFRA (250.170)** | ✅ **6 FIXED** | C6 Docker volumes (named volume vocalia-data + symlinks), F1 JWT_SECRET in docker-compose, F6 VOCALIA_VAULT_KEY, H2 STRIPE_SECRET_KEY, H3 SMTP vars. M9 quota sync (Sheets→local every 10min). Admin dashboard: AI Fallback Chain visualization. 5 remain. | 7.6 → **8.0** |
+| **P0-LIVE-AUDIT (250.171)** | ✅ **AUDIT** | Live deployment verified via curl: website 200, voice API health OK, db-api connected (Google Sheets 7 tables), auth works, /respond BROKEN (old code). Client dashboard: quota usage radials. Benchmark SWOT updated. Qwen3-TTS closed. | 8.0 → **8.1** |
 
-**Code Completeness: 9.0/10** | **Production Readiness: 3.5/10** | **Weighted: 8.0/10**
+**Code Completeness: 9.0/10** | **Production Readiness: 4.0/10** | **Weighted: 8.1/10**
 
-**Remaining (5 bugs — from Deep Audit 250.166 + Phase 3 250.167, after 49 fixed):**
+**Remaining (5 bugs — from Deep Audit 250.166 + Phase 3 250.167, after 65 fixed):**
 ```
 P1 (SHOULD FIX — Architectural):
   1. GoogleSheetsDB auth scalability ceiling [M5]
 
 P2 (NICE TO HAVE — Research):
   2. Evaluate Telnyx for Moroccan telephony
+
+CLOSED:
+  - Qwen3-TTS for Darija: mediocre results, research abandoned
 
 NON-FIXABLE / MONITORING:
   - H14b: Gemini TTS preview model (no stable version exists)
@@ -537,14 +549,28 @@ RESOLVED (not bugs):
   - M10: Payzone is NOT dead code — BillingAgent uses it for MAD currency routing
 ```
 
+**Live Deployment Status (VERIFIED 250.171 via curl):**
+```
+✅ vocalia.ma            → Website live, all pages 200
+✅ api.vocalia.ma/health → Voice API running (4 AI providers configured:true)
+✅ api.vocalia.ma/api/db/health → DB API connected (Google Sheets: 7 sheets)
+✅ api.vocalia.ma/api/auth/login → Auth endpoint works (returns proper errors)
+❌ api.vocalia.ma/respond → BROKEN — "VOICE_CONFIG is not defined" (C14 bug, fixed locally 250.167, NOT redeployed)
+✅ Widget v2.7.0 → Loaded from homepage (72KB b2b kernel)
+
+.env LOCAL: 12 keys SET (XAI, Gemini, Anthropic, ElevenLabs, Twilio, Google OAuth)
+.env MISSING: JWT_SECRET, SMTP_HOST/USER/PASS, STRIPE_SECRET_KEY, VOCALIA_VAULT_KEY
+```
+
 **Remaining (operations — NOT code):**
 ```
 → GA4: ✅ DONE — configured + server-side Measurement Protocol
 → Darija pricing: ✅ DONE — $0.25/min inbound
 → Docker volumes: ✅ DONE — docker-compose.production.yml rewritten
-→ VPS env vars: ✅ DONE in docker-compose — needs .env file with real values
-→ VPS redeploy: Needed to apply new docker-compose + .env
-→ SMTP: Needs provider credentials (Brevo/Resend/SES) in .env
+→ VPS env vars: ✅ DONE in docker-compose — needs .env on VPS with real values
+→ VPS REDEPLOY: ⚠️ CRITICAL — /respond broken on production, local code has fix
+→ SMTP: Needs provider credentials (Brevo/Resend/SES)
+→ Qwen3-TTS: ✅ CLOSED — mediocre results
 ```
 
 ### 6.13 Phase 6 Fixes (250.170) — 6 Bugs Fixed + Dashboard Enhancement
@@ -592,5 +618,5 @@ RESOLVED (not bugs):
 
 ---
 
-*Document mis a jour le 2026-02-09 — Session 250.170b*
-*Changelog: sessions 250.153→170 (14 sessions, 70 bugs found, 65 fixed). Details: `memory/session-history.md`*
+*Document mis a jour le 2026-02-09 — Session 250.171*
+*Changelog: sessions 250.153→171 (15 sessions, 70 bugs found, 65 fixed). Details: `memory/session-history.md`*
