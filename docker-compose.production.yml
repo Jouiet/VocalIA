@@ -1,11 +1,16 @@
-# VocalIA Production Deployment - ALL SERVICES
-# Session 250.170 - Full Production Stack + Persistent Volumes
+# VocalIA Production Deployment - Full Stack with Profiles
+# Session 250.178 - 4 core + 3 optional (profiles)
 #
-# Services:
+# CORE (always run):
 # - db-api (3013): Database API, Auth, Tenants, HITL
 # - voice-api (3004): Voice AI Response Generation
 # - grok-realtime (3007): WebSocket Voice Streaming
 # - telephony (3009): Twilio PSTN Bridge
+#
+# OPTIONAL (via --profile):
+# - oauth-gateway (3010): OAuth 2.0 flows [profile: integrations]
+# - webhook-router (3011): Inbound webhooks [profile: integrations]
+# - mcp-server (3015): 203 MCP tools [profile: mcp]
 #
 # Routes (all via api.vocalia.ma — no extra DNS needed):
 # - api.vocalia.ma/api/auth/* → db-api (priority 100)
@@ -14,7 +19,10 @@
 # - api.vocalia.ma/api/tenants/* → db-api
 # - api.vocalia.ma/api/logs → db-api
 # - api.vocalia.ma/api/catalog/* → db-api
+# - api.vocalia.ma/oauth/* → oauth-gateway (priority 95) [profile: integrations]
+# - api.vocalia.ma/webhook/* → webhook-router (priority 93) [profile: integrations]
 # - api.vocalia.ma/realtime/* → grok-realtime (priority 90)
+# - api.vocalia.ma/mcp → mcp-server (priority 85) [profile: mcp]
 # - api.vocalia.ma/telephony/* → telephony (priority 80)
 # - api.vocalia.ma/* → voice-api (priority 50)
 # Subdomain aliases (optional, need DNS A records at NindoHost):
@@ -23,7 +31,11 @@
 #
 # Volumes: vocalia-data persists quotas, HITL, conversations, metrics, audit logs, client credentials
 #
-# Deploy: docker-compose -f docker-compose.production.yml up -d
+# Deploy:
+#   docker-compose -f docker-compose.production.yml up -d                              # Core only (4 services)
+#   docker-compose -f docker-compose.production.yml --profile integrations up -d        # + OAuth + Webhooks
+#   docker-compose -f docker-compose.production.yml --profile mcp up -d                 # + MCP Server
+#   docker-compose -f docker-compose.production.yml --profile integrations --profile mcp up -d  # All 7
 
 services:
   # ═══════════════════════════════════════════════════════════════
@@ -252,6 +264,151 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
+  # ═══════════════════════════════════════════════════════════════
+  # OAUTH GATEWAY - OAuth 2.0 Flows (HubSpot, Shopify, Google, Stripe, Zoho)
+  # Routes: api.vocalia.ma/oauth/*
+  # Profile: integrations (not started by default)
+  # ═══════════════════════════════════════════════════════════════
+  vocalia-oauth:
+    image: node:20-alpine
+    container_name: vocalia-oauth
+    restart: unless-stopped
+    working_dir: /app
+    profiles: ["integrations"]
+    volumes:
+      - vocalia-data:/vocalia-data
+    environment:
+      - NODE_ENV=production
+      - OAUTH_PORT=3010
+      - OAUTH_BASE_URL=https://api.vocalia.ma/oauth
+    command: >
+      sh -c "
+        apk add --no-cache git curl &&
+        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        cd /app &&
+        rm -rf data 2>/dev/null || true &&
+        ln -sf /vocalia-data data &&
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node core/OAuthGateway.cjs
+      "
+    ports:
+      - "3010:3010"
+    labels:
+      - "traefik.enable=true"
+      # Internal routes: /oauth/start/:provider, /oauth/callback/:provider, /oauth/providers
+      - "traefik.http.routers.vocalia-oauth.rule=Host(`api.vocalia.ma`) && PathPrefix(`/oauth`)"
+      - "traefik.http.routers.vocalia-oauth.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-oauth.tls=true"
+      - "traefik.http.routers.vocalia-oauth.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-oauth.priority=95"
+      - "traefik.http.services.vocalia-oauth.loadbalancer.server.port=3010"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3010/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ═══════════════════════════════════════════════════════════════
+  # WEBHOOK ROUTER - Inbound Webhooks (HubSpot, Shopify, Stripe, Klaviyo, Google)
+  # Routes: api.vocalia.ma/webhook/*
+  # Profile: integrations (not started by default)
+  # ═══════════════════════════════════════════════════════════════
+  vocalia-webhooks:
+    image: node:20-alpine
+    container_name: vocalia-webhooks
+    restart: unless-stopped
+    working_dir: /app
+    profiles: ["integrations"]
+    volumes:
+      - vocalia-data:/vocalia-data
+    environment:
+      - NODE_ENV=production
+      - WEBHOOK_PORT=3011
+    command: >
+      sh -c "
+        apk add --no-cache git curl &&
+        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        cd /app &&
+        rm -rf data 2>/dev/null || true &&
+        ln -sf /vocalia-data data &&
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node core/WebhookRouter.cjs
+      "
+    ports:
+      - "3011:3011"
+    labels:
+      - "traefik.enable=true"
+      # Internal routes: /webhook/:provider, /webhook/handlers, /webhook/events/:tenantId
+      - "traefik.http.routers.vocalia-webhooks.rule=Host(`api.vocalia.ma`) && PathPrefix(`/webhook`)"
+      - "traefik.http.routers.vocalia-webhooks.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-webhooks.tls=true"
+      - "traefik.http.routers.vocalia-webhooks.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-webhooks.priority=93"
+      - "traefik.http.services.vocalia-webhooks.loadbalancer.server.port=3011"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3011/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ═══════════════════════════════════════════════════════════════
+  # MCP SERVER - 203 Tools + 6 Resources + 8 Prompts (TypeScript)
+  # Routes: api.vocalia.ma/mcp
+  # Profile: mcp (not started by default)
+  # ═══════════════════════════════════════════════════════════════
+  vocalia-mcp:
+    image: node:20-alpine
+    container_name: vocalia-mcp
+    restart: unless-stopped
+    working_dir: /app/mcp-server
+    profiles: ["mcp"]
+    environment:
+      - NODE_ENV=production
+      - MCP_PORT=3015
+      - MCP_TRANSPORT=streamable-http
+      - VOCALIA_API_URL=http://vocalia-api:3004
+      - VOCALIA_TELEPHONY_URL=http://vocalia-telephony:3009
+      - VOCALIA_API_KEY=${VOCALIA_API_KEY:-}
+    command: >
+      sh -c "
+        apk add --no-cache git curl &&
+        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        cd /app/mcp-server &&
+        npm install --ignore-scripts 2>/dev/null || true &&
+        npx tsc &&
+        node dist/index.js
+      "
+    ports:
+      - "3015:3015"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vocalia-mcp.rule=Host(`api.vocalia.ma`) && PathPrefix(`/mcp`)"
+      - "traefik.http.routers.vocalia-mcp.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-mcp.tls=true"
+      - "traefik.http.routers.vocalia-mcp.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-mcp.priority=85"
+      - "traefik.http.services.vocalia-mcp.loadbalancer.server.port=3015"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3015/health"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
 
 volumes:
   vocalia-data:
