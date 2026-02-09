@@ -869,26 +869,151 @@ US/Other → EN + USD (Starter $49, Pro $99)
 
 ---
 
-## 11. FLUX DE DONNÉES
+## 11. FLUX DE DONNÉES & CHEMINS CRITIQUES
 
-### 11.1 Flux Auth
+> Added 250.177 — Traced empirically from code (voice-api-resilient.cjs:2636-2786, grok-voice-realtime.cjs:733-768, voice-telephony-bridge.cjs:3707-3756, db-api.cjs:221-243)
 
-1. **REGISTER**: POST /api/auth/register → bcrypt hash → Create user in Sheets → Send verification email
-2. **LOGIN**: POST /api/auth/login → Verify bcrypt → Generate access_token (24h) + refresh_token (30d) → Store hash in auth_sessions
-3. **AUTH REQUEST**: Header `Authorization: Bearer {token}` → Verify JWT → Check expiration → Extract tenant_id → Apply RLS filter
-4. **REFRESH**: POST /api/auth/refresh → Verify refresh_token → Generate new access_token
+### 11.1 Chemin Critique #1 — Widget Text Conversation (S1: port 3004)
+
+```
+Browser Widget                    S1: Voice API (3004)                    AI Provider
+─────────────                     ──────────────────                      ───────────
+POST /respond ──────────────────► 1. Parse JSON body (max 1MB)
+{message, tenant_id,              2. Sanitize tenantId
+ language, history,               3. Validate origin↔tenant (CORS)
+ session_id, api_key}             4. Validate API key (timing-safe)
+                                  5. Check quota (GoogleSheetsDB)
+                                  6. Check feature gating (plan matrix)
+                                  7. Load persona (VoicePersonaInjector)
+                                     → SYSTEM_PROMPTS[key][lang]
+                                  8. Build feature restrictions (prompt injection)
+                                  9. RAG search (HybridRAG: BM25+Gemini embeddings)
+                                  10. GraphRAG relational context
+                                  11. Ecom sensor verification (if Shopify configured)
+                                  12. Build full system prompt
+                                      (persona + RAG + graph + tools + features)
+                                  13. Fallback chain: ──────────────────► Grok (grok-4-1-fast-reasoning)
+                                      Grok → Gemini → Claude → Atlas       ↓ fail
+                                      (Atlas only for Darija/ary)         Gemini (gemini-3-flash)
+                                                                            ↓ fail
+                                                                          Claude (claude-opus-4-5)
+                                                                            ↓ fail
+                                                                          Atlas-Chat-9B (Darija)
+                                                                            ↓ fail
+                                                                          Local rule-based fallback
+◄──────────────────────────────── 14. Return {response, provider, latency,
+{response, provider,                   qualification, features, a2ui}
+ qualification, features}         15. Store conversation (conversation-store)
+                                  16. Record latency metrics
+```
+
+**Latency budget**: ~800ms (Grok) | ~1200ms (Gemini) | ~1500ms (Claude)
+**Security gates**: CORS origin, tenant validation, API key, quota, body size limit, input sanitization
+
+### 11.2 Chemin Critique #2 — Realtime Voice (S3: port 3007)
+
+```
+Browser (Web Speech API)          S3: Grok Realtime (3007)                xAI Realtime API
+────────────────────              ────────────────────────                 ─────────────────
+WebSocket connect ────────────► 1. Validate origin+tenant (registry)
+?voice=ara&tenant_id=xxx          2. Check session limit (MAX=100)
+                                  3. Load tenant config (instructions)
+                                  4. Create GrokRealtimeSession
+                                  5. Connect to xAI ──────────────────► wss://api.x.ai/v1/realtime
+                                     (WS proxy)                          (Grok audio model)
+
+Audio frames (base64) ──────────► 6. Forward to Grok ──────────────────► Process speech
+                                  7. Message type allowlist filter
+◄──────────────────────────────── 8. Forward response ◄──────────────── Audio response
+Audio response (base64)
+
+                                  Gemini TTS fallback (if Grok audio fails):
+                                  → gemini-2.5-flash-preview-tts
+                                  → Generates audio, streams back to client
+```
+
+**Protocol**: WebSocket bidirectional, base64 audio frames
+**Security**: Origin validation, tenant registry, session limits, message type allowlist, instruction injection prevented (query params ignored, only registry config used)
+
+### 11.3 Chemin Critique #3 — Voice Telephony (S4: port 3009)
+
+```
+Phone (PSTN)        Twilio          S4: Telephony Bridge (3009)       Grok Realtime API
+────────────        ──────          ───────────────────────────       ─────────────────
+Inbound call ──► Webhook POST ───► /voice/inbound
+                                   1. Validate Twilio signature
+                                   2. Check tenant quota
+                                   3. Create Grok session ──────────► wss://api.x.ai/v1/realtime
+                                   4. Inject persona (VoicePersonaInjector)
+                                   5. Generate TwiML (WebSocket stream URL)
+◄──── TwiML ◄── Response ◄──────── <Connect><Stream url="wss://..."/>
+
+Audio stream ──► WebSocket ──────► /stream/:sessionId
+                 (bidirectional)   6. Forward Twilio audio → Grok
+                                   7. Forward Grok response → Twilio
+                                   8. Function tool calls (25 tools):
+                                      booking, qualify_lead, check_stock,
+                                      search_catalog, schedule_callback, etc.
+                                   9. HITL gating (BANT score check)
+◄──── Audio ◄── TTS ◄────────────  10. ElevenLabs TTS (multilingual)
+                                       or Twilio native TTS
+
+                                   11. On call end:
+                                       → Store lead data
+                                       → Push to CRM (if configured)
+                                       → Send WhatsApp/SMS confirmation
+```
+
+**Cost**: Grok ~$0.05 + Twilio ~$0.01 + ElevenLabs TTS ~$0.04 = **~$0.10/min**
+**25 function tools**: Grok calls these via `function_call` → handler returns structured data → Grok incorporates into conversation
+
+### 11.4 Flux Auth
+
+1. **REGISTER**: POST /api/auth/register → bcrypt hash → Create user in Sheets → Send verification email → Token hashed (SHA-256)
+2. **LOGIN**: POST /api/auth/login → Verify bcrypt → Check email_verified → Generate access_token (24h) + refresh_token (30d) → Store hash in auth_sessions
+3. **AUTH REQUEST**: Header `Authorization: Bearer {token}` → Verify JWT (shared CONFIG.JWT_SECRET) → Check expiration → Extract tenant_id → Apply RLS filter
+4. **REFRESH**: POST /api/auth/refresh → Verify refresh_token hash → Generate new access_token
 5. **LOGOUT**: POST /api/auth/logout → Delete refresh_token from auth_sessions
 
-### 11.2 Flux HITL
+### 11.5 Flux HITL
 
-1. **CREATE**: voice-telephony-bridge.cjs → BANT score < threshold → POST /api/db/hitl_pending → Notify admin (WS/Slack)
+1. **CREATE**: voice-telephony-bridge.cjs → BANT score > threshold → Queue action for human review → Persist to disk (pending-actions.json)
 2. **REVIEW**: GET /api/hitl/pending → Show in admin/hitl.html
-3. **DECIDE**: POST /api/hitl/approve/:id or /reject/:id → Move to hitl_history → Delete from hitl_pending
+3. **DECIDE**: POST /api/hitl/approve/:id or /reject/:id → Move to hitl_history → Audit log (chained hashes)
 
-### 11.3 Flux Dashboard
+### 11.6 Flux Dashboard
 
 - **Client**: requireAuth() → GET /api/db/tenants/{id} (mrr, nps, conversion) → GET /api/db/sessions?tenant_id=xxx → Render charts
 - **Admin**: requireAdmin() → tenants.list() + hitl.stats() + logs.list({limit: 10})
+
+### 11.7 Flux E-Commerce (Widget V3)
+
+```
+Browser (e-commerce.html)         S1: Voice API (3004)         External APIs
+─────────────────────             ──────────────────           ─────────────
+POST /respond                     Same as 11.1, plus:
+{message, widget_type:"ECOM",    → voice-ecommerce-tools.cjs
+ page_context:{product,price}}      → catalog-connector.cjs
+                                      → WooCommerce REST v3 (if configured)
+                                      → Shopify Admin API (if configured)
+                                    → check_stock, get_recommendations
+                                    → cart_recovery (abandoned-cart-recovery.js)
+```
+
+### 11.8 Inter-Service Communication
+
+```
+S1 (3004) ──► reads ──► GoogleSheetsDB (via S2:3013 or direct)
+S1 (3004) ──► reads ──► tenant-kb-loader → hybrid-rag → knowledge files
+S1 (3004) ──► reads ──► client_registry.json (CORS, tenant config)
+S4 (3009) ──► reads ──► VoicePersonaInjector (38 personas × 5 langs)
+S4 (3009) ──► reads ──► SecretVault (per-tenant API keys)
+S2 (3013) ──► reads/writes ──► Google Sheets API (7 tables)
+S2 (3013) ──► sends ──► nodemailer (SMTP: verification, reset emails)
+MCP (3015) ──► 0 imports from core ──► standalone, talks to external APIs directly
+```
+
+**No service-to-service HTTP calls in production.** Each service reads shared files/config directly. S2 is the only gateway to Google Sheets.
 
 ---
 
