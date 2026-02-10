@@ -1,6 +1,6 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-10 | **Session:** 250.191 (Runtime Integrity Deep Scan: 6 new bugs fixed — F16-F21: catalog saveCatalog guard, Shopify token naming, retention-sensor fallback, db-api path+fs imports, docker-compose env vars. 39 missing .env.example vars added.)
+> **Date:** 2026-02-10 | **Session:** 250.191b (Code tasks 100% complete — F8 EventBus dead wiring fixed, F15 orphan deleted, F7 reclassified, DIST-1/DIST-2 verified synced, temp scripts cleaned. All remaining items are OPERATIONS/BUSINESS.)
 > **Code Completeness:** 9.5/10 | **Production Readiness:** 3.5/10 (website deployed, API on VPS running OLD code — /respond crashes C14, 18 env vars MISSING, widget VISIBLE but MUTE: 0 conversations possible)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
 > **Source:** 32 audit phases across sessions 250.105-250.191. Latest: **RUNTIME INTEGRITY 250.191** (6 bugs: F16 saveCatalog crash on non-custom connectors, F17 SHOPIFY_ADMIN_TOKEN naming, F18 retention-sensor Shopify fallback, F19-F20 CRITICAL db-api path+fs imports missing, F21 CRITICAL docker-compose env gaps). Prior: UCP unification (250.189), fragmentation audit (250.190), BL1-BL40 (250.182-188). Full history: `memory/session-history.md`
@@ -529,7 +529,8 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 30 UCP+AUDIT (250.189)** | **18 (BL29-40 + F1-F4)** | **18** | **0** |
 | **Phase 31 FRAGMENTATION (250.190)** | **8 (F5-F6, F9-F11, F13-F14)** | **8** | **0** |
 | **Phase 32 RUNTIME INTEGRITY (250.191)** | **9 (F16-F24)** | **9** | **0** |
-| **CUMULATIVE** | **375** | **375** | **0 actionable** (8 not fixable locally: VPS/arch. Inc. 2 external deps, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified). NOTE: Business logic + integration APIs = INCONNU (0 appels réels, 0 clients) |
+| **Phase 33 CLEANUP (250.191b)** | **2 (F8+F15)** | **2** | **0** |
+| **CUMULATIVE** | **377** | **377** | **0 actionable** (8 not fixable locally: VPS/arch. Inc. 2 external deps, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified). NOTE: Business logic + integration APIs = INCONNU (0 appels réels, 0 clients). **ALL CODE tasks complete — only OPERATIONS/BUSINESS remain.** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
 
@@ -627,13 +628,14 @@ create_booking          get_recommendations    qualify_lead
 | **P0-UCP-UNIFICATION (250.189)** | ✅ **4/4 FIXED** | F1: MCP ucp.ts migrated to shared per-tenant storage. F2: voice-api auto-enriches UCP after each message. F3: telephony auto-enriches UCP after each call. F4: recommendations auto-fetches UCP profile. Data flow: Widget→UCP→Recommendations, Telephony→UCP→Insights, MCP→UCP (same files). Zero fragmentation. | **9.4** |
 | **P0-FRAGMENTATION (250.190)** | ✅ **8/8 FIXED** | System-wide data store audit (30+ stores). F5 CRITICAL: catalog config nesting → items never persisted. F6 CRITICAL: getUCPStore() ReferenceError in recommendations. F9: catalog path divergence. F10: market rules fragmented across 3 modules. F11: 5 KB files stale pricing. F13: GB in EU_BLOC → French served to UK. F14: HITL dashboard dead (0 writers, now aggregates 4 stores). RAG chunks cleaned. | **9.5** |
 | **P0-RUNTIME-INTEGRITY (250.191)** | ✅ **9/9 FIXED** | F16: saveCatalog() crash on non-custom connectors (guard added). F17: SHOPIFY_ADMIN_TOKEN→SHOPIFY_ADMIN_ACCESS_TOKEN alignment. F18: retention-sensor missing SHOPIFY_SHOP_NAME fallback. F19 CRITICAL: db-api ReferenceError path (F14 HITL fix used path.join at module scope without import). F20 CRITICAL: db-api ReferenceError fs (same root cause). F21 CRITICAL: docker-compose missing VOCALIA_VAULT_KEY + VOCALIA_INTERNAL_KEY. F22: KB getStatus() JSON.parse crash on corrupted file. F23: 4 sensors updateGPM() JSON.parse crash on corrupted GPM file. F24: ab-analytics.cjs 0 purge policy (JSONL files grow forever) — added purgeOldFiles() + auto-purge 24h/30 days. .env.example: 39 missing vars added (74/76 documented). | **9.5** |
+| **P0-CLEANUP (250.191b)** | ✅ **ALL CODE TASKS DONE** | F8: EventBus voice-agent-b2b emit()→publish() + RevenueScience dead subscriber removed. F15: orphan translation_queue.json deleted (269KB). F7: reclassified as design choice (domain-specific HITL stores with aggregated read). DIST-1/DIST-2: verified synced (3,697 lines each). Temp audit scripts deleted. | **9.5** |
 
 **Code Completeness: 9.5/10** | **Production Readiness: 3.5/10** | **Weighted: 8.6/10** | **MCP: 9.0/10**
 
-**Remaining actionable bugs: 0** (verified 250.191b). 8 not fixable locally (VPS/arch).
+**Remaining actionable bugs: 0** (verified 250.191b). 8 not fixable locally (VPS/arch). **ALL CODE tasks complete — only OPERATIONS/BUSINESS items remain.**
 
 The previous "12 remaining" (250.174) was a stale number propagated across sessions without verification.
-Rigorous per-item audit through 250.181 reveals all 268 reported issues from phases 1-19 are resolved (phases 20-32 add 107 more, all also resolved — 375 total):
+Rigorous per-item audit through 250.181 reveals all 268 reported issues from phases 1-19 are resolved (phases 20-33 add 109 more, all also resolved — 377 total):
 
 ```
 RECLASSIFIED (were counted as "remaining" but are NOT bugs):
@@ -679,15 +681,16 @@ RESEARCH (not a bug):
   3. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
   4. First paying customer → first real traffic → validate entire stack
 
-CODE — LOW PRIORITY:
-  5. F7 (MEDIUM): HITL domain stores still file-separated — aggregated in dashboard but each domain writes to own file
-  6. F8 (LOW): EventBus dead wiring — 7 publishers without subscribers, 1 subscriber without publisher
-  7. F15 (ORPHAN): data/translation_queue.json has old pricing model — not imported by any code
-  8. Distribution widgets rebuild (Shopify+npm frozen at v3.0.0)
+CODE — ALL DONE ✅ (250.191b):
+  5. ✅ F7 RECLASSIFIED: HITL domain stores = DESIGN CHOICE (domain-specific write + aggregated read via loadAllPendingHITL)
+  6. ✅ F8 FIXED: EventBus dead wiring — voice-agent-b2b.cjs emit()→publish() + RevenueScience dead subscriber removed
+  7. ✅ F15 FIXED: data/translation_queue.json DELETED (269KB orphan, 0 importers)
+  8. ✅ DIST-1/DIST-2 VERIFIED: npm+Shopify widgets already synced (3,697 lines each, escapeHTML+safeConfigMerge+Shadow DOM)
+  9. ✅ Temp audit scripts cleaned up (scripts/_audit-env.cjs, scripts/_audit-requires.cjs deleted)
 
 BUSINESS:
-  9. Evaluate Telnyx for Moroccan telephony (cheaper than Twilio $0.83/min)
-  10. GA4 data review (52 events configured, collecting since 250.163)
+  10. Evaluate Telnyx for Moroccan telephony (cheaper than Twilio $0.83/min)
+  11. GA4 data review (52 events configured, collecting since 250.163)
 ```
 
 ### 6.13 Phase 6 Fixes (250.170) — 6 Bugs Fixed + Dashboard Enhancement

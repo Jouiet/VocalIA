@@ -357,24 +357,8 @@ class RevenueScience {
 const instance = new RevenueScience();
 instance.pricingHistory = [];
 
-// v3.0: Register for capacity events from EventBus
-const registerEventBusIntegration = () => {
-    try {
-        const eventBus = require('./AgencyEventBus.cjs');
-
-        // Subscribe to capacity update events
-        eventBus.subscribe('system.capacity_update', async (event) => {
-            instance.handleCapacityEvent(event);
-        }, { name: 'RevenueScience.capacityUpdate' });
-
-        console.log('[RevenueScience] v3.0 EventBus integration registered');
-    } catch (e) {
-        // EventBus not loaded yet - will work when called later
-    }
-};
-
-// Delay registration to avoid circular dependency at module load
-setImmediate(registerEventBusIntegration);
+// v3.0: handleCapacityEvent() available for direct calls.
+// No EventBus subscription — system.capacity_update has no publisher yet.
 
 // CLI
 if (require.main === module) {

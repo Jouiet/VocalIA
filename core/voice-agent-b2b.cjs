@@ -238,7 +238,7 @@ class VoiceAgentB2B {
     }
 
     // Announce agent verified presence
-    eventBus.emit('agent.online', {
+    eventBus.publish('agent.online', {
       id: AGENT_CARD.provider.organization + '.' + AGENT_CARD.name,
       capabilities: AGENT_CARD.capabilities
     });
@@ -586,14 +586,12 @@ IMPORTANT RULES
       log_file: logFile
     };
 
-    // A2A Event: Session Completed
-    eventBus.emit('voice.session_end', {
+    // A2A Event: Session Completed — use publish() not emit() so subscribers receive it
+    eventBus.publish('voice.session_end', {
       sessionId: this.currentSession.session_id,
       duration: (new Date() - new Date(this.currentSession.started_at)) / 1000,
-      messages: this.currentSession.messages.length,
-      outcome: result.automations_discussed.length > 0 ? 'interested' : 'informational',
-      logPath: logFile
-    });
+      outcome: result.automations_discussed.length > 0 ? 'interested' : 'informational'
+    }, { tenantId: 'vocalia', source: 'VoiceAgentB2B' });
 
     this.currentSession = null;
     return result;
