@@ -67,7 +67,7 @@ services:
       sh -c "
         apk add --no-cache git curl &&
         mkdir -p /vocalia-data/metrics /vocalia-data/voice/hitl-pending /vocalia-data/audit /vocalia-data/clients &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         rm -rf data clients 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
@@ -78,8 +78,13 @@ services:
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/db-api.cjs
       "
-    ports:
-      - "3013:3013"
+    expose:
+      - "3013"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       # Route all DB API paths to this service
@@ -119,14 +124,17 @@ services:
       - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - HUGGINGFACE_API_KEY=${HUGGINGFACE_API_KEY}
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
       - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
       - GA4_API_SECRET=${GA4_API_SECRET}
       - JWT_SECRET=${JWT_SECRET}
+      - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
+      - VOCALIA_INTERNAL_KEY=${VOCALIA_INTERNAL_KEY:-}
     command: >
       sh -c "
         apk add --no-cache git curl &&
         mkdir -p /vocalia-data/metrics /vocalia-data/voice /vocalia-data/clients &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         rm -rf data clients 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
@@ -134,8 +142,13 @@ services:
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/voice-api-resilient.cjs --server --port=3004
       "
-    ports:
-      - "3004:3004"
+    expose:
+      - "3004"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.vocalia-api.rule=Host(`api.vocalia.ma`)"
@@ -172,13 +185,18 @@ services:
     command: >
       sh -c "
         apk add --no-cache git curl &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/grok-voice-realtime.cjs --server --port=3007
       "
-    ports:
-      - "3007:3007"
+    expose:
+      - "3007"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       # Path-based routing via api.vocalia.ma (no extra DNS needed)
@@ -199,6 +217,12 @@ services:
     networks:
       - default
       - traefik
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3007/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
 
   # ═══════════════════════════════════════════════════════════════
   # TELEPHONY - Twilio PSTN Bridge
@@ -225,19 +249,25 @@ services:
       - GA4_MEASUREMENT_ID=${GA4_MEASUREMENT_ID}
       - GA4_API_SECRET=${GA4_API_SECRET}
       - VOCALIA_VAULT_KEY=${VOCALIA_VAULT_KEY}
+      - VOCALIA_INTERNAL_KEY=${VOCALIA_INTERNAL_KEY:-}
     command: >
       sh -c "
         apk add --no-cache git curl &&
         mkdir -p /vocalia-data/voice/hitl-pending &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         rm -rf data 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node telephony/voice-telephony-bridge.cjs
       "
-    ports:
-      - "3009:3009"
+    expose:
+      - "3009"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       # Path-based routing via api.vocalia.ma (no extra DNS needed)
@@ -285,15 +315,20 @@ services:
     command: >
       sh -c "
         apk add --no-cache git curl &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         rm -rf data 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/OAuthGateway.cjs
       "
-    ports:
-      - "3010:3010"
+    expose:
+      - "3010"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       # Internal routes: /oauth/start/:provider, /oauth/callback/:provider, /oauth/providers
@@ -333,15 +368,20 @@ services:
     command: >
       sh -c "
         apk add --no-cache git curl &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app &&
         rm -rf data 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
         node core/WebhookRouter.cjs
       "
-    ports:
-      - "3011:3011"
+    expose:
+      - "3011"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       # Internal routes: /webhook/:provider, /webhook/handlers, /webhook/events/:tenantId
@@ -383,14 +423,19 @@ services:
     command: >
       sh -c "
         apk add --no-cache git curl &&
-        git clone --depth 1 https://github.com/Jouiet/VoicalAI.git /app 2>/dev/null || (cd /app && git pull) &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
         cd /app/mcp-server &&
         npm install --ignore-scripts 2>/dev/null || true &&
         npx tsc &&
         node dist/index.js
       "
-    ports:
-      - "3015:3015"
+    expose:
+      - "3015"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.vocalia-mcp.rule=Host(`api.vocalia.ma`) && PathPrefix(`/mcp`)"

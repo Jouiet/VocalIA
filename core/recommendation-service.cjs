@@ -140,18 +140,15 @@ class AssociationRulesEngine {
     const rules = this._loadRules(tenantId);
     const itemCounts = {};    // productId -> count
     const pairCounts = {};    // "A|B" -> count
-    const totalOrders = orders.length;
-
-    if (totalOrders < 10) {
-      console.log(`[AssociationRules] Not enough orders for ${tenantId}: ${totalOrders}`);
-      return { learned: 0 };
-    }
+    let validOrderCount = 0;
 
     // Count individual items and pairs with MENA-specific filtering
     for (const order of orders) {
       // SOTA: COD Resilience - Filter out cancelled or refunded orders (high in MENA market)
       const isCancelled = ['cancelled', 'voided', 'refunded', 'returned'].includes(order.status?.toLowerCase() || order.fulfillment_status?.toLowerCase());
       if (isCancelled) continue;
+
+      validOrderCount++;
 
       const items = (order.items || order.line_items || [])
         .map(i => ({
@@ -185,6 +182,14 @@ class AssociationRulesEngine {
           pairCounts[pair] = (pairCounts[pair] || 0) + weight;
         }
       }
+    }
+
+    // BL9 fix: Use validOrderCount (excludes cancelled) as denominator
+    const totalOrders = validOrderCount;
+
+    if (totalOrders < 10) {
+      console.log(`[AssociationRules] Not enough valid orders for ${tenantId}: ${totalOrders}`);
+      return { learned: 0 };
     }
 
     // Generate rules with support and confidence filtering

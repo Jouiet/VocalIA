@@ -135,20 +135,15 @@ class LLMGateway {
             return res;
         };
 
-        // Frontier Claude Models (Jan 2026):
-        // 1. claude-opus-4-5-20251101 - Most capable (expensive)
-        // 2. claude-opus-4-5-20251101 - Fast & capable (balanced)
-        // 3. claude-3-5-sonnet-20241022 - Fallback
-        let res = await tryModel("claude-opus-4-5-20251101");
+        // Frontier Claude Models (Feb 2026):
+        // 1. claude-opus-4-6 - Most capable (latest)
+        // 2. claude-sonnet-4-5-20250929 - Fast & capable (balanced)
+        // G5+G6 fix: Removed duplicate model, fixed model ID format
+        let res = await tryModel('claude-opus-4-6');
 
         if (res.status === 400 || res.status === 404) {
-            console.warn("[LLM] Claude Opus 4.5 not available. Trying Claude Opus 4.5...");
-            res = await tryModel("claude-opus-4-5-20251101");
-        }
-
-        if (res.status === 400 || res.status === 404) {
-            console.warn("[LLM] Claude Opus 4.5 not available. Falling back to Claude 4.5 Sonnet...");
-            res = await tryModel("claude-4-5-sonnet-20260201");
+            console.warn('[LLM] Claude Opus 4.6 not available. Trying Claude Sonnet 4.5...');
+            res = await tryModel('claude-sonnet-4-5-20250929');
         }
 
         return this._handleFetchResponse(res, 'Claude');

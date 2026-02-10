@@ -214,11 +214,12 @@ describe('DB API sendError', () => {
     assert.strictEqual(JSON.parse(res._body).error, 'Not found');
   });
 
-  test('sends 500 for server error', () => {
+  test('sends 500 with generic message (P4: no internal detail leakage)', () => {
     const res = createMockRes();
-    sendError(res, 500, 'Internal error');
+    sendError(res, 500, 'Some internal detail that should be hidden');
     assert.strictEqual(res._statusCode, 500);
-    assert.strictEqual(JSON.parse(res._body).error, 'Internal error');
+    // P4 fix: 500 errors MUST return generic message, never internal details
+    assert.strictEqual(JSON.parse(res._body).error, 'Internal server error');
   });
 });
 

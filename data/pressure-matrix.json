@@ -1,7 +1,7 @@
 {
   "platform": "VocalIA",
   "version": "1.0.0",
-  "last_updated": "2026-01-28T20:30:00Z",
+  "last_updated": "2026-02-10T09:25:24.987Z",
   "update_frequency": "5m",
   "sectors": {
     "voice": {
@@ -15,9 +15,18 @@
         "daily_calls": 0
       },
       "services": {
-        "voice-api": { "status": "down", "port": 3004 },
-        "grok-realtime": { "status": "up", "port": 3007 },
-        "telephony-bridge": { "status": "down", "port": 3009 }
+        "voice-api": {
+          "status": "down",
+          "port": 3004
+        },
+        "grok-realtime": {
+          "status": "up",
+          "port": 3007
+        },
+        "telephony-bridge": {
+          "status": "down",
+          "port": 3009
+        }
       }
     },
     "personas": {
@@ -51,6 +60,33 @@
           "grok": 0,
           "gemini": 0,
           "claude": 0
+        }
+      }
+    },
+    "sales": {
+      "lead_velocity": {
+        "pressure": 90,
+        "trend": "UP",
+        "last_check": "2026-02-10T09:25:24.874Z",
+        "sensor_data": {
+          "leads_last_24h": 0
+        }
+      }
+    },
+    "finance": {
+      "api_costs": {
+        "label": "API Costs",
+        "pressure": 0,
+        "trend": "STABLE",
+        "last_check": "2026-02-10T09:25:24.987Z",
+        "sensor_data": {
+          "projected_month_usd": null,
+          "daily_avg_usd": null,
+          "budget_warning_usd": 100,
+          "budget_critical_usd": 250,
+          "budget_status": "OK",
+          "providers_tracked": 0,
+          "provider_details": []
         }
       }
     }

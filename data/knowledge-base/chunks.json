@@ -84,7 +84,7 @@
     "marketing_science": "BANT scoring, PAS framework, CIALDINI principles, AIDA funnel, LAER objection handling",
     "diagnostic_truth": "",
     "systemic_risk": "",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "id": "voice-widget-core",
@@ -480,9 +480,9 @@
     "category": "faq",
     "persona_id": "agency_v3",
     "topic": "produits",
-    "answer_fr": "VocalIA propose 4 produits Voice AI: Voice Widget B2B (qualification leads), Voice Widget B2C (support e-commerce), Widget E-commerce (8 intégrations) et Voice Telephony AI (ligne PSTN via Twilio).",
+    "answer_fr": "VocalIA propose 3 produits Voice AI: Voice Widget B2B (qualification leads), Widget E-commerce Pro (8 intégrations + panier, carrousel, quiz) et Voice Telephony AI (ligne PSTN via Twilio).",
     "tenant_id": "agency_internal",
-    "text": "agency Produits produits VocalIA propose 4 produits Voice AI: Voice Widget B2B (qualification leads), Voice Widget B2C (support e-commerce), Widget E-commerce (8 intégrations) et Voice Telephony AI (ligne PSTN via Twilio)."
+    "text": "agency Produits produits VocalIA propose 3 produits Voice AI: Voice Widget B2B (qualification leads), Widget E-commerce Pro (8 intégrations + panier, carrousel, quiz) et Voice Telephony AI (ligne PSTN via Twilio)."
   },
   {
     "id": "faq_agency_v3_personas",
@@ -599,7 +599,7 @@
     "category": "faq",
     "topic": "services",
     "answer_fr": "Révision, freins, pneus, batterie, diagnostic électronique, contrôle technique.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "type": "faq",
@@ -608,7 +608,7 @@
     "category": "faq",
     "topic": "horaires",
     "answer_fr": "Lundi-Vendredi 8h30-18h00, Samedi 9h-12h.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "type": "faq",
@@ -617,7 +617,7 @@
     "category": "faq",
     "topic": "vehicule_courtoisie",
     "answer_fr": "Nous prêtons un véhicule de courtoisie sur réservation préalable.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "type": "faq",
@@ -626,7 +626,7 @@
     "category": "faq",
     "topic": "garantie",
     "answer_fr": "Toutes nos réparations sont garanties 1 an pièces et main d'œuvre.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "id": "faq_counselor_v1_domaines",
@@ -1163,7 +1163,7 @@
     "category": "faq",
     "topic": "premier_contact",
     "answer_fr": "Notre équipe est disponible 24h/24 pour vous accompagner dans ces moments difficiles.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "type": "faq",
@@ -1172,7 +1172,7 @@
     "category": "faq",
     "topic": "organisation",
     "answer_fr": "Nous nous occupons de toutes les démarches administratives et logistiques.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "type": "faq",
@@ -1181,7 +1181,7 @@
     "category": "faq",
     "topic": "personnalisation",
     "answer_fr": "Chaque cérémonie peut être personnalisée selon vos souhaits et croyances.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "type": "faq",
@@ -1190,7 +1190,7 @@
     "category": "faq",
     "topic": "accompagnement",
     "answer_fr": "Un conseiller dédié vous accompagne tout au long du processus.",
-    "tenant_id": "agency_internal",
+    "tenant_id": "agency_internal"
   },
   {
     "id": "faq_accountant_v1_services",

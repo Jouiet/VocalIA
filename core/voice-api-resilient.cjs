@@ -75,6 +75,7 @@ const SecretVault = require('./SecretVault.cjs');
 const ContextBox = require('./ContextBox.cjs'); // Missing import fixed
 const { getInstance: getConversationStore } = require('./conversation-store.cjs'); // Session 250.153: Was MISSING — caused silent TypeError at L2627
 const conversationStore = getConversationStore();
+const { getInstance: getUCPStore } = require('./ucp-store.cjs'); // Session 250.188: UCP auto-enrichment
 const { getDB } = require('./GoogleSheetsDB.cjs'); // Session 250.89: DB for quota check
 
 
@@ -612,6 +613,17 @@ const KB = new ServiceKnowledgeBase(); // Session 250.89: Create instance for KB
 
 const ECOM_TOOLS = require('./voice-ecommerce-tools.cjs');
 const CRM_TOOLS = require('./voice-crm-tools.cjs');
+
+// BL31 fix: Import RecommendationService (was missing — crashed /respond on recommendation intent)
+const RecommendationService = require('./recommendation-service.cjs');
+
+// BL33 fix: Import ElevenLabs client + voice IDs (was missing — crashed /tts endpoint)
+const { ElevenLabsClient, VOICE_IDS } = require('./elevenlabs-client.cjs');
+const elevenLabsClient = new ElevenLabsClient();
+
+// BL34 fix: Import TenantKBLoader (was missing — /api/fallback always returned 503)
+const { getInstance: _getTenantKBLoader } = require('./tenant-kb-loader.cjs');
+const tenantKBLoader = _getTenantKBLoader();
 
 
 /**
@@ -1298,7 +1310,10 @@ async function callGemini(userMessage, conversationHistory = [], customSystemPro
 
   const parsed = safeJsonParse(response.data, 'Gemini voice response');
   if (!parsed.success) throw new Error(`Gemini JSON parse failed: ${parsed.error}`);
-  return await verifyTranslation(parsed.data.candidates[0].content.parts[0].text, 'fr');
+  // BL25 fix: Optional chaining prevents crash on empty/malformed Gemini response
+  const text = parsed.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Empty Gemini response');
+  return await verifyTranslation(text, 'fr');
 }
 
 async function callAnthropic(userMessage, conversationHistory = [], customSystemPrompt = null, options = {}) {
@@ -1332,7 +1347,10 @@ async function callAnthropic(userMessage, conversationHistory = [], customSystem
 
   const parsed = safeJsonParse(response.data, 'Anthropic voice response');
   if (!parsed.success) throw new Error(`Anthropic JSON parse failed: ${parsed.error}`);
-  return await verifyTranslation(parsed.data.content[0].text, 'fr');
+  // BL25 fix: Optional chaining prevents crash on empty/malformed Anthropic response
+  const text = parsed.data?.content?.[0]?.text;
+  if (!text) throw new Error('Empty Anthropic response');
+  return await verifyTranslation(text, 'fr');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1572,10 +1590,6 @@ function processQualificationData(session, message, language = 'fr') {
       }
     }
   }
-  if (decisionMaker && !extracted.decisionMaker) {
-    extracted.decisionMaker = decisionMaker;
-  }
-
   const industry = extractIndustryFit(message);
   if (industry && !extracted.industry) {
     extracted.industry = industry;
@@ -1913,7 +1927,7 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
         provider: provider.name,
         latencyMs, // Session 178: SOTA - Include latency in response
         fallbacksUsed: errors.length,
-        errors,
+        // BL16 fix: Don't leak provider error details to client
       };
     } catch (err) {
       errors.push({ provider: provider.name, error: err.message });
@@ -2383,9 +2397,14 @@ function startServer(port = 3004) {
           const telephonyUrl = `http://localhost:${telephonyPort}/voice/outbound`;
 
           try {
+            // BL17 fix: Forward VOCALIA_INTERNAL_KEY for auth (BL12 requires it on /voice/outbound)
+            const internalHeaders = { 'Content-Type': 'application/json' };
+            if (process.env.VOCALIA_INTERNAL_KEY) {
+              internalHeaders['Authorization'] = `Bearer ${process.env.VOCALIA_INTERNAL_KEY}`;
+            }
             const telephonyResponse = await fetch(telephonyUrl, {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: internalHeaders,
               body: JSON.stringify({
                 phone,
                 name,
@@ -2540,12 +2559,14 @@ function startServer(port = 3004) {
       let tenantId = urlParams.get('tenantId');
 
       const sendConfig = async (tId) => {
+        // BL18 fix: Sanitize tenantId to prevent path traversal in config.json lookup
+        const safeTId = sanitizeTenantId(tId) || 'default';
         let client = {};
         let persona = {};
         try {
           const { VoicePersonaInjector, CLIENT_REGISTRY } = require('../personas/voice-persona-injector.cjs');
-          client = CLIENT_REGISTRY.clients[tId] || {};
-          persona = VoicePersonaInjector.getPersona(null, null, tId) || {};
+          client = CLIENT_REGISTRY.clients[safeTId] || {};
+          persona = VoicePersonaInjector.getPersona(null, null, safeTId) || {};
         } catch (e) {
           console.error('[Config] Failed to load persona/registry:', e.message);
         }
@@ -2553,7 +2574,7 @@ function startServer(port = 3004) {
         // Read tenant config.json for widget_features
         let tenantConfig = {};
         try {
-          const configPath = path.join(__dirname, '../clients', tId, 'config.json');
+          const configPath = path.join(__dirname, '../clients', safeTId, 'config.json');
           if (fs.existsSync(configPath)) {
             tenantConfig = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
           }
@@ -2581,7 +2602,7 @@ function startServer(port = 3004) {
 
         const config = {
           success: true,
-          tenantId: tId,
+          tenantId: safeTId,
           plan: tenantPlan,
           currency: tenantCurrency,
           branding: {
@@ -2715,6 +2736,8 @@ function startServer(port = 3004) {
           // Lead qualification processing
           const leadSessionId = sessionId || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           const session = getOrCreateLeadSession(leadSessionId);
+          // BL13 fix: Capture new session flag BEFORE processQualificationData pushes user message
+          const isNewSession = session.messages.length === 0;
           processQualificationData(session, message, language);
 
           // Get Persona with full injection (Session 250.54: Fixed Widget persona injection)
@@ -2801,6 +2824,26 @@ function startServer(port = 3004) {
             console.warn('[ConversationStore] Save warning:', convErr.message);
           }
 
+          // Session 250.188: UCP auto-enrichment (fire-and-forget, non-blocking)
+          try {
+            const ucpStore = getUCPStore();
+            const ucpUserId = bodyParsed.data.userId || bodyParsed.data.user_id || leadSessionId;
+            ucpStore.upsertProfile(tenantId, ucpUserId, {
+              last_channel: 'widget',
+              last_language: language,
+              last_persona: persona?.id
+            });
+            ucpStore.recordInteraction(tenantId, ucpUserId, {
+              type: 'widget_chat',
+              channel: 'voice_widget',
+              sessionId: leadSessionId,
+              language,
+              outcome: session.status || 'ongoing'
+            });
+          } catch (ucpErr) {
+            console.warn('[UCP] Auto-enrichment warning:', ucpErr.message);
+          }
+
           // Sync to HubSpot if lead has email and is qualified (gated by plan)
           let hubspotSync = null;
           if (session.qualificationComplete && session.status === 'hot' && tenantFeatures.bant_crm_push?.allowed) {
@@ -2820,7 +2863,8 @@ function startServer(port = 3004) {
           updateDashboardMetrics(language, result.latencyMs || 0, session);
 
           // Session 250.57: Increment session usage on first message of session
-          if (session.messages.length === 1) {
+          // BL13 fix: Use isNewSession flag (was session.messages.length===1, always false after processQualificationData)
+          if (isNewSession) {
             db.incrementUsage(tenantId, 'sessions');
             // Session 250.87bis: A2A Event - Voice Session Start
             eventBus.publish('voice.session_start', {
@@ -2885,7 +2929,8 @@ function startServer(port = 3004) {
         } catch (err) {
           console.error('[Voice API] Error:', err.message);
           res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: err.message }));
+          // BL14 fix: Generic error to client, full detail in server logs only
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
         }
       });
       return;
@@ -2971,14 +3016,17 @@ function startServer(port = 3004) {
         } catch (err) {
           console.error('[Lead Qual] Error:', err.message);
           res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: err.message }));
+          // BL14 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
         }
       });
       return;
     }
 
     // Get lead session data
+    // BL35 fix: Add admin auth — exposes PII (email, phone, name) with guessable session IDs
     if (req.url.startsWith('/lead/') && req.method === 'GET') {
+      if (!checkAdminAuth(req, res)) return;
       const sessionId = req.url.replace('/lead/', '');
       const session = leadSessions.get(sessionId);
 
@@ -3073,7 +3121,8 @@ function startServer(port = 3004) {
         } catch (err) {
           console.error('[A2UI] Error:', err.message);
           res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: err.message }));
+          // BL19 fix: Generic error to client (don't leak internal details)
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
         }
       });
       return;
@@ -3135,12 +3184,14 @@ function startServer(port = 3004) {
             responsePayload.message = 'Checkout initiated';
           }
 
-          res.writeHead(200, corsHeaders(req, { 'Content-Type': 'application/json' }));
+          // BL32 fix: CORS headers already set via res.setHeader at top of handler
+          res.writeHead(200, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify(responsePayload));
         } catch (err) {
           console.error('[A2UI] Action error:', err.message);
           res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: err.message }));
+          // BL19 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'An internal error occurred. Please try again.' }));
         }
       });
       return;
@@ -3250,7 +3301,8 @@ function startServer(port = 3004) {
         } catch (err) {
           console.error('[TTS] Error:', err.message);
           res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: err.message }));
+          // BL19 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'TTS service error. Please try again.' }));
         }
       });
       return;
@@ -3265,7 +3317,7 @@ function startServer(port = 3004) {
         bodySize += chunk.length;
         if (bodySize > 5 * 1024 * 1024) { // 5MB max audio
           req.destroy();
-          res.writeHead(413, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+          res.writeHead(413, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: 'Audio too large (max 5MB)' }));
           return;
         }
@@ -3275,7 +3327,7 @@ function startServer(port = 3004) {
         try {
           const audioBuffer = Buffer.concat(chunks);
           if (audioBuffer.length < 100) {
-            res.writeHead(400, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+            res.writeHead(400, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Audio data too small' }));
             return;
           }
@@ -3354,16 +3406,17 @@ function startServer(port = 3004) {
 
           if (transcript) {
             console.log(`✅ [STT] Transcribed (${language}): "${transcript.substring(0, 50)}..."`);
-            res.writeHead(200, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+            res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ success: true, text: transcript, language }));
           } else {
-            res.writeHead(503, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
+            res.writeHead(503, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Transcription failed — no STT provider available' }));
           }
         } catch (err) {
           console.error('[STT] Error:', err.message);
-          res.writeHead(500, { ...getCorsHeaders(req), 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: err.message }));
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          // BL19 fix: Generic error to client
+          res.end(JSON.stringify({ error: 'STT service error. Please try again.' }));
         }
       });
       return;

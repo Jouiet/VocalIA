@@ -50,7 +50,7 @@
     if (langDropdown) langDropdown.classList.add('hidden');
 
     VocaliaI18n.translatePage();
-    localStorage.setItem('vocalia_lang', lang);
+    try { localStorage.setItem('vocalia_lang', lang); } catch (e) { /* Safari private mode */ }
   }
 
   // ============================================

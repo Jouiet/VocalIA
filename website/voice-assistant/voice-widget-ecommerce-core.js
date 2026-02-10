@@ -74,8 +74,10 @@
         accentColor: '#10B981',
         darkBg: '#0f172a',
 
-        // Paths - FIXED Session 250.90: Correct path to language files
-        LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
+        // Paths - FIXED Session 250.179: Absolute URL for third-party embedding (like B2B)
+        LANG_PATH: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/voice-assistant/lang/voice-{lang}.json'
+            : 'https://vocalia.ma/voice-assistant/lang/voice-{lang}.json',
 
         // Cache
         SLOT_CACHE_TTL: 5 * 60 * 1000,
@@ -669,13 +671,13 @@
       </style>
 
       <button class="va-trigger" id="va-trigger" aria-label="${L.ui.ariaOpenAssistant}">
-        <img src="/logo.png" alt="VocalIA" />
+        <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
       </button>
 
       <div class="va-panel" id="va-panel" role="dialog" aria-label="${L.ui.headerTitle}" aria-modal="true">
         <div class="va-header">
           <div class="va-header-icon">
-            <img src="/logo.png" alt="VocalIA" />
+            <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
           </div>
           <div class="va-header-text">
             <h3>${L.ui.headerTitle}</h3>
@@ -942,14 +944,14 @@
         }
 
         return `
-      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${product.id}" style="position: relative;">
+      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${escapeAttr(String(product.id))}" style="position: relative;">
         ${badgeHTML}
         ${hasImage
-                ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
+                ? `<img class="va-product-img" src="${escapeAttr(product.image || product.images[0])}" alt="${escapeAttr(product.name)}" loading="lazy" />`
                 : `<div class="va-product-img-placeholder">📦</div>`
             }
         <div class="va-product-info">
-          <p class="va-product-name">${product.name}</p>
+          <p class="va-product-name">${escapeHTML(product.name)}</p>
           <div class="va-product-price">
             ${formatPrice(product.price, product.currency)}
             ${isOnSale ? `<span class="va-product-price-old">${formatPrice(product.compare_at_price, product.currency)}</span>` : ''}
@@ -1060,10 +1062,10 @@
             ${displayTitle}
           </span>
           <div class="va-carousel-nav">
-            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaPrev || 'Previous'}">
               <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
             </button>
-            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="Next">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaNext || 'Next'}">
               <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
             </button>
           </div>
@@ -1428,11 +1430,7 @@
 
                 // Sync with UCP
                 if (UCP.syncPreference) {
-                    UCP.recordInteraction({
-                        type: 'quiz_completed',
-                        product_id: null,
-                        metadata: { template, answers: lead.answers }
-                    });
+                    UCP.recordInteraction('quiz_completed', { template, answers: lead.answers });
                 }
             },
             ...options
@@ -1595,10 +1593,12 @@
      * Check if spin wheel is available (cooldown check)
      */
     window.VocalIA.isSpinWheelAvailable = function () {
-        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-        if (!lastPlayed) return true;
-        const elapsed = Date.now() - parseInt(lastPlayed, 10);
-        return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        try {
+            const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+            if (!lastPlayed) return true;
+            const elapsed = Date.now() - parseInt(lastPlayed, 10);
+            return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        } catch { return true; }
     };
 
     /**
@@ -2375,7 +2375,8 @@
         if (!CONFIG.EXIT_INTENT_ENABLED) return;
 
         // Check cooldown (once per 24h per user)
-        const lastShown = localStorage.getItem('vocalia_exit_intent_shown');
+        let lastShown = null;
+        try { lastShown = localStorage.getItem('vocalia_exit_intent_shown'); } catch {}
         if (lastShown && Date.now() - parseInt(lastShown) < CONFIG.EXIT_INTENT_COOLDOWN) {
             return;
         }
@@ -2451,7 +2452,7 @@
         state.exitIntent.shown = true;
 
         // Save to localStorage for cooldown
-        localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString());
+        try { localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString()); } catch {}
 
         // Track event
         trackEvent('exit_intent_triggered', { trigger, page: window.location.pathname });
@@ -2547,7 +2548,7 @@
       </style>
 
       <div class="va-exit-popup">
-        <button class="va-exit-close" id="va-exit-close" aria-label="Fermer">
+        <button class="va-exit-close" id="va-exit-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
           <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
 
@@ -2638,7 +2639,7 @@
                 state.socialProof.messages = data.messages;
             }
         } catch (e) {
-            console.warn('[VocalIA ECOM] Social proof fetch failed, using fallback:', e.message);
+            console.warn('[VocalIA ECOM] Social proof API unavailable, using lang data:', e.message);
         }
 
         // Initial delay before starting notifications
@@ -2714,7 +2715,7 @@
         .va-sp-close:hover { color: rgba(255,255,255,0.7); }
       </style>
 
-      <button class="va-sp-close" aria-label="Fermer">
+      <button class="va-sp-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
@@ -2722,11 +2723,11 @@
 
       <div class="va-sp-content">
         <div class="va-sp-icon">
-          <svg viewBox="0 0 24 24">${proof.icon || '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
+          <svg viewBox="0 0 24 24">${(proof.icon && /^<(?:path|circle|rect|line|polyline|polygon|ellipse|g)\s/.test(proof.icon.trim())) ? proof.icon : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
         </div>
         <div>
-          <div class="va-sp-text">${proof.text}</div>
-          <div class="va-sp-time">${proof.time || getRandomTimeAgo(L)}</div>
+          <div class="va-sp-text">${escapeHTML(proof.text || '')}</div>
+          <div class="va-sp-time">${escapeHTML(proof.time || getRandomTimeAgo(L))}</div>
         </div>
       </div>
     `;
@@ -2766,6 +2767,7 @@
 
     function isBookingIntent(text) {
         const L = state.langData;
+        if (!L?.booking?.keywords) return false;
         const lower = text.toLowerCase();
         return L.booking.keywords.some(kw => lower.includes(kw));
     }
@@ -3465,10 +3467,11 @@
                 if (focusable.length === 0) return;
                 const first = focusable[0];
                 const last = focusable[focusable.length - 1];
-                if (e.shiftKey && document.activeElement === first) {
+                const active = (shadowRoot || document).activeElement;
+                if (e.shiftKey && active === first) {
                     e.preventDefault();
                     last.focus();
-                } else if (!e.shiftKey && document.activeElement === last) {
+                } else if (!e.shiftKey && active === last) {
                     e.preventDefault();
                     first.focus();
                 }
@@ -3575,14 +3578,33 @@
     // INITIALIZATION
     // ============================================================
 
+    // H8 fix: Allowlist of safe config keys that host pages may override
+    const SAFE_CONFIG_KEYS = new Set([
+        'DEFAULT_LANG', 'ECOMMERCE_MODE', 'EXIT_INTENT_ENABLED',
+        'EXIT_INTENT_DELAY', 'EXIT_INTENT_SENSITIVITY', 'EXIT_INTENT_COOLDOWN',
+        'EXIT_INTENT_MOBILE_SCROLL_RATIO', 'EXIT_INTENT_PAGES',
+        'SOCIAL_PROOF_ENABLED', 'SOCIAL_PROOF_INTERVAL', 'SOCIAL_PROOF_DURATION',
+        'SOCIAL_PROOF_MAX_SHOWN', 'MAX_CAROUSEL_ITEMS', 'AI_MODE', 'API_TIMEOUT'
+    ]);
+
+    function safeConfigMerge(source) {
+        if (!source || typeof source !== 'object') return;
+        for (const key of Object.keys(source)) {
+            if (SAFE_CONFIG_KEYS.has(key)) {
+                CONFIG[key] = source[key];
+            }
+        }
+    }
+
     async function init() {
         try {
             // Priority 1: Pick up injected config from distributions (WordPress/Shopify/Wix)
+            // H8 fix: Only allow safe keys — API URLs, tenant_id etc. cannot be overridden
             if (window.VOCALIA_CONFIG_INJECTED) {
-                Object.assign(CONFIG, window.VOCALIA_CONFIG_INJECTED);
+                safeConfigMerge(window.VOCALIA_CONFIG_INJECTED);
             }
             if (window.VOCALIA_CONFIG) {
-                Object.assign(CONFIG, window.VOCALIA_CONFIG);
+                safeConfigMerge(window.VOCALIA_CONFIG);
             }
 
             const lang = detectLanguage();

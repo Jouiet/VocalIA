@@ -47,12 +47,13 @@ class VoiceVisualizer {
     this.demoPhase = 0;
     this.time = 0;
 
+    this._boundResize = () => this.resize();
     this.init();
   }
 
   init() {
     this.resize();
-    window.addEventListener('resize', () => this.resize());
+    window.addEventListener('resize', this._boundResize);
 
     if (this.options.demo) {
       this.startDemo();
@@ -600,7 +601,7 @@ class VoiceVisualizer {
 
   destroy() {
     this.stop();
-    window.removeEventListener('resize', this.resize);
+    window.removeEventListener('resize', this._boundResize);
     if (this.audioContext) {
       this.audioContext.close();
     }

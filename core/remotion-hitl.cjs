@@ -98,6 +98,18 @@ function queueVideo(videoRequest) {
     reviewNotes: null
   };
 
+  // BL30 fix: Bound queue to prevent unbounded growth
+  const MAX_QUEUE_SIZE = 10000;
+  if (queue.items.length >= MAX_QUEUE_SIZE) {
+    // Remove oldest completed/failed items first
+    const removableStates = [STATES.COMPLETED, STATES.FAILED, STATES.REJECTED];
+    const idx = queue.items.findIndex(i => removableStates.includes(i.state));
+    if (idx !== -1) {
+      queue.items.splice(idx, 1);
+    } else {
+      queue.items.shift(); // Remove oldest if none removable
+    }
+  }
   queue.items.push(item);
   saveQueue(queue);
 
@@ -492,7 +504,8 @@ async function handleRequest(req, res) {
 
   } catch (error) {
     console.error('[HITL] Request error:', error);
-    sendJson(res, { error: error.message }, 500);
+    // BL29 fix: Generic error to client (don't leak internal details)
+    sendJson(res, { error: 'Internal server error' }, 500);
   }
 }
 

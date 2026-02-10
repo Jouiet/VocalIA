@@ -29,9 +29,10 @@ const VocaliaGeo = (function () {
 
     // EU Countries (Broad definition for "Europe -> FR/EUR" rule)
     // NOTE: Spain (ES) excluded — routed to ES+EUR as Hispanic market
+    // Session 250.190 Fix F13: GB removed — British users should get EN+USD (International), not FR+EUR
     const EU_BLOC = [
         'FR', 'BE', 'LU', 'MC', 'CH', // Francophone-ish
-        'DE', 'IT', 'PT', 'NL', 'AT', 'GR', 'FI', 'SE', 'DK', 'PL', 'CZ', 'HU', 'RO', 'BG', 'HR', 'SI', 'SK', 'EE', 'LV', 'LT', 'CY', 'MT', 'IE', 'IS', 'NO', 'GB'
+        'DE', 'IT', 'PT', 'NL', 'AT', 'GR', 'FI', 'SE', 'DK', 'PL', 'CZ', 'HU', 'RO', 'BG', 'HR', 'SI', 'SK', 'EE', 'LV', 'LT', 'CY', 'MT', 'IE', 'IS', 'NO'
     ];
 
     const MAGHREB_EUR = ['DZ', 'TN'];
@@ -121,7 +122,8 @@ const VocaliaGeo = (function () {
 
     async function detect() {
         // Check Cache
-        const cached = localStorage.getItem(CONFIG.CACHE_KEY);
+        let cached = null;
+        try { cached = localStorage.getItem(CONFIG.CACHE_KEY); } catch (e) { /* Safari private mode / Firefox SecurityError */ }
         if (cached) {
             try {
                 const data = JSON.parse(cached);
@@ -129,7 +131,7 @@ const VocaliaGeo = (function () {
                     return data.config;
                 }
             } catch (e) {
-                localStorage.removeItem(CONFIG.CACHE_KEY);
+                try { localStorage.removeItem(CONFIG.CACHE_KEY); } catch (e2) { /* ignore */ }
             }
         }
 
@@ -142,11 +144,13 @@ const VocaliaGeo = (function () {
             const country = data.country_code || 'MA';
             const config = resolveConfig(country);
 
-            // Cache it
-            localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify({
-                timestamp: Date.now(),
-                config: config
-            }));
+            // W7 fix: Cache in separate try/catch to avoid losing detected config
+            try {
+                localStorage.setItem(CONFIG.CACHE_KEY, JSON.stringify({
+                    timestamp: Date.now(),
+                    config: config
+                }));
+            } catch (e) { /* Safari private mode / Firefox SecurityError */ }
 
             return config;
 

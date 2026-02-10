@@ -458,7 +458,7 @@ describe('MCP logging', () => {
   });
 
   test('registerModuleTool uses withLogging wrapper', () => {
-    assert.ok(indexContent.includes('withLogging(toolDef.name, toolDef.handler)'),
+    assert.ok(indexContent.includes('withLogging(toolDef.name,'),
       'registerModuleTool should wrap handler with withLogging');
   });
 

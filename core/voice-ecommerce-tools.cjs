@@ -178,7 +178,7 @@ module.exports = {
 
       // Shopify (Primary E-commerce)
       const shopifyStore = creds.SHOPIFY_STORE || creds.SHOPIFY_SHOP_NAME;
-      const shopifyToken = creds.SHOPIFY_ACCESS_TOKEN || creds.SHOPIFY_ADMIN_TOKEN;
+      const shopifyToken = creds.SHOPIFY_ACCESS_TOKEN || creds.SHOPIFY_ADMIN_ACCESS_TOKEN;
 
       if (shopifyStore && shopifyToken) {
         try {
@@ -263,8 +263,11 @@ module.exports = {
 
           const order = await woocommerceRequest(wooUrl, wooKey, wooSecret, `/wp-json/wc/v3/orders/${cleanOrderId}`);
 
-          // Verify email matches (security)
-          if (email && order.billing?.email && order.billing.email.toLowerCase() !== email.toLowerCase()) {
+          // BL7 fix: Email REQUIRED for WooCommerce too (prevents order enumeration)
+          if (!email) {
+            return { found: false, message: 'Veuillez fournir votre email pour vérifier la commande.' };
+          }
+          if (order.billing?.email && order.billing.email.toLowerCase() !== email.toLowerCase()) {
             console.warn(`[VoiceEcom] Email mismatch for WooCommerce order ${orderId}`);
             return { found: false, message: 'Cette commande ne correspond pas à votre email.' };
           }
@@ -358,7 +361,7 @@ module.exports = {
 
       // Shopify
       const shopifyStore = creds.SHOPIFY_STORE || creds.SHOPIFY_SHOP_NAME;
-      const shopifyToken = creds.SHOPIFY_ACCESS_TOKEN || creds.SHOPIFY_ADMIN_TOKEN;
+      const shopifyToken = creds.SHOPIFY_ACCESS_TOKEN || creds.SHOPIFY_ADMIN_ACCESS_TOKEN;
 
       if (shopifyStore && shopifyToken) {
         try {

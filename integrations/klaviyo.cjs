@@ -20,7 +20,7 @@ class KlaviyoIntegration {
         this.apiKey = apiKey;
         this.tenantId = tenantId;
         this.baseUrl = 'https://a.klaviyo.com/api';
-        this.revision = '2024-02-15'; // Specific revision to ensure stability
+        this.revision = '2026-01-15'; // G7 fix: Updated from 2024-02-15 (near deprecation)
     }
 
     /**

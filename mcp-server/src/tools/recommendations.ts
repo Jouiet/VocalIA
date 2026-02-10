@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { createRequire } from 'module';
-import { corePath } from '../paths.js';
+import { corePath, dataPath } from '../paths.js';
+import * as fs from 'fs';
+import * as path from 'path';
 
 // Import RecommendationService via createRequire (CommonJS module)
 const require = createRequire(import.meta.url);
@@ -10,6 +12,23 @@ try {
     RecommendationService = require(corePath('recommendation-service.cjs'));
 } catch {
     // RecommendationService not available — tools will return appropriate errors
+}
+
+/**
+ * Session 250.188: Auto-fetch UCP profile from shared per-tenant storage.
+ * Eliminates data fragmentation — recommendations now use real UCP data.
+ */
+function loadUCPProfile(tenantId: string, userId: string): Record<string, any> {
+    try {
+        const filepath = path.join(dataPath('ucp'), tenantId, 'profiles.json');
+        if (fs.existsSync(filepath)) {
+            const profiles = JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+            return profiles[userId] || {};
+        }
+    } catch {
+        // UCP not available — proceed with empty profile
+    }
+    return {};
 }
 
 export const recommendationTools = {
@@ -117,15 +136,8 @@ export const recommendationTools = {
                     throw new Error("RecommendationService not loaded");
                 }
 
-                // In a real scenario, we might fetch UCP profile here if not passed.
-                // For now we assume the service handles fetching or works with minimal context.
-                // The MCP tool doesn't easily accept the full UCP object, so we pass IDs.
-                // Using a mock UCP profile or fetching it from UCP service would be better.
-                // We'll rely on what's passed.
-
-                const ucpProfile = {
-                    // Minimal stub if needed, but the service handles missing profile gracefully
-                };
+                // Session 250.188: Auto-fetch UCP profile from shared storage
+                const ucpProfile = loadUCPProfile(tenantId, userId);
 
                 const recommendations = await RecommendationService.getPersonalizedRecommendations(
                     tenantId,

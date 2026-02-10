@@ -1,6 +1,6 @@
 /**
  * VocalIA - Voice Assistant Widget Core
- * Version: 3.0.0
+ * Version: 3.2.0
  *
  * Unified widget that loads language-specific translations
  * Supports: FR, EN, ES, AR, Darija (ary)
@@ -21,32 +21,67 @@
     // CONFIGURATION
     // ============================================================
 
-    // Default Configuration
-    const DEFAULT_CONFIG = {
+    const CONFIG = {
         // Supported languages - All 5 languages
         SUPPORTED_LANGS: ['fr', 'en', 'es', 'ar', 'ary'],
         DEFAULT_LANG: 'fr',
+
+        // API Endpoints
+        VOICE_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3004/respond'
+            : 'https://api.vocalia.ma/respond',
         AI_MODE: true, // true = use Voice API with personas, false = pattern matching fallback
-        EXIT_INTENT_COOLDOWN: 86400000, // Once per 24h per user
-        EXIT_INTENT_MOBILE_SCROLL_RATIO: 0.3, // Show on 30% scroll up
-        EXIT_INTENT_PAGES: null, // null = all pages, array = specific paths
+        API_TIMEOUT: 10000, // 10 seconds
+
+        // Catalog API (E-commerce Mode)
+        CATALOG_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3013/api/tenants'  // Dev: local DB API
+            : 'https://api.vocalia.ma/api/tenants', // Prod: deployed API
+        ECOMMERCE_MODE: true, // Enable product display in widget
+        MAX_CAROUSEL_ITEMS: 5, // Maximum products in carousel
+
+        // Base API URL (for recommendations, product details, quiz)
+        API_BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3013'
+            : 'https://api.vocalia.ma',
+
+        // Booking API (Google Apps Script)
+        BOOKING_API: 'https://script.google.com/macros/s/AKfycbzXKtu88n0Z-oFiBm5kJYPmGOi29maowtMv2vEQ0o5Xhp4sayNdnm2cNBaAx2OlHkUK/exec',
+
+        // Exit-Intent Voice Popup (UNIQUE COMPETITIVE ADVANTAGE - Session 250.78)
+        EXIT_INTENT_ENABLED: true,
+        EXIT_INTENT_DELAY: 3000,
+        EXIT_INTENT_SENSITIVITY: 20,
+        EXIT_INTENT_COOLDOWN: 86400000,
+        EXIT_INTENT_MOBILE_SCROLL_RATIO: 0.3,
+        EXIT_INTENT_PAGES: null,
+
+        // Social Proof API (fetch real data from backend)
+        SOCIAL_PROOF_API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3004/social-proof'
+            : 'https://api.vocalia.ma/social-proof',
 
         // Social Proof/FOMO Notifications (Session 250.78)
         SOCIAL_PROOF_ENABLED: true,
-        SOCIAL_PROOF_INTERVAL: 25000, // Show every 25 seconds
-        SOCIAL_PROOF_DURATION: 5000, // Toast visible for 5 seconds
-        SOCIAL_PROOF_MAX_SHOWN: 5, // Max notifications per session
-        SOCIAL_PROOF_DELAY: 8000, // Initial delay before first notification
+        SOCIAL_PROOF_INTERVAL: 25000,
+        SOCIAL_PROOF_DURATION: 5000,
+        SOCIAL_PROOF_MAX_SHOWN: 5,
+        SOCIAL_PROOF_DELAY: 8000,
 
         // Branding
         primaryColor: '#5E6AD2',
         primaryDark: '#4f46e5',
         accentColor: '#10B981',
-        darkBg: '#191E35',
+        darkBg: '#0f172a',
+
+        // Paths - FIXED Session 250.179: Absolute URL for third-party embedding (like B2B)
+        LANG_PATH: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/voice-assistant/lang/voice-{lang}.json'
+            : 'https://vocalia.ma/voice-assistant/lang/voice-{lang}.json',
 
         // Cache
-        SLOT_CACHE_TTL: 5 * 60 * 1000, // 5 minutes
-        CATALOG_CACHE_TTL: 5 * 60 * 1000, // 5 minutes
+        SLOT_CACHE_TTL: 5 * 60 * 1000,
+        CATALOG_CACHE_TTL: 5 * 60 * 1000,
 
         // Auto-detection
         AUTO_DETECT_ENABLED: true,
@@ -55,9 +90,23 @@
             'en-US': 'en', 'en-GB': 'en', 'en': 'en',
             'es-ES': 'es', 'es-MX': 'es', 'es': 'es',
             'ar-SA': 'ar', 'ar-MA': 'ar', 'ar': 'ar',
-            'ary': 'ary' // Darija (Moroccan Arabic)
+            'ary': 'ary'
         }
     };
+
+    // ============================================================
+    // SECURITY UTILITIES
+    // ============================================================
+
+    function escapeHTML(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function escapeAttr(text) {
+        return String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
     // ============================================================
     // STATE
@@ -73,6 +122,9 @@
         langData: null,
         sessionId: `widget_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         tenantId: null, // Set via data attribute or URL
+        tenantConfig: null, // Loaded from /config endpoint
+        planFeatures: null, // Session 250.146: Plan-based feature gating
+        currency: null, // Session 250.147: Tenant currency from /config (MAD/EUR/USD)
         availableSlotsCache: { slots: [], timestamp: 0 },
         catalogCache: { products: [], timestamp: 0 },
         conversationContext: {
@@ -124,6 +176,56 @@
     const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const needsTextFallback = !hasSpeechRecognition || isFirefox || isSafari;
+
+    // ============================================================
+    // SHADOW DOM - Scoped DOM queries
+    // ============================================================
+
+    let shadowRoot = null;
+
+    function $id(id) { return shadowRoot ? shadowRoot.getElementById(id) : document.getElementById(id); }
+    function $q(sel) { return shadowRoot ? shadowRoot.querySelector(sel) : document.querySelector(sel); }
+    function $qa(sel) { return shadowRoot ? shadowRoot.querySelectorAll(sel) : document.querySelectorAll(sel); }
+
+    // ============================================================
+    // TENANT CONFIGURATION
+    // ============================================================
+
+    async function loadTenantConfig() {
+        if (!state.tenantId) return null;
+
+        const url = `${CONFIG.VOICE_API_URL.replace('/respond', '/config')}?tenantId=${encodeURIComponent(state.tenantId)}`;
+
+        try {
+            const response = await fetch(url, { signal: AbortSignal.timeout(CONFIG.API_TIMEOUT) });
+            if (!response.ok) throw new Error('Config fetch failed');
+
+            const data = await response.json();
+            if (data.success) {
+                if (data.branding && data.branding.primaryColor) {
+                    CONFIG.primaryColor = data.branding.primaryColor;
+                    const root = document.getElementById('voice-assistant-widget');
+                    if (root) {
+                        root.style.setProperty('--va-primary', CONFIG.primaryColor);
+                    }
+                }
+                state.tenantConfig = data;
+                // Session 250.146: Store plan features for sub-widget gating
+                if (data.plan_features) {
+                    state.planFeatures = data.plan_features;
+                }
+                // Session 250.147: Store tenant currency for geo-aware pricing
+                if (data.currency) {
+                    state.currency = data.currency;
+                }
+                trackEvent('tenant_config_loaded', { tenantId: state.tenantId, plan: data.plan });
+                return data;
+            }
+        } catch (error) {
+            console.warn('[VocalIA ECOM] Config fetch failed, using static defaults:', error.message);
+        }
+        return null;
+    }
 
     // ============================================================
     // LANGUAGE DETECTION & LOADING
@@ -204,8 +306,6 @@
             dataLayer.push({ event: eventName, ...eventData });
         }
 
-        // SOTA: Signal bridge to backend (Agent Ops Dashboard ingestion)
-        console.log(`[VocalIA] SOTA Signal: ${eventName}`, eventData);
     }
 
     /**
@@ -221,9 +321,6 @@
         attr.gclid = urlParams.get('gclid') || attr.gclid;
         attr.fbclid = urlParams.get('fbclid') || attr.fbclid;
 
-        if (attr.gclid || attr.fbclid) {
-            console.log('[VocalIA] Attribution Captured:', attr);
-        }
     }
 
     // ============================================================
@@ -232,7 +329,6 @@
 
     function createWidget() {
         if (document.getElementById('voice-assistant-widget')) {
-            console.log('[VocalIA] Widget already exists');
             return;
         }
 
@@ -240,12 +336,13 @@
         const isRTL = L.meta.rtl;
         const position = isRTL ? 'left' : 'right';
 
-        const widget = document.createElement('div');
-        widget.id = 'voice-assistant-widget';
-        widget.style.cssText = `position:fixed;bottom:30px;${position}:25px;z-index:99999;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;${isRTL ? 'direction:rtl;' : ''}`;
+        const host = document.createElement('div');
+        host.id = 'voice-assistant-widget';
+        host.style.cssText = `position:fixed;bottom:30px;${position}:25px;z-index:99999;font-family:Inter,-apple-system,BlinkMacSystemFont,sans-serif;${isRTL ? 'direction:rtl;' : ''}`;
+        document.body.appendChild(host);
 
-        widget.innerHTML = generateWidgetHTML(L, isRTL, position);
-        document.body.appendChild(widget);
+        shadowRoot = host.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = generateWidgetHTML(L, isRTL, position);
 
         initEventListeners();
 
@@ -361,8 +458,8 @@
         .va-input:focus { border-color: var(--va-primary); }
         .va-mic-btn {
           width: 40px; height: 40px; border-radius: 50%;
-          background: ${hasSpeechRecognition ? 'var(--va-primary)' : 'rgba(255,255,255,0.1)'};
-          border: none; cursor: ${hasSpeechRecognition ? 'pointer' : 'not-allowed'};
+          background: ${(hasSpeechRecognition || typeof MediaRecorder !== 'undefined') ? 'var(--va-primary)' : 'rgba(255,255,255,0.1)'};
+          border: none; cursor: ${(hasSpeechRecognition || typeof MediaRecorder !== 'undefined') ? 'pointer' : 'not-allowed'};
           display: flex; align-items: center; justify-content: center; transition: all 0.2s;
         }
         .va-mic-btn.listening { background: #ef4444; animation: pulse 1s infinite; }
@@ -574,13 +671,13 @@
       </style>
 
       <button class="va-trigger" id="va-trigger" aria-label="${L.ui.ariaOpenAssistant}">
-        <img src="/logo.png" alt="VocalIA" />
+        <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
       </button>
 
-      <div class="va-panel" id="va-panel">
+      <div class="va-panel" id="va-panel" role="dialog" aria-label="${L.ui.headerTitle}" aria-modal="true">
         <div class="va-header">
           <div class="va-header-icon">
-            <img src="/logo.png" alt="VocalIA" />
+            <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
           </div>
           <div class="va-header-text">
             <h3>${L.ui.headerTitle}</h3>
@@ -592,19 +689,19 @@
         </div>
 
         <!-- Voice Waveform Visualizer (SOTA 2026) -->
-        <div class="va-visualizer" id="va-visualizer">
+        <div class="va-visualizer" id="va-visualizer" aria-hidden="true">
           <div class="va-visualizer-bars" id="va-visualizer-bars">
             ${Array.from({ length: 10 }, () => '<div class="va-visualizer-bar"></div>').join('')}
           </div>
           <div class="va-visualizer-label" id="va-visualizer-label">${L.ui.voiceReady || 'Voice Ready'}</div>
         </div>
 
-        <div class="va-messages" id="va-messages"></div>
+        <div class="va-messages" id="va-messages" aria-live="polite" aria-relevant="additions"></div>
 
         <div class="va-input-area">
           <input type="text" class="va-input" id="va-input" placeholder="${L.ui.placeholder}">
-          ${!needsTextFallback && hasSpeechRecognition ? `
-          <button class="va-mic-btn" id="va-mic" aria-label="${L.ui.ariaMic}">
+          ${(hasSpeechRecognition || typeof MediaRecorder !== 'undefined') ? `
+          <button class="va-mic-btn" id="va-mic" aria-label="${L.ui.ariaMic || 'Microphone'}">
             <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1 1.93c-3.94-.49-7-3.85-7-7.93h2c0 3.31 2.69 6 6 6s6-2.69 6-6h2c0 4.08-3.06 7.44-7 7.93V20h4v2H8v-2h4v-4.07z"/></svg>
           </button>
           ` : ''}
@@ -625,7 +722,7 @@
         const isRTL = L.meta.rtl;
         const position = isRTL ? 'left' : 'right';
 
-        const trigger = document.getElementById('va-trigger');
+        const trigger = $id('va-trigger');
         const bubble = document.createElement('div');
         bubble.className = 'va-notification';
         bubble.innerHTML = `
@@ -685,10 +782,10 @@
     // ============================================================
 
     function addMessage(text, type = 'assistant') {
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const messageDiv = document.createElement('div');
         messageDiv.className = `va-message ${type}`;
-        messageDiv.innerHTML = `<div class="va-message-content">${text}</div>`;
+        messageDiv.innerHTML = `<div class="va-message-content">${escapeHTML(text)}</div>`;
         messagesContainer.appendChild(messageDiv);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
@@ -703,7 +800,7 @@
     }
 
     function showTyping() {
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const typingDiv = document.createElement('div');
         typingDiv.className = 'va-message assistant';
         typingDiv.id = 'va-typing';
@@ -713,13 +810,59 @@
     }
 
     function hideTyping() {
-        const typing = document.getElementById('va-typing');
+        const typing = $id('va-typing');
         if (typing) typing.remove();
     }
 
     // ============================================================
     // E-COMMERCE PRODUCT DISPLAY (Phase 1)
     // ============================================================
+
+    // ============================================================
+    // PAGE CONTEXT (Session 250.147: Proactive contextual greeting)
+    // ============================================================
+
+    function getPageContext() {
+        const path = window.location.pathname;
+        const title = document.title || '';
+        const ogTitle = document.querySelector('meta[property="og:title"]')?.content || '';
+        const description = document.querySelector('meta[name="description"]')?.content || '';
+        const h1 = document.querySelector('h1')?.textContent?.trim() || '';
+
+        // Detect page type from path and meta
+        let pageType = 'general';
+        if (/\/(product|produit)/i.test(path)) pageType = 'product';
+        else if (/\/(collection|category|categorie)/i.test(path)) pageType = 'category';
+        else if (/\/(cart|panier)/i.test(path)) pageType = 'cart';
+        else if (/\/(checkout|commande)/i.test(path)) pageType = 'checkout';
+        else if (/\/(pricing|tarifs|prix)/i.test(path)) pageType = 'pricing';
+        else if (/\/(booking|rendez-vous|demo)/i.test(path)) pageType = 'booking';
+        else if (path === '/' || path === '/index.html') pageType = 'homepage';
+
+        // E-commerce product data from schema.org or Open Graph
+        const productSchema = document.querySelector('script[type="application/ld+json"]');
+        let productData = null;
+        if (productSchema) {
+            try {
+                const schema = JSON.parse(productSchema.textContent);
+                if (schema['@type'] === 'Product') {
+                    productData = { name: schema.name, price: schema.offers?.price, currency: schema.offers?.priceCurrency };
+                }
+            } catch (e) { /* ignore */ }
+        }
+        if (!productData) {
+            const ogProduct = document.querySelector('meta[property="og:type"][content="product"]');
+            if (ogProduct) {
+                productData = {
+                    name: ogTitle || h1,
+                    price: document.querySelector('meta[property="product:price:amount"]')?.content,
+                    currency: document.querySelector('meta[property="product:price:currency"]')?.content
+                };
+            }
+        }
+
+        return { path, pageType, title: ogTitle || h1 || title, description: description.slice(0, 200), product: productData };
+    }
 
     /**
      * Track input method (voice vs text)
@@ -746,7 +889,8 @@
      * @param {string} currency - Currency code (default: MAD)
      * @returns {string} Formatted price
      */
-    function formatPrice(price, currency = 'MAD') {
+    function formatPrice(price, currency) {
+        currency = currency || state.currency || 'EUR';
         const currencySymbols = {
             'MAD': 'DH',
             'EUR': '€',
@@ -800,14 +944,14 @@
         }
 
         return `
-      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${product.id}" style="position: relative;">
+      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${escapeAttr(String(product.id))}" style="position: relative;">
         ${badgeHTML}
         ${hasImage
-                ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
+                ? `<img class="va-product-img" src="${escapeAttr(product.image || product.images[0])}" alt="${escapeAttr(product.name)}" loading="lazy" />`
                 : `<div class="va-product-img-placeholder">📦</div>`
             }
         <div class="va-product-info">
-          <p class="va-product-name">${product.name}</p>
+          <p class="va-product-name">${escapeHTML(product.name)}</p>
           <div class="va-product-price">
             ${formatPrice(product.price, product.currency)}
             ${isOnSale ? `<span class="va-product-price-old">${formatPrice(product.compare_at_price, product.currency)}</span>` : ''}
@@ -826,35 +970,41 @@
     function addProductCard(product, context = 'detail') {
         if (!product) return;
 
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const productDiv = document.createElement('div');
         productDiv.className = 'va-message assistant';
 
         const hasImage = product.image || product.images?.[0];
         const inStock = product.available !== false && product.in_stock !== false;
 
+        const safeId = escapeAttr(product.id);
+        const safeName = escapeHTML(product.name || '');
+        const safeDesc = product.description ? escapeHTML(product.description) : '';
+        const safeImage = escapeAttr(product.image || product.images?.[0] || '');
+        const safeUrl = product.url ? escapeAttr(product.url) : '';
+
         productDiv.innerHTML = `
       <div class="va-message-content">
-        <div class="va-single-product" data-product-id="${product.id}">
+        <div class="va-single-product" data-product-id="${safeId}">
           <div class="va-single-product-row">
             ${hasImage
-                ? `<img class="va-single-product-img" src="${product.image || product.images[0]}" alt="${product.name}" />`
+                ? `<img class="va-single-product-img" src="${safeImage}" alt="${safeName}" />`
                 : `<div class="va-single-product-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>`
             }
             <div class="va-single-product-details">
-              <h4 class="va-single-product-name">${product.name}</h4>
-              ${product.description ? `<p class="va-single-product-desc">${product.description}</p>` : ''}
+              <h4 class="va-single-product-name">${safeName}</h4>
+              ${safeDesc ? `<p class="va-single-product-desc">${safeDesc}</p>` : ''}
               <div class="va-single-product-price">${formatPrice(product.price, product.currency)}</div>
             </div>
           </div>
           <div class="va-product-actions">
-            <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${product.id}')" ${!inStock ? 'disabled' : ''}>
+            <button class="va-product-btn primary" onclick="window.VocalIA.viewProduct('${safeId}')" ${!inStock ? 'disabled' : ''}>
               ${inStock
                 ? (state.langData?.ecommerce?.viewDetails || 'Voir détails')
                 : (state.langData?.ecommerce?.notifyMe || 'Me notifier')
             }
             </button>
-            ${product.url ? `<button class="va-product-btn secondary" onclick="window.open('${product.url}', '_blank')">
+            ${safeUrl ? `<button class="va-product-btn secondary" onclick="window.open('${safeUrl}', '_blank')">
               ${state.langData?.ecommerce?.buyNow || 'Acheter'}
             </button>` : ''}
           </div>
@@ -887,7 +1037,7 @@
 
         const L = state.langData;
         const isRTL = L?.meta?.rtl;
-        const messagesContainer = document.getElementById('va-messages');
+        const messagesContainer = $id('va-messages');
         const carouselDiv = document.createElement('div');
         carouselDiv.className = 'va-message assistant';
 
@@ -912,10 +1062,10 @@
             ${displayTitle}
           </span>
           <div class="va-carousel-nav">
-            <button onclick="document.getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaPrev || 'Previous'}">
               <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
             </button>
-            <button onclick="document.getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="Next">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaNext || 'Next'}">
               <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
             </button>
           </div>
@@ -984,7 +1134,7 @@
         try {
             const endpoint = options.search
                 ? `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/search`
-                : `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items`;
+                : `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog`;
 
             const params = new URLSearchParams();
             if (options.category) params.append('category', options.category);
@@ -1095,7 +1245,7 @@
 
         try {
             const response = await fetch(
-                `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/items/${productId}`,
+                `${CONFIG.CATALOG_API_URL}/${state.tenantId}/catalog/detail/${encodeURIComponent(productId)}`,
                 { signal: AbortSignal.timeout(CONFIG.API_TIMEOUT) }
             );
 
@@ -1214,7 +1364,7 @@
 
         try {
             const response = await fetch(
-                `${CONFIG.API_BASE_URL}/api/tenants/${state.tenantId}/catalog/items/${productId}`
+                `${CONFIG.API_BASE_URL}/api/tenants/${state.tenantId}/catalog/${encodeURIComponent(productId)}`
             );
             if (response.ok) {
                 const data = await response.json();
@@ -1236,6 +1386,11 @@
      * @param {object} options - Custom options
      */
     window.VocalIA.startQuiz = function (template = 'generic', options = {}) {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_quiz === false) {
+            console.warn('[VocalIA] Quiz not available on current plan');
+            return null;
+        }
         // Lazy load quiz if not already loaded
         if (!window.VocalIAQuiz) {
             console.warn('[VocalIA] Voice Quiz not loaded. Include voice-quiz.js');
@@ -1275,11 +1430,7 @@
 
                 // Sync with UCP
                 if (UCP.syncPreference) {
-                    UCP.recordInteraction({
-                        type: 'quiz_completed',
-                        product_id: null,
-                        metadata: { template, answers: lead.answers }
-                    });
+                    UCP.recordInteraction('quiz_completed', { template, answers: lead.answers });
                 }
             },
             ...options
@@ -1306,6 +1457,11 @@
      * @param {Object} options - Configuration options
      */
     window.VocalIA.initCartRecovery = function (options = {}) {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_cart_recovery === false) {
+            console.warn('[VocalIA] Cart recovery not available on current plan');
+            return null;
+        }
         if (window.VocaliaAbandonedCart) {
             return window.VocaliaAbandonedCart.init({
                 tenantId: state.tenantId || options.tenantId,
@@ -1322,6 +1478,8 @@
      * @param {string} reason - Reason for triggering (manual, exit, inactivity)
      */
     window.VocalIA.triggerCartRecovery = function (reason = 'manual') {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_cart_recovery === false) return;
         if (window.VocaliaAbandonedCart?.getInstance()) {
             window.VocaliaAbandonedCart.getInstance().trigger(reason);
         } else {
@@ -1352,7 +1510,7 @@
                 event_category: 'ecommerce',
                 cart_value: cartData.total,
                 items_count: cartData.items?.length || 0,
-                currency: cartData.currency || 'MAD'
+                currency: cartData.currency || state.currency || 'EUR'
             });
         }
     };
@@ -1415,6 +1573,11 @@
      * @param {Object} options - Configuration options
      */
     window.VocalIA.showSpinWheel = function (options = {}) {
+        // Session 250.146: Gate by plan
+        if (state.planFeatures && state.planFeatures.ecom_gamification === false) {
+            console.warn('[VocalIA] Spin wheel not available on current plan');
+            return null;
+        }
         if (window.VocaliaSpinWheel) {
             return window.VocaliaSpinWheel.show({
                 tenantId: state.tenantId || options.tenantId,
@@ -1430,10 +1593,12 @@
      * Check if spin wheel is available (cooldown check)
      */
     window.VocalIA.isSpinWheelAvailable = function () {
-        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-        if (!lastPlayed) return true;
-        const elapsed = Date.now() - parseInt(lastPlayed, 10);
-        return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        try {
+            const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+            if (!lastPlayed) return true;
+            const elapsed = Date.now() - parseInt(lastPlayed, 10);
+            return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        } catch { return true; }
     };
 
     /**
@@ -1554,9 +1719,84 @@
     // Export orchestrator
     window.VocalIA.Orchestrator = WidgetOrchestrator;
 
+    // ============================================================
+    // DYNAMIC CHUNK LOADER (Code-split support — BIZ-7)
+    // ============================================================
+    // In monolith mode: sub-widgets are already loaded, loadChunk() is a no-op.
+    // In code-split mode: sub-widgets lazy-load from separate .min.js files.
+
+    const WIDGET_CHUNKS = {
+        shippingBar:    { file: 'voice-widget-ecommerce-shipping.js', global: 'VocaliaShippingBar' },
+        abandonedCart:  { file: 'voice-widget-ecommerce-cart.js',     global: 'VocaliaAbandonedCart' },
+        quiz:           { file: 'voice-widget-ecommerce-quiz.js',     global: 'VocalIAQuiz' },
+        spinWheel:      { file: 'voice-widget-ecommerce-spin.js',     global: 'VocaliaSpinWheel' },
+        recommendations:{ file: 'voice-widget-ecommerce-carousel.js', global: 'VocalIARecommendations' }
+    };
+
+    const chunkPromises = {};
+
+    function getWidgetBaseUrl() {
+        const scripts = document.querySelectorAll('script[src*="voice-widget-ecommerce"]');
+        if (scripts.length > 0) {
+            const src = scripts[scripts.length - 1].src;
+            return src.substring(0, src.lastIndexOf('/') + 1);
+        }
+        return '/voice-assistant/';
+    }
+
+    function loadChunk(name) {
+        const chunk = WIDGET_CHUNKS[name];
+        if (!chunk) return Promise.reject(new Error('Unknown chunk: ' + name));
+        if (window[chunk.global]) return Promise.resolve(true); // Already loaded (monolith)
+        if (chunkPromises[name]) return chunkPromises[name];
+
+        chunkPromises[name] = new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = getWidgetBaseUrl() + chunk.file;
+            script.onload = () => resolve(true);
+            script.onerror = () => {
+                delete chunkPromises[name];
+                reject(new Error('Chunk unavailable: ' + chunk.file));
+            };
+            document.head.appendChild(script);
+        });
+        return chunkPromises[name];
+    }
+
+    // Expose for external access
+    window.VocalIA.loadChunk = loadChunk;
+
     // Wire up existing widgets to orchestrator
     WidgetOrchestrator.on('widget:activated', ({ widget }) => {
-        console.log(`[Orchestrator] Widget activated: ${widget}`);
+        if (widget === 'spinWheel' && window.VocaliaSpinWheel) {
+            window.VocaliaSpinWheel.show({
+                tenantId: state.tenantId,
+                lang: state.currentLang
+            });
+        }
+        if (widget === 'shippingBar' && window.VocaliaShippingBar) {
+            window.VocaliaShippingBar.init({
+                tenantId: state.tenantId,
+                lang: state.currentLang
+            });
+        }
+        if (widget === 'recommendations' && window.VocalIARecommendations) {
+            const carousel = new window.VocalIARecommendations({
+                tenantId: state.tenantId,
+                lang: state.currentLang,
+                apiBase: CONFIG.API_BASE_URL
+            });
+            carousel.render();
+        }
+    });
+
+    WidgetOrchestrator.on('widget:deactivated', ({ widget }) => {
+        if (widget === 'spinWheel' && window.VocaliaSpinWheel?.getInstance()) {
+            window.VocaliaSpinWheel.getInstance().destroy();
+        }
+        if (widget === 'shippingBar' && window.VocaliaShippingBar?.getInstance()) {
+            window.VocaliaShippingBar.getInstance().destroy();
+        }
     });
 
     // ============================================================
@@ -1909,58 +2149,135 @@
     }
 
     function initSpeechRecognition() {
-        if (!hasSpeechRecognition) return;
+        if (hasSpeechRecognition) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            state.recognition = new SpeechRecognition();
+            state.recognition.lang = state.langData.meta.speechRecognition;
+            state.recognition.continuous = false;
+            state.recognition.interimResults = false;
 
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        state.recognition = new SpeechRecognition();
+            state.recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                $id('va-input').value = transcript;
+                sendMessage(transcript, 'voice');
 
-        // Start with page language, but allow auto-detection
-        state.recognition.lang = state.langData.meta.speechRecognition;
-        state.recognition.continuous = false;
-        state.recognition.interimResults = false;
+                if (event.results[0][0].confidence) {
+                    trackEvent('voice_recognition_result', {
+                        confidence: event.results[0][0].confidence,
+                        detected_lang: state.recognition.lang
+                    });
+                }
+            };
 
-        state.recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
-            document.getElementById('va-input').value = transcript;
-            sendMessage(transcript, 'voice'); // Track as voice input
+            state.recognition.onend = () => {
+                state.isListening = false;
+                $id('va-mic')?.classList.remove('listening');
+                $id('va-trigger')?.classList.remove('listening');
+                hideVisualizer();
+            };
 
-            // Log detected language for analytics
-            if (event.results[0][0].confidence) {
-                trackEvent('voice_recognition_result', {
-                    confidence: event.results[0][0].confidence,
-                    detected_lang: state.recognition.lang
-                });
-            }
-        };
+            state.recognition.onerror = (event) => {
+                state.isListening = false;
+                $id('va-mic')?.classList.remove('listening');
+                hideVisualizer();
+                trackEvent('voice_recognition_error', { error: event.error });
+            };
 
-        state.recognition.onend = () => {
+            state.sttMode = 'native';
+        } else if (navigator.mediaDevices && typeof MediaRecorder !== 'undefined') {
+            state.sttMode = 'fallback';
+            console.log('[VocalIA ECOM] Using MediaRecorder STT fallback');
+        } else {
+            state.sttMode = 'none';
+        }
+    }
+
+    async function startFallbackRecording() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            state.mediaRecorder = new MediaRecorder(stream, {
+                mimeType: MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/ogg'
+            });
+            state.audioChunks = [];
+
+            state.mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) state.audioChunks.push(e.data);
+            };
+
+            state.mediaRecorder.onstop = async () => {
+                stream.getTracks().forEach(t => t.stop());
+                const audioBlob = new Blob(state.audioChunks, { type: state.mediaRecorder.mimeType });
+                if (audioBlob.size < 1000) return;
+
+                const sttUrl = CONFIG.API_BASE_URL + '/stt';
+                try {
+                    const resp = await fetch(sttUrl, {
+                        method: 'POST',
+                        headers: { 'X-Language': state.currentLang },
+                        body: audioBlob,
+                        signal: AbortSignal.timeout(15000)
+                    });
+                    const result = await resp.json();
+                    if (result.success && result.text) {
+                        $id('va-input').value = result.text;
+                        sendMessage(result.text, 'voice');
+                    }
+                } catch (err) {
+                    console.error('[VocalIA ECOM] STT request failed:', err.message);
+                }
+            };
+
+            state.mediaRecorder.start();
+            state.isListening = true;
+
+            state.recordingTimeout = setTimeout(() => {
+                if (state.mediaRecorder?.state === 'recording') {
+                    state.mediaRecorder.stop();
+                    state.isListening = false;
+                    $id('va-mic')?.classList.remove('listening');
+                    $id('va-trigger')?.classList.remove('listening');
+                    hideVisualizer();
+                }
+            }, 10000);
+        } catch (err) {
+            console.error('[VocalIA ECOM] Microphone access denied:', err.message);
             state.isListening = false;
-            document.getElementById('va-mic')?.classList.remove('listening');
-            document.getElementById('va-trigger').classList.remove('listening');
-            hideVisualizer();
-        };
+            $id('va-mic')?.classList.remove('listening');
+        }
+    }
 
-        state.recognition.onerror = (event) => {
-            state.isListening = false;
-            document.getElementById('va-mic')?.classList.remove('listening');
-            hideVisualizer();
-            trackEvent('voice_recognition_error', { error: event.error });
-        };
+    function stopFallbackRecording() {
+        if (state.recordingTimeout) clearTimeout(state.recordingTimeout);
+        if (state.mediaRecorder?.state === 'recording') state.mediaRecorder.stop();
+        state.isListening = false;
     }
 
     function toggleListening() {
-        if (!state.recognition) return;
-
-        if (state.isListening) {
-            state.recognition.stop();
-            hideVisualizer();
-        } else {
-            state.recognition.start();
-            state.isListening = true;
-            document.getElementById('va-mic').classList.add('listening');
-            document.getElementById('va-trigger').classList.add('listening');
-            showVisualizer('listening');
-            trackEvent('voice_mic_activated');
+        if (state.sttMode === 'native' && state.recognition) {
+            if (state.isListening) {
+                state.recognition.stop();
+                hideVisualizer();
+            } else {
+                state.recognition.start();
+                state.isListening = true;
+                $id('va-mic')?.classList.add('listening');
+                $id('va-trigger')?.classList.add('listening');
+                showVisualizer('listening');
+                trackEvent('voice_mic_activated', { mode: 'native' });
+            }
+        } else if (state.sttMode === 'fallback') {
+            if (state.isListening) {
+                stopFallbackRecording();
+                $id('va-mic')?.classList.remove('listening');
+                $id('va-trigger')?.classList.remove('listening');
+                hideVisualizer();
+            } else {
+                startFallbackRecording();
+                $id('va-mic')?.classList.add('listening');
+                $id('va-trigger')?.classList.add('listening');
+                showVisualizer('listening');
+                trackEvent('voice_mic_activated', { mode: 'fallback' });
+            }
         }
     }
 
@@ -1973,9 +2290,9 @@
      * @param {string} mode - 'listening' | 'speaking' | 'processing'
      */
     function showVisualizer(mode = 'listening') {
-        const visualizer = document.getElementById('va-visualizer');
-        const bars = document.getElementById('va-visualizer-bars');
-        const label = document.getElementById('va-visualizer-label');
+        const visualizer = $id('va-visualizer');
+        const bars = $id('va-visualizer-bars');
+        const label = $id('va-visualizer-label');
         const L = state.langData;
 
         if (!visualizer) return;
@@ -2003,8 +2320,8 @@
      * Hide the voice visualizer
      */
     function hideVisualizer() {
-        const visualizer = document.getElementById('va-visualizer');
-        const bars = document.getElementById('va-visualizer-bars');
+        const visualizer = $id('va-visualizer');
+        const bars = $id('va-visualizer-bars');
 
         if (visualizer) {
             visualizer.classList.remove('active');
@@ -2017,7 +2334,7 @@
     let barAnimationId = null;
 
     function startBarAnimation() {
-        const bars = document.querySelectorAll('.va-visualizer-bar');
+        const bars = $qa('.va-visualizer-bar');
         if (!bars.length) return;
 
         function animateBars() {
@@ -2038,7 +2355,7 @@
             cancelAnimationFrame(barAnimationId);
             barAnimationId = null;
         }
-        const bars = document.querySelectorAll('.va-visualizer-bar');
+        const bars = $qa('.va-visualizer-bar');
         bars.forEach(bar => {
             bar.style.height = '4px';
             bar.style.opacity = '0.5';
@@ -2058,7 +2375,8 @@
         if (!CONFIG.EXIT_INTENT_ENABLED) return;
 
         // Check cooldown (once per 24h per user)
-        const lastShown = localStorage.getItem('vocalia_exit_intent_shown');
+        let lastShown = null;
+        try { lastShown = localStorage.getItem('vocalia_exit_intent_shown'); } catch {}
         if (lastShown && Date.now() - parseInt(lastShown) < CONFIG.EXIT_INTENT_COOLDOWN) {
             return;
         }
@@ -2076,8 +2394,6 @@
             // Mobile: Scroll up detection
             window.addEventListener('scroll', handleMobileExitIntent, { passive: true });
         }
-
-        console.log('[VocalIA] Exit-intent detection initialized');
     }
 
     function isMobileDevice() {
@@ -2136,12 +2452,23 @@
         state.exitIntent.shown = true;
 
         // Save to localStorage for cooldown
-        localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString());
+        try { localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString()); } catch {}
 
         // Track event
         trackEvent('exit_intent_triggered', { trigger, page: window.location.pathname });
 
-        // Show exit-intent overlay
+        // Session 250.146: Cart recovery coordination — if cart has items and plan allows,
+        // trigger cart recovery popup instead of generic exit overlay (higher conversion)
+        const cart = window.VocalIA?.cart;
+        const hasCartItems = cart && cart.items && cart.items.length > 0;
+        const planAllowsCartRecovery = !state.planFeatures || state.planFeatures.ecom_cart_recovery !== false;
+        if (CONFIG.ECOMMERCE_MODE && hasCartItems && planAllowsCartRecovery) {
+            trackEvent('exit_intent_cart_recovery', { cart_value: cart.total, items: cart.items.length });
+            window.VocalIA.triggerCartRecovery('exit_intent');
+            return;
+        }
+
+        // Show generic exit-intent overlay
         showExitIntentOverlay();
     }
 
@@ -2221,7 +2548,7 @@
       </style>
 
       <div class="va-exit-popup">
-        <button class="va-exit-close" id="va-exit-close" aria-label="Fermer">
+        <button class="va-exit-close" id="va-exit-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
           <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
 
@@ -2248,16 +2575,16 @@
       </div>
     `;
 
-        document.body.appendChild(overlay);
+        (shadowRoot || document.body).appendChild(overlay);
 
         // Event listeners
-        document.getElementById('va-exit-close').addEventListener('click', dismissExitIntent);
-        document.getElementById('va-exit-chat').addEventListener('click', () => {
+        $id('va-exit-close').addEventListener('click', dismissExitIntent);
+        $id('va-exit-chat').addEventListener('click', () => {
             dismissExitIntent();
             openWidget();
             trackEvent('exit_intent_chat_clicked');
         });
-        document.getElementById('va-exit-demo').addEventListener('click', () => {
+        $id('va-exit-demo').addEventListener('click', () => {
             dismissExitIntent();
             window.location.href = '/booking';
             trackEvent('exit_intent_demo_clicked');
@@ -2274,7 +2601,7 @@
 
     function dismissExitIntent() {
         state.exitIntent.dismissed = true;
-        const overlay = document.getElementById('va-exit-overlay');
+        const overlay = $id('va-exit-overlay');
         if (overlay) {
             overlay.style.animation = 'fadeOut 0.2s ease';
             setTimeout(() => overlay.remove(), 200);
@@ -2283,11 +2610,11 @@
     }
 
     function openWidget() {
-        const panel = document.getElementById('va-panel');
+        const panel = $id('va-panel');
         if (panel) {
             panel.classList.add('open');
             state.isOpen = true;
-            const input = document.getElementById('va-input');
+            const input = $id('va-input');
             if (input) input.focus();
         }
     }
@@ -2300,8 +2627,20 @@
      * Initialize social proof notifications
      * Shows recent activity to create urgency/trust
      */
-    function initSocialProof() {
+    async function initSocialProof() {
         if (!CONFIG.SOCIAL_PROOF_ENABLED) return;
+
+        // Fetch real social proof data from backend (like B2B widget)
+        try {
+            const url = `${CONFIG.SOCIAL_PROOF_API_URL}?lang=${state.currentLang}`;
+            const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            const data = await response.json();
+            if (data.success && Array.isArray(data.messages) && data.messages.length > 0) {
+                state.socialProof.messages = data.messages;
+            }
+        } catch (e) {
+            console.warn('[VocalIA ECOM] Social proof API unavailable, using lang data:', e.message);
+        }
 
         // Initial delay before starting notifications
         setTimeout(() => {
@@ -2314,8 +2653,6 @@
                 }
             }, CONFIG.SOCIAL_PROOF_INTERVAL);
         }, CONFIG.SOCIAL_PROOF_DELAY);
-
-        console.log('[VocalIA] Social proof notifications initialized');
     }
 
     /**
@@ -2327,7 +2664,12 @@
 
         const L = state.langData || {};
         const isRTL = L?.meta?.rtl || false;
-        const proofs = L?.socialProof?.messages || getDefaultSocialProofMessages();
+        // Session 250.153: Only show REAL social proof data from backend — no fake fallback
+        const proofs = state.socialProof.messages.length > 0
+            ? state.socialProof.messages
+            : (L?.socialProof?.messages || []);
+        // If no real social proof data, don't show anything
+        if (proofs.length === 0) return;
 
         // Pick a random proof message
         const proof = proofs[Math.floor(Math.random() * proofs.length)];
@@ -2373,7 +2715,7 @@
         .va-sp-close:hover { color: rgba(255,255,255,0.7); }
       </style>
 
-      <button class="va-sp-close" aria-label="Fermer">
+      <button class="va-sp-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
@@ -2381,16 +2723,16 @@
 
       <div class="va-sp-content">
         <div class="va-sp-icon">
-          <svg viewBox="0 0 24 24">${proof.icon || '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
+          <svg viewBox="0 0 24 24">${(proof.icon && /^<(?:path|circle|rect|line|polyline|polygon|ellipse|g)\s/.test(proof.icon.trim())) ? proof.icon : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
         </div>
         <div>
-          <div class="va-sp-text">${proof.text}</div>
-          <div class="va-sp-time">${proof.time || getRandomTimeAgo(L)}</div>
+          <div class="va-sp-text">${escapeHTML(proof.text || '')}</div>
+          <div class="va-sp-time">${escapeHTML(proof.time || getRandomTimeAgo(L))}</div>
         </div>
       </div>
     `;
 
-        document.body.appendChild(notification);
+        (shadowRoot || document.body).appendChild(notification);
 
         // Close button
         notification.querySelector('.va-sp-close').addEventListener('click', () => {
@@ -2399,7 +2741,7 @@
 
         // Auto-remove after duration
         setTimeout(() => {
-            if (document.getElementById(notification.id)) {
+            if ($id(notification.id)) {
                 notification.remove();
             }
         }, CONFIG.SOCIAL_PROOF_DURATION);
@@ -2416,15 +2758,8 @@
         return times[Math.floor(Math.random() * times.length)];
     }
 
-    function getDefaultSocialProofMessages() {
-        return [
-            { text: 'Sophie de Paris vient de demander une démo', icon: '<path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>' },
-            { text: 'Une entreprise a automatisé 500 appels ce mois', icon: '<path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>' },
-            { text: 'Nouveau client: Cabinet dentaire à Casablanca', icon: '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>' },
-            { text: 'Ahmed a réservé un rendez-vous via l\'assistant', icon: '<path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zm-7-9c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>' },
-            { text: '12 leads qualifiés générés aujourd\'hui', icon: '<path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>' }
-        ];
-    }
+    // Session 250.153: getDefaultSocialProofMessages() REMOVED — was returning fake testimonials
+    // ("Sophie de Paris", "Ahmed", "500 appels"). Now mirrors B2B behavior: no data = no display.
 
     // ============================================================
     // BOOKING SYSTEM
@@ -2432,6 +2767,7 @@
 
     function isBookingIntent(text) {
         const L = state.langData;
+        if (!L?.booking?.keywords) return false;
         const lower = text.toLowerCase();
         return L.booking.keywords.some(kw => lower.includes(kw));
     }
@@ -2681,6 +3017,126 @@
         return null;
     }
 
+    // ============================================================
+    // A2UI RENDERER — Agent-to-UI dynamic components
+    // ============================================================
+
+    // Sanitize A2UI HTML — whitelist-based to prevent XSS from backend
+    function sanitizeA2UIHtml(html) {
+        const allowed = /^(div|span|button|p|h[1-6]|ul|ol|li|img|svg|path|line|circle|label|input|select|option|strong|em|br|a)$/i;
+        const allowedAttrs = /^(class|id|style|data-[a-z-]+|aria-[a-z]+|role|type|placeholder|value|src|alt|href|viewBox|d|fill|stroke|stroke-width|stroke-linecap|stroke-linejoin|xmlns|width|height|x1|y1|x2|y2|cx|cy|r|loading|dir|disabled)$/i;
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        const walk = (node) => {
+            const children = Array.from(node.childNodes);
+            for (const child of children) {
+                if (child.nodeType === 3) continue; // text node OK
+                if (child.nodeType !== 1) { child.remove(); continue; }
+                if (!allowed.test(child.tagName)) { child.remove(); continue; }
+                // Remove disallowed attributes
+                for (const attr of Array.from(child.attributes)) {
+                    if (!allowedAttrs.test(attr.name)) child.removeAttribute(attr.name);
+                }
+                // Remove event handler attributes (on*)
+                for (const attr of Array.from(child.attributes)) {
+                    if (attr.name.startsWith('on')) child.removeAttribute(attr.name);
+                }
+                // Strip javascript: from href/src
+                if (child.hasAttribute('href') && /^\s*javascript:/i.test(child.getAttribute('href'))) child.removeAttribute('href');
+                if (child.hasAttribute('src') && /^\s*javascript:/i.test(child.getAttribute('src'))) child.removeAttribute('src');
+                walk(child);
+            }
+        };
+        walk(temp);
+        return temp.innerHTML;
+    }
+
+    function renderA2UIComponent(a2ui) {
+        if (!a2ui || !a2ui.html) return;
+        const container = $id('va-messages');
+        if (!container) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'va-message assistant va-a2ui-wrapper';
+
+        if (a2ui.css) {
+            const style = document.createElement('style');
+            style.textContent = a2ui.css;
+            wrapper.appendChild(style);
+        }
+
+        const content = document.createElement('div');
+        content.className = 'va-message-content';
+        content.innerHTML = sanitizeA2UIHtml(a2ui.html);
+        wrapper.appendChild(content);
+
+        container.appendChild(wrapper);
+        container.scrollTop = container.scrollHeight;
+
+        wrapper.querySelectorAll('[data-a2ui-action]').forEach(el => {
+            el.addEventListener('click', () => {
+                handleA2UIAction(el.dataset.a2uiAction, {
+                    type: a2ui.type,
+                    value: el.dataset.slot || el.dataset.productId || null,
+                    element: el,
+                    wrapper
+                });
+            });
+        });
+
+        trackEvent('a2ui_rendered', { type: a2ui.type });
+    }
+
+    async function handleA2UIAction(action, ctx) {
+        trackEvent('a2ui_action', { action, type: ctx.type });
+
+        if (action === 'select_slot') {
+            const comp = ctx.element.closest('[data-a2ui-component]');
+            if (comp) {
+                comp.querySelectorAll('.va-a2ui-slot').forEach(s => s.classList.remove('selected'));
+                ctx.element.classList.add('selected');
+                const btn = comp.querySelector('[data-a2ui-action="confirm_booking"]');
+                if (btn) btn.disabled = false;
+            }
+            return;
+        }
+
+        if (action === 'close') {
+            ctx.wrapper.remove();
+            return;
+        }
+
+        const payload = {};
+        const comp = ctx.element.closest('[data-a2ui-component]');
+        if (action === 'confirm_booking' && comp) {
+            const selected = comp.querySelector('.va-a2ui-slot.selected');
+            payload.slot = selected?.dataset.slot;
+        } else if (action === 'submit_lead' && comp) {
+            const form = comp.querySelector('form');
+            if (form) new FormData(form).forEach((v, k) => { payload[k] = v; });
+        }
+
+        try {
+            const resp = await fetch(CONFIG.VOICE_API_URL.replace('/respond', '/a2ui/action'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action,
+                    data: payload,
+                    sessionId: state.sessionId,
+                    tenant_id: state.tenantId,
+                    widget_type: 'ECOM'
+                })
+            });
+            const result = await resp.json();
+            if (result.message) {
+                addMessage(result.message, 'assistant');
+            }
+        } catch (e) {
+            console.warn('[VocalIA ECOM] A2UI action failed:', e.message);
+        }
+    }
+
     /**
      * Call Voice API with persona-powered AI response
      * Falls back to pattern matching if API fails or AI_MODE is disabled
@@ -2692,18 +3148,26 @@
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), CONFIG.API_TIMEOUT);
 
+            const payload = {
+                message: userMessage,
+                language: state.currentLang,
+                sessionId: state.sessionId || `widget_${Date.now()}`,
+                tenant_id: state.tenantId,
+                api_key: CONFIG.api_key || undefined,
+                widget_type: 'ECOM', // Enforce E-commerce Persona
+                history: state.conversationHistory.slice(-10).map(m => ({
+                    role: m.role,
+                    content: m.content
+                }))
+            };
+            // Session 250.147: Send page context on first messages for contextual responses
+            if (state.conversationHistory.length <= 2) {
+                payload.page_context = getPageContext();
+            }
             const response = await fetch(CONFIG.VOICE_API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    message: userMessage,
-                    language: state.currentLang,
-                    sessionId: state.sessionId || `widget_${Date.now()}`,
-                    history: state.conversationHistory.slice(-10).map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }))
-                }),
+                body: JSON.stringify(payload),
                 signal: controller.signal
             });
 
@@ -2716,7 +3180,19 @@
 
             const data = await response.json();
             if (data.response) {
+                // Session 250.146: Update plan features from /respond (authoritative per-request)
+                if (data.features) {
+                    state.planFeatures = data.features;
+                }
                 trackEvent('voice_api_response', { language: state.currentLang, latency: data.latencyMs });
+                // Render A2UI component if backend sent one
+                if (data.a2ui) {
+                    renderA2UIComponent(data.a2ui);
+                }
+                // Render product catalog cards if backend returned them
+                if (data.catalog && data.catalog.items && data.catalog.items.length > 0) {
+                    addProductCarousel(data.catalog.items, data.catalog.title, 'api_response');
+                }
                 return data.response;
             }
             return null;
@@ -2726,10 +3202,11 @@
             } else {
                 console.error('[VocalIA] API error:', err.message);
             }
-            // Use INTELLIGENT fallback instead of error message
-            // DIRECT ERROR RETURN - NO LOCAL FALLBACK
-            const L = state.langData;
-            return L?.ui?.errorMessage || "Désolé, je suis temporairement indisponible. Veuillez réessayer.";
+            const L = state.langData?.ui || {};
+            if (err.name === 'AbortError') {
+                return L.timeoutMessage || L.errorMessage || 'The request took too long. Please try again.';
+            }
+            return L.connectionError || L.errorMessage || 'Sorry, I\'m experiencing a connection issue.';
         }
     }
 
@@ -2816,8 +3293,9 @@
             if (bookingResponse) return bookingResponse;
         }
 
-        // 2. Check for booking intent (always local)
-        if (isBookingIntent(lower)) {
+        // 2. Check for booking intent (gated by plan — Session 250.146)
+        const planAllowsBooking = !state.planFeatures || state.planFeatures.booking !== false;
+        if (planAllowsBooking && isBookingIntent(lower)) {
             ctx.bookingFlow.active = true;
             ctx.bookingFlow.step = 'name';
             ctx.bookingFlow.data.service = L.booking.service;
@@ -2848,7 +3326,7 @@
         trackInputMethod(inputMethod);
 
         addMessage(text, 'user');
-        document.getElementById('va-input').value = '';
+        $id('va-input').value = '';
         showTyping();
 
         try {
@@ -2930,7 +3408,7 @@
 
     function togglePanel() {
         state.isOpen = !state.isOpen;
-        const panel = document.getElementById('va-panel');
+        const panel = $id('va-panel');
 
         if (state.isOpen) {
             panel.classList.add('open');
@@ -2941,7 +3419,7 @@
                 const welcomeMsg = needsTextFallback ? L.ui.welcomeMessageTextOnly : L.ui.welcomeMessage;
                 addMessage(welcomeMsg, 'assistant');
             }
-            document.getElementById('va-input').focus();
+            $id('va-input').focus();
         } else {
             panel.classList.remove('open');
             if (state.synthesis) state.synthesis.cancel();
@@ -2954,57 +3432,199 @@
     // ============================================================
 
     function initEventListeners() {
-        document.getElementById('va-trigger').addEventListener('click', togglePanel);
-        document.getElementById('va-close').addEventListener('click', togglePanel);
+        $id('va-trigger').addEventListener('click', togglePanel);
+        $id('va-close').addEventListener('click', togglePanel);
 
-        document.getElementById('va-send').addEventListener('click', () => {
-            sendMessage(document.getElementById('va-input').value, 'text');
+        $id('va-send').addEventListener('click', () => {
+            sendMessage($id('va-input').value, 'text');
         });
 
-        document.getElementById('va-input').addEventListener('keypress', (e) => {
+        $id('va-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage(e.target.value, 'text');
         });
 
-        if (hasSpeechRecognition) {
-            initSpeechRecognition();
-            const micBtn = document.getElementById('va-mic');
-            if (micBtn) {
-                micBtn.addEventListener('click', toggleListening);
+        initSpeechRecognition();
+        const micBtn = $id('va-mic');
+        if (micBtn && state.sttMode !== 'none') {
+            micBtn.addEventListener('click', toggleListening);
+        } else if (micBtn && state.sttMode === 'none') {
+            micBtn.style.display = 'none';
+        }
+
+        // Keyboard: Escape to close, Tab focus trap
+        document.addEventListener('keydown', (e) => {
+            if (!state.isOpen) return;
+            if (e.key === 'Escape') {
+                togglePanel();
+                const trigger = $id('va-trigger');
+                if (trigger) trigger.focus();
+                return;
+            }
+            if (e.key === 'Tab') {
+                const panel = $id('va-panel');
+                if (!panel) return;
+                const focusable = panel.querySelectorAll('button, input, [tabindex]:not([tabindex="-1"])');
+                if (focusable.length === 0) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                const active = (shadowRoot || document).activeElement;
+                if (e.shiftKey && active === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && active === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        });
+    }
+
+    // ============================================================
+    // SUB-WIDGET AUTO-INITIALIZATION
+    // ============================================================
+
+    function initSubWidgets() {
+        if (!CONFIG.ECOMMERCE_MODE || !state.tenantId) return;
+
+        // Session 250.146: Check plan features before activating sub-widgets
+        const pf = state.planFeatures || {};
+        const isFeatureAllowed = (key) => pf[key] !== false; // Default true if no plan_features loaded
+
+        // Helper: init shipping bar once loaded (always-on for ECOM plans)
+        const activateShipping = () => {
+            if (!window.VocaliaShippingBar) return;
+            try {
+                window.VocaliaShippingBar.init({
+                    tenantId: state.tenantId,
+                    lang: state.currentLang,
+                    currency: state.currency || 'EUR',
+                    voiceEnabled: true
+                });
+                WidgetOrchestrator.activate('shippingBar');
+            } catch (e) {
+                console.warn('[VocalIA] ShippingBar init failed:', e.message);
+            }
+        };
+
+        // Helper: init spin wheel once loaded (15s delay, 24h cooldown)
+        const activateSpin = () => {
+            if (!window.VocaliaSpinWheel || !window.VocalIA.isSpinWheelAvailable()) return;
+            setTimeout(() => {
+                if (!state.isOpen && WidgetOrchestrator.canShow('spinWheel')) {
+                    try {
+                        window.VocaliaSpinWheel.show({
+                            tenantId: state.tenantId,
+                            lang: state.currentLang,
+                            voiceEnabled: true
+                        });
+                        WidgetOrchestrator.activate('spinWheel');
+                    } catch (e) {
+                        console.warn('[VocalIA] SpinWheel init failed:', e.message);
+                    }
+                }
+            }, 15000);
+        };
+
+        // Helper: init recommendations once loaded
+        const activateCarousel = () => {
+            if (!window.VocalIARecommendations) return;
+            try {
+                window.VocalIA.RecommendationCarousel = window.VocalIARecommendations;
+                WidgetOrchestrator.activate('recommendations');
+            } catch (e) {
+                console.warn('[VocalIA] RecommendationCarousel init failed:', e.message);
+            }
+        };
+
+        // Free Shipping Bar: immediate (always-on for ECOM — no plan gating needed)
+        if (window.VocaliaShippingBar) {
+            activateShipping();
+        } else {
+            loadChunk('shippingBar').then(activateShipping).catch(() => {});
+        }
+
+        // Spin Wheel: gated by ecom_gamification plan feature
+        if (isFeatureAllowed('ecom_gamification')) {
+            if (window.VocaliaSpinWheel) {
+                activateSpin();
+            } else {
+                loadChunk('spinWheel').then(activateSpin).catch(() => {});
             }
         }
+
+        // Recommendation Carousel: gated by ecom_recommendations plan feature
+        if (isFeatureAllowed('ecom_recommendations')) {
+            if (window.VocalIARecommendations) {
+                activateCarousel();
+            } else {
+                loadChunk('recommendations').then(activateCarousel).catch(() => {});
+            }
+        }
+
+        // Cart recovery: gated by ecom_cart_recovery plan feature
+        // Quiz: gated by ecom_quiz plan feature
+        // Both preload after 5s (triggered by user action / exit intent)
+        setTimeout(() => {
+            if (isFeatureAllowed('ecom_cart_recovery')) {
+                loadChunk('abandonedCart').catch(() => {});
+            }
+            if (isFeatureAllowed('ecom_quiz')) {
+                loadChunk('quiz').catch(() => {});
+            }
+        }, 5000);
     }
 
     // ============================================================
     // INITIALIZATION
     // ============================================================
 
+    // H8 fix: Allowlist of safe config keys that host pages may override
+    const SAFE_CONFIG_KEYS = new Set([
+        'DEFAULT_LANG', 'ECOMMERCE_MODE', 'EXIT_INTENT_ENABLED',
+        'EXIT_INTENT_DELAY', 'EXIT_INTENT_SENSITIVITY', 'EXIT_INTENT_COOLDOWN',
+        'EXIT_INTENT_MOBILE_SCROLL_RATIO', 'EXIT_INTENT_PAGES',
+        'SOCIAL_PROOF_ENABLED', 'SOCIAL_PROOF_INTERVAL', 'SOCIAL_PROOF_DURATION',
+        'SOCIAL_PROOF_MAX_SHOWN', 'MAX_CAROUSEL_ITEMS', 'AI_MODE', 'API_TIMEOUT'
+    ]);
+
+    function safeConfigMerge(source) {
+        if (!source || typeof source !== 'object') return;
+        for (const key of Object.keys(source)) {
+            if (SAFE_CONFIG_KEYS.has(key)) {
+                CONFIG[key] = source[key];
+            }
+        }
+    }
+
     async function init() {
         try {
-            const lang = detectLanguage();
-            console.log(`[VocalIA] Detected language: ${lang}`);
+            // Priority 1: Pick up injected config from distributions (WordPress/Shopify/Wix)
+            // H8 fix: Only allow safe keys — API URLs, tenant_id etc. cannot be overridden
+            if (window.VOCALIA_CONFIG_INJECTED) {
+                safeConfigMerge(window.VOCALIA_CONFIG_INJECTED);
+            }
+            if (window.VOCALIA_CONFIG) {
+                safeConfigMerge(window.VOCALIA_CONFIG);
+            }
 
+            const lang = detectLanguage();
             await loadLanguage(lang);
-            console.log(`[VocalIA] Loaded language: ${state.currentLang}`);
 
             // Detect tenant ID for e-commerce features
             detectTenantId();
             if (state.tenantId) {
-                console.log(`[VocalIA] E-commerce mode: tenant ${state.tenantId}`);
-
-                // Initialize UCP for personalized experience
+                await loadTenantConfig();
                 if (CONFIG.ECOMMERCE_MODE) {
-                    UCP.syncPreference().then(data => {
-                        if (data) {
-                            console.log(`[VocalIA] UCP synced: ${data.ltvTier} tier, ${data.profile?.locale}`);
-                        }
-                    }).catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
+                    UCP.syncPreference().catch(e => console.warn('[VocalIA] UCP init failed:', e.message));
                 }
             }
 
-            captureAttribution(); // Session 177: MarEng Injector
+            captureAttribution();
             createWidget();
-            initExitIntent(); // Session 250.78: Voice Exit-Intent Popup
-            initSocialProof(); // Session 250.78: Social Proof/FOMO
+            initExitIntent();
+            initSocialProof();
+            initSubWidgets();
+
             trackEvent('voice_widget_loaded', {
                 language: state.currentLang,
                 ecommerce_mode: CONFIG.ECOMMERCE_MODE && !!state.tenantId,
@@ -3023,10 +3643,17 @@
      * Priority: 1. Script data attribute 2. URL param 3. Meta tag 4. Global variable
      */
     function detectTenantId() {
+        // 0. Priority: Global Config
+        if (CONFIG.tenantId) {
+            state.tenantId = CONFIG.tenantId;
+            return;
+        }
+
         // 1. Script data attribute
-        const scriptTag = document.querySelector('script[data-vocalia-tenant]');
+        const scriptTag = document.querySelector('script[data-vocalia-tenant]') ||
+            document.querySelector('script[data-tenant-id]');
         if (scriptTag) {
-            state.tenantId = scriptTag.dataset.vocaliaTenant;
+            state.tenantId = scriptTag.dataset.vocaliaTenant || scriptTag.dataset.tenantId;
             return;
         }
 
@@ -3052,7 +3679,8 @@
         }
 
         // 5. Widget element data attribute
-        const widgetElement = document.getElementById('vocalia-widget');
+        const widgetElement = document.getElementById('vocalia-widget') ||
+            document.getElementById('voice-assistant-widget');
         if (widgetElement?.dataset.tenantId) {
             state.tenantId = widgetElement.dataset.tenantId;
             return;
@@ -3067,2546 +3695,3 @@
     }
 
 })();
-/**
- * VocalIA - Voice Abandoned Cart Recovery Widget
- * Version: 1.0.0 | Session 250.82
- *
- * UNIQUE COMPETITIVE ADVANTAGE: Voice-based cart recovery
- * Estimated impact: +25% recovery vs SMS/email (benchmark data)
- *
- * Features:
- * - Cart abandonment detection (exit-intent + inactivity + tab blur)
- * - Voice reminder popup with TTS
- * - Multi-channel recovery: Voice callback, SMS, Email
- * - 5 languages: FR, EN, ES, AR, Darija (ary)
- * - RTL support for Arabic/Darija
- * - GA4 event tracking
- * - UCP integration for personalization
- * - Orchestrator integration
- */
-
-(function () {
-    'use strict';
-
-    // ============================================================
-    // TRANSLATIONS (5 LANGUAGES)
-    // ============================================================
-
-    const TRANSLATIONS = {
-        fr: {
-            title: 'Votre panier vous attend !',
-            subtitle: 'Vous avez {{count}} article(s) dans votre panier',
-            subtitleSingular: 'Vous avez 1 article dans votre panier',
-            voiceReminder: 'Attendez ! Ne partez pas les mains vides...',
-            valueLabel: 'Valeur totale :',
-            offerLabel: 'Offre exclusive :',
-            offerText: '{{discount}}% de reduction si vous finalisez maintenant',
-            callbackTitle: 'Rappel vocal gratuit',
-            callbackDesc: 'Recevez un rappel vocal personnalise',
-            smsTitle: 'Rappel par SMS',
-            smsDesc: 'Lien direct vers votre panier',
-            emailTitle: 'Rappel par email',
-            emailDesc: 'Recapitulatif de votre panier',
-            phonePlaceholder: '+212 6XX XXX XXX',
-            emailPlaceholder: 'votre@email.com',
-            sendBtn: 'Recevoir le rappel',
-            checkoutBtn: 'Finaliser ma commande',
-            continueBrowsing: 'Continuer mes achats',
-            successCallback: 'Parfait ! Vous recevrez un appel dans quelques minutes.',
-            successSms: 'SMS envoye ! Verifiez votre telephone.',
-            successEmail: 'Email envoye ! Verifiez votre boite de reception.',
-            errorInvalid: 'Veuillez entrer un numero ou email valide',
-            errorSend: 'Erreur lors de l\'envoi. Reessayez.',
-            cartItemsLabel: 'Articles :',
-            expiresIn: 'Offre valable encore {{minutes}} min'
-        },
-        en: {
-            title: 'Your cart is waiting!',
-            subtitle: 'You have {{count}} item(s) in your cart',
-            subtitleSingular: 'You have 1 item in your cart',
-            voiceReminder: 'Wait! Don\'t leave empty-handed...',
-            valueLabel: 'Total value:',
-            offerLabel: 'Exclusive offer:',
-            offerText: '{{discount}}% off if you complete now',
-            callbackTitle: 'Free voice callback',
-            callbackDesc: 'Get a personalized voice reminder',
-            smsTitle: 'SMS reminder',
-            smsDesc: 'Direct link to your cart',
-            emailTitle: 'Email reminder',
-            emailDesc: 'Summary of your cart',
-            phonePlaceholder: '+1 XXX XXX XXXX',
-            emailPlaceholder: 'your@email.com',
-            sendBtn: 'Get reminder',
-            checkoutBtn: 'Complete my order',
-            continueBrowsing: 'Continue shopping',
-            successCallback: 'Perfect! You\'ll receive a call shortly.',
-            successSms: 'SMS sent! Check your phone.',
-            successEmail: 'Email sent! Check your inbox.',
-            errorInvalid: 'Please enter a valid phone or email',
-            errorSend: 'Error sending. Please retry.',
-            cartItemsLabel: 'Items:',
-            expiresIn: 'Offer valid for {{minutes}} more min'
-        },
-        es: {
-            title: 'Tu carrito te espera!',
-            subtitle: 'Tienes {{count}} articulo(s) en tu carrito',
-            subtitleSingular: 'Tienes 1 articulo en tu carrito',
-            voiceReminder: 'Espera! No te vayas con las manos vacias...',
-            valueLabel: 'Valor total:',
-            offerLabel: 'Oferta exclusiva:',
-            offerText: '{{discount}}% de descuento si finalizas ahora',
-            callbackTitle: 'Llamada de recordatorio gratis',
-            callbackDesc: 'Recibe un recordatorio de voz personalizado',
-            smsTitle: 'Recordatorio por SMS',
-            smsDesc: 'Enlace directo a tu carrito',
-            emailTitle: 'Recordatorio por email',
-            emailDesc: 'Resumen de tu carrito',
-            phonePlaceholder: '+34 XXX XXX XXX',
-            emailPlaceholder: 'tu@email.com',
-            sendBtn: 'Recibir recordatorio',
-            checkoutBtn: 'Finalizar mi pedido',
-            continueBrowsing: 'Seguir comprando',
-            successCallback: 'Perfecto! Recibiras una llamada en breve.',
-            successSms: 'SMS enviado! Revisa tu telefono.',
-            successEmail: 'Email enviado! Revisa tu bandeja.',
-            errorInvalid: 'Por favor ingresa un numero o email valido',
-            errorSend: 'Error al enviar. Reintenta.',
-            cartItemsLabel: 'Articulos:',
-            expiresIn: 'Oferta valida por {{minutes}} min mas'
-        },
-        ar: {
-            title: 'سلتك بانتظارك!',
-            subtitle: 'لديك {{count}} منتج(ات) في سلتك',
-            subtitleSingular: 'لديك منتج واحد في سلتك',
-            voiceReminder: 'انتظر! لا تغادر بيدين فارغتين...',
-            valueLabel: 'القيمة الإجمالية:',
-            offerLabel: 'عرض حصري:',
-            offerText: '{{discount}}% خصم إذا أتممت الآن',
-            callbackTitle: 'مكالمة تذكير مجانية',
-            callbackDesc: 'احصل على تذكير صوتي مخصص',
-            smsTitle: 'تذكير عبر SMS',
-            smsDesc: 'رابط مباشر لسلتك',
-            emailTitle: 'تذكير عبر البريد',
-            emailDesc: 'ملخص سلتك',
-            phonePlaceholder: '+212 6XX XXX XXX',
-            emailPlaceholder: 'بريدك@مثال.com',
-            sendBtn: 'استلم التذكير',
-            checkoutBtn: 'إتمام طلبي',
-            continueBrowsing: 'متابعة التسوق',
-            successCallback: 'ممتاز! ستتلقى مكالمة قريبًا.',
-            successSms: 'تم إرسال SMS! تحقق من هاتفك.',
-            successEmail: 'تم إرسال البريد! تحقق من صندوقك.',
-            errorInvalid: 'يرجى إدخال رقم أو بريد صحيح',
-            errorSend: 'خطأ في الإرسال. حاول مجددًا.',
-            cartItemsLabel: 'المنتجات:',
-            expiresIn: 'العرض صالح لمدة {{minutes}} دقيقة'
-        },
-        ary: {
-            title: 'الباني ديالك كيتسناك!',
-            subtitle: 'عندك {{count}} منتوج(ات) فالباني',
-            subtitleSingular: 'عندك منتوج واحد فالباني',
-            voiceReminder: 'تسنا! ما تمشيش بيديك خاويين...',
-            valueLabel: 'المجموع:',
-            offerLabel: 'عرض خاص:',
-            offerText: '{{discount}}% تخفيض إلا كملتي دابا',
-            callbackTitle: 'تيليفون مجاني',
-            callbackDesc: 'غادي نعيطو ليك باش نفكروك',
-            smsTitle: 'SMS للتذكير',
-            smsDesc: 'لينك مباشر للباني',
-            emailTitle: 'إيميل للتذكير',
-            emailDesc: 'ملخص الباني ديالك',
-            phonePlaceholder: '+212 6XX XXX XXX',
-            emailPlaceholder: 'الإيميل ديالك',
-            sendBtn: 'بغيت التذكير',
-            checkoutBtn: 'نكمل الطلب',
-            continueBrowsing: 'نكمل التسوق',
-            successCallback: 'مزيان! غادي نعيطو ليك دابا.',
-            successSms: 'SMS مشى! شوف التيليفون.',
-            successEmail: 'الإيميل مشى! شوف البوات.',
-            errorInvalid: 'دخل رقم ولا إيميل صحيح',
-            errorSend: 'كاين مشكل. عاود.',
-            cartItemsLabel: 'المنتوجات:',
-            expiresIn: 'العرض صالح {{minutes}} دقيقة'
-        }
-    };
-
-    // ============================================================
-    // STYLES
-    // ============================================================
-
-    const STYLES = `
-    .va-abandoned-cart-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      z-index: 10001;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-    }
-
-    .va-abandoned-cart-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .va-abandoned-cart-modal {
-      background: linear-gradient(135deg, #191E35 0%, #0F1225 100%);
-      border: 1px solid rgba(94, 106, 210, 0.3);
-      border-radius: 24px;
-      max-width: 480px;
-      width: 95%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(94, 106, 210, 0.2);
-      animation: vaCartSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .va-abandoned-cart-modal[dir="rtl"] {
-      text-align: right;
-    }
-
-    @keyframes vaCartSlideIn {
-      from {
-        transform: translateY(-30px) scale(0.95);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-    }
-
-    .va-cart-header {
-      padding: 24px 24px 16px;
-      text-align: center;
-      border-bottom: 1px solid rgba(94, 106, 210, 0.15);
-    }
-
-    .va-cart-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 16px;
-      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: vaPulseCart 2s infinite;
-    }
-
-    @keyframes vaPulseCart {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(94, 106, 210, 0.4); }
-      50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(94, 106, 210, 0); }
-    }
-
-    .va-cart-icon svg {
-      width: 32px;
-      height: 32px;
-      fill: white;
-    }
-
-    .va-cart-title {
-      color: #FFFFFF;
-      font-size: 24px;
-      font-weight: 700;
-      margin: 0 0 8px;
-    }
-
-    .va-cart-subtitle {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 16px;
-      margin: 0;
-    }
-
-    .va-cart-value {
-      background: rgba(94, 106, 210, 0.1);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .va-cart-value-label {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 14px;
-    }
-
-    .va-cart-value-amount {
-      color: #5E6AD2;
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .va-cart-offer {
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.15) 0%, rgba(94, 106, 210, 0.15) 100%);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin: 0 24px 16px;
-      text-align: center;
-    }
-
-    .va-cart-offer-label {
-      color: #10B981;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .va-cart-offer-text {
-      color: #FFFFFF;
-      font-size: 16px;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .va-cart-timer {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 12px;
-      margin-top: 8px;
-    }
-
-    .va-cart-items-preview {
-      padding: 0 24px 16px;
-    }
-
-    .va-cart-items-label {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 12px;
-      margin-bottom: 8px;
-    }
-
-    .va-cart-items-row {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-    }
-
-    .va-cart-item-thumb {
-      width: 48px;
-      height: 48px;
-      border-radius: 8px;
-      object-fit: cover;
-      border: 1px solid rgba(94, 106, 210, 0.2);
-      flex-shrink: 0;
-    }
-
-    .va-cart-recovery-options {
-      padding: 0 24px 16px;
-    }
-
-    .va-recovery-option {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .va-recovery-option:hover {
-      background: rgba(94, 106, 210, 0.1);
-      border-color: rgba(94, 106, 210, 0.3);
-    }
-
-    .va-recovery-option.selected {
-      background: rgba(94, 106, 210, 0.15);
-      border-color: #5E6AD2;
-    }
-
-    .va-recovery-option-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .va-recovery-option-icon.voice {
-      background: linear-gradient(135deg, #5E6AD2 0%, #4f46e5 100%);
-    }
-
-    .va-recovery-option-icon.sms {
-      background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-    }
-
-    .va-recovery-option-icon.email {
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-    }
-
-    .va-recovery-option-icon svg {
-      width: 20px;
-      height: 20px;
-      fill: white;
-    }
-
-    .va-recovery-option-content {
-      flex: 1;
-    }
-
-    .va-recovery-option-title {
-      color: #FFFFFF;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-
-    .va-recovery-option-desc {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 12px;
-    }
-
-    .va-recovery-option-radio {
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      position: relative;
-    }
-
-    .va-recovery-option.selected .va-recovery-option-radio {
-      border-color: #5E6AD2;
-    }
-
-    .va-recovery-option.selected .va-recovery-option-radio::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 10px;
-      height: 10px;
-      background: #5E6AD2;
-      border-radius: 50%;
-    }
-
-    .va-cart-input-group {
-      padding: 0 24px 16px;
-    }
-
-    .va-cart-input {
-      width: 100%;
-      padding: 14px 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      color: #FFFFFF;
-      font-size: 16px;
-      outline: none;
-      transition: border-color 0.2s ease;
-      box-sizing: border-box;
-    }
-
-    .va-cart-input:focus {
-      border-color: #5E6AD2;
-    }
-
-    .va-cart-input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .va-cart-input[dir="rtl"] {
-      text-align: right;
-    }
-
-    .va-cart-actions {
-      padding: 0 24px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .va-cart-btn {
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .va-cart-btn.primary {
-      background: linear-gradient(135deg, #5E6AD2 0%, #10B981 100%);
-      color: white;
-    }
-
-    .va-cart-btn.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(94, 106, 210, 0.4);
-    }
-
-    .va-cart-btn.secondary {
-      background: rgba(94, 106, 210, 0.1);
-      color: #5E6AD2;
-      border: 1px solid rgba(94, 106, 210, 0.3);
-    }
-
-    .va-cart-btn.secondary:hover {
-      background: rgba(94, 106, 210, 0.2);
-    }
-
-    .va-cart-btn.text {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    .va-cart-btn.text:hover {
-      color: #FFFFFF;
-    }
-
-    .va-cart-btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .va-cart-btn svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .va-cart-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s ease;
-    }
-
-    .va-cart-close:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .va-cart-close svg {
-      width: 16px;
-      height: 16px;
-      fill: white;
-    }
-
-    [dir="rtl"] .va-cart-close {
-      right: auto;
-      left: 16px;
-    }
-
-    .va-cart-message {
-      padding: 12px 16px;
-      margin: 0 24px 16px;
-      border-radius: 10px;
-      font-size: 14px;
-      text-align: center;
-    }
-
-    .va-cart-message.success {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #10B981;
-    }
-
-    .va-cart-message.error {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #EF4444;
-    }
-
-    /* Voice speaking animation */
-    .va-cart-speaking .va-cart-icon {
-      animation: vaSpeakingPulse 0.5s infinite;
-    }
-
-    @keyframes vaSpeakingPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-    }
-
-    /* Mobile responsive */
-    @media (max-width: 480px) {
-      .va-abandoned-cart-modal {
-        border-radius: 20px 20px 0 0;
-        max-width: 100%;
-        width: 100%;
-        position: fixed;
-        bottom: 0;
-        margin: 0;
-        max-height: 85vh;
-      }
-
-      .va-cart-header {
-        padding: 20px 20px 14px;
-      }
-
-      .va-cart-title {
-        font-size: 20px;
-      }
-
-      .va-cart-value,
-      .va-cart-offer,
-      .va-cart-recovery-options,
-      .va-cart-input-group,
-      .va-cart-actions {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-    }
-  `;
-
-    // ============================================================
-    // ABANDONED CART RECOVERY CLASS
-    // ============================================================
-
-    class AbandonedCartRecovery {
-        constructor(options = {}) {
-            this.config = {
-                tenantId: options.tenantId || this.detectTenantId(),
-                lang: options.lang || this.detectLanguage(),
-                apiUrl: options.apiUrl || this.detectApiUrl(),
-                discountPercent: options.discountPercent || 10,
-                offerDurationMinutes: options.offerDurationMinutes || 15,
-                inactivityTimeout: options.inactivityTimeout || 180000, // 3 minutes
-                tabBlurTimeout: options.tabBlurTimeout || 60000, // 1 minute
-                minCartValue: options.minCartValue || 0,
-                cooldownPeriod: options.cooldownPeriod || 86400000, // 24 hours
-                voiceEnabled: options.voiceEnabled !== false,
-                checkoutUrl: options.checkoutUrl || '/checkout',
-                cartSelector: options.cartSelector || null, // Custom cart data selector
-                onShow: options.onShow || null,
-                onHide: options.onHide || null,
-                onRecovery: options.onRecovery || null
-            };
-
-            this.state = {
-                isVisible: false,
-                isSpeaking: false,
-                selectedChannel: 'voice', // voice, sms, email
-                cartData: null,
-                timerInterval: null,
-                remainingMinutes: this.config.offerDurationMinutes,
-                inactivityTimer: null,
-                tabBlurTimer: null,
-                messageType: null,
-                messageText: null
-            };
-
-            this.elements = {};
-            this.translations = TRANSLATIONS[this.config.lang] || TRANSLATIONS.en;
-            this.isRTL = ['ar', 'ary'].includes(this.config.lang);
-
-            this.init();
-        }
-
-        detectTenantId() {
-            const widget = document.querySelector('[data-vocalia-tenant]');
-            if (widget) return widget.dataset.vocaliaTenant;
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('tenant') || 'default';
-        }
-
-        detectLanguage() {
-            const widget = document.querySelector('[data-vocalia-lang]');
-            if (widget) return widget.dataset.vocaliaLang;
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('lang')) return urlParams.get('lang');
-            const browserLang = navigator.language?.split('-')[0];
-            return ['fr', 'en', 'es', 'ar', 'ary'].includes(browserLang) ? browserLang : 'fr';
-        }
-
-        detectApiUrl() {
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-            return isLocal ? 'http://localhost:3013/api' : 'https://api.vocalia.ma/api';
-        }
-
-        init() {
-            // Inject styles
-            if (!document.querySelector('#va-abandoned-cart-styles')) {
-                const styleEl = document.createElement('style');
-                styleEl.id = 'va-abandoned-cart-styles';
-                styleEl.textContent = STYLES;
-                document.head.appendChild(styleEl);
-            }
-
-            // Create modal structure
-            this.createModal();
-
-            // Setup detection triggers
-            this.setupDetection();
-
-            // Check cooldown
-            this.checkCooldown();
-
-            // Listen for orchestrator events
-            this.setupOrchestratorIntegration();
-
-            console.log('[AbandonedCartRecovery] Initialized', {
-                tenant: this.config.tenantId,
-                lang: this.config.lang
-            });
-        }
-
-        createModal() {
-            const overlay = document.createElement('div');
-            overlay.className = 'va-abandoned-cart-overlay';
-            overlay.id = 'va-abandoned-cart-overlay';
-            overlay.innerHTML = this.getModalHTML();
-            document.body.appendChild(overlay);
-
-            this.elements.overlay = overlay;
-            this.elements.modal = overlay.querySelector('.va-abandoned-cart-modal');
-            this.elements.closeBtn = overlay.querySelector('.va-cart-close');
-            this.elements.input = overlay.querySelector('.va-cart-input');
-            this.elements.sendBtn = overlay.querySelector('.va-cart-send-btn');
-            this.elements.checkoutBtn = overlay.querySelector('.va-cart-checkout-btn');
-            this.elements.continueBtn = overlay.querySelector('.va-cart-continue-btn');
-            this.elements.message = overlay.querySelector('.va-cart-message');
-            this.elements.timer = overlay.querySelector('.va-cart-timer');
-            this.elements.subtitle = overlay.querySelector('.va-cart-subtitle');
-            this.elements.valueAmount = overlay.querySelector('.va-cart-value-amount');
-            this.elements.itemsRow = overlay.querySelector('.va-cart-items-row');
-            this.elements.offerText = overlay.querySelector('.va-cart-offer-text');
-
-            // Event listeners
-            this.elements.closeBtn.addEventListener('click', () => this.hide());
-            this.elements.overlay.addEventListener('click', (e) => {
-                if (e.target === this.elements.overlay) this.hide();
-            });
-
-            // Recovery options
-            overlay.querySelectorAll('.va-recovery-option').forEach(opt => {
-                opt.addEventListener('click', () => this.selectChannel(opt.dataset.channel));
-            });
-
-            // Send reminder
-            this.elements.sendBtn.addEventListener('click', () => this.sendReminder());
-
-            // Checkout
-            this.elements.checkoutBtn.addEventListener('click', () => this.goToCheckout());
-
-            // Continue browsing
-            this.elements.continueBtn.addEventListener('click', () => this.hide());
-
-            // Input placeholder update
-            this.elements.input.addEventListener('focus', () => this.updateInputPlaceholder());
-        }
-
-        getModalHTML() {
-            const t = this.translations;
-            const dir = this.isRTL ? 'rtl' : 'ltr';
-
-            return `
-        <div class="va-abandoned-cart-modal" dir="${dir}" role="dialog" aria-modal="true" aria-labelledby="va-cart-title">
-          <button class="va-cart-close" aria-label="Close">
-            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-          </button>
-
-          <div class="va-cart-header">
-            <div class="va-cart-icon">
-              <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-            </div>
-            <h2 class="va-cart-title" id="va-cart-title">${t.title}</h2>
-            <p class="va-cart-subtitle">${t.subtitleSingular}</p>
-          </div>
-
-          <div class="va-cart-value">
-            <span class="va-cart-value-label">${t.valueLabel}</span>
-            <span class="va-cart-value-amount">0 MAD</span>
-          </div>
-
-          <div class="va-cart-offer">
-            <div class="va-cart-offer-label">${t.offerLabel}</div>
-            <div class="va-cart-offer-text">${t.offerText.replace('{{discount}}', this.config.discountPercent)}</div>
-            <div class="va-cart-timer">${t.expiresIn.replace('{{minutes}}', this.config.offerDurationMinutes)}</div>
-          </div>
-
-          <div class="va-cart-items-preview">
-            <div class="va-cart-items-label">${t.cartItemsLabel}</div>
-            <div class="va-cart-items-row"></div>
-          </div>
-
-          <div class="va-cart-recovery-options">
-            <div class="va-recovery-option selected" data-channel="voice">
-              <div class="va-recovery-option-icon voice">
-                <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
-              </div>
-              <div class="va-recovery-option-content">
-                <div class="va-recovery-option-title">${t.callbackTitle}</div>
-                <div class="va-recovery-option-desc">${t.callbackDesc}</div>
-              </div>
-              <div class="va-recovery-option-radio"></div>
-            </div>
-
-            <div class="va-recovery-option" data-channel="sms">
-              <div class="va-recovery-option-icon sms">
-                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-              </div>
-              <div class="va-recovery-option-content">
-                <div class="va-recovery-option-title">${t.smsTitle}</div>
-                <div class="va-recovery-option-desc">${t.smsDesc}</div>
-              </div>
-              <div class="va-recovery-option-radio"></div>
-            </div>
-
-            <div class="va-recovery-option" data-channel="email">
-              <div class="va-recovery-option-icon email">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-              </div>
-              <div class="va-recovery-option-content">
-                <div class="va-recovery-option-title">${t.emailTitle}</div>
-                <div class="va-recovery-option-desc">${t.emailDesc}</div>
-              </div>
-              <div class="va-recovery-option-radio"></div>
-            </div>
-          </div>
-
-          <div class="va-cart-input-group">
-            <input type="text" class="va-cart-input" placeholder="${t.phonePlaceholder}" dir="${this.isRTL ? 'rtl' : 'ltr'}">
-          </div>
-
-          <div class="va-cart-message" style="display: none;"></div>
-
-          <div class="va-cart-actions">
-            <button class="va-cart-btn primary va-cart-send-btn">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-              ${t.sendBtn}
-            </button>
-            <button class="va-cart-btn secondary va-cart-checkout-btn">
-              ${t.checkoutBtn}
-            </button>
-            <button class="va-cart-btn text va-cart-continue-btn">
-              ${t.continueBrowsing}
-            </button>
-          </div>
-        </div>
-      `;
-        }
-
-        setupDetection() {
-            // Exit intent detection (desktop)
-            document.addEventListener('mouseout', (e) => {
-                if (e.clientY < 10 && !this.state.isVisible) {
-                    this.checkAndShow('exit_intent');
-                }
-            });
-
-            // Tab visibility change
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    this.startTabBlurTimer();
-                } else {
-                    this.clearTabBlurTimer();
-                }
-            });
-
-            // Inactivity detection
-            this.resetInactivityTimer();
-            ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
-                document.addEventListener(event, () => this.resetInactivityTimer(), { passive: true });
-            });
-
-            // Before unload (for analytics)
-            window.addEventListener('beforeunload', () => {
-                if (this.hasCartItems()) {
-                    this.trackEvent('cart_abandoned_page_exit');
-                }
-            });
-        }
-
-        setupOrchestratorIntegration() {
-            // Integrate with Widget Orchestrator if available
-            if (window.VocalIA?.Orchestrator) {
-                window.VocalIA.Orchestrator.on('widgetActivated', (data) => {
-                    // Pause abandoned cart detection when other widgets are active
-                    if (data.widgetName !== 'abandonedCart' && this.state.isVisible) {
-                        this.hide();
-                    }
-                });
-
-                // Register with orchestrator
-                window.VocalIA.Orchestrator.widgets.abandonedCart = {
-                    priority: 6, // Lower priority than quiz (3) but shows for cart
-                    isActive: false,
-                    element: null,
-                    triggers: ['cart_abandon', 'exit_with_cart']
-                };
-            }
-        }
-
-        checkCooldown() {
-            const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
-            if (lastShown) {
-                const elapsed = Date.now() - parseInt(lastShown, 10);
-                if (elapsed < this.config.cooldownPeriod) {
-                    this.cooldownActive = true;
-                    return;
-                }
-            }
-            this.cooldownActive = false;
-        }
-
-        startInactivityTimer() {
-            this.state.inactivityTimer = setTimeout(() => {
-                this.checkAndShow('inactivity');
-            }, this.config.inactivityTimeout);
-        }
-
-        resetInactivityTimer() {
-            if (this.state.inactivityTimer) {
-                clearTimeout(this.state.inactivityTimer);
-            }
-            this.startInactivityTimer();
-        }
-
-        startTabBlurTimer() {
-            this.state.tabBlurTimer = setTimeout(() => {
-                this.checkAndShow('tab_blur');
-            }, this.config.tabBlurTimeout);
-        }
-
-        clearTabBlurTimer() {
-            if (this.state.tabBlurTimer) {
-                clearTimeout(this.state.tabBlurTimer);
-                this.state.tabBlurTimer = null;
-            }
-        }
-
-        hasCartItems() {
-            const cart = this.getCartData();
-            return cart && cart.items && cart.items.length > 0;
-        }
-
-        getCartData() {
-            // Try multiple sources for cart data
-
-            // 1. Custom selector
-            if (this.config.cartSelector) {
-                const el = document.querySelector(this.config.cartSelector);
-                if (el) {
-                    try {
-                        return JSON.parse(el.textContent || el.dataset.cart);
-                    } catch (e) { }
-                }
-            }
-
-            // 2. VocalIA cart state
-            if (window.VocalIA?.cart) {
-                return window.VocalIA.cart;
-            }
-
-            // 3. Common e-commerce platforms
-            // Shopify
-            if (window.Shopify?.checkout?.line_items) {
-                return {
-                    items: window.Shopify.checkout.line_items.map(item => ({
-                        id: item.variant_id,
-                        name: item.title,
-                        price: item.price,
-                        quantity: item.quantity,
-                        image: item.image
-                    })),
-                    total: window.Shopify.checkout.total_price / 100,
-                    currency: window.Shopify.checkout.currency || 'MAD'
-                };
-            }
-
-            // WooCommerce
-            if (window.wc_cart_fragments_params) {
-                const cartHash = document.querySelector('.cart-contents-count');
-                if (cartHash && parseInt(cartHash.textContent) > 0) {
-                    return { items: [{}], total: 0, currency: 'MAD' };
-                }
-            }
-
-            // 4. LocalStorage cart
-            const storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart');
-            if (storedCart) {
-                try {
-                    return JSON.parse(storedCart);
-                } catch (e) { }
-            }
-
-            // 5. Demo cart for testing
-            if (window.location.search.includes('demo_cart=1')) {
-                return {
-                    items: [
-                        { id: '1', name: 'Produit Demo 1', price: 299, quantity: 1, image: 'https://placehold.co/100x100/191E35/4FBAF1?text=P1' },
-                        { id: '2', name: 'Produit Demo 2', price: 199, quantity: 2, image: 'https://placehold.co/100x100/191E35/10B981?text=P2' }
-                    ],
-                    total: 697,
-                    currency: 'MAD'
-                };
-            }
-
-            return null;
-        }
-
-        checkAndShow(trigger) {
-            // Check if we should show
-            if (this.state.isVisible) return;
-            if (this.cooldownActive) return;
-            if (!this.hasCartItems()) return;
-
-            // Check orchestrator permission
-            if (window.VocalIA?.Orchestrator && !window.VocalIA.Orchestrator.canShow('abandonedCart')) {
-                return;
-            }
-
-            // Get cart data
-            this.state.cartData = this.getCartData();
-
-            // Check minimum cart value
-            if (this.state.cartData.total < this.config.minCartValue) return;
-
-            // Show the modal
-            this.show(trigger);
-        }
-
-        show(trigger = 'manual') {
-            if (this.state.isVisible) return;
-
-            this.state.isVisible = true;
-            this.updateCartDisplay();
-            this.elements.overlay.classList.add('active');
-
-            // Start countdown timer
-            this.startCountdown();
-
-            // Speak voice reminder
-            if (this.config.voiceEnabled) {
-                setTimeout(() => this.speak(this.translations.voiceReminder), 500);
-            }
-
-            // Set cooldown
-            localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString());
-            this.cooldownActive = true;
-
-            // Notify orchestrator
-            if (window.VocalIA?.Orchestrator) {
-                window.VocalIA.Orchestrator.activate('abandonedCart');
-            }
-
-            // Track event
-            this.trackEvent('cart_recovery_shown', {
-                trigger,
-                cart_value: this.state.cartData?.total || 0,
-                items_count: this.state.cartData?.items?.length || 0
-            });
-
-            // Callback
-            if (this.config.onShow) {
-                this.config.onShow({ trigger, cartData: this.state.cartData });
-            }
-        }
-
-        hide() {
-            this.state.isVisible = false;
-            this.elements.overlay.classList.remove('active');
-            this.stopCountdown();
-            this.stopSpeaking();
-
-            // Notify orchestrator
-            if (window.VocalIA?.Orchestrator) {
-                window.VocalIA.Orchestrator.deactivate('abandonedCart');
-            }
-
-            // Track event
-            this.trackEvent('cart_recovery_closed');
-
-            // Callback
-            if (this.config.onHide) {
-                this.config.onHide();
-            }
-        }
-
-        updateCartDisplay() {
-            const cart = this.state.cartData;
-            if (!cart) return;
-
-            // Update subtitle with item count
-            const count = cart.items?.length || 0;
-            this.elements.subtitle.textContent = count === 1
-                ? this.translations.subtitleSingular
-                : this.translations.subtitle.replace('{{count}}', count);
-
-            // Update total value
-            const currency = cart.currency || 'MAD';
-            const total = cart.total || 0;
-            this.elements.valueAmount.textContent = `${total.toLocaleString()} ${currency}`;
-
-            // Update items preview
-            this.elements.itemsRow.innerHTML = '';
-            if (cart.items) {
-                cart.items.slice(0, 5).forEach(item => {
-                    if (item.image) {
-                        const img = document.createElement('img');
-                        img.className = 'va-cart-item-thumb';
-                        img.src = item.image;
-                        img.alt = item.name || 'Product';
-                        this.elements.itemsRow.appendChild(img);
-                    }
-                });
-            }
-        }
-
-        startCountdown() {
-            this.state.remainingMinutes = this.config.offerDurationMinutes;
-            this.updateTimerDisplay();
-
-            this.state.timerInterval = setInterval(() => {
-                this.state.remainingMinutes -= 1;
-                this.updateTimerDisplay();
-
-                if (this.state.remainingMinutes <= 0) {
-                    this.stopCountdown();
-                    this.hide();
-                }
-            }, 60000); // Update every minute
-        }
-
-        stopCountdown() {
-            if (this.state.timerInterval) {
-                clearInterval(this.state.timerInterval);
-                this.state.timerInterval = null;
-            }
-        }
-
-        updateTimerDisplay() {
-            this.elements.timer.textContent = this.translations.expiresIn.replace(
-                '{{minutes}}',
-                this.state.remainingMinutes
-            );
-        }
-
-        selectChannel(channel) {
-            this.state.selectedChannel = channel;
-
-            // Update UI
-            this.elements.overlay.querySelectorAll('.va-recovery-option').forEach(opt => {
-                opt.classList.toggle('selected', opt.dataset.channel === channel);
-            });
-
-            // Update input placeholder
-            this.updateInputPlaceholder();
-
-            // Track event
-            this.trackEvent('cart_recovery_channel_selected', { channel });
-        }
-
-        updateInputPlaceholder() {
-            const t = this.translations;
-            switch (this.state.selectedChannel) {
-                case 'voice':
-                case 'sms':
-                    this.elements.input.placeholder = t.phonePlaceholder;
-                    this.elements.input.type = 'tel';
-                    break;
-                case 'email':
-                    this.elements.input.placeholder = t.emailPlaceholder;
-                    this.elements.input.type = 'email';
-                    break;
-            }
-        }
-
-        async sendReminder() {
-            const value = this.elements.input.value.trim();
-            const channel = this.state.selectedChannel;
-
-            // Validate input
-            if (!this.validateInput(value, channel)) {
-                this.showMessage('error', this.translations.errorInvalid);
-                return;
-            }
-
-            // Disable button
-            this.elements.sendBtn.disabled = true;
-
-            try {
-                // Send to API
-                const response = await fetch(`${this.config.apiUrl}/cart-recovery`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        tenant_id: this.config.tenantId,
-                        channel,
-                        contact: value,
-                        cart: this.state.cartData,
-                        discount_percent: this.config.discountPercent,
-                        language: this.config.lang,
-                        checkout_url: window.location.origin + this.config.checkoutUrl
-                    })
-                });
-
-                if (!response.ok) throw new Error('API error');
-
-                // Show success message
-                const successMessages = {
-                    voice: this.translations.successCallback,
-                    sms: this.translations.successSms,
-                    email: this.translations.successEmail
-                };
-                this.showMessage('success', successMessages[channel]);
-
-                // Speak confirmation
-                if (this.config.voiceEnabled) {
-                    this.speak(successMessages[channel]);
-                }
-
-                // Track event
-                this.trackEvent('cart_recovery_reminder_sent', {
-                    channel,
-                    cart_value: this.state.cartData?.total || 0
-                });
-
-                // Callback
-                if (this.config.onRecovery) {
-                    this.config.onRecovery({ channel, contact: value, cartData: this.state.cartData });
-                }
-
-                // Close after delay
-                setTimeout(() => this.hide(), 3000);
-
-            } catch (error) {
-                console.error('[AbandonedCartRecovery] Send error:', error);
-                this.showMessage('error', this.translations.errorSend);
-            } finally {
-                this.elements.sendBtn.disabled = false;
-            }
-        }
-
-        validateInput(value, channel) {
-            if (!value) return false;
-
-            switch (channel) {
-                case 'voice':
-                case 'sms':
-                    // Phone validation (international format)
-                    return /^\+?[0-9]{8,15}$/.test(value.replace(/[\s-]/g, ''));
-                case 'email':
-                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-                default:
-                    return false;
-            }
-        }
-
-        showMessage(type, text) {
-            this.elements.message.className = `va-cart-message ${type}`;
-            this.elements.message.textContent = text;
-            this.elements.message.style.display = 'block';
-
-            setTimeout(() => {
-                this.elements.message.style.display = 'none';
-            }, 5000);
-        }
-
-        goToCheckout() {
-            // Track event
-            this.trackEvent('cart_recovery_checkout_clicked', {
-                cart_value: this.state.cartData?.total || 0,
-                discount_applied: this.config.discountPercent
-            });
-
-            // Apply discount code if possible
-            const discountCode = `COMEBACK${this.config.discountPercent}`;
-            const checkoutUrl = new URL(this.config.checkoutUrl, window.location.origin);
-            checkoutUrl.searchParams.set('discount', discountCode);
-
-            // Redirect
-            window.location.href = checkoutUrl.toString();
-        }
-
-        speak(text) {
-            if (!window.speechSynthesis) return;
-
-            this.stopSpeaking();
-            this.state.isSpeaking = true;
-            this.elements.modal.classList.add('va-cart-speaking');
-
-            const utterance = new SpeechSynthesisUtterance(text);
-
-            // Language mapping
-            const langMap = {
-                'fr': 'fr-FR',
-                'en': 'en-US',
-                'es': 'es-ES',
-                'ar': 'ar-SA',
-                'ary': 'ar-MA'
-            };
-            utterance.lang = langMap[this.config.lang] || 'fr-FR';
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
-
-            utterance.onend = () => {
-                this.state.isSpeaking = false;
-                this.elements.modal.classList.remove('va-cart-speaking');
-            };
-
-            window.speechSynthesis.speak(utterance);
-        }
-
-        stopSpeaking() {
-            if (window.speechSynthesis) {
-                window.speechSynthesis.cancel();
-            }
-            this.state.isSpeaking = false;
-            this.elements.modal?.classList.remove('va-cart-speaking');
-        }
-
-        trackEvent(eventName, params = {}) {
-            // GA4
-            if (window.gtag) {
-                window.gtag('event', eventName, {
-                    event_category: 'cart_recovery',
-                    tenant_id: this.config.tenantId,
-                    language: this.config.lang,
-                    ...params
-                });
-            }
-
-            // Plausible
-            if (window.plausible) {
-                window.plausible(eventName, { props: params });
-            }
-
-            // VocalIA Analytics
-            if (window.VocalIA?.trackEvent) {
-                window.VocalIA.trackEvent(eventName, params);
-            }
-        }
-
-        // Public API
-        trigger(reason = 'manual') {
-            this.checkAndShow(reason);
-        }
-
-        setCartData(cartData) {
-            this.state.cartData = cartData;
-            if (this.state.isVisible) {
-                this.updateCartDisplay();
-            }
-        }
-
-        setDiscount(percent) {
-            this.config.discountPercent = percent;
-            if (this.elements.offerText) {
-                this.elements.offerText.textContent = this.translations.offerText.replace('{{discount}}', percent);
-            }
-        }
-
-        destroy() {
-            this.hide();
-            this.elements.overlay?.remove();
-            if (this.state.inactivityTimer) clearTimeout(this.state.inactivityTimer);
-            if (this.state.tabBlurTimer) clearTimeout(this.state.tabBlurTimer);
-        }
-    }
-
-    // ============================================================
-    // EXPORT
-    // ============================================================
-
-    // Auto-initialize
-    let cartRecoveryInstance = null;
-
-    function initAbandonedCartRecovery(options = {}) {
-        if (cartRecoveryInstance) {
-            cartRecoveryInstance.destroy();
-        }
-        cartRecoveryInstance = new AbandonedCartRecovery(options);
-        return cartRecoveryInstance;
-    }
-
-    // Expose to window
-    window.VocaliaAbandonedCart = {
-        init: initAbandonedCartRecovery,
-        getInstance: () => cartRecoveryInstance,
-        AbandonedCartRecovery
-    };
-
-    // Integrate with VocalIA namespace
-    if (typeof window.VocalIA !== 'undefined') {
-        window.VocalIA.AbandonedCart = window.VocaliaAbandonedCart;
-
-        // Add convenience methods
-        window.VocalIA.triggerCartRecovery = function (reason = 'manual') {
-            if (!cartRecoveryInstance) {
-                cartRecoveryInstance = initAbandonedCartRecovery();
-            }
-            cartRecoveryInstance.trigger(reason);
-        };
-
-        window.VocalIA.setCartData = function (cartData) {
-            if (!cartRecoveryInstance) {
-                cartRecoveryInstance = initAbandonedCartRecovery();
-            }
-            cartRecoveryInstance.setCartData(cartData);
-        };
-    }
-
-    // Auto-init if data attribute present
-    document.addEventListener('DOMContentLoaded', () => {
-        const widget = document.querySelector('[data-vocalia-cart-recovery]');
-        if (widget) {
-            initAbandonedCartRecovery({
-                tenantId: widget.dataset.vocaliaTenant,
-                lang: widget.dataset.vocaliaLang,
-                discountPercent: parseInt(widget.dataset.discount) || 10,
-                voiceEnabled: widget.dataset.voice !== 'false'
-            });
-        }
-    });
-
-})();
-/**
- * VocalIA - Voice-Guided Product Quiz Widget
- *
- * Conversational voice-driven product quiz for lead generation
- * and personalized product recommendations.
- *
- * Features:
- * - Voice-first interaction with text fallback
- * - Multi-step quiz flow with branching logic
- * - Zero-party data collection
- * - Product recommendations based on answers
- * - Lead capture integration
- * - 5 language support with RTL
- *
- * Benchmark Impact (Source: ConvertFlow, Octane AI):
- * - +52% CTR vs static content
- * - 2x lead generation
- * - +65% completion rate vs text-only quiz
- *
- * Version: 1.0.0 | Session 250.79 | 03/02/2026
- */
-
-(function (global) {
-    'use strict';
-
-    // CSS for the quiz widget
-    const QUIZ_CSS = `
-    .va-quiz-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
-      z-index: 10003;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .va-quiz-overlay.va-quiz-visible {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .va-quiz-container {
-      width: 90%;
-      max-width: 500px;
-      max-height: 90vh;
-      background: linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
-      border-radius: 20px;
-      border: 1px solid rgba(139, 92, 246, 0.3);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.15);
-      overflow: hidden;
-      transform: scale(0.9) translateY(20px);
-      transition: transform 0.3s ease;
-    }
-
-    .va-quiz-visible .va-quiz-container {
-      transform: scale(1) translateY(0);
-    }
-
-    .va-quiz-header {
-      padding: 20px;
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.15));
-      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .va-quiz-title {
-      color: #e2e8f0;
-      font-size: 18px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .va-quiz-title svg {
-      width: 24px;
-      height: 24px;
-      color: #8b5cf6;
-    }
-
-    .va-quiz-close {
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: #94a3b8;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-
-    .va-quiz-close:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #e2e8f0;
-    }
-
-    .va-quiz-progress {
-      padding: 0 20px;
-      margin-top: 16px;
-    }
-
-    .va-quiz-progress-bar {
-      height: 4px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .va-quiz-progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #8b5cf6, #3b82f6);
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-
-    .va-quiz-progress-text {
-      color: #64748b;
-      font-size: 12px;
-      margin-top: 8px;
-      text-align: right;
-    }
-
-    .va-quiz-content {
-      padding: 24px 20px;
-      max-height: 50vh;
-      overflow-y: auto;
-    }
-
-    .va-quiz-question {
-      color: #e2e8f0;
-      font-size: 20px;
-      font-weight: 500;
-      line-height: 1.4;
-      margin-bottom: 24px;
-      text-align: center;
-    }
-
-    .va-quiz-options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .va-quiz-option {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 16px 20px;
-      color: #e2e8f0;
-      font-size: 15px;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .va-quiz-option:hover {
-      background: rgba(139, 92, 246, 0.15);
-      border-color: rgba(139, 92, 246, 0.4);
-      transform: translateX(4px);
-    }
-
-    .va-quiz-option.va-quiz-selected {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.2));
-      border-color: #8b5cf6;
-    }
-
-    .va-quiz-option-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .va-quiz-option.va-quiz-selected .va-quiz-option-icon {
-      background: #8b5cf6;
-    }
-
-    .va-quiz-option-icon svg {
-      width: 14px;
-      height: 14px;
-      color: #94a3b8;
-    }
-
-    .va-quiz-option.va-quiz-selected .va-quiz-option-icon svg {
-      color: white;
-    }
-
-    .va-quiz-voice-section {
-      margin-top: 20px;
-      padding: 16px;
-      background: rgba(139, 92, 246, 0.1);
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .va-quiz-voice-hint {
-      color: #a78bfa;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .va-quiz-voice-btn {
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
-      border: none;
-      color: white;
-      padding: 14px 24px;
-      border-radius: 50px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .va-quiz-voice-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
-    }
-
-    .va-quiz-voice-btn.va-quiz-listening {
-      animation: va-quiz-pulse 1.5s infinite;
-    }
-
-    @keyframes va-quiz-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
-      50% { box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
-    }
-
-    .va-quiz-voice-btn svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .va-quiz-footer {
-      padding: 16px 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .va-quiz-btn {
-      flex: 1;
-      padding: 14px 20px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-    }
-
-    .va-quiz-btn-back {
-      background: rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-    }
-
-    .va-quiz-btn-back:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #e2e8f0;
-    }
-
-    .va-quiz-btn-next {
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
-      color: white;
-    }
-
-    .va-quiz-btn-next:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
-    }
-
-    .va-quiz-btn-next:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* Results screen */
-    .va-quiz-results {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .va-quiz-results-icon {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-    }
-
-    .va-quiz-results-icon svg {
-      width: 32px;
-      height: 32px;
-      color: white;
-    }
-
-    .va-quiz-results-title {
-      color: #e2e8f0;
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 12px;
-    }
-
-    .va-quiz-results-subtitle {
-      color: #94a3b8;
-      font-size: 14px;
-      margin-bottom: 24px;
-    }
-
-    .va-quiz-lead-form {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-
-    .va-quiz-lead-form input {
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 8px;
-      padding: 12px 16px;
-      color: #e2e8f0;
-      font-size: 14px;
-      margin-bottom: 12px;
-    }
-
-    .va-quiz-lead-form input:focus {
-      outline: none;
-      border-color: #8b5cf6;
-    }
-
-    .va-quiz-lead-form input::placeholder {
-      color: #64748b;
-    }
-
-    /* RTL Support */
-    [dir="rtl"] .va-quiz-option:hover {
-      transform: translateX(-4px);
-    }
-
-    [dir="rtl"] .va-quiz-progress-text {
-      text-align: left;
-    }
-
-    /* Mobile responsive */
-    @media (max-width: 480px) {
-      .va-quiz-container {
-        width: 95%;
-        max-height: 95vh;
-      }
-
-      .va-quiz-question {
-        font-size: 18px;
-      }
-
-      .va-quiz-option {
-        padding: 14px 16px;
-        font-size: 14px;
-      }
-    }
-  `;
-
-    /**
-     * Default quiz templates for common industries
-     */
-    const QUIZ_TEMPLATES = {
-        skincare: {
-            title: { fr: 'Trouvez votre routine parfaite', en: 'Find Your Perfect Routine', es: 'Encuentra tu rutina perfecta', ar: 'اعثر على روتينك المثالي', ary: 'لقى روتينك لي يناسبك' },
-            questions: [
-                {
-                    id: 'skin_type',
-                    question: { fr: 'Quel est votre type de peau ?', en: 'What is your skin type?', es: '¿Cuál es tu tipo de piel?', ar: 'ما هو نوع بشرتك؟', ary: 'شنو نوع جلدك?' },
-                    options: [
-                        { value: 'dry', label: { fr: 'Sèche', en: 'Dry', es: 'Seca', ar: 'جافة', ary: 'ناشف' } },
-                        { value: 'oily', label: { fr: 'Grasse', en: 'Oily', es: 'Grasa', ar: 'دهنية', ary: 'دهني' } },
-                        { value: 'combination', label: { fr: 'Mixte', en: 'Combination', es: 'Mixta', ar: 'مختلطة', ary: 'مخلوط' } },
-                        { value: 'sensitive', label: { fr: 'Sensible', en: 'Sensitive', es: 'Sensible', ar: 'حساسة', ary: 'حساس' } }
-                    ],
-                    tags: { dry: ['hydrating', 'moisturizing'], oily: ['mattifying', 'oil-control'], combination: ['balancing'], sensitive: ['gentle', 'calming'] }
-                },
-                {
-                    id: 'concern',
-                    question: { fr: 'Quelle est votre préoccupation principale ?', en: 'What is your main concern?', es: '¿Cuál es tu principal preocupación?', ar: 'ما هو قلقك الرئيسي؟', ary: 'شنو لي كيهمك بزاف?' },
-                    options: [
-                        { value: 'acne', label: { fr: 'Acné', en: 'Acne', es: 'Acné', ar: 'حب الشباب', ary: 'الحبوب' } },
-                        { value: 'aging', label: { fr: 'Anti-âge', en: 'Anti-aging', es: 'Anti-edad', ar: 'مكافحة الشيخوخة', ary: 'ضد الشيخوخة' } },
-                        { value: 'hydration', label: { fr: 'Hydratation', en: 'Hydration', es: 'Hidratación', ar: 'ترطيب', ary: 'الترطيب' } },
-                        { value: 'brightening', label: { fr: 'Éclat', en: 'Brightening', es: 'Luminosidad', ar: 'إشراق', ary: 'البريق' } }
-                    ],
-                    tags: { acne: ['salicylic', 'anti-acne'], aging: ['retinol', 'anti-wrinkle'], hydration: ['hyaluronic', 'moisturizing'], brightening: ['vitamin-c', 'brightening'] }
-                },
-                {
-                    id: 'budget',
-                    question: { fr: 'Quel est votre budget ?', en: 'What is your budget?', es: '¿Cuál es tu presupuesto?', ar: 'ما هي ميزانيتك؟', ary: 'شحال معاك تصرف?' },
-                    options: [
-                        { value: 'budget', label: { fr: 'Économique (< 50€)', en: 'Budget (< $50)', es: 'Económico (< 50€)', ar: 'اقتصادي (< 50$)', ary: 'رخيص (< 500 DH)' } },
-                        { value: 'mid', label: { fr: 'Moyen (50-100€)', en: 'Mid-range ($50-100)', es: 'Medio (50-100€)', ar: 'متوسط (50-100$)', ary: 'معتدل (500-1000 DH)' } },
-                        { value: 'premium', label: { fr: 'Premium (100€+)', en: 'Premium ($100+)', es: 'Premium (100€+)', ar: 'ممتاز (100$+)', ary: 'غالي (+1000 DH)' } }
-                    ],
-                    priceRanges: { budget: { max: 50 }, mid: { min: 50, max: 100 }, premium: { min: 100 } }
-                }
-            ]
-        },
-        electronics: {
-            title: { fr: 'Trouvez l\'appareil idéal', en: 'Find Your Ideal Device', es: 'Encuentra tu dispositivo ideal', ar: 'اعثر على جهازك المثالي', ary: 'لقى الجهاز لي يناسبك' },
-            questions: [
-                {
-                    id: 'usage',
-                    question: { fr: 'Quelle sera l\'utilisation principale ?', en: 'What will be the main use?', es: '¿Cuál será el uso principal?', ar: 'ما هو الاستخدام الرئيسي؟', ary: 'شنو غادي دير بيه؟' },
-                    options: [
-                        { value: 'work', label: { fr: 'Travail', en: 'Work', es: 'Trabajo', ar: 'عمل', ary: 'خدمة' } },
-                        { value: 'gaming', label: { fr: 'Gaming', en: 'Gaming', es: 'Gaming', ar: 'ألعاب', ary: 'العاب' } },
-                        { value: 'casual', label: { fr: 'Usage quotidien', en: 'Daily use', es: 'Uso diario', ar: 'استخدام يومي', ary: 'كل يوم' } },
-                        { value: 'creative', label: { fr: 'Création', en: 'Creative work', es: 'Creación', ar: 'إبداعي', ary: 'إبداع' } }
-                    ],
-                    tags: { work: ['professional', 'productivity'], gaming: ['gaming', 'high-performance'], casual: ['everyday', 'budget-friendly'], creative: ['creative', 'high-specs'] }
-                },
-                {
-                    id: 'priority',
-                    question: { fr: 'Quelle est votre priorité ?', en: 'What is your priority?', es: '¿Cuál es tu prioridad?', ar: 'ما هي أولويتك؟', ary: 'شنو لي مهم عندك بزاف؟' },
-                    options: [
-                        { value: 'performance', label: { fr: 'Performance', en: 'Performance', es: 'Rendimiento', ar: 'أداء', ary: 'القوة' } },
-                        { value: 'battery', label: { fr: 'Autonomie', en: 'Battery life', es: 'Batería', ar: 'عمر البطارية', ary: 'البطارية' } },
-                        { value: 'portability', label: { fr: 'Portabilité', en: 'Portability', es: 'Portabilidad', ar: 'قابلية النقل', ary: 'خفيف' } },
-                        { value: 'price', label: { fr: 'Prix', en: 'Price', es: 'Precio', ar: 'السعر', ary: 'الثمن' } }
-                    ]
-                }
-            ]
-        },
-        generic: {
-            title: { fr: 'Trouvez votre produit idéal', en: 'Find Your Ideal Product', es: 'Encuentra tu producto ideal', ar: 'اعثر على منتجك المثالي', ary: 'لقى المنتوج لي يناسبك' },
-            questions: [
-                {
-                    id: 'need',
-                    question: { fr: 'Qu\'est-ce que vous recherchez ?', en: 'What are you looking for?', es: '¿Qué estás buscando?', ar: 'ما الذي تبحث عنه؟', ary: 'شنو كتقلب عليه؟' },
-                    voiceKeywords: { fr: ['cherche', 'besoin', 'voudrais'], en: ['looking', 'need', 'want'], es: ['busco', 'necesito', 'quiero'], ar: ['أبحث', 'أريد'], ary: ['كنقلب', 'بغيت'] }
-                },
-                {
-                    id: 'budget',
-                    question: { fr: 'Quel est votre budget ?', en: 'What is your budget?', es: '¿Cuál es tu presupuesto?', ar: 'ما هي ميزانيتك؟', ary: 'شحال معاك؟' },
-                    options: [
-                        { value: 'low', label: { fr: '< 50€', en: '< $50', es: '< 50€', ar: '< 50$', ary: '< 500 DH' } },
-                        { value: 'mid', label: { fr: '50-150€', en: '$50-150', es: '50-150€', ar: '50-150$', ary: '500-1500 DH' } },
-                        { value: 'high', label: { fr: '> 150€', en: '> $150', es: '> 150€', ar: '> 150$', ary: '> 1500 DH' } }
-                    ]
-                }
-            ]
-        }
-    };
-
-    /**
-     * Voice Quiz Class
-     */
-    class VoiceQuiz {
-        constructor(options = {}) {
-            this.options = {
-                tenantId: null,
-                template: 'generic',
-                customQuestions: null,
-                lang: 'fr',
-                voiceEnabled: true,
-                onComplete: null,
-                onLeadCapture: null,
-                apiBaseUrl: 'https://api.vocalia.ma',
-                ...options
-            };
-
-            this.container = null;
-            this.isVisible = false;
-            this.currentStep = 0;
-            this.answers = {};
-            this.questions = [];
-            this.isListening = false;
-            this.recognition = null;
-
-            this._injectStyles();
-            this._initQuestions();
-            this._initVoiceRecognition();
-        }
-
-        /**
-         * Inject CSS styles
-         */
-        _injectStyles() {
-            if (document.getElementById('va-quiz-styles')) return;
-
-            const style = document.createElement('style');
-            style.id = 'va-quiz-styles';
-            style.textContent = QUIZ_CSS;
-            document.head.appendChild(style);
-        }
-
-        /**
-         * Initialize questions from template or custom
-         */
-        _initQuestions() {
-            if (this.options.customQuestions) {
-                this.questions = this.options.customQuestions;
-            } else {
-                const template = QUIZ_TEMPLATES[this.options.template] || QUIZ_TEMPLATES.generic;
-                this.questions = template.questions;
-                this.title = template.title;
-            }
-        }
-
-        /**
-         * Initialize voice recognition
-         */
-        _initVoiceRecognition() {
-            if (!this.options.voiceEnabled) return;
-
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            if (!SpeechRecognition) {
-                console.warn('[VoiceQuiz] Speech Recognition not supported');
-                return;
-            }
-
-            this.recognition = new SpeechRecognition();
-            this.recognition.continuous = false;
-            this.recognition.interimResults = false;
-            this.recognition.lang = this._getSpeechLang();
-
-            this.recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript.toLowerCase();
-                this._processVoiceAnswer(transcript);
-            };
-
-            this.recognition.onend = () => {
-                this.isListening = false;
-                this._updateVoiceButton();
-            };
-
-            this.recognition.onerror = (event) => {
-                console.error('[VoiceQuiz] Speech error:', event.error);
-                this.isListening = false;
-                this._updateVoiceButton();
-            };
-        }
-
-        /**
-         * Get speech recognition language code
-         */
-        _getSpeechLang() {
-            const langMap = {
-                fr: 'fr-FR',
-                en: 'en-US',
-                es: 'es-ES',
-                ar: 'ar-SA',
-                ary: 'ar-MA'
-            };
-            return langMap[this.options.lang] || 'fr-FR';
-        }
-
-        /**
-         * Get localized text
-         */
-        _t(textObj) {
-            if (typeof textObj === 'string') return textObj;
-            return textObj[this.options.lang] || textObj.fr || textObj.en || Object.values(textObj)[0];
-        }
-
-        /**
-         * Get labels
-         */
-        _getLabels() {
-            const labels = {
-                fr: {
-                    back: 'Retour',
-                    next: 'Suivant',
-                    finish: 'Voir mes recommandations',
-                    voiceHint: 'Ou répondez par la voix',
-                    listening: 'Je vous écoute...',
-                    speak: 'Parler',
-                    stepOf: 'Question {current} sur {total}',
-                    resultsTitle: 'Vos recommandations sont prêtes !',
-                    resultsSubtitle: 'Entrez vos coordonnées pour recevoir votre sélection personnalisée',
-                    namePlaceholder: 'Votre nom',
-                    emailPlaceholder: 'Votre email',
-                    phonePlaceholder: 'Votre téléphone (optionnel)',
-                    getResults: 'Recevoir mes recommandations',
-                    skip: 'Voir sans email'
-                },
-                en: {
-                    back: 'Back',
-                    next: 'Next',
-                    finish: 'See my recommendations',
-                    voiceHint: 'Or answer by voice',
-                    listening: 'I\'m listening...',
-                    speak: 'Speak',
-                    stepOf: 'Question {current} of {total}',
-                    resultsTitle: 'Your recommendations are ready!',
-                    resultsSubtitle: 'Enter your details to receive your personalized selection',
-                    namePlaceholder: 'Your name',
-                    emailPlaceholder: 'Your email',
-                    phonePlaceholder: 'Your phone (optional)',
-                    getResults: 'Get my recommendations',
-                    skip: 'View without email'
-                },
-                es: {
-                    back: 'Atrás',
-                    next: 'Siguiente',
-                    finish: 'Ver mis recomendaciones',
-                    voiceHint: 'O responde por voz',
-                    listening: 'Te escucho...',
-                    speak: 'Hablar',
-                    stepOf: 'Pregunta {current} de {total}',
-                    resultsTitle: '¡Tus recomendaciones están listas!',
-                    resultsSubtitle: 'Ingresa tus datos para recibir tu selección personalizada',
-                    namePlaceholder: 'Tu nombre',
-                    emailPlaceholder: 'Tu email',
-                    phonePlaceholder: 'Tu teléfono (opcional)',
-                    getResults: 'Recibir mis recomendaciones',
-                    skip: 'Ver sin email'
-                },
-                ar: {
-                    back: 'رجوع',
-                    next: 'التالي',
-                    finish: 'عرض توصياتي',
-                    voiceHint: 'أو أجب بالصوت',
-                    listening: 'أستمع...',
-                    speak: 'تكلم',
-                    stepOf: 'السؤال {current} من {total}',
-                    resultsTitle: 'توصياتك جاهزة!',
-                    resultsSubtitle: 'أدخل بياناتك لتلقي اختيارك المخصص',
-                    namePlaceholder: 'اسمك',
-                    emailPlaceholder: 'بريدك الإلكتروني',
-                    phonePlaceholder: 'هاتفك (اختياري)',
-                    getResults: 'استلم توصياتي',
-                    skip: 'عرض بدون بريد'
-                },
-                ary: {
-                    back: 'رجع',
-                    next: 'كمل',
-                    finish: 'شوف شنو يناسبني',
-                    voiceHint: 'ولا جاوب بالصوت',
-                    listening: 'كنسمعك...',
-                    speak: 'هضر',
-                    stepOf: 'سؤال {current} من {total}',
-                    resultsTitle: 'التوصيات ديالك جاهزين!',
-                    resultsSubtitle: 'دخل معلوماتك باش توصلك لائحة خاصة بيك',
-                    namePlaceholder: 'سميتك',
-                    emailPlaceholder: 'الإيميل ديالك',
-                    phonePlaceholder: 'التيليفون (اختياري)',
-                    getResults: 'توصلني التوصيات',
-                    skip: 'شوف بلا إيميل'
-                }
-            };
-
-            return labels[this.options.lang] || labels.fr;
-        }
-
-        /**
-         * Create quiz DOM
-         */
-        _createQuizDOM() {
-            const L = this._getLabels();
-            const isRTL = this.options.lang === 'ar' || this.options.lang === 'ary';
-
-            const overlay = document.createElement('div');
-            overlay.className = 'va-quiz-overlay';
-            overlay.id = 'va-quiz-overlay';
-            if (isRTL) overlay.setAttribute('dir', 'rtl');
-
-            overlay.innerHTML = `
-        <div class="va-quiz-container">
-          <div class="va-quiz-header">
-            <div class="va-quiz-title">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>${this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' })}</span>
-            </div>
-            <button class="va-quiz-close" aria-label="Close">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-          <div class="va-quiz-progress">
-            <div class="va-quiz-progress-bar">
-              <div class="va-quiz-progress-fill" style="width: 0%"></div>
-            </div>
-            <div class="va-quiz-progress-text"></div>
-          </div>
-          <div class="va-quiz-content"></div>
-          <div class="va-quiz-footer">
-            <button class="va-quiz-btn va-quiz-btn-back" style="display: none">${L.back}</button>
-            <button class="va-quiz-btn va-quiz-btn-next" disabled>${L.next}</button>
-          </div>
-        </div>
-      `;
-
-            // Event listeners
-            overlay.querySelector('.va-quiz-close').addEventListener('click', () => this.hide());
-            overlay.querySelector('.va-quiz-btn-back').addEventListener('click', () => this._prevStep());
-            overlay.querySelector('.va-quiz-btn-next').addEventListener('click', () => this._nextStep());
-
-            // Close on overlay click
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) this.hide();
-            });
-
-            return overlay;
-        }
-
-        /**
-         * Render current question
-         */
-        _renderQuestion() {
-            const L = this._getLabels();
-            const question = this.questions[this.currentStep];
-            const content = this.container.querySelector('.va-quiz-content');
-            const progress = this.container.querySelector('.va-quiz-progress-fill');
-            const progressText = this.container.querySelector('.va-quiz-progress-text');
-            const backBtn = this.container.querySelector('.va-quiz-btn-back');
-            const nextBtn = this.container.querySelector('.va-quiz-btn-next');
-
-            // Update progress
-            const progressPct = ((this.currentStep + 1) / this.questions.length) * 100;
-            progress.style.width = `${progressPct}%`;
-            progressText.textContent = L.stepOf
-                .replace('{current}', this.currentStep + 1)
-                .replace('{total}', this.questions.length);
-
-            // Show/hide back button
-            backBtn.style.display = this.currentStep > 0 ? 'block' : 'none';
-
-            // Update next button text
-            nextBtn.textContent = this.currentStep === this.questions.length - 1 ? L.finish : L.next;
-            nextBtn.disabled = !this.answers[question.id];
-
-            // Render question content
-            content.innerHTML = `
-        <div class="va-quiz-question">${this._t(question.question)}</div>
-        <div class="va-quiz-options">
-          ${(question.options || []).map(opt => `
-            <button class="va-quiz-option ${this.answers[question.id] === opt.value ? 'va-quiz-selected' : ''}" data-value="${opt.value}">
-              <span class="va-quiz-option-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </span>
-              <span>${this._t(opt.label)}</span>
-            </button>
-          `).join('')}
-        </div>
-        ${this.recognition ? `
-          <div class="va-quiz-voice-section">
-            <div class="va-quiz-voice-hint">${L.voiceHint}</div>
-            <button class="va-quiz-voice-btn" id="va-quiz-voice-btn">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                <line x1="12" y1="19" x2="12" y2="23"></line>
-                <line x1="8" y1="23" x2="16" y2="23"></line>
-              </svg>
-              <span>${L.speak}</span>
-            </button>
-          </div>
-        ` : ''}
-      `;
-
-            // Add option click handlers
-            content.querySelectorAll('.va-quiz-option').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const value = btn.dataset.value;
-                    this._selectOption(question.id, value);
-                });
-            });
-
-            // Add voice button handler
-            const voiceBtn = content.querySelector('#va-quiz-voice-btn');
-            if (voiceBtn) {
-                voiceBtn.addEventListener('click', () => this._toggleVoice());
-            }
-        }
-
-        /**
-         * Select an option
-         */
-        _selectOption(questionId, value) {
-            this.answers[questionId] = value;
-            this._renderQuestion();
-            this._trackAnswer(questionId, value);
-        }
-
-        /**
-         * Toggle voice recognition
-         */
-        _toggleVoice() {
-            if (!this.recognition) return;
-
-            if (this.isListening) {
-                this.recognition.stop();
-            } else {
-                this.isListening = true;
-                this._updateVoiceButton();
-                this.recognition.start();
-            }
-        }
-
-        /**
-         * Update voice button state
-         */
-        _updateVoiceButton() {
-            const L = this._getLabels();
-            const btn = this.container?.querySelector('#va-quiz-voice-btn');
-            if (!btn) return;
-
-            if (this.isListening) {
-                btn.classList.add('va-quiz-listening');
-                btn.querySelector('span').textContent = L.listening;
-            } else {
-                btn.classList.remove('va-quiz-listening');
-                btn.querySelector('span').textContent = L.speak;
-            }
-        }
-
-        /**
-         * Process voice answer
-         */
-        _processVoiceAnswer(transcript) {
-            const question = this.questions[this.currentStep];
-            if (!question.options) return;
-
-            // Try to match transcript to option
-            for (const opt of question.options) {
-                const label = this._t(opt.label).toLowerCase();
-                if (transcript.includes(label) || label.includes(transcript)) {
-                    this._selectOption(question.id, opt.value);
-                    // Auto-advance after voice selection
-                    setTimeout(() => this._nextStep(), 800);
-                    return;
-                }
-            }
-
-            // Check voice keywords if defined
-            if (question.voiceKeywords) {
-                const keywords = question.voiceKeywords[this.options.lang] || [];
-                for (const keyword of keywords) {
-                    if (transcript.includes(keyword)) {
-                        // For free-form questions, store transcript
-                        this.answers[question.id] = transcript;
-                        this._renderQuestion();
-                        setTimeout(() => this._nextStep(), 800);
-                        return;
-                    }
-                }
-            }
-        }
-
-        /**
-         * Go to previous step
-         */
-        _prevStep() {
-            if (this.currentStep > 0) {
-                this.currentStep--;
-                this._renderQuestion();
-            }
-        }
-
-        /**
-         * Go to next step or show results
-         */
-        _nextStep() {
-            if (this.currentStep < this.questions.length - 1) {
-                this.currentStep++;
-                this._renderQuestion();
-            } else {
-                this._showResults();
-            }
-        }
-
-        /**
-         * Show results/lead capture screen
-         */
-        _showResults() {
-            const L = this._getLabels();
-            const content = this.container.querySelector('.va-quiz-content');
-            const footer = this.container.querySelector('.va-quiz-footer');
-
-            // Update progress to 100%
-            this.container.querySelector('.va-quiz-progress-fill').style.width = '100%';
-            this.container.querySelector('.va-quiz-progress-text').textContent = '';
-
-            content.innerHTML = `
-        <div class="va-quiz-results">
-          <div class="va-quiz-results-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </div>
-          <h3 class="va-quiz-results-title">${L.resultsTitle}</h3>
-          <p class="va-quiz-results-subtitle">${L.resultsSubtitle}</p>
-          <div class="va-quiz-lead-form">
-            <input type="text" id="va-quiz-name" placeholder="${L.namePlaceholder}" required>
-            <input type="email" id="va-quiz-email" placeholder="${L.emailPlaceholder}" required>
-            <input type="tel" id="va-quiz-phone" placeholder="${L.phonePlaceholder}">
-          </div>
-        </div>
-      `;
-
-            footer.innerHTML = `
-        <button class="va-quiz-btn va-quiz-btn-back">${L.skip}</button>
-        <button class="va-quiz-btn va-quiz-btn-next">${L.getResults}</button>
-      `;
-
-            footer.querySelector('.va-quiz-btn-back').addEventListener('click', () => {
-                this._completeQuiz(false);
-            });
-
-            footer.querySelector('.va-quiz-btn-next').addEventListener('click', () => {
-                const name = this.container.querySelector('#va-quiz-name').value.trim();
-                const email = this.container.querySelector('#va-quiz-email').value.trim();
-                const phone = this.container.querySelector('#va-quiz-phone').value.trim();
-
-                if (name && email) {
-                    this._captureLead({ name, email, phone });
-                    this._completeQuiz(true);
-                }
-            });
-        }
-
-        /**
-         * Capture lead data
-         */
-        async _captureLead(lead) {
-            if (this.options.onLeadCapture) {
-                this.options.onLeadCapture({ ...lead, answers: this.answers });
-            }
-
-            // Track lead capture
-            this._track('quiz_lead_captured', { ...lead, answers_count: Object.keys(this.answers).length });
-
-            // Send to backend if tenant configured
-            if (this.options.tenantId) {
-                try {
-                    await fetch(`${this.options.apiBaseUrl}/api/leads`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            tenant_id: this.options.tenantId,
-                            source: 'voice_quiz',
-                            ...lead,
-                            quiz_answers: this.answers
-                        })
-                    });
-                } catch (e) {
-                    console.error('[VoiceQuiz] Lead capture error:', e);
-                }
-            }
-        }
-
-        /**
-         * Complete quiz and get recommendations
-         */
-        async _completeQuiz(withLead) {
-            // Collect tags from answers
-            const tags = [];
-            for (const question of this.questions) {
-                const answer = this.answers[question.id];
-                if (answer && question.tags?.[answer]) {
-                    tags.push(...question.tags[answer]);
-                }
-            }
-
-            // Track completion
-            this._track('quiz_completed', {
-                with_lead: withLead,
-                answers: this.answers,
-                tags: tags
-            });
-
-            // Callback with results
-            if (this.options.onComplete) {
-                this.options.onComplete({
-                    answers: this.answers,
-                    tags: tags,
-                    withLead: withLead
-                });
-            }
-
-            // Show recommendations if VocalIA widget available
-            if (window.VocalIA?.getAIRecommendations) {
-                // Close quiz
-                this.hide();
-
-                // Get personalized recommendations based on quiz
-                await window.VocalIA.getAIRecommendations(null, [], 'personalized');
-            } else {
-                this.hide();
-            }
-        }
-
-        /**
-         * Track analytics event
-         */
-        _track(event, data = {}) {
-            if (typeof gtag === 'function') {
-                gtag('event', event, {
-                    event_category: 'voice_quiz',
-                    ...data
-                });
-            }
-        }
-
-        /**
-         * Track answer
-         */
-        _trackAnswer(questionId, value) {
-            this._track('quiz_answer', {
-                question_id: questionId,
-                answer: value,
-                step: this.currentStep + 1
-            });
-        }
-
-        /**
-         * Show quiz
-         */
-        show() {
-            if (this.isVisible) return this;
-
-            // Track quiz start
-            this._track('quiz_started', { template: this.options.template });
-
-            // Create and append
-            this.container = this._createQuizDOM();
-            document.body.appendChild(this.container);
-
-            // Render first question
-            this._renderQuestion();
-
-            // Animate in
-            requestAnimationFrame(() => {
-                this.container.classList.add('va-quiz-visible');
-            });
-
-            this.isVisible = true;
-            return this;
-        }
-
-        /**
-         * Hide quiz
-         */
-        hide() {
-            if (!this.isVisible) return this;
-
-            // Stop listening if active
-            if (this.isListening && this.recognition) {
-                this.recognition.stop();
-            }
-
-            // Track if abandoned
-            if (this.currentStep < this.questions.length) {
-                this._track('quiz_abandoned', {
-                    step: this.currentStep + 1,
-                    total: this.questions.length
-                });
-            }
-
-            this.container?.classList.remove('va-quiz-visible');
-            setTimeout(() => {
-                this.container?.remove();
-                this.container = null;
-            }, 300);
-
-            this.isVisible = false;
-            return this;
-        }
-
-        /**
-         * Reset quiz
-         */
-        reset() {
-            this.currentStep = 0;
-            this.answers = {};
-            if (this.isVisible) {
-                this._renderQuestion();
-            }
-            return this;
-        }
-
-        /**
-         * Set language
-         */
-        setLanguage(lang) {
-            this.options.lang = lang;
-            if (this.recognition) {
-                this.recognition.lang = this._getSpeechLang();
-            }
-            return this;
-        }
-    }
-
-    // Export
-    global.VocalIAQuiz = VoiceQuiz;
-    global.QUIZ_TEMPLATES = QUIZ_TEMPLATES;
-
-    // Auto-register with VocalIA if available
-    if (global.VocalIA) {
-        global.VocalIA.Quiz = VoiceQuiz;
-        global.VocalIA.QuizTemplates = QUIZ_TEMPLATES;
-    }
-
-})(typeof window !== 'undefined' ? window : this);

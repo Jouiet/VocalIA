@@ -28,7 +28,7 @@ const FALLBACK_CLIENTS = {
                 'DZ': { id: 'maghreb', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Maghreb' },
                 'TN': { id: 'maghreb', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Maghreb' },
                 'FR': { id: 'europe', lang: 'fr', currency: 'EUR', symbol: '€', label: 'Europe' },
-                'AE': { id: 'mena', lang: 'en', currency: 'USD', symbol: '$', label: 'MENA' },
+                'AE': { id: 'mena', lang: 'ar', currency: 'USD', symbol: '$', label: 'MENA' }, // Fix F10b: ar not en (MENA→AR strategy)
                 'US': { id: 'intl', lang: 'en', currency: 'USD', symbol: '$', label: 'International' }
             },
             default: { id: 'intl', lang: 'en', currency: 'USD', symbol: '$', label: 'International' }

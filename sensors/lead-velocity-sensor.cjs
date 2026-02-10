@@ -42,6 +42,7 @@ function updateGPM(pressure, count) {
 
     const gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
 
+    gpm.sectors = gpm.sectors || {};
     gpm.sectors.sales = gpm.sectors.sales || {};
     gpm.sectors.sales.lead_velocity = {
         pressure: pressure,

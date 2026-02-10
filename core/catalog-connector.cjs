@@ -170,7 +170,13 @@ class CustomCatalogConnector extends CatalogConnector {
 
       if (fs.existsSync(catalogFile)) {
         const content = fs.readFileSync(catalogFile, 'utf8');
-        this.catalog = JSON.parse(content);
+        try {
+          this.catalog = JSON.parse(content);
+        } catch (e) {
+          console.error(`❌ [CatalogConnector] Corrupted catalog file: ${catalogFile}`, e.message);
+          this.status = CONNECTOR_STATUS.ERROR;
+          return [];
+        }
         this.lastSync = new Date().toISOString();
         this.status = CONNECTOR_STATUS.CONNECTED;
 

@@ -36,8 +36,8 @@ class AuthClient {
    */
   _loadFromStorage() {
     const storage = this._getStorage();
-    const accessToken = storage.getItem(AUTH_CONFIG.tokenKey);
-    const userJson = storage.getItem(AUTH_CONFIG.userKey);
+    const accessToken = this._safeGetItem(storage, AUTH_CONFIG.tokenKey);
+    const userJson = this._safeGetItem(storage, AUTH_CONFIG.userKey);
 
     if (accessToken && userJson) {
       try {
@@ -49,10 +49,25 @@ class AuthClient {
   }
 
   /**
+   * Safe storage access wrapper
+   */
+  _safeGetItem(storage, key) {
+    try { return storage.getItem(key); } catch (e) { return null; }
+  }
+
+  _safeSetItem(storage, key, value) {
+    try { storage.setItem(key, value); } catch (e) { /* Safari private mode / Firefox SecurityError */ }
+  }
+
+  _safeRemoveItem(storage, key) {
+    try { storage.removeItem(key); } catch (e) { /* ignore */ }
+  }
+
+  /**
    * Get appropriate storage (localStorage if remember, sessionStorage otherwise)
    */
   _getStorage() {
-    const remember = localStorage.getItem(AUTH_CONFIG.rememberKey) === 'true';
+    const remember = this._safeGetItem(localStorage, AUTH_CONFIG.rememberKey) === 'true';
     return remember ? localStorage : sessionStorage;
   }
 
@@ -61,15 +76,15 @@ class AuthClient {
    */
   _storeTokens(accessToken, refreshToken, user, remember = false) {
     // Set remember preference
-    localStorage.setItem(AUTH_CONFIG.rememberKey, remember ? 'true' : 'false');
+    this._safeSetItem(localStorage, AUTH_CONFIG.rememberKey, remember ? 'true' : 'false');
 
     const storage = this._getStorage();
-    storage.setItem(AUTH_CONFIG.tokenKey, accessToken);
+    this._safeSetItem(storage, AUTH_CONFIG.tokenKey, accessToken);
     if (refreshToken) {
-      storage.setItem(AUTH_CONFIG.refreshKey, refreshToken);
+      this._safeSetItem(storage, AUTH_CONFIG.refreshKey, refreshToken);
     }
     if (user) {
-      storage.setItem(AUTH_CONFIG.userKey, JSON.stringify(user));
+      this._safeSetItem(storage, AUTH_CONFIG.userKey, JSON.stringify(user));
       this._user = user;
     }
 
@@ -80,12 +95,12 @@ class AuthClient {
    * Clear all storage
    */
   _clearStorage() {
-    localStorage.removeItem(AUTH_CONFIG.tokenKey);
-    localStorage.removeItem(AUTH_CONFIG.refreshKey);
-    localStorage.removeItem(AUTH_CONFIG.userKey);
-    sessionStorage.removeItem(AUTH_CONFIG.tokenKey);
-    sessionStorage.removeItem(AUTH_CONFIG.refreshKey);
-    sessionStorage.removeItem(AUTH_CONFIG.userKey);
+    this._safeRemoveItem(localStorage, AUTH_CONFIG.tokenKey);
+    this._safeRemoveItem(localStorage, AUTH_CONFIG.refreshKey);
+    this._safeRemoveItem(localStorage, AUTH_CONFIG.userKey);
+    this._safeRemoveItem(sessionStorage, AUTH_CONFIG.tokenKey);
+    this._safeRemoveItem(sessionStorage, AUTH_CONFIG.refreshKey);
+    this._safeRemoveItem(sessionStorage, AUTH_CONFIG.userKey);
     this._user = null;
     this._notifyListeners('logout', null);
   }
@@ -203,7 +218,7 @@ class AuthClient {
    */
   async logout() {
     try {
-      const refreshToken = this._getStorage().getItem(AUTH_CONFIG.refreshKey);
+      const refreshToken = this._safeGetItem(this._getStorage(), AUTH_CONFIG.refreshKey);
       if (refreshToken) {
         await this._request('/logout', {
           method: 'POST',
@@ -226,7 +241,7 @@ class AuthClient {
       return this._refreshPromise;
     }
 
-    const refreshToken = this._getStorage().getItem(AUTH_CONFIG.refreshKey);
+    const refreshToken = this._safeGetItem(this._getStorage(), AUTH_CONFIG.refreshKey);
     if (!refreshToken) {
       throw new Error('No refresh token');
     }
@@ -235,7 +250,7 @@ class AuthClient {
       method: 'POST',
       body: { refresh_token: refreshToken }
     }).then(result => {
-      this._getStorage().setItem(AUTH_CONFIG.tokenKey, result.access_token);
+      this._safeSetItem(this._getStorage(), AUTH_CONFIG.tokenKey, result.access_token);
       return result;
     }).finally(() => {
       this._refreshPromise = null;
@@ -320,7 +335,7 @@ class AuthClient {
   async fetchCurrentUser() {
     const result = await this._request('/me', { method: 'GET' });
     this._user = result;
-    this._getStorage().setItem(AUTH_CONFIG.userKey, JSON.stringify(result));
+    this._safeSetItem(this._getStorage(), AUTH_CONFIG.userKey, JSON.stringify(result));
     return result;
   }
 
@@ -333,7 +348,7 @@ class AuthClient {
       body: updates
     });
     this._user = result;
-    this._getStorage().setItem(AUTH_CONFIG.userKey, JSON.stringify(result));
+    this._safeSetItem(this._getStorage(), AUTH_CONFIG.userKey, JSON.stringify(result));
     return result;
   }
 
@@ -351,7 +366,7 @@ class AuthClient {
    * Get current access token
    */
   getAccessToken() {
-    return this._getStorage().getItem(AUTH_CONFIG.tokenKey);
+    return this._safeGetItem(this._getStorage(), AUTH_CONFIG.tokenKey);
   }
 
   /**

@@ -22,7 +22,7 @@ const WS_CONFIG = {
 };
 
 // Debug logger (disabled in production)
-const wsDebug = WS_CONFIG.debug ? (...args) => wsDebug('', ...args) : () => {};
+const wsDebug = WS_CONFIG.debug ? (...args) => console.debug('[WS]', ...args) : () => {};
 
 const WS_STATES = {
   CONNECTING: 0,
@@ -124,8 +124,8 @@ class WebSocketManager {
     wsDebug(' Disconnected:', event.code, event.reason);
     this._emit('close', event);
 
-    // Reconnect if was connected and auto-reconnect enabled
-    if (wasOpen && this.options.autoReconnect) {
+    // W2 fix: Reconnect on any non-clean close (not just when wasOpen)
+    if (this.options.autoReconnect && event.code !== 1000) {
       this._scheduleReconnect();
     }
   }

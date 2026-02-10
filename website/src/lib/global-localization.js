@@ -174,7 +174,8 @@ class GlobalLocalization {
 
         // Check localStorage cache (24h)
         if (typeof localStorage !== 'undefined') {
-            const stored = localStorage.getItem('vocal_geo_cache');
+            let stored = null;
+            try { stored = localStorage.getItem('vocal_geo_cache'); } catch (e) { /* Safari private mode / Firefox SecurityError */ }
             if (stored) {
                 try {
                     const cache = JSON.parse(stored);
@@ -192,10 +193,12 @@ class GlobalLocalization {
             }
 
             // Update cache
-            localStorage.setItem('vocal_geo_cache', JSON.stringify({
-                countryCode,
-                timestamp: Date.now()
-            }));
+            try {
+                localStorage.setItem('vocal_geo_cache', JSON.stringify({
+                    countryCode,
+                    timestamp: Date.now()
+                }));
+            } catch (e) { /* Safari private mode */ }
         }
 
         const config = this.getMarketConfig(countryCode);

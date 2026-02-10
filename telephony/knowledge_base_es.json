@@ -19,11 +19,11 @@
         "dentiste": "Nuestro dentista es especialista en implantes y odontología estética."
     },
     "agency_v3": {
-        "produits": "VocalIA ofrece 4 productos de Voz IA: Voice Widget B2B (calificación leads), Voice Widget B2C (soporte e-commerce), Widget E-commerce (8 integraciones) y Voice Telephony AI (línea PSTN via Twilio).",
+        "produits": "VocalIA ofrece 3 productos de Voz IA: Voice Widget B2B (calificación leads), E-commerce Widget Pro (8 integraciones + carrito, carrusel, quiz) y Voice Telephony AI (línea PSTN via Twilio).",
         "personas": "38 personas sectoriales preconfiguradas: dentistas, inmobiliarias, restaurantes, e-commerce, PYMES y más.",
         "langues": "5 idiomas soportados: Francés, Inglés, Español, Árabe y Darija Marroquí.",
         "contact": "Contáctenos vía vocalia.ma/booking o email contact@vocalia.ma.",
-        "tarifs": "Prueba gratuita 14 días, Starter 49€/mes, Pro 99€/mes, Enterprise a pedido.",
+        "tarifs": "Prueba gratuita 14 días incluida. Starter 49€/mes, Pro 99€/mes, E-commerce 99€/mes, Telephony 199€/mes + 0,10€/min.",
         "integrations": "31+ integraciones nativas (HubSpot, Shopify, Stripe, Calendly...) y 203 MCP tools."
     },
     "healer_v1": {

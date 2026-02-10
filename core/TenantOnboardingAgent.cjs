@@ -120,7 +120,9 @@ class TenantOnboardingAgent {
      */
     async onboardTenant(tenantData) {
         const { id, name, email, vertical, integrations = {} } = tenantData;
-        const correlationId = `onboard_${id}_${Date.now()}`;
+        // S9 fix: Sanitize tenant ID to prevent path traversal in all file operations
+        const safeId = sanitizeTenantId(id);
+        const correlationId = `onboard_${safeId}_${Date.now()}`;
 
         // A2A: Record task submitted
         this.recordTaskState(correlationId, TASK_STATES.SUBMITTED, { tenantId: id, name });
@@ -132,11 +134,11 @@ class TenantOnboardingAgent {
             this.recordTaskState(correlationId, TASK_STATES.WORKING, { skill: 'directory_provisioning' });
 
             // 1. Create directory structure
-            this._createClientDirectory(id);
+            this._createClientDirectory(safeId);
 
             // 2. Generate config.json
             const config = {
-                id,
+                id: safeId,
                 name,
                 vertical,
                 status: 'onboarding',
@@ -146,7 +148,7 @@ class TenantOnboardingAgent {
                     vocalia_widget: { enabled: true }
                 }
             };
-            fs.writeFileSync(path.join(this.baseClientsDir, id, 'config.json'), JSON.stringify(config, null, 2));
+            fs.writeFileSync(path.join(this.baseClientsDir, safeId, 'config.json'), JSON.stringify(config, null, 2));
 
             // 3. Generate initial credentials.json (placeholders)
             const credentials = {
@@ -154,7 +156,7 @@ class TenantOnboardingAgent {
                 STRIPE_SECRET_KEY: '',
                 TWILIO_ACCOUNT_SID: ''
             };
-            fs.writeFileSync(path.join(this.baseClientsDir, id, 'credentials.json'), JSON.stringify(credentials, null, 2));
+            fs.writeFileSync(path.join(this.baseClientsDir, safeId, 'credentials.json'), JSON.stringify(credentials, null, 2));
 
             // A2A: Working - CRM sync
             this.recordTaskState(correlationId, TASK_STATES.WORKING, { skill: 'crm_sync' });
@@ -170,7 +172,7 @@ class TenantOnboardingAgent {
 
             // 5. Emit event
             await AgencyEventBus.publish('tenant.created', {
-                tenantId: id,
+                tenantId: safeId,
                 name,
                 vertical
             }, { source: 'TenantOnboardingAgent' });
@@ -178,7 +180,7 @@ class TenantOnboardingAgent {
             // A2A: Completed
             this.recordTaskState(correlationId, TASK_STATES.COMPLETED, {
                 action: 'tenant_onboarded',
-                tenantId: id
+                tenantId: safeId
             });
 
             console.log(`[Onboarding] Successfully onboarded tenant: ${id}`);

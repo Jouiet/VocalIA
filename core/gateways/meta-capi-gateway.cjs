@@ -207,7 +207,9 @@ class MetaCAPIGateway {
         };
 
         const payload = this._buildPayload('Lead', userData, customData, data.sourceUrl);
-        console.log(`[MetaCAPI] Tracking Lead: ${data.email || data.phone} | Score: ${customData.lead_score}`);
+        // G4 fix: Redact PII in logs (RGPD)
+        const redacted = data.email ? `${data.email.substring(0, 3)}***` : data.phone ? `***${data.phone.slice(-4)}` : 'anon';
+        console.log(`[MetaCAPI] Tracking Lead: ${redacted} | Score: ${customData.lead_score}`);
         return await this._send(payload);
     }
 
@@ -234,7 +236,8 @@ class MetaCAPIGateway {
         };
 
         const payload = this._buildPayload('Purchase', userData, customData, data.sourceUrl);
-        console.log(`[MetaCAPI] Tracking Purchase: ${data.email || data.phone} | Value: €${customData.value}`);
+        const redactedP = data.email ? `${data.email.substring(0, 3)}***` : data.phone ? `***${data.phone.slice(-4)}` : 'anon';
+        console.log(`[MetaCAPI] Tracking Purchase: ${redactedP} | Value: €${customData.value}`);
         return await this._send(payload);
     }
 
@@ -255,7 +258,8 @@ class MetaCAPIGateway {
         };
 
         const payload = this._buildPayload('InitiateCheckout', userData, customData, data.sourceUrl);
-        console.log(`[MetaCAPI] Tracking InitiateCheckout: ${data.email || data.phone}`);
+        const redactedC = data.email ? `${data.email.substring(0, 3)}***` : data.phone ? `***${data.phone.slice(-4)}` : 'anon';
+        console.log(`[MetaCAPI] Tracking InitiateCheckout: ${redactedC}`);
         return await this._send(payload);
     }
 

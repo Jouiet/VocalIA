@@ -571,7 +571,7 @@
             if (imageUrl) {
                 html += `<img class="va-service-card-img" src="${escapeHtml(imageUrl)}" alt="${safeName}" loading="lazy" onerror="this.outerHTML='<div class=\\'va-service-card-img-placeholder\\'>📋</div>'"/>`;
             } else {
-                html += `<div class="va-service-card-img-placeholder">${item.icon || '📋'}</div>`;
+                html += `<div class="va-service-card-img-placeholder">${escapeHtml(item.icon || '📋')}</div>`;
             }
             html += `<div class="va-service-card-body">`;
             html += `<div class="va-service-card-title">${safeName}</div>`;

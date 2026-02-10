@@ -25,7 +25,7 @@ async function fetchShopifyOrders(shop, token) {
     if (!shop || !token) {
         throw new Error('Shopify Shop and Access Token required');
     }
-    const url = `https://${shop}/admin/api/2024-01/orders.json?status=any&limit=250&fields=email,created_at,total_price,customer`;
+    const url = `https://${shop}/admin/api/2025-10/orders.json?status=any&limit=250&fields=email,created_at,total_price,customer`;
     const response = await fetch(url, {
         headers: {
             'X-Shopify-Access-Token': token,
@@ -71,6 +71,8 @@ function updateGPM(pressure, stats) {
     if (!fs.existsSync(GPM_PATH)) return;
     const gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
 
+    gpm.sectors = gpm.sectors || {};
+    gpm.sectors.marketing = gpm.sectors.marketing || {};
     gpm.sectors.marketing.retention = {
         pressure: pressure,
         trend: (gpm.sectors.marketing.retention && pressure > gpm.sectors.marketing.retention.pressure) ? "UP" : "DOWN",
@@ -86,7 +88,7 @@ function updateGPM(pressure, stats) {
 async function main() {
     // Handle --health check - REAL API TEST (added Session 168quaterdecies)
     if (process.argv.includes('--health')) {
-        const shop = process.env.SHOPIFY_SHOP || process.env.SHOPIFY_STORE || process.env.SHOPIFY_STORE_DOMAIN;
+        const shop = process.env.SHOPIFY_SHOP_NAME || process.env.SHOPIFY_SHOP || process.env.SHOPIFY_STORE || process.env.SHOPIFY_STORE_DOMAIN;
         const token = process.env.SHOPIFY_ACCESS_TOKEN || process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
 
         const health = {
@@ -126,7 +128,7 @@ async function main() {
     }
 
     try {
-        const shop = process.env.SHOPIFY_SHOP || process.env.SHOPIFY_STORE || process.env.SHOPIFY_STORE_DOMAIN;
+        const shop = process.env.SHOPIFY_SHOP_NAME || process.env.SHOPIFY_SHOP || process.env.SHOPIFY_STORE || process.env.SHOPIFY_STORE_DOMAIN;
         const token = process.env.SHOPIFY_ACCESS_TOKEN || process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
 
         if (!shop || !token) {

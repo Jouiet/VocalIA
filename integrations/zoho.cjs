@@ -93,6 +93,13 @@ class ZohoCRMIntegration {
         }
 
         const response = await fetch(url, options);
+
+        // G8 fix: Check response status before parsing
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Zoho API Error ${response.status}: ${errorText}`);
+        }
+
         const result = await response.json();
         return result;
     }

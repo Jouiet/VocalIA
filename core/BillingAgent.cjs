@@ -183,7 +183,7 @@ class BillingAgent {
 
         try {
             const tenantId = sessionData.metadata?.tenantId || 'unknown';
-            const currency = sessionData.metadata?.currency || this.currency;
+            const currency = (sessionData.metadata?.currency || this.currency).toLowerCase();
             const gateway = currency === 'mad' ? this.payzone : this.stripe;
 
             // 1. Create or Find Customer
@@ -198,7 +198,8 @@ class BillingAgent {
             }
 
             // 4. Create Draft Invoice (Engineered Flow: Handoff to human for final 11% check)
-            const invoice = await this._createDraftInvoice(customer.id, price, intent?.need, null, gateway, currency);
+            // BL16 fix: Pass sessionData.id for proper idempotency (was null → Date.now()-based key)
+            const invoice = await this._createDraftInvoice(customer.id, price, intent?.need, sessionData.id || null, gateway, currency);
 
             // 5. Track conversion for closed-loop attribution (GA4 + Meta CAPI)
             await MarketingScience.trackV2('booking_initiated', {
@@ -337,12 +338,17 @@ class BillingAgent {
 
         // SOTA: Deduplication check (avoid double-tracking)
         const dedupKey = `invoice_paid_${invoiceId}`;
-        if (this._processedInvoices && this._processedInvoices.has(dedupKey)) {
+        if (!this._processedInvoices) this._processedInvoices = new Set();
+        if (this._processedInvoices.has(dedupKey)) {
             console.log(`[BillingAgent] Invoice ${invoiceId} already processed, skipping`);
             return { success: true, tracked: false, reason: 'already_processed' };
         }
-        this._processedInvoices = this._processedInvoices || new Set();
         this._processedInvoices.add(dedupKey);
+        // Bound the set to prevent memory leak (keep last 10,000 invoice IDs)
+        if (this._processedInvoices.size > 10000) {
+            const firstKey = this._processedInvoices.values().next().value;
+            this._processedInvoices.delete(firstKey);
+        }
 
         console.log(`[BillingAgent] Invoice paid: €${amount} - ${email}`);
 
@@ -388,11 +394,11 @@ class BillingAgent {
      */
     static async trackCost(category, amount, tenantId, metadata = {}) {
         const costEntry = {
+            ...metadata,
             timestamp: new Date().toISOString(),
             category,
             amount,
-            tenantId,
-            ...metadata
+            tenantId
         };
 
         // Log to cost tracking

@@ -1,11 +1,21 @@
 import { z } from 'zod';
 import { tenantMiddleware } from '../middleware/tenant.js';
 import * as fs from 'fs';
+import * as path from 'path';
 import { dataPath } from '../paths.js';
 
-// File-based UCP Profile Storage
-const DATA_DIR = dataPath();
-const UCP_PROFILES_FILE = dataPath('ucp-profiles.json');
+// ═══════════════════════════════════════════════════════════════════════════════
+// UNIFIED UCP Storage — Per-tenant directory (shared with core/ucp-store.cjs)
+//
+// Storage: data/ucp/{tenantId}/profiles.json   (keyed by userId)
+//          data/ucp/{tenantId}/interactions.jsonl (append-only audit trail)
+//          data/ucp/{tenantId}/ltv.json          (LTV tiers & history)
+//
+// Session 250.188: Unified with core/ucp-store.cjs — same files, same format.
+// Both core REST API and MCP tools now read/write the SAME data.
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const UCP_BASE_DIR = dataPath('ucp');
 
 interface UCPInteraction {
     type: 'voice_call' | 'widget_chat' | 'api_request' | 'booking' | 'purchase';
@@ -24,68 +34,90 @@ interface UCPBehavioralEvent {
 }
 
 interface UCPProfile {
-    userId: string;
-    tenantId: string;
-    country: string;
-    market: string;
-    locale: string;
-    currency: string;
-    currencySymbol: string;
-    enforced: boolean;
-    timestamp: string;
-    // Enhanced CDP fields (Session 250.28)
-    interactionHistory: UCPInteraction[];
-    behavioralEvents: UCPBehavioralEvent[];
-    totalInteractions: number;
+    customer_id: string;
+    tenant_id: string;
+    country?: string;
+    market?: string;
+    locale?: string;
+    currency?: string;
+    currencySymbol?: string;
+    enforced?: boolean;
+    created_at: string;
+    updated_at: string;
+    // Identity fields (set by core REST API or MCP)
+    name?: string;
+    email?: string;
+    phone?: string;
+    // CDP enhanced fields
+    interactionHistory?: UCPInteraction[];
+    behavioralEvents?: UCPBehavioralEvent[];
+    totalInteractions?: number;
+    interaction_count?: number;
     lastInteraction?: string;
+    last_interaction?: string;
     preferredChannel?: string;
     lifetimeValue?: number;
-}
-
-interface UCPStorage {
-    profiles: { [key: string]: UCPProfile };
-    lastUpdated: string;
+    ltv_value?: number;
+    ltv_tier?: string;
+    // Voice pipeline fields (set by auto-enrichment)
+    last_channel?: string;
+    last_language?: string;
+    last_persona?: string;
 }
 
 /**
- * Load UCP profiles from file
+ * Get tenant UCP directory (create if missing)
  */
-function loadProfiles(): UCPStorage {
+function getTenantDir(tenantId: string): string {
+    const dir = path.join(UCP_BASE_DIR, tenantId);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    return dir;
+}
+
+/**
+ * Load UCP profiles for a specific tenant
+ * Reads from: data/ucp/{tenantId}/profiles.json
+ */
+function loadTenantProfiles(tenantId: string): Record<string, UCPProfile> {
+    const filepath = path.join(getTenantDir(tenantId), 'profiles.json');
     try {
-        if (fs.existsSync(UCP_PROFILES_FILE)) {
-            const data = fs.readFileSync(UCP_PROFILES_FILE, 'utf-8');
-            return JSON.parse(data);
+        if (fs.existsSync(filepath)) {
+            return JSON.parse(fs.readFileSync(filepath, 'utf-8'));
         }
     } catch (e) {
-        console.error('[UCP] Failed to load profiles:', e);
+        console.error(`[UCP] Failed to load profiles for ${tenantId}:`, e);
     }
-    return { profiles: {}, lastUpdated: new Date().toISOString() };
+    return {};
 }
 
 /**
- * Save UCP profiles to file
+ * Save UCP profiles for a specific tenant
+ * Writes to: data/ucp/{tenantId}/profiles.json
  */
-function saveProfiles(storage: UCPStorage): boolean {
+function saveTenantProfiles(tenantId: string, profiles: Record<string, UCPProfile>): boolean {
     try {
-        // Ensure data directory exists
-        if (!fs.existsSync(DATA_DIR)) {
-            fs.mkdirSync(DATA_DIR, { recursive: true });
-        }
-        storage.lastUpdated = new Date().toISOString();
-        fs.writeFileSync(UCP_PROFILES_FILE, JSON.stringify(storage, null, 2));
+        const filepath = path.join(getTenantDir(tenantId), 'profiles.json');
+        fs.writeFileSync(filepath, JSON.stringify(profiles, null, 2));
         return true;
     } catch (e) {
-        console.error('[UCP] Failed to save profiles:', e);
+        console.error(`[UCP] Failed to save profiles for ${tenantId}:`, e);
         return false;
     }
 }
 
 /**
- * Generate profile key with unambiguous separator (MM2 fix).
- * Uses '::' which is disallowed in tenant/user IDs by sanitization rules.
+ * Append interaction to JSONL audit log (shared with core/ucp-store.cjs)
+ * Writes to: data/ucp/{tenantId}/interactions.jsonl
  */
-function profileKey(tenantId: string, userId: string): string {
-    return `${tenantId}::${userId}`;
+function appendInteractionLog(tenantId: string, entry: Record<string, any>): void {
+    try {
+        const filepath = path.join(getTenantDir(tenantId), 'interactions.jsonl');
+        fs.appendFileSync(filepath, JSON.stringify(entry) + '\n');
+    } catch (e) {
+        console.error(`[UCP] Failed to append interaction log for ${tenantId}:`, e);
+    }
 }
 
 export const ucpTools = {
@@ -114,32 +146,38 @@ export const ucpTools = {
                 rule = config.marketRules.default;
             }
 
-            // 3. Load existing storage and create/update profile
-            const storage = loadProfiles();
-            const existingProfile = storage.profiles[profileKey(tenant.id, userId)];
+            // 3. Load existing profile from shared per-tenant storage
+            const profiles = loadTenantProfiles(tenant.id);
+            const existing = profiles[userId] || {};
+            const now = new Date().toISOString();
+
+            // 4. Merge profile (preserve existing fields, add/update market rules)
             const profile: UCPProfile = {
-                userId,
-                tenantId: tenant.id,
+                ...existing,
+                customer_id: userId,
+                tenant_id: tenant.id,
                 country: code,
                 market: rule.id,
                 locale: rule.lang,
                 currency: rule.currency,
                 currencySymbol: rule.symbol,
                 enforced: true,
-                timestamp: new Date().toISOString(),
-                // Preserve or initialize CDP fields
-                interactionHistory: existingProfile?.interactionHistory || [],
-                behavioralEvents: existingProfile?.behavioralEvents || [],
-                totalInteractions: existingProfile?.totalInteractions || 0,
-                lastInteraction: existingProfile?.lastInteraction,
-                preferredChannel: existingProfile?.preferredChannel,
-                lifetimeValue: existingProfile?.lifetimeValue || 0
+                updated_at: now,
+                created_at: existing.created_at || now,
+                // Preserve CDP fields
+                interactionHistory: existing.interactionHistory || [],
+                behavioralEvents: existing.behavioralEvents || [],
+                totalInteractions: existing.totalInteractions || existing.interaction_count || 0,
+                interaction_count: existing.interaction_count || existing.totalInteractions || 0,
+                lastInteraction: existing.lastInteraction || existing.last_interaction,
+                last_interaction: existing.last_interaction || existing.lastInteraction,
+                preferredChannel: existing.preferredChannel,
+                lifetimeValue: existing.lifetimeValue || existing.ltv_value || 0,
+                ltv_value: existing.ltv_value || existing.lifetimeValue || 0
             };
 
-            // 4. PERSIST to file
-            const key = profileKey(tenant.id, userId);
-            storage.profiles[key] = profile;
-            const saved = saveProfiles(storage);
+            profiles[userId] = profile;
+            const saved = saveTenantProfiles(tenant.id, profiles);
 
             return {
                 content: [{
@@ -167,11 +205,9 @@ export const ucpTools = {
         handler: async (args: any) => {
             const tenant = await tenantMiddleware(args);
             const userId = args.userId;
-            const key = profileKey(tenant.id, userId);
 
-            // Load from persistent storage
-            const storage = loadProfiles();
-            const profile = storage.profiles[key];
+            const profiles = loadTenantProfiles(tenant.id);
+            const profile = profiles[userId];
 
             if (profile) {
                 return {
@@ -195,7 +231,7 @@ export const ucpTools = {
                         tenant: tenant.name,
                         status: "not_found",
                         hint: "Use ucp_sync_preference to create a profile first.",
-                        availableProfiles: Object.keys(storage.profiles).length
+                        availableProfiles: Object.keys(profiles).length
                     }, null, 2)
                 }]
             };
@@ -210,12 +246,8 @@ export const ucpTools = {
         },
         handler: async (args: any) => {
             const tenant = await tenantMiddleware(args);
-            const storage = loadProfiles();
-
-            // Filter profiles by tenant
-            const tenantProfiles = Object.entries(storage.profiles)
-                .filter(([k]) => k.startsWith(`${tenant.id}::`))
-                .map(([, profile]) => profile);
+            const profiles = loadTenantProfiles(tenant.id);
+            const tenantProfiles = Object.values(profiles);
 
             return {
                 content: [{
@@ -225,7 +257,7 @@ export const ucpTools = {
                         tenant: tenant.name,
                         count: tenantProfiles.length,
                         profiles: tenantProfiles,
-                        lastUpdated: storage.lastUpdated
+                        lastUpdated: new Date().toISOString()
                     }, null, 2)
                 }]
             };
@@ -233,7 +265,7 @@ export const ucpTools = {
     },
 
     // ─────────────────────────────────────────────────────────────────────────
-    // CDP ENHANCED TOOLS (Session 250.28)
+    // CDP ENHANCED TOOLS (Session 250.28, unified storage 250.188)
     // ─────────────────────────────────────────────────────────────────────────
 
     ucp_record_interaction: {
@@ -250,10 +282,9 @@ export const ucpTools = {
         },
         handler: async (args: any) => {
             const tenant = await tenantMiddleware(args);
-            const storage = loadProfiles();
-            const key = profileKey(tenant.id, args.userId);
+            const profiles = loadTenantProfiles(tenant.id);
 
-            let profile = storage.profiles[key];
+            let profile = profiles[args.userId];
             if (!profile) {
                 return {
                     content: [{
@@ -266,7 +297,7 @@ export const ucpTools = {
                 };
             }
 
-            // Initialize arrays if missing (migration for old profiles)
+            // Initialize arrays if missing (migration for old profiles from core)
             if (!profile.interactionHistory) profile.interactionHistory = [];
             if (!profile.behavioralEvents) profile.behavioralEvents = [];
 
@@ -282,12 +313,17 @@ export const ucpTools = {
 
             profile.interactionHistory.push(interaction);
             profile.totalInteractions = (profile.totalInteractions || 0) + 1;
+            profile.interaction_count = profile.totalInteractions;
             profile.lastInteraction = interaction.timestamp;
+            profile.last_interaction = interaction.timestamp;
+            profile.updated_at = interaction.timestamp;
 
             // CDP: Calculate Lifetime Value for purchases/bookings
             if (args.interactionType === 'purchase' || args.interactionType === 'booking') {
                 const amount = args.metadata?.amount || args.metadata?.value || 0;
                 profile.lifetimeValue = (profile.lifetimeValue || 0) + amount;
+                profile.ltv_value = profile.lifetimeValue;
+                profile.ltv_tier = getLTVTier(profile.lifetimeValue || 0);
             }
 
             // Update preferred channel based on frequency
@@ -298,13 +334,21 @@ export const ucpTools = {
             profile.preferredChannel = Object.entries(channelCounts)
                 .sort(([, a], [, b]) => b - a)[0]?.[0];
 
-            // Keep only last 100 interactions
+            // Keep only last 100 interactions inline
             if (profile.interactionHistory.length > 100) {
                 profile.interactionHistory = profile.interactionHistory.slice(-100);
             }
 
-            storage.profiles[key] = profile;
-            saveProfiles(storage);
+            profiles[args.userId] = profile;
+            saveTenantProfiles(tenant.id, profiles);
+
+            // Also append to JSONL audit trail (shared with core/ucp-store.cjs)
+            appendInteractionLog(tenant.id, {
+                ...interaction,
+                id: Math.random().toString(36).substring(2, 10),
+                customer_id: args.userId,
+                tenant_id: tenant.id
+            });
 
             return {
                 content: [{
@@ -332,10 +376,9 @@ export const ucpTools = {
         },
         handler: async (args: any) => {
             const tenant = await tenantMiddleware(args);
-            const storage = loadProfiles();
-            const key = profileKey(tenant.id, args.userId);
+            const profiles = loadTenantProfiles(tenant.id);
 
-            let profile = storage.profiles[key];
+            let profile = profiles[args.userId];
             if (!profile) {
                 return {
                     content: [{
@@ -360,14 +403,15 @@ export const ucpTools = {
             };
 
             profile.behavioralEvents.push(event);
+            profile.updated_at = event.timestamp;
 
             // Keep only last 200 events
             if (profile.behavioralEvents.length > 200) {
                 profile.behavioralEvents = profile.behavioralEvents.slice(-200);
             }
 
-            storage.profiles[key] = profile;
-            saveProfiles(storage);
+            profiles[args.userId] = profile;
+            saveTenantProfiles(tenant.id, profiles);
 
             return {
                 content: [{
@@ -391,10 +435,9 @@ export const ucpTools = {
         },
         handler: async (args: any) => {
             const tenant = await tenantMiddleware(args);
-            const storage = loadProfiles();
-            const key = profileKey(tenant.id, args.userId);
+            const profiles = loadTenantProfiles(tenant.id);
 
-            const profile = storage.profiles[key];
+            const profile = profiles[args.userId];
             if (!profile) {
                 return {
                     content: [{
@@ -412,11 +455,13 @@ export const ucpTools = {
             const events = profile.behavioralEvents || [];
 
             // Engagement score (0-100)
-            const recencyDays = profile.lastInteraction
-                ? Math.floor((Date.now() - new Date(profile.lastInteraction).getTime()) / (1000 * 60 * 60 * 24))
+            const lastInt = profile.lastInteraction || profile.last_interaction;
+            const recencyDays = lastInt
+                ? Math.floor((Date.now() - new Date(lastInt).getTime()) / (1000 * 60 * 60 * 24))
                 : 999;
             const recencyScore = Math.max(0, 100 - recencyDays * 5);
-            const frequencyScore = Math.min(100, (profile.totalInteractions || 0) * 10);
+            const totalInt = profile.totalInteractions || profile.interaction_count || 0;
+            const frequencyScore = Math.min(100, totalInt * 10);
             const engagementScore = Math.round((recencyScore + frequencyScore) / 2);
 
             // Channel breakdown
@@ -431,6 +476,8 @@ export const ucpTools = {
                 eventSummary[e.event] = (eventSummary[e.event] || 0) + 1;
             });
 
+            const ltv = profile.lifetimeValue || profile.ltv_value || 0;
+
             return {
                 content: [{
                     type: "text" as const,
@@ -441,11 +488,11 @@ export const ucpTools = {
                         locale: profile.locale,
                         insights: {
                             engagementScore,
-                            totalInteractions: profile.totalInteractions || 0,
-                            lastInteraction: profile.lastInteraction,
+                            totalInteractions: totalInt,
+                            lastInteraction: lastInt,
                             preferredChannel: profile.preferredChannel,
-                            lifetimeValue: profile.lifetimeValue || 0,
-                            ltvTier: getLTVTier(profile.lifetimeValue || 0),
+                            lifetimeValue: ltv,
+                            ltvTier: getLTVTier(ltv),
                             recencyDays,
                             channelBreakdown,
                             topEvents: Object.entries(eventSummary)
@@ -471,10 +518,9 @@ export const ucpTools = {
         },
         handler: async (args: any) => {
             const tenant = await tenantMiddleware(args);
-            const storage = loadProfiles();
-            const key = profileKey(tenant.id, args.userId);
+            const profiles = loadTenantProfiles(tenant.id);
 
-            let profile = storage.profiles[key];
+            let profile = profiles[args.userId];
             if (!profile) {
                 return {
                     content: [{
@@ -488,7 +534,7 @@ export const ucpTools = {
             }
 
             // Calculate LTV change
-            const previousLTV = profile.lifetimeValue || 0;
+            const previousLTV = profile.lifetimeValue || profile.ltv_value || 0;
             let ltvChange = args.amount;
 
             // Refunds decrease LTV
@@ -496,10 +542,14 @@ export const ucpTools = {
                 ltvChange = -Math.abs(args.amount);
             }
 
-            profile.lifetimeValue = Math.max(0, previousLTV + ltvChange);
+            const newLTV = Math.max(0, previousLTV + ltvChange);
+            profile.lifetimeValue = newLTV;
+            profile.ltv_value = newLTV;
+            profile.ltv_tier = getLTVTier(newLTV);
+            profile.updated_at = new Date().toISOString();
 
-            storage.profiles[key] = profile;
-            saveProfiles(storage);
+            profiles[args.userId] = profile;
+            saveTenantProfiles(tenant.id, profiles);
 
             return {
                 content: [{
@@ -522,7 +572,7 @@ export const ucpTools = {
 
 /**
  * Calculate LTV Tier based on value
- * Tiers: Bronze (<100), Silver (100-500), Gold (500-2000), Platinum (2000-10000), Diamond (>10000)
+ * Tiers match core/ucp-store.cjs: Bronze (<100), Silver (100-500), Gold (500-2000), Platinum (2000-10000), Diamond (>10000)
  */
 function getLTVTier(ltv: number): string {
     if (ltv >= 10000) return 'diamond';

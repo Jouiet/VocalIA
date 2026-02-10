@@ -192,12 +192,25 @@ function inferAnnotations(name: string): ToolAnnotations {
 /**
  * Register a module tool with description, inferred annotations, and automatic logging.
  * Wraps the handler with sendLoggingMessage for observability.
+ * BL40 fix: auto-detect error responses and set isError flag for MCP protocol compliance.
  */
 function registerModuleTool(
   toolDef: { name: string; description?: string; parameters: any; handler: any },
   annotationsOverride?: ToolAnnotations
 ) {
-  const wrappedHandler = withLogging(toolDef.name, toolDef.handler);
+  const wrappedHandler = withLogging(toolDef.name, async (...args: any[]) => {
+    const result = await toolDef.handler(...args);
+    // BL40: Detect error responses from external tool modules and set isError flag
+    if (result?.content?.[0]?.text) {
+      const text = result.content[0].text;
+      if (text.includes('"status":"error"') || text.includes('"status": "error"') ||
+          text.includes('"success":false') || text.includes('"success": false') ||
+          text.includes('Missing ') && text.includes('credentials')) {
+        result.isError = true;
+      }
+    }
+    return result;
+  });
 
   server.registerTool(toolDef.name, {
     description: toolDef.description || `VocalIA tool: ${toolDef.name}`,
@@ -2505,7 +2518,7 @@ async function startHttp() {
   });
 
   // --- Rate limiting ---
-  const RATE_LIMIT = parseInt(process.env.MCP_RATE_LIMIT || "100", 10); // per minute
+  const RATE_LIMIT = parseInt(process.env.MCP_RATE_LIMIT || "60", 10); // per minute
   const rateLimitWindow: number[] = [];
 
   app.use("/mcp", (_req, res, next) => {
@@ -2522,8 +2535,8 @@ async function startHttp() {
   });
 
   // --- Session map (MH4 fix: TTL + max sessions) ---
-  const MAX_SESSIONS = 100;
-  const SESSION_TTL = 30 * 60 * 1000; // 30 minutes
+  const MAX_SESSIONS = parseInt(process.env.MCP_MAX_SESSIONS || "20", 10);
+  const SESSION_TTL = parseInt(process.env.MCP_SESSION_TTL || "600000", 10); // 10 minutes default
   const transports: Record<string, { transport: StreamableHTTPServerTransport; server: McpServer; lastActivity: number }> = {};
 
   // Cleanup stale sessions every 5 minutes

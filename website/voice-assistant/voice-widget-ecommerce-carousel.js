@@ -275,8 +275,6 @@
       this.isVisible = false;
       this.autoCloseTimer = null;
       this.items = [];
-
-      this._injectStyles();
     }
 
     _detectTenantId() {

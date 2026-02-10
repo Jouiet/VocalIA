@@ -91,6 +91,9 @@ const { getInstance: getConversationStore } = require('../core/conversation-stor
 const conversationStore = getConversationStore();
 console.log('✅ Conversation store initialized for telephony');
 
+// Session 250.188: UCP auto-enrichment for telephony calls
+const { getInstance: getUCPStore } = require('../core/ucp-store.cjs');
+
 // Session 250.63: Google Sheets DB for tenant voice preferences
 const { getDB } = require('../core/GoogleSheetsDB.cjs');
 let tenantDB = null;
@@ -243,7 +246,8 @@ const CONFIG = {
     maxBodySize: 1024 * 1024, // 1MB
     requestTimeout: 30000,
     maxActiveSessions: 50,
-    sessionTimeout: 600000 // 10 minutes
+    sessionTimeout: 600000, // 10 minutes
+    internalKey: process.env.VOCALIA_INTERNAL_KEY // BL12/BL14: Auth for billable endpoints
   },
 
   // Rate limiting
@@ -252,6 +256,25 @@ const CONFIG = {
     maxRequests: 30
   }
 };
+
+// BL12/BL14 fix: Bearer token check for internal endpoints that trigger billable actions
+// BL36 fix: Use timing-safe comparison to prevent timing attacks on Bearer token
+function checkInternalAuth(req, res) {
+  if (!CONFIG.security.internalKey) return true; // Dev mode: no key set
+  const auth = req.headers.authorization || '';
+  const expected = `Bearer ${CONFIG.security.internalKey}`;
+  const authBuf = Buffer.from(auth);
+  const expectedBuf = Buffer.from(expected);
+  if (authBuf.length !== expectedBuf.length || !crypto.timingSafeEqual(authBuf, expectedBuf)) {
+    res.writeHead(401, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Unauthorized: Bearer token required' }));
+    return false;
+  }
+  return true;
+}
+if (!CONFIG.security.internalKey) {
+  console.warn('⚠️ [Security] VOCALIA_INTERNAL_KEY not set — /voice/outbound and /messaging/send unprotected');
+}
 
 // ============================================================================
 // TWIML MULTILINGUAL MESSAGES (Session 166sexies - Phase 1)
@@ -633,6 +656,10 @@ function checkRateLimit(ip) {
   const windowStart = now - CONFIG.rateLimit.windowMs;
 
   if (!rateLimitMap.has(ip)) {
+    // BL23 fix: Cap max entries to prevent memory DoS from distributed IPs
+    if (rateLimitMap.size >= 10000) {
+      return false; // Reject when map is full (fail-closed)
+    }
     rateLimitMap.set(ip, []);
   }
 
@@ -1886,11 +1913,15 @@ async function sendFunctionResult(session, callId, result) {
 async function handleCheckOrderStatus(session, args) {
   const email = args.email || session.bookingData.email;
   if (!email) return { success: false, error: "no_email_provided" };
-  return await ECOM_TOOLS.getOrderStatus(email);
+  // BL24 fix: Pass tenantId so per-tenant Shopify credentials are used
+  const tenantId = session.metadata?.tenant_id || 'default';
+  return await ECOM_TOOLS.getOrderStatus(email, { tenantId });
 }
 
 async function handleCheckProductStock(session, args) {
-  return await ECOM_TOOLS.checkProductStock(args.query);
+  // BL24 fix: Pass tenantId so per-tenant Shopify credentials are used
+  const tenantId = session.metadata?.tenant_id || 'default';
+  return await ECOM_TOOLS.checkProductStock(args.query, { tenantId });
 }
 
 // ============================================
@@ -3507,9 +3538,14 @@ async function queueCartRecoveryCallback(options) {
   const lang = language || 'fr';
   const msg = messages[lang] || messages.fr;
 
-  // Store callback request for processing
+  // Store callback request for processing (BL10 fix: bounded array)
   if (!global.cartRecoveryCallbacks) {
     global.cartRecoveryCallbacks = [];
+  }
+  // Evict oldest entries if over limit
+  const MAX_RECOVERY_CALLBACKS = 200;
+  if (global.cartRecoveryCallbacks.length >= MAX_RECOVERY_CALLBACKS) {
+    global.cartRecoveryCallbacks = global.cartRecoveryCallbacks.slice(-Math.floor(MAX_RECOVERY_CALLBACKS / 2));
   }
 
   const callbackRequest = {
@@ -4205,6 +4241,32 @@ async function finalizeSession(sessionId, wasAbandoned = false) {
   console.log(`[Analytics] Final: ${JSON.stringify(finalAnalytics)}`);
   logConversionEvent(session, 'call_completed', finalAnalytics);
 
+  // Session 250.188: UCP auto-enrichment for telephony calls
+  try {
+    const ucpStore = getUCPStore();
+    const callTenantId = session.metadata?.tenant_id || 'default';
+    const ucpCallerId = session.bookingData.phone || session.callSid || sessionId;
+    const profileData = {
+      last_channel: 'telephony',
+      last_language: session.metadata?.language || CONFIG.defaultLanguage,
+      last_persona: session.metadata?.persona_id
+    };
+    if (session.bookingData.name) profileData.name = session.bookingData.name;
+    if (session.bookingData.email) profileData.email = session.bookingData.email;
+    if (session.bookingData.phone) profileData.phone = session.bookingData.phone;
+    ucpStore.upsertProfile(callTenantId, ucpCallerId, profileData);
+    ucpStore.recordInteraction(callTenantId, ucpCallerId, {
+      type: 'voice_call',
+      channel: 'telephony',
+      duration_sec: callDuration,
+      outcome: session.analytics.outcome || 'completed',
+      sessionId,
+      qualification_score: session.qualification.score
+    });
+  } catch (ucpErr) {
+    console.warn('[UCP] Telephony enrichment warning:', ucpErr.message);
+  }
+
   // Agent Ops: Store full context pillars for post-call agents
   const finalContext = ContextBox.set(session.callSid, {
     status: 'completed',
@@ -4396,21 +4458,32 @@ const server = http.createServer(async (req, res) => {
     }
 
     // Outbound call trigger (Agentic Action)
+    // BL12 fix: Require internal auth for billable endpoint
     if (pathname === '/voice/outbound' && req.method === 'POST') {
+      if (!checkInternalAuth(req, res)) return;
       const body = await parseBody(req);
       await handleOutboundTrigger(req, res, body);
       return;
     }
 
     // Outbound TwiML handler
+    // BL13 fix: Validate Twilio signature (this is a Twilio callback, like /voice/inbound)
     if (pathname === '/voice/outbound-twiml' && req.method === 'POST') {
-      const body = await parseBody(req); // To get CallSid if needed
+      const body = await parseBody(req);
+      if (!await validateTwilioSignature(req, body)) {
+        console.error('[Security] Rejected outbound-twiml with invalid Twilio signature');
+        res.writeHead(403, { 'Content-Type': 'text/plain' });
+        res.end('Forbidden: Invalid signature');
+        return;
+      }
       await handleOutboundTwiML(req, res, body);
       return;
     }
 
     // Messaging endpoint (Session 249.18: WhatsApp + Twilio SMS fallback)
+    // BL14 fix: Require internal auth for billable endpoint
     if (pathname === '/messaging/send' && req.method === 'POST') {
+      if (!checkInternalAuth(req, res)) return;
       const body = await parseBody(req);
       const { to, message, channel = 'auto' } = body;
 

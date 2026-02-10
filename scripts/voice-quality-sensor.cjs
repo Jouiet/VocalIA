@@ -14,7 +14,7 @@ const https = require('https');
 const http = require('http');
 
 // Load environment variables
-const envPaths = [path.join(__dirname, '.env'), path.join(__dirname, '../../../.env'), path.join(process.cwd(), '.env')];
+const envPaths = [path.join(__dirname, '.env'), path.join(__dirname, '..', '.env'), path.join(process.cwd(), '.env')];
 for (const envPath of envPaths) {
     if (fs.existsSync(envPath)) {
         require('dotenv').config({ path: envPath });
@@ -22,7 +22,7 @@ for (const envPath of envPaths) {
     }
 }
 
-const GPM_PATH = path.join(__dirname, '../../../landing-page-hostinger/data/pressure-matrix.json');
+const GPM_PATH = path.join(__dirname, '..', 'data', 'pressure-matrix.json');
 
 // Voice API endpoints to check
 const VOICE_ENDPOINTS = [

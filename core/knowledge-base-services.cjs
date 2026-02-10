@@ -391,7 +391,13 @@ class ServiceKnowledgeBase {
       throw new Error(`Catalog not found: ${CATALOG_PATH}`);
     }
 
-    const catalog = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf8'));
+    let catalog;
+    try {
+      catalog = JSON.parse(fs.readFileSync(CATALOG_PATH, 'utf8'));
+    } catch (e) {
+      console.error(`❌ [KB] Corrupted catalog file: ${CATALOG_PATH}`, e.message);
+      catalog = { automations: [], categories: {} };
+    }
     const automations = catalog.automations || [];
     const categories = catalog.categories || {};
 
@@ -490,7 +496,13 @@ class ServiceKnowledgeBase {
     // Merge Legacy Knowledge Base (Session 250.15 - 38 Personas FAQ)
     if (fs.existsSync(LEGACY_KB_FILE)) {
       console.log('   Merging legacy knowledge base (persona FAQ)...');
-      const legacyKB = JSON.parse(fs.readFileSync(LEGACY_KB_FILE, 'utf8'));
+      let legacyKB;
+      try {
+        legacyKB = JSON.parse(fs.readFileSync(LEGACY_KB_FILE, 'utf8'));
+      } catch (e) {
+        console.error(`❌ [KB] Corrupted legacy KB file: ${LEGACY_KB_FILE}`, e.message);
+        legacyKB = {};
+      }
       let faqCount = 0;
 
       for (const [personaId, faqEntries] of Object.entries(legacyKB)) {
@@ -547,7 +559,13 @@ class ServiceKnowledgeBase {
 
     // Add Manual Policy Knowledge (Phase 15)
     if (fs.existsSync(KB_POLICY_FILE)) {
-      const policies = JSON.parse(fs.readFileSync(KB_POLICY_FILE, 'utf8'));
+      let policies;
+      try {
+        policies = JSON.parse(fs.readFileSync(KB_POLICY_FILE, 'utf8'));
+      } catch (e) {
+        console.error(`❌ [KB] Corrupted policy file: ${KB_POLICY_FILE}`, e.message);
+        policies = {};
+      }
       for (const [key, policy] of Object.entries(policies)) {
         this.chunks.push({
           id: `policy_${key}`,
@@ -862,7 +880,7 @@ async function main() {
     }
 
     (async () => {
-      const results = await kb.searchHybrid(query, 5, { tenantId });
+      const results = await kb.asyncSearchHybrid(query, 5, { tenantId });
       console.log(`\nSearch: "${query}" (Hybrid RRF Optimization | Tenant: ${tenantId})`);
       console.log(`Found: ${results.length} results`);
       results.forEach((res, i) => {

@@ -239,7 +239,10 @@ class SecretVault {
       toSave = { ...credentials };
     }
 
-    fs.writeFileSync(credPath, JSON.stringify(toSave, null, 2));
+    // S8 fix: Atomic write (temp + rename) to prevent corruption on crash
+    const tempPath = `${credPath}.tmp`;
+    fs.writeFileSync(tempPath, JSON.stringify(toSave, null, 2));
+    fs.renameSync(tempPath, credPath);
 
     // Invalidate cache
     this.cache.delete(`creds_${tenantId}`);

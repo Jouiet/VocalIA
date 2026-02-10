@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { CatalogConnectorFactory, CATALOG_TYPES, CONNECTOR_STATUS } = require('./catalog-connector.cjs');
+const { sanitizeTenantId } = require('./voice-api-utils.cjs');
 
 // Lazy-load CalendarSlotsConnector to avoid circular dependencies
 let CalendarSlotsStore = null;
@@ -144,8 +145,10 @@ class TenantCatalogStore {
 
     this.tenantConfigs.set(tenantId, config);
 
-    // Create connector
-    const connector = CatalogConnectorFactory.create(tenantId, config);
+    // Session 250.190 Fix F5: Flatten nested config.connector before passing to factory
+    // db-api passes { name, connector: { type, dataPath } } but factory expects flat { type, dataPath }
+    const connectorConfig = config.connector || config;
+    const connector = CatalogConnectorFactory.create(tenantId, connectorConfig);
     this.connectors.set(tenantId, connector);
 
     // Connect and initial sync
@@ -831,9 +834,11 @@ class TenantCatalogStore {
       // Invalidate cache for this tenant
       this.invalidateCache(tenantId);
 
-      // Save to disk if using custom connector
-      if (connector.config?.dataPath) {
-        this._saveTenantCatalog(tenantId, connector.catalog, catalogType);
+      // Session 250.190 Fix F5: Persist via connector's own saveCatalog (consistent path)
+      // Session 250.191 Fix F16: saveCatalog only exists on CustomCatalogConnector
+      // Non-custom connectors (Shopify, WooCommerce, etc.) manage persistence via sync()
+      if (typeof connector.saveCatalog === 'function') {
+        connector.saveCatalog(connector.catalog);
       }
 
       return true;
@@ -872,8 +877,9 @@ class TenantCatalogStore {
 
       this.invalidateCache(tenantId);
 
-      if (connector.config?.dataPath) {
-        this._saveTenantCatalog(tenantId, connector.catalog, catalogType);
+      // Session 250.191 Fix F16: saveCatalog only on CustomCatalogConnector
+      if (typeof connector.saveCatalog === 'function') {
+        connector.saveCatalog(connector.catalog);
       }
 
       return true;
@@ -911,8 +917,9 @@ class TenantCatalogStore {
 
       this.invalidateCache(tenantId);
 
-      if (connector.config?.dataPath) {
-        this._saveTenantCatalog(tenantId, connector.catalog, catalogType);
+      // Session 250.191 Fix F16: saveCatalog only on CustomCatalogConnector
+      if (typeof connector.saveCatalog === 'function') {
+        connector.saveCatalog(connector.catalog);
       }
 
       return true;
@@ -946,28 +953,9 @@ class TenantCatalogStore {
     }
   }
 
-  /**
-   * Save tenant catalog to disk
-   * @param {string} tenantId - Tenant identifier
-   * @param {object} catalog - Catalog data
-   * @param {string} catalogType - Catalog type
-   */
-  _saveTenantCatalog(tenantId, catalog, catalogType) {
-    const tenantDir = `data/catalogs/tenants/${tenantId}`;
-    if (!fs.existsSync(tenantDir)) {
-      fs.mkdirSync(tenantDir, { recursive: true });
-    }
-
-    const filename = `${catalogType.toLowerCase()}.json`;
-    const filepath = `${tenantDir}/${filename}`;
-
-    fs.writeFileSync(filepath, JSON.stringify({
-      tenant_id: tenantId,
-      catalog_type: catalogType,
-      updated_at: new Date().toISOString(),
-      ...catalog
-    }, null, 2));
-  }
+  // Session 250.190: _saveTenantCatalog REMOVED — was source of path divergence (F5/F9).
+  // Mutations now call connector.saveCatalog() which uses the connector's own consistent path.
+  // Previously wrote to data/catalogs/tenants/{id}/ while connector used data/catalogs/{id}/.
 
   /**
    * Load store configuration from disk
@@ -981,8 +969,9 @@ class TenantCatalogStore {
         for (const [tenantId, tenantConfig] of Object.entries(config.tenants || {})) {
           this.tenantConfigs.set(tenantId, tenantConfig);
 
-          // Create connector
-          const connector = CatalogConnectorFactory.create(tenantId, tenantConfig);
+          // Session 250.190 Fix F5: Flatten nested config.connector (same fix as registerTenant)
+          const connectorConfig = tenantConfig.connector || tenantConfig;
+          const connector = CatalogConnectorFactory.create(tenantId, connectorConfig);
           this.connectors.set(tenantId, connector);
         }
 

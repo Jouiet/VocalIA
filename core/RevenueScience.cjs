@@ -20,7 +20,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const FINANCIAL_CONFIG = require('../personas/agency-financial-config.cjs');
 
 class RevenueScience {
     constructor() {

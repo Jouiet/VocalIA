@@ -343,9 +343,10 @@ class CalendarSlotsConnector {
       const dateStr = current.toISOString().split('T')[0];
       const daySlots = this._generateDaySlots(dateStr);
 
-      // Mark slots as unavailable if they overlap with busy periods
+      // BL26 fix: Mark slots as unavailable if they overlap with busy periods
+      // Preserve min_advance_booking check from _generateDaySlots (AND, not overwrite)
       for (const slot of daySlots) {
-        slot.available = !this._isSlotBusy(slot, busyPeriods);
+        slot.available = slot.available && !this._isSlotBusy(slot, busyPeriods);
         // Remove Date objects for JSON serialization
         delete slot.startTime;
         delete slot.endTime;
@@ -588,6 +589,8 @@ class CalendarSlotsConnector {
  * Calendar Slots Store
  * Manages multiple tenant calendar connections
  */
+const MAX_CALENDAR_CONNECTORS = 200;
+
 class CalendarSlotsStore {
   constructor() {
     this.connectors = new Map();
@@ -616,6 +619,15 @@ class CalendarSlotsStore {
    */
   async registerTenant(tenantId, config) {
     await this.init();
+
+    // BL26 fix: Bound connectors Map to prevent unbounded memory growth
+    if (this.connectors.size >= MAX_CALENDAR_CONNECTORS && !this.connectors.has(tenantId)) {
+      // Evict oldest connector (LRU)
+      const firstKey = this.connectors.keys().next().value;
+      const old = this.connectors.get(firstKey);
+      if (old) await old.disconnect();
+      this.connectors.delete(firstKey);
+    }
 
     const connector = new CalendarSlotsConnector(tenantId, config);
     await connector.connect();

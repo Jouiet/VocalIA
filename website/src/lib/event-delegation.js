@@ -29,7 +29,7 @@
       }
 
       // Update localStorage
-      localStorage.setItem('vocalia_lang', lang);
+      try { localStorage.setItem('vocalia_lang', lang); } catch (e) { /* Safari private mode */ }
 
       // Update HTML lang attribute
       document.documentElement.lang = lang;

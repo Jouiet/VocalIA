@@ -118,6 +118,7 @@ function vocalia_enqueue_widget() {
 
     // Determine config based on saved settings
     $mode = get_option('vocalia_mode', 'ecommerce');
+    $is_ecommerce = ($mode === 'ecommerce');
     // Unified V3 Kernel Handles all modes (B2B, B2C, Ecommerce)
     $script_name = 'voice-widget-v3.js';
 

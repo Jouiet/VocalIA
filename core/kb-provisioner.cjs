@@ -464,7 +464,7 @@ async function provisionAllTenants(options = {}) {
       console.log(`Processing: ${tenant.id} (${tenant.business_name || tenant.name || 'Unknown'})...`);
 
       if (dryRun) {
-        const kbDir = path.join(CLIENTS_DIR, tenant.id, 'knowledge_base');
+        const kbDir = path.join(CLIENTS_DIR, sanitizeTenantId(tenant.id), 'knowledge_base');
         const exists = fs.existsSync(kbDir);
         console.log(`  Would ${exists && !overwrite ? 'SKIP (exists)' : 'CREATE'}`);
         summary.details.push({

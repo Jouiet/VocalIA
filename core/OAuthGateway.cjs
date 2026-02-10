@@ -381,6 +381,17 @@ if (require.main === module) {
     gateway.healthCheck();
   } else if (args.includes('--start')) {
     gateway.start();
+
+    process.on('uncaughtException', (err) => {
+      console.error('❌ [OAuthGateway] Uncaught exception:', err.message);
+      console.error(err.stack);
+      gateway.stop();
+      process.exit(1);
+    });
+
+    process.on('unhandledRejection', (reason) => {
+      console.error('❌ [OAuthGateway] Unhandled rejection:', reason);
+    });
   } else if (args.includes('--get-url')) {
     const providerIdx = args.indexOf('--provider');
     const tenantIdx = args.indexOf('--tenant');

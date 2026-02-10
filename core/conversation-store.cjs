@@ -263,12 +263,13 @@ class ConversationStore {
       };
     }
 
+    // BL28 fix: Spread messageMetadata BEFORE fixed fields to prevent override of id/timestamp
     const message = {
+      ...messageMetadata,
       id: crypto.randomUUID().split('-')[0],
       role, // 'user' | 'assistant' | 'system'
       content,
       timestamp: now,
-      ...messageMetadata
     };
 
     conversation.messages.push(message);
@@ -449,8 +450,9 @@ class ConversationStore {
     let totalDeleted = 0;
     let tenantsProcessed = 0;
 
+    // BL15 fix: Sanitize tenantId when provided (all other methods use sanitizeTenantId)
     const tenants = tenantId
-      ? [tenantId]
+      ? [sanitizeTenantId(tenantId)]
       : fs.existsSync(this.baseDir)
         ? fs.readdirSync(this.baseDir).filter(f =>
           fs.statSync(path.join(this.baseDir, f)).isDirectory()

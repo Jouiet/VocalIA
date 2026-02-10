@@ -200,11 +200,11 @@ Output JSON: { "score": <0-10>, "feedback": "concise critique", "issues": ["list
     static async trackV2(event, data) {
         const sector = (data.sector || 'GENERAL').toUpperCase();
         const logEntry = {
+            ...data,
             timestamp: new Date().toISOString(),
             event: event,
             sector: sector,
-            language: data.language || 'fr', // SOTA: Language-aware telemetry
-            ...data
+            language: data.language || 'fr' // SOTA: Language-aware telemetry
         };
 
         console.log(`[MarketingScience][${sector}] TRACK: ${event}`, JSON.stringify(data));
@@ -228,15 +228,20 @@ Output JSON: { "score": <0-10>, "feedback": "concise critique", "issues": ["list
                 const clientId = data.clientId || data.sessionId || 'anonymous';
                 const url = `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA4_MEASUREMENT_ID}&api_secret=${process.env.GA4_API_SECRET}`;
 
+                // BL21 fix: Only send non-PII fields to GA4 (Google ToS + GDPR)
+                const GA4_ALLOWED_KEYS = ['sector', 'tenantId', 'language', 'value', 'estimated_value', 'deal_value', 'duration', 'qualification_score', 'bant_score'];
+                const ga4Params = {};
+                for (const key of GA4_ALLOWED_KEYS) {
+                    if (data[key] !== undefined) ga4Params[key] = data[key];
+                }
+                ga4Params.sector = sector;
+                ga4Params.engagement_time_msec = data.duration ? data.duration * 1000 : 100;
+
                 const payload = {
                     client_id: clientId,
                     events: [{
                         name: event,
-                        params: {
-                            ...data,
-                            sector: sector,
-                            engagement_time_msec: data.duration ? data.duration * 1000 : 100
-                        }
+                        params: ga4Params
                     }]
                 };
 

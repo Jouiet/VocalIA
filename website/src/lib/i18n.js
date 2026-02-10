@@ -90,7 +90,7 @@ async function setLocale(locale) {
   await loadTranslations(locale);
   currentLocale = locale;
   document.documentElement.lang = locale;
-  localStorage.setItem('vocalia_lang', locale);
+  try { localStorage.setItem('vocalia_lang', locale); } catch (e) { /* Safari private mode */ }
 
   // Set text direction for RTL languages
   if (RTL_LOCALES.includes(locale)) {
@@ -176,10 +176,14 @@ async function detectUserGeo() {
  * @returns {Object} { currency: 'MAD', symbol: 'DH' }
  */
 function getCurrencyInfo() {
-  return {
-    currency: localStorage.getItem('vocalia_currency') || 'USD',
-    symbol: localStorage.getItem('vocalia_symbol') || '$'
-  };
+  try {
+    return {
+      currency: localStorage.getItem('vocalia_currency') || 'USD',
+      symbol: localStorage.getItem('vocalia_symbol') || '$'
+    };
+  } catch (e) {
+    return { currency: 'USD', symbol: '$' };
+  }
 }
 
 /**
@@ -196,15 +200,18 @@ async function initI18n() {
   }
 
   // Set defaults if not present
-  if (!localStorage.getItem('vocalia_currency')) {
-    localStorage.setItem('vocalia_currency', geoConfig.currency);
-    localStorage.setItem('vocalia_symbol', geoConfig.symbol);
-  }
+  try {
+    if (!localStorage.getItem('vocalia_currency')) {
+      localStorage.setItem('vocalia_currency', geoConfig.currency);
+      localStorage.setItem('vocalia_symbol', geoConfig.symbol);
+    }
+  } catch (e) { /* Safari private mode */ }
 
   // 2. Priority: URL param > localStorage > geo detection > default
   const urlParams = new URLSearchParams(window.location.search);
   const urlLang = urlParams.get('lang');
-  const storedLang = localStorage.getItem('vocalia_lang');
+  let storedLang = null;
+  try { storedLang = localStorage.getItem('vocalia_lang'); } catch (e) { /* ignore */ }
 
   const locale = urlLang || storedLang || geoConfig.lang || 'fr';
   await setLocale(locale);

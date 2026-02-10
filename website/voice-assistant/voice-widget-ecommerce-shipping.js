@@ -41,6 +41,7 @@
       threshold: 'Seuil livraison gratuite',
       currentCart: 'Panier actuel',
       remaining: 'Restant',
+      ariaClose: 'Fermer',
       currency: {
         MAD: 'DH',
         EUR: '€',
@@ -59,6 +60,7 @@
       threshold: 'Free shipping threshold',
       currentCart: 'Current cart',
       remaining: 'Remaining',
+      ariaClose: 'Close',
       currency: {
         MAD: 'MAD',
         EUR: '€',
@@ -77,6 +79,7 @@
       threshold: 'Umbral envio gratis',
       currentCart: 'Carrito actual',
       remaining: 'Restante',
+      ariaClose: 'Cerrar',
       currency: {
         MAD: 'MAD',
         EUR: '€',
@@ -95,6 +98,7 @@
       threshold: 'حد الشحن المجاني',
       currentCart: 'السلة الحالية',
       remaining: 'المتبقي',
+      ariaClose: 'إغلاق',
       currency: {
         MAD: 'درهم',
         EUR: '€',
@@ -113,6 +117,7 @@
       threshold: 'الحد ديال التوصيل بلاش',
       currentCart: 'الباني دابا',
       remaining: 'اللي باقي',
+      ariaClose: 'سد',
       currency: {
         MAD: 'درهم',
         EUR: '€',
@@ -492,7 +497,7 @@
           </div>
 
           ${this.config.dismissible ? `
-            <button class="va-shipping-close" aria-label="Close">
+            <button class="va-shipping-close" aria-label="${t.ariaClose}">
               <svg viewBox="0 0 24 24">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
               </svg>
@@ -505,9 +510,9 @@
     setupCartListeners() {
       // Listen for VocalIA cart updates
       if (window.VocalIA) {
-        const originalSetCartData = window.VocalIA.setCartData;
+        this._originalSetCartData = window.VocalIA.setCartData || null;
         window.VocalIA.setCartData = (cartData) => {
-          if (originalSetCartData) originalSetCartData.call(window.VocalIA, cartData);
+          if (this._originalSetCartData) this._originalSetCartData.call(window.VocalIA, cartData);
           this.updateCartValue(cartData?.total || 0);
         };
       }
@@ -539,11 +544,13 @@
 
     loadCartValue() {
       // Try to get cart value from various sources
-      const stored = localStorage.getItem('va_cart_total');
-      if (stored) {
-        this.updateCartValue(parseFloat(stored));
-        return;
-      }
+      try {
+        const stored = localStorage.getItem('va_cart_total');
+        if (stored) {
+          this.updateCartValue(parseFloat(stored));
+          return;
+        }
+      } catch (e) { /* Private browsing — localStorage may be unavailable */ }
 
       // Check VocalIA cart
       if (window.VocalIA?.cart?.total) {
@@ -564,7 +571,7 @@
       this.state.isUnlocked = value >= this.config.threshold;
 
       // Store for persistence
-      localStorage.setItem('va_cart_total', value.toString());
+      try { localStorage.setItem('va_cart_total', value.toString()); } catch (e) { /* Private browsing */ }
 
       // Update UI
       this.updateUI();
@@ -721,7 +728,7 @@
     dismiss() {
       this.state.dismissed = true;
       this.hide();
-      localStorage.setItem('va_shipping_bar_dismissed', 'true');
+      try { localStorage.setItem('va_shipping_bar_dismissed', 'true'); } catch {}
 
       this.trackEvent('shipping_bar_dismissed', {
         cart_value: this.state.currentValue,
@@ -764,18 +771,27 @@
       this.elements.progress = this.elements.container.querySelector('.va-shipping-progress');
       this.elements.message = this.elements.container.querySelector('.va-shipping-message');
       this.elements.amount = this.elements.container.querySelector('.va-shipping-amount');
+      // Re-attach close button listener lost by innerHTML
+      this.elements.closeBtn = this.elements.container.querySelector('.va-shipping-close');
+      if (this.elements.closeBtn) {
+        this.elements.closeBtn.addEventListener('click', () => this.dismiss());
+      }
       this.updateUI();
     }
 
     reset() {
       this.state.dismissed = false;
       this.state.announcedMilestones.clear();
-      localStorage.removeItem('va_shipping_bar_dismissed');
+      try { localStorage.removeItem('va_shipping_bar_dismissed'); } catch {}
       this.updateCartValue(0);
     }
 
     destroy() {
       this.hide();
+      // Restore monkey-patched setCartData
+      if (window.VocalIA && this._originalSetCartData !== undefined) {
+        window.VocalIA.setCartData = this._originalSetCartData;
+      }
       this.host?.remove();
       this.host = null;
       this._shadowRoot = null;
@@ -792,7 +808,7 @@
 
   function initFreeShippingBar(options = {}) {
     // Check if dismissed
-    if (localStorage.getItem('va_shipping_bar_dismissed') === 'true' && options.respectDismissal !== false) {
+    if ((() => { try { return localStorage.getItem('va_shipping_bar_dismissed'); } catch { return null; } })() === 'true' && options.respectDismissal !== false) {
       console.log('[FreeShippingBar] Previously dismissed, not showing');
       return null;
     }

@@ -222,7 +222,8 @@
     }
 
     const content = config.content[variant];
-    const lang = localStorage.getItem('vocalia_lang') || 'fr';
+    let lang = 'fr';
+    try { lang = localStorage.getItem('vocalia_lang') || 'fr'; } catch (e) { /* ignore */ }
 
     // Return localized content
     return {
@@ -369,7 +370,7 @@
    * Reset all assignments (for testing)
    */
   function reset() {
-    localStorage.removeItem(STORAGE_KEY);
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
   }
 
   // Initialize on DOMContentLoaded

@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,803 tests (68 .mjs, 0 skip)
+> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,765 tests (68 .mjs, 0 skip)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -53,10 +53,11 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 8.5/10 — **185 bugs reported, 0 remaining actionable** (all fixed or reclassified: 2 external, 2 non-bugs, ~5 cosmetic). 12 audit phases, 23 sessions.
-- **Production readiness**: 4.0/10 — Website live, /respond BROKEN on VPS. 0 paying customers.
-- **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. All 29 tool files audited.
+- **Code completeness**: 9.5/10 — **372 bugs found across 32 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 3,765 pass, 0 fail. Validator: 23/23.
+- **Production readiness**: 3.5/10 — Website live, /respond BROKEN on VPS. 0 paying customers.
+- **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. 29 tool files + index.ts + auth-provider + middleware audited. isError protocol compliance fixed.
+- **UCP**: Unified — core + MCP + voice + telephony + recommendations all share `data/ucp/{tenantId}/profiles.json`. Zero fragmentation.
 - **Next**: VPS redeploy (critical) → .env setup → SMTP provider → First paying customer
-- **Weighted score**: 8.3/10
+- **Weighted score**: 8.6/10
 
-*Last update: 09/02/2026 - Session 250.178 (Homepage stale pricing $0.06→$0.10, geo-aware data-price-key, pricing.html dynamic overage)*
+*Last update: 10/02/2026 - Session 250.191 (Runtime integrity deep scan: 6 bugs fixed — F16 saveCatalog guard, F17 Shopify token naming, F18 shop name fallback, F19-F20 path/fs missing imports, F21 docker-compose missing env vars)*

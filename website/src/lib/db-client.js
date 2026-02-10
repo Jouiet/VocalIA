@@ -21,7 +21,9 @@ class DBClient {
    * Make API request
    */
   async request(method, path, data = null) {
-    const token = localStorage.getItem('vocalia_access_token');
+    // WJ2 fix: Check both storages (auth-client stores in sessionStorage when remember=false)
+    let token = null;
+    try { token = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token'); } catch (e) { /* ignore */ }
     const options = {
       method,
       headers: {

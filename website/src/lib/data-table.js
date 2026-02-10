@@ -253,7 +253,14 @@ class DataTable {
         const value = this._getValue(row, col.key);
 
         if (col.render) {
-          td.innerHTML = col.render(value, row, index);
+          // W3 fix: col.render may return unsafe HTML — use textContent as default,
+          // render callbacks that need HTML should return a DocumentFragment or Element
+          const rendered = col.render(value, row, index);
+          if (rendered instanceof HTMLElement || rendered instanceof DocumentFragment) {
+            td.appendChild(rendered);
+          } else {
+            td.innerHTML = rendered;
+          }
         } else if (col.type === 'date') {
           td.textContent = value ? new Date(value).toLocaleDateString() : '-';
         } else if (col.type === 'datetime') {
@@ -261,7 +268,7 @@ class DataTable {
         } else if (col.type === 'badge') {
           const colors = col.badgeColors || {};
           const color = colors[value] || 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-200';
-          td.innerHTML = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${color}">${value || '-'}</span>`;
+          td.innerHTML = `<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${color}">${this._escapeHtml(value || '-')}</span>`;
         } else if (col.type === 'boolean') {
           const icon = value
             ? '<svg class="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
@@ -437,6 +444,15 @@ class DataTable {
         return this.sortDirection === 'asc' ? cmp : -cmp;
       });
     }
+  }
+
+  /**
+   * Escape HTML to prevent XSS
+   */
+  _escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = String(text ?? '');
+    return div.innerHTML;
   }
 
   /**

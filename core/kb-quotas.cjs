@@ -60,6 +60,8 @@ const PLAN_ALIASES = {
   scale: 'pro',
   startup: 'starter',
   business: 'pro',
+  ecommerce: 'pro',
+  telephony: 'enterprise',
   unlimited: 'enterprise',
   custom: 'enterprise'
 };

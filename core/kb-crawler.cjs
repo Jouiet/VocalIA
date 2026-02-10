@@ -231,7 +231,8 @@ class KBCrawler {
   /**
    * Fetch page content
    */
-  fetchPage(url) {
+  // BL20 fix: Add redirectCount parameter to track redirect depth (was ignored as 2nd arg)
+  fetchPage(url, redirectCount = 0) {
     return new Promise((resolve, reject) => {
       const urlObj = new URL(url);
       const protocol = urlObj.protocol === 'https:' ? https : http;
@@ -251,10 +252,10 @@ class KBCrawler {
       const req = protocol.request(options, (res) => {
         // Handle redirects
         if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-          const depth = (options?._redirectCount || 0) + 1;
+          const depth = redirectCount + 1;
           if (depth > 5) return reject(new Error(`Max redirects (5) exceeded for ${url}`));
           const redirectUrl = new URL(res.headers.location, url).href;
-          return resolve(this.fetchPage(redirectUrl, { _redirectCount: depth }));
+          return resolve(this.fetchPage(redirectUrl, depth));
         }
 
         if (res.statusCode !== 200) {

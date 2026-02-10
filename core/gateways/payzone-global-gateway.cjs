@@ -58,8 +58,16 @@ class PayzoneGlobalGateway {
             });
         }
 
-        // Default: pass through as payment
-        return this.gateway.processPayment(body);
+        // Stripe-compatible paths not supported by Payzone
+        const unsupportedPaths = ['/customers', '/invoices', '/invoice_items'];
+        if (unsupportedPaths.some(p => path.startsWith(p))) {
+            console.warn(`[Payzone] ⚠️ Stripe-compatible path ${path} not supported — Payzone only supports direct payments`);
+            // Return a stub response so BillingAgent doesn't crash
+            return { id: `pz_stub_${Date.now()}`, object: 'payzone_stub', path, note: 'Payzone does not support customer/invoice management' };
+        }
+
+        // Unknown path — reject explicitly instead of misrouting
+        throw new Error(`[Payzone] Unsupported API path: ${path}. Payzone only supports /payment.`);
     }
 
     /**
@@ -102,11 +110,13 @@ class PayzoneGlobalGateway {
                 .update(bodyString)
                 .digest('hex');
 
-            // Constant-time comparison
-            const valid = crypto.timingSafeEqual(
-                Buffer.from(signature || ''),
-                Buffer.from(expectedSignature)
-            );
+            // G10 fix: Check length before timingSafeEqual (throws on mismatch)
+            const sigBuf = Buffer.from(signature || '');
+            const expectedBuf = Buffer.from(expectedSignature);
+            if (sigBuf.length !== expectedBuf.length) {
+                return { valid: false, error: 'Signature length mismatch' };
+            }
+            const valid = crypto.timingSafeEqual(sigBuf, expectedBuf);
 
             if (valid) {
                 // Parse Payzone XML response

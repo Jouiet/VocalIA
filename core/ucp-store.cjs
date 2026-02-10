@@ -57,8 +57,9 @@ function getLTVTier(ltvValue) {
 class UCPStore {
   constructor(options = {}) {
     this.baseDir = options.baseDir || UCP_DIR;
-    this.cache = new Map();
+    this.cache = new Map(); // tenantId -> { data, timestamp }
     this.cacheTTL = options.cacheTTL || 5 * 60 * 1000; // 5 min
+    this.maxCacheSize = options.maxCacheSize || 100;
   }
 
   /**
@@ -96,15 +97,22 @@ class UCPStore {
   // ==================== PROFILES ====================
 
   /**
-   * Load all profiles for a tenant
+   * Load all profiles for a tenant (cache-through: memory → disk)
    */
   loadProfiles(tenantId) {
+    const cached = this.cache.get(tenantId);
+    if (cached && (Date.now() - cached.timestamp) < this.cacheTTL) {
+      return cached.data;
+    }
+
     const filepath = this.getProfilesPath(tenantId);
     if (!fs.existsSync(filepath)) {
       return {};
     }
     try {
-      return JSON.parse(fs.readFileSync(filepath, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+      this._cacheSet(tenantId, data);
+      return data;
     } catch (e) {
       console.error(`❌ [UCP] Error loading profiles for ${tenantId}:`, e.message);
       return {};
@@ -112,11 +120,30 @@ class UCPStore {
   }
 
   /**
-   * Save all profiles for a tenant
+   * Save all profiles for a tenant (write-through: memory + disk)
    */
   saveProfiles(tenantId, profiles) {
     const filepath = this.getProfilesPath(tenantId);
     fs.writeFileSync(filepath, JSON.stringify(profiles, null, 2));
+    this._cacheSet(tenantId, profiles);
+  }
+
+  /**
+   * Set cache entry with LRU eviction
+   */
+  _cacheSet(tenantId, data) {
+    if (this.cache.size >= this.maxCacheSize && !this.cache.has(tenantId)) {
+      const oldest = this.cache.keys().next().value;
+      if (oldest) this.cache.delete(oldest);
+    }
+    this.cache.set(tenantId, { data, timestamp: Date.now() });
+  }
+
+  /**
+   * Invalidate cache for a tenant
+   */
+  _cacheInvalidate(tenantId) {
+    this.cache.delete(tenantId);
   }
 
   /**
@@ -214,12 +241,13 @@ class UCPStore {
    */
   recordInteraction(tenantId, customerId, interaction) {
     const filepath = this.getInteractionsPath(tenantId);
+    // BL27 fix: Spread interaction BEFORE fixed fields to prevent override of system values
     const entry = {
+      ...interaction,
       id: crypto.randomUUID().split('-')[0],
       customer_id: customerId,
       tenant_id: tenantId,
       timestamp: new Date().toISOString(),
-      ...interaction
     };
 
     // Append to JSONL file
@@ -419,6 +447,7 @@ class UCPStore {
    */
   purgeTenant(tenantId) {
     const tenantDir = path.join(this.baseDir, sanitizeTenantId(tenantId));
+    this._cacheInvalidate(tenantId);
     if (fs.existsSync(tenantDir)) {
       fs.rmSync(tenantDir, { recursive: true, force: true });
       return true;

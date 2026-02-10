@@ -834,6 +834,15 @@ class GrokRealtimeProxy {
             if (CONFIG.voices[msg.voice]) {
               session.setVoice(msg.voice);
             }
+          } else if (msg.type === 'session.update') {
+            // BL11 fix: Strip instructions from session.update to prevent prompt injection
+            // Instructions are set from tenant config only (line 759-762), never from browser
+            if (msg.session) {
+              delete msg.session.instructions;
+              delete msg.session.tools;
+              delete msg.session.tool_choice;
+            }
+            session._send(msg);
           } else {
             // Forward raw message to Grok
             session._send(msg);
@@ -1140,6 +1149,17 @@ Examples:
       console.log('\nShutting down...');
       proxy.stop();
       process.exit(0);
+    });
+
+    process.on('uncaughtException', (err) => {
+      console.error('❌ [GrokRealtime] Uncaught exception:', err.message);
+      console.error(err.stack);
+      proxy.stop();
+      process.exit(1);
+    });
+
+    process.on('unhandledRejection', (reason) => {
+      console.error('❌ [GrokRealtime] Unhandled rejection:', reason);
     });
 
     return;

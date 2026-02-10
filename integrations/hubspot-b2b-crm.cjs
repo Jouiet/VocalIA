@@ -854,7 +854,9 @@ class HubSpotB2BCRM {
     }
 
     // HITL Check: High-value deals require approval
-    if (HITL_CONFIG.enabled && dealData.amount >= HITL_CONFIG.dealValueThreshold) {
+    // G9 fix: Ensure numeric comparison (amount may be string from API)
+    const dealAmount = parseFloat(dealData.amount) || 0;
+    if (HITL_CONFIG.enabled && dealAmount >= HITL_CONFIG.dealValueThreshold) {
       const pendingDeal = queueDealForApproval(dealData, `Deal amount €${dealData.amount.toLocaleString()} >= €${HITL_CONFIG.dealValueThreshold.toLocaleString()} threshold`);
       return {
         status: 'pending_approval',
@@ -1304,8 +1306,9 @@ async function createForTenant(tenantId) {
   return new HubSpotB2BCRM(accessToken, tenantId);
 }
 
-// Cache for tenant instances
+// Cache for tenant instances (IC2 fix: bounded)
 const tenantInstances = new Map();
+const MAX_TENANT_INSTANCES = 50;
 
 /**
  * Get or create a cached tenant instance
@@ -1314,6 +1317,11 @@ const tenantInstances = new Map();
  */
 async function getForTenant(tenantId = 'agency_internal') {
   if (!tenantInstances.has(tenantId)) {
+    // Evict oldest if cache full
+    if (tenantInstances.size >= MAX_TENANT_INSTANCES) {
+      const oldestKey = tenantInstances.keys().next().value;
+      tenantInstances.delete(oldestKey);
+    }
     const instance = await createForTenant(tenantId);
     tenantInstances.set(tenantId, instance);
   }

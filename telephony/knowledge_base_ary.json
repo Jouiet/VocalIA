@@ -19,11 +19,11 @@
         "dentiste": "الدكتور متخصص فالأسنان التجميلية وزراعة الأسنان."
     },
     "agency_v3": {
-        "produits": "VocalIA عندها 4 ديال المنتجات: Voice Widget B2B (تأهيل leads)، Voice Widget B2C (دعم e-commerce)، Widget E-commerce (8 تكاملات)، و Voice Telephony AI (خط تيليفون PSTN).",
+        "produits": "VocalIA عندها 3 ديال المنتجات: Voice Widget B2B (تأهيل leads)، E-commerce Widget Pro (8 تكاملات + panier، carousel، quiz)، و Voice Telephony AI (خط تيليفون PSTN).",
         "personas": "40 شخصية متخصصة: أطباء الأسنان، العقارات، المطاعم، التجارة الإلكترونية والشركات.",
         "langues": "5 لغات: الفرنسية، الإنجليزية، الإسبانية، العربية والدارجة المغربية.",
         "contact": "تواصل معانا عبر vocalia.ma/booking ولا contact@vocalia.ma.",
-        "tarifs": "تجربة مجانية 14 يوم، Starter 490 درهم/شهر، Pro 990 درهم/شهر، Enterprise على حسب الطلب.",
+        "tarifs": "تجربة مجانية 14 يوم. Starter 49€/شهر، Pro 99€/شهر، E-commerce 99€/شهر، Telephony 199€/شهر + 0.10€/الدقيقة.",
         "integrations": "+31 تكامل أصلي (HubSpot، Shopify، Stripe، Calendly...) و 203 أداة MCP."
     },
     "healer_v1": {

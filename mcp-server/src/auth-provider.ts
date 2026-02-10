@@ -318,8 +318,8 @@ export class VocaliaOAuthProvider implements OAuthServerProvider {
 
 const CLEANUP_INTERVAL = 15 * 60 * 1000; // 15 minutes
 
-const MAX_REVOKED_TOKENS = 10000;
-const MAX_CLIENTS = 1000;
+const MAX_REVOKED_TOKENS = 5000;
+const MAX_CLIENTS = 100;
 // CLIENT_INACTIVITY_TTL reserved for future per-client TTL enforcement
 
 const cleanupTimer = setInterval(() => {

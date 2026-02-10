@@ -55,7 +55,8 @@
             errorInvalid: 'Veuillez entrer un numero ou email valide',
             errorSend: 'Erreur lors de l\'envoi. Reessayez.',
             cartItemsLabel: 'Articles :',
-            expiresIn: 'Offre valable encore {{minutes}} min'
+            expiresIn: 'Offre valable encore {{minutes}} min',
+            ariaClose: 'Fermer'
         },
         en: {
             title: 'Your cart is waiting!',
@@ -82,7 +83,8 @@
             errorInvalid: 'Please enter a valid phone or email',
             errorSend: 'Error sending. Please retry.',
             cartItemsLabel: 'Items:',
-            expiresIn: 'Offer valid for {{minutes}} more min'
+            expiresIn: 'Offer valid for {{minutes}} more min',
+            ariaClose: 'Close'
         },
         es: {
             title: 'Tu carrito te espera!',
@@ -109,7 +111,8 @@
             errorInvalid: 'Por favor ingresa un numero o email valido',
             errorSend: 'Error al enviar. Reintenta.',
             cartItemsLabel: 'Articulos:',
-            expiresIn: 'Oferta valida por {{minutes}} min mas'
+            expiresIn: 'Oferta valida por {{minutes}} min mas',
+            ariaClose: 'Cerrar'
         },
         ar: {
             title: 'سلتك بانتظارك!',
@@ -136,7 +139,8 @@
             errorInvalid: 'يرجى إدخال رقم أو بريد صحيح',
             errorSend: 'خطأ في الإرسال. حاول مجددًا.',
             cartItemsLabel: 'المنتجات:',
-            expiresIn: 'العرض صالح لمدة {{minutes}} دقيقة'
+            expiresIn: 'العرض صالح لمدة {{minutes}} دقيقة',
+            ariaClose: 'إغلاق'
         },
         ary: {
             title: 'الباني ديالك كيتسناك!',
@@ -163,7 +167,8 @@
             errorInvalid: 'دخل رقم ولا إيميل صحيح',
             errorSend: 'كاين مشكل. عاود.',
             cartItemsLabel: 'المنتوجات:',
-            expiresIn: 'العرض صالح {{minutes}} دقيقة'
+            expiresIn: 'العرض صالح {{minutes}} دقيقة',
+            ariaClose: 'سد'
         }
     };
 
@@ -658,6 +663,14 @@
             this.translations = TRANSLATIONS[this.config.lang] || TRANSLATIONS.en;
             this.isRTL = ['ar', 'ary'].includes(this.config.lang);
 
+            // Store bound handlers for cleanup in destroy()
+            this._handlers = {
+                mouseout: (e) => { if (e.clientY < 10 && !this.state.isVisible) this.checkAndShow('exit_intent'); },
+                visibilitychange: () => { document.hidden ? this.startTabBlurTimer() : this.clearTabBlurTimer(); },
+                activity: () => this.resetInactivityTimer(),
+                beforeunload: () => { if (this.hasCartItems()) this.trackEvent('cart_abandoned_page_exit'); }
+            };
+
             this.init();
         }
 
@@ -764,7 +777,7 @@
 
             return `
         <div class="va-abandoned-cart-modal" dir="${dir}" role="dialog" aria-modal="true" aria-labelledby="va-cart-title">
-          <button class="va-cart-close" aria-label="Close">
+          <button class="va-cart-close" aria-label="${t.ariaClose}">
             <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
 
@@ -851,33 +864,19 @@
 
         setupDetection() {
             // Exit intent detection (desktop)
-            document.addEventListener('mouseout', (e) => {
-                if (e.clientY < 10 && !this.state.isVisible) {
-                    this.checkAndShow('exit_intent');
-                }
-            });
+            document.addEventListener('mouseout', this._handlers.mouseout);
 
             // Tab visibility change
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    this.startTabBlurTimer();
-                } else {
-                    this.clearTabBlurTimer();
-                }
-            });
+            document.addEventListener('visibilitychange', this._handlers.visibilitychange);
 
             // Inactivity detection
             this.resetInactivityTimer();
             ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
-                document.addEventListener(event, () => this.resetInactivityTimer(), { passive: true });
+                document.addEventListener(event, this._handlers.activity, { passive: true });
             });
 
             // Before unload (for analytics)
-            window.addEventListener('beforeunload', () => {
-                if (this.hasCartItems()) {
-                    this.trackEvent('cart_abandoned_page_exit');
-                }
-            });
+            window.addEventListener('beforeunload', this._handlers.beforeunload);
         }
 
         setupOrchestratorIntegration() {
@@ -901,14 +900,16 @@
         }
 
         checkCooldown() {
-            const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
-            if (lastShown) {
-                const elapsed = Date.now() - parseInt(lastShown, 10);
-                if (elapsed < this.config.cooldownPeriod) {
-                    this.cooldownActive = true;
-                    return;
+            try {
+                const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
+                if (lastShown) {
+                    const elapsed = Date.now() - parseInt(lastShown, 10);
+                    if (elapsed < this.config.cooldownPeriod) {
+                        this.cooldownActive = true;
+                        return;
+                    }
                 }
-            }
+            } catch {}
             this.cooldownActive = false;
         }
 
@@ -988,7 +989,8 @@
             }
 
             // 4. LocalStorage cart
-            const storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart');
+            let storedCart = null;
+            try { storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart'); } catch {}
             if (storedCart) {
                 try {
                     return JSON.parse(storedCart);
@@ -1047,7 +1049,7 @@
             }
 
             // Set cooldown
-            localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString());
+            try { localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString()); } catch {}
             this.cooldownActive = true;
 
             // Notify orchestrator
@@ -1326,7 +1328,7 @@
 
         trackEvent(eventName, params = {}) {
             // RGPD: Only track if user has consented to analytics
-            if (!VocalIACartRecovery._hasAnalyticsConsent()) return;
+            if (!AbandonedCartRecovery._hasAnalyticsConsent()) return;
 
             // GA4
             if (window.gtag) {
@@ -1378,6 +1380,13 @@
 
         destroy() {
             this.hide();
+            // Remove all event listeners (W14 fix)
+            document.removeEventListener('mouseout', this._handlers.mouseout);
+            document.removeEventListener('visibilitychange', this._handlers.visibilitychange);
+            ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+                document.removeEventListener(event, this._handlers.activity);
+            });
+            window.removeEventListener('beforeunload', this._handlers.beforeunload);
             this.host?.remove();
             this.host = null;
             this._shadowRoot = null;

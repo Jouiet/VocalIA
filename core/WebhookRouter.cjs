@@ -267,15 +267,24 @@ class WebhookRouter {
       res.status(200).json({ received: true });
     });
 
-    // List registered handlers
+    // S6 fix: /handlers requires WEBHOOK_ADMIN_KEY to prevent info leak
     this.app.get('/webhook/handlers', (req, res) => {
+      const adminKey = process.env.WEBHOOK_ADMIN_KEY;
+      if (adminKey && req.headers['x-admin-key'] !== adminKey) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
       res.json({
         handlers: Array.from(handlers.keys())
       });
     });
 
-    // Get events for a tenant
+    // S5 fix: /events requires WEBHOOK_ADMIN_KEY to prevent tenant data exposure
     this.app.get('/webhook/events/:tenantId', (req, res) => {
+      const adminKey = process.env.WEBHOOK_ADMIN_KEY;
+      if (adminKey && req.headers['x-admin-key'] !== adminKey) {
+        return res.status(401).json({ error: 'Unauthorized' });
+      }
+
       const { tenantId } = req.params;
       const { date, limit = 100 } = req.query;
 
@@ -288,13 +297,17 @@ class WebhookRouter {
         return res.json({ events: [], count: 0 });
       }
 
+      // S7 fix: Validate and cap limit to prevent unbounded reads
+      const parsedLimit = parseInt(limit, 10);
+      const safeLimit = (Number.isFinite(parsedLimit) && parsedLimit > 0) ? Math.min(parsedLimit, 1000) : 100;
+
       const lines = fs.readFileSync(logFile, 'utf8').split('\n').filter(Boolean);
       const events = lines
         .map(line => {
           try { return JSON.parse(line); } catch { return null; }
         })
         .filter(e => e && e.tenantId === tenantId)
-        .slice(-parseInt(limit));
+        .slice(-safeLimit);
 
       res.json({ events, count: events.length });
     });
@@ -404,6 +417,17 @@ if (require.main === module) {
     router.healthCheck();
   } else if (args.includes('--start')) {
     router.start();
+
+    process.on('uncaughtException', (err) => {
+      console.error('❌ [WebhookRouter] Uncaught exception:', err.message);
+      console.error(err.stack);
+      router.stop();
+      process.exit(1);
+    });
+
+    process.on('unhandledRejection', (reason) => {
+      console.error('❌ [WebhookRouter] Unhandled rejection:', reason);
+    });
   } else {
     console.log(`
 WebhookRouter - Multi-Tenant Inbound Webhook Handler

@@ -86,11 +86,11 @@ async function sendCartRecoveryEmail({ to, tenantId, cart, discount, language, r
   const cartItemsHtml = (cart || []).map(item => `
     <tr>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb;">
-        ${item.image ? `<img src="${item.image}" alt="" width="50" height="50" style="border-radius: 6px; object-fit: cover;">` : ''}
+        ${item.image ? `<img src="${escapeHtml(item.image)}" alt="" width="50" height="50" style="border-radius: 6px; object-fit: cover;">` : ''}
       </td>
       <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; font-weight: 500;">${escapeHtml(item.name || '')}</td>
-      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center;">${item.quantity || 1}</td>
-      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: 600;">${item.price || ''}</td>
+      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: center;">${parseInt(item.quantity, 10) || 1}</td>
+      <td style="padding: 12px; border-bottom: 1px solid #e5e7eb; text-align: right; font-weight: 600;">${escapeHtml(String(item.price || ''))}</td>
     </tr>
   `).join('');
 
@@ -194,24 +194,28 @@ async function sendVerificationEmail(email, token, name = '') {
   const baseUrl = ENV.APP_URL || 'https://vocalia.ma';
   const verifyUrl = `${baseUrl}/app/auth/verify-email.html?token=${encodeURIComponent(token)}`;
 
-  await transporter.sendMail({
-    from: ENV.SMTP_FROM || 'VocalIA <no-reply@vocalia.ma>',
-    to: email,
-    subject: 'Vérifiez votre email — VocalIA',
-    html: `
-      <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;">
-        <h2 style="color: #5E6AD2;">Bienvenue sur VocalIA${name ? ', ' + escapeHtml(name) : ''} !</h2>
-        <p>Cliquez sur le bouton ci-dessous pour vérifier votre adresse email :</p>
-        <a href="${verifyUrl}" style="display: inline-block; background: #5E6AD2; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
-          Vérifier mon email
-        </a>
-        <p style="color: #71717a; font-size: 14px;">Ce lien expire dans 24 heures.</p>
-        <p style="color: #71717a; font-size: 12px;">Si vous n'avez pas créé de compte, ignorez cet email.</p>
-      </div>
-    `
-  });
-
-  return true;
+  try {
+    await transporter.sendMail({
+      from: ENV.SMTP_FROM || 'VocalIA <no-reply@vocalia.ma>',
+      to: email,
+      subject: 'Vérifiez votre email — VocalIA',
+      html: `
+        <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;">
+          <h2 style="color: #5E6AD2;">Bienvenue sur VocalIA${name ? ', ' + escapeHtml(name) : ''} !</h2>
+          <p>Cliquez sur le bouton ci-dessous pour vérifier votre adresse email :</p>
+          <a href="${verifyUrl}" style="display: inline-block; background: #5E6AD2; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
+            Vérifier mon email
+          </a>
+          <p style="color: #71717a; font-size: 14px;">Ce lien expire dans 24 heures.</p>
+          <p style="color: #71717a; font-size: 12px;">Si vous n'avez pas créé de compte, ignorez cet email.</p>
+        </div>
+      `
+    });
+    return true;
+  } catch (err) {
+    console.error('❌ [EmailService] Verification email failed:', err.message);
+    return false;
+  }
 }
 
 /**
@@ -227,24 +231,28 @@ async function sendPasswordResetEmail(email, token, name = '') {
   const baseUrl = ENV.APP_URL || 'https://vocalia.ma';
   const resetUrl = `${baseUrl}/app/auth/forgot-password.html?token=${encodeURIComponent(token)}`;
 
-  await transporter.sendMail({
-    from: ENV.SMTP_FROM || 'VocalIA <no-reply@vocalia.ma>',
-    to: email,
-    subject: 'Réinitialisation de mot de passe — VocalIA',
-    html: `
-      <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;">
-        <h2 style="color: #5E6AD2;">Réinitialisation de mot de passe</h2>
-        <p>${name ? escapeHtml(name) + ', v' : 'V'}ous avez demandé une réinitialisation de mot de passe.</p>
-        <a href="${resetUrl}" style="display: inline-block; background: #5E6AD2; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
-          Réinitialiser mon mot de passe
-        </a>
-        <p style="color: #71717a; font-size: 14px;">Ce lien expire dans 6 heures.</p>
-        <p style="color: #71717a; font-size: 12px;">Si vous n'avez pas fait cette demande, ignorez cet email.</p>
-      </div>
-    `
-  });
-
-  return true;
+  try {
+    await transporter.sendMail({
+      from: ENV.SMTP_FROM || 'VocalIA <no-reply@vocalia.ma>',
+      to: email,
+      subject: 'Réinitialisation de mot de passe — VocalIA',
+      html: `
+        <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px;">
+          <h2 style="color: #5E6AD2;">Réinitialisation de mot de passe</h2>
+          <p>${name ? escapeHtml(name) + ', v' : 'V'}ous avez demandé une réinitialisation de mot de passe.</p>
+          <a href="${resetUrl}" style="display: inline-block; background: #5E6AD2; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; margin: 16px 0;">
+            Réinitialiser mon mot de passe
+          </a>
+          <p style="color: #71717a; font-size: 14px;">Ce lien expire dans 6 heures.</p>
+          <p style="color: #71717a; font-size: 12px;">Si vous n'avez pas fait cette demande, ignorez cet email.</p>
+        </div>
+      `
+    });
+    return true;
+  } catch (err) {
+    console.error('❌ [EmailService] Password reset email failed:', err.message);
+    return false;
+  }
 }
 
 module.exports = {

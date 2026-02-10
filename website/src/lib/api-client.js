@@ -414,7 +414,9 @@ class APIClient {
    */
   _groupByDate(arr, field) {
     return arr.reduce((acc, item) => {
-      const date = new Date(item[field]).toISOString().split('T')[0];
+      // W4 fix: new Date(undefined).toISOString() throws RangeError
+      const d = new Date(item[field]);
+      const date = isNaN(d.getTime()) ? 'unknown' : d.toISOString().split('T')[0];
       acc[date] = (acc[date] || 0) + 1;
       return acc;
     }, {});

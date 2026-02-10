@@ -832,7 +832,7 @@ class GoogleSheetsDB {
 
     const mapping = quotaMap[quotaType];
     if (!mapping) {
-      return { allowed: true, current: 0, limit: Infinity, remaining: Infinity, error: 'Invalid quota type' };
+      return { allowed: false, current: 0, limit: 0, remaining: 0, error: `Invalid quota type: ${quotaType}` };
     }
 
     const limit = config.quotas?.[mapping.quota] || Infinity;
@@ -888,10 +888,14 @@ class GoogleSheetsDB {
     const newValue = (config.usage?.[usageKey] || 0) + amount;
     const updated = this.updateTenantUsage(tenantId, { [usageKey]: newValue });
 
+    // BL9 fix: Use correct quota key mapping (kb_entries ≠ kb_entries_monthly)
+    const quotaKeys = { calls: 'calls_monthly', sessions: 'sessions_monthly', kb_entries: 'kb_entries' };
+    const quotaLimit = config.quotas?.[quotaKeys[usageType]] || Infinity;
+
     return {
       success: updated,
       newValue,
-      withinQuota: newValue <= (config.quotas?.[usageMap[usageType]?.replace('_current', '_monthly')] || Infinity)
+      withinQuota: newValue <= quotaLimit
     };
   }
 

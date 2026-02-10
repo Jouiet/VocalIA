@@ -31,6 +31,8 @@
 
 const http = require('http');
 const url = require('url');
+const path = require('path');
+const fs = require('fs');
 const crypto = require('crypto');
 const { WebSocketServer } = require('ws');
 const { getDB } = require('./GoogleSheetsDB.cjs');
@@ -117,6 +119,8 @@ const { validateOriginTenant, validateApiKey, getCorsHeaders, VOCALIA_ORIGINS: C
 const dbLimiter = rateLimit({ windowMs: 60 * 1000, max: 100 }); // 100 per minute
 // D8 fix: Rate limiter for public catalog/widget endpoints
 const publicLimiter = rateLimit({ windowMs: 60 * 1000, max: 30 }); // 30 per minute per IP
+// P1 fix: Strict rate limiter for endpoints that trigger external actions (calls/SMS/email)
+const actionLimiter = rateLimit({ windowMs: 60 * 1000, max: 5 }); // 5 per minute per IP
 
 const stripeService = require('./StripeService.cjs');
 
@@ -210,7 +214,14 @@ function sendJson(res, statusCode, data) {
  * Send error response
  */
 function sendError(res, statusCode, message) {
-  sendJson(res, statusCode, { error: message });
+  // P4 fix: Never expose internal error details in 500 responses
+  // Client-facing errors (4xx) are intentional and safe to return as-is
+  if (statusCode >= 500) {
+    console.error(`[DB-API] Internal error: ${message}`);
+    sendJson(res, statusCode, { error: 'Internal server error' });
+  } else {
+    sendJson(res, statusCode, { error: message });
+  }
 }
 
 /**
@@ -302,6 +313,8 @@ async function handleAuthRequest(req, res, path, method) {
 
     // POST /api/auth/refresh
     if (path === '/api/auth/refresh' && method === 'POST') {
+      const rateLimited = await applyRateLimit(req, res, loginLimiter);
+      if (rateLimited) return true;
       const { refresh_token } = body;
       if (!refresh_token) {
         sendError(res, 400, 'Refresh token required');
@@ -331,6 +344,8 @@ async function handleAuthRequest(req, res, path, method) {
 
     // POST /api/auth/reset
     if (path === '/api/auth/reset' && method === 'POST') {
+      const rateLimited = await applyRateLimit(req, res, loginLimiter);
+      if (rateLimited) return true;
       const { token, password } = body;
       if (!token || !password) {
         sendError(res, 400, 'Token and new password required');
@@ -344,6 +359,8 @@ async function handleAuthRequest(req, res, path, method) {
 
     // POST /api/auth/verify-email
     if (path === '/api/auth/verify-email' && method === 'POST') {
+      const rateLimited = await applyRateLimit(req, res, loginLimiter);
+      if (rateLimited) return true;
       const { token } = body;
       if (!token) {
         sendError(res, 400, 'Verification token required');
@@ -448,36 +465,114 @@ async function handleAuthRequest(req, res, path, method) {
  */
 async function applyRateLimit(req, res, limiter) {
   return new Promise(resolve => {
-    limiter(req, res, () => resolve(false));
-    // If rate limited, resolve will happen after sendError
-    setTimeout(() => resolve(res.writableEnded), 100);
+    // Intercept writeHead to detect rate-limit response reliably (no setTimeout race)
+    const origWriteHead = res.writeHead;
+    res.writeHead = function(statusCode, ...args) {
+      origWriteHead.call(this, statusCode, ...args);
+      if (statusCode === 429) resolve(true);
+    };
+    limiter(req, res, () => {
+      res.writeHead = origWriteHead; // Restore
+      resolve(false);
+    });
   });
 }
 
 /**
  * Handle HITL (Human-in-the-Loop) Endpoints
- * - GET  /api/hitl/pending  - List pending approvals
+ * - GET  /api/hitl/pending  - List pending approvals (aggregated from all domains)
  * - GET  /api/hitl/history  - List approval history
- * - POST /api/hitl/approve/:id - Approve an item
- * - POST /api/hitl/reject/:id  - Reject an item
+ * - POST /api/hitl/approve/:id - Approve an item (dispatched to domain by ID prefix)
+ * - POST /api/hitl/reject/:id  - Reject an item (dispatched to domain by ID prefix)
  * - GET  /api/hitl/stats    - Get HITL statistics
+ *
+ * Session 250.190: F14 fix — aggregate from 3 domain-specific stores + GoogleSheetsDB.
+ * Before this fix, hitl_pending (GoogleSheetsDB) had ZERO writers → dashboard always empty.
  */
+
+// HITL file store paths (domain-specific)
+const HITL_VOICE_FILE = path.join(__dirname, '..', 'data', 'voice', 'hitl-pending', 'pending-actions.json');
+const HITL_HUBSPOT_FILE = path.join(__dirname, '..', 'data', 'hubspot', 'hitl-pending', 'pending-deals.json');
+const HITL_REMOTION_FILE = path.join(__dirname, '..', 'data', 'remotion-hitl', 'pending-queue.json');
+
+function loadFileHITL(filePath, source) {
+  try {
+    if (fs.existsSync(filePath)) {
+      const items = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      return (Array.isArray(items) ? items : []).map(item => ({
+        ...item,
+        _source: source,
+        _filePath: filePath
+      }));
+    }
+  } catch (e) { /* file not ready */ }
+  return [];
+}
+
+function saveFileHITL(filePath, items) {
+  const clean = items.map(({ _source, _filePath, ...rest }) => rest);
+  const tmpPath = `${filePath}.tmp`;
+  fs.writeFileSync(tmpPath, JSON.stringify(clean, null, 2));
+  fs.renameSync(tmpPath, filePath);
+}
+
+function loadAllPendingHITL(db) {
+  const voice = loadFileHITL(HITL_VOICE_FILE, 'voice');
+  const hubspot = loadFileHITL(HITL_HUBSPOT_FILE, 'hubspot');
+  const remotion = loadFileHITL(HITL_REMOTION_FILE, 'remotion');
+
+  // Normalize to common shape
+  const normalize = (item, source) => ({
+    id: item.id,
+    type: item.actionType || item.type || source,
+    source,
+    tenant: item.tenantId || item.tenant_id || item.tenant || 'default',
+    summary: item.reason || item.dealData?.dealname || item.videoId || item.summary || '',
+    created_at: item.created_at || item.queuedAt || item.createdAt || new Date().toISOString(),
+    raw: item
+  });
+
+  return [
+    ...voice.map(i => normalize(i, 'voice')),
+    ...hubspot.map(i => normalize(i, 'hubspot')),
+    ...remotion.map(i => normalize(i, 'remotion'))
+  ];
+}
+
+function findAndRemoveFromFileStore(id) {
+  const stores = [
+    { path: HITL_VOICE_FILE, source: 'voice' },
+    { path: HITL_HUBSPOT_FILE, source: 'hubspot' },
+    { path: HITL_REMOTION_FILE, source: 'remotion' }
+  ];
+  for (const store of stores) {
+    const items = loadFileHITL(store.path, store.source);
+    const index = items.findIndex(i => i.id === id);
+    if (index !== -1) {
+      const [found] = items.splice(index, 1);
+      saveFileHITL(store.path, items);
+      return { item: found, source: store.source };
+    }
+  }
+  return null;
+}
+
 async function handleHITLRequest(req, res, path, method, authUser = null) {
   try {
     const db = getDB();
 
-    // GET /api/hitl/pending
+    // GET /api/hitl/pending — aggregated from all domain stores
     if (path === '/api/hitl/pending' && method === 'GET') {
-      let pending = [];
+      let dbPending = [];
       try {
-        pending = await db.findAll('hitl_pending');
-        // Sort by created_at descending (newest first)
-        pending.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-      } catch (e) {
-        // Table might not exist yet
-        pending = [];
-      }
-      sendJson(res, 200, { count: pending.length, data: pending });
+        dbPending = await db.findAll('hitl_pending');
+      } catch (e) { /* sheet may not exist */ }
+
+      const filePending = loadAllPendingHITL(db);
+      const all = [...dbPending, ...filePending];
+      all.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      sendJson(res, 200, { count: all.length, data: all });
       return true;
     }
 
@@ -494,19 +589,27 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
       return true;
     }
 
-    // GET /api/hitl/stats
+    // GET /api/hitl/stats — aggregated
     if (path === '/api/hitl/stats' && method === 'GET') {
-      let pending = [], history = [];
+      let dbPending = [], history = [];
       try {
-        pending = await db.findAll('hitl_pending');
+        dbPending = await db.findAll('hitl_pending');
         history = await db.findAll('hitl_history');
-      } catch (e) {
-        // Tables might not exist
-      }
+      } catch (e) { /* tables might not exist */ }
+
+      const filePending = loadAllPendingHITL(db);
+      const totalPending = dbPending.length + filePending.length;
       const approved = history.filter(h => h.decision === 'approved').length;
       const rejected = history.filter(h => h.decision === 'rejected').length;
+
       sendJson(res, 200, {
-        pending_count: pending.length,
+        pending_count: totalPending,
+        pending_by_source: {
+          db: dbPending.length,
+          voice: filePending.filter(i => i.source === 'voice').length,
+          hubspot: filePending.filter(i => i.source === 'hubspot').length,
+          remotion: filePending.filter(i => i.source === 'remotion').length
+        },
         approved_count: approved,
         rejected_count: rejected,
         total_decided: history.length
@@ -514,100 +617,114 @@ async function handleHITLRequest(req, res, path, method, authUser = null) {
       return true;
     }
 
-    // POST /api/hitl/approve/:id
+    // POST /api/hitl/approve/:id — dispatched to domain by ID
     const approveMatch = path.match(/^\/api\/hitl\/approve\/(\w+)$/);
     if (approveMatch && method === 'POST') {
       const id = approveMatch[1];
       const body = await parseBody(req);
-      // D9 fix: use authenticated user identity, not spoofable body param
       const admin = authUser?.email || authUser?.sub || 'Admin';
 
-      // Find pending item
+      // Try GoogleSheetsDB first
       let pending;
       try {
         pending = await db.findById('hitl_pending', id);
-      } catch (e) {
-        sendError(res, 404, 'Pending item not found');
-        return true;
+      } catch (e) { /* not in DB */ }
+
+      if (pending) {
+        // Legacy DB path
+        await db.create('hitl_history', {
+          ...pending,
+          decision: 'approved',
+          decided_by: admin,
+          decided_at: new Date().toISOString()
+        });
+        await db.delete('hitl_pending', id);
+      } else {
+        // Search file-based stores
+        const result = findAndRemoveFromFileStore(id);
+        if (!result) {
+          sendError(res, 404, 'Pending item not found');
+          return true;
+        }
+        pending = result.item;
+        // Record in history
+        await db.create('hitl_history', {
+          id,
+          type: pending.actionType || pending.type || result.source,
+          source: result.source,
+          tenant_id: pending.tenantId || pending.tenant_id || 'default',
+          decision: 'approved',
+          decided_by: admin,
+          decided_at: new Date().toISOString(),
+          data: pending
+        });
       }
 
-      if (!pending) {
-        sendError(res, 404, 'Pending item not found');
-        return true;
-      }
-
-      // Move to history with approved decision
-      await db.create('hitl_history', {
-        ...pending,
-        decision: 'approved',
-        decided_by: admin,
-        decided_at: new Date().toISOString()
-      });
-
-      // Remove from pending
-      await db.delete('hitl_pending', id);
-
-      // Broadcast HITL approval
       broadcast('hitl', 'approved', { id, admin, item: pending });
 
-      // Session 250.57: Audit trail for HITL approval
-      auditStore.log(pending.tenant_id || 'default', {
+      auditStore.log(pending.tenant_id || pending.tenantId || 'default', {
         action: ACTION_CATEGORIES.HITL_APPROVE,
         actor: admin,
         actor_type: 'admin',
         resource: `hitl:${id}`,
-        details: { type: pending.type, data: pending.data }
+        details: { type: pending.type || pending.actionType, data: pending }
       });
 
       sendJson(res, 200, { success: true, decision: 'approved', id });
       return true;
     }
 
-    // POST /api/hitl/reject/:id
+    // POST /api/hitl/reject/:id — dispatched to domain by ID
     const rejectMatch = path.match(/^\/api\/hitl\/reject\/(\w+)$/);
     if (rejectMatch && method === 'POST') {
       const id = rejectMatch[1];
       const body = await parseBody(req);
-      // D9 fix: use authenticated user identity, not spoofable body param
       const admin = authUser?.email || authUser?.sub || 'Admin';
       const reason = body.reason || '';
 
-      // Find pending item
+      // Try GoogleSheetsDB first
       let pending;
       try {
         pending = await db.findById('hitl_pending', id);
-      } catch (e) {
-        sendError(res, 404, 'Pending item not found');
-        return true;
+      } catch (e) { /* not in DB */ }
+
+      if (pending) {
+        await db.create('hitl_history', {
+          ...pending,
+          decision: 'rejected',
+          decided_by: admin,
+          decided_at: new Date().toISOString(),
+          rejection_reason: reason
+        });
+        await db.delete('hitl_pending', id);
+      } else {
+        const result = findAndRemoveFromFileStore(id);
+        if (!result) {
+          sendError(res, 404, 'Pending item not found');
+          return true;
+        }
+        pending = result.item;
+        await db.create('hitl_history', {
+          id,
+          type: pending.actionType || pending.type || result.source,
+          source: result.source,
+          tenant_id: pending.tenantId || pending.tenant_id || 'default',
+          decision: 'rejected',
+          decided_by: admin,
+          decided_at: new Date().toISOString(),
+          rejection_reason: reason,
+          data: pending
+        });
       }
 
-      if (!pending) {
-        sendError(res, 404, 'Pending item not found');
-        return true;
-      }
-
-      // Move to history with rejected decision
-      await db.create('hitl_history', {
-        ...pending,
-        decision: 'rejected',
-        decided_by: admin,
-        decided_at: new Date().toISOString(),
-        rejection_reason: reason
-      });
-
-      // Remove from pending
-      await db.delete('hitl_pending', id);
-
-      // Broadcast HITL rejection
       broadcast('hitl', 'rejected', { id, admin, reason, item: pending });
 
-      // Session 250.57: Audit trail for HITL rejection
-      auditStore.log(pending.tenant_id || 'default', {
+      auditStore.log(pending.tenant_id || pending.tenantId || 'default', {
         action: ACTION_CATEGORIES.HITL_REJECT,
         actor: admin,
         actor_type: 'admin',
         resource: `hitl:${id}`,
-        details: { type: pending.type, reason }
+        details: { type: pending.type || pending.actionType, reason }
       });
 
       sendJson(res, 200, { success: true, decision: 'rejected', id });
@@ -909,7 +1026,13 @@ async function handleRequest(req, res) {
       // Load or create KB
       let kb = {};
       if (fs.existsSync(kbFile)) {
-        kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+        try {
+          kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+        } catch (e) {
+          console.error(`❌ [KB] Corrupted KB file: ${kbFile}`, e.message);
+          sendError(res, 500, 'Knowledge base file is corrupted');
+          return;
+        }
       }
 
       // Add/update entry
@@ -964,7 +1087,14 @@ async function handleRequest(req, res) {
         return;
       }
 
-      const kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+      let kb;
+      try {
+        kb = JSON.parse(fs.readFileSync(kbFile, 'utf8'));
+      } catch (e) {
+        console.error(`❌ [KB] Corrupted KB file: ${kbFile}`, e.message);
+        sendError(res, 500, 'Knowledge base file is corrupted');
+        return;
+      }
       if (!kb[key]) {
         sendError(res, 404, 'KB entry not found');
         return;
@@ -1317,8 +1447,9 @@ async function handleRequest(req, res) {
         name: tenantId,
         connector: {
           type: 'custom',
-          catalogType: catalogType,
-          dataPath: `data/catalogs/tenants/${tenantId}`
+          catalogType: catalogType
+          // Session 250.190 Fix F9: Removed explicit dataPath — let connector use its own
+          // absolute default (data/catalogs/{tenantId}), consistent with voice-ecommerce-tools
         }
       });
 
@@ -1559,8 +1690,8 @@ async function handleRequest(req, res) {
         name: tenantId,
         connector: {
           type: 'custom',
-          catalogType: catalogType,
-          dataPath: `data/catalogs/tenants/${tenantId}`
+          catalogType: catalogType
+          // Session 250.190 Fix F9: Removed explicit dataPath — use connector default
         }
       });
 
@@ -1814,6 +1945,9 @@ async function handleRequest(req, res) {
   // AI Recommendations - POST /api/recommendations (Session 250.79)
   // Uses AI-powered recommendation service: similar, bought_together, personalized
   if (path === '/api/recommendations' && method === 'POST') {
+    // P3 fix: rate limit public widget endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     try {
       const body = await parseBody(req);
       const tenantId = body.tenant_id;
@@ -1862,11 +1996,22 @@ async function handleRequest(req, res) {
           }
           break;
 
-        case 'personalized':
+        case 'personalized': {
+          // Session 250.188: Auto-fetch UCP profile from shared store if not provided
+          // Session 250.190: Fix F6 — lazy require in correct scope (was ReferenceError)
+          const userId = body.user_id || 'anonymous';
+          let ucpProfile = body.ucp_profile || null;
+          if (!ucpProfile) {
+            try {
+              const { getInstance: getUCPStore } = require('./ucp-store.cjs');
+              const ucpStore = getUCPStore();
+              ucpProfile = ucpStore.getProfile(tenantId, userId) || {};
+            } catch { ucpProfile = {}; }
+          }
           result = await recommendationService.getPersonalizedRecommendations(
             tenantId,
-            body.user_id || 'anonymous',
-            body.ucp_profile || {},
+            userId,
+            ucpProfile,
             {
               topK: body.limit || 10,
               recentlyViewed: body.recently_viewed || [],
@@ -1874,6 +2019,7 @@ async function handleRequest(req, res) {
             }
           );
           break;
+        }
 
         default:
           return sendError(res, 400, `Unknown recommendation_type: ${type}`);
@@ -1990,6 +2136,9 @@ async function handleRequest(req, res) {
 
   // Create Lead - POST /api/leads
   if (path === '/api/leads' && method === 'POST') {
+    // P2 fix: rate limit public lead capture endpoint
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     try {
       const body = await parseBody(req);
       const { tenant_id, source, name, email, phone, quiz_answers } = body;
@@ -2054,6 +2203,9 @@ async function handleRequest(req, res) {
   // Cart Recovery - POST /api/cart-recovery
   // Triggers voice callback, SMS, or email reminder for abandoned carts
   if (path === '/api/cart-recovery' && method === 'POST') {
+    // P1 fix: STRICT rate limit — triggers external actions (calls/SMS/email)
+    const rateLimited = await applyRateLimit(req, res, actionLimiter);
+    if (rateLimited) return;
     try {
       const body = await parseBody(req);
       const { tenant_id, channel, contact, cart, discount_percent, language, checkout_url } = body;
@@ -2283,6 +2435,9 @@ async function handleRequest(req, res) {
 
   // POST /api/promo/generate — Generate a unique, time-limited promo code
   if (path === '/api/promo/generate' && method === 'POST') {
+    // P3 fix: rate limit public widget endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     try {
       const body = await parseBody(req);
       const { tenant_id, prize_id, discount_percent, email } = body;
@@ -2338,6 +2493,9 @@ async function handleRequest(req, res) {
 
   // POST /api/promo/validate — Validate and optionally redeem a promo code
   if (path === '/api/promo/validate' && method === 'POST') {
+    // P3 fix: rate limit public widget endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     try {
       const body = await parseBody(req);
       const { code, tenant_id, redeem } = body;
@@ -2621,6 +2779,9 @@ async function handleRequest(req, res) {
   // UCP Sync - POST /api/ucp/sync
   if (path === '/api/ucp/sync' && method === 'POST') {
     // No auth required for widget access
+    // P3 fix: rate limit public widget endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     try {
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
       const body = await parseBody(req);
@@ -2634,16 +2795,17 @@ async function handleRequest(req, res) {
       const userId = body.userId || `anon_${Date.now()}`;
       const countryCode = body.countryCode || 'MA';
 
-      // Market rules based on country
+      // Session 250.190 Fix F10: Market rules aligned with business strategy (MENA→AR+USD)
+      // and consistent with geo-detect.js + client-registry.cjs
       const marketRules = {
         MA: { locale: 'fr-MA', currency: 'MAD', market: 'morocco' },
         FR: { locale: 'fr-FR', currency: 'EUR', market: 'europe' },
         BE: { locale: 'fr-BE', currency: 'EUR', market: 'europe' },
         ES: { locale: 'es-ES', currency: 'EUR', market: 'europe' },
         US: { locale: 'en-US', currency: 'USD', market: 'international' },
-        GB: { locale: 'en-GB', currency: 'GBP', market: 'international' },
-        SA: { locale: 'ar-SA', currency: 'SAR', market: 'mena' },
-        AE: { locale: 'ar-AE', currency: 'AED', market: 'mena' }
+        GB: { locale: 'en-GB', currency: 'USD', market: 'international' },
+        SA: { locale: 'ar-SA', currency: 'USD', market: 'mena' },
+        AE: { locale: 'ar-AE', currency: 'USD', market: 'mena' }
       };
 
       const rules = marketRules[countryCode] || marketRules.MA;
@@ -2678,6 +2840,9 @@ async function handleRequest(req, res) {
 
   // UCP Record Interaction - POST /api/ucp/interaction
   if (path === '/api/ucp/interaction' && method === 'POST') {
+    // P3 fix: rate limit public widget endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     try {
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
       const body = await parseBody(req);
@@ -2708,6 +2873,9 @@ async function handleRequest(req, res) {
   // UCP Track Event - POST /api/ucp/event
   // Uses recordInteraction with type='behavioral_event'
   if (path === '/api/ucp/event' && method === 'POST') {
+    // P3 fix: rate limit public widget endpoints
+    const rateLimited = await applyRateLimit(req, res, publicLimiter);
+    if (rateLimited) return;
     try {
       const { getInstance: getUCPStore } = require('./ucp-store.cjs');
       const body = await parseBody(req);

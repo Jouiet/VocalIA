@@ -76,7 +76,7 @@ for (const field of requiredFields) {
 }
 
 // Load base voice widget
-const baseWidgetPath = path.join(__dirname, '../widget/voice-widget-core.js');
+const baseWidgetPath = path.join(__dirname, '../widget/voice-widget-v3.js');
 if (!fs.existsSync(baseWidgetPath)) {
   console.error('❌ Base voice-widget.js not found');
   process.exit(1);

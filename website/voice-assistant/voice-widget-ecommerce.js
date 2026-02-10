@@ -74,8 +74,10 @@
         accentColor: '#10B981',
         darkBg: '#0f172a',
 
-        // Paths - FIXED Session 250.90: Correct path to language files
-        LANG_PATH: '/voice-assistant/lang/voice-{lang}.json',
+        // Paths - FIXED Session 250.179: Absolute URL for third-party embedding (like B2B)
+        LANG_PATH: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+            ? '/voice-assistant/lang/voice-{lang}.json'
+            : 'https://vocalia.ma/voice-assistant/lang/voice-{lang}.json',
 
         // Cache
         SLOT_CACHE_TTL: 5 * 60 * 1000,
@@ -669,13 +671,13 @@
       </style>
 
       <button class="va-trigger" id="va-trigger" aria-label="${L.ui.ariaOpenAssistant}">
-        <img src="/logo.png" alt="VocalIA" />
+        <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
       </button>
 
       <div class="va-panel" id="va-panel" role="dialog" aria-label="${L.ui.headerTitle}" aria-modal="true">
         <div class="va-header">
           <div class="va-header-icon">
-            <img src="/logo.png" alt="VocalIA" />
+            <img src="${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '/logo.png' : 'https://vocalia.ma/logo.png'}" alt="VocalIA" />
           </div>
           <div class="va-header-text">
             <h3>${L.ui.headerTitle}</h3>
@@ -942,14 +944,14 @@
         }
 
         return `
-      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${product.id}" style="position: relative;">
+      <div class="va-product-card ${featured ? 'featured' : ''}" data-product-id="${escapeAttr(String(product.id))}" style="position: relative;">
         ${badgeHTML}
         ${hasImage
-                ? `<img class="va-product-img" src="${product.image || product.images[0]}" alt="${product.name}" loading="lazy" />`
+                ? `<img class="va-product-img" src="${escapeAttr(product.image || product.images[0])}" alt="${escapeAttr(product.name)}" loading="lazy" />`
                 : `<div class="va-product-img-placeholder">📦</div>`
             }
         <div class="va-product-info">
-          <p class="va-product-name">${product.name}</p>
+          <p class="va-product-name">${escapeHTML(product.name)}</p>
           <div class="va-product-price">
             ${formatPrice(product.price, product.currency)}
             ${isOnSale ? `<span class="va-product-price-old">${formatPrice(product.compare_at_price, product.currency)}</span>` : ''}
@@ -1060,10 +1062,10 @@
             ${displayTitle}
           </span>
           <div class="va-carousel-nav">
-            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="Previous">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '150' : '-150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaPrev || 'Previous'}">
               <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
             </button>
-            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="Next">
+            <button onclick="this.getRootNode().getElementById('${carouselId}').scrollBy({left: ${isRTL ? '-150' : '150'}, behavior: 'smooth'})" aria-label="${L?.ui?.ariaNext || 'Next'}">
               <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
             </button>
           </div>
@@ -1428,11 +1430,7 @@
 
                 // Sync with UCP
                 if (UCP.syncPreference) {
-                    UCP.recordInteraction({
-                        type: 'quiz_completed',
-                        product_id: null,
-                        metadata: { template, answers: lead.answers }
-                    });
+                    UCP.recordInteraction('quiz_completed', { template, answers: lead.answers });
                 }
             },
             ...options
@@ -1595,10 +1593,12 @@
      * Check if spin wheel is available (cooldown check)
      */
     window.VocalIA.isSpinWheelAvailable = function () {
-        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-        if (!lastPlayed) return true;
-        const elapsed = Date.now() - parseInt(lastPlayed, 10);
-        return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        try {
+            const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+            if (!lastPlayed) return true;
+            const elapsed = Date.now() - parseInt(lastPlayed, 10);
+            return elapsed >= 24 * 60 * 60 * 1000; // 24 hours
+        } catch { return true; }
     };
 
     /**
@@ -2375,7 +2375,8 @@
         if (!CONFIG.EXIT_INTENT_ENABLED) return;
 
         // Check cooldown (once per 24h per user)
-        const lastShown = localStorage.getItem('vocalia_exit_intent_shown');
+        let lastShown = null;
+        try { lastShown = localStorage.getItem('vocalia_exit_intent_shown'); } catch {}
         if (lastShown && Date.now() - parseInt(lastShown) < CONFIG.EXIT_INTENT_COOLDOWN) {
             return;
         }
@@ -2451,7 +2452,7 @@
         state.exitIntent.shown = true;
 
         // Save to localStorage for cooldown
-        localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString());
+        try { localStorage.setItem('vocalia_exit_intent_shown', Date.now().toString()); } catch {}
 
         // Track event
         trackEvent('exit_intent_triggered', { trigger, page: window.location.pathname });
@@ -2547,7 +2548,7 @@
       </style>
 
       <div class="va-exit-popup">
-        <button class="va-exit-close" id="va-exit-close" aria-label="Fermer">
+        <button class="va-exit-close" id="va-exit-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
           <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
         </button>
 
@@ -2638,7 +2639,7 @@
                 state.socialProof.messages = data.messages;
             }
         } catch (e) {
-            console.warn('[VocalIA ECOM] Social proof fetch failed, using fallback:', e.message);
+            console.warn('[VocalIA ECOM] Social proof API unavailable, using lang data:', e.message);
         }
 
         // Initial delay before starting notifications
@@ -2714,7 +2715,7 @@
         .va-sp-close:hover { color: rgba(255,255,255,0.7); }
       </style>
 
-      <button class="va-sp-close" aria-label="Fermer">
+      <button class="va-sp-close" aria-label="${state.langData?.ui?.ariaClose || 'Close'}">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
@@ -2722,11 +2723,11 @@
 
       <div class="va-sp-content">
         <div class="va-sp-icon">
-          <svg viewBox="0 0 24 24">${proof.icon || '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
+          <svg viewBox="0 0 24 24">${(proof.icon && /^<(?:path|circle|rect|line|polyline|polygon|ellipse|g)\s/.test(proof.icon.trim())) ? proof.icon : '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>'}</svg>
         </div>
         <div>
-          <div class="va-sp-text">${proof.text}</div>
-          <div class="va-sp-time">${proof.time || getRandomTimeAgo(L)}</div>
+          <div class="va-sp-text">${escapeHTML(proof.text || '')}</div>
+          <div class="va-sp-time">${escapeHTML(proof.time || getRandomTimeAgo(L))}</div>
         </div>
       </div>
     `;
@@ -2766,6 +2767,7 @@
 
     function isBookingIntent(text) {
         const L = state.langData;
+        if (!L?.booking?.keywords) return false;
         const lower = text.toLowerCase();
         return L.booking.keywords.some(kw => lower.includes(kw));
     }
@@ -3465,10 +3467,11 @@
                 if (focusable.length === 0) return;
                 const first = focusable[0];
                 const last = focusable[focusable.length - 1];
-                if (e.shiftKey && document.activeElement === first) {
+                const active = (shadowRoot || document).activeElement;
+                if (e.shiftKey && active === first) {
                     e.preventDefault();
                     last.focus();
-                } else if (!e.shiftKey && document.activeElement === last) {
+                } else if (!e.shiftKey && active === last) {
                     e.preventDefault();
                     first.focus();
                 }
@@ -3575,14 +3578,33 @@
     // INITIALIZATION
     // ============================================================
 
+    // H8 fix: Allowlist of safe config keys that host pages may override
+    const SAFE_CONFIG_KEYS = new Set([
+        'DEFAULT_LANG', 'ECOMMERCE_MODE', 'EXIT_INTENT_ENABLED',
+        'EXIT_INTENT_DELAY', 'EXIT_INTENT_SENSITIVITY', 'EXIT_INTENT_COOLDOWN',
+        'EXIT_INTENT_MOBILE_SCROLL_RATIO', 'EXIT_INTENT_PAGES',
+        'SOCIAL_PROOF_ENABLED', 'SOCIAL_PROOF_INTERVAL', 'SOCIAL_PROOF_DURATION',
+        'SOCIAL_PROOF_MAX_SHOWN', 'MAX_CAROUSEL_ITEMS', 'AI_MODE', 'API_TIMEOUT'
+    ]);
+
+    function safeConfigMerge(source) {
+        if (!source || typeof source !== 'object') return;
+        for (const key of Object.keys(source)) {
+            if (SAFE_CONFIG_KEYS.has(key)) {
+                CONFIG[key] = source[key];
+            }
+        }
+    }
+
     async function init() {
         try {
             // Priority 1: Pick up injected config from distributions (WordPress/Shopify/Wix)
+            // H8 fix: Only allow safe keys — API URLs, tenant_id etc. cannot be overridden
             if (window.VOCALIA_CONFIG_INJECTED) {
-                Object.assign(CONFIG, window.VOCALIA_CONFIG_INJECTED);
+                safeConfigMerge(window.VOCALIA_CONFIG_INJECTED);
             }
             if (window.VOCALIA_CONFIG) {
-                Object.assign(CONFIG, window.VOCALIA_CONFIG);
+                safeConfigMerge(window.VOCALIA_CONFIG);
             }
 
             const lang = detectLanguage();
@@ -3730,7 +3752,8 @@
             errorInvalid: 'Veuillez entrer un numero ou email valide',
             errorSend: 'Erreur lors de l\'envoi. Reessayez.',
             cartItemsLabel: 'Articles :',
-            expiresIn: 'Offre valable encore {{minutes}} min'
+            expiresIn: 'Offre valable encore {{minutes}} min',
+            ariaClose: 'Fermer'
         },
         en: {
             title: 'Your cart is waiting!',
@@ -3757,7 +3780,8 @@
             errorInvalid: 'Please enter a valid phone or email',
             errorSend: 'Error sending. Please retry.',
             cartItemsLabel: 'Items:',
-            expiresIn: 'Offer valid for {{minutes}} more min'
+            expiresIn: 'Offer valid for {{minutes}} more min',
+            ariaClose: 'Close'
         },
         es: {
             title: 'Tu carrito te espera!',
@@ -3784,7 +3808,8 @@
             errorInvalid: 'Por favor ingresa un numero o email valido',
             errorSend: 'Error al enviar. Reintenta.',
             cartItemsLabel: 'Articulos:',
-            expiresIn: 'Oferta valida por {{minutes}} min mas'
+            expiresIn: 'Oferta valida por {{minutes}} min mas',
+            ariaClose: 'Cerrar'
         },
         ar: {
             title: 'سلتك بانتظارك!',
@@ -3811,7 +3836,8 @@
             errorInvalid: 'يرجى إدخال رقم أو بريد صحيح',
             errorSend: 'خطأ في الإرسال. حاول مجددًا.',
             cartItemsLabel: 'المنتجات:',
-            expiresIn: 'العرض صالح لمدة {{minutes}} دقيقة'
+            expiresIn: 'العرض صالح لمدة {{minutes}} دقيقة',
+            ariaClose: 'إغلاق'
         },
         ary: {
             title: 'الباني ديالك كيتسناك!',
@@ -3838,7 +3864,8 @@
             errorInvalid: 'دخل رقم ولا إيميل صحيح',
             errorSend: 'كاين مشكل. عاود.',
             cartItemsLabel: 'المنتوجات:',
-            expiresIn: 'العرض صالح {{minutes}} دقيقة'
+            expiresIn: 'العرض صالح {{minutes}} دقيقة',
+            ariaClose: 'سد'
         }
     };
 
@@ -4333,6 +4360,14 @@
             this.translations = TRANSLATIONS[this.config.lang] || TRANSLATIONS.en;
             this.isRTL = ['ar', 'ary'].includes(this.config.lang);
 
+            // Store bound handlers for cleanup in destroy()
+            this._handlers = {
+                mouseout: (e) => { if (e.clientY < 10 && !this.state.isVisible) this.checkAndShow('exit_intent'); },
+                visibilitychange: () => { document.hidden ? this.startTabBlurTimer() : this.clearTabBlurTimer(); },
+                activity: () => this.resetInactivityTimer(),
+                beforeunload: () => { if (this.hasCartItems()) this.trackEvent('cart_abandoned_page_exit'); }
+            };
+
             this.init();
         }
 
@@ -4439,7 +4474,7 @@
 
             return `
         <div class="va-abandoned-cart-modal" dir="${dir}" role="dialog" aria-modal="true" aria-labelledby="va-cart-title">
-          <button class="va-cart-close" aria-label="Close">
+          <button class="va-cart-close" aria-label="${t.ariaClose}">
             <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
 
@@ -4526,33 +4561,19 @@
 
         setupDetection() {
             // Exit intent detection (desktop)
-            document.addEventListener('mouseout', (e) => {
-                if (e.clientY < 10 && !this.state.isVisible) {
-                    this.checkAndShow('exit_intent');
-                }
-            });
+            document.addEventListener('mouseout', this._handlers.mouseout);
 
             // Tab visibility change
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    this.startTabBlurTimer();
-                } else {
-                    this.clearTabBlurTimer();
-                }
-            });
+            document.addEventListener('visibilitychange', this._handlers.visibilitychange);
 
             // Inactivity detection
             this.resetInactivityTimer();
             ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
-                document.addEventListener(event, () => this.resetInactivityTimer(), { passive: true });
+                document.addEventListener(event, this._handlers.activity, { passive: true });
             });
 
             // Before unload (for analytics)
-            window.addEventListener('beforeunload', () => {
-                if (this.hasCartItems()) {
-                    this.trackEvent('cart_abandoned_page_exit');
-                }
-            });
+            window.addEventListener('beforeunload', this._handlers.beforeunload);
         }
 
         setupOrchestratorIntegration() {
@@ -4576,14 +4597,16 @@
         }
 
         checkCooldown() {
-            const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
-            if (lastShown) {
-                const elapsed = Date.now() - parseInt(lastShown, 10);
-                if (elapsed < this.config.cooldownPeriod) {
-                    this.cooldownActive = true;
-                    return;
+            try {
+                const lastShown = localStorage.getItem('va_cart_recovery_last_shown');
+                if (lastShown) {
+                    const elapsed = Date.now() - parseInt(lastShown, 10);
+                    if (elapsed < this.config.cooldownPeriod) {
+                        this.cooldownActive = true;
+                        return;
+                    }
                 }
-            }
+            } catch {}
             this.cooldownActive = false;
         }
 
@@ -4663,7 +4686,8 @@
             }
 
             // 4. LocalStorage cart
-            const storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart');
+            let storedCart = null;
+            try { storedCart = localStorage.getItem('va_cart') || localStorage.getItem('cart'); } catch {}
             if (storedCart) {
                 try {
                     return JSON.parse(storedCart);
@@ -4722,7 +4746,7 @@
             }
 
             // Set cooldown
-            localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString());
+            try { localStorage.setItem('va_cart_recovery_last_shown', Date.now().toString()); } catch {}
             this.cooldownActive = true;
 
             // Notify orchestrator
@@ -5001,7 +5025,7 @@
 
         trackEvent(eventName, params = {}) {
             // RGPD: Only track if user has consented to analytics
-            if (!VocalIACartRecovery._hasAnalyticsConsent()) return;
+            if (!AbandonedCartRecovery._hasAnalyticsConsent()) return;
 
             // GA4
             if (window.gtag) {
@@ -5053,6 +5077,13 @@
 
         destroy() {
             this.hide();
+            // Remove all event listeners (W14 fix)
+            document.removeEventListener('mouseout', this._handlers.mouseout);
+            document.removeEventListener('visibilitychange', this._handlers.visibilitychange);
+            ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach(event => {
+                document.removeEventListener(event, this._handlers.activity);
+            });
+            window.removeEventListener('beforeunload', this._handlers.beforeunload);
             this.host?.remove();
             this.host = null;
             this._shadowRoot = null;
@@ -5625,7 +5656,6 @@
             this.isListening = false;
             this.recognition = null;
 
-            this._injectStyles();
             this._initQuestions();
             this._initVoiceRecognition();
         }
@@ -5830,7 +5860,7 @@
               </svg>
               <span>${escapeHTML(this._t(this.title || { fr: 'Quiz Produit', en: 'Product Quiz' }))}</span>
             </div>
-            <button class="va-quiz-close" aria-label="Close">
+            <button class="va-quiz-close" aria-label="${this._t({ fr: 'Fermer', en: 'Close', es: 'Cerrar', ar: 'إغلاق', ary: 'سد' })}">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -6315,6 +6345,7 @@
     fr: {
       title: 'Tentez votre chance !',
       subtitle: 'Tournez la roue pour gagner une surprise',
+      ariaClose: 'Fermer',
       spinButton: 'TOURNER',
       spinning: 'En cours...',
       emailPlaceholder: 'Votre email pour recevoir le code',
@@ -6347,6 +6378,7 @@
     en: {
       title: 'Try Your Luck!',
       subtitle: 'Spin the wheel to win a surprise',
+      ariaClose: 'Close',
       spinButton: 'SPIN',
       spinning: 'Spinning...',
       emailPlaceholder: 'Your email to receive the code',
@@ -6379,6 +6411,7 @@
     es: {
       title: 'Prueba tu suerte!',
       subtitle: 'Gira la rueda para ganar una sorpresa',
+      ariaClose: 'Cerrar',
       spinButton: 'GIRAR',
       spinning: 'Girando...',
       emailPlaceholder: 'Tu email para recibir el codigo',
@@ -6411,6 +6444,7 @@
     ar: {
       title: 'جرب حظك!',
       subtitle: 'ادر العجلة لتربح مفاجأة',
+      ariaClose: 'إغلاق',
       spinButton: 'ادر',
       spinning: 'جاري الدوران...',
       emailPlaceholder: 'بريدك لاستلام الكود',
@@ -6443,6 +6477,7 @@
     ary: {
       title: 'جرب الزهر ديالك!',
       subtitle: 'دور الروضة باش تربح كادو',
+      ariaClose: 'سد',
       spinButton: 'دور',
       spinning: 'كتدور...',
       emailPlaceholder: 'الإيميل ديالك باش تاخد الكود',
@@ -6956,14 +6991,16 @@
     }
 
     checkCooldown() {
-      const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-      if (lastPlayed) {
-        const elapsed = Date.now() - parseInt(lastPlayed, 10);
-        const cooldownMs = this.config.cooldownHours * 60 * 60 * 1000;
-        if (elapsed < cooldownMs) {
-          this.state.hasPlayed = true;
+      try {
+        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+        if (lastPlayed) {
+          const elapsed = Date.now() - parseInt(lastPlayed, 10);
+          const cooldownMs = this.config.cooldownHours * 60 * 60 * 1000;
+          if (elapsed < cooldownMs) {
+            this.state.hasPlayed = true;
+          }
         }
-      }
+      } catch {}
     }
 
     createModal() {
@@ -6973,7 +7010,7 @@
 
       overlay.innerHTML = `
         <div class="va-spin-modal" dir="${this.isRTL ? 'rtl' : 'ltr'}" role="dialog" aria-modal="true">
-          <button class="va-spin-close" aria-label="Close">
+          <button class="va-spin-close" aria-label="${this.translations.ariaClose || 'Close'}">
             <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
           </button>
 
@@ -7312,7 +7349,7 @@
 
       // Set cooldown
       this.state.hasPlayed = true;
-      localStorage.setItem('va_spin_wheel_last_played', Date.now().toString());
+      try { localStorage.setItem('va_spin_wheel_last_played', Date.now().toString()); } catch {}
     }
 
     showConfetti() {
@@ -7354,7 +7391,7 @@
     }
 
     copyCode() {
-      const code = this.state.selectedPrize?.code;
+      const code = this.state.activeCode || this.state.selectedPrize?.code;
       if (!code) return;
 
       navigator.clipboard.writeText(code).then(() => {
@@ -7445,7 +7482,7 @@
       this.state.hasPlayed = false;
       this.state.isSpinning = false;
       this.state.selectedPrize = null;
-      localStorage.removeItem('va_spin_wheel_last_played');
+      try { localStorage.removeItem('va_spin_wheel_last_played'); } catch {}
 
       if (this.elements.wheel) {
         this.elements.wheel.style.transform = 'rotate(0deg)';
@@ -7500,10 +7537,12 @@
     };
 
     window.VocalIA.isSpinWheelAvailable = function() {
-      const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
-      if (!lastPlayed) return true;
-      const elapsed = Date.now() - parseInt(lastPlayed, 10);
-      return elapsed >= 24 * 60 * 60 * 1000;
+      try {
+        const lastPlayed = localStorage.getItem('va_spin_wheel_last_played');
+        if (!lastPlayed) return true;
+        const elapsed = Date.now() - parseInt(lastPlayed, 10);
+        return elapsed >= 24 * 60 * 60 * 1000;
+      } catch { return true; }
     };
   }
 
@@ -7570,6 +7609,7 @@
       threshold: 'Seuil livraison gratuite',
       currentCart: 'Panier actuel',
       remaining: 'Restant',
+      ariaClose: 'Fermer',
       currency: {
         MAD: 'DH',
         EUR: '€',
@@ -7588,6 +7628,7 @@
       threshold: 'Free shipping threshold',
       currentCart: 'Current cart',
       remaining: 'Remaining',
+      ariaClose: 'Close',
       currency: {
         MAD: 'MAD',
         EUR: '€',
@@ -7606,6 +7647,7 @@
       threshold: 'Umbral envio gratis',
       currentCart: 'Carrito actual',
       remaining: 'Restante',
+      ariaClose: 'Cerrar',
       currency: {
         MAD: 'MAD',
         EUR: '€',
@@ -7624,6 +7666,7 @@
       threshold: 'حد الشحن المجاني',
       currentCart: 'السلة الحالية',
       remaining: 'المتبقي',
+      ariaClose: 'إغلاق',
       currency: {
         MAD: 'درهم',
         EUR: '€',
@@ -7642,6 +7685,7 @@
       threshold: 'الحد ديال التوصيل بلاش',
       currentCart: 'الباني دابا',
       remaining: 'اللي باقي',
+      ariaClose: 'سد',
       currency: {
         MAD: 'درهم',
         EUR: '€',
@@ -8021,7 +8065,7 @@
           </div>
 
           ${this.config.dismissible ? `
-            <button class="va-shipping-close" aria-label="Close">
+            <button class="va-shipping-close" aria-label="${t.ariaClose}">
               <svg viewBox="0 0 24 24">
                 <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
               </svg>
@@ -8034,9 +8078,9 @@
     setupCartListeners() {
       // Listen for VocalIA cart updates
       if (window.VocalIA) {
-        const originalSetCartData = window.VocalIA.setCartData;
+        this._originalSetCartData = window.VocalIA.setCartData || null;
         window.VocalIA.setCartData = (cartData) => {
-          if (originalSetCartData) originalSetCartData.call(window.VocalIA, cartData);
+          if (this._originalSetCartData) this._originalSetCartData.call(window.VocalIA, cartData);
           this.updateCartValue(cartData?.total || 0);
         };
       }
@@ -8068,11 +8112,13 @@
 
     loadCartValue() {
       // Try to get cart value from various sources
-      const stored = localStorage.getItem('va_cart_total');
-      if (stored) {
-        this.updateCartValue(parseFloat(stored));
-        return;
-      }
+      try {
+        const stored = localStorage.getItem('va_cart_total');
+        if (stored) {
+          this.updateCartValue(parseFloat(stored));
+          return;
+        }
+      } catch (e) { /* Private browsing — localStorage may be unavailable */ }
 
       // Check VocalIA cart
       if (window.VocalIA?.cart?.total) {
@@ -8093,7 +8139,7 @@
       this.state.isUnlocked = value >= this.config.threshold;
 
       // Store for persistence
-      localStorage.setItem('va_cart_total', value.toString());
+      try { localStorage.setItem('va_cart_total', value.toString()); } catch (e) { /* Private browsing */ }
 
       // Update UI
       this.updateUI();
@@ -8250,7 +8296,7 @@
     dismiss() {
       this.state.dismissed = true;
       this.hide();
-      localStorage.setItem('va_shipping_bar_dismissed', 'true');
+      try { localStorage.setItem('va_shipping_bar_dismissed', 'true'); } catch {}
 
       this.trackEvent('shipping_bar_dismissed', {
         cart_value: this.state.currentValue,
@@ -8293,18 +8339,27 @@
       this.elements.progress = this.elements.container.querySelector('.va-shipping-progress');
       this.elements.message = this.elements.container.querySelector('.va-shipping-message');
       this.elements.amount = this.elements.container.querySelector('.va-shipping-amount');
+      // Re-attach close button listener lost by innerHTML
+      this.elements.closeBtn = this.elements.container.querySelector('.va-shipping-close');
+      if (this.elements.closeBtn) {
+        this.elements.closeBtn.addEventListener('click', () => this.dismiss());
+      }
       this.updateUI();
     }
 
     reset() {
       this.state.dismissed = false;
       this.state.announcedMilestones.clear();
-      localStorage.removeItem('va_shipping_bar_dismissed');
+      try { localStorage.removeItem('va_shipping_bar_dismissed'); } catch {}
       this.updateCartValue(0);
     }
 
     destroy() {
       this.hide();
+      // Restore monkey-patched setCartData
+      if (window.VocalIA && this._originalSetCartData !== undefined) {
+        window.VocalIA.setCartData = this._originalSetCartData;
+      }
       this.host?.remove();
       this.host = null;
       this._shadowRoot = null;
@@ -8321,7 +8376,7 @@
 
   function initFreeShippingBar(options = {}) {
     // Check if dismissed
-    if (localStorage.getItem('va_shipping_bar_dismissed') === 'true' && options.respectDismissal !== false) {
+    if ((() => { try { return localStorage.getItem('va_shipping_bar_dismissed'); } catch { return null; } })() === 'true' && options.respectDismissal !== false) {
       console.log('[FreeShippingBar] Previously dismissed, not showing');
       return null;
     }
@@ -8650,8 +8705,6 @@
       this.isVisible = false;
       this.autoCloseTimer = null;
       this.items = [];
-
-      this._injectStyles();
     }
 
     _detectTenantId() {

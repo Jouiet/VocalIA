@@ -7743,8 +7743,10 @@ class VoicePersonaInjector {
             '{{services}}': Array.isArray(persona.services) ? persona.services.join(', ') : (persona.services || ''),
             '{{zones}}': Array.isArray(persona.zones) ? persona.zones.join(', ') : (persona.zones || ''),
             '{{payment_details}}': persona.payment_config?.details || '',
+            '{{payment_method}}': persona.payment_config?.method || '',
             '{{currency}}': persona.payment_config?.currency || 'EUR',
-            '{{client_domain}}': persona.business_info?.domain || persona.name?.toLowerCase().replace(/\s+/g, '-') + '.com' || 'client.com',
+            '{{client_domain}}': persona.business_info?.domain || (persona.name ? persona.name.toLowerCase().replace(/\s+/g, '-') + '.com' : 'client.com'),
+            '{{website}}': persona.business_info?.domain || persona.business_info?.website || '',
             '{{specialite}}': persona.specialite || ''
         };
 
@@ -7980,7 +7982,8 @@ class VoicePersonaInjector {
             '{{payment_method}}': clientConfig?.payment_method || '',
             '{{payment_details}}': clientConfig?.payment_details || '',
             '{{client_domain}}': clientConfig?.domain || clientConfig?.website || '',
-            '{{website}}': clientConfig?.domain || clientConfig?.website || ''
+            '{{website}}': clientConfig?.domain || clientConfig?.website || '',
+            '{{specialite}}': clientConfig?.specialite || ''
         };
 
         // Apply template replacements
@@ -7997,7 +8000,7 @@ class VoicePersonaInjector {
                 'VocalIA Sales', 'Cabinet Dentaire Lumière', 'Universal E-commerce Support',
                 'Atlas Property Management', 'Boutique Pro', 'Construction Atlas', 'Restaurant Le Gourmet',
                 'Atlas Voyages', 'Consulting Pro', 'TechSupport MSP', 'Atelier Artisan', 'Cabinet Médical',
-                'Boulangerie Pâtissier', 'Salon de Coiffure', 'Service Livraison Courses',
+                'Étude Notariale', 'Boulangerie Pâtissier', 'Salon de Coiffure', 'Service Livraison Courses',
                 'Institut Beauté', 'City Gym', 'Riad Jardin', 'Agence Immobilière', 'Auto Galaxy',
                 'Assurances Pro', 'Maroc Cars', 'Force Vente', 'Marrakech Events', 'Centre de Santé Intégral',
                 'Fitness Plus', 'Le Grand Hôtel', 'Garage Atlas Mécanique', 'Cabinet d\'Avocats Lumière',

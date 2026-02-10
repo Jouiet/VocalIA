@@ -131,7 +131,11 @@ class StripeGlobalGateway {
      * @returns {string} Idempotency key
      */
     generateIdempotencyKey(action, seed) {
-        const data = `${action}_${seed}_${new Date().toISOString().split('T')[0]}`;
+        // BL11 fix: Use date (not time) + no randomness for true idempotency
+        // Same action + same seed + same day = same key = duplicate prevented
+        // Different day or different seed = different key = new operation allowed
+        const date = new Date().toISOString().split('T')[0];
+        const data = `stripe_${action}_${seed}_${date}`;
         return crypto.createHash('sha256').update(data).digest('hex').substring(0, 32);
     }
 

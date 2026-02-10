@@ -179,6 +179,7 @@ class VocaliaChart {
     });
 
     observer.observe(document.documentElement, { attributes: true });
+    this._darkModeObserver = observer;
   }
 
   /**
@@ -316,6 +317,10 @@ class VocaliaChart {
    * Destroy chart
    */
   destroy() {
+    if (this._darkModeObserver) {
+      this._darkModeObserver.disconnect();
+      this._darkModeObserver = null;
+    }
     if (this.chart) {
       this.chart.destroy();
       this.chart = null;

@@ -89,6 +89,10 @@ class PayzoneGateway {
                 });
             });
 
+            // G3 fix: 30s timeout to prevent infinite hang
+            req.setTimeout(30000, () => {
+                req.destroy(new Error('Payzone request timeout (30s)'));
+            });
             req.on('error', reject);
             req.write(xmlRequest);
             req.end();
@@ -98,7 +102,14 @@ class PayzoneGateway {
     buildXml(data) {
         let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<request>';
         for (const [key, value] of Object.entries(data)) {
-            xml += `<${key}>${value}</${key}>`;
+            // G1 fix: Escape XML special chars to prevent injection
+            const escaped = String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
+            xml += `<${key}>${escaped}</${key}>`;
         }
         xml += '</request>';
         return xml;
