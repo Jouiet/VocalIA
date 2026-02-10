@@ -1790,15 +1790,12 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 
   // 2.1 AGENTIC VERIFICATION LOOP (Phase 13)
   // Logic: Check if RAG mention an order, and verify with live sensors
-  // Session 250.89: Only if ECOM_TOOLS.getOrderStatus exists AND tenant has Shopify
+  // Session 250.89: Only if ECOM_TOOLS.checkOrderStatus exists AND tenant has Shopify
   if ((ragContext.toLowerCase().includes('order') || lower.includes('order') || lower.includes('commande')) &&
-      typeof ECOM_TOOLS.getOrderStatus === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
+      typeof ECOM_TOOLS.checkOrderStatus === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
     if (session?.extractedData?.email) {
       try {
-        const order = await ECOM_TOOLS.getOrderStatus(session.extractedData.email, {
-          shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
-          shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
-        });
+        const order = await ECOM_TOOLS.checkOrderStatus(session.extractedData.email, null, tenantId);
         if (order.found) {
           toolContext += `\nVERIFIED_SENSOR_DATA (Shopify): Order ${order.orderId} status is officially "${order.status}".`;
           ragContext = ragContext.replace(/Order status: [^.\n]+/i, `Order status: ${order.status} (Verified)`);
@@ -1811,24 +1808,28 @@ async function getResilisentResponse(userMessageRaw, conversationHistory = [], s
 
   // 2.2 CRM RAG: Returning Customer Recognition (Phase 14)
   let crmContext = "";
-  if (session?.extractedData?.email) {
-    const customer = await CRM_TOOLS.getCustomerContext(session.extractedData.email);
-    if (customer.found) {
-      crmContext = CRM_TOOLS.formatForVoice(customer);
+  if (session?.extractedData?.email && typeof CRM_TOOLS.lookupCustomer === 'function') {
+    try {
+      const customer = await CRM_TOOLS.lookupCustomer(session.extractedData.email, tenantId);
+      if (customer.found) {
+        crmContext = `\nRETURNING_CUSTOMER: ${customer.name || 'Known customer'}. ` +
+          (customer.company ? `Company: ${customer.company}. ` : '') +
+          (customer.deal_stage ? `Deal stage: ${customer.deal_stage}. ` : '') +
+          (customer.lifetime_value ? `LTV: ${customer.lifetime_value}€. ` : '');
+      }
+    } catch (crmErr) {
+      console.warn('[Voice API] CRM lookup failed:', crmErr.message);
     }
   }
 
-  // Session 250.89: Only check stock if ECOM_TOOLS.checkProductStock exists AND tenant has Shopify configured
+  // Session 250.89: Only check stock if ECOM_TOOLS.checkStock exists AND tenant has Shopify configured
   if ((ragContext.toLowerCase().includes('stock') || lower.includes('stock') || lower.includes('dispo')) &&
-      typeof ECOM_TOOLS.checkProductStock === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
+      typeof ECOM_TOOLS.checkStock === 'function' && tenantSecrets.SHOPIFY_ACCESS_TOKEN) {
     // Extract potential product name from message or RAG
     const productMatch = userMessage.match(/(?:stock|dispo|about)\s+(?:de\s+|du\s+|d')?([a-z0-9\s]+)/i);
     const query = productMatch ? productMatch[1].trim() : userMessage;
     try {
-      const stock = await ECOM_TOOLS.checkProductStock(query, {
-        shopifyToken: tenantSecrets.SHOPIFY_ACCESS_TOKEN,
-        shopifyShop: tenantSecrets.SHOPIFY_SHOP_NAME
-      });
+      const stock = await ECOM_TOOLS.checkStock(query, tenantId);
       if (stock.found) {
         const liveStock = stock.products.map(p => `${p.title}: ${p.inStock ? 'In Stock' : 'Out of Stock'} (${p.price}€)`).join(', ');
         toolContext += `\nVERIFIED_SENSOR_DATA: Current stock and pricing: ${liveStock}. (Source: Shopify Real-time)`;

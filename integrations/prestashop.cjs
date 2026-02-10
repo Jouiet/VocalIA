@@ -15,7 +15,7 @@
  * @date 2026-02-05
  */
 
-const { SecretVault } = require('../core/SecretVault.cjs');
+const SecretVault = require('../core/SecretVault.cjs');
 
 class PrestaShopIntegration {
     constructor(url = null, key = null, tenantId = 'agency_internal') {

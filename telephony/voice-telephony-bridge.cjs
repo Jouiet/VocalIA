@@ -695,7 +695,7 @@ rateLimitCleanupInterval.unref();
 // TWILIO SIGNATURE VALIDATION
 // ============================================
 
-const { SecretVault } = require('../core/SecretVault.cjs'); // Ensure correct import if not already
+const SecretVault = require('../core/SecretVault.cjs');
 const ClientRegistry = require('../core/client-registry.cjs');
 
 /**

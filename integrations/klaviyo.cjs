@@ -13,7 +13,7 @@
  * @date 2026-02-05
  */
 
-const { SecretVault } = require('../core/SecretVault.cjs');
+const SecretVault = require('../core/SecretVault.cjs');
 
 class KlaviyoIntegration {
     constructor(apiKey = null, tenantId = 'agency_internal') {
