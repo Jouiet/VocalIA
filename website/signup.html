@@ -153,47 +153,7 @@
           data-i18n="signup_page.select_plan">
           1. Choisissez votre plan
         </h2>
-        <div class="grid md:grid-cols-3 gap-4">
-          <!-- Business Plan -->
-          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="free" data-action="selectPlan"
-            data-params="free">
-            <div class="flex justify-between items-start mb-3">
-              <div>
-                <h3 class="font-semibold text-white">Free</h3>
-                <p class="text-2xl font-bold text-white"><span data-i18n="signup_page.free_price">0</span><span
-                    class="text-sm font-normal text-zinc-400" id="free-currency"><span
-                      data-i18n="signup_page.per_month">/mois</span></span></p>
-              </div>
-              <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
-                <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd" />
-                </svg>
-              </div>
-            </div>
-            <ul class="text-sm text-zinc-400 space-y-1">
-              <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span data-i18n="signup_page.free_f1">Voice Widget illimité</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                <span data-i18n="signup_page.free_f2">5 langues</span>
-              </li>
-              <li class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                <span class="text-zinc-400"><span data-i18n="signup_page.free_f3">Pas de téléphonie</span></span>
-              </li>
-            </ul>
-          </div>
-
+        <div class="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
           <!-- Starter Plan -->
           <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="starter"
             data-action="selectPlan" data-params="starter">
@@ -216,19 +176,19 @@
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span data-i18n="signup_page.starter_f1">100 min téléphonie</span>
+                <span data-i18n="signup_page.starter_f1">Chat vocal + texte</span>
               </li>
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span data-i18n="signup_page.starter_f2">15 personas métier</span>
+                <span data-i18n="signup_page.starter_f2">5 langues natives</span>
               </li>
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span data-i18n="signup_page.starter_f3">Email support</span>
+                <span data-i18n="signup_page.starter_f3">Réponses IA 24/7</span>
               </li>
             </ul>
           </div>
@@ -260,19 +220,57 @@
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span data-i18n="signup_page.pro_f1">500 min téléphonie</span>
+                <span data-i18n="signup_page.pro_f1">Tout Starter +</span>
               </li>
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span data-i18n="signup_page.pro_f2">38 personas métier</span>
+                <span data-i18n="signup_page.pro_f2">Qualification leads BANT</span>
               </li>
               <li class="flex items-center gap-2">
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                <span data-i18n="signup_page.pro_f3">Intégrations CRM</span>
+                <span data-i18n="signup_page.pro_f3">Sync CRM (HubSpot)</span>
+              </li>
+            </ul>
+          </div>
+          <!-- E-commerce Plan -->
+          <div class="plan-card rounded-xl p-5 bg-white/[0.04] cursor-pointer" data-plan="ecom"
+            data-action="selectPlan" data-params="ecom">
+            <div class="flex justify-between items-start mb-3">
+              <div>
+                <h3 class="font-semibold text-white">E-commerce</h3>
+                <p class="text-2xl font-bold text-white"><span id="ecom-price">99</span><span
+                    class="text-sm font-normal text-zinc-400" id="ecom-currency">€/mois</span></p>
+              </div>
+              <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
+                <svg class="w-3 h-3 text-indigo-400 hidden" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+            <ul class="text-sm text-zinc-400 space-y-1">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span data-i18n="signup_page.ecom_f1">7 widgets e-commerce</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span data-i18n="signup_page.ecom_f2">Quiz IA + Carousel</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span data-i18n="signup_page.ecom_f3">Sync catalogue temps réel</span>
               </li>
             </ul>
           </div>
@@ -286,7 +284,7 @@
           2. Vos informations
         </h2>
         <form id="signupForm" class="space-y-4">
-          <input type="hidden" id="selectedPlan" name="plan" value="free">
+          <input type="hidden" id="selectedPlan" name="plan" value="starter">
 
           <!-- Company Name -->
           <div>
@@ -401,7 +399,7 @@
   <script src="/src/lib/i18n.js"></script>
   <script>
     // Plan selection
-    let currentPlan = 'free';
+    let currentPlan = 'starter';
 
     function selectPlan(plan) {
       currentPlan = plan;
@@ -421,7 +419,7 @@
     // Get plan from URL
     function getPlanFromURL() {
       const params = new URLSearchParams(window.location.search);
-      return params.get('plan') || 'free';
+      return params.get('plan') || 'starter';
     }
 
     // Form submission
@@ -432,29 +430,25 @@
 
       // Here you would send to your API
       // For now, redirect to Stripe checkout for paid plans
-      if (data.plan === 'starter' || data.plan === 'pro') {
-        // Redirect to Stripe Checkout
-        window.location.href = `/api/checkout?plan=${data.plan}&email=${encodeURIComponent(data.email)}`;
-      } else {
-        // Free plan - direct signup
-        window.location.href = `/app/client/?welcome=true`;
-      }
+      // Redirect to Stripe Checkout
+      window.location.href = `/api/checkout?plan=${data.plan}&email=${encodeURIComponent(data.email)}`;
     });
 
     // Update prices based on geo
     function updatePrices(geo) {
       const prices = {
-        MAD: { starter: '490', pro: '990', symbol: ' MAD' },
-        EUR: { starter: '49', pro: '99', symbol: '€' },
-        USD: { starter: '53', pro: '109', symbol: '$' }
+        MAD: { starter: '490', pro: '990', ecom: '990', symbol: ' MAD' },
+        EUR: { starter: '49', pro: '99', ecom: '99', symbol: '€' },
+        USD: { starter: '53', pro: '109', ecom: '109', symbol: '$' }
       };
       const p = prices[geo.currency] || prices.EUR;
 
       document.getElementById('starter-price').textContent = p.starter;
       document.getElementById('pro-price').textContent = p.pro;
+      document.getElementById('ecom-price').textContent = p.ecom;
       document.getElementById('starter-currency').textContent = p.symbol + '/mois';
       document.getElementById('pro-currency').textContent = p.symbol + '/mois';
-      document.getElementById('free-currency').textContent = '/mois';
+      document.getElementById('ecom-currency').textContent = p.symbol + '/mois';
     }
 
     // Initialize
@@ -466,10 +460,10 @@
 
       // Select plan from URL
       const planFromURL = getPlanFromURL();
-      if (['free', 'starter', 'pro'].includes(planFromURL)) {
+      if (['starter', 'pro', 'ecom'].includes(planFromURL)) {
         selectPlan(planFromURL);
       } else {
-        selectPlan('free');
+        selectPlan('starter');
       }
     })();
   </script>
