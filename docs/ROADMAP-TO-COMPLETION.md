@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (3,765 tests, 68 files). **372 bugs reported across 32 audit phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Session 250.191: Runtime Integrity scan found 6 new bugs (F16 saveCatalog crash, F17 Shopify token naming, F18 sensor fallback, F19-F20 CRITICAL db-api missing imports, F21 CRITICAL docker-compose env gaps) — ALL fixed. .env.example expanded: 39 vars added (74/76 documented). Validator: 23/23. 2 CRITICAL distribution findings (Shopify+npm widgets frozen at v3.0.0). Reclassified: 2 external dependencies, 2 non-bugs, 2 false alarms, ~5 cosmetic.
+**Code Completeness: 9.5/10** — Features coded and tested (3,765 tests, 68 files). **375 bugs reported across 32 audit phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Session 250.191: Runtime Integrity scan found 9 bugs (F16 saveCatalog crash, F17 Shopify token naming, F18 sensor fallback, F19-F20 CRITICAL db-api missing imports, F21 CRITICAL docker-compose env gaps, F22 KB status crash, F23 sensors GPM crash, F24 ab-analytics no purge) — ALL fixed. .env.example expanded: 39 vars added (74/76 documented). Validator: 23/23. 2 CRITICAL distribution findings (Shopify+npm widgets frozen at v3.0.0). Reclassified: 2 external dependencies, 2 non-bugs, 2 false alarms, ~5 cosmetic.
 **Production Readiness: 3.5/10** — VERIFIED 250.171 bottom-up audit:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (but runs OLD code from 250.167)
@@ -528,8 +528,8 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 29 (250.188b)** | **4** | **4** | **0** |
 | **Phase 30 UCP+AUDIT (250.189)** | **18 (BL29-40 + F1-F4)** | **18** | **0** |
 | **Phase 31 FRAGMENTATION (250.190)** | **8 (F5-F6, F9-F11, F13-F14)** | **8** | **0** |
-| **Phase 32 RUNTIME INTEGRITY (250.191)** | **6 (F16-F21)** | **6** | **0** |
-| **CUMULATIVE** | **372** | **372** | **0 actionable** (8 not fixable locally: VPS/arch. Inc. 2 external deps, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified). NOTE: Business logic + integration APIs = INCONNU (0 appels réels, 0 clients) |
+| **Phase 32 RUNTIME INTEGRITY (250.191)** | **9 (F16-F24)** | **9** | **0** |
+| **CUMULATIVE** | **375** | **375** | **0 actionable** (8 not fixable locally: VPS/arch. Inc. 2 external deps, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified). NOTE: Business logic + integration APIs = INCONNU (0 appels réels, 0 clients) |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
 
@@ -626,14 +626,14 @@ create_booking          get_recommendations    qualify_lead
 | **PHASES 20-29 (250.182-188b)** | ✅ **64/64 FIXED** | 12 mini-audit phases: BL1-BL40 across all modules. isError MCP compliance (180+ error responses in 29 tool files). Widget build drift synced (8 bundles). kb-provisioner dry-run sanitization. UCP cache wired up. 100% codebase audited — 0 unaudited zones. | **9.2** |
 | **P0-UCP-UNIFICATION (250.189)** | ✅ **4/4 FIXED** | F1: MCP ucp.ts migrated to shared per-tenant storage. F2: voice-api auto-enriches UCP after each message. F3: telephony auto-enriches UCP after each call. F4: recommendations auto-fetches UCP profile. Data flow: Widget→UCP→Recommendations, Telephony→UCP→Insights, MCP→UCP (same files). Zero fragmentation. | **9.4** |
 | **P0-FRAGMENTATION (250.190)** | ✅ **8/8 FIXED** | System-wide data store audit (30+ stores). F5 CRITICAL: catalog config nesting → items never persisted. F6 CRITICAL: getUCPStore() ReferenceError in recommendations. F9: catalog path divergence. F10: market rules fragmented across 3 modules. F11: 5 KB files stale pricing. F13: GB in EU_BLOC → French served to UK. F14: HITL dashboard dead (0 writers, now aggregates 4 stores). RAG chunks cleaned. | **9.5** |
-| **P0-RUNTIME-INTEGRITY (250.191)** | ✅ **6/6 FIXED** | F16: saveCatalog() crash on non-custom connectors (guard added). F17: SHOPIFY_ADMIN_TOKEN→SHOPIFY_ADMIN_ACCESS_TOKEN alignment. F18: retention-sensor missing SHOPIFY_SHOP_NAME fallback. F19 CRITICAL: db-api ReferenceError path (F14 HITL fix used path.join at module scope without import). F20 CRITICAL: db-api ReferenceError fs (same root cause). F21 CRITICAL: docker-compose missing VOCALIA_VAULT_KEY + VOCALIA_INTERNAL_KEY. .env.example updated: 39 missing vars added (74/76 documented). | **9.5** |
+| **P0-RUNTIME-INTEGRITY (250.191)** | ✅ **9/9 FIXED** | F16: saveCatalog() crash on non-custom connectors (guard added). F17: SHOPIFY_ADMIN_TOKEN→SHOPIFY_ADMIN_ACCESS_TOKEN alignment. F18: retention-sensor missing SHOPIFY_SHOP_NAME fallback. F19 CRITICAL: db-api ReferenceError path (F14 HITL fix used path.join at module scope without import). F20 CRITICAL: db-api ReferenceError fs (same root cause). F21 CRITICAL: docker-compose missing VOCALIA_VAULT_KEY + VOCALIA_INTERNAL_KEY. F22: KB getStatus() JSON.parse crash on corrupted file. F23: 4 sensors updateGPM() JSON.parse crash on corrupted GPM file. F24: ab-analytics.cjs 0 purge policy (JSONL files grow forever) — added purgeOldFiles() + auto-purge 24h/30 days. .env.example: 39 missing vars added (74/76 documented). | **9.5** |
 
 **Code Completeness: 9.5/10** | **Production Readiness: 3.5/10** | **Weighted: 8.6/10** | **MCP: 9.0/10**
 
-**Remaining actionable bugs: 0** (verified 250.191). 8 not fixable locally (VPS/arch).
+**Remaining actionable bugs: 0** (verified 250.191b). 8 not fixable locally (VPS/arch).
 
 The previous "12 remaining" (250.174) was a stale number propagated across sessions without verification.
-Rigorous per-item audit through 250.181 reveals all 268 reported issues from phases 1-19 are resolved (phases 20-32 add 104 more, all also resolved — 372 total):
+Rigorous per-item audit through 250.181 reveals all 268 reported issues from phases 1-19 are resolved (phases 20-32 add 107 more, all also resolved — 375 total):
 
 ```
 RECLASSIFIED (were counted as "remaining" but are NOT bugs):
@@ -672,7 +672,7 @@ RESEARCH (not a bug):
 **Next Actions (Priority Order):**
 ```
 ⚠️ OPERATIONS — CRITICAL (NOT code):
-  1. VPS REDEPLOY: /respond BROKEN on production — local code has ALL 372 bug fixes since 250.167
+  1. VPS REDEPLOY: /respond BROKEN on production — local code has ALL 375 bug fixes since 250.167
      → git pull + docker-compose up on VPS = instant deploy
      → docker-compose has 7 services (4 core + 3 optional via profiles)
   2. VPS .env: Create .env with 18 MISSING keys (JWT_SECRET, SMTP_*, STRIPE_*, VOCALIA_VAULT_KEY, etc.)

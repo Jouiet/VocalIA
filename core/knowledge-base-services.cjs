@@ -783,10 +783,15 @@ class ServiceKnowledgeBase {
       return { exists: false };
     }
 
-    const status = JSON.parse(fs.readFileSync(KB_STATUS_FILE, 'utf8'));
-    status.exists = true;
-    status.knowledge_base_dir = KNOWLEDGE_BASE_DIR;
-    return status;
+    try {
+      const status = JSON.parse(fs.readFileSync(KB_STATUS_FILE, 'utf8'));
+      status.exists = true;
+      status.knowledge_base_dir = KNOWLEDGE_BASE_DIR;
+      return status;
+    } catch (e) {
+      console.error(`❌ [KB] Corrupted status file: ${KB_STATUS_FILE}`, e.message);
+      return { exists: false, error: 'corrupted_status_file' };
+    }
   }
 
   /**

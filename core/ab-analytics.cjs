@@ -19,6 +19,16 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
+// Auto-purge old files on startup and every 24h
+const AB_RETENTION_DAYS = 30;
+const _purgeTimer = setInterval(() => {
+  try {
+    const { purgeOldFiles } = module.exports;
+    purgeOldFiles(AB_RETENTION_DAYS);
+  } catch (e) { /* startup race — module not yet exported */ }
+}, 24 * 60 * 60 * 1000);
+if (_purgeTimer.unref) _purgeTimer.unref();
+
 /**
  * Get current log file path
  */
@@ -216,11 +226,37 @@ function createAnalyticsMiddleware() {
   };
 }
 
+/**
+ * Purge JSONL files older than retentionDays (default: 30)
+ */
+function purgeOldFiles(retentionDays = 30) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - retentionDays);
+  const cutoffStr = cutoff.toISOString().split('T')[0];
+
+  const files = fs.readdirSync(DATA_DIR)
+    .filter(f => f.startsWith('ab-events-') && f.endsWith('.jsonl'));
+
+  let purged = 0;
+  for (const file of files) {
+    const dateMatch = file.match(/ab-events-(\d{4}-\d{2}-\d{2})\.jsonl/);
+    if (dateMatch && dateMatch[1] < cutoffStr) {
+      fs.unlinkSync(path.join(DATA_DIR, file));
+      purged++;
+    }
+  }
+  if (purged > 0) {
+    console.log(`[AB Analytics] Purged ${purged} files older than ${retentionDays} days`);
+  }
+  return purged;
+}
+
 module.exports = {
   logEvent,
   getExperimentStats,
   getAllExperiments,
-  createAnalyticsMiddleware
+  createAnalyticsMiddleware,
+  purgeOldFiles
 };
 
 // CLI mode

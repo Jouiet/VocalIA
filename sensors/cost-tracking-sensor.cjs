@@ -180,7 +180,13 @@ function updateGPM(pressure, costs, costLog) {
         return;
     }
 
-    const gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
+    let gpm;
+    try {
+        gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
+    } catch (e) {
+        console.error('❌ Corrupted GPM file, resetting:', e.message);
+        gpm = {};
+    }
 
     const previousPressure = gpm.sectors?.finance?.api_costs?.pressure;
     const monthlyEstimate = estimateMonthlyCost(costLog);

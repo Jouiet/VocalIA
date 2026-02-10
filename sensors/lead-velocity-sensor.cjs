@@ -40,7 +40,13 @@ function calculatePressure(leads) {
 function updateGPM(pressure, count) {
     if (!fs.existsSync(GPM_PATH)) return;
 
-    const gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
+    let gpm;
+    try {
+        gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
+    } catch (e) {
+        console.error('❌ Corrupted GPM file, resetting:', e.message);
+        gpm = {};
+    }
 
     gpm.sectors = gpm.sectors || {};
     gpm.sectors.sales = gpm.sectors.sales || {};

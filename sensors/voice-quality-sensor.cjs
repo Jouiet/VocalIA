@@ -181,7 +181,13 @@ function updateGPM(pressure, endpoints, providers) {
         return;
     }
 
-    const gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
+    let gpm;
+    try {
+        gpm = JSON.parse(fs.readFileSync(GPM_PATH, 'utf8'));
+    } catch (e) {
+        console.error('❌ Corrupted GPM file, resetting:', e.message);
+        gpm = {};
+    }
 
     const previousPressure = gpm.sectors?.technology?.voice_quality?.pressure;
 
