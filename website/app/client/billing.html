@@ -204,6 +204,11 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     if (!auth.requireAuth()) {
       throw new Error('Not authenticated');
     }
@@ -286,7 +291,7 @@
 
         // Load REAL invoices from API
         try {
-          const billingRes = await api.request(`/tenants/${tenantId}/billing`);
+          const billingRes = await api.get(`/tenants/${tenantId}/billing`);
           if (billingRes.invoices) {
             renderInvoices(billingRes.invoices);
           } else {
@@ -322,7 +327,7 @@
 
       tbody.innerHTML = invoices.map(inv => `
         <tr>
-          <td class="py-3 text-zinc-900 dark:text-white font-medium">${inv.id}</td>
+          <td class="py-3 text-zinc-900 dark:text-white font-medium">${escapeHtml(inv.id)}</td>
           <td class="py-3 text-zinc-600 dark:text-zinc-300">${new Date(inv.date).toLocaleDateString('fr-FR')}</td>
           <td class="py-3 text-zinc-900 dark:text-white font-medium">${inv.amount} ${inv.currency}</td>
           <td class="py-3">
@@ -331,8 +336,8 @@
             </span>
           </td>
           <td class="py-3">
-            ${inv.hosted_url ?
-          `<a href="${inv.hosted_url}" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Voir</a>` :
+            ${inv.hosted_url && inv.hosted_url.startsWith('https://') ?
+          `<a href="${escapeHtml(inv.hosted_url)}" target="_blank" rel="noopener" class="text-indigo-600 dark:text-indigo-400 hover:underline text-sm">Voir</a>` :
           `<button disabled class="text-zinc-400 text-sm">Indisponible</button>`
         }
           </td>
@@ -420,7 +425,7 @@
     document.getElementById('upgrade-btn').addEventListener('click', async () => {
       const tenantId = auth.getTenantId();
       try {
-        const res = await api.request(`/tenants/${tenantId}/billing/portal`, { method: 'POST' });
+        const res = await api.post(`/tenants/${tenantId}/billing/portal`);
         if (res.url) window.location.href = res.url;
       } catch (e) {
         window.location.href = '/pricing';
@@ -432,7 +437,7 @@
       const tenantId = auth.getTenantId();
       try {
         // Try to get portal link
-        const res = await api.request(`/tenants/${tenantId}/billing/portal`, { method: 'POST' });
+        const res = await api.post(`/tenants/${tenantId}/billing/portal`);
         if (res.url) {
           window.location.href = res.url;
         } else {
@@ -448,7 +453,7 @@
       // For now, redirect to portal as well since Stripe handles billing details
       const tenantId = auth.getTenantId();
       try {
-        const res = await api.request(`/tenants/${tenantId}/billing/portal`, { method: 'POST' });
+        const res = await api.post(`/tenants/${tenantId}/billing/portal`);
         if (res.url) {
           window.location.href = res.url;
         } else {

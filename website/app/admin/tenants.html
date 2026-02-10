@@ -107,6 +107,11 @@
 
     lucide.createIcons();
 
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     // Theme toggle
     if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
@@ -233,11 +238,11 @@
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-sm text-zinc-500">Nom</p>
-                <p class="font-medium text-zinc-900 dark:text-white">${tenant.name || '-'}</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(tenant.name) || '-'}</p>
               </div>
               <div>
                 <p class="text-sm text-zinc-500">Email</p>
-                <p class="font-medium text-zinc-900 dark:text-white">${tenant.email || '-'}</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(tenant.email) || '-'}</p>
               </div>
               <div>
                 <p class="text-sm text-zinc-500">Plan</p>
@@ -249,7 +254,7 @@
               </div>
               <div>
                 <p class="text-sm text-zinc-500">Persona</p>
-                <p class="font-medium text-zinc-900 dark:text-white">${tenant.active_persona || tenant.persona || 'AGENCY'}</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(tenant.active_persona || tenant.persona || 'AGENCY')}</p>
               </div>
               <div>
                 <p class="text-sm text-zinc-500">Créé le</p>

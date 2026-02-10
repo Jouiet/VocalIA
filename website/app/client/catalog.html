@@ -507,7 +507,6 @@
     </div>
   </div>
 
-  <script src="/src/lib/api-client.js"></script>
   <script src="/app/components/app-components.js" defer></script>
   <script>
     // Session 250.167: Auth guard
@@ -632,7 +631,6 @@
     document.getElementById('confirm-import').addEventListener('click', async () => {
       if (!importFile) return;
 
-      const tenantId = tenantId;
       const reader = new FileReader();
 
       reader.onload = async (e) => {
@@ -718,7 +716,6 @@
     document.getElementById('save-item').addEventListener('click', async () => {
       const form = document.getElementById('add-item-form');
       const formData = new FormData(form);
-      const tenantId = tenantId;
       const isEditing = !!editingItemId;
 
       const item = {
@@ -789,8 +786,6 @@
     // Load catalog data from API
     async function loadCatalog() {
       try {
-        const tenantId = tenantId;
-
         // Fetch catalog from API
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog?type=${currentType.toUpperCase()}`, {
           headers: { 'Authorization': `Bearer ${authToken}` }
@@ -827,7 +822,7 @@
     function updateCategoriesFromData(categories) {
       categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
       categories.forEach(cat => {
-        categoryFilter.innerHTML += `<option value="${cat}">${cat}</option>`;
+        categoryFilter.innerHTML += `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`;
       });
     }
 
@@ -861,7 +856,7 @@
       const categories = [...new Set(catalogItems.map(item => item.category).filter(Boolean))];
       categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
       categories.forEach(cat => {
-        categoryFilter.innerHTML += `<option value="${cat}">${cat}</option>`;
+        categoryFilter.innerHTML += `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`;
       });
     }
 
@@ -899,13 +894,13 @@
                   <i data-lucide="package" class="w-5 h-5 text-zinc-400"></i>
                 </div>
                 <div>
-                  <p class="font-medium text-zinc-900 dark:text-white">${item.name}</p>
-                  <p class="text-xs text-zinc-500">${item.id || '-'}</p>
+                  <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(item.name)}</p>
+                  <p class="text-xs text-zinc-500">${escapeHtml(item.id || '-')}</p>
                 </div>
               </div>
             </td>
             <td class="px-4 py-3">
-              <span class="text-sm text-zinc-600 dark:text-zinc-400">${item.category || '-'}</span>
+              <span class="text-sm text-zinc-600 dark:text-zinc-400">${escapeHtml(item.category || '-')}</span>
             </td>
             <td class="px-4 py-3">
               <span class="font-medium text-zinc-900 dark:text-white">${item.price} ${item.currency || 'EUR'}</span>
@@ -917,10 +912,10 @@
               ${statusBadge}
             </td>
             <td class="px-4 py-3 text-right">
-              <button class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08] text-zinc-400 hover:text-zinc-600" onclick="editItem('${item.id}')">
+              <button class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08] text-zinc-400 hover:text-zinc-600" onclick="editItem('${escapeHtml(item.id)}')">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
               </button>
-              <button class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-zinc-400 hover:text-red-600" onclick="deleteItem('${item.id}')">
+              <button class="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/30 text-zinc-400 hover:text-red-600" onclick="deleteItem('${escapeHtml(item.id)}')">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
             </td>
@@ -958,7 +953,7 @@
       if (count === 0) {
         preview = '"Le catalogue n\'est pas encore configuré. Souhaitez-vous ajouter des articles?"';
       } else {
-        const samples = catalogItems.slice(0, 3).map(i => i.name).join(', ');
+        const samples = catalogItems.slice(0, 3).map(i => escapeHtml(i.name)).join(', ');
         preview = `"Nous proposons ${available} articles disponibles, notamment ${samples}. Que souhaitez-vous consulter?"`;
       }
 
@@ -995,8 +990,6 @@
     async function deleteItem(id) {
       if (!confirm('Supprimer cet article?')) return;
 
-      const tenantId = tenantId;
-
       try {
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/${id}?type=${currentType.toUpperCase()}`, {
           method: 'DELETE',
@@ -1019,6 +1012,11 @@
     }
 
     // Toast notification
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     function showToast(message, type = 'info') {
       const toast = document.createElement('div');
       const colors = {
@@ -1203,8 +1201,6 @@
     document.getElementById('connector-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const form = e.target;
-      const tenantId = tenantId;
-
       const formData = new FormData(form);
       const config = { source: selectedPlatform };
       for (const [key, value] of formData.entries()) {
@@ -1253,7 +1249,6 @@
 
     // Sync catalog
     async function syncCatalog() {
-      const tenantId = tenantId;
       try {
         const response = await fetch(`${window.API_BASE_URL || ''}/api/tenants/${tenantId}/catalog/sync`, {
           method: 'POST',

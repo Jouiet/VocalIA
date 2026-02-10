@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-10 | **Session:** 250.191b (Code tasks 100% complete — F8 EventBus dead wiring fixed, F15 orphan deleted, F7 reclassified, DIST-1/DIST-2 verified synced, temp scripts cleaned. All remaining items are OPERATIONS/BUSINESS.)
+> **Date:** 2026-02-10 | **Session:** 250.192 (Dashboard/App page audit — 8 bugs B1-B8, 22 individual fixes across 10 files. XSS hardening across 6 app pages. All remaining items are OPERATIONS/BUSINESS.)
 > **Code Completeness:** 9.5/10 | **Production Readiness:** 3.5/10 (website deployed, API on VPS running OLD code — /respond crashes C14, 18 env vars MISSING, widget VISIBLE but MUTE: 0 conversations possible)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 32 audit phases across sessions 250.105-250.191. Latest: **RUNTIME INTEGRITY 250.191** (6 bugs: F16 saveCatalog crash on non-custom connectors, F17 SHOPIFY_ADMIN_TOKEN naming, F18 retention-sensor Shopify fallback, F19-F20 CRITICAL db-api path+fs imports missing, F21 CRITICAL docker-compose env gaps). Prior: UCP unification (250.189), fragmentation audit (250.190), BL1-BL40 (250.182-188). Full history: `memory/session-history.md`
+> **Source:** 35 audit phases across sessions 250.105-250.192. Latest: **DASHBOARD/APP AUDIT 250.192** (8 bugs: B1 CRITICAL 6× TDZ self-reference in catalog.html, B2 HIGH onboarding no API submit, B3 MEDIUM XSS catalog.html, B4 HIGH 7× api.request() wrong arg order, B5 LOW dead ES module imports, B6-B7 MEDIUM XSS in 4 admin/client pages, B8 LOW KB onclick injection). Prior: code cleanup (250.191b), runtime integrity (250.191), UCP unification (250.189). Full history: `memory/session-history.md`
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (3,765 tests, 68 files). **375 bugs reported across 32 audit phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Session 250.191: Runtime Integrity scan found 9 bugs (F16 saveCatalog crash, F17 Shopify token naming, F18 sensor fallback, F19-F20 CRITICAL db-api missing imports, F21 CRITICAL docker-compose env gaps, F22 KB status crash, F23 sensors GPM crash, F24 ab-analytics no purge) — ALL fixed. .env.example expanded: 39 vars added (74/76 documented). Validator: 23/23. 2 CRITICAL distribution findings (Shopify+npm widgets frozen at v3.0.0). Reclassified: 2 external dependencies, 2 non-bugs, 2 false alarms, ~5 cosmetic.
+**Code Completeness: 9.5/10** — Features coded and tested (3,765 tests, 68 files). **385 bugs reported across 35 audit phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Session 250.192: Dashboard/App page audit found 8 bugs (B1 CRITICAL 6× TDZ crash in catalog.html, B2 HIGH onboarding wizard never saved data, B3-B6-B7-B8 XSS across 6 pages, B4 HIGH 7× api.request() wrong args, B5 dead ES module imports) — ALL fixed. Prior: 377 bugs across 33 phases (250.105-250.191b). Validator: 23/23. Reclassified: 2 external dependencies, 2 non-bugs, 2 false alarms, ~5 cosmetic.
 **Production Readiness: 3.5/10** — VERIFIED 250.171 bottom-up audit:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (but runs OLD code from 250.167)
@@ -297,7 +297,7 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | Registry clients | 22 | `jq 'keys | length' personas/client_registry.json` |
 | i18n lines | 26,175 | `wc -l website/src/locales/*.json` |
 | npm vulnerabilities | 0 | `npm audit --json` |
-| innerHTML XSS risk | 0 | All dynamic data uses escapeHTML/textContent |
+| innerHTML XSS risk | 0 | All dynamic data uses escapeHTML/textContent (250.192: 6 app pages hardened) |
 
 ### 5.2 Tests
 
@@ -629,13 +629,14 @@ create_booking          get_recommendations    qualify_lead
 | **P0-FRAGMENTATION (250.190)** | ✅ **8/8 FIXED** | System-wide data store audit (30+ stores). F5 CRITICAL: catalog config nesting → items never persisted. F6 CRITICAL: getUCPStore() ReferenceError in recommendations. F9: catalog path divergence. F10: market rules fragmented across 3 modules. F11: 5 KB files stale pricing. F13: GB in EU_BLOC → French served to UK. F14: HITL dashboard dead (0 writers, now aggregates 4 stores). RAG chunks cleaned. | **9.5** |
 | **P0-RUNTIME-INTEGRITY (250.191)** | ✅ **9/9 FIXED** | F16: saveCatalog() crash on non-custom connectors (guard added). F17: SHOPIFY_ADMIN_TOKEN→SHOPIFY_ADMIN_ACCESS_TOKEN alignment. F18: retention-sensor missing SHOPIFY_SHOP_NAME fallback. F19 CRITICAL: db-api ReferenceError path (F14 HITL fix used path.join at module scope without import). F20 CRITICAL: db-api ReferenceError fs (same root cause). F21 CRITICAL: docker-compose missing VOCALIA_VAULT_KEY + VOCALIA_INTERNAL_KEY. F22: KB getStatus() JSON.parse crash on corrupted file. F23: 4 sensors updateGPM() JSON.parse crash on corrupted GPM file. F24: ab-analytics.cjs 0 purge policy (JSONL files grow forever) — added purgeOldFiles() + auto-purge 24h/30 days. .env.example: 39 missing vars added (74/76 documented). | **9.5** |
 | **P0-CLEANUP (250.191b)** | ✅ **ALL CODE TASKS DONE** | F8: EventBus voice-agent-b2b emit()→publish() + RevenueScience dead subscriber removed. F15: orphan translation_queue.json deleted (269KB). F7: reclassified as design choice (domain-specific HITL stores with aggregated read). DIST-1/DIST-2: verified synced (3,697 lines each). Temp audit scripts deleted. | **9.5** |
+| **P0-DASHBOARD-AUDIT (250.192)** | ✅ **8/8 FIXED** | Dashboard/App page audit: B1 CRITICAL 6× `const tenantId = tenantId` TDZ crash in catalog.html (every function crashes). B2 HIGH onboarding wizard 4-step never saves data to API (added PUT to /api/db/tenants). B3 MEDIUM XSS catalog.html (6 unescaped user-data in innerHTML from CSV/JSON imports). B4 HIGH 7× api.request() wrong arg order in billing+integrations+calls (TypeError on _buildUrl). B5 LOW 2× dead `<script src="api-client.js">` without type=module (SyntaxError). B6 MEDIUM XSS admin/tenants+hitl (tenant.name, item.summary unescaped). B7 MEDIUM XSS calls.html+billing.html (caller_phone, summary, hosted_url unescaped). B8 LOW KB onclick key injection (apostrophe in key breaks JS). 22 individual fixes, 10 files modified. | **9.5** |
 
 **Code Completeness: 9.5/10** | **Production Readiness: 3.5/10** | **Weighted: 8.6/10** | **MCP: 9.0/10**
 
-**Remaining actionable bugs: 0** (verified 250.191b). 8 not fixable locally (VPS/arch). **ALL CODE tasks complete — only OPERATIONS/BUSINESS items remain.**
+**Remaining actionable bugs: 0** (verified 250.192). 8 not fixable locally (VPS/arch). **ALL CODE tasks complete — only OPERATIONS/BUSINESS items remain.**
 
 The previous "12 remaining" (250.174) was a stale number propagated across sessions without verification.
-Rigorous per-item audit through 250.181 reveals all 268 reported issues from phases 1-19 are resolved (phases 20-33 add 109 more, all also resolved — 377 total):
+Rigorous per-item audit through 250.181 reveals all 268 reported issues from phases 1-19 are resolved (phases 20-34 add 117 more, all also resolved — 385 total):
 
 ```
 RECLASSIFIED (were counted as "remaining" but are NOT bugs):

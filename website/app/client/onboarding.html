@@ -279,10 +279,52 @@
       document.getElementById('progress-bar').style.width = `${(step / totalSteps) * 100}%`;
     }
 
-    function nextStep() {
+    async function nextStep() {
       if (currentStep < totalSteps) {
+        // Save onboarding data when completing step 3 → step 4
+        if (currentStep === 3) {
+          await saveOnboardingData();
+        }
         currentStep++;
         showStep(currentStep);
+      }
+    }
+
+    async function saveOnboardingData() {
+      var apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:3013/api'
+        : 'https://api.vocalia.ma/api';
+
+      var user = JSON.parse(localStorage.getItem('vocalia_user') || sessionStorage.getItem('vocalia_user') || '{}');
+      var tid = user.tenant_id;
+      if (!tid) return;
+
+      var businessForm = document.getElementById('business-form');
+      var formData = businessForm ? new FormData(businessForm) : new FormData();
+      var persona = document.querySelector('input[name="persona"]:checked');
+      var voiceLang = document.getElementById('voice-lang');
+
+      var data = {
+        company_name: formData.get('company') || '',
+        industry: formData.get('industry') || '',
+        team_size: formData.get('team_size') || '',
+        active_persona: persona ? persona.value : 'AGENCY',
+        voice_language: voiceLang ? voiceLang.value : 'fr',
+        onboarding_completed: true,
+        onboarding_at: new Date().toISOString()
+      };
+
+      try {
+        await fetch(apiBase + '/db/tenants/' + tid, {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+      } catch (e) {
+        console.error('Onboarding save error:', e);
       }
     }
 

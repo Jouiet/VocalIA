@@ -444,7 +444,7 @@
       try {
         const tenantId = auth.getTenantId() || user?.tenant_id;
         if (!tenantId) return;
-        const stats = await api.request(`/tenants/${tenantId}/webhooks/health`).catch(() => null);
+        const stats = await api.get(`/tenants/${tenantId}/webhooks/health`).catch(() => null);
         if (stats) {
           document.getElementById('webhook-uptime').textContent = (stats.uptime_pct || 0).toFixed(1) + '%';
           document.getElementById('webhook-delivered').textContent = (stats.delivered || 0).toLocaleString();
@@ -462,7 +462,7 @@
       toast.info(`Test de ${meta.name}...`);
       try {
         const tenantId = auth.getTenantId() || user?.tenant_id;
-        const result = await api.request(`/tenants/${tenantId}/integrations/${name}/test`);
+        const result = await api.get(`/tenants/${tenantId}/integrations/${name}/test`);
         if (result.success) {
           toast.success(`${meta.name} — connexion OK (${result.latency_ms || 0}ms)`);
         } else {

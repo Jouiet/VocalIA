@@ -149,6 +149,11 @@
     // Initialize Lucide icons
     lucide.createIcons();
 
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     // Theme init
     if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
@@ -260,8 +265,8 @@
                 <i data-lucide="${getTypeIcon(item.type)}" class="w-5 h-5"></i>
               </div>
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">${item.tenant}</p>
-                <p class="text-sm text-zinc-500">${item.caller}</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(item.tenant)}</p>
+                <p class="text-sm text-zinc-500">${escapeHtml(item.caller)}</p>
               </div>
             </div>
             <div class="text-right">
@@ -270,7 +275,7 @@
             </div>
           </div>
 
-          <p class="text-zinc-700 dark:text-zinc-300 mb-4">${item.summary}</p>
+          <p class="text-zinc-700 dark:text-zinc-300 mb-4">${escapeHtml(item.summary)}</p>
 
           ${item.context.bant ? `
             <div class="grid grid-cols-4 gap-2 mb-4">
@@ -310,7 +315,7 @@
           <td class="px-4 py-3">
             <span class="px-2 py-1 text-xs rounded ${getTypeColor(item.type)} capitalize">${item.type}</span>
           </td>
-          <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">${item.details}</td>
+          <td class="px-4 py-3 text-zinc-700 dark:text-zinc-300">${escapeHtml(item.details)}</td>
           <td class="px-4 py-3">
             <span class="${item.score >= 70 ? 'text-green-600' : item.score >= 50 ? 'text-amber-600' : 'text-zinc-500'} font-medium">${item.score}%</span>
           </td>
@@ -319,7 +324,7 @@
               ${item.decision === 'approved' ? 'Approuvé' : 'Rejeté'}
             </span>
           </td>
-          <td class="px-4 py-3 text-zinc-500">${item.by}</td>
+          <td class="px-4 py-3 text-zinc-500">${escapeHtml(item.by)}</td>
           <td class="px-4 py-3 text-zinc-500">${item.date.toLocaleString()}</td>
         </tr>
       `).join('');
