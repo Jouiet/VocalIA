@@ -262,11 +262,22 @@
   <!-- App Component Loader -->
   <script src="/app/components/app-components.js" defer></script>
 
-  <script>
-    // Auth check — Session 250.167: Fixed to use correct storage key
-    const token = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token');
-    if (!token) {
-      window.location.href = '/app/auth/login.html?return=' + encodeURIComponent(window.location.pathname);
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
+
+    // Initialize i18n
+    if (window.VocaliaI18n) {
+      await VocaliaI18n.initI18n();
+      VocaliaI18n.translatePage();
+    }
+
+    // Initialize icons
+    lucide.createIcons();
+
+    // Auth check
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
     }
 
     let currentStep = 1;
@@ -281,7 +292,6 @@
 
     async function nextStep() {
       if (currentStep < totalSteps) {
-        // Save onboarding data when completing step 3 → step 4
         if (currentStep === 3) {
           await saveOnboardingData();
         }
@@ -291,20 +301,15 @@
     }
 
     async function saveOnboardingData() {
-      var apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:3013/api'
-        : 'https://api.vocalia.ma/api';
-
-      var user = JSON.parse(localStorage.getItem('vocalia_user') || sessionStorage.getItem('vocalia_user') || '{}');
-      var tid = user.tenant_id;
+      const tid = auth.getTenantId();
       if (!tid) return;
 
-      var businessForm = document.getElementById('business-form');
-      var formData = businessForm ? new FormData(businessForm) : new FormData();
-      var persona = document.querySelector('input[name="persona"]:checked');
-      var voiceLang = document.getElementById('voice-lang');
+      const businessForm = document.getElementById('business-form');
+      const formData = businessForm ? new FormData(businessForm) : new FormData();
+      const persona = document.querySelector('input[name="persona"]:checked');
+      const voiceLang = document.getElementById('voice-lang');
 
-      var data = {
+      const data = {
         company_name: formData.get('company') || '',
         industry: formData.get('industry') || '',
         team_size: formData.get('team_size') || '',
@@ -315,14 +320,7 @@
       };
 
       try {
-        await fetch(apiBase + '/db/tenants/' + tid, {
-          method: 'PUT',
-          headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        });
+        await api.put(`/db/tenants/${tid}`, data);
       } catch (e) {
         console.error('Onboarding save error:', e);
       }
@@ -334,6 +332,10 @@
         showStep(currentStep);
       }
     }
+
+    // Expose for onclick handlers
+    window.nextStep = nextStep;
+    window.prevStep = prevStep;
 
     // Persona selection styling
     document.querySelectorAll('.persona-card input').forEach(input => {
@@ -347,13 +349,8 @@
       });
     });
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      if (typeof initI18n === 'function') initI18n();
-      // Set initial persona selection style
-      document.querySelector('.persona-card input:checked')?.closest('.persona-card').querySelector('.persona-box')?.classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
-    });
+    // Set initial persona selection style
+    document.querySelector('.persona-card input:checked')?.closest('.persona-card').querySelector('.persona-box')?.classList.add('border-indigo-500', 'bg-indigo-50', 'dark:bg-indigo-900/20');
   </script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Téléphonie - VocalIA</title>
+  <title>Téléphonie PSTN - VocalIA</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
@@ -22,6 +22,9 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
   <!-- i18n -->
   <script src="/src/lib/i18n.js"></script>
 
@@ -31,17 +34,26 @@
       .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
       .sidebar.open { transform: translateX(0); }
     }
-    .stat-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 16px;
-      transition: all 0.3s ease;
+    /* Stat card accent borders */
+    .stat-accent { position: relative; overflow: hidden; }
+    .stat-accent::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
     }
-    .stat-card:hover {
-      border-color: rgba(94, 106, 210, 0.3);
-      background: rgba(255, 255, 255, 0.05);
-    }
-    .glass-panel { background: rgba(255,255,255,0.04); backdrop-filter: blur(12px); }
+    [dir="rtl"] .stat-accent::before { left: auto; right: 0; }
+    .stat-accent-indigo::before { background: linear-gradient(180deg, #6366f1, #818cf8); }
+    .stat-accent-amber::before { background: linear-gradient(180deg, #f59e0b, #fbbf24); }
+    .stat-accent-emerald::before { background: linear-gradient(180deg, #10b981, #34d399); }
+    .stat-accent-sky::before { background: linear-gradient(180deg, #3b82f6, #60a5fa); }
+    .stat-accent:hover { box-shadow: 0 0 20px rgba(99, 102, 241, 0.08); }
+    /* Live pulse */
+    @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; animation: livePulse 2s ease-in-out infinite; }
+    /* Completion ring animation */
+    @keyframes ringDraw { from { stroke-dashoffset: 301.59; } }
+    .ring-animated { animation: ringDraw 1.5s ease-out forwards; }
+    /* Signal bars */
+    .signal-bar { width: 4px; border-radius: 2px; background: currentColor; transition: height 0.5s ease; }
   </style>
 </head>
 <body class="min-h-screen bg-zinc-50 dark:bg-[#050505]">
@@ -60,15 +72,15 @@
           </button>
           <div>
             <h1 class="text-xl lg:text-2xl font-bold text-zinc-900 dark:text-white" data-i18n="dashboard.telephony.title">Téléphonie PSTN</h1>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm" data-i18n="dashboard.telephony.subtitle">CDRs & Monitoring en temps réel</p>
+            <p class="text-zinc-500 dark:text-zinc-400 text-sm" data-i18n="dashboard.telephony.subtitle">Infrastructure voix & monitoring temps réel</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
-          <select id="dateRange" class="px-3 py-2 rounded-lg bg-white dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.08] text-sm text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <option value="7d">7 derniers jours</option>
-            <option value="30d" selected>30 derniers jours</option>
-          </select>
-          <button type="button" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition flex items-center gap-2">
+          <div class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 dark:bg-emerald-900/20 rounded-full">
+            <div class="live-dot"></div>
+            <span class="text-xs font-medium text-emerald-700 dark:text-emerald-400" data-i18n="dashboard.telephony.live">Live</span>
+          </div>
+          <button type="button" id="btn-export-cdr" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition flex items-center gap-2">
             <i data-lucide="download" class="w-4 h-4"></i>
             <span data-i18n="dashboard.telephony.export_cdr">Export CDR</span>
           </button>
@@ -77,298 +89,487 @@
     </header>
 
     <!-- Content -->
-    <div class="p-4 lg:p-8">
+    <div class="p-4 lg:p-8 space-y-6">
+
       <!-- KPI Cards -->
-      <section class="mb-8">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          <div class="stat-card p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center">
-                <i data-lucide="phone-call" class="w-6 h-6 text-indigo-400"></i>
-              </div>
-              <span id="calls-trend" class="text-emerald-400 text-sm font-medium flex items-center gap-1"></span>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Total Calls -->
+        <div class="stat-accent stat-accent-indigo bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+              <i data-lucide="phone-call" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
             </div>
-            <h3 class="text-3xl font-bold text-zinc-900 dark:text-white mb-1" id="totalCalls">--</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm" data-i18n="dashboard.telephony.total_calls">Total Appels</p>
+            <span id="trend-calls" class="text-xs font-medium px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-white/[0.06] text-zinc-500">--</span>
           </div>
+          <p id="kpi-total-calls" class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">--</p>
+          <p class="text-sm text-zinc-500 mt-0.5" data-i18n="dashboard.telephony.total_calls">Total Appels PSTN</p>
+        </div>
 
-          <div class="stat-card p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                <i data-lucide="timer" class="w-6 h-6 text-amber-400"></i>
-              </div>
+        <!-- Avg Duration -->
+        <div class="stat-accent stat-accent-amber bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+              <i data-lucide="timer" class="w-5 h-5 text-amber-600 dark:text-amber-400"></i>
             </div>
-            <h3 class="text-3xl font-bold text-zinc-900 dark:text-white mb-1" id="avgCallDuration">--:--</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm" data-i18n="dashboard.telephony.avg_duration">Durée Moyenne</p>
           </div>
+          <p id="kpi-avg-duration" class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">--:--</p>
+          <p class="text-sm text-zinc-500 mt-0.5" data-i18n="dashboard.telephony.avg_duration">Durée Moyenne</p>
+        </div>
 
-          <div class="stat-card p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                <i data-lucide="coins" class="w-6 h-6 text-emerald-400"></i>
-              </div>
+        <!-- Savings -->
+        <div class="stat-accent stat-accent-emerald bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg">
+              <i data-lucide="trending-up" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
             </div>
-            <h3 class="text-3xl font-bold text-zinc-900 dark:text-white mb-1"><span id="savings">0</span> <span id="savings-currency">MAD</span></h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm" data-i18n="dashboard.telephony.savings">Économies (vs opérateur)</p>
           </div>
+          <p class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight"><span id="kpi-savings">0</span><span class="text-lg ml-1 text-zinc-400">EUR</span></p>
+          <p class="text-sm text-zinc-500 mt-0.5" data-i18n="dashboard.telephony.savings">Économies vs opérateur</p>
+        </div>
 
-          <div class="stat-card p-6">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center">
-                <i data-lucide="globe" class="w-6 h-6 text-sky-400"></i>
-              </div>
+        <!-- PSTN Uptime -->
+        <div class="stat-accent stat-accent-sky bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <div class="p-2 bg-sky-50 dark:bg-sky-900/20 rounded-lg">
+              <i data-lucide="radio-tower" class="w-5 h-5 text-sky-600 dark:text-sky-400"></i>
             </div>
-            <h3 class="text-3xl font-bold text-zinc-900 dark:text-white mb-1" id="pstn-uptime">--</h3>
-            <p class="text-zinc-500 dark:text-zinc-400 text-sm" data-i18n="dashboard.telephony.pstn_infra">Infrastructure PSTN</p>
+            <div class="flex items-end gap-px h-5" id="signal-bars">
+              <div class="signal-bar h-1.5 text-emerald-500"></div>
+              <div class="signal-bar h-2.5 text-emerald-500"></div>
+              <div class="signal-bar h-3.5 text-emerald-500"></div>
+              <div class="signal-bar h-5 text-emerald-500"></div>
+            </div>
+          </div>
+          <p id="kpi-uptime" class="mt-3 text-3xl font-bold text-zinc-900 dark:text-white tracking-tight">--</p>
+          <p class="text-sm text-zinc-500 mt-0.5" data-i18n="dashboard.telephony.pstn_infra">Infrastructure PSTN</p>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Call Volume Chart -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.telephony.volume_chart">Volume d'appels PSTN</h3>
+            <span class="text-xs text-zinc-400" data-i18n="dashboard.telephony.last_7_days">7 derniers jours</span>
+          </div>
+          <div class="h-64">
+            <canvas id="callVolumeChart"></canvas>
           </div>
         </div>
-      </section>
 
-      <!-- Language & Status Row -->
-      <section class="grid lg:grid-cols-2 gap-4 lg:gap-6 mb-8">
-        <div class="stat-card p-6">
-          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-6" data-i18n="dashboard.telephony.volume_by_lang">Volume par Langue</h3>
+        <!-- Language Distribution -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-5 border border-zinc-200 dark:border-white/[0.08] hover:shadow-lg transition-all duration-200">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.telephony.volume_by_lang">Distribution par Langue</h3>
+            <span class="text-xs text-zinc-400" id="lang-total-label">--</span>
+          </div>
+          <div class="h-64 flex items-center justify-center">
+            <canvas id="langChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status & Quality Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Call Completion Ring -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08] flex flex-col items-center justify-center">
+          <h3 class="font-semibold text-zinc-900 dark:text-white mb-4 self-start" data-i18n="dashboard.telephony.completion_rate">Taux de Complétion</h3>
+          <div class="relative w-36 h-36">
+            <svg viewBox="0 0 120 120" class="w-full h-full -rotate-90">
+              <circle cx="60" cy="60" r="48" fill="none" stroke="currentColor" stroke-width="10" class="text-zinc-200 dark:text-white/[0.08]" />
+              <circle id="completion-ring" cx="60" cy="60" r="48" fill="none" stroke="url(#completionGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="301.59" stroke-dashoffset="301.59" />
+              <defs>
+                <linearGradient id="completionGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#10b981" />
+                  <stop offset="100%" stop-color="#34d399" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <span id="completion-value" class="text-3xl font-bold text-zinc-900 dark:text-white">--</span>
+              <span class="text-xs text-zinc-500">%</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-6 mt-4 text-sm">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+              <span class="text-zinc-500" data-i18n="dashboard.telephony.answered">Répondus</span>
+              <span id="status-completed" class="font-medium text-zinc-900 dark:text-white">--%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-amber-500"></div>
+              <span class="text-zinc-500" data-i18n="dashboard.telephony.busy">Occupé</span>
+              <span id="status-busy" class="font-medium text-zinc-900 dark:text-white">--%</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+              <span class="text-zinc-500" data-i18n="dashboard.telephony.failed">Échecs</span>
+              <span id="status-failed" class="font-medium text-zinc-900 dark:text-white">--%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality Metrics -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08]">
+          <div class="flex items-center gap-2 mb-5">
+            <i data-lucide="gauge" class="w-5 h-5 text-indigo-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.telephony.quality">Qualité PSTN</h3>
+          </div>
+          <div class="space-y-5">
+            <div>
+              <div class="flex items-center justify-between text-sm mb-1.5">
+                <span class="text-zinc-500" data-i18n="dashboard.telephony.answer_rate">Taux de réponse</span>
+                <span id="quality-answer" class="font-medium text-zinc-900 dark:text-white">--%</span>
+              </div>
+              <div class="h-2 bg-zinc-100 dark:bg-white/[0.06] rounded-full overflow-hidden">
+                <div id="quality-answer-bar" class="h-full bg-emerald-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between text-sm mb-1.5">
+                <span class="text-zinc-500" data-i18n="dashboard.telephony.avg_call_time">Durée moy. effective</span>
+                <span id="quality-duration" class="font-medium text-zinc-900 dark:text-white">--</span>
+              </div>
+              <div class="h-2 bg-zinc-100 dark:bg-white/[0.06] rounded-full overflow-hidden">
+                <div id="quality-duration-bar" class="h-full bg-indigo-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between text-sm mb-1.5">
+                <span class="text-zinc-500" data-i18n="dashboard.telephony.multilingual">Couverture multilingue</span>
+                <span id="quality-langs" class="font-medium text-zinc-900 dark:text-white">--</span>
+              </div>
+              <div class="h-2 bg-zinc-100 dark:bg-white/[0.06] rounded-full overflow-hidden">
+                <div id="quality-langs-bar" class="h-full bg-amber-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center justify-between text-sm mb-1.5">
+                <span class="text-zinc-500" data-i18n="dashboard.telephony.infra_uptime">Disponibilité infra</span>
+                <span id="quality-uptime" class="font-medium text-zinc-900 dark:text-white">--</span>
+              </div>
+              <div class="h-2 bg-zinc-100 dark:bg-white/[0.06] rounded-full overflow-hidden">
+                <div id="quality-uptime-bar" class="h-full bg-sky-500 rounded-full transition-all duration-1000" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cost Analysis -->
+        <div class="bg-white dark:bg-white/[0.06] rounded-xl p-6 border border-zinc-200 dark:border-white/[0.08]">
+          <div class="flex items-center gap-2 mb-5">
+            <i data-lucide="receipt" class="w-5 h-5 text-emerald-500"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.telephony.cost_analysis">Analyse de Coûts</h3>
+          </div>
           <div class="space-y-4">
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">ARY</span>
-              <div class="flex-1 h-8 bg-zinc-100 dark:bg-white/[0.04] rounded-lg overflow-hidden">
-                <div id="bar-ary" class="h-full bg-rose-500 rounded-lg transition-all" style="width: 0%"></div>
+            <div class="flex items-center justify-between p-3 bg-zinc-50 dark:bg-white/[0.03] rounded-lg">
+              <div>
+                <p class="text-xs text-zinc-500 uppercase font-medium" data-i18n="dashboard.telephony.ai_cost">Coût IA / min</p>
+                <p class="text-lg font-bold text-zinc-900 dark:text-white mt-0.5">0.10 EUR</p>
               </div>
-              <span id="pct-ary" class="w-12 text-sm text-right text-zinc-500">--%</span>
-            </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">FR</span>
-              <div class="flex-1 h-8 bg-zinc-100 dark:bg-white/[0.04] rounded-lg overflow-hidden">
-                <div id="bar-fr" class="h-full bg-indigo-500 rounded-lg transition-all" style="width: 0%"></div>
+              <div class="p-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg">
+                <i data-lucide="cpu" class="w-5 h-5 text-indigo-500"></i>
               </div>
-              <span id="pct-fr" class="w-12 text-sm text-right text-zinc-500">--%</span>
             </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">EN</span>
-              <div class="flex-1 h-8 bg-zinc-100 dark:bg-white/[0.04] rounded-lg overflow-hidden">
-                <div id="bar-en" class="h-full bg-sky-500 rounded-lg transition-all" style="width: 0%"></div>
+            <div class="flex items-center justify-between p-3 bg-zinc-50 dark:bg-white/[0.03] rounded-lg">
+              <div>
+                <p class="text-xs text-zinc-500 uppercase font-medium" data-i18n="dashboard.telephony.human_cost">Coût humain / min</p>
+                <p class="text-lg font-bold text-zinc-900 dark:text-white mt-0.5">0.50 EUR</p>
               </div>
-              <span id="pct-en" class="w-12 text-sm text-right text-zinc-500">--%</span>
-            </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">AR</span>
-              <div class="flex-1 h-8 bg-zinc-100 dark:bg-white/[0.04] rounded-lg overflow-hidden">
-                <div id="bar-ar" class="h-full bg-amber-500 rounded-lg transition-all" style="width: 0%"></div>
+              <div class="p-2 bg-rose-50 dark:bg-rose-900/20 rounded-lg">
+                <i data-lucide="user" class="w-5 h-5 text-rose-500"></i>
               </div>
-              <span id="pct-ar" class="w-12 text-sm text-right text-zinc-500">--%</span>
             </div>
-            <div class="flex items-center gap-4">
-              <span class="w-8 text-sm font-medium text-zinc-600 dark:text-zinc-300">ES</span>
-              <div class="flex-1 h-8 bg-zinc-100 dark:bg-white/[0.04] rounded-lg overflow-hidden">
-                <div id="bar-es" class="h-full bg-emerald-500 rounded-lg transition-all" style="width: 0%"></div>
+            <div class="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-900/10 rounded-lg border border-emerald-200 dark:border-emerald-800/30">
+              <div>
+                <p class="text-xs text-emerald-600 dark:text-emerald-400 uppercase font-medium" data-i18n="dashboard.telephony.total_savings">Économies totales</p>
+                <p id="cost-total-savings" class="text-lg font-bold text-emerald-700 dark:text-emerald-300 mt-0.5">-- EUR</p>
               </div>
-              <span id="pct-es" class="w-12 text-sm text-right text-zinc-500">--%</span>
+              <div class="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                <i data-lucide="piggy-bank" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+              </div>
             </div>
+            <p class="text-xs text-zinc-400 text-center" id="cost-minutes-label" data-i18n="dashboard.telephony.based_on">Basé sur -- minutes de conversation</p>
           </div>
         </div>
-
-        <div class="stat-card p-6">
-          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white mb-6" data-i18n="dashboard.telephony.call_status">Statut des Appels</h3>
-          <div class="flex items-center justify-around h-32">
-            <div class="flex flex-col items-center gap-2">
-              <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                <i data-lucide="check-circle-2" class="w-6 h-6 text-emerald-400"></i>
-              </div>
-              <div class="text-2xl font-bold text-emerald-500 dark:text-emerald-400" id="stat-completed">--%</div>
-              <div class="text-xs text-zinc-500 dark:text-zinc-400 uppercase font-medium" data-i18n="dashboard.telephony.answered">Répondus</div>
-            </div>
-            <div class="flex flex-col items-center gap-2">
-              <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
-                <i data-lucide="phone-missed" class="w-6 h-6 text-amber-400"></i>
-              </div>
-              <div class="text-2xl font-bold text-amber-500 dark:text-amber-400" id="stat-busy">--%</div>
-              <div class="text-xs text-zinc-500 dark:text-zinc-400 uppercase font-medium" data-i18n="dashboard.telephony.busy">Occupé</div>
-            </div>
-            <div class="flex flex-col items-center gap-2">
-              <div class="w-12 h-12 rounded-full bg-rose-500/20 flex items-center justify-center">
-                <i data-lucide="x-circle" class="w-6 h-6 text-rose-400"></i>
-              </div>
-              <div class="text-2xl font-bold text-rose-500 dark:text-rose-400" id="stat-failed">--%</div>
-              <div class="text-xs text-zinc-500 dark:text-zinc-400 uppercase font-medium" data-i18n="dashboard.telephony.failed">Échecs</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
 
       <!-- CDR Table -->
-      <section class="stat-card p-6">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.telephony.cdr_title">Call Detail Records (CDRs)</h3>
-          <button type="button" class="text-sm text-indigo-500 hover:text-indigo-400 transition" data-i18n="dashboard.telephony.view_all">Tout voir</button>
+      <div class="bg-white dark:bg-white/[0.06] rounded-xl border border-zinc-200 dark:border-white/[0.08]">
+        <div class="flex items-center justify-between p-5 border-b border-zinc-200 dark:border-white/[0.08]">
+          <div class="flex items-center gap-2">
+            <i data-lucide="list" class="w-5 h-5 text-zinc-400"></i>
+            <h3 class="font-semibold text-zinc-900 dark:text-white" data-i18n="dashboard.telephony.cdr_title">Call Detail Records</h3>
+          </div>
+          <span id="cdr-count" class="text-xs text-zinc-400">--</span>
         </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead>
-              <tr class="text-left text-zinc-500 dark:text-zinc-400 border-b border-zinc-200 dark:border-white/[0.08]">
-                <th class="pb-3 font-medium" data-i18n="dashboard.telephony.number">Numéro</th>
-                <th class="pb-3 font-medium" data-i18n="dashboard.telephony.persona">Persona</th>
-                <th class="pb-3 font-medium" data-i18n="dashboard.telephony.language">Langue</th>
-                <th class="pb-3 font-medium" data-i18n="dashboard.telephony.duration">Durée</th>
-                <th class="pb-3 font-medium" data-i18n="dashboard.telephony.direction">Direction</th>
-                <th class="pb-3 font-medium" data-i18n="dashboard.telephony.status">Statut</th>
-                <th class="pb-3 font-medium" data-i18n="dashboard.telephony.date">Date</th>
-              </tr>
-            </thead>
-            <tbody id="cdr-table">
-              <tr>
-                <td colspan="7" class="py-8 text-center text-zinc-400">
-                  <div class="flex items-center justify-center gap-2">
-                    <div class="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span data-i18n="dashboard.telephony.loading">Chargement des données PSTN...</span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+        <div id="cdr-table" class="p-4"></div>
+      </div>
+
     </div>
   </main>
 
   <!-- App Component Loader -->
   <script src="/app/components/app-components.js" defer></script>
 
-  <script>
-    // Session 250.167: Auth guard
-    (function() {
-      const token = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token');
-      if (!token) {
-        window.location.href = '/app/auth/login.html?return=' + encodeURIComponent(window.location.pathname);
+  <!-- Main Module -->
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
+    import { createLineChart, createDoughnutChart, COLORS } from '/src/lib/charts.js';
+    import DataTable from '/src/lib/data-table.js';
+    import toast from '/src/lib/toast.js';
+
+    // Initialize i18n
+    if (window.VocaliaI18n) {
+      await VocaliaI18n.initI18n();
+      VocaliaI18n.translatePage();
+    }
+
+    // Initialize icons
+    lucide.createIcons();
+
+    // Auth check
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
+    }
+
+    // Theme
+    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+
+    // State
+    let callVolumeChart = null;
+    let langChart = null;
+
+    // CDR DataTable
+    const cdrTable = new DataTable('#cdr-table', {
+      columns: [
+        { key: 'timestamp', label: 'Date', type: 'datetime', sortable: true },
+        { key: 'number', label: 'Numéro', sortable: true,
+          render: (val) => `<span class="font-mono text-xs">${escapeHtml(val)}</span>`
+        },
+        { key: 'persona', label: 'Persona', sortable: true },
+        { key: 'language', label: 'Langue',
+          render: (val) => {
+            const flags = { fr: 'FR', en: 'EN', es: 'ES', ar: 'AR', ary: 'ARY' };
+            const colors = { fr: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300', en: 'bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-300', es: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300', ar: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300', ary: 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300' };
+            const lang = (val || 'fr').toLowerCase();
+            return `<span class="px-2 py-0.5 rounded-full text-xs font-medium ${colors[lang] || 'bg-zinc-100 text-zinc-700'}">${flags[lang] || lang.toUpperCase()}</span>`;
+          }
+        },
+        { key: 'duration_sec', label: 'Durée',
+          render: (val) => {
+            const sec = parseInt(val) || 0;
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${m}:${String(s).padStart(2, '0')}`;
+          }
+        },
+        { key: 'direction', label: 'Direction',
+          render: (val) => {
+            const isOut = val === 'outbound';
+            return `<span class="inline-flex items-center gap-1 text-xs font-medium ${isOut ? 'text-blue-600 dark:text-blue-400' : 'text-zinc-600 dark:text-zinc-300'}">${isOut ? '&#8599;' : '&#8601;'} ${isOut ? 'Out' : 'In'}</span>`;
+          }
+        },
+        { key: 'status', label: 'Statut', type: 'badge',
+          badgeColors: {
+            'Completed': 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
+            'completed': 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300',
+            'busy': 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
+            'failed': 'bg-rose-100 text-rose-800 dark:bg-rose-900/30 dark:text-rose-300',
+            'no-answer': 'bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300'
+          }
+        }
+      ],
+      pageSize: 10,
+      searchable: true,
+      searchPlaceholder: 'Rechercher un appel...',
+      emptyMessage: 'Aucun enregistrement PSTN',
+      exportable: true
+    });
+
+    // Animated counter
+    function animateCounter(elementId, target, duration = 1200) {
+      const el = document.getElementById(elementId);
+      if (!el || target <= 0) {
+        if (el) el.textContent = (target || 0).toLocaleString();
         return;
       }
-    })();
+      const start = Date.now();
+      const tick = () => {
+        const elapsed = Date.now() - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(target * ease).toLocaleString();
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString();
+      };
+      tick();
+    }
 
-    // Init icons
-    if (window.lucide) lucide.createIcons();
+    // XSS escape
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
 
-    // API Configuration
-    var API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:3013/api'
-      : 'https://api.vocalia.ma/api';
+    // Format uptime
+    function formatUptime(seconds) {
+      const h = Math.floor(seconds / 3600);
+      const d = Math.floor(h / 24);
+      if (d > 0) return `${d}j ${h % 24}h`;
+      if (h > 0) return `${h}h ${Math.floor((seconds % 3600) / 60)}m`;
+      return `${Math.floor(seconds / 60)}m`;
+    }
 
-    var urlParams = new URLSearchParams(window.location.search);
-    var TENANT_ID = urlParams.get('tenant') || localStorage.getItem('vocalia_tenant_id') || 'demo';
-
-    async function fetchTelephonyData() {
+    // Load telephony data
+    async function loadTelephony() {
       try {
-        var token = localStorage.getItem('vocalia_access_token');
-        if (!token && TENANT_ID !== 'demo') {
-          window.location.href = '/app/auth/login.html?redirect=' + encodeURIComponent(window.location.pathname);
-          return;
-        }
+        const tenantId = auth.getTenantId();
 
-        var headers = {
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/json'
-        };
+        const [statsRes, cdrsRes] = await Promise.all([
+          api.get('/telephony/stats', { tenantId }),
+          api.get('/telephony/cdrs', { tenantId, limit: 50 })
+        ]);
 
-        // Fetch Stats
-        var statsRes = await fetch(API_BASE + '/telephony/stats?tenantId=' + TENANT_ID, { headers: headers });
-        if (statsRes.status === 401) {
-          if (TENANT_ID !== 'demo') window.location.href = '/app/auth/login.html';
-          return;
-        }
-        var statsData = await statsRes.json();
+        // --- KPI Cards ---
+        if (statsRes.success) {
+          const s = statsRes.stats;
 
-        if (statsData.success) {
-          var stats = statsData.stats;
-          document.getElementById('totalCalls').textContent = stats.totalCalls.toLocaleString();
+          animateCounter('kpi-total-calls', s.totalCalls);
+          animateCounter('kpi-savings', s.savings);
 
-          var mins = Math.floor(stats.avgDuration / 60);
-          var secs = stats.avgDuration % 60;
-          document.getElementById('avgCallDuration').textContent = mins + ':' + secs.toString().padStart(2, '0');
+          // Avg duration
+          const avgMin = Math.floor(s.avgDuration / 60);
+          const avgSec = s.avgDuration % 60;
+          document.getElementById('kpi-avg-duration').textContent = `${avgMin}:${String(avgSec).padStart(2, '0')}`;
 
-          document.getElementById('savings').textContent = stats.savings.toLocaleString();
+          // Uptime
+          document.getElementById('kpi-uptime').textContent = formatUptime(s.uptime);
 
-          // Update Language Bars
-          var totalLangs = Math.max(stats.totalCalls, 1);
-          var langs = ['ary', 'fr', 'en', 'ar', 'es'];
-          langs.forEach(function(lang) {
-            var count = (stats.languages && stats.languages[lang]) || 0;
-            var pct = Math.round((count / totalLangs) * 100);
-            var bar = document.getElementById('bar-' + lang);
-            var label = document.getElementById('pct-' + lang);
-            if (bar) bar.style.width = pct + '%';
-            if (label) label.textContent = pct + '%';
-          });
+          // --- Status Breakdown ---
+          const completed = s.statusBreakdown.completed;
+          document.getElementById('completion-value').textContent = completed;
+          document.getElementById('status-completed').textContent = `${completed}%`;
+          document.getElementById('status-busy').textContent = `${s.statusBreakdown.busy}%`;
+          document.getElementById('status-failed').textContent = `${s.statusBreakdown.failed}%`;
 
-          // Update Status Breakdown
-          if (stats.statusBreakdown) {
-            var total = Math.max(stats.totalCalls, 1);
-            document.getElementById('stat-completed').textContent = Math.round((stats.statusBreakdown.completed / total) * 100) + '%';
-            document.getElementById('stat-busy').textContent = Math.round((stats.statusBreakdown.busy / total) * 100) + '%';
-            document.getElementById('stat-failed').textContent = Math.round((stats.statusBreakdown.failed / total) * 100) + '%';
+          // Animate ring
+          const ring = document.getElementById('completion-ring');
+          if (ring) {
+            const circumference = 301.59;
+            const offset = circumference - (completed / 100) * circumference;
+            ring.style.strokeDashoffset = offset;
+            ring.classList.add('ring-animated');
+          }
+
+          // --- Quality Metrics ---
+          document.getElementById('quality-answer').textContent = `${completed}%`;
+          document.getElementById('quality-answer-bar').style.width = `${completed}%`;
+
+          const durScore = Math.min(Math.round((s.avgDuration / 300) * 100), 100);
+          document.getElementById('quality-duration').textContent = `${avgMin}:${String(avgSec).padStart(2, '0')}`;
+          document.getElementById('quality-duration-bar').style.width = `${durScore}%`;
+
+          const langCount = Object.keys(s.languages || {}).length;
+          const langScore = Math.round((langCount / 5) * 100);
+          document.getElementById('quality-langs').textContent = `${langCount}/5`;
+          document.getElementById('quality-langs-bar').style.width = `${langScore}%`;
+
+          const uptimeHours = s.uptime / 3600;
+          const uptimeScore = Math.min(Math.round((uptimeHours / 24) * 100), 100);
+          document.getElementById('quality-uptime').textContent = formatUptime(s.uptime);
+          document.getElementById('quality-uptime-bar').style.width = `${uptimeScore}%`;
+
+          // --- Cost Analysis ---
+          const totalMinutes = Math.round(s.totalDuration / 60);
+          document.getElementById('cost-total-savings').textContent = `${s.savings.toLocaleString()} EUR`;
+          document.getElementById('cost-minutes-label').textContent = `Basé sur ${totalMinutes.toLocaleString()} minutes de conversation`;
+
+          // --- Language Chart ---
+          const langLabels = [];
+          const langData = [];
+          const langColors = { ary: '#f43f5e', fr: '#6366f1', en: '#3b82f6', ar: '#f59e0b', es: '#22c55e' };
+          const langPalette = [];
+
+          for (const [lang, count] of Object.entries(s.languages || {})) {
+            langLabels.push(lang.toUpperCase());
+            langData.push(count);
+            langPalette.push(langColors[lang] || COLORS.palette[langLabels.length % COLORS.palette.length]);
+          }
+
+          document.getElementById('lang-total-label').textContent = `${s.totalCalls} appels`;
+
+          if (langChart) langChart.destroy();
+          if (langData.length > 0) {
+            langChart = createDoughnutChart('#langChart', {
+              labels: langLabels,
+              data: langData,
+              colors: langPalette
+            });
           }
         }
 
-        // Fetch CDRs
-        var cdrsRes = await fetch(API_BASE + '/telephony/cdrs?tenantId=' + TENANT_ID + '&limit=10', { headers: headers });
-        var cdrsData = await cdrsRes.json();
+        // --- CDR Table ---
+        if (cdrsRes.success && cdrsRes.data) {
+          cdrTable.setData(cdrsRes.data);
+          document.getElementById('cdr-count').textContent = `${cdrsRes.data.length} enregistrements`;
 
-        if (cdrsData.success && cdrsData.data && cdrsData.data.length > 0) {
-          var table = document.getElementById('cdr-table');
-          table.innerHTML = '';
-          cdrsData.data.forEach(function(cdr) {
-            var date = new Date(cdr.timestamp);
-            var timeAgo = formatTimeAgo(date);
-            var durSec = parseInt(cdr.duration_sec) || 0;
-            var cdrMins = Math.floor(durSec / 60);
-            var cdrSecs = durSec % 60;
-            var duration = cdrMins + ':' + cdrSecs.toString().padStart(2, '0');
+          // --- Call Volume Chart (from CDR timestamps) ---
+          const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+          const labels = [];
+          const counts = [];
 
-            var tr = document.createElement('tr');
-            tr.className = 'border-b border-zinc-200 dark:border-white/[0.08] hover:bg-zinc-50 dark:hover:bg-white/[0.03] transition';
+          for (let i = 6; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(d.getDate() - i);
+            labels.push(days[d.getDay()]);
 
-            var cells = [
-              { text: cdr.number || '', cls: 'font-mono text-xs' },
-              { text: cdr.persona || '' },
-              { text: (cdr.language || '').toUpperCase() },
-              { text: duration },
-              { text: cdr.direction === 'outbound' ? 'Outbound' : 'Inbound', cls: 'font-medium text-emerald-500 dark:text-emerald-400' },
-              { html: true, status: cdr.status },
-              { text: timeAgo, cls: 'text-zinc-400' }
-            ];
+            const dayStr = d.toDateString();
+            const count = cdrsRes.data.filter(c => {
+              const cd = new Date(c.timestamp);
+              return cd.toDateString() === dayStr;
+            }).length;
+            counts.push(count);
+          }
 
-            cells.forEach(function(cell) {
-              var td = document.createElement('td');
-              td.className = 'py-3 ' + (cell.cls || '');
-              if (cell.html) {
-                var span = document.createElement('span');
-                span.className = 'px-2 py-1 rounded-full text-xs ' +
-                  (cell.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-500 dark:text-emerald-400' : 'bg-amber-500/20 text-amber-500 dark:text-amber-400');
-                span.textContent = cell.status || 'Unknown';
-                td.appendChild(span);
-              } else {
-                td.textContent = cell.text;
-              }
-              tr.appendChild(td);
-            });
-
-            table.appendChild(tr);
+          if (callVolumeChart) callVolumeChart.destroy();
+          callVolumeChart = createLineChart('#callVolumeChart', {
+            labels,
+            datasets: [{
+              label: 'Appels PSTN',
+              data: counts,
+              color: '#6366f1',
+              fill: true,
+              pointRadius: 4,
+              tension: 0.4
+            }]
           });
         }
-      } catch (err) {
-        console.warn('[Telephony] API connection failed (offline mode)');
+
+      } catch (error) {
+        console.error('[Telephony] Load error:', error);
+        toast.error('Erreur de chargement des données PSTN');
       }
     }
 
-    function formatTimeAgo(date) {
-      var seconds = Math.floor((new Date() - date) / 1000);
-      if (seconds < 60) return 'À l\'instant';
-      var minutes = Math.floor(seconds / 60);
-      if (minutes < 60) return 'Il y a ' + minutes + ' min';
-      var hours = Math.floor(minutes / 60);
-      if (hours < 24) return 'Il y a ' + hours + ' h';
-      return date.toLocaleDateString();
-    }
+    // Export CDR
+    document.getElementById('btn-export-cdr')?.addEventListener('click', () => {
+      if (cdrTable && typeof cdrTable.exportCSV === 'function') {
+        cdrTable.exportCSV('vocalia-cdr-export');
+        toast.success('Export CDR téléchargé');
+      } else {
+        toast.info('Aucune donnée à exporter');
+      }
+    });
 
-    fetchTelephonyData();
-    setInterval(fetchTelephonyData, 30000);
+    // Initial load + auto-refresh
+    loadTelephony();
+    setInterval(loadTelephony, 30000);
   </script>
 </body>
 </html>

@@ -817,6 +817,7 @@ async function handleTelephonyRequest(req, res, path, method, query) {
         persona: c.persona || 'AGENCY',
         language: c.language || 'fr',
         duration_sec: c.duration_sec || 0,
+        direction: c.direction || 'inbound',
         status: c.status || 'Completed',
         timestamp: c.created_at
       }));

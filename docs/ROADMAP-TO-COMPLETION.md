@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-10 | **Session:** 250.193 (Caller/callee deep audit — 7 bugs D1-D3, including D2 CRITICAL: 4 function name mismatches in /respond endpoint. 70+ cross-module imports verified. All remaining items are OPERATIONS/BUSINESS.)
+> **Date:** 2026-02-10 | **Session:** 250.194 (SOTA Dashboard & Module System — telephony.html SOTA rewrite 374→575 lines, 4 pages migrated to shared ES modules, ALL 21 app pages now use shared module system)
 > **Code Completeness:** 9.5/10 | **Production Readiness:** 3.5/10 (website deployed, API on VPS running OLD code — /respond crashes C14, 18 env vars MISSING, widget VISIBLE but MUTE: 0 conversations possible)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 36 audit phases across sessions 250.105-250.193. Latest: **CALLER/CALLEE AUDIT 250.193** (7 bugs: D1 HIGH 5× SecretVault destructuring, D2 CRITICAL 4× function name mismatch in /respond, D3 telephony SecretVault. 70+ imports verified ALL match). Prior: dashboard audit (250.192), code cleanup (250.191b), runtime integrity (250.191). Full history: `memory/session-history.md`
+> **Source:** 37 audit phases across sessions 250.105-250.194. Latest: **SOTA DASHBOARD 250.194** (telephony SOTA rewrite with Chart.js + DataTable + animated counters + SVG ring gauge; 4 pages migrated from inline fetch/auth to shared ES modules; design tokens 23/23 clean). Prior: caller/callee audit (250.193), dashboard audit (250.192), code cleanup (250.191b). Full history: `memory/session-history.md`
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (3,765 tests, 68 files). **392 bugs reported across 36 audit phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Session 250.193: Caller/callee deep audit found 7 bugs (D1 HIGH 5× SecretVault destructuring gets CLASS not instance, D2 CRITICAL 4× function name mismatch in /respond endpoint — getOrderStatus/checkProductStock silently dead, getCustomerContext CRASHES every request with email) — ALL fixed. 70+ cross-module imports verified across all modules. Prior: 385 bugs across 35 phases (250.105-250.192). Validator: 23/23. Reclassified: 2 external dependencies, 2 non-bugs, 2 false alarms, ~5 cosmetic.
+**Code Completeness: 9.5/10** — Features coded and tested (3,765 tests, 68 files). **392 bugs reported across 37 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Session 250.194: SOTA dashboard & module system modernization — telephony.html rewritten as data-driven dashboard (374→575 lines: Chart.js, DataTable, animated counters, SVG ring gauge), 4 pages migrated from inline fetch/auth to shared ES modules (knowledge-base 10 fetch calls, catalog 7 fetch calls, onboarding, telephony). **ALL 21 app pages now use shared module system** (auth-client.js + api-client.js + toast.js). Zero `localStorage.getItem('vocalia_access_token')` in any app page. Design tokens: 23/23 ✅. Prior: 392 bugs across 36 phases (250.105-250.193). Reclassified: 2 external dependencies, 2 non-bugs, 2 false alarms, ~5 cosmetic.
 **Production Readiness: 3.5/10** — VERIFIED 250.171 bottom-up audit:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200)
 - `api.vocalia.ma/health` ✅ Voice API responds (but runs OLD code from 250.167)
@@ -530,6 +530,7 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 31 FRAGMENTATION (250.190)** | **8 (F5-F6, F9-F11, F13-F14)** | **8** | **0** |
 | **Phase 32 RUNTIME INTEGRITY (250.191)** | **9 (F16-F24)** | **9** | **0** |
 | **Phase 33 CLEANUP (250.191b)** | **2 (F8+F15)** | **2** | **0** |
+| **Phase 37 SOTA DASHBOARD (250.194)** | **0 (modernization)** | **0** | **0** |
 | **CUMULATIVE** | **377** | **377** | **0 actionable** (8 not fixable locally: VPS/arch. Inc. 2 external deps, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified). NOTE: Business logic + integration APIs = INCONNU (0 appels réels, 0 clients). **ALL CODE tasks complete — only OPERATIONS/BUSINESS remain.** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
@@ -631,6 +632,7 @@ create_booking          get_recommendations    qualify_lead
 | **P0-CLEANUP (250.191b)** | ✅ **ALL CODE TASKS DONE** | F8: EventBus voice-agent-b2b emit()→publish() + RevenueScience dead subscriber removed. F15: orphan translation_queue.json deleted (269KB). F7: reclassified as design choice (domain-specific HITL stores with aggregated read). DIST-1/DIST-2: verified synced (3,697 lines each). Temp audit scripts deleted. | **9.5** |
 | **P0-DASHBOARD-AUDIT (250.192)** | ✅ **8/8 FIXED** | Dashboard/App page audit: B1 CRITICAL 6× `const tenantId = tenantId` TDZ crash in catalog.html (every function crashes). B2 HIGH onboarding wizard 4-step never saves data to API (added PUT to /api/db/tenants). B3 MEDIUM XSS catalog.html (6 unescaped user-data in innerHTML from CSV/JSON imports). B4 HIGH 7× api.request() wrong arg order in billing+integrations+calls (TypeError on _buildUrl). B5 LOW 2× dead `<script src="api-client.js">` without type=module (SyntaxError). B6 MEDIUM XSS admin/tenants+hitl (tenant.name, item.summary unescaped). B7 MEDIUM XSS calls.html+billing.html (caller_phone, summary, hosted_url unescaped). B8 LOW KB onclick key injection (apostrophe in key breaks JS). 22 individual fixes, 10 files modified. | **9.5** |
 | **P0-CALLER-CALLEE (250.193)** | ✅ **7/7 FIXED** | Exhaustive cross-module caller/callee verification. D1 HIGH: 5× `const { SecretVault } = require(...)` destructures CLASS instead of singleton instance → `loadCredentials()` is undefined (4 integrations + telephony). D2 CRITICAL: 4 function name mismatches in voice-api-resilient.cjs — `getOrderStatus→checkOrderStatus`, `checkProductStock→checkStock` (silently dead via typeof guard), `getCustomerContext→lookupCustomer` (**CRASHES every /respond with email** — no guard, TypeError), `formatForVoice` (doesn't exist). D3: telephony SecretVault destructuring. Verified: 70+ cross-module imports across ALL modules (voice-api 18, telephony 15, db-api 14, MCP 26 tools, personas, scripts) — ALL match. | **9.5** |
+| **P0-SOTA-DASHBOARD (250.194)** | ✅ **DONE** | SOTA dashboard modernization & shared module system completion. Telephony.html: complete rewrite 374→575 lines (Chart.js call volume + language doughnut, DataTable CDR records, SVG ring gauge, animated counters, quality metrics progress bars, cost analysis, 30s auto-refresh). 4 pages migrated from inline fetch/auth to shared ES modules: knowledge-base (10 fetch→api calls), catalog (7 fetch→api calls), onboarding (auth+fetch→modules), telephony (full SOTA). db-api.cjs: CDR `direction` field added. Design tokens: sky colors (#0ea5e9→#3b82f6, #38bdf8→#60a5fa) for approved palette compliance. Result: ALL 21 app pages use shared module system (auth-client + api-client + toast). Zero inline auth/fetch patterns remaining. 23/23 ✅. | **9.5** |
 
 **Code Completeness: 9.5/10** | **Production Readiness: 3.5/10** | **Weighted: 8.6/10** | **MCP: 9.0/10**
 
@@ -683,12 +685,12 @@ RESEARCH (not a bug):
   3. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
   4. First paying customer → first real traffic → validate entire stack
 
-CODE — ALL DONE ✅ (250.191b):
-  5. ✅ F7 RECLASSIFIED: HITL domain stores = DESIGN CHOICE (domain-specific write + aggregated read via loadAllPendingHITL)
-  6. ✅ F8 FIXED: EventBus dead wiring — voice-agent-b2b.cjs emit()→publish() + RevenueScience dead subscriber removed
-  7. ✅ F15 FIXED: data/translation_queue.json DELETED (269KB orphan, 0 importers)
-  8. ✅ DIST-1/DIST-2 VERIFIED: npm+Shopify widgets already synced (3,697 lines each, escapeHTML+safeConfigMerge+Shadow DOM)
-  9. ✅ Temp audit scripts cleaned up (scripts/_audit-env.cjs, scripts/_audit-requires.cjs deleted)
+CODE — ALL DONE ✅ (250.194):
+  5. ✅ SOTA DASHBOARD (250.194): telephony.html rewritten (374→575 lines, Chart.js+DataTable+SVG gauge)
+  6. ✅ MODULE SYSTEM (250.194): ALL 21 app pages use shared ES modules (auth-client+api-client+toast)
+  7. ✅ 4 pages migrated: telephony, knowledge-base (10 fetch), catalog (7 fetch), onboarding
+  8. ✅ Design tokens: 23/23 ✅ (sky→blue palette compliance)
+  9. ✅ Prior: F7/F8/F15/DIST-1/DIST-2 all resolved (250.191b)
 
 BUSINESS:
   10. Evaluate Telnyx for Moroccan telephony (cheaper than Twilio $0.83/min)

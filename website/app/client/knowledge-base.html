@@ -406,29 +406,27 @@
   <div id="toast-container" class="fixed bottom-4 right-4 z-50 space-y-2"></div>
 
   <script src="/app/components/app-components.js" defer></script>
-  <script>
-    // Session 250.167: Auth guard
-    (function() {
-      const token = localStorage.getItem('vocalia_access_token') || sessionStorage.getItem('vocalia_access_token');
-      if (!token) {
-        window.location.href = '/app/auth/login.html?return=' + encodeURIComponent(window.location.pathname);
-        return;
-      }
-    })();
+  <script type="module">
+    import auth from '/src/lib/auth-client.js';
+    import { api } from '/src/lib/api-client.js';
+    import toast from '/src/lib/toast.js';
 
     // Initialize i18n (RTL support for AR/ARY)
-    (async () => {
-      if (window.VocaliaI18n) {
-        await VocaliaI18n.initI18n();
-        VocaliaI18n.translatePage();
-      }
-    })();
+    if (window.VocaliaI18n) {
+      await VocaliaI18n.initI18n();
+      VocaliaI18n.translatePage();
+    }
 
     // Initialize Lucide icons
     lucide.createIcons();
 
+    // Auth check
+    if (!auth.requireAuth()) {
+      throw new Error('Not authenticated');
+    }
+
     // State
-    let currentTenantId = null;
+    let currentTenantId = auth.getTenantId();
     let currentLanguage = 'fr';
     let kbEntries = {};
     let editingKey = null;
@@ -444,7 +442,7 @@
 
     // Initialize
     async function init() {
-      await loadUser();
+      loadUserInfo();
       await loadKBEntries();
       await loadQuota();
       setupEventListeners();
@@ -453,14 +451,7 @@
     // Load quota status
     async function loadQuota() {
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const response = await fetch(`/api/tenants/${currentTenantId}/kb/quota`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!response.ok) return;
-
-        const quota = await response.json();
+        const quota = await api.get(`/tenants/${currentTenantId}/kb/quota`);
         renderQuota(quota);
       } catch (e) {
         console.error('Quota load error:', e);
@@ -509,64 +500,28 @@
       }
     }
 
-    // Load user and get tenant ID
-    async function loadUser() {
-      try {
-        const token = localStorage.getItem('vocalia_access_token');
-        if (!token) {
-          window.location.href = '/app/auth/login.html';
-          return;
-        }
-
-        const response = await fetch('/api/auth/me', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!response.ok) throw new Error('Auth failed');
-
-        const user = await response.json();
-        if (!user.tenant_id) {
-          window.location.href = '/app/client/onboarding.html';
-          return;
-        }
-        currentTenantId = user.tenant_id;
-
+    // Load user info from auth client
+    function loadUserInfo() {
+      const user = auth.getCurrentUser();
+      if (user) {
+        currentTenantId = auth.getTenantId();
         document.getElementById('user-name').textContent = user.name || user.email;
         document.getElementById('user-email').textContent = user.email;
         document.getElementById('user-initials').textContent = getInitials(user.name || user.email);
-      } catch (e) {
-        console.error('Auth error:', e);
-        window.location.href = '/app/auth/login.html';
-        return;
       }
     }
 
     // Load KB entries
     async function loadKBEntries() {
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const response = await fetch(`/api/tenants/${currentTenantId}/kb?lang=${currentLanguage}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!response.ok) {
-          // API unavailable — return empty KB
-          kbEntries = await loadDemoKB();
-        } else {
-          kbEntries = await response.json();
-        }
-
+        kbEntries = await api.get(`/tenants/${currentTenantId}/kb`, { lang: currentLanguage });
         renderEntries();
         updateStats();
       } catch (e) {
         console.error('KB load error:', e);
-        kbEntries = await loadDemoKB();
+        kbEntries = {};
         renderEntries();
       }
-    }
-
-    async function loadDemoKB() {
-      return {};
     }
 
     // Render entries table
@@ -628,7 +583,7 @@
       }
 
       // Fetch index stats
-      fetch('/api/kb/stats').then(r => r.json()).then(stats => {
+      api.get('/kb/stats').then(stats => {
         if (stats.cache) {
           document.getElementById('stat-index').textContent = `${stats.cache.size} cached`;
         }
@@ -706,9 +661,8 @@
       document.getElementById('chatbot-form').addEventListener('submit', handleChatbotSubmit);
 
       // Logout
-      document.getElementById('logout-btn').addEventListener('click', () => {
-        localStorage.removeItem('vocalia_access_token');
-        localStorage.removeItem('vocalia_user');
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await auth.logout();
         window.location.href = '/app/auth/login.html';
       });
 
@@ -762,7 +716,7 @@
       const language = document.getElementById('entry-language').value;
 
       if (!key || !response) {
-        showToast('Veuillez remplir tous les champs requis', 'error');
+        toast.error('Veuillez remplir tous les champs requis');
         return;
       }
 
@@ -772,25 +726,14 @@
           const details = JSON.parse(detailsStr);
           value = { ...details, response };
         } catch (e) {
-          showToast('Format JSON invalide dans les détails', 'error');
+          toast.error('Format JSON invalide dans les détails');
           return;
         }
       }
 
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const res = await fetch(`/api/tenants/${currentTenantId}/kb`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ key, value, language })
-        });
-
-        if (!res.ok) throw new Error('Save failed');
-
-        showToast(editingKey ? 'Entrée mise à jour' : 'Entrée ajoutée', 'success');
+        await api.post(`/tenants/${currentTenantId}/kb`, { key, value, language });
+        toast.success(editingKey ? 'Entrée mise à jour' : 'Entrée ajoutée');
         hideModal('entry-modal');
         await loadKBEntries();
       } catch (e) {
@@ -798,7 +741,7 @@
         kbEntries[key] = value;
         renderEntries();
         updateStats();
-        showToast(editingKey ? 'Entrée mise à jour (local)' : 'Entrée ajoutée (local)', 'success');
+        toast.success(editingKey ? 'Entrée mise à jour (local)' : 'Entrée ajoutée (local)');
         hideModal('entry-modal');
       }
     }
@@ -808,22 +751,15 @@
       if (!confirm(`Supprimer l'entrée "${key}" ?`)) return;
 
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const res = await fetch(`/api/tenants/${currentTenantId}/kb/${key}?lang=${currentLanguage}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!res.ok) throw new Error('Delete failed');
-
-        showToast('Entrée supprimée', 'success');
+        await api.delete(`/tenants/${currentTenantId}/kb/${key}`, { params: { lang: currentLanguage } });
+        toast.success('Entrée supprimée');
         await loadKBEntries();
       } catch (e) {
         // Fallback: update local state
         delete kbEntries[key];
         renderEntries();
         updateStats();
-        showToast('Entrée supprimée (local)', 'success');
+        toast.success('Entrée supprimée (local)');
       }
     }
 
@@ -848,7 +784,7 @@
           document.getElementById('import-preview').classList.remove('hidden');
           document.getElementById('import-submit').disabled = false;
         } catch (err) {
-          showToast('Erreur de lecture du fichier: ' + err.message, 'error');
+          toast.error('Erreur de lecture du fichier: ' + err.message);
         }
       };
       reader.readAsText(file);
@@ -880,43 +816,23 @@
       const overwrite = document.getElementById('import-overwrite').checked;
 
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const res = await fetch(`/api/tenants/${currentTenantId}/kb/import`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ data: importData, language, overwrite })
-        });
-
-        const result = await res.json();
-        showToast(`Import terminé: ${result.imported || 0} ajoutées, ${result.updated || 0} mises à jour`, 'success');
+        const result = await api.post(`/tenants/${currentTenantId}/kb/import`, { data: importData, language, overwrite });
+        toast.success(`Import terminé: ${result.imported || 0} ajoutées, ${result.updated || 0} mises à jour`);
         hideModal('import-modal');
         await loadKBEntries();
       } catch (e) {
-        showToast('Erreur d\'import: ' + e.message, 'error');
+        toast.error('Erreur d\'import: ' + e.message);
       }
     }
 
     // Rebuild index
     async function rebuildIndex() {
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const res = await fetch(`/api/tenants/${currentTenantId}/kb/rebuild-index`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ language: currentLanguage })
-        });
-
-        const result = await res.json();
-        showToast(`Index reconstruit: ${result.totalChunks || 0} chunks, ${result.totalVocabulary || 0} termes`, 'success');
+        const result = await api.post(`/tenants/${currentTenantId}/kb/rebuild-index`, { language: currentLanguage });
+        toast.success(`Index reconstruit: ${result.totalChunks || 0} chunks, ${result.totalVocabulary || 0} termes`);
         updateStats();
       } catch (e) {
-        showToast('Erreur de reconstruction: ' + e.message, 'error');
+        toast.error('Erreur de reconstruction: ' + e.message);
       }
     }
 
@@ -924,7 +840,7 @@
     async function crawlWebsite() {
       const url = document.getElementById('crawl-url').value.trim();
       if (!url) {
-        showToast('Veuillez entrer une URL', 'error');
+        toast.error('Veuillez entrer une URL');
         return;
       }
 
@@ -937,33 +853,18 @@
       document.getElementById('crawl-submit').disabled = true;
 
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const res = await fetch(`/api/tenants/${currentTenantId}/kb/crawl`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ url, maxPages, language, singlePage })
-        });
-
-        if (!res.ok) {
-          const error = await res.json();
-          throw new Error(error.error || 'Crawl failed');
-        }
-
-        const result = await res.json();
+        const result = await api.post(`/tenants/${currentTenantId}/kb/crawl`, { url, maxPages, language, singlePage });
 
         if (result.success && result.imported) {
-          showToast(`Crawl terminé: ${result.imported.imported || 0} entrées importées`, 'success');
+          toast.success(`Crawl terminé: ${result.imported.imported || 0} entrées importées`);
           hideModal('crawl-modal');
           await loadKBEntries();
           await loadQuota();
         } else {
-          showToast('Aucune donnée KB extraite de l\'URL', 'info');
+          toast.info('Aucune donnée KB extraite de l\'URL');
         }
       } catch (e) {
-        showToast('Erreur de crawl: ' + e.message, 'error');
+        toast.error('Erreur de crawl: ' + e.message);
       } finally {
         document.getElementById('crawl-progress').classList.add('hidden');
         document.getElementById('crawl-submit').disabled = false;
@@ -991,12 +892,7 @@
 
       // Search KB
       try {
-        const token = localStorage.getItem('vocalia_access_token');
-        const res = await fetch(`/api/tenants/${currentTenantId}/kb/search?q=${encodeURIComponent(query)}&lang=${currentLanguage}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        const results = await res.json();
+        const results = await api.get(`/tenants/${currentTenantId}/kb/search`, { q: query, lang: currentLanguage });
         let response = 'Je n\'ai pas trouvé d\'information à ce sujet.';
 
         if (results.results && results.results.length > 0) {
@@ -1052,26 +948,9 @@
       document.getElementById(id).classList.add('hidden');
     }
 
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toast-container');
-      const colors = {
-        success: 'bg-emerald-500',
-        error: 'bg-red-500',
-        info: 'bg-indigo-500'
-      };
-      const toast = document.createElement('div');
-      toast.className = `${colors[type]} text-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-slide-in`;
-      toast.innerHTML = `
-        <i data-lucide="${type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info'}" class="w-4 h-4"></i>
-        <span>${escapeHtml(message)}</span>
-      `;
-      container.appendChild(toast);
-      lucide.createIcons();
-
-      setTimeout(() => {
-        toast.remove();
-      }, 4000);
-    }
+    // Expose for onclick handlers in dynamic HTML
+    window.editEntry = editEntry;
+    window.deleteEntry = deleteEntry;
 
     function escapeHtml(text) {
       const div = document.createElement('div');
