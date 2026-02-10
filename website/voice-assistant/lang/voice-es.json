@@ -62,7 +62,7 @@
     },
     "telephony": {
       "keywords": ["telefono", "telefonia", "llamada", "llamadas", "pbx", "ivr", "centralita"],
-      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a solo 0,10EUR/minuto (hasta 60% mas barato que alternativas). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
+      "response": "Nuestra telefonia AI VocalIA automatiza llamadas entrantes 24/7 a 0,10EUR/minuto todo incluido (IA + 38 personas + analytics). Califica leads, agenda citas y transfiere llamadas urgentes. Interesado en una demo?"
     },
     "integration": {
       "keywords": ["integracion", "crm", "hubspot", "shopify", "api", "webhook"],
@@ -74,7 +74,7 @@
     },
     "competitors": {
       "keywords": ["vapi", "retell", "bland", "competidor", "alternativa", "comparacion", "versus"],
-      "response": "Comparado con Vapi (0,15-0,33EUR/min) o Retell (0,13-0,31EUR/min), VocalIA cuesta solo 0,10EUR/min - hasta 60% de ahorro. Ademas, ofrecemos Widget + Telefonia en una sola plataforma con soporte Darija para el mercado marroqui."
+      "response": "VocalIA ofrece 0,10EUR/min con IA, personas y analytics incluidos en una sola suscripcion (199EUR/mes). Los competidores cobran STT + LLM + TTS por separado. Ademas, ofrecemos Widget + Telefonia en una sola plataforma con soporte Darija para el mercado marroqui."
     },
     "leads": {
       "keywords": ["lead", "leads", "prospecto", "calificacion", "bant", "cualificar"],

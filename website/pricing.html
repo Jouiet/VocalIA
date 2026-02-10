@@ -99,10 +99,10 @@
         },
         {
           "@type": "Question",
-          "name": "Comment fonctionne l'option self-hosted?",
+          "name": "Quelles sont les options de déploiement?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "L'option Enterprise self-hosted vous permet de déployer VocalIA sur votre propre infrastructure (AWS, GCP, Azure, on-premise). Vous gardez le contrôle total des données. Support dédié inclus."
+            "text": "VocalIA est déployé sur une infrastructure cloud sécurisée en Europe. Vos données sont chiffrées en transit et au repos."
           }
         }
       ]
@@ -221,15 +221,9 @@
           Commencez avec le plan Starter, évoluez vers l'Enterprise au rythme de votre croissance.
         </p>
 
-        <!-- Billing Toggle -->
+        <!-- Billing: Monthly only (annual billing not yet available) -->
         <div class="flex items-center justify-center gap-4 mb-12">
-          <div class="toggle-switch" id="billingToggle">
-            <div class="toggle-option active" data-period="monthly" data-i18n="pricing_page.toggle_monthly">Mensuel
-            </div>
-            <div class="toggle-option" data-period="annual"><span data-i18n="pricing_page.toggle_annual">Annuel</span>
-              <span class="text-emerald-400 text-xs ml-1" data-i18n="pricing_page.toggle_discount">-20%</span>
-            </div>
-          </div>
+          <span class="text-zinc-400 text-sm" data-i18n="pricing_page.billing_note">Facturation mensuelle</span>
         </div>
       </div>
     </div>
@@ -317,7 +311,7 @@
             </li>
             <li class="flex items-start gap-2 text-white">
               <i data-lucide="check" class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5"></i>
-              <span data-i18n="pricing_page.pro_f5">Conversations illimitées</span>
+              <span data-i18n="pricing_page.pro_f5">Conversations incluses</span>
             </li>
           </ul>
 
@@ -412,7 +406,7 @@
           <a href="/contact?product=telephony"
             class="block w-full py-3 px-6 rounded-xl border-2 border-violet-500 text-violet-400 text-center font-semibold transition hover:bg-violet-500/10"
             data-i18n="pricing_page.telephony_cta">
-            Contacter Sales
+            Nous Contacter
           </a>
         </div>
       </div>
@@ -422,61 +416,25 @@
         <div class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08]">
           <i data-lucide="info" class="w-5 h-5 text-vocalia-400"></i>
           <span class="text-zinc-300" data-i18n="pricing_page.overage_note">Minutes supplémentaires: <strong
-              class="text-white">0.10€/min</strong> (5 langues). Darija inbound: $0.25/min</span>
+              class="text-white">0.10€/min</strong> (5 langues). Darija inbound: 0.25€/min</span>
         </div>
       </div>
 
-      <!-- Volume Discounts Section -->
+      <!-- Volume: Contact for custom pricing -->
       <div class="mt-16 max-w-4xl mx-auto">
-        <div class="glass rounded-2xl p-8 border border-white/[0.08]">
-          <div class="flex items-center gap-3 mb-6">
+        <div class="glass rounded-2xl p-8 border border-white/[0.08] text-center">
+          <div class="flex items-center justify-center gap-3 mb-4">
             <div class="w-12 h-12 rounded-xl bg-vocalia-500/20 flex items-center justify-center">
               <i data-lucide="trending-up" class="w-6 h-6 text-vocalia-400"></i>
             </div>
-            <div>
-              <h3 class="text-xl font-bold text-white" data-i18n="pricing_page.volume_title">Remises Volume</h3>
-              <p class="text-zinc-400 text-sm" data-i18n="pricing_page.volume_subtitle">Plus vous utilisez, plus vous
-                économisez</p>
-            </div>
+            <h3 class="text-xl font-bold text-white" data-i18n="pricing_page.volume_title">Grands Comptes</h3>
           </div>
-
-          <div class="grid md:grid-cols-3 gap-4">
-            <!-- Tier 1 -->
-            <div class="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center">
-              <div class="text-2xl font-bold text-white mb-1">1,000+</div>
-              <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
-              <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount1">-10%</div>
-              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate1">0.09€/min</div>
-            </div>
-
-            <!-- Tier 2 -->
-            <div class="p-4 rounded-xl bg-vocalia-500/10 border border-vocalia-500/30 text-center">
-              <div class="absolute -top-2 left-1/2 -translate-x-1/2">
-                <span class="px-2 py-0.5 rounded-full bg-vocalia-500 text-white text-xs font-semibold"
-                  data-i18n="pricing_page.volume_popular">Populaire</span>
-              </div>
-              <div class="text-2xl font-bold text-white mb-1">5,000+</div>
-              <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
-              <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount2">-20%</div>
-              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate2">0.08€/min</div>
-            </div>
-
-            <!-- Tier 3 -->
-            <div class="p-4 rounded-xl bg-white/[0.04] border border-white/[0.08] text-center">
-              <div class="text-2xl font-bold text-white mb-1">10,000+</div>
-              <div class="text-sm text-zinc-400 mb-3" data-i18n="pricing_page.volume_min">min/mois</div>
-              <div class="text-lg font-semibold text-emerald-400" data-i18n="pricing_page.volume_discount3">-30%</div>
-              <div class="text-xs text-zinc-400 mt-1" data-i18n="pricing_page.volume_rate3">0.07€/min</div>
-            </div>
-          </div>
-
-          <div class="mt-6 text-center">
-            <a href="/contact?subject=volume"
-              class="inline-flex items-center gap-2 text-vocalia-400 hover:text-vocalia-300 transition font-medium">
-              <span data-i18n="pricing_page.volume_cta">Demander un devis personnalisé</span>
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </a>
-          </div>
+          <p class="text-zinc-400 text-sm mb-6" data-i18n="pricing_page.volume_subtitle">Vous avez besoin de plus de 1 000 minutes/mois ? Contactez-nous pour un tarif personnalisé.</p>
+          <a href="/contact?subject=volume"
+            class="inline-flex items-center gap-2 text-vocalia-400 hover:text-vocalia-300 transition font-medium">
+            <span data-i18n="pricing_page.volume_cta">Demander un devis personnalisé</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -526,8 +484,8 @@
             <tr class="border-b border-white/[0.06]">
               <td class="py-4 px-4 font-medium" data-i18n="pricing_page.row_minutes">Conversations</td>
               <td class="text-center py-4 px-4">500/mois</td>
-              <td class="text-center py-4 px-4">Illimité</td>
-              <td class="text-center py-4 px-4">Illimité</td>
+              <td class="text-center py-4 px-4">Incluses</td>
+              <td class="text-center py-4 px-4">Incluses</td>
               <td class="text-center py-4 px-4">100 min PSTN</td>
             </tr>
             <tr class="border-b border-white/[0.06]">
@@ -535,7 +493,7 @@
               <td class="text-center py-4 px-4">Email</td>
               <td class="text-center py-4 px-4">Prioritaire</td>
               <td class="text-center py-4 px-4">Prioritaire</td>
-              <td class="text-center py-4 px-4">Dédié 24/7</td>
+              <td class="text-center py-4 px-4">Email prioritaire</td>
             </tr>
           </tbody>
         </table>
@@ -713,10 +671,7 @@
       let currentSymbol = '€';
       // Synchronized with Starter/Pro/ECOM/Telephony pricing (250.142)
       let currentPricing = { starter: 49, pro: 99, ecom: 99, telephony: 199, overage: 0.10 };
-      let isAnnual = false;
-
-      // Annual discount: 20%
-      const ANNUAL_DISCOUNT = 0.20;
+      let isAnnual = false; // Annual billing not yet available
 
       function formatPrice(amount, symbol, currency) {
         if (currency === 'MAD') return `${amount} ${symbol}`;
@@ -843,23 +798,8 @@
         });
       }
 
-      // Billing Toggle
+      // Initialize pricing with geo-detected currency (annual billing not yet available)
       document.addEventListener('DOMContentLoaded', () => {
-        const toggle = document.getElementById('billingToggle');
-        if (!toggle) return;
-
-        const options = toggle.querySelectorAll('.toggle-option');
-
-        options.forEach(option => {
-          option.addEventListener('click', () => {
-            options.forEach(o => o.classList.remove('active'));
-            option.classList.add('active');
-            isAnnual = option.dataset.period === 'annual';
-            updatePriceDisplay();
-          });
-        });
-
-        // Initialize with geo-detected currency
         initMultiCurrencyPricing();
       });
     })();

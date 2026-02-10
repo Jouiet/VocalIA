@@ -27,9 +27,6 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@vocalia_ma">
-
-
-  <!-- Twitter Card -->
   <meta name="twitter:url" content="https://vocalia.ma/products/voice-widget" />
   <meta name="twitter:title" content="Voice Widget - VocalIA | Assistant Vocal IA" />
   <meta name="twitter:description"
@@ -51,7 +48,7 @@
       "brand": {"@type": "Brand", "name": "VocalIA"},
       "offers": {
         "@type": "Offer",
-        "price": "49",
+        "price": "99",
         "priceCurrency": "EUR",
         "availability": "https://schema.org/InStock"
       },
@@ -369,7 +366,7 @@
     <span class="attr"><span data-i18n="widget.language_5">language</span></span>: <span class="string">'fr'</span>
   };
 <span class="keyword">&lt;/script&gt;</span>
-<span class="keyword">&lt;script</span> <span class="attr">src</span>=<span class="string">"https://vocalia.ma/voice-assistant/voice-widget-v3.js"</span> <span class="attr">async</span><span class="keyword">&gt;&lt;/script&gt;</span></code></pre>
+<span class="keyword">&lt;script</span> <span class="attr">src</span>=<span class="string">"https://vocalia.ma/voice-assistant/voice-widget-ecommerce-core.js"</span> <span class="attr">async</span><span class="keyword">&gt;&lt;/script&gt;</span></code></pre>
         </div>
       </div>
     </div>
@@ -394,7 +391,7 @@
           <h3 class="text-lg font-semibold mb-2" data-i18n="voice_widget_page.feature1_title">Reconnaissance Vocale
             Premium</h3>
           <p class="text-zinc-400 text-sm" data-i18n="voice_widget_page.feature1_desc">Technologie de reconnaissance et
-            synthèse vocale de dernière génération. Infrastructure dédiée.</p>
+            synthèse vocale de dernière génération. Web Speech API natif navigateur.</p>
         </div>
 
         <!-- Feature 2 -->
@@ -499,7 +496,7 @@
           <ul class="space-y-2 text-zinc-400 text-sm">
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              <span data-i18n="voice_widget_page.specs_perf_bundle">Bundle size: ~45KB gzipped</span>
+              <span data-i18n="voice_widget_page.specs_perf_bundle">Bundle size: ~34KB gzipped</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
@@ -507,7 +504,7 @@
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              <span data-i18n="voice_widget_page.specs_perf_workers">Web Workers pour le traitement audio</span>
+              <span data-i18n="voice_widget_page.specs_perf_workers">Shadow DOM isolé pour sécurité</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
@@ -515,7 +512,7 @@
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-vocalia-400"></span>
-              <span data-i18n="voice_widget_page.specs_perf_cdn">CDN global (latence &lt;50ms)</span>
+              <span data-i18n="voice_widget_page.specs_perf_cdn">Hébergement Europe (VPS dédié)</span>
             </li>
           </ul>
         </div>
@@ -536,7 +533,7 @@
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span data-i18n="voice_widget_page.specs_security_data">Aucune donnée stockée côté VocalIA</span>
+              <span data-i18n="voice_widget_page.specs_security_data">Données chiffrées en transit et au repos</span>
             </li>
             <li class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
@@ -628,7 +625,7 @@
     language: 'fr'
   };
 <\/script>
-<script src="https://vocalia.ma/voice-assistant/voice-widget-v3.js" async><\/script>`;
+<script src="https://vocalia.ma/voice-assistant/voice-widget-ecommerce-core.js" async><\/script>`;
       navigator.clipboard.writeText(code);
       alert('Code copié!');
     }

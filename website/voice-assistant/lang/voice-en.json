@@ -62,7 +62,7 @@
     },
     "telephony": {
       "keywords": ["phone", "telephony", "call", "calls", "pbx", "ivr", "hotline"],
-      "response": "Our VocalIA AI telephony automates inbound calls 24/7 at competitive per-minute rates (60% cheaper than market alternatives). It qualifies leads, books appointments and transfers urgent calls. Interested in a demo?"
+      "response": "Our VocalIA AI telephony automates inbound calls 24/7 at €0.10/min all-inclusive (AI + 38 personas + analytics). It qualifies leads, books appointments and transfers urgent calls. Interested in a demo?"
     },
     "integration": {
       "keywords": ["integration", "crm", "hubspot", "shopify", "api", "webhook"],
@@ -74,7 +74,7 @@
     },
     "competitors": {
       "keywords": ["vapi", "retell", "bland", "competitor", "alternative", "comparison", "versus"],
-      "response": "VocalIA offers significant savings compared to alternatives - up to 60% lower costs. Plus, we offer Widget + Telephony in one platform and exclusive Darija support for the Moroccan market."
+      "response": "VocalIA offers €0.10/min with AI, personas and analytics included in a single subscription (€199/mo). Competitors charge STT + LLM + TTS separately. Plus, we offer Widget + Telephony in one platform and exclusive Darija support for the Moroccan market."
     },
     "leads": {
       "keywords": ["lead", "leads", "prospect", "qualification", "bant", "qualify"],
