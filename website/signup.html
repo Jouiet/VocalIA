@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inscription - Créer un compte | VocalIA</title>
   <meta name="description"
-    content="Créez votre compte VocalIA et déployez des agents vocaux IA professionnels. Plans Starter/Pro/E-commerce/Telephony, téléphonie 199€/mois + 0.10€/min. ROI mesurable dès le 1er mois.">
+    content="Créez votre compte VocalIA et déployez des agents vocaux IA professionnels. Plans à partir de 49€/mois. Essai gratuit 14 jours. ROI mesurable dès le 1er mois.">
   <link rel="canonical" href="https://vocalia.ma/signup" />
 
   <!-- Hreflang -->
@@ -143,7 +143,7 @@
           Créer votre compte
         </h1>
         <p class="text-zinc-400 text-lg" data-i18n="signup_page.subtitle">
-          Commencez avec Starter, upgradez quand vous voulez
+          Commencez avec l'essai 14 jours, upgradez quand vous voulez
         </p>
       </div>
 
@@ -200,7 +200,7 @@
             <div class="flex justify-between items-start mb-3">
               <div>
                 <h3 class="font-semibold text-white"><span data-i18n="signup.starter_1">Starter</span></h3>
-                <p class="text-2xl font-bold text-white"><span id="starter-price">99</span><span
+                <p class="text-2xl font-bold text-white"><span id="starter-price">49</span><span
                     class="text-sm font-normal text-zinc-400" id="starter-currency">€/mois</span></p>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
@@ -244,7 +244,7 @@
             <div class="flex justify-between items-start mb-3">
               <div>
                 <h3 class="font-semibold text-white">Pro</h3>
-                <p class="text-2xl font-bold text-white"><span id="pro-price">299</span><span
+                <p class="text-2xl font-bold text-white"><span id="pro-price">99</span><span
                     class="text-sm font-normal text-zinc-400" id="pro-currency">€/mois</span></p>
               </div>
               <div class="w-5 h-5 rounded-full border-2 border-white/[0.1] flex items-center justify-center plan-check">
@@ -444,9 +444,9 @@
     // Update prices based on geo
     function updatePrices(geo) {
       const prices = {
-        MAD: { starter: '990', pro: '2990', symbol: ' MAD' },
-        EUR: { starter: '99', pro: '299', symbol: '€' },
-        USD: { starter: '109', pro: '329', symbol: '$' }
+        MAD: { starter: '490', pro: '990', symbol: ' MAD' },
+        EUR: { starter: '49', pro: '99', symbol: '€' },
+        USD: { starter: '53', pro: '109', symbol: '$' }
       };
       const p = prices[geo.currency] || prices.EUR;
 

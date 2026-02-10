@@ -928,7 +928,7 @@
         "API completa",
         "Soporte prioritario"
       ],
-      "cta": "Contactar Ventas",
+      "cta": "Contáctenos",
       "popular": true
     },
     "enterprise": {
@@ -2555,7 +2555,7 @@
     "pro_f1": "500 min telefonía",
     "pro_f2": "38 personas de negocio",
     "pro_f3": "Integraciones CRM",
-    "free_price": "49",
+    "free_price": "0",
     "per_month": "/mes",
     "password_hint": "8 caracteres mínimo",
     "password_very_weak": "Muy débil",
