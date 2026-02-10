@@ -468,28 +468,28 @@
     "subtitle": "No pierda ningún lead, en la web o por teléfono.",
     "widget": {
       "title": "El Widget Vocal",
-      "description": "Un agente comercial IA en su sitio web. Cualifica, vende y acompaña a sus visitantes — día y noche, en 5 idiomas.",
+      "description": "Su mejor comercial, integrado en su sitio web. Atiende a cada visitante, entiende su necesidad y convierte — 24/7, en 5 idiomas.",
       "price": "Business",
       "features": [
-        "Cualifica sus leads y alimenta su CRM",
-        "Agenda citas y gestiona el soporte",
-        "Recupera carritos abandonados y vende",
-        "5 idiomas · Instalado en 2 min"
+        "Cualifica cada visitante y envía los leads calientes a su CRM",
+        "Agenda citas y gestiona el soporte — incluso a las 3 de la mañana",
+        "Recupera carritos abandonados y guía hasta el pago",
+        "FR, EN, ES, AR, Darija · 1 línea de código"
       ],
-      "b2b": "B2B — Cualifica sus leads y alimenta su CRM",
-      "b2c": "B2C — Agenda citas y gestiona el soporte al cliente",
-      "ecom": "E-commerce — Recupera carritos abandonados y vende",
-      "tech": "5 idiomas · Responde en < 1s · Instalado en 2 min"
+      "b2b": "B2B — Cualifica cada visitante y envía los leads calientes a su CRM",
+      "b2c": "B2C — Agenda citas y gestiona el soporte — incluso a las 3 de la mañana",
+      "ecom": "E-commerce — Recupera carritos abandonados y guía hasta el pago",
+      "tech": "FR, EN, ES, AR, Darija · Responde en < 1s · 1 línea de código"
     },
     "telephony": {
       "title": "Telefonía IA",
-      "description": "Reemplace su centralita telefónica. Sus clientes son recibidos, cualificados y dirigidos — sin esperas, 24/7.",
+      "description": "Su centralita telefónica, reinventada. La IA contesta en < 1s, entiende la solicitud y dirige cada llamada — sin esperas, 24/7.",
       "price": "0.10€/min",
       "features": [
-        "Número de teléfono dedicado incluido",
-        "5 motores IA en relevo — siempre disponible",
-        "Conoce sus productos, precios y horarios",
-        "Transferencia a un humano en una palabra"
+        "Un número de teléfono local real, dedicado a su empresa",
+        "Nunca se cae — 5 motores IA se relevan automáticamente",
+        "Entrenada con sus datos: productos, precios, horarios, FAQ",
+        "Su cliente dice «un humano» — transferencia instantánea"
       ]
     },
     "aes256_0": "Cifrado Militar",
@@ -2655,10 +2655,10 @@
     "espaol_12": "Español",
     "english_13": "Inglés",
     "franais_14": "Francés",
-    "hitl_configurable_15": "Transferencia a un humano en una palabra",
-    "rag_knowledge_base_16": "Conoce sus productos, precios y horarios",
-    "ia_multiprovider_17": "5 motores IA en relevo — siempre disponible",
-    "pstn_intgr_18": "Número de teléfono dedicado incluido",
+    "hitl_configurable_15": "Su cliente dice «un humano» — transferencia instantánea",
+    "rag_knowledge_base_16": "Entrenada con sus datos: productos, precios, horarios, FAQ",
+    "ia_multiprovider_17": "Nunca se cae — 5 motores IA se relevan automáticamente",
+    "pstn_intgr_18": "Un número de teléfono local real, dedicado a su empresa",
     "intgration_en_2_19": "Integración en 2 minutos",
     "web_speech_api_20": "Web Speech API nativa",
     "cinematic_demo_loading_21": "Cinematic Demo\n                      Loading...",

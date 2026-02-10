@@ -468,28 +468,28 @@
     "subtitle": "Never miss a lead again, on the web or over the phone.",
     "widget": {
       "title": "The Voice Widget",
-      "description": "An AI sales agent on your website. It qualifies, sells, and supports your visitors — day and night, in 5 languages.",
+      "description": "Your best salesperson, built into your website. It engages every visitor, understands their need, and converts — 24/7, in 5 languages.",
       "price": "Business",
       "features": [
-        "Qualifies your leads and feeds your CRM",
-        "Books appointments and handles support",
-        "Recovers abandoned carts and sells",
-        "5 languages · Installed in 2 min"
+        "Qualifies every visitor and sends hot leads to your CRM",
+        "Books appointments and handles support — even at 3 AM",
+        "Recovers abandoned carts and guides to checkout",
+        "FR, EN, ES, AR, Darija · 1 line of code"
       ],
-      "b2b": "B2B — Qualifies your leads and feeds your CRM",
-      "b2c": "B2C — Books appointments and handles support",
-      "ecom": "E-commerce — Recovers abandoned carts and sells",
-      "tech": "5 languages · Responds in < 1s · Installed in 2 min"
+      "b2b": "B2B — Qualifies every visitor and sends hot leads to your CRM",
+      "b2c": "B2C — Books appointments and handles support — even at 3 AM",
+      "ecom": "E-commerce — Recovers abandoned carts and guides to checkout",
+      "tech": "FR, EN, ES, AR, Darija · Responds in < 1s · 1 line of code"
     },
     "telephony": {
       "title": "AI Telephony",
-      "description": "Replace your phone switchboard. Your customers are greeted, qualified, and routed — no hold music, 24/7.",
+      "description": "Your phone switchboard, reinvented. AI picks up in < 1s, understands the request, and routes every caller — no hold music, 24/7.",
       "price": "/min",
       "features": [
-        "Dedicated phone number included",
-        "5 AI engines in relay — always available",
-        "Knows your products, prices, and hours",
-        "Transfer to a human in one word"
+        "A real local phone number, dedicated to your business",
+        "Never goes down — 5 AI engines relay automatically",
+        "Trained on your data: products, prices, hours, FAQ",
+        "Your customer says 'a human' — instant transfer"
       ]
     },
     "aes256_0": "Military-Grade Encryption",
@@ -2655,10 +2655,10 @@
     "espaol_12": "Español",
     "english_13": "English",
     "franais_14": "French",
-    "hitl_configurable_15": "Transfer to a human in one word",
-    "rag_knowledge_base_16": "Knows your products, prices, and hours",
-    "ia_multiprovider_17": "5 AI engines in relay — always available",
-    "pstn_intgr_18": "Dedicated phone number included",
+    "hitl_configurable_15": "Your customer says 'a human' — instant transfer",
+    "rag_knowledge_base_16": "Trained on your data: products, prices, hours, FAQ",
+    "ia_multiprovider_17": "Never goes down — 5 AI engines relay automatically",
+    "pstn_intgr_18": "A real local phone number, dedicated to your business",
     "intgration_en_2_19": "2-minute integration",
     "web_speech_api_20": "Web Speech API Native",
     "cinematic_demo_loading_21": "Cinematic Demo\n                      Loading...",
