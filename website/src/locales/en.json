@@ -464,32 +464,32 @@
     "trusted": "Deployed by leaders"
   },
   "features": {
-    "title": "One Infrastructure, Two Growth Engines",
-    "subtitle": "Never miss a lead again, on the web or over the phone.",
+    "title": "Every Visitor Greeted. Every Call Answered.",
+    "subtitle": "Two AI agents working for you, around the clock.",
     "widget": {
       "title": "The Voice Widget",
-      "description": "Turn web traffic into revenue. A sales agent that qualifies, sells, and supports your visitors 24/7.",
+      "description": "An AI sales agent on your website. It qualifies, sells, and supports your visitors — day and night, in 5 languages.",
       "price": "Business",
       "features": [
-        "Auto-Qualification & BANT",
-        "Direct CRM Injection",
-        "Native Darija & Arabic Support",
-        "Deployment < 2 minutes"
+        "Qualifies your leads and feeds your CRM",
+        "Books appointments and handles support",
+        "Recovers abandoned carts and sells",
+        "5 languages · Installed in 2 min"
       ],
-      "b2b": "B2B:",
-      "b2c": "B2C:",
-      "ecom": "E-com:",
-      "tech": "5 Languages • Zero Latency • 18KB"
+      "b2b": "B2B — Qualifies your leads and feeds your CRM",
+      "b2c": "B2C — Books appointments and handles support",
+      "ecom": "E-commerce — Recovers abandoned carts and sells",
+      "tech": "5 languages · Responds in < 1s · Installed in 2 min"
     },
     "telephony": {
-      "title": "Voice Telephony AI",
-      "description": "Replace your switchboard with an AI capable of handling 10,000 concurrent calls. Zero wait, Zero hallucinations.",
+      "title": "AI Telephony",
+      "description": "Replace your phone switchboard. Your customers are greeted, qualified, and routed — no hold music, 24/7.",
       "price": "/min",
       "features": [
-        "Local Numbers (Morocco/France/US)",
-        "Latency < 400ms (Real-time)",
-        "RAG on Private Data",
-        "Intelligent Human Escalation"
+        "Dedicated phone number included",
+        "5 AI engines in relay — always available",
+        "Knows your products, prices, and hours",
+        "Transfer to a human in one word"
       ]
     },
     "aes256_0": "Military-Grade Encryption",
@@ -2655,10 +2655,10 @@
     "espaol_12": "Español",
     "english_13": "English",
     "franais_14": "French",
-    "hitl_configurable_15": "HITL Configurable",
-    "rag_knowledge_base_16": "RAG Knowledge Base",
-    "ia_multiprovider_17": "AI Multi-Provider",
-    "pstn_intgr_18": "Integrated PSTN",
+    "hitl_configurable_15": "Transfer to a human in one word",
+    "rag_knowledge_base_16": "Knows your products, prices, and hours",
+    "ia_multiprovider_17": "5 AI engines in relay — always available",
+    "pstn_intgr_18": "Dedicated phone number included",
     "intgration_en_2_19": "2-minute integration",
     "web_speech_api_20": "Web Speech API Native",
     "cinematic_demo_loading_21": "Cinematic Demo\n                      Loading...",

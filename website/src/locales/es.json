@@ -464,32 +464,32 @@
     "trusted": "Desplegado por líderes"
   },
   "features": {
-    "title": "Una Infraestructura, Dos Motores de Crecimiento",
-    "subtitle": "No pierda ningún lead, en la web o por teléfono.",
+    "title": "Cada Visitante Atendido. Cada Llamada Respondida.",
+    "subtitle": "Dos agentes IA trabajando para usted, las 24 horas.",
     "widget": {
       "title": "El Widget Vocal",
-      "description": "Convierta su tráfico web en ingresos. Un agente comercial que cualifica, vende y da soporte 24/7.",
+      "description": "Un agente comercial IA en su sitio web. Cualifica, vende y acompaña a sus visitantes — día y noche, en 5 idiomas.",
       "price": "Business",
       "features": [
-        "Cualificación & BANT Automático",
-        "Inyección Directa a CRM",
-        "Soporte Nativo Darija & Árabe",
-        "Despliegue < 2 minutos"
+        "Cualifica sus leads y alimenta su CRM",
+        "Agenda citas y gestiona el soporte",
+        "Recupera carritos abandonados y vende",
+        "5 idiomas · Instalado en 2 min"
       ],
-      "b2b": "B2B:",
-      "b2c": "B2C:",
-      "ecom": "E-com:",
-      "tech": "5 Idiomas • Latencia Cero • 18KB"
+      "b2b": "B2B — Cualifica sus leads y alimenta su CRM",
+      "b2c": "B2C — Agenda citas y gestiona el soporte al cliente",
+      "ecom": "E-commerce — Recupera carritos abandonados y vende",
+      "tech": "5 idiomas · Responde en < 1s · Instalado en 2 min"
     },
     "telephony": {
       "title": "Telefonía IA",
-      "description": "Reemplace su centralita con una IA capaz de gestionar 10,000 llamadas simultáneas. Cero espera, Cero alucinaciones.",
+      "description": "Reemplace su centralita telefónica. Sus clientes son recibidos, cualificados y dirigidos — sin esperas, 24/7.",
       "price": "0.10€/min",
       "features": [
-        "Números Locales (Marruecos/Francia)",
-        "Latencia < 400ms (Tiempo Real)",
-        "RAG sobre Datos Privados",
-        "Escalada Humana Inteligente"
+        "Número de teléfono dedicado incluido",
+        "5 motores IA en relevo — siempre disponible",
+        "Conoce sus productos, precios y horarios",
+        "Transferencia a un humano en una palabra"
       ]
     },
     "aes256_0": "Cifrado Militar",
@@ -2655,10 +2655,10 @@
     "espaol_12": "Español",
     "english_13": "Inglés",
     "franais_14": "Francés",
-    "hitl_configurable_15": "HITL configurable",
-    "rag_knowledge_base_16": "Base de Conocimiento RAG",
-    "ia_multiprovider_17": "IA Multi-Proveedor",
-    "pstn_intgr_18": "PSTN integrado",
+    "hitl_configurable_15": "Transferencia a un humano en una palabra",
+    "rag_knowledge_base_16": "Conoce sus productos, precios y horarios",
+    "ia_multiprovider_17": "5 motores IA en relevo — siempre disponible",
+    "pstn_intgr_18": "Número de teléfono dedicado incluido",
     "intgration_en_2_19": "Integración en 2 minutos",
     "web_speech_api_20": "Web Speech API nativa",
     "cinematic_demo_loading_21": "Cinematic Demo\n                      Loading...",
