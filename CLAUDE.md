@@ -55,10 +55,10 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 - **Code completeness**: 9.5/10 — **392 bugs found across 38 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 3,765 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages use shared ES module system.**
 - **Marketing integrity**: 100% — **Marketing copy remediation COMPLETE** (250.195-197): 34 HTML items + locale key remediation (healthcare/finance/ROI across 5 locales) + 12/12 blog disclaimers. Zero false claims, zero exaggerated metrics. ROI web-verified (~3,000-5,000€/mois).
-- **Production readiness**: 3.5/10 — Website live, /respond BROKEN on VPS. 0 paying customers.
+- **Production readiness**: 6.0/10 — Website live + API redeployed (250.197). /respond OK (Grok 4.1, ~3.5s). 4 containers healthy. Missing: SMTP, Stripe, 0 paying customers.
 - **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. 29 tool files + index.ts + auth-provider + middleware audited. isError protocol compliance fixed.
 - **UCP**: Unified — core + MCP + voice + telephony + recommendations all share `data/ucp/{tenantId}/profiles.json`. Zero fragmentation.
-- **Next**: ALL CODE DONE. Remaining: VPS redeploy (critical) → .env setup → SMTP provider → First paying customer
-- **Weighted score**: 8.6/10
+- **Next**: VPS redeployed (250.197). Remaining: SMTP provider → Stripe setup → First paying customer
+- **Weighted score**: 8.9/10
 
-*Last update: 10/02/2026 - Session 250.197 (Marketing Copy Remediation Phase 2: locale key remediation for healthcare/finance/industries/ROI across 5 locales, 5 additional blog disclaimers added (12/12 total), ROI amounts web-verified and corrected to ~3,000-5,000€/mois. CSS verified. Changes local only — not yet deployed.)*
+*Last update: 12/02/2026 - Session 250.197 (VPS REDEPLOYED: /respond WORKS (Grok 4.1, 3.5s). 4 containers healthy. JWT_SECRET+VAULT_KEY+INTERNAL_KEY generated. vocalia-data volume created. Code at commit 2c09fad (392 bugs fixed). Marketing copy Phase 2 complete. Production readiness 3.5→6.0.)*

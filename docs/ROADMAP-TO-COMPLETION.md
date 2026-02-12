@@ -21,15 +21,19 @@
 ## 1. Score Actuel
 
 **Code Completeness: 9.5/10** — Features coded and tested (3,765 tests, 68 files). **392 bugs reported across 38 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197): 34 HTML items fixed + locale key remediation across 5 locales (healthcare/finance/industries/ROI) + 12/12 blog disclaimers. ROI amounts web-verified (~3,000-5,000€/mois). Zero false claims remaining. **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅. Reclassified: 2 external dependencies, 2 non-bugs, 2 false alarms, ~5 cosmetic.
-**Production Readiness: 3.5/10** — VERIFIED 250.171 bottom-up audit:
-- `vocalia.ma` ✅ Website live (all 80 pages return 200)
-- `api.vocalia.ma/health` ✅ Voice API responds (but runs OLD code from 250.167)
+**Production Readiness: 6.0/10** — VERIFIED 250.197 (12/02/2026) via SSH + curl:
+- `vocalia.ma` ✅ Website live (all 80 pages return 200, 64KB homepage)
+- `api.vocalia.ma/health` ✅ Voice API healthy (4 AI providers: Grok, Gemini, Claude, Atlas)
 - `api.vocalia.ma/api/db/health` ✅ DB API connected (Google Sheets: 7 sheets)
-- `api.vocalia.ma/api/auth/login` ✅ Auth endpoint works (returns proper errors)
-- `api.vocalia.ma/respond` ❌ **BROKEN** — `VOICE_CONFIG is not defined` (fixed locally 250.167, NEVER redeployed)
-- Widget v2.7.0 VISIBLE on homepage but **MUTE** — /respond crash = 0 conversations possible
-- .env LOCAL: 12 keys SET | **18 CRITICAL MISSING**: JWT_SECRET, STRIPE_SECRET_KEY, VOCALIA_VAULT_KEY, VOICE_API_KEY, GOOGLE_GENERATIVE_AI_API_KEY, SMTP_* (4), GA4_* (2), META_* (2), PAYZONE_* (3), SLACK_WEBHOOK_URL
-- 0 paying customers, 0 real conversations, 0 payments, 0 emails sent
+- `api.vocalia.ma/api/auth/login` ✅ Auth endpoint works (JWT_SECRET configured)
+- `api.vocalia.ma/respond` ✅ **WORKING** — Grok 4.1 Fast Reasoning, ~3.5s latency, lead qualification active
+- `api.vocalia.ma/realtime/health` ✅ 7 voices, WebSocket streaming ready
+- `api.vocalia.ma/telephony/health` ✅ Twilio=true, Grok=true, 50 max sessions
+- Widget on homepage — /respond functional, conversations POSSIBLE
+- Docker: 4 core containers healthy + vocalia-hitl. vocalia-data volume persistent.
+- .env VPS: 35 keys SET (JWT_SECRET, VOCALIA_VAULT_KEY, VOCALIA_INTERNAL_KEY, VOICE_API_KEY, GA4_*, all AI providers)
+- **Still MISSING**: STRIPE_SECRET_KEY (billing), SMTP_HOST/USER/PASS (email), PAYZONE_* (MAD), META_* (analytics)
+- 0 paying customers, 0 real conversations (quota config needed per tenant), 0 payments, 0 emails sent
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
 
@@ -638,7 +642,7 @@ create_booking          get_recommendations    qualify_lead
 | **P0-MARKETING-COPY (250.195)** | ✅ **DONE** | Marketing copy forensic remediation Phase 1 (HTML): 34 false/misleading claims fixed across 80 pages. Schema.org fixes, ISO badge removed, employee count corrected, competitor table honest, SLA→best-effort, "60% moins cher"→"Plateforme Tout-en-Un" (17+ occurrences), bundle sizes corrected, duplicate Twitter Cards removed, blog disclaimers (7/12). Benchmark verified: VocalIA 2-4× MORE expensive than Retell/Vapi at low volume; real advantage = all-in-one platform. | **9.5** |
 | **P0-MARKETING-COPY-P2 (250.197)** | ✅ **DONE** | Marketing copy remediation Phase 2 (Locales + Blogs): Healthcare locale keys across 5 langs (false HIPAA/RGPD/HDS certifications→real features: 3 Personas/Prise de RDV/Rappels/Chiffrement/Isolation JWT). Finance locale keys across 5 langs (false PCI DSS/SOC 2/DORA/AI Act→real features: Banques & Assurances/Support Client/Persona INSURER/25 Function Tools). Industries index locales (certifications→personas). ROI locales web-verified: 15,000€→~3,000-5,000€/mois, 3-4→1-2 agents, removed unverified %s, e-commerce.html calculator recalculated. 5 additional blog disclaimers added (12/12 total). CSS verified: amber classes present in compiled output. | **9.5** |
 
-**Code Completeness: 9.5/10** | **Production Readiness: 3.5/10** | **Weighted: 8.6/10** | **MCP: 9.0/10**
+**Code Completeness: 9.5/10** | **Production Readiness: 6.0/10** | **Weighted: 8.9/10** | **MCP: 9.0/10**
 
 **Remaining actionable bugs: 0** (verified 250.197). 8 not fixable locally (VPS/arch). **ALL CODE tasks complete. Marketing copy 100% clean. Only OPERATIONS/BUSINESS items remain.**
 
@@ -666,28 +670,37 @@ RESEARCH (not a bug):
   - Evaluate Telnyx for Moroccan telephony (operational decision)
 ```
 
-**Live Deployment Status (VERIFIED 250.171 via curl):**
+**Live Deployment Status (VERIFIED 250.197 — 12/02/2026 via SSH + curl):**
 ```
-✅ vocalia.ma            → Website live, all pages 200
-✅ api.vocalia.ma/health → Voice API running (4 AI providers configured:true)
+✅ vocalia.ma            → Website live, all pages 200 (64KB homepage)
+✅ api.vocalia.ma/health → Voice API healthy (Grok+Gemini+Claude+Atlas)
 ✅ api.vocalia.ma/api/db/health → DB API connected (Google Sheets: 7 sheets)
-✅ api.vocalia.ma/api/auth/login → Auth endpoint works (returns proper errors)
-❌ api.vocalia.ma/respond → BROKEN — "VOICE_CONFIG is not defined" (C14 bug, fixed locally 250.167, NOT redeployed)
-✅ Widget v2.7.0 → Loaded from homepage (72KB b2b kernel)
+✅ api.vocalia.ma/api/auth/login → Auth works (JWT_SECRET configured)
+✅ api.vocalia.ma/respond → WORKING! Grok 4.1 Fast Reasoning, ~3.5s, lead qualification
+✅ api.vocalia.ma/realtime/health → 7 voices, WebSocket ready
+✅ api.vocalia.ma/telephony/health → Twilio=true, Grok=true
 
-.env LOCAL: 12 keys SET (XAI, Gemini, Anthropic, ElevenLabs, Twilio, Google OAuth)
-.env MISSING: 18 keys (JWT_SECRET, SMTP_HOST/USER/PASS/FROM, STRIPE_SECRET_KEY, VOCALIA_VAULT_KEY, VOICE_API_KEY, GA4_*, META_*, PAYZONE_*, SLACK_WEBHOOK_URL)
+Docker: 5 containers healthy (api, db-api, realtime, telephony, hitl)
+Volume: vocalia-data (persistent)
+Code: commit 2c09fad (250.197 — all 392 bugs + marketing copy)
+
+.env VPS: 35 keys SET (AI providers, Twilio, Google OAuth, GA4, security keys)
+.env STILL MISSING: STRIPE_SECRET_KEY, SMTP_HOST/USER/PASS, PAYZONE_*, META_*
 ```
 
 **Next Actions (Priority Order):**
 ```
-⚠️ OPERATIONS — CRITICAL (NOT code):
-  1. VPS REDEPLOY: /respond BROKEN on production — local code has ALL 375 bug fixes since 250.167
-     → git pull + docker-compose up on VPS = instant deploy
-     → docker-compose has 7 services (4 core + 3 optional via profiles)
-  2. VPS .env: Create .env with 18 MISSING keys (JWT_SECRET, SMTP_*, STRIPE_*, VOCALIA_VAULT_KEY, etc.)
-  3. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
-  4. First paying customer → first real traffic → validate entire stack
+✅ VPS REDEPLOYED (250.197 — 12/02/2026):
+  1. ✅ VPS REDEPLOY: /respond WORKING (Grok 4.1, ~3.5s). Code at 2c09fad. 4 containers healthy.
+  2. ✅ VPS .env: 35 keys SET (JWT_SECRET, VOCALIA_VAULT_KEY, VOCALIA_INTERNAL_KEY, VOICE_API_KEY, GA4_*)
+  3. ✅ vocalia-data volume: Persistent data across container restarts
+  4. ✅ docker-compose.production.yml updated (530 lines, volumes, routes, healthchecks)
+
+⚠️ REMAINING OPERATIONS:
+  5. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
+  6. STRIPE_SECRET_KEY: Needed for billing (subscriptions, payments)
+  7. Tenant provisioning: Create config.json per tenant for quota system
+  8. First paying customer → first real traffic → validate entire stack
 
 CODE — ALL DONE ✅ (250.194):
   5. ✅ SOTA DASHBOARD (250.194): telephony.html rewritten (374→575 lines, Chart.js+DataTable+SVG gauge)
