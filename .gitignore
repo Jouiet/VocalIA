@@ -77,6 +77,7 @@ data/ab-analytics/
 data/analytics/
 data/remotion-hitl/audit-log.jsonl
 data/remotion-hitl/pending-queue.json
+data/remotion-hitl/outputs/
 data/recommendations/test_*.json
 
 # Widget archive (dead code)

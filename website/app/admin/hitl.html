@@ -164,16 +164,30 @@
     }
 
     const user = auth.getCurrentUser();
-    if (user) {
-      document.getElementById('admin-name').textContent = user.name || 'Admin';
-      document.getElementById('admin-email').textContent = user.email || '';
-      document.getElementById('admin-initials').textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
-    }
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await auth.logout();
-      window.location.href = '/app/auth/login.html';
-    });
+    // Wait for sidebar component to be injected before accessing its elements
+    function initSidebar() {
+      if (user) {
+        const nameEl = document.getElementById('admin-name');
+        const emailEl = document.getElementById('admin-email');
+        const initialsEl = document.getElementById('admin-initials');
+        if (nameEl) nameEl.textContent = user.name || 'Admin';
+        if (emailEl) emailEl.textContent = user.email || '';
+        if (initialsEl) initialsEl.textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+      }
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          await auth.logout();
+          window.location.href = '/app/auth/login.html';
+        });
+      }
+    }
+    if (document.getElementById('admin-name')) {
+      initSidebar();
+    } else {
+      document.addEventListener('app-components:loaded', initSidebar, { once: true });
+    }
 
     // State - loaded from API
     let pendingItems = [];
@@ -367,7 +381,8 @@
     };
 
     function updateBadge() {
-      const badge = document.getElementById('pending-badge');
+      const badge = document.getElementById('hitl-badge');
+      if (!badge) return;
       badge.textContent = pendingItems.length;
       if (pendingItems.length === 0) {
         badge.classList.add('hidden');

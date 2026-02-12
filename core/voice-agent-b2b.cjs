@@ -407,7 +407,7 @@ IMPORTANT RULES
 
     // A2A Event: Lead Interest Detected (Real-time telemetry)
     if (this.currentSession.automations_discussed.length > 0) {
-      eventBus.emit('lead.interest', {
+      eventBus.publish('lead.interest', {
         sessionId: this.currentSession.session_id,
         interests: this.currentSession.automations_discussed,
         score: this.currentSession.automations_discussed.length * 10 // Basic scoring

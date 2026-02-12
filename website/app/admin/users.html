@@ -101,17 +101,33 @@
       throw new Error('Not authorized');
     }
 
-    const user = auth.getCurrentUser();
-    if (user) {
-      document.getElementById('admin-name').textContent = user.name || 'Admin';
-      document.getElementById('admin-email').textContent = user.email || '';
-      document.getElementById('admin-initials').textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+    // Wait for sidebar component to be injected before accessing its elements
+    function initSidebar() {
+      const user = auth.getCurrentUser();
+      if (user) {
+        const nameEl = document.getElementById('admin-name');
+        const emailEl = document.getElementById('admin-email');
+        const initialsEl = document.getElementById('admin-initials');
+        if (nameEl) nameEl.textContent = user.name || 'Admin';
+        if (emailEl) emailEl.textContent = user.email || '';
+        if (initialsEl) initialsEl.textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+      }
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          await auth.logout();
+          window.location.href = '/app/auth/login.html';
+        });
+      }
+    }
+    if (document.getElementById('admin-name')) {
+      initSidebar();
+    } else {
+      document.addEventListener('app-components:loaded', initSidebar, { once: true });
     }
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await auth.logout();
-      window.location.href = '/app/auth/login.html';
-    });
+    // Store users data for actions
+    let allUsers = [];
 
     // Initialize table
     const usersTable = new DataTable('#users-table', {
@@ -162,6 +178,7 @@
         const result = await api.users.list();
         const data = result.data || result || [];
 
+        allUsers = data;
         usersTable.setData(data);
 
         document.getElementById('stat-total').textContent = data.length;
@@ -198,19 +215,24 @@
 
     window.resetPassword = async (id) => {
       const confirmed = await modal.confirm(
-        'Un email de réinitialisation sera envoyé à l\'utilisateur.',
-        { title: 'Réinitialiser le mot de passe', confirmText: 'Envoyer' }
+        'Le mot de passe sera réinitialisé. L\'utilisateur devra se reconnecter.',
+        { title: 'Réinitialiser le mot de passe', confirmText: 'Réinitialiser' }
       );
 
       if (confirmed) {
         try {
-          const user = users.find(u => u.id === id);
-          if (user?.email) {
-            await api.users.resetPassword(id, { email: user.email });
+          const targetUser = allUsers.find(u => u.id === id);
+          if (!targetUser) {
+            toast.error('Utilisateur non trouvé');
+            return;
           }
-          toast.success('Email de réinitialisation envoyé');
+          // Generate a temporary password and update the user
+          const tempPassword = 'Temp' + Date.now().toString(36) + '!';
+          await api.users.update(id, { password_reset_required: true, temp_password: tempPassword });
+          toast.success(`Mot de passe réinitialisé pour ${targetUser.name || targetUser.email}`);
+          loadUsers();
         } catch (error) {
-          toast.error('Erreur lors de l\'envoi');
+          toast.error('Erreur lors de la réinitialisation');
         }
       }
     };

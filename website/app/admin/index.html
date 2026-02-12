@@ -469,6 +469,10 @@
     import api from '/src/lib/api-client.js';
     import { createLineChart, createBarChart, COLORS } from '/src/lib/charts.js';
 
+    const API_HEALTH_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:3013/api/health'
+      : 'https://api.vocalia.ma/api/health';
+
     // Initialize i18n
     if (window.VocaliaI18n) {
       await VocaliaI18n.initI18n();
@@ -494,18 +498,33 @@
       document.documentElement.classList.add('dark');
     }
 
-    // User info
-    const user = auth.getCurrentUser();
-    if (user) {
-      document.getElementById('admin-name').textContent = user.name || 'Admin';
-      document.getElementById('admin-email').textContent = user.email || '';
-      document.getElementById('admin-initials').textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+    // Wait for sidebar component to be injected before accessing its elements
+    function initSidebar() {
+      const user = auth.getCurrentUser();
+      if (user) {
+        const nameEl = document.getElementById('admin-name');
+        const emailEl = document.getElementById('admin-email');
+        const initialsEl = document.getElementById('admin-initials');
+        if (nameEl) nameEl.textContent = user.name || 'Admin';
+        if (emailEl) emailEl.textContent = user.email || '';
+        if (initialsEl) initialsEl.textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+      }
+
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          await auth.logout();
+          window.location.href = '/app/auth/login.html';
+        });
+      }
     }
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await auth.logout();
-      window.location.href = '/app/auth/login.html';
-    });
+    // Sidebar loaded via async fetch — elements may not exist yet
+    if (document.getElementById('admin-name')) {
+      initSidebar();
+    } else {
+      document.addEventListener('app-components:loaded', initSidebar, { once: true });
+    }
 
     // Animated stat counter
     function animateStatCounter(elementId, targetValue, suffix = '', duration = 1500) {
@@ -564,7 +583,7 @@
           api.tenants.list(),
           api.sessions.list({ limit: 1000 }),
           api.hitl.stats().catch(() => ({ pending_count: 0 })),
-          fetch('/api/health').then(r => r.json()).catch(() => null)
+          fetch(API_HEALTH_URL).then(r => r.json()).catch(() => null)
         ]);
 
         const tenantsData = tenants.data || tenants || [];
@@ -632,17 +651,19 @@
         // Update system status indicator
         updateSystemStatus(health);
 
-        // HITL badge
+        // HITL badge (in sidebar — may not be loaded yet)
         const pending = hitlStats.pending_count || 0;
         const badge = document.getElementById('hitl-badge');
         const notifDot = document.getElementById('notif-dot');
-        if (pending > 0) {
-          badge.textContent = pending;
-          badge.classList.remove('hidden');
-          notifDot?.classList.remove('hidden');
-        } else {
-          badge.classList.add('hidden');
-          notifDot?.classList.add('hidden');
+        if (badge) {
+          if (pending > 0) {
+            badge.textContent = pending;
+            badge.classList.remove('hidden');
+            notifDot?.classList.remove('hidden');
+          } else {
+            badge.classList.add('hidden');
+            notifDot?.classList.add('hidden');
+          }
         }
 
         // Build charts
@@ -998,7 +1019,7 @@
       const providers = ['primary', 'fallback', 'tts', 'telephony'];
       try {
         const start = Date.now();
-        const res = await fetch('/api/health');
+        const res = await fetch(API_HEALTH_URL);
         const apiLatency = Date.now() - start;
         const health = res.ok ? await res.json() : null;
 

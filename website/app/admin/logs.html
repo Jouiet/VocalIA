@@ -175,17 +175,35 @@
       throw new Error('Not authorized');
     }
 
-    const user = auth.getCurrentUser();
-    if (user) {
-      document.getElementById('admin-name').textContent = user.name || 'Admin';
-      document.getElementById('admin-email').textContent = user.email || '';
-      document.getElementById('admin-initials').textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+    // Wait for sidebar component to be injected before accessing its elements
+    function initSidebar() {
+      const user = auth.getCurrentUser();
+      if (user) {
+        const nameEl = document.getElementById('admin-name');
+        const emailEl = document.getElementById('admin-email');
+        const initialsEl = document.getElementById('admin-initials');
+        if (nameEl) nameEl.textContent = user.name || 'Admin';
+        if (emailEl) emailEl.textContent = user.email || '';
+        if (initialsEl) initialsEl.textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+      }
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          await auth.logout();
+          window.location.href = '/app/auth/login.html';
+        });
+      }
+    }
+    if (document.getElementById('admin-name')) {
+      initSidebar();
+    } else {
+      document.addEventListener('app-components:loaded', initSidebar, { once: true });
     }
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await auth.logout();
-      window.location.href = '/app/auth/login.html';
-    });
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
 
     const logsContainer = document.getElementById('logs-container');
     let refreshInterval = null;
@@ -229,13 +247,13 @@
         <div class="p-3 hover:bg-zinc-50 dark:hover:bg-white/[0.08]/50 cursor-pointer" onclick="this.querySelector('.details').classList.toggle('hidden')">
           <div class="flex items-start gap-3">
             <span class="text-xs text-zinc-400 whitespace-nowrap">${new Date(log.timestamp).toLocaleTimeString()}</span>
-            <span class="px-1.5 py-0.5 text-xs rounded ${getLevelColor(log.level)} uppercase font-medium">${log.level}</span>
-            <span class="px-1.5 py-0.5 text-xs bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 rounded">${log.service}</span>
-            <span class="text-zinc-700 dark:text-zinc-300 flex-1">${log.message}</span>
+            <span class="px-1.5 py-0.5 text-xs rounded ${getLevelColor(log.level)} uppercase font-medium">${escapeHtml(log.level)}</span>
+            <span class="px-1.5 py-0.5 text-xs bg-zinc-100 dark:bg-white/[0.06] text-zinc-600 dark:text-zinc-400 rounded">${escapeHtml(log.service)}</span>
+            <span class="text-zinc-700 dark:text-zinc-300 flex-1">${escapeHtml(log.message)}</span>
           </div>
           ${log.details ? `
             <div class="details hidden mt-2 ml-[140px] text-xs text-zinc-500 bg-zinc-50 dark:bg-[#050505] p-2 rounded">
-              <pre>${JSON.stringify(log.details, null, 2)}</pre>
+              <pre>${escapeHtml(JSON.stringify(log.details, null, 2))}</pre>
             </div>
           ` : ''}
         </div>
@@ -284,16 +302,22 @@
     document.getElementById('filter-search').addEventListener('input', filterLogs);
 
     // Auto-refresh
-    document.getElementById('auto-refresh').addEventListener('change', (e) => {
+    const autoRefreshCb = document.getElementById('auto-refresh');
+    function startAutoRefresh() {
+      clearInterval(refreshInterval);
+      refreshInterval = setInterval(async () => {
+        await loadLogs();
+      }, 10000);
+    }
+    autoRefreshCb.addEventListener('change', (e) => {
       if (e.target.checked) {
-        refreshInterval = setInterval(async () => {
-          await loadLogs();
-          toast.info('Logs actualisés');
-        }, 10000);
+        startAutoRefresh();
       } else {
         clearInterval(refreshInterval);
       }
     });
+    // Start auto-refresh since checkbox is checked by default
+    if (autoRefreshCb.checked) startAutoRefresh();
 
     // Export button
     document.getElementById('export-btn').addEventListener('click', () => {

@@ -469,10 +469,37 @@
         import auth from '/src/lib/auth-client.js';
         import toast from '/src/lib/toast.js';
 
-        // Auth guard — admin only (requireRole redirects to login internally)
-        auth.requireRole('admin');
+        // Auth guard — admin only
+        if (!auth.requireRole('admin')) {
+            throw new Error('Not authorized');
+        }
 
         lucide.createIcons();
+
+        // Wait for sidebar component to be injected before accessing its elements
+        function initSidebar() {
+            const user = auth.getCurrentUser();
+            if (user) {
+                const nameEl = document.getElementById('admin-name');
+                const emailEl = document.getElementById('admin-email');
+                const initialsEl = document.getElementById('admin-initials');
+                if (nameEl) nameEl.textContent = user.name || 'Admin';
+                if (emailEl) emailEl.textContent = user.email || '';
+                if (initialsEl) initialsEl.textContent = (user.name || 'A').split(' ').map(n => n[0]).join('').toUpperCase();
+            }
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                    await auth.logout();
+                    window.location.href = '/app/auth/login.html';
+                });
+            }
+        }
+        if (document.getElementById('admin-name')) {
+            initSidebar();
+        } else {
+            document.addEventListener('app-components:loaded', initSidebar, { once: true });
+        }
 
         // HITL URL — localhost: direct port | production: Traefik path routing via api.vocalia.ma
         const HITL_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
