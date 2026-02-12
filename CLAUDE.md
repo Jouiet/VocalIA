@@ -54,15 +54,16 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 ## State
 
 - **Code completeness**: 9.5/10 — **415 bugs found across 43 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 4,903 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages + 5 auth pages audited.**
-- **Security**: 8.5/10 — SOTA audit (250.200b): CDN SRI 78/78, CSP on 22 app pages, security headers on all 6 API services, CORS tightened, npm vulns patched. VPS: SSH key-only, fail2ban, UFW. Remaining: containers=root, zero backup.
+- **Security**: 9.0/10 — SOTA audit (250.200): CDN SRI 78/78, CSP 22 app pages, security headers all 7 API services, CORS tightened, npm vulns patched, **all 7 containers non-root** (su-exec node user PID 1). VPS: SSH key-only, fail2ban, UFW. X-XSS-Protection: 0 (modern).
 - **Monitoring**: Production monitor v3.0 LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh alerts, recovery detection, */5 cron.
+- **Backup**: Daily at 2 AM UTC, 7-day retention, ~4KB compressed. Cron on VPS.
 - **Marketing integrity**: 100% — Remediation COMPLETE (250.195-197): 34 HTML + locale keys + 12/12 blog disclaimers. Zero false claims.
-- **Production readiness**: 7.5/10 — Website live + API + monitoring + security hardened. 6 containers healthy. Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
+- **Production readiness**: 8.0/10 — Website live + API + monitoring + security hardened + non-root containers + backup. 7 containers healthy. Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
 - **OAuth SSO**: Deployed (250.198). Blocked: GOOGLE_CLIENT_ID/SECRET, GITHUB_CLIENT_ID/SECRET not configured.
 - **Video Studio**: E2E verified (250.197-199). Veo FUNCTIONAL (GCP ADC). Kling API = external 500 (crédits).
 - **MCP Server**: 9.0/10. 203 tools + 6 resources + 8 prompts.
 - **UCP**: Unified — core + MCP + voice + telephony + recommendations. Zero fragmentation.
-- **Next**: API redeploy (security headers) → Backup strategy → OAuth credentials → SMTP → Stripe → First paying customer
-- **Weighted score**: 9.0/10
+- **Next**: OAuth credentials → SMTP provider → Stripe setup → First paying customer
+- **Weighted score**: 9.1/10
 
 *Last update: 12/02/2026 - Session 250.200b (SOTA security: CDN SRI 78/78 + CSP 22 pages + security headers 6 services + CORS fix + npm audit + .htaccess CSP fix. 415 bugs / 43 phases.)*
