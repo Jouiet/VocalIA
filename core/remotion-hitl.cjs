@@ -358,14 +358,16 @@ function startServer() {
   return server;
 }
 
+// CRITICAL: exports MUST be set BEFORE startServer() to avoid circular require deadlock.
+// startServer() requires kling-service.cjs/veo-service.cjs which require THIS module back.
+// If module.exports is still {} when they require us, all methods resolve to undefined.
+module.exports = { queueVideo, getPending, getVideo, updateVideo, approveVideo, rejectVideo, markGenerating, markRendering, markCompleted, markFailed, getStats, getAuditLog, startServer, hitlEvents, STATES, TYPES };
+
 if (require.main === module) {
   const args = process.argv.slice(2);
   if (args.includes('--server')) {
     startServer();
   } else {
-    // Basic CLI or help logic could go here
     console.log("Usage: node remotion-hitl.cjs --server");
   }
 }
-
-module.exports = { queueVideo, getPending, getVideo, updateVideo, approveVideo, rejectVideo, markGenerating, markRendering, markCompleted, markFailed, getStats, getAuditLog, startServer, hitlEvents, STATES, TYPES };
