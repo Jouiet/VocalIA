@@ -59,12 +59,15 @@ class KlingAI:
             return None
 
         body = response.json()
-        # Validate API-level error code (Kling returns {"code": 0} on success)
-        if body.get("code") and body.get("code") != 0:
-            print(f"[Kling-Error] API code {body.get('code')}: {body.get('message', 'Unknown')}", file=sys.stderr)
+        # Validate API-level error: check both "code" and "status" fields
+        api_code = body.get("code") or body.get("status")
+        if api_code and api_code != 0 and api_code != 200:
+            error_detail = body.get("error", {})
+            error_msg = body.get("message") or (error_detail.get("detail") if isinstance(error_detail, dict) else str(error_detail)) or "Unknown"
+            print(f"[Kling-Error] API status {api_code}: {error_msg}", file=sys.stderr)
             return None
 
-        task_id = body.get("data", {}).get("task_id")
+        task_id = (body.get("data") or {}).get("task_id")
         if not task_id:
             print(f"[Kling-Error] No task_id in response: {json.dumps(body)[:300]}", file=sys.stderr)
         return task_id

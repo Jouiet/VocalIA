@@ -45,7 +45,8 @@ RewriteRule ^dashboard/?$ /dashboard/client.html [L]
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
     # CSP (Content Security Policy) - Session 250.75: Added cdn.jsdelivr.net for Chart.js
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://plausible.io https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma https://*.vocalia.ma blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'"
+    # Session 250.197: Added images.unsplash.com for persona thumbnails in video-ads dashboard
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://plausible.io https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma https://*.vocalia.ma https://images.unsplash.com blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'"
 </IfModule>
 
 # Caching - Static Assets
@@ -90,10 +91,11 @@ ErrorDocument 500 /404.html
     </IfModule>
 </FilesMatch>
 
-# Allow specific JS files in /src/lib/
+# Allow specific JS files in /src/lib/ and /app/components/
 # Session 250.75: Added api-client, auth-client, charts, data-table, modal, toast
 # Session 250.90: Added voice-widget-b2b, voice-widget-ecommerce, intelligent-fallback
-<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|voice-widget-b2b|voice-widget-ecommerce|intelligent-fallback|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization|api-client|auth-client|charts|data-table|modal|toast)\.js$">
+# Session 250.197: Added app-components for admin dashboard sidebar
+<FilesMatch "^(geo-detect|i18n|card-tilt|voice-visualizer|gsap-animations|dashboard-grid|voice-widget|voice-widget-b2b|voice-widget-ecommerce|intelligent-fallback|components|site-init|event-delegation|ab-testing|form-validation|home-page|global-localization|api-client|auth-client|charts|data-table|modal|toast|app-components)\.js$">
     <IfModule mod_authz_core.c>
         Require all granted
     </IfModule>

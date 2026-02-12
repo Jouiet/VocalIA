@@ -19,6 +19,13 @@
     <script src="/app/components/app-components.js" defer></script>
 
     <style>
+        /* Sidebar layout (shared pattern across all admin pages) */
+        .sidebar { width: 260px; }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
+            .sidebar.open { transform: translateX(0); }
+        }
+
         :root {
             --primary: #3b82f6;
             --indigo: #6366f1;
@@ -463,10 +470,8 @@
         import auth from '/src/lib/auth-client.js';
         import toast from '/src/lib/toast.js';
 
-        // Auth guard — admin only
-        if (!auth.requireRole('admin')) {
-            window.location.href = '/login.html';
-        }
+        // Auth guard — admin only (requireRole redirects to login internally)
+        auth.requireRole('admin');
 
         lucide.createIcons();
 

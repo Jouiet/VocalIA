@@ -49,6 +49,133 @@ const auditStore = getAuditStore();
 const { getInstance: getConversationStore, TELEPHONY_RETENTION_DAYS } = require('./conversation-store.cjs');
 const conversationStore = getConversationStore();
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Session 250.198: Tenant Provisioning — Plan quotas + config.json generation
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Plan name normalization (signup sends "ecom", internal uses "ecommerce")
+const PLAN_NAME_MAP = { ecom: 'ecommerce', ecommerce: 'ecommerce', starter: 'starter', pro: 'pro', telephony: 'telephony' };
+
+const PLAN_QUOTAS = {
+  starter:    { calls_monthly: 500,  sessions_monthly: 1000,  kb_entries: 100,  conversation_history_days: 30,  users_max: 3 },
+  pro:        { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
+  ecommerce:  { calls_monthly: 2000, sessions_monthly: 5000,  kb_entries: 500,  conversation_history_days: 90,  users_max: 10 },
+  telephony:  { calls_monthly: 5000, sessions_monthly: 10000, kb_entries: 1000, conversation_history_days: 180, users_max: 25 }
+};
+
+const PLAN_FEATURES = {
+  starter:   { voice_widget: true, voice_telephony: false, email_automation: false, sms_automation: false, whatsapp: false, crm_sync: false, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: false, api_access: false, webhooks: false },
+  pro:       { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true },
+  ecommerce: { voice_widget: true, voice_telephony: false, email_automation: true, sms_automation: false, whatsapp: false, crm_sync: true, calendar_sync: false, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true },
+  telephony: { voice_widget: true, voice_telephony: true, email_automation: true, sms_automation: true, whatsapp: true, crm_sync: true, calendar_sync: true, hitl_enabled: true, conversation_persistence: true, analytics_dashboard: true, custom_branding: true, api_access: true, webhooks: true }
+};
+
+/**
+ * Generate a tenant ID from company name
+ * @param {string} company - Company name (e.g. "Mon Entreprise SARL")
+ * @returns {string} Sanitized tenant ID (e.g. "mon_entreprise_sarl_k7m2")
+ */
+function generateTenantIdFromCompany(company) {
+  const base = company
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove accents
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_|_$/g, '')
+    .substring(0, 40);
+  const suffix = Date.now().toString(36).slice(-4);
+  return `${base || 'tenant'}_${suffix}`;
+}
+
+/**
+ * Provision a new tenant: create directory + config.json
+ * @param {string} tenantId - Sanitized tenant ID
+ * @param {Object} opts - { plan, company, email }
+ * @returns {{ success: boolean, configPath: string }}
+ */
+function provisionTenant(tenantId, { plan = 'starter', company = '', email = '' } = {}) {
+  const safeTId = sanitizeTenantId(tenantId);
+  const normalizedPlan = PLAN_NAME_MAP[plan] || 'starter';
+  const quotas = PLAN_QUOTAS[normalizedPlan] || PLAN_QUOTAS.starter;
+  const features = PLAN_FEATURES[normalizedPlan] || PLAN_FEATURES.starter;
+  const now = new Date().toISOString();
+  const periodStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+
+  const config = {
+    tenant_id: safeTId,
+    name: company || safeTId,
+    type: 'client',
+    vertical: normalizedPlan === 'ecommerce' ? 'ecommerce' : 'universal_sme',
+    plan: normalizedPlan,
+    status: 'active',
+    created_at: now,
+    updated_at: now,
+    quotas: { ...quotas },
+    usage: {
+      calls_current: 0,
+      sessions_current: 0,
+      kb_entries_current: 0,
+      period_start: periodStart
+    },
+    features: { ...features },
+    widget_config: {
+      enabled: true,
+      persona: normalizedPlan === 'ecommerce' ? 'UNIVERSAL_ECOMMERCE' : 'UNIVERSAL_SME',
+      default_language: 'fr',
+      supported_languages: ['fr', 'en'],
+      position: 'bottom-right',
+      branding: {
+        primary_color: '#4FBAF1',
+        primary_dark: '#2B6685',
+        accent_color: '#10B981',
+        dark_bg: '#191E35',
+        logo_url: null,
+        company_name: company || null
+      }
+    },
+    integrations: {},
+    knowledge_base: {
+      enabled: true,
+      languages: ['fr'],
+      auto_index: true,
+      search_algorithm: 'tfidf',
+      max_results: 5,
+      relevance_threshold: 0.3
+    },
+    analytics: {
+      enabled: true,
+      track_conversations: true,
+      track_leads: true,
+      track_conversions: true,
+      export_enabled: normalizedPlan !== 'starter'
+    },
+    contact: {
+      email: email || '',
+      phone: '',
+      company_name: company || '',
+      address: '',
+      website: ''
+    },
+    metadata: {
+      onboarding_completed: false,
+      last_activity: null,
+      notes: ''
+    }
+  };
+
+  const clientDir = path.join(__dirname, '..', 'clients', safeTId);
+  const configPath = path.join(clientDir, 'config.json');
+
+  try {
+    fs.mkdirSync(clientDir, { recursive: true });
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    console.log(`✅ [Provision] Tenant ${safeTId} provisioned (plan: ${normalizedPlan})`);
+    return { success: true, configPath };
+  } catch (e) {
+    console.error(`❌ [Provision] Failed to provision tenant ${safeTId}:`, e.message);
+    return { success: false, configPath: null };
+  }
+}
+
 // WebSocket clients store
 const wsClients = new Map(); // Map<WebSocket, { user, channels: Set<string> }>
 
@@ -237,17 +364,49 @@ async function handleAuthRequest(req, res, path, method) {
       const rateLimited = await applyRateLimit(req, res, registerLimiter);
       if (rateLimited) return true;
 
-      const { email, password, name, tenant_id } = body;
+      // Session 250.198: Extract all signup fields (plan, company, name)
+      const { email, password, name, fullname, company, plan, tenant_id } = body;
       if (!email || !password) {
         sendError(res, 400, 'Email and password required');
         return true;
       }
 
-      const result = await authService.register({ email, password, name, tenantId: tenant_id });
+      // Resolve user display name: fullname > name > company > email prefix
+      const userName = fullname || name || company || email.split('@')[0];
+
+      // Generate tenant_id if not provided (self-service signup)
+      const tenantId = tenant_id || generateTenantIdFromCompany(company || email.split('@')[0]);
+      const safeTenantId = sanitizeTenantId(tenantId);
+
+      // Register user in Google Sheets (with tenant link)
+      const result = await authService.register({ email, password, name: userName, tenantId: safeTenantId });
+
+      // Session 250.198: Provision tenant directory + config.json
+      const normalizedPlan = PLAN_NAME_MAP[plan] || 'starter';
+      const provision = provisionTenant(safeTenantId, { plan: normalizedPlan, company: company || '', email });
+
+      if (provision.success) {
+        console.log(`✅ [Register] User ${email} + Tenant ${safeTenantId} (plan: ${normalizedPlan})`);
+      } else {
+        console.error(`❌ [Register] User ${email} created but tenant provisioning FAILED for ${safeTenantId}`);
+      }
+
+      // Audit log
+      try {
+        auditStore.log({
+          action: 'user.registered',
+          category: ACTION_CATEGORIES?.AUTH || 'auth',
+          actor: email,
+          target: safeTenantId,
+          details: { plan: normalizedPlan, company: company || '', provisioned: provision.success }
+        });
+      } catch (_e) { /* non-critical */ }
+
       sendJson(res, 201, {
         success: true,
         message: 'Registration successful. Please verify your email.',
-        user: result
+        user: { ...result, tenant_id: safeTenantId },
+        tenant: { id: safeTenantId, plan: normalizedPlan, provisioned: provision.success }
       });
       return true;
     }
@@ -3445,5 +3604,7 @@ module.exports = {
   startServer, handleRequest, broadcast, broadcastToTenant, wsClients,
   // Pure utilities (exported for testing)
   filterUserRecord, filterUserRecords, getCorsHeaders, parseBody, sendJson, sendError,
-  ALLOWED_SHEETS, CORS_ALLOWED_ORIGINS
+  ALLOWED_SHEETS, CORS_ALLOWED_ORIGINS,
+  // Session 250.198: Tenant provisioning (exported for integration testing)
+  provisionTenant, generateTenantIdFromCompany, PLAN_QUOTAS, PLAN_FEATURES, PLAN_NAME_MAP
 };

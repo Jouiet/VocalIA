@@ -47,8 +47,8 @@ except ImportError:
 class VeoGenerator:
     """Vertex AI Veo 3.1 text-to-video generation client."""
 
-    # Vertex AI model endpoint for Veo 3.1
-    MODEL_ID = "veo-3.1-generate-preview"
+    # Vertex AI model endpoint for Veo 3.1 (GA)
+    MODEL_ID = "veo-3.1-generate-001"
 
     def __init__(self):
         self.project = os.getenv("GOOGLE_CLOUD_PROJECT")
@@ -72,7 +72,8 @@ class VeoGenerator:
         self.credentials.refresh(GoogleAuthRequest())
         return {
             "Authorization": f"Bearer {self.credentials.token}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "x-goog-user-project": self.project
         }
 
     def generate_video(self, prompt, aspect_ratio="16:9", resolution="1080p",
@@ -82,14 +83,15 @@ class VeoGenerator:
         Returns: operation name (LRO identifier) or None on failure.
 
         Vertex AI endpoint:
-        POST .../publishers/google/models/veo-3.1:generateVideos
+        POST .../publishers/google/models/MODEL_ID:predictLongRunning
         """
         url = (
             f"{self.base_url}/publishers/google/models/"
-            f"{self.MODEL_ID}:generateVideos"
+            f"{self.MODEL_ID}:predictLongRunning"
         )
 
         # Build the request body per Vertex AI Veo API spec
+        storage_uri = os.getenv("VEO_STORAGE_URI", f"gs://vocalia-video-outputs/veo-{int(time.time())}/")
         request_body = {
             "instances": [
                 {
@@ -97,6 +99,7 @@ class VeoGenerator:
                 }
             ],
             "parameters": {
+                "storageUri": storage_uri,
                 "aspectRatio": aspect_ratio,
                 "sampleCount": 1,
                 "durationSeconds": duration,
@@ -150,17 +153,23 @@ class VeoGenerator:
 
     def check_status(self, operation_name):
         """
-        Poll the status of a long-running operation.
+        Poll the status of a long-running operation via fetchPredictOperation.
         Output: JSON with { done, videoUri?, error? }
         """
-        url = f"https://{self.region}-aiplatform.googleapis.com/v1/{operation_name}"
+        # Extract model path from operation name for fetchPredictOperation endpoint
+        # operation_name format: projects/.../publishers/google/models/MODEL/operations/OP_ID
+        parts = operation_name.split("/operations/")
+        model_path = parts[0] if len(parts) == 2 else operation_name.rsplit("/operations/", 1)[0]
+
+        url = f"https://{self.region}-aiplatform.googleapis.com/v1/{model_path}:fetchPredictOperation"
         headers = self._get_auth_header()
+        body = {"operationName": operation_name}
 
         try:
-            response = requests.get(url, headers=headers, timeout=30)
+            response = requests.post(url, headers=headers, json=body, timeout=30)
 
             if response.status_code != 200:
-                print(json.dumps({"done": False, "error": f"HTTP {response.status_code}"}))
+                print(json.dumps({"done": False, "error": f"HTTP {response.status_code}: {response.text[:200]}"}))
                 return
 
             data = response.json()
@@ -170,18 +179,19 @@ class VeoGenerator:
                 # Check for error
                 error = data.get("error")
                 if error:
+                    error_msg = error.get("message", str(error)) if isinstance(error, dict) else str(error)
                     print(json.dumps({
                         "done": True,
-                        "error": error.get("message", str(error))
+                        "error": error_msg
                     }))
                     return
 
-                # Extract video URI from response
+                # Extract video URI from response (Vertex AI format: response.videos[].gcsUri)
                 response_data = data.get("response", {})
-                videos = response_data.get("generatedVideos", [])
+                videos = response_data.get("videos", [])
 
                 if videos and len(videos) > 0:
-                    video_uri = videos[0].get("video", {}).get("uri", "")
+                    video_uri = videos[0].get("gcsUri", "")
                     print(json.dumps({
                         "done": True,
                         "videoUri": video_uri
@@ -206,24 +216,35 @@ class VeoGenerator:
     def download_video(self, gcs_uri, output_path):
         """
         Download a video from a GCS URI to a local file.
-        Handles both gs:// URIs and HTTPS signed URLs.
+        Handles gs:// URIs (via gcloud CLI or GCS lib) and HTTPS signed URLs.
         """
+        import subprocess
+
         if gcs_uri.startswith("gs://"):
-            if not HAS_GCS:
-                print("[Veo3.1-Error] google-cloud-storage not installed for gs:// download", file=sys.stderr)
-                print("Install via: pip3 install google-cloud-storage", file=sys.stderr)
+            # Primary: gcloud storage cp (uses user ADC, most reliable)
+            result = subprocess.run(
+                ["gcloud", "storage", "cp", gcs_uri, output_path,
+                 "--project", self.project],
+                capture_output=True, text=True, timeout=300
+            )
+            if result.returncode == 0 and os.path.exists(output_path):
+                print(f"[Veo3.1] Downloaded to {output_path}", file=sys.stderr)
+                return
+
+            # Fallback: google-cloud-storage library
+            if HAS_GCS:
+                print("[Veo3.1] gcloud cp failed, trying GCS library...", file=sys.stderr)
+                parts = gcs_uri.replace("gs://", "").split("/", 1)
+                bucket_name = parts[0]
+                blob_name = parts[1] if len(parts) > 1 else ""
+                client = gcs_storage.Client(project=self.project, credentials=self.credentials)
+                bucket = client.bucket(bucket_name)
+                blob = bucket.blob(blob_name)
+                blob.download_to_filename(output_path)
+                print(f"[Veo3.1] Downloaded to {output_path}", file=sys.stderr)
+            else:
+                print(f"[Veo3.1-Error] Both gcloud and GCS library failed: {result.stderr[:300]}", file=sys.stderr)
                 sys.exit(1)
-
-            # Parse gs://bucket/path
-            parts = gcs_uri.replace("gs://", "").split("/", 1)
-            bucket_name = parts[0]
-            blob_name = parts[1] if len(parts) > 1 else ""
-
-            client = gcs_storage.Client()
-            bucket = client.bucket(bucket_name)
-            blob = bucket.blob(blob_name)
-            blob.download_to_filename(output_path)
-            print(f"[Veo3.1] Downloaded to {output_path}", file=sys.stderr)
 
         elif gcs_uri.startswith("http"):
             # Direct HTTPS download (signed URL)
