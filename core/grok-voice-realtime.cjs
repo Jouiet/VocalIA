@@ -687,11 +687,16 @@ class GrokRealtimeProxy {
         'http://localhost:3007'
       ];
       const origin = req.headers.origin;
-      if (allowedOrigins.includes(origin) || !origin) {
-        res.setHeader('Access-Control-Allow-Origin', origin || '*');
+      if (origin && allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      } else if (!origin) {
+        res.setHeader('Access-Control-Allow-Origin', 'https://vocalia.ma');
       }
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('X-Frame-Options', 'DENY');
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
 
       if (req.method === 'OPTIONS') {
         res.writeHead(204);

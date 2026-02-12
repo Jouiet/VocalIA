@@ -53,14 +53,16 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 9.5/10 — **396 bugs found across 41 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 4,903 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages use shared ES module system.**
-- **Marketing integrity**: 100% — **Marketing copy remediation COMPLETE** (250.195-197): 34 HTML items + locale key remediation (healthcare/finance/ROI across 5 locales) + 12/12 blog disclaimers. Zero false claims, zero exaggerated metrics. ROI web-verified (~3,000-5,000€/mois).
-- **Production readiness**: 6.5/10 — Website live + API redeployed (250.198). **6 containers healthy** (4 core + video HITL + OAuth). OAuth SSO deployed (Google+GitHub — awaiting credentials). Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
-- **OAuth SSO**: Deployed (250.198). `loginWithOAuth()` in auth-service + OAuthGateway login routes + login.html SSO buttons. Tenant auto-provisioning on first OAuth login. Blocked: GOOGLE_CLIENT_ID/SECRET, GITHUB_CLIENT_ID/SECRET not configured.
-- **Video Studio**: E2E verified (250.197-199). Dashboard at `/app/admin/video-ads`. Kling + Veo 3.1 pipelines wired. Kling API = external 500 (crédits). **Veo = FUNCTIONAL** (GCP ADC configured, video generated + downloaded 1.2 MB MP4).
-- **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. 29 tool files + index.ts + auth-provider + middleware audited. isError protocol compliance fixed.
-- **UCP**: Unified — core + MCP + voice + telephony + recommendations all share `data/ucp/{tenantId}/profiles.json`. Zero fragmentation.
-- **Next**: Kling credits → OAuth credentials → SMTP provider → Stripe setup → First paying customer
-- **Weighted score**: 8.9/10
+- **Code completeness**: 9.5/10 — **415 bugs found across 43 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 4,903 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages + 5 auth pages audited.**
+- **Security**: 8.5/10 — SOTA audit (250.200b): CDN SRI 78/78, CSP on 22 app pages, security headers on all 6 API services, CORS tightened, npm vulns patched. VPS: SSH key-only, fail2ban, UFW. Remaining: containers=root, zero backup.
+- **Monitoring**: Production monitor v3.0 LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh alerts, recovery detection, */5 cron.
+- **Marketing integrity**: 100% — Remediation COMPLETE (250.195-197): 34 HTML + locale keys + 12/12 blog disclaimers. Zero false claims.
+- **Production readiness**: 7.5/10 — Website live + API + monitoring + security hardened. 6 containers healthy. Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
+- **OAuth SSO**: Deployed (250.198). Blocked: GOOGLE_CLIENT_ID/SECRET, GITHUB_CLIENT_ID/SECRET not configured.
+- **Video Studio**: E2E verified (250.197-199). Veo FUNCTIONAL (GCP ADC). Kling API = external 500 (crédits).
+- **MCP Server**: 9.0/10. 203 tools + 6 resources + 8 prompts.
+- **UCP**: Unified — core + MCP + voice + telephony + recommendations. Zero fragmentation.
+- **Next**: API redeploy (security headers) → Backup strategy → OAuth credentials → SMTP → Stripe → First paying customer
+- **Weighted score**: 9.0/10
 
-*Last update: 12/02/2026 - Session 250.200 (Test optimization: 5 new test files +1,057 tests. Bug #396: eventBus.emit→publish in voice-agent-b2b. Tests: 3,846→4,903. 396 bugs / 41 phases.)*
+*Last update: 12/02/2026 - Session 250.200b (SOTA security: CDN SRI 78/78 + CSP 22 pages + security headers 6 services + CORS fix + npm audit + .htaccess CSP fix. 415 bugs / 43 phases.)*

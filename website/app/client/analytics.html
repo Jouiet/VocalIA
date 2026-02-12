@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://www.google-analytics.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
   <title>Analytics - VocalIA</title>
 
   <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
@@ -13,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="/public/css/style.css" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" integrity="sha384-9nhczxUqK87bcKHh20fSQcTGD4qq5GhayNYSYWqwBkINBhOfQLg/P5HG5lF1urn4" crossorigin="anonymous"></script>
   <script src="/src/lib/i18n.js"></script>
 </head>
 <body class="bg-zinc-50 dark:bg-[#050505] min-h-screen">
@@ -241,6 +244,11 @@
     import { createLineChart, createBarChart, createDoughnutChart, COLORS } from '/src/lib/charts.js';
     import toast from '/src/lib/toast.js';
 
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     // Initialize i18n (RTL support for AR/ARY)
     if (window.VocaliaI18n) {
       await VocaliaI18n.initI18n();
@@ -411,7 +419,7 @@
 
       tbody.innerHTML = sorted.map(p => `
         <tr>
-          <td class="py-3 text-zinc-900 dark:text-white font-medium">${p.name}</td>
+          <td class="py-3 text-zinc-900 dark:text-white font-medium">${escapeHtml(p.name)}</td>
           <td class="py-3 text-zinc-600 dark:text-zinc-300">${p.calls.toLocaleString()}</td>
           <td class="py-3 font-medium ${p.completion >= 50 ? 'text-green-600' : p.completion >= 30 ? 'text-amber-600' : 'text-zinc-500'}">${p.completion}%</td>
           <td class="py-3 text-zinc-600 dark:text-zinc-300">${formatDuration(p.avgDuration)}</td>

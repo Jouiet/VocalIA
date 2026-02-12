@@ -35,8 +35,9 @@ RewriteRule ^dashboard/?$ /dashboard/client.html [L]
     # Prevent MIME type sniffing
     Header always set X-Content-Type-Options "nosniff"
 
-    # XSS Protection
-    Header always set X-XSS-Protection "1; mode=block"
+    # XSS Protection (disabled — CSP is the modern replacement, and X-XSS-Protection
+    # can introduce vulnerabilities in older browsers via selective script blocking)
+    Header always set X-XSS-Protection "0"
 
     # Referrer Policy
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
@@ -46,7 +47,8 @@ RewriteRule ^dashboard/?$ /dashboard/client.html [L]
 
     # CSP (Content Security Policy) - Session 250.75: Added cdn.jsdelivr.net for Chart.js
     # Session 250.197: Added images.unsplash.com for persona thumbnails in video-ads dashboard
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://plausible.io https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma https://*.vocalia.ma https://images.unsplash.com blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma https://plausible.io; frame-ancestors 'none'"
+    # Session 250.200: Added googletagmanager.com + google-analytics.com for GA4 on app pages
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://plausible.io https://cdn.jsdelivr.net https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://vocalia.ma https://*.vocalia.ma https://images.unsplash.com blob:; connect-src 'self' https://ipapi.co https://api.vocalia.ma https://plausible.io https://www.google-analytics.com; frame-ancestors 'none'"
 </IfModule>
 
 # Caching - Static Assets
