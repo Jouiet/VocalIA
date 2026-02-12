@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Sovereign Studio - VocalIA Production</title>
+
+    <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link href="/public/css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <script src="/src/lib/i18n.js"></script>
+    <script src="/app/components/app-components.js" defer></script>
+
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --indigo: #6366f1;
+            --dark-bg: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-glow: rgba(59, 130, 246, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: #fafafa;
+            overflow-x: hidden;
+        }
+
+        .outfit {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .studio-stage {
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+            border-radius: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 21/9;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 30%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-studio {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--indigo) 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-studio:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .persona-card {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .persona-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .persona-card.active {
+            border-color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        @keyframes scanline {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        .scanline::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(59, 130, 246, 0.05) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scanline 10s linear infinite;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <div data-app-component="admin-sidebar" class="hidden lg:block"></div>
+
+    <main class="lg:ml-[260px] p-6 lg:p-10 space-y-10">
+
+        <!-- Grand Header -->
+        <header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="space-y-2">
+                <div class="flex items-center gap-3">
+                    <span
+                        class="px-2 py-1 bg-blue-500/10 text-blue-400 text-[10px] font-bold tracking-widest rounded-md border border-blue-500/20 uppercase">Sovereign
+                        Edition</span>
+                    <span class="text-zinc-600">/</span>
+                    <span class="text-xs text-zinc-400 font-mono">DUAL_ENGINE: KLING_V2.6 + VEO_3.1</span>
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-bold outfit gradient-text">AI Video Studio</h1>
+                <p class="text-zinc-500 text-sm font-medium tracking-wide">Production interne — Ads marketing VocalIA (non multi-tenant)</p>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden sm:block">
+                    <p class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-1">Engines</p>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="flex items-center gap-1.5 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                            <div class="w-1.5 h-1.5 rounded-full bg-amber-400"></div>
+                            <span class="text-[9px] font-bold text-amber-400">KLING</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-1.5 bg-purple-500/10 px-2.5 py-1 rounded-full border border-purple-500/20">
+                            <div class="w-1.5 h-1.5 rounded-full bg-purple-400"></div>
+                            <span class="text-[9px] font-bold text-purple-400">VEO 3.1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Studio Layout -->
+        <div class="grid grid-cols-12 gap-8">
+
+            <!-- Stage & Creation (8 cols) -->
+            <div class="col-span-12 xl:col-span-8 space-y-8">
+
+                <!-- Main Production Stage -->
+                <div class="studio-stage scanline group">
+                    <video id="stage-video" loop class="w-full h-full object-cover opacity-60 hidden"></video>
+
+                    <div id="stage-ui"
+                        class="absolute inset-0 flex flex-col items-center justify-center p-12 text-center transition-all bg-black/40">
+                        <div
+                            class="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center mb-6">
+                            <i data-lucide="monitor" class="w-8 h-8 text-zinc-600"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold outfit mb-2">Production Monitor</h2>
+                        <p class="text-zinc-400 text-sm max-w-sm">Select a video from the queue to preview, or create
+                            a new generation below.</p>
+                    </div>
+
+                    <!-- Monitoring Overlay -->
+                    <div class="absolute top-6 left-6 flex gap-3">
+                        <div class="glass-panel px-4 py-2 flex items-center gap-3 border-white/5">
+                            <div class="w-2 h-2 bg-blue-500 rounded-full" id="poll-indicator"></div>
+                            <span class="text-[10px] font-bold tracking-widest text-zinc-300">POLL: 30s</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Creation Suite -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Script Editor + Engine Selector -->
+                    <div class="glass-panel p-8 space-y-6">
+                        <h3 class="text-lg font-bold outfit flex items-center gap-3">
+                            <i data-lucide="pen-tool" class="w-5 h-5 text-blue-400"></i>
+                            Video Script Draft
+                        </h3>
+
+                        <!-- Engine Selector -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Engine</span>
+                            <div class="flex bg-black/40 rounded-xl p-1 border border-white/5" id="engine-selector">
+                                <button type="button" data-engine="kling_video"
+                                    class="engine-btn px-4 py-2 rounded-lg text-[11px] font-bold transition-all bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                                    <i data-lucide="film" class="w-3.5 h-3.5 inline-block mr-1"></i>Kling AI
+                                </button>
+                                <button type="button" data-engine="veo_video"
+                                    class="engine-btn px-4 py-2 rounded-lg text-[11px] font-bold transition-all text-zinc-500 hover:text-zinc-300">
+                                    <i data-lucide="sparkles" class="w-3.5 h-3.5 inline-block mr-1"></i>Veo 3.1
+                                </button>
+                            </div>
+                        </div>
+
+                        <textarea id="ad-prompt"
+                            class="w-full h-32 bg-black/40 border border-white/5 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500/30 outline-none transition-all placeholder:text-zinc-600 text-zinc-300"
+                            placeholder="Describe the cinematic scene in detail..."></textarea>
+
+                        <!-- Kling Options (visible by default) -->
+                        <div id="kling-options"
+                            class="space-y-3 p-4 bg-amber-500/[0.03] border border-amber-500/10 rounded-xl">
+                            <p class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">Kling v2.6 — Options
+                            </p>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Ratio</label>
+                                    <select id="kling-ratio"
+                                        class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
+                                        <option value="16:9">16:9 Landscape</option>
+                                        <option value="9:16">9:16 Vertical</option>
+                                        <option value="1:1">1:1 Square</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Duration</label>
+                                    <select id="kling-duration"
+                                        class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
+                                        <option value="5">5s</option>
+                                        <option value="10">10s</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Mode</label>
+                                    <select id="kling-mode"
+                                        class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
+                                        <option value="pro">Pro</option>
+                                        <option value="std">Standard</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Negative
+                                    Prompt</label>
+                                <input type="text" id="kling-negative"
+                                    class="w-full bg-black/40 border border-white/5 rounded-lg px-3 py-1.5 text-xs text-zinc-300 outline-none placeholder:text-zinc-600"
+                                    placeholder="low quality, blurry, distorted, watermark">
+                            </div>
+                        </div>
+
+                        <!-- Veo 3.1 Options (hidden when Kling selected) -->
+                        <div id="veo-options"
+                            class="hidden space-y-3 p-4 bg-purple-500/[0.03] border border-purple-500/10 rounded-xl">
+                            <p class="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Veo 3.1 — Options
+                            </p>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div>
+                                    <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Ratio</label>
+                                    <select id="veo-ratio"
+                                        class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
+                                        <option value="16:9">16:9 Landscape</option>
+                                        <option value="9:16">9:16 Vertical</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Resolution</label>
+                                    <select id="veo-resolution"
+                                        class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
+                                        <option value="1080p">1080p</option>
+                                        <option value="720p">720p</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Duration</label>
+                                    <select id="veo-duration"
+                                        class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
+                                        <option value="8">8s</option>
+                                        <option value="6">6s</option>
+                                        <option value="4">4s</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" id="veo-audio" checked
+                                        class="w-3.5 h-3.5 rounded accent-purple-500">
+                                    <span class="text-[10px] text-zinc-400">Native Audio (dialogue + SFX)</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Negative
+                                    Prompt</label>
+                                <input type="text" id="veo-negative"
+                                    class="w-full bg-black/40 border border-white/5 rounded-lg px-3 py-1.5 text-xs text-zinc-300 outline-none placeholder:text-zinc-600"
+                                    placeholder="sci-fi, holograms, neon, robots, low quality">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex gap-2" id="spec-badges">
+                                <span
+                                    class="px-2 py-1 bg-amber-500/10 rounded text-[10px] text-amber-400 border border-amber-500/20">KLING_V2.6</span>
+                                <span
+                                    class="px-2 py-1 bg-white/5 rounded text-[10px] text-zinc-500 border border-white/5">PRO_1080p</span>
+                            </div>
+                            <button id="generate-btn"
+                                class="btn-studio px-8 py-3 rounded-xl font-bold flex items-center gap-2">
+                                Generate
+                                <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Persona Grid -->
+                    <div class="glass-panel p-8 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold outfit flex items-center gap-3">
+                                <i data-lucide="clapperboard" class="w-5 h-5 text-indigo-400"></i>
+                                Scénarios Pub
+                            </h3>
+                            <span class="text-[10px] font-bold text-zinc-500 px-2 py-1 bg-white/5 rounded">9 SCÉNARIOS</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3" id="persona-grid">
+                            <!-- Personas Injected -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Queue & Statistics (4 cols) -->
+            <div class="col-span-12 xl:col-span-4 space-y-8">
+
+                <!-- Queue Stats (dynamic from HITL) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel p-6 text-center border-blue-500/10 bg-blue-500/[0.02]">
+                        <p class="text-2xl font-bold outfit text-blue-400" id="stat-total">0</p>
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Total Queued</p>
+                    </div>
+                    <div class="glass-panel p-6 text-center border-green-500/10 bg-green-500/[0.02]">
+                        <p class="text-2xl font-bold outfit text-green-400" id="stat-completed">0</p>
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Completed</p>
+                    </div>
+                </div>
+
+                <!-- Approval Queue -->
+                <div class="glass-panel flex flex-col h-[650px]">
+                    <div class="p-6 border-b border-white/5 flex items-center justify-between">
+                        <h3 class="font-bold outfit">Production Queue</h3>
+                        <button id="refresh-btn"
+                            class="p-2 hover:bg-white/5 rounded-full transition-all text-zinc-500 hover:text-white">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                    <div id="ad-queue-list" class="flex-1 overflow-y-auto divide-y divide-white/5 p-4 space-y-2">
+                        <!-- Items -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Review Modal (Sovereign Style) -->
+    <div id="review-modal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl hidden">
+        <div class="glass-panel w-full max-w-5xl overflow-hidden border-white/10 shadow-2xl">
+            <div class="flex items-center justify-between p-8 border-b border-white/5 bg-white/[0.02]">
+                <div>
+                    <h2 class="text-2xl font-bold outfit gradient-text">Review Video Master</h2>
+                    <p id="modal-id" class="text-[10px] text-zinc-600 font-mono mt-1">UUID: --</p>
+                </div>
+                <button id="close-modal" class="p-3 bg-white/5 hover:bg-white/10 rounded-full transition-all"><i
+                        data-lucide="x"></i></button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-0">
+                <!-- Preview -->
+                <div class="lg:col-span-3 p-8 border-r border-white/5 bg-black/20">
+                    <div
+                        class="studio-stage aspect-video bg-zinc-950 flex items-center justify-center relative shadow-2xl border-white/5">
+                        <video id="modal-video" controls class="w-full h-full rounded-xl"></video>
+                        <div id="no-video-placeholder"
+                            class="absolute inset-0 flex flex-col items-center justify-center text-zinc-700 hidden">
+                            <i data-lucide="video-off" class="w-12 h-12 mb-4"></i>
+                            <p class="text-[10px] uppercase font-bold tracking-widest">Generating Frames...</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-3 gap-4">
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
+                            <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Engine</p>
+                            <p class="text-sm font-bold" id="modal-engine">--</p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
+                            <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">Resolution</p>
+                            <p class="text-sm font-bold" id="modal-resolution">--</p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5 text-center">
+                            <p class="text-[10px] text-zinc-500 uppercase font-bold tracking-tighter">State</p>
+                            <p class="text-sm font-bold" id="modal-state">--</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="lg:col-span-2 p-8 space-y-8">
+                    <div>
+                        <label class="flex justify-between items-center mb-3">
+                            <span class="text-zinc-500 text-[10px] uppercase font-bold tracking-widest">Edit Generation
+                                Script</span>
+                            <span class="text-[10px] text-blue-500 font-bold bg-blue-500/10 px-2 py-0.5 rounded">Manual
+                                Trace</span>
+                        </label>
+                        <textarea id="modal-prompt-edit"
+                            class="w-full h-48 bg-black/40 border border-white/5 rounded-2xl p-4 text-sm focus:ring-2 focus:ring-blue-500/30 outline-none transition-all resize-none text-zinc-300"></textarea>
+                    </div>
+
+                    <div class="space-y-4">
+                        <button id="regenerate-btn"
+                            class="w-full py-4 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-2xl font-bold hover:bg-indigo-500/20 transition-all flex items-center justify-center gap-3">
+                            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                            Regenerate with Polish
+                        </button>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button id="reject-btn"
+                                class="w-full py-5 rounded-2xl border border-white/5 text-zinc-600 hover:text-red-500 hover:bg-red-500/5 transition-all font-bold uppercase text-[10px] tracking-widest">Reject</button>
+                            <button id="approve-btn"
+                                class="w-full py-5 btn-studio text-white rounded-2xl font-bold transition-all uppercase text-[10px] tracking-widest">Approve
+                                & Lock</button>
+                        </div>
+                        <button id="delete-btn"
+                            class="hidden w-full py-3 rounded-2xl border border-red-500/20 text-red-400/60 hover:text-red-400 hover:bg-red-500/10 transition-all font-bold uppercase text-[10px] tracking-widest mt-2">
+                            <i data-lucide="trash-2" class="w-3 h-3 inline-block mr-1"></i>Delete from Queue
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Production Status (Floating) -->
+    <div class="fixed bottom-6 right-6 z-40">
+        <div class="glass-panel p-4 flex items-center gap-4 cursor-help">
+            <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                <i data-lucide="video" class="w-4 h-4 text-blue-400"></i>
+            </div>
+            <div class="text-[10px]">
+                <p class="font-bold text-zinc-300">VocalIA Video Studio</p>
+                <p class="text-zinc-500">Internal Production Tool</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import auth from '/src/lib/auth-client.js';
+        import toast from '/src/lib/toast.js';
+
+        // Auth guard — admin only
+        if (!auth.requireRole('admin')) {
+            window.location.href = '/login.html';
+        }
+
+        lucide.createIcons();
+
+        // HITL URL — localhost: direct port | production: Traefik path routing via api.vocalia.ma
+        const HITL_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:3012'
+            : 'https://api.vocalia.ma/hitl';
+
+        // XSS prevention
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        const adQueueList = document.getElementById('ad-queue-list');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const personaGrid = document.getElementById('persona-grid');
+
+        let selectedPersona = null;
+        let selectedEngine = 'kling_video';
+        let currentReviewItem = null;
+
+        // Ad scenarios — VocalIA internal marketing (NOT multi-tenant client personas)
+        // Each represents an industry vertical ad showing VocalIA in action
+        const personas = [
+            { name: 'Boutique', role: 'E-commerce', img: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=100&h=100&fit=crop', id: 'AD_ECOMMERCE', context: 'Publicité pour boutique e-commerce utilisant VocalIA: assistant vocal qui guide les clients, répond aux questions produits et facilite les commandes' },
+            { name: 'Agence', role: 'Immobilier', img: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=100&h=100&fit=crop', id: 'AD_IMMOBILIER', context: 'Publicité pour agence immobilière avec VocalIA: assistant vocal qui qualifie les prospects, planifie les visites et répond aux questions sur les biens' },
+            { name: 'Restaurant', role: 'Réservations', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=100&h=100&fit=crop', id: 'AD_RESTAURANT', context: 'Publicité pour restaurant avec VocalIA: assistant vocal qui prend les réservations, informe sur le menu et gère les appels aux heures de pointe' },
+            { name: 'Cabinet', role: 'Médical', img: 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=100&h=100&fit=crop', id: 'AD_MEDICAL', context: 'Publicité pour cabinet médical avec VocalIA: assistant vocal qui gère les rendez-vous, oriente les patients et répond aux questions pratiques' },
+            { name: 'Startup', role: 'SaaS / Tech', img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=100&h=100&fit=crop', id: 'AD_SAAS', context: 'Publicité pour startup SaaS avec VocalIA: assistant vocal B2B qui qualifie les leads, assiste le support technique et accélère l\'onboarding' },
+            { name: 'Artisan', role: 'PME / BTP', img: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=100&h=100&fit=crop', id: 'AD_ARTISAN', context: 'Publicité pour artisan/PME avec VocalIA: assistant vocal qui prend les demandes de devis, planifie les interventions et répond quand l\'artisan est sur chantier' },
+            { name: 'Notaire', role: 'Juridique', img: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=100&h=100&fit=crop', id: 'AD_JURIDIQUE', context: 'Publicité pour cabinet juridique avec VocalIA: assistant vocal qui filtre les appels, prend les rendez-vous et informe sur les documents nécessaires' },
+            { name: 'Support', role: 'SAV / Hotline', img: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=100&h=100&fit=crop', id: 'AD_SUPPORT', context: 'Publicité pour service SAV avec VocalIA: assistant vocal qui traite les demandes de support niveau 1, crée les tickets et escalade intelligemment' },
+            { name: 'Marque', role: 'Brand Intro', img: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=100&h=100&fit=crop', id: 'AD_BRAND', context: 'Vidéo de présentation de la marque VocalIA: plateforme Voice AI tout-en-un avec 38 personas, widget web, téléphonie PSTN et intégrations CRM/e-commerce' }
+        ];
+
+        personaGrid.innerHTML = personas.map(p => `
+            <div class="persona-card p-3 rounded-2xl text-center cursor-pointer group" data-persona="${escapeHtml(p.id)}">
+                <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" class="w-full aspect-square rounded-xl object-cover mb-2 grayscale group-hover:grayscale-0 transition-all shadow-lg border border-white/5" loading="lazy">
+                <p class="text-[10px] font-bold text-zinc-300 truncate">${escapeHtml(p.name)}</p>
+                <p class="text-[8px] text-zinc-500 uppercase tracking-tighter">${escapeHtml(p.role)}</p>
+            </div>
+        `).join('');
+
+        // Persona selection via event delegation
+        personaGrid.addEventListener('click', (e) => {
+            const card = e.target.closest('.persona-card');
+            if (!card) return;
+            document.querySelectorAll('.persona-card').forEach(p => p.classList.remove('active'));
+            card.classList.add('active');
+            selectedPersona = card.dataset.persona;
+            const personaName = card.querySelector('.text-zinc-300')?.textContent || selectedPersona;
+            toast.info(`Scénario: ${personaName}`);
+        });
+
+        // HITL fetch helper
+        async function hitlFetch(path, options = {}) {
+            const res = await fetch(`${HITL_URL}${path}`, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                }
+            });
+            if (!res.ok) throw new Error(`HITL ${res.status}: ${res.statusText}`);
+            return res.json();
+        }
+
+        async function loadAdQueue() {
+            const indicator = document.getElementById('poll-indicator');
+            const pollLabel = indicator?.nextElementSibling;
+            indicator?.classList.add('animate-pulse');
+            if (pollLabel) pollLabel.textContent = 'POLLING...';
+            try {
+                const [klingRes, veoRes] = await Promise.allSettled([
+                    hitlFetch('/queue?type=kling_video'),
+                    hitlFetch('/queue?type=veo_video')
+                ]);
+
+                const anyFailed = klingRes.status === 'rejected' && veoRes.status === 'rejected';
+                if (anyFailed) {
+                    indicator?.classList.replace('bg-blue-500', 'bg-red-500');
+                    if (pollLabel) pollLabel.textContent = 'HITL OFFLINE';
+                    return;
+                }
+                indicator?.classList.remove('bg-red-500');
+                indicator?.classList.add('bg-blue-500');
+
+                let items = [];
+                if (klingRes.status === 'fulfilled') items = items.concat(klingRes.value.items || []);
+                if (veoRes.status === 'fulfilled') items = items.concat(veoRes.value.items || []);
+
+                // Sort newest first
+                items.sort((a, b) => new Date(b.requestedAt || 0) - new Date(a.requestedAt || 0));
+
+                // Update stats
+                const total = items.length;
+                const completed = items.filter(i => i.state === 'completed').length;
+                document.getElementById('stat-total').textContent = total;
+                document.getElementById('stat-completed').textContent = completed;
+
+                adQueueList.innerHTML = items.length ? items.map(item => {
+                    const isVeo = item.type === 'veo_video';
+                    const engineBadge = isVeo
+                        ? '<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-purple-500/15 text-purple-400 border border-purple-500/20">VEO</span>'
+                        : '<span class="text-[8px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/20">KLING</span>';
+                    const promptText = item.props && item.props.prompt
+                        ? escapeHtml(item.props.prompt.length > 35 ? item.props.prompt.substring(0, 35) + '\u2026' : item.props.prompt)
+                        : 'Untitled Ad';
+                    const timeStr = item.requestedAt ? new Date(item.requestedAt).toLocaleTimeString() : 'N/A';
+                    const safeId = escapeHtml(item.id);
+
+                    return `
+                      <div class="flex items-center justify-between p-4 glass-panel border-transparent hover:border-blue-500/30 transition-all cursor-pointer group" data-review-id="${safeId}">
+                        <div class="flex items-center gap-4">
+                          <div class="w-12 h-12 rounded-xl bg-black/40 flex items-center justify-center border border-white/5 group-hover:border-blue-500/20">
+                            <i data-lucide="${item.state === 'generating' ? 'loader-2' : 'video'}" class="w-5 h-5 text-zinc-500 group-hover:text-blue-500 transition-colors ${item.state === 'generating' ? 'animate-spin' : ''}"></i>
+                          </div>
+                          <div>
+                            <p class="font-bold text-sm text-zinc-100">${promptText}</p>
+                            <div class="flex items-center gap-2 mt-1">
+                               ${engineBadge}
+                               <span class="text-[10px] font-bold uppercase tracking-tighter ${stateColor(item.state)}">${escapeHtml(item.state)}</span>
+                               <span class="text-[9px] text-zinc-600 font-mono">${escapeHtml(timeStr)}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-700 group-hover:text-blue-500 transition-all"></i>
+                      </div>`;
+                }).join('') : '<div class="p-12 text-center text-zinc-600 text-sm">Empty Production Queue</div>';
+
+                lucide.createIcons();
+            } catch (err) {
+                console.error('[HITL] Failed to poll queue:', err.message);
+                indicator?.classList.replace('bg-blue-500', 'bg-red-500');
+                if (pollLabel) pollLabel.textContent = 'HITL OFFLINE';
+            } finally {
+                indicator?.classList.remove('animate-pulse');
+                if (pollLabel && !pollLabel.textContent.includes('OFFLINE')) pollLabel.textContent = 'POLL: 30s';
+            }
+        }
+
+        function stateColor(state) {
+            switch (state) {
+                case 'pending': return 'text-amber-500';
+                case 'approved': return 'text-green-500';
+                case 'rendering': return 'text-blue-400';
+                case 'generating': return 'text-blue-500 animate-pulse';
+                case 'completed': return 'text-emerald-500';
+                case 'rejected': return 'text-red-400';
+                case 'failed': return 'text-red-500';
+                default: return 'text-zinc-600';
+            }
+        }
+
+        // Queue click → open review (event delegation)
+        adQueueList.addEventListener('click', (e) => {
+            const row = e.target.closest('[data-review-id]');
+            if (!row) return;
+            openReview(row.dataset.reviewId);
+        });
+
+        refreshBtn.addEventListener('click', loadAdQueue);
+
+        async function openReview(id) {
+            try {
+                const item = await hitlFetch(`/video/${id}`);
+                currentReviewItem = item;
+
+                document.getElementById('modal-id').textContent = `UUID: ${escapeHtml(item.id)}`;
+                document.getElementById('modal-prompt-edit').value = item.props.prompt || '';
+
+                // Dynamic modal specs
+                const isVeo = item.type === 'veo_video';
+                document.getElementById('modal-engine').textContent = isVeo ? 'Veo 3.1' : 'Kling AI';
+                document.getElementById('modal-resolution').textContent = isVeo
+                    ? (item.props.resolution || '1080p')
+                    : `${(item.props.mode || 'pro').toUpperCase()} 1080p`;
+                document.getElementById('modal-state').textContent = (item.state || 'unknown').toUpperCase();
+
+                // Disable approve/reject for non-pending items
+                const isPending = item.state === 'pending';
+                const isTerminal = ['completed', 'failed', 'rejected'].includes(item.state);
+                document.getElementById('approve-btn').disabled = !isPending;
+                document.getElementById('reject-btn').disabled = !isPending;
+                document.getElementById('approve-btn').classList.toggle('opacity-30', !isPending);
+                document.getElementById('reject-btn').classList.toggle('opacity-30', !isPending);
+                document.getElementById('delete-btn').classList.toggle('hidden', !isTerminal);
+
+                const videoEl = document.getElementById('modal-video');
+                const placeholder = document.getElementById('no-video-placeholder');
+
+                if (item.outputPath) {
+                    videoEl.src = item.outputPath.startsWith('http') ? item.outputPath : `${HITL_URL}/outputs/${encodeURIComponent(item.id)}.mp4`;
+                    videoEl.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                } else {
+                    videoEl.classList.add('hidden');
+                    placeholder.classList.remove('hidden');
+                    const statusTxt = placeholder.querySelector('p');
+                    const engineLabel = isVeo ? 'VEO 3.1' : 'KLING';
+                    statusTxt.textContent = item.state === 'generating' ? `GENERATING IN ${engineLabel}...` : 'WAITING FOR APPROVAL';
+                }
+
+                document.getElementById('review-modal').classList.remove('hidden');
+            } catch (err) {
+                toast.error('Failed to load video details');
+            }
+        }
+
+        // Approve
+        document.getElementById('approve-btn').addEventListener('click', async () => {
+            if (!currentReviewItem) return;
+            const btn = document.getElementById('approve-btn');
+            btn.disabled = true;
+            btn.innerHTML = 'LOCKING...';
+
+            try {
+                const user = auth.getUser();
+                await hitlFetch(`/video/${currentReviewItem.id}/approve`, {
+                    method: 'POST',
+                    body: JSON.stringify({ reviewer: user?.name || 'VocalIA_Admin' })
+                });
+                toast.success('Ad approved — generation triggered');
+                document.getElementById('review-modal').classList.add('hidden');
+                currentReviewItem = null;
+                loadAdQueue();
+            } catch (e) {
+                toast.error('Approval failed');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Approve & Lock';
+            }
+        });
+
+        // Reject
+        document.getElementById('reject-btn').addEventListener('click', async () => {
+            if (!currentReviewItem) return;
+            try {
+                const user = auth.getUser();
+                await hitlFetch(`/video/${currentReviewItem.id}/reject`, {
+                    method: 'POST',
+                    body: JSON.stringify({ reviewer: user?.name || 'VocalIA_Admin', reason: 'Manual Rejection' })
+                });
+                toast.warning('Ad rejected');
+                document.getElementById('review-modal').classList.add('hidden');
+                currentReviewItem = null;
+                loadAdQueue();
+            } catch (e) {
+                toast.error('Rejection failed');
+            }
+        });
+
+        // Delete from queue
+        document.getElementById('delete-btn').addEventListener('click', async () => {
+            if (!currentReviewItem) return;
+            try {
+                await hitlFetch(`/video/${currentReviewItem.id}`, { method: 'DELETE' });
+                toast.success('Removed from queue');
+                document.getElementById('review-modal').classList.add('hidden');
+                currentReviewItem = null;
+                loadAdQueue();
+            } catch (e) {
+                toast.error('Delete failed');
+            }
+        });
+
+        // Regenerate — re-queue with edited prompt
+        document.getElementById('regenerate-btn').addEventListener('click', async () => {
+            if (!currentReviewItem) return;
+            const editedPrompt = document.getElementById('modal-prompt-edit').value.trim();
+            if (!editedPrompt) return toast.error('Script draft required');
+
+            const btn = document.getElementById('regenerate-btn');
+            btn.disabled = true;
+
+            try {
+                const isVeo = currentReviewItem.type === 'veo_video';
+                const composition = isVeo ? 'VeoAd_v1' : 'KlingAd_v2';
+                const props = { ...currentReviewItem.props, prompt: editedPrompt };
+
+                await hitlFetch('/queue', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        type: currentReviewItem.type,
+                        composition,
+                        props,
+                        requestedBy: auth.getUser()?.name || 'VocalIA_Admin'
+                    })
+                });
+
+                toast.success('Re-queued with updated script');
+                document.getElementById('review-modal').classList.add('hidden');
+                currentReviewItem = null;
+                loadAdQueue();
+            } catch (e) {
+                toast.error('Re-queue failed');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Close modal
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('review-modal').classList.add('hidden');
+            currentReviewItem = null;
+        });
+
+        // ESC key closes modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !document.getElementById('review-modal').classList.contains('hidden')) {
+                document.getElementById('review-modal').classList.add('hidden');
+                currentReviewItem = null;
+            }
+        });
+
+        // Engine selector (event delegation)
+        document.getElementById('engine-selector').addEventListener('click', (e) => {
+            const btn = e.target.closest('.engine-btn');
+            if (!btn) return;
+            selectEngine(btn.dataset.engine);
+        });
+
+        function selectEngine(engine) {
+            selectedEngine = engine;
+            const veoOpts = document.getElementById('veo-options');
+            const klingOpts = document.getElementById('kling-options');
+            const specBadges = document.getElementById('spec-badges');
+
+            document.querySelectorAll('.engine-btn').forEach(btn => {
+                const isActive = btn.dataset.engine === engine;
+                if (engine === 'veo_video' && isActive) {
+                    btn.className = 'engine-btn px-4 py-2 rounded-lg text-[11px] font-bold transition-all bg-purple-500/20 text-purple-400 border border-purple-500/30';
+                } else if (engine === 'kling_video' && isActive) {
+                    btn.className = 'engine-btn px-4 py-2 rounded-lg text-[11px] font-bold transition-all bg-amber-500/20 text-amber-400 border border-amber-500/30';
+                } else {
+                    btn.className = 'engine-btn px-4 py-2 rounded-lg text-[11px] font-bold transition-all text-zinc-500 hover:text-zinc-300';
+                }
+            });
+
+            if (engine === 'veo_video') {
+                veoOpts.classList.remove('hidden');
+                klingOpts.classList.add('hidden');
+                specBadges.innerHTML = `
+                    <span class="px-2 py-1 bg-purple-500/10 rounded text-[10px] text-purple-400 border border-purple-500/20">VEO_3.1</span>
+                    <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-zinc-500 border border-white/5">NATIVE_AUDIO</span>`;
+            } else {
+                veoOpts.classList.add('hidden');
+                klingOpts.classList.remove('hidden');
+                specBadges.innerHTML = `
+                    <span class="px-2 py-1 bg-amber-500/10 rounded text-[10px] text-amber-400 border border-amber-500/20">KLING_V2.6</span>
+                    <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-zinc-500 border border-white/5">PRO_1080p</span>`;
+            }
+            lucide.createIcons();
+            toast.info(`Engine: ${engine === 'veo_video' ? 'Veo 3.1' : 'Kling AI'}`);
+        }
+
+        // Generate button
+        document.getElementById('generate-btn').addEventListener('click', async () => {
+            const prompt = document.getElementById('ad-prompt').value.trim();
+            if (!selectedPersona) return toast.error('Persona selection required');
+            if (!prompt) return toast.error('Script draft required');
+
+            const btn = document.getElementById('generate-btn');
+            btn.disabled = true;
+            btn.innerHTML = 'QUEUING...';
+
+            const isVeo = selectedEngine === 'veo_video';
+            const composition = isVeo ? 'VeoAd_v1' : 'KlingAd_v2';
+            const personaData = personas.find(p => p.id === selectedPersona);
+            const enrichedPrompt = personaData?.context ? `[${personaData.context}] ${prompt}` : prompt;
+            const props = { prompt: enrichedPrompt, persona: selectedPersona };
+
+            if (isVeo) {
+                props.aspectRatio = document.getElementById('veo-ratio').value;
+                props.resolution = document.getElementById('veo-resolution').value;
+                props.duration = parseInt(document.getElementById('veo-duration').value);
+                props.generateAudio = document.getElementById('veo-audio').checked;
+                props.negativePrompt = document.getElementById('veo-negative').value;
+            } else {
+                props.aspectRatio = document.getElementById('kling-ratio').value;
+                props.duration = parseInt(document.getElementById('kling-duration').value);
+                props.mode = document.getElementById('kling-mode').value;
+                props.negativePrompt = document.getElementById('kling-negative').value;
+            }
+
+            try {
+                await hitlFetch('/queue', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        type: selectedEngine,
+                        composition,
+                        props,
+                        requestedBy: auth.getUser()?.name || 'VocalIA_Admin'
+                    })
+                });
+
+                const engineName = isVeo ? 'Veo 3.1' : 'Kling';
+                toast.success(`${engineName} — Task queued`);
+                document.getElementById('ad-prompt').value = '';
+                loadAdQueue();
+            } catch (err) {
+                toast.error('Failed to queue task');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Generate <i data-lucide="zap" class="w-4 h-4 fill-current"></i>';
+                lucide.createIcons();
+            }
+        });
+
+        // Initial load + polling (30s — video generation takes minutes)
+        loadAdQueue();
+        setInterval(loadAdQueue, 30000);
+    </script>
+</body>
+
+</html>

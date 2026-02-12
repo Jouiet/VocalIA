@@ -1,5 +1,5 @@
 # VocalIA Production Deployment - Full Stack with Profiles
-# Session 250.178 - 4 core + 3 optional (profiles)
+# Session 250.178 - 4 core + 4 optional (profiles)
 #
 # CORE (always run):
 # - db-api (3013): Database API, Auth, Tenants, HITL
@@ -10,6 +10,7 @@
 # OPTIONAL (via --profile):
 # - oauth-gateway (3010): OAuth 2.0 flows [profile: integrations]
 # - webhook-router (3011): Inbound webhooks [profile: integrations]
+# - hitl-video (3012): Video Studio HITL + Kling/Veo generation [profile: video]
 # - mcp-server (3015): 203 MCP tools [profile: mcp]
 #
 # Routes (all via api.vocalia.ma — no extra DNS needed):
@@ -21,6 +22,7 @@
 # - api.vocalia.ma/api/catalog/* → db-api
 # - api.vocalia.ma/oauth/* → oauth-gateway (priority 95) [profile: integrations]
 # - api.vocalia.ma/webhook/* → webhook-router (priority 93) [profile: integrations]
+# - api.vocalia.ma/hitl/* → hitl-video (priority 92) [profile: video]
 # - api.vocalia.ma/realtime/* → grok-realtime (priority 90)
 # - api.vocalia.ma/mcp → mcp-server (priority 85) [profile: mcp]
 # - api.vocalia.ma/telephony/* → telephony (priority 80)
@@ -34,8 +36,9 @@
 # Deploy:
 #   docker-compose -f docker-compose.production.yml up -d                              # Core only (4 services)
 #   docker-compose -f docker-compose.production.yml --profile integrations up -d        # + OAuth + Webhooks
+#   docker-compose -f docker-compose.production.yml --profile video up -d               # + Video Studio HITL
 #   docker-compose -f docker-compose.production.yml --profile mcp up -d                 # + MCP Server
-#   docker-compose -f docker-compose.production.yml --profile integrations --profile mcp up -d  # All 7
+#   docker-compose -f docker-compose.production.yml --profile integrations --profile video --profile mcp up -d  # All 8
 
 services:
   # ═══════════════════════════════════════════════════════════════
@@ -397,6 +400,67 @@ services:
       - traefik
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:3011/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ═══════════════════════════════════════════════════════════════
+  # HITL VIDEO STUDIO - Approval Workflow + Kling/Veo Generation
+  # Routes: api.vocalia.ma/hitl/*
+  # Profile: video (not started by default)
+  # Requires: Python3 + PyJWT (Kling auth) + google-auth (Veo auth)
+  # ═══════════════════════════════════════════════════════════════
+  vocalia-hitl:
+    image: node:20-alpine
+    container_name: vocalia-hitl
+    restart: unless-stopped
+    working_dir: /app
+    profiles: ["video"]
+    volumes:
+      - vocalia-data:/vocalia-data
+    environment:
+      - NODE_ENV=production
+      - REMOTION_HITL_PORT=3012
+      - KLING_ACCESS_KEY=${KLING_ACCESS_KEY}
+      - KLING_SECRET_KEY=${KLING_SECRET_KEY}
+      - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
+      - GOOGLE_CLOUD_REGION=${GOOGLE_CLOUD_REGION:-us-central1}
+    command: >
+      sh -c "
+        apk add --no-cache git curl python3 py3-pip &&
+        pip3 install --break-system-packages PyJWT requests python-dotenv google-auth google-cloud-storage 2>/dev/null || true &&
+        git clone --depth 1 https://github.com/Jouiet/VocalIA.git /app 2>/dev/null || (cd /app && git pull) &&
+        cd /app &&
+        rm -rf data 2>/dev/null || true &&
+        ln -sf /vocalia-data data &&
+        mkdir -p data/remotion-hitl/outputs &&
+        npm install --production --ignore-scripts 2>/dev/null || true &&
+        node core/remotion-hitl.cjs --server
+      "
+    expose:
+      - "3012"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vocalia-hitl.rule=Host(`api.vocalia.ma`) && PathPrefix(`/hitl`)"
+      - "traefik.http.routers.vocalia-hitl.entrypoints=websecure"
+      - "traefik.http.routers.vocalia-hitl.tls=true"
+      - "traefik.http.routers.vocalia-hitl.tls.certresolver=mytlschallenge"
+      - "traefik.http.routers.vocalia-hitl.priority=92"
+      - "traefik.http.routers.vocalia-hitl.middlewares=strip-hitl"
+      - "traefik.http.middlewares.strip-hitl.stripprefix.prefixes=/hitl"
+      - "traefik.http.services.vocalia-hitl.loadbalancer.server.port=3012"
+      - "traefik.docker.network=root_default"
+    networks:
+      - default
+      - traefik
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3012/health"]
       interval: 30s
       timeout: 10s
       retries: 3

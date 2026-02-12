@@ -5,13 +5,6 @@
  *
  * Manages video approval workflow before publishing/exporting.
  * Provides queue, preview, approve/reject functionality.
- *
- * Usage:
- *   node remotion-hitl.cjs --server        # Start HITL API server
- *   node remotion-hitl.cjs --list          # List pending approvals
- *   node remotion-hitl.cjs --approve <id>  # Approve video
- *   node remotion-hitl.cjs --reject <id>   # Reject video
- *   node remotion-hitl.cjs --health        # Health check
  */
 
 const http = require('http');
@@ -31,7 +24,7 @@ if (!fs.existsSync(DATA_DIR)) {
 }
 
 // HITL Event Emitter for real-time notifications
-class HITLEvents extends EventEmitter {}
+class HITLEvents extends EventEmitter { }
 const hitlEvents = new HITLEvents();
 
 // Video approval states
@@ -39,18 +32,18 @@ const STATES = {
   PENDING: 'pending',
   APPROVED: 'approved',
   REJECTED: 'rejected',
+  GENERATING: 'generating',
   RENDERING: 'rendering',
   COMPLETED: 'completed',
   FAILED: 'failed'
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Queue Management
-// ─────────────────────────────────────────────────────────────────────────────
+const TYPES = {
+  REMOTION: 'remotion',
+  KLING_VIDEO: 'kling_video',
+  VEO_VIDEO: 'veo_video'
+};
 
-/**
- * Load pending queue from disk
- */
 function loadQueue() {
   try {
     if (fs.existsSync(QUEUE_FILE)) {
@@ -62,29 +55,20 @@ function loadQueue() {
   return { items: [], lastUpdated: null };
 }
 
-/**
- * Save queue to disk
- */
 function saveQueue(queue) {
   queue.lastUpdated = new Date().toISOString();
   fs.writeFileSync(QUEUE_FILE, JSON.stringify(queue, null, 2));
 }
 
-/**
- * Generate unique ID
- */
 function generateId() {
   return `vid_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
 }
 
-/**
- * Add video to approval queue
- */
 function queueVideo(videoRequest) {
   const queue = loadQueue();
-
   const item = {
     id: generateId(),
+    type: videoRequest.type || TYPES.REMOTION,
     state: STATES.PENDING,
     composition: videoRequest.composition,
     language: videoRequest.language || 'fr',
@@ -95,290 +79,143 @@ function queueVideo(videoRequest) {
     outputPath: null,
     reviewedBy: null,
     reviewedAt: null,
-    reviewNotes: null
+    reviewNotes: null,
+    externalTaskId: videoRequest.externalTaskId || null
   };
-
-  // BL30 fix: Bound queue to prevent unbounded growth
-  const MAX_QUEUE_SIZE = 10000;
-  if (queue.items.length >= MAX_QUEUE_SIZE) {
-    // Remove oldest completed/failed items first
-    const removableStates = [STATES.COMPLETED, STATES.FAILED, STATES.REJECTED];
-    const idx = queue.items.findIndex(i => removableStates.includes(i.state));
-    if (idx !== -1) {
-      queue.items.splice(idx, 1);
-    } else {
-      queue.items.shift(); // Remove oldest if none removable
-    }
-  }
   queue.items.push(item);
   saveQueue(queue);
-
-  // Emit event
   hitlEvents.emit('video:queued', item);
-
-  // Log audit
   logAudit('VIDEO_QUEUED', item);
-
-  console.log(`[HITL] Video queued: ${item.id} (${item.composition})`);
   return item;
 }
 
-/**
- * Get pending videos
- */
 function getPending() {
-  const queue = loadQueue();
-  return queue.items.filter(item => item.state === STATES.PENDING);
+  return loadQueue().items.filter(item => item.state === STATES.PENDING);
 }
 
-/**
- * Get video by ID
- */
 function getVideo(id) {
-  const queue = loadQueue();
-  return queue.items.find(item => item.id === id);
+  return loadQueue().items.find(item => item.id === id);
 }
 
-/**
- * Update video state
- */
 function updateVideo(id, updates) {
   const queue = loadQueue();
   const index = queue.items.findIndex(item => item.id === id);
-
-  if (index === -1) {
-    throw new Error(`Video not found: ${id}`);
-  }
-
+  if (index === -1) throw new Error(`Video not found: ${id}`);
   queue.items[index] = { ...queue.items[index], ...updates };
   saveQueue(queue);
-
   return queue.items[index];
 }
 
-/**
- * Approve video for rendering
- */
 function approveVideo(id, reviewer, notes = '') {
   const video = getVideo(id);
-
-  if (!video) {
-    throw new Error(`Video not found: ${id}`);
-  }
-
-  if (video.state !== STATES.PENDING) {
-    throw new Error(`Video not in pending state: ${video.state}`);
-  }
-
+  if (!video) throw new Error(`Video not found: ${id}`);
+  if (video.state !== STATES.PENDING) throw new Error(`Video ${id} is not in pending state (current: ${video.state})`);
   const updated = updateVideo(id, {
     state: STATES.APPROVED,
     reviewedBy: reviewer,
     reviewedAt: new Date().toISOString(),
     reviewNotes: notes
   });
-
-  // Emit event
   hitlEvents.emit('video:approved', updated);
-
-  // Log audit
   logAudit('VIDEO_APPROVED', { id, reviewer, notes });
-
-  console.log(`[HITL] Video approved: ${id} by ${reviewer}`);
   return updated;
 }
 
-/**
- * Reject video
- */
 function rejectVideo(id, reviewer, reason = '') {
   const video = getVideo(id);
-
-  if (!video) {
-    throw new Error(`Video not found: ${id}`);
-  }
-
-  if (video.state !== STATES.PENDING) {
-    throw new Error(`Video not in pending state: ${video.state}`);
-  }
-
+  if (!video) throw new Error(`Video not found: ${id}`);
+  if (video.state !== STATES.PENDING) throw new Error(`Video ${id} is not in pending state (current: ${video.state})`);
   const updated = updateVideo(id, {
     state: STATES.REJECTED,
     reviewedBy: reviewer,
     reviewedAt: new Date().toISOString(),
     reviewNotes: reason
   });
-
-  // Emit event
   hitlEvents.emit('video:rejected', updated);
-
-  // Log audit
   logAudit('VIDEO_REJECTED', { id, reviewer, reason });
-
-  console.log(`[HITL] Video rejected: ${id} by ${reviewer} - ${reason}`);
   return updated;
 }
 
-/**
- * Mark video as rendering
- */
 function markRendering(id) {
-  const updated = updateVideo(id, {
-    state: STATES.RENDERING,
-    renderStartedAt: new Date().toISOString()
-  });
-
-  hitlEvents.emit('video:rendering', updated);
-  logAudit('VIDEO_RENDERING', { id });
-
-  return updated;
+  return updateVideo(id, { state: STATES.RENDERING, renderStartedAt: new Date().toISOString() });
 }
 
-/**
- * Mark video as completed
- */
 function markCompleted(id, outputPath) {
-  const updated = updateVideo(id, {
-    state: STATES.COMPLETED,
-    outputPath,
-    completedAt: new Date().toISOString()
-  });
-
-  hitlEvents.emit('video:completed', updated);
-  logAudit('VIDEO_COMPLETED', { id, outputPath });
-
-  console.log(`[HITL] Video completed: ${id} → ${outputPath}`);
-  return updated;
+  return updateVideo(id, { state: STATES.COMPLETED, outputPath, completedAt: new Date().toISOString() });
 }
 
-/**
- * Mark video as failed
- */
+function markGenerating(id) {
+  return updateVideo(id, { state: STATES.GENERATING });
+}
+
 function markFailed(id, error) {
-  const updated = updateVideo(id, {
-    state: STATES.FAILED,
-    error: error.message || error,
-    failedAt: new Date().toISOString()
-  });
-
-  hitlEvents.emit('video:failed', updated);
-  logAudit('VIDEO_FAILED', { id, error: error.message || error });
-
-  console.error(`[HITL] Video failed: ${id} - ${error}`);
-  return updated;
+  return updateVideo(id, { state: STATES.FAILED, error: error.message || error, failedAt: new Date().toISOString() });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Audit Logging
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Log audit event
- */
 function logAudit(action, data) {
-  const entry = {
-    timestamp: new Date().toISOString(),
-    action,
-    data
-  };
-
+  const entry = { timestamp: new Date().toISOString(), action, data };
+  try {
+    if (fs.existsSync(AUDIT_FILE)) {
+      const stat = fs.statSync(AUDIT_FILE);
+      if (stat.size > 5 * 1024 * 1024) {
+        const rotated = AUDIT_FILE.replace('.jsonl', '.old.jsonl');
+        if (fs.existsSync(rotated)) fs.unlinkSync(rotated);
+        fs.renameSync(AUDIT_FILE, rotated);
+      }
+    }
+  } catch (_) { /* rotation failure is non-critical */ }
   fs.appendFileSync(AUDIT_FILE, JSON.stringify(entry) + '\n');
 }
 
-/**
- * Get audit log
- */
 function getAuditLog(limit = 100) {
   try {
-    if (!fs.existsSync(AUDIT_FILE)) {
-      return [];
-    }
-
-    const lines = fs.readFileSync(AUDIT_FILE, 'utf8')
-      .split('\n')
-      .filter(line => line.trim())
-      .slice(-limit)
-      .reverse();
-
+    if (!fs.existsSync(AUDIT_FILE)) return [];
+    const lines = fs.readFileSync(AUDIT_FILE, 'utf8').split('\n').filter(line => line.trim()).slice(-limit).reverse();
     return lines.map(line => { try { return JSON.parse(line); } catch { return null; } }).filter(Boolean);
-  } catch (error) {
-    console.error('[HITL] Error reading audit log:', error.message);
-    return [];
-  }
+  } catch (error) { return []; }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Statistics
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Get queue statistics
- */
 function getStats() {
   const queue = loadQueue();
-
-  const stats = {
-    total: queue.items.length,
-    pending: 0,
-    approved: 0,
-    rejected: 0,
-    rendering: 0,
-    completed: 0,
-    failed: 0,
-    lastUpdated: queue.lastUpdated
-  };
-
-  for (const item of queue.items) {
-    stats[item.state] = (stats[item.state] || 0) + 1;
-  }
-
+  const stats = { total: queue.items.length, pending: 0, approved: 0, rejected: 0, generating: 0, rendering: 0, completed: 0, failed: 0, lastUpdated: queue.lastUpdated };
+  for (const item of queue.items) stats[item.state] = (stats[item.state] || 0) + 1;
   return stats;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HTTP API Server
-// ─────────────────────────────────────────────────────────────────────────────
-
-/**
- * Parse JSON body from request
- */
 async function parseBody(req, maxBytes = 1048576) {
   return new Promise((resolve, reject) => {
     let body = '';
-    let bytes = 0;
-    req.on('data', chunk => {
-      bytes += chunk.length;
-      if (bytes > maxBytes) {
-        req.destroy();
-        return reject(new Error(`Body exceeds ${maxBytes} bytes limit`));
-      }
-      body += chunk;
-    });
-    req.on('end', () => {
-      try {
-        resolve(body ? JSON.parse(body) : {});
-      } catch (e) {
-        reject(new Error('Invalid JSON'));
-      }
-    });
+    req.on('data', chunk => { body += chunk; if (body.length > maxBytes) req.destroy(); });
+    req.on('end', () => { try { resolve(body ? JSON.parse(body) : {}); } catch (e) { reject(new Error('Invalid JSON')); } });
     req.on('error', reject);
   });
 }
 
-/**
- * Send JSON response
- */
-// Session 250.43: CORS whitelist instead of '*'
 const CORS_ALLOWED_ORIGINS = [
   'https://vocalia.ma',
   'https://www.vocalia.ma',
   'https://api.vocalia.ma',
+  'http://localhost:8081',
   'http://localhost:8080',
   'http://localhost:3000'
 ];
 
 function getCorsOrigin(req) {
-  const origin = req.headers?.origin || req.headers?.referer?.replace(/\/$/, '') || '';
-  return CORS_ALLOWED_ORIGINS.includes(origin) ? origin : CORS_ALLOWED_ORIGINS[0];
+  const origin = req.headers?.origin || req.headers?.referer || '';
+  if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+    // Extract origin part (protocol + host + port)
+    try {
+      const url = new URL(origin);
+      return `${url.protocol}//${url.host}`;
+    } catch (e) {
+      if (origin.includes('localhost:8081')) return 'http://localhost:8081';
+      if (origin.includes('localhost:8080')) return 'http://localhost:8080';
+    }
+  }
+  for (const allowed of CORS_ALLOWED_ORIGINS) {
+    if (origin.startsWith(allowed)) return allowed;
+  }
+  return CORS_ALLOWED_ORIGINS[0];
 }
 
 function sendJson(res, data, status = 200, req = null) {
@@ -392,14 +229,10 @@ function sendJson(res, data, status = 200, req = null) {
   res.end(JSON.stringify(data, null, 2));
 }
 
-/**
- * Handle HTTP request
- */
 async function handleRequest(req, res) {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const method = req.method.toUpperCase();
 
-  // CORS preflight
   if (method === 'OPTIONS') {
     const corsOrigin = getCorsOrigin(req);
     res.writeHead(204, {
@@ -411,256 +244,128 @@ async function handleRequest(req, res) {
   }
 
   try {
-    // Routes
-    if (url.pathname === '/health' && method === 'GET') {
-      return sendJson(res, {
-        service: 'Remotion HITL',
-        status: 'healthy',
-        stats: getStats(),
-        timestamp: new Date().toISOString()
+    // Serve generated video files
+    const outputMatch = url.pathname.match(/^\/outputs\/([^/]+)$/);
+    if (outputMatch && method === 'GET') {
+      const filename = decodeURIComponent(outputMatch[1]);
+      if (filename.includes('..') || filename.includes('/')) return sendJson(res, { error: 'Invalid filename' }, 400, req);
+      const filePath = path.join(DATA_DIR, 'outputs', filename);
+      if (!fs.existsSync(filePath)) return sendJson(res, { error: 'File not found' }, 404, req);
+      const stat = fs.statSync(filePath);
+      const corsOrigin = getCorsOrigin(req);
+      res.writeHead(200, {
+        'Content-Type': 'video/mp4',
+        'Content-Length': stat.size,
+        'Access-Control-Allow-Origin': corsOrigin,
+        'Cache-Control': 'public, max-age=86400'
       });
+      fs.createReadStream(filePath).pipe(res);
+      return;
     }
-
+    if (url.pathname === '/health' && method === 'GET') {
+      return sendJson(res, { service: 'Remotion HITL', status: 'healthy', stats: getStats(), timestamp: new Date().toISOString() }, 200, req);
+    }
     if (url.pathname === '/stats' && method === 'GET') {
-      return sendJson(res, getStats());
+      return sendJson(res, getStats(), 200, req);
     }
-
     if (url.pathname === '/queue' && method === 'GET') {
       const state = url.searchParams.get('state');
+      const type = url.searchParams.get('type');
+      const limit = parseInt(url.searchParams.get('limit') || '200');
+      const offset = parseInt(url.searchParams.get('offset') || '0');
       const queue = loadQueue();
-      const items = state
-        ? queue.items.filter(item => item.state === state)
-        : queue.items;
-      return sendJson(res, { items, total: items.length });
+      let items = queue.items;
+      if (state) items = items.filter(item => item.state === state);
+      if (type) items = items.filter(item => item.type === type);
+      const total = items.length;
+      items = items.slice(offset, offset + limit);
+      return sendJson(res, { items, total, limit, offset }, 200, req);
     }
-
     if (url.pathname === '/queue' && method === 'POST') {
       const body = await parseBody(req);
-      if (!body.composition) {
-        return sendJson(res, { error: 'composition is required' }, 400);
-      }
+      if (!body.composition) return sendJson(res, { error: 'composition is required' }, 400, req);
       const item = queueVideo(body);
-      return sendJson(res, item, 201);
+      return sendJson(res, item, 201, req);
     }
-
     if (url.pathname === '/pending' && method === 'GET') {
-      return sendJson(res, { items: getPending() });
+      return sendJson(res, { items: getPending() }, 200, req);
     }
-
-    // Video operations: /video/:id
     const videoMatch = url.pathname.match(/^\/video\/([^/]+)$/);
-    if (videoMatch) {
-      const id = videoMatch[1];
-
-      if (method === 'GET') {
-        const video = getVideo(id);
-        if (!video) {
-          return sendJson(res, { error: 'Video not found' }, 404);
-        }
-        return sendJson(res, video);
-      }
+    if (videoMatch && method === 'GET') {
+      const video = getVideo(videoMatch[1]);
+      if (!video) return sendJson(res, { error: 'Video not found' }, 404, req);
+      return sendJson(res, video, 200, req);
     }
-
-    // Approve: /video/:id/approve
+    if (videoMatch && method === 'DELETE') {
+      try {
+        const queue = loadQueue();
+        const idx = queue.items.findIndex(item => item.id === videoMatch[1]);
+        if (idx === -1) return sendJson(res, { error: 'Video not found' }, 404, req);
+        const removed = queue.items.splice(idx, 1)[0];
+        saveQueue(queue);
+        logAudit('VIDEO_DELETED', { id: removed.id });
+        return sendJson(res, { success: true, deleted: removed.id }, 200, req);
+      } catch (e) { return sendJson(res, { error: e.message }, 400, req); }
+    }
     const approveMatch = url.pathname.match(/^\/video\/([^/]+)\/approve$/);
     if (approveMatch && method === 'POST') {
-      const id = approveMatch[1];
       const body = await parseBody(req);
-      const reviewer = body.reviewer || 'admin';
-      const notes = body.notes || '';
-
-      try {
-        const video = approveVideo(id, reviewer, notes);
-        return sendJson(res, video);
-      } catch (error) {
-        return sendJson(res, { error: error.message }, 400);
-      }
+      try { return sendJson(res, approveVideo(approveMatch[1], body.reviewer || 'admin', body.notes || ''), 200, req); } catch (e) { return sendJson(res, { error: e.message }, 400, req); }
     }
-
-    // Reject: /video/:id/reject
     const rejectMatch = url.pathname.match(/^\/video\/([^/]+)\/reject$/);
     if (rejectMatch && method === 'POST') {
-      const id = rejectMatch[1];
       const body = await parseBody(req);
-      const reviewer = body.reviewer || 'admin';
-      const reason = body.reason || '';
-
-      try {
-        const video = rejectVideo(id, reviewer, reason);
-        return sendJson(res, video);
-      } catch (error) {
-        return sendJson(res, { error: error.message }, 400);
-      }
+      try { return sendJson(res, rejectVideo(rejectMatch[1], body.reviewer || 'admin', body.reason || ''), 200, req); } catch (e) { return sendJson(res, { error: e.message }, 400, req); }
     }
-
-    // Audit log
     if (url.pathname === '/audit' && method === 'GET') {
-      const limit = parseInt(url.searchParams.get('limit') || '100');
-      return sendJson(res, { entries: getAuditLog(limit) });
+      return sendJson(res, { entries: getAuditLog(parseInt(url.searchParams.get('limit') || '100')) }, 200, req);
     }
-
-    // 404
-    sendJson(res, { error: 'Not found' }, 404);
-
+    sendJson(res, { error: 'Not found' }, 404, req);
   } catch (error) {
-    console.error('[HITL] Request error:', error);
-    // BL29 fix: Generic error to client (don't leak internal details)
-    sendJson(res, { error: 'Internal server error' }, 500);
+    sendJson(res, { error: 'Internal server error' }, 500, req);
   }
 }
 
-/**
- * Start HTTP server
- */
 function startServer() {
   const server = http.createServer(handleRequest);
 
+  // Wire auto-generation pipeline for video engine types
+  try {
+    const klingService = require('./kling-service.cjs');
+    const veoService = require('./veo-service.cjs');
+
+    hitlEvents.on('video:approved', async (video) => {
+      if (video.type === TYPES.KLING_VIDEO) {
+        console.log(`[HITL] Auto-triggering Kling generation for ${video.id}`);
+        klingService.generateApproved(video.id).catch(err => {
+          console.error(`[HITL] Kling generation failed for ${video.id}:`, err.message);
+        });
+      } else if (video.type === TYPES.VEO_VIDEO) {
+        console.log(`[HITL] Auto-triggering Veo 3.1 generation for ${video.id}`);
+        veoService.generateApproved(video.id).catch(err => {
+          console.error(`[HITL] Veo generation failed for ${video.id}:`, err.message);
+        });
+      }
+    });
+    console.log('[HITL] Video generation pipeline connected (Kling + Veo 3.1)');
+  } catch (err) {
+    console.warn('[HITL] Video generation services not available:', err.message);
+  }
+
   server.listen(PORT, () => {
     console.log(`[HITL] Remotion HITL server running on http://localhost:${PORT}`);
-    console.log(`[HITL] Endpoints:`);
-    console.log(`  GET  /health          - Health check`);
-    console.log(`  GET  /stats           - Queue statistics`);
-    console.log(`  GET  /queue           - List all videos`);
-    console.log(`  GET  /pending         - List pending videos`);
-    console.log(`  POST /queue           - Queue new video`);
-    console.log(`  GET  /video/:id       - Get video details`);
-    console.log(`  POST /video/:id/approve - Approve video`);
-    console.log(`  POST /video/:id/reject  - Reject video`);
-    console.log(`  GET  /audit           - Get audit log`);
   });
-
   return server;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CLI
-// ─────────────────────────────────────────────────────────────────────────────
-
-async function main() {
+if (require.main === module) {
   const args = process.argv.slice(2);
-
   if (args.includes('--server')) {
     startServer();
-    return;
+  } else {
+    // Basic CLI or help logic could go here
+    console.log("Usage: node remotion-hitl.cjs --server");
   }
-
-  if (args.includes('--health')) {
-    console.log(JSON.stringify({
-      service: 'Remotion HITL',
-      stats: getStats(),
-      dataDir: DATA_DIR,
-      queueFile: QUEUE_FILE
-    }, null, 2));
-    return;
-  }
-
-  if (args.includes('--list')) {
-    const pending = getPending();
-    console.log('\n=== Pending Video Approvals ===\n');
-    if (pending.length === 0) {
-      console.log('No pending videos.');
-    } else {
-      for (const item of pending) {
-        console.log(`  ${item.id}`);
-        console.log(`    Composition: ${item.composition}`);
-        console.log(`    Language: ${item.language}`);
-        console.log(`    Requested: ${item.requestedAt}`);
-        console.log(`    By: ${item.requestedBy}`);
-        console.log('');
-      }
-    }
-    console.log(`Total pending: ${pending.length}`);
-    return;
-  }
-
-  if (args.includes('--stats')) {
-    console.log(JSON.stringify(getStats(), null, 2));
-    return;
-  }
-
-  const approveIndex = args.indexOf('--approve');
-  if (approveIndex !== -1) {
-    const id = args[approveIndex + 1];
-    if (!id) {
-      console.error('Usage: --approve <video-id>');
-      process.exit(1);
-    }
-    try {
-      const video = approveVideo(id, 'cli-admin', 'Approved via CLI');
-      console.log(`Approved: ${video.id}`);
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
-      process.exit(1);
-    }
-    return;
-  }
-
-  const rejectIndex = args.indexOf('--reject');
-  if (rejectIndex !== -1) {
-    const id = args[rejectIndex + 1];
-    const reason = args[rejectIndex + 2] || 'Rejected via CLI';
-    if (!id) {
-      console.error('Usage: --reject <video-id> [reason]');
-      process.exit(1);
-    }
-    try {
-      const video = rejectVideo(id, 'cli-admin', reason);
-      console.log(`Rejected: ${video.id}`);
-    } catch (error) {
-      console.error(`Error: ${error.message}`);
-      process.exit(1);
-    }
-    return;
-  }
-
-  // Default: show help
-  console.log(`
-Remotion HITL Service - Video Approval Workflow
-================================================
-
-Commands:
-  --server              Start HITL API server (port ${PORT})
-  --list                List pending approvals
-  --stats               Show queue statistics
-  --approve <id>        Approve video for rendering
-  --reject <id> [reason] Reject video
-  --health              Health check
-
-API Endpoints (when server running):
-  GET  /health          - Service health
-  GET  /stats           - Queue statistics
-  GET  /queue           - List all videos
-  GET  /pending         - List pending videos
-  POST /queue           - Queue new video
-  POST /video/:id/approve - Approve video
-  POST /video/:id/reject  - Reject video
-  GET  /audit           - Audit log
-
-Examples:
-  node remotion-hitl.cjs --server
-  node remotion-hitl.cjs --list
-  node remotion-hitl.cjs --approve vid_12345_abc
-  node remotion-hitl.cjs --reject vid_12345_abc "Wrong content"
-  `);
 }
 
-// Run if called directly
-if (require.main === module) {
-  main().catch(console.error);
-}
-
-module.exports = {
-  queueVideo,
-  getPending,
-  getVideo,
-  approveVideo,
-  rejectVideo,
-  markRendering,
-  markCompleted,
-  markFailed,
-  getStats,
-  getAuditLog,
-  startServer,
-  hitlEvents,
-  STATES
-};
+module.exports = { queueVideo, getPending, getVideo, updateVideo, approveVideo, rejectVideo, markGenerating, markRendering, markCompleted, markFailed, getStats, getAuditLog, startServer, hitlEvents, STATES, TYPES };
