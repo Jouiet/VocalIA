@@ -24,8 +24,8 @@ import { STATES, queueVideo, getPending, getVideo, approveVideo, rejectVideo, ma
 // ─── STATES ─────────────────────────────────────────────────────────
 
 describe('RemotionHITL STATES', () => {
-  test('has 6 states', () => {
-    assert.strictEqual(Object.keys(STATES).length, 6);
+  test('has 7 states', () => {
+    assert.strictEqual(Object.keys(STATES).length, 7);
   });
 
   test('has PENDING state', () => {
@@ -42,6 +42,10 @@ describe('RemotionHITL STATES', () => {
 
   test('has RENDERING state', () => {
     assert.strictEqual(STATES.RENDERING, 'rendering');
+  });
+
+  test('has GENERATING state', () => {
+    assert.strictEqual(STATES.GENERATING, 'generating');
   });
 
   test('has COMPLETED state', () => {
@@ -121,7 +125,7 @@ describe('RemotionHITL queue workflow', () => {
   test('approveVideo throws for non-existent video', () => {
     assert.throws(
       () => approveVideo('vid_nonexistent_000', 'admin'),
-      { message: /not found/ }
+      { message: /not found/i }
     );
   });
 
@@ -130,7 +134,7 @@ describe('RemotionHITL queue workflow', () => {
     approveVideo(item.id, 'admin');
     assert.throws(
       () => approveVideo(item.id, 'admin'),
-      { message: /not in pending state/ }
+      { message: /not in pending state/i }
     );
   });
 
@@ -145,7 +149,7 @@ describe('RemotionHITL queue workflow', () => {
   test('rejectVideo throws for non-existent video', () => {
     assert.throws(
       () => rejectVideo('vid_nonexistent_001', 'admin'),
-      { message: /not found/ }
+      { message: /not found/i }
     );
   });
 

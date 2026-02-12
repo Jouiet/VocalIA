@@ -283,6 +283,7 @@
           data-i18n="signup_page.your_info">
           2. Vos informations
         </h2>
+        <div id="signup-error" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm mb-4"></div>
         <form id="signupForm" class="space-y-4">
           <input type="hidden" id="selectedPlan" name="plan" value="starter">
 
@@ -428,10 +429,33 @@
       const formData = new FormData(this);
       const data = Object.fromEntries(formData);
 
-      // Here you would send to your API
-      // For now, redirect to Stripe checkout for paid plans
-      // Redirect to Stripe Checkout
-      window.location.href = `/api/checkout?plan=${data.plan}&email=${encodeURIComponent(data.email)}`;
+      // Register via DB API, then redirect to login
+      try {
+        const resp = await fetch('https://api.vocalia.ma/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+            company: data.company,
+            plan: data.plan
+          })
+        });
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({}));
+          throw new Error(err.error || 'Erreur lors de l\'inscription');
+        }
+        // Success — redirect to login with success message
+        window.location.href = '/login.html?registered=1';
+      } catch (err) {
+        const errorEl = document.getElementById('signup-error');
+        if (errorEl) {
+          errorEl.textContent = err.message;
+          errorEl.classList.remove('hidden');
+        } else {
+          alert(err.message);
+        }
+      }
     });
 
     // Update prices based on geo

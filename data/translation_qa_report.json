@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-02-09T09:13:17",
+  "timestamp": "2026-02-11T08:56:22",
   "metrics": {
-    "checked": 19296,
+    "checked": 19548,
     "issues": 6,
     "whitelisted": 11,
-    "skipped_short": 3156
+    "skipped_short": 3184
   },
   "thresholds": {
     "en": 0.35,

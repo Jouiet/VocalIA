@@ -25,24 +25,24 @@
       enabled: true,
       content: {
         control: {
-          text: 'Commencer Gratuitement',
-          textEn: 'Start Free',
-          subtext: null
-        },
-        urgent: {
-          text: 'Essayez Maintenant — Gratuit',
-          textEn: 'Try Now — Free',
+          text: 'Essai 14 Jours',
+          textEn: 'Try 14 Days',
           subtext: 'Sans carte bancaire'
         },
+        urgent: {
+          text: 'Demander une Démo',
+          textEn: 'Request a Demo',
+          subtext: 'Personnalisée et sans engagement'
+        },
         value: {
-          text: 'Économisez 80% sur vos Appels',
-          textEn: 'Save 80% on Calls',
-          subtext: '~0.10€/min vs 0.30€ moyenne'
+          text: 'Plateforme Tout-en-Un',
+          textEn: 'All-in-One Platform',
+          subtext: '38 personas • 5 langues • 203 outils MCP'
         },
         social: {
-          text: 'Rejoignez 200+ Entreprises',
-          textEn: 'Join 200+ Companies',
-          subtext: 'qui automatisent leurs appels'
+          text: 'Découvrir VocalIA',
+          textEn: 'Discover VocalIA',
+          subtext: 'Widget + Téléphonie PSTN'
         }
       }
     },
@@ -62,8 +62,8 @@
           textEn: '14-Day Free Trial'
         },
         guarantee: {
-          text: 'Démarrer — Satisfait ou Remboursé',
-          textEn: 'Start — Money-Back Guarantee'
+          text: 'Démarrer — Essai 14 Jours',
+          textEn: 'Start — 14-Day Trial'
         }
       }
     },

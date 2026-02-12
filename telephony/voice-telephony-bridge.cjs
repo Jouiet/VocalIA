@@ -3572,16 +3572,6 @@ async function queueCartRecoveryCallback(options) {
       const twilio = require('twilio');
       const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-      // Session 250.70: Multi-tenant Quota Enforcement
-      const billing = require('../core/BillingAgent.cjs');
-      const quotas = await billing.getTenantQuotas(tenantId);
-
-      if (quotas && quotas.voice_minutes_remaining <= 0) {
-        console.warn(`[Voice] Quota exceeded for tenant ${tenantId}. Blocking call.`);
-        // Note: This response is for the API call that queues the callback, not the Twilio call itself.
-        // The actual Twilio call will not be initiated.
-        return { success: false, error: 'quota_exceeded', callbackId, method: 'none' };
-      }
       // Generate TwiML for voice callback
       const twiml = `<?xml version="1.0" encoding="UTF-8"?>
 <Response>

@@ -127,12 +127,12 @@
           </p>
 
           <!-- Categories Filter -->
-          <div class="flex flex-wrap justify-center gap-3">
-            <button type="button" class="px-4 py-2 bg-vocalia-500 rounded-full text-sm font-medium">Tous</button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.guides_22">Guides</span></button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.actualits_21">Actualités</span></button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.tudes_de_cas_20">Études de cas</span></button>
-            <button type="button" class="px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.tutoriels_19">Tutoriels</span></button>
+          <div class="flex flex-wrap justify-center gap-3" id="blog-filters">
+            <button type="button" data-filter="all" class="blog-filter px-4 py-2 bg-vocalia-500 rounded-full text-sm font-medium">Tous</button>
+            <button type="button" data-filter="guides" class="blog-filter px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.guides_22">Guides</span></button>
+            <button type="button" data-filter="actualites" class="blog-filter px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.actualits_21">Actualités</span></button>
+            <button type="button" data-filter="etudes-de-cas" class="blog-filter px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.tudes_de_cas_20">Études de cas</span></button>
+            <button type="button" data-filter="tutoriels" class="blog-filter px-4 py-2 glass rounded-full text-sm font-medium text-zinc-300 hover:text-white transition"><span data-i18n="blog_index.tutoriels_19">Tutoriels</span></button>
           </div>
         </div>
       </div>
@@ -141,7 +141,7 @@
     <!-- Featured Article -->
     <section class="py-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <article class="featured-card rounded-2xl overflow-hidden">
+        <article class="featured-card rounded-2xl overflow-hidden" data-category="guides">
           <div class="md:flex">
             <div class="md:w-1/2 bg-gradient-to-br from-vocalia-500/30 to-purple-500/20 p-12 flex items-center justify-center">
               <div class="text-center">
@@ -185,7 +185,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Article 1 -->
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="actualites">
             <div class="h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 flex items-center justify-center">
               <i data-lucide="languages" class="w-16 h-16 text-blue-400"></i>
             </div>
@@ -205,7 +205,7 @@
           </article>
 
           <!-- Article 2 -->
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="etudes-de-cas">
             <div class="h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/10 flex items-center justify-center">
               <i data-lucide="heart-pulse" class="w-16 h-16 text-purple-400"></i>
             </div>
@@ -225,7 +225,7 @@
           </article>
 
           <!-- Article 3 -->
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="tutoriels">
             <div class="h-48 bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center">
               <i data-lucide="shopping-cart" class="w-16 h-16 text-amber-400"></i>
             </div>
@@ -245,7 +245,7 @@
           </article>
 
           <!-- Article 4 -->
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="guides">
             <div class="h-48 bg-gradient-to-br from-emerald-500/20 to-teal-500/10 flex items-center justify-center">
               <i data-lucide="shield-check" class="w-16 h-16 text-emerald-400"></i>
             </div>
@@ -265,7 +265,7 @@
           </article>
 
           <!-- Article 5 -->
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="etudes-de-cas">
             <div class="h-48 bg-gradient-to-br from-rose-500/20 to-red-500/10 flex items-center justify-center">
               <i data-lucide="building-2" class="w-16 h-16 text-rose-400"></i>
             </div>
@@ -285,7 +285,7 @@
           </article>
 
           <!-- Article 6 -->
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="actualites">
             <div class="h-48 bg-gradient-to-br from-indigo-500/20 to-violet-500/10 flex items-center justify-center">
               <i data-lucide="scale" class="w-16 h-16 text-indigo-400"></i>
             </div>
@@ -305,7 +305,7 @@
           </article>
 
           <!-- NEW ARTICLES -->
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="guides">
             <div class="h-48 bg-gradient-to-br from-emerald-500/20 to-teal-500/10 flex items-center justify-center">
               <i data-lucide="target" class="w-16 h-16 text-emerald-400"></i>
             </div>
@@ -324,7 +324,7 @@
             </div>
           </article>
 
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="guides">
             <div class="h-48 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 flex items-center justify-center">
               <i data-lucide="message-circle" class="w-16 h-16 text-blue-400"></i>
             </div>
@@ -343,7 +343,7 @@
             </div>
           </article>
 
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="tutoriels">
             <div class="h-48 bg-gradient-to-br from-purple-500/20 to-pink-500/10 flex items-center justify-center">
               <i data-lucide="calendar" class="w-16 h-16 text-purple-400"></i>
             </div>
@@ -362,7 +362,7 @@
             </div>
           </article>
 
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="actualites">
             <div class="h-48 bg-gradient-to-br from-sky-500/20 to-blue-500/10 flex items-center justify-center">
               <i data-lucide="trending-up" class="w-16 h-16 text-sky-400"></i>
             </div>
@@ -381,7 +381,7 @@
             </div>
           </article>
 
-          <article class="blog-card rounded-2xl overflow-hidden">
+          <article class="blog-card rounded-2xl overflow-hidden" data-category="guides">
             <div class="h-48 bg-gradient-to-br from-amber-500/20 to-orange-500/10 flex items-center justify-center">
               <i data-lucide="check-circle" class="w-16 h-16 text-amber-400"></i>
             </div>
@@ -401,20 +401,7 @@
           </article>
         </div>
 
-        <!-- Pagination -->
-        <div class="flex justify-center mt-12">
-          <nav class="flex items-center gap-2">
-            <button type="button" class="w-10 h-10 glass rounded-lg flex items-center justify-center text-zinc-400 hover:text-white transition" disabled>
-              <i data-lucide="chevron-left" class="w-5 h-5"></i>
-            </button>
-            <button type="button" class="w-10 h-10 bg-vocalia-500 rounded-lg font-medium">1</button>
-            <button type="button" class="w-10 h-10 glass rounded-lg font-medium text-zinc-300 hover:text-white transition">2</button>
-            <button type="button" class="w-10 h-10 glass rounded-lg font-medium text-zinc-300 hover:text-white transition">3</button>
-            <button type="button" class="w-10 h-10 glass rounded-lg flex items-center justify-center text-zinc-300 hover:text-white transition">
-              <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
-          </nav>
-        </div>
+        <!-- All articles displayed — no pagination needed -->
       </div>
     </section>
   <!-- Newsletter CTA -->
@@ -453,6 +440,35 @@
 <!-- Lucide Icons 2026 -->
     <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
     
+  <!-- Blog category filter -->
+  <script>
+  (function() {
+    var filters = document.getElementById('blog-filters');
+    if (!filters) return;
+    filters.addEventListener('click', function(e) {
+      var btn = e.target.closest('[data-filter]');
+      if (!btn) return;
+      var cat = btn.getAttribute('data-filter');
+      // Update active button styles
+      filters.querySelectorAll('.blog-filter').forEach(function(b) {
+        b.classList.remove('bg-vocalia-500');
+        b.classList.add('glass', 'text-zinc-300');
+      });
+      btn.classList.add('bg-vocalia-500');
+      btn.classList.remove('glass', 'text-zinc-300');
+      // Filter articles
+      var articles = document.querySelectorAll('[data-category]');
+      articles.forEach(function(article) {
+        if (cat === 'all' || article.getAttribute('data-category') === cat) {
+          article.style.display = '';
+        } else {
+          article.style.display = 'none';
+        }
+      });
+    });
+  })();
+  </script>
+
   <!-- Inline Fallback (403 workaround) -->
   <script>
   (function() {
