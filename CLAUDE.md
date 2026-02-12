@@ -58,7 +58,7 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Monitoring**: Production monitor v3.0 LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh alerts, recovery detection, */5 cron.
 - **Backup**: Daily at 2 AM UTC, 7-day retention, ~4KB compressed. Cron on VPS.
 - **Marketing integrity**: 100% — Remediation COMPLETE (250.195-197): 34 HTML + locale keys + 12/12 blog disclaimers. Zero false claims.
-- **Production readiness**: 8.0/10 — Website live + API + monitoring + security hardened + non-root containers + backup. 7 containers healthy. Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
+- **Production readiness**: 8.0/10 — Website live + API + monitoring + security hardened + non-root containers + backup + disk cleaned (86%→20%). 7 containers healthy. Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
 - **OAuth SSO**: Deployed (250.198). Blocked: GOOGLE_CLIENT_ID/SECRET, GITHUB_CLIENT_ID/SECRET not configured.
 - **Video Studio**: E2E verified (250.197-199). Veo FUNCTIONAL (GCP ADC). Kling API = external 500 (crédits).
 - **MCP Server**: 9.0/10. 203 tools + 6 resources + 8 prompts.
@@ -66,4 +66,4 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 - **Next**: OAuth credentials → SMTP provider → Stripe setup → First paying customer
 - **Weighted score**: 9.1/10
 
-*Last update: 12/02/2026 - Session 250.200b (SOTA security: CDN SRI 78/78 + CSP 22 pages + security headers 6 services + CORS fix + npm audit + .htaccess CSP fix. 415 bugs / 43 phases.)*
+*Last update: 12/02/2026 - Session 250.200c (Non-root containers, backup, disk 86%→20% (63GB freed). 415 bugs / 43 phases.)*
