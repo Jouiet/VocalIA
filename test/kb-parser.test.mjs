@@ -260,7 +260,8 @@ describe('KBParser error handling', () => {
     );
   });
 
-  test('handles invalid JSON', () => {
-    assert.throws(() => parser.parseContent('not json', 'json'));
+  test('handles invalid JSON gracefully', () => {
+    const result = parser.parseContent('not json', 'json');
+    assert.deepStrictEqual(result, {}, 'Invalid JSON should return empty object, not crash');
   });
 });

@@ -808,7 +808,7 @@ describe('setSecurityHeaders', () => {
 
     assert.strictEqual(headers['X-Content-Type-Options'], 'nosniff');
     assert.strictEqual(headers['X-Frame-Options'], 'DENY');
-    assert.strictEqual(headers['X-XSS-Protection'], '1; mode=block');
+    assert.strictEqual(headers['X-XSS-Protection'], '0');
     assert.ok(headers['Referrer-Policy']);
     assert.ok(headers['Strict-Transport-Security'].includes('max-age='));
     assert.ok(headers['Content-Security-Policy'].includes("default-src"));

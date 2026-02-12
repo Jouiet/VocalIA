@@ -149,9 +149,9 @@ describe('ClientRegistry getTenantIdByTwilioSid', () => {
 // ─── Integration structure ─────────────────────────────────────────
 
 describe('ClientRegistry integration structure', () => {
-  test('agency_internal has hubspot enabled', () => {
+  test('agency_internal has hubspot disabled by default', () => {
     const client = ClientRegistry.getClient('agency_internal');
-    assert.strictEqual(client.integrations.hubspot, true);
+    assert.strictEqual(client.integrations.hubspot, false);
   });
 
   test('agency_internal has no shopify integration', () => {
