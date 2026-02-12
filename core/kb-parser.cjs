@@ -79,7 +79,13 @@ class KBParser {
    * Parse JSON content
    */
   parseJSON(content) {
-    const data = JSON.parse(content);
+    let data;
+    try {
+      data = JSON.parse(content);
+    } catch (e) {
+      console.error('❌ kb-parser: Failed to parse JSON:', e.message);
+      return {};
+    }
 
     // If it's already the right format, return as-is
     if (typeof data === 'object' && !Array.isArray(data)) {

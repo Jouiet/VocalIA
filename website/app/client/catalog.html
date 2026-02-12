@@ -920,7 +920,7 @@
         preview = `"Nous proposons ${available} articles disponibles, notamment ${samples}. Que souhaitez-vous consulter?"`;
       }
 
-      voicePreview.innerHTML = `<p class="text-sm italic">${preview}</p>`;
+      voicePreview.innerHTML = `<p class="text-sm italic">${escapeHtml(preview)}</p>`;
     }
 
     let editingItemId = null;

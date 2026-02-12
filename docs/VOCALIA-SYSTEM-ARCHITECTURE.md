@@ -1,6 +1,6 @@
 # VocalIA - Architecture Système Complète
 ## Document Consolidé de Référence
-### Version 2.4.0 | 12/02/2026 | Session 250.199 (6 deployed + 2 non-deployed. OAuth Gateway deployed profile:integrations. Veo 3.1 E2E functional.)
+### Version 2.5.0 | 12/02/2026 | Session 250.200c (7 deployed + 1 non-deployed. ALL non-root. Security SOTA. Monitoring v3.0. Backup daily.)
 
 > **DOCUMENT UNIQUE DE RÉFÉRENCE** - Remplace tous les documents d'architecture fragmentés
 > Généré par analyse bottom-up factuelle exhaustive du codebase
@@ -125,9 +125,9 @@
 
 ## 2. ARCHITECTURE DES SERVICES
 
-### 2.1 Services HTTP (8 total — 6 deployed, 2 non-deployed)
+### 2.1 Services HTTP (8 total — 7 deployed, 1 non-deployed)
 
-**Deployed (Docker containers via Traefik):**
+**Deployed (Docker containers via Traefik — ALL non-root, su-exec node PID 1):**
 
 | Service | Port | Fichier | Lignes | Fonction | Docker Profile |
 |:--------|:----:|:--------|:------:|:---------|:---------------|
@@ -136,9 +136,12 @@
 | **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` | **4,709** | PSTN ↔ AI + 25 Function Tools | core (default) |
 | **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | ~400 | OAuth 2.0 SSO (Google, GitHub, HubSpot, Shopify, Slack) | integrations |
 | **DB API** | 3013 | `core/db-api.cjs` | **2,721** | REST API + Auth + WebSocket | core (default) |
+| **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ~300 | Inbound webhooks (HubSpot, Shopify, Stripe, Klaviyo, Google) | integrations |
 | **Video HITL** | 3012 | `core/remotion-hitl.cjs` | **374** | Video HITL + Kling/Veo pipeline | video |
 
 > **OAuth Gateway** (250.198): Deployed via `--profile integrations`. Routes: `api.vocalia.ma/oauth/*`. SSO login with tenant auto-provisioning. Awaiting GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET.
+
+> **Webhook Router** (250.200c): Deployed via `--profile integrations`. Routes: `api.vocalia.ma/webhook/*`. HMAC signature validation. Start flag: `--start`.
 
 > **Video HITL** (250.197-199): Deployed via `--profile video`. Routes: `api.vocalia.ma/hitl/*` (Traefik StripPrefix). Auto-triggers Kling v2.6 or Veo 3.1 generation on approval. Pipeline: `remotion-hitl.cjs → kling-service.cjs/veo-service.cjs → Python bridges`. **Veo E2E functional** (GCP ADC via service account, video generated + downloaded). Dashboard: `/app/admin/video-ads.html`.
 
@@ -146,7 +149,6 @@
 
 | Service | Port | Fichier | Lignes | Fonction |
 |:--------|:----:|:--------|:------:|:---------|
-| **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ~350 | Inbound webhooks |
 | **MCP Server** | 3015 | `mcp-server/dist/index.js` | **19,500+** | 203 tools + 6 resources + 8 prompts (standalone, 0 imports from core) |
 
 ### 2.2 Commandes de Démarrage
@@ -161,8 +163,17 @@ node core/grok-voice-realtime.cjs --server --port=3007
 # Telephony Bridge (PSTN)
 node telephony/voice-telephony-bridge.cjs
 
+# OAuth Gateway (SSO)
+node core/OAuthGateway.cjs --start
+
+# Webhook Router (Inbound webhooks)
+node core/WebhookRouter.cjs --start
+
 # DB API (REST + Auth)
 node core/db-api.cjs
+
+# Video HITL
+node core/remotion-hitl.cjs --server
 
 # Website (Static)
 npx serve website -p 8080
@@ -171,11 +182,15 @@ npx serve website -p 8080
 ### 2.3 Health Checks
 
 ```bash
-# Tous les services
-curl http://localhost:3004/health
-curl http://localhost:3007/health
-curl http://localhost:3009/health
-curl http://localhost:3013/api/db/health
+# Core services
+curl http://localhost:3004/health          # Voice API
+curl http://localhost:3007/health          # Grok Realtime
+curl http://localhost:3009/health          # Telephony
+curl http://localhost:3013/api/db/health   # DB API
+# Integration services
+curl http://localhost:3010/oauth/providers # OAuth Gateway
+curl http://localhost:3011/health          # Webhook Router
+curl http://localhost:3012/health          # Video HITL
 ```
 
 ---
@@ -779,12 +794,18 @@ sdks/
 | RBAC | admin, user, viewer |
 | Tenant Isolation | tenant_id dans JWT |
 | Credentials | AES-256-GCM (SecretVault) |
-| CSP | Strict Content-Security-Policy |
-| SRI | GSAP + Lucide (39 pages) |
-| CORS | Whitelist strict |
+| CSP | `<meta>` CSP sur 22 pages app + header CSP sur 7 services API |
+| SRI | 78/78 scripts CDN (toutes pages website) |
+| CORS | Whitelist strict (origin↔tenant registry) |
 | API Auth | checkAuth() sur tous /api/db/* |
 | Password Filter | filterUserRecord() sur users |
 | Admin Protection | checkAdmin() sur hitl, logs, users |
+| Security Headers | X-Content-Type-Options: nosniff, X-Frame-Options: DENY, HSTS 1yr, Referrer-Policy: strict-origin-when-cross-origin, X-XSS-Protection: 0 — sur les 7 services API |
+| Docker | ALL containers non-root (su-exec node, PID 1) |
+| XSS | escapeHtml() sur tous les inputs dynamiques (app pages, admin, widgets) |
+| Monitoring | v3.0 cron */5 + ntfy.sh alerts |
+| Backup | Daily 2AM UTC, 7-day retention, auto-rotate logs |
+| VPS Hardening | SSH key-only, fail2ban, UFW |
 
 ### 9.3 API Endpoints (23)
 
@@ -1014,6 +1035,7 @@ S4 (3009) ──► reads ──► VoicePersonaInjector (38 personas × 5 langs
 S4 (3009) ──► reads ──► SecretVault (per-tenant API keys)
 S2 (3013) ──► reads/writes ──► Google Sheets API (7 tables)
 S2 (3013) ──► sends ──► nodemailer (SMTP: verification, reset emails)
+S7 (3011) ──► validates ──► HMAC signatures → routes to S1/S4/integrations
 MCP (3015) ──► 0 imports from core ──► standalone, talks to external APIs directly
 ```
 

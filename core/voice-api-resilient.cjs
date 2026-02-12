@@ -3095,7 +3095,7 @@ function startServer(port = 3004) {
           const uiResult = await A2UIService.generateUI({ type, context, language, useStitch });
 
           // Emit AG-UI event
-          eventBus.emit('a2ui_generated', {
+          eventBus.publish('a2ui_generated', {
             type,
             source: uiResult.source,
             latency: uiResult.latency,

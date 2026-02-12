@@ -1,11 +1,8 @@
 /**
  * VocalIA Security Regression Tests — T5
  *
- * Structural tests that verify security patterns are respected in source code.
- * No runtime execution — reads source files and asserts patterns.
- *
- * Detects: XSS innerHTML without escape (12), tenant isolation bypass (8),
- * timing-safe comparison gaps (3), unbounded collections (10), SSRF (1) = ~36 bugs.
+ * Per-occurrence scanners that detect dangerous patterns across the ENTIRE codebase.
+ * Tests FAIL when bugs exist. Each violation includes exact file:line location.
  *
  * Run: node --test test/security-regression.test.mjs
  */
@@ -19,7 +16,7 @@ import path from 'path';
 const require = createRequire(import.meta.url);
 const ROOT = path.resolve(import.meta.url.replace('file://', ''), '../../');
 
-// ─── Helper: read file safely ────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function readFile(relPath) {
   const fullPath = path.join(ROOT, relPath);
@@ -34,9 +31,9 @@ function listFiles(dir, ext) {
     .map(f => path.join(dir, f));
 }
 
-// ─── T5.1: Widget XSS — all widgets have escapeHTML ─────────────────────────
+// ─── T5.1: Widget XSS + Shadow DOM ──────────────────────────────────────────
 
-describe('T5: Widget XSS protection', () => {
+describe('T5.1: Widget XSS protection', () => {
   const widgetFiles = listFiles('widget', '.js');
 
   test('All 7 widget files exist', () => {
@@ -60,39 +57,124 @@ describe('T5: Widget XSS protection', () => {
   }
 });
 
-// ─── T5.2: App page XSS — innerHTML with dynamic data has escapeHtml ────────
+// ─── T5.2: JSON.parse safety scanner ────────────────────────────────────────
+// Scans ALL .cjs files. JSON.parse without try-catch = process crash on bad input.
 
-describe('T5: App page XSS protection', () => {
-  const appPages = [
-    'website/app/client/calls.html',
-    'website/app/client/billing.html',
-    'website/app/client/catalog.html',
-    'website/app/client/knowledge-base.html',
-    'website/app/client/telephony.html',
-    'website/app/admin/tenants.html',
-    'website/app/admin/hitl.html',
-    'website/app/admin/video-ads.html',
-    'website/app/admin/logs.html',
-  ];
-
-  for (const page of appPages) {
-    test(`${path.basename(page)} has escapeHtml when using innerHTML`, () => {
-      const src = readFile(page);
-      if (!src) return;
-
-      // If page uses innerHTML with template literals, must have escapeHtml
-      const hasInnerHTML = src.includes('innerHTML') && src.includes('${');
-      if (hasInnerHTML) {
-        assert.ok(src.includes('escapeHtml') || src.includes('escapeHTML'),
-          `${page} uses innerHTML with template literals but no escapeHtml — XSS B6/B7 regression`);
-      }
-    });
+describe('T5.2: JSON.parse without try-catch — crash risk', () => {
+  const cjsDirs = ['core', 'telephony', 'integrations'];
+  const allCjsFiles = [];
+  for (const dir of cjsDirs) {
+    allCjsFiles.push(...listFiles(dir, '.cjs'));
   }
+
+  test('All JSON.parse calls are inside try-catch blocks', () => {
+    const violations = [];
+
+    for (const file of allCjsFiles) {
+      const src = readFile(file);
+      if (!src) continue;
+      const lines = src.split('\n');
+      let tryDepth = 0;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+
+        // Skip comments
+        if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*')) continue;
+
+        // Track try depth — handle 'try {' and 'try\n{'
+        if (/\btry\s*\{/.test(line)) {
+          tryDepth++;
+        } else if (/\btry\s*$/.test(trimmed)) {
+          for (let k = i + 1; k < Math.min(lines.length, i + 3); k++) {
+            const next = lines[k].trim();
+            if (next === '') continue;
+            if (next.startsWith('{')) { tryDepth++; break; }
+            break;
+          }
+        }
+
+        // Track catch — handle '} catch' and standalone 'catch'
+        if (/\}\s*catch\b/.test(line)) {
+          if (tryDepth > 0) tryDepth--;
+        } else if (/^\s*catch\s*[\({]/.test(trimmed) && !/catch\s*:/.test(trimmed)) {
+          if (tryDepth > 0) tryDepth--;
+        }
+
+        // Check JSON.parse
+        if (trimmed.includes('JSON.parse(') && tryDepth === 0) {
+          // Skip inline try-catch on same line
+          if (/\btry\b/.test(trimmed) && /\bcatch\b/.test(trimmed)) continue;
+
+          violations.push(`  ${file}:${i + 1} — ${trimmed.substring(0, 120)}`);
+        }
+      }
+    }
+
+    assert.strictEqual(violations.length, 0,
+      `Found ${violations.length} JSON.parse call(s) without try-catch:\n${violations.join('\n')}`);
+  });
 });
 
-// ─── T5.3: No eval/Function/document.write in app pages ─────────────────────
+// ─── T5.3: innerHTML per-occurrence XSS scanner ─────────────────────────────
+// Scans ALL app HTML. Every innerHTML with ${} interpolation must use escapeHtml.
 
-describe('T5: No dangerous JS patterns', () => {
+describe('T5.3: innerHTML per-occurrence XSS', () => {
+  const appDirs = ['website/app/client', 'website/app/admin', 'website/app/auth'];
+  const appPages = [];
+  for (const dir of appDirs) {
+    appPages.push(...listFiles(dir, '.html'));
+  }
+
+  test('All innerHTML assignments with ${} use escapeHtml', () => {
+    const violations = [];
+
+    for (const pagePath of appPages) {
+      const src = readFile(pagePath);
+      if (!src) continue;
+
+      const scriptBlocks = src.match(/<script[^>]*>([\s\S]*?)<\/script>/gi) || [];
+      for (const block of scriptBlocks) {
+        const content = block.replace(/<\/?script[^>]*>/gi, '');
+        const lines = content.split('\n');
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          if (!/\.innerHTML\s*[+=]=?\s*/.test(line)) continue;
+
+          // Collect the full expression (multi-line template literals)
+          let fullExpr = line;
+          let backtickCount = (line.match(/`/g) || []).length;
+
+          if (backtickCount % 2 !== 0) {
+            // Unbalanced backticks — collect until balanced
+            for (let j = i + 1; j < Math.min(lines.length, i + 50); j++) {
+              fullExpr += '\n' + lines[j];
+              backtickCount += (lines[j].match(/`/g) || []).length;
+              if (backtickCount % 2 === 0) break;
+            }
+          }
+
+          // Skip if no dynamic interpolation
+          if (!fullExpr.includes('${')) continue;
+
+          // Check if escapeHtml is used in the expression
+          if (fullExpr.includes('escapeHtml') || fullExpr.includes('escapeHTML')) continue;
+
+          violations.push(`  ${pagePath}:~${i + 1} — innerHTML with unescaped \${}`);
+        }
+      }
+    }
+
+    assert.strictEqual(violations.length, 0,
+      `Found ${violations.length} innerHTML assignment(s) with unescaped interpolation:\n${violations.join('\n')}`);
+  });
+});
+
+// ─── T5.4: No eval/Function/document.write ──────────────────────────────────
+
+describe('T5.4: No dangerous JS patterns', () => {
   const appDirs = ['website/app/client', 'website/app/admin', 'website/app/auth'];
 
   for (const dir of appDirs) {
@@ -102,11 +184,9 @@ describe('T5: No dangerous JS patterns', () => {
         const src = readFile(file);
         if (!src) return;
 
-        // Extract script content
         const scriptBlocks = src.match(/<script[^>]*>([\s\S]*?)<\/script>/gi) || [];
         for (const block of scriptBlocks) {
           const content = block.replace(/<\/?script[^>]*>/gi, '');
-          // Check for eval — but not inside strings or comments
           const lines = content.split('\n');
           for (const line of lines) {
             const trimmed = line.trim();
@@ -124,9 +204,9 @@ describe('T5: No dangerous JS patterns', () => {
   }
 });
 
-// ─── T5.4: Tenant isolation — sanitizeTenantId usage ────────────────────────
+// ─── T5.5: Tenant isolation — path.join with raw tenantId ───────────────────
 
-describe('T5: Tenant isolation — path traversal protection', () => {
+describe('T5.5: Tenant isolation — path traversal protection', () => {
   const coreModules = listFiles('core', '.cjs');
 
   for (const file of coreModules) {
@@ -137,12 +217,10 @@ describe('T5: Tenant isolation — path traversal protection', () => {
       const lines = src.split('\n');
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        // Find path.join calls that include tenantId as raw variable
         if (line.includes('path.join') && line.includes('tenantId') &&
             !line.includes('sanitizeTenantId') && !line.includes('safeTId') &&
             !line.includes('safeTenantId') && !line.includes('sanitizedId') &&
             !line.includes('this.getTenantDir') && !line.includes('getTenantDir')) {
-          // Check if sanitization happened on a nearby line above
           const contextAbove = lines.slice(Math.max(0, i - 5), i).join('\n');
           const hasSanitize = contextAbove.includes('sanitizeTenantId') ||
                               contextAbove.includes('safeTId') ||
@@ -155,9 +233,9 @@ describe('T5: Tenant isolation — path traversal protection', () => {
   }
 });
 
-// ─── T5.5: Timing-safe comparisons for secrets ──────────────────────────────
+// ─── T5.6: Timing-safe comparisons for secrets ─────────────────────────────
 
-describe('T5: Timing-safe secret comparison', () => {
+describe('T5.6: Timing-safe secret comparison', () => {
   const criticalFiles = [
     'core/gateways/stripe-global-gateway.cjs',
     'core/WebhookRouter.cjs',
@@ -182,9 +260,9 @@ describe('T5: Timing-safe secret comparison', () => {
   });
 });
 
-// ─── T5.6: No hardcoded secrets ──────────────────────────────────────────────
+// ─── T5.7: No hardcoded secrets ─────────────────────────────────────────────
 
-describe('T5: No hardcoded secrets', () => {
+describe('T5.7: No hardcoded secrets', () => {
   const coreModules = listFiles('core', '.cjs');
 
   for (const file of coreModules) {
@@ -197,7 +275,6 @@ describe('T5: No hardcoded secrets', () => {
         const line = lines[i].trim();
         if (line.startsWith('//') || line.startsWith('*')) continue;
 
-        // Check for patterns like: apiKey = 'sk_live_...'
         assert.ok(!line.match(/['"]sk_(live|test)_[a-zA-Z0-9]{10,}['"]/),
           `${file}:${i + 1} — hardcoded Stripe key\n  ${line}`);
         assert.ok(!line.match(/['"]xai-[a-zA-Z0-9]{20,}['"]/),
@@ -209,10 +286,9 @@ describe('T5: No hardcoded secrets', () => {
   }
 });
 
-// ─── T5.7: Require casing correctness (Linux-safe) ──────────────────────────
-// macOS is case-insensitive, Linux is case-sensitive. Wrong casing = crash on deploy.
+// ─── T5.8: Require path casing (Linux-safe) ────────────────────────────────
 
-describe('T5: Require path casing', () => {
+describe('T5.8: Require path casing', () => {
   const coreModules = listFiles('core', '.cjs');
 
   for (const file of coreModules) {
@@ -225,7 +301,6 @@ describe('T5: Require path casing', () => {
         const reqPath = match[1];
         const resolvedPath = path.resolve(path.join(ROOT, path.dirname(file), reqPath));
 
-        // Add .cjs if no extension
         const candidates = [resolvedPath];
         if (!path.extname(resolvedPath)) {
           candidates.push(resolvedPath + '.cjs', resolvedPath + '.js', resolvedPath + '.json');
@@ -239,9 +314,9 @@ describe('T5: Require path casing', () => {
   }
 });
 
-// ─── T5.8: CORS — no wildcard origins ────────────────────────────────────────
+// ─── T5.9: CORS — no wildcard ───────────────────────────────────────────────
 
-describe('T5: CORS safety', () => {
+describe('T5.9: CORS safety', () => {
   test('db-api CORS_ALLOWED_ORIGINS has no wildcard', () => {
     const { CORS_ALLOWED_ORIGINS } = require('../core/db-api.cjs');
     assert.ok(!CORS_ALLOWED_ORIGINS.includes('*'),
@@ -259,9 +334,9 @@ describe('T5: CORS safety', () => {
   });
 });
 
-// ─── T5.9: Auth middleware exports all required guards ───────────────────────
+// ─── T5.10: Auth guards completeness ────────────────────────────────────────
 
-describe('T5: Auth guards completeness', () => {
+describe('T5.10: Auth guards completeness', () => {
   const authMW = require('../core/auth-middleware.cjs');
 
   const requiredGuards = ['requireAuth', 'requireRole', 'requireTenant',
@@ -275,9 +350,9 @@ describe('T5: Auth guards completeness', () => {
   }
 });
 
-// ─── T5.10: JWT configuration safety ────────────────────────────────────────
+// ─── T5.11: JWT configuration safety ────────────────────────────────────────
 
-describe('T5: JWT configuration', () => {
+describe('T5.11: JWT configuration', () => {
   test('auth-service uses process.env for JWT secret', () => {
     const src = readFile('core/auth-service.cjs');
     assert.ok(src);
@@ -288,7 +363,6 @@ describe('T5: JWT configuration', () => {
   test('auth-service does not hardcode JWT secret', () => {
     const src = readFile('core/auth-service.cjs');
     assert.ok(src);
-    // Check no literal string assigned to JWT secret (except env fallback)
     const lines = src.split('\n');
     for (const line of lines) {
       if (line.includes('JWT_SECRET') && line.includes('=') && !line.includes('process.env')) {
@@ -299,29 +373,117 @@ describe('T5: JWT configuration', () => {
   });
 });
 
-// ─── T5.11: Collection bounds — Maps/Sets have MAX limits ───────────────────
+// ─── T5.12: Unbounded Map/Set — memory leak scanner ────────────────────────
+// Module-level and class-level Map/Set must have eviction logic.
 
-describe('T5: Bounded collections in singletons', () => {
-  test('auth-middleware rateLimit has eviction', () => {
-    const src = readFile('core/auth-middleware.cjs');
-    assert.ok(src);
-    assert.ok(src.includes('cleanupRateLimits') || src.includes('cleanup') || src.includes('delete'),
-      'rateLimit should have a cleanup/eviction mechanism');
-  });
+describe('T5.12: Unbounded Map/Set — memory leak risk', () => {
+  const coreFiles = listFiles('core', '.cjs');
 
-  test('OAuthGateway pendingStates is bounded', () => {
-    const src = readFile('core/OAuthGateway.cjs');
-    assert.ok(src);
-    // pendingStates should have expiry or cleanup
-    assert.ok(src.includes('delete') || src.includes('clear') || src.includes('expire') || src.includes('setTimeout'),
-      'OAuthGateway pendingStates should have cleanup mechanism');
+  // Maps/Sets that are bounded by design (not per-request growth):
+  // - WebhookRouter.handlers: registered at startup, finite webhook types
+  // - knowledge-base-services vocabulary/idf: rebuilt per-index(), bounded by KB data size
+  // - tenant-cors._tenantOrigins: rebuilt from client registry, finite
+  const BOUNDED_BY_DESIGN = new Set([
+    'WebhookRouter.cjs:handlers',
+    'knowledge-base-services.cjs:vocabulary',
+    'knowledge-base-services.cjs:idf',
+    'tenant-cors.cjs:_tenantOrigins',
+  ]);
+
+  test('Persistent Map/Set collections have eviction logic', () => {
+    const violations = [];
+
+    for (const file of coreFiles) {
+      const src = readFile(file);
+      if (!src) continue;
+      const lines = src.split('\n');
+
+      // Find persistent Map/Set declarations
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        const indent = line.search(/\S/);
+
+        let varName = null;
+        let collType = null;
+
+        // Module-level: const x = new Map() at indent 0
+        const moduleMatch = trimmed.match(/^(?:const|let|var)\s+(\w+)\s*=\s*new\s+(Map|Set)\(\)/);
+        if (moduleMatch && indent <= 0) {
+          varName = moduleMatch[1];
+          collType = moduleMatch[2];
+        }
+
+        // Class property: this.x = new Map()
+        const classMatch = trimmed.match(/this\.(\w+)\s*=\s*new\s+(Map|Set)\(\)/);
+        if (classMatch) {
+          varName = classMatch[1];
+          collType = classMatch[2];
+        }
+
+        if (!varName) continue;
+
+        // Skip collections known to be bounded by design
+        const fileBase = path.basename(file);
+        if (BOUNDED_BY_DESIGN.has(`${fileBase}:${varName}`)) continue;
+
+        // Check for eviction patterns for this variable
+        const hasDelete = src.includes(`${varName}.delete(`) || src.includes(`${varName}.delete(`);
+        const hasClear = src.includes(`${varName}.clear(`) || src.includes(`${varName}.clear()`);
+        const hasSizeCheck = new RegExp(`${varName}\\.size\\s*>=?`).test(src);
+        const hasMAX = /\bMAX_\w+\s*=\s*\d+/.test(src) || /\bmaxSize\b/.test(src);
+        const hasTimeout = src.includes('setTimeout') && src.includes(varName);
+        const hasCleanup = /cleanup|purge|evict/i.test(src);
+
+        if (!hasDelete && !hasClear && !hasSizeCheck && !(hasMAX && (hasSizeCheck || hasDelete)) && !hasTimeout && !hasCleanup) {
+          violations.push(`  ${file}:${i + 1} — ${collType} "${varName}" has no eviction/cleanup`);
+        }
+      }
+    }
+
+    assert.strictEqual(violations.length, 0,
+      `Found ${violations.length} unbounded collection(s):\n${violations.join('\n')}`);
   });
 });
 
-// ─── T5.12: Sensitive fields filtered from user records ─────────────────────
+// ─── T5.13: eventBus.emit vs publish scanner ────────────────────────────────
+// eventBus.emit() only fires Node EventEmitter listeners.
+// eventBus.publish() fires full subscriber system with retry/dedup/persistence.
 
-describe('T5: Sensitive field filtering', () => {
-  test('db-api filterUserRecord strips sensitive fields', () => {
+describe('T5.13: eventBus.emit vs publish', () => {
+  const cjsDirs = ['core', 'telephony', 'integrations', 'personas'];
+  const allFiles = [];
+  for (const dir of cjsDirs) {
+    allFiles.push(...listFiles(dir, '.cjs'));
+  }
+
+  test('No eventBus.emit() calls — should use eventBus.publish()', () => {
+    const violations = [];
+
+    for (const file of allFiles) {
+      const src = readFile(file);
+      if (!src) continue;
+      const lines = src.split('\n');
+
+      for (let i = 0; i < lines.length; i++) {
+        const trimmed = lines[i].trim();
+        if (trimmed.startsWith('//') || trimmed.startsWith('*')) continue;
+
+        if (/eventBus\.emit\s*\(/.test(trimmed)) {
+          violations.push(`  ${file}:${i + 1} — ${trimmed.substring(0, 100)}`);
+        }
+      }
+    }
+
+    assert.strictEqual(violations.length, 0,
+      `Found ${violations.length} eventBus.emit() call(s) — should be eventBus.publish():\n${violations.join('\n')}`);
+  });
+});
+
+// ─── T5.14: Sensitive field filtering ───────────────────────────────────────
+
+describe('T5.14: Sensitive field filtering', () => {
+  test('db-api filterUserRecord strips all sensitive fields', () => {
     const { filterUserRecord } = require('../core/db-api.cjs');
     const record = {
       email: 'test@test.com',
@@ -343,9 +505,9 @@ describe('T5: Sensitive field filtering', () => {
   });
 });
 
-// ─── T5.13: sanitizeTenantId blocks path traversal ──────────────────────────
+// ─── T5.15: sanitizeTenantId runtime behavior ──────────────────────────────
 
-describe('T5: sanitizeTenantId security', () => {
+describe('T5.15: sanitizeTenantId security', () => {
   const { sanitizeTenantId } = require('../core/voice-api-utils.cjs');
 
   test('strips path traversal ../', () => {
@@ -370,14 +532,14 @@ describe('T5: sanitizeTenantId security', () => {
   });
 });
 
-// ─── T5.14: WordPress plugin XSS protection ─────────────────────────────────
+// ─── T5.16: WordPress plugin XSS protection ────────────────────────────────
 
-describe('T5: WordPress plugin safety', () => {
+describe('T5.16: WordPress plugin safety', () => {
   const wpFile = 'widget/wordpress-plugin/vocalia-voice-widget.php';
 
   test('WordPress plugin uses esc_html/esc_attr', () => {
     const src = readFile(wpFile);
-    if (!src) return; // Skip if no WP plugin
+    if (!src) return;
     assert.ok(src.includes('esc_html') || src.includes('esc_attr'),
       'WordPress plugin should use esc_html/esc_attr for output escaping');
   });
@@ -389,4 +551,3 @@ describe('T5: WordPress plugin safety', () => {
       'WordPress plugin should use sanitize_text_field for user input');
   });
 });
-

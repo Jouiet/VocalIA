@@ -12,7 +12,7 @@ clients/ = 553 dirs (ALL test data) | website/ = 81 pages + locales (26.2k)
 
 ## Services (8 HTTP servers)
 
-**Deployed (6 Docker containers via Traefik):**
+**Deployed (7 Docker containers via Traefik — ALL non-root, su-exec node PID 1):**
 
 | Service | Port | Script | Profile |
 |:--------|:----:|:-------|:--------|
@@ -21,13 +21,13 @@ clients/ = 553 dirs (ALL test data) | website/ = 81 pages + locales (26.2k)
 | Telephony | 3009 | `telephony/voice-telephony-bridge.cjs` | core |
 | DB API | 3013 | `core/db-api.cjs` | core |
 | OAuth Gateway | 3010 | `core/OAuthGateway.cjs --start` | integrations |
+| Webhook Router | 3011 | `core/WebhookRouter.cjs --start` | integrations |
 | Video HITL | 3012 | `core/remotion-hitl.cjs --server` | video |
 
 **Non-deployed (standalone, code exists):**
 
 | Service | Port | Script |
 |:--------|:----:|:-------|
-| Webhook Router | 3011 | `core/WebhookRouter.cjs` |
 | MCP Server (HTTP) | 3015 | `mcp-server/dist/index.js --http` |
 
 ## Commands

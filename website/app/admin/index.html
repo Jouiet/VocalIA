@@ -472,6 +472,11 @@
     import api from '/src/lib/api-client.js';
     import { createLineChart, createBarChart, COLORS } from '/src/lib/charts.js';
 
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     const API_HEALTH_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
       ? 'http://localhost:3013/api/health'
       : 'https://api.vocalia.ma/api/health';
@@ -929,7 +934,7 @@
 
         const iconDiv = document.createElement('div');
         iconDiv.className = `w-8 h-8 rounded-full bg-${a.iconColor}-100 dark:bg-${a.iconColor}-900/30 flex items-center justify-center`;
-        iconDiv.innerHTML = `<i data-lucide="${a.icon}" class="w-4 h-4 text-${a.iconColor}-600"></i>`;
+        iconDiv.innerHTML = `<i data-lucide="${escapeHtml(a.icon)}" class="w-4 h-4 text-${escapeHtml(a.iconColor)}-600"></i>`;
 
         const textDiv = document.createElement('div');
         textDiv.className = 'flex-1';

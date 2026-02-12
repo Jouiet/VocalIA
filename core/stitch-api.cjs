@@ -87,9 +87,13 @@ async function listProjects() {
   const result = await mcpRequest('list_projects', {});
 
   if (result?.content?.[0]?.text) {
-    const data = JSON.parse(result.content[0].text);
-    console.log(JSON.stringify(data, null, 2));
-    return data;
+    try {
+      const data = JSON.parse(result.content[0].text);
+      console.log(JSON.stringify(data, null, 2));
+      return data;
+    } catch (e) {
+      console.error('❌ stitch-api: Failed to parse response:', e.message);
+    }
   }
   console.log(JSON.stringify(result, null, 2));
   return result;
@@ -100,9 +104,13 @@ async function createProject(title) {
   const result = await mcpRequest('create_project', { title });
 
   if (result?.content?.[0]?.text) {
-    const data = JSON.parse(result.content[0].text);
-    console.log(JSON.stringify(data, null, 2));
-    return data;
+    try {
+      const data = JSON.parse(result.content[0].text);
+      console.log(JSON.stringify(data, null, 2));
+      return data;
+    } catch (e) {
+      console.error('❌ stitch-api: Failed to parse response:', e.message);
+    }
   }
   console.log(JSON.stringify(result, null, 2));
   return result;
@@ -154,9 +162,13 @@ async function listScreens(projectId) {
   const result = await mcpRequest('list_screens', { projectId });
 
   if (result?.content?.[0]?.text) {
-    const data = JSON.parse(result.content[0].text);
-    console.log(JSON.stringify(data, null, 2));
-    return data;
+    try {
+      const data = JSON.parse(result.content[0].text);
+      console.log(JSON.stringify(data, null, 2));
+      return data;
+    } catch (e) {
+      console.error('❌ stitch-api: Failed to parse response:', e.message);
+    }
   }
   console.log(JSON.stringify(result, null, 2));
   return result;
@@ -167,9 +179,13 @@ async function getScreen(projectId, screenId) {
   const result = await mcpRequest('get_screen', { projectId, screenId });
 
   if (result?.content?.[0]?.text) {
-    const data = JSON.parse(result.content[0].text);
-    console.log(JSON.stringify(data, null, 2));
-    return data;
+    try {
+      const data = JSON.parse(result.content[0].text);
+      console.log(JSON.stringify(data, null, 2));
+      return data;
+    } catch (e) {
+      console.error('❌ stitch-api: Failed to parse response:', e.message);
+    }
   }
   console.log(JSON.stringify(result, null, 2));
   return result;
@@ -180,9 +196,13 @@ async function getProject(name) {
   const result = await mcpRequest('get_project', { name: `projects/${name}` });
 
   if (result?.content?.[0]?.text) {
-    const data = JSON.parse(result.content[0].text);
-    console.log(JSON.stringify(data, null, 2));
-    return data;
+    try {
+      const data = JSON.parse(result.content[0].text);
+      console.log(JSON.stringify(data, null, 2));
+      return data;
+    } catch (e) {
+      console.error('❌ stitch-api: Failed to parse response:', e.message);
+    }
   }
   console.log(JSON.stringify(result, null, 2));
   return result;

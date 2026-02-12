@@ -1,9 +1,10 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-12 | **Session:** 250.199 (Veo 3.1 ADC E2E — GCP service account, video generated+downloaded. Bug V3 gcloud fallback.)
-> **Code Completeness:** 9.5/10 | **Production Readiness:** 6.5/10 (6 containers healthy, /respond quota-limited, OAuth SSO deployed, Veo 3.1 E2E functional. Missing: Kling credits, OAuth creds, SMTP, Stripe)
+> **Date:** 2026-02-12 | **Session:** 250.200c (Security SOTA + non-root containers + backup + disk cleanup 86%→20%)
+> **Code Completeness:** 9.5/10 | **Production Readiness:** 8.0/10 | **Security:** 9.0/10 | **Weighted:** 9.1/10
+> **Deployed:** 7 containers healthy (ALL non-root), security headers on all services, CDN SRI 78/78, CSP 22 app pages, monitoring v3.0 */5, daily backup, disk 20% (19G/96G). Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 40 audit phases across sessions 250.105-250.199. Latest: **VEO ADC E2E (250.199)** GCP service account, key mount, video generated+downloaded, bug V3 gcloud fallback. Prior: OAuth SSO (250.198), marketing copy (250.195-197), SOTA dashboard (250.194). Full history: `memory/session-history.md`
+> **Source:** 43 audit phases across sessions 250.105-250.200c. Latest: **SECURITY SOTA (250.200)** monitoring v3.0, VPS hardening, CDN SRI, CSP, non-root containers, backup, disk cleanup. Prior: Veo ADC E2E (250.199), OAuth SSO (250.198), marketing copy (250.195-197). Full history: `memory/session-history.md`
 
 ---
 
@@ -20,19 +21,23 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (3,846 tests, 70 files). **395 bugs reported across 40 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197). OAuth SSO login implemented (250.198). Veo 3.1 E2E functional (250.199). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
-**Production Readiness: 6.5/10** — VERIFIED 250.198 (12/02/2026) via SSH + curl:
+**Code Completeness: 9.5/10** — Features coded and tested (4,903 tests, 75 files). **415 bugs reported across 43 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197). OAuth SSO login implemented (250.198). Veo 3.1 E2E functional (250.199). Security SOTA (250.200). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
+**Production Readiness: 8.0/10** — VERIFIED 250.200c (12/02/2026) via SSH + curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200, 64KB homepage)
 - `api.vocalia.ma/health` ✅ Voice API healthy (4 AI providers: Grok, Gemini, Claude, Atlas)
-- `api.vocalia.ma/api/db/health` ✅ DB API connected (Google Sheets: 7 sheets)
+- `api.vocalia.ma/api/db/health` ✅ DB API connected (Google Sheets: 7 sheets) + security headers (nosniff, X-Frame DENY, HSTS, Referrer-Policy)
 - `api.vocalia.ma/api/auth/login` ✅ Auth endpoint works (JWT_SECRET configured)
 - `api.vocalia.ma/respond` ✅ Quota-limited (demo tenant — needs config.json per tenant)
 - `api.vocalia.ma/realtime/health` ✅ 7 voices, WebSocket streaming ready
-- `api.vocalia.ma/telephony/health` ✅ Twilio=true, Grok=true, 50 max sessions
-- `api.vocalia.ma/oauth/providers` ✅ 5 providers (Google, GitHub, HubSpot, Shopify, Slack)
+- `api.vocalia.ma/telephony/health` ✅ Twilio=true, Grok=true, 50 max sessions + HSTS
+- `api.vocalia.ma/oauth/providers` ✅ 5 providers (Google, GitHub, HubSpot, Shopify, Slack) + security headers
 - `api.vocalia.ma/oauth/login/google` → 400 "Missing GOOGLE_CLIENT_ID" (credentials needed)
 - `api.vocalia.ma/oauth/login/github` → 400 "Missing GITHUB_CLIENT_ID" (credentials needed)
-- Docker: **6 containers healthy** (4 core + vocalia-hitl via `--profile video` + vocalia-oauth via `--profile integrations`). vocalia-data volume persistent.
+- Docker: **7 containers healthy** (4 core + vocalia-hitl `--profile video` + vocalia-oauth + vocalia-webhooks `--profile integrations`). **ALL non-root** (su-exec node PID 1). vocalia-data volume persistent.
+- Security: CDN SRI 78/78, CSP 22 app pages, security headers all 7 services, CORS tightened, npm vulns patched, X-XSS-Protection: 0 (modern). VPS: SSH key-only, fail2ban, UFW.
+- Monitoring: v3.0 LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh push alerts, */5 cron.
+- Backup: Daily 2 AM UTC, 7-day retention, ~4KB compressed (vocalia-data = 184KB currently).
+- Disk: 20% (19G/96G) — cleaned 63GB of Docker waste (250.200c). Weekly cron prevents reaccumulation.
 - .env VPS: 35 keys SET (JWT_SECRET, VOCALIA_VAULT_KEY, VOCALIA_INTERNAL_KEY, VOICE_API_KEY, GA4_*, all AI providers)
 - **Still MISSING**: KLING_ACCESS_KEY/SECRET (expired credits), GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET (OAuth SSO), STRIPE_SECRET_KEY (billing), SMTP_HOST/USER/PASS (email), PAYZONE_* (MAD)
 - 0 paying customers, 0 real conversations (quota config needed per tenant), 0 payments, 0 emails sent
@@ -154,23 +159,25 @@ Feature injection: blocked features injected into system prompt → AI won't off
 
 | Component | Status |
 |:----------|:------:|
-| vocalia.ma | ✅ UP |
-| api.vocalia.ma/health | ✅ UP (4 AI providers configured) |
-| api.vocalia.ma/api/db/health | ✅ UP (Google Sheets connected, 7 tables) |
-| VPS Hostinger (KVM 2) | ✅ Running (2 CPU, 8 GB, 148.230.113.163) |
-| Docker containers (6) | ✅ All healthy (vocalia-api, db-api, realtime, telephony, vocalia-hitl, vocalia-oauth) |
-| OAuth SSO | ✅ Deployed (250.198, profile: integrations). Google+GitHub SSO. Awaiting CLIENT_ID/SECRET credentials. |
-| Non-deployed servers (2) | Webhook 3011, MCP 3015 → docker-compose profiles available but not activated |
-| Video Studio HITL | ✅ E2E verified (250.197-199). Dashboard `/app/admin/video-ads`. Kling pipeline = external 500 (crédits). **Veo 3.1 = FUNCTIONAL** (GCP ADC, video generated+downloaded). 3 bugs fixed (V1: auth.getUser, V2: circular require, V3: gcloud fallback). |
+| vocalia.ma | ✅ UP (LiteSpeed shared hosting, GitHub Actions FTP deploy) |
+| api.vocalia.ma | ✅ UP (VPS 148.230.113.163, Docker/Traefik) |
+| VPS Hostinger (KVM 2) | ✅ Running (2 CPU, 8 GB, disk 20%) |
+| Docker containers (7) | ✅ All healthy, ALL non-root (su-exec node PID 1): api, db-api, realtime, telephony, hitl, oauth, webhooks |
+| Security headers | ✅ All 7 services: nosniff + X-Frame DENY + HSTS + Referrer-Policy. X-XSS-Protection: 0 (modern). |
+| CDN SRI | ✅ 78/78 scripts with integrity attributes (Lucide, Chart.js, GSAP) |
+| CSP | ✅ 22 app pages (meta tags) + .htaccess (server-level) |
+| CORS | ✅ Tenant whitelist + explicit vocalia.ma fallback (no `*`) |
+| VPS hardening | ✅ SSH key-only + fail2ban + UFW (22/80/443 only) + TLS 1.2+ |
+| npm audit | ✅ axios+qs patched. 1 moderate (nodemailer — deferred, SMTP not configured) |
+| Monitoring v3.0 | ✅ LIVE — 7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh alerts, */5 cron |
+| Backup | ✅ Daily 2 AM UTC, 7-day retention. Weekly Docker cleanup Sunday 3 AM. |
+| OAuth SSO | ✅ Deployed (250.198). Awaiting GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET. |
+| Video Studio HITL | ✅ E2E verified (250.197-199). **Veo 3.1 FUNCTIONAL** (GCP ADC). Kling = external 500 (crédits). |
 | Traefik reverse proxy | ✅ SSL/TLS auto (Let's Encrypt) |
-| api.vocalia.ma/realtime/health | ✅ UP (7 voices, grok-realtime) |
-| api.vocalia.ma/telephony/health | ✅ UP (Twilio configured) |
-| Dockerfile + docker-compose (prod+staging) | ✅ Deployed (250.170: volumes + env vars added) |
+| Non-deployed servers (1) | MCP 3015 → docker-compose profile available but not activated |
 | Distribution platforms | 5 (npm, shopify, wordpress, wix, zapier) |
-| CI/CD (unit + exhaustive + i18n + coverage + tsc + Playwright) | ✅ Active |
+| CI/CD | ✅ Active (unit + exhaustive + i18n + coverage + tsc + Playwright) |
 | OpenAPI spec | ✅ 25 methods / 24 paths (validated 250.158) |
-| Security headers (CSP, HSTS, X-Frame, Referrer, Permissions) | ✅ All set |
-| CORS origin whitelist | ✅ Tenant-based (client_registry.json, 5-min TTL) |
 
 ---
 
@@ -304,12 +311,12 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | HTML pages | 80 | `find website -name "*.html" | wc -l` |
 | Registry clients | 22 | `jq 'keys | length' personas/client_registry.json` |
 | i18n lines | 26,175 | `wc -l website/src/locales/*.json` |
-| npm vulnerabilities | 0 | `npm audit --json` |
+| npm vulnerabilities | 1 moderate (nodemailer — deferred, SMTP not configured) | `npm audit --json` |
 | innerHTML XSS risk | 0 | All dynamic data uses escapeHTML/textContent (250.192: 6 app pages hardened) |
 
 ### 5.2 Tests
 
-**TOTAL: 3,846 tests | 3,846 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.198)
+**TOTAL: 4,903 tests | 4,903 pass | 0 fail | 0 cancelled | ALL ESM (.mjs)** (Verified 250.200)
 
 Top test suites (by count):
 
@@ -323,9 +330,9 @@ Top test suites (by count):
 | telephony-pure | 76 | Real functions |
 | persona-audit | 711 | 38 × 5 langs |
 
-70 test files total. Coverage: 39.4% statements, 75.2% branches, 45.0% functions.
+75 test files total. Coverage: 39.4% statements, 75.2% branches, 45.0% functions.
 Theater tests: **0** typeof/exports (244 purged in 250.126, 20 purged in 250.114).
-New (250.198): oauth-login.test.mjs (16 tests), provision-tenant.test.mjs (24 tests).
+New (250.198-200): oauth-login.test.mjs (16), provision-tenant.test.mjs (24), auth-pages.test.mjs, security-headers.test.mjs, and more.
 
 ### 5.3 The 25 Function Tools
 
@@ -416,7 +423,7 @@ create_booking          get_recommendations    qualify_lead
 2. **Auth Near-Functional** — JWT_SECRET + SMTP now in docker-compose. Needs actual .env values on VPS + SMTP provider (Brevo/Resend/SES).
 3. ~~**Two Sources of Truth**~~ — ✅ **FIXED 250.170** — Quota sync every 10 min (Sheets→local). Sheets authoritative for plan data.
 4. ~~**VPS Env Vars Incomplete**~~ — ✅ **FIXED 250.170** — All required env vars defined in docker-compose.production.yml. Needs .env file with real values on VPS.
-5. **Code Exists ≠ Feature Deployed** — StripeService, BillingAgent, Payzone, OAuthGateway, WebhookRouter, EmailService = sophisticated code. Needs redeploy with new docker-compose + .env.
+5. **Code Exists ≠ Feature Deployed** — StripeService, BillingAgent, Payzone, EmailService = sophisticated code. Needs `.env` values (STRIPE_SECRET_KEY, PAYZONE_*, SMTP_*). OAuthGateway + WebhookRouter now deployed (250.198/250.200c) but need credentials.
 
 ### 6.6 Phase 3 Internal Audit (250.167) — 12 Bugs (+1F, +2C, +4H, +5M)
 
@@ -542,7 +549,14 @@ create_booking          get_recommendations    qualify_lead
 | **Phase 37 SOTA DASHBOARD (250.194)** | **0 (modernization)** | **0** | **0** |
 | **Phase 38 MARKETING COPY (250.195)** | **34 (marketing claims)** | **34** | **0** |
 | **Phase 38b LOCALE+BLOG (250.197)** | **0 (remediation ext.)** | **0** | **0** |
-| **CUMULATIVE** | **392+34 marketing** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch. Inc. 2 external deps, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified). NOTE: Business logic + integration APIs = INCONNU (0 appels réels, 0 clients). **ALL CODE + MARKETING tasks complete — only OPERATIONS/BUSINESS remain.** |
+| **Phase 34 DASHBOARD/APP (250.192)** | **8 (B1-B8)** | **8** | **0** |
+| **Phase 35 CALLER/CALLEE (250.193)** | **7 (D1-D3)** | **7** | **0** |
+| **Phase 39 OAUTH (250.198)** | **2 (D1-pattern)** | **2** | **0** |
+| **Phase 40 VEO (250.199)** | **1 (V3 gcloud)** | **1** | **0** |
+| **Phase 41 MONITORING+AUTH (250.200)** | **12 (E1-E12)** | **12** | **0** |
+| **Phase 42 SECURITY SOTA (250.200b)** | **5 (S1-S5: SRI, XSS, npm, headers, CORS)** | **5** | **0** |
+| **Phase 43 NON-ROOT+BACKUP (250.200c)** | **2 (WebhookRouter --start, X-XSS-Protection)** | **2** | **0** |
+| **CUMULATIVE** | **415** | **ALL** | **0 actionable** (8 not fixable locally: VPS/arch. Inc. 2 external deps, 2 non-bugs, 2 false alarm, ~5 cosmetic — all reclassified). NOTE: Business logic + integration APIs = INCONNU (0 appels réels, 0 clients). **ALL CODE + SECURITY + MARKETING + OPS tasks complete — only BUSINESS remain (SMTP, Stripe, OAuth creds, first customer).** |
 
 ### 6.20 Phase 19 — Unaudited Zones (250.181) — 10 Bugs Found + Fixed
 
@@ -588,12 +602,12 @@ create_booking          get_recommendations    qualify_lead
 | website/src/lib/card-tilt.js | CSS transform only, no DOM injection |
 | website/src/lib/site-init.js | Module loader, no user input processing |
 
-#### CRITICAL Distribution Findings (NOT YET FIXED — Flagged for Future)
+#### Distribution Findings — ✅ FIXED (250.191b)
 
-| # | Finding | Impact |
+| # | Finding | Status |
 |:-:|:--------|:-------|
-| DIST-1 | Shopify widget frozen at v3.0.0 (~250.74), 5,612 lines, ZERO security fixes since 100+ sessions | No escapeHTML, no Shadow DOM, no safeConfigMerge, no try/catch localStorage |
-| DIST-2 | npm widget frozen at v3.0.0 (~250.74), 5,612 lines, identical divergence | Same as DIST-1 — needs full rebuild from main widget codebase |
+| DIST-1 | Shopify widget synced with main codebase (3,697 lines, escapeHTML+safeConfigMerge+Shadow DOM) | ✅ FIXED |
+| DIST-2 | npm widget synced with main codebase (3,697 lines, identical to DIST-1) | ✅ FIXED |
 
 **Tests**: 3,765 pass, 0 fail, 1 cancelled (ab-analytics timeout — 44,095 accumulated JSONL lines in data/ab-analytics/).
 **Validator**: 23/23 ✅
@@ -648,12 +662,11 @@ create_booking          get_recommendations    qualify_lead
 | **P0-MARKETING-COPY-P2 (250.197)** | ✅ **DONE** | Marketing copy remediation Phase 2 (Locales + Blogs): Healthcare locale keys across 5 langs (false HIPAA/RGPD/HDS certifications→real features: 3 Personas/Prise de RDV/Rappels/Chiffrement/Isolation JWT). Finance locale keys across 5 langs (false PCI DSS/SOC 2/DORA/AI Act→real features: Banques & Assurances/Support Client/Persona INSURER/25 Function Tools). Industries index locales (certifications→personas). ROI locales web-verified: 15,000€→~3,000-5,000€/mois, 3-4→1-2 agents, removed unverified %s, e-commerce.html calculator recalculated. 5 additional blog disclaimers added (12/12 total). CSS verified: amber classes present in compiled output. | **9.5** |
 | **P0-OAUTH-SSO (250.198)** | ✅ **DONE** | OAuth SSO Login (Google+GitHub): `loginWithOAuth()` in auth-service.cjs (find-or-create user, auto-verify email, JWT tokens). OAuthGateway: GitHub provider added, `getLoginAuthUrl()`, `exchangeLoginCode()`, `/oauth/login/:provider` + `/oauth/login/callback/:provider` routes, auth-service init with DB in `start()`. login.html: SSO buttons visible (Google+GitHub), callback hash handler, error handler. Tenant auto-provisioning on first OAuth login (generates config.json). docker-compose: OAUTH_BASE_URL double-path bug fixed, `--start` flag added. 2 D1-pattern bugs found by code audit (NOT by tests): `require('./GoogleSheetsDB.cjs')` returns module not instance, auth-service `db=null` in separate process. 40 tests added (16 oauth-login + 24 provision-tenant). **6 containers deployed** (4 core + hitl + oauth). Blocked: GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET not configured. | **9.5** |
 
-**Code Completeness: 9.5/10** | **Production Readiness: 6.5/10** | **Weighted: 8.9/10** | **MCP: 9.0/10**
+**Code Completeness: 9.5/10** | **Production Readiness: 8.0/10** | **Security: 9.0/10** | **Weighted: 9.1/10** | **MCP: 9.0/10**
 
-**Remaining actionable bugs: 0** (verified 250.198). 8 not fixable locally (VPS/arch). **ALL CODE tasks complete. Marketing copy 100% clean. Only OPERATIONS/BUSINESS items remain.**
+**Remaining actionable bugs: 0** (verified 250.200c). 8 not fixable locally (VPS/arch). **ALL CODE + SECURITY + OPS tasks complete. Marketing copy 100% clean. Only BUSINESS items remain (SMTP, Stripe, OAuth credentials, first customer).**
 
-The previous "12 remaining" (250.174) was a stale number propagated across sessions without verification.
-Rigorous per-item audit through 250.198 reveals all 394 code bugs resolved. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO (250.198) adds 2 D1-pattern bugs found by code audit:
+Rigorous per-item audit through 250.200c reveals all 415 code bugs resolved across 43 phases. Marketing copy remediation (250.195-197) adds 34 false claim fixes + locale key + blog remediation — all complete. OAuth SSO (250.198) adds 2 D1-pattern bugs. Security SOTA (250.200) adds 17 security fixes (SRI, CSP, headers, CORS, npm). Non-root containers + backup (250.200c):
 
 ```
 RECLASSIFIED (were counted as "remaining" but are NOT bugs):
@@ -676,22 +689,28 @@ RESEARCH (not a bug):
   - Evaluate Telnyx for Moroccan telephony (operational decision)
 ```
 
-**Live Deployment Status (VERIFIED 250.198 — 12/02/2026 via SSH + curl):**
+**Live Deployment Status (VERIFIED 250.200c — 12/02/2026 via SSH + curl):**
 ```
 ✅ vocalia.ma            → Website live, all pages 200 (64KB homepage)
-✅ api.vocalia.ma/health → Voice API healthy (Grok+Gemini+Claude+Atlas)
-✅ api.vocalia.ma/api/db/health → DB API connected (Google Sheets: 7 sheets)
+✅ api.vocalia.ma/health → Voice API healthy (Grok+Gemini+Claude+Atlas) + security headers
+✅ api.vocalia.ma/api/db/health → DB API connected (Google Sheets: 7 sheets) + security headers
 ✅ api.vocalia.ma/api/auth/login → Auth works (JWT_SECRET configured)
 ✅ api.vocalia.ma/respond → Quota-limited (demo tenant — needs config.json)
-✅ api.vocalia.ma/realtime/health → 7 voices, WebSocket ready
-✅ api.vocalia.ma/telephony/health → Twilio=true, Grok=true
+✅ api.vocalia.ma/realtime/health → 7 voices, WebSocket ready + HSTS
+✅ api.vocalia.ma/telephony/health → Twilio=true, Grok=true + HSTS
 ✅ api.vocalia.ma/oauth/providers → 5 providers (Google, GitHub, HubSpot, Shopify, Slack)
+✅ api.vocalia.ma/webhook/health → Webhook Router healthy
 ⚠️ api.vocalia.ma/oauth/login/google → 400 "Missing GOOGLE_CLIENT_ID"
 ⚠️ api.vocalia.ma/oauth/login/github → 400 "Missing GITHUB_CLIENT_ID"
 
-Docker: 6 containers healthy (api, db-api, realtime, telephony, hitl, oauth)
-Volume: vocalia-data (persistent)
-Code: commit 4dbaabf (250.198 — OAuth SSO + tenant provisioning)
+Docker: 7 containers healthy, ALL non-root (su-exec node PID 1)
+  - api, db-api, realtime, telephony, hitl, oauth, webhooks
+Volume: vocalia-data (persistent, external)
+Disk: 20% (19G/96G) — cleaned 63GB Docker waste (250.200c)
+Monitoring: v3.0 LIVE — */5 cron, ntfy.sh alerts
+Backup: daily 2AM UTC, 7-day retention
+Crons: monitoring */5 + backup daily 2AM + docker cleanup weekly Sunday 3AM
+Code: commit 3c98553 (250.200c — non-root containers + backup + disk cleanup)
 
 .env VPS: 35 keys SET (AI providers, Twilio, Google OAuth for Sheets, GA4, security keys)
 .env STILL MISSING: GOOGLE_CLIENT_ID/SECRET (OAuth SSO), GITHUB_CLIENT_ID/SECRET (OAuth SSO),
@@ -700,19 +719,25 @@ Code: commit 4dbaabf (250.198 — OAuth SSO + tenant provisioning)
 
 **Next Actions (Priority Order):**
 ```
-✅ VPS REDEPLOYED (250.198 — 12/02/2026):
-  1. ✅ VPS REDEPLOY: 6 containers healthy. Code at 4dbaabf.
+✅ VPS FULLY OPERATIONAL (250.200c — 12/02/2026):
+  1. ✅ VPS REDEPLOY: 7 containers healthy, ALL non-root. Code at 3c98553.
   2. ✅ VPS .env: 35 keys SET (JWT_SECRET, VOCALIA_VAULT_KEY, VOCALIA_INTERNAL_KEY, VOICE_API_KEY, GA4_*)
   3. ✅ vocalia-data volume: Persistent data across container restarts
   4. ✅ OAuth SSO container deployed (vocalia-oauth via --profile integrations)
+  5. ✅ Webhook Router deployed (vocalia-webhooks via --profile integrations)
+  6. ✅ Security headers on ALL 7 services (nosniff, X-Frame DENY, HSTS, Referrer-Policy, X-XSS-Protection: 0)
+  7. ✅ CDN SRI 78/78, CSP 22 app pages, CORS tightened
+  8. ✅ Monitoring v3.0 LIVE (7 endpoints + 7 containers + disk/mem/SSL, ntfy.sh, */5 cron)
+  9. ✅ Backup daily 2AM UTC, 7-day retention
+  10. ✅ Disk cleaned 86%→20% (63GB freed), weekly Docker cleanup cron
 
-⚠️ REMAINING OPERATIONS:
-  5. OAuth credentials: Create apps in Google Cloud Console + GitHub Developer Settings
+⚠️ REMAINING BUSINESS OPERATIONS:
+  11. OAuth credentials: Create apps in Google Cloud Console + GitHub Developer Settings
      → Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET in .env
-  6. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
-  7. STRIPE_SECRET_KEY: Needed for billing (subscriptions, payments)
-  8. Tenant provisioning: Create config.json per tenant for quota system (auto for OAuth users)
-  9. First paying customer → first real traffic → validate entire stack
+  12. SMTP provider: Brevo/Resend/SES — email verification + password reset depend on it
+  13. STRIPE_SECRET_KEY: Needed for billing (subscriptions, payments)
+  14. Tenant provisioning: Create config.json per tenant for quota system (auto for OAuth users)
+  15. First paying customer → first real traffic → validate entire stack
 
 CODE — ALL DONE ✅ (250.198):
   5. ✅ OAUTH SSO (250.198): loginWithOAuth + OAuthGateway + login.html SSO buttons + tenant auto-provisioning
