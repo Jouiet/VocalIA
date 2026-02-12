@@ -2,7 +2,7 @@
  * VocalIA OAuthGateway Tests
  *
  * Tests:
- * - OAUTH_PROVIDERS structure (Google, HubSpot, Shopify, Slack)
+ * - OAUTH_PROVIDERS structure (Google, GitHub, HubSpot, Shopify, Slack)
  * - OAuthGateway constructor defaults
  * - generateState / verifyState (CSRF protection)
  * - getAuthUrl (URL construction, validation)
@@ -23,8 +23,13 @@ const { OAuthGateway, OAUTH_PROVIDERS } = mod;
 // ─── OAUTH_PROVIDERS ─────────────────────────────────────────────────────────
 
 describe('OAUTH_PROVIDERS structure', () => {
-  test('has 4 providers', () => {
-    assert.strictEqual(Object.keys(OAUTH_PROVIDERS).length, 4);
+  test('has 5 providers', () => {
+    assert.strictEqual(Object.keys(OAUTH_PROVIDERS).length, 5);
+  });
+
+  test('has github provider', () => {
+    assert.ok(OAUTH_PROVIDERS.github);
+    assert.strictEqual(OAUTH_PROVIDERS.github.name, 'GitHub');
   });
 
   test('has google provider', () => {

@@ -314,7 +314,7 @@ services:
     environment:
       - NODE_ENV=production
       - OAUTH_PORT=3010
-      - OAUTH_BASE_URL=https://api.vocalia.ma/oauth
+      - OAUTH_BASE_URL=https://api.vocalia.ma
     command: >
       sh -c "
         apk add --no-cache git curl &&
@@ -323,7 +323,7 @@ services:
         rm -rf data 2>/dev/null || true &&
         ln -sf /vocalia-data data &&
         npm install --production --ignore-scripts 2>/dev/null || true &&
-        node core/OAuthGateway.cjs
+        node core/OAuthGateway.cjs --start
       "
     expose:
       - "3010"
@@ -334,7 +334,7 @@ services:
         max-file: "3"
     labels:
       - "traefik.enable=true"
-      # Internal routes: /oauth/start/:provider, /oauth/callback/:provider, /oauth/providers
+      # Routes: /oauth/start/:provider, /oauth/callback/:provider, /oauth/login/:provider, /oauth/login/callback/:provider, /oauth/providers
       - "traefik.http.routers.vocalia-oauth.rule=Host(`api.vocalia.ma`) && PathPrefix(`/oauth`)"
       - "traefik.http.routers.vocalia-oauth.entrypoints=websecure"
       - "traefik.http.routers.vocalia-oauth.tls=true"

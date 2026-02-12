@@ -366,6 +366,100 @@ async function login({ email, password, rememberMe = false }) {
 }
 
 /**
+ * Login or register via OAuth SSO (Google, GitHub)
+ * If user exists with this email: login. If not: create account.
+ * OAuth users are auto-verified (email comes from trusted provider).
+ */
+async function loginWithOAuth({ email, name, provider, providerId }) {
+  if (!validateEmail(email)) {
+    throw new AuthError('Invalid email from OAuth provider', 'INVALID_EMAIL');
+  }
+
+  const normalizedEmail = email.toLowerCase();
+  const now = new Date().toISOString();
+
+  // Check if user exists
+  let users = await db.query('users', { email: normalizedEmail });
+  let user;
+
+  if (users.length > 0) {
+    // Existing user — update OAuth info and login
+    user = users[0];
+    await db.update('users', user.id, {
+      oauth_provider: provider,
+      oauth_provider_id: providerId,
+      last_login: now,
+      login_count: (parseInt(user.login_count) || 0) + 1,
+      failed_login_count: 0,
+      locked_until: null,
+      email_verified: true,
+      updated_at: now
+    });
+    // Re-read updated user
+    users = await db.query('users', { email: normalizedEmail });
+    user = users[0];
+  } else {
+    // New user — auto-register via OAuth (no password needed)
+    const userId = `user_${generateToken(16)}`;
+    // Random password hash (not usable for password login)
+    const randomPassword = crypto.randomBytes(64).toString('hex');
+    const passwordHash = await hashPassword(randomPassword);
+
+    user = await db.create('users', {
+      id: userId,
+      email: normalizedEmail,
+      password_hash: passwordHash,
+      name: name || normalizedEmail.split('@')[0],
+      role: 'user',
+      tenant_id: null,
+      email_verified: true,
+      oauth_provider: provider,
+      oauth_provider_id: providerId,
+      login_count: 1,
+      failed_login_count: 0,
+      preferences: JSON.stringify({ theme: 'system', lang: 'fr', notifications: true }),
+      created_at: now,
+      updated_at: now
+    });
+  }
+
+  // Generate tokens (same as standard login)
+  const accessToken = generateAccessToken(user);
+  const refreshToken = generateRefreshToken();
+  const refreshTokenHash = crypto.createHash('sha256').update(refreshToken).digest('hex');
+  const refreshExpiry = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days for OAuth
+
+  // Store session
+  const sessionId = `session_${generateToken(16)}`;
+  await db.create('auth_sessions', {
+    id: sessionId,
+    user_id: user.id,
+    refresh_token_hash: refreshTokenHash,
+    expires_at: refreshExpiry.toISOString(),
+    created_at: now,
+    last_used_at: now
+  });
+
+  console.log(`✅ [Auth] OAuth login: ${normalizedEmail} via ${provider}`);
+
+  return {
+    access_token: accessToken,
+    refresh_token: refreshToken,
+    token_type: 'Bearer',
+    expires_in: 86400,
+    user: {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      tenant_id: user.tenant_id,
+      email_verified: true,
+      preferences: (() => { try { return user.preferences ? JSON.parse(user.preferences) : {}; } catch { return {}; } })()
+    }
+  };
+}
+
+/**
  * Logout user (invalidate refresh token)
  */
 async function logout(refreshToken) {
@@ -710,6 +804,7 @@ module.exports = {
   init,
   register,
   login,
+  loginWithOAuth,
   logout,
   refreshTokens,
   verifyAccessToken,

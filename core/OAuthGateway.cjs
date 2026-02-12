@@ -30,8 +30,23 @@ const OAUTH_PROVIDERS = {
       drive: 'https://www.googleapis.com/auth/drive.file',
       gmail: 'https://www.googleapis.com/auth/gmail.readonly'
     },
+    loginScopes: 'openid email profile',
+    profileUrl: 'https://www.googleapis.com/oauth2/v2/userinfo',
     clientIdEnv: 'GOOGLE_CLIENT_ID',
     clientSecretEnv: 'GOOGLE_CLIENT_SECRET'
+  },
+  github: {
+    name: 'GitHub',
+    authUrl: 'https://github.com/login/oauth/authorize',
+    tokenUrl: 'https://github.com/login/oauth/access_token',
+    scopes: {
+      default: 'read:user user:email'
+    },
+    loginScopes: 'read:user user:email',
+    profileUrl: 'https://api.github.com/user',
+    emailsUrl: 'https://api.github.com/user/emails',
+    clientIdEnv: 'GITHUB_CLIENT_ID',
+    clientSecretEnv: 'GITHUB_CLIENT_SECRET'
   },
   hubspot: {
     name: 'HubSpot',
@@ -219,6 +234,9 @@ class OAuthGateway {
       slack: {
         access_token: 'SLACK_ACCESS_TOKEN',
         incoming_webhook: 'SLACK_WEBHOOK_URL'
+      },
+      github: {
+        access_token: 'GITHUB_ACCESS_TOKEN'
       }
     };
 
@@ -243,10 +261,155 @@ class OAuthGateway {
   }
 
   /**
+   * Get OAuth login URL (for SSO authentication, NOT integration)
+   */
+  getLoginAuthUrl(provider) {
+    const config = OAUTH_PROVIDERS[provider];
+    if (!config) throw new Error(`Unknown OAuth provider: ${provider}`);
+    if (!config.loginScopes) throw new Error(`Provider ${provider} does not support login`);
+
+    const clientId = process.env[config.clientIdEnv];
+    if (!clientId) throw new Error(`Missing ${config.clientIdEnv} environment variable`);
+
+    const state = crypto.randomBytes(32).toString('hex');
+    pendingStates.set(state, {
+      tenantId: '__login__',
+      provider,
+      scopes: ['login'],
+      createdAt: Date.now()
+    });
+    const timer = setTimeout(() => pendingStates.delete(state), 10 * 60 * 1000);
+    if (timer.unref) timer.unref();
+
+    const redirectUri = `${this.baseUrl}/oauth/login/callback/${provider}`;
+    const params = new URLSearchParams({
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      response_type: 'code',
+      scope: config.loginScopes,
+      state: state
+    });
+
+    if (provider === 'google') {
+      params.set('prompt', 'select_account');
+    }
+
+    return `${config.authUrl}?${params.toString()}`;
+  }
+
+  /**
+   * Exchange login code and fetch user profile from provider
+   */
+  async exchangeLoginCode(provider, code, state) {
+    const stateData = this.verifyState(state);
+    if (!stateData || stateData.tenantId !== '__login__') {
+      throw new Error('Invalid or expired login state token');
+    }
+
+    const config = OAUTH_PROVIDERS[provider];
+    const clientId = process.env[config.clientIdEnv];
+    const clientSecret = process.env[config.clientSecretEnv];
+
+    if (!clientId || !clientSecret) {
+      throw new Error(`Missing OAuth credentials for ${provider}`);
+    }
+
+    const redirectUri = `${this.baseUrl}/oauth/login/callback/${provider}`;
+
+    // Exchange code for tokens
+    const tokenHeaders = { 'Content-Type': 'application/x-www-form-urlencoded' };
+    if (provider === 'github') {
+      tokenHeaders['Accept'] = 'application/json';
+    }
+
+    const tokenResponse = await fetch(config.tokenUrl, {
+      method: 'POST',
+      headers: tokenHeaders,
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        code: code,
+        redirect_uri: redirectUri,
+        grant_type: 'authorization_code'
+      })
+    });
+
+    if (!tokenResponse.ok) {
+      const error = await tokenResponse.text();
+      throw new Error(`Token exchange failed: ${error}`);
+    }
+
+    const tokens = await tokenResponse.json();
+    const accessToken = tokens.access_token;
+    if (!accessToken) throw new Error('No access token received');
+
+    // Fetch user profile
+    const profileResponse = await fetch(config.profileUrl, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Accept': 'application/json',
+        'User-Agent': 'VocalIA-OAuth/1.0'
+      }
+    });
+
+    if (!profileResponse.ok) {
+      throw new Error('Failed to fetch user profile from provider');
+    }
+
+    const profile = await profileResponse.json();
+
+    // Normalize profile across providers
+    if (provider === 'google') {
+      return {
+        email: profile.email,
+        name: profile.name || profile.given_name || '',
+        avatar: profile.picture || null,
+        provider: 'google',
+        providerId: profile.id
+      };
+    }
+
+    if (provider === 'github') {
+      let email = profile.email;
+      // GitHub may not return email in profile — fetch from /user/emails
+      if (!email && config.emailsUrl) {
+        const emailsResponse = await fetch(config.emailsUrl, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Accept': 'application/json',
+            'User-Agent': 'VocalIA-OAuth/1.0'
+          }
+        });
+        if (emailsResponse.ok) {
+          const emails = await emailsResponse.json();
+          const primary = emails.find(e => e.primary && e.verified);
+          email = primary ? primary.email : (emails[0] ? emails[0].email : null);
+        }
+      }
+      if (!email) throw new Error('Unable to retrieve email from GitHub. Ensure your email is public or grant user:email scope.');
+
+      return {
+        email: email,
+        name: profile.name || profile.login || '',
+        avatar: profile.avatar_url || null,
+        provider: 'github',
+        providerId: String(profile.id)
+      };
+    }
+
+    throw new Error(`Login not supported for provider: ${provider}`);
+  }
+
+  /**
    * Start the OAuth callback server
    */
   start() {
     this.app = express();
+
+    // Initialize auth-service with DB (required for loginWithOAuth — OAuthGateway runs as separate process)
+    const authService = require('./auth-service.cjs');
+    const { getDB } = require('./GoogleSheetsDB.cjs');
+    authService.init(getDB());
 
     // Health check
     this.app.get('/health', (req, res) => {
@@ -317,6 +480,77 @@ class OAuthGateway {
             <p>${safeMsg}</p>
           </body></html>
         `);
+      }
+    });
+
+    // === SSO Login Routes (for user authentication, NOT service integration) ===
+
+    // Initiate SSO login
+    this.app.get('/oauth/login/:provider', (req, res) => {
+      const { provider } = req.params;
+      try {
+        const authUrl = this.getLoginAuthUrl(provider);
+        res.redirect(authUrl);
+      } catch (error) {
+        res.status(400).json({ error: error.message });
+      }
+    });
+
+    // SSO login callback
+    this.app.get('/oauth/login/callback/:provider', async (req, res) => {
+      const { provider } = req.params;
+      const { code, state, error } = req.query;
+      const websiteBase = process.env.WEBSITE_URL || 'https://vocalia.ma';
+
+      if (error) {
+        const safeError = encodeURIComponent(String(error));
+        return res.redirect(`${websiteBase}/login.html?oauth_error=${safeError}`);
+      }
+
+      try {
+        // Exchange code and get user profile
+        const profile = await this.exchangeLoginCode(provider, code, state);
+
+        // Authenticate via auth-service (find or create user)
+        const authService = require('./auth-service.cjs');
+        const result = await authService.loginWithOAuth({
+          email: profile.email,
+          name: profile.name,
+          provider: profile.provider,
+          providerId: profile.providerId
+        });
+
+        // Provision tenant if new user (no tenant_id yet)
+        if (!result.user.tenant_id) {
+          try {
+            const { provisionTenant, generateTenantIdFromCompany } = require('./db-api.cjs');
+            const tenantId = generateTenantIdFromCompany(profile.name || profile.email.split('@')[0]);
+            provisionTenant(tenantId, { plan: 'starter', company: profile.name || '', email: profile.email });
+
+            // Update user with tenant_id
+            const { getDB } = require('./GoogleSheetsDB.cjs');
+            await getDB().update('users', result.user.id, { tenant_id: tenantId });
+            result.user.tenant_id = tenantId;
+          } catch (provErr) {
+            console.error('❌ [OAuthGateway] Tenant provisioning failed:', provErr.message);
+          }
+        }
+
+        // Redirect to website with tokens in URL fragment (hash — not sent to server)
+        const params = new URLSearchParams({
+          access_token: result.access_token,
+          refresh_token: result.refresh_token,
+          user_id: result.user.id,
+          user_email: result.user.email,
+          user_name: result.user.name || '',
+          tenant_id: result.user.tenant_id || ''
+        });
+
+        res.redirect(`${websiteBase}/login.html#oauth_success=1&${params.toString()}`);
+      } catch (error) {
+        console.error('❌ [OAuthGateway] Login callback error:', error.message);
+        const safeError = encodeURIComponent(String(error.message));
+        res.redirect(`${websiteBase}/login.html?oauth_error=${safeError}`);
       }
     });
 
