@@ -1,6 +1,6 @@
 # VocalIA - Architecture Système Complète
 ## Document Consolidé de Référence
-### Version 2.2.0 | 09/02/2026 | Session 250.177 (Architecture audit corrections — 8 HTTP servers, deployed/non-deployed split, 5 distribution platforms)
+### Version 2.4.0 | 12/02/2026 | Session 250.199 (6 deployed + 2 non-deployed. OAuth Gateway deployed profile:integrations. Veo 3.1 E2E functional.)
 
 > **DOCUMENT UNIQUE DE RÉFÉRENCE** - Remplace tous les documents d'architecture fragmentés
 > Généré par analyse bottom-up factuelle exhaustive du codebase
@@ -125,24 +125,28 @@
 
 ## 2. ARCHITECTURE DES SERVICES
 
-### 2.1 Services HTTP (8 total — 4 deployed, 4 non-deployed)
+### 2.1 Services HTTP (8 total — 6 deployed, 2 non-deployed)
 
 **Deployed (Docker containers via Traefik):**
 
-| Service | Port | Fichier | Lignes | Fonction |
-|:--------|:----:|:--------|:------:|:---------|
-| **Voice API** | 3004 | `core/voice-api-resilient.cjs` | **3,018** | API texte multi-AI |
-| **Grok Realtime** | 3007 | `core/grok-voice-realtime.cjs` | **1,109** | WebSocket audio |
-| **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` | **4,709** | PSTN ↔ AI + 25 Function Tools |
-| **DB API** | 3013 | `core/db-api.cjs` | **2,721** | REST API + Auth + WebSocket |
+| Service | Port | Fichier | Lignes | Fonction | Docker Profile |
+|:--------|:----:|:--------|:------:|:---------|:---------------|
+| **Voice API** | 3004 | `core/voice-api-resilient.cjs` | **3,018** | API texte multi-AI | core (default) |
+| **Grok Realtime** | 3007 | `core/grok-voice-realtime.cjs` | **1,109** | WebSocket audio | core (default) |
+| **Telephony Bridge** | 3009 | `telephony/voice-telephony-bridge.cjs` | **4,709** | PSTN ↔ AI + 25 Function Tools | core (default) |
+| **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | ~400 | OAuth 2.0 SSO (Google, GitHub, HubSpot, Shopify, Slack) | integrations |
+| **DB API** | 3013 | `core/db-api.cjs` | **2,721** | REST API + Auth + WebSocket | core (default) |
+| **Video HITL** | 3012 | `core/remotion-hitl.cjs` | **374** | Video HITL + Kling/Veo pipeline | video |
+
+> **OAuth Gateway** (250.198): Deployed via `--profile integrations`. Routes: `api.vocalia.ma/oauth/*`. SSO login with tenant auto-provisioning. Awaiting GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET.
+
+> **Video HITL** (250.197-199): Deployed via `--profile video`. Routes: `api.vocalia.ma/hitl/*` (Traefik StripPrefix). Auto-triggers Kling v2.6 or Veo 3.1 generation on approval. Pipeline: `remotion-hitl.cjs → kling-service.cjs/veo-service.cjs → Python bridges`. **Veo E2E functional** (GCP ADC via service account, video generated + downloaded). Dashboard: `/app/admin/video-ads.html`.
 
 **Non-deployed (standalone servers, code exists, NOT in Docker):**
 
 | Service | Port | Fichier | Lignes | Fonction |
 |:--------|:----:|:--------|:------:|:---------|
-| **OAuth Gateway** | 3010 | `core/OAuthGateway.cjs` | ~400 | OAuth 2.0 flows |
 | **Webhook Router** | 3011 | `core/WebhookRouter.cjs` | ~350 | Inbound webhooks |
-| **Remotion HITL** | 3012 | `core/remotion-hitl.cjs` | **645** | Video HITL (hybrid: library + optional server) |
 | **MCP Server** | 3015 | `mcp-server/dist/index.js` | **19,500+** | 203 tools + 6 resources + 8 prompts (standalone, 0 imports from core) |
 
 ### 2.2 Commandes de Démarrage

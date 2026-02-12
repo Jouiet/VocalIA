@@ -12,7 +12,7 @@
 | MCP Prompts | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` | 8 |
 | Widgets | `ls widget/*.js \| wc -l` | 7 |
 | Languages | `ls website/src/locales/*.json \| wc -l` | 5 |
-| Tests | `ls test/*.mjs \| wc -l` | 70 |
+| Tests | `ls test/*.mjs \| wc -l` | 75 |
 | HTML pages | `find website -name "*.html" \| wc -l` | 80 |
 | Registry | `node -e "const r=require('./personas/client_registry.json'); console.log(Object.keys(r.clients).length)"` | 22 |
 

@@ -1,9 +1,9 @@
 # VocalIA — Roadmap to 100% Completion
 
-> **Date:** 2026-02-12 | **Session:** 250.198 (OAuth SSO Login — Google+GitHub, tenant auto-provisioning, 6 containers deployed)
-> **Code Completeness:** 9.5/10 | **Production Readiness:** 6.5/10 (6 containers healthy, /respond quota-limited, OAuth SSO deployed awaiting credentials. Missing: OAuth creds, SMTP, Stripe)
+> **Date:** 2026-02-12 | **Session:** 250.199 (Veo 3.1 ADC E2E — GCP service account, video generated+downloaded. Bug V3 gcloud fallback.)
+> **Code Completeness:** 9.5/10 | **Production Readiness:** 6.5/10 (6 containers healthy, /respond quota-limited, OAuth SSO deployed, Veo 3.1 E2E functional. Missing: Kling credits, OAuth creds, SMTP, Stripe)
 > **Methodologie:** Chaque tache est liee a un FAIT verifie par commande. Zero supposition.
-> **Source:** 39 audit phases across sessions 250.105-250.198. Latest: **OAUTH SSO (250.198)** loginWithOAuth + OAuthGateway login routes + login.html SSO buttons + tenant auto-provisioning + 2 D1-pattern bugs. Prior: marketing copy (250.195-197), SOTA dashboard (250.194), caller/callee audit (250.193). Full history: `memory/session-history.md`
+> **Source:** 40 audit phases across sessions 250.105-250.199. Latest: **VEO ADC E2E (250.199)** GCP service account, key mount, video generated+downloaded, bug V3 gcloud fallback. Prior: OAuth SSO (250.198), marketing copy (250.195-197), SOTA dashboard (250.194). Full history: `memory/session-history.md`
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. Score Actuel
 
-**Code Completeness: 9.5/10** — Features coded and tested (3,846 tests, 70 files). **394 bugs reported across 39 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197). OAuth SSO login implemented (250.198). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
+**Code Completeness: 9.5/10** — Features coded and tested (3,846 tests, 70 files). **395 bugs reported across 40 phases — ALL actionable bugs fixed, 8 not fixable locally (VPS/arch), 0 remaining.** Marketing copy remediation COMPLETE (250.195-197). OAuth SSO login implemented (250.198). Veo 3.1 E2E functional (250.199). **ALL 21 app pages use shared module system** (auth-client.js + api-client.js + toast.js). Design tokens: 23/23 ✅.
 **Production Readiness: 6.5/10** — VERIFIED 250.198 (12/02/2026) via SSH + curl:
 - `vocalia.ma` ✅ Website live (all 80 pages return 200, 64KB homepage)
 - `api.vocalia.ma/health` ✅ Voice API healthy (4 AI providers: Grok, Gemini, Claude, Atlas)
@@ -34,7 +34,7 @@
 - `api.vocalia.ma/oauth/login/github` → 400 "Missing GITHUB_CLIENT_ID" (credentials needed)
 - Docker: **6 containers healthy** (4 core + vocalia-hitl via `--profile video` + vocalia-oauth via `--profile integrations`). vocalia-data volume persistent.
 - .env VPS: 35 keys SET (JWT_SECRET, VOCALIA_VAULT_KEY, VOCALIA_INTERNAL_KEY, VOICE_API_KEY, GA4_*, all AI providers)
-- **Still MISSING**: GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET (OAuth SSO), STRIPE_SECRET_KEY (billing), SMTP_HOST/USER/PASS (email), PAYZONE_* (MAD)
+- **Still MISSING**: KLING_ACCESS_KEY/SECRET (expired credits), GOOGLE_CLIENT_ID/SECRET + GITHUB_CLIENT_ID/SECRET (OAuth SSO), STRIPE_SECRET_KEY (billing), SMTP_HOST/USER/PASS (email), PAYZONE_* (MAD)
 - 0 paying customers, 0 real conversations (quota config needed per tenant), 0 payments, 0 emails sent
 
 > **Important**: These are TWO separate scores. Code completeness measures how much code is written/tested AND how much of it actually works correctly. Production readiness measures what's deployed and functionally serving real users.
@@ -158,9 +158,10 @@ Feature injection: blocked features injected into system prompt → AI won't off
 | api.vocalia.ma/health | ✅ UP (4 AI providers configured) |
 | api.vocalia.ma/api/db/health | ✅ UP (Google Sheets connected, 7 tables) |
 | VPS Hostinger (KVM 2) | ✅ Running (2 CPU, 8 GB, 148.230.113.163) |
-| Docker containers (5) | ✅ All healthy (vocalia-api, db-api, realtime, telephony, vocalia-hitl) |
-| Non-deployed servers (4→0 core) | ~~OAuth 3010, Webhook 3011, MCP 3015~~ → docker-compose profiles (250.178). HITL 3012 deployed (250.197, profile: video). |
-| Video Studio HITL | ✅ E2E verified (250.197). Dashboard `/app/admin/video-ads`. Kling+Veo pipelines wired. 2 bugs fixed (V1: auth.getUser, V2: circular require deadlock). |
+| Docker containers (6) | ✅ All healthy (vocalia-api, db-api, realtime, telephony, vocalia-hitl, vocalia-oauth) |
+| OAuth SSO | ✅ Deployed (250.198, profile: integrations). Google+GitHub SSO. Awaiting CLIENT_ID/SECRET credentials. |
+| Non-deployed servers (2) | Webhook 3011, MCP 3015 → docker-compose profiles available but not activated |
+| Video Studio HITL | ✅ E2E verified (250.197-199). Dashboard `/app/admin/video-ads`. Kling pipeline = external 500 (crédits). **Veo 3.1 = FUNCTIONAL** (GCP ADC, video generated+downloaded). 3 bugs fixed (V1: auth.getUser, V2: circular require, V3: gcloud fallback). |
 | Traefik reverse proxy | ✅ SSL/TLS auto (Let's Encrypt) |
 | api.vocalia.ma/realtime/health | ✅ UP (7 voices, grok-realtime) |
 | api.vocalia.ma/telephony/health | ✅ UP (Twilio configured) |

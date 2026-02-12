@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~85k lines | 3,846 tests (70 .mjs, 0 skip)
+> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~85k lines | 4,903 tests (75 .mjs, 0 skip)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -53,14 +53,14 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 9.5/10 — **394 bugs found across 39 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 3,846 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages use shared ES module system.**
+- **Code completeness**: 9.5/10 — **396 bugs found across 41 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 4,903 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages use shared ES module system.**
 - **Marketing integrity**: 100% — **Marketing copy remediation COMPLETE** (250.195-197): 34 HTML items + locale key remediation (healthcare/finance/ROI across 5 locales) + 12/12 blog disclaimers. Zero false claims, zero exaggerated metrics. ROI web-verified (~3,000-5,000€/mois).
 - **Production readiness**: 6.5/10 — Website live + API redeployed (250.198). **6 containers healthy** (4 core + video HITL + OAuth). OAuth SSO deployed (Google+GitHub — awaiting credentials). Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
 - **OAuth SSO**: Deployed (250.198). `loginWithOAuth()` in auth-service + OAuthGateway login routes + login.html SSO buttons. Tenant auto-provisioning on first OAuth login. Blocked: GOOGLE_CLIENT_ID/SECRET, GITHUB_CLIENT_ID/SECRET not configured.
-- **Video Studio**: E2E verified (250.197). Dashboard at `/app/admin/video-ads`. Kling + Veo 3.1 pipelines wired. Kling API = external 500. Veo = needs GCP service account in container.
+- **Video Studio**: E2E verified (250.197-199). Dashboard at `/app/admin/video-ads`. Kling + Veo 3.1 pipelines wired. Kling API = external 500 (crédits). **Veo = FUNCTIONAL** (GCP ADC configured, video generated + downloaded 1.2 MB MP4).
 - **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. 29 tool files + index.ts + auth-provider + middleware audited. isError protocol compliance fixed.
 - **UCP**: Unified — core + MCP + voice + telephony + recommendations all share `data/ucp/{tenantId}/profiles.json`. Zero fragmentation.
-- **Next**: OAuth credentials → SMTP provider → Stripe setup → First paying customer
+- **Next**: Kling credits → OAuth credentials → SMTP provider → Stripe setup → First paying customer
 - **Weighted score**: 8.9/10
 
-*Last update: 12/02/2026 - Session 250.198 (OAuth SSO: 6 containers (4 core + video HITL + OAuth). loginWithOAuth + SSO routes + login.html buttons + tenant auto-provisioning. 2 D1-pattern bugs found by code audit. Commit 4dbaabf.)*
+*Last update: 12/02/2026 - Session 250.200 (Test optimization: 5 new test files +1,057 tests. Bug #396: eventBus.emit→publish in voice-agent-b2b. Tests: 3,846→4,903. 396 bugs / 41 phases.)*
