@@ -12,12 +12,12 @@
 | MCP Prompts | `grep -c "server.registerPrompt(" mcp-server/src/index.ts` | 8 |
 | Widgets | `ls widget/*.js \| wc -l` | 7 |
 | Languages | `ls website/src/locales/*.json \| wc -l` | 5 |
-| Tests | `ls test/*.mjs \| wc -l` | 68 |
-| HTML pages | `find website -name "*.html" \| wc -l` | 81 |
+| Tests | `ls test/*.mjs \| wc -l` | 70 |
+| HTML pages | `find website -name "*.html" \| wc -l` | 80 |
 | Registry | `node -e "const r=require('./personas/client_registry.json'); console.log(Object.keys(r.clients).length)"` | 22 |
 
-## Deployment Reality (0 deployed)
-Services: DOWN | External APIs: 0 | Paying customers: 0 | Live calls: 0 | Real conversations: 0
+## Deployment Reality (6 containers deployed, 0 revenue)
+Services: 6 containers HEALTHY (api, db-api, realtime, telephony, hitl, oauth) | External APIs: 0 configured | Paying customers: 0 | Live calls: 0 | Real conversations: 0
 
 ## INTERDIT
 - Claims sans test empirique | "Code exists" ≠ "Feature deployed" | Vanity metrics sans context

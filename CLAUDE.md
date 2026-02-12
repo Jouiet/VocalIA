@@ -1,7 +1,7 @@
 # VocalIA - Voice AI Platform
 
 > Voice AI SaaS | vocalia.ma | ~/Desktop/VocalIA/ | CommonJS (.cjs), 2 spaces, single quotes
-> 81 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~84k lines | 3,765 tests (68 .mjs, 0 skip)
+> 80 pages | 5 langs (FR/EN/ES/AR/ARY) | RTL | ~85k lines | 3,846 tests (70 .mjs, 0 skip)
 > 203 MCP tools + 6 resource types (43 URIs) + 8 prompts (SDK v1.26.0, stdio + HTTP + OAuth) | 38 personas | 25 function tools | 7 widgets
 
 ## Architecture
@@ -12,22 +12,22 @@ clients/ = 553 dirs (ALL test data) | website/ = 81 pages + locales (26.2k)
 
 ## Services (8 HTTP servers)
 
-**Deployed (4 Docker containers via Traefik):**
+**Deployed (6 Docker containers via Traefik):**
 
-| Service | Port | Script |
-|:--------|:----:|:-------|
-| Voice API | 3004 | `core/voice-api-resilient.cjs` |
-| Grok Realtime | 3007 | `core/grok-voice-realtime.cjs` |
-| Telephony | 3009 | `telephony/voice-telephony-bridge.cjs` |
-| DB API | 3013 | `core/db-api.cjs` |
+| Service | Port | Script | Profile |
+|:--------|:----:|:-------|:--------|
+| Voice API | 3004 | `core/voice-api-resilient.cjs` | core |
+| Grok Realtime | 3007 | `core/grok-voice-realtime.cjs` | core |
+| Telephony | 3009 | `telephony/voice-telephony-bridge.cjs` | core |
+| DB API | 3013 | `core/db-api.cjs` | core |
+| OAuth Gateway | 3010 | `core/OAuthGateway.cjs --start` | integrations |
+| Video HITL | 3012 | `core/remotion-hitl.cjs --server` | video |
 
 **Non-deployed (standalone, code exists):**
 
 | Service | Port | Script |
 |:--------|:----:|:-------|
-| OAuth Gateway | 3010 | `core/OAuthGateway.cjs` |
 | Webhook Router | 3011 | `core/WebhookRouter.cjs` |
-| Remotion HITL | 3012 | `core/remotion-hitl.cjs` (hybrid: library + optional server) |
 | MCP Server (HTTP) | 3015 | `mcp-server/dist/index.js --http` |
 
 ## Commands
@@ -53,12 +53,14 @@ Run `node scripts/validate-design-tokens.cjs`. Verify STALE_NUMBER_PATTERNS matc
 
 ## State
 
-- **Code completeness**: 9.5/10 — **392 bugs found across 38 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 3,765 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages use shared ES module system.**
+- **Code completeness**: 9.5/10 — **394 bugs found across 39 phases, 8 not fixable locally** (VPS/arch), rest all fixed. Tests: 3,846 pass, 0 fail. Validator: 23/23. **ALL CODE tasks complete. ALL 21 app pages use shared ES module system.**
 - **Marketing integrity**: 100% — **Marketing copy remediation COMPLETE** (250.195-197): 34 HTML items + locale key remediation (healthcare/finance/ROI across 5 locales) + 12/12 blog disclaimers. Zero false claims, zero exaggerated metrics. ROI web-verified (~3,000-5,000€/mois).
-- **Production readiness**: 6.0/10 — Website live + API redeployed (250.197). /respond OK (Grok 4.1, ~3.5s). 4 containers healthy. Missing: SMTP, Stripe, 0 paying customers.
+- **Production readiness**: 6.5/10 — Website live + API redeployed (250.198). **6 containers healthy** (4 core + video HITL + OAuth). OAuth SSO deployed (Google+GitHub — awaiting credentials). Missing: SMTP, Stripe, OAuth credentials, 0 paying customers.
+- **OAuth SSO**: Deployed (250.198). `loginWithOAuth()` in auth-service + OAuthGateway login routes + login.html SSO buttons. Tenant auto-provisioning on first OAuth login. Blocked: GOOGLE_CLIENT_ID/SECRET, GITHUB_CLIENT_ID/SECRET not configured.
+- **Video Studio**: E2E verified (250.197). Dashboard at `/app/admin/video-ads`. Kling + Veo 3.1 pipelines wired. Kling API = external 500. Veo = needs GCP service account in container.
 - **MCP Server**: Phase 0-6 DONE. MCP **9.0/10**. 29 tool files + index.ts + auth-provider + middleware audited. isError protocol compliance fixed.
 - **UCP**: Unified — core + MCP + voice + telephony + recommendations all share `data/ucp/{tenantId}/profiles.json`. Zero fragmentation.
-- **Next**: VPS redeployed (250.197). Remaining: SMTP provider → Stripe setup → First paying customer
+- **Next**: OAuth credentials → SMTP provider → Stripe setup → First paying customer
 - **Weighted score**: 8.9/10
 
-*Last update: 12/02/2026 - Session 250.197 (VPS REDEPLOYED: /respond WORKS (Grok 4.1, 3.5s). 4 containers healthy. JWT_SECRET+VAULT_KEY+INTERNAL_KEY generated. vocalia-data volume created. Code at commit 2c09fad (392 bugs fixed). Marketing copy Phase 2 complete. Production readiness 3.5→6.0.)*
+*Last update: 12/02/2026 - Session 250.198 (OAuth SSO: 6 containers (4 core + video HITL + OAuth). loginWithOAuth + SSO routes + login.html buttons + tenant auto-provisioning. 2 D1-pattern bugs found by code audit. Commit 4dbaabf.)*
