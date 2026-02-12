@@ -1,0 +1,95 @@
+{
+  "__meta": {
+    "tenant_id": "agency_internal",
+    "business_name": "VocalIA — Plateforme Voice AI",
+    "language": "fr",
+    "created_at": "2026-02-12T00:00:00Z",
+    "auto_generated": false,
+    "version": "1.0.0"
+  },
+  "business_info": {
+    "question": "Qu'est-ce que VocalIA ?",
+    "response": "VocalIA est une plateforme Voice AI SaaS qui permet aux entreprises d'ajouter un assistant vocal intelligent sur leur site web ou par téléphone. Notre IA répond aux clients en temps réel, en 5 langues (français, anglais, espagnol, arabe, darija marocain), 24h/24 et 7j/7.",
+    "keywords": ["vocalia", "quoi", "c'est quoi", "présentation", "plateforme", "voice ai"]
+  },
+  "pricing": {
+    "question": "Quels sont vos tarifs ?",
+    "response": "Nos plans : Starter à 49€/mois (widget vocal, 500 appels/mois, 2 langues), Pro à 99€/mois (5 langues, CRM, calendrier, 2000 appels/mois), E-commerce à 99€/mois (intégrations Shopify/WooCommerce, suivi commandes, stock), Telephony à 199€/mois + 0.10€/minute (numéro dédié, PSTN, transfert d'appels). Tous les plans incluent un essai gratuit de 14 jours sans engagement.",
+    "keywords": ["prix", "tarif", "coût", "combien", "plan", "abonnement", "starter", "pro", "ecommerce", "telephony", "essai"]
+  },
+  "trial": {
+    "question": "Y a-t-il un essai gratuit ?",
+    "response": "Oui, tous nos plans incluent un essai gratuit de 14 jours, sans carte bancaire requise et sans engagement. Vous pouvez tester toutes les fonctionnalités du plan choisi pendant 14 jours.",
+    "keywords": ["essai", "gratuit", "trial", "tester", "test", "démo", "14 jours"]
+  },
+  "personas": {
+    "question": "Quels types de personas proposez-vous ?",
+    "response": "VocalIA propose 38 personas pré-construits adaptés à différents secteurs : cabinets dentaires, cabinets médicaux, immobilier, notaires, e-commerce (mode, électronique, alimentation...), hôtellerie, restauration, recrutement, consulting, assurance, logistique, événementiel, juridique, bien-être, coaching, conciergerie, coiffure. Chaque persona est optimisé pour le vocabulaire et les scénarios de son secteur.",
+    "keywords": ["persona", "secteur", "industrie", "métier", "adapté", "spécialisé", "38"]
+  },
+  "languages": {
+    "question": "Quelles langues sont supportées ?",
+    "response": "VocalIA supporte 5 langues : français, anglais, espagnol, arabe standard, et darija (arabe marocain). La détection de langue est automatique — le visiteur peut parler dans sa langue et l'IA répond dans la même langue.",
+    "keywords": ["langue", "language", "français", "anglais", "espagnol", "arabe", "darija", "multilingue"]
+  },
+  "integrations": {
+    "question": "Avec quels outils VocalIA s'intègre-t-il ?",
+    "response": "VocalIA s'intègre avec : Shopify et WooCommerce (e-commerce), HubSpot et Zoho (CRM), Klaviyo (email marketing), Google Calendar (rendez-vous), Stripe (paiements), Slack (notifications), Pipedrive (CRM), PrestaShop et Magento (e-commerce). Les intégrations se configurent depuis le tableau de bord en quelques clics.",
+    "keywords": ["intégration", "shopify", "woocommerce", "hubspot", "stripe", "slack", "crm", "calendrier", "connecter"]
+  },
+  "widget": {
+    "question": "Comment fonctionne le widget vocal ?",
+    "response": "Le widget VocalIA est un bouton flottant qui s'ajoute à votre site web avec un simple copier-coller de code HTML. Les visiteurs cliquent dessus pour discuter avec votre assistant IA par texte ou par voix. Le widget est personnalisable (couleurs, logo, messages d'accueil) et s'adapte au mobile. Il utilise le Shadow DOM pour ne pas interférer avec votre site existant.",
+    "keywords": ["widget", "bouton", "installer", "site web", "chat", "vocal", "comment ça marche"]
+  },
+  "telephony": {
+    "question": "Comment fonctionne le service téléphonique ?",
+    "response": "Avec le plan Telephony (199€/mois + 0.10€/min), vous obtenez un numéro de téléphone dédié. L'IA répond aux appels téléphoniques entrants, qualifie les appelants, prend des rendez-vous, et peut transférer vers un humain si nécessaire. Les appels sont enregistrés et transcrits automatiquement.",
+    "keywords": ["téléphone", "appel", "pstn", "numéro", "telephony", "voix", "appeler"]
+  },
+  "security": {
+    "question": "VocalIA est-il sécurisé ?",
+    "response": "VocalIA utilise le chiffrement TLS/HTTPS pour toutes les communications, l'isolation des données par tenant (chaque client a ses données séparées), des tokens JWT pour l'authentification, et est conforme au RGPD. Les données sont hébergées en Europe. Nous ne vendons pas les données client.",
+    "keywords": ["sécurité", "rgpd", "données", "chiffrement", "confidentiel", "protection", "gdpr"]
+  },
+  "booking": {
+    "question": "Comment réserver une démonstration ?",
+    "response": "Vous pouvez réserver une démonstration gratuite sur vocalia.ma/booking. Nous vous montrerons la plateforme en action avec un persona adapté à votre secteur d'activité. La démo dure environ 20 minutes.",
+    "keywords": ["réserver", "démo", "démonstration", "rendez-vous", "booking", "voir"]
+  },
+  "contact": {
+    "question": "Comment contacter VocalIA ?",
+    "response": "Vous pouvez nous contacter par email à contact@vocalia.ma, réserver une démo sur vocalia.ma/booking, ou discuter directement avec moi, Nadia, votre conseillère VocalIA ! Je suis disponible 24h/24.",
+    "keywords": ["contact", "email", "joindre", "appeler", "adresse", "parler"]
+  },
+  "ecommerce": {
+    "question": "Comment VocalIA aide les e-commerçants ?",
+    "response": "Le plan E-commerce (99€/mois) connecte VocalIA à votre boutique Shopify, WooCommerce, PrestaShop ou Magento. L'IA peut : vérifier le statut des commandes, consulter le stock en temps réel, recommander des produits, gérer les retours et échanges, et qualifier les leads. Tout cela en conversation naturelle avec vos clients.",
+    "keywords": ["ecommerce", "boutique", "commande", "stock", "shopify", "woocommerce", "produit"]
+  },
+  "setup": {
+    "question": "Combien de temps pour mettre en place VocalIA ?",
+    "response": "La mise en place est rapide : ajoutez une ligne de code HTML à votre site pour le widget (5 minutes), configurez votre persona et votre knowledge base depuis le tableau de bord (15-30 minutes), et c'est en ligne. Pas besoin de développeur. Pour les intégrations CRM/e-commerce, comptez 10-15 minutes supplémentaires par intégration.",
+    "keywords": ["installer", "setup", "mise en place", "temps", "configurer", "démarrer", "combien de temps"]
+  },
+  "knowledge_base_feature": {
+    "question": "Qu'est-ce que la Knowledge Base ?",
+    "response": "La Knowledge Base est la mémoire de votre assistant IA. Vous y ajoutez les informations spécifiques à votre entreprise : horaires, services, tarifs, FAQ, procédures. L'IA utilise ces informations pour répondre avec précision aux questions de vos clients. Vous pouvez importer du contenu depuis des fichiers CSV/JSON ou depuis une URL de votre site.",
+    "keywords": ["knowledge base", "base de connaissances", "kb", "informations", "faq", "contenu"]
+  },
+  "dashboard": {
+    "question": "Y a-t-il un tableau de bord ?",
+    "response": "Oui, VocalIA inclut un tableau de bord complet accessible depuis app.vocalia.ma. Vous y trouvez : les conversations en temps réel, les statistiques d'appels, les leads qualifiés, la gestion de la Knowledge Base, la configuration du widget, le suivi de facturation, et les intégrations. Tout est accessible depuis le navigateur, pas besoin d'installer de logiciel.",
+    "keywords": ["tableau de bord", "dashboard", "statistiques", "analytics", "suivi", "gestion"]
+  },
+  "ai_technology": {
+    "question": "Quelle technologie IA utilisez-vous ?",
+    "response": "VocalIA utilise les modèles de langage les plus avancés avec un système de fallback intelligent : Grok en principal, Gemini en secours, puis Claude. Cela garantit une disponibilité maximale. La reconnaissance vocale et la synthèse vocale sont assurées par ElevenLabs pour une qualité de voix naturelle.",
+    "keywords": ["ia", "intelligence artificielle", "technologie", "grok", "modèle", "llm", "comment ça fonctionne"]
+  },
+  "difference": {
+    "question": "Quelle est la différence entre VocalIA et un chatbot classique ?",
+    "response": "Contrairement à un chatbot scriptébasé sur des arbres de décision, VocalIA utilise l'IA générative pour des conversations naturelles et contextuelles. L'assistant comprend les nuances, gère le multilingue automatiquement, et s'adapte au secteur du client grâce aux personas spécialisés. De plus, VocalIA offre la voix (pas seulement le texte), la téléphonie PSTN, et des intégrations CRM/e-commerce natives.",
+    "keywords": ["différence", "chatbot", "mieux", "avantage", "comparaison", "pourquoi vocalia"]
+  }
+}

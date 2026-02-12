@@ -3,47 +3,180 @@
   "name": "VocalIA Internal",
   "type": "agency",
   "vertical": "voice_ai_saas",
-  "plan": "enterprise",
+  "plan": "pro",
   "status": "active",
   "created_at": "2026-01-01T00:00:00Z",
+  "updated_at": "2026-02-12T00:00:00Z",
+  "quotas": {
+    "calls_monthly": 2000,
+    "sessions_monthly": 5000,
+    "kb_entries": 500,
+    "conversation_history_days": 90,
+    "users_max": 10
+  },
+  "usage": {
+    "calls_current": 0,
+    "sessions_current": 0,
+    "kb_entries_current": 0,
+    "period_start": "2026-02-01T00:00:00Z"
+  },
   "features": {
     "voice_widget": true,
-    "voice_telephony": true,
-    "email_automation": true,
-    "sms_automation": true,
+    "voice_telephony": false,
+    "email_automation": false,
+    "sms_automation": false,
+    "whatsapp": false,
     "crm_sync": true,
     "calendar_sync": true,
-    "analytics": true,
+    "hitl_enabled": true,
+    "conversation_persistence": true,
+    "analytics_dashboard": true,
+    "custom_branding": true,
+    "api_access": true,
+    "webhooks": true,
     "multi_language": true
+  },
+  "widget_config": {
+    "enabled": true,
+    "persona": "AGENCY",
+    "default_language": "fr",
+    "supported_languages": [
+      "fr",
+      "en",
+      "es",
+      "ar",
+      "ary"
+    ],
+    "position": "bottom-right",
+    "branding": {
+      "primary_color": "#5E6AD2",
+      "primary_dark": "#4A55B0",
+      "accent_color": "#10B981",
+      "dark_bg": "#191E35",
+      "logo_url": null,
+      "company_name": "VocalIA"
+    },
+    "greeting": {
+      "fr": "Bonjour ! Je suis Nadia, conseillère VocalIA. Comment puis-je vous aider à découvrir notre plateforme Voice AI ?",
+      "en": "Hello! I'm Nadia, VocalIA advisor. How can I help you discover our Voice AI platform?",
+      "es": "¡Hola! Soy Nadia, asesora de VocalIA. ¿Cómo puedo ayudarle a descubrir nuestra plataforma Voice AI?",
+      "ar": "مرحباً! أنا نادية، مستشارة VocalIA. كيف يمكنني مساعدتك في اكتشاف منصتنا للذكاء الاصطناعي الصوتي؟",
+      "ary": "أهلاً! أنا نادية، مستشارة ديال VocalIA. كيفاش نقدر نعاونك تكتاشف منصتنا ديال Voice AI؟"
+    },
+    "cta": {
+      "enabled": true,
+      "text": {
+        "fr": "Réserver une démo",
+        "en": "Book a demo",
+        "es": "Reservar una demo",
+        "ar": "احجز عرضاً توضيحياً",
+        "ary": "حجز ديمو"
+      },
+      "link": "/booking"
+    },
+    "notification_bubble": {
+      "enabled": true,
+      "delay_ms": 5000,
+      "text": {
+        "fr": "Découvrez VocalIA en discutant avec Nadia !",
+        "en": "Discover VocalIA by chatting with Nadia!",
+        "es": "¡Descubra VocalIA hablando con Nadia!",
+        "ar": "اكتشف VocalIA بالدردشة مع نادية!",
+        "ary": "كتاشف VocalIA بالهضرة مع نادية!"
+      }
+    },
+    "speech": {
+      "auto_speak_responses": true,
+      "voice_input_enabled": true,
+      "tts_provider": "native",
+      "tts_fallback": "elevenlabs"
+    },
+    "behavior": {
+      "auto_open": false,
+      "auto_open_delay_ms": 0,
+      "persist_conversation": true,
+      "max_history_messages": 50,
+      "typing_indicator": true,
+      "show_timestamps": false
+    }
+  },
+  "telephony_config": {
+    "enabled": false,
+    "phone_number": null,
+    "persona": "AGENCY",
+    "default_language": "fr",
+    "supported_languages": [
+      "fr",
+      "en"
+    ],
+    "voice": {
+      "provider": "grok",
+      "voice_id": "Sal",
+      "speed": 1.0,
+      "darija_voice": "Ghizlane"
+    },
+    "greeting": {
+      "fr": "Bonjour, vous êtes chez VocalIA. Comment puis-je vous aider ?",
+      "en": "Hello, you've reached VocalIA. How can I help you?"
+    },
+    "transfer_rules": {
+      "enabled": false,
+      "trigger_keywords": [],
+      "destination_number": null
+    }
   },
   "integrations": {
     "hubspot": {
-      "enabled": true,
-      "credentials_key": "HUBSPOT_ACCESS_TOKEN",
-      "purpose": "Lead tracking, deal management"
+      "enabled": false,
+      "credentials_key": "HUBSPOT_ACCESS_TOKEN"
+    },
+    "shopify": {
+      "enabled": false,
+      "shop_domain": "",
+      "credentials_key": "SHOPIFY_ACCESS_TOKEN"
+    },
+    "klaviyo": {
+      "enabled": false,
+      "account_id": "",
+      "credentials_key": "KLAVIYO_API_KEY"
     },
     "google": {
-      "enabled": true,
-      "scopes": [
-        "calendar",
-        "sheets",
-        "drive",
-        "gmail"
-      ],
-      "credentials_key": "GOOGLE_REFRESH_TOKEN",
-      "purpose": "Internal analytics, scheduling, notifications"
+      "enabled": false,
+      "scopes": ["calendar", "sheets"],
+      "credentials_key": "GOOGLE_REFRESH_TOKEN"
     },
     "slack": {
-      "enabled": true,
-      "credentials_key": "SLACK_WEBHOOK_URL",
-      "purpose": "Team notifications, alerts"
+      "enabled": false,
+      "credentials_key": "SLACK_WEBHOOK_URL"
     },
     "twilio": {
-      "enabled": true,
-      "credentials_key": "TWILIO_AUTH_TOKEN",
-      "account_sid": "AC_AGENCY_SID_PLACEHOLDER",
-      "purpose": "Voice telephony PSTN"
+      "enabled": false,
+      "account_sid": null,
+      "credentials_key": "TWILIO_AUTH_TOKEN"
+    },
+    "webhooks": {
+      "enabled": false,
+      "endpoints": []
     }
+  },
+  "knowledge_base": {
+    "enabled": true,
+    "languages": [
+      "fr",
+      "en",
+      "es"
+    ],
+    "auto_index": true,
+    "search_algorithm": "tfidf",
+    "max_results": 5,
+    "relevance_threshold": 0.3
+  },
+  "analytics": {
+    "enabled": true,
+    "track_conversations": true,
+    "track_leads": true,
+    "track_conversions": true,
+    "export_enabled": true
   },
   "market_rules": {
     "strict": true,
@@ -59,26 +192,26 @@
         "id": "maghreb",
         "lang": "fr",
         "currency": "EUR",
-        "symbol": "EUR",
+        "symbol": "€",
         "label": "Maghreb"
       },
       "TN": {
         "id": "maghreb",
         "lang": "fr",
         "currency": "EUR",
-        "symbol": "EUR",
+        "symbol": "€",
         "label": "Maghreb"
       },
       "FR": {
         "id": "europe",
         "lang": "fr",
         "currency": "EUR",
-        "symbol": "EUR",
+        "symbol": "€",
         "label": "Europe"
       },
       "AE": {
         "id": "mena",
-        "lang": "en",
+        "lang": "ar",
         "currency": "USD",
         "symbol": "$",
         "label": "MENA"
@@ -92,15 +225,22 @@
       }
     },
     "default": {
-      "id": "intl",
-      "lang": "en",
-      "currency": "USD",
-      "symbol": "$",
-      "label": "International"
+      "id": "europe",
+      "lang": "fr",
+      "currency": "EUR",
+      "symbol": "€",
+      "label": "Europe"
     }
   },
   "contact": {
     "email": "contact@vocalia.ma",
-    "phone": "+17624224223"
+    "phone": "+17624224223",
+    "company_name": "VocalIA",
+    "website": "https://vocalia.ma"
+  },
+  "metadata": {
+    "onboarding_completed": true,
+    "last_activity": "2026-02-12T00:00:00Z",
+    "notes": "Internal demo tenant for vocalia.ma widget"
   }
 }

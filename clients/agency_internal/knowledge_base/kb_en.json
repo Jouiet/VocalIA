@@ -1,0 +1,70 @@
+{
+  "__meta": {
+    "tenant_id": "agency_internal",
+    "business_name": "VocalIA — Voice AI Platform",
+    "language": "en",
+    "created_at": "2026-02-12T00:00:00Z",
+    "auto_generated": false,
+    "version": "1.0.0"
+  },
+  "business_info": {
+    "question": "What is VocalIA?",
+    "response": "VocalIA is a Voice AI SaaS platform that allows businesses to add an intelligent voice assistant to their website or phone line. Our AI responds to customers in real-time, in 5 languages (French, English, Spanish, Arabic, Moroccan Darija), 24/7.",
+    "keywords": ["vocalia", "what", "about", "platform", "voice ai"]
+  },
+  "pricing": {
+    "question": "What are your plans and pricing?",
+    "response": "Our plans: Starter at 49EUR/month (voice widget, 500 calls/month, 2 languages), Pro at 99EUR/month (5 languages, CRM, calendar, 2000 calls/month), E-commerce at 99EUR/month (Shopify/WooCommerce integrations, order tracking, inventory), Telephony at 199EUR/month + 0.10EUR/minute (dedicated phone number, PSTN, call transfer). All plans include a free 14-day trial with no commitment.",
+    "keywords": ["price", "pricing", "cost", "plan", "subscription", "starter", "pro", "ecommerce", "telephony", "trial"]
+  },
+  "trial": {
+    "question": "Is there a free trial?",
+    "response": "Yes, all plans include a free 14-day trial, no credit card required and no commitment. You can test all features of the chosen plan for 14 days.",
+    "keywords": ["trial", "free", "test", "demo", "14 days", "try"]
+  },
+  "personas": {
+    "question": "What types of personas do you offer?",
+    "response": "VocalIA offers 38 pre-built personas tailored to different industries: dental clinics, medical practices, real estate, notaries, e-commerce (fashion, electronics, food...), hospitality, restaurants, recruitment, consulting, insurance, logistics, events, legal, wellness, coaching, concierge, hairdressing. Each persona is optimized for the vocabulary and scenarios of its sector.",
+    "keywords": ["persona", "industry", "sector", "specialized", "tailored", "38"]
+  },
+  "languages": {
+    "question": "What languages are supported?",
+    "response": "VocalIA supports 5 languages: French, English, Spanish, standard Arabic, and Darija (Moroccan Arabic). Language detection is automatic — visitors can speak in their language and the AI responds in the same language.",
+    "keywords": ["language", "french", "english", "spanish", "arabic", "darija", "multilingual"]
+  },
+  "integrations": {
+    "question": "What tools does VocalIA integrate with?",
+    "response": "VocalIA integrates with: Shopify and WooCommerce (e-commerce), HubSpot and Zoho (CRM), Klaviyo (email marketing), Google Calendar (appointments), Stripe (payments), Slack (notifications), Pipedrive (CRM), PrestaShop and Magento (e-commerce). Integrations are configured from the dashboard in a few clicks.",
+    "keywords": ["integration", "shopify", "woocommerce", "hubspot", "stripe", "slack", "crm", "connect"]
+  },
+  "widget": {
+    "question": "How does the voice widget work?",
+    "response": "The VocalIA widget is a floating button added to your website with a simple copy-paste of HTML code. Visitors click it to chat with your AI assistant via text or voice. The widget is customizable (colors, logo, greetings) and mobile-responsive. It uses Shadow DOM so it won't interfere with your existing site.",
+    "keywords": ["widget", "button", "install", "website", "chat", "voice", "how it works"]
+  },
+  "booking": {
+    "question": "How can I book a demo?",
+    "response": "You can book a free demonstration at vocalia.ma/booking. We'll show you the platform in action with a persona tailored to your industry. The demo lasts about 20 minutes.",
+    "keywords": ["book", "demo", "demonstration", "appointment", "see"]
+  },
+  "contact": {
+    "question": "How can I contact VocalIA?",
+    "response": "You can contact us by email at contact@vocalia.ma, book a demo at vocalia.ma/booking, or chat directly with me, Nadia, your VocalIA advisor! I'm available 24/7.",
+    "keywords": ["contact", "email", "reach", "call", "address", "talk"]
+  },
+  "security": {
+    "question": "Is VocalIA secure?",
+    "response": "VocalIA uses TLS/HTTPS encryption for all communications, per-tenant data isolation (each client has separate data), JWT tokens for authentication, and is GDPR compliant. Data is hosted in Europe. We do not sell client data.",
+    "keywords": ["security", "gdpr", "data", "encryption", "privacy", "protection"]
+  },
+  "setup": {
+    "question": "How long does it take to set up VocalIA?",
+    "response": "Setup is quick: add one line of HTML code to your site for the widget (5 minutes), configure your persona and knowledge base from the dashboard (15-30 minutes), and you're live. No developer needed. For CRM/e-commerce integrations, allow 10-15 extra minutes per integration.",
+    "keywords": ["setup", "install", "time", "configure", "start", "how long"]
+  },
+  "difference": {
+    "question": "How is VocalIA different from a regular chatbot?",
+    "response": "Unlike a scripted chatbot based on decision trees, VocalIA uses generative AI for natural, contextual conversations. The assistant understands nuances, handles multilingual automatically, and adapts to the client's sector through specialized personas. Additionally, VocalIA offers voice (not just text), PSTN telephony, and native CRM/e-commerce integrations.",
+    "keywords": ["difference", "chatbot", "better", "advantage", "comparison", "why vocalia"]
+  }
+}

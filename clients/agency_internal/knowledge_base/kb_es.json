@@ -1,0 +1,45 @@
+{
+  "__meta": {
+    "tenant_id": "agency_internal",
+    "business_name": "VocalIA — Plataforma Voice AI",
+    "language": "es",
+    "created_at": "2026-02-12T00:00:00Z",
+    "auto_generated": false,
+    "version": "1.0.0"
+  },
+  "business_info": {
+    "question": "Que es VocalIA?",
+    "response": "VocalIA es una plataforma Voice AI SaaS que permite a las empresas agregar un asistente vocal inteligente a su sitio web o linea telefonica. Nuestra IA responde a los clientes en tiempo real, en 5 idiomas (frances, ingles, espanol, arabe, darija marroqui), 24/7.",
+    "keywords": ["vocalia", "que", "plataforma", "voice ai"]
+  },
+  "pricing": {
+    "question": "Cuales son sus tarifas?",
+    "response": "Nuestros planes: Starter a 49EUR/mes (widget vocal, 500 llamadas/mes, 2 idiomas), Pro a 99EUR/mes (5 idiomas, CRM, calendario, 2000 llamadas/mes), E-commerce a 99EUR/mes (integraciones Shopify/WooCommerce, seguimiento de pedidos, inventario), Telephony a 199EUR/mes + 0.10EUR/minuto (numero dedicado, PSTN, transferencia de llamadas). Todos los planes incluyen una prueba gratuita de 14 dias sin compromiso.",
+    "keywords": ["precio", "tarifa", "costo", "plan", "suscripcion", "starter", "pro", "ecommerce", "telephony", "prueba"]
+  },
+  "trial": {
+    "question": "Hay una prueba gratuita?",
+    "response": "Si, todos nuestros planes incluyen una prueba gratuita de 14 dias, sin tarjeta de credito requerida y sin compromiso. Puede probar todas las funciones del plan elegido durante 14 dias.",
+    "keywords": ["prueba", "gratis", "gratuita", "probar", "demo", "14 dias"]
+  },
+  "personas": {
+    "question": "Que tipos de personas ofrecen?",
+    "response": "VocalIA ofrece 38 personas preconstruidos adaptados a diferentes sectores: clinicas dentales, consultorios medicos, inmobiliarias, notarias, e-commerce (moda, electronica, alimentacion...), hosteleria, restaurantes, reclutamiento, consultoria, seguros, logistica, eventos, juridico, bienestar, coaching, conserjeria, peluqueria. Cada persona esta optimizado para el vocabulario y los escenarios de su sector.",
+    "keywords": ["persona", "sector", "industria", "especializado", "adaptado", "38"]
+  },
+  "languages": {
+    "question": "Que idiomas soporta VocalIA?",
+    "response": "VocalIA soporta 5 idiomas: frances, ingles, espanol, arabe estandar, y darija (arabe marroqui). La deteccion de idioma es automatica — los visitantes pueden hablar en su idioma y la IA responde en el mismo.",
+    "keywords": ["idioma", "lengua", "frances", "ingles", "espanol", "arabe", "darija", "multilingue"]
+  },
+  "contact": {
+    "question": "Como contactar a VocalIA?",
+    "response": "Puede contactarnos por email a contact@vocalia.ma, reservar una demo en vocalia.ma/booking, o chatear directamente conmigo, Nadia, su asesora VocalIA. Estoy disponible 24/7.",
+    "keywords": ["contacto", "email", "llamar", "hablar", "direccion"]
+  },
+  "booking": {
+    "question": "Como reservar una demostracion?",
+    "response": "Puede reservar una demostracion gratuita en vocalia.ma/booking. Le mostraremos la plataforma en accion con un persona adaptado a su sector de actividad. La demo dura unos 20 minutos.",
+    "keywords": ["reservar", "demo", "demostracion", "cita", "ver"]
+  }
+}

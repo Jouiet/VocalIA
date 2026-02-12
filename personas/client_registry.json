@@ -3,7 +3,7 @@
         "agency_internal": {
             "name": "VocalIA",
             "sector": "AGENCY",
-            "currency": "USD",
+            "currency": "EUR",
             "language": "fr",
             "knowledge_base_id": "agency_v3",
             "payment_method": "WISE",
