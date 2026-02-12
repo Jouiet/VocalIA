@@ -419,7 +419,7 @@ services:
     profiles: ["video"]
     volumes:
       - vocalia-data:/vocalia-data
-      - ./vocalia-veo-key.json:/app/vocalia-veo-key.json:ro
+      - ./vocalia-veo-key.json:/secrets/vocalia-veo-key.json:ro
     environment:
       - NODE_ENV=production
       - REMOTION_HITL_PORT=3012
@@ -427,7 +427,7 @@ services:
       - KLING_SECRET_KEY=${KLING_SECRET_KEY}
       - GOOGLE_CLOUD_PROJECT=${GOOGLE_CLOUD_PROJECT}
       - GOOGLE_CLOUD_REGION=${GOOGLE_CLOUD_REGION:-us-central1}
-      - GOOGLE_APPLICATION_CREDENTIALS=/app/vocalia-veo-key.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/secrets/vocalia-veo-key.json
     command: >
       sh -c "
         apk add --no-cache git curl python3 py3-pip &&

@@ -222,14 +222,17 @@ class VeoGenerator:
 
         if gcs_uri.startswith("gs://"):
             # Primary: gcloud storage cp (uses user ADC, most reliable)
-            result = subprocess.run(
-                ["gcloud", "storage", "cp", gcs_uri, output_path,
-                 "--project", self.project],
-                capture_output=True, text=True, timeout=300
-            )
-            if result.returncode == 0 and os.path.exists(output_path):
-                print(f"[Veo3.1] Downloaded to {output_path}", file=sys.stderr)
-                return
+            try:
+                result = subprocess.run(
+                    ["gcloud", "storage", "cp", gcs_uri, output_path,
+                     "--project", self.project],
+                    capture_output=True, text=True, timeout=300
+                )
+                if result.returncode == 0 and os.path.exists(output_path):
+                    print(f"[Veo3.1] Downloaded to {output_path}", file=sys.stderr)
+                    return
+            except FileNotFoundError:
+                print("[Veo3.1] gcloud CLI not available, skipping...", file=sys.stderr)
 
             # Fallback: google-cloud-storage library
             if HAS_GCS:
