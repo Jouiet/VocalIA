@@ -260,9 +260,11 @@
       try {
         // Get email from localStorage if available
         const email = localStorage.getItem('vocalia_pending_verification_email');
-        if (email) {
-          await auth.resendVerificationEmail(email);
+        if (!email) {
+          toast.error('Email non trouvé. Veuillez vous réinscrire.');
+          return;
         }
+        await auth.resendVerificationEmail(email);
         showView('resend-success-view');
       } catch (error) {
         console.error('Resend error:', error);

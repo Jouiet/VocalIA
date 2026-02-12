@@ -237,10 +237,18 @@
     const errorMessage = document.getElementById('error-message');
     const googleLoginBtn = document.getElementById('google-login');
 
+    // Validate return URL — only allow same-origin paths to prevent open redirect
+    function getSafeReturnUrl() {
+      const returnUrl = new URLSearchParams(window.location.search).get('return');
+      if (!returnUrl) return '/app/client/index.html';
+      // Only allow relative paths starting with /
+      if (returnUrl.startsWith('/') && !returnUrl.startsWith('//')) return returnUrl;
+      return '/app/client/index.html';
+    }
+
     // Check if already logged in
     if (auth.isAuthenticated()) {
-      const returnUrl = new URLSearchParams(window.location.search).get('return');
-      window.location.href = returnUrl || '/app/client/index.html';
+      window.location.href = getSafeReturnUrl();
     }
 
     // Toggle password visibility
@@ -306,8 +314,7 @@
 
         // Redirect after short delay
         setTimeout(() => {
-          const returnUrl = new URLSearchParams(window.location.search).get('return');
-          window.location.href = returnUrl || '/app/client/index.html';
+          window.location.href = getSafeReturnUrl();
         }, 500);
 
       } catch (error) {

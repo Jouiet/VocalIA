@@ -303,6 +303,12 @@
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
+    // XSS protection
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     // Initialize i18n (RTL support for AR/ARY)
     if (window.VocaliaI18n) {
       await VocaliaI18n.initI18n();
@@ -364,12 +370,12 @@
       container.innerHTML = keys.map(k => `
         <div class="flex items-center justify-between p-3 border border-zinc-200 dark:border-white/[0.08] rounded-lg">
           <div>
-            <p class="font-medium text-zinc-900 dark:text-white">${k.name}</p>
-            <p class="text-sm text-zinc-500 font-mono">${k.key || '••••••••••••••••'}</p>
+            <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(k.name)}</p>
+            <p class="text-sm text-zinc-500 font-mono">${escapeHtml(k.key) || '••••••••••••••••'}</p>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-xs px-2 py-1 rounded ${k.type === 'production' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}">${k.type}</span>
-            <button onclick="deleteApiKey('${k.id}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded text-red-500" title="Supprimer">
+            <span class="text-xs px-2 py-1 rounded ${k.type === 'production' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300'}">${escapeHtml(k.type)}</span>
+            <button onclick="deleteApiKey('${escapeHtml(k.id)}')" class="p-2 hover:bg-zinc-100 dark:hover:bg-white/[0.06] rounded text-red-500" title="Supprimer">
               <i data-lucide="trash-2" class="w-4 h-4"></i>
             </button>
           </div>

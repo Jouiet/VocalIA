@@ -296,6 +296,12 @@
     import toast from '/src/lib/toast.js';
     import modal from '/src/lib/modal.js';
 
+    // XSS protection
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     // Initialize i18n (RTL support for AR/ARY)
     if (window.VocaliaI18n) {
       await VocaliaI18n.initI18n();
@@ -377,18 +383,18 @@
                 <span class="absolute -bottom-1 -right-1 w-3 h-3 rounded-full ${isHealthy ? 'bg-green-500' : 'bg-amber-500'} border-2 border-white dark:border-zinc-900"></span>
               </div>
               <div>
-                <p class="font-medium text-zinc-900 dark:text-white">${meta.name}</p>
+                <p class="font-medium text-zinc-900 dark:text-white">${escapeHtml(meta.name)}</p>
                 <div class="flex items-center gap-3 text-xs text-zinc-500">
                   <span>Connecté le ${new Date(i.connected_at).toLocaleDateString()}</span>
-                  ${syncLabel ? '<span class="text-green-500">' + syncLabel + '</span>' : ''}
+                  ${syncLabel ? '<span class="text-green-500">' + escapeHtml(syncLabel) + '</span>' : ''}
                 </div>
               </div>
             </div>
             <div class="flex items-center gap-2">
-              <button onclick="testIntegration('${i.name}')" class="px-3 py-1.5 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-600 dark:text-zinc-300 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.06]" title="Test connection">
+              <button onclick="testIntegration('${escapeHtml(i.name)}')" class="px-3 py-1.5 text-sm border border-zinc-300 dark:border-white/[0.08] text-zinc-600 dark:text-zinc-300 rounded-lg hover:bg-zinc-50 dark:hover:bg-white/[0.06]" title="Test connection">
                 <i data-lucide="activity" class="w-4 h-4 inline"></i>
               </button>
-              <button onclick="disconnectIntegration('${i.name}')" class="px-3 py-1.5 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
+              <button onclick="disconnectIntegration('${escapeHtml(i.name)}')" class="px-3 py-1.5 text-sm border border-red-300 text-red-600 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20">
                 Déconnecter
               </button>
             </div>
