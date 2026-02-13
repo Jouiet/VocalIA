@@ -498,6 +498,8 @@ function validate() {
     if (COMPONENT_TEMPLATE_DIRS.includes(topDir)) continue;
     // Skip app/components/ (sidebar templates)
     if (parts[0] === 'app' && parts[1] === 'components') continue;
+    // Skip offline.html (PWA Service Worker fallback — self-contained by design)
+    if (path.basename(file) === 'offline.html') continue;
 
     const content = fs.readFileSync(file, 'utf-8');
     const rel = relPath(file);

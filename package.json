@@ -1,7 +1,7 @@
 {
   "name": "vocalia",
   "version": "1.0.0",
-  "description": "VocalIA - Voice AI Platform for MENA & Europe",
+  "description": "VocalIA - Voice AI Platform for Europe, MENA & International",
   "author": "VocalIA <contact@vocalia.ma>",
   "license": "PROPRIETARY",
   "main": "core/index.js",
@@ -41,9 +41,10 @@
     "google-auth-library": "^10.5.0",
     "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.3",
-    "nodemailer": "^6.10.1",
+    "nodemailer": "^8.0.1",
     "papaparse": "^5.5.3",
     "pdfkit": "^0.17.2",
+    "resend": "^6.9.2",
     "twilio": "^4.19.0",
     "ws": "^8.14.2"
   },
@@ -52,7 +53,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Jouiet/VoicalAI.git"
+    "url": "https://github.com/Jouiet/VocalIA.git"
   },
   "keywords": [
     "voice-ai",

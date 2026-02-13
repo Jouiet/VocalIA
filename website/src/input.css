@@ -337,8 +337,8 @@
   .card {
     position: relative;
     background: rgba(51, 65, 85, 0.6);
-    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     border: 1px solid rgba(148, 163, 184, 0.12);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
@@ -389,8 +389,8 @@
      ======================================================================= */
   .glass-panel {
     background: rgba(17, 17, 20, 0.6);
-    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
     border: 1px solid rgba(161, 161, 170, 0.1);
     border-radius: var(--radius-xl);
     transition: all 200ms ease;
@@ -409,8 +409,8 @@
   .liquid-glass {
     position: relative;
     background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--radius-xl);
     box-shadow:
@@ -478,8 +478,8 @@
   .card-float {
     position: relative;
     background: rgba(51, 65, 85, 0.6);
-    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: var(--radius-xl);
     padding: 1.5rem;
@@ -626,8 +626,8 @@
   .stat-card {
     position: relative;
     background: rgba(51, 65, 85, 0.5);
-    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
     border: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: var(--radius-lg);
     padding: 1.25rem;
@@ -1518,8 +1518,8 @@ html.light .card,
 [data-theme="light"] .stat-card,
 [data-theme="light"] .card {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   border-color: rgba(0, 0, 0, 0.08);
   box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.06),
@@ -2996,8 +2996,8 @@ body.gsap-ready [data-reveal="scale"] {
   .bg-slate-900\/90 { background-color: rgb(15 23 42 / 0.90); }
 
   /* Primary brand with opacity (for glows and accents) */
-  .bg-vocalia-600\/20 { background-color: oklch(54% 0.22 270 / 0.20); }
-  .bg-vocalia-600\/30 { background-color: oklch(54% 0.22 270 / 0.30); }
+  .bg-vocalia-600\/20 { background-color: rgb(78 70 229 / 0.20); background-color: oklch(54% 0.22 270 / 0.20); }
+  .bg-vocalia-600\/30 { background-color: rgb(78 70 229 / 0.30); background-color: oklch(54% 0.22 270 / 0.30); }
   .bg-indigo-500\/20 { background-color: rgb(99 102 241 / 0.20); }
   .bg-indigo-500\/30 { background-color: rgb(99 102 241 / 0.30); }
 }

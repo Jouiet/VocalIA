@@ -154,7 +154,7 @@ except CallError as e:
 
 - [Documentation](https://vocalia.ma/docs)
 - [API Reference](https://vocalia.ma/docs/api)
-- [GitHub](https://github.com/Jouiet/VoicalAI)
+- [GitHub](https://github.com/Jouiet/VocalIA)
 
 ## License
 

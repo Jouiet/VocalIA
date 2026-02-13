@@ -104,7 +104,7 @@ MCP définit **3 primitives serveur** (spec 2025-06-18) :
 |:--:|:----|:--------|:-------:|
 | ML1 | **PersonaKeyEnum tiers ≠ PERSONAS_DATA** — enum comments don't match data structure. | `index.ts` | **PLAUSIBLE** (non vérifié en détail) |
 | ML2 | **withLogging 5/22 inline** — claim que seulement 5 tools ont le logging. | `index.ts` | **TROMPEUR** — 4 inline + ALL 181 module tools via registerModuleTool = 185/203 tools logged |
-| ML3 | **server.json repo URL typo** — `VoicalAI` au lieu de `VocalIA`. | `server.json:8`, `package.json:33` | **CONFIRMÉ** |
+| ML3 | **server.json repo URL typo** — `VocalIA` au lieu de `VocalIA`. | `server.json:8`, `package.json:33` | **CONFIRMÉ** |
 
 ### Patterns Systémiques
 
@@ -206,7 +206,7 @@ MCP définit **3 primitives serveur** (spec 2025-06-18) :
 | # | Tâche | Status | Notes |
 |:-:|:------|:------:|:------|
 | 5.1 | **npm publish** | ⬚ | Package ready. Needs `npm login` + `npm publish --access public`. |
-| 5.2 | **server.json** | ✅ | Done (250.171c). **WARNING: repo URL typo `VoicalAI` (ML3)** |
+| 5.2 | **server.json** | ✅ | Done (250.171c). **WARNING: repo URL typo `VocalIA` (ML3)** |
 | 5.3 | **MCP Registry** | ⬚ | Needs npm publish first |
 | 5.4 | **Docker image** | ✅ | Dockerfile + .dockerignore. Multi-stage node:22-alpine. Not tested. |
 | 5.5 | **GitHub Release** | ✅ | Code committed. |
@@ -227,7 +227,7 @@ MCP définit **3 primitives serveur** (spec 2025-06-18) :
 | 6.9 | **UCP profileKey safe separator** (MM2) | MEDIUM | ✅ | `::` separator (unambiguous, disallowed in IDs) |
 | 6.10 | **exec timeout** for translation QA (MM6) | MEDIUM | ✅ | 30s timeout on `execAsync()` |
 | 6.11 | **CORS wildcard warning** (MM5) | MEDIUM | ✅ | Logs warning when `MCP_CORS_ORIGINS=*` in HTTP mode |
-| 6.12 | **Fix repo URL typo** VoicalAI → VocalIA (ML3) | LOW | ✅ | Fixed in server.json + package.json |
+| 6.12 | **Fix repo URL typo** VocalIA → VocalIA (ML3) | LOW | ✅ | Fixed in server.json + package.json |
 
 **Bonus fixes**: Stripe API version updated `2024-12-18.acacia` → `2026-01-28.clover` (MM8). RecommendationService module noise suppressed (MM7).
 

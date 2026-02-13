@@ -33,6 +33,8 @@ class RevenueScience {
         };
 
         // Multi-Sector Yield Models
+        // VOICE_AI = active product. SEO_AUTOMATION & CONTENT_FACTORY = planned future sectors
+        // (referenced by BillingAgent pricing model — do not remove)
         this.models = {
             VOICE_AI: { floor: 500, target: 1200, max: 5000 },
             SEO_AUTOMATION: { floor: 300, target: 800, max: 2000 },

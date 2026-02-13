@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>500 - Erreur serveur | VocalIA</title>
+  <meta name="description" content="Erreur serveur. Nos équipes travaillent sur le problème.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://vocalia.ma/500" />
+
+  <!-- Hreflang for i18n SEO -->
+  <link rel="alternate" hreflang="fr" href="https://vocalia.ma/500?lang=fr" />
+  <link rel="alternate" hreflang="en" href="https://vocalia.ma/500?lang=en" />
+  <link rel="alternate" hreflang="es" href="https://vocalia.ma/500?lang=es" />
+  <link rel="alternate" hreflang="ar" href="https://vocalia.ma/500?lang=ar" />
+  <link rel="alternate" hreflang="ary" href="https://vocalia.ma/500?lang=ary" />
+  <link rel="alternate" hreflang="x-default" href="https://vocalia.ma/500" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#5E6AD2">
+
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://api.vocalia.ma https://plausible.io https://ipapi.co; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <link href="/public/css/style.css" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.469.0" integrity="sha384-hJnF5AwidE18GSWTAGHv3ByzzvfNZ1Tcx5y1UUV3WkauuMCEzBJBMSwSt/PUPXnM" crossorigin="anonymous"></script>
+
+  <style>
+    .vocalia-gradient { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
+    .error-code {
+      font-size: clamp(8rem, 20vw, 16rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5)); }
+      50% { opacity: 0.8; filter: drop-shadow(0 0 40px rgba(99, 102, 241, 0.8)); }
+    }
+  </style>
+  <!-- Plausible Analytics (Privacy-First, GDPR Compliant) -->
+  <script defer data-domain="vocalia.ma" src="https://plausible.io/js/script.js"></script>
+
+</head>
+
+<body class="bg-[#050505] text-white font-inter min-h-screen flex flex-col">
+  <!-- Navigation -->
+  <div data-component="header"></div>
+
+  <!-- Main Content -->
+  <main id="main-content" class="flex-1 flex items-center justify-center px-4 pt-16">
+    <div class="text-center max-w-2xl mx-auto">
+      <div class="error-code mb-4" aria-hidden="true">500</div>
+
+      <h1 class="text-3xl md:text-4xl font-bold mb-4" data-i18n="error_500.title">
+        Erreur serveur
+      </h1>
+      <p class="text-zinc-400 text-lg mb-8 max-w-md mx-auto" data-i18n="error_500.message">
+        Nos équipes travaillent sur le problème. Réessayez dans quelques instants.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button onclick="location.reload()" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl vocalia-gradient hover:opacity-90 transition font-semibold">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+          </svg>
+          <span data-i18n="error_500.retry">Réessayer</span>
+        </button>
+        <a href="/" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] transition font-medium">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+          </svg>
+          <span data-i18n="error_page.back_home">Retour à l'accueil</span>
+        </a>
+      </div>
+
+      <div class="mt-12">
+        <a href="/status" class="text-zinc-500 hover:text-zinc-300 text-sm transition" data-i18n="error_500.check_status">
+          Vérifier le statut des services
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div data-component="footer"></div>
+
+  <!-- i18n -->
+  <script src="/src/lib/geo-detect.js"></script>
+  <script src="/src/lib/i18n.js"></script>
+  <script>
+    (async function() {
+      const geo = await VocaliaGeo.getGeo();
+      await VocaliaI18n.initI18n(geo.lang);
+      VocaliaI18n.translatePage();
+    })();
+  </script>
+
+  <!-- Inline Fallback -->
+  <script>
+  (function() {
+    'use strict';
+    window.plausible = window.plausible || function() {
+      (window.plausible.q = window.plausible.q || []).push(arguments);
+    };
+    function initLucide() {
+      if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+        lucide.createIcons();
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLucide);
+    } else {
+      initLucide();
+    }
+    window.addEventListener('load', initLucide);
+  })();
+  </script>
+  <script src="/src/lib/event-delegation.js?v=250" defer></script>
+  <script src="/src/lib/components.js" defer></script>
+</body>
+</html>

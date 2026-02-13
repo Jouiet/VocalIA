@@ -5551,5 +5551,11 @@
     "english": "English",
     "spanish": "Spanish"
   },
-  "per_min": "/min"
+  "per_min": "/min",
+  "cookie": {
+    "message": "We use analytics cookies (Plausible) to improve your experience. No personal data is collected.",
+    "learn_more": "Learn more",
+    "accept": "Accept",
+    "reject": "Reject"
+  }
 }

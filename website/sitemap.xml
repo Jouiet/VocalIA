@@ -12,6 +12,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/"/>
     </url>
 
@@ -25,6 +26,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/features?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/features?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/features?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/features?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/features"/>
     </url>
 
@@ -38,6 +40,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/pricing?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/pricing?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/pricing?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/pricing?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/pricing"/>
     </url>
 
@@ -51,6 +54,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/products/voice-widget?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/products/voice-widget?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/products/voice-widget?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/products/voice-widget?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/products/voice-widget"/>
     </url>
     <url>
@@ -62,6 +66,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/products/voice-telephony?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/products/voice-telephony?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/products/voice-telephony?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/products/voice-telephony?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/products/voice-telephony"/>
     </url>
 
@@ -75,6 +80,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/about?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/about?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/about?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/about?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/about"/>
     </url>
 
@@ -88,6 +94,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/contact?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/contact?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/contact?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/contact?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/contact"/>
     </url>
 
@@ -101,6 +108,7 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://vocalia.ma/booking?lang=en"/>
         <xhtml:link rel="alternate" hreflang="es" href="https://vocalia.ma/booking?lang=es"/>
         <xhtml:link rel="alternate" hreflang="ar" href="https://vocalia.ma/booking?lang=ar"/>
+        <xhtml:link rel="alternate" hreflang="ary" href="https://vocalia.ma/booking?lang=ary"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://vocalia.ma/booking"/>
     </url>
 

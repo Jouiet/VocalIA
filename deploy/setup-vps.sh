@@ -107,7 +107,7 @@ mkdir -p /var/log/vocalia
 # Clone repository (or copy files)
 if [ ! -d "/var/www/vocalia/.git" ]; then
     echo "   Cloning VocalIA repository..."
-    git clone https://github.com/Jouiet/VoicalAI.git /var/www/vocalia
+    git clone https://github.com/Jouiet/VocalIA.git /var/www/vocalia
 else
     echo "   Pulling latest changes..."
     cd /var/www/vocalia && git pull

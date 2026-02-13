@@ -9,8 +9,8 @@
 ## Setup
 
 ```bash
-git clone https://github.com/Jouiet/VoicalAI.git
-cd VoicalAI
+git clone https://github.com/Jouiet/VocalIA.git
+cd VocalIA
 npm install
 cp .env.example .env  # Configure API keys
 ```

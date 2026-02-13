@@ -44,8 +44,8 @@ dev = [
 [project.urls]
 Homepage = "https://vocalia.ma"
 Documentation = "https://vocalia.ma/docs"
-Repository = "https://github.com/Jouiet/VoicalAI"
-Issues = "https://github.com/Jouiet/VoicalAI/issues"
+Repository = "https://github.com/Jouiet/VocalIA"
+Issues = "https://github.com/Jouiet/VocalIA/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

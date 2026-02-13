@@ -231,7 +231,7 @@
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
                                     <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Ratio</label>
-                                    <select id="kling-ratio"
+                                    <select id="kling-ratio" aria-label="Aspect ratio"
                                         class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
                                         <option value="16:9">16:9 Landscape</option>
                                         <option value="9:16">9:16 Vertical</option>
@@ -240,7 +240,7 @@
                                 </div>
                                 <div>
                                     <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Duration</label>
-                                    <select id="kling-duration"
+                                    <select id="kling-duration" aria-label="Duration"
                                         class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
                                         <option value="5">5s</option>
                                         <option value="10">10s</option>
@@ -248,7 +248,7 @@
                                 </div>
                                 <div>
                                     <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Mode</label>
-                                    <select id="kling-mode"
+                                    <select id="kling-mode" aria-label="Generation mode"
                                         class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
                                         <option value="pro">Pro</option>
                                         <option value="std">Standard</option>
@@ -258,7 +258,7 @@
                             <div>
                                 <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Negative
                                     Prompt</label>
-                                <input type="text" id="kling-negative"
+                                <input type="text" id="kling-negative" aria-label="Negative prompt"
                                     class="w-full bg-black/40 border border-white/5 rounded-lg px-3 py-1.5 text-xs text-zinc-300 outline-none placeholder:text-zinc-600"
                                     placeholder="low quality, blurry, distorted, watermark">
                             </div>
@@ -272,7 +272,7 @@
                             <div class="grid grid-cols-3 gap-3">
                                 <div>
                                     <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Ratio</label>
-                                    <select id="veo-ratio"
+                                    <select id="veo-ratio" aria-label="Aspect ratio"
                                         class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
                                         <option value="16:9">16:9 Landscape</option>
                                         <option value="9:16">9:16 Vertical</option>
@@ -281,7 +281,7 @@
                                 <div>
                                     <label
                                         class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Resolution</label>
-                                    <select id="veo-resolution"
+                                    <select id="veo-resolution" aria-label="Resolution"
                                         class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
                                         <option value="1080p">1080p</option>
                                         <option value="720p">720p</option>
@@ -290,7 +290,7 @@
                                 <div>
                                     <label
                                         class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Duration</label>
-                                    <select id="veo-duration"
+                                    <select id="veo-duration" aria-label="Duration"
                                         class="w-full bg-black/40 border border-white/5 rounded-lg px-2 py-1.5 text-xs text-zinc-300 outline-none">
                                         <option value="8">8s</option>
                                         <option value="6">6s</option>
@@ -308,7 +308,7 @@
                             <div>
                                 <label class="text-[9px] text-zinc-500 uppercase font-bold block mb-1">Negative
                                     Prompt</label>
-                                <input type="text" id="veo-negative"
+                                <input type="text" id="veo-negative" aria-label="Negative prompt"
                                     class="w-full bg-black/40 border border-white/5 rounded-lg px-3 py-1.5 text-xs text-zinc-300 outline-none placeholder:text-zinc-600"
                                     placeholder="sci-fi, holograms, neon, robots, low quality">
                             </div>
@@ -364,7 +364,7 @@
                 <div class="glass-panel flex flex-col h-[650px]">
                     <div class="p-6 border-b border-white/5 flex items-center justify-between">
                         <h3 class="font-bold outfit">Production Queue</h3>
-                        <button id="refresh-btn"
+                        <button id="refresh-btn" aria-label="Refresh queue"
                             class="p-2 hover:bg-white/5 rounded-full transition-all text-zinc-500 hover:text-white">
                             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                         </button>
@@ -387,7 +387,7 @@
                     <h2 class="text-2xl font-bold outfit gradient-text">Review Video Master</h2>
                     <p id="modal-id" class="text-[10px] text-zinc-600 font-mono mt-1">UUID: --</p>
                 </div>
-                <button id="close-modal" class="p-3 bg-white/5 hover:bg-white/10 rounded-full transition-all"><i
+                <button id="close-modal" aria-label="Fermer" class="p-3 bg-white/5 hover:bg-white/10 rounded-full transition-all"><i
                         data-lucide="x"></i></button>
             </div>
 

@@ -43,7 +43,7 @@ FOOTER_HTML = '''  <footer class="bg-slate-900 border-t border-slate-800">
             <a href="https://linkedin.com/company/vocalia" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="LinkedIn">
               <i data-lucide="linkedin" class="w-4 h-4"></i>
             </a>
-            <a href="https://github.com/Jouiet/VoicalAI" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="GitHub">
+            <a href="https://github.com/Jouiet/VocalIA" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="GitHub">
               <i data-lucide="github" class="w-4 h-4"></i>
             </a>
             <a href="https://youtube.com/@vocalia" class="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-zinc-400 hover:text-white transition" aria-label="YouTube">

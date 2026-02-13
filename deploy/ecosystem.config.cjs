@@ -117,7 +117,7 @@ module.exports = {
       user: 'vocalia',
       host: 'vps.vocalia.ma',
       ref: 'origin/main',
-      repo: 'git@github.com:Jouiet/VoicalAI.git',
+      repo: 'git@github.com:Jouiet/VocalIA.git',
       path: '/var/www/vocalia',
       'pre-deploy-local': '',
       'post-deploy': 'npm install && pm2 reload ecosystem.config.cjs --env production',

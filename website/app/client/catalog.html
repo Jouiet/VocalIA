@@ -154,11 +154,11 @@
                   class="w-full pl-10 pr-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="Rechercher un article..." data-i18n-placeholder="catalog.search_placeholder">
               </div>
-              <select id="category-filter"
+              <select id="category-filter" aria-label="Filtrer par catégorie"
                 class="px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
                 <option value="" data-i18n="catalog.filter.all_categories">Toutes les catégories</option>
               </select>
-              <select id="status-filter"
+              <select id="status-filter" aria-label="Filtrer par statut"
                 class="px-4 py-2 border border-zinc-300 dark:border-white/[0.08] rounded-lg bg-white dark:bg-white/[0.06] text-zinc-900 dark:text-white">
                 <option value="" data-i18n="catalog.filter.all_status">Tous les statuts</option>
                 <option value="available" data-i18n="catalog.filter.available">Disponible</option>
@@ -232,12 +232,12 @@
               <span data-i18n="catalog.items">articles</span>
             </p>
             <div class="flex gap-2">
-              <button id="prev-page"
+              <button id="prev-page" aria-label="Page précédente"
                 class="px-3 py-1 border border-zinc-300 dark:border-white/[0.08] rounded text-sm disabled:opacity-50"
                 disabled>
                 <i data-lucide="chevron-left" class="w-4 h-4"></i>
               </button>
-              <button id="next-page"
+              <button id="next-page" aria-label="Page suivante"
                 class="px-3 py-1 border border-zinc-300 dark:border-white/[0.08] rounded text-sm disabled:opacity-50">
                 <i data-lucide="chevron-right" class="w-4 h-4"></i>
               </button>
@@ -272,14 +272,14 @@
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="catalog.import_modal.title">
             Importer le catalogue</h3>
-          <button id="close-import-modal" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <button id="close-import-modal" aria-label="Fermer" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
             <i data-lucide="x" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
 
         <div class="space-y-4">
           <div class="border-2 border-dashed border-zinc-300 dark:border-white/[0.08] rounded-lg p-8 text-center">
-            <input type="file" id="file-input" class="hidden" accept=".json,.csv,.xlsx">
+            <input type="file" id="file-input" aria-label="Fichier catalogue" class="hidden" accept=".json,.csv,.xlsx">
             <i data-lucide="upload-cloud" class="w-12 h-12 mx-auto text-zinc-400 mb-4"></i>
             <p class="text-zinc-600 dark:text-zinc-400 mb-2" data-i18n="catalog.import_modal.drag_drop">Glissez un
               fichier ici ou</p>
@@ -335,7 +335,7 @@
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="catalog.add_modal.title">Ajouter
             un article</h3>
-          <button id="close-add-modal" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <button id="close-add-modal" aria-label="Fermer" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
             <i data-lucide="x" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>
@@ -423,7 +423,7 @@
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold text-zinc-900 dark:text-white" data-i18n="catalog.connector.title">Connecter
             une plateforme e-commerce</h3>
-          <button id="close-connector-modal" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
+          <button id="close-connector-modal" aria-label="Fermer" class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.08]">
             <i data-lucide="x" class="w-5 h-5 text-zinc-400"></i>
           </button>
         </div>

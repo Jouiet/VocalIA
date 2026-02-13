@@ -260,7 +260,7 @@
 | Platform | URL | Status |
 |:---------|:----|:------:|
 | LinkedIn | `linkedin.com/company/vocalia` | Link exists, profile not verified |
-| GitHub | `github.com/Jouiet/VoicalAI` | **TYPO**: "VoicalAI" not "VocalIA" |
+| GitHub | `github.com/Jouiet/VocalIA` | **TYPO**: "VocalIA" not "VocalIA" |
 | Twitter/X | — | **NOT PRESENT** in footer |
 | Facebook | — | **NOT PRESENT** in footer |
 | Instagram | — | **NOT PRESENT** in footer |
@@ -294,7 +294,7 @@ CONVERSION:              0 — NO functional acquisition mechanism
 | 5 | ~~Decide B2C product~~ — merged into Pro 99€ | ✅ Done | Pricing clarity | ✅ Session 250.143 |
 | 6 | ~~Increase telephony price~~ — 0.06→0.10→0.24€/min | ✅ Done | Margin 8%→38%→77% | ✅ Session 250.143+250.204 |
 | 7 | **Serve brotli** via nginx config on VPS | 30min | Transfer -55% | ❌ Infrastructure |
-| 8 | **Fix GitHub typo** — VoicalAI → VocalIA (or rename repo) | 5min | Brand consistency | ❌ |
+| 8 | **Fix GitHub typo** — VocalIA → VocalIA (or rename repo) | 5min | Brand consistency | ❌ |
 | 9 | **Configure Google Sheets DB** — GOOGLE_SHEETS_ID in .env | 30min | Contact form actually persists | ❌ |
 
 ---

@@ -1897,7 +1897,7 @@ VocalIA's architecture is **85% SOTA-aligned**:
 ---
 
 *Màj: 30/01/2026 - Session 244.2 (RLHF + YourAtlas + vercel.json removed)*
-*Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
+*Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VocalIA*
 
 ### Session 244.3: RLHF Applicability Analysis
 
@@ -4069,7 +4069,7 @@ node --check core/db-api.cjs  # ✅ OK
 ---
 
 *Màj: 02/02/2026 - Session 250.57 (Rigorous Audit + i18n 18/18 + wsDebug fix)*
-*Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VoicalAI*
+*Deploy: NindoHost cPanel (Apache) | GitHub: github.com/Jouiet/VocalIA*
 
 ---
 
